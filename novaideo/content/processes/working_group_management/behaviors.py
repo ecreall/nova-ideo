@@ -8,7 +8,7 @@ from dace.processinstance.activity import (
     StartStep,
     EndStep)
 
-from sdkuneagi.content.interface import IWorkingGroup
+from novaideo.content.interface import IWorkingGroup
 
 def edit_relation_validation(process, context):
     return True

@@ -7,8 +7,8 @@ from pontus.schema import Schema, select, omit
 from pontus.widget import FileWidget
 from pontus.file import ObjectData, File
 
-from sdkuneagi.content.processes.organization_management.behaviors import AddOrganizations
-from sdkuneagi.content.novaideo_application import NovaIdeoApplication
+from novaideo.content.processes.organization_management.behaviors import AddOrganizations
+from novaideo.content.novaideo_application import NovaIdeoApplication
 
 
 

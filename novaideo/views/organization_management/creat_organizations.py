@@ -6,9 +6,9 @@ from pontus.form import FormView
 from pontus.widget import TableWidget, LineWidget
 from pontus.schema import Schema, omit, select
 
-from sdkuneagi.content.processes.organization_management.behaviors import  CreatOrganizations
-from sdkuneagi.content.novaideo_application import NovaIdeoApplication
-from sdkuneagi.content.organization import OrganizationSchema, Organization
+from novaideo.content.processes.organization_management.behaviors import  CreatOrganizations
+from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.content.organization import OrganizationSchema, Organization
 
 
 class CreatOrganizationsSchema(Schema):

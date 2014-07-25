@@ -6,9 +6,9 @@ from pontus.form import FormView
 from pontus.widget import TableWidget, LineWidget
 from pontus.schema import Schema, omit, select
 
-from sdkuneagi.content.processes.user_management.behaviors import  InviteUsers
-from sdkuneagi.content.novaideo_application import NovaIdeoApplication
-from sdkuneagi.content.invitation import InvitationSchema, Invitation
+from novaideo.content.processes.user_management.behaviors import  InviteUsers
+from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.content.invitation import InvitationSchema, Invitation
 
 
 class InviteUsersSchema(Schema):

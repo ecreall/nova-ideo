@@ -9,9 +9,9 @@ from dace.processinstance.activity import (
     ActionType,
     StartStep,
     EndStep)
-from sdkuneagi.ips.xlreader import creat_object_from_xl
-from sdkuneagi.content.interface import INovaIdeoApplication
-from sdkuneagi.content.person import Person
+from novaideo.ips.xlreader import creat_object_from_xl
+from novaideo.content.interface import INovaIdeoApplication
+from novaideo.content.person import Person
 
 
 def adduser_relation_validation(process, context):

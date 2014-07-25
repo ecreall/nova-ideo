@@ -5,8 +5,8 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.schema import select, omit
 
-from sdkuneagi.content.processes.working_group_management.behaviors import EditAction
-from sdkuneagi.content.working_group import WorkingGroup, WorkingGroupSchema
+from novaideo.content.processes.working_group_management.behaviors import EditAction
+from novaideo.content.working_group import WorkingGroup, WorkingGroupSchema
 
 @view_config(
     name='edit_wg',
