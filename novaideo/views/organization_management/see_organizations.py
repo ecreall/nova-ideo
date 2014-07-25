@@ -1,3 +1,4 @@
+import re
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
@@ -163,11 +164,17 @@ class SeeOrganizationsView(BasicView):
             if organization.logo:
                 logo = {'url':organization.logo.url(self.request), 'title':organization.logo.title}
 
+            #http://www.developpez.net/forums/d81553/autres-langages/python-zope/general-python/chaine-caracteres-couper-trouver-remplacer/
+            description = organization.description
+            if len(description) > 249:
+                description = description[:250]
+                reduced_description = re.sub('\s[a-z0-9._-]+$', ' ...', description)
+
             organization_dic = { 
                 'actions': actions,
                 'url':self.request.resource_url(organization, '@@index'), 
                 'title': organization.title,
-                'description': organization.description,
+                'description': reduced_description,
                 'logo': logo}
             all_organization_data['organizations'].append(organization_dic)
          
