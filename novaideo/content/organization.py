@@ -24,6 +24,18 @@ from dace.util import getSite
 from .interface import IOrganization
 from .person import Person, PersonSchema
 
+
+@colander.deferred
+def default_members(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    values = []
+    if hasattr(context, 'members'):
+        values = context.members
+
+    return values
+
+
 @colander.deferred
 def members_choice(node, kw):
     context = node.bindings['context']
@@ -35,7 +47,7 @@ def members_choice(node, kw):
 
     principals = find_service(root, 'principals')
     prop = principals['users'].values()
-    values = [(i, i.name) for i in prop]
+    values = [(i, i.name) for i in prop if getattr(i, 'organization', None) in (None, context)]
     return Select2Widget(values=values, multiple=True)
 
 
@@ -58,7 +70,8 @@ class OrganizationSchema(VisualisableElementSchema):
     members = colander.SchemaNode(
         colander.Set(),
         widget=members_choice,
-        title='members'
+        default=default_members,
+        title='Members'
         )
 
 
@@ -81,4 +94,11 @@ class Organization(VisualisableElement, Entity):
 
     def setmembers(self, members):
         self.setproperty('members', members)
+
+    @property
+    def logo(self):
+        return self.getproperty('logo')
+
+    def setlogo(self, logo):
+        self.setproperty('logo', logo)
 

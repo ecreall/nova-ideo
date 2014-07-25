@@ -1,0 +1,20 @@
+<div >
+  <div >
+    <h3>${title}</h3>
+    <a tal:condition="logo" tal:attributes="href logo['url']" >
+       <img tal:attributes="src logo['url']" class="img-thumbnail"/>
+    </a>
+    <p class="text-muted" tal:condition="description">
+        <small  >${description}</small>
+    </p>
+    <h4>List of members:</h4>
+    <ul class="nav nav-list">
+      <li tal:repeat="m members">${m}</li>
+    </ul>
+
+  </div>
+</div>
+
+
+
+

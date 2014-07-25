@@ -57,21 +57,17 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
 
     working_groups = colander.SchemaNode(
                         colander.Sequence(),
-                        omit(WorkingGroupSchema(widget=LineWidget(),
-                                factory=WorkingGroup,
+                        omit(WorkingGroupSchema(factory=WorkingGroup,
                                 editable=True,
                                 name='Working group'),['_csrf_token_']),
-                        widget=TableWidget(),
                         title='Working groups'
                         )
 
     organizations = colander.SchemaNode(
                         colander.Sequence(),
-                        omit(OrganizationSchema(widget=LineWidget(),
-                                factory=Organization,
+                        omit(OrganizationSchema(factory=Organization,
                                 editable=True,
                                 name='Organization'),['_csrf_token_']),
-                        widget=TableWidget(),
                         title='Organizations'
                         )
 

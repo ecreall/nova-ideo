@@ -17,9 +17,9 @@ class InviteUsersSchema(Schema):
                 colander.Sequence(),
                 select(omit(InvitationSchema(factory=Invitation,
                                          editable=True,
-                                         name='Invitation'),['_csrf_token_']), ['first_name', 
+                                         name='Invitation'),['_csrf_token_']), ['user_title',
+                                                                                'first_name', 
                                                                                 'last_name',
-                                                                                'user_title',
                                                                                 'email']),
                 title='Invitations'
                 )
