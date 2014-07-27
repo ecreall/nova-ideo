@@ -1,14 +1,18 @@
-<div class="jumbotron well">
-  <div class="container">
-    <img tal:attributes="src logo['url']" />
-    <h3>${title}</h3> 
-    <p class="text-muted" tal:condition="description">
-        <small  >${description}</small>
-    </p>
-    <h4>Members</h4>
-    <ul class="nav nav-list">
-      <li tal:repeat="m members">${m}</li>
-    </ul>
-  </div>
-</div>
-
+<img tal:attributes="src logo['url']" />     
+<dl class="dl-horizontal">
+    <dt>${title}</dt>
+    <dd>
+        <p class="text-muted" tal:condition="description">
+            <small>${description}</small>
+        </p>
+    </dd>
+    <dt tal:condition="email">Email</dt><dd>${email}</dd>
+    <dt tal:condition="phone">Phone</dt><dd>${phone}</dd>
+    <dt tal:condition="fax">Fax</dt><dd>${fax}</dd>
+    <dt>Members</dt>
+    <dd>
+      <ul class="nav nav-list">
+        <li tal:repeat="m members">${m}</li>
+      </ul>
+    </dd>
+</dl>

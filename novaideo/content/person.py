@@ -14,7 +14,7 @@ from dace.objectofcollaboration.object import (
                 COMPOSITE_UNIQUE)
 from dace.objectofcollaboration.principal import User
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import RadioChoiceWidget, FileWidget
+from pontus.widget import RadioChoiceWidget, FileWidget, Select2Widget
 from pontus.file import Image, ObjectData, Object as ObjectType
 from .interface import IPerson
 
@@ -28,9 +28,18 @@ def organization_choice(node, kw):
     if root is None:
         root = context.__parent__.__parent__
 
-    prop = root.organizations
-    values = [(i, i.get_view(request)) for i in prop]
-    return RadioChoiceWidget(values=values)
+    prop = sorted(root.organizations, key=lambda p: p.title)
+    values = [(i, i.title) for i in prop]
+    return Select2Widget(values=values)
+
+
+@colander.deferred
+def titles_choice(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    root = getSite(context)
+    values = [(i, i) for i in root.titles]
+    return Select2Widget(values=values)
 
 
 def context_is_a_person(context, request):
@@ -47,12 +56,28 @@ class PersonSchema(VisualisableElementSchema, UserSchema):
             ObjectData(Image),
             widget= FileWidget(),
             required = False
-            ) 
+            )
+
+    first_name =  colander.SchemaNode(
+                    colander.String(),
+                    title='First name' 
+                    )
+
+    last_name = colander.SchemaNode(
+                    colander.String(),
+                    title='Last name' 
+                    )
+  
+    user_title = colander.SchemaNode(
+                    colander.String(),
+                    widget=titles_choice,
+                    title='Title'
+                )
 
     organization = colander.SchemaNode(
                 ObjectType(),
                 widget=organization_choice,
-                requierd=False
+                missing=None
                 )
 
 

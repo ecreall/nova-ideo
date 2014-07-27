@@ -19,6 +19,9 @@ class EditOrganizationView(FormView):
     title = 'Edit organization'
     schema = select(OrganizationSchema(editable=True),['title',
                                                        'description',
+                                                       'email',
+                                                       'phone',
+                                                       'fax',
                                                        'logo',
                                                        'members'])
     behaviors = [EditOrganization]

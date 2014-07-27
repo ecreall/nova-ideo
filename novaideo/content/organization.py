@@ -67,6 +67,21 @@ class OrganizationSchema(VisualisableElementSchema):
             required = False
             )
 
+    email = colander.SchemaNode(
+                colander.String(),
+                validator=colander.All(
+                    colander.Email(),
+                    colander.Length(max=100)
+                    ),
+                )
+
+    phone = colander.SchemaNode(
+                     colander.String(),
+                     title="Phone number")
+
+    fax = colander.SchemaNode(
+                     colander.String())
+
     members = colander.SchemaNode(
         colander.Set(),
         widget=members_choice,
@@ -87,6 +102,14 @@ class Organization(VisualisableElement, Entity):
 
     def __init__(self, **kwargs):
         super(Organization, self).__init__(**kwargs)
+        if 'phone' in kwargs:
+            self.phone = kwargs.get('phone')
+
+        if 'fax' in kwargs:
+            self.fax = kwargs.get('fax')
+
+        if 'email' in kwargs:
+            self.email = kwargs.get('email')
 
     @property
     def members(self):

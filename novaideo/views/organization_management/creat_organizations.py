@@ -15,7 +15,15 @@ class CreatOrganizationsSchema(Schema):
 
     organizations = colander.SchemaNode(
                 colander.Sequence(),
-                select(omit(OrganizationSchema(factory=Organization, editable=True, name='Organization'),['_csrf_token_']), ['title', 'description', 'logo', 'members']),
+                select(omit(OrganizationSchema(factory=Organization,
+                                               editable=True,
+                                               name='Organization'),['_csrf_token_']), ['title',
+                                                                                        'description',
+                                                                                        'email',
+                                                                                        'phone',
+                                                                                        'fax',
+                                                                                        'logo',
+                                                                                        'members']),
                 title='Organizations to creat'
                 )
 

@@ -7,22 +7,22 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView, ViewError, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
-from novaideo.content.processes.organization_management.behaviors import  SeeOrganizations
+from novaideo.content.processes.invitation_management.behaviors import  SeeInvitations
 from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
 
 
 
 @view_config(
-    name='seeorganizations',
+    name='seeinvitations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/view.pt',
     )
-class SeeOrganizationsView(BasicView):
-    title = 'Organizations'
-    name = 'seeorganizations'
-    behaviors = [SeeOrganizations]
-    template = 'novaideo:views/organization_management/templates/see_organizations.pt'
-    viewid = 'seeorganizations'
+class SeeInvitationsView(BasicView):
+    title = 'Invitations'
+    name = 'seeinvitations'
+    behaviors = [SeeInvitations]
+    template = 'novaideo:views/invitation_management/templates/see_invitations.pt'
+    viewid = 'seeinvitations'
 
 
     def _modal_views(self, all_actions, form_id):
@@ -140,9 +140,9 @@ class SeeOrganizationsView(BasicView):
         all_resources = {}
         all_resources['js_links'] = []
         all_resources['css_links'] = []
-        all_organization_data = {'organizations':[]}
-        for organization in self.context.organizations:
-            action_updated, messages, resources, actions = self._actions(organization)
+        all_invitation_data = {'invitations':[]}
+        for invitation in self.context.invitations:
+            action_updated, messages, resources, actions = self._actions(invitation)
             if action_updated and not isactive:
                 isactive = True
 
@@ -156,27 +156,18 @@ class SeeOrganizationsView(BasicView):
                     all_resources['css_links'].extend(resources['css_links'])
                     all_resources['css_links'] =list(set(all_resources['css_links']))
 
-            logo = {}
-            if organization.logo:
-                logo = {'url':organization.logo.url(self.request), 'title':organization.logo.title}
 
-            #http://www.developpez.net/forums/d81553/autres-langages/python-zope/general-python/chaine-caracteres-couper-trouver-remplacer/
-            description = organization.description
-            reduced_description = description
-            if len(description) > 249:
-                description = description[:250]
-                reduced_description = re.sub('\s[a-z0-9._-]+$', ' ...', description)
-
-            organization_dic = { 
+            invitation_dic = { 
                 'actions': actions,
-                'url':self.request.resource_url(organization, '@@index'), 
-                'title': organization.title,
-                'description': reduced_description,
-                'logo': logo}
-            all_organization_data['organizations'].append(organization_dic)
+                'url':self.request.resource_url(invitation, '@@index'), 
+                'first_name': getattr(invitation, 'first_name',''),
+                'last_name': getattr(invitation, 'last_name', ''),
+                'user_title': getattr(invitation, 'user_title', ''),
+                'roles':getattr(invitation, 'roles', '')}
+            all_invitation_data['invitations'].append(invitation_dic)
          
-        all_organization_data['tabid'] = self.__class__.__name__+'OrganizationActions'
-        body = self.content(result=all_organization_data, template=self.template)['body']
+        all_invitation_data['tabid'] = self.__class__.__name__+'InvitationActions'
+        body = self.content(result=all_invitation_data, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = all_messages
         item['isactive'] = isactive
@@ -187,4 +178,4 @@ class SeeOrganizationsView(BasicView):
 
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeOrganizations:SeeOrganizationsView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeInvitations:SeeInvitationsView})

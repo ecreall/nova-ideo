@@ -15,30 +15,42 @@ from dace.objectofcollaboration.services.processdef_container import process_def
 
 from pontus.core import VisualisableElement
 
-from .behaviors import InviteUsers, AddUsers
+from .behaviors import (
+    InviteUsers,
+    UploadUsers,
+    SeeInvitation,
+    SeeInvitations)
 
 
-@process_definition(name='usermanagement', id='usermanagement')
-class UserManagement(ProcessDefinition, VisualisableElement):
+@process_definition(name='invitationmanagement', id='invitationmanagement')
+class InvitationManagement(ProcessDefinition, VisualisableElement):
     isUnique = True
 
     def __init__(self, **kwargs):
-        super(UserManagement, self).__init__(**kwargs)
-        self.title = 'Users management'
-        self.description = 'Users management'
+        super(InvitationManagement, self).__init__(**kwargs)
+        self.title = 'Invitations management'
+        self.description = 'Invitations management'
 
     def _init_definition(self):
         self.defineNodes(
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
-                add = ActivityDefinition(contexts=[AddUsers],
+                add = ActivityDefinition(contexts=[UploadUsers],
                                        description="Upload users from xl file",
                                        title="Upload users",
-                                       groups=['Add','User']),
+                                       groups=['Invite']),
                 invite = ActivityDefinition(contexts=[InviteUsers],
                                        description="Invite users",
                                        title="Invite users",
-                                       groups=['Add','User']),
+                                       groups=['Invite']),
+                seeinvitation = ActivityDefinition(contexts=[SeeInvitation],
+                                       description="See the invitation",
+                                       title="Details",
+                                       groups=[]),
+                seeinvitations = ActivityDefinition(contexts=[SeeInvitations],
+                                       description="See the invitations",
+                                       title="Invitations",
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -47,6 +59,10 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'add'),
                 TransitionDefinition('pg', 'invite'),
                 TransitionDefinition('add', 'eg'),
+                TransitionDefinition('pg', 'seeinvitation'),
+                TransitionDefinition('seeinvitation', 'eg'),
+                TransitionDefinition('pg', 'seeinvitations'),
+                TransitionDefinition('seeinvitations', 'eg'),
                 TransitionDefinition('invite', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )

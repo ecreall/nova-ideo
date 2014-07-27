@@ -11,10 +11,6 @@ from novaideo.content.organization import OrganizationSchema, Organization
 
 
 
-def get_items(view):
-    return view.context.organizations
-
-
 @view_config(
     name='seeorganization',
     context=Organization,
@@ -38,6 +34,9 @@ class SeeOrganizationView(BasicView):
         values = {
                 'title': self.context.title,
                 'description': self.context.description,
+                'email':getattr(self.context, 'email', ''),
+                'phone':getattr(self.context, 'phone', ''),
+                'fax': getattr(self.context, 'fax', ''),
                 'logo': logo,
                 'members' : [m.name for m in self.context.members],
                }
