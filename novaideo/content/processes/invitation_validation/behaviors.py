@@ -124,11 +124,13 @@ class RemoveInvitation(ElementaryAction):
     state_validation = remove_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        root = getSite()
         root.delproperty('invitations', context) 
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        root = getSite()
+        return HTTPFound(request.resource_url(root, "@@index"))
 
 
 def reinvite_relation_validation(process, context):
