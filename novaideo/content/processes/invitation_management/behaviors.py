@@ -41,8 +41,9 @@ class UploadUsers(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         xlfile = appstruct['file']['_object_data']
-        new_invitations = creat_object_from_xl(file=xlfile, factory=Invitation, properties={'title':('String', False),
-                                                                                  'description':('String', False),
+        new_invitations = creat_object_from_xl(file=xlfile, factory=Invitation, properties={'first_name':('String', False),
+                                                                                  'last_name':('String', False),
+                                                                                  'user_title':('String', False),
                                                                                   'email':('String', False)})
         def_container = find_service('process_definition_container')
         pd = def_container.get_definition('invitationvalidation')
