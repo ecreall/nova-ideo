@@ -27,9 +27,9 @@ class SeeInvitationView(BasicView):
         self.execute(None)
         result = {}
         values = {
-                'first_name': self.context.first_name,
-                'last_name': self.context.last_name,
-                'user_title': self.context.user_title,
+                'first_name': getattr(self.context, 'first_name',''),
+                'last_name': getattr(self.context, 'last_name',''),
+                'user_title': getattr(self.context, 'user_title', ''),
                 'roles':getattr(self.context, 'roles', ''),
                 'url': ''#self.request.resource_url(self.context, '@@index')
                }

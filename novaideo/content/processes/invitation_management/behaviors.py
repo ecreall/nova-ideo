@@ -178,4 +178,66 @@ class SeeInvitations(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
+def edit_relation_validation(process, context):
+    return True
+
+
+def edit_roles_validation(process, context):
+    return True#has_any_roles(roles=('Moderator',))
+
+
+def edit_processsecurity_validation(process, context):
+    return len(context.invitations)>=1
+
+
+def edit_state_validation(process, context):
+    return True
+
+
+class EditInvitations(InfiniteCardinality):
+    isSequential = True
+    context = INovaIdeoApplication
+    relation_validation = edit_relation_validation
+    roles_validation = edit_roles_validation
+    processsecurity_validation = edit_processsecurity_validation
+    state_validation = edit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def editinv_relation_validation(process, context):
+    return True
+
+
+def editinv_roles_validation(process, context):
+    return True#has_any_roles(roles=('Moderator',))
+
+
+def editinv_processsecurity_validation(process, context):
+    return True
+
+
+def editinv_state_validation(process, context):
+    return True
+
+
+class EditInvitation(InfiniteCardinality):
+    isSequential = False
+    title = 'Edit invitation'
+    context = IInvitation
+    relation_validation = editinv_relation_validation
+    roles_validation = editinv_roles_validation
+    processsecurity_validation = editinv_processsecurity_validation
+    state_validation = editinv_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 #TODO bihaviors

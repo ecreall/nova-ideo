@@ -57,6 +57,7 @@ class AcceptInvitation(ElementaryAction):
         name = person.first_name + ' ' +person.last_name
         principals['users'][name] = person
         grant_roles(person, roles)
+        grant_roles(person, (('Owner', person),))
         context.state.remove('pending')
         context.state.append('accepted')
         root.delproperty('invitations', context) 

@@ -19,7 +19,9 @@ from .behaviors import (
     InviteUsers,
     UploadUsers,
     SeeInvitation,
-    SeeInvitations)
+    SeeInvitations,
+    EditInvitations,
+    EditInvitation)
 
 
 @process_definition(name='invitationmanagement', id='invitationmanagement')
@@ -51,6 +53,14 @@ class InvitationManagement(ProcessDefinition, VisualisableElement):
                                        description="See the invitations",
                                        title="Invitations",
                                        groups=[]),
+                edits = ActivityDefinition(contexts=[EditInvitations],
+                                       description="Edit invitations",
+                                       title="Edit invitations",
+                                       groups=['Edit']),
+                edit = ActivityDefinition(contexts=[EditInvitation],
+                                       description="Edit invitation",
+                                       title="Edit invitation",
+                                       groups=['Edit']),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -58,11 +68,15 @@ class InvitationManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'add'),
                 TransitionDefinition('pg', 'invite'),
+                TransitionDefinition('pg', 'edits'),
+                TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('add', 'eg'),
                 TransitionDefinition('pg', 'seeinvitation'),
                 TransitionDefinition('seeinvitation', 'eg'),
                 TransitionDefinition('pg', 'seeinvitations'),
                 TransitionDefinition('seeinvitations', 'eg'),
                 TransitionDefinition('invite', 'eg'),
+                TransitionDefinition('edits', 'eg'),
+                TransitionDefinition('edit', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )

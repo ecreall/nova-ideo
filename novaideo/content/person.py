@@ -24,7 +24,7 @@ def organization_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
     values = []
-    root = getSite(context)
+    root = getSite()
     if root is None:
         root = context.__parent__.__parent__
 
@@ -37,7 +37,7 @@ def organization_choice(node, kw):
 def titles_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
-    root = getSite(context)
+    root = getSite()
     values = [(i, i) for i in root.titles]
     return Select2Widget(values=values)
 

@@ -1,1 +1,1 @@
-<strong>${user_title} ${last_name} ${first_name}</strong> Vous êtes invité à rejoindre l'application collaborative INEUS en tant que <strong tal:repeat="r roles">${r} </strong>. Veuilliez visiter ce <a tal:attributes="href url">lien</a> afin de valider votre invitation.
+<strong>${user_title} ${last_name} ${first_name}</strong> Vous êtes invité à rejoindre l'application collaborative INEUS <div tal:condition="roles">en tant que </div><strong tal:repeat="r roles">${r} </strong>. Veuilliez visiter ce <a tal:attributes="href url">lien</a> afin de valider votre invitation.
