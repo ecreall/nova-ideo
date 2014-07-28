@@ -12,6 +12,8 @@ from novaideo.ips.xlreader import creat_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IInvitation
 from novaideo.content.person import Person
 from novaideo.content.invitation import Invitation
+from novaideo.ips.mailer import mailer_send
+from novaideo.content.processes.invitation_validation.behaviors import invitation_message
 
 
 def uploaduser_relation_validation(process, context):
@@ -57,7 +59,12 @@ class UploadUsers(InfiniteCardinality):
             proc.defineGraph(pd)
             proc.execute()
             proc.execution_context.add_involved_entity('invitation', invitation)
-
+            url = request.resource_url(invitation, "@@index")
+            message = invitation_message.format(
+                invitation=invitation,
+                invitation_url=url,
+                roles=", ".join(invitation.roles))
+            mailer_send(subject='Invitation', recipients=[invitation.email], body=message )
     
         return True
 
@@ -106,8 +113,13 @@ class InviteUsers(InfiniteCardinality):
             proc.defineGraph(pd)
             proc.execute()
             proc.execution_context.add_involved_entity('invitation', invitation)
-            #send mail
-    
+            url = request.resource_url(invitation, "@@index")
+            message = invitation_message.format(
+                invitation=invitation,
+                invitation_url=url,
+                roles=", ".join(invitation.roles))
+            mailer_send(subject='Invitation', recipients=[invitation.email], body=message )
+
         return True
 
     def redirect(self, context, request, **kw):

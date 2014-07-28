@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service
 
@@ -13,10 +14,21 @@ from dace.processinstance.activity import (
 from pontus.schema import select, omit
 
 from novaideo.ips.xlreader import creat_object_from_xl
+from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IInvitation
 from novaideo.content.person import Person
 from novaideo.content.invitation import InvitationSchema
 
+
+invitation_message = u"""
+Bonjour,
+
+{invitation.user_title} {invitation.last_name} {invitation.first_name} vous êtes invité à rejoindre l\'application collaborative INEUS en tant que {roles}. Veuilliez visiter ce lien {invitation_url} afin de valider votre invitation.
+
+Cordialement,
+
+La Plateforme NovaIdeo
+"""
 
 def accept_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'invitation')
@@ -158,7 +170,12 @@ class ReinviteUser(ElementaryAction):
     state_validation = reinvite_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #send mail
+        url = request.resource_url(context, "@@index")
+        message = invitation_message.format(
+            invitation=context,
+            invitation_url=url,
+            roles=", ".join(context.roles))
+        mailer_send(subject='Invitation', recipients=[context.email], body=message )
         context.state.remove('refused')
         context.state.append('pending')
         return True
@@ -192,7 +209,12 @@ class RemindInvitation(InfiniteCardinality):
     state_validation = remind_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #send mail to person    
+        url = request.resource_url(context, "@@index")
+        message = invitation_message.format(
+            invitation=context,
+            invitation_url=url,
+            roles=", ".join(context.roles))
+        mailer_send(subject='Invitation', recipients=[invitation.email], body=message )   
         return True
 
     def redirect(self, context, request, **kw):
