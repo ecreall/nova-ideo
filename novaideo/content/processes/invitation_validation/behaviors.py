@@ -1,9 +1,9 @@
 # -*- coding: utf8 -*-
 from pyramid.httpexceptions import HTTPFound
-from substanced.util import find_service
+from substanced.util import find_service, get_oid
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles
+from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
@@ -23,7 +23,7 @@ from novaideo.content.invitation import InvitationSchema
 invitation_message = u"""
 Bonjour,
 
-{invitation.user_title} {invitation.last_name} {invitation.first_name} vous êtes invité à rejoindre l\'application collaborative INEUS en tant que {roles}. Veuilliez visiter ce lien {invitation_url} afin de valider votre invitation.
+{user_title} {invitation.last_name} {invitation.first_name} vous êtes invité à rejoindre l\'application collaborative INEUS en tant que {roles}. Veuilliez visiter ce lien {invitation_url} afin de valider votre invitation.
 
 Cordialement,
 
@@ -35,7 +35,7 @@ def accept_relation_validation(process, context):
 
 
 def accept_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Anonymous',)) and not has_any_roles(roles=('Admin',))
 
 
 def accept_processsecurity_validation(process, context):
@@ -85,7 +85,7 @@ def refuse_relation_validation(process, context):
 
 
 def refuse_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Anonymous',)) and not has_any_roles(roles=('Admin',))
 
 
 def refuse_processsecurity_validation(process, context):
@@ -118,7 +118,7 @@ def remove_relation_validation(process, context):
 
 
 def remove_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Moderator',)) 
 
 
 def remove_processsecurity_validation(process, context):
@@ -151,7 +151,7 @@ def reinvite_relation_validation(process, context):
 
 
 def reinvite_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Moderator',)) 
 
 
 def reinvite_processsecurity_validation(process, context):
@@ -170,11 +170,13 @@ class ReinviteUser(ElementaryAction):
     state_validation = reinvite_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        url = request.resource_url(context, "@@index")
+        root = getSite()
+        url = request.resource_url(root, "@@seeinvitation", query={'invitation_id':str(get_oid(context))})
         message = invitation_message.format(
             invitation=context,
+            user_title=getattr(context, 'user_title', ''),
             invitation_url=url,
-            roles=", ".join(context.roles))
+            roles=", ".join(getattr(context, 'roles', [])))
         mailer_send(subject='Invitation', recipients=[context.email], body=message )
         context.state.remove('refused')
         context.state.append('pending')
@@ -189,7 +191,7 @@ def remind_relation_validation(process, context):
 
 
 def remind_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Moderator',)) 
 
 
 def remind_processsecurity_validation(process, context):
@@ -209,12 +211,14 @@ class RemindInvitation(InfiniteCardinality):
     state_validation = remind_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        url = request.resource_url(context, "@@index")
+        root = getSite()
+        url = request.resource_url(root, "@@seeinvitation", query={'invitation_id':str(get_oid(context))})
         message = invitation_message.format(
             invitation=context,
+            user_title=getattr(context, 'user_title', ''),
             invitation_url=url,
-            roles=", ".join(context.roles))
-        mailer_send(subject='Invitation', recipients=[invitation.email], body=message )   
+            roles=", ".join(getattr(context, 'roles', [])))
+        mailer_send(subject='Invitation', recipients=[context.email], body=message )   
         return True
 
     def redirect(self, context, request, **kw):

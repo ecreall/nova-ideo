@@ -1,6 +1,8 @@
 from pyramid.httpexceptions import HTTPFound
 
+from substanced.util import get_oid
 from dace.util import find_service, getSite
+from dace.objectofcollaboration.principal.util import has_any_roles
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
@@ -21,7 +23,7 @@ def uploaduser_relation_validation(process, context):
 
 
 def uploaduser_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Moderator',)) 
 
 
 def uploaduser_processsecurity_validation(process, context):
@@ -33,7 +35,7 @@ def uploaduser_state_validation(process, context):
 
 
 class UploadUsers(InfiniteCardinality):
-    isSequential = True
+    isSequential = False
     context = INovaIdeoApplication
     relation_validation = uploaduser_relation_validation
     roles_validation = uploaduser_roles_validation
@@ -51,6 +53,10 @@ class UploadUsers(InfiniteCardinality):
         pd = def_container.get_definition('invitationvalidation')
         runtime = find_service('runtime')
         for invitation in new_invitations:
+            invitation.title = u"""{title} {user_title} {first_name} {last_name}""".format(title=invitation.title,
+                                                                                           user_title=getattr(self.context, 'user_title',''),
+                                                                                           first_name=getattr(self.context, 'first_name',''),
+                                                                                           last_name=getattr(self.context, 'last_name',''))
             invitation.state.append('pending')
             root.addtoproperty('invitations', invitation)
             proc = pd()
@@ -59,11 +65,12 @@ class UploadUsers(InfiniteCardinality):
             proc.defineGraph(pd)
             proc.execute()
             proc.execution_context.add_involved_entity('invitation', invitation)
-            url = request.resource_url(invitation, "@@index")
+            url = request.resource_url(root, "@@seeinvitation",query={'invitation_id':str(get_oid(invitation))})
             message = invitation_message.format(
                 invitation=invitation,
+                user_title=getattr(invitation, 'user_title', ''),
                 invitation_url=url,
-                roles=", ".join(invitation.roles))
+                roles=", ".join(getattr(invitation, 'roles', [])))
             mailer_send(subject='Invitation', recipients=[invitation.email], body=message )
     
         return True
@@ -78,7 +85,7 @@ def inviteuser_relation_validation(process, context):
 
 
 def inviteuser_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Moderator',)) 
 
 
 def inviteuser_processsecurity_validation(process, context):
@@ -90,7 +97,7 @@ def inviteuser_state_validation(process, context):
 
 
 class InviteUsers(InfiniteCardinality):
-    isSequential = True
+    isSequential = False
     context = INovaIdeoApplication
     relation_validation = inviteuser_relation_validation
     roles_validation = inviteuser_roles_validation
@@ -113,11 +120,12 @@ class InviteUsers(InfiniteCardinality):
             proc.defineGraph(pd)
             proc.execute()
             proc.execution_context.add_involved_entity('invitation', invitation)
-            url = request.resource_url(invitation, "@@index")
+            url = request.resource_url(root, "@@seeinvitation",query={'invitation_id':str(get_oid(invitation))})
             message = invitation_message.format(
                 invitation=invitation,
+                user_title=getattr(invitation, 'user_title', ''),
                 invitation_url=url,
-                roles=", ".join(invitation.roles))
+                roles=", ".join(getattr(invitation, 'roles', [])))
             mailer_send(subject='Invitation', recipients=[invitation.email], body=message )
 
         return True
@@ -132,11 +140,11 @@ def seeinv_relation_validation(process, context):
 
 
 def seeinv_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Anonymous',)) and not has_any_roles(roles=('Administrator',))
 
 
 def seeinv_processsecurity_validation(process, context):
-    return len(context.__parent__.invitations)>=1
+    return len(context.invitations)>=1
 
 
 def seeinv_state_validation(process, context):
@@ -147,7 +155,7 @@ class SeeInvitation(InfiniteCardinality):
     isSequential = False
     title = 'Details'
     actionType = ActionType.automatic
-    context = IInvitation
+    context = INovaIdeoApplication
     relation_validation = seeinv_relation_validation
     roles_validation = seeinv_roles_validation
     processsecurity_validation = seeinv_processsecurity_validation
@@ -165,7 +173,7 @@ def seeinvs_relation_validation(process, context):
 
 
 def seeinvs_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Moderator',)) 
 
 
 def seeinvs_processsecurity_validation(process, context):
@@ -196,7 +204,7 @@ def edit_relation_validation(process, context):
 
 
 def edit_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Moderator',)) 
 
 
 def edit_processsecurity_validation(process, context):
@@ -227,7 +235,7 @@ def editinv_relation_validation(process, context):
 
 
 def editinv_roles_validation(process, context):
-    return True#has_any_roles(roles=('Moderator',))
+    return has_any_roles(roles=('Moderator',)) 
 
 
 def editinv_processsecurity_validation(process, context):

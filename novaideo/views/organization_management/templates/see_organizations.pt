@@ -51,7 +51,7 @@
  <div tal:condition="organizations" tal:repeat="organization organizations">
     <div class="col-sm-6 col-md-4">
       <div class="thumbnail">
-        <img tal:attributes="src organization['logo']['url']"  alt="300x200"/>
+        <img tal:condition="organization['logo']" tal:attributes="src organization['logo']['url']"  alt="300x200"/>
         <div class="caption">
          <h3>${organization['title']} <small><a tal:attributes="href organization['url']"><span class="glyphicon glyphicon-zoom-in"></span></a></small></h3>
          <p class="text-muted" tal:condition=" organization['description']">

@@ -17,7 +17,8 @@ from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, Nov
 class EditInvitationsView(FormView):
 
     title = 'Edit invitations'
-    schema = select(NovaIdeoApplicationSchema(editable=True),[(u'invitations',['user_title',
+    schema = select(NovaIdeoApplicationSchema(editable=True),[(u'invitations',[ 'title',
+                                                                                'user_title',
                                                                                 'roles',
                                                                                 'first_name', 
                                                                                 'last_name',

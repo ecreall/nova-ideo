@@ -7,19 +7,21 @@ from pyramid.threadlocal import get_current_request
 
 
 def mailer_send(subject="!",
-                sender="admin@ecreall.com",
+                sender=None,
                 recipients=[],
                 body="",
-               attachments=[]):
+                attachments=[]):
+
+    if sender is None:
+        sender = get_current_request().registry.settings['novaideo.admin_email']    
+
     mailer = get_mailer(get_current_request())
     message = Message(subject=subject,
                   sender=sender,
                   recipients=recipients,
                   body=body)
-
     for attachment in attachments:
         attachment = Attachment(attachment.title, attachment.mimetype, attachment)
         message.attach(attachment)
 
     mailer.send(message)
-    #transaction.commit()

@@ -157,7 +157,7 @@ class SeeOrganizationsView(BasicView):
                     all_resources['css_links'] =list(set(all_resources['css_links']))
 
             logo = {}
-            if organization.logo:
+            if getattr(organization, 'logo', None):
                 logo = {'url':organization.logo.url(self.request), 'title':organization.logo.title}
 
             #http://www.developpez.net/forums/d81553/autres-langages/python-zope/general-python/chaine-caracteres-couper-trouver-remplacer/
