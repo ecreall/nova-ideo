@@ -1,23 +1,13 @@
-import colander
-from zope.interface import invariant, implementer, Interface
+from zope.interface import implementer
 
 from substanced.content import content
 from substanced.util import renamer
-from substanced.property import PropertySheet
-from substanced.schema import (
-    NameSchemaNode
-    )
+from substanced.schema import NameSchemaNode
 
 from dace.objectofcollaboration.entity import Entity
-from dace.objectofcollaboration.object import(
-                COMPOSITE_UNIQUE,
-                SHARED_UNIQUE,
-                COMPOSITE_MULTIPLE,
-                SHARED_MULTIPLE,
-                Object)
-from pontus.schema import Schema, omit
+from dace.descriptors import CompositeUniqueProperty
+from pontus.schema import omit
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import TableWidget, LineWidget, CheckboxChoiceWidget
 
 from .action_proposal import ActionProposalSchema, ActionProposal
 from .interface import IWorkingGroup
@@ -46,14 +36,10 @@ class WorkingGroupSchema(VisualisableElementSchema):
 class WorkingGroup(VisualisableElement, Entity):
     name = renamer()
     template = 'pontus:templates/visualisable_templates/object.pt'
-    properties_def = {'action_proposal':(COMPOSITE_UNIQUE, 'myparent', False)}
+    action_proposal = CompositeUniqueProperty('action_proposal', 'myparent')
 
     def __init__(self, **kwargs):
         super(WorkingGroup, self).__init__(**kwargs)
-
-    @property
-    def action_proposal(self):
-        return self.getproperty('action_proposal')
 
     def setaction_proposal(self, action_proposal):
         self.setproperty('action_proposal', action_proposal)

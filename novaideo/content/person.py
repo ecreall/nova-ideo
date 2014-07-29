@@ -7,17 +7,17 @@ from substanced.util import renamer
 from substanced.principal import UserSchema
 
 from dace.util import getSite
-from dace.objectofcollaboration.entity import Entity
-from dace.objectofcollaboration.object import (
-                SHARED_UNIQUE,
-                COMPOSITE_MULTIPLE,
-                COMPOSITE_UNIQUE)
 from dace.objectofcollaboration.principal import User
+from dace.descriptors import (
+    SharedUniqueProperty,
+    CompositeMultipleProperty,
+    CompositeUniqueProperty)
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import RadioChoiceWidget, FileWidget, Select2Widget
+from pontus.widget import FileWidget, Select2Widget
 from pontus.file import Image, ObjectData, Object as ObjectType
-from .interface import IPerson
 
+from .interface import IPerson
+from novaideo import _
 
 @colander.deferred
 def organization_choice(node, kw):
@@ -60,24 +60,25 @@ class PersonSchema(VisualisableElementSchema, UserSchema):
 
     first_name =  colander.SchemaNode(
                     colander.String(),
-                    title='First name' 
+                    title=_('First name') 
                     )
 
     last_name = colander.SchemaNode(
                     colander.String(),
-                    title='Last name' 
+                    title=_('Last name')
                     )
   
     user_title = colander.SchemaNode(
                     colander.String(),
                     widget=titles_choice,
-                    title='Title'
+                    title=_('Title')
                 )
 
     organization = colander.SchemaNode(
                 ObjectType(),
                 widget=organization_choice,
-                missing=None
+                missing=None,
+                title=_('Organization')
                 )
 
 
@@ -88,23 +89,15 @@ class PersonSchema(VisualisableElementSchema, UserSchema):
 @implementer(IPerson)
 class Person(VisualisableElement, User):
     name = renamer()
-    properties_def = {'tokens':(COMPOSITE_MULTIPLE, 'owner', True),
-                      'organization':(SHARED_UNIQUE, 'members', False),
-                      'picture':(COMPOSITE_UNIQUE, None, False)}
+    tokens = CompositeMultipleProperty('tokens', 'owner')
+    organization = SharedUniqueProperty('organization', 'members')
+    picture = CompositeUniqueProperty('picture')
 
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)
 
-    @property
-    def tokens(self):
-        return self.getproperty('tokens')
-
     def settokens(self, tokens):
         self.setproperty('tokens', tokens)
-
-    @property
-    def organization(self):
-        return self.getproperty('organization')
 
     def setorganization(self, organization):
         self.setproperty('organization', organization)

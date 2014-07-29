@@ -46,16 +46,25 @@
 </div>
 
 
-
 <div class="row">
  <div tal:condition="invitations" tal:repeat="invitation invitations">
     <div class="col-md-12">
       <div class="thumbnail">
         <div class="caption">
-         <h3>${invitation['user_title']} ${invitation['last_name']} ${invitation['first_name']}</h3> (<strong tal:repeat="r invitation['roles']">${r} </strong>) <small><a tal:attributes="href invitation['url']"><span class="glyphicon glyphicon-zoom-in"></span></a></small>
+         <h3 tal:condition="invitation['state']"><span class="label label-primary pull-right">${invitation['state'].capitalize()}</span></h3>
+         <dl class="dl-horizontal">
+             <dt>Personne invitée</dt><dd>${invitation['user_title']} ${invitation['last_name']} ${invitation['first_name']}</dd>
+             <dt tal:condition="invitation['organization']">Organization</dt><dd>${invitation['organization'].title}</dd>
+             <dt tal:condition="invitation['roles']">Invitée en tant que</dt>
+             <dd tal:condition="invitation['roles']">
+                <ul class="nav nav-list">
+                   <li tal:repeat="r invitation['roles']">${r}</li>
+                </ul>
+             </dd>
+         </dl>
          <p tal:condition="'actions' in invitation">
              <div tal:define="anotfinished [ac for ac in invitation['actions'] if not ('finished' in ac)]" tal:condition="anotfinished" id="actions_tabel">
-                 <ul class="nav nav-pills nav-stacked">
+                 <ul class="nav nav-pills">
                  <li tal:repeat="a anotfinished">
                    <a id="${a['action_id']}-btn" 
                       class="btn btn-primary btn-sm dace-action" 

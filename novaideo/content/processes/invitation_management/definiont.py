@@ -7,12 +7,8 @@ from dace.processdefinition.gatewaydef import (
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
-    EndEventDefinition,
-    IntermediateCatchEventDefinition,
-    ConditionalEventDefinition,
-    TimerEventDefinition)
+    EndEventDefinition)
 from dace.objectofcollaboration.services.processdef_container import process_definition
-
 from pontus.core import VisualisableElement
 
 from .behaviors import (

@@ -1,6 +1,4 @@
 import colander
-import deform
-import deform.widget
 from zope.interface import implementer
 
 from substanced.content import content
@@ -8,21 +6,13 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer, find_service
 
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.schema import Schema, omit, select
-from pontus.widget import RichTextWidget, LineWidget, TableWidget, Select2Widget, FileWidget
+from pontus.widget import Select2Widget, FileWidget
 from pontus.file import Image, ObjectData
 from dace.objectofcollaboration.entity import Entity
-from dace.objectofcollaboration.object import (
-                COMPOSITE_UNIQUE,
-                SHARED_UNIQUE,
-                COMPOSITE_MULTIPLE,
-                SHARED_MULTIPLE,
-                Object)
+from dace.descriptors import SharedMultipleProperty, CompositeUniqueProperty
 from dace.util import getSite
 
-
 from .interface import IOrganization
-from .person import Person, PersonSchema
 
 
 @colander.deferred
@@ -97,8 +87,8 @@ class OrganizationSchema(VisualisableElementSchema):
 @implementer(IOrganization)
 class Organization(VisualisableElement, Entity):
     name = renamer()
-    properties_def = {'members':(SHARED_MULTIPLE, 'organization', False),
-                      'logo':(COMPOSITE_UNIQUE, None, False)}
+    members = SharedMultipleProperty('members', 'organization')
+    logo = CompositeUniqueProperty('logo')
 
     def __init__(self, **kwargs):
         super(Organization, self).__init__(**kwargs)
@@ -111,16 +101,8 @@ class Organization(VisualisableElement, Entity):
         if 'email' in kwargs:
             self.email = kwargs.get('email')
 
-    @property
-    def members(self):
-        return self.getproperty('members')
-
     def setmembers(self, members):
         self.setproperty('members', members)
-
-    @property
-    def logo(self):
-        return self.getproperty('logo')
 
     def setlogo(self, logo):
         self.setproperty('logo', logo)

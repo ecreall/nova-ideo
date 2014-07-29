@@ -1,22 +1,11 @@
-import colander
-import deform
-import deform.widget
 from zope.interface import implementer
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
-from pontus.schema import Schema
-from pontus.widget import RichTextWidget
 from dace.objectofcollaboration.entity import Entity
-from dace.objectofcollaboration.object import (
-                COMPOSITE_UNIQUE,
-                SHARED_UNIQUE,
-                COMPOSITE_MULTIPLE,
-                SHARED_MULTIPLE,
-                Object)
-
+from dace.descriptors import SharedUniqueProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
 
 from .interface import IToken
@@ -40,7 +29,7 @@ class TokenSchema(VisualisableElementSchema):
 @implementer(IToken)
 class Token(VisualisableElement, Entity):
     name = renamer()
-    properties_def = {'owner':(SHARED_UNIQUE, 'tokens', False)}
+    owner = SharedUniqueProperty('owner', 'tokens')
 
     def __init__(self, **kwargs):
         super(Token, self).__init__(**kwargs)

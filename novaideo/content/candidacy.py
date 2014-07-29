@@ -1,6 +1,4 @@
 import colander
-import deform
-import deform.widget
 from zope.interface import implementer
 
 from substanced.content import content

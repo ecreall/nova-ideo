@@ -37,12 +37,18 @@ class SeeInvitationView(BasicView):
         invitationsview = SeeInvitationsView(self.context, self.request)
         action_updated, messages, resources, actions = invitationsview._actions(invitation)
         result = {}
+        state = None
+        if invitation.state:
+            state = invitation.state[0]
+
         values = {
                 'actions':actions,
                 'first_name': getattr(invitation, 'first_name',''),
                 'last_name': getattr(invitation, 'last_name',''),
                 'user_title': getattr(invitation, 'user_title', ''),
                 'roles':getattr(invitation, 'roles', ''),
+                'organization':getattr(invitation, 'organization', None),
+                'state': state
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

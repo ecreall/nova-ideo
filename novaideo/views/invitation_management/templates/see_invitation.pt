@@ -2,10 +2,20 @@
     <div class="col-md-12">
       <div class="thumbnail">
         <div class="caption">
-         <h3>${user_title} ${last_name} ${first_name}</h3> (<strong tal:repeat="r roles">${r} </strong>)
+         <h3 tal:condition="state"><span class="label label-primary pull-right">${state.capitalize()}</span></h3>
+         <dl class="dl-horizontal">
+             <dt>Vous</dt><dd>${user_title} ${last_name} ${first_name}</dd>
+             <dt tal:condition="organization">Organization</dt><dd>${organization.title}</dd>
+             <dt tal:condition="roles">Invitée en tant que</dt>
+             <dd tal:condition="roles">
+                <ul class="nav nav-list">
+                   <li tal:repeat="r roles">${r}</li>
+                </ul>
+             </dd>
+         </dl>
          <p tal:condition="actions">
              <div tal:define="anotfinished [ac for ac in actions if not ('finished' in ac)]" tal:condition="anotfinished" id="actions_tabel">
-                 <ul class="nav nav-pills nav-stacked">
+                 <ul class="nav nav-pills">
                  <li tal:repeat="a anotfinished">
                    <a id="${a['action_id']}-btn" 
                       class="btn btn-primary btn-sm dace-action" 

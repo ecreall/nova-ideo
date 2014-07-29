@@ -2,20 +2,14 @@ import colander
 from zope.interface import implementer
 
 from substanced.content import content
-from substanced.property import PropertySheet
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.objectofcollaboration.application import Application
+from dace.descriptors import CompositeMultipleProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import TableWidget, LineWidget, CheckboxChoiceWidget, SequenceWidget
-from pontus.schema import Schema, omit
-from dace.objectofcollaboration.object import(
-                COMPOSITE_UNIQUE,
-                SHARED_UNIQUE,
-                COMPOSITE_MULTIPLE,
-                SHARED_MULTIPLE,
-                Object)
+from pontus.widget import SequenceWidget
+from pontus.schema import omit
 
 from .working_group import WorkingGroupSchema, WorkingGroup
 from .organization import OrganizationSchema, Organization
@@ -104,9 +98,10 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
 @implementer(INovaIdeoApplication)
 class NovaIdeoApplication(VisualisableElement, Application):
     name = renamer()
-    properties_def = {'working_groups':(COMPOSITE_MULTIPLE, None, False),
-                      'organizations':(COMPOSITE_MULTIPLE, None, False),
-                      'invitations':(COMPOSITE_MULTIPLE, None, False)}
+    working_groups = CompositeMultipleProperty('working_groups')
+    organizations = CompositeMultipleProperty('organizations')
+    invitations = CompositeMultipleProperty('invitations')
+
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
@@ -117,23 +112,11 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.tokens_mini = 7
         self.titles = default_titles
 
-    @property
-    def working_groups(self):
-        return self.getproperty('working_groups')
-
     def setworking_groups(self, working_groups):
         self.setproperty('working_groups', working_groups)
 
-    @property
-    def organizations(self):
-        return self.getproperty('organizations')
-
     def setorganizations(self, organizations):
         self.setproperty('organizations', organizations)
-
-    @property
-    def invitations(self):
-        return self.getproperty('invitations')
 
     def setinvitations(self, invitations):
         self.setproperty('invitations', invitations)

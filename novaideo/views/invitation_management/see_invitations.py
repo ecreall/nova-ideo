@@ -156,6 +156,9 @@ class SeeInvitationsView(BasicView):
                     all_resources['css_links'].extend(resources['css_links'])
                     all_resources['css_links'] =list(set(all_resources['css_links']))
 
+            state = None
+            if invitation.state:
+                state = invitation.state[0]
 
             invitation_dic = { 
                 'actions': actions,
@@ -163,7 +166,9 @@ class SeeInvitationsView(BasicView):
                 'first_name': getattr(invitation, 'first_name',''),
                 'last_name': getattr(invitation, 'last_name', ''),
                 'user_title': getattr(invitation, 'user_title', ''),
-                'roles':getattr(invitation, 'roles', '')}
+                'roles':getattr(invitation, 'roles', ''),
+                'organization':getattr(invitation, 'organization', None),
+                'state':state}
             all_invitation_data['invitations'].append(invitation_dic)
          
         all_invitation_data['tabid'] = self.__class__.__name__+'InvitationActions'

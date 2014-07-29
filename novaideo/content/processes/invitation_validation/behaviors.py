@@ -54,6 +54,7 @@ class AcceptInvitation(ElementaryAction):
     state_validation = accept_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        
         datas = context.get_data(select(omit(InvitationSchema(), ['_csrf_token_']),['user_title',
                                                             'roles', 
                                                             'first_name', 

@@ -1,6 +1,4 @@
 import colander
-import deform
-import deform.widget
 from zope.interface import implementer
 
 from substanced.content import content
@@ -9,18 +7,14 @@ from substanced.util import renamer
 
 from dace.util import getSite
 from dace.objectofcollaboration.entity import Entity
-from dace.objectofcollaboration.object import (
-                SHARED_UNIQUE,
-                COMPOSITE_MULTIPLE,
-                COMPOSITE_UNIQUE)
 from dace.objectofcollaboration.principal.role import roles_id
-from pontus.widget import RichTextWidget, Select2Widget
-from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.file import Object as ObjectType
+from dace.descriptors import SharedUniqueProperty
+from pontus.widget import Select2Widget
+from pontus.core import VisualisableElement
 
 from .interface import IInvitation
 from .person import PersonSchema
-
+from novaideo import _
 
 
 @colander.deferred
@@ -39,7 +33,7 @@ class InvitationSchema(PersonSchema):
     roles = colander.SchemaNode(
                     colander.Set(),
                     widget=roles_choice,
-                    title='Roles',
+                    title=_('Roles'),
                     missing=['Collaborator'],
                     default=['Collaborator']
                 )
@@ -52,7 +46,7 @@ class InvitationSchema(PersonSchema):
 @implementer(IInvitation)
 class Invitation(VisualisableElement, Entity):
     name = renamer()
-    properties_def = {'organization':(SHARED_UNIQUE, None, False)}
+    organization = SharedUniqueProperty('organization')
 
     def __init__(self, **kwargs):
         super(Invitation, self).__init__(**kwargs)
@@ -73,10 +67,6 @@ class Invitation(VisualisableElement, Entity):
 
         if 'roles' in kwargs:
             self.roles = kwargs.get('roles')
-
-    @property
-    def organization(self):
-        return self.getproperty('organization')
 
     def setorganization(self, organization):
         self.setproperty('organization', organization)

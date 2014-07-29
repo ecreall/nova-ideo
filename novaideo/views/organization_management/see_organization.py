@@ -28,7 +28,7 @@ class SeeOrganizationView(BasicView):
         self.execute(None)
         result = {}
         logo = {}
-        if getattr(self.context.logo, 'logo', None):
+        if getattr(self.context, 'logo', None):
             logo = {'url':self.context.logo.url(self.request), 'title':self.context.logo.title}
 
         values = {
