@@ -54,7 +54,7 @@
          <h3 tal:condition="invitation['state']"><span class="label label-primary pull-right">${invitation['state'].capitalize()}</span></h3>
          <dl class="dl-horizontal">
              <dt>Personne invitée</dt><dd>${invitation['user_title']} ${invitation['last_name']} ${invitation['first_name']}</dd>
-             <dt tal:condition="invitation['organization']">Organization</dt><dd>${invitation['organization'].title}</dd>
+             <dt tal:condition="invitation['organization']">Organization</dt><dd tal:condition="invitation['organization']">${invitation['organization'].title}</dd>
              <dt tal:condition="invitation['roles']">Invitée en tant que</dt>
              <dd tal:condition="invitation['roles']">
                 <ul class="nav nav-list">

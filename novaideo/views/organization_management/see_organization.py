@@ -20,7 +20,7 @@ class SeeOrganizationView(BasicView):
     title = _('Details')
     name = 'seeorganization'
     behaviors = [SeeOrganization]
-    self_template = 'novaideo:views/organization_management/templates/see_organization.pt'
+    template = 'novaideo:views/organization_management/templates/see_organization.pt'
     viewid = 'seeorganization'
 
 
@@ -40,9 +40,10 @@ class SeeOrganizationView(BasicView):
                 'logo': logo,
                 'members' : [m.name for m in self.context.members],
                }
-        body = self.content(result=values, template=self.self_template)['body']
+        body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeOrganization:SeeOrganizationView})

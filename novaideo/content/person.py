@@ -1,10 +1,13 @@
+# -*- coding: utf8 -*-
 import colander
-from zope.interface import implementer
+from zope.interface import invariant, implementer
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 from substanced.principal import UserSchema
+from substanced.interfaces import IUserLocator
+from substanced.principal import DefaultUserLocator
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal import User
@@ -42,6 +45,31 @@ def titles_choice(node, kw):
     return Select2Widget(values=values)
 
 
+@colander.deferred
+def email_validator(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    root = getSite()
+    adapter = request.registry.queryMultiAdapter(
+        (context, request),
+        IUserLocator
+        )
+    if adapter is None:
+        adapter = DefaultUserLocator(context, request)
+    user = adapter.get_user_by_email(kw)
+    if user is context:
+        user = None
+
+    invitation = None
+    for invit in root.invitations:
+        if invit.email == kw and not (context is invit):
+            invitation = invit
+            break
+
+    if user is not None or invitation is not None:
+        raise colander.Invalid(node, _('{email} email address already in use').format(email=kw))
+
+
 def context_is_a_person(context, request):
     return request.registry.content.istype(context, 'person')
 
@@ -50,6 +78,15 @@ class PersonSchema(VisualisableElementSchema, UserSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_person,
+        )
+
+    email = colander.SchemaNode(
+        colander.String(),
+        validator=colander.All(
+            colander.Email(),
+            email_validator,
+            colander.Length(max=100)
+            ),
         )
 
     picture = colander.SchemaNode(

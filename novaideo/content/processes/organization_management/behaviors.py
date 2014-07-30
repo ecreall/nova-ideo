@@ -6,7 +6,6 @@ from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
     InfiniteCardinality,
-    ActionType,
     StartStep,
     EndStep,
     ActionType)

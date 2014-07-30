@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-sm-12">
+       <h2 class="form-signin-heading" ><p class="text-center" i18n:translate="">Log In</p></h2>
+       <form action="${url}" method="post"
+             class="form-signin"
+             metal:define-macro="login-form">
+
+         <input type="hidden" name="csrf_token"
+                value="${request.session.get_csrf_token()}" />
+
+         <input type="text" name="email" class="form-control"
+                autofocus="autofocus" placeholder="Email" i18n:attributes="placeholder"
+                value="${login}" />
+
+         <input type="password" name="password" class="form-control"
+                placeholder="Password" i18n:attributes="placeholder"
+                value="${password}" />
+
+         <input type="submit" name="form.submitted"
+                class="btn btn-primary btn-block" i18n:attributes="value"
+                value="Log In" />
+
+         <p id="password-reset-link"
+              metal:define-macro="password-reset-link">
+           <a href="${request.sdiapi.mgmt_path(request.virtual_root, '@@resetpassword')}" i18n:translate=""
+                >Forgot your password?</a>
+         </p>
+
+
+       </form>
+  </div>
+</div>
+
+
