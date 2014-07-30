@@ -9,7 +9,7 @@ from pontus.schema import Schema, omit, select
 from novaideo.content.processes.invitation_management.behaviors import  InviteUsers
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.invitation import InvitationSchema, Invitation
-
+from novaideo import _
 
 class InviteUsersSchema(Schema):
 
@@ -23,7 +23,7 @@ class InviteUsersSchema(Schema):
                                                                                 'last_name',
                                                                                 'email',
                                                                                 'organization']),
-                title='Invitations'
+                title=_('Invitations')
                 )
 
 
@@ -34,7 +34,7 @@ class InviteUsersSchema(Schema):
     )
 class InviteUserView(FormView):
 
-    title = 'Invite users'
+    title = _('Invite users')
     schema = InviteUsersSchema()
     behaviors = [InviteUsers]
     formid = 'forminviteusers'

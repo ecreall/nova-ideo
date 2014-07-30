@@ -15,7 +15,7 @@ from .working_group import WorkingGroupSchema, WorkingGroup
 from .organization import OrganizationSchema, Organization
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
-
+from novaideo import _
 
 default_titles = ['Mr', 'Madam', 'Miss']
 
@@ -34,58 +34,58 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                 colander.Sequence(),
                 colander.SchemaNode(
                     colander.String(),
-                    name="Title"
+                    name=_("Title")
                     ),
                 widget=SequenceWidget(),
                 default=default_titles,
-                title='List of titles'
+                title=_('List of titles')
                 )
 
     invitations = colander.SchemaNode(
                         colander.Sequence(),
                         omit(InvitationSchema(factory=Invitation,
                                                editable=True,
-                                               name='Invitations'),['_csrf_token_']),
-                        title='List of invitation'
+                                               name=_('Invitations')),['_csrf_token_']),
+                        title=_('List of invitation')
                         )
 
     working_groups = colander.SchemaNode(
                         colander.Sequence(),
                         omit(WorkingGroupSchema(factory=WorkingGroup,
                                 editable=True,
-                                name='Working group'),['_csrf_token_']),
-                        title='Working groups'
+                                name=_('Working group')),['_csrf_token_']),
+                        title=_('Working groups')
                         )
 
     organizations = colander.SchemaNode(
                         colander.Sequence(),
                         omit(OrganizationSchema(factory=Organization,
                                 editable=True,
-                                name='Organization'),['_csrf_token_']),
-                        title='Organizations'
+                                name=_('Organization')),['_csrf_token_']),
+                        title=_('Organizations')
                         )
 
     participants_mini = colander.SchemaNode(
                             colander.Integer(),
-                            title='Minimum number of participants for a working group',
+                            title=_('Minimum number of participants for a working group'),
                             default=3
                             )
 
     participants_maxi = colander.SchemaNode(
                             colander.Integer(),
-                            title='Maximum number of participants for a working group',
+                            title=_('Maximum number of participants for a working group'),
                             default=12
                             )
 
     participations_maxi = colander.SchemaNode(
                             colander.Integer(),
-                            title='Maximum number of working group by member',
+                            title=_('Maximum number of working group by member'),
                             default=5
                             )
 
     tokens_mini = colander.SchemaNode(
                             colander.Integer(),
-                            title='Minimum number of tokens by member',
+                            title=_('Minimum number of tokens by member'),
                             default=7
                             )
 

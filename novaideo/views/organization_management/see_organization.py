@@ -8,7 +8,7 @@ from pontus.schema import select
 
 from novaideo.content.processes.organization_management.behaviors import  SeeOrganization
 from novaideo.content.organization import OrganizationSchema, Organization
-
+from novaideo import _
 
 
 @view_config(
@@ -17,7 +17,7 @@ from novaideo.content.organization import OrganizationSchema, Organization
     renderer='pontus:templates/view.pt',
     )
 class SeeOrganizationView(BasicView):
-    title = 'Details'
+    title = _('Details')
     name = 'seeorganization'
     behaviors = [SeeOrganization]
     self_template = 'novaideo:views/organization_management/templates/see_organization.pt'

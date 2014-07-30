@@ -9,7 +9,7 @@ from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
 from novaideo.content.processes.organization_management.behaviors import  SeeOrganizations
 from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
-
+from novaideo import _
 
 
 @view_config(
@@ -18,7 +18,7 @@ from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, Nov
     renderer='pontus:templates/view.pt',
     )
 class SeeOrganizationsView(BasicView):
-    title = 'Organizations'
+    title = _('Organizations')
     name = 'seeorganizations'
     behaviors = [SeeOrganizations]
     template = 'novaideo:views/organization_management/templates/see_organizations.pt'

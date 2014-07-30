@@ -10,6 +10,8 @@ from pontus.view import BasicView, View, merge_dicts, ViewError
 from novaideo.content.processes.invitation_management.behaviors import  SeeInvitation
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from .see_invitations import SeeInvitationsView
+from novaideo import _
+
 
 @view_config(
     name='seeinvitation',
@@ -17,7 +19,7 @@ from .see_invitations import SeeInvitationsView
     renderer='pontus:templates/view.pt',
     )
 class SeeInvitationView(BasicView):
-    title = 'Details'
+    title = _('Details')
     name = 'seeinvitation'
     behaviors = [SeeInvitation]
     template = 'novaideo:views/invitation_management/templates/see_invitation.pt'
@@ -30,7 +32,7 @@ class SeeInvitationView(BasicView):
             invitation = get_obj(int(invitation_id)) 
         except Exception:
             e = ViewError()
-            e.principalmessage = "Invitation is not valid"
+            e.principalmessage = _("Invitation is not valid")
             raise e
 
         self.execute(None)        

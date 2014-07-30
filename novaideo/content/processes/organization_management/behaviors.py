@@ -13,6 +13,7 @@ from dace.processinstance.activity import (
 from novaideo.ips.xlreader import creat_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IOrganization
 from novaideo.content.organization import Organization
+from novaideo import _
 
 
 def add_relation_validation(process, context):
@@ -169,7 +170,7 @@ def see_state_validation(process, context):
 
 class SeeOrganization(InfiniteCardinality):
     isSequential = False
-    title = 'Details'
+    title = _('Details')
     actionType = ActionType.automatic
     context = IOrganization
     relation_validation = see_relation_validation
@@ -202,7 +203,7 @@ def editorg_state_validation(process, context):
 
 class EditOrganization(InfiniteCardinality):
     isSequential = False
-    title = 'Edit organization'
+    title = _('Edit organization')
     context = IOrganization
     relation_validation = editorg_relation_validation
     roles_validation = editorg_roles_validation

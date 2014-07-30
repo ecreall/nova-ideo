@@ -9,7 +9,7 @@ from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
 from novaideo.content.processes.invitation_management.behaviors import  SeeInvitations
 from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
-
+from novaideo import _
 
 
 @view_config(
@@ -18,7 +18,7 @@ from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, Nov
     renderer='pontus:templates/view.pt',
     )
 class SeeInvitationsView(BasicView):
-    title = 'Invitations'
+    title = _('Invitations')
     name = 'seeinvitations'
     behaviors = [SeeInvitations]
     template = 'novaideo:views/invitation_management/templates/see_invitations.pt'

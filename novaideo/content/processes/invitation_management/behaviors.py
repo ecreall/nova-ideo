@@ -16,6 +16,7 @@ from novaideo.content.person import Person
 from novaideo.content.invitation import Invitation
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.processes.invitation_validation.behaviors import invitation_message
+from novaideo import _
 
 
 def uploaduser_relation_validation(process, context):
@@ -153,7 +154,7 @@ def seeinv_state_validation(process, context):
 
 class SeeInvitation(InfiniteCardinality):
     isSequential = False
-    title = 'Details'
+    title = _('Details')
     actionType = ActionType.automatic
     context = INovaIdeoApplication
     relation_validation = seeinv_relation_validation
@@ -248,7 +249,7 @@ def editinv_state_validation(process, context):
 
 class EditInvitation(InfiniteCardinality):
     isSequential = False
-    title = 'Edit invitation'
+    title = _('Edit invitation')
     context = IInvitation
     relation_validation = editinv_relation_validation
     roles_validation = editinv_roles_validation

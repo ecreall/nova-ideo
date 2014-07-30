@@ -9,6 +9,7 @@ from pontus.schema import Schema, omit, select
 from novaideo.content.processes.organization_management.behaviors import  CreatOrganizations
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.organization import OrganizationSchema, Organization
+from novaideo import _
 
 
 class CreatOrganizationsSchema(Schema):
@@ -24,7 +25,7 @@ class CreatOrganizationsSchema(Schema):
                                                                                         'fax',
                                                                                         'logo',
                                                                                         'members']),
-                title='Organizations to creat'
+                title=_('Organizations to creat')
                 )
 
 
@@ -35,10 +36,11 @@ class CreatOrganizationsSchema(Schema):
     )
 class CreatOrganizationsView(FormView):
 
-    title = 'Creat organizations'
+    title = _('Creat organizations')
     schema = CreatOrganizationsSchema()
     behaviors = [CreatOrganizations]
     formid = 'formcreatorganizations'
     name='creatorganizations'
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CreatOrganizations:CreatOrganizationsView})

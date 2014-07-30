@@ -11,6 +11,7 @@ from pontus.core import VisualisableElement, VisualisableElementSchema
 
 from .action_proposal import ActionProposalSchema, ActionProposal
 from .interface import IWorkingGroup
+from novaideo import _
 
 
 def context_is_a_workinggroup(context, request):
@@ -23,7 +24,7 @@ class WorkingGroupSchema(VisualisableElementSchema):
         editing=context_is_a_workinggroup,
         )
 
-    action_proposal = omit(ActionProposalSchema(name='action proposal',
+    action_proposal = omit(ActionProposalSchema(name=_('action proposal'),
                                                 factory=ActionProposal,
                                                 editable=True),['_csrf_token_'])
 

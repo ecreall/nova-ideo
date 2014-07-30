@@ -7,6 +7,8 @@ from pontus.schema import select, omit
 
 from novaideo.content.processes.working_group_management.behaviors import EditAction
 from novaideo.content.working_group import WorkingGroup, WorkingGroupSchema
+from novaideo import _
+
 
 @view_config(
     name='edit_wg',
@@ -15,7 +17,7 @@ from novaideo.content.working_group import WorkingGroup, WorkingGroupSchema
     )
 class EditView(FormView):
 
-    title = 'Edit'
+    title = _('Edit')
     schema = select(WorkingGroupSchema(factory=WorkingGroup, editable=True), [u'title'])
     behaviors = [EditAction]
     formid = 'formeditaction'

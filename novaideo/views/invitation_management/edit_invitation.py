@@ -6,7 +6,7 @@ from pontus.schema import select
 
 from novaideo.content.processes.invitation_management.behaviors import  EditInvitation
 from novaideo.content.invitation import InvitationSchema, Invitation
-
+from novaideo import _
 
 
 @view_config(
@@ -16,7 +16,7 @@ from novaideo.content.invitation import InvitationSchema, Invitation
     )
 class EditInvitationView(FormView):
 
-    title = 'Edit invitation'
+    title = _('Edit invitation')
     schema = select(InvitationSchema(editable=True),['title',
                                                      'user_title',
                                                      'roles',

@@ -13,6 +13,7 @@ from dace.descriptors import SharedMultipleProperty, CompositeUniqueProperty
 from dace.util import getSite
 
 from .interface import IOrganization
+from novaideo import _
 
 
 @colander.deferred
@@ -53,8 +54,9 @@ class OrganizationSchema(VisualisableElementSchema):
     
     logo = colander.SchemaNode(
             ObjectData(Image),
-            widget= FileWidget(),
-            required = False
+            widget=FileWidget(),
+            required=False,
+            title=_('Logo')
             )
 
     email = colander.SchemaNode(
@@ -63,11 +65,12 @@ class OrganizationSchema(VisualisableElementSchema):
                     colander.Email(),
                     colander.Length(max=100)
                     ),
+                title=_('Email')
                 )
 
     phone = colander.SchemaNode(
                      colander.String(),
-                     title="Phone number")
+                     title=_("Phone number"))
 
     fax = colander.SchemaNode(
                      colander.String())
@@ -76,7 +79,7 @@ class OrganizationSchema(VisualisableElementSchema):
         colander.Set(),
         widget=members_choice,
         default=default_members,
-        title='Members'
+        title=_('Members')
         )
 
 

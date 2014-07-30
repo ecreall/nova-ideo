@@ -22,6 +22,7 @@ from .behaviors import (
     SeeOrganizations,
     EditOrganization,
     SeeOrganization)
+from novaideo import _
 
 
 @process_definition(name='organizationmanagement', id='organizationmanagement')
@@ -30,36 +31,36 @@ class OrganizationManagement(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(OrganizationManagement, self).__init__(**kwargs)
-        self.title = 'Orgaizations management'
-        self.description = 'Orgaizations management'
+        self.title = _('Orgaizations management')
+        self.description = _('Orgaizations management')
 
     def _init_definition(self):
         self.defineNodes(
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
                 add = ActivityDefinition(contexts=[AddOrganizations],
-                                       description="Upload organizations from xl file",
-                                       title="Upload organizations",
-                                       groups=['Add']),
+                                       description=_("Upload organizations from xl file"),
+                                       title=_("Upload organizations"),
+                                       groups=[_('Add')]),
                 creat = ActivityDefinition(contexts=[CreatOrganizations],
-                                       description="Creat organizations",
-                                       title="Creat organizations",
-                                       groups=['Add']),
+                                       description=_("Creat organizations"),
+                                       title=_("Creat organizations"),
+                                       groups=[_('Add')]),
                 edits = ActivityDefinition(contexts=[EditOrganizations],
-                                       description="Edit organizations",
-                                       title="Edit organizations",
-                                       groups=['Edit']),
+                                       description=_("Edit organizations"),
+                                       title=_("Edit organizations"),
+                                       groups=[_('Edit')]),
                 sees = ActivityDefinition(contexts=[SeeOrganizations],
-                                       description="See organizations",
-                                       title="Organizations",
+                                       description=_("See organizations"),
+                                       title=_("Organizations"),
                                        groups=[]),
                 edit = ActivityDefinition(contexts=[EditOrganization],
-                                       description="Edit organization",
-                                       title="Edit organizations",
-                                       groups=['Edit']),
+                                       description=_("Edit organization"),
+                                       title=_("Edit organizations"),
+                                       groups=[_('Edit')]),
                 see = ActivityDefinition(contexts=[SeeOrganization],
-                                       description="See organization",
-                                       title="Details",
+                                       description=_("See organization"),
+                                       title=_("Details"),
                                        groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),

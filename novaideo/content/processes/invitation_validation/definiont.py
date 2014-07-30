@@ -21,6 +21,7 @@ from .behaviors import (
     RemoveInvitation,
     RemindInvitation,
     ReinviteUser)
+from novaideo import _
 
 
 @process_definition(name='invitationvalidation', id='invitationvalidation')
@@ -30,8 +31,8 @@ class InvitationValidation(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(InvitationValidation, self).__init__(**kwargs)
-        self.title = 'Invitation validation'
-        self.description = 'Invitation validation'
+        self.title = _('Invitation validation')
+        self.description = _('Invitation validation')
 
     def _init_definition(self):
         self.defineNodes(
@@ -39,24 +40,24 @@ class InvitationValidation(ProcessDefinition, VisualisableElement):
                 pg = ParallelGatewayDefinition(),
                 egar = ExclusiveGatewayDefinition(),
                 accept = ActivityDefinition(contexts=[AcceptInvitation],
-                                       description="Accept the invitation",
-                                       title="Accept the invitation",
+                                       description=_("Accept the invitation"),
+                                       title=_("Accept the invitation"),
                                        groups=[]),
                 refuse = ActivityDefinition(contexts=[RefuseInvitation],
-                                       description="Refuse the invitation",
-                                       title="Refuse the invitation",
+                                       description=_("Refuse the invitation"),
+                                       title=_("Refuse the invitation"),
                                        groups=[]),
                 remove = ActivityDefinition(contexts=[RemoveInvitation],
-                                       description="Remove the invitation",
-                                       title="Remove the invitation",
+                                       description=_("Remove the invitation"),
+                                       title=_("Remove the invitation"),
                                        groups=[]),
                 reinvite = ActivityDefinition(contexts=[ReinviteUser],
-                                       description="Re-invite the person",
-                                       title="Re-invite the person",
+                                       description=_("Re-invite the person"),
+                                       title=_("Re-invite the person"),
                                        groups=[]),
                 remind = ActivityDefinition(contexts=[RemindInvitation],
-                                       description="Remind the person",
-                                       title="Remind the person",
+                                       description=_("Remind the person"),
+                                       title=_("Remind the person"),
                                        groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),

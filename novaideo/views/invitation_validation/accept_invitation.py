@@ -10,7 +10,7 @@ from pontus.file import ObjectData, File
 
 from novaideo.content.processes.invitation_validation.behaviors import AcceptInvitation
 from novaideo.content.invitation import Invitation
-
+from novaideo import _
 
 
 class AcceptInvitationSchema(Schema):
@@ -29,7 +29,7 @@ class AcceptInvitationSchema(Schema):
     )
 class AcceptInvitationView(FormView):
 
-    title = 'Accept invitation users'
+    title = _('Accept invitation users')
     schema = AcceptInvitationSchema()
     behaviors = [AcceptInvitation]
     formid = 'formacceptinvitation'

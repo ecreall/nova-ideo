@@ -18,6 +18,7 @@ from .behaviors import (
     SeeInvitations,
     EditInvitations,
     EditInvitation)
+from novaideo import _
 
 
 @process_definition(name='invitationmanagement', id='invitationmanagement')
@@ -26,8 +27,8 @@ class InvitationManagement(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(InvitationManagement, self).__init__(**kwargs)
-        self.title = 'Invitations management'
-        self.description = 'Invitations management'
+        self.title = _('Invitations management')
+        self.description = _('Invitations management')
 
     def _init_definition(self):
         self.defineNodes(
@@ -38,25 +39,25 @@ class InvitationManagement(ProcessDefinition, VisualisableElement):
                                        title="Upload users",
                                        groups=['Invite']),
                 invite = ActivityDefinition(contexts=[InviteUsers],
-                                       description="Invite users",
-                                       title="Invite users",
-                                       groups=['Invite']),
+                                       description=_("Invite users"),
+                                       title=_("Invite users"),
+                                       groups=[_('Invite')]),
                 seeinvitation = ActivityDefinition(contexts=[SeeInvitation],
-                                       description="See the invitation",
-                                       title="Details",
+                                       description=_("See the invitation"),
+                                       title=_("Details"),
                                        groups=[]),
                 seeinvitations = ActivityDefinition(contexts=[SeeInvitations],
-                                       description="See the invitations",
-                                       title="Invitations",
+                                       description=_("See the invitations"),
+                                       title=_("Invitations"),
                                        groups=[]),
                 edits = ActivityDefinition(contexts=[EditInvitations],
-                                       description="Edit invitations",
-                                       title="Edit invitations",
-                                       groups=['Edit']),
+                                       description=_("Edit invitations"),
+                                       title=_("Edit invitations"),
+                                       groups=[_('Edit')]),
                 edit = ActivityDefinition(contexts=[EditInvitation],
-                                       description="Edit invitation",
-                                       title="Edit invitation",
-                                       groups=['Edit']),
+                                       description=_("Edit invitation"),
+                                       title=_("Edit invitation"),
+                                       groups=[_('Edit')]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )

@@ -9,7 +9,7 @@ from pontus.file import ObjectData, File
 
 from novaideo.content.processes.invitation_management.behaviors import UploadUsers
 from novaideo.content.novaideo_application import NovaIdeoApplication
-
+from novaideo import _
 
 
 class UploadUsersSchema(Schema):
@@ -27,12 +27,11 @@ class UploadUsersSchema(Schema):
     )
 class UploadUsersView(FormView):
 
-    title = 'Upload users'
+    title = _('Upload users')
     schema = UploadUsersSchema(editable=True)
     behaviors = [UploadUsers]
     formid = 'formuploadusers'
     name='upload_users'
-
 
 
 

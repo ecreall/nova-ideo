@@ -6,7 +6,7 @@ from pontus.schema import select
 
 from novaideo.content.processes.organization_management.behaviors import  EditOrganization
 from novaideo.content.organization import OrganizationSchema, Organization
-
+from novaideo import _
 
 
 @view_config(
@@ -16,7 +16,7 @@ from novaideo.content.organization import OrganizationSchema, Organization
     )
 class EditOrganizationView(FormView):
 
-    title = 'Edit organization'
+    title = _('Edit organization')
     schema = select(OrganizationSchema(editable=True),['title',
                                                        'description',
                                                        'email',
@@ -30,5 +30,6 @@ class EditOrganizationView(FormView):
 
     def default_data(self):
         return self.context
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({EditOrganization:EditOrganizationView})

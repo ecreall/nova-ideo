@@ -9,7 +9,7 @@ from pontus.file import ObjectData, File
 
 from novaideo.content.processes.organization_management.behaviors import AddOrganizations
 from novaideo.content.novaideo_application import NovaIdeoApplication
-
+from novaideo import _
 
 
 class AddOrganizationsSchema(Schema):
@@ -27,7 +27,7 @@ class AddOrganizationsSchema(Schema):
     )
 class AddOrganizationsView(FormView):
 
-    title = 'Add organizations'
+    title = _('Add organizations')
     schema = AddOrganizationsSchema(editable=True)
     behaviors = [AddOrganizations]
     formid = 'formaddorganization'

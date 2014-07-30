@@ -10,6 +10,7 @@ from pontus.file import ObjectData, File
 
 from novaideo.content.processes.invitation_validation.behaviors import RefuseInvitation
 from novaideo.content.invitation import Invitation
+from novaideo import _
 
 
 @view_config(
@@ -19,7 +20,7 @@ from novaideo.content.invitation import Invitation
     )
 class RefuseInvitationView(BasicView):
 
-    title = 'Refuse invitation'
+    title = _('Refuse invitation')
     behaviors = [RefuseInvitation]
     name='refuse_invitation'
 
