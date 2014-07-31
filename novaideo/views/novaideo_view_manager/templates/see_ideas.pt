@@ -1,0 +1,116 @@
+<div tal:condition="ideas" tal:repeat="idea ideas">
+    <div tal:define="afinished [ac for ac in idea['actions'] if ('finished' in ac)]" tal:condition="afinished" tal:repeat="a afinished">
+          <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <span class="glyphicon glyphicon-bell btn-lg"></span> Le rapport de l'action 
+            <a id="${a['action_id']}-btn" 
+                      class="alert-link dace-action" 
+                      style="max-width: 300px;"
+                      href="${a['actionurl']}"   
+                      data-toggle="modal"
+                      data-actionid ="${a['action_id']}" 
+                      data-target="#${a['action_id']}-result"
+                      data-updateurl="${a['actionurl_update']}"
+                      data-toreplay="${'toreplay' in a}">
+                      ${a['action'].title}
+            </a>!
+            <script tal:condition="'toreplay' in a">       
+                      $(document).ready(function(){
+                             $(${'\'#'+a['action_id']+'-btn\''}).click();
+                        });
+            </script>  
+            <script>
+                        $(document).ready(function(){
+                            $(${'\'#'+a['action_id']+'-result-modal\''}).on('hidden.bs.modal', function (e) {
+                               after_execution(${'\"'+a['actionurl_after']+'\"'})
+                              })
+                        });
+            </script>
+
+          </div>
+                <!-- Modal -->
+                <div class="modal fade" id="${a['action_id']}-result-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                 <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h4 class="modal-title" id="myModalLabel"> ${a['action'].title}</h4>
+                    </div>
+                    <div class="modal-body">
+                      ${structure:a['body']}
+                    </div>
+                  </div>
+                 </div>
+               </div>
+    </div>
+</div>
+
+
+<div class="row">
+ <div tal:condition="ideas" tal:repeat="idea ideas">
+    <div class="col-md-12">
+      <div class="thumbnail">
+        <div class="caption">
+         <h3 tal:condition="idea['state']"><span class="label label-primary pull-right">${idea['state'].capitalize()}</span></h3>
+         <dl class="dl-horizontal">
+             <dt>Titre</dt><dd><a tal:attributes="href idea['url']">${idea['title']}</a></dd>
+             <dt>Résumé</dt><dd>${idea['description']}</dd>
+             <dt>Auteur</dt><dd>${idea['author']}</dd>
+             <dt>Créée le</dt><dd>${idea['created_at'].date()} ${idea['created_at'].hour}:${idea['created_at'].minute}:${idea['created_at'].second}
+             <dt tal:condition="idea['keywords']">Mots clef</dt>
+             <dd tal:condition="idea['keywords']">
+                <ul class="nav nav-list">
+                   <li tal:repeat="k idea['keywords']">${k}</li>
+                </ul>
+             </dd>
+         </dl>
+         <p tal:condition="'actions' in idea">
+             <div tal:define="anotfinished [ac for ac in idea['actions'] if not ('finished' in ac)]" tal:condition="anotfinished" id="actions_tabel">
+                 <ul class="nav nav-pills">
+                 <li tal:repeat="a anotfinished">
+                   <a id="${a['action_id']}-btn" 
+                      class="btn btn-primary btn-sm dace-action" 
+                      style="max-width: 300px;"
+                      href="${a['actionurl']}"   
+                      data-toggle="modal"
+                      data-actionid ="${a['action_id']}" 
+                      data-target="#${a['action_id']}"
+                      data-updateurl="${a['actionurl_update']}"
+                      data-toreplay="${'toreplay' in a}">
+                     <span class="glyphicon glyphicon-cog"></span> ${a['action'].title}
+                   </a>  
+                      <script tal:condition="'toreplay' in a">       
+                        $(document).ready(function(){
+                             $(${'\'#'+a['action_id']+'-btn\''}).click();
+                        });
+                      </script>  
+                      <script>
+                        $(document).ready(function(){
+                            $(${'\'#'+a['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
+                               after_execution(${'\"'+a['actionurl_after']+'\"'})
+                              })
+                        });
+                      </script>
+                      <!-- Modal -->
+                      <div class="modal fade" id="${a['action_id']}-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                       <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                           <h4 class="modal-title" id="myModalLabel"> ${a['action'].title}</h4>
+                          </div>
+                          <div class="modal-body">
+                            ${structure:a['body']}
+                          </div>
+                        </div>
+                       </div>
+                     </li>
+                 </ul>
+             </div>
+         </p>
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+
