@@ -1,6 +1,19 @@
 from zope.interface import Interface
 
 
+
+class ICommentabl(Interface):
+    pass
+
+
+class IComment(ICommentabl):
+    pass
+
+
+class Iidea(Interface):
+    pass
+
+
 class IInvitation(Interface):
     pass
 

@@ -22,6 +22,8 @@ from pontus.file import Image, ObjectData, Object as ObjectType
 from .interface import IPerson
 from novaideo import _
 
+
+
 @colander.deferred
 def organization_choice(node, kw):
     context = node.bindings['context']

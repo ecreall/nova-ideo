@@ -14,6 +14,7 @@ from pontus.core import VisualisableElement, VisualisableElementSchema
 
 from .keyword import KeywordSchema, Keyword
 from .interface import IActionProposal
+from .commentabl import Commentabl
 from novaideo import _
 
 def context_is_a_actionproposal(context, request):
@@ -44,7 +45,7 @@ class ActionProposalSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IActionProposal)
-class ActionProposal(VisualisableElement, Entity):
+class ActionProposal(Commentabl):
     name = renamer()
     author = SharedUniqueProperty('author')
     tokens = CompositeMultipleProperty('tokens')

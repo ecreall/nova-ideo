@@ -17,6 +17,8 @@ from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
 from novaideo import _
 
+
+
 default_titles = ['Mr', 'Madam', 'Miss']
 
 

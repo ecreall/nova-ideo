@@ -34,10 +34,6 @@ class Token(VisualisableElement, Entity):
     def __init__(self, **kwargs):
         super(Token, self).__init__(**kwargs)
 
-    @property
-    def owner(self):
-        return self.getproperty('owner')
-
     def setowner(self, owner):
         self.setproperty('owner', owner)
 
