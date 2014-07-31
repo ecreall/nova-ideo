@@ -6,8 +6,7 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
-from dace.objectofcollaboration.entity import Entity
-from dace.descriptors import CompositeMultipleProperty
+from dace.descriptors import CompositeMultipleProperty, SharedUniqueProperty
 from pontus.core import VisualisableElementSchema
 from pontus.widget import SequenceWidget, FileWidget
 from pontus.file import ObjectData, File
@@ -54,6 +53,8 @@ class CommentSchema(VisualisableElementSchema):
 @implementer(IComment)
 class Comment(Commentabl):
     name = renamer()
+    author = SharedUniqueProperty('author')
+    attached_files = CompositeMultipleProperty('attached_files')
 
     def __init__(self, **kwargs):
         super(Comment, self).__init__(**kwargs)

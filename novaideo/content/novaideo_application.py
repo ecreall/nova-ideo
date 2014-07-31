@@ -13,6 +13,7 @@ from pontus.schema import omit
 
 from .working_group import WorkingGroupSchema, WorkingGroup
 from .organization import OrganizationSchema, Organization
+from .idea import IdeaSchema, Idea
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
 from novaideo import _
@@ -67,6 +68,13 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                         title=_('Organizations')
                         )
 
+    ideas = colander.SchemaNode(
+                        colander.Sequence(),
+                        omit(IdeaSchema(factory=Idea,
+                                        name=_('Idea')),['_csrf_token_']),
+                        title=_('Ideas')
+                        )
+
     participants_mini = colander.SchemaNode(
                             colander.Integer(),
                             title=_('Minimum number of participants for a working group'),
@@ -103,6 +111,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     working_groups = CompositeMultipleProperty('working_groups')
     organizations = CompositeMultipleProperty('organizations')
     invitations = CompositeMultipleProperty('invitations')
+    ideas = CompositeMultipleProperty('ideas')
 
 
     def __init__(self, **kwargs):
@@ -122,3 +131,6 @@ class NovaIdeoApplication(VisualisableElement, Application):
 
     def setinvitations(self, invitations):
         self.setproperty('invitations', invitations)
+
+    def setideas(self, ideas):
+        self.setproperty('ideas', ideas)

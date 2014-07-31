@@ -9,7 +9,7 @@ from substanced.util import renamer
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import RichTextWidget
+from pontus.widget import RichTextWidget, LineWidget, TableWidget
 from pontus.schema import omit
 
 from .interface import Iidea
@@ -32,7 +32,7 @@ class IdeaSchema(VisualisableElementSchema):
     description = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=2000),
-        widget=deform.widget.TextAreaWidget(rows=10, cols=60)
+        widget=deform.widget.TextAreaWidget(rows=10, cols=30)
         )
 
     text = colander.SchemaNode(
@@ -44,9 +44,11 @@ class IdeaSchema(VisualisableElementSchema):
 
     keywords = colander.SchemaNode(
         colander.Sequence(),
-        omit(KeywordSchema(factory=Keyword,
+        omit(KeywordSchema(widget=LineWidget(),
+                           factory=Keyword,
                            editable=True,
                            name='Keyword'),['_csrf_token_']),
+        widget=TableWidget(min_len=1),
         title='Keywords'
         )
 

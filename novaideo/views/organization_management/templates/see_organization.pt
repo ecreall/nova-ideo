@@ -1,4 +1,6 @@
-<img tal:condition="logo" tal:attributes="src logo['url']" />     
+<div class="thumbnail">
+        <img tal:condition="logo" tal:attributes="src logo['url']" alt="300x200" />
+</div>
 <dl class="dl-horizontal">
     <dt>${title}</dt>
     <dd>

@@ -131,6 +131,7 @@ class Person(VisualisableElement, User):
     tokens = CompositeMultipleProperty('tokens', 'owner')
     organization = SharedUniqueProperty('organization', 'members')
     picture = CompositeUniqueProperty('picture')
+    ideas = SharedUniqueProperty('ideas', 'author')
 
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)

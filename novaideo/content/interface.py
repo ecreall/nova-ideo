@@ -34,7 +34,7 @@ class IPerson(Interface):
     pass
 
 
-class IActionProposal(Interface):
+class IProposal(Interface):
     pass
 
 

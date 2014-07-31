@@ -21,7 +21,6 @@ from novaideo import _
 @implementer(ICommentabl)
 class Commentabl(VisualisableElement, Entity):
     name = renamer()
-    attached_files = CompositeMultipleProperty('attached_files')
     comments = CompositeMultipleProperty('comments')
 
     def __init__(self, **kwargs):
