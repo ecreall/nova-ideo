@@ -53,4 +53,35 @@ class AnonymousLogIn(InfiniteCardinality):
         return HTTPFound(request.resource_url(root, "@@index"))
 
 
+def seeideas_relation_validation(process, context):
+    return True
+
+
+def seeideas_roles_validation(process, context):
+    return has_any_roles(roles=('Member',)) 
+
+
+def seeideas_processsecurity_validation(process, context):
+    return len(context.ideas)>=1
+
+
+def seeideas_state_validation(process, context):
+    return True
+
+
+class SeeIdeas(InfiniteCardinality):
+    isSequential = False
+    context = INovaIdeoApplication
+    relation_validation = seeideas_relation_validation
+    roles_validation = seeideas_roles_validation
+    processsecurity_validation = seeideas_processsecurity_validation
+    state_validation = seeideas_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
 #TODO bihaviors

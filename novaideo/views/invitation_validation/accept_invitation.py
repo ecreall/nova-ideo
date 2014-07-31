@@ -3,6 +3,7 @@ import deform.widget
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import Schema, select, omit
 from pontus.widget import FileWidget
@@ -31,7 +32,7 @@ class AcceptInvitationView(FormView):
 
     title = _('Accept invitation users')
     schema = AcceptInvitationSchema()
-    behaviors = [AcceptInvitation]
+    behaviors = [AcceptInvitation, Cancel]
     formid = 'formacceptinvitation'
     name='accept_invitation'
 

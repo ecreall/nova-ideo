@@ -1,6 +1,7 @@
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
 
@@ -21,7 +22,7 @@ class EditIdeaView(FormView):
                                                              'description',
                                                              ('keywords', ['title']),
                                                              'text'])
-    behaviors = [EditIdea]
+    behaviors = [EditIdea, Cancel]
     formid = 'formeditidea'
     name='editidea'
 

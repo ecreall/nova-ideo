@@ -26,9 +26,6 @@ class DelIdeaView(BasicView):
 
     def update(self):
         self.execute(None)        
-        item = self.adapt_item('', self.viewid)
-        result = {}
-        result['coordinates'] = {self.coordinates:[item]}
-        return result
+        return self.behaviorinstances.values()[0].redirect(self.context, self.request)
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({DelIdea:DelIdeaView})

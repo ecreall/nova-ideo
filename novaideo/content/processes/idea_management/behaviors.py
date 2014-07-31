@@ -1,7 +1,7 @@
 from pyramid.httpexceptions import HTTPFound
 
 from substanced.util import get_oid
-from dace.util import find_service, getSite
+from dace.util import find_service, getSite, getBusinessAction 
 from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
 from dace.processinstance.activity import (
     ElementaryAction,
@@ -42,7 +42,7 @@ class CreatIdea(ElementaryAction):
         root = getSite()
         idea = appstruct['_object_data']
         root.addtoproperty('ideas', idea)
-        idea.state.append('created')
+        idea.state.append('to work')
         grant_roles(roles=(('Owner', idea), ))
         idea.setproperty('author', get_current())
         self.newcontext = idea
@@ -141,6 +141,15 @@ class EditIdea(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        if 'abandoned' in context.state:
+            recuperate_actions = getBusinessAction('ideamanagement',
+                                                   'recuperate',
+                                                   '',
+                                                    request,
+                                                    context)
+            if recuperate_actions:
+                recuperate_actions[0].execute(context, request, appstruct, **kw)
+
         return True
 
     def redirect(self, context, request, **kw):
@@ -160,7 +169,7 @@ def pub_processsecurity_validation(process, context):
 
 
 def pub_state_validation(process, context):
-    return 'created' in context.state
+    return 'to work' in context.state
 
 
 class PublishIdea(ElementaryAction):
@@ -171,7 +180,7 @@ class PublishIdea(ElementaryAction):
     state_validation = pub_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('created')
+        context.state.remove('to work')
         context.state.append('published')
         return True
 
@@ -192,7 +201,7 @@ def ab_processsecurity_validation(process, context):
 
 
 def ab_state_validation(process, context):
-    return 'created' in context.state
+    return 'to work' in context.state
 
 
 class AbandonIdea(ElementaryAction):
@@ -203,7 +212,7 @@ class AbandonIdea(ElementaryAction):
     state_validation = ab_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('created')
+        context.state.remove('to work')
         context.state.append('abandoned')
         return True
 
@@ -236,7 +245,7 @@ class RecuperateIdea(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('abandoned')
-        context.state.append('created')
+        context.state.append('to work')
         return True
 
     def redirect(self, context, request, **kw):
