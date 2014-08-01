@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 import colander
+import deform.widget
 from zope.interface import invariant, implementer
 
 from substanced.content import content
@@ -93,8 +94,9 @@ class PersonSchema(VisualisableElementSchema, UserSchema):
 
     picture = colander.SchemaNode(
             ObjectData(Image),
-            widget= FileWidget(),
-            required = False
+            widget=FileWidget(),
+            required=False,
+            missing=None
             )
 
     first_name =  colander.SchemaNode(
@@ -112,6 +114,12 @@ class PersonSchema(VisualisableElementSchema, UserSchema):
                     widget=titles_choice,
                     title=_('Title')
                 )
+
+    password = colander.SchemaNode(
+        colander.String(),
+        widget = deform.widget.CheckedPasswordWidget(),
+        validator=colander.Length(min=3, max=100),
+        )
 
     organization = colander.SchemaNode(
                 ObjectType(),
@@ -135,6 +143,7 @@ class Person(VisualisableElement, User):
 
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)
+        self.set_data(kwargs)
 
     def settokens(self, tokens):
         self.setproperty('tokens', tokens)

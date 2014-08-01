@@ -34,7 +34,7 @@ def creatidea_state_validation(process, context):
     return True
 
 
-class CreatIdea(ElementaryAction):
+class CreatIdea(InfiniteCardinality):
     context = INovaIdeoApplication
     relation_validation = creatidea_relation_validation
     roles_validation = creatidea_roles_validation
@@ -49,7 +49,6 @@ class CreatIdea(ElementaryAction):
         grant_roles(roles=(('Owner', idea), ))
         idea.setproperty('author', get_current())
         self.newcontext = idea
-        self.process.execution_context.add_created_entity('idea', idea)
         return True
 
     def redirect(self, context, request, **kw):
@@ -72,7 +71,7 @@ def duplicat_state_validation(process, context):
     return True
 
 
-class DuplicatIdea(ElementaryAction):
+class DuplicatIdea(InfiniteCardinality):
     context = Iidea
     relation_validation = duplicat_relation_validation
     roles_validation = duplicat_roles_validation
@@ -88,7 +87,7 @@ class DuplicatIdea(ElementaryAction):
 
 
 def del_relation_validation(process, context):
-    return process.execution_context.has_relation(context, 'idea')
+    return True
 
 
 def del_roles_validation(process, context):
@@ -100,10 +99,10 @@ def del_processsecurity_validation(process, context):
 
 
 def del_state_validation(process, context):
-    return True
+    return ('to work' in context.state) or ('abandoned' in context.state)
 
 
-class DelIdea(ElementaryAction):
+class DelIdea(InfiniteCardinality):
     context = Iidea
     relation_validation = del_relation_validation
     roles_validation = del_roles_validation
@@ -121,7 +120,7 @@ class DelIdea(ElementaryAction):
 
 
 def edit_relation_validation(process, context):
-    return process.execution_context.has_relation(context, 'idea')
+    return True
 
 
 def edit_roles_validation(process, context):
@@ -160,7 +159,7 @@ class EditIdea(InfiniteCardinality):
 
 
 def pub_relation_validation(process, context):
-    return process.execution_context.has_relation(context, 'idea')
+    return True
 
 
 def pub_roles_validation(process, context):
@@ -175,7 +174,7 @@ def pub_state_validation(process, context):
     return 'to work' in context.state
 
 
-class PublishIdea(ElementaryAction):
+class PublishIdea(InfiniteCardinality):
     context = Iidea
     relation_validation = pub_relation_validation
     roles_validation = pub_roles_validation
@@ -192,7 +191,7 @@ class PublishIdea(ElementaryAction):
 
 
 def ab_relation_validation(process, context):
-    return process.execution_context.has_relation(context, 'idea')
+    return True
 
 
 def ab_roles_validation(process, context):
@@ -207,7 +206,7 @@ def ab_state_validation(process, context):
     return 'to work' in context.state
 
 
-class AbandonIdea(ElementaryAction):
+class AbandonIdea(InfiniteCardinality):
     context = Iidea
     relation_validation = ab_relation_validation
     roles_validation = ab_roles_validation
@@ -224,7 +223,7 @@ class AbandonIdea(ElementaryAction):
 
 
 def re_relation_validation(process, context):
-    return process.execution_context.has_relation(context, 'idea')
+    return True
 
 
 def re_roles_validation(process, context):
@@ -239,7 +238,7 @@ def re_state_validation(process, context):
     return 'abandoned' in context.state
 
 
-class RecuperateIdea(ElementaryAction):
+class RecuperateIdea(InfiniteCardinality):
     context = Iidea
     relation_validation = re_relation_validation
     roles_validation = re_roles_validation
@@ -256,7 +255,7 @@ class RecuperateIdea(ElementaryAction):
 
 
 def comm_relation_validation(process, context):
-    return process.execution_context.has_relation(context, 'idea')
+    return True
 
 
 def comm_roles_validation(process, context):
@@ -290,7 +289,7 @@ class CommentIdea(InfiniteCardinality):
 
 
 def present_relation_validation(process, context):
-    return process.execution_context.has_relation(context, 'idea')
+    return True
 
 
 def present_roles_validation(process, context):
