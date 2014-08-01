@@ -41,7 +41,8 @@ class CommentSchema(VisualisableElementSchema):
             name=_("File"),
             widget= FileWidget()
             ),
-        widget=SequenceWidget(max_len=4),
+        widget=SequenceWidget(),
+        missing=[],
         title=_('Files')
         )
 

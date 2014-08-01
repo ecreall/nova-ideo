@@ -1,7 +1,9 @@
 from pyramid.view import view_config
+from pyramid.threadlocal import get_current_registry
 
 from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.form import FormView
 from pontus.view_operation import CallSelectedContextsViews
 from pontus.schema import select
@@ -35,9 +37,9 @@ class SeeInvitationView(BasicView):
             e.principalmessage = _("Invitation is not valid")
             raise e
 
-        self.execute(None)        
-        invitationsview = SeeInvitationsView(self.context, self.request)
-        action_updated, messages, resources, actions = invitationsview._actions(invitation)
+        self.execute(None)   
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')     
+        action_updated, messages, resources, actions = dace_ui_api._actions(self.request, invitation)
         result = {}
         state = None
         if invitation.state:

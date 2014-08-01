@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from pyramid.httpexceptions import HTTPFound
 
 from substanced.util import get_oid
@@ -10,6 +11,8 @@ from dace.processinstance.activity import (
     ActionType,
     StartStep,
     EndStep)
+
+from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, Iidea
 from novaideo import _
 
@@ -280,6 +283,79 @@ class CommentIdea(InfiniteCardinality):
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
         comment.setproperty('author', comment)
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def present_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'idea')
+
+
+def present_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context),)) 
+
+
+def present_processsecurity_validation(process, context):
+    return True
+
+
+def present_state_validation(process, context):
+    return 'published' in context.state
+
+
+presentation_idea_message = u"""
+Bonjour {member_title} {member_first_name} {member_last_name},
+
+{user_title} {user_first_name} {user_last_name} souhaite vous présenter l'Idée figurant sur la plateforme Nova-Ideo.org sous {idea_url}. Nova-Ideo est un service en ligne permettant d'initier des propositions, constituer des groupes de travail pour les améliorer et les finaliser, bénéficier de soutiens de membres de la communauté et d'avis de comités d'examen.
+
+Cordialement,
+
+La Plateforme NovaIdeo
+"""
+
+
+class PresentIdea(InfiniteCardinality):
+    context = Iidea
+    relation_validation = present_relation_validation
+    roles_validation = present_roles_validation
+    processsecurity_validation = present_processsecurity_validation
+    state_validation = present_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        members = appstruct['members']
+        exterior_emails = appstruct['exterior_emails']
+        user = get_current()
+        user_title=getattr(user, 'user_title',''),
+        user_first_name=getattr(user, 'first_name', user.name)
+        user_last_name=getattr(user, 'last_name','')
+        url = request.resource_url(context, "@@index")
+        for member in members:
+            message = presentation_idea_message.format(
+                member_title=getattr(user, 'user_title',''),
+                member_first_name=getattr(user, 'first_name', member.name),
+                member_last_name=getattr(user, 'last_name',''),
+                idea_url=url,
+                user_title=user_title,
+                user_first_name=user_first_name,
+                user_last_name=user_last_name
+                 )
+            mailer_send(subject='Presentation: '+context.title, recipients=[member.email], body=message)
+
+        for email in exterior_emails:
+            message = presentation_idea_message.format(
+                member_title='',
+                member_first_name='',
+                member_last_name='',
+                idea_url=url,
+                user_title=user_title,
+                user_first_name=user_first_name,
+                user_last_name=user_last_name
+                 )
+            mailer_send(subject='Presentation: '+context.title, recipients=[email], body=message)
+
+
         return True
 
     def redirect(self, context, request, **kw):

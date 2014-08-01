@@ -65,4 +65,6 @@ class Idea(Commentabl):
 
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)
+        if 'text' in kwargs:
+            self.text = kwargs['text']
 
