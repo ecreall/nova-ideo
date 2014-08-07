@@ -20,39 +20,6 @@ from novaideo.content.interface import INovaIdeoApplication
 from novaideo import _
 
 
-def login_relation_validation(process, context):
-    return True
-
-
-def login_roles_validation(process, context):
-    return has_any_roles(roles=('Anonymous', ), ignore_superiors=True)
-
-
-def login_processsecurity_validation(process, context):
-    return True
-
-
-def login_state_validation(process, context):
-    return True
-
-
-class AnonymousLogIn(InfiniteCardinality):
-    title = _('Log in access')
-    context = Interface
-    actionType = ActionType.automatic
-    relation_validation = login_relation_validation
-    roles_validation = login_roles_validation
-    processsecurity_validation = login_processsecurity_validation
-    state_validation = login_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        return True
-
-    def redirect(self, context, request, **kw):
-        root = getSite()
-        return HTTPFound(request.resource_url(root, "@@index"))
-
-
 def seeideas_relation_validation(process, context):
     return True
 
@@ -102,7 +69,7 @@ def search_state_validation(process, context):
 
 class Search(InfiniteCardinality):
     isSequential = False
-    context = Interface
+    context = INovaIdeoApplication
     actionType = ActionType.automatic
     relation_validation = search_relation_validation
     roles_validation = search_roles_validation

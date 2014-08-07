@@ -28,6 +28,8 @@
           rel="stylesheet"/>
     <script src="${su('pontus.dace_ui_extension:static/css/dace_ui.css')}"
             type="stylesheet"></script>
+    <link href="${su('novaideo:static/css/novaideo_ui.css')}"
+          rel="stylesheet"/>
 
     <!-- Fav icons -->
     <link rel="shortcut icon"

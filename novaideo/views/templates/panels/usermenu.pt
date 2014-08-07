@@ -5,6 +5,7 @@
       tal:define="mp request.sdiapi.mgmt_path;"
       tal:omit-tag="">
 
+    <a class="brand" href="/"><img alt="Nova-Ideo" src="${request.static_url('novaideo:static/images/novaideo32.png')}" class="globe-logo"> Nova-Ideo</a>
     <div tal:condition="request.user">
       <button type="button" class="btn btn-primary pull-right dropdown-toggle"
               data-toggle="dropdown">
@@ -22,10 +23,15 @@
         </li>
       </ul>
     </div>
-    <div tal:condition="request.user is None">  
-       <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary pull-right">
+    <div tal:condition="request.user is None" class="btn-group pull-right">  
+       <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary ">
           <i class="glyphicon glyphicon-log-in"> </i> Log In
+       </a>
+       <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary ">
+          <i class="glyphicon glyphicon-pencil"> </i> Registration
        </a>
     </div>
 
 </html>
+
+

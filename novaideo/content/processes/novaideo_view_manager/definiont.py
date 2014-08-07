@@ -16,7 +16,6 @@ from dace.objectofcollaboration.services.processdef_container import process_def
 from pontus.core import VisualisableElement
 
 from .behaviors import (
-    AnonymousLogIn,
     SeeIdeas,
     Search,
     SeeMyIdeas,
@@ -42,10 +41,6 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
         self.defineNodes(
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
-                login = ActivityDefinition(contexts=[AnonymousLogIn],
-                                       description=_("Log in access"),
-                                       title=_("Log in access"),
-                                       groups=[]),
                 seeideas = ActivityDefinition(contexts=[SeeIdeas],
                                        description=_("See ideas"),
                                        title=_("Ideas"),
@@ -83,8 +78,6 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
         )
         self.defineTransitions(
                 TransitionDefinition('start', 'pg'),
-                TransitionDefinition('pg', 'login'),
-                TransitionDefinition('login', 'eg'),
                 TransitionDefinition('pg', 'seeideas'),
                 TransitionDefinition('seeideas', 'eg'),
                 TransitionDefinition('pg', 'search'),

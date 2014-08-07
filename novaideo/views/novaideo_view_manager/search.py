@@ -115,7 +115,7 @@ class SearchView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class SearchResultView(BasicView):
-    title = _('Result')
+    title = _('Nova-Ideo contents')
     name = ''
     validators = [Search.get_validator()]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
