@@ -1,6 +1,21 @@
 from zope.interface import Interface
 
 
+class ISerchableEntity(Interface):
+    pass
+
+
+class IVersionableEntity(Interface):
+    pass
+
+
+class IDuplicableEntity(Interface):
+    pass
+
+
+class ISerchableEntity(Interface):
+    pass
+
 
 class ICommentabl(Interface):
     pass
@@ -10,7 +25,7 @@ class IComment(ICommentabl):
     pass
 
 
-class Iidea(Interface):
+class Iidea(ICommentabl):
     pass
 
 
@@ -34,7 +49,7 @@ class IPerson(Interface):
     pass
 
 
-class IProposal(Interface):
+class IProposal(ICommentabl):
     pass
 
 

@@ -7,15 +7,23 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.descriptors import CompositeMultipleProperty, SharedUniqueProperty
+from dace .util import getSite
 from pontus.core import VisualisableElementSchema
-from pontus.widget import SequenceWidget, FileWidget
+from pontus.widget import SequenceWidget, FileWidget, Select2Widget
 from pontus.file import ObjectData, File
 from pontus.schema import Schema, omit
 
 from .interface import IComment
-from .commentabl import Commentabl
+from novaideo.core import Commentabl
 from novaideo import _
 
+
+@colander.deferred
+def intention_choice(node, kw):
+    root = getSite()
+    intentions = sorted(root.comment_intentions)
+    values = [(i, i) for i in intentions ]
+    return Select2Widget(values=values)
 
 
 def context_is_a_comment(context, request):
@@ -45,6 +53,12 @@ class CommentSchema(VisualisableElementSchema):
         missing=[],
         title=_('Files')
         )
+
+    intention = colander.SchemaNode(
+                    colander.String(),
+                    widget=intention_choice,
+                    title=_('Intention'),
+                )
 
 
 @content(

@@ -18,8 +18,13 @@ from pontus.core import VisualisableElement, VisualisableElementSchema
 
 from .keyword import KeywordSchema, Keyword
 from .interface import IProposal
-from .commentabl import Commentabl
+from novaideo.core import Commentabl
 from novaideo import _
+from novaideo.core import (
+    VersionableEntity,
+    DuplicableEntity,
+    SerchableEntity,
+    SerchableEntitySchema)
 
 
 @colander.deferred
@@ -34,7 +39,7 @@ def context_is_a_proposal(context, request):
     return request.registry.content.istype(context, 'proposal')
 
 
-class ProposalSchema(VisualisableElementSchema):
+class ProposalSchema(VisualisableElementSchema, SerchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_proposal,
@@ -44,14 +49,6 @@ class ProposalSchema(VisualisableElementSchema):
         colander.String(),
         widget= RichTextWidget()
         )
-
-    keywords = colander.SchemaNode(
-                   colander.Sequence(),
-                   omit(KeywordSchema(factory=Keyword,
-                                      editable=True,
-                                      name=_('Keyword')),['_csrf_token_']),
-                   title=_('Keywords')
-                )
 
     ideas  = colander.SchemaNode(
                     colander.Set(),
@@ -67,29 +64,23 @@ class ProposalSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IProposal)
-class Proposal(Commentabl):
+class Proposal(Commentabl, SerchableEntity):
+    result_template = 'novaideo:views/templates/proposal_result.pt' 
     name = renamer()
     author = SharedUniqueProperty('author')
     tokens = CompositeMultipleProperty('tokens')
-    keywords = CompositeMultipleProperty('keywords')
     ideas = SharedMultipleProperty('ideas')
 
     def __init__(self, **kwargs):
         super(ActionProposal, self).__init__(**kwargs)
-        if 'body' in kwargs:
-            self.body = kwargs.get('body')
+        self.set_data(kwargs)
 
-        if 'keywords' in kwargs:
-            self.keywords = kwargs.get('keywords')
 
     def setauthor(self, author):
         self.setproperty('author', author)
 
     def settokens(self, tokens):
         self.setproperty('tokens', tokens)
-
-    def setkeywords(self, keywords):
-        self.setproperty('keywords', keywords)
 
     def setideas(self, ideas):
         self.setproperty('ideas', ideas)

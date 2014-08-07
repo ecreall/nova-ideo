@@ -1,0 +1,3 @@
+.thumbnail.right-caption>img{float: left;margin-right: 9px;}
+.thumbnail.right-caption{float: unset;}
+.thumbnail.right-caption>.caption{padding: 4px;}

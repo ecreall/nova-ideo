@@ -6,24 +6,36 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
+from dace.util import getSite
 from dace.objectofcollaboration.entity import Entity
-from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
+from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty, SharedMultipleProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import RichTextWidget, LineWidget, TableWidget
+from pontus.widget import RichTextWidget, LineWidget, TableWidget, Select2Widget
 from pontus.schema import omit
 
 from .interface import Iidea
-from .keyword import KeywordSchema, Keyword
-from .commentabl import Commentabl
+from novaideo.core import Commentabl
 from novaideo import _
+from novaideo.core import (
+    VersionableEntity,
+    DuplicableEntity,
+    SerchableEntity,
+    SerchableEntitySchema)
 
+
+@colander.deferred
+def intention_choice(node, kw):
+    root = getSite()
+    intentions = sorted(root.idea_intentions)
+    values = [(i, i) for i in intentions ]
+    return Select2Widget(values=values)
 
 
 def context_is_a_idea(context, request):
     return request.registry.content.istype(context, 'idea')
 
 
-class IdeaSchema(VisualisableElementSchema):
+class IdeaSchema(VisualisableElementSchema, SerchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_idea,
@@ -42,15 +54,12 @@ class IdeaSchema(VisualisableElementSchema):
         missing=''
         )
 
-    keywords = colander.SchemaNode(
-        colander.Sequence(),
-        omit(KeywordSchema(widget=LineWidget(),
-                           factory=Keyword,
-                           editable=True,
-                           name='Keyword'),['_csrf_token_']),
-        widget=TableWidget(min_len=1),
-        title='Keywords'
-        )
+    intention = colander.SchemaNode(
+                    colander.String(),
+                    widget=intention_choice,
+                    title=_('Intention'),
+                    default=_('Creation')
+                )
 
 
 @content(
@@ -58,13 +67,11 @@ class IdeaSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(Iidea)
-class Idea(Commentabl):
+class Idea(Commentabl, VersionableEntity, DuplicableEntity, SerchableEntity):
+    result_template = 'novaideo:views/templates/idea_result.pt' 
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')
-    keywords = CompositeMultipleProperty('keywords')
 
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)
-        if 'text' in kwargs:
-            self.text = kwargs['text']
-
+        self.set_data(kwargs)

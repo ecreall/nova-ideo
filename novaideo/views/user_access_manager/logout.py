@@ -29,7 +29,7 @@ class LogoutView(BasicView):
     def update(self):
         self.execute(None)
         headers = forget(self.request)
-        return HTTPFound(location = self.request.resource_url(self.request.context, '@@index'),
+        return HTTPFound(location = self.request.resource_url(self.request.context),
                      headers = headers)
 
 

@@ -20,6 +20,11 @@ from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import FileWidget, Select2Widget
 from pontus.file import Image, ObjectData, Object as ObjectType
 
+from novaideo.core import (
+    SerchableEntity,
+    SerchableEntitySchema,
+    default_keywords_choice,
+    keywords_choice)
 from .interface import IPerson
 from novaideo import _
 
@@ -77,11 +82,21 @@ def context_is_a_person(context, request):
     return request.registry.content.istype(context, 'person')
 
 
-class PersonSchema(VisualisableElementSchema, UserSchema):
+class PersonSchema(VisualisableElementSchema, UserSchema, SerchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_person,
         )
+
+    keywords =  colander.SchemaNode(
+                    colander.Sequence(),
+                    colander.SchemaNode(
+                         colander.String(),
+                         widget=keywords_choice,
+                         name='Preference'),
+                default=default_keywords_choice,
+                title=_('Preferences')
+                )
 
     email = colander.SchemaNode(
         colander.String(),
@@ -134,7 +149,8 @@ class PersonSchema(VisualisableElementSchema, UserSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IPerson)
-class Person(VisualisableElement, User):
+class Person(VisualisableElement, User, SerchableEntity):
+    result_template = 'novaideo:views/templates/person_result.pt'
     name = renamer()
     tokens = CompositeMultipleProperty('tokens', 'owner')
     organization = SharedUniqueProperty('organization', 'members')
@@ -144,6 +160,10 @@ class Person(VisualisableElement, User):
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)
         self.set_data(kwargs)
+
+    @property
+    def prefernces(self):
+        return self.keywords
 
     def settokens(self, tokens):
         self.setproperty('tokens', tokens)

@@ -19,10 +19,10 @@ from novaideo import _
 class CreatIdeaView(FormView):
 
     title = _('Edit invitations')
-    schema = select(IdeaSchema(factory=Idea, editable=True),['title',
+    schema = select(IdeaSchema(factory=Idea, editable=True, omit=['keywords']),['title',
                                                              'description',
-                                                              ('keywords', ['title']),
-                                                              'text'])
+                                                             'keywords',
+                                                             'text'])
     behaviors = [CreatIdea, Cancel]
     formid = 'formcreatidea'
     name='creatidea'

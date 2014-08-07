@@ -57,7 +57,7 @@ class SeeIdeasView(BasicView):
                 'actions': actions,
                 'url':self.request.resource_url(idea, '@@index'), 
                 'description': idea.description,
-                'keywords': [k.title for k in idea.keywords],
+                'keywords': idea.keywords,
                 'title':idea.title,
                 'state':state,
                 'author': idea.author.name,

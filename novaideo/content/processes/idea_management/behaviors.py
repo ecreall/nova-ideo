@@ -1,8 +1,14 @@
 # -*- coding: utf8 -*-
+import datetime
 from pyramid.httpexceptions import HTTPFound
 
 from substanced.util import get_oid
-from dace.util import find_service, getSite, getBusinessAction 
+
+from dace.util import (
+    find_service,
+    getSite,
+    getBusinessAction,
+    copy)
 from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
 from dace.processinstance.activity import (
     ElementaryAction,
@@ -43,8 +49,15 @@ class CreatIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        keywords_ids = appstruct.pop('keywords')
+        result, newkeywords = root.get_keywords(keywords_ids)
+        for nk in newkeywords:
+            root.addtoproperty('keywords', nk)
+
+        result.extend(newkeywords)
         idea = appstruct['_object_data']
         root.addtoproperty('ideas', idea)
+        idea.setproperty('keywords_ref', result)
         idea.state.append('to work')
         grant_roles(roles=(('Owner', idea), ))
         idea.setproperty('author', get_current())
@@ -55,35 +68,52 @@ class CreatIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
-def duplicat_relation_validation(process, context):
+def duplicate_relation_validation(process, context):
     return True
 
 
-def duplicat_roles_validation(process, context):
-    return has_any_roles(roles=('Member',)) 
-
-
-def duplicat_processsecurity_validation(process, context):
+def duplicate_roles_validation(process, context):
     return True
 
 
-def duplicat_state_validation(process, context):
+def duplicate_processsecurity_validation(process, context):
+    return has_any_roles(roles=('Owner', context)) or 'published' in context.state
+
+
+def duplicate_state_validation(process, context):
     return True
 
 
-class DuplicatIdea(InfiniteCardinality):
+class DuplicateIdea(InfiniteCardinality):
     context = Iidea
-    relation_validation = duplicat_relation_validation
-    roles_validation = duplicat_roles_validation
-    processsecurity_validation = duplicat_processsecurity_validation
-    state_validation = duplicat_state_validation
+    relation_validation = duplicate_relation_validation
+    roles_validation = duplicate_roles_validation
+    processsecurity_validation = duplicate_processsecurity_validation
+    state_validation = duplicate_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #TODO
+        root = getSite()
+        copy_of_idea = copy(context)
+        copy_of_idea.created_at = datetime.datetime.today()
+        copy_of_idea.modified_at = datetime.datetime.today()
+        keywords_ids = appstruct.pop('keywords')
+        result, newkeywords = root.get_keywords(keywords_ids)
+        for nk in newkeywords:
+            root.addtoproperty('keywords', nk)
+
+        result.extend(newkeywords)
+        appstruct['keywords_ref'] = result
+        copy_of_idea.set_data(appstruct)
+        root.addtoproperty('ideas', copy_of_idea)
+        copy_of_idea.addtoproperty('originalideas', context)
+        copy_of_idea.state.append('to work')
+        copy_of_idea.setproperty('author', get_current())
+        grant_roles(roles=(('Owner', copy_of_idea), ))
+        self.newcontext = copy_of_idea
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
 def del_relation_validation(process, context):
@@ -143,19 +173,37 @@ class EditIdea(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        if 'abandoned' in context.state:
+        root = getSite()
+        copy_of_idea = copy(context)
+        copy_of_idea.created_at = datetime.datetime.today()
+        copy_of_idea.modified_at = datetime.datetime.today()
+        keywords_ids = appstruct.pop('keywords')
+        result, newkeywords = root.get_keywords(keywords_ids)
+        for nk in newkeywords:
+            root.addtoproperty('keywords', nk)
+
+        result.extend(newkeywords)
+        appstruct['keywords_ref'] = result
+        copy_of_idea.set_data(appstruct)
+        context.state = ['Archived']
+        copy_of_idea.setproperty('version', context)
+        root.addtoproperty('ideas', copy_of_idea)
+        copy_of_idea.setproperty('author', get_current())
+        grant_roles(roles=(('Owner', copy_of_idea), ))
+        self.newcontext = copy_of_idea
+        if 'abandoned' in copy_of_idea.state:
             recuperate_actions = getBusinessAction('ideamanagement',
                                                    'recuperate',
                                                    '',
                                                     request,
-                                                    context)
+                                                    copy_of_idea)
             if recuperate_actions:
-                recuperate_actions[0].execute(context, request, appstruct, **kw)
+                recuperate_actions[0].execute(copy_of_idea, request, appstruct, **kw)
 
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
 def pub_relation_validation(process, context):
@@ -167,6 +215,12 @@ def pub_roles_validation(process, context):
 
 
 def pub_processsecurity_validation(process, context):
+    if getattr(context, 'originalideas', None):
+        orignial_ideas = getattr(context, 'originalideas')
+        for orignial_idea in orignial_ideas: 
+            if orignial_idea.text == context.text:
+                return False
+
     return True
 
 
@@ -182,6 +236,7 @@ class PublishIdea(InfiniteCardinality):
     state_validation = pub_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        
         context.state.remove('to work')
         context.state.append('published')
         return True

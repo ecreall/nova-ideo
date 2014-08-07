@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import datetime
 from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service, get_oid
 
@@ -64,6 +65,13 @@ class Registration(InfiniteCardinality):
         grant_roles(person, (('Owner', person),))
         person.state.append('created')
         root = getSite()
+        keywords_ids = appstruct.pop('keywords')
+        result, newkeywords = root.get_keywords(keywords_ids)
+        for nk in newkeywords:
+            root.addtoproperty('keywords', nk)
+
+        result.extend(newkeywords)
+        person.setproperty('keywords_ref', result)
         message = confiramtion_message.format(person=person)
         mailer_send(subject='Confiramtion', recipients=[person.email], body=message )
         return True
@@ -98,6 +106,7 @@ class EditSuper(InfiniteCardinality):
     state_validation = editsup_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        context.modified_at = datetime.datetime.today()
         return True
 
     def redirect(self, context, request, **kw):
@@ -129,6 +138,15 @@ class Edit(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        keywords_ids = appstruct.pop('keywords')
+        result, newkeywords = root.get_keywords(keywords_ids)
+        for nk in newkeywords:
+            root.addtoproperty('keywords', nk)
+
+        result.extend(newkeywords)
+        context.setproperty('keywords_ref', result)
+        context.modified_at = datetime.datetime.today()
         return True
 
     def redirect(self, context, request, **kw):

@@ -1,0 +1,18 @@
+<div class="thumbnail right-caption span4 " >
+  <img src="http://www.lebonprofil.com/userfiles/www.lebonprofil.com/image/Boite_a_idee_Ampoule_Fotolia_4904317_XS.jpg" width="100">
+  <div class="media-body">
+    <h3 tal:condition="object.state"><span class="label label-primary pull-right">${object.state[0].capitalize()}</span></h3>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
+    <dl >
+      <dt>Résumé</dt><dd>${object.description}</dd>
+      <dt tal:condition="object.keywords">Mots clés</dt>
+      <dd tal:condition="object.keywords">
+        <tal:loop repeat="k object.keywords">
+          <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>
+            <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+        </tal:loop>
+      </dd>
+    </dl>
+    Modifiée le ${object.modified_at.date()} à ${object.created_at.hour}:${object.created_at.minute}:${object.created_at.second} par <a tal:attributes="href request.resource_url(object.author, '@@index')">${object.author.name}</a>
+  </div>
+</div>

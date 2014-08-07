@@ -1,0 +1,11 @@
+
+${length} elements trouvés
+
+<div class="row">
+  <div tal:condition="bodies">
+    <div class="col-md-12">
+      <div tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
+    </div>
+  </div>
+</div>
+

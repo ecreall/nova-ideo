@@ -19,10 +19,12 @@ from novaideo import _
 class RegistrationView(FormView):
 
     title = _('Registration')
-    schema = select(PersonSchema(factory=Person, editable=True),['user_title',
+    schema = select(PersonSchema(factory=Person, editable=True, omit=('keywords',)),['user_title',
                                                      'first_name', 
                                                      'last_name',
                                                      'email',
+                                                     'keywords',
+                                                     'picture',
                                                      'password'])
     behaviors = [Registration, Cancel]
     formid = 'formregistration'

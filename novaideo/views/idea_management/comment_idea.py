@@ -19,7 +19,7 @@ from novaideo import _
 class CommentIdeaView(FormView):
 
     title = _('Comment')
-    schema = select(CommentSchema(factory=Comment, editable=True),['comment', 'attached_files'])
+    schema = select(CommentSchema(factory=Comment, editable=True),['intention', 'comment', 'attached_files'])
     behaviors = [CommentIdea, Cancel]
     formid = 'formcommentidea'
     name='commentidea'

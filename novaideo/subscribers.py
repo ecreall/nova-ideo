@@ -9,5 +9,7 @@ from dace.objectofcollaboration.principal.util import grant_roles
 @subscriber(RootAdded)
 def mysubscriber(event):
     root = event.object
+    catalogs = find_service(root, 'catalogs')
+    catalogs.add_catalog('novaideo')
     principals = find_service(root, 'principals')
     users = principals['users']

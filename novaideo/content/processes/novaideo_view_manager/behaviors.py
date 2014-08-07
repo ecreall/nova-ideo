@@ -84,4 +84,122 @@ class SeeIdeas(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def search_relation_validation(process, context):
+    return True
+
+
+def search_roles_validation(process, context):
+    return True 
+
+
+def search_processsecurity_validation(process, context):
+    return True
+
+
+def search_state_validation(process, context):
+    return True
+
+
+class Search(InfiniteCardinality):
+    isSequential = False
+    context = Interface
+    actionType = ActionType.automatic
+    relation_validation = search_relation_validation
+    roles_validation = search_roles_validation
+    processsecurity_validation = search_processsecurity_validation
+    state_validation = search_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        self.content_types = appstruct['content_types']
+        self.text = appstruct['text']
+        return True
+
+    def redirect(self, context, request, **kw):
+        root = getSite()
+        return HTTPFound(request.resource_url(root, "@@search_result", query={'text': self.text, 'content_types': ",".join(self.content_types)}))
+
+#see
+def seemy_relation_validation(process, context):
+    return True
+
+
+def seemy_roles_validation(process, context):
+    return has_any_roles(roles=('Member',)) 
+
+
+def seemy_processsecurity_validation(process, context):
+    return True
+
+
+def seemy_state_validation(process, context):
+    return True
+
+
+class SeeMyIdeas(InfiniteCardinality):
+    isSequential = False
+    context = INovaIdeoApplication
+    relation_validation = seemy_relation_validation
+    roles_validation = seemy_roles_validation
+    processsecurity_validation = seemy_processsecurity_validation
+    state_validation = seemy_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+
+class SeeMycontacts(InfiniteCardinality):
+    isSequential = False
+    context = INovaIdeoApplication
+    relation_validation = seemy_relation_validation
+    roles_validation = seemy_roles_validation
+    processsecurity_validation = seemy_processsecurity_validation
+    state_validation = seemy_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+class SeeMyProposals(InfiniteCardinality):
+    isSequential = False
+    context = INovaIdeoApplication
+    relation_validation = seemy_relation_validation
+    roles_validation = seemy_roles_validation
+    processsecurity_validation = seemy_processsecurity_validation
+    state_validation = seemy_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+class SeeMySelections(InfiniteCardinality):
+    isSequential = False
+    context = INovaIdeoApplication
+    relation_validation = seemy_relation_validation
+    roles_validation = seemy_roles_validation
+    processsecurity_validation = seemy_processsecurity_validation
+    state_validation = seemy_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+class SeeMyParticipations(InfiniteCardinality):
+    isSequential = False
+    context = INovaIdeoApplication
+    relation_validation = seemy_relation_validation
+    roles_validation = seemy_roles_validation
+    processsecurity_validation = seemy_processsecurity_validation
+    state_validation = seemy_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+class SeeMySupports(InfiniteCardinality):
+    isSequential = False
+    context = INovaIdeoApplication
+    relation_validation = seemy_relation_validation
+    roles_validation = seemy_roles_validation
+    processsecurity_validation = seemy_processsecurity_validation
+    state_validation = seemy_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
 #TODO bihaviors

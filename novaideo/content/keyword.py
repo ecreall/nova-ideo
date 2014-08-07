@@ -6,6 +6,7 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.objectofcollaboration.entity import Entity
+from dace.descriptors import SharedMultipleProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
 
 from .interface import IKeyword
@@ -22,6 +23,7 @@ class KeywordSchema(VisualisableElementSchema):
         )
 
 
+
 @content(
     'keyword',
     icon='glyphicon glyphicon-align-left',
@@ -29,7 +31,9 @@ class KeywordSchema(VisualisableElementSchema):
 @implementer(IKeyword)
 class Keyword(VisualisableElement, Entity):
     name = renamer()
+    referenced_elements = SharedMultipleProperty('referenced_elements', 'keywords')
 
     def __init__(self, **kwargs):
         super(Keyword, self).__init__(**kwargs)
+        self.set_data(kwargs)
 

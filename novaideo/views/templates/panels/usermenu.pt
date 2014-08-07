@@ -1,0 +1,31 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="substanced"
+      tal:define="mp request.sdiapi.mgmt_path;"
+      tal:omit-tag="">
+
+    <div tal:condition="request.user">
+      <button type="button" class="btn btn-primary pull-right dropdown-toggle"
+              data-toggle="dropdown">
+        <i class="glyphicon glyphicon-user" style="margin-right: 5px;"></i>${request.user.__name__}<span class="caret" style="margin-left: 8px;"></span>
+      </button>
+
+      <ul class="dropdown-menu pull-right" role="menu">
+        <li class="account-link">
+          <a href="${mp(request.user, '')}" i18n:translate="">
+            <i i18n:name="icon" class="glyphicon glyphicon-pencil"></i> Account</a>
+        </li>
+        <li class="logout-link">
+          <a href="${request.resource_url(request.root, '@@logout')}" i18n:translate="">
+            <i i18n:name="icon" class="glyphicon glyphicon-off"></i> Log Out</a>
+        </li>
+      </ul>
+    </div>
+    <div tal:condition="request.user is None">  
+       <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary pull-right">
+          <i class="glyphicon glyphicon-log-in"> </i> Log In
+       </a>
+    </div>
+
+</html>

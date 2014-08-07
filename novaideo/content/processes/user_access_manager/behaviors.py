@@ -53,7 +53,7 @@ class LogIn(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, "@@index"))
+        return HTTPFound(request.resource_url(root))
 
 
 def logout_relation_validation(process, context):
@@ -86,6 +86,6 @@ class LogOut(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, "@@index"))
+        return HTTPFound(request.resource_url(root))
 
 #TODO bihaviors

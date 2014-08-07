@@ -57,7 +57,7 @@ class LoginView(BasicView):
 
         if login_url in referrer:
             # never use the login form itself as came_from
-            referrer = request.resource_url(request.virtual_root, '@@index')
+            referrer = request.resource_url(request.virtual_root)
         came_from = request.session.setdefault('sdi.came_from', referrer)
         login = ''
         password = ''
