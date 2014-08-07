@@ -157,7 +157,7 @@ class SearchResultView(BasicView):
             query = keywords_index.any(text) | \
                     name_index.any(text) | \
                     states_index.any(text)
-            for t in text:
+            for t in text: #TODO
                 query = query | \
                         title_index.contains(t) | \
                         description_index.contains(t) | \

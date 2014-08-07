@@ -59,7 +59,7 @@ class UserNavBarPanel(object):
     def _actions(self):
         root = getSite()
         search_action, search_view = self._getaction('novaideoviewmanager', 'search')
-        search_view_instance = search_view(self.context, self.request, behaviors=[search_action])
+        search_view_instance = search_view(root, self.request, behaviors=[search_action])
         actions_url ={'menue1':OrderedDict(), 'menue2':OrderedDict(), 'menue3':OrderedDict()}
         for (menue, actions) in user_menue_actions.items():
             for actionclass in actions:

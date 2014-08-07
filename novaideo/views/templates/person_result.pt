@@ -13,6 +13,6 @@
           </tal:loop>
         </dd>
       </dl>
-      Membre depuis le ${object.modefied_at.date()} à ${object.created_at.hour}:${object.created_at.minute}:${object.created_at.second}
+      Membre depuis le ${object.modified_at.date()} à ${object.created_at.hour}:${object.created_at.minute}:${object.created_at.second}
   </div>
 </div>
