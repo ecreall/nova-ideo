@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+from collections import OrderedDict
 from pyramid_layout.panel import panel_config
 from pyramid.location import lineage
 from pyramid.security import has_permission
@@ -12,7 +13,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMyIdeas,
-    SeeMycontacts,
+    SeeMyContacts,
     SeeMyProposals,
     SeeMySelections,
     SeeMyParticipations,
@@ -21,8 +22,8 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
 from novaideo.content.processes.idea_management.behaviors import CreatIdea
 
 user_menue_actions = {'menue1': [SeeMyIdeas, SeeMyProposals, SeeMyParticipations],
-                      'menue2': [SeeMycontacts, SeeMySelections, SeeMySupports],
-                      'menue3': [CreatIdea]}
+                      'menue2': [SeeMyContacts, SeeMySelections, SeeMySupports],
+                      'menue3': [CreatIdea]} #TODO add CreatProposal...
 
 
 
@@ -59,7 +60,7 @@ class UserNavBarPanel(object):
         root = getSite()
         search_action, search_view = self._getaction('novaideoviewmanager', 'search')
         search_view_instance = search_view(self.context, self.request, behaviors=[search_action])
-        actions_url ={'menue1':{}, 'menue2':{}, 'menue3':{}}
+        actions_url ={'menue1':OrderedDict(), 'menue2':OrderedDict(), 'menue3':OrderedDict()}
         for (menue, actions) in user_menue_actions.items():
             for actionclass in actions:
                 process_id, action_id = tuple(actionclass.node_definition.id.split('.'))

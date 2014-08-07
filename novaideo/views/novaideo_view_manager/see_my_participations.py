@@ -13,23 +13,23 @@ from pontus.widget import CheckboxChoiceWidget, RichTextWidget
 from pontus.schema import Schema
 from pontus.form import FormView
 
-from novaideo.content.processes.novaideo_view_manager.behaviors import  SeeMyProposals
+from novaideo.content.processes.novaideo_view_manager.behaviors import  SeeMyParticipations
 from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
 from novaideo import _
 from novaideo.content.interface import Iidea, IProposal, IPerson
 
 
 @view_config(
-    name='seemyproposals',
+    name='seemyparticipations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/view.pt',
     )
-class SeeMyProposalsView(BasicView):
-    title = _('My proposals')
-    name = 'seemyproposals'
-    behaviors = [SeeMyProposals]
+class SeeMyParticipationsView(BasicView):
+    title = _('My participations')
+    name = 'seemyparticipations'
+    behaviors = [SeeMyParticipations]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
-    viewid = 'seemyproposals'
+    viewid = 'seemyparticipations'
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/novaideo.js']}
 
@@ -37,7 +37,7 @@ class SeeMyProposalsView(BasicView):
     def update(self):
         self.execute(None) 
         user = get_current()
-        objects = getattr(user, 'proposals', [])
+        objects = getattr(user, 'participations', [])
         len_result = len(objects)
         result_body = []
         for o in objects:
@@ -57,5 +57,5 @@ class SeeMyProposalsView(BasicView):
         return result
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeMyProposals:SeeMyProposalsView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeMyParticipations:SeeMyParticipationsView})
 

@@ -120,7 +120,7 @@ class SearchResultView(BasicView):
     validators = [Search.get_validator()]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'search_result'
-    requirements = {'css_links':['novaideo:static/css/novaideo_ui.css'],
+    requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/novaideo.js']}
 
 
@@ -175,6 +175,7 @@ class SearchResultView(BasicView):
             #resultset = resultset.sort(title_index, raise_unsortable=False)
 
         objects = resultset.all()
+        #TODO access control
         result_body = []
         for o in objects:
             object_values = {'object':o}

@@ -114,7 +114,7 @@ class SeeMyIdeas(InfiniteCardinality):
         return True
 
 
-class SeeMycontacts(InfiniteCardinality):
+class SeeMyContacts(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     relation_validation = seemy_relation_validation

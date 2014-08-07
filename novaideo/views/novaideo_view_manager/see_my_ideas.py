@@ -30,7 +30,7 @@ class SeeMyIdeasView(BasicView):
     behaviors = [SeeMyIdeas]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seemyideas'
-    requirements = {'css_links':['novaideo:static/css/novaideo_ui.css'],
+    requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/novaideo.js']}
 
 
