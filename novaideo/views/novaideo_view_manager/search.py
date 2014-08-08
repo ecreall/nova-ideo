@@ -18,6 +18,7 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import  Search
 from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
 from novaideo import _
 from novaideo.content.interface import Iidea, IProposal, IPerson
+from .widget import SearchTextInputWidget, SearchFormWidget
 
 
 default_serchable_content = {'Idea': Iidea,
@@ -37,12 +38,13 @@ def default_content_types_choices(node, kw):
 
 
 class SearchSchema(Schema):
+    widget = SearchFormWidget()
 
     text = colander.SchemaNode(
         colander.String(),
+        widget=SearchTextInputWidget(),
         title=_(''),
         missing='',
-        description=_(u"""Saisissez les mots clés séparés par une virgule \', \'. (ex: public, animation)""")
         )
     content_types = colander.SchemaNode(
                 colander.Set(),

@@ -16,3 +16,8 @@
 .navbar .brand:hover, .navbar .brand:focus {
     text-decoration: none;
 }
+
+.input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group {
+    margin-left: -1px;
+    margin-top: 0;
+}
