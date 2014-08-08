@@ -16,7 +16,7 @@
         </span>
       </div>
    <p class="help-block">
-    Saisissez les mots clés séparés par une virgule ', '. (ex: public, animation)
+    <small>Saisissez les mots clés séparés par une virgule ', '. (ex: public, animation)</small>
    </p>
     <script tal:condition="mask" type="text/javascript">
       deform.addCallback(
