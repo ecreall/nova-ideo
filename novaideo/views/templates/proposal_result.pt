@@ -13,6 +13,6 @@
         </tal:loop>
       </dd>
     </dl>
-    Modifiée le ${object.modified_at.date()} à ${object.created_at.hour}:${object.created_at.minute}:${object.created_at.second} par <a tal:attributes="href request.resource_url(object.author, '@@index')">${object.author.name}</a>
+    Modifiée le ${object.modified_at.date()} à ${object.created_at.hour}:${object.created_at.minute}:${object.created_at.second} par <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
   </div>
 </div>

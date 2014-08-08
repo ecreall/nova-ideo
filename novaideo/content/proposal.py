@@ -24,7 +24,8 @@ from novaideo.core import (
     VersionableEntity,
     DuplicableEntity,
     SerchableEntity,
-    SerchableEntitySchema)
+    SerchableEntitySchema,
+    CorrelableEntity)
 
 
 @colander.deferred
@@ -64,7 +65,7 @@ class ProposalSchema(VisualisableElementSchema, SerchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IProposal)
-class Proposal(Commentabl, SerchableEntity):
+class Proposal(Commentabl, SerchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/proposal_result.pt' 
     name = renamer()
     author = SharedUniqueProperty('author')

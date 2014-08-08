@@ -21,6 +21,7 @@ from dace.processinstance.activity import (
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, Iidea
 from novaideo import _
+from ..user_management.behaviors import global_user_processsecurity
 
 
 
@@ -33,7 +34,7 @@ def creatidea_roles_validation(process, context):
 
 
 def creatidea_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def creatidea_state_validation(process, context):
@@ -77,7 +78,7 @@ def duplicate_roles_validation(process, context):
 
 
 def duplicate_processsecurity_validation(process, context):
-    return has_any_roles(roles=('Owner', context)) or 'published' in context.state
+    return global_user_processsecurity(process, context) and has_any_roles(roles=('Owner', context)) or 'published' in context.state
 
 
 def duplicate_state_validation(process, context):
@@ -125,7 +126,7 @@ def del_roles_validation(process, context):
 
 
 def del_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def del_state_validation(process, context):
@@ -146,7 +147,7 @@ class DelIdea(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, "@@index"))
+        return HTTPFound(request.resource_url(root))
 
 
 def edit_relation_validation(process, context):
@@ -158,7 +159,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def edit_state_validation(process, context):
@@ -221,7 +222,7 @@ def pub_processsecurity_validation(process, context):
             if orignial_idea.text == context.text:
                 return False
 
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def pub_state_validation(process, context):
@@ -236,7 +237,6 @@ class PublishIdea(InfiniteCardinality):
     state_validation = pub_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        
         context.state.remove('to work')
         context.state.append('published')
         return True
@@ -254,7 +254,7 @@ def ab_roles_validation(process, context):
 
 
 def ab_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def ab_state_validation(process, context):
@@ -286,7 +286,7 @@ def re_roles_validation(process, context):
 
 
 def re_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def re_state_validation(process, context):
@@ -318,7 +318,7 @@ def comm_roles_validation(process, context):
 
 
 def comm_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def comm_state_validation(process, context):
@@ -352,7 +352,7 @@ def present_roles_validation(process, context):
 
 
 def present_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def present_state_validation(process, context):
@@ -415,5 +415,41 @@ class PresentIdea(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
+def associate_relation_validation(process, context):
+    return True
+
+
+def associate_roles_validation(process, context):
+    return True 
+
+
+def associate_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) and \
+           (has_any_roles(roles=(('Owner', context),)) or \
+            (has_any_roles(roles=('Member',)) and 'published' in context.state))
+
+
+def associate_state_validation(process, context):
+    return True
+
+
+class Associate(InfiniteCardinality):
+    context = Iidea
+    relation_validation = associate_relation_validation
+    roles_validation = associate_roles_validation
+    processsecurity_validation = associate_processsecurity_validation
+    state_validation = associate_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        correlation = appstruct['_object_data']
+        correlation.setproperty('source', context)
+        root = getSite()
+        root.addtoproperty('correlations', correlation)
+        self.newcontext = correlation
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 #TODO bihaviors

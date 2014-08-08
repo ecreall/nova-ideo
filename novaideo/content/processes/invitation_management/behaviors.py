@@ -17,6 +17,7 @@ from novaideo.content.invitation import Invitation
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.processes.invitation_validation.behaviors import invitation_message
 from novaideo import _
+from ..user_management.behaviors import global_user_processsecurity
 
 
 def uploaduser_relation_validation(process, context):
@@ -28,7 +29,7 @@ def uploaduser_roles_validation(process, context):
 
 
 def uploaduser_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def uploaduser_state_validation(process, context):
@@ -77,7 +78,7 @@ class UploadUsers(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 
@@ -90,7 +91,7 @@ def inviteuser_roles_validation(process, context):
 
 
 def inviteuser_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def inviteuser_state_validation(process, context):
@@ -132,7 +133,7 @@ class InviteUsers(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 
@@ -166,7 +167,7 @@ class SeeInvitation(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 def seeinvs_relation_validation(process, context):
@@ -178,7 +179,7 @@ def seeinvs_roles_validation(process, context):
 
 
 def seeinvs_processsecurity_validation(process, context):
-    return len(context.invitations)>=1
+    return global_user_processsecurity(process, context) and len(context.invitations)>=1
 
 
 def seeinvs_state_validation(process, context):
@@ -197,7 +198,7 @@ class SeeInvitations(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 def edit_relation_validation(process, context):
@@ -209,7 +210,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return len(context.invitations)>=1
+    return global_user_processsecurity(process, context) and len(context.invitations)>=1
 
 
 def edit_state_validation(process, context):
@@ -228,7 +229,7 @@ class EditInvitations(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 def editinv_relation_validation(process, context):
@@ -240,7 +241,7 @@ def editinv_roles_validation(process, context):
 
 
 def editinv_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def editinv_state_validation(process, context):

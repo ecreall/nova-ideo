@@ -5,7 +5,7 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service, get_oid
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles
+from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
@@ -18,6 +18,7 @@ from pontus.schema import select, omit
 
 from novaideo.content.interface import INovaIdeoApplication
 from novaideo import _
+from ..user_management.behaviors import global_user_processsecurity
 
 
 def seeideas_relation_validation(process, context):
@@ -29,7 +30,7 @@ def seeideas_roles_validation(process, context):
 
 
 def seeideas_processsecurity_validation(process, context):
-    return len(context.ideas)>=1
+    return global_user_processsecurity(process, context) and len(context.ideas)>=1
 
 
 def seeideas_state_validation(process, context):
@@ -48,7 +49,7 @@ class SeeIdeas(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 def search_relation_validation(process, context):
@@ -83,7 +84,7 @@ class Search(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, "@@search_result", query={'text': self.text, 'content_types': ",".join(self.content_types)}))
+        return HTTPFound(request.resource_url(root, query={'text': self.text, 'content_types': ",".join(self.content_types)}))
 
 #see
 def seemy_relation_validation(process, context):
@@ -95,7 +96,8 @@ def seemy_roles_validation(process, context):
 
 
 def seemy_processsecurity_validation(process, context):
-    return True
+    user = get_current()
+    return global_user_processsecurity(process, context) and getattr(user, 'ideas', [])
 
 
 def seemy_state_validation(process, context):
@@ -113,57 +115,82 @@ class SeeMyIdeas(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         return True
 
+def seemyc_processsecurity_validation(process, context):
+    user = get_current()
+    return global_user_processsecurity(process, context) and getattr(user, 'contacts', [])
+
 
 class SeeMyContacts(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     relation_validation = seemy_relation_validation
     roles_validation = seemy_roles_validation
-    processsecurity_validation = seemy_processsecurity_validation
+    processsecurity_validation = seemyc_processsecurity_validation
     state_validation = seemy_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True
+
+def seemyp_processsecurity_validation(process, context):
+    user = get_current()
+    return global_user_processsecurity(process, context) and getattr(user, 'proposals', [])
 
 class SeeMyProposals(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     relation_validation = seemy_relation_validation
     roles_validation = seemy_roles_validation
-    processsecurity_validation = seemy_processsecurity_validation
+    processsecurity_validation = seemyp_processsecurity_validation
     state_validation = seemy_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True
+
+def seemys_processsecurity_validation(process, context):
+    user = get_current()
+    return global_user_processsecurity(process, context) and getattr(user, 'selections', [])
+
 
 class SeeMySelections(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     relation_validation = seemy_relation_validation
     roles_validation = seemy_roles_validation
-    processsecurity_validation = seemy_processsecurity_validation
+    processsecurity_validation = seemys_processsecurity_validation
     state_validation = seemy_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True
+
+
+def seemypa_processsecurity_validation(process, context):
+    user = get_current()
+    return global_user_processsecurity(process, context) and getattr(user, 'participations', [])
+
 
 class SeeMyParticipations(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     relation_validation = seemy_relation_validation
     roles_validation = seemy_roles_validation
-    processsecurity_validation = seemy_processsecurity_validation
+    processsecurity_validation = seemypa_processsecurity_validation
     state_validation = seemy_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True
+
+
+def seemysu_processsecurity_validation(process, context):
+    user = get_current()
+    return global_user_processsecurity(process, context) and getattr(user, 'supports', [])
+
 
 class SeeMySupports(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     relation_validation = seemy_relation_validation
     roles_validation = seemy_roles_validation
-    processsecurity_validation = seemy_processsecurity_validation
+    processsecurity_validation = seemysu_processsecurity_validation
     state_validation = seemy_state_validation
 
     def start(self, context, request, appstruct, **kw):

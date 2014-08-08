@@ -150,6 +150,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     invitations = CompositeMultipleProperty('invitations')
     ideas = CompositeMultipleProperty('ideas')
     keywords = CompositeMultipleProperty('keywords')
+    correlations = CompositeMultipleProperty('correlations')
 
 
     def __init__(self, **kwargs):

@@ -24,7 +24,8 @@ from novaideo.content.interface import (
     IVersionableEntity,
     IDuplicableEntity,
     ISerchableEntity,
-    ICommentabl)
+    ICommentabl,
+    ICorrelableEntity)
 
 
 
@@ -103,7 +104,6 @@ class SerchableEntitySchema(Schema):
                 )
 
 
-
 @implementer(ISerchableEntity)
 class SerchableEntity(Entity):
     result_template = 'novaideo:templates/views/default_result.pt'    
@@ -118,3 +118,19 @@ class SerchableEntity(Entity):
     @property
     def keywords(self):
         return [k.title for k in self.keywords_ref]
+
+
+@implementer(ICorrelableEntity)
+class CorrelableEntity(Entity):
+    source_correlations = SharedMultipleProperty('source_correlations', 'source')
+    target_correlations = SharedMultipleProperty('target_correlations', 'target')
+
+    def __init__(self, **kwargs):
+        super(CorrelableEntity, self).__init__(**kwargs)
+
+
+    @property
+    def correlations(self):
+        result = list([c.target for c in self.source_correlations])
+        result.extend(list([c.source for c in self.target_correlations]))
+        return list(set( result))

@@ -20,7 +20,8 @@ from novaideo.core import (
     VersionableEntity,
     DuplicableEntity,
     SerchableEntity,
-    SerchableEntitySchema)
+    SerchableEntitySchema,
+    CorrelableEntity)
 
 
 @colander.deferred
@@ -67,7 +68,7 @@ class IdeaSchema(VisualisableElementSchema, SerchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(Iidea)
-class Idea(Commentabl, VersionableEntity, DuplicableEntity, SerchableEntity):
+class Idea(Commentabl, VersionableEntity, DuplicableEntity, SerchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/idea_result.pt' 
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')

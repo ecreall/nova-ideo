@@ -4,7 +4,7 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service, get_oid
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles
+from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
@@ -30,6 +30,15 @@ Cordialement,
 
 La Plateforme NovaIdeo
 """
+
+def global_user_processsecurity(process, context):
+    user = get_current()
+    state = list(getattr(user, 'state', []))
+
+    if has_any_roles(roles=('Admin',)) and not('active' in state):
+        state.append('active')
+
+    return 'active' in state
 
 
 def reg_relation_validation(process, context):
@@ -63,7 +72,7 @@ class Registration(InfiniteCardinality):
         principals['users'][name] = person
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
-        person.state.append('created')
+        person.state.append('active')
         root = getSite()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
@@ -78,7 +87,7 @@ class Registration(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, "@@index"))
+        return HTTPFound(request.resource_url(root))
 
 
 def editsup_relation_validation(process, context):
@@ -94,7 +103,7 @@ def editsup_processsecurity_validation(process, context):
 
 
 def editsup_state_validation(process, context):
-    return 'created' in context.state
+    return 'active' in context.state
 
 
 class EditSuper(InfiniteCardinality):
@@ -122,11 +131,11 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def edit_state_validation(process, context):
-    return 'created' in context.state
+    return 'active' in context.state
 
 
 class Edit(InfiniteCardinality):
@@ -151,4 +160,103 @@ class Edit(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def deactivate_relation_validation(process, context):
+    return True
+
+
+def deactivate_roles_validation(process, context):
+    return has_any_roles(roles=('Admin',)) 
+
+
+def deactivate_processsecurity_validation(process, context):
+    return True
+
+
+def deactivate_state_validation(process, context):
+    return 'active' in context.state
+
+
+class Deactivate(InfiniteCardinality):
+    title = _('Deactivate')
+    context = IPerson
+    relation_validation = deactivate_relation_validation
+    roles_validation = deactivate_roles_validation
+    processsecurity_validation = deactivate_processsecurity_validation
+    state_validation = deactivate_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state.remove('active')
+        context.state.append('deactivated')
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def activate_relation_validation(process, context):
+    return True
+
+
+def activate_roles_validation(process, context):
+    return has_any_roles(roles=('Admin',)) 
+
+
+def activate_processsecurity_validation(process, context):
+    return True
+
+
+def activate_state_validation(process, context):
+    return 'deactivated' in context.state
+
+
+class Activate(InfiniteCardinality):
+    title = _('Activate')
+    context = IPerson
+    relation_validation = activate_relation_validation
+    roles_validation = activate_roles_validation
+    processsecurity_validation = activate_processsecurity_validation
+    state_validation = activate_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state.remove('deactivated')
+        context.state.append('active')
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def seeperson_relation_validation(process, context):
+    return True
+
+
+def seeperson_roles_validation(process, context):
+    return True 
+
+
+def seeperson_processsecurity_validation(process, context):
+    return True
+
+
+def seeperson_state_validation(process, context):
+    return 'active' in context.state
+
+
+class SeePerson(InfiniteCardinality):
+    title = _('Details')
+    context = IPerson
+    actionType = ActionType.automatic
+    relation_validation = seeperson_relation_validation
+    roles_validation = seeperson_roles_validation
+    processsecurity_validation = seeperson_processsecurity_validation
+    state_validation = seeperson_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
 #TODO bihaviors

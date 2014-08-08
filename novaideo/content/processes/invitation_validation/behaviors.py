@@ -18,6 +18,7 @@ from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IInvitation
 from novaideo.content.person import Person
 from novaideo.content.invitation import InvitationSchema
+from ..user_management.behaviors import global_user_processsecurity
 
 
 invitation_message = u"""
@@ -78,7 +79,7 @@ class AcceptInvitation(ElementaryAction):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, "@@index"))
+        return HTTPFound(request.resource_url(root))
 
 
 def refuse_relation_validation(process, context):
@@ -123,7 +124,7 @@ def remove_roles_validation(process, context):
 
 
 def remove_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def remove_state_validation(process, context):
@@ -144,7 +145,7 @@ class RemoveInvitation(ElementaryAction):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, "@@index"))
+        return HTTPFound(request.resource_url(root))
 
 
 def reinvite_relation_validation(process, context):
@@ -156,7 +157,7 @@ def reinvite_roles_validation(process, context):
 
 
 def reinvite_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def reinvite_state_validation(process, context):
@@ -196,7 +197,7 @@ def remind_roles_validation(process, context):
 
 
 def remind_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def remind_state_validation(process, context):

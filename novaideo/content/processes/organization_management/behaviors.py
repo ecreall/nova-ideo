@@ -13,6 +13,7 @@ from novaideo.ips.xlreader import creat_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IOrganization
 from novaideo.content.organization import Organization
 from novaideo import _
+from ..user_management.behaviors import global_user_processsecurity
 
 
 def add_relation_validation(process, context):
@@ -24,7 +25,7 @@ def add_roles_validation(process, context):
 
 
 def add_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def add_state_validation(process, context):
@@ -48,7 +49,7 @@ class AddOrganizations(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 def creatorg_relation_validation(process, context):
@@ -60,7 +61,7 @@ def creatorg_roles_validation(process, context):
 
 
 def creatorg_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def creatorg_state_validation(process, context):
@@ -86,7 +87,7 @@ class CreatOrganizations(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 def edit_relation_validation(process, context):
@@ -98,7 +99,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return len(context.organizations)>=1
+    return global_user_processsecurity(process, context) and len(context.organizations)>=1
 
 
 def edit_state_validation(process, context):
@@ -117,7 +118,7 @@ class EditOrganizations(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 def seeorgs_relation_validation(process, context):
@@ -129,7 +130,7 @@ def seeorgs_roles_validation(process, context):
 
 
 def seeorgs_processsecurity_validation(process, context):
-    return len(context.organizations)>=1
+    return global_user_processsecurity(process, context) and len(context.organizations)>=1
 
 
 def seeorgs_state_validation(process, context):
@@ -148,7 +149,7 @@ class SeeOrganizations(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context))
 
 
 def see_relation_validation(process, context):
@@ -160,7 +161,7 @@ def see_roles_validation(process, context):
 
 
 def see_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def see_state_validation(process, context):
@@ -193,7 +194,7 @@ def editorg_roles_validation(process, context):
 
 
 def editorg_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def editorg_state_validation(process, context):

@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import re
 import colander
 from pyramid.view import view_config
@@ -6,6 +7,7 @@ from pyramid.threadlocal import get_current_registry
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, allSubobjectsOfType
+from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView, ViewError, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.widget import CheckboxChoiceWidget, RichTextWidget
@@ -39,7 +41,8 @@ class SearchSchema(Schema):
     text = colander.SchemaNode(
         colander.String(),
         title=_(''),
-        missing=''
+        missing='',
+        description=_(u"""Saisissez les mots clés séparés par une virgule \', \'. (ex: public, animation)""")
         )
     content_types = colander.SchemaNode(
                 colander.Set(),
@@ -108,7 +111,6 @@ class SearchView(FormView):
         return appstruct
 
 
-
 @view_config(
     name='',
     context=NovaIdeoApplication,
@@ -134,8 +136,13 @@ class SearchResultView(BasicView):
             text = None
 
         if text is not None:
-            text = [t.lower() for t in text.split(',')]
- 
+            text = [t.lower() for t in text.split(', ')]
+            result = []
+            for t in text:
+                result.extend(t.split(','))
+
+            text = result
+
         root = getSite()
         interfaces = [default_serchable_content[i].__identifier__ for i in content_types]
         #catalog
@@ -157,28 +164,28 @@ class SearchResultView(BasicView):
             query = keywords_index.any(text) | \
                     name_index.any(text) | \
                     states_index.any(text)
+
             for t in text: #TODO
                 query = query | \
                         title_index.contains(t) | \
                         description_index.contains(t) | \
                         text_index.contains(t)
-            
+
         if query is None:
             query = object_provides_index.any(interfaces)
         else:
             query = (query) & object_provides_index.any(interfaces)
 
         resultset = query.execute()
-        len_result = resultset.__len__()
-
         #if len_result > 2:
             #resultset = resultset.sort(title_index, raise_unsortable=False)
 
-        objects = resultset.all()
+        objects = [o for o in resultset.all() if o.actions]
+        len_result = len(objects)
         #TODO access control
         result_body = []
         for o in objects:
-            object_values = {'object':o}
+            object_values = {'object':o, 'current_user': get_current()}
             body = self.content(result=object_values, template=o.result_template)['body']
             result_body.append(body)
 

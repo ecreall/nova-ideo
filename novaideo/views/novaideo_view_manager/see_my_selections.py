@@ -41,7 +41,7 @@ class SeeMySelectionsView(BasicView):
         len_result = len(objects)
         result_body = []
         for o in objects:
-            object_values = {'object':o}
+            object_values = {'object':o, 'current_user':user}
             body = self.content(result=object_values, template=o.result_template)['body']
             result_body.append(body)
 

@@ -13,43 +13,48 @@ from pontus.widget import CheckboxChoiceWidget, RichTextWidget
 from pontus.schema import Schema
 from pontus.form import FormView
 
-from novaideo.content.processes.novaideo_view_manager.behaviors import  SeeMyContacts
-from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
+from novaideo.content.processes.user_management.behaviors import  SeePerson
+from novaideo.content.person import Person
 from novaideo import _
-from novaideo.content.interface import Iidea, IProposal, IPerson
+from novaideo.views.novaideo_view_manager.search import SearchResultView
 
 
 @view_config(
-    name='seemycontacts',
-    context=NovaIdeoApplication,
+    name='seeperson',
+    context=Person,
     renderer='pontus:templates/view.pt',
     )
-class SeeMyContactsView(BasicView):
-    title = _('My contacts')
-    name = 'seemycontacts'
-    behaviors = [SeeMyContacts]
-    template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
-    viewid = 'seemycontacts'
+class SeePersonView(BasicView):
+    title = _('Details')
+    name = 'seeperson'
+    behaviors = [SeePerson]
+    template = 'novaideo:views/user_management/templates/see_person.pt'
+    viewid = 'seeperson'
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/novaideo.js']}
 
 
     def update(self):
         self.execute(None) 
-        user = get_current()
-        objects = getattr(user, 'contacts', [])
-        len_result = len(objects)
+        user = self.context
+        ideas = [o for o in getattr(user, 'ideas', []) if o.actions]
+        len_result = len(ideas)
         result_body = []
-        for o in objects:
+        result = {}
+        for o in ideas:
             object_values = {'object':o, 'current_user':user}
             body = self.content(result=object_values, template=o.result_template)['body']
             result_body.append(body)
-
-        result = {}
         values = {
                 'bodies': result_body,
                 'length': len_result
                }
+        ideas_body = self.content(result=values, template=SearchResultView.template)['body']
+
+        #TOTDO proposals...
+        values = {'ideas': (result_body and ideas_body) or None,
+                  'proposals':None,
+                  'user': self.context}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
@@ -57,5 +62,5 @@ class SeeMyContactsView(BasicView):
         return result
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeMyContacts:SeeMyContactsView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({SeePerson:SeePersonView})
 

@@ -10,12 +10,13 @@ from substanced.principal import UserSchema
 from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
 
-from dace.util import getSite
+from dace.util import getSite, find_entities
 from dace.objectofcollaboration.principal import User
 from dace.descriptors import (
     SharedUniqueProperty,
     CompositeMultipleProperty,
-    CompositeUniqueProperty)
+    CompositeUniqueProperty,
+    SharedMultipleProperty)
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import FileWidget, Select2Widget
 from pontus.file import Image, ObjectData, Object as ObjectType
@@ -24,7 +25,8 @@ from novaideo.core import (
     SerchableEntity,
     SerchableEntitySchema,
     default_keywords_choice,
-    keywords_choice)
+    keywords_choice,
+    CorrelableEntity)
 from .interface import IPerson
 from novaideo import _
 
@@ -76,6 +78,25 @@ def email_validator(node, kw):
 
     if user is not None or invitation is not None:
         raise colander.Invalid(node, _('{email} email address already in use').format(email=kw))
+
+
+@colander.deferred
+def contacts_choice(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    values = []
+    users = find_entities([IPerson], ['active'])
+    values = [(i, i.name) for i in users if not (i in context.contacts)]
+    values = sorted(values, key=lambda p: p[1])
+    return Select2Widget(values=values, multiple=True)
+
+
+@colander.deferred
+def default_contacts(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    prop = sorted(self.contacts, key=lambda p: p.name)
+    return prop
 
 
 def context_is_a_person(context, request):
@@ -143,23 +164,33 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SerchableEntitySchema)
                 title=_('Organization')
                 )
 
+    contacts = colander.SchemaNode(
+                colander.Set(),
+                widget=contacts_choice,
+                default=default_contacts,
+                title=_('Contacts')
+                )
+
 
 @content(
     'person',
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IPerson)
-class Person(VisualisableElement, User, SerchableEntity):
+class Person(VisualisableElement, User, SerchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/person_result.pt'
     name = renamer()
     tokens = CompositeMultipleProperty('tokens', 'owner')
     organization = SharedUniqueProperty('organization', 'members')
     picture = CompositeUniqueProperty('picture')
-    ideas = SharedUniqueProperty('ideas', 'author')
+    ideas = SharedMultipleProperty('ideas', 'author')
+    contacts = SharedMultipleProperty('contacts')
 
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)
+        kwargs.pop('password')
         self.set_data(kwargs)
+
 
     @property
     def prefernces(self):

@@ -20,7 +20,8 @@ from .behaviors import (
     RecuperateIdea,
     AbandonIdea,
     CommentIdea,
-    PresentIdea)
+    PresentIdea,
+    Associate)
 from novaideo import _
 
 
@@ -73,6 +74,10 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Comment the idea"),
                                        title=_("Comment"),
                                        groups=[]),
+                associate = ActivityDefinition(contexts=[Associate],
+                                       description=_("Associate the idea"),
+                                       title=_("Associate"),
+                                       groups=[]),
                 pg = ParallelGatewayDefinition(),
                 #pg2 = ParallelGatewayDefinition(),
                 #eg1 = ExclusiveGatewayDefinition(),
@@ -91,6 +96,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'recuperate'),
                 TransitionDefinition('pg', 'comment'),
                 TransitionDefinition('pg', 'present'),
+                TransitionDefinition('pg', 'associate'),
                 TransitionDefinition('creat', 'eg'),
                 TransitionDefinition('duplicate', 'eg'),
                 TransitionDefinition('recuperate', 'eg'),
@@ -100,6 +106,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('edit', 'eg'),
                 TransitionDefinition('comment', 'eg'),
                 TransitionDefinition('present', 'eg'),
+                TransitionDefinition('associate', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
 

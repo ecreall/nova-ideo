@@ -18,7 +18,10 @@ from pontus.core import VisualisableElement
 from .behaviors import (
     EditSuper,
     Registration,
-    Edit)
+    Edit,
+    Activate,
+    Deactivate,
+    SeePerson)
 from novaideo import _
 
 
@@ -47,7 +50,18 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Edit"),
                                        title=_("Edit"),
                                        groups=[]),
-
+                deactivate = ActivityDefinition(contexts=[Deactivate],
+                                       description=_("Deactivate"),
+                                       title=_("Deactivate"),
+                                       groups=[]),
+                activate = ActivityDefinition(contexts=[Activate],
+                                       description=_("Activate"),
+                                       title=_("Activate"),
+                                       groups=[]),
+                see = ActivityDefinition(contexts=[SeePerson],
+                                       description=_("Details"),
+                                       title=_("Details"),
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -59,6 +73,12 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('editsuper', 'eg'),
                 TransitionDefinition('edit', 'eg'),
                 TransitionDefinition('registration', 'eg'),
+                TransitionDefinition('pg', 'deactivate'),
+                TransitionDefinition('deactivate', 'eg'),
+                TransitionDefinition('pg', 'activate'),
+                TransitionDefinition('activate', 'eg'),
+                TransitionDefinition('pg', 'see'),
+                TransitionDefinition('see', 'eg'),
                 TransitionDefinition('eg', 'end'),
 
         )
