@@ -18,7 +18,7 @@ from novaideo import _
     )
 class CreatIdeaView(FormView):
 
-    title = _('Edit invitations')
+    title = _('Creat an idea')
     schema = select(IdeaSchema(factory=Idea, editable=True, omit=['keywords']),['title',
                                                              'description',
                                                              'keywords',
