@@ -1,0 +1,29 @@
+<span tal:define="name name|field.name;
+                  css_class css_class|field.widget.css_class;
+                  oid oid|field.oid;
+                  mask mask|field.widget.mask;
+                  mask_placeholder mask_placeholder|field.widget.mask_placeholder;
+                  style style|field.widget.style;
+"
+      tal:omit-tag="">
+      <div class="input-group">
+       <input type="text" name="${name}" value="${cstruct}" 
+           tal:attributes="class string: form-control ${css_class};
+                           style style"
+           id="${oid}">
+        <span class="input-group-btn">
+           <button class="btn btn-default" type="submit">Search</button>
+        </span>
+      </div>
+   <p class="help-block">
+    Saisissez les mots clés séparés par une virgule ', '. (ex: public, animation)
+   </p>
+    <script tal:condition="mask" type="text/javascript">
+      deform.addCallback(
+         '${oid}',
+         function (oid) {
+            $("#" + oid).mask("${mask}", 
+                 {placeholder:"${mask_placeholder}"});
+         });
+    </script>
+</span>
