@@ -103,7 +103,6 @@ class SearchView(FormView):
 
     def before_update(self):
         root = getSite()
-        self.form_class.css_class = 'navbar-form navbar-right'
         self.action = self.request.resource_url(root, '')
 
     def default_data(self):
