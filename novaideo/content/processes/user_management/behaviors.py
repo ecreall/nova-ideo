@@ -18,7 +18,7 @@ from novaideo.content.interface import INovaIdeoApplication, IPerson
 from novaideo import _
 
 
-confirmation_message = u"""
+CONFIRMATION_MESSAGE = u"""
 Bonjour {person.user_title} {person.last_name} {person.first_name},
 
 Bienvenue sur le plateforme NovaIdeo.
@@ -78,7 +78,7 @@ class Registration(InfiniteCardinality):
 
         result.extend(newkeywords)
         person.setproperty('keywords_ref', result)
-        message = confirmation_message.format(person=person)
+        message = CONFIRMATION_MESSAGE.format(person=person)
         mailer_send(subject='Confirmation de votre inscription',
                 recipients=[person.email], body=message)
         return True
