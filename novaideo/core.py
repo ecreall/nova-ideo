@@ -18,18 +18,15 @@ from novaideo import _
 from novaideo.content.interface import (
     IVersionableEntity,
     IDuplicableEntity,
-    ISerchableEntity,
-    ICommentabl,
+    ISearchableEntity,
+    ICommentable,
     ICorrelableEntity)
 
 
-@implementer(ICommentabl)
+@implementer(ICommentable)
 class Commentabl(VisualisableElement, Entity):
     name = renamer()
     comments = CompositeMultipleProperty('comments')
-
-    def __init__(self, **kwargs):
-        super(Commentabl, self).__init__(**kwargs)
 
 
 @implementer(IVersionableEntity)
@@ -76,7 +73,7 @@ def default_keywords_choice(node, kw):
     return values
 
 
-class SerchableEntitySchema(Schema):
+class SearchableEntitySchema(Schema):
 
     keywords =  colander.SchemaNode(
         colander.Sequence(),
@@ -89,8 +86,8 @@ class SerchableEntitySchema(Schema):
         )
 
 
-@implementer(ISerchableEntity)
-class SerchableEntity(Entity):
+@implementer(ISearchableEntity)
+class SearchableEntity(Entity):
     result_template = 'novaideo:templates/views/default_result.pt'
     keywords_ref = SharedMultipleProperty('keywords_ref', 'referenced_elements')
 

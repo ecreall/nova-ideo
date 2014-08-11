@@ -5,7 +5,7 @@ class ICorrelableEntity(Interface):
     pass
 
 
-class ISerchableEntity(Interface):
+class ISearchableEntity(Interface):
     pass
 
 
@@ -17,27 +17,27 @@ class IDuplicableEntity(Interface):
     pass
 
 
-class ISerchableEntity(Interface):
+class ISearchableEntity(Interface):
     pass
 
 
-class ICommentabl(Interface):
+class ICommentable(Interface):
     pass
 
 
-class IComment(ICommentabl):
+class IComment(ICommentable):
     pass
 
 
-class Iidea(ICommentabl,
+class Iidea(ICommentable,
             IDuplicableEntity,
             IVersionableEntity,
-            ISerchableEntity,
+            ISearchableEntity,
             ICorrelableEntity):
     pass
 
 
-class ICorrelation(ICommentabl):
+class ICorrelation(ICommentable):
     pass
 
 
@@ -57,13 +57,13 @@ class IToken(Interface):
     pass
 
 
-class IPerson(ISerchableEntity,
+class IPerson(ISearchableEntity,
               ICorrelableEntity):
     pass
 
 
-class IProposal(ICommentabl,
-                ISerchableEntity,
+class IProposal(ICommentable,
+                ISearchableEntity,
                 ICorrelableEntity):
     pass
 
