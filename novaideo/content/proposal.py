@@ -6,23 +6,18 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.util import getSite
-from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import (
     CompositeMultipleProperty,
     SharedUniqueProperty,
     SharedMultipleProperty
 )
-from pontus.schema import omit
-from pontus.widget import RichTextWidget
-from pontus.core import VisualisableElement, VisualisableElementSchema
+from pontus.widget import RichTextWidget,Select2Widget
+from pontus.core import VisualisableElementSchema
 
-from .keyword import KeywordSchema, Keyword
 from .interface import IProposal
 from novaideo.core import Commentabl
 from novaideo import _
 from novaideo.core import (
-    VersionableEntity,
-    DuplicableEntity,
     SerchableEntity,
     SerchableEntitySchema,
     CorrelableEntity)
@@ -48,16 +43,16 @@ class ProposalSchema(VisualisableElementSchema, SerchableEntitySchema):
 
     body = colander.SchemaNode(
         colander.String(),
-        widget= RichTextWidget()
+        widget= RichTextWidget(),
         )
 
     ideas  = colander.SchemaNode(
-                    colander.Set(),
-                    widget=ideas_choice,
-                    title=_('Related ideas'),
-                    missing=[],
-                    default=[]
-                )
+        colander.Set(),
+        widget=ideas_choice,
+        title=_('Related ideas'),
+        missing=[],
+        default=[],
+        )
 
 
 @content(
@@ -66,23 +61,12 @@ class ProposalSchema(VisualisableElementSchema, SerchableEntitySchema):
     )
 @implementer(IProposal)
 class Proposal(Commentabl, SerchableEntity, CorrelableEntity):
-    result_template = 'novaideo:views/templates/proposal_result.pt' 
+    result_template = 'novaideo:views/templates/proposal_result.pt'
     name = renamer()
     author = SharedUniqueProperty('author')
     tokens = CompositeMultipleProperty('tokens')
     ideas = SharedMultipleProperty('ideas')
 
     def __init__(self, **kwargs):
-        super(ActionProposal, self).__init__(**kwargs)
+        super(Proposal, self).__init__(**kwargs)
         self.set_data(kwargs)
-
-
-    def setauthor(self, author):
-        self.setproperty('author', author)
-
-    def settokens(self, tokens):
-        self.setproperty('tokens', tokens)
-
-    def setideas(self, ideas):
-        self.setproperty('ideas', ideas)
-

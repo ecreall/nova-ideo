@@ -69,8 +69,8 @@ class UserNavBarPanel(object):
                     actions_url[menue][action.title] = action.url(root)
                 else:
                     actions_url[menue][actionclass.node_definition.title] = None
-  
-        if self.request.POST: 
+
+        if self.request.POST:
             search_view_instance.postedform = self.request.POST.copy()
             self.request.POST.clear()
 
@@ -87,7 +87,6 @@ class UserNavBarPanel(object):
         result['search_body'] = search_body
         result['view'] = self
         return result
-
 
     def __call__(self):
        return self._actions()

@@ -19,7 +19,6 @@ from novaideo import _
 @colander.deferred
 def default_members(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
     values = []
     if hasattr(context, 'members'):
         values = context.members
@@ -30,7 +29,6 @@ def default_members(node, kw):
 @colander.deferred
 def members_choice(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
     values = []
     root = getSite(context)
     if root is None:
@@ -51,35 +49,37 @@ class OrganizationSchema(VisualisableElementSchema):
     name = NameSchemaNode(
         editing=context_is_a_organization,
         )
-    
+
     logo = colander.SchemaNode(
-            ObjectData(Image),
-            widget=FileWidget(),
-            required=False,
-            title=_('Logo')
-            )
+        ObjectData(Image),
+        widget=FileWidget(),
+        required=False,
+        title=_('Logo'),
+        )
 
     email = colander.SchemaNode(
-                colander.String(),
-                validator=colander.All(
-                    colander.Email(),
-                    colander.Length(max=100)
-                    ),
-                title=_('Email')
-                )
+        colander.String(),
+        validator=colander.All(
+            colander.Email(),
+            colander.Length(max=100)
+            ),
+        title=_('Email'),
+        )
 
     phone = colander.SchemaNode(
-                     colander.String(),
-                     title=_("Phone number"))
+         colander.String(),
+         title=_("Phone number"),
+         )
 
     fax = colander.SchemaNode(
-                     colander.String())
+         colander.String()
+         )
 
     members = colander.SchemaNode(
         colander.Set(),
         widget=members_choice,
         default=default_members,
-        title=_('Members')
+        title=_('Members'),
         )
 
 
@@ -103,10 +103,3 @@ class Organization(VisualisableElement, Entity):
 
         if 'email' in kwargs:
             self.email = kwargs.get('email')
-
-    def setmembers(self, members):
-        self.setproperty('members', members)
-
-    def setlogo(self, logo):
-        self.setproperty('logo', logo)
-

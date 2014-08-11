@@ -23,7 +23,6 @@ class KeywordSchema(VisualisableElementSchema):
         )
 
 
-
 @content(
     'keyword',
     icon='glyphicon glyphicon-align-left',
@@ -31,9 +30,9 @@ class KeywordSchema(VisualisableElementSchema):
 @implementer(IKeyword)
 class Keyword(VisualisableElement, Entity):
     name = renamer()
-    referenced_elements = SharedMultipleProperty('referenced_elements', 'keywords')
+    referenced_elements = SharedMultipleProperty('referenced_elements',
+                                                 'keywords')
 
     def __init__(self, **kwargs):
         super(Keyword, self).__init__(**kwargs)
         self.set_data(kwargs)
-

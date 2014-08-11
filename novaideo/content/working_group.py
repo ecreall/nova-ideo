@@ -26,7 +26,8 @@ class WorkingGroupSchema(VisualisableElementSchema):
 
     proposal = omit(ProposalSchema(name=_('Proposal'),
                                                 factory=Proposal,
-                                                editable=True),['_csrf_token_'])
+                                                editable=True),
+                                                ['_csrf_token_'])
 
 
 @content(
@@ -38,11 +39,3 @@ class WorkingGroup(VisualisableElement, Entity):
     name = renamer()
     template = 'pontus:templates/visualisable_templates/object.pt'
     proposal = CompositeUniqueProperty('proposal', 'myparent')
-
-    def __init__(self, **kwargs):
-        super(WorkingGroup, self).__init__(**kwargs)
-
-    def setproposal(self, proposal):
-        self.setproperty('proposal', proposal)
-
-

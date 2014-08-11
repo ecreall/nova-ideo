@@ -4,15 +4,10 @@ from substanced.util import get_oid
 from dace.util import find_service, getSite
 from dace.objectofcollaboration.principal.util import has_any_roles
 from dace.processinstance.activity import (
-    ElementaryAction,
-    LimitedCardinality,
     InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
-from novaideo.ips.xlreader import creat_object_from_xl
+    ActionType)
+from novaideo.ips.xlreader import create_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IInvitation
-from novaideo.content.person import Person
 from novaideo.content.invitation import Invitation
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.processes.invitation_validation.behaviors import invitation_message
@@ -25,7 +20,7 @@ def uploaduser_relation_validation(process, context):
 
 
 def uploaduser_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def uploaduser_processsecurity_validation(process, context):
@@ -47,7 +42,7 @@ class UploadUsers(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         xlfile = appstruct['file']['_object_data']
-        new_invitations = creat_object_from_xl(file=xlfile, factory=Invitation, properties={'first_name':('String', False),
+        new_invitations = create_object_from_xl(file=xlfile, factory=Invitation, properties={'first_name':('String', False),
                                                                                   'last_name':('String', False),
                                                                                   'user_title':('String', False),
                                                                                   'email':('String', False)})
@@ -74,7 +69,7 @@ class UploadUsers(InfiniteCardinality):
                 invitation_url=url,
                 roles=", ".join(getattr(invitation, 'roles', [])))
             mailer_send(subject='Invitation', recipients=[invitation.email], body=message )
-    
+
         return True
 
     def redirect(self, context, request, **kw):
@@ -87,7 +82,7 @@ def inviteuser_relation_validation(process, context):
 
 
 def inviteuser_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def inviteuser_processsecurity_validation(process, context):
@@ -175,7 +170,7 @@ def seeinvs_relation_validation(process, context):
 
 
 def seeinvs_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def seeinvs_processsecurity_validation(process, context):
@@ -206,7 +201,7 @@ def edit_relation_validation(process, context):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def edit_processsecurity_validation(process, context):
@@ -237,7 +232,7 @@ def editinv_relation_validation(process, context):
 
 
 def editinv_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def editinv_processsecurity_validation(process, context):
@@ -262,4 +257,5 @@ class EditInvitation(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
-#TODO bihaviors
+
+#TODO behaviors

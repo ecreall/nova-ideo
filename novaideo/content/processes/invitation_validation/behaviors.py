@@ -6,14 +6,9 @@ from dace.util import getSite
 from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles
 from dace.processinstance.activity import (
     ElementaryAction,
-    LimitedCardinality,
-    InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
+    InfiniteCardinality)
 from pontus.schema import select, omit
 
-from novaideo.ips.xlreader import creat_object_from_xl
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IInvitation
 from novaideo.content.person import Person
@@ -55,10 +50,10 @@ class AcceptInvitation(ElementaryAction):
     state_validation = accept_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        
+
         datas = context.get_data(select(omit(InvitationSchema(), ['_csrf_token_']),['user_title',
-                                                            'roles', 
-                                                            'first_name', 
+                                                            'roles',
+                                                            'first_name',
                                                             'last_name',
                                                             'email',
                                                             'organization']))
@@ -74,7 +69,7 @@ class AcceptInvitation(ElementaryAction):
         grant_roles(person, (('Owner', person),))
         context.state.remove('pending')
         context.state.append('accepted')
-        root.delproperty('invitations', context) 
+        root.delproperty('invitations', context)
         return True
 
     def redirect(self, context, request, **kw):
@@ -114,13 +109,12 @@ class RefuseInvitation(ElementaryAction):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-
 def remove_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'invitation')
 
 
 def remove_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def remove_processsecurity_validation(process, context):
@@ -140,7 +134,7 @@ class RemoveInvitation(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        root.delproperty('invitations', context) 
+        root.delproperty('invitations', context)
         return True
 
     def redirect(self, context, request, **kw):
@@ -153,7 +147,7 @@ def reinvite_relation_validation(process, context):
 
 
 def reinvite_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def reinvite_processsecurity_validation(process, context):
@@ -193,7 +187,7 @@ def remind_relation_validation(process, context):
 
 
 def remind_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def remind_processsecurity_validation(process, context):
@@ -203,7 +197,7 @@ def remind_processsecurity_validation(process, context):
 def remind_state_validation(process, context):
     return 'pending' in context.state
 
-    
+
 class RemindInvitation(InfiniteCardinality):
     isSequential = True
     context = IInvitation
@@ -220,12 +214,11 @@ class RemindInvitation(InfiniteCardinality):
             user_title=getattr(context, 'user_title', ''),
             invitation_url=url,
             roles=", ".join(getattr(context, 'roles', [])))
-        mailer_send(subject='Invitation', recipients=[context.email], body=message )   
+        mailer_send(subject='Invitation', recipients=[context.email], body=message )
         return True
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-
-#TODO bihaviors
+#TODO behaviors

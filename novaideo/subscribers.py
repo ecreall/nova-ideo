@@ -3,8 +3,6 @@ from pyramid.events import subscriber
 from substanced.event import RootAdded
 from substanced.util import find_service
 
-from dace.objectofcollaboration.principal.util import grant_roles
-
 
 @subscriber(RootAdded)
 def mysubscriber(event):

@@ -2,10 +2,8 @@ import colander
 from zope.interface import implementer
 
 from substanced.content import content
-from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
-from dace.util import getSite
 from dace.objectofcollaboration.entity import Entity
 from dace.objectofcollaboration.principal.role import roles_id
 from dace.descriptors import SharedUniqueProperty
@@ -31,12 +29,12 @@ def context_is_a_invitation(context, request):
 class InvitationSchema(PersonSchema):
 
     roles = colander.SchemaNode(
-                    colander.Set(),
-                    widget=roles_choice,
-                    title=_('Roles'),
-                    missing=['Collaborator'],
-                    default=['Collaborator']
-                )
+        colander.Set(),
+        widget=roles_choice,
+        title=_('Roles'),
+        missing=['Collaborator'],
+        default=['Collaborator'],
+        )
 
 
 @content(
@@ -54,7 +52,7 @@ class Invitation(VisualisableElement, Entity):
         if 'first_name' in kwargs:
             self.first_name = kwargs.get('first_name')
             self.title = self.title + ' '+ self.first_name
- 
+
         if 'last_name' in kwargs:
             self.last_name = kwargs.get('last_name')
             self.title = self.title + ' '+ self.last_name
@@ -67,6 +65,3 @@ class Invitation(VisualisableElement, Entity):
 
         if 'roles' in kwargs:
             self.roles = kwargs.get('roles')
-
-    def setorganization(self, organization):
-        self.setproperty('organization', organization)

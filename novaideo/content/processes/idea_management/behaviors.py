@@ -2,25 +2,15 @@
 import datetime
 from pyramid.httpexceptions import HTTPFound
 
-from substanced.util import get_oid
-
 from dace.util import (
-    find_service,
     getSite,
     getBusinessAction,
     copy)
 from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
-from dace.processinstance.activity import (
-    ElementaryAction,
-    LimitedCardinality,
-    InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
+from dace.processinstance.activity import InfiniteCardinality
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, Iidea
-from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
 
 
@@ -30,7 +20,7 @@ def creatidea_relation_validation(process, context):
 
 
 def creatidea_roles_validation(process, context):
-    return has_any_roles(roles=('Member',)) 
+    return has_any_roles(roles=('Member',))
 
 
 def creatidea_processsecurity_validation(process, context):
@@ -122,7 +112,7 @@ def del_relation_validation(process, context):
 
 
 def del_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),)) 
+    return has_any_roles(roles=(('Owner', context),))
 
 
 def del_processsecurity_validation(process, context):
@@ -155,7 +145,7 @@ def edit_relation_validation(process, context):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),)) 
+    return has_any_roles(roles=(('Owner', context),))
 
 
 def edit_processsecurity_validation(process, context):
@@ -212,13 +202,13 @@ def pub_relation_validation(process, context):
 
 
 def pub_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),)) 
+    return has_any_roles(roles=(('Owner', context),))
 
 
 def pub_processsecurity_validation(process, context):
     if getattr(context, 'originalideas', None):
         orignial_ideas = getattr(context, 'originalideas')
-        for orignial_idea in orignial_ideas: 
+        for orignial_idea in orignial_ideas:
             if orignial_idea.text == context.text:
                 return False
 
@@ -250,7 +240,7 @@ def ab_relation_validation(process, context):
 
 
 def ab_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),)) 
+    return has_any_roles(roles=(('Owner', context),))
 
 
 def ab_processsecurity_validation(process, context):
@@ -282,7 +272,7 @@ def re_relation_validation(process, context):
 
 
 def re_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),)) 
+    return has_any_roles(roles=(('Owner', context),))
 
 
 def re_processsecurity_validation(process, context):
@@ -314,7 +304,7 @@ def comm_relation_validation(process, context):
 
 
 def comm_roles_validation(process, context):
-    return has_any_roles(roles=('Member',)) 
+    return has_any_roles(roles=('Member',))
 
 
 def comm_processsecurity_validation(process, context):
@@ -348,7 +338,7 @@ def present_relation_validation(process, context):
 
 
 def present_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),)) 
+    return has_any_roles(roles=(('Owner', context),))
 
 
 def present_processsecurity_validation(process, context):
@@ -395,7 +385,7 @@ class PresentIdea(InfiniteCardinality):
                 user_first_name=user_first_name,
                 user_last_name=user_last_name
                  )
-            mailer_send(subject='Presentation: '+context.title, recipients=[member.email], body=message)
+            mailer_send(subject='Présentation : '+context.title, recipients=[member.email], body=message)
 
         for email in exterior_emails:
             message = presentation_idea_message.format(
@@ -407,7 +397,7 @@ class PresentIdea(InfiniteCardinality):
                 user_first_name=user_first_name,
                 user_last_name=user_last_name
                  )
-            mailer_send(subject='Presentation: '+context.title, recipients=[email], body=message)
+            mailer_send(subject='Présentation : '+context.title, recipients=[email], body=message)
 
 
         return True
@@ -421,13 +411,13 @@ def associate_relation_validation(process, context):
 
 
 def associate_roles_validation(process, context):
-    return True 
+    return True
 
 
 def associate_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) and \
            (has_any_roles(roles=(('Owner', context),)) or \
-            (has_any_roles(roles=('Member',)) and 'published' in context.state))
+           (has_any_roles(roles=('Member',)) and 'published' in context.state))
 
 
 def associate_state_validation(process, context):
@@ -452,4 +442,4 @@ class Associate(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
-#TODO bihaviors
+#TODO behaviors

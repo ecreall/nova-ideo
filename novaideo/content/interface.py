@@ -1,7 +1,6 @@
 from zope.interface import Interface
 
 
-
 class ICorrelableEntity(Interface):
     pass
 
@@ -79,5 +78,3 @@ class IOrganization(Interface):
 
 class INovaIdeoApplication(Interface):
     pass
-
-

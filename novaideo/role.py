@@ -1,7 +1,8 @@
-from dace.objectofcollaboration.principal.role import Collaborator, Role, Administrator, role
+from dace.objectofcollaboration.principal.role import (
+    Collaborator, Role, Administrator, role)
 
 
-@role(name='Member', 
+@role(name='Member',
       superiors=[Administrator],
       lowers=[Collaborator])
 class Member(Role):
@@ -23,15 +24,15 @@ class Moderator(Role):
     pass
 
 
-@role(name='Examiner', 
-      superiors=[Administrator], 
+@role(name='Examiner',
+      superiors=[Administrator],
       lowers=[Collaborator])
 class Examiner(Role):
     pass
 
 
-@role(name='OrganizationResponsible', 
-      superiors=[Administrator], 
+@role(name='OrganizationResponsible',
+      superiors=[Administrator],
       lowers=[Collaborator],
       islocal=True)
 class OrganizationResponsible(Role):
@@ -51,7 +52,3 @@ class Participant(Role):
      lowers=[Collaborator])
 class Certifier(Role):
     pass
-
-
-
-

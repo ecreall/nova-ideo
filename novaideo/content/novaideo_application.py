@@ -20,7 +20,6 @@ from .keyword import KeywordSchema, Keyword
 from novaideo import _
 
 
-
 default_titles = [_('Mr'), _('Madam'), _('Miss')]
 
 default_comment_intentions = [_('Ironie'), _('Humour'), _('Remarque')]
@@ -39,61 +38,61 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         )
 
     titles = colander.SchemaNode(
-                colander.Sequence(),
-                colander.SchemaNode(
-                    colander.String(),
-                    name=_("Title")
-                    ),
-                widget=SequenceWidget(),
-                default=default_titles,
-                title=_('List of titles')
-                )
+        colander.Sequence(),
+        colander.SchemaNode(
+            colander.String(),
+            name=_("Title")
+            ),
+        widget=SequenceWidget(),
+        default=default_titles,
+        title=_('List of titles'),
+        )
 
     comment_intention = colander.SchemaNode(
-                colander.Sequence(),
-                colander.SchemaNode(
-                    colander.String(),
-                    name=_("Comment intention")
-                    ),
-                widget=SequenceWidget(),
-                default=default_comment_intentions,
-                title=_('Comment intentions')
-                )
+        colander.Sequence(),
+        colander.SchemaNode(
+            colander.String(),
+            name=_("Comment intention")
+            ),
+        widget=SequenceWidget(),
+        default=default_comment_intentions,
+        title=_('Comment intentions'),
+        )
 
     idea_intention = colander.SchemaNode(
-                colander.Sequence(),
-                colander.SchemaNode(
-                    colander.String(),
-                    name=_("Idea intention")
-                    ),
-                widget=SequenceWidget(),
-                default=default_idea_intentions,
-                title=_('Idea intentions')
-                )
+        colander.Sequence(),
+        colander.SchemaNode(
+            colander.String(),
+            name=_("Idea intention")
+            ),
+        widget=SequenceWidget(),
+        default=default_idea_intentions,
+        title=_('Idea intentions'),
+        )
 
     invitations = colander.SchemaNode(
-                        colander.Sequence(),
-                        omit(InvitationSchema(factory=Invitation,
-                                               editable=True,
-                                               name=_('Invitations')),['_csrf_token_']),
-                        title=_('List of invitation')
-                        )
+        colander.Sequence(),
+        omit(InvitationSchema(factory=Invitation,
+                               editable=True,
+                               name=_('Invitations')),['_csrf_token_']),
+        title=_('List of invitation'),
+        )
 
     working_groups = colander.SchemaNode(
-                        colander.Sequence(),
-                        omit(WorkingGroupSchema(factory=WorkingGroup,
-                                editable=True,
-                                name=_('Working group')),['_csrf_token_']),
-                        title=_('Working groups')
-                        )
+        colander.Sequence(),
+        omit(WorkingGroupSchema(factory=WorkingGroup,
+                editable=True,
+                name=_('Working group')),['_csrf_token_']),
+        title=_('Working groups'),
+        )
 
     organizations = colander.SchemaNode(
-                        colander.Sequence(),
-                        omit(OrganizationSchema(factory=Organization,
-                                editable=True,
-                                name=_('Organization')),['_csrf_token_']),
-                        title=_('Organizations')
-                        )
+        colander.Sequence(),
+        omit(OrganizationSchema(factory=Organization,
+                editable=True,
+                name=_('Organization')),['_csrf_token_']),
+        title=_('Organizations'),
+        )
 
     keywords = colander.SchemaNode(
         colander.Sequence(),
@@ -102,39 +101,39 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                            editable=True,
                            name='Keyword'),['_csrf_token_']),
         widget=TableWidget(min_len=1),
-        title='Keywords'
+        title='Keywords',
         )
 
     ideas = colander.SchemaNode(
-                        colander.Sequence(),
-                        omit(IdeaSchema(factory=Idea,
-                                        name=_('Idea')),['_csrf_token_']),
-                        title=_('Ideas')
-                        )
+        colander.Sequence(),
+        omit(IdeaSchema(factory=Idea,
+                        name=_('Idea')),['_csrf_token_']),
+        title=_('Ideas'),
+        )
 
     participants_mini = colander.SchemaNode(
-                            colander.Integer(),
-                            title=_('Minimum number of participants for a working group'),
-                            default=3
-                            )
+        colander.Integer(),
+        title=_('Minimum number of participants for a working group'),
+        default=3,
+        )
 
     participants_maxi = colander.SchemaNode(
-                            colander.Integer(),
-                            title=_('Maximum number of participants for a working group'),
-                            default=12
-                            )
+        colander.Integer(),
+        title=_('Maximum number of participants for a working group'),
+        default=12,
+        )
 
     participations_maxi = colander.SchemaNode(
-                            colander.Integer(),
-                            title=_('Maximum number of working group by member'),
-                            default=5
-                            )
+        colander.Integer(),
+        title=_('Maximum number of working group by member'),
+        default=5,
+        )
 
     tokens_mini = colander.SchemaNode(
-                            colander.Integer(),
-                            title=_('Minimum number of tokens by member'),
-                            default=7
-                            )
+        colander.Integer(),
+        title=_('Minimum number of tokens by member'),
+        default=7,
+        )
 
 
 @content(
@@ -152,7 +151,6 @@ class NovaIdeoApplication(VisualisableElement, Application):
     keywords = CompositeMultipleProperty('keywords')
     correlations = CompositeMultipleProperty('correlations')
 
-
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
         self.title = 'NovaIdeo'
@@ -164,25 +162,13 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.comment_intentions = default_comment_intentions
         self.idea_intentions = default_idea_intentions
 
-    def setworking_groups(self, working_groups):
-        self.setproperty('working_groups', working_groups)
-
-    def setorganizations(self, organizations):
-        self.setproperty('organizations', organizations)
-
-    def setinvitations(self, invitations):
-        self.setproperty('invitations', invitations)
-
-    def setideas(self, ideas):
-        self.setproperty('ideas', ideas)
-
     @property
     def keywords_ids(self):
         return dict([(k.title, k) for k in self.keywords])
 
     def get_keywords(self, keywords_ids):
         result = []
-        newkeywords = []       
+        newkeywords = []
         for k in keywords_ids:
             if k in self.keywords_ids.keys():
                 result.append(self.keywords_ids[k])

@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 import datetime
 from pyramid.httpexceptions import HTTPFound
-from substanced.util import find_service, get_oid
+from substanced.util import find_service
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current
@@ -12,19 +12,16 @@ from dace.processinstance.activity import (
     ActionType,
     StartStep,
     EndStep)
-from pontus.schema import select, omit
 
-from novaideo.ips.xlreader import creat_object_from_xl
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IPerson
-from novaideo.content.person import Person
 from novaideo import _
 
 
 confiramtion_message = u"""
 Bonjour {person.user_title} {person.last_name} {person.first_name},
 
-Confiramtion de votre inscription.
+Confirmation de votre inscription.
 
 Cordialement,
 
@@ -95,7 +92,7 @@ def editsup_relation_validation(process, context):
 
 
 def editsup_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',)) 
+    return has_any_roles(roles=('Admin',))
 
 
 def editsup_processsecurity_validation(process, context):
@@ -127,7 +124,7 @@ def edit_relation_validation(process, context):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),)) 
+    return has_any_roles(roles=(('Owner', context),))
 
 
 def edit_processsecurity_validation(process, context):
@@ -167,7 +164,7 @@ def deactivate_relation_validation(process, context):
 
 
 def deactivate_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',)) 
+    return has_any_roles(roles=('Admin',))
 
 
 def deactivate_processsecurity_validation(process, context):
@@ -200,7 +197,7 @@ def activate_relation_validation(process, context):
 
 
 def activate_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',)) 
+    return has_any_roles(roles=('Admin',))
 
 
 def activate_processsecurity_validation(process, context):
@@ -233,7 +230,7 @@ def seeperson_relation_validation(process, context):
 
 
 def seeperson_roles_validation(process, context):
-    return True 
+    return True
 
 
 def seeperson_processsecurity_validation(process, context):
@@ -259,4 +256,4 @@ class SeePerson(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
-#TODO bihaviors
+#TODO behaviors

@@ -11,22 +11,16 @@ from dace.descriptors import (
     SharedMultipleProperty,
     CompositeMultipleProperty)
 from dace.util import getSite, allSubobjectsOfKind
-from dace.descriptors import SharedMultipleProperty
-from pontus.widget import Select2Widget
 from pontus.schema import Schema
-from pontus.file import Object as ObjectType
 from pontus.core import VisualisableElement
-from pontus.widget import SequenceWidget
 
 from novaideo import _
 from novaideo.content.interface import (
-    ISerchableEntity,
     IVersionableEntity,
     IDuplicableEntity,
     ISerchableEntity,
     ICommentabl,
     ICorrelableEntity)
-
 
 
 @implementer(ICommentabl)
@@ -44,12 +38,9 @@ class VersionableEntity(Entity):
     version = CompositeUniqueProperty('version', 'nextversion')
     nextversion = SharedUniqueProperty('nextversion', 'version')
 
-    def __init__(self, **kwargs):
-        super(VersionableEntity, self).__init__(**kwargs)
-
     @property
     def current_version(self):
-        if self.newtversion is None:
+        if self.nextversion is None:
             return self
         else:
             return self.nextversion.current_version
@@ -64,14 +55,9 @@ class DuplicableEntity(Entity):
 
     originalideas = SharedMultipleProperty('originalideas')
 
-    def __init__(self, **kwargs):
-        super(DuplicableEntity, self).__init__(**kwargs)
-
 
 @colander.deferred
 def keywords_choice(node, kw):
-    context = node.bindings['context']
-    request = node.bindings['request']
     values = []
     root = getSite()
     prop = sorted(root.keywords, key=lambda p: p.title)
@@ -82,7 +68,6 @@ def keywords_choice(node, kw):
 @colander.deferred
 def default_keywords_choice(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
     root = getSite()
     if context is root:
         return []
@@ -94,26 +79,20 @@ def default_keywords_choice(node, kw):
 class SerchableEntitySchema(Schema):
 
     keywords =  colander.SchemaNode(
-                    colander.Sequence(),
-                    colander.SchemaNode(
-                         colander.String(),
-                         widget=keywords_choice,
-                         name='keyword'),
-                default=default_keywords_choice,
-                title=_('Keywords')
-                )
+        colander.Sequence(),
+        colander.SchemaNode(
+             colander.String(),
+             widget=keywords_choice,
+             name='keyword'),
+        default=default_keywords_choice,
+        title=_('Keywords'),
+        )
 
 
 @implementer(ISerchableEntity)
 class SerchableEntity(Entity):
-    result_template = 'novaideo:templates/views/default_result.pt'    
+    result_template = 'novaideo:templates/views/default_result.pt'
     keywords_ref = SharedMultipleProperty('keywords_ref', 'referenced_elements')
-
-    def __init__(self, **kwargs):
-        super(SerchableEntity, self).__init__(**kwargs)
-
-    def setkeywords(self, keywords):
-        self.setproperty('keywords', keywords)
 
     @property
     def keywords(self):
@@ -125,12 +104,8 @@ class CorrelableEntity(Entity):
     source_correlations = SharedMultipleProperty('source_correlations', 'source')
     target_correlations = SharedMultipleProperty('target_correlations', 'target')
 
-    def __init__(self, **kwargs):
-        super(CorrelableEntity, self).__init__(**kwargs)
-
-
     @property
     def correlations(self):
-        result = list([c.target for c in self.source_correlations])
-        result.extend(list([c.source for c in self.target_correlations]))
-        return list(set( result))
+        result = [c.target for c in self.source_correlations]
+        result.extend([c.source for c in self.target_correlations])
+        return list(set(result))

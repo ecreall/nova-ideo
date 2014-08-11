@@ -9,7 +9,7 @@ from dace.processinstance.activity import (
     StartStep,
     EndStep,
     ActionType)
-from novaideo.ips.xlreader import creat_object_from_xl
+from novaideo.ips.xlreader import create_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IOrganization
 from novaideo.content.organization import Organization
 from novaideo import _
@@ -21,7 +21,7 @@ def add_relation_validation(process, context):
 
 
 def add_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def add_processsecurity_validation(process, context):
@@ -43,7 +43,7 @@ class AddOrganizations(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         xlfile = appstruct['file']['_object_data']
-        organizations = creat_object_from_xl(file=xlfile, factory=Organization, properties={'title':('String', False),
+        organizations = create_object_from_xl(file=xlfile, factory=Organization, properties={'title':('String', False),
                                                                                             'description':('String', False)})
         root.setproperty('organizations', organizations)
         return True
@@ -57,7 +57,7 @@ def creatorg_relation_validation(process, context):
 
 
 def creatorg_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def creatorg_processsecurity_validation(process, context):
@@ -80,10 +80,10 @@ class CreatOrganizations(InfiniteCardinality):
         root = getSite()
         new_organizations = appstruct['organizations']
         for organization_dict in new_organizations:
-            organization = organization_dict['_object_data'] 
+            organization = organization_dict['_object_data']
             root.addtoproperty('organizations', organization)
             #send mail
-    
+
         return True
 
     def redirect(self, context, request, **kw):
@@ -95,7 +95,7 @@ def edit_relation_validation(process, context):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def edit_processsecurity_validation(process, context):
@@ -126,7 +126,7 @@ def seeorgs_relation_validation(process, context):
 
 
 def seeorgs_roles_validation(process, context):
-    return has_any_roles(roles=('Collaborator',)) 
+    return has_any_roles(roles=('Collaborator',))
 
 
 def seeorgs_processsecurity_validation(process, context):
@@ -157,7 +157,7 @@ def see_relation_validation(process, context):
 
 
 def see_roles_validation(process, context):
-    return has_any_roles(roles=('Collaborator',)) 
+    return has_any_roles(roles=('Collaborator',))
 
 
 def see_processsecurity_validation(process, context):
@@ -190,7 +190,7 @@ def editorg_relation_validation(process, context):
 
 
 def editorg_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',)) 
+    return has_any_roles(roles=('Moderator',))
 
 
 def editorg_processsecurity_validation(process, context):
@@ -215,4 +215,4 @@ class EditOrganization(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
-#TODO bihaviors
+#TODO behaviors

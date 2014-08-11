@@ -1,8 +1,5 @@
 # -*- coding: utf8 -*-
-from zope.interface import Interface
-
 from pyramid.httpexceptions import HTTPFound
-from substanced.util import find_service, get_oid
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current
@@ -26,7 +23,7 @@ def seeideas_relation_validation(process, context):
 
 
 def seeideas_roles_validation(process, context):
-    return has_any_roles(roles=('Member',)) 
+    return has_any_roles(roles=('Member',))
 
 
 def seeideas_processsecurity_validation(process, context):
@@ -57,7 +54,7 @@ def search_relation_validation(process, context):
 
 
 def search_roles_validation(process, context):
-    return True 
+    return True
 
 
 def search_processsecurity_validation(process, context):
@@ -92,7 +89,7 @@ def seemy_relation_validation(process, context):
 
 
 def seemy_roles_validation(process, context):
-    return has_any_roles(roles=('Member',)) 
+    return has_any_roles(roles=('Member',))
 
 
 def seemy_processsecurity_validation(process, context):
@@ -196,4 +193,4 @@ class SeeMySupports(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         return True
 
-#TODO bihaviors
+#TODO behaviors

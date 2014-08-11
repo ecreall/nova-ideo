@@ -39,7 +39,7 @@ class CommentSchema(VisualisableElementSchema):
     comment = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=2000),
-        widget=deform.widget.TextAreaWidget(rows=10, cols=60)
+        widget=deform.widget.TextAreaWidget(rows=10, cols=60),
         )
 
     attached_files = colander.SchemaNode(
@@ -51,14 +51,14 @@ class CommentSchema(VisualisableElementSchema):
             ),
         widget=SequenceWidget(),
         missing=[],
-        title=_('Files')
+        title=_('Files'),
         )
 
     intention = colander.SchemaNode(
-                    colander.String(),
-                    widget=intention_choice,
-                    title=_('Intention'),
-                )
+        colander.String(),
+        widget=intention_choice,
+        title=_('Intention'),
+        )
 
 
 @content(
@@ -71,12 +71,9 @@ class Comment(Commentabl):
     author = SharedUniqueProperty('author')
     attached_files = CompositeMultipleProperty('attached_files')
 
-    def __init__(self, **kwargs):
-        super(Comment, self).__init__(**kwargs)
-
 
 class AddCommentSchema(Schema):
 
     comment = omit(CommentSchema(factory=Comment,
                                  editable=True,
-                                 name=_('Comment')),['_csrf_token_'])
+                                 name=_('Comment')), ['_csrf_token_'])

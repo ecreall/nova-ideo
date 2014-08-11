@@ -12,6 +12,7 @@ from pontus.core import VisualisableElement, VisualisableElementSchema
 from .interface import ICandidacy
 from novaideo import _
 
+
 def context_is_a_candidacy(context, request):
     return request.registry.content.istype(context, 'candidacy')
 
@@ -25,7 +26,7 @@ class CandidacySchema(VisualisableElementSchema):
     body = colander.SchemaNode(
         colander.String(),
         widget=RichTextWidget(),
-        title=_('Candidacy')
+        title=_('Candidacy'),
         )
 
 
@@ -36,7 +37,3 @@ class CandidacySchema(VisualisableElementSchema):
 @implementer(ICandidacy)
 class Candidacy(VisualisableElement, Entity):
     name = renamer()
-
-    def __init__(self, **kwargs):
-        super(Candidacy, self).__init__(**kwargs)
-

@@ -14,9 +14,9 @@ class NovaideoCatalogViews(object):
     def object_keywords(self, default):
         if self.resource is None:
             return default
-        
+
         keywords = getattr(self.resource, 'keywords', default)
-        if not (keywords is default):
+        if not keywords is default:
             keywords = [k.lower() for k in keywords]
 
         return keywords

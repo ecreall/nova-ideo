@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 import colander
 import deform.widget
-from zope.interface import invariant, implementer
+from zope.interface import implementer
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -31,11 +31,9 @@ from .interface import IPerson
 from novaideo import _
 
 
-
 @colander.deferred
 def organization_choice(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
     values = []
     root = getSite()
     if root is None:
@@ -48,8 +46,6 @@ def organization_choice(node, kw):
 
 @colander.deferred
 def titles_choice(node, kw):
-    context = node.bindings['context']
-    request = node.bindings['request']
     root = getSite()
     values = [(i, i) for i in root.titles]
     return Select2Widget(values=values)
@@ -77,13 +73,14 @@ def email_validator(node, kw):
             break
 
     if user is not None or invitation is not None:
-        raise colander.Invalid(node, _('{email} email address already in use').format(email=kw))
+        raise colander.Invalid(node,
+                _('${email} email address already in use',
+                  mapping={'email': kw}))
 
 
 @colander.deferred
 def contacts_choice(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
     values = []
     users = find_entities([IPerson], ['active'])
     values = [(i, i.name) for i in users if not (i in context.contacts)]
@@ -94,8 +91,7 @@ def contacts_choice(node, kw):
 @colander.deferred
 def default_contacts(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
-    prop = sorted(self.contacts, key=lambda p: p.name)
+    prop = sorted(context.contacts, key=lambda p: p.name)
     return prop
 
 
@@ -110,14 +106,14 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SerchableEntitySchema)
         )
 
     keywords =  colander.SchemaNode(
-                    colander.Sequence(),
-                    colander.SchemaNode(
-                         colander.String(),
-                         widget=keywords_choice,
-                         name='Preference'),
-                default=default_keywords_choice,
-                title=_('Preferences')
-                )
+        colander.Sequence(),
+        colander.SchemaNode(
+             colander.String(),
+             widget=keywords_choice,
+             name='Preference'),
+        default=default_keywords_choice,
+        title=_('Preferences'),
+        )
 
     email = colander.SchemaNode(
         colander.String(),
@@ -129,27 +125,27 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SerchableEntitySchema)
         )
 
     picture = colander.SchemaNode(
-            ObjectData(Image),
-            widget=FileWidget(),
-            required=False,
-            missing=None
-            )
+        ObjectData(Image),
+        widget=FileWidget(),
+        required=False,
+        missing=None,
+        )
 
     first_name =  colander.SchemaNode(
-                    colander.String(),
-                    title=_('First name') 
-                    )
+        colander.String(),
+        title=_('First name'),
+        )
 
     last_name = colander.SchemaNode(
-                    colander.String(),
-                    title=_('Last name')
-                    )
-  
+        colander.String(),
+        title=_('Last name'),
+        )
+
     user_title = colander.SchemaNode(
-                    colander.String(),
-                    widget=titles_choice,
-                    title=_('Title')
-                )
+        colander.String(),
+        widget=titles_choice,
+        title=_('Title'),
+        )
 
     password = colander.SchemaNode(
         colander.String(),
@@ -158,18 +154,18 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SerchableEntitySchema)
         )
 
     organization = colander.SchemaNode(
-                ObjectType(),
-                widget=organization_choice,
-                missing=None,
-                title=_('Organization')
-                )
+        ObjectType(),
+        widget=organization_choice,
+        missing=None,
+        title=_('Organization'),
+        )
 
     contacts = colander.SchemaNode(
-                colander.Set(),
-                widget=contacts_choice,
-                default=default_contacts,
-                title=_('Contacts')
-                )
+        colander.Set(),
+        widget=contacts_choice,
+        default=default_contacts,
+        title=_('Contacts'),
+        )
 
 
 @content(
@@ -190,15 +186,3 @@ class Person(VisualisableElement, User, SerchableEntity, CorrelableEntity):
         super(Person, self).__init__(**kwargs)
         kwargs.pop('password')
         self.set_data(kwargs)
-
-
-    @property
-    def prefernces(self):
-        return self.keywords
-
-    def settokens(self, tokens):
-        self.setproperty('tokens', tokens)
-
-    def setorganization(self, organization):
-        self.setproperty('organization', organization)
-

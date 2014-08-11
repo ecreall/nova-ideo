@@ -15,7 +15,6 @@ from dace.processinstance.activity import (
     EndStep)
 from pontus.schema import select, omit
 
-from novaideo.ips.xlreader import creat_object_from_xl
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IInvitation
 from novaideo.content.person import Person
@@ -88,4 +87,4 @@ class LogOut(InfiniteCardinality):
         root = getSite()
         return HTTPFound(request.resource_url(root))
 
-#TODO bihaviors
+#TODO behaviors

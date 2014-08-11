@@ -30,10 +30,3 @@ class TokenSchema(VisualisableElementSchema):
 class Token(VisualisableElement, Entity):
     name = renamer()
     owner = SharedUniqueProperty('owner', 'tokens')
-
-    def __init__(self, **kwargs):
-        super(Token, self).__init__(**kwargs)
-
-    def setowner(self, owner):
-        self.setproperty('owner', owner)
-

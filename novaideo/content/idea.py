@@ -45,22 +45,22 @@ class IdeaSchema(VisualisableElementSchema, SerchableEntitySchema):
     description = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=2000),
-        widget=deform.widget.TextAreaWidget(rows=10, cols=30)
+        widget=deform.widget.TextAreaWidget(rows=10, cols=30),
         )
 
     text = colander.SchemaNode(
         colander.String(),
         widget= RichTextWidget(),
         title=_('Content'),
-        missing=''
+        missing='',
         )
 
     intention = colander.SchemaNode(
-                    colander.String(),
-                    widget=intention_choice,
-                    title=_('Intention'),
-                    default=_('Creation')
-                )
+        colander.String(),
+        widget=intention_choice,
+        title=_('Intention'),
+        default=_('Creation'),
+        )
 
 
 @content(
@@ -68,8 +68,9 @@ class IdeaSchema(VisualisableElementSchema, SerchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(Iidea)
-class Idea(Commentabl, VersionableEntity, DuplicableEntity, SerchableEntity, CorrelableEntity):
-    result_template = 'novaideo:views/templates/idea_result.pt' 
+class Idea(Commentabl, VersionableEntity, DuplicableEntity,
+           SerchableEntity, CorrelableEntity):
+    result_template = 'novaideo:views/templates/idea_result.pt'
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')
 

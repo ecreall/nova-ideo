@@ -1,7 +1,7 @@
 import xlrd
 
 
-def toIntger(value):
+def toInteger(value):
     return int(value)
 
 
@@ -17,12 +17,12 @@ def toString(value):
 
 
 transformation_rols = {("String", False): toString,
-                       ("Integer", False): toIntger,
+                       ("Integer", False): toInteger,
                        ("Boolean", False): toBoolean}
 
 
 # properties = {'at1':('Type', Multiplicity),...}
-def creat_object_from_xl(file, factory, properties):
+def create_object_from_xl(file, factory, properties):
     book = xlrd.open_workbook(file_contents=file.fp.read())
     sheet = book.sheet_by_index(0) # ou: sheet_by_name("Ma feuille")
     header = []
@@ -38,7 +38,7 @@ def creat_object_from_xl(file, factory, properties):
         for col_index in xrange(sheet.ncols):
             value = sheet.cell(rowx=row_index,colx=col_index).value
             key = header[col_index].lower()
-            if key in properties_keys: 
+            if key in properties_keys:
                 metadata = properties[key]
                 property_type = metadata[0]
                 multiplicity = metadata[1]
@@ -48,4 +48,4 @@ def creat_object_from_xl(file, factory, properties):
         obj.set_data(appstruct)
         objects.append(obj)
 
-    return objects 
+    return objects

@@ -7,9 +7,9 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.descriptors import SharedUniqueProperty
-from dace .util import getSite, find_entities
+from dace .util import find_entities
 from pontus.core import VisualisableElementSchema
-from pontus.widget import  Select2Widget
+from pontus.widget import Select2Widget
 from pontus.file import Object as ObjectType
 
 from .interface import ICorrelation, ICorrelableEntity
@@ -19,8 +19,6 @@ from novaideo import _
 
 @colander.deferred
 def targets_choice(node, kw):
-    context = node.bindings['context']
-    request = node.bindings['request']
     values = []
     entities = find_entities([ICorrelableEntity])
     values = [(i, i.title) for i in entities]
@@ -41,14 +39,14 @@ class CorrelationSchema(VisualisableElementSchema):
     comment = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=2000),
-        widget=deform.widget.TextAreaWidget(rows=10, cols=60)
+        widget=deform.widget.TextAreaWidget(rows=10, cols=60),
         )
 
     targets = colander.SchemaNode(
-                ObjectType(),
-                widget=targets_choice,
-                title=_('Targets')
-                )
+        ObjectType(),
+        widget=targets_choice,
+        title=_('Targets'),
+        )
 
 
 @content(
@@ -61,13 +59,6 @@ class Correlation(Commentabl):
     source = SharedUniqueProperty('source', 'source_correlations')
     target = SharedUniqueProperty('target', 'target_correlations')
 
-    def __init__(self, **kwargs):
-        super(Correlation, self).__init__(**kwargs)
-
     @property
     def ends(self):
         return (self.source, self.target)
-
-
-
-

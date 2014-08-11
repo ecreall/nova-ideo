@@ -39,4 +39,4 @@ class EditAction(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-#TODO bihaviors
+#TODO behaviors
