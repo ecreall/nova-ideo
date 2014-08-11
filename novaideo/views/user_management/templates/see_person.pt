@@ -13,7 +13,9 @@
           </tal:loop>
         </dd>
       </dl>
-      Membre depuis le ${user.modified_at.date()} à ${user.created_at.hour}:${user.created_at.minute}:${user.created_at.second}
+      <span class="date" i18n:translate="">
+        Member since <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)" i18n:name="date"/>
+      </span>
   </div>
 </div>
 
