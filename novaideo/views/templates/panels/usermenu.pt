@@ -24,7 +24,7 @@
         </li>
       </ul>
     </div>
-    <div id="searchform" class="col-lg-3 navbar-form navbar-right">
+    <div id="searchform" class="navbar-form navbar-right">
      ${structure:search_body}
     </div>
     <div class="navbar-right">
