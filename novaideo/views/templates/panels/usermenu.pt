@@ -24,14 +24,15 @@
         </li>
       </ul>
     </div>
-    <div class="col-lg-5" >
-      <div class="pull-right switchchoice">
-      <input name="globalmenu" type="checkbox" checked data-label-text="Menu"  data-on-color="success" data-off-color="danger" data-size="small"  data-on-text="<span class='glyphicon glyphicon-tasks'></span>" data-off-text="<span class='glyphicon glyphicon-off'></span>" >
-
-      <script type="text/javascript">$(document).ready(function(){$("[name='globalmenu']").bootstrapSwitch();})</script>
-    </div></div>
-    <div id="searchform">
+    <div id="searchform" class="col-lg-3 pull-right">
      ${structure:search_body}
+    </div>
+    <div class="col-lg-3 pull-right">
+      <div class="switchchoice">
+        <input name="globalmenu" type="checkbox" checked data-label-text="Menu"  data-on-color="success" data-off-color="danger" data-size="small"  data-on-text="<span class='glyphicon glyphicon-tasks'></span>" data-off-text="<span class='glyphicon glyphicon-off'></span>" >
+
+        <script type="text/javascript">$(document).ready(function(){$("[name='globalmenu']").bootstrapSwitch();})</script>
+      </div>
     </div>
     <div tal:condition="request.user is None" class="btn-group pull-right">  
        <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary ">
