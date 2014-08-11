@@ -11,7 +11,7 @@ from dace.objectofcollaboration.services.processdef_container import process_def
 from pontus.core import VisualisableElement
 
 from .behaviors import (
-    CreatIdea,
+    CreateIdea,
     DuplicateIdea,
     DelIdea,
     EditIdea,
@@ -37,7 +37,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
         self.defineNodes(
                 start = StartEventDefinition(),
                 #egs = ExclusiveGatewayDefinition(),
-                creat = ActivityDefinition(contexts=[CreatIdea],
+                creat = ActivityDefinition(contexts=[CreateIdea],
                                        description="Creat a new idea",
                                        title="Creat idea",
                                        groups=[_('Add')]),

@@ -14,11 +14,11 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMyParticipations,
     SeeMySupports)
 
-from novaideo.content.processes.idea_management.behaviors import CreatIdea
+from novaideo.content.processes.idea_management.behaviors import CreateIdea
 
 user_menu_actions = {'menu1': [SeeMyIdeas, SeeMyProposals, SeeMyParticipations],
-                      'menu2': [SeeMyContacts, SeeMySelections, SeeMySupports],
-                      'menu3': [CreatIdea]}  #TODO add CreateProposal...
+                     'menu2': [SeeMyContacts, SeeMySelections, SeeMySupports],
+                     'menu3': [CreateIdea]}  #TODO add CreateProposal...
 
 
 

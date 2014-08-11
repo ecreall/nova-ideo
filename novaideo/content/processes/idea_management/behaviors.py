@@ -15,28 +15,28 @@ from ..user_management.behaviors import global_user_processsecurity
 
 
 
-def creatidea_relation_validation(process, context):
+def createidea_relation_validation(process, context):
     return True
 
 
-def creatidea_roles_validation(process, context):
+def createidea_roles_validation(process, context):
     return has_any_roles(roles=('Member',))
 
 
-def creatidea_processsecurity_validation(process, context):
+def createidea_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context)
 
 
-def creatidea_state_validation(process, context):
+def createidea_state_validation(process, context):
     return True
 
 
-class CreatIdea(InfiniteCardinality):
+class CreateIdea(InfiniteCardinality):
     context = INovaIdeoApplication
-    relation_validation = creatidea_relation_validation
-    roles_validation = creatidea_roles_validation
-    processsecurity_validation = creatidea_processsecurity_validation
-    state_validation = creatidea_state_validation
+    relation_validation = createidea_relation_validation
+    roles_validation = createidea_roles_validation
+    processsecurity_validation = createidea_processsecurity_validation
+    state_validation = createidea_state_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
