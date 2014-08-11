@@ -18,10 +18,10 @@ from novaideo.content.interface import INovaIdeoApplication, IPerson
 from novaideo import _
 
 
-confiramtion_message = u"""
+confirmation_message = u"""
 Bonjour {person.user_title} {person.last_name} {person.first_name},
 
-Confirmation de votre inscription.
+Bienvenue sur le plateforme NovaIdeo.
 
 Cordialement,
 
@@ -32,7 +32,7 @@ def global_user_processsecurity(process, context):
     user = get_current()
     state = list(getattr(user, 'state', []))
 
-    if has_any_roles(roles=('Admin',)) and not('active' in state):
+    if has_any_roles(roles=('Admin',)) and not 'active' in state:
         state.append('active')
 
     return 'active' in state
@@ -78,8 +78,9 @@ class Registration(InfiniteCardinality):
 
         result.extend(newkeywords)
         person.setproperty('keywords_ref', result)
-        message = confiramtion_message.format(person=person)
-        mailer_send(subject='Confiramtion', recipients=[person.email], body=message )
+        message = confirmation_message.format(person=person)
+        mailer_send(subject='Confirmation de votre inscription',
+                recipients=[person.email], body=message)
         return True
 
     def redirect(self, context, request, **kw):
