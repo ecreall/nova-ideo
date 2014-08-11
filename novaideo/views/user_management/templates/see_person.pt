@@ -14,7 +14,7 @@
         </dd>
       </dl>
       <span class="date" i18n:translate="">
-        Member since <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)" i18n:name="date"/>
+        Member since <span tal:replace="layout.to_localized_time(user.modified_at, date_only=True)" i18n:name="date"/>
       </span>
   </div>
 </div>
