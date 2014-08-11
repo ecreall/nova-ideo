@@ -81,8 +81,7 @@ class SearchView(FormView):
                 post = post.copy()
                 controls = post.items()
                 validated = form.validate(controls)
-                content_types = validated['content_types']
-                if content_types:
+                if 'content_types' in validated:
                     return validated
                 else:
                     validated['content_types'] = default_serchable_content.keys()
@@ -104,12 +103,11 @@ class SearchView(FormView):
 
     def before_update(self):
         root = getSite()
-        #self.form_class.css_class = 'navbar-form navbar-left'
+        self.form_class.css_class = 'navbar-form navbar-right'
         self.action = self.request.resource_url(root, '')
 
     def default_data(self):
         appstruct = self._get_appstruct()
-        
         return appstruct
 
 

@@ -15,7 +15,7 @@ from pontus.widget import RichTextWidget,Select2Widget
 from pontus.core import VisualisableElementSchema
 
 from .interface import IProposal
-from novaideo.core import Commentabl
+from novaideo.core import Commentable
 from novaideo import _
 from novaideo.core import (
     SearchableEntity,
@@ -60,7 +60,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IProposal)
-class Proposal(Commentabl, SearchableEntity, CorrelableEntity):
+class Proposal(Commentable, SearchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/proposal_result.pt'
     name = renamer()
     author = SharedUniqueProperty('author')

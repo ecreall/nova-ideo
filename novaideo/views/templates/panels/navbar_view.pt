@@ -20,8 +20,8 @@
             <div class="col-sm-6 col-md-6">
                     <div class="row">
                         <div class="col-md-6">
-                          <ul tal:condition="actions['menu1']" tal:repeat="(k, a) actions['menu1'].items()" class="nav nav-pills nav-stacked">
-                             <li >
+                          <ul tal:condition="actions['menu1']"  class="nav nav-pills nav-stacked">
+                             <li tal:repeat="(k, a) actions['menu1'].items()">
                                 <a class="btn btn-primary ${((actions['menu1'][k] is None) and 'disabled') or ''} btn-sm" style="max-width: 300px;" href="${actions['menu1'][k]}" >
                                    ${k}
                                 </a>
@@ -29,8 +29,8 @@
                           </ul>
                         </div>
                         <div class="col-md-6" >
-                          <ul tal:condition="actions['menu2']" tal:repeat="(k, a) actions['menu2'].items()" class="nav nav-pills nav-stacked">
-                             <li >
+                          <ul tal:condition="actions['menu2']"  class="nav nav-pills nav-stacked">
+                             <li tal:repeat="(k, a) actions['menu2'].items()">
                                 <a class="btn btn-primary ${((actions['menu2'][k] is None) and 'disabled') or ''} btn-sm" style="max-width: 300px;" href="${actions['menu2'][k]}" >
                                    ${k}
                                 </a>

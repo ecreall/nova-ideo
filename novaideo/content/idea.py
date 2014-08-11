@@ -14,7 +14,7 @@ from pontus.widget import RichTextWidget, LineWidget, TableWidget, Select2Widget
 from pontus.schema import omit
 
 from .interface import Iidea
-from novaideo.core import Commentabl
+from novaideo.core import Commentable
 from novaideo import _
 from novaideo.core import (
     VersionableEntity,
@@ -68,7 +68,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(Iidea)
-class Idea(Commentabl, VersionableEntity, DuplicableEntity,
+class Idea(Commentable, VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/idea_result.pt'
     name = renamer()

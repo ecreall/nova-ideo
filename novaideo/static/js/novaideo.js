@@ -11,3 +11,7 @@ $(document).ready(function(){
     $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-minus');
   });
 });
+
+(function () { 
+  jQuery('.switch')['bootstrapSwitch']();
+})();

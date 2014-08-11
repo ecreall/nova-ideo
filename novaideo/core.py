@@ -24,7 +24,7 @@ from novaideo.content.interface import (
 
 
 @implementer(ICommentable)
-class Commentabl(VisualisableElement, Entity):
+class Commentable(VisualisableElement, Entity):
     name = renamer()
     comments = CompositeMultipleProperty('comments')
 

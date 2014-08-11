@@ -15,7 +15,7 @@
            <button class="btn btn-default" type="submit">Search</button>
         </span>
       </div>
-   <p class="help-block">
+   <p class="help-block" >
     <small>Saisissez les mots clés séparés par une virgule. (ex: public, animation)</small>
    </p>
     <script tal:condition="mask" type="text/javascript">

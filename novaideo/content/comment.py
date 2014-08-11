@@ -14,7 +14,7 @@ from pontus.file import ObjectData, File
 from pontus.schema import Schema, omit
 
 from .interface import IComment
-from novaideo.core import Commentabl
+from novaideo.core import Commentable
 from novaideo import _
 
 
@@ -66,7 +66,7 @@ class CommentSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IComment)
-class Comment(Commentabl):
+class Comment(Commentable):
     name = renamer()
     author = SharedUniqueProperty('author')
     attached_files = CompositeMultipleProperty('attached_files')

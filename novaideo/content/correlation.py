@@ -13,7 +13,7 @@ from pontus.widget import Select2Widget
 from pontus.file import Object as ObjectType
 
 from .interface import ICorrelation, ICorrelableEntity
-from novaideo.core import Commentabl
+from novaideo.core import Commentable
 from novaideo import _
 
 
@@ -54,7 +54,7 @@ class CorrelationSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(ICorrelation)
-class Correlation(Commentabl):
+class Correlation(Commentable):
     name = renamer()
     source = SharedUniqueProperty('source', 'source_correlations')
     target = SharedUniqueProperty('target', 'target_correlations')

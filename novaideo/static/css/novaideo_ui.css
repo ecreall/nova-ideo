@@ -21,3 +21,20 @@
     margin-left: -1px;
     margin-top: 0;
 }
+
+#searchform label {
+  display: none;
+}
+
+#searchform p {
+  display: none;
+}
+
+#searchform {
+    padding-right: 16em;
+}
+
+
+.switchchoice{
+    margin-top:12px;
+}
