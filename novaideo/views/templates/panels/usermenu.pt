@@ -24,10 +24,10 @@
         </li>
       </ul>
     </div>
-    <div id="searchform" class="col-lg-3 pull-right">
+    <div id="searchform" class="col-lg-3 navbar-form navbar-right">
      ${structure:search_body}
     </div>
-    <div class="pull-right">
+    <div class="navbar-right">
       <div class="switchchoice">
         <input name="globalmenu" type="checkbox" checked data-label-text="Menu"  data-on-color="success" data-off-color="danger" data-size="small"  data-on-text="<span class='glyphicon glyphicon-tasks'></span>" data-off-text="<span class='glyphicon glyphicon-off'></span>" >
 
