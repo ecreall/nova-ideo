@@ -4,8 +4,8 @@
      <div class="container">
 
         <div class="row" >
-            <div class="col-md-4" tal:condition="actions['menue3']" tal:repeat="(k, a) actions['menue3'].items()">
-                <a class="btn btn-default ${((actions['menue3'][k] is None) and 'disabled') or ''} btn-sm" style="width: 300px;" href="${actions['menue3'][k]}" >
+            <div class="col-md-4" tal:condition="actions['menu3']" tal:repeat="(k, a) actions['menu3'].items()">
+                <a class="btn btn-default ${((actions['menu3'][k] is None) and 'disabled') or ''} btn-sm" style="width: 300px;" href="${actions['menu3'][k]}" >
                    ${k}
                 </a>
             </div>
@@ -20,18 +20,18 @@
             <div class="col-sm-6 col-md-6">
                     <div class="row">
                         <div class="col-md-6">
-                          <ul tal:condition="actions['menue1']" tal:repeat="(k, a) actions['menue1'].items()" class="nav nav-pills nav-stacked">
+                          <ul tal:condition="actions['menu1']" tal:repeat="(k, a) actions['menu1'].items()" class="nav nav-pills nav-stacked">
                              <li >
-                                <a class="btn btn-primary ${((actions['menue1'][k] is None) and 'disabled') or ''} btn-sm" style="max-width: 300px;" href="${actions['menue1'][k]}" >
+                                <a class="btn btn-primary ${((actions['menu1'][k] is None) and 'disabled') or ''} btn-sm" style="max-width: 300px;" href="${actions['menu1'][k]}" >
                                    ${k}
                                 </a>
                              </li>
                           </ul>
                         </div>
                         <div class="col-md-6" >
-                          <ul tal:condition="actions['menue2']" tal:repeat="(k, a) actions['menue2'].items()" class="nav nav-pills nav-stacked">
+                          <ul tal:condition="actions['menu2']" tal:repeat="(k, a) actions['menu2'].items()" class="nav nav-pills nav-stacked">
                              <li >
-                                <a class="btn btn-primary ${((actions['menue2'][k] is None) and 'disabled') or ''} btn-sm" style="max-width: 300px;" href="${actions['menue2'][k]}" >
+                                <a class="btn btn-primary ${((actions['menu2'][k] is None) and 'disabled') or ''} btn-sm" style="max-width: 300px;" href="${actions['menu2'][k]}" >
                                    ${k}
                                 </a>
                              </li>

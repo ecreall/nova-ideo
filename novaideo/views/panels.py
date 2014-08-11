@@ -1,13 +1,8 @@
 # -*- coding: utf8 -*-
 from collections import OrderedDict
 from pyramid_layout.panel import panel_config
-from pyramid.location import lineage
-from pyramid.security import has_permission
-from pyramid import renderers
-from pyramid_layout.layout import Structure
 
 from dace.objectofcollaboration.entity import Entity
-from dace.objectofcollaboration.principal.util import has_any_roles
 from dace.util import getBusinessAction, getSite
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 
@@ -21,9 +16,9 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
 
 from novaideo.content.processes.idea_management.behaviors import CreatIdea
 
-user_menue_actions = {'menue1': [SeeMyIdeas, SeeMyProposals, SeeMyParticipations],
-                      'menue2': [SeeMyContacts, SeeMySelections, SeeMySupports],
-                      'menue3': [CreatIdea]} #TODO add CreatProposal...
+user_menu_actions = {'menu1': [SeeMyIdeas, SeeMyProposals, SeeMyParticipations],
+                      'menu2': [SeeMyContacts, SeeMySelections, SeeMySupports],
+                      'menu3': [CreatIdea]}  #TODO add CreateProposal...
 
 
 
@@ -58,17 +53,21 @@ class UserNavBarPanel(object):
 
     def _actions(self):
         root = getSite()
-        search_action, search_view = self._getaction('novaideoviewmanager', 'search')
-        search_view_instance = search_view(root, self.request, behaviors=[search_action])
-        actions_url ={'menue1':OrderedDict(), 'menue2':OrderedDict(), 'menue3':OrderedDict()}
-        for (menue, actions) in user_menue_actions.items():
+        search_action, search_view = self._getaction('novaideoviewmanager',
+                                                     'search')
+        search_view_instance = search_view(root, self.request,
+                                           behaviors=[search_action])
+        actions_url = {'menu1': OrderedDict(),
+                       'menu2': OrderedDict(),
+                       'menu3': OrderedDict()}
+        for (menu, actions) in user_menu_actions.items():
             for actionclass in actions:
                 process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
                 action, view = self._getaction(process_id, action_id)
                 if not (None in (action, view)):
-                    actions_url[menue][action.title] = action.url(root)
+                    actions_url[menu][action.title] = action.url(root)
                 else:
-                    actions_url[menue][actionclass.node_definition.title] = None
+                    actions_url[menu][actionclass.node_definition.title] = None
 
         if self.request.POST:
             search_view_instance.postedform = self.request.POST.copy()
