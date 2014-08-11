@@ -31,5 +31,8 @@ class EditView(FormView):
     formid = 'formedit'
     name='edit'
 
+    def default_data(self):
+        return self.context
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Edit:EditView})

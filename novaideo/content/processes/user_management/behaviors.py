@@ -4,7 +4,7 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current
+from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current, Anonymous
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,

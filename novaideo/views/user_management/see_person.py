@@ -41,8 +41,9 @@ class SeePersonView(BasicView):
         len_result = len(ideas)
         result_body = []
         result = {}
+        current_user = get_current()
         for o in ideas:
-            object_values = {'object':o, 'current_user':user}
+            object_values = {'object':o, 'current_user':current_user}
             body = self.content(result=object_values, template=o.result_template)['body']
             result_body.append(body)
         values = {

@@ -29,6 +29,7 @@ class DuplicateIdeaView(FormView):
 
     behaviors = [DuplicateIdea, Cancel]
     formid = 'formduplicateidea'
+    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
 
 
     def default_data(self):

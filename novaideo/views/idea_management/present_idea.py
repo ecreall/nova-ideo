@@ -57,11 +57,12 @@ class PresentIdeaSchema(Schema):
     )
 class PresentIdeaView(FormView):
 
-    title = _('Comment')
+    title = _('Present idea')
     schema = select(PresentIdeaSchema(), ['members', 'exterior_emails'])
     behaviors = [PresentIdea, Cancel]
     formid = 'formpresentidea'
     name='presentidea'
+    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({PresentIdea:PresentIdeaView})

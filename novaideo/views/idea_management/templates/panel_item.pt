@@ -1,0 +1,12 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <a href="#${subitem['view'].viewid}" data-parent="#panel-actions-idea" data-toggle="collapse" class="panel-title collapsed">
+        <span class="glyphicon glyphicon-plus"></span> ${subitem['view'].title}
+    </a>
+  </div>
+  <div class="panel-collapse collapse" id="${subitem['view'].viewid}" style="height: auto;">
+    <div  class="panel-body">
+      <div tal:replace="structure subitem['body']" />
+    </div>
+  </div>
+</div>

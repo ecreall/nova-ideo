@@ -20,7 +20,8 @@ from .behaviors import (
     AbandonIdea,
     CommentIdea,
     PresentIdea,
-    Associate)
+    Associate,
+    SeeIdea)
 from novaideo import _
 
 
@@ -77,6 +78,10 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Associate the idea"),
                                        title=_("Associate"),
                                        groups=[]),
+                see = ActivityDefinition(contexts=[SeeIdea],
+                                       description=_("Details"),
+                                       title=_("Details"),
+                                       groups=[]),
                 pg = ParallelGatewayDefinition(),
                 #pg2 = ParallelGatewayDefinition(),
                 #eg1 = ExclusiveGatewayDefinition(),
@@ -96,6 +101,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'comment'),
                 TransitionDefinition('pg', 'present'),
                 TransitionDefinition('pg', 'associate'),
+                TransitionDefinition('pg', 'see'),
                 TransitionDefinition('creat', 'eg'),
                 TransitionDefinition('duplicate', 'eg'),
                 TransitionDefinition('recuperate', 'eg'),
@@ -106,6 +112,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('comment', 'eg'),
                 TransitionDefinition('present', 'eg'),
                 TransitionDefinition('associate', 'eg'),
+                TransitionDefinition('see', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
 

@@ -1,0 +1,24 @@
+<div class="media-body">
+<h3 tal:condition="idea.state"><span class="label label-primary pull-right">${idea.state[0].capitalize()}</span></h3>
+<h3>${idea.title}</h3>
+</div>
+
+<div class="jumbotron well">
+    <dl >
+        <dt>Résumé</dt>
+	<dd>${idea.description}</dd>
+      <dt tal:condition="idea.keywords">Mots clés</dt>
+      <dd tal:condition="idea.keywords">
+        <tal:loop repeat="k idea.keywords">
+          <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>
+            <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+        </tal:loop>
+      </dd>
+        <dt>Dernière modification</dt>
+	<dd>
+          ${idea.modified_at.date()} à ${idea.created_at.hour}:${idea.created_at.minute}:${idea.created_at.second} 
+        </dd>
+    </dl>
+</div>
+
+${structure:idea.text}

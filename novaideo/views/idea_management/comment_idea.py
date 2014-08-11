@@ -23,6 +23,7 @@ class CommentIdeaView(FormView):
     behaviors = [CommentIdea, Cancel]
     formid = 'formcommentidea'
     name='commentidea'
+    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CommentIdea:CommentIdeaView})

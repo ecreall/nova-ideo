@@ -7,12 +7,12 @@ from dace.util import (
     getBusinessAction,
     copy)
 from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
-from dace.processinstance.activity import InfiniteCardinality
+from dace.processinstance.activity import InfiniteCardinality, ActionType
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, Iidea
 from ..user_management.behaviors import global_user_processsecurity
-
+from novaideo import _
 
 
 def createidea_relation_validation(process, context):
@@ -68,7 +68,8 @@ def duplicate_roles_validation(process, context):
 
 
 def duplicate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and has_any_roles(roles=('Owner', context)) or 'published' in context.state
+    return global_user_processsecurity(process, context) and \
+           (has_any_roles(roles=(('Owner', context), )) or 'published' in context.state)
 
 
 def duplicate_state_validation(process, context):
@@ -97,7 +98,7 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.set_data(appstruct)
         root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.addtoproperty('originalideas', context)
-        copy_of_idea.state.append('to work')
+        copy_of_idea.state = ['to work']
         copy_of_idea.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_idea), ))
         self.newcontext = copy_of_idea
@@ -441,5 +442,37 @@ class Associate(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+
+def seeidea_relation_validation(process, context):
+    return True
+
+
+def seeidea_roles_validation(process, context):
+    return True
+
+
+def seeidea_processsecurity_validation(process, context):
+    return (has_any_roles(roles=(('Owner', context),)) or 'published' in context.state)
+
+
+def seeidea_state_validation(process, context):
+    return True
+
+
+class SeeIdea(InfiniteCardinality):
+    title = _('Details')
+    context = Iidea
+    actionType = ActionType.automatic
+    relation_validation = seeidea_relation_validation
+    roles_validation = seeidea_roles_validation
+    processsecurity_validation = seeidea_processsecurity_validation
+    state_validation = seeidea_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
 
 #TODO behaviors

@@ -18,8 +18,8 @@ from .interface import IProposal
 from novaideo.core import Commentabl
 from novaideo import _
 from novaideo.core import (
-    SerchableEntity,
-    SerchableEntitySchema,
+    SearchableEntity,
+    SearchableEntitySchema,
     CorrelableEntity)
 
 
@@ -35,7 +35,7 @@ def context_is_a_proposal(context, request):
     return request.registry.content.istype(context, 'proposal')
 
 
-class ProposalSchema(VisualisableElementSchema, SerchableEntitySchema):
+class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_proposal,
@@ -60,7 +60,7 @@ class ProposalSchema(VisualisableElementSchema, SerchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IProposal)
-class Proposal(Commentabl, SerchableEntity, CorrelableEntity):
+class Proposal(Commentabl, SearchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/proposal_result.pt'
     name = renamer()
     author = SharedUniqueProperty('author')

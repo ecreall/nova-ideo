@@ -19,8 +19,8 @@ from novaideo import _
 from novaideo.core import (
     VersionableEntity,
     DuplicableEntity,
-    SerchableEntity,
-    SerchableEntitySchema,
+    SearchableEntity,
+    SearchableEntitySchema,
     CorrelableEntity)
 
 
@@ -36,7 +36,7 @@ def context_is_a_idea(context, request):
     return request.registry.content.istype(context, 'idea')
 
 
-class IdeaSchema(VisualisableElementSchema, SerchableEntitySchema):
+class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_idea,
@@ -69,7 +69,7 @@ class IdeaSchema(VisualisableElementSchema, SerchableEntitySchema):
     )
 @implementer(Iidea)
 class Idea(Commentabl, VersionableEntity, DuplicableEntity,
-           SerchableEntity, CorrelableEntity):
+           SearchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/idea_result.pt'
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')

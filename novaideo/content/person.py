@@ -22,8 +22,8 @@ from pontus.widget import FileWidget, Select2Widget
 from pontus.file import Image, ObjectData, Object as ObjectType
 
 from novaideo.core import (
-    SerchableEntity,
-    SerchableEntitySchema,
+    SearchableEntity,
+    SearchableEntitySchema,
     default_keywords_choice,
     keywords_choice,
     CorrelableEntity)
@@ -99,7 +99,7 @@ def context_is_a_person(context, request):
     return request.registry.content.istype(context, 'person')
 
 
-class PersonSchema(VisualisableElementSchema, UserSchema, SerchableEntitySchema):
+class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_person,
@@ -173,7 +173,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SerchableEntitySchema)
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IPerson)
-class Person(VisualisableElement, User, SerchableEntity, CorrelableEntity):
+class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/person_result.pt'
     name = renamer()
     tokens = CompositeMultipleProperty('tokens', 'owner')
