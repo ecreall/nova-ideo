@@ -3,6 +3,8 @@ import colander
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
+from substanced.util import Batch
+
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, allSubobjectsOfType
@@ -18,7 +20,6 @@ from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, Nov
 from novaideo import _
 from novaideo.content.interface import Iidea, IProposal, IPerson
 
-
 @view_config(
     name='seemyideas',
     context=NovaIdeoApplication,
@@ -33,22 +34,24 @@ class SeeMyIdeasView(BasicView):
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/novaideo.js']}
 
-
     def update(self):
-        self.execute(None) 
+        self.execute(None)
         user = get_current()
-        objects = getattr(user, 'ideas', [])
-        len_result = len(objects)
+        ideas = getattr(user, 'ideas', [])
+        batch = Batch(ideas, self.request, default_size=1)
+        batch.target = "#results"
+        len_result = batch.seqlen
         result_body = []
-        for o in objects:
-            object_values = {'object':o, 'current_user':user}
-            body = self.content(result=object_values, template=o.result_template)['body']
+        for o in batch:
+            render_dict = {'object': o, 'current_user': user}
+            body = self.content(result=render_dict, template=o.result_template)['body']
             result_body.append(body)
 
         result = {}
         values = {
                 'bodies': result_body,
-                'length': len_result
+                'length': len_result,
+                'batch': batch,
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
