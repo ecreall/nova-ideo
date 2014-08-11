@@ -54,10 +54,15 @@ class Usermenu_panel(object):
                                                 'search')
         search_view_instance = search_view(root, self.request,
                                            behaviors=[search_action])
-        search_view_instance.viewid = search_view_instance.viewid + 'usermenu' 
-        if self.request.POST:
-            search_view_instance.postedform = self.request.POST.copy()
-            self.request.POST.clear()
+        search_view_instance.viewid = 'usermenu' + search_view_instance.viewid 
+        posted_formid = None
+        if self.request.POST :
+            if '__formid__' in self.request.POST:
+                posted_formid = self.request.POST['__formid__']
+
+            if posted_formid and posted_formid.startswith(search_view_instance.viewid):
+                search_view_instance.postedform = self.request.POST.copy()
+                self.request.POST.clear()
 
         search_view_instance.schema = select(search_view_instance.schema, ['text'])
         search_view_result = search_view_instance()
@@ -105,9 +110,14 @@ class UserNavBarPanel(object):
                 else:
                     actions_url[menu][actionclass.node_definition.title] = None
 
-        if self.request.POST:
-            search_view_instance.postedform = self.request.POST.copy()
-            self.request.POST.clear()
+        posted_formid = None
+        if self.request.POST :
+            if '__formid__' in self.request.POST:
+                posted_formid = self.request.POST['__formid__']
+
+            if posted_formid and posted_formid.startswith(search_view_instance.viewid):
+                search_view_instance.postedform = self.request.POST.copy()
+                self.request.POST.clear()
 
         search_view_result = search_view_instance()
         search_body = ''

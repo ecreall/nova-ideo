@@ -32,6 +32,3 @@ $(document).ready(function(){
   });
 });
 
-(function () { 
-  jQuery('.switch')['bootstrapSwitch']();
-})();
