@@ -7,7 +7,7 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.descriptors import CompositeMultipleProperty, SharedUniqueProperty
-from dace .util import getSite
+from dace.util import getSite
 from pontus.core import VisualisableElementSchema
 from pontus.widget import SequenceWidget, FileWidget, Select2Widget
 from pontus.file import ObjectData, File
