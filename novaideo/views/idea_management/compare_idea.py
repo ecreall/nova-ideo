@@ -1,6 +1,8 @@
 import colander
 
+from zope.interface import invariant
 from pyramid.view import view_config
+
 from substanced.util import find_service
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -19,26 +21,57 @@ from novaideo import _
 def version_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
-    values = [(i, i.get_view(request)) for i in context.current_version.history ]
+    current_version = context.current_version
+    values = [(i, i.get_view(request)) for i in current_version.history if not(i is current_version)]
     values = sorted(values, key=lambda v: v[0].modified_at, reverse=True)
     return CheckboxChoiceWidget(values=values, multiple=True)
 
 
 @colander.deferred
-def default_version_choice(node, kw):
+def current_version_choice(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    current_version = context.current_version
+    values = [(current_version, current_version.get_view(request))]
+    return CheckboxChoiceWidget(values=values, multiple=True)
+
+
+@colander.deferred
+def default_current_version_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
     values = [context.current_version]
     return values
 
+
 class CompareIdeaSchema(Schema):
 
-    version = colander.SchemaNode(
+    current_version = colander.SchemaNode(
+        colander.Set(),
+        widget=current_version_choice,
+        default=default_current_version_choice,
+        missing=[],
+        title=_('Current version')
+        )
+
+    versions = colander.SchemaNode(
         colander.Set(),
         widget=version_choice,
-        default=default_version_choice,
-        title=_('Version')
+        title=_('Last versions')
         )
+    
+    @invariant
+    def versions_number_invariant(self, appstruct):
+        root = getSite()
+        number = 0
+        if 'current_version' in appstruct and appstruct['current_version']:
+            number += 1
+
+        if 'versions' in appstruct and appstruct['versions']:
+            number += len(appstruct['versions'])
+
+        if not(number == 2):
+            raise colander.Invalid(self, _('Il selectionner deux versions'))
 
 
 @view_config(
@@ -49,7 +82,7 @@ class CompareIdeaSchema(Schema):
 class CompareIdeaView(FormView):
 
     title = _('Compare idea')
-    schema = select(CompareIdeaSchema(), ['version'])
+    schema = select(CompareIdeaSchema(), ['current_version', 'versions'])
     behaviors = [CompareIdea]
     formid = 'formcomparedea'
     name='comparedea'

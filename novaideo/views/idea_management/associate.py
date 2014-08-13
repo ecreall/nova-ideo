@@ -19,8 +19,8 @@ from novaideo import _
 class AssociateView(FormView):
 
     title = _('Associate')
-    schema = select(CorrelationSchema(),['comment', 'targets'])
-    behaviors = [Associate, Cancel]
+    schema = select(CorrelationSchema(),['targets', 'comment'])
+    behaviors = [Associate]
     formid = 'formassociate'
     name='associate'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'

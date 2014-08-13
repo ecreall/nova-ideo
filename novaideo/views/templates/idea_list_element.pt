@@ -1,1 +1,1 @@
-<a href="${request.resource_url(object, '@@index')}" i18n:translate="">${object.title}</a> <span tal:condition="object.nextversion is None">(Version actulle)</span> modifiée le ${object.modified_at.date()} à ${object.created_at.hour}:${object.created_at.minute}:${object.created_at.second}
+<a href="${request.resource_url(object, '@@index')}" i18n:translate="">${object.title}</a> modifiée le ${object.modified_at.date()} à ${object.created_at.hour}:${object.created_at.minute}:${object.created_at.second}

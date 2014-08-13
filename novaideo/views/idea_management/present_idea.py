@@ -59,7 +59,7 @@ class PresentIdeaView(FormView):
 
     title = _('Present idea')
     schema = select(PresentIdeaSchema(), ['members', 'exterior_emails'])
-    behaviors = [PresentIdea, Cancel]
+    behaviors = [PresentIdea]
     formid = 'formpresentidea'
     name='presentidea'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'

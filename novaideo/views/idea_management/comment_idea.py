@@ -20,7 +20,7 @@ class CommentIdeaView(FormView):
 
     title = _('Comment')
     schema = select(CommentSchema(factory=Comment, editable=True),['intention', 'comment', 'attached_files'])
-    behaviors = [CommentIdea, Cancel]
+    behaviors = [CommentIdea]
     formid = 'formcommentidea'
     name='commentidea'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
