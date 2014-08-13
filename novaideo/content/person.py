@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 import colander
 import deform.widget
-from zope.interface import implementer
+from zope.interface import implementer, invariant
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -10,7 +10,7 @@ from substanced.principal import UserSchema
 from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
 
-from dace.util import getSite, find_entities
+from dace.util import getSite, find_entities, find_catalog
 from dace.objectofcollaboration.principal import User
 from dace.descriptors import (
     SharedUniqueProperty,
@@ -166,6 +166,23 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         default=default_contacts,
         title=_('Contacts'),
         )
+
+    @invariant
+    def person_name_invariant(self, appstruct):
+        root = getSite()
+        name = ''
+        if 'first_name' in appstruct:
+            name = name + appstruct['first_name']
+            if 'last_name' in appstruct:
+                name = name + ' ' + appstruct['last_name']
+
+        system_catalog = find_catalog('system')
+        name_index = system_catalog['name']
+        query = name_index.eq(name)
+        resultset = query.execute()
+       
+        if resultset.__len__ > 0:
+            raise colander.Invalid(self, _('The user ' + name + ' already exists!'))
 
 
 @content(
