@@ -15,18 +15,10 @@ from dace.processinstance.activity import (
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IPerson
+from novaideo.mail import CONFIRMATION_MESSAGE
 from novaideo import _
 
 
-CONFIRMATION_MESSAGE = u"""
-Bonjour {person.user_title} {person.last_name} {person.first_name},
-
-Bienvenue sur le plateforme NovaIdeo.
-
-Cordialement,
-
-La Plateforme NovaIdeo
-"""
 
 def global_user_processsecurity(process, context):
     user = get_current()
@@ -62,6 +54,7 @@ class Registration(InfiniteCardinality):
     state_validation = reg_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        import pdb; pdb.set_trace()
         person = appstruct['_object_data']
         root = getSite(context)
         principals = find_service(root, 'principals')

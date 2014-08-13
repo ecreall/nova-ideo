@@ -14,17 +14,9 @@ from novaideo.content.interface import IInvitation
 from novaideo.content.person import Person
 from novaideo.content.invitation import InvitationSchema
 from ..user_management.behaviors import global_user_processsecurity
+from novaideo.mail import INVITATION_MESSAGE
 
 
-invitation_message = u"""
-Bonjour,
-
-{user_title} {invitation.last_name} {invitation.first_name} vous êtes invité à rejoindre l\'application collaborative INEUS en tant que {roles}. Veuilliez visiter ce lien {invitation_url} afin de valider votre invitation.
-
-Cordialement,
-
-La Plateforme NovaIdeo
-"""
 
 def accept_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'invitation')
@@ -168,7 +160,7 @@ class ReinviteUser(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         url = request.resource_url(root, "@@seeinvitation", query={'invitation_id':str(get_oid(context))})
-        message = invitation_message.format(
+        message = INVITATION_MESSAGE.format(
             invitation=context,
             user_title=getattr(context, 'user_title', ''),
             invitation_url=url,
@@ -209,7 +201,7 @@ class RemindInvitation(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         url = request.resource_url(root, "@@seeinvitation", query={'invitation_id':str(get_oid(context))})
-        message = invitation_message.format(
+        message = INVITATION_MESSAGE.format(
             invitation=context,
             user_title=getattr(context, 'user_title', ''),
             invitation_url=url,

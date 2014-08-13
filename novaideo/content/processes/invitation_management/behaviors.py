@@ -10,7 +10,7 @@ from novaideo.ips.xlreader import create_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IInvitation
 from novaideo.content.invitation import Invitation
 from novaideo.ips.mailer import mailer_send
-from novaideo.content.processes.invitation_validation.behaviors import invitation_message
+from novaideo.mail import INVITATION_MESSAGE
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
 
@@ -63,7 +63,7 @@ class UploadUsers(InfiniteCardinality):
             proc.execute()
             proc.execution_context.add_involved_entity('invitation', invitation)
             url = request.resource_url(root, "@@seeinvitation",query={'invitation_id':str(get_oid(invitation))})
-            message = invitation_message.format(
+            message = INVITATION_MESSAGE.format(
                 invitation=invitation,
                 user_title=getattr(invitation, 'user_title', ''),
                 invitation_url=url,
@@ -118,7 +118,7 @@ class InviteUsers(InfiniteCardinality):
             proc.execute()
             proc.execution_context.add_involved_entity('invitation', invitation)
             url = request.resource_url(root, "@@seeinvitation",query={'invitation_id':str(get_oid(invitation))})
-            message = invitation_message.format(
+            message = INVITATION_MESSAGE.format(
                 invitation=invitation,
                 user_title=getattr(invitation, 'user_title', ''),
                 invitation_url=url,

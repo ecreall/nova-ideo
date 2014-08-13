@@ -12,6 +12,7 @@ from dace.processinstance.activity import InfiniteCardinality, ActionType
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, Iidea
 from ..user_management.behaviors import global_user_processsecurity
+from novaideo.mail import PRESENTATION_IDEA_MESSAGE
 from novaideo import _
 
 
@@ -350,17 +351,6 @@ def present_state_validation(process, context):
     return 'published' in context.state
 
 
-presentation_idea_message = u"""
-Bonjour {member_title} {member_first_name} {member_last_name},
-
-{user_title} {user_first_name} {user_last_name} souhaite vous présenter l'Idée figurant sur la plateforme Nova-Ideo.org sous {idea_url}. Nova-Ideo est un service en ligne permettant d'initier des propositions, constituer des groupes de travail pour les améliorer et les finaliser, bénéficier de soutiens de membres de la communauté et d'avis de comités d'examen.
-
-Cordialement,
-
-La Plateforme NovaIdeo
-"""
-
-
 class PresentIdea(InfiniteCardinality):
     context = Iidea
     relation_validation = present_relation_validation
@@ -377,7 +367,7 @@ class PresentIdea(InfiniteCardinality):
         user_last_name=getattr(user, 'last_name','')
         url = request.resource_url(context, "@@index")
         for member in members:
-            message = presentation_idea_message.format(
+            message = PRESENTATION_IDEA_MESSAGE.format(
                 member_title=getattr(user, 'user_title',''),
                 member_first_name=getattr(user, 'first_name', member.name),
                 member_last_name=getattr(user, 'last_name',''),
@@ -389,7 +379,7 @@ class PresentIdea(InfiniteCardinality):
             mailer_send(subject='Présentation : '+context.title, recipients=[member.email], body=message)
 
         for email in exterior_emails:
-            message = presentation_idea_message.format(
+            message = PRESENTATION_IDEA_MESSAGE.format(
                 member_title='',
                 member_first_name='',
                 member_last_name='',

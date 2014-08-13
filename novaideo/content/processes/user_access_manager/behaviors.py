@@ -15,7 +15,6 @@ from dace.processinstance.activity import (
     EndStep)
 from pontus.schema import select, omit
 
-from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IInvitation
 from novaideo.content.person import Person
 from novaideo.content.interface import INovaIdeoApplication
