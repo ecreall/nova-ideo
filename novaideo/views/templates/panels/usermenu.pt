@@ -39,7 +39,7 @@
    </div>
     <div class="navbar-right">
       <div class="switchchoice">
-        <input name="globalmenuswitch" type="checkbox" checked  data-label-text="Menu"  data-on-color="success" data-off-color="danger" data-size="small"  data-on-text="<span class='glyphicon glyphicon-tasks'></span>" data-off-text="<span class='glyphicon glyphicon-off'></span>" >
+        <input name="globalmenuswitch" type="checkbox" checked  data-label-text="Menu"  data-on-color="success" data-off-color="danger" data-size="small">
       </div>
     </div>
 </html>

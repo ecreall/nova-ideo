@@ -19,7 +19,7 @@ function switchoff(){
 
 
 function menuSwitchChange(state, is_init) {
-    $.cookie('menu_switch_state', state, {path: '/' });
+    $.cookie('menu_switch_state', state, {path: '/',  expires: 1});
     if (state==true){
       if (is_init){
           $('input[name="globalmenuswitch"]').bootstrapSwitch('state', true);
