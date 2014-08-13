@@ -6,15 +6,6 @@
       tal:omit-tag="">
 
     <a class="brand" href="/"><img alt="Nova-Ideo" src="${request.static_url('novaideo:static/images/novaideo32.png')}" class="globe-logo"> Nova-Ideo</a>
-    
-    <div tal:condition="request.user is None" class="btn-group pull-right">  
-       <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary ">
-          <i class="glyphicon glyphicon-log-in"> </i> Log In
-       </a>
-       <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary ">
-          <i class="glyphicon glyphicon-pencil"> </i> Registration
-       </a>
-    </div>
 
     <div class="nav navbar-nav navbar-right" tal:condition="request.user">
       <button type="button" class="btn btn-primary pull-right dropdown-toggle"
@@ -24,7 +15,7 @@
 
       <ul class="dropdown-menu pull-right" role="menu">
         <li class="account-link">
-          <a href="${mp(request.user, '')}" i18n:translate="">
+          <a href="${request.resource_url(request.user, '@@edit')}" i18n:translate="">
             <i i18n:name="icon" class="glyphicon glyphicon-pencil"></i> Account</a>
         </li>
         <li class="logout-link">
@@ -33,12 +24,22 @@
         </li>
       </ul>
     </div>
-    <div id="searchform" class="navbar-right">
+    <div tal:condition="request.user is None" class="btn-group pull-right">  
+       <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary ">
+          <i class="glyphicon glyphicon-log-in"> </i> Log In
+       </a>
+       <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary ">
+          <i class="glyphicon glyphicon-pencil"> </i> Registration
+       </a>
+    </div>
+   <div class="col-lg-3 col-sm-3 pull-right">
+    <div id="searchform" class="navbar-form navbar-right">
      ${structure:search_body}
     </div>
+   </div>
     <div class="navbar-right">
       <div class="switchchoice">
-        <input name="globalmenuswitch" type="checkbox" checked data-label-text="Menu"  data-on-color="success" data-off-color="danger" data-size="small"  data-on-text="<span class='glyphicon glyphicon-tasks'></span>" data-off-text="<span class='glyphicon glyphicon-off'></span>" >
+        <input name="globalmenuswitch" type="checkbox" checked  data-label-text="Menu"  data-on-color="success" data-off-color="danger" data-size="small"  data-on-text="<span class='glyphicon glyphicon-tasks'></span>" data-off-text="<span class='glyphicon glyphicon-off'></span>" >
       </div>
     </div>
 </html>

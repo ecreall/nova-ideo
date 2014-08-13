@@ -121,8 +121,6 @@ class SearchResultView(BasicView):
     validators = [Search.get_validator()]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'search_result'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/novaideo.js']}
 
 
     def update(self):
