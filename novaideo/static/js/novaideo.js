@@ -1,4 +1,10 @@
 $(document).ready(function(){
+  $("[name='globalmenuswitch']").bootstrapSwitch();
+
+  $("[name='globalmenuswitch']").on('switchChange.bootstrapSwitch',function() {
+     $('#navbaruser').slideToggle();
+  });
+
   $('nav a nav-control').on('click', function(){
       $(".navbar-toggle").click();
   });

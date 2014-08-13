@@ -1,6 +1,6 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
   tal:omit-tag="">
-   <nav class="navbar navbar-default navbar" role="navigation">
+   <nav id="navbaruser" class="navbar navbar-default navbar" role="navigation">
      <div class="container">
 
         <div class="row" >
