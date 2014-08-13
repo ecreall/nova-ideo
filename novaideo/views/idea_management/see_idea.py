@@ -21,6 +21,8 @@ from novaideo.views.novaideo_view_manager.search import SearchResultView
 from .present_idea import PresentIdeaView
 from .duplicate_idea import DuplicateIdeaView
 from .comment_idea import CommentIdeaView
+from .associate import AssociateView
+from .compare_idea import CompareIdeaView
 
 
 
@@ -31,23 +33,31 @@ class DetailIdeaView(BasicView):
     template = 'novaideo:views/idea_management/templates/see_idea.pt'
     item_template = 'pontus:templates/subview_sample.pt'
     viewid = 'seeidea'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/novaideo.js']}
 
 
     def update(self):
         self.execute(None) 
         user = get_current()
-        
+        files = getattr(self.context, 'attached_files', [])
+        files_urls = []
+        for f in files:
+            files_urls.append({'title':f.title, 'url':f.url(self.request)})
+
+        actions = [a for a in self.context.actions if getattr(a.action, 'style', '') == 'button']
+        actions_urls = []
+        for action in actions:
+            actions_urls.append({'title':action.title, 'url':action.url})
+
         result = {}
         values = {
                 'idea': self.context,
-                'current_user': user
+                'current_user': user,
+                'files': files_urls,
+                'actions': actions_urls
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
-        result  = merge_dicts(self.requirements_copy, result)
         return result
 
 
@@ -55,7 +65,7 @@ class SeeIdeaActionsView(MultipleView):
     title = _('actions')
     name = 'seeiactionsdea'
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (PresentIdeaView, DuplicateIdeaView, CommentIdeaView)
+    views = (AssociateView, PresentIdeaView, CommentIdeaView, CompareIdeaView)
 
 
 @view_config(

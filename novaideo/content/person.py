@@ -180,8 +180,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         name_index = system_catalog['name']
         query = name_index.eq(name)
         resultset = query.execute()
-       
-        if resultset.__len__ > 0:
+        if resultset.__len__() > 0:
             raise colander.Invalid(self, _('The user ' + name + ' already exists!'))
 
 

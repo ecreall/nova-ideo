@@ -23,6 +23,6 @@ class AssociateView(FormView):
     behaviors = [Associate, Cancel]
     formid = 'formassociate'
     name='associate'
-
+    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Associate:AssociateView})

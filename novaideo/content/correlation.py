@@ -19,9 +19,11 @@ from novaideo import _
 
 @colander.deferred
 def targets_choice(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
     values = []
     entities = find_entities([ICorrelableEntity])
-    values = [(i, i.title) for i in entities]
+    values = [(i, i.title) for i in entities if not(i is context) and i.actions]
     values = sorted(values, key=lambda p: p[1])
     return Select2Widget(values=values, multiple=True)
 

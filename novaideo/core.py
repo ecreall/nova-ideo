@@ -23,6 +23,9 @@ from novaideo.content.interface import (
     ICorrelableEntity)
 
 
+BATCH_DEFAULT_SIZE = 7
+
+
 @implementer(ICommentable)
 class Commentable(VisualisableElement, Entity):
     name = renamer()
@@ -44,7 +47,14 @@ class VersionableEntity(Entity):
 
     @property
     def history(self):
-        return allSubobjectsOfKind(interface=IVersionableEntity)
+        result = []
+        if self.version is None:
+            return [self]
+        else:
+            result.append(self)
+            result.extend(self.version.history)
+
+        return result
 
 
 @implementer(IDuplicableEntity)

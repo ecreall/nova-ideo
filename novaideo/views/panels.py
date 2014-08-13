@@ -8,17 +8,15 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.schema import select
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import(
-    SeeMyIdeas,
-    SeeMyContacts,
-    SeeMyProposals,
+    SeeMyContents,
     SeeMySelections,
     SeeMyParticipations,
     SeeMySupports)
 
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 
-user_menu_actions = {'menu1': [SeeMyIdeas, SeeMyProposals, SeeMyParticipations],
-                     'menu2': [SeeMyContacts, SeeMySelections, SeeMySupports],
+user_menu_actions = {'menu1': [SeeMyContents, SeeMyParticipations],
+                     'menu2': [SeeMySelections, SeeMySupports],
                      'menu3': [CreateIdea]}  #TODO add CreateProposal...
 
 

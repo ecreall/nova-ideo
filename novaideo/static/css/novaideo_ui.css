@@ -33,3 +33,10 @@
 .switchchoice{
     margin-top:12px;
 }
+
+.attached_files{
+    border-left: 4px solid #eeeeee;
+    font-size: 13.5px;
+    margin: 0 0 20px;
+    padding: 0 11px;
+}

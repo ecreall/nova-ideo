@@ -4,6 +4,8 @@ import colander
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
+from substanced.util import Batch
+
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, allSubobjectsOfType
@@ -19,6 +21,7 @@ from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, Nov
 from novaideo import _
 from novaideo.content.interface import Iidea, IProposal, IPerson
 from .widget import SearchTextInputWidget, SearchFormWidget
+from novaideo.core import BATCH_DEFAULT_SIZE
 
 
 default_serchable_content = {'Idea': Iidea,
@@ -178,10 +181,11 @@ class SearchResultView(BasicView):
             #resultset = resultset.sort(title_index, raise_unsortable=False)
 
         objects = [o for o in resultset.all() if o.actions]
-        len_result = len(objects)
-        #TODO access control
+        batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
+        batch.target = "#results"
+        len_result = batch.seqlen
         result_body = []
-        for o in objects:
+        for o in batch:
             object_values = {'object':o, 'current_user': get_current()}
             body = self.content(result=object_values, template=o.result_template)['body']
             result_body.append(body)
@@ -189,7 +193,8 @@ class SearchResultView(BasicView):
         result = {}
         values = {
                 'bodies': result_body,
-                'length': len_result
+                'length': len_result,
+                'batch': batch,
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

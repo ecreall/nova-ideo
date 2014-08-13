@@ -54,7 +54,6 @@ class Registration(InfiniteCardinality):
     state_validation = reg_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        import pdb; pdb.set_trace()
         person = appstruct['_object_data']
         root = getSite(context)
         principals = find_service(root, 'principals')

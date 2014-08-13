@@ -101,23 +101,12 @@ def seemy_state_validation(process, context):
     return True
 
 
-class SeeMyIdeas(InfiniteCardinality):
-    isSequential = False
-    context = INovaIdeoApplication
-    relation_validation = seemy_relation_validation
-    roles_validation = seemy_roles_validation
-    processsecurity_validation = seemy_processsecurity_validation
-    state_validation = seemy_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        return True
-
 def seemyc_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and getattr(user, 'contacts', [])
+    return global_user_processsecurity(process, context) and \
+           (getattr(user, 'proposals', []) or getattr(user, 'ideas', []))
 
-
-class SeeMyContacts(InfiniteCardinality):
+class SeeMyContents(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     relation_validation = seemy_relation_validation
@@ -128,24 +117,10 @@ class SeeMyContacts(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         return True
 
-def seemyp_processsecurity_validation(process, context):
-    user = get_current()
-    return global_user_processsecurity(process, context) and getattr(user, 'proposals', [])
-
-class SeeMyProposals(InfiniteCardinality):
-    isSequential = False
-    context = INovaIdeoApplication
-    relation_validation = seemy_relation_validation
-    roles_validation = seemy_roles_validation
-    processsecurity_validation = seemyp_processsecurity_validation
-    state_validation = seemy_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        return True
-
 def seemys_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and getattr(user, 'selections', [])
+    return global_user_processsecurity(process, context) and \
+           (getattr(user, 'selections', []) or getattr(user, 'contacts', []))
 
 
 class SeeMySelections(InfiniteCardinality):

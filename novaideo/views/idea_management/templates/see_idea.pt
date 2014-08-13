@@ -22,3 +22,27 @@
 </div>
 
 ${structure:idea.text}
+
+<div id="idea_files">
+<small>
+ <blockquote class="attached_files">
+   <dl >
+   <dt tal:condition="len(files)>1">Pièces jointes:</dt><dt tal:condition="len(files)==1">Pièce jointe:</dt>
+   <dd tal:condition="files">
+        <tal:loop repeat="f files">
+          <a tal:attributes="href f['url']">${f['title']}</a>
+            <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+        </tal:loop>
+   </dd>
+ </blockquote>
+</small>
+</div>
+
+<div id="idea_actions">
+  <div tal:condition="actions" class="btn-group btn-group-justified">
+        <tal:loop repeat="a actions">
+          <a tal:attributes="href a['url']" class="btn btn-default">${a['title']}</a>
+        </tal:loop>
+  </div>
+
+</div>

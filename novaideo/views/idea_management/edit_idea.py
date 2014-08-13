@@ -22,7 +22,8 @@ class EditIdeaView(FormView):
                                   'title',
                                   'description',
                                   'keywords',
-                                  'text'])
+                                  'text',
+                                  'attached_files'])
     behaviors = [EditIdea, Cancel]
     formid = 'formeditidea'
     name='editidea'

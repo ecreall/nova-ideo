@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import colander
 import deform.widget
 from zope.interface import implementer
@@ -10,7 +11,14 @@ from dace.util import getSite
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty, SharedMultipleProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import RichTextWidget, LineWidget, TableWidget, Select2Widget
+from pontus.widget import (
+    RichTextWidget,
+    LineWidget,
+    TableWidget,
+    Select2Widget,
+    SequenceWidget,
+    FileWidget)
+from pontus.file import ObjectData, File
 from pontus.schema import omit
 
 from .interface import Iidea
@@ -44,14 +52,16 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     description = colander.SchemaNode(
         colander.String(),
-        validator=colander.Length(max=2000),
+        validator=colander.Length(max=300),
         widget=deform.widget.TextAreaWidget(rows=10, cols=30),
+        title=_("Abstract"),
+        description=_("(300 caracteres maximum)")
         )
 
     text = colander.SchemaNode(
         colander.String(),
         widget= RichTextWidget(),
-        title=_('Content'),
+        title=_('Text'),
         missing='',
         )
 
@@ -60,6 +70,18 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         widget=intention_choice,
         title=_('Intention'),
         default=_('Creation'),
+        )
+
+    attached_files = colander.SchemaNode(
+        colander.Sequence(),
+        colander.SchemaNode(
+            ObjectData(File),
+            name=_("File"),
+            widget=FileWidget()
+            ),
+        widget=SequenceWidget(),
+        missing=[],
+        title=_('Files'),
         )
 
 
@@ -71,8 +93,10 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 class Idea(Commentable, VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/idea_result.pt'
+    template = 'novaideo:views/templates/idea_list_element.pt'
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')
+    attached_files = CompositeMultipleProperty('attached_files')
 
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)

@@ -24,7 +24,8 @@ class CreateIdeaView(FormView):
                     ['title',
                      'description',
                      'keywords',
-                     'text'])
+                     'text',
+                     'attached_files'])
     behaviors = [CreateIdea, Cancel]
     formid = 'formcreateidea'
     name='createidea'

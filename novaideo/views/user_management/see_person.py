@@ -21,8 +21,6 @@ class SeePersonView(BasicView):
     behaviors = [SeePerson]
     template = 'novaideo:views/user_management/templates/see_person.pt'
     viewid = 'seeperson'
-    requirements = {'css_links': [],
-                    'js_links': ['novaideo:static/js/novaideo.js']}
 
 
     def update(self):
@@ -51,7 +49,6 @@ class SeePersonView(BasicView):
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
-        result = merge_dicts(self.requirements_copy, result)
         return result
 
 

@@ -70,7 +70,7 @@ def duplicate_roles_validation(process, context):
 
 def duplicate_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) and \
-           (has_any_roles(roles=(('Owner', context), )) or 'published' in context.state)
+           ((has_any_roles(roles=(('Owner', context), )) and not ('abandoned' in context.state)) or 'published' in context.state)
 
 
 def duplicate_state_validation(process, context):
@@ -78,6 +78,7 @@ def duplicate_state_validation(process, context):
 
 
 class DuplicateIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     context = Iidea
     relation_validation = duplicate_relation_validation
     roles_validation = duplicate_roles_validation
@@ -96,9 +97,13 @@ class DuplicateIdea(InfiniteCardinality):
 
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
+        files = [f['_object_data'] for f in appstruct.pop('attached_files')]
+        appstruct['attached_files'] = files
         copy_of_idea.set_data(appstruct)
         root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.addtoproperty('originalideas', context)
+        copy_of_idea.setproperty('version', None)
+        copy_of_idea.setproperty('nextversion', None)
         copy_of_idea.state = ['to work']
         copy_of_idea.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_idea), ))
@@ -122,10 +127,11 @@ def del_processsecurity_validation(process, context):
 
 
 def del_state_validation(process, context):
-    return ('to work' in context.state) or ('abandoned' in context.state)
+    return ('abandoned' in context.state)
 
 
 class DelIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     context = Iidea
     relation_validation = del_relation_validation
     roles_validation = del_roles_validation
@@ -155,10 +161,11 @@ def edit_processsecurity_validation(process, context):
 
 
 def edit_state_validation(process, context):
-    return True
+    return not ("published" in context.state) and not("Archived" in context.state)
 
 
 class EditIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     context = Iidea
     relation_validation = edit_relation_validation
     roles_validation = edit_roles_validation
@@ -170,6 +177,8 @@ class EditIdea(InfiniteCardinality):
         copy_of_idea = copy(context)
         copy_of_idea.created_at = datetime.datetime.today()
         copy_of_idea.modified_at = datetime.datetime.today()
+        files = [f['_object_data'] for f in appstruct.pop('attached_files')]
+        appstruct['attached_files'] = files
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
@@ -183,6 +192,8 @@ class EditIdea(InfiniteCardinality):
         root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_idea), ))
+        grant_roles(roles=(('Owner', context), ))#TODO attribute SubstanceD.Folder.moving
+        user = get_current()
         self.newcontext = copy_of_idea
         if 'abandoned' in copy_of_idea.state:
             recuperate_actions = getBusinessAction('ideamanagement',
@@ -222,6 +233,7 @@ def pub_state_validation(process, context):
 
 
 class PublishIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     context = Iidea
     relation_validation = pub_relation_validation
     roles_validation = pub_roles_validation
@@ -254,6 +266,7 @@ def ab_state_validation(process, context):
 
 
 class AbandonIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     context = Iidea
     relation_validation = ab_relation_validation
     roles_validation = ab_roles_validation
@@ -286,6 +299,7 @@ def re_state_validation(process, context):
 
 
 class RecuperateIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     context = Iidea
     relation_validation = re_relation_validation
     roles_validation = re_roles_validation
@@ -453,6 +467,37 @@ class SeeIdea(InfiniteCardinality):
     title = _('Details')
     context = Iidea
     actionType = ActionType.automatic
+    relation_validation = seeidea_relation_validation
+    roles_validation = seeidea_roles_validation
+    processsecurity_validation = seeidea_processsecurity_validation
+    state_validation = seeidea_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def seecompare_relation_validation(process, context):
+    return True
+
+
+def seecompare_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context),))
+
+
+def seecompare_processsecurity_validation(process, context):
+    return getattr(context, 'version', None) is not None
+
+
+def seecompare_state_validation(process, context):
+    return True
+
+
+class CompareIdea(InfiniteCardinality):
+    title = _('Compare')
+    context = Iidea
     relation_validation = seeidea_relation_validation
     roles_validation = seeidea_roles_validation
     processsecurity_validation = seeidea_processsecurity_validation
