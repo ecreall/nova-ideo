@@ -5,12 +5,13 @@ from pyramid.httpexceptions import HTTPFound
 from dace.util import (
     getSite,
     getBusinessAction,
-    copy)
+    copy,
+    find_entities)
 from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
 from dace.processinstance.activity import InfiniteCardinality, ActionType
 
 from novaideo.ips.mailer import mailer_send
-from novaideo.content.interface import INovaIdeoApplication, Iidea
+from novaideo.content.interface import INovaIdeoApplication, Iidea, ICorrelableEntity
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.mail import PRESENTATION_IDEA_MESSAGE
 from novaideo import _
@@ -161,7 +162,7 @@ def edit_processsecurity_validation(process, context):
 
 
 def edit_state_validation(process, context):
-    return not ("published" in context.state) and not("Archived" in context.state)
+    return not ("published" in context.state) and not("deprecated" in context.state)
 
 
 class EditIdea(InfiniteCardinality):
@@ -187,7 +188,7 @@ class EditIdea(InfiniteCardinality):
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
         copy_of_idea.set_data(appstruct)
-        context.state = ['Archived']
+        context.state = ['deprecated']
         copy_of_idea.setproperty('version', context)
         root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.setproperty('author', get_current())
@@ -420,7 +421,10 @@ def associate_roles_validation(process, context):
 
 
 def associate_processsecurity_validation(process, context):
+    entities = find_entities([ICorrelableEntity])
+    values = [(i, i.title) for i in entities if not(i is context) and i.actions]
     return global_user_processsecurity(process, context) and \
+           values and \
            (has_any_roles(roles=(('Owner', context),)) or \
            (has_any_roles(roles=('Member',)) and 'published' in context.state))
 
@@ -439,6 +443,7 @@ class Associate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         correlation = appstruct['_object_data']
         correlation.setproperty('source', context)
+        correlation.setproperty('author', get_current())
         root = getSite()
         root.addtoproperty('correlations', correlation)
         self.newcontext = correlation
@@ -479,29 +484,29 @@ class SeeIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-def seecompare_relation_validation(process, context):
+def compare_relation_validation(process, context):
     return True
 
 
-def seecompare_roles_validation(process, context):
+def compare_roles_validation(process, context):
     return has_any_roles(roles=(('Owner', context),))
 
 
-def seecompare_processsecurity_validation(process, context):
+def compare_processsecurity_validation(process, context):
     return getattr(context, 'version', None) is not None
 
 
-def seecompare_state_validation(process, context):
+def compare_state_validation(process, context):
     return True
 
 
 class CompareIdea(InfiniteCardinality):
     title = _('Compare')
     context = Iidea
-    relation_validation = seeidea_relation_validation
-    roles_validation = seeidea_roles_validation
-    processsecurity_validation = seeidea_processsecurity_validation
-    state_validation = seeidea_state_validation
+    relation_validation = compare_relation_validation
+    roles_validation = compare_roles_validation
+    processsecurity_validation = compare_processsecurity_validation
+    state_validation = compare_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True
@@ -509,5 +514,39 @@ class CompareIdea(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
+def associate_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) and \
+           (has_any_roles(roles=(('Owner', context),)) or \
+           (has_any_roles(roles=('Member',)) and 'published' in context.state))
+           #getattr(get_current(), 'proposals', []) and \
+
+
+class AddToProposals(InfiniteCardinality):
+    context = Iidea
+    relation_validation = associate_relation_validation
+    roles_validation = associate_roles_validation
+    processsecurity_validation = associate_processsecurity_validation
+    state_validation = associate_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        proposals = appstruct['proposals']
+        root = getSite()
+        datas = {'author': get_current(),
+                 'target': context,
+                 'comment': appstruct['comment'],
+                 'intention': appstruct['intention']}
+        for proposal in proposals:
+            correlation = Correlation()
+            data['source'] = proposal
+            correlation.set_data(datas)
+            correlation.tags.extend('related_proposals', 'related_ideas')
+            correlation.type = 1
+            root.addtoproperty('correlations', correlation)
+
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(self.context, "@@index"))
 
 #TODO behaviors

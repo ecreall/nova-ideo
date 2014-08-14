@@ -13,6 +13,7 @@ from dace.descriptors import (
 from dace.util import getSite, allSubobjectsOfKind
 from pontus.schema import Schema
 from pontus.core import VisualisableElement
+from pontus.widget import SequenceWidget
 
 from novaideo import _
 from novaideo.content.interface import (
@@ -23,7 +24,7 @@ from novaideo.content.interface import (
     ICorrelableEntity)
 
 
-BATCH_DEFAULT_SIZE = 7
+BATCH_DEFAULT_SIZE = 5
 
 
 @implementer(ICommentable)
@@ -92,6 +93,7 @@ class SearchableEntitySchema(Schema):
              widget=keywords_choice,
              name='keyword'),
         default=default_keywords_choice,
+        widget=SequenceWidget(max_len=5, min_len=1),
         title=_('Keywords'),
         )
 

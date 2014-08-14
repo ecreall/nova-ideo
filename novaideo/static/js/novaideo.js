@@ -48,33 +48,13 @@ function init_switch() {
     init_switch = function(){};
 };
 
-
-$(document).ready(function(){
-  $("[name='globalmenuswitch']").bootstrapSwitch();
-
-  init_switch();
-
-  $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
-     menuSwitchChange(state, false);
-  });
-
-  $('nav a nav-control').on('click', function(){
-      $(".navbar-toggle").click();
-  });
-
-  $('.panel-collapse').on('hide.bs.collapse', function () {
-    $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-plus');
-  });
-
-  $('.panel-collapse').on('show.bs.collapse', function () {
-    $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-minus');
-  });
-  $('#results').infinitescroll({
-    navSelector  : "#results .batch",
+function initscroll(){
+  $('.results').infinitescroll({
+    navSelector  : ".results .batch",
                    // selector for the paged navigation (it will be hidden)
-    nextSelector : "#results .pager .next",
+    nextSelector : ".results .pager .next",
                    // selector for the NEXT link (to page 2)
-    itemSelector : "#results div.col-md-12",
+    itemSelector : ".results div.col-md-12",
                    // selector for all items you'll retrieve
     pathParse: function(path, next_page) {
        var parts = path.match(/^(.*?batch_num=)1(.*|$)/).slice(1);
@@ -89,5 +69,43 @@ $(document).ready(function(){
       finishedMsg: "<em>No more item.</em>"
     }
   });
+
+};
+
+
+$(document).ready(function(){
+  $("[name='globalmenuswitch']").bootstrapSwitch();
+
+  init_switch();
+
+  $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
+     menuSwitchChange(state, false);
+  });
+
+  $('.panel-collapse.collapse .results').attr('class', 'results-collapse');
+
+  $('.panel-collapse').on('hidden.bs.collapse', function () {
+      $(this).find('.result-collapse').attr('class', 'results-collapse');
+      $('.results').attr('infinitescroll', null)
+  });
+
+  $('.panel-collapse').on('shown.bs.collapse', function () {
+      $(this).find('.results-collapse').attr('class', 'results');
+      initscroll()
+  });
+
+  $('nav a nav-control').on('click', function(){
+      $(".navbar-toggle").click();
+  });
+
+  $('.panel-collapse').on('hide.bs.collapse', function () {
+    $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-plus');
+  });
+
+  $('.panel-collapse').on('show.bs.collapse', function () {
+    $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-minus');
+  });
+
+  initscroll();
 });
 

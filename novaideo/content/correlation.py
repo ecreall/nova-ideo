@@ -7,7 +7,7 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.descriptors import SharedUniqueProperty
-from dace.util import find_entities
+from dace.util import find_entities, getSite
 from pontus.core import VisualisableElementSchema
 from pontus.widget import Select2Widget
 from pontus.file import Object as ObjectType
@@ -28,6 +28,15 @@ def targets_choice(node, kw):
     return Select2Widget(values=values, multiple=True)
 
 
+
+@colander.deferred
+def intention_choice(node, kw):
+    root = getSite()
+    intentions = sorted(root.correlation_intentions)
+    values = [(i, i) for i in intentions ]
+    return Select2Widget(values=values)
+
+
 def context_is_a_correlation(context, request):
     return request.registry.content.istype(context, 'correlation')
 
@@ -38,9 +47,16 @@ class CorrelationSchema(VisualisableElementSchema):
         editing=context_is_a_correlation,
         )
 
+
+    intention = colander.SchemaNode(
+        colander.String(),
+        widget=intention_choice,
+        title=_('Intention'),
+        )
+
     comment = colander.SchemaNode(
         colander.String(),
-        validator=colander.Length(max=2000),
+        validator=colander.Length(max=500),
         widget=deform.widget.TextAreaWidget(rows=10, cols=60),
         )
 
@@ -60,6 +76,13 @@ class Correlation(Commentable):
     name = renamer()
     source = SharedUniqueProperty('source', 'source_correlations')
     target = SharedUniqueProperty('target', 'target_correlations')
+    author = SharedUniqueProperty('author')
+
+    def __init__(self, **kwargs):
+        super(Correlation, self).__init__(**kwargs)
+        self.set_data(kwargs)
+        self.type = 0
+        self.tags = []
 
     @property
     def ends(self):

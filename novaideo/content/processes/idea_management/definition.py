@@ -22,7 +22,8 @@ from .behaviors import (
     PresentIdea,
     Associate,
     SeeIdea,
-    CompareIdea)
+    CompareIdea,
+    AddToProposals)
 from novaideo import _
 
 
@@ -79,6 +80,12 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Associate the idea"),
                                        title=_("Associate"),
                                        groups=[]),
+
+                addtoproposals = ActivityDefinition(contexts=[AddToProposals],
+                                       description=_("Add the idea"),
+                                       title=_("Add the idea"),
+                                       groups=[]),
+
                 see = ActivityDefinition(contexts=[SeeIdea],
                                        description=_("Details"),
                                        title=_("Details"),
@@ -108,6 +115,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'associate'),
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('pg', 'compare'),
+                TransitionDefinition('pg', 'addtoproposals'),
                 TransitionDefinition('creat', 'eg'),
                 TransitionDefinition('duplicate', 'eg'),
                 TransitionDefinition('recuperate', 'eg'),
@@ -120,6 +128,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('associate', 'eg'),
                 TransitionDefinition('see', 'eg'),
                 TransitionDefinition('compare', 'eg'),
+                TransitionDefinition('addtoproposals', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
 

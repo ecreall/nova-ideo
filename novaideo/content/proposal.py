@@ -46,7 +46,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         widget= RichTextWidget(),
         )
 
-    ideas  = colander.SchemaNode(
+    related_ideas  = colander.SchemaNode(
         colander.Set(),
         widget=ideas_choice,
         title=_('Related ideas'),
@@ -64,9 +64,13 @@ class Proposal(Commentable, SearchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/proposal_result.pt'
     name = renamer()
     author = SharedUniqueProperty('author')
+    working_group = SharedUniqueProperty('working_group', 'proposal')
     tokens = CompositeMultipleProperty('tokens')
-    ideas = SharedMultipleProperty('ideas')
 
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
         self.set_data(kwargs)
+
+    @property
+    def related_ideas(self):
+        return [c.target for c in self.target_correlations if ((c.type==1) and ('related_ideas' in c.tags))]

@@ -197,8 +197,14 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     picture = CompositeUniqueProperty('picture')
     ideas = SharedMultipleProperty('ideas', 'author')
     contacts = SharedMultipleProperty('contacts')
+    working_groups = SharedMultipleProperty('working_groups', 'members')
 
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)
         kwargs.pop('password')
         self.set_data(kwargs)
+        self.title = self.first_name + ' ' + self.last_name
+
+    @property
+    def proposals(self):
+        return [wg.proposal for wg in self.working_groups]

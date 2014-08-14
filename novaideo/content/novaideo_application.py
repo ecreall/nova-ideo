@@ -24,6 +24,8 @@ default_titles = [_('Mr'), _('Madam'), _('Miss')]
 
 default_comment_intentions = [_('Ironie'), _('Humour'), _('Remarque')]
 
+default_correlation_intentions = [_('Ironie'), _('Humour'), _('Remarque')]
+
 default_idea_intentions = [_('Ammelioration'), _('Humour'), _('Ironie')]
 
 
@@ -145,6 +147,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
 class NovaIdeoApplication(VisualisableElement, Application):
     name = renamer()
     working_groups = CompositeMultipleProperty('working_groups')
+    proposals = CompositeMultipleProperty('proposals')
     organizations = CompositeMultipleProperty('organizations')
     invitations = CompositeMultipleProperty('invitations')
     ideas = CompositeMultipleProperty('ideas')
@@ -160,6 +163,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.tokens_mini = 7
         self.titles = default_titles
         self.comment_intentions = default_comment_intentions
+        self.correlation_intentions = default_correlation_intentions
         self.idea_intentions = default_idea_intentions
 
     @property

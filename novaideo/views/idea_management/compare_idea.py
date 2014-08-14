@@ -75,7 +75,7 @@ class CompareIdeaSchema(Schema):
 
 
 @view_config(
-    name='comparedea',
+    name='compareidea',
     context=Idea,
     renderer='pontus:templates/view.pt',
     )
@@ -84,8 +84,8 @@ class CompareIdeaView(FormView):
     title = _('Compare idea')
     schema = select(CompareIdeaSchema(), ['current_version', 'versions'])
     behaviors = [CompareIdea]
-    formid = 'formcomparedea'
-    name='comparedea'
+    formid = 'formcompareidea'
+    name='compareidea'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
 
 

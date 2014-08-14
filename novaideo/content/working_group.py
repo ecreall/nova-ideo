@@ -5,7 +5,7 @@ from substanced.util import renamer
 from substanced.schema import NameSchemaNode
 
 from dace.objectofcollaboration.entity import Entity
-from dace.descriptors import CompositeUniqueProperty
+from dace.descriptors import SharedMultipleProperty, SharedUniqueProperty
 from pontus.schema import omit
 from pontus.core import VisualisableElement, VisualisableElementSchema
 
@@ -24,11 +24,6 @@ class WorkingGroupSchema(VisualisableElementSchema):
         editing=context_is_a_workinggroup,
         )
 
-    proposal = omit(ProposalSchema(name=_('Proposal'),
-                                                factory=Proposal,
-                                                editable=True),
-                                                ['_csrf_token_'])
-
 
 @content(
     'workinggroup',
@@ -38,4 +33,5 @@ class WorkingGroupSchema(VisualisableElementSchema):
 class WorkingGroup(VisualisableElement, Entity):
     name = renamer()
     template = 'pontus:templates/visualisable_templates/object.pt'
-    proposal = CompositeUniqueProperty('proposal', 'myparent')
+    proposal = SharedUniqueProperty('proposal', 'working_group')
+    members = SharedMultipleProperty('members', 'working_groups')

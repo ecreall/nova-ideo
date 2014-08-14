@@ -101,3 +101,7 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)
         self.set_data(kwargs)
+
+    @property
+    def related_proposals(self):
+        return [c.source for c in self.source_correlations if ((c.type==1) and ('related_proposals' in c.tags))]
