@@ -39,9 +39,9 @@ class SeeMyParticipationsView(BasicView):
     def update(self):
         self.execute(None) 
         user = get_current()
-        objects = getattr(user, 'participations', [])
+        objects = [o for o in getattr(user, 'participations', []) if not('deprecated' in o.state)]
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results"
+        batch.target = "#results_participations"
         len_result = batch.seqlen
         result_body = []
         for o in batch:

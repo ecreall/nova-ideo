@@ -1,5 +1,7 @@
 from pyramid.view import view_config
 
+from substanced.util import Batch
+
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView, merge_dicts
@@ -8,6 +10,7 @@ from novaideo.content.processes.user_management.behaviors import  SeePerson
 from novaideo.content.person import Person
 from novaideo import _
 from novaideo.views.novaideo_view_manager.search import SearchResultView
+from novaideo.core import BATCH_DEFAULT_SIZE
 
 
 @view_config(
@@ -26,18 +29,22 @@ class SeePersonView(BasicView):
     def update(self):
         self.execute(None)
         user = self.context
-        ideas = [o for o in getattr(user, 'ideas', []) if o.actions]
-        len_result = len(ideas)
+        objects = [o for o in getattr(user, 'ideas', []) if o.actions]
+        batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
+        batch.target = "#results_ideas"
+        len_result = batch.seqlen
         result_body = []
         result = {}
         current_user = get_current()
-        for o in ideas:
+        for o in batch:
             object_values = {'object': o, 'current_user': current_user}
             body = self.content(result=object_values,
                     template=o.result_template)['body']
             result_body.append(body)
+
         values = {'bodies': result_body,
                   'length': len_result,
+                  'batch': batch
                   }
         ideas_body = self.content(result=values,
                 template=SearchResultView.template)['body']

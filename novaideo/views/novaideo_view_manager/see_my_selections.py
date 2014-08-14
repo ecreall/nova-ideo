@@ -39,10 +39,10 @@ class SeeMySelectionsView(BasicView):
     def update(self):
         self.execute(None) 
         user = get_current()
-        objects = getattr(user, 'selections', [])
+        objects = [o for o in getattr(user, 'selections', []) if not('deprecated' in o.state)]
         objects.extend(getattr(user, 'selections', []))
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results"
+        batch.target = "#results_selections"
         len_result = batch.seqlen
         result_body = []
         for o in batch:

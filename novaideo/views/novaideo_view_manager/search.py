@@ -176,6 +176,7 @@ class SearchResultView(BasicView):
         else:
             query = (query) & object_provides_index.any(interfaces)
 
+        query = (query) & states_index.notany(('deprecated',)) 
         resultset = query.execute()
         #if len_result > 2:
             #resultset = resultset.sort(title_index, raise_unsortable=False)

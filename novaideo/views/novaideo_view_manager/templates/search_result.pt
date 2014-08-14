@@ -1,9 +1,9 @@
 
 ${length} elements trouvés
 
-<div class="row">
-  <div tal:condition="bodies" id="results">
-    <div tal:condition="batch|nothing" metal:use-macro="request.sdiapi.get_macro('pontus:templates/batching.pt', 'batching')"/>
+<div class="row" tal:define="batch_value batch|nothing">
+  <div tal:condition="bodies" id="${(batch_value and batch_value.target.replace('#', '')) or 'results'}" class="results">
+    <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('pontus:templates/batching.pt', 'batching')"/>
     <div class="col-md-12">
       <div tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
     </div>
