@@ -1,0 +1,14 @@
+<h4 tal:condition="message">${message}</h4>
+
+<ul >
+  <tal:loop repeat="content_dict relatedcontents">
+    <li tal:define="correlation content_dict['correlation']; content content_dict['content']; url content_dict['url']">
+      <div>
+        <a tal:attributes="href url"><h3>${content.title} </h3></a> <span tal:condition="getattr(correlation, 'intention', None)">(${correlation.intention})</span>
+        <p>${correlation.comment}</p>
+        Ajoutée par <a tal:attributes="href request.resource_url(correlation.author, '@@index')">${((correlation.author is current_user) and 'Vous') or correlation.author.name}</a>, le ${correlation.modified_at.date()}
+      </div>
+    </li>
+  </tal:loop>
+</ul>
+
