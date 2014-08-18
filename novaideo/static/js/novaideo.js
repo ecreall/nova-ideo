@@ -106,6 +106,13 @@ $(document).ready(function(){
     $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-minus');
   });
 
+  $('.scroll-able.result-scroll').endlessScroll({
+      fireOnce: false,
+      callback: function(i, n, p) {
+        $(window).scroll()
+      }
+    });
+
   initscroll();
 });
 

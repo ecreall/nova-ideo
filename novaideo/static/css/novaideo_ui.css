@@ -40,3 +40,10 @@
     margin: 0 0 20px;
     padding: 0 11px;
 }
+
+.scroll-able {
+    border: 0;
+    height: 1600px;
+    overflow: auto;
+    padding: 0;
+}

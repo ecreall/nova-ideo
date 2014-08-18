@@ -7,6 +7,7 @@ from pyramid.threadlocal import get_current_registry
 from substanced.util import Batch
 
 from dace.util import find_catalog
+
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, allSubobjectsOfType
 from dace.objectofcollaboration.principal.util import get_current
@@ -22,6 +23,7 @@ from novaideo import _
 from novaideo.content.interface import Iidea, IProposal, IPerson
 from .widget import SearchTextInputWidget, SearchFormWidget
 from novaideo.core import BATCH_DEFAULT_SIZE
+from novaideo.core import can_access
 
 
 default_serchable_content = {'Idea': Iidea,
@@ -178,16 +180,14 @@ class SearchResultView(BasicView):
 
         query = (query) & states_index.notany(('deprecated',)) 
         resultset = query.execute()
-        #if len_result > 2:
-            #resultset = resultset.sort(title_index, raise_unsortable=False)
-
-        objects = [o for o in resultset.all() if o.actions]
+        user = get_current()
+        objects = [o for o in resultset.all() if can_access(user, o, self.request, root)] # TODO (if o.actions) replace by an other test
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results"
         len_result = batch.seqlen
         result_body = []
         for o in batch:
-            object_values = {'object':o, 'current_user': get_current()}
+            object_values = {'object':o, 'current_user': user}
             body = self.content(result=object_values, template=o.result_template)['body']
             result_body.append(body)
 
