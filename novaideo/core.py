@@ -13,7 +13,7 @@ from dace.descriptors import (
 from dace.util import getSite, allSubobjectsOfKind
 from pontus.schema import Schema
 from pontus.core import VisualisableElement
-from pontus.widget import SequenceWidget
+from pontus.widget import SequenceWidget, Select2WidgetCreateSearchChoice
 
 from novaideo import _
 from novaideo.content.interface import (
@@ -24,7 +24,20 @@ from novaideo.content.interface import (
     ICorrelableEntity)
 
 
+
 BATCH_DEFAULT_SIZE = 5
+
+
+def can_access(user, context, request, root):
+    provides =  context.__provides__.declared[0]
+    for a in root.acces_actions[provides].values():
+        process = a.process
+        if not a.processsecurity_validation.__func__(process, context):
+            continue
+
+        return True
+
+    return False
 
 
 @implementer(ICommentable)
@@ -69,8 +82,8 @@ def keywords_choice(node, kw):
     values = []
     root = getSite()
     prop = sorted(root.keywords, key=lambda p: p.title)
-    values = [i.title for i in prop]
-    return deform.widget.AutocompleteInputWidget(values=values)
+    values = [(i.title, i.title) for i in prop]
+    return Select2WidgetCreateSearchChoice(max_len=5, values=values, multiple=True)
 
 
 @colander.deferred
@@ -87,13 +100,9 @@ def default_keywords_choice(node, kw):
 class SearchableEntitySchema(Schema):
 
     keywords =  colander.SchemaNode(
-        colander.Sequence(),
-        colander.SchemaNode(
-             colander.String(),
-             widget=keywords_choice,
-             name='keyword'),
+        colander.Set(),
         default=default_keywords_choice,
-        widget=SequenceWidget(max_len=5, min_len=1),
+        widget=keywords_choice,
         title=_('Keywords'),
         )
 

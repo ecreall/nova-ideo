@@ -106,12 +106,9 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         )
 
     keywords =  colander.SchemaNode(
-        colander.Sequence(),
-        colander.SchemaNode(
-             colander.String(),
-             widget=keywords_choice,
-             name='Preference'),
+        colander.Set(),
         default=default_keywords_choice,
+        widget=keywords_choice,
         title=_('Preferences'),
         )
 

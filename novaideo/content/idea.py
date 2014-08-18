@@ -2,7 +2,11 @@
 import colander
 import deform.widget
 from zope.interface import implementer
+from persistent.list import PersistentList
+from pyramid.threadlocal import get_current_request
 
+from substanced.interfaces import IUserLocator
+from substanced.principal import DefaultUserLocator
 from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
@@ -101,7 +105,29 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)
         self.set_data(kwargs)
+        self.email_persons_contacted = PersistentList()
 
     @property
     def related_proposals(self):
         return [c.source for c in self.source_correlations if ((c.type==1) and ('related_proposals' in c.tags))]
+
+    @property
+    def persons_contacted(self):
+        request = get_current_request()
+        adapter = request.registry.queryMultiAdapter(
+                (self, request),
+                IUserLocator
+                )
+        if adapter is None:
+            adapter = DefaultUserLocator(self, request)
+
+        result = []
+        for email in self.email_persons_contacted:
+            user = adapter.get_user_by_email(email)
+            if user is not None:
+                result.append(user)
+            else:
+                result.append(email)
+
+        return set(result)
+

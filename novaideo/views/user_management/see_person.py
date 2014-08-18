@@ -29,7 +29,7 @@ class SeePersonView(BasicView):
     def update(self):
         self.execute(None)
         user = self.context
-        objects = [o for o in getattr(user, 'ideas', []) if o.actions and not('deprecated' in o.state)]
+        objects = [o for o in getattr(user, 'ideas', []) if not('deprecated' in o.state)]# TODO (if o.actions) replace by an other test
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_ideas"
         len_result = batch.seqlen

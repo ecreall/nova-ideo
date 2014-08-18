@@ -41,7 +41,7 @@ class RelatedProposalsView(BasicView):
 
     def update(self):
         user = get_current()
-        correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_proposals' in c.tags) and c.source.actions)]
+        correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_proposals' in c.tags))] # TODO (if c.source.actions) replace by an other test
         relatedproposals = []
         for c in correlations:
             proposals = c.targets

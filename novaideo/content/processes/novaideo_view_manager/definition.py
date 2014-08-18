@@ -28,7 +28,6 @@ from novaideo import _
 @process_definition(name='novaideoviewmanager', id='novaideoviewmanager')
 class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
     isUnique = True
-    isVolatile = True
 
     def __init__(self, **kwargs):
         super(NovaIdeoViewManager, self).__init__(**kwargs)

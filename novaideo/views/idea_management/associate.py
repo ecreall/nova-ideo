@@ -26,15 +26,15 @@ class RelatedContentsView(BasicView):
 
     def update(self):
         user = get_current()
-        correlations = [c for c in self.context.source_correlations if ((c.type==0) and c.source.actions)]
-        correlations_target = [c for c in self.context.target_correlations if ((c.type==0) and c.target.actions)]
+        correlations = [c for c in self.context.source_correlations if c.type==0]# TODO (if c.source.actions) replace by an other test
+        target_correlations = [c for c in self.context.target_correlations if c.type==0]# TODO (if c.target.actions) replace by an other test
         relatedcontents = []
         for c in correlations:
             contents = c.targets
             for content in contents:
                 relatedcontents.append({'content':content, 'url':content.url(self.request), 'correlation': c})
 
-        for c in correlations_target:
+        for c in target_correlations:
             content = c.source
             relatedcontents.append({'content':content, 'url':content.url(self.request), 'correlation': c})
 

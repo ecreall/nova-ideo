@@ -13,9 +13,13 @@ from dace.processinstance.activity import InfiniteCardinality, ActionType
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, Iidea, ICorrelableEntity
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.mail import PRESENTATION_IDEA_MESSAGE
+from novaideo.mail import PRESENTATION_IDEA_MESSAGE, PRESENTATION_IDEA_SUBJECT
 from novaideo import _
 
+try:
+      basestring
+except NameError:
+      basestring = str
 
 
 def createidea_roles_validation(process, context):
@@ -317,37 +321,44 @@ class PresentIdea(InfiniteCardinality):
     state_validation = present_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        members = appstruct['members']
-        exterior_emails = appstruct['exterior_emails']
+        send_to_me = appstruct['send_to_me']
+        members = list(appstruct['members'])
         user = get_current()
-        user_title=getattr(user, 'user_title',''),
+        if send_to_me:
+            members.append(user)
+
+        user_title=getattr(user, 'user_title','')
         user_first_name=getattr(user, 'first_name', user.name)
         user_last_name=getattr(user, 'last_name','')
         url = request.resource_url(context, "@@index")
+        presentation_subject = appstruct['subject']
+        presentation_message = appstruct['message']
+        subject = presentation_subject.format(idea_title=context.title)
         for member in members:
-            message = PRESENTATION_IDEA_MESSAGE.format(
-                member_title=getattr(user, 'user_title',''),
-                member_first_name=getattr(user, 'first_name', member.name),
-                member_last_name=getattr(user, 'last_name',''),
-                idea_url=url,
-                user_title=user_title,
-                user_first_name=user_first_name,
-                user_last_name=user_last_name
-                 )
-            mailer_send(subject='Présentation : '+context.title, recipients=[member.email], body=message)
+            recipient_title = ''
+            recipient_first_name = ''
+            recipient_last_name = ''
+            member_email = ''
+            if not isinstance(member, basestring):
+                recipient_title = getattr(member, 'user_title','')
+                recipient_first_name = getattr(member, 'first_name', member.name)
+                recipient_last_name = getattr(member, 'last_name','')
+                member_email = member.email
+            else:
+                member_email = member
 
-        for email in exterior_emails:
-            message = PRESENTATION_IDEA_MESSAGE.format(
-                member_title='',
-                member_first_name='',
-                member_last_name='',
+            message = presentation_message.format(
+                recipient_title=recipient_title,
+                recipient_first_name=recipient_first_name,
+                recipient_last_name=recipient_last_name,
                 idea_url=url,
-                user_title=user_title,
-                user_first_name=user_first_name,
-                user_last_name=user_last_name
+                my_title=user_title,
+                my_first_name=user_first_name,
+                my_last_name=user_last_name
                  )
-            mailer_send(subject='Présentation : '+context.title, recipients=[email], body=message)
-
+            mailer_send(subject=subject, recipients=[member_email], body=message)
+            if not (member is user):
+                context.email_persons_contacted.append(member_email)
 
         return True
 
@@ -380,8 +391,7 @@ class Associate(InfiniteCardinality):
 
 
 def seeidea_processsecurity_validation(process, context):
-    return (has_any_roles(roles=(('Owner', context),)) or 'published' in context.state)
-
+    return ('published' in context.state or has_any_roles(roles=(('Owner', context),)))
 
 class SeeIdea(InfiniteCardinality):
     title = _('Details')
