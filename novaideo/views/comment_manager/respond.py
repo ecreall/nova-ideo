@@ -23,7 +23,7 @@ from novaideo import _
 class RespondView(FormView):
 
     title = _('Respond')
-    schema = select(CommentSchema(factory=Comment, editable=True),['intention', 'comment', 'attached_files'])
+    schema = select(CommentSchema(factory=Comment, editable=True),['intention', 'comment'])
     behaviors = [Respond]
     formid = 'formrespond'
     name='respond'

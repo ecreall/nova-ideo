@@ -58,17 +58,22 @@
 }
 
 .commentulorigin {
-list-style:none;
-margin-left:0;
-padding-left:0;
+   list-style:none;
+   margin-left:0;
+   padding-left:0;
 }
 
 .commentli {
-margin-bottom:15px;/* à adapter */
+margin-bottom:15px;
+}
+
+.commentli p {
+    margin: 16px 0 0;
 }
 
 .commentul {
-list-style:none;
-margin-left:40px;
-padding-left:0;
+   list-style:none;
+   margin-left:40px;
+   padding-left:0;
 }
+

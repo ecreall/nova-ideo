@@ -26,7 +26,6 @@ class CommentsView(BasicView):
     viewid = 'comments'
 
     def _datetimedelta(self, date):
-        s = 13420
         now = datetime.datetime.now()
         delta = now - date 
         hours, remainder = divmod(delta.seconds, 3600)
@@ -45,14 +44,6 @@ class CommentsView(BasicView):
             result['seconds'] = seconds
 
         return result
-
-    def _get_files(self, comment):
-        files = getattr(comment, 'attached_files', [])
-        files_urls = []
-        for f in files:
-            files_urls.append({'title':f.title, 'url':f.url(self.request)})
-
-        return files_urls
 
     def _rendre_comments(self, comments, origin=False):
         all_messages = {}
@@ -106,7 +97,7 @@ class CommentsView(BasicView):
 class CommentIdeaFormView(FormView):
 
     title = _('Comment')
-    schema = select(CommentSchema(factory=Comment, editable=True),['intention', 'comment', 'attached_files'])
+    schema = select(CommentSchema(factory=Comment, editable=True),['intention', 'comment'])
     behaviors = [CommentIdea]
     formid = 'formcommentidea'
     name='commentideaform'

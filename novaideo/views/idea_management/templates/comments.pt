@@ -6,28 +6,17 @@
           <img tal:condition="comment.author.picture is None" tal:attributes="src 'http://www.websco.fr/images/slides/User-green-icon.png'" width="60"/>
           <div class="media-body" style="width:auto;">
             <small>
-              <a tal:attributes="href request.resource_url(comment.author, '@@index')">${comment.author.name}</a> - Il y a 
-              <span tal:condition="'days' in diff">${diff['days']} jour(s)</span> 
-              <span tal:condition="'hours' in diff">${diff['hours']} heur(s)</span> 
-              <span tal:condition="'minutes' in diff">${diff['minutes']} minute(s)</span>
-              <span tal:condition="'seconds' in diff">${diff['seconds']} seconde(s)</span> - Son intention: 
+              <a tal:attributes="href request.resource_url(comment.author, '@@index')">${comment.author.name}</a> - 
+              <div  tal:omit-tag="" tal:condition="diff">Il y a 
+                <span tal:condition="'days' in diff">${diff['days']} jour(s)</span> 
+                <span tal:condition="'hours' in diff">${diff['hours']} heur(s)</span> 
+                <span tal:condition="'minutes' in diff">${diff['minutes']} minute(s)</span>
+                <span tal:condition="len(diff.keys()) == 1 and 'seconds' in diff">${diff['seconds']} seconde(s)</span>
+              </div>
+              <span tal:condition="len(diff.keys()) == 0">Maintenant</span> - Son intention: 
               <span tal:condition="getattr(comment, 'intention', None)">${comment.intention}</span>
             </small>
             <p>${comment.comment}</p>
-            <div id="comments_files" tal:define="files view._get_files(comment)">
-             <small>
-                <blockquote class="attached_files">
-                  <dl >
-                  <dt tal:condition="len(files)>1">Pièces jointes:</dt><dt tal:condition="len(files)==1">Pièce jointe:</dt>
-                  <dd tal:condition="files">
-                    <tal:loop repeat="f files">
-                      <a tal:attributes="href f['url']">${f['title']}</a>
-                     <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
-                    </tal:loop>
-                  </dd>
-               </blockquote>
-              </small>
-            </div>
             <div tal:condition="'commentaction' in item"  id="commentaction">
                 <div tal:omit-tag="" tal:define="commentaction item['commentaction']">
                  <a id="${commentaction['action_id']}-btn" 

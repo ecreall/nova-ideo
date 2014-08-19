@@ -42,18 +42,6 @@ class CommentSchema(VisualisableElementSchema):
         widget=deform.widget.TextAreaWidget(rows=10, cols=60),
         )
 
-    attached_files = colander.SchemaNode(
-        colander.Sequence(),
-        colander.SchemaNode(
-            ObjectData(File),
-            name=_("File"),
-            widget= FileWidget()
-            ),
-        widget=SequenceWidget(),
-        missing=[],
-        title=_('Files'),
-        )
-
     intention = colander.SchemaNode(
         colander.String(),
         widget=intention_choice,
@@ -69,7 +57,6 @@ class CommentSchema(VisualisableElementSchema):
 class Comment(Commentable):
     name = renamer()
     author = SharedUniqueProperty('author')
-    attached_files = CompositeMultipleProperty('attached_files')
 
     def __init__(self, **kwargs):
         super(Comment, self).__init__(**kwargs)
