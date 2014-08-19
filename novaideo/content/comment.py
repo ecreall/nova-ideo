@@ -75,6 +75,14 @@ class Comment(Commentable):
         super(Comment, self).__init__(**kwargs)
         self.set_data(kwargs)
 
+    @property
+    def subject(self):
+        if not isinstance(self.__parent__, Comment):
+            return self.__parent__
+        else:
+            return self.__parent__.subject 
+
+
 class AddCommentSchema(Schema):
 
     comment = omit(CommentSchema(factory=Comment,

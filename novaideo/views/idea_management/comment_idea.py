@@ -54,7 +54,7 @@ class CommentsView(BasicView):
 
         return files_urls
 
-    def _rendre_comments(self, comments):
+    def _rendre_comments(self, comments, origin=False):
         all_messages = {}
         isactive = False
         all_resources = {}
@@ -64,7 +64,7 @@ class CommentsView(BasicView):
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
         for comment in comments:
             comment_data = {'comment':comment}
-            action_updated, messages, resources, actions = dace_ui_api._actions(self.request, comment, 'ideamanagement', 'comment')
+            action_updated, messages, resources, actions = dace_ui_api._actions(self.request, comment, 'commentmanagement', 'respond')
             if action_updated and not isactive:
                 isactive = True
 
@@ -86,13 +86,14 @@ class CommentsView(BasicView):
         values = {
                 'comments': all_comments,
                 'view': self,
+                'origin':origin
                }
         body = self.content(result=values, template=self.template)['body']
         return body, all_resources, all_messages, isactive
 
     def update(self):
         result = {}
-        body, resources, messages, isactive =  self._rendre_comments(self.context.comments)
+        body, resources, messages, isactive =  self._rendre_comments(self.context.comments, True)
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive

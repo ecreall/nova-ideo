@@ -53,6 +53,22 @@
 
 .comments-scroll {
     border: 0;
-    height: 1600px;
+    height: 700px;
     padding: 0;
+}
+
+.commentulorigin {
+list-style:none;
+margin-left:0;
+padding-left:0;
+}
+
+.commentli {
+margin-bottom:15px;/* à adapter */
+}
+
+.commentul {
+list-style:none;
+margin-left:40px;
+padding-left:0;
 }

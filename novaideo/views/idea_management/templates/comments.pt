@@ -1,6 +1,6 @@
-<ul class="list-unstyled">
+<ul class="${(origin and 'commentulorigin') or 'commentul'}">
   <tal:loop repeat="item comments">
-    <li tal:define="diff view._datetimedelta(item['comment'].created_at); comment item['comment']">
+    <li class="commentli" tal:define="diff view._datetimedelta(item['comment'].created_at); comment item['comment']">
        <div class="thumbnail right-caption span4" >
           <img tal:condition="comment.author.picture is not None" tal:attributes="src comment.author.picture.url(request)"  width="60"/>
           <img tal:condition="comment.author.picture is None" tal:attributes="src 'http://www.websco.fr/images/slides/User-green-icon.png'" width="60"/>
@@ -31,7 +31,7 @@
             <div tal:condition="'commentaction' in item"  id="commentaction">
                 <div tal:omit-tag="" tal:define="commentaction item['commentaction']">
                  <a id="${commentaction['action_id']}-btn" 
-                      class="btn btn-primary btn-sm dace-action"
+                      class="btn btn-default btn-xs dace-action pull-right"
                       style="max-width: 300px;"
                       href="${commentaction['actionurl']}"   
                       data-toggle="modal"
@@ -39,7 +39,7 @@
                       data-target="#${commentaction['action_id']}"
                       data-updateurl="${commentaction['actionurl_update']}"
                       data-toreplay="${'toreplay' in commentaction}">
-                     <span class="glyphicon glyphicon-cog"></span> ${commentaction['action'].title}
+                     <span class="glyphicon glyphicon-pencil"></span> ${commentaction['action'].title}
                    </a>
                    <script tal:condition="'toreplay' in commentaction">       
                         $(document).ready(function(){
@@ -74,8 +74,8 @@
                 </div>
             </div>      
           </div>
-          <div tal:define="(body, r, m, a) view._rendre_comments(comment.comments)" tal:replace="structure body" />
        </div>
+      <div tal:define="(body, r, m, a) view._rendre_comments(comment.comments)" tal:replace="structure body" />
     </li>
   </tal:loop>
 </ul>
