@@ -295,7 +295,8 @@ class CommentIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
-        comment.setproperty('author', comment)
+        user = get_current()
+        comment.setproperty('author', user)
         return True
 
     def redirect(self, context, request, **kw):

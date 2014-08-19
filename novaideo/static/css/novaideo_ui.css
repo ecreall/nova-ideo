@@ -42,8 +42,17 @@
 }
 
 .scroll-able {
+    overflow: auto;
+}
+
+.result-scroll {
     border: 0;
     height: 1600px;
-    overflow: auto;
+    padding: 0;
+}
+
+.comments-scroll {
+    border: 0;
+    height: 1600px;
     padding: 0;
 }

@@ -1,0 +1,84 @@
+<ul class="list-unstyled">
+  <tal:loop repeat="item comments">
+    <li tal:define="diff view._datetimedelta(item['comment'].created_at); comment item['comment']">
+       <div class="thumbnail right-caption span4" >
+          <img tal:condition="comment.author.picture is not None" tal:attributes="src comment.author.picture.url(request)"  width="60"/>
+          <img tal:condition="comment.author.picture is None" tal:attributes="src 'http://www.websco.fr/images/slides/User-green-icon.png'" width="60"/>
+          <div class="media-body" style="width:auto;">
+            <small>
+              <a tal:attributes="href request.resource_url(comment.author, '@@index')">${comment.author.name}</a> - Il y a 
+              <span tal:condition="'days' in diff">${diff['days']} jour(s)</span> 
+              <span tal:condition="'hours' in diff">${diff['hours']} heur(s)</span> 
+              <span tal:condition="'minutes' in diff">${diff['minutes']} minute(s)</span>
+              <span tal:condition="'seconds' in diff">${diff['seconds']} seconde(s)</span> - Son intention: 
+              <span tal:condition="getattr(comment, 'intention', None)">${comment.intention}</span>
+            </small>
+            <p>${comment.comment}</p>
+            <div id="comments_files" tal:define="files view._get_files(comment)">
+             <small>
+                <blockquote class="attached_files">
+                  <dl >
+                  <dt tal:condition="len(files)>1">Pièces jointes:</dt><dt tal:condition="len(files)==1">Pièce jointe:</dt>
+                  <dd tal:condition="files">
+                    <tal:loop repeat="f files">
+                      <a tal:attributes="href f['url']">${f['title']}</a>
+                     <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+                    </tal:loop>
+                  </dd>
+               </blockquote>
+              </small>
+            </div>
+            <div tal:condition="'commentaction' in item"  id="commentaction">
+                <div tal:omit-tag="" tal:define="commentaction item['commentaction']">
+                 <a id="${commentaction['action_id']}-btn" 
+                      class="btn btn-primary btn-sm dace-action"
+                      style="max-width: 300px;"
+                      href="${commentaction['actionurl']}"   
+                      data-toggle="modal"
+                      data-actionid ="${commentaction['action_id']}" 
+                      data-target="#${commentaction['action_id']}"
+                      data-updateurl="${commentaction['actionurl_update']}"
+                      data-toreplay="${'toreplay' in commentaction}">
+                     <span class="glyphicon glyphicon-cog"></span> ${commentaction['action'].title}
+                   </a>
+                   <script tal:condition="'toreplay' in commentaction">       
+                        $(document).ready(function(){
+                             $(${'\'#'+commentaction['action_id']+'-btn\''}).click();
+                        });
+                   </script>  
+                   <script>
+                        $(document).ready(function(){
+                            $(${'\'#'+commentaction['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
+                               after_execution(${'\"'+commentaction['actionurl_after']+'\"'})
+                              })
+                        });
+                   </script>
+                <!-- Modal -->
+                   <div class="modal fade" 
+                       id="${commentaction['action_id']}-modal" 
+                       role="dialog" 
+                       aria-labelledby="myModalLabel" 
+                       aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                               <h4 class="modal-title" id="myModalLabel"> ${commentaction['action'].title}</h4>
+                           </div>
+                           <div class="modal-body">
+                              ${structure:commentaction['body']}
+                           </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+            </div>      
+          </div>
+          <div tal:define="(body, r, m, a) view._rendre_comments(comment.comments)" tal:replace="structure body" />
+       </div>
+    </li>
+  </tal:loop>
+</ul>
+
+
+

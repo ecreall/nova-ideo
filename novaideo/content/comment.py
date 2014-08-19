@@ -71,6 +71,9 @@ class Comment(Commentable):
     author = SharedUniqueProperty('author')
     attached_files = CompositeMultipleProperty('attached_files')
 
+    def __init__(self, **kwargs):
+        super(Comment, self).__init__(**kwargs)
+        self.set_data(kwargs)
 
 class AddCommentSchema(Schema):
 
