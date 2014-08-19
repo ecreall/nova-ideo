@@ -19,11 +19,9 @@ from novaideo.content.interface import IInvitation
 from novaideo.content.person import Person
 from novaideo.content.interface import IComment
 from novaideo import _
-from ..idea_management.behaviors import CommentIdea
-from ...idea import Idea
 
 
-validation_by_context = {Idea:CommentIdea} #TODO Proposals
+validation_by_context = {} #TODO Proposals
 
 
 def respond_relation_validation(process, context):

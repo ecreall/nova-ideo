@@ -15,6 +15,9 @@ from novaideo.content.interface import INovaIdeoApplication, Iidea, ICorrelableE
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.mail import PRESENTATION_IDEA_MESSAGE, PRESENTATION_IDEA_SUBJECT
 from novaideo import _
+from novaideo.content.idea import Idea
+from ..comment_management.behaviors import validation_by_context
+
 
 try:
       basestring
@@ -460,3 +463,5 @@ class AddToProposals(InfiniteCardinality):
         return HTTPFound(request.resource_url(self.context, "@@index"))
 
 #TODO behaviors
+
+validation_by_context[Idea] = CommentIdea
