@@ -17,6 +17,7 @@ from novaideo.mail import PRESENTATION_IDEA_MESSAGE, PRESENTATION_IDEA_SUBJECT
 from novaideo import _
 from novaideo.content.idea import Idea
 from ..comment_management.behaviors import validation_by_context
+from novaideo.core import acces_action
 
 
 try:
@@ -397,6 +398,7 @@ class Associate(InfiniteCardinality):
 def seeidea_processsecurity_validation(process, context):
     return ('published' in context.state or has_any_roles(roles=(('Owner', context),)))
 
+@acces_action()
 class SeeIdea(InfiniteCardinality):
     title = _('Details')
     context = Iidea

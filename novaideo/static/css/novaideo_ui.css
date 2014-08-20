@@ -52,9 +52,23 @@
 }
 
 .comments-scroll {
-    border: 0;
+    background-color: beige;
+    border: 1px solid threedlightshadow;
+    border-radius: 13px;
     height: 700px;
-    padding: 0;
+    padding: 7px;
+}
+
+.comment-data {
+    border-radius: 13px;
+}
+
+.comment-data, .img-thumbnail {
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.075);
+}
+
+.comment-data, .btn-xs, .btn-group-xs > .btn {
+    border-radius: 10px;
 }
 
 .commentulorigin {
@@ -77,3 +91,6 @@ margin-bottom:15px;
    padding-left:0;
 }
 
+#panel-actions-idea {
+    margin-top: 20px;
+}

@@ -113,6 +113,37 @@ $(document).ready(function(){
       }
     });
 
+    $(document).on('submit','.commentform', function( event ) {
+        var intention = $(this).find('.select2-chosen').text();
+        var comment = $(this).find('textarea').val();
+        var target = $($(this).parents('.panel-body').first()).find('.scroll-able.comments-scroll');
+        var dict_post = {};
+        var inputs = $($(event.target).children().filter('fieldset')[0]).children().filter('input');
+        var i = 0;
+        while(i<inputs.length){
+           dict_post[$(inputs[i]).attr('name')] = $(inputs[i]).val();
+           i++;
+        };
+        dict_post['comment'] = comment;
+        dict_post['intention'] = intention;
+        dict_post['Comment'] = '';
+        var url = event.target.action
+        $.post(url, dict_post, function(data) {
+                 var content = $(data).find('.scroll-able.comments-scroll');//TODO chercher le bon scrollable
+                 if (content){
+                     $(target).html($(content).html())
+                  }else{
+                     location.reload();
+                     return false
+                  }
+              });
+        event.preventDefault();
+   });
+
   initscroll();
 });
+
+
+
+
 

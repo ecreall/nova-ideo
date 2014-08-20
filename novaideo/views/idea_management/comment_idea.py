@@ -1,4 +1,5 @@
 import datetime
+import deform
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
@@ -102,6 +103,14 @@ class CommentIdeaFormView(FormView):
     formid = 'formcommentidea'
     name='commentideaform'
 
+    def before_update(self):
+        self.schema.widget = deform.widget.FormWidget(css_class='commentform')
+        view_name = self.request.view_name
+        if self.request.view_name == 'dace-ui-api-view':
+            view_name = 'commentidea'
+
+        self.action = self.request.resource_url(self.context, '@@'+view_name)
+    
 
 @view_config(
     name='commentidea',

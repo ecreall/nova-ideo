@@ -1,4 +1,5 @@
 import datetime
+import deform
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
@@ -25,11 +26,19 @@ class CommentsCorrelationView(CommentsView):
 
 class CommentCorrelationFormView(FormView):
 
-    title = _('Comment')
+    title = _('Comment form')
     schema = select(CommentSchema(factory=Comment, editable=True),['intention', 'comment'])
     behaviors = [CommentCorrelation]
     formid = 'formcommentcorrelation'
     name='commentcorrelationform'
+
+    def before_update(self):
+        self.schema.widget = deform.widget.FormWidget(css_class='commentform')
+        view_name = self.request.view_name
+        if self.request.view_name == 'dace-ui-api-view':
+            view_name = 'commentcorrelation'
+
+        self.action = self.request.resource_url(self.context, '@@'+view_name)
 
 
 @view_config(
@@ -41,7 +50,7 @@ class CommentCorrelationView(MultipleView):
     title = _('Comment')
     name='commentcorrelation'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    #item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CommentCorrelationFormView, CommentsCorrelationView)
 
 
