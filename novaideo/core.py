@@ -1,4 +1,5 @@
 import colander
+import venusian
 import deform.widget
 from zope.interface import implementer
 
@@ -10,7 +11,7 @@ from dace.descriptors import (
     CompositeUniqueProperty,
     SharedMultipleProperty,
     CompositeMultipleProperty)
-from dace.util import getSite, allSubobjectsOfKind
+from dace.util import getSite, allSubobjectsOfKind, acces_validation
 from pontus.schema import Schema
 from pontus.core import VisualisableElement
 from pontus.widget import SequenceWidget, Select2WidgetCreateSearchChoice
@@ -28,14 +29,28 @@ from novaideo.content.interface import (
 BATCH_DEFAULT_SIZE = 5
 
 
-def can_access(user, context, request, root):
-    provides =  context.__provides__.declared[0]
-    for a in root.acces_actions[provides].values():
-        process = a.process
-        if not a.processsecurity_validation.__func__(process, context):
-            continue
+novaideo_acces_actions = {}
 
-        return True
+
+class acces_action(object):
+
+    def __call__(self, wrapped):
+        def callback(scanner, name, ob):
+            if ob.context in novaideo_acces_actions:
+                novaideo_acces_actions[ob.context].append(ob)
+            else: 
+                novaideo_acces_actions[ob.context] = [ob]
+ 
+        venusian.attach(wrapped, callback)
+        return wrapped
+
+
+def can_access(user, context, request, root):
+    declared = context.__provides__.declared[0]
+    if declared in novaideo_acces_actions:
+        for action in novaideo_acces_actions[declared]:
+            if action.processsecurity_validation.__func__(None, context):
+                return True
 
     return False
 

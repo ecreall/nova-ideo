@@ -14,6 +14,7 @@ from novaideo.content.interface import INovaIdeoApplication, IOrganization
 from novaideo.content.organization import Organization
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
+from novaideo.core import acces_action
 
 
 def add_relation_validation(process, context):
@@ -152,31 +153,18 @@ class SeeOrganizations(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
-def see_relation_validation(process, context):
-    return True
-
-
-def see_roles_validation(process, context):
-    return has_any_roles(roles=('Collaborator',))
-
 
 def see_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity(process, context) and has_any_roles(roles=('Member',))
 
 
-def see_state_validation(process, context):
-    return True
-
-
+@acces_action()
 class SeeOrganization(InfiniteCardinality):
     isSequential = False
     title = _('Details')
     actionType = ActionType.automatic
     context = IOrganization
-    relation_validation = see_relation_validation
-    roles_validation = see_roles_validation
     processsecurity_validation = see_processsecurity_validation
-    state_validation = see_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True

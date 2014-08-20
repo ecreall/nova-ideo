@@ -17,7 +17,7 @@ from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IPerson
 from novaideo.mail import CONFIRMATION_MESSAGE
 from novaideo import _
-
+from novaideo.core import acces_action
 
 
 def global_user_processsecurity(process, context):
@@ -218,30 +218,16 @@ class Activate(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-def seeperson_relation_validation(process, context):
-    return True
-
-
-def seeperson_roles_validation(process, context):
-    return True
-
-
 def seeperson_processsecurity_validation(process, context):
-    return True
-
-
-def seeperson_state_validation(process, context):
     return 'active' in context.state
 
 
+@acces_action()
 class SeePerson(InfiniteCardinality):
     title = _('Details')
     context = IPerson
     actionType = ActionType.automatic
-    relation_validation = seeperson_relation_validation
-    roles_validation = seeperson_roles_validation
     processsecurity_validation = seeperson_processsecurity_validation
-    state_validation = seeperson_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True

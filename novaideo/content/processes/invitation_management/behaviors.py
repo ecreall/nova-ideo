@@ -13,7 +13,7 @@ from novaideo.ips.mailer import mailer_send
 from novaideo.mail import INVITATION_MESSAGE
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
-
+from novaideo.core import acces_action
 
 def uploaduser_relation_validation(process, context):
     return True
@@ -132,31 +132,17 @@ class InviteUsers(InfiniteCardinality):
 
 
 
-def seeinv_relation_validation(process, context):
-    return True
-
-
-def seeinv_roles_validation(process, context):
-    return has_any_roles(roles=('Anonymous',)) and not has_any_roles(roles=('Administrator',))
-
 
 def seeinv_processsecurity_validation(process, context):
-    return len(context.invitations)>=1
+    return has_any_roles(roles=('Anonymous',)) and not has_any_roles(roles=('Administrator',))
 
-
-def seeinv_state_validation(process, context):
-    return True
-
-
+@acces_action()
 class SeeInvitation(InfiniteCardinality):
     isSequential = False
     title = _('Details')
     actionType = ActionType.automatic
     context = INovaIdeoApplication
-    relation_validation = seeinv_relation_validation
-    roles_validation = seeinv_roles_validation
     processsecurity_validation = seeinv_processsecurity_validation
-    state_validation = seeinv_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True

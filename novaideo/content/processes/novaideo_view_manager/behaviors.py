@@ -16,7 +16,7 @@ from pontus.schema import select, omit
 from novaideo.content.interface import INovaIdeoApplication
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
-
+from novaideo.core import acces_action
 
 def seeideas_relation_validation(process, context):
     return True
@@ -49,30 +49,15 @@ class SeeIdeas(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
-def search_relation_validation(process, context):
-    return True
-
-
-def search_roles_validation(process, context):
-    return True
-
-
 def search_processsecurity_validation(process, context):
     return True
 
-
-def search_state_validation(process, context):
-    return True
-
-
+@acces_action()
 class Search(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     actionType = ActionType.automatic
-    relation_validation = search_relation_validation
-    roles_validation = search_roles_validation
     processsecurity_validation = search_processsecurity_validation
-    state_validation = search_state_validation
 
     def start(self, context, request, appstruct, **kw):
         self.content_types = appstruct['content_types']

@@ -20,7 +20,7 @@ from novaideo.content.interface import ICorrelation
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
 from ..comment_management.behaviors import validation_by_context
-from novaideo.core import can_access
+from novaideo.core import can_access, acces_action
 
 
 
@@ -50,7 +50,6 @@ class CommentCorrelation(InfiniteCardinality):
     processsecurity_validation = comm_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        import pdb; pdb.set_trace()
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
         user = get_current()
@@ -60,12 +59,11 @@ class CommentCorrelation(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
-
+@acces_action()
 class SeeCorrelation(InfiniteCardinality):
     title = _('Details')
     context = ICorrelation
     actionType = ActionType.automatic
-    roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
@@ -76,4 +74,3 @@ class SeeCorrelation(InfiniteCardinality):
 
 #TODO behaviors
 validation_by_context[Correlation] = CommentCorrelation
-
