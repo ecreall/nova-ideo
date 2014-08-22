@@ -45,6 +45,7 @@ class EditIdeaActionsView(MultipleView):
 class EditIdeaView(MultipleView):
     title = _('Edit idea')
     name = 'editidea'
+    item_template = 'novaideo:views/templates/subview.pt'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (EditIdeaFormView, EditIdeaActionsView)
 
