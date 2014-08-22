@@ -3,7 +3,7 @@ import colander
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import find_entities
+from dace.util import find_entities, getSite
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
@@ -17,7 +17,12 @@ from novaideo.content.correlation import CorrelationSchema, Correlation
 from novaideo.content.idea import Idea
 from novaideo.content.interface import IProposal
 from novaideo import _
+from novaideo.core import can_access
 
+
+addtoproposals_message = {'0': u"""Pas de propositions utilisant l'dée""",
+                          '1': u"""Voir la proposition utilisant l'idée""",
+                          '*': u"""Voir les {len_proposals} propositions utilisant l'dée"""}
 
 
 @colander.deferred
@@ -40,8 +45,9 @@ class RelatedProposalsView(BasicView):
 
 
     def update(self):
+        root = getSite()
         user = get_current()
-        correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_proposals' in c.tags))] # TODO (if c.source.actions) replace by an other test
+        correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_proposals' in c.tags) and can_access(user, c, self.request, root))] # TODO (if c.source.actions) replace by an other test
         relatedproposals = []
         for c in correlations:
             proposals = c.targets
@@ -49,14 +55,11 @@ class RelatedProposalsView(BasicView):
                 relatedproposals.append({'content':proposal, 'url':proposal.url(self.request), 'correlation': c})
 
         len_proposals = len(relatedproposals)
-        message = ''
+        index = str(len_proposals)
         if len_proposals>1:
-            message = u"""Voir les {len} propositions utilisant l'idée""".format(len=len_proposals)
-        elif len_proposals == 0:
-            message = u"""Pas de propositions utilisant l'idée"""
-        else:   
-            message = u"""Voir la proposition utilisant l'idée"""
+            index = '*'
 
+        message = addtoproposals_message[index].format(len_proposals=len_proposals)
         result = {}
         values = {
                 'relatedcontents': relatedproposals,
@@ -94,6 +97,17 @@ class AddToProposalsView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (AddToProposalsFormView, RelatedProposalsView)
+
+    def get_message(self):
+        root = getSite()
+        user = get_current()
+        correlations = [c.targets for c in self.context.source_correlations if ((c.type==1) and ('related_proposals' in c.tags) and can_access(user, c, self.request, root))]
+        len_proposals = len(correlations)
+        index = str(len_proposals)
+        if len_proposals>1:
+            index = '*'
+        message = (addtoproposals_message[index]).format(len_proposals=len_proposals)
+        return message
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({AddToProposals:AddToProposalsView})

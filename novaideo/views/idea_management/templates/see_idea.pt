@@ -16,7 +16,7 @@
       </dd>
         <dt>Dernière modification</dt>
 	<dd>
-          ${idea.modified_at.date()} à ${idea.created_at.hour}:${idea.created_at.minute}:${idea.created_at.second} 
+          ${idea.modified_at.date()} à ${idea.created_at.hour}:${idea.created_at.minute}:${idea.created_at.second} par <a tal:attributes="href request.resource_url(idea.author, '@@index')">${((idea.author is current_user) and 'Vous') or idea.author.name}</a>
         </dd>
     </dl>
 </div>

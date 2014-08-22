@@ -20,6 +20,11 @@ from .add_to_proposals import targets_choice
 from novaideo.core import can_access
 
 
+associate_messages = {'0': u"""Pas de contenus asociés""",
+                      '1': u"""Voir le contenu asocié""",
+                      '*': u"""Voir les {lenassociated} contenus asociés"""}
+
+
 class RelatedContentsView(BasicView):
     title = _('Related contents')
     name = 'relatedcontents'
@@ -77,15 +82,11 @@ class RelatedContentsView(BasicView):
             self._update_data(messages, resources, all_messages, all_resources)
 
         len_contents = len(relatedcontents)
-        message = ''
+        index = str(len_contents)
         if len_contents>1:
-            message = u"""Voir les {len} contenus associés""".format(len=len_contents)
-        elif len_contents == 0:
-            message = u"""Pas de contenus associés"""
-        else:   
-            message = u"""Voir le contenu associé"""
+            index = '*'
 
-
+        message = associate_messages[index].format(lenassociated=len_contents)
         result = {}
         values = {
                 'relatedcontents': relatedcontents,
@@ -127,6 +128,20 @@ class AssociateView(MultipleView):
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (AssociateFormView, RelatedContentsView)
 
+    def get_message(self):
+        root = getSite()
+        user = get_current()
+        correlations = [c.targets for c in self.context.source_correlations if c.type==0 and can_access(user, c, self.request, root)]
+        targets  = [item for t in correlations for item in t]
+        sources = [c.source for c in self.context.target_correlations if c.type==0 and can_access(user, c, self.request, root)]
+        targets.extend(sources)
+        all_associated = set(targets)
+        lenassociated = len(all_associated)
+        index = str(lenassociated)
+        if lenassociated>1:
+            index = '*'
+        message = (associate_messages[index]).format(lenassociated=lenassociated)
+        return message
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Associate:AssociateView})

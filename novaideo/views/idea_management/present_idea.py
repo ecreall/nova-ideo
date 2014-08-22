@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import colander
 import deform
 from pyramid.view import view_config
@@ -25,6 +26,12 @@ except NameError:
       basestring = str
 
 
+
+presentidea_message = {'0': u"""Pas de personnes contactées""",
+                       '1': u"""Voir la personne contactée""",
+                       '*': u"""Voir les {len_persons_contacted} personnes contactées"""}
+
+
 class SetToView(BasicView):
     title = _('Sent to')
     name = 'sentto'
@@ -36,8 +43,15 @@ class SetToView(BasicView):
 
     def update(self):
         members = self.context.persons_contacted
+        len_members = len(members)
+        index = str(len_members)
+        if len_members>1:
+            index = '*'
+
+        message = presentidea_message[index].format(len_persons_contacted=len_members)
         result = {}
         values = {
+                'message': message,
                 'members': members,
                 'basestring': basestring,
                }
@@ -111,6 +125,14 @@ class PresentIdeaView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (PresentIdeaFormView, SetToView)
+
+    def get_message(self):
+        len_persons_contacted = len(self.context.persons_contacted)
+        index = str(len_persons_contacted)
+        if len_persons_contacted>1:
+            index = '*'
+        message = (presentidea_message[index]).format(len_persons_contacted=len_persons_contacted)
+        return message
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({PresentIdea:PresentIdeaView})

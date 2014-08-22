@@ -110,7 +110,11 @@ class CommentIdeaFormView(FormView):
             view_name = 'commentidea'
 
         self.action = self.request.resource_url(self.context, '@@'+view_name)
-    
+
+
+commentide_message = {'0': u"""Pas de fils de discussion""",
+                      '1': u"""Voir la fil de discussion""",
+                      '*': u"""Voir les {lencomments} fils de discussion"""} 
 
 @view_config(
     name='commentidea',
@@ -123,6 +127,14 @@ class CommentIdeaView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CommentIdeaFormView, CommentsView)
+
+    def get_message(self):
+        lencomments = len(self.context.comments)
+        index = str(lencomments)
+        if lencomments>1:
+            index = '*'
+        message = (commentide_message[index]).format(lencomments=lencomments)
+        return message
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CommentIdea:CommentIdeaView})

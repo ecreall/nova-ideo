@@ -1,11 +1,6 @@
-<div tal:omit-tag="" tal:define="memberslen len(members)">
-  <div tal:condition="memberslen==0">
-    L'idée n'est pas communiquée!
-  </div>
-
-  <div tal:condition="memberslen>=1">
-    <h3 tal:condition="memberslen>1">Voir les ${memberslen} personnes contactées</h3> 
-    <h3 tal:condition="memberslen==1">Voir la personne contactée</h3> 
+<div tal:omit-tag="" >
+  <h3>${message}</h3>
+  <div tal:condition="members">
     L'idée a été envoyée à: <tal:loop repeat="m members">
                             <a tal:condition="not isinstance(m, basestring)" tal:attributes="href request.resource_url(m, '@index')">${m.name}</a>
                             <span tal:condition="isinstance(m, basestring)">${m}</span>

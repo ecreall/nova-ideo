@@ -1,3 +1,4 @@
+import deform
 import datetime
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
@@ -27,6 +28,11 @@ class RespondView(FormView):
     behaviors = [Respond]
     formid = 'formrespond'
     name='respond'
+
+    def before_update(self):
+        self.schema.widget = deform.widget.FormWidget(css_class='respondform')
+        view_name = 'respond'
+        self.action = self.request.resource_url(self.context, '@@'+view_name)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Respond:RespondView})

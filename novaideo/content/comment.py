@@ -39,7 +39,7 @@ class CommentSchema(VisualisableElementSchema):
     comment = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=2000),
-        widget=deform.widget.TextAreaWidget(rows=10, cols=60),
+        widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         )
 
     intention = colander.SchemaNode(

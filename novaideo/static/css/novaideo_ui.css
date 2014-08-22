@@ -45,6 +45,12 @@
     overflow: auto;
 }
 
+.scroll_choice {
+
+    height: 70px;
+
+}
+
 .result-scroll {
     border: 0;
     height: 1600px;
@@ -93,4 +99,26 @@ margin-bottom:15px;
 
 #panel-actions-idea {
     margin-top: 20px;
+}
+
+del {
+background-color: red;
+}
+
+ins {
+background-color: springgreen;
+}
+
+.legend-carre-del{
+	width:20px;
+	height:20px;
+	background:red;
+        display: inline-block;; 
+}
+
+.legend-carre-ins{
+	width:20px;
+	height:20px;
+	background:springgreen;
+        display: inline-block;; 
 }

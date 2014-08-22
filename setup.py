@@ -17,7 +17,11 @@ requires = [
     'pyramid_tm',
     'substanced',
     'waitress',
-    'xlrd'
+    'xlrd', 
+    'diff-match-patch',
+    'htmldiff',
+    'Genshi',
+    'html5lib'
     ]
 
 setup(name='novaideo',
