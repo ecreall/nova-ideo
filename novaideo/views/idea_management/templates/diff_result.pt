@@ -1,0 +1,24 @@
+<div class="compare-result">
+<div tal:omit-tag="" tal:condition="version">
+<div class="jumbotron well">
+    <dl >
+        <dt>Résumé</dt>
+	<dd>${structure:descriptiondiff}</dd>
+      <dt tal:condition="keywordsdiff">Mots clés</dt>
+      <dd tal:condition="keywordsdiff">
+        <tal:loop repeat="k keywordsdiff">
+          <a tal:attributes="href request.resource_url(request.root, '', query={'text':k['title']})"><del tal:condition="k['state']=='del'">${k['title']}</del><ins tal:condition="k['state']=='ins'">${k['title']}</ins><span tal:condition="k['state']=='nothing'">${k['title']}</span></a>
+            <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+        </tal:loop>
+      </dd>
+    </dl>
+</div>
+
+${structure:textdiff}
+
+  <div id="legend">
+    <div><div class="legend-carre-ins"></div> : Texte ajouté dans ${idee.title}</div>
+    <div><div class="legend-carre-del"></div> : Texte supprimé dans ${idee.title}</div>
+  </div>
+ </div>
+</div>
