@@ -30,6 +30,7 @@ class DiffView(BasicView):
     title = _('Diff result')
     name = 'diffresult'
     viewid = 'diffresult'
+    validators = [CompareIdea.get_validator()]
     template = 'novaideo:views/idea_management/templates/diff_result.pt'
 
     def update(self):
