@@ -33,12 +33,14 @@ class CommentCorrelationFormView(FormView):
     name='commentcorrelationform'
 
     def before_update(self):
-        self.schema.widget = deform.widget.FormWidget(css_class='commentform')
+        formwidget = deform.widget.FormWidget(css_class='commentform')
+        formwidget.template = 'novaideo:views/templates/form.pt'
+        self.schema.widget = formwidget
         view_name = self.request.view_name
         if self.request.view_name == 'dace-ui-api-view':
             view_name = 'commentcorrelation'
 
-        self.action = self.request.resource_url(self.context, '@@'+view_name)
+        formwidget.ajax_url = self.request.resource_url(self.context, '@@'+view_name)
 
 
 @view_config(

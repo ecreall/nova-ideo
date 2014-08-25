@@ -157,12 +157,6 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         title=_('Organization'),
         )
 
-    contacts = colander.SchemaNode(
-        colander.Set(),
-        widget=contacts_choice,
-        default=default_contacts,
-        title=_('Contacts'),
-        )
 
     @invariant
     def person_name_invariant(self, appstruct):
@@ -193,7 +187,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     organization = SharedUniqueProperty('organization', 'members')
     picture = CompositeUniqueProperty('picture')
     ideas = SharedMultipleProperty('ideas', 'author')
-    contacts = SharedMultipleProperty('contacts')
+    selections = SharedMultipleProperty('selections')
     working_groups = SharedMultipleProperty('working_groups', 'members')
 
     def __init__(self, **kwargs):
@@ -205,3 +199,16 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     @property
     def proposals(self):
         return [wg.proposal for wg in self.working_groups]
+
+    @property
+    def contacts(self):
+        return [s for s in self.selections if isinstance(s, Person)]
+
+
+    @property
+    def contents(self):
+        result = self.ideas
+        result.extend(self.proposals)
+        #TODO 
+        return result
+    

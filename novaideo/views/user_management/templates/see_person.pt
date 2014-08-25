@@ -19,28 +19,25 @@
   </div>
 </div>
 
-<div id="contributions" class="panel-group">
-  <div tal:condition="ideas" class="panel panel-default">
-    <div class="panel-heading">
-      <a  href="#ideas" data-parent="#contributions" data-toggle="collapse" class="panel-title collapsed">
-	Ideas
-      </a>
-    </div>
-    <div class="panel-collapse collapse" id="ideas" style="height: 0px;">
-	<div  class="panel-body">
-	    ${structure:ideas}
-	</div>
-    </div>
+<div id="person_actions">
+  <div tal:condition="actions" class="btn-group btn-group-justified">
+        <tal:loop repeat="a actions">
+          <a tal:attributes="href a['url']" class="btn btn-default">${a['title']}</a>
+        </tal:loop>
   </div>
-  <div tal:condition="proposals" class="panel panel-default">
+
+</div>
+
+<div id="panel-contributions" class="panel-group">
+  <div tal:condition="contents" class="panel panel-default">
     <div class="panel-heading">
-      <a  href="#proposals" data-parent="#contributions" data-toggle="collapse" class="panel-title collapsed">
-	Proposals
+      <a  href="#contents" data-parent="#contributions" data-toggle="collapse" class="panel-title collapsed">
+	Contents
       </a>
     </div>
-    <div class="panel-collapse collapse" id="proposals" style="height: 0px;">
+    <div class="panel-collapse collapse" id="contents" style="height: 0px;">
 	<div  class="panel-body">
-	    ${structure:proposals}
+	    ${structure:contents}
 	</div>
     </div>
   </div>

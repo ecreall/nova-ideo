@@ -60,7 +60,7 @@ class CorrelationSchema(VisualisableElementSchema):
     comment = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=500),
-        widget=deform.widget.TextAreaWidget(rows=10, cols=60),
+        widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         )
 
     targets = colander.SchemaNode(

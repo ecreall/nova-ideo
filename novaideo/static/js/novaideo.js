@@ -81,7 +81,9 @@ $(document).ready(function(){
   $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
      menuSwitchChange(state, false);
   });
-
+  $('#ideatext p').on('select',function(event){
+               alert(event)
+     });
   $('.panel-collapse.collapse .results').attr('class', 'results-collapse');
 
   $('.panel-collapse').on('hidden.bs.collapse', function () {
@@ -121,13 +123,13 @@ $(document).ready(function(){
         var progress = parent.find('#progress');
         //POST dict
         var dict_post = {};
-        var inputs = $($(event.target).children().filter('fieldset')[0]).find('input[type|="checkbox"]');
+        var inputs = $($(event.target).children().filter('fieldset')[0]).find('input[type|="radio"]');
         var version = '';
         for (i=0; i<inputs.length; i++ ){
            if (inputs[i].checked){version = $(inputs[i]).val()};
         };
         dict_post['version'] = version;
-        var url = event.target.action;
+        var url = $(event.target).data('url');
         if (version !=''){
           progress.show();// TODO
           $(button).addClass('disabled');
@@ -180,7 +182,7 @@ $(document).ready(function(){
         dict_post['comment'] = comment;
         dict_post['intention'] = intention;
         dict_post[button.val()] = '';
-        var url = event.target.action;
+        var url = $(event.target).data('url');
         if (comment !='' && intention!=''){
           progress.show();// TODO
           $(button).addClass('disabled');
@@ -223,7 +225,7 @@ $(document).ready(function(){
         var parent = $($(this).parents('.panel-body').get(1));
         var modal = $(parent).find('.modal.fade:has(form[id|=\''+formid+'\'])');
         var parentform = parent.find('.commentform');
-        var urlparent = $(parentform).attr('action');
+        var urlparent = $(parentform).data('url');
 
         var target = parent.find('.scroll-able.comments-scroll');
         var commentmessageinfo = parent.find('#commentmessageinfo');
@@ -243,7 +245,7 @@ $(document).ready(function(){
         dict_post['intention'] = intention;
         dict_post[button.val()] = '';
 
-        var url = event.target.action;
+        var url = $(event.target).data('url');
         if (comment !='' && intention!=''){
           progress.show();// TODO
           $(modal).modal('hide');
@@ -280,4 +282,33 @@ $(document).ready(function(){
 });
 
 
+
+
+if(!window.Kolich){
+  Kolich = {};
+}
+
+Kolich.Selector = {};
+Kolich.Selector.getSelected = function(){
+  var t = '';
+  if(window.getSelection){
+    t = window.getSelection();
+  }else if(document.getSelection){
+    t = document.getSelection();
+  }else if(document.selection){
+    t = document.selection.createRange().text;
+  }
+  return t;
+}
+
+Kolich.Selector.mouseup = function(){
+  var st = Kolich.Selector.getSelected();
+  if(st!=''){
+    alert("You selected:\n"+st);
+  }
+}
+
+$(document).ready(function(){
+  $(document).bind("mouseup", Kolich.Selector.mouseup);
+});
 

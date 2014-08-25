@@ -47,7 +47,9 @@
 
 .scroll_choice {
 
-    height: 70px;
+    border: 1px solid threedlightshadow;
+    border-radius: 6px;
+    height: 132px;
 
 }
 
@@ -98,6 +100,10 @@ margin-bottom:15px;
 }
 
 #panel-actions-idea {
+    margin-top: 20px;
+}
+
+#panel-contributions {
     margin-top: 20px;
 }
 

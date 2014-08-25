@@ -30,9 +30,11 @@ class RespondView(FormView):
     name='respond'
 
     def before_update(self):
-        self.schema.widget = deform.widget.FormWidget(css_class='respondform')
+        formwidget = deform.widget.FormWidget(css_class='respondform')
+        formwidget.template = 'novaideo:views/templates/form.pt'
+        self.schema.widget = formwidget
         view_name = 'respond'
-        self.action = self.request.resource_url(self.context, '@@'+view_name)
+        formwidget.ajax_url = self.request.resource_url(self.context, '@@'+view_name)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Respond:RespondView})

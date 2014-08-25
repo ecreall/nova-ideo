@@ -97,6 +97,7 @@ def editsup_state_validation(process, context):
 
 
 class EditSuper(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     title = _('Edit')
     context = IPerson
     relation_validation = editsup_relation_validation
@@ -129,6 +130,7 @@ def edit_state_validation(process, context):
 
 
 class Edit(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     title = _('Edit')
     context = IPerson
     relation_validation = edit_relation_validation
@@ -169,6 +171,7 @@ def deactivate_state_validation(process, context):
 
 
 class Deactivate(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     title = _('Deactivate')
     context = IPerson
     relation_validation = deactivate_relation_validation
@@ -202,6 +205,7 @@ def activate_state_validation(process, context):
 
 
 class Activate(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     title = _('Activate')
     context = IPerson
     relation_validation = activate_relation_validation

@@ -5,7 +5,7 @@
     <li tal:define="correlation content_dict['correlation']; content content_dict['content']; url content_dict['url']">
       <div>
         <h4><a tal:attributes="href url">${content.title} </a> <span tal:condition="getattr(correlation, 'intention', None)">(${correlation.intention})</span></h4>
-        <small>Par <a tal:attributes="href request.resource_url(correlation.author, '@@index')">${((correlation.author is current_user) and 'Vous') or correlation.author.name}</a>, le ${correlation.modified_at.date()}</small>
+        <small>Par <a tal:attributes="href request.resource_url(correlation.author, '@@index')">${((correlation.author is current_user) and 'Vous') or correlation.author.name}</a>, le <span tal:replace="layout.to_localized_time(correlation.modified_at, date_only=True)"/></small>
         <p>${correlation.comment}</p>
             <div tal:condition="'correlationaction' in content_dict"  id="correlationaction">
                 <div tal:omit-tag="" tal:define="correlationaction content_dict['correlationaction']">

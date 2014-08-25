@@ -14,6 +14,7 @@ from pontus.schema import select, Schema
 from pontus.widget import CheckboxChoiceWidget, RadioChoiceWidget
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
+from pontus.file import  Object as ObjectType
 
 from novaideo.content.processes.idea_management.behaviors import  CompareIdea
 from novaideo.content.idea import Idea
@@ -74,7 +75,7 @@ def version_choice(node, kw):
     values = [(i, i.get_view(request)) for i in current_version.history if not(i is current_version)]
     values = sorted(values, key=lambda v: v[0].modified_at, reverse=True) 
     widget = RadioChoiceWidget(values=values)
-    widget.template = 'novaideo:views/idea_management/templates/checkbox_choice.pt'
+    widget.template = 'novaideo:views/idea_management/templates/radio_choice.pt'
     return widget
 
 
@@ -106,7 +107,7 @@ class CompareIdeaSchema(Schema):
         )
 
     versions = colander.SchemaNode(
-        colander.Set(),
+        ObjectType(),
         widget=version_choice,
         title=_('Last versions')
         )
@@ -121,9 +122,11 @@ class CompareIdeaFormView(FormView):
     name='compareideaform'
 
     def before_update(self):
-        self.schema.widget = deform.widget.FormWidget(css_class='compareform')
+        formwidget = deform.widget.FormWidget(css_class='compareform')
+        formwidget.template = 'novaideo:views/templates/form.pt'
+        self.schema.widget = formwidget
         view_name = 'compareidea'
-        self.action = self.request.resource_url(self.context, '@@'+view_name)
+        formwidget.ajax_url = self.request.resource_url(self.context, '@@'+view_name)
 
 
 @view_config(

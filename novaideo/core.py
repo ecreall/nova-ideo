@@ -45,7 +45,7 @@ class acces_action(object):
         return wrapped
 
 
-def can_access(user, context, request, root):
+def can_access(user, context, request=None, root=None):
     declared = context.__provides__.declared[0]
     if declared in novaideo_acces_actions:
         for action in novaideo_acces_actions[declared]:

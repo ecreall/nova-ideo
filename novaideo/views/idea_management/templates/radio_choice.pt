@@ -1,8 +1,9 @@
 <div tal:define="oid oid|field.oid;
                  css_class css_class|field.widget.css_class;
                  style style|field.widget.style;
-                 inline getattr(field.widget, 'inline', False);"
+                 inline getattr(field.widget, 'inline', False)"
      tal:omit-tag="not inline">
+
   <div class="scroll-able scroll_choice" >
   ${field.start_rename()}
   <div tal:repeat="choice values | field.widget.values"
@@ -22,5 +23,5 @@
     </label>
   </div>
   ${field.end_rename()}
-<div>
+</div>
 </div>

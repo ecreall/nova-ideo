@@ -181,9 +181,11 @@ class SearchResultView(BasicView):
         query = (query) & states_index.notany(('deprecated',)) 
         resultset = query.execute()
         user = get_current()
-        objects = [o for o in resultset.all() if can_access(user, o, self.request, root)] # TODO (if o.actions) replace by an other test
-        batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
+        objects = [o for o in resultset.all() if can_access(user, o, self.request, root)]
+        url = self.request.resource_url(self.context, '', query={'content_types':content_types, 'text':appstruct['text']})
+        batch = Batch(objects, self.request, url=url, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results"
+        
         len_result = batch.seqlen
         result_body = []
         for o in batch:

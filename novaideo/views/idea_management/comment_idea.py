@@ -104,12 +104,14 @@ class CommentIdeaFormView(FormView):
     name='commentideaform'
 
     def before_update(self):
-        self.schema.widget = deform.widget.FormWidget(css_class='commentform')
+        formwidget = deform.widget.FormWidget(css_class='commentform')
+        formwidget.template = 'novaideo:views/templates/form.pt'
         view_name = self.request.view_name
         if self.request.view_name == 'dace-ui-api-view':
             view_name = 'commentidea'
 
-        self.action = self.request.resource_url(self.context, '@@'+view_name)
+        formwidget.ajax_url = self.request.resource_url(self.context, '@@'+view_name)
+        self.schema.widget = formwidget
 
 
 commentide_message = {'0': u"""Pas de fils de discussion""",
