@@ -437,12 +437,16 @@ def addtoproposals_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) and \
            (has_any_roles(roles=(('Owner', context),)) or \
            (has_any_roles(roles=('Member',)) and 'published' in context.state))
-           #getattr(get_current(), 'proposals', []) and \
+
+
+#def addtoproposals_state_validation(process, context):
+#    return 'published' in context.state
 
 
 class AddToProposals(InfiniteCardinality):
     context = Iidea
     processsecurity_validation = addtoproposals_processsecurity_validation
+    #state_validation = addtoproposals_state_validation
 
     def start(self, context, request, appstruct, **kw):
         proposals = appstruct['proposals']

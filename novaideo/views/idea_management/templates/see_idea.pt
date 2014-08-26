@@ -3,7 +3,7 @@
 <h3>${idea.title}</h3>
 </div>
 
-<div class="jumbotron well">
+<div class="jumbotron well idea-well">
     <dl >
         <dt>Résumé</dt>
 	<dd>${idea.description}</dd>

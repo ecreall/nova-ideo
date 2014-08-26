@@ -128,3 +128,30 @@ background-color: springgreen;
 	background:springgreen;
         display: inline-block;; 
 }
+
+.idea-well {
+    background-image: linear-gradient(to bottom, #effdea 0%, #dff0d8 100%);
+    border-color: #dff0d8;
+}
+
+.thumbnail.right-caption > #idea-image {
+    /**background-image: linear-gradient(to left, #effdea -100%, #93d91a 123%);**/
+    background-image: linear-gradient(to left, #adcce7 -100%, #adcce7 123%);
+    float: left;
+    height: 184px;
+    margin-left: -4px;
+    margin-right: 9px;
+    margin-top: -4px;
+    width: 100px;
+}
+
+.thumbnail.right-caption > #person-image {
+    /**background-image: linear-gradient(to left, #effdea -100%, #93d91a 123%);**/
+    background-image: linear-gradient(to left, #d3e1d3 -100%, #d3e1d3 123%);
+    float: left;
+    height: 144px;
+    margin-left: -4px;
+    margin-right: 9px;
+    margin-top: -4px;
+    width: 100px;
+}
