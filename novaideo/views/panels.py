@@ -12,12 +12,12 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMySelections,
     SeeMyParticipations,
     SeeMySupports)
-
+from novaideo.content.processes.proposal_management.behaviors import CreateProposal
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 
 user_menu_actions = {'menu1': [SeeMyContents, SeeMyParticipations],
                      'menu2': [SeeMySelections, SeeMySupports],
-                     'menu3': [CreateIdea]}  #TODO add CreateProposal...
+                     'menu3': [CreateIdea, CreateProposal]}  #TODO add CreateProposal...
 
 
 def _getaction(view, process_id, action_id):

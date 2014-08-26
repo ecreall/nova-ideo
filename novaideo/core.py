@@ -89,7 +89,7 @@ class VersionableEntity(Entity):
 @implementer(IDuplicableEntity)
 class DuplicableEntity(Entity):
 
-    originalideas = SharedMultipleProperty('originalideas')
+    originalentity = SharedMultipleProperty('originalentity')
 
 
 @colander.deferred

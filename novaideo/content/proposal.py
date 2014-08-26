@@ -6,6 +6,7 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.util import getSite
+from dace.objectofcollaboration.principal.util import get_current
 from dace.descriptors import (
     CompositeMultipleProperty,
     SharedUniqueProperty,
@@ -15,19 +16,21 @@ from pontus.widget import RichTextWidget,Select2Widget
 from pontus.core import VisualisableElementSchema
 
 from .interface import IProposal
-from novaideo.core import Commentable
+from novaideo.core import Commentable, can_access
 from novaideo import _
 from novaideo.core import (
     SearchableEntity,
     SearchableEntitySchema,
-    CorrelableEntity)
+    CorrelableEntity,
+    DuplicableEntity)
 
 
 @colander.deferred
 def ideas_choice(node, kw):
     root = getSite()
-    ideas = [i for i in root.ideas if 'published' in i.state]
-    values = [(i, i) for i in ideas]
+    user = get_current()
+    ideas = [i for i in root.ideas if can_access(user, i)]
+    values = [(i, i.title) for i in ideas]
     return Select2Widget(values=values, multiple=True)
 
 
@@ -41,7 +44,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         editing=context_is_a_proposal,
         )
 
-    body = colander.SchemaNode(
+    text = colander.SchemaNode(
         colander.String(),
         widget= RichTextWidget(),
         )
@@ -60,7 +63,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IProposal)
-class Proposal(Commentable, SearchableEntity, CorrelableEntity):
+class Proposal(Commentable, SearchableEntity, DuplicableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/proposal_result.pt'
     name = renamer()
     author = SharedUniqueProperty('author')

@@ -49,9 +49,9 @@ class DiffView(BasicView):
                  if k in self.context.keywords:
                      keywordsdiff.append({'title':k,'state':'nothing'})
                  else:
-                     keywordsdiff.append({'title':k,'state':'ins'})
+                     keywordsdiff.append({'title':k,'state':'del'})
                   
-             [keywordsdiff.append({'title':k,'state':'del'}) for k in self.context.keywords if k not in versionobj.keywords]
+             [keywordsdiff.append({'title':k,'state':'ins'}) for k in self.context.keywords if k not in versionobj.keywords]
 
         result = {}
         values = {

@@ -16,6 +16,7 @@ from ..user_management.behaviors import global_user_processsecurity
 from novaideo.mail import PRESENTATION_IDEA_MESSAGE, PRESENTATION_IDEA_SUBJECT
 from novaideo import _
 from novaideo.content.idea import Idea
+from novaideo.content.correlation import Correlation
 from ..comment_management.behaviors import validation_by_context
 from novaideo.core import acces_action
 
@@ -86,7 +87,7 @@ class DuplicateIdea(InfiniteCardinality):
         appstruct['attached_files'] = files
         copy_of_idea.set_data(appstruct)
         root.addtoproperty('ideas', copy_of_idea)
-        copy_of_idea.addtoproperty('originalideas', context)
+        copy_of_idea.setproperty('originalentity', context)
         copy_of_idea.setproperty('version', None)
         copy_of_idea.setproperty('nextversion', None)
         copy_of_idea.state = ['to work']
@@ -191,11 +192,10 @@ def pub_roles_validation(process, context):
 
 
 def pub_processsecurity_validation(process, context):
-    if getattr(context, 'originalideas', None):
-        orignial_ideas = getattr(context, 'originalideas')
-        for orignial_idea in orignial_ideas:
-            if orignial_idea.text == context.text:
-                return False
+    if getattr(context, 'originalentity', None):
+        originalentity = getattr(context, 'originalentity')
+        if originalentity.text == context.text:
+            return False
 
     return global_user_processsecurity(process, context)
 
@@ -449,24 +449,24 @@ class AddToProposals(InfiniteCardinality):
     #state_validation = addtoproposals_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        proposals = appstruct['proposals']
+        proposals = appstruct['targets']
         root = getSite()
         datas = {'author': get_current(),
-                 'target': context,
+                 'targets': [context],
                  'comment': appstruct['comment'],
                  'intention': appstruct['intention']}
         for proposal in proposals:
             correlation = Correlation()
-            data['source'] = proposal
+            datas['source'] = proposal
             correlation.set_data(datas)
-            correlation.tags.extend('related_proposals', 'related_ideas')
+            correlation.tags.extend(['related_proposals', 'related_ideas'])
             correlation.type = 1
             root.addtoproperty('correlations', correlation)
 
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.context, "@@index"))
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 #TODO behaviors
 

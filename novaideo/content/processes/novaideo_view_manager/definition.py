@@ -21,7 +21,8 @@ from .behaviors import (
     SeeMyContents,
     SeeMySelections,
     SeeMyParticipations,
-    SeeMySupports)
+    SeeMySupports,
+    SeeProposal)
 from novaideo import _
 
 
@@ -62,13 +63,19 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                                        description=_("See my supports"),
                                        title=_("My supports"),
                                        groups=[]),
+                seeproposal = ActivityDefinition(contexts=[SeeProposal],
+                                       description=_("Details"),
+                                       title=_("Details"),
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
         self.defineTransitions(
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'seeideas'),
+                TransitionDefinition('pg', 'seeproposal'),
                 TransitionDefinition('seeideas', 'eg'),
+                TransitionDefinition('seeproposal', 'eg'),
                 TransitionDefinition('pg', 'search'),
                 TransitionDefinition('search', 'eg'),
                 TransitionDefinition('pg', 'mycontents'),

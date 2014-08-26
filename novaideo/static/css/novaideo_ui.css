@@ -130,8 +130,8 @@ background-color: springgreen;
 }
 
 .idea-well {
-    background-image: linear-gradient(to bottom, #effdea 0%, #dff0d8 100%);
-    border-color: #dff0d8;
+    background-image: linear-gradient(to bottom, #adcce7 0%, #d2e8fd 100%);
+    border-color: #adcce7;
 }
 
 .thumbnail.right-caption > #idea-image {
@@ -146,7 +146,6 @@ background-color: springgreen;
 }
 
 .thumbnail.right-caption > #person-image {
-    /**background-image: linear-gradient(to left, #effdea -100%, #93d91a 123%);**/
     background-image: linear-gradient(to left, #d3e1d3 -100%, #d3e1d3 123%);
     float: left;
     height: 144px;
@@ -155,3 +154,15 @@ background-color: springgreen;
     margin-top: -4px;
     width: 100px;
 }
+
+.thumbnail.right-caption > #proposal-image {
+    background-image: linear-gradient(to left, #f0f0f0 -100%, #f0f0f0 123%);
+    float: left;
+    height: 144px;
+    margin-left: -4px;
+    margin-right: 9px;
+    margin-top: -4px;
+    width: 100px;
+}
+
+

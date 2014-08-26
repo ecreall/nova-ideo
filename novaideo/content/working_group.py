@@ -35,3 +35,4 @@ class WorkingGroup(VisualisableElement, Entity):
     template = 'pontus:templates/visualisable_templates/object.pt'
     proposal = SharedUniqueProperty('proposal', 'working_group')
     members = SharedMultipleProperty('members', 'working_groups')
+    wating_list = SharedMultipleProperty('wating_list')

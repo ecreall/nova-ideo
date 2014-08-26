@@ -1,6 +1,7 @@
 import colander
 import deform
 from zope.interface import implementer
+from persistent.list import PersistentList
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -85,7 +86,7 @@ class Correlation(Commentable):
         super(Correlation, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.type = 0
-        self.tags = []
+        self.tags = PersistentList()
 
     @property
     def ends(self):

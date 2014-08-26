@@ -47,12 +47,11 @@ class RelatedProposalsView(BasicView):
     def update(self):
         root = getSite()
         user = get_current()
-        correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_proposals' in c.tags) and can_access(user, c, self.request, root))] # TODO (if c.source.actions) replace by an other test
+        correlations = [c for c in self.context.target_correlations if ((c.type==1) and ('related_proposals' in c.tags) and can_access(user, c, self.request, root))] # TODO (if c.source.actions) replace by an other test
         relatedproposals = []
         for c in correlations:
-            proposals = c.targets
-            for proposal in proposals:
-                relatedproposals.append({'content':proposal, 'url':proposal.url(self.request), 'correlation': c})
+            proposal = c.source
+            relatedproposals.append({'content':proposal, 'url':proposal.url(self.request), 'correlation': c})
 
         len_proposals = len(relatedproposals)
         index = str(len_proposals)
@@ -99,9 +98,8 @@ class AddToProposalsView(MultipleView):
     views = (AddToProposalsFormView, RelatedProposalsView)
 
     def get_message(self):
-        root = getSite()
         user = get_current()
-        correlations = [c.targets for c in self.context.source_correlations if ((c.type==1) and ('related_proposals' in c.tags) and can_access(user, c, self.request, root))]
+        correlations = [c.targets for c in self.context.target_correlations if ((c.type==1) and ('related_proposals' in c.tags) and can_access(user, c))]
         len_proposals = len(correlations)
         index = str(len_proposals)
         if len_proposals>1:

@@ -13,7 +13,7 @@ from dace.processinstance.activity import (
 from pontus.view import BasicView
 from pontus.schema import select, omit
 
-from novaideo.content.interface import INovaIdeoApplication
+from novaideo.content.interface import INovaIdeoApplication, IProposal
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.core import acces_action
@@ -152,5 +152,23 @@ class SeeMySupports(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         return True
+
+def seeproposal_processsecurity_validation(process, context):
+    return has_any_roles(roles=(('Owner', context),)) or \
+           not ('draft' in context.state)
+
+
+@acces_action()
+class SeeProposal(InfiniteCardinality):
+    title = _('Details')
+    context = IProposal
+    actionType = ActionType.automatic
+    processsecurity_validation = seeproposal_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 #TODO behaviors

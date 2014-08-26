@@ -204,10 +204,14 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     def contacts(self):
         return [s for s in self.selections if isinstance(s, Person)]
 
+    @property
+    def participations(self):
+        result = list(self.proposals)
+        return result
 
     @property
     def contents(self):
-        result = self.ideas
+        result = list(self.ideas)
         result.extend(self.proposals)
         #TODO 
         return result
