@@ -99,9 +99,7 @@ class SearchView(FormView):
         if text is None:
             text = ''
 
-        if content_types is not None:
-            content_types = content_types.split(',')
-        else:
+        if content_types is None:
             content_types = default_serchable_content.keys()
 
         return {'content_types':content_types, 'text':text} 
