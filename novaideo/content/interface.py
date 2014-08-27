@@ -1,6 +1,27 @@
 from zope.interface import Interface
 
 
+
+class IVote(Interface):
+    pass
+
+
+class IBallotType(Interface):
+    pass
+
+
+class IReport(Interface):
+    pass
+
+
+class IBallot(Interface):
+    pass
+
+
+class IBallotBox(Interface):
+    pass
+
+
 class ICorrelableEntity(Interface):
     pass
 

@@ -32,3 +32,49 @@ ${structure:proposal.text}
   </div>
 
 </div>
+
+            <div tal:condition="'voteaction' in voteaction"  id="voteaction">
+                <div tal:omit-tag="" tal:define="voteaction voteaction['voteaction']">
+                 <a id="${voteaction['action_id']}-btn" 
+                      class="btn btn-default btn-xs dace-action pull-right"
+                      style="max-width: 300px;"
+                      href="${voteaction['actionurl']}"   
+                      data-toggle="modal"
+                      data-actionid ="${voteaction['action_id']}" 
+                      data-target="#${voteaction['action_id']}"
+                      data-updateurl="${voteaction['actionurl_update']}"
+                      data-toreplay="${'toreplay' in voteaction}">
+                     <span class="glyphicon glyphicon-pencil"></span> ${voteaction['action'].title}
+                   </a>
+                   <script >       
+                        $(document).ready(function(){
+                             $(${'\'#'+voteaction['action_id']+'-btn\''}).click();
+                        });
+                   </script>  
+                   <script>
+                        $(document).ready(function(){
+                            $(${'\'#'+voteaction['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
+                               after_execution(${'\"'+voteaction['actionurl_after']+'\"'})
+                              })
+                        });
+                   </script>
+                <!-- Modal -->
+                   <div class="modal fade" 
+                       id="${voteaction['action_id']}-modal" 
+                       role="dialog" 
+                       aria-labelledby="myModalLabel" 
+                       aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                               <h4 class="modal-title" id="myModalLabel"> ${voteaction['action'].title}</h4>
+                           </div>
+                           <div class="modal-body">
+                              ${structure:voteaction['body']}
+                           </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+            </div>

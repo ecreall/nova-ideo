@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 import datetime
+from datetime import timedelta
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import (
@@ -7,7 +8,7 @@ from dace.util import (
     getBusinessAction,
     copy,
     find_entities)
-from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
+from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current, revoke_roles
 from dace.processinstance.activity import InfiniteCardinality, ActionType, LimitedCardinality, ElementaryAction
 
 from novaideo.ips.mailer import mailer_send
@@ -20,6 +21,7 @@ from ..comment_management.behaviors import validation_by_context
 from novaideo.core import acces_action
 from novaideo.content.correlation import Correlation
 from novaideo.content.working_group import WorkingGroup
+from novaideo.content.ballot import Ballot
 
 
 try:
@@ -116,7 +118,12 @@ class SubmitProposal(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('draft')
-        context.state.append('first decision')
+        root = getSite()
+        if root.participants_mini > 1:
+            context.state.append('open to a working group')
+        else:
+            context.state.append('votes for publishing')
+        
         return True
 
     def redirect(self, context, request, **kw):
@@ -205,7 +212,7 @@ def pub_roles_validation(process, context):
 
 def pub_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and ('amendable' in context.state or 'first decision' in context.state)
+    return 'active' in wg.state and ('amendable' in context.state or 'votes for publishing' in context.state)
 
 
 class PublishProposal(ElementaryAction):
@@ -216,7 +223,7 @@ class PublishProposal(ElementaryAction):
     state_validation = pub_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('draft')
+        context.state.remove('votes for publishing')
         context.state.append('published')
         return True
 
@@ -432,39 +439,28 @@ def decision_relation_validation(process, context):
 
 
 def decision_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context),))
-
-
-def decision_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return has_any_roles(roles=('Member',))#System
 
 
 def decision_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and 'first decision' in context.state
+    return 'active' in wg.state and 'votes for publishing' in context.state
 
 
-def decision_cardinality(process):
-    return 3
-
-class FirstPublishDecision(LimitedCardinality):
-    isSequential = False
-    loopCardinality = decision_cardinality
+class FirstPublishDecision(ElementaryAction):
+    style = 'button' #TODO add style abstract class
     context = IProposal
     relation_validation = decision_relation_validation
     roles_validation = decision_roles_validation
-    processsecurity_validation = decision_processsecurity_validation
     state_validation = decision_state_validation
 
-    def __init__(self, workitem, **kwargs):
-        super(FirstPublishDecision, self).__init__(workitem, **kwargs)
-        proposal = self.process.execution_context.created_entity('proposal')
-        members = proposal.working_group.members[:3]
-        self.local_assigned_to.append(members[self.item])
 
     def start(self, context, request, appstruct, **kw):
         #TODO
         return True
+
+    def execute(self, context, request, appstruct, **kw):
+        super(FirstPublishDecision, self).execute(context, request, appstruct, **kw)
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -485,7 +481,7 @@ def withdraw_processsecurity_validation(process, context):
 
 def withdraw_state_validation(process, context):
     wg = context.working_group
-    return  'amendable' in context.state or 'first decision' in context.state
+    return  'amendable' in context.state
 
 
 class Withdraw(InfiniteCardinality):
@@ -498,7 +494,9 @@ class Withdraw(InfiniteCardinality):
     state_validation = withdraw_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #TODO
+        user = get_current()
+        wg = context.working_group
+        wg.delproperty('wating_list', user)
         return True
 
     def redirect(self, context, request, **kw):
@@ -518,8 +516,7 @@ def resign_processsecurity_validation(process, context):
 
 
 def resign_state_validation(process, context):
-    wg = context.working_group
-    return  'amendable' in context.state
+    return  True#'amendable' in context.state or 'open to a working group' in context.state #TODO
 
 
 class Resign(InfiniteCardinality):
@@ -531,8 +528,34 @@ class Resign(InfiniteCardinality):
     processsecurity_validation = resign_processsecurity_validation
     state_validation = resign_state_validation
 
+    def _get_next_user(self, users, root):
+        for user in users:
+            if 'active' in user.state and len(user.working_groups) < root.participations_maxi:
+                return user
+
+        return None 
+
     def start(self, context, request, appstruct, **kw):
-        #TODO
+        root = getSite()
+        user = get_current()
+        wg = context.working_group
+        wg.delproperty('members', user)
+        revoke_roles(user, (('Participant', context),))
+        if wg.wating_list:
+            next_user = self._get_next_user(wg.wating_list, root)
+            if next_user is not None:
+                wg.delproperty('wating_list', next_user)
+                wg.addtoproperty('members', next_user)
+                grant_roles(next_user, (('Participant', context),))
+                #TODO send mail to next_user
+
+        participants = wg.members
+        len_participants = len(participants)
+        if len_participants < root.participants_mini:
+            context.state = ['open to a working group']
+            wg.state.remove('active')
+            wg.state.append('deactivated')
+
         return True
 
     def redirect(self, context, request, **kw):
@@ -549,25 +572,46 @@ def participate_roles_validation(process, context):
 
 def participate_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and not(user in context.working_group.wating_list)
+    root = getSite()
+    return global_user_processsecurity(process, context) and \
+           not(user in context.working_group.wating_list) and \
+           len(user.working_groups) < root.participations_maxi 
 
 
 def participate_state_validation(process, context):
     wg = context.working_group
-    return  'amendable' in context.state or 'first decision' in context.state
+    return  'amendable' in context.state or 'open to a working group' in context.state
 
 
-class Participate(InfiniteCardinality):
+class Participate(ElementaryAction):
     style = 'button' #TODO add style abstract class
-    isSequential = False
     context = IProposal
-    relation_validation = resign_relation_validation
-    roles_validation = resign_roles_validation
-    processsecurity_validation = resign_processsecurity_validation
-    state_validation = resign_state_validation
+    relation_validation = participate_relation_validation
+    roles_validation = participate_roles_validation
+    processsecurity_validation = participate_processsecurity_validation
+    state_validation = participate_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #TODO
+        root = getSite()
+        user = get_current()
+        wg = context.working_group
+        participants = wg.members
+        len_participants = len(participants)
+        if len_participants < root.participants_maxi:
+            wg.addtoproperty('members', user)
+            grant_roles(user, (('Participant', context),))
+            if (len_participants+1) == root.participants_mini:
+                context.state.remove('open to a working group')
+                wg.state.remove('deactivated')
+                wg.state.append('active')
+                if not hasattr(self.process, 'first_decision'):
+                    context.state.append('votes for publishing')
+                    self.process.first_decision = True
+                else:
+                    context.state.append('amendable')
+        else:
+            wg.addtoproperty('wating_list', user)
+ 
         return True
 
     def redirect(self, context, request, **kw):

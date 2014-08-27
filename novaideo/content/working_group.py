@@ -5,7 +5,7 @@ from substanced.util import renamer
 from substanced.schema import NameSchemaNode
 
 from dace.objectofcollaboration.entity import Entity
-from dace.descriptors import SharedMultipleProperty, SharedUniqueProperty
+from dace.descriptors import SharedMultipleProperty, SharedUniqueProperty, CompositeMultipleProperty
 from pontus.schema import omit
 from pontus.core import VisualisableElement, VisualisableElementSchema
 
@@ -36,3 +36,4 @@ class WorkingGroup(VisualisableElement, Entity):
     proposal = SharedUniqueProperty('proposal', 'working_group')
     members = SharedMultipleProperty('members', 'working_groups')
     wating_list = SharedMultipleProperty('wating_list')
+    ballots = CompositeMultipleProperty('ballots')

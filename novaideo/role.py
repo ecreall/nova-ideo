@@ -47,6 +47,12 @@ class Participant(Role):
     pass
 
 
+@role(name='Elector',
+      islocal=True)
+class Elector(Role):
+    pass
+
+
 @role(name='Certifier',
      superiors=[Administrator],
      lowers=[Collaborator])

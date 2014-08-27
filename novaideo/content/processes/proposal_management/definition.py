@@ -1,5 +1,8 @@
+from datetime import timedelta
+
 from dace.processdefinition.processdef import ProcessDefinition
-from dace.processdefinition.activitydef import ActivityDefinition
+from dace.util import getSite
+from dace.processdefinition.activitydef import ActivityDefinition, SubProcessDefinition as OriginSubProcessDefinition
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
@@ -26,6 +29,7 @@ from .behaviors import (
     Participate,
     SubmitProposal)
 from novaideo import _
+from novaideo.content.ballot import Ballot
 
 
 def eg3_publish_condition(process):
@@ -37,6 +41,23 @@ def eg3_publish_condition(process):
 
 def eg3_pg5_condition(process):
     return not eg3_publish_condition(process)
+
+
+class SubProcessDefinition(OriginSubProcessDefinition):
+
+    
+    def _init_subprocess(self, process, subprocess):
+        root = getSite()
+        proposal = process.execution_context.created_entity('proposal')
+        electors = proposal.working_group.members[:root.participants_mini]
+        subjects = [proposal]
+        duration = timedelta(minutes=20)
+        ballot = Ballot('Referendum' , electors, subjects, duration)
+        processes = ballot.run_ballot()
+        subprocess.execution_context.add_involved_collection('processes', processes)
+        proposal.working_group.addtoproperty('ballots', ballot)
+        subprocess.ballot = ballot
+
 
 @process_definition(name='proposalmanagement', id='proposalmanagement')
 class ProposalManagement(ProcessDefinition, VisualisableElement):
@@ -87,7 +108,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Withdraw from the wating list"),
                                        title=_("Withdraw"),
                                        groups=[]),
-                firstpublishdecision = ActivityDefinition(contexts=[FirstPublishDecision],
+                firstpublishdecision = SubProcessDefinition(pd='ballotprocess', contexts=[FirstPublishDecision],
                                        description=_("Publish decision"),
                                        title=_("Publish"),
                                        groups=[]),

@@ -29,10 +29,25 @@ class DetailProposalView(BasicView):
     viewid = 'seeproposal'
 
 
+    def _vote_action(self):
+        isactive = False
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
+        vote_data = {'subject':self.context}
+        action_updated, messages, resources, actions = dace_ui_api._actions(self.request, self.context, 'referendumprocess', 'favour')
+        if action_updated and not isactive:
+            isactive = True
+
+        if actions: 
+            vote_data['voteaction'] = actions[0]
+
+        return vote_data, resources, messages, isactive
+
     def update(self):
-        self.execute(None) 
+        self.execute(None)
         user = get_current()
-        actions = [a for a in self.context.actions if getattr(a.action, 'style', '') == 'button']
+        actions = self.context.actions
+        firstvote_actions, resources, messages, isactive = self._vote_action()
+        actions = [a for a in actions if getattr(a.action, 'style', '') == 'button']
         actions_urls = []
         for action in actions:
             actions_urls.append({'title':action.title, 'url':action.url})
@@ -41,10 +56,14 @@ class DetailProposalView(BasicView):
         values = {
                 'proposal': self.context,
                 'current_user': user,
-                'actions': actions_urls
+                'actions': actions_urls,
+                'voteaction': firstvote_actions
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
+        item['messages'] = messages
+        item['isactive'] = isactive
+        result.update(resources)
         result['coordinates'] = {self.coordinates:[item]}
         return result
 
