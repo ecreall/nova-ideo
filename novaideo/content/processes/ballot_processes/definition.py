@@ -1,4 +1,5 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
+from persistent.list import PersistentList
 
 from dace.interfaces import IProcessDefinition
 from dace.processdefinition.processdef import ProcessDefinition
@@ -20,16 +21,18 @@ from pontus.core import VisualisableElement
 from novaideo import _
 
 
-default_duration = timedelta(minutes=30)
-
 def time_duration(process):
-    return getattr(process.ballot, 'duration', default_duration)
+    return process.duration
+
 
 def event_condition(process):
     processes = process.execution_context.get_involved_collection('vote_processes')
     for p in processes:
         if not p._finished:
             return False
+
+    for ballot in process.ballots:
+        ballot.finished_at = datetime.today()
 
     return True
 
@@ -39,13 +42,14 @@ class BallotProcess(ProcessDefinition, VisualisableElement):
     isControlled = True
     isSubProcess = True
     #isVolatile = True
-    ballot = None
     id = 'ballotprocess'
 
     def __init__(self, **kwargs):
         super(BallotProcess, self).__init__(**kwargs)
         self.title = _('Ballot Process')
         self.description = _('Ballot Process')
+        self.ballots = PersistentList()
+        self.duration = None
 
     def _init_definition(self):
         self.defineNodes(

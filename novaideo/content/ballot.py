@@ -20,6 +20,7 @@ from pontus.core import VisualisableElement, VisualisableElementSchema
 from .interface import IVote, IBallotType, IReport, IBallot, IBallotBox
 from novaideo import _
 
+
 @content(
     'vote',
     icon='glyphicon glyphicon-align-left',
@@ -56,25 +57,23 @@ class Referendum(object):
             runtime.addtoproperty('processes', proc)
             proc.defineGraph(pd)
             proc.execution_context.add_involved_entity('elector', elector)
-         
             proc.execution_context.add_involved_entity('subject', self.subject)
             grant_roles(elector, (('Elector', proc),))
             proc.ballot = self.report.ballot
             proc.execute()
             processes.append(proc)
 
-        #TODO run processes referendumprocess pour chaque elector su
         return processes
 
     def calculate_votes(self, votes):
         result = {'True':0, 'False':0, 'None':0}
         for vote in votes:
             if vote is True:
-                self.result['True'] += 1
+                result['True'] += 1
             elif vote is False:
-                self.result['False'] += 1
+                result['False'] += 1
             else:
-                self.result['None'] += 1
+                result['None'] += 1
 
         return result
 
@@ -85,7 +84,7 @@ class Referendum(object):
         return None
 
 
-ballot_types = {'Referendum': Referendum}
+ballot_types = {'Referendum': Referendum} #TODO add ballot types
 
 
 @content(
@@ -105,20 +104,23 @@ class Report(VisualisableElement, Entity):
         super(Report, self).__init__(**kwargs)
         [self.addtoproperty('electors', elector) for elector in electors]
         [self.addtoproperty('subjects', subject) for subject in subjects]
-        self.ballot = ballot_types[ballottype](self)
+        self.ballottype = ballot_types[ballottype](self)
         self.result = None
         self.calculated = False
 
     def calculate_votes(self):
         if not self.calculated:
             votes = self.ballot.ballot_box.votes
-            self.result = self.ballot.calculate_votes(votes)
+            self.result = self.ballottype.calculate_votes(votes)
             self.calculated = True
         else:
             return self.result
 
     def get_electeds(self):
-        return self.ballot.get_electeds(self.result)
+        if not self.calculated:
+            self.calculate_votes()
+
+        return self.ballottype.get_electeds(self.result)
 
 
 @content(
@@ -147,10 +149,12 @@ class Ballot(VisualisableElement, Entity):
         self.setproperty('report', Report(ballottype=ballot_type, electors=electors, subjects=subjects))
         self.run_at = None
         self.duration = duration
+        self.finished_at = None
 
     def run_ballot(self):
-        processes = self.report.ballot.run_ballot()
+        processes = self.report.ballottype.run_ballot()
         self.run_at = datetime.datetime.today()
+        self.finished_at = self.run_at + self.duration
         return processes
 
 

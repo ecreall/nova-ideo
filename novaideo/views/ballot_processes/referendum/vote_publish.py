@@ -21,14 +21,20 @@ class VoteViewStudyReport(BasicView):
 
     def update(self):
         result = {}
-        values = {'context': self.context}
+        ballot_report = None
+        try:
+            ballot_report = self.parent.children[1].behaviorinstances.values()[0].process.ballot.report
+        except Exception:
+            pass
+
+        values = {'context': self.context, 'ballot_report': ballot_report}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
 
 
-class VoteView(FormView):
+class VoteFormView(FormView):
     title =  _('Vote')
     name ='voteform'
     formid = 'formvote'
@@ -44,10 +50,9 @@ class VoteView(FormView):
 class VoteViewMultipleView(MultipleView):
     title = _('Vote')
     name = 'votepublishing'
-    behaviors = [Favour, Against]
     viewid = 'votepublishing'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    views = (VoteViewStudyReport, VoteView)
+    views = (VoteViewStudyReport, VoteFormView)
     validators = [Favour.get_validator(), Against.get_validator()]
 
 

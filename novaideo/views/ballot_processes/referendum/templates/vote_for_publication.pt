@@ -1,1 +1,26 @@
-bla bla
+ <dl >
+     <dt>Sujet du vote</dt>
+     <dd>Publication de la proposition</dd>
+     <div tal:omit-tag="" tal:condition="ballot_report is not None">
+       <dt tal:condition="ballot_report.electors">Electeurs</dt>
+       <dd tal:condition="ballot_report.electors">
+         <tal:loop repeat="e ballot_report.electors">
+           <a tal:attributes="href request.resource_url(e, '@@index')">${e.name}</a>
+           <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
+         </tal:loop>
+       </dd>
+       <dt tal:condition="ballot_report.voters">Votants</dt>
+       <dd tal:condition="ballot_report.voters">
+         <tal:loop repeat="e ballot_report.voters">
+             ${e.name}
+             <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
+         </tal:loop>
+       </dd>
+       <dt>Durée</dt>
+       <dd tal:define="run ballot_report.ballot.run_at; finish  ballot_report.ballot.finished_at">
+          le vote à commencé le <span tal:replace="layout.to_localized_time(run, date_only=True)"/> à ${run.hour}:${run.minute}:${run.second}. La fin duvote est prévue pour <span tal:replace="layout.to_localized_time(finish, date_only=True)"/> à ${finish.hour}:${finish.minute}:${finish.second}.
+       </dd>
+     </div>
+ </dl>
+
+

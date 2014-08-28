@@ -1,0 +1,60 @@
+# -*- coding: utf8 -*-
+import colander
+import deform
+from pyramid.view import view_config
+from substanced.util import find_service
+
+from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.util import getSite
+from dace.objectofcollaboration.principal.util import get_current
+from pontus.default_behavior import Cancel
+from pontus.form import FormView
+from pontus.schema import select, Schema
+from pontus.widget import Select2WidgetCreateSearchChoice
+from pontus.view_operation import MultipleView
+from pontus.view import BasicView
+
+from novaideo.content.processes.proposal_management.behaviors import  PresentProposal
+from novaideo.content.proposal import Proposal
+from novaideo import _
+from novaideo.mail import PRESENTATION_PROPOSAL_MESSAGE, PRESENTATION_PROPOSAL_SUBJECT
+from novaideo.views.idea_management.present_idea import PresentIdeaView, PresentIdeaSchema, SentToView
+
+
+class PresentProposalSchema(PresentIdeaSchema):
+
+    subject =  colander.SchemaNode(
+        colander.String(),
+        default=PRESENTATION_PROPOSAL_SUBJECT,
+        title=_('Subject'),
+        )
+
+    message = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(max=2000),
+        default=PRESENTATION_PROPOSAL_MESSAGE,
+        widget=deform.widget.TextAreaWidget(rows=10, cols=60),
+        )
+
+
+class PresentProposalFormView(FormView):
+
+    title = _('Present proposal')
+    schema = select(PresentProposalSchema(), ['members', 'subject', 'message', 'send_to_me'])
+    behaviors = [PresentProposal]
+    formid = 'formpresentproposalform'
+    name='presentproposalform'
+
+
+@view_config(
+    name='presentproposal',
+    context=Proposal,
+    renderer='pontus:templates/view.pt',
+    )
+class PresentProposalView(PresentIdeaView):
+    title = _('Present proposal')
+    name='presentproposal'
+    views = (PresentProposalFormView, SentToView)
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update({PresentProposal:PresentProposalView})

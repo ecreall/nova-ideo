@@ -18,6 +18,13 @@
 	<dd>
           <span tal:replace="layout.to_localized_time(proposal.modified_at, date_only=True)"/> à ${proposal.created_at.hour}:${proposal.created_at.minute}:${proposal.created_at.second} par <a tal:attributes="href request.resource_url(proposal.author, '@@index')">${((proposal.author is current_user) and 'Vous') or proposal.author.name}</a>
         </dd>
+        <dt>Groupe de travail</dt>
+	<dd>
+          <tal:loop repeat="m proposal.working_group.members">
+            <a tal:attributes="href request.resource_url(m, '@@index')">${m}</a>
+              <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
+          </tal:loop>
+        </dd>
     </dl>
 </div>
 <div id="proposaltext">

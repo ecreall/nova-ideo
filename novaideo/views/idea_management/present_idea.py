@@ -32,7 +32,7 @@ presentidea_message = {'0': u"""Pas de personnes contactées""",
                        '*': u"""Voir les {len_persons_contacted} personnes contactées"""}
 
 
-class SetToView(BasicView):
+class SentToView(BasicView):
     title = _('Sent to')
     name = 'sentto'
     validators = [PresentIdea.get_validator()]
@@ -124,7 +124,7 @@ class PresentIdeaView(MultipleView):
     name='presentidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
-    views = (PresentIdeaFormView, SetToView)
+    views = (PresentIdeaFormView, SentToView)
 
     def get_message(self):
         len_persons_contacted = len(self.context.persons_contacted)

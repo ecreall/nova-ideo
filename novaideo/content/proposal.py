@@ -1,6 +1,10 @@
 import colander
 from zope.interface import implementer
+from persistent.list import PersistentList
+from pyramid.threadlocal import get_current_request
 
+from substanced.interfaces import IUserLocator
+from substanced.principal import DefaultUserLocator
 from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
@@ -22,7 +26,8 @@ from novaideo.core import (
     SearchableEntity,
     SearchableEntitySchema,
     CorrelableEntity,
-    DuplicableEntity)
+    DuplicableEntity,
+    VersionableEntity)
 
 
 @colander.deferred
@@ -63,7 +68,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IProposal)
-class Proposal(Commentable, SearchableEntity, DuplicableEntity, CorrelableEntity):
+class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/proposal_result.pt'
     name = renamer()
     author = SharedUniqueProperty('author')
@@ -73,7 +78,29 @@ class Proposal(Commentable, SearchableEntity, DuplicableEntity, CorrelableEntity
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
         self.set_data(kwargs)
+        self.email_persons_contacted = PersistentList()
 
     @property
     def related_ideas(self):
         return [c.target for c in self.target_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
+
+    @property
+    def persons_contacted(self):
+        request = get_current_request()
+        adapter = request.registry.queryMultiAdapter(
+                (self, request),
+                IUserLocator
+                )
+        if adapter is None:
+            adapter = DefaultUserLocator(self, request)
+
+        result = []
+        for email in self.email_persons_contacted:
+            user = adapter.get_user_by_email(email)
+            if user is not None:
+                result.append(user)
+            else:
+                result.append(email)
+
+        return set(result)
+

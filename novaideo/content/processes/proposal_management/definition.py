@@ -1,4 +1,5 @@
 from datetime import timedelta
+from persistent.list import PersistentList
 
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.util import getSite
@@ -9,7 +10,9 @@ from dace.processdefinition.gatewaydef import (
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
-    EndEventDefinition)
+    EndEventDefinition,
+    IntermediateCatchEventDefinition,
+    TimerEventDefinition)
 from dace.objectofcollaboration.services.processdef_container import process_definition
 from pontus.core import VisualisableElement
 
@@ -23,23 +26,51 @@ from .behaviors import (
     Associate,
     ImproveProposal,
     CorrectProposal,
-    FirstPublishDecision,
+    VotingPublication,
     Withdraw,
     Resign,
     Participate,
-    SubmitProposal)
+    SubmitProposal,
+    VotingAmendments,
+    AmendmentsResult,
+    Amendable,
+    AmendmentsResult)
 from novaideo import _
 from novaideo.content.ballot import Ballot
 
 
+vp_default_duration = timedelta(minutes=30)
+
+
+amendments_default_duration = timedelta(minutes=30)
+
+
+
+def amendments_duration(process):
+    return amendments_default_duration
+
+
 def eg3_publish_condition(process):
-    vote_number = getattr(process, 'vote_number', 0)
-    if vote_number == 3:
+    report = process.vp_ballot.report
+    if hasattr(process, 'first_decision'):
+        electeds = report.get_electeds()
+        if electeds:
+            return True
+        else:
+            return False
+
+    voters_len = len(report.voters)
+    electors_len = len(report.electors)
+    if voters_len != electors_len:
+        return False
+
+    if report.result['False'] == 0:
         return True
 
     return False
 
-def eg3_pg5_condition(process):
+
+def eg3_amendable_condition(process):
     return not eg3_publish_condition(process)
 
 
@@ -47,16 +78,44 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
     
     def _init_subprocess(self, process, subprocess):
+
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
         electors = proposal.working_group.members[:root.participants_mini]
+        if hasattr(process, 'first_decision'):
+            electors = proposal.working_group.members
+
         subjects = [proposal]
-        duration = timedelta(minutes=20)
-        ballot = Ballot('Referendum' , electors, subjects, duration)
+        ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
+        #TODO add ballot informations
         processes = ballot.run_ballot()
-        subprocess.execution_context.add_involved_collection('processes', processes)
+        subprocess.execution_context.add_involved_collection('vote_processes', processes)
         proposal.working_group.addtoproperty('ballots', ballot)
-        subprocess.ballot = ballot
+        subprocess.ballots.append(ballot)
+        subprocess.duration = vp_default_duration
+        process.vp_ballot = ballot #vp for voting for publishing
+
+
+class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
+
+    
+    def _init_subprocess(self, process, subprocess):
+        root = getSite()
+        proposal = process.execution_context.created_entity('proposal')
+        electors = proposal.working_group.members
+        subjects = proposal.amendments
+        processes = []
+        #TODO calcul des groups d'amendements. Pour chaque groupe creer un ballot de type Jugement Majoritaire
+        #TODO Start For
+        ballot = Ballot('Referendum' , electors, subjects, amendments_default_duration)
+        #TODO add ballot informations
+        processes.extend(ballot.run_ballot())
+        proposal.working_group.addtoproperty('ballots', ballot)
+        subprocess.ballots.append(ballot)
+        process.amendments_ballots.append(ballot)
+        #TODO End For
+        subprocess.execution_context.add_involved_collection('vote_processes', processes)
+        subprocess.duration = amendments_default_duration
 
 
 @process_definition(name='proposalmanagement', id='proposalmanagement')
@@ -66,11 +125,12 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
         super(ProposalManagement, self).__init__(**kwargs)
         self.title = _('Proposals management')
         self.description = _('Proposals management')
+        self.vp_ballot = None
+        self.amendments_ballots = PersistentList()
 
     def _init_definition(self):
         self.defineNodes(
                 start = StartEventDefinition(),
-                #egs = ExclusiveGatewayDefinition(),
                 eg0 = ExclusiveGatewayDefinition(),
                 pg2 = ParallelGatewayDefinition(),
                 pg3 = ParallelGatewayDefinition(),
@@ -108,14 +168,26 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Withdraw from the wating list"),
                                        title=_("Withdraw"),
                                        groups=[]),
-                firstpublishdecision = SubProcessDefinition(pd='ballotprocess', contexts=[FirstPublishDecision],
-                                       description=_("Publish decision"),
-                                       title=_("Publish"),
+                votingpublication = SubProcessDefinition(pd='ballotprocess', contexts=[VotingPublication],
+                                       description=_("Start voting for publication"),
+                                       title=_("Start voting for publication"),
                                        groups=[]),
-
+                votingamendments = SubProcessDefinitionAmendments(pd='ballotprocess', contexts=[VotingAmendments],
+                                       description=_("Start voting for amendments"),
+                                       title=_("Start voting for amendments"),
+                                       groups=[]),
+                amendable = ActivityDefinition(contexts=[Amendable],
+                                       description=_("Change the state to amendable"),
+                                       title=_("Amendable"),
+                                       groups=[]),
+                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_duration=amendments_duration)),
                 publish = ActivityDefinition(contexts=[PublishProposal],
                                        description=_("Publish the proposal"),
                                        title=_("Publish"),
+                                       groups=[]),
+                amendmentsresult = ActivityDefinition(contexts=[AmendmentsResult],
+                                       description=_("Amendments result"),
+                                       title=_("Amendments result"),
                                        groups=[]),
                 present = ActivityDefinition(contexts=[PresentProposal],
                                        description=_("Present the proposal"),
@@ -133,7 +205,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Correct proposal"),
                                        title=_("Correct"),
                                        groups=[]),
-
                 improve = ActivityDefinition(contexts=[ImproveProposal],
                                        description=_("Improve proposal"),
                                        title=_("Improve"),
@@ -154,15 +225,17 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg3', 'associate'),
                 TransitionDefinition('pg3', 'present'),
                 TransitionDefinition('pg3', 'resign'),
+                TransitionDefinition('pg3', 'participate'),
+                TransitionDefinition('pg3', 'correct'),
+                TransitionDefinition('pg3', 'improve'),
                 TransitionDefinition('pg3', 'eg2'),
-                TransitionDefinition('eg2', 'participate'),
-                TransitionDefinition('participate', 'pg4'),
-                TransitionDefinition('pg4', 'eg2'),
-                TransitionDefinition('pg4', 'firstpublishdecision'),
-                TransitionDefinition('firstpublishdecision', 'eg3'),
+                TransitionDefinition('eg2', 'votingpublication'),
+                TransitionDefinition('votingpublication', 'eg3'),
+                TransitionDefinition('eg3', 'amendable', eg3_amendable_condition),
                 TransitionDefinition('eg3', 'publish', eg3_publish_condition),
-                TransitionDefinition('eg3', 'pg5', eg3_pg5_condition),
-                TransitionDefinition('pg5', 'correct'),
-                TransitionDefinition('pg5', 'improve'),
+                TransitionDefinition('amendable', 'timer'),
+                TransitionDefinition('timer', 'votingamendments'),
+                TransitionDefinition('votingamendments', 'amendmentsresult'),
+                TransitionDefinition('amendmentsresult', 'eg2'),
                 TransitionDefinition('publish', 'end'),
         )

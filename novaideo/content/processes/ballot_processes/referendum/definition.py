@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from dace.interfaces import IProcessDefinition
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
@@ -21,23 +19,22 @@ from .behaviors import Favour, Against
 from novaideo import _
 
 
-default_duration = timedelta(minutes=30)
 
 def time_duration(process):
-    import pdb; pdb.set_trace()
-    return getattr(process.ballot, 'duration', default_duration)
+    return getattr(process.ballot, 'duration')
+
 
 @process_definition(name='referendumprocess', id='referendumprocess')
 class ReferendumProcess(ProcessDefinition, VisualisableElement):
     isUnique = True
     #isVolatile = True
     isControlled = True
-    ballot = None
 
     def __init__(self, **kwargs):
         super(ReferendumProcess, self).__init__(**kwargs)
         self.title = _('Referendum Process')
         self.description = _('Referendum Process')
+        self.ballot = None
 
     def _init_definition(self):
         self.defineNodes(

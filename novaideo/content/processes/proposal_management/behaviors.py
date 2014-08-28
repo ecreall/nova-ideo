@@ -22,6 +22,7 @@ from novaideo.core import acces_action
 from novaideo.content.correlation import Correlation
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.ballot import Ballot
+from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
 
 
 try:
@@ -208,11 +209,11 @@ def pub_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
 def pub_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_any_roles(roles=(('Participant', context),)) #System
 
 def pub_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and ('amendable' in context.state or 'votes for publishing' in context.state)
+    return 'active' in wg.state and 'votes for publishing' in context.state
 
 
 class PublishProposal(ElementaryAction):
@@ -223,6 +224,7 @@ class PublishProposal(ElementaryAction):
     state_validation = pub_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        #TODO wg desactive, members vide...
         context.state.remove('votes for publishing')
         context.state.append('published')
         return True
@@ -279,59 +281,14 @@ def present_processsecurity_validation(process, context):
 
 
 def present_state_validation(process, context):
-    return 'published' in context.state
+    return 'published' in context.state #TODO ?
 
 
-class PresentProposal(InfiniteCardinality):
+class PresentProposal(PresentIdea):
     context = IProposal
     roles_validation = present_roles_validation
     processsecurity_validation = present_processsecurity_validation
     state_validation = present_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        send_to_me = appstruct['send_to_me']
-        members = list(appstruct['members'])
-        user = get_current()
-        if send_to_me:
-            members.append(user)
-
-        user_title=getattr(user, 'user_title','')
-        user_first_name=getattr(user, 'first_name', user.name)
-        user_last_name=getattr(user, 'last_name','')
-        url = request.resource_url(context, "@@index")
-        presentation_subject = appstruct['subject']
-        presentation_message = appstruct['message']
-        subject = presentation_subject.format(proposal_title=context.title)
-        for member in members:
-            recipient_title = ''
-            recipient_first_name = ''
-            recipient_last_name = ''
-            member_email = ''
-            if not isinstance(member, basestring):
-                recipient_title = getattr(member, 'user_title','')
-                recipient_first_name = getattr(member, 'first_name', member.name)
-                recipient_last_name = getattr(member, 'last_name','')
-                member_email = member.email
-            else:
-                member_email = member
-
-            message = presentation_message.format(
-                recipient_title=recipient_title,
-                recipient_first_name=recipient_first_name,
-                recipient_last_name=recipient_last_name,
-                proposal_url=url,
-                my_title=user_title,
-                my_first_name=user_first_name,
-                my_last_name=user_last_name
-                 )
-            mailer_send(subject=subject, recipients=[member_email], body=message)
-            if not (member is user):
-                context.email_persons_contacted.append(member_email)
-
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 def associate_relation_validation(process, context):
@@ -347,23 +304,11 @@ def associate_processsecurity_validation(process, context):
            (has_any_roles(roles=(('Owner', context),)) or \
            (has_any_roles(roles=('Member',)) and not ('draft' in context.state)))
 
-class Associate(InfiniteCardinality):
+class Associate(AssociateIdea):
     context = IProposal
     processsecurity_validation = associate_processsecurity_validation
     roles_validation = associate_roles_validation
     relation_validation = associate_relation_validation
-
-    def start(self, context, request, appstruct, **kw):
-        correlation = appstruct['_object_data']
-        correlation.setproperty('source', context)
-        correlation.setproperty('author', get_current())
-        root = getSite()
-        root.addtoproperty('correlations', correlation)
-        self.newcontext = correlation
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
 def improve_relation_validation(process, context):
@@ -439,7 +384,10 @@ def decision_relation_validation(process, context):
 
 
 def decision_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))#System
+     #has_first_decision = hasattr(process, 'first_decision')
+     #return (has_first_decision and has_any_roles(roles=(('Participant', context),))) or \
+     #       (has_first_decision and has_any_roles(roles=('System',)))
+    return has_any_roles(roles=('Member',))
 
 
 def decision_state_validation(process, context):
@@ -447,13 +395,12 @@ def decision_state_validation(process, context):
     return 'active' in wg.state and 'votes for publishing' in context.state
 
 
-class FirstPublishDecision(ElementaryAction):
+class VotingPublication(ElementaryAction):
     style = 'button' #TODO add style abstract class
     context = IProposal
     relation_validation = decision_relation_validation
     roles_validation = decision_roles_validation
     state_validation = decision_state_validation
-
 
     def start(self, context, request, appstruct, **kw):
         #TODO
@@ -583,8 +530,9 @@ def participate_state_validation(process, context):
     return  'amendable' in context.state or 'open to a working group' in context.state
 
 
-class Participate(ElementaryAction):
+class Participate(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    isSequential = False
     context = IProposal
     relation_validation = participate_relation_validation
     roles_validation = participate_roles_validation
@@ -617,6 +565,81 @@ class Participate(ElementaryAction):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
+def va_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'proposal')
+
+
+def va_roles_validation(process, context):
+    #return has_any_roles(roles=('System',))
+    return has_any_roles(roles=('Member',))
+
+
+def va_state_validation(process, context):
+    wg = context.working_group
+    return 'active' in wg.state and 'votes for amendments' in context.state
+
+
+class VotingAmendments(ElementaryAction):
+    style = 'button' #TODO add style abstract class
+    context = IProposal
+    relation_validation = va_relation_validation
+    roles_validation = va_roles_validation
+    state_validation = va_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        #TODO
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def ar_state_validation(process, context):
+    wg = context.working_group
+    return 'active' in wg.state and 'votes for amendments' in context.state
+
+
+class AmendmentsResult(ElementaryAction):
+    style = 'button' #TODO add style abstract class
+    context = IProposal
+    relation_validation = va_relation_validation
+    roles_validation = va_roles_validation
+    state_validation = ar_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        result = set()
+        for ballot in self.process.amendments_ballots:
+            result.update(ballot.report.get_electeds())
+
+        #TODO merg result
+        context.state.remove('votes for amendments')
+        context.state.append('votes for publishing')
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def ta_state_validation(process, context):
+    wg = context.working_group
+    return 'active' in wg.state and 'votes for publishing' in context.state
+
+
+class Amendable(ElementaryAction):
+    style = 'button' #TODO add style abstract class
+    context = IProposal
+    relation_validation = va_relation_validation
+    roles_validation = va_roles_validation
+    state_validation = ta_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state.remove('votes for publishing')
+        context.state.append('votes for amendments')
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 #TODO behaviors
 

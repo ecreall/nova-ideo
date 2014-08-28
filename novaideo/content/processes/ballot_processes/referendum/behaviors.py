@@ -16,6 +16,7 @@ from dace.processinstance.activity import (
     EndStep)
 from pontus.schema import select, omit
 
+from ...user_management.behaviors import global_user_processsecurity
 from novaideo.content.interface import IInvitation
 from novaideo.content.person import Person
 from novaideo.content.interface import IComment
@@ -29,6 +30,11 @@ def vote_relation_validation(process, context):
 def vote_roles_validation(process, context):
     return has_any_roles(roles=(('Elector', process),))
 
+def vote_processsecurity_validation(process, context):
+    user = get_current()
+    return global_user_processsecurity(process, context) and \
+           not (user in process.ballot.report.voters)
+
 
 class Favour(ElementaryAction):
     title = _('Vote in favour')
@@ -36,10 +42,15 @@ class Favour(ElementaryAction):
     context = IEntity
     relation_validation = vote_relation_validation
     roles_validation = vote_roles_validation
+    processsecurity_validation = vote_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        votefactory = self.process.ballot.report.ballottype.votefactory
-        self.process.ballot.ballot_box.addtoproperty('votes', votefactory(True))
+        user = get_current()
+        ballot = self.process.ballot
+        report = ballot.report
+        votefactory = report.ballottype.vote_factory
+        ballot.ballot_box.addtoproperty('votes', votefactory(True))
+        report.addtoproperty('voters', user)
         return True
 
     def redirect(self, context, request, **kw):
@@ -52,10 +63,15 @@ class Against(ElementaryAction):
     context = IEntity
     relation_validation = vote_relation_validation
     roles_validation = vote_roles_validation
+    processsecurity_validation = vote_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        vote_factory = self.process.ballot.report.ballottype.vote_factory
-        self.process.ballot.ballot_box.addtoproperty('votes', vote_factory(False))
+        user = get_current()
+        ballot = self.process.ballot
+        report = ballot.report
+        votefactory = report.ballottype.vote_factory
+        ballot.ballot_box.addtoproperty('votes', votefactory(False))
+        report.addtoproperty('voters', user)
         return True
 
     def redirect(self, context, request, **kw):
