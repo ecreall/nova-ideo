@@ -41,6 +41,7 @@ def organization_choice(node, kw):
 
     prop = sorted(root.organizations, key=lambda p: p.title)
     values = [(i, i.title) for i in prop]
+    values.insert(0, ('', '- Select -'))
     return Select2Widget(values=values)
 
 
@@ -48,6 +49,7 @@ def organization_choice(node, kw):
 def titles_choice(node, kw):
     root = getSite()
     values = [(i, i) for i in root.titles]
+    values.insert(0, ('', '- Select -'))
     return Select2Widget(values=values)
 
 
