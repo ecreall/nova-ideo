@@ -14,14 +14,14 @@
             <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
         </tal:loop>
       </dd>
-        <dt>Dernière modification</dt>
+        <dt>Proposée le </dt>
 	<dd>
-          <span tal:replace="layout.to_localized_time(proposal.modified_at, date_only=True)"/> à ${proposal.created_at.hour}:${proposal.created_at.minute}:${proposal.created_at.second} par <a tal:attributes="href request.resource_url(proposal.author, '@@index')">${((proposal.author is current_user) and 'Vous') or proposal.author.name}</a>
+          <span tal:replace="layout.to_localized_time(proposal.created_at, date_only=True)"/> à ${proposal.created_at.hour}:${proposal.created_at.minute}:${proposal.created_at.second} par <a tal:attributes="href request.resource_url(proposal.author, '@@index')">${((proposal.author is current_user) and 'Vous') or proposal.author.name}</a>
         </dd>
         <dt>Groupe de travail</dt>
 	<dd>
           <tal:loop repeat="m proposal.working_group.members">
-            <a tal:attributes="href request.resource_url(m, '@@index')">${m}</a>
+            <a tal:attributes="href request.resource_url(m, '@@index')">${m.name}</a>
               <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
           </tal:loop>
         </dd>

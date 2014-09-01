@@ -17,7 +17,9 @@ from pontus.view_operation import MultipleView
 from novaideo.content.processes.novaideo_view_manager.behaviors import  SeeProposal
 from novaideo.content.proposal import Proposal
 from novaideo import _
-
+from novaideo.views.proposal_management.present_proposal import PresentProposalView
+from novaideo.views.proposal_management.comment_proposal import CommentProposalView
+from novaideo.views.proposal_management.associate import AssociateView
 
 
 class DetailProposalView(BasicView):
@@ -72,7 +74,7 @@ class SeeProposalActionsView(MultipleView):
     title = _('actions')
     name = 'seeiactionsdea'
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = ()
+    views = (AssociateView, PresentProposalView, CommentProposalView)
 
 
 @view_config(

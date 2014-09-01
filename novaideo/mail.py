@@ -19,10 +19,10 @@ Bonjour,
 PRESENTATION_IDEA_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-{my_title} {my_first_name} {my_last_name} souhaite vous présenter l'Idée figurant sur la plateforme Nova-Ideo.org sous {idea_url}. Nova-Ideo est un service en ligne permettant d'initier des propositions, constituer des groupes de travail pour les améliorer et les finaliser, bénéficier de soutiens de membres de la communauté et d'avis de comités d'examen.
+{my_title} {my_first_name} {my_last_name} souhaite vous présenter l'Idée figurant sur la plateforme Nova-Ideo.org sous {subject_url}. Nova-Ideo est un service en ligne permettant d'initier des propositions, constituer des groupes de travail pour les améliorer et les finaliser, bénéficier de soutiens de membres de la communauté et d'avis de comités d'examen.
 """ + PORTAL_SIGNATURE
 
-PRESENTATION_IDEA_SUBJECT = u"""Présentation : {idea_title}""" 
+PRESENTATION_IDEA_SUBJECT = u"""Présentation : {subject_title}""" 
 
 CONFIRMATION_MESSAGE = u"""
 Bonjour {person.user_title} {person.last_name} {person.first_name},
@@ -34,8 +34,8 @@ Bienvenue sur le plateforme NovaIdeo.
 PRESENTATION_PROPOSAL_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-{my_title} {my_first_name} {my_last_name} souhaite vous présenter la proposition figurant sur la plateforme Nova-Ideo.org sous {proposal_url}. Nova-Ideo est un service en ligne permettant d'initier des propositions, constituer des groupes de travail pour les améliorer et les finaliser, bénéficier de soutiens de membres de la communauté et d'avis de comités d'examen.
+{my_title} {my_first_name} {my_last_name} souhaite vous présenter la proposition figurant sur la plateforme Nova-Ideo.org sous {subject_url}. Nova-Ideo est un service en ligne permettant d'initier des propositions, constituer des groupes de travail pour les améliorer et les finaliser, bénéficier de soutiens de membres de la communauté et d'avis de comités d'examen.
 """ + PORTAL_SIGNATURE
 
 
-PRESENTATION_PROPOSAL_SUBJECT = u"""Présentation : {proposal_title}""" 
+PRESENTATION_PROPOSAL_SUBJECT = u"""Présentation : {subject_title}""" 

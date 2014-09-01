@@ -18,7 +18,12 @@ from novaideo.content.processes.proposal_management.behaviors import  PresentPro
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.mail import PRESENTATION_PROPOSAL_MESSAGE, PRESENTATION_PROPOSAL_SUBJECT
-from novaideo.views.idea_management.present_idea import PresentIdeaView, PresentIdeaSchema, SentToView
+from novaideo.views.idea_management.present_idea import PresentIdeaView, PresentIdeaSchema, SentToView as IdeaSentToView
+
+
+class SentToView(IdeaSentToView):
+    validators = [PresentProposal.get_validator()]
+    template = 'novaideo:views/proposal_management/templates/sent_to.pt'
 
 
 class PresentProposalSchema(PresentIdeaSchema):

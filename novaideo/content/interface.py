@@ -2,6 +2,7 @@ from zope.interface import Interface
 
 
 
+
 class IVote(Interface):
     pass
 
@@ -47,6 +48,10 @@ class ICommentable(Interface):
 
 
 class IComment(ICommentable):
+    pass
+
+
+class IAmendment(ICommentable, ICorrelableEntity):
     pass
 
 
