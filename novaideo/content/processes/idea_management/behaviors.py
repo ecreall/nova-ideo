@@ -338,7 +338,7 @@ class PresentIdea(InfiniteCardinality):
         url = request.resource_url(context, "@@index")
         presentation_subject = appstruct['subject']
         presentation_message = appstruct['message']
-        subject = presentation_subject.format(idea_title=context.title)
+        subject = presentation_subject.format(subject_title=context.title)
         for member in members:
             recipient_title = ''
             recipient_first_name = ''
@@ -356,7 +356,7 @@ class PresentIdea(InfiniteCardinality):
                 recipient_title=recipient_title,
                 recipient_first_name=recipient_first_name,
                 recipient_last_name=recipient_last_name,
-                idea_url=url,
+                subject_url=url,
                 my_title=user_title,
                 my_first_name=user_first_name,
                 my_last_name=user_last_name

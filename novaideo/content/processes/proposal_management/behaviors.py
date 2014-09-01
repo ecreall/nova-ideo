@@ -246,8 +246,7 @@ def comm_processsecurity_validation(process, context):
 
 
 def comm_state_validation(process, context):
-    wg = context.working_group
-    return 'active' in wg.state
+    return  not('draft' in context.state)
 
 
 class CommentProposal(InfiniteCardinality):
@@ -281,7 +280,7 @@ def present_processsecurity_validation(process, context):
 
 
 def present_state_validation(process, context):
-    return 'published' in context.state #TODO ?
+    return not ('draft' in context.state) #TODO ?
 
 
 class PresentProposal(PresentIdea):
@@ -338,7 +337,7 @@ class ImproveProposal(InfiniteCardinality):
     state_validation = improve_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #TODO
+        import pdb; pdb.set_trace()
         return True
 
     def redirect(self, context, request, **kw):
@@ -463,7 +462,7 @@ def resign_processsecurity_validation(process, context):
 
 
 def resign_state_validation(process, context):
-    return  True#'amendable' in context.state or 'open to a working group' in context.state #TODO
+    return  'amendable' in context.state or 'open to a working group' in context.state #TODO
 
 
 class Resign(InfiniteCardinality):
@@ -500,8 +499,7 @@ class Resign(InfiniteCardinality):
         len_participants = len(participants)
         if len_participants < root.participants_mini:
             context.state = ['open to a working group']
-            wg.state.remove('active')
-            wg.state.append('deactivated')
+            wg.state = ['deactivated']
 
         return True
 
@@ -549,9 +547,8 @@ class Participate(InfiniteCardinality):
             wg.addtoproperty('members', user)
             grant_roles(user, (('Participant', context),))
             if (len_participants+1) == root.participants_mini:
-                context.state.remove('open to a working group')
-                wg.state.remove('deactivated')
-                wg.state.append('active')
+                context.state = [] #remove('open to a working group')
+                wg.state = ['active']
                 if not hasattr(self.process, 'first_decision'):
                     context.state.append('votes for publishing')
                     self.process.first_decision = True

@@ -74,6 +74,20 @@ function initscroll(){
 
 
 $(document).ready(function(){
+
+  $('button.toconfirm').on('click',function(event){
+       //   var form = $($(this).parents('form').first());
+       //   var buttons = form.find('.form-group').last();
+       //   var confirmation = form.find('#confirmation');
+       //   $(buttons).hide();
+       //   $(confirmation).show();
+
+         var form = $($(this).parents('form').first());
+         var confirmation = form.find('.modal.fade');
+         $(confirmation).modal('show');
+
+     });
+
   $("[name='globalmenuswitch']").bootstrapSwitch();
 
   init_switch();

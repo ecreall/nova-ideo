@@ -28,6 +28,8 @@ default_correlation_intentions = [_('Ironie'), _('Humour'), _('Remarque')]
 
 default_idea_intentions = [_('Ammelioration'), _('Humour'), _('Ironie')]
 
+default_amendment_intentions = [_('Ammelioration'), _('Humour'), _('Ironie')]
+
 
 def context_is_a_root(context, request):
     return request.registry.content.istype(context, 'Root')
@@ -70,6 +72,17 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         widget=SequenceWidget(),
         default=default_idea_intentions,
         title=_('Idea intentions'),
+        )
+
+    amendment_intention = colander.SchemaNode(
+        colander.Sequence(),
+        colander.SchemaNode(
+            colander.String(),
+            name=_("Amendment intention")
+            ),
+        widget=SequenceWidget(),
+        default=default_amendment_intentions,
+        title=_('Amendment intentions'),
         )
 
     invitations = colander.SchemaNode(
@@ -165,6 +178,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.comment_intentions = default_comment_intentions
         self.correlation_intentions = default_correlation_intentions
         self.idea_intentions = default_idea_intentions
+        self.amendment_intentions = default_idea_intentions
 
     @property
     def keywords_ids(self):

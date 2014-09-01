@@ -1,0 +1,65 @@
+<tal:def tal:define="title title|field.title;
+                     form form|field.get_root();
+                     description description|field.description;
+                     errormsg errormsg|field.errormsg;
+                     buttons buttons|form.buttons;
+                     formid formid|field.get_root().formid;
+                     item_template item_template|field.widget.item_template;
+                     toconfirm toconfirm| getattr(form.widget, 'to_confirm', False)"
+         i18n:domain="deform">
+
+ <div class="modal fade" 
+      id="confirmation-modal" 
+      role="dialog" 
+      aria-labelledby="myModalLabel" 
+      aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel"> ${title}</h4>
+      </div>
+      <div class="modal-body">
+
+
+              <div tal:condition="errormsg" 
+                   class="clearfix alert alert-message error">
+                <p i18n:translate="">
+                   There was a problem with this section
+                </p>
+                <p>${errormsg}</p>
+              </div>
+
+              <div tal:condition="description">
+                 ${description}
+              </div>
+
+              ${field.start_mapping()}
+              <div tal:repeat="child field.children"
+                   tal:replace="structure child.render_template(item_template)" >
+              </div>     
+              ${field.end_mapping()}
+
+             <div class="form-group">
+               <tal:loop tal:repeat="button buttons">
+                 <button
+                       tal:condition="button.title != 'Cancel'"
+                       tal:define="btn_disposition repeat.button.start and 'btn-primary' or 'btn-default';
+                       btn_icon button.icon|None"
+                       tal:attributes="disabled button.disabled if button.disabled else None"
+                       id="${formid+button.name}"
+                       name="${button.name}"
+                       type="${button.type}"
+                       class="btn ${btn_disposition} ${button.css_class}"
+                       value="${button.value}">
+                   <i tal:condition="btn_icon" class="${btn_icon}"> </i>
+                   ${((toconfirm == button.title) and ('Confirm '+button.title)) or button.title}
+                 </button>
+               </tal:loop>
+             </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</tal:def>

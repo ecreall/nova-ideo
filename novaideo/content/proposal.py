@@ -74,6 +74,8 @@ class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntit
     author = SharedUniqueProperty('author')
     working_group = SharedUniqueProperty('working_group', 'proposal')
     tokens = CompositeMultipleProperty('tokens')
+    amendments = CompositeMultipleProperty('amendments', 'proposal')
+
 
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
@@ -82,7 +84,8 @@ class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntit
 
     @property
     def related_ideas(self):
-        return [c.target for c in self.target_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
+        lists = [c.targets for c in self.source_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
+        return [target for targets in lists for target in targets]
 
     @property
     def persons_contacted(self):
