@@ -337,7 +337,7 @@ class ImproveProposal(InfiniteCardinality):
     state_validation = improve_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        import pdb; pdb.set_trace()
+        #TODO
         return True
 
     def redirect(self, context, request, **kw):
