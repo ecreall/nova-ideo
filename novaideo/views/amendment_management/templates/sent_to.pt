@@ -1,0 +1,10 @@
+<div tal:omit-tag="" >
+  <h3>${message}</h3>
+  <div tal:condition="members">
+    L'idée a été envoyée à: <tal:loop repeat="m members">
+                            <a tal:condition="not isinstance(m, basestring)" tal:attributes="href request.resource_url(m, '@index')">${m.name}</a>
+                            <span tal:condition="isinstance(m, basestring)">${m}</span>
+                            <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
+                          </tal:loop>
+  </div>
+</div>

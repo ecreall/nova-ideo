@@ -1,0 +1,44 @@
+<div class="media-body">
+<h3 tal:condition="amendment.state"><span class="label label-primary pull-right">${amendment.state[0].capitalize()}</span></h3>
+<h3>${amendment.title}</h3>
+</div>
+  <div class="jumbotron well amendment-well">
+    <dl >
+        <dt>Intention</dt>
+	<dd>${amendment.intention}</dd>
+        <dt>Objet</dt>
+	<dd>${amendment.comment}</dd>
+        <dt>Dernière modification</dt>
+	<dd>
+          <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.created_at.hour}:${amendment.created_at.minute}:${amendment.created_at.second} par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a>
+        </dd>
+    </dl>
+  </div>
+
+<h3>Les modifications apportées à la proposition</h3>
+<div id="amendment-diff">
+  <div class="jumbotron well diff-well">
+    <dl >
+        <dt>Résumé</dt>
+	<dd>${structure:descriptiondiff}</dd>
+      <dt tal:condition="keywordsdiff">Mots clés</dt>
+      <dd tal:condition="keywordsdiff">
+        <tal:loop repeat="k keywordsdiff">
+          <a tal:attributes="href request.resource_url(request.root, '', query={'text':k['title']})"><del tal:condition="k['state']=='del'">${k['title']}</del><ins tal:condition="k['state']=='ins'">${k['title']}</ins><span tal:condition="k['state']=='nothing'">${k['title']}</span></a>
+            <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+        </tal:loop>
+      </dd>
+    </dl>
+  </div>
+  <div id="amendmenttext">
+    ${structure:textdiff}
+  </div>
+</div>
+<div id="idea_actions">
+  <div tal:condition="actions" class="btn-group btn-group-justified">
+        <tal:loop repeat="a actions">
+          <a tal:attributes="href a['url']" class="btn btn-default">${a['title']}</a>
+        </tal:loop>
+  </div>
+
+</div>
