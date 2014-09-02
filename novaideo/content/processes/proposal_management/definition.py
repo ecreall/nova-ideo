@@ -33,8 +33,7 @@ from .behaviors import (
     SubmitProposal,
     VotingAmendments,
     AmendmentsResult,
-    Amendable,
-    AmendmentsResult)
+    Amendable)
 from novaideo import _
 from novaideo.content.ballot import Ballot
 

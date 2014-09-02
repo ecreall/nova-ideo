@@ -20,6 +20,8 @@ from novaideo.content.proposal import Proposal
 from ..comment_management.behaviors import validation_by_context
 from novaideo.core import acces_action
 from novaideo.content.correlation import Correlation
+from novaideo.content.idea import Idea
+from novaideo.content.amendment import Amendment
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.ballot import Ballot
 from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
@@ -336,12 +338,52 @@ class ImproveProposal(InfiniteCardinality):
     processsecurity_validation = improve_processsecurity_validation
     state_validation = improve_state_validation
 
+
     def start(self, context, request, appstruct, **kw):
-        #TODO
+        root = getSite()
+        data = {}
+        data['title'] = appstruct['title']
+        data['text'] = appstruct['text']
+        keywords_ids = appstruct.pop('keywords')
+        result, newkeywords = root.get_keywords(keywords_ids)
+        for nk in newkeywords:
+            root.addtoproperty('keywords', nk)
+
+        result.extend(newkeywords)
+        data['keywords_ref'] = result
+        data['description'] = appstruct['description']
+        data['comment'] = appstruct['confirmation']['comment']
+        data['intention'] = appstruct['confirmation']['intention']
+        not_identified = appstruct['confirmation']['replaced_idea']['not_identified']
+        new_idea = appstruct['confirmation']['idea_of_replacement']['new_idea']
+        amendment = Amendment()
+        self.newcontext = amendment
+        if not not_identified:
+            data['replaced_idea'] = appstruct['confirmation']['replaced_idea']['replaced_idea']
+
+        if not new_idea:
+            data['idea_of_replacement'] = appstruct['confirmation']['idea_of_replacement']['idea_of_replacement']
+        else:
+            newidea = Idea(title='Idea for '+context.title)
+            root.addtoproperty('ideas', newidea)
+            newidea.state.append('to work')
+            grant_roles(roles=(('Owner', newidea), ))
+            newidea.setproperty('author', get_current())
+            data['idea_of_replacement'] = newidea
+            self.newcontext = newidea
+
+        amendment.set_data(data)
+        context.addtoproperty('amendments', amendment)
+        amendment.state.append('draft')
+        grant_roles(roles=(('Owner', amendment), ))
+        amendment.setproperty('author', get_current())
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        if isinstance(self.newcontext, Amendment):
+            return HTTPFound(request.resource_url(context, "@@index"))
+        else:
+            return HTTPFound(request.resource_url(self.newcontext, "@@editidea"))
 
 
 def correct_relation_validation(process, context):
@@ -391,7 +433,7 @@ def decision_roles_validation(process, context):
 
 def decision_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and 'votes for publishing' in context.state
+    return 'active' in wg.state and 'amendable' in context.state
 
 
 class VotingPublication(ElementaryAction):
@@ -402,7 +444,8 @@ class VotingPublication(ElementaryAction):
     state_validation = decision_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #TODO
+        context.state.remove('amendable')
+        context.state.append('votes for publishing')
         return True
 
 
@@ -548,10 +591,9 @@ class Participate(InfiniteCardinality):
                 context.state = [] #remove('open to a working group')
                 wg.state = ['active']
                 if not hasattr(self.process, 'first_decision'):
-                    context.state.append('votes for publishing')
                     self.process.first_decision = True
-                else:
-                    context.state.append('amendable')
+
+                context.state.append('amendable')
         else:
             wg.addtoproperty('wating_list', user)
  
@@ -572,7 +614,7 @@ def va_roles_validation(process, context):
 
 def va_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and 'votes for amendments' in context.state
+    return 'active' in wg.state and 'amendable' in context.state
 
 
 class VotingAmendments(ElementaryAction):
@@ -583,7 +625,8 @@ class VotingAmendments(ElementaryAction):
     state_validation = va_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #TODO
+        context.state.remove('amendable')
+        context.state.append('votes for amendments')
         return True
 
     def redirect(self, context, request, **kw):
@@ -609,7 +652,7 @@ class AmendmentsResult(ElementaryAction):
 
         #TODO merg result
         context.state.remove('votes for amendments')
-        context.state.append('votes for publishing')
+        context.state.append('amendable')
         return True
 
     def redirect(self, context, request, **kw):
@@ -630,7 +673,7 @@ class Amendable(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('votes for publishing')
-        context.state.append('votes for amendments')
+        context.state.append('amendable')
         return True
 
     def redirect(self, context, request, **kw):

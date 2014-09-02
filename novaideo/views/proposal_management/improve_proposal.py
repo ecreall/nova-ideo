@@ -24,10 +24,12 @@ class ImproveProposalView(FormView):
     viewid = 'improveproposal'
     formid = 'formimproveproposal'
     behaviors = [ImproveProposal, Cancel]
-    schema = select(AmendmentSchema(widget=deform.widget.FormWidget(css_class='amendmentform')),['description',
-                                       'keywords', 
-                                       'text', 
-                                       'confirmation'])
+    schema = select(AmendmentSchema(widget=deform.widget.FormWidget(css_class='amendmentform')),
+                    ['title',
+                     'description',
+                     'keywords', 
+                     'text', 
+                     'confirmation'])
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/action_confirmation.js']}
 

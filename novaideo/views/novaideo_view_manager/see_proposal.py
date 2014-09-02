@@ -35,7 +35,6 @@ class DetailProposalView(BasicView):
         isactive = False
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
         vote_data = {'subject':self.context}
-        import pdb; pdb.set_trace()
         action_updated, messages, resources, actions = dace_ui_api._actions(self.request, self.context, 'referendumprocess', 'favour')
         if action_updated and not isactive:
             isactive = True

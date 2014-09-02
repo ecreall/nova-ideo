@@ -1,10 +1,6 @@
 import colander
 from zope.interface import implementer
-from persistent.list import PersistentList
-from pyramid.threadlocal import get_current_request
 
-from substanced.interfaces import IUserLocator
-from substanced.principal import DefaultUserLocator
 from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
@@ -27,7 +23,8 @@ from novaideo.core import (
     SearchableEntitySchema,
     CorrelableEntity,
     DuplicableEntity,
-    VersionableEntity)
+    VersionableEntity,
+    PresentableEntity)
 
 
 @colander.deferred
@@ -68,7 +65,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IProposal)
-class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntity, CorrelableEntity):
+class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntity, CorrelableEntity, PresentableEntity):
     result_template = 'novaideo:views/templates/proposal_result.pt'
     name = renamer()
     author = SharedUniqueProperty('author')
@@ -80,30 +77,9 @@ class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntit
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
         self.set_data(kwargs)
-        self.email_persons_contacted = PersistentList()
 
     @property
     def related_ideas(self):
         lists = [c.targets for c in self.source_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
         return [target for targets in lists for target in targets]
-
-    @property
-    def persons_contacted(self):
-        request = get_current_request()
-        adapter = request.registry.queryMultiAdapter(
-                (self, request),
-                IUserLocator
-                )
-        if adapter is None:
-            adapter = DefaultUserLocator(self, request)
-
-        result = []
-        for email in self.email_persons_contacted:
-            user = adapter.get_user_by_email(email)
-            if user is not None:
-                result.append(user)
-            else:
-                result.append(email)
-
-        return set(result)
 
