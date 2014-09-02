@@ -68,9 +68,9 @@ class Referendum(object):
     def calculate_votes(self, votes):
         result = {'True':0, 'False':0, 'None':0}
         for vote in votes:
-            if vote is True:
+            if vote.value is True:
                 result['True'] += 1
-            elif vote is False:
+            elif vote.value is False:
                 result['False'] += 1
             else:
                 result['None'] += 1

@@ -383,6 +383,7 @@ class Associate(InfiniteCardinality):
     processsecurity_validation = associate_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
+        import pdb; pdb.set_trace()
         correlation = appstruct['_object_data']
         correlation.setproperty('source', context)
         correlation.setproperty('author', get_current())

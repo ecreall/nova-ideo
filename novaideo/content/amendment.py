@@ -1,7 +1,6 @@
 import colander
 import deform
 from zope.interface import implementer
-from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_request
 
 from substanced.interfaces import IUserLocator
@@ -28,6 +27,7 @@ from novaideo.core import (
     SearchableEntitySchema,
     CorrelableEntity,
     Commentable,
+    PresentableEntity,
     can_access)
 from novaideo import _
 from novaideo.views.widget import ConfirmationWidget
@@ -142,7 +142,7 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IAmendment)
-class Amendment(Commentable, CorrelableEntity, SearchableEntity):
+class Amendment(Commentable, CorrelableEntity, SearchableEntity, PresentableEntity):
     name = renamer()
     author = SharedUniqueProperty('author')
     proposal = SharedUniqueProperty('proposal', 'amendments')

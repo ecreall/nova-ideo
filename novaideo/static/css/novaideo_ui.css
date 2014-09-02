@@ -108,11 +108,19 @@ margin-bottom:15px;
 }
 
 del {
-background-color: red;
+  background-color: red;
 }
 
 ins {
-background-color: springgreen;
+  background-color: springgreen;
+}
+
+#amendment-diff del {
+  background-color: #cc66cc;
+}
+
+#amendment-diff ins {
+  background-color: #cc66cc;
 }
 
 .legend-carre-del{
@@ -133,6 +141,12 @@ background-color: springgreen;
     background-image: linear-gradient(to bottom, #adcce7 0%, #d2e8fd 100%);
     border-color: #adcce7;
 }
+
+.amendment-well {
+    background-image: linear-gradient(to bottom, #eadcea 0%, #eadcea 100%);
+    border-color: #dbd0db;
+}
+
 
 .thumbnail.right-caption > #idea-image {
     /**background-image: linear-gradient(to left, #effdea -100%, #93d91a 123%);**/

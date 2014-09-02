@@ -39,3 +39,13 @@ Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
 
 PRESENTATION_PROPOSAL_SUBJECT = u"""Présentation : {subject_title}""" 
+
+
+PRESENTATION_AMENDMENT_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+{my_title} {my_first_name} {my_last_name} souhaite vous présenter l'amendment figurant sur la plateforme Nova-Ideo.org sous {subject_url}. Nova-Ideo est un service en ligne permettant d'initier des propositions, constituer des groupes de travail pour les améliorer et les finaliser, bénéficier de soutiens de membres de la communauté et d'avis de comités d'examen.
+""" + PORTAL_SIGNATURE
+
+
+PRESENTATION_AMENDMENT_SUBJECT = u"""Présentation : {subject_title}""" 

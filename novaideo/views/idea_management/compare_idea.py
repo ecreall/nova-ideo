@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import colander
 import deform
+import htmldiff
 from zope.interface import invariant
 from pyramid.view import view_config
 
@@ -35,7 +36,6 @@ class DiffView(BasicView):
     template = 'novaideo:views/idea_management/templates/diff_result.pt'
 
     def update(self):
-        import htmldiff
         version = self.params('version')
         textdiff = ''
         descriptiondiff = ''
@@ -43,8 +43,8 @@ class DiffView(BasicView):
         versionobj = None
         if version is not None:
              versionobj = get_obj(int(version))
-             textdiff = htmldiff.render_html_diff(versionobj.text, self.context.text)
-             descriptiondiff = htmldiff.render_html_diff('<div>'+versionobj.description+'</div>', '<div>'+self.context.description+'</div>')
+             textdiff = htmldiff.render_html_diff(getattr(versionobj, 'text', ''), getattr(self.context, 'text', ''))
+             descriptiondiff = htmldiff.render_html_diff('<div>'+getattr(versionobj, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
              for k in versionobj.keywords:
                  if k in self.context.keywords:
                      keywordsdiff.append({'title':k,'state':'nothing'})
@@ -56,7 +56,7 @@ class DiffView(BasicView):
         result = {}
         values = {
                 'version' : versionobj,
-                 'idee': self.context,
+                'idee': self.context,
                 'textdiff': textdiff,
                 'descriptiondiff':descriptiondiff,
                 'keywordsdiff':keywordsdiff

@@ -3,6 +3,9 @@ from zope.interface import Interface
 
 
 
+class IPresentableEntity(Interface):
+    pass
+
 class IVote(Interface):
     pass
 
@@ -51,7 +54,9 @@ class IComment(ICommentable):
     pass
 
 
-class IAmendment(ICommentable, ICorrelableEntity):
+class IAmendment(ICommentable, 
+                 ICorrelableEntity,
+                 IPresentableEntity):
     pass
 
 
@@ -59,7 +64,8 @@ class Iidea(ICommentable,
             IDuplicableEntity,
             IVersionableEntity,
             ISearchableEntity,
-            ICorrelableEntity):
+            ICorrelableEntity,
+            IPresentableEntity):
     pass
 
 
@@ -90,7 +96,8 @@ class IPerson(ISearchableEntity,
 
 class IProposal(ICommentable,
                 ISearchableEntity,
-                ICorrelableEntity):
+                ICorrelableEntity,
+                IPresentableEntity):
     pass
 
 
