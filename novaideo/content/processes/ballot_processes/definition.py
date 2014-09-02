@@ -48,8 +48,6 @@ class BallotProcess(ProcessDefinition, VisualisableElement):
         super(BallotProcess, self).__init__(**kwargs)
         self.title = _('Ballot Process')
         self.description = _('Ballot Process')
-        self.ballots = PersistentList()
-        self.duration = None
 
     def _init_definition(self):
         self.defineNodes(

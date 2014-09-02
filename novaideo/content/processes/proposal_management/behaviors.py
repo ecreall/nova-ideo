@@ -405,8 +405,6 @@ class VotingPublication(ElementaryAction):
         #TODO
         return True
 
-    def execute(self, context, request, appstruct, **kw):
-        super(FirstPublishDecision, self).execute(context, request, appstruct, **kw)
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))

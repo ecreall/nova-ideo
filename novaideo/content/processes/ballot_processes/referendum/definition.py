@@ -34,7 +34,6 @@ class ReferendumProcess(ProcessDefinition, VisualisableElement):
         super(ReferendumProcess, self).__init__(**kwargs)
         self.title = _('Referendum Process')
         self.description = _('Referendum Process')
-        self.ballot = None
 
     def _init_definition(self):
         self.defineNodes(

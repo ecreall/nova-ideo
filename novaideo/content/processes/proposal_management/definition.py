@@ -91,6 +91,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         processes = ballot.run_ballot()
         subprocess.execution_context.add_involved_collection('vote_processes', processes)
         proposal.working_group.addtoproperty('ballots', ballot)
+        subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
         subprocess.duration = vp_default_duration
         process.vp_ballot = ballot #vp for voting for publishing
@@ -111,7 +112,9 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         #TODO add ballot informations
         processes.extend(ballot.run_ballot())
         proposal.working_group.addtoproperty('ballots', ballot)
+        subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
+        process.amendments_ballots = PersistentList()
         process.amendments_ballots.append(ballot)
         #TODO End For
         subprocess.execution_context.add_involved_collection('vote_processes', processes)
@@ -125,8 +128,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
         super(ProposalManagement, self).__init__(**kwargs)
         self.title = _('Proposals management')
         self.description = _('Proposals management')
-        self.vp_ballot = None
-        self.amendments_ballots = PersistentList()
 
     def _init_definition(self):
         self.defineNodes(
