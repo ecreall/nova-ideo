@@ -1,0 +1,20 @@
+<div class="thumbnail right-caption span4 " >
+  <div id="amendment-image">
+
+  </div>
+  <div class="media-body">
+    <h3 tal:condition="object.state"><span class="label label-primary pull-right">${object.state[0].capitalize()}</span></h3>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
+    <dl >
+        <dt>Intention</dt>
+	<dd>${object.intention}</dd>
+        <dt>Objet</dt>
+	<dd>${object.comment}</dd>
+        <dt>Dernière modification</dt>
+	<dd>
+          <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> à ${object.created_at.hour}:${object.created_at.minute}:${object.created_at.second} par <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
+        </dd>
+    </dl>
+    <a tal:condition="action is not None" tal:attributes="href action.url" class="btn btn-default btn-xs pull-right edit-amendment-action"><span class="glyphicon glyphicon-pencil"></span> ${action.title}</a>
+  </div>
+</div>

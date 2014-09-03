@@ -144,6 +144,7 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(IAmendment)
 class Amendment(Commentable, CorrelableEntity, SearchableEntity, PresentableEntity):
     name = renamer()
+    result_template = 'novaideo:views/templates/amendment_result.pt'
     author = SharedUniqueProperty('author')
     proposal = SharedUniqueProperty('proposal', 'amendments')
     replaced_idea = SharedUniqueProperty('replaced_idea')

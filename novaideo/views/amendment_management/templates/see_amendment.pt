@@ -15,7 +15,7 @@
     </dl>
   </div>
 
-<h3>Les modifications apportées à la proposition</h3>
+<h3>Les modifications apportées à la proposition (<a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a>)</h3>
 <div id="amendment-diff">
   <div class="jumbotron well diff-well">
     <dl >

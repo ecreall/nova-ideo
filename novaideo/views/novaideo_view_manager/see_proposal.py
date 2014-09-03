@@ -20,6 +20,7 @@ from novaideo import _
 from novaideo.views.proposal_management.present_proposal import PresentProposalView
 from novaideo.views.proposal_management.comment_proposal import CommentProposalView
 from novaideo.views.proposal_management.associate import AssociateView
+from novaideo.views.proposal_management.edit_amendments import EditAmendmentsView
 
 
 class DetailProposalView(BasicView):
@@ -74,7 +75,7 @@ class SeeProposalActionsView(MultipleView):
     title = _('actions')
     name = 'seeiactionsdea'
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (AssociateView, PresentProposalView, CommentProposalView)
+    views = (EditAmendmentsView, AssociateView, PresentProposalView, CommentProposalView)
 
 
 @view_config(

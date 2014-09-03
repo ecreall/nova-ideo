@@ -269,6 +269,33 @@ class CommentProposal(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def edita_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'proposal')
+
+
+def edita_roles_validation(process, context):
+    return has_any_roles(roles=('Member',))
+
+
+def edita_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) and \
+           context.amendments
+
+
+class EditAmendments(InfiniteCardinality):
+    isSequential = False
+    context = IProposal
+    relation_validation = edita_relation_validation
+    roles_validation = edita_roles_validation
+    processsecurity_validation = edita_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
 def present_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
@@ -404,6 +431,23 @@ def correct_state_validation(process, context):
 
 
 class CorrectProposal(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    isSequential = False
+    context = IProposal
+    relation_validation = correct_relation_validation
+    roles_validation = correct_roles_validation
+    processsecurity_validation = correct_processsecurity_validation
+    state_validation = correct_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        #TODO
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class AddParagraph(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     isSequential = False
     context = IProposal

@@ -1,5 +1,6 @@
 from datetime import timedelta
 from persistent.list import PersistentList
+from pyramid.threadlocal import get_current_registry
 
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.util import getSite
@@ -33,15 +34,18 @@ from .behaviors import (
     SubmitProposal,
     VotingAmendments,
     AmendmentsResult,
-    Amendable)
+    Amendable,
+    EditAmendments,
+    AddParagraph)
 from novaideo import _
 from novaideo.content.ballot import Ballot
+from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 vp_default_duration = timedelta(minutes=30)
 
 
-amendments_default_duration = timedelta(minutes=30)
+amendments_default_duration = timedelta(minutes=3) #TODO 
 
 
 
@@ -77,7 +81,6 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
     
     def _init_subprocess(self, process, subprocess):
-
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
         electors = proposal.working_group.members[:root.participants_mini]
@@ -98,23 +101,59 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
 class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
 
-    
+    def _get_commun_groups(self, amendment, groups):
+        result = []
+        for group in groups:
+            if amendment in group:
+                result.append(group)
+
+        return result
+
     def _init_subprocess(self, process, subprocess):
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
         electors = proposal.working_group.members
-        subjects = proposal.amendments
+        amendments = [a for a in proposal.amendments if 'published' in a.state]
         processes = []
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        groups = []
+        for amendment in amendments:
+            isadded = False
+            for group in groups:
+                for a in group:
+                    if text_analyzer.hasConflict(a.text, [amendment.text]) or amendment.replaced_idea is a.replaced_idea:
+                        group.append(amendment)
+                        isadded = True
+
+                    if isadded:
+                        break
+
+            if not isadded:
+                groups.append([amendment])
+
+        for amendment in amendments:
+            commungroups = self._get_commun_groups(amendment, groups)
+            new_group = set()
+            for g in commungroups:
+                new_group.update(g)
+                groups.pop(groups.index(g))
+
+            groups.append(list(new_group))
+
+        for group in groups:
+            group.insert(0, proposal)
+     
         #TODO calcul des groups d'amendements. Pour chaque groupe creer un ballot de type Jugement Majoritaire
         #TODO Start For
-        ballot = Ballot('Referendum' , electors, subjects, amendments_default_duration)
-        #TODO add ballot informations
-        processes.extend(ballot.run_ballot())
-        proposal.working_group.addtoproperty('ballots', ballot)
         subprocess.ballots = PersistentList()
-        subprocess.ballots.append(ballot)
         process.amendments_ballots = PersistentList()
-        process.amendments_ballots.append(ballot)
+        for group in groups:
+            ballot = Ballot('MajorityJudgment' , electors, group, amendments_default_duration)
+            #TODO add ballot informations
+            processes.extend(ballot.run_ballot(context=proposal))
+            proposal.working_group.addtoproperty('ballots', ballot)
+            subprocess.ballots.append(ballot)
+            process.amendments_ballots.append(ballot)
         #TODO End For
         subprocess.execution_context.add_involved_collection('vote_processes', processes)
         subprocess.duration = amendments_default_duration
@@ -197,6 +236,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Comment the proposal"),
                                        title=_("Comment"),
                                        groups=[]),
+                editamendments = ActivityDefinition(contexts=[EditAmendments],
+                                       description=_("Edit amendments"),
+                                       title=_("Edit amendments"),
+                                       groups=[]),
                 associate = ActivityDefinition(contexts=[Associate],
                                        description=_("Associate the proposal"),
                                        title=_("Associate"),
@@ -204,6 +247,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 correct = ActivityDefinition(contexts=[CorrectProposal],
                                        description=_("Correct proposal"),
                                        title=_("Correct"),
+                                       groups=[]),
+                addparagraph = ActivityDefinition(contexts=[AddParagraph],
+                                       description=_("Add a paragraph"),
+                                       title=_("Add a paragraph"),
                                        groups=[]),
                 improve = ActivityDefinition(contexts=[ImproveProposal],
                                        description=_("Improve proposal"),
@@ -222,11 +269,13 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg2', 'edit'),
                 TransitionDefinition('submit', 'pg3'),
                 TransitionDefinition('pg3', 'comment'),
+                TransitionDefinition('pg3', 'editamendments'),
                 TransitionDefinition('pg3', 'associate'),
                 TransitionDefinition('pg3', 'present'),
                 TransitionDefinition('pg3', 'resign'),
                 TransitionDefinition('pg3', 'participate'),
                 TransitionDefinition('pg3', 'correct'),
+                TransitionDefinition('pg3', 'addparagraph'),
                 TransitionDefinition('pg3', 'improve'),
                 TransitionDefinition('pg3', 'eg2'),
                 TransitionDefinition('eg2', 'votingpublication'),

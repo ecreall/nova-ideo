@@ -1,0 +1,9 @@
+
+
+
+    <div tal:condition="len(bodies)==0" class="col-md-12">
+      Pas d'amendements accessibles. Des amendements sont en cours de rédaction. 
+    </div>
+    <div tal:condition="bodies" class="col-md-12">
+      <div tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
+    </div>

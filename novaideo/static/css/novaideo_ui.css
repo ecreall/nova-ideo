@@ -120,7 +120,7 @@ ins {
 }
 
 #amendment-diff ins {
-  background-color: #cc66cc;
+  background-color: #f19cf0;
 }
 
 .legend-carre-del{
@@ -178,5 +178,20 @@ ins {
     margin-top: -4px;
     width: 100px;
 }
+
+.thumbnail.right-caption > #amendment-image {
+    background-image: linear-gradient(to left, #eadcea -100%, #eadcea 123%);
+    float: left;
+    height: 205px;
+    margin-left: -4px;
+    margin-right: 9px;
+    margin-top: -4px;
+    width: 100px;
+}
+
+.edit-amendment-action {
+    margin-top: -22px;
+}
+
 
 
