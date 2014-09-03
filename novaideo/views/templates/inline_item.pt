@@ -1,0 +1,19 @@
+<div tal:omit-tag="field.widget.hidden"
+     tal:define="hidden hidden|field.widget.hidden;
+                 error_class error_class|field.widget.error_class;
+                 description description|field.description;
+                 title title|field.title;
+                 oid oid|field.oid"
+     title="${description}"
+     class="form-group col-md-4 deformSeqItem ${field.error and error_class or ''} ${field.widget.item_css_class or ''}"
+     i18n:domain="deform">
+    <span tal:replace="structure field.serialize(cstruct)"/>
+    <tal:errors condition="field.error and not hidden"
+                define="errstr 'error-%s' % oid"
+                repeat="msg field.error.messages()">
+      <p tal:condition="msg"
+         id="${errstr if repeat.msg.index==0 else '%s-%s' % (errstr, repeat.msg.index)}"
+         class="${error_class} help-block"
+         i18n:translate="">${msg}</p>
+    </tal:errors>
+</div>

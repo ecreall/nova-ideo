@@ -5,10 +5,10 @@ from zope.interface import implementer
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
-from substanced.util import renamer
+from substanced.util import renamer, get_oid
 from dace.objectofcollaboration.principal.util import grant_roles
 from dace.objectofcollaboration.entity import Entity
-from dace.util import find_service
+from dace.util import find_service, get_obj
 from dace.descriptors import (
         CompositeUniqueProperty,
         CompositeMultipleProperty,
@@ -22,7 +22,7 @@ from novaideo import _
 
 
 @content(
-    'vote',
+    'referendumvote',
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IVote)
@@ -46,18 +46,21 @@ class Referendum(object):
         else:
             self.subject =  self.report.subjects
 
-    def run_ballot(self):
+    def run_ballot(self, context=None):
         processes = []
         def_container = find_service('process_definition_container')
         runtime = find_service('runtime')
         pd = def_container.get_definition(self.vote_process_id)
+        if context is None:
+            context = self.subject
+
         for elector in self.report.electors:
             proc = pd()
             proc.__name__ = proc.id
             runtime.addtoproperty('processes', proc)
             proc.defineGraph(pd)
             proc.execution_context.add_involved_entity('elector', elector)
-            proc.execution_context.add_involved_entity('subject', self.subject)
+            proc.execution_context.add_involved_entity('subject', context)
             grant_roles(elector, (('Elector', proc),))
             proc.ballot = self.report.ballot
             proc.execute()
@@ -84,7 +87,93 @@ class Referendum(object):
         return None
 
 
-ballot_types = {'Referendum': Referendum} #TODO add ballot types
+default_judgments = {'excellent': 7, 'very Good': 6, 'good': 5, 'fairly well': 4, 'passable': 3, 'insufficient': 2, 'reject': 1}
+
+
+@content(
+    'majorityjudgmentvote',
+    icon='glyphicon glyphicon-align-left',
+    )
+@implementer(IVote)
+class MajorityJudgmentVote(VisualisableElement, Entity):
+    name = renamer()
+
+    def __init__(self, value=None, **kwargs):
+        super(MajorityJudgmentVote, self).__init__(**kwargs)
+        self.value = value
+        #value  = {objectoid: 'Judgment', ...}
+
+        
+@implementer(IBallotType)
+class MajorityJudgment(object):
+    vote_factory = MajorityJudgmentVote
+    vote_process_id = 'majorityjudgmentprocess'
+
+    def __init__(self, report):
+        self.report = report
+        self.judgments = default_judgments
+
+    def run_ballot(self, context=None):
+        processes = []
+        def_container = find_service('process_definition_container')
+        runtime = find_service('runtime')
+        pd = def_container.get_definition(self.vote_process_id)
+        if context is None:
+            context = self.report.subjects[0].__parent__
+
+        for elector in self.report.electors:
+            proc = pd()
+            proc.__name__ = proc.id
+            runtime.addtoproperty('processes', proc)
+            proc.defineGraph(pd)
+            proc.execution_context.add_involved_entity('elector', elector)
+            proc.execution_context.add_involved_entity('subject', context)
+            grant_roles(elector, (('Elector', proc),))
+            proc.ballot = self.report.ballot
+            proc.execute()
+            processes.append(proc)
+
+        return processes
+
+    def calculate_votes(self, votes):
+        result = {}
+        for subject in self.report.subjects:
+            oid = get_oid(subjects)
+            for judgment in self.judgements.keys():
+                result[oid][judgment] = 0
+
+        for vote in votes:
+            for oid, judgment in vote.value.items():
+                object = get_obj(oid)
+                if object in self.report.subjects:
+                    result[oid][judgment] += 1
+
+        return result
+
+    def get_electeds(self, result):
+        len_voters = len(self.report.voters)
+        object_results = dict([(oid, 0) for oid in result.keys()])
+        for oid in result.keys():
+            object_result = 0
+            for judgment in result[oid].keys():
+                object_result += float(result[oid][judgment]) / float(len_voters) * 100
+                if object_result >= 50:
+                    object_results[oid] = result[oid][judgment]
+                    break
+
+        sorted_results = sorted(object_results.keys(), key=lambda o: object_results[o], reverse=True)
+        if sorted_results:
+            try:
+                object = get_obj(sorted_results[0])
+                return [object]
+            except Exception:
+                return None                   
+
+        return None
+
+
+ballot_types = {'Referendum': Referendum,
+                'MajorityJudgment': MajorityJudgment} #TODO add ballot types
 
 
 @content(
@@ -151,8 +240,8 @@ class Ballot(VisualisableElement, Entity):
         self.duration = duration
         self.finished_at = None
 
-    def run_ballot(self):
-        processes = self.report.ballottype.run_ballot()
+    def run_ballot(self, context=None):
+        processes = self.report.ballottype.run_ballot(context)
         self.run_at = datetime.datetime.today()
         self.finished_at = self.run_at + self.duration
         return processes
