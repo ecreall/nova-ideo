@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import datetime
 from pyramid.httpexceptions import HTTPFound
+from persistent.list import PersistentList
 
 from dace.util import (
     getSite,
@@ -90,7 +91,7 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.setproperty('originalentity', context)
         copy_of_idea.setproperty('version', None)
         copy_of_idea.setproperty('nextversion', None)
-        copy_of_idea.state = ['to work']
+        copy_of_idea.state = PersistentList(['to work'])
         copy_of_idea.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_idea), ))
         self.newcontext = copy_of_idea
@@ -163,7 +164,7 @@ class EditIdea(InfiniteCardinality):
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
         copy_of_idea.set_data(appstruct)
-        context.state = ['deprecated']
+        context.state = PersistentList(['deprecated'])
         copy_of_idea.setproperty('version', context)
         root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.setproperty('author', get_current())

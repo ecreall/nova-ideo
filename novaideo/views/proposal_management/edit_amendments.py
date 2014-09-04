@@ -16,7 +16,7 @@ from novaideo.core import BATCH_DEFAULT_SIZE, can_access
 
 amendments_messages = {'0': u"""Pas d'amendements""",
                       '1': u"""Voir l'amendement""",
-                      '*': u"""Voir les {lenassociated} amendements"""}
+                      '*': u"""Voir les {lenamendments} amendements"""}
 
 
 @view_config(

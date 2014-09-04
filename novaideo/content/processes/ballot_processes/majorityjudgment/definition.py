@@ -27,7 +27,7 @@ def time_duration(process):
 @process_definition(name='majorityjudgmentprocess', id='majorityjudgmentprocess')
 class MajorityJudgmentProcess(ProcessDefinition, VisualisableElement):
     isUnique = True
-    #isVolatile = True
+    isVolatile = True
     isControlled = True
 
     def __init__(self, **kwargs):

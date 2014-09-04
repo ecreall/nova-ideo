@@ -1,0 +1,16 @@
+<div tal:condition="amendment is not None" >
+    <h3><a tal:attributes="href request.resource_url(amendment, '@@index')">${amendment.title}</a></h3>
+    <div class="scroll-able amendment-trimmed-text">
+      ${structure:text}
+    </div>
+    <div class="scroll-able amendment-trimmed-intention">
+        <span tal:condition="is_proposal" style="color: red;">(Texte d'origine)</span>
+        <dl  tal:condition="not is_proposal">
+            <dt>Intention</dt>
+	    <dd>${amendment.intention}</dd>
+            <dt>Objectif</dt>
+	    <dd>${amendment.comment}</dd>
+        </dl>
+   </div>
+</div>
+

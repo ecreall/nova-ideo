@@ -6,7 +6,7 @@
 #************************************************************
 from zope.interface import Interface, implementer
 from dace.util import utility
-import diff_match_patch
+from diff_match_patch import diff_match_patch 
 
  
 

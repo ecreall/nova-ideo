@@ -193,5 +193,16 @@ ins {
     margin-top: -22px;
 }
 
+.amendment-body {
+    padding: 6px;
+    margin: -20px 0;
+}
+.amendment-trimmed-text {
+  height: 150px
+}
+
+.amendment-trimmed-intention {
+  height: 120px
+}
 
 

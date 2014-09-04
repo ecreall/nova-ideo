@@ -45,12 +45,13 @@ from novaideo.utilities.text_analyzer import ITextAnalyzer
 vp_default_duration = timedelta(minutes=30)
 
 
-amendments_default_duration = timedelta(minutes=3) #TODO 
+amendments_vote_default_duration = timedelta(minutes=30) #TODO 
+
+amendments_cycle_default_duration = timedelta(minutes=4)
 
 
-
-def amendments_duration(process):
-    return amendments_default_duration
+def amendments_cycle_duration(process):
+    return amendments_cycle_default_duration
 
 
 def eg3_publish_condition(process):
@@ -148,7 +149,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         subprocess.ballots = PersistentList()
         process.amendments_ballots = PersistentList()
         for group in groups:
-            ballot = Ballot('MajorityJudgment' , electors, group, amendments_default_duration)
+            ballot = Ballot('MajorityJudgment' , electors, group, amendments_vote_default_duration)
             #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))
             proposal.working_group.addtoproperty('ballots', ballot)
@@ -156,7 +157,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             process.amendments_ballots.append(ballot)
         #TODO End For
         subprocess.execution_context.add_involved_collection('vote_processes', processes)
-        subprocess.duration = amendments_default_duration
+        subprocess.duration = amendments_vote_default_duration
 
 
 @process_definition(name='proposalmanagement', id='proposalmanagement')
@@ -219,7 +220,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Change the state to amendable"),
                                        title=_("Amendable"),
                                        groups=[]),
-                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_duration=amendments_duration)),
+                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_duration=amendments_cycle_duration)),
                 publish = ActivityDefinition(contexts=[PublishProposal],
                                        description=_("Publish the proposal"),
                                        title=_("Publish"),

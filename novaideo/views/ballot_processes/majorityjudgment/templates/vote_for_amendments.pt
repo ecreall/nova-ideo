@@ -1,6 +1,6 @@
  <dl >
      <dt>Sujet du vote</dt>
-     <dd>Publication de la proposition</dd>
+     <dd>Décision sur les Amendements d'une Proposition</dd>
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
        <dt tal:condition="ballot_report.electors">Electeurs</dt>
        <dd tal:condition="ballot_report.electors">

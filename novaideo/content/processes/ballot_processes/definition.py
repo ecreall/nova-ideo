@@ -41,7 +41,7 @@ def event_condition(process):
 class BallotProcess(ProcessDefinition, VisualisableElement):
     isControlled = True
     isSubProcess = True
-    #isVolatile = True
+    isVolatile = True
     id = 'ballotprocess'
 
     def __init__(self, **kwargs):

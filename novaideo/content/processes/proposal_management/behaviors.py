@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import datetime
 from datetime import timedelta
+from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import (
@@ -157,7 +158,7 @@ class DuplicateProposal(ElementaryAction):
         copy_of_proposal.set_data(appstruct)
         root.addtoproperty('proposals', copy_of_proposal)
         copy_of_proposal.setproperty('originalentity', context)
-        copy_of_proposal.state = ['draft']
+        copy_of_proposal.state = PersistentList(['draft'])
         copy_of_proposal.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_proposal), ))
         self.newcontext = copy_of_proposal
@@ -583,8 +584,8 @@ class Resign(InfiniteCardinality):
         participants = wg.members
         len_participants = len(participants)
         if len_participants < root.participants_mini:
-            context.state = ['open to a working group']
-            wg.state = ['deactivated']
+            context.state = PersistentList(['open to a working group'])
+            wg.state = PersistentList(['deactivated'])
 
         return True
 
@@ -632,8 +633,8 @@ class Participate(InfiniteCardinality):
             wg.addtoproperty('members', user)
             grant_roles(user, (('Participant', context),))
             if (len_participants+1) == root.participants_mini:
-                context.state = [] #remove('open to a working group')
-                wg.state = ['active']
+                context.state = PersistentList()#.remove('open to a working group')
+                wg.state = PersistentList(['active'])
                 if not hasattr(self.process, 'first_decision'):
                     self.process.first_decision = True
 
@@ -669,8 +670,7 @@ class VotingAmendments(ElementaryAction):
     state_validation = va_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('amendable')
-        context.state.append('votes for amendments')
+        context.state = PersistentList(['votes for amendments'])
         return True
 
     def redirect(self, context, request, **kw):
@@ -692,7 +692,9 @@ class AmendmentsResult(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         result = set()
         for ballot in self.process.amendments_ballots:
-            result.update(ballot.report.get_electeds())
+            electeds = ballot.report.get_electeds()
+            if electeds is not None:
+                result.update(ballot.report.get_electeds())
 
         #TODO merg result
         context.state.remove('votes for amendments')

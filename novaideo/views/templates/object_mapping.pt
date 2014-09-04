@@ -5,8 +5,7 @@
          i18n:domain="deform">
   
   <div class="panel panel-default" title="${description}">
-    <div class="panel-body">
-
+    <div class="panel-body amendment-body">
       <div tal:condition="errormsg" 
            class="clearfix alert alert-message error">
         <p i18n:translate="">
@@ -18,10 +17,8 @@
       <div tal:condition="description">
         ${description}
       </div>
-      <div tal:define="description_dict field.get_root().schema.view.get_description(field, cstruct)">
-        <tal:loop repeat="(t, value) description_dict.items()">
-                ${structure:value}
-        </tal:loop>
+      <div tal:omit-tag="" tal:define="object_description field.get_root().schema.view.get_description(field, cstruct)">
+                ${structure:object_description}
       </div>
       ${field.start_mapping()}
       <div tal:repeat="child field.children"

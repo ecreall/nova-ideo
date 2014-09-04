@@ -87,7 +87,13 @@ class Referendum(object):
         return None
 
 
-default_judgments = {'excellent': 7, 'very Good': 6, 'good': 5, 'fairly well': 4, 'passable': 3, 'insufficient': 2, 'reject': 1}
+default_judgments = {'Excellent': 7,
+                     'Very good': 6,
+                     'Good': 5,
+                     'Fairly well': 4,
+                     'Passable': 3,
+                     'Insufficient': 2,
+                     'Reject': 1}
 
 
 @content(
@@ -138,8 +144,9 @@ class MajorityJudgment(object):
     def calculate_votes(self, votes):
         result = {}
         for subject in self.report.subjects:
-            oid = get_oid(subjects)
-            for judgment in self.judgements.keys():
+            oid = get_oid(subject)
+            result[oid] = {}
+            for judgment in self.judgments.keys():
                 result[oid][judgment] = 0
 
         for vote in votes:
@@ -152,6 +159,9 @@ class MajorityJudgment(object):
 
     def get_electeds(self, result):
         len_voters = len(self.report.voters)
+        if len_voters == 0:
+            return None
+
         object_results = dict([(oid, 0) for oid in result.keys()])
         for oid in result.keys():
             object_result = 0

@@ -1,6 +1,7 @@
 import colander
 import deform
 import htmldiff
+import re
 from pyramid.view import view_config
 
 from dace.util import get_obj
@@ -95,17 +96,64 @@ class VoteFormView(FormView):
         
         return {'condidates': ballot_report.subjects}
 
-    def get_description(self, field, cstruct):
+    def _get_added_texts(self, text):
+        result = text.split("<ins>")
+        result = [r.split("</ins>") for r in result]
+        result = [r for r in  result if len(r)>1]
+        result = [r[0] for r in result]
+        result = "..."+"...<br />...".join(result)+"..."
+        return result
+
+    def validate_html_text(self, text):
+        last_start_end_index = text.rfind("</")
+        last_end_index = text[last_start_end_index:].find(">")
+        prune_index = last_start_end_index
+        if last_end_index > 0:
+            last_end_index += last_start_end_index
+            prune_index = text[last_end_index:].find("<")
+            prune_index += last_end_index
+
+        if prune_index < 0:
+            texts = re.split(r"[^/]>", text)
+            return texts.pop()
+
+        return text[:prune_index]
+
+    def _get_trimed_text(self, text):
+        trimed_text = text
+        trimed_texts = []
+        if len(trimed_text) > 499:
+            texts = trimed_text.split('\n')
+            length = 500 / len(texts)
+            for t in texts:
+                if len(t) > length-1:
+                    t = self.validate_html_text(t[:length])
+                    t = re.sub('\s[a-z0-9._-]+$', ' <b>...</b>', t)
+
+                trimed_texts.append(t)
+
+            trimed_text = "\n".join(trimed_texts)
+
+        return trimed_text
+
+    def get_description(self, field, cstruct): 
+        description_template = 'novaideo:views/amendment_management/templates/description_amendments.pt'
         oid = cstruct[OBJECT_OID]
+        
         try:
             object = get_obj(oid)
+            values = {'amendment': object, 'is_proposal': False}
             if isinstance(object, Proposal):
-                return {'title': '<h3>'+object.title+'</h3>', 'text':object.text}
+                values['text'] = self._get_trimed_text(object.text)
+                values['is_proposal'] = True
             else:
                 textdiff = htmldiff.render_html_diff(getattr(self.context, 'text', ''), getattr(object, 'text', ''))
-                return {'title': '<h3>'+object.title+'</h3>', 'text':textdiff}
+                values['text'] = self._get_added_texts(textdiff)
+
+            body = self.content(result=values, template=description_template)['body']
+            return body
         except Exception:
-            return {}
+            return {'amendment': None}
 
 
 
