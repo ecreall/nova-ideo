@@ -3,19 +3,21 @@ import datetime
 from datetime import timedelta
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
+from pyramid.threadlocal import get_current_registry
 
 from dace.util import (
     getSite,
     getBusinessAction,
     copy,
-    find_entities)
+    find_entities,
+    get_obj)
 from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current, revoke_roles
 from dace.processinstance.activity import InfiniteCardinality, ActionType, LimitedCardinality, ElementaryAction
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IProposal, ICorrelableEntity
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.mail import PRESENTATION_PROPOSAL_MESSAGE, PRESENTATION_PROPOSAL_SUBJECT
+from novaideo.mail import ALERT_SUBJECT, ALERT_MESSAGE,  RESULT_VOTE_AMENDMENT_SUBJECT,  RESULT_VOTE_AMENDMENT_MESSAGE
 from novaideo import _
 from novaideo.content.proposal import Proposal
 from ..comment_management.behaviors import validation_by_context
@@ -26,6 +28,7 @@ from novaideo.content.amendment import Amendment
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.ballot import Ballot
 from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
+from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 try:
@@ -88,6 +91,8 @@ class CreateProposal(ElementaryAction):
         if related_ideas:
             self._associate(related_ideas, proposal)
 
+        proposal.reindex()
+        wg.reindex()
         self.newcontext = proposal
         return True
 
@@ -161,6 +166,8 @@ class DuplicateProposal(ElementaryAction):
         copy_of_proposal.state = PersistentList(['draft'])
         copy_of_proposal.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_proposal), ))
+        copy_of_proposal.reindex()
+        context.reindex()
         self.newcontext = copy_of_proposal
         return True
 
@@ -230,6 +237,48 @@ class PublishProposal(ElementaryAction):
         #TODO wg desactive, members vide...
         context.state.remove('votes for publishing')
         context.state.append('published')
+        context.reindex()
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def alert_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'proposal')
+
+def alert_roles_validation(process, context):
+    return has_any_roles(roles=(('Participant', context),)) #System
+
+def alert_state_validation(process, context):
+    wg = context.working_group
+    return 'active' in wg.state and 'amendable' in context.state
+
+
+class Alert(ElementaryAction):
+    style = 'button' #TODO add style abstract class
+    context = IProposal
+    roles_validation = alert_roles_validation
+    relation_validation = alert_relation_validation
+    state_validation = alert_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        members = context.working_group.members
+        url = request.resource_url(context, "@@index")
+        subject = ALERT_SUBJECT.format(subject_title=context.title)
+        for member in members:
+            recipient_title = getattr(member, 'user_title','')
+            recipient_first_name = getattr(member, 'first_name', member.name)
+            recipient_last_name = getattr(member, 'last_name','')
+            member_email = member.email
+            message = ALERT_MESSAGE.format(
+                recipient_title=recipient_title,
+                recipient_first_name=recipient_first_name,
+                recipient_last_name=recipient_last_name,
+                subject_url=url
+                 )
+            mailer_send(subject=subject, recipients=[member_email], body=message)
+
         return True
 
     def redirect(self, context, request, **kw):
@@ -398,6 +447,7 @@ class ImproveProposal(InfiniteCardinality):
             grant_roles(roles=(('Owner', newidea), ))
             newidea.setproperty('author', get_current())
             data['idea_of_replacement'] = newidea
+            newidea.reindex()
             self.newcontext = newidea
 
         amendment.set_data(data)
@@ -491,6 +541,7 @@ class VotingPublication(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('amendable')
         context.state.append('votes for publishing')
+        context.reindex()
         return True
 
 
@@ -586,6 +637,8 @@ class Resign(InfiniteCardinality):
         if len_participants < root.participants_mini:
             context.state = PersistentList(['open to a working group'])
             wg.state = PersistentList(['deactivated'])
+            wg.reindex()
+            context.reindex()
 
         return True
 
@@ -639,9 +692,11 @@ class Participate(InfiniteCardinality):
                     self.process.first_decision = True
 
                 context.state.append('amendable')
+                context.reindex()
         else:
             wg.addtoproperty('wating_list', user)
- 
+            wg.reindex()
+
         return True
 
     def redirect(self, context, request, **kw):
@@ -671,6 +726,7 @@ class VotingAmendments(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         context.state = PersistentList(['votes for amendments'])
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
@@ -689,20 +745,92 @@ class AmendmentsResult(ElementaryAction):
     roles_validation = va_roles_validation
     state_validation = ar_state_validation
 
+    def _get_copy(self, context, root, wg):
+        copy_of_proposal = copy(context)
+        copy_of_proposal.created_at = datetime.datetime.today()
+        copy_of_proposal.modified_at = datetime.datetime.today()
+        copy_of_proposal.setproperty('originalentity', context)
+        copy_of_proposal.setproperty('version', None)
+        copy_of_proposal.setproperty('nextversion', None)
+        copy_of_proposal.state = PersistentList(['amendable'])
+        root.addtoproperty('proposals', copy_of_proposal)
+        for user in wg.members: #TODO la copy des roles: option de copy
+            grant_roles(user=user, roles=(('Participant', copy_of_proposal), ))
+
+        grant_roles(user=context.author, roles=(('Owner', copy_of_proposal), ))#TODO la copy des roles: option de copy
+        grant_roles(user=context.author, roles=(('Owner', context), ))
+        self.process.execution_context.add_created_entity('proposal', copy_of_proposal)
+        wg.setproperty('proposal', copy_of_proposal)
+        return copy_of_proposal
+
+    def _send_ballot_result(self, context, request, electeds, members):
+        group_nb = 0
+        amendments_vote_result = []
+        for ballot in self.process.amendments_ballots: 
+            result = []
+            result_ballot = "Group " + str(group_nb) + ": \n"
+            for oid,result_vote in ballot.report.result.items():
+                obj = get_obj(oid)
+                result_vote = [judgment+": "+str(nbvote) for (judgment, nbvote) in result_vote.items()]
+                result.append(obj.title + " :" + ",".join(result_vote))
+
+            result_ballot += "\n    ".join(result)
+            amendments_vote_result.append(result_ballot)
+
+        message_result = "\n".join(amendments_vote_result)
+        electeds_result = "\n".join([e.title for e in electeds])
+        url = request.resource_url(context, "@@index")
+        subject = RESULT_VOTE_AMENDMENT_SUBJECT.format(subject_title=context.title)
+        for member in members:
+            recipient_title = getattr(member, 'user_title','')
+            recipient_first_name = getattr(member, 'first_name', member.name)
+            recipient_last_name = getattr(member, 'last_name','')
+            member_email = member.email
+            message = RESULT_VOTE_AMENDMENT_MESSAGE.format(
+                recipient_title=recipient_title,
+                recipient_first_name=recipient_first_name,
+                recipient_last_name=recipient_last_name,
+                subject_url=url,
+                message_result=message_result,
+                electeds_result=electeds_result
+                 )
+            mailer_send(subject=subject, recipients=[member_email], body=message)
+        
+
+
     def start(self, context, request, appstruct, **kw):
         result = set()
         for ballot in self.process.amendments_ballots:
             electeds = ballot.report.get_electeds()
             if electeds is not None:
-                result.update(ballot.report.get_electeds())
+                result.update(electeds)
 
         #TODO merg result
-        context.state.remove('votes for amendments')
-        context.state.append('amendable')
+        amendments = [a for a in result if isinstance(a, Amendment)]
+        wg = context.working_group
+        root = getSite()
+        self.newcontext = context
+        if amendments:
+            self._send_ballot_result(context, request, result, wg.members)
+            replaced_ideas = [a.replaced_idea for a in amendments if a.replaced_idea is not None]
+            ideas_of_replacement = [a.idea_of_replacement for a in amendments if a.idea_of_replacement is not None]
+            text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+            merged_text = text_analyzer.merge(context.text, [a.text for a in amendments])
+            #TODO merged_keywords + merged_description
+            copy_of_proposal = self._get_copy(context, root, wg)
+            context.state = PersistentList(['deprecated'])
+            copy_of_proposal.text = merged_text
+            #TODO correlation idea of replacement ideas... del replaced_idea
+            self.newcontext = copy_of_proposal
+        else:
+            context.state = PersistentList(['amendable'])
+
+        copy_of_proposal.reindex()
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
 def ta_state_validation(process, context):
@@ -720,6 +848,7 @@ class Amendable(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('votes for publishing')
         context.state.append('amendable')
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):

@@ -21,7 +21,8 @@ requires = [
     'diff-match-patch',
     'htmldiff',
     'Genshi',
-    'html5lib'
+    'html5lib',
+    'html2text' 
     ]
 
 setup(name='novaideo',

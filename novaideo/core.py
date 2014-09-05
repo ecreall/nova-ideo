@@ -94,7 +94,7 @@ class VersionableEntity(Entity):
 @implementer(IDuplicableEntity)
 class DuplicableEntity(Entity):
 
-    originalentity = SharedMultipleProperty('originalentity')
+    originalentity = SharedUniqueProperty('originalentity')
 
 
 @colander.deferred

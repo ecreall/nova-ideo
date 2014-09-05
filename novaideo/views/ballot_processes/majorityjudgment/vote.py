@@ -2,6 +2,7 @@ import colander
 import deform
 import htmldiff
 import re
+import html2text
 from pyramid.view import view_config
 
 from dace.util import get_obj
@@ -104,30 +105,15 @@ class VoteFormView(FormView):
         result = "..."+"...<br />...".join(result)+"..."
         return result
 
-    def validate_html_text(self, text):
-        last_start_end_index = text.rfind("</")
-        last_end_index = text[last_start_end_index:].find(">")
-        prune_index = last_start_end_index
-        if last_end_index > 0:
-            last_end_index += last_start_end_index
-            prune_index = text[last_end_index:].find("<")
-            prune_index += last_end_index
-
-        if prune_index < 0:
-            texts = re.split(r"[^/]>", text)
-            return texts.pop()
-
-        return text[:prune_index]
-
     def _get_trimed_text(self, text):
-        trimed_text = text
+        trimed_text =html2text.html2text(text)
         trimed_texts = []
         if len(trimed_text) > 499:
             texts = trimed_text.split('\n')
             length = 500 / len(texts)
             for t in texts:
                 if len(t) > length-1:
-                    t = self.validate_html_text(t[:length])
+                    t = t[:length]
                     t = re.sub('\s[a-z0-9._-]+$', ' <b>...</b>', t)
 
                 trimed_texts.append(t)
@@ -139,7 +125,6 @@ class VoteFormView(FormView):
     def get_description(self, field, cstruct): 
         description_template = 'novaideo:views/amendment_management/templates/description_amendments.pt'
         oid = cstruct[OBJECT_OID]
-        
         try:
             object = get_obj(oid)
             values = {'amendment': object, 'is_proposal': False}
@@ -156,7 +141,6 @@ class VoteFormView(FormView):
             return {'amendment': None}
 
 
-
 @view_config(
     name='voteforamendments',
     context=Proposal,
@@ -167,6 +151,7 @@ class VoteViewMultipleView(MultipleView):
     name = 'voteforamendments'
     viewid = 'voteforamendments'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
+    item_template = 'novaideo:views/proposal_management/templates/panel_item.pt'
     views = (VoteViewStudyReport, VoteFormView)
     validators = [Vote.get_validator()]
 

@@ -48,4 +48,31 @@ Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 """ + PORTAL_SIGNATURE
 
 
-PRESENTATION_AMENDMENT_SUBJECT = u"""Présentation : {subject_title}""" 
+PRESENTATION_AMENDMENT_SUBJECT = u"""Présentation : {subject_title}"""
+
+
+ALERT_SUBJECT= u"""Inactivité : {subject_title}"""
+
+ALERT_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+Aucun amendement n'a été publié pour la proposition sous {subject_url}.
+
+""" + PORTAL_SIGNATURE
+
+
+RESULT_VOTE_AMENDMENT_SUBJECT= u"""Les resultat du vote sur amendments : {subject_title}"""
+
+RESULT_VOTE_AMENDMENT_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+Les résultats du vote sur amendements concernant la proposition {subject_url} sont les suivants:
+
+{message_result}
+
+Les amendements élus, après calcule, du vote:
+
+{electeds_result}
+
+""" + PORTAL_SIGNATURE
+

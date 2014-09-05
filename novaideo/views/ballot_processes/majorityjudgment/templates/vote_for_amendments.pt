@@ -18,7 +18,7 @@
        </dd>
        <dt>Durée</dt>
        <dd tal:define="run ballot_report.ballot.run_at; finish  ballot_report.ballot.finished_at">
-          le vote à commencé le <span tal:replace="layout.to_localized_time(run, date_only=True)"/> à ${run.hour}:${run.minute}:${run.second}. <span tal:condition="finish is not None">La fin duvote est prévue pour <span tal:replace="layout.to_localized_time(finish, date_only=True)"/> à ${finish.hour}:${finish.minute}:${finish.second}.</span>
+          le vote à commencé le <span tal:replace="layout.to_localized_time(run, date_only=True)"/> à ${run.hour}:${run.minute}:${run.second}. <span tal:condition="finish is not None">La fin du vote est prévue pour le <span tal:replace="layout.to_localized_time(finish, date_only=True)"/> à ${finish.hour}:${finish.minute}:${finish.second}.</span>
        </dd>
      </div>
  </dl>

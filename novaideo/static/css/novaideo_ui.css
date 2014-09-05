@@ -201,8 +201,17 @@ ins {
   height: 150px
 }
 
-.amendment-trimmed-intention {
-  height: 120px
+.amendment-intention {
+  height: 189px
 }
 
+.modal-amendments-vote {
+    margin-left: -50%;
+    width: 180%;
+}
+
+.modal-amendments-vote form .panel{
+    box-shadow: 5px 6px 5px rgba(25, 40, 21, 0.2);
+    background-color: #f2f6fa;
+}
 

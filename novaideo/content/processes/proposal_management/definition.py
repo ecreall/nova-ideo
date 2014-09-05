@@ -36,7 +36,8 @@ from .behaviors import (
     AmendmentsResult,
     Amendable,
     EditAmendments,
-    AddParagraph)
+    AddParagraph,
+    Alert)
 from novaideo import _
 from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
@@ -45,9 +46,9 @@ from novaideo.utilities.text_analyzer import ITextAnalyzer
 vp_default_duration = timedelta(minutes=30)
 
 
-amendments_vote_default_duration = timedelta(minutes=30) #TODO 
+amendments_vote_default_duration = timedelta(minutes=3) #TODO 
 
-amendments_cycle_default_duration = timedelta(minutes=4)
+amendments_cycle_default_duration = timedelta(minutes=3)
 
 
 def amendments_cycle_duration(process):
@@ -76,6 +77,18 @@ def eg3_publish_condition(process):
 
 def eg3_amendable_condition(process):
     return not eg3_publish_condition(process)
+
+
+def eg4_votingamendments_condition(process):
+    proposal = process.execution_context.created_entity('proposal')
+    if proposal.amendments:
+        return True
+
+    return False
+ 
+
+def eg4_alert_condition(process):
+    return not eg4_votingamendments_condition(process)
 
 
 class SubProcessDefinition(OriginSubProcessDefinition):
@@ -179,6 +192,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 eg1 = ExclusiveGatewayDefinition(),
                 eg2 = ExclusiveGatewayDefinition(),
                 eg3 = ExclusiveGatewayDefinition(),
+                eg4 = ExclusiveGatewayDefinition(),
                 creat = ActivityDefinition(contexts=[CreateProposal],
                                        description=_("Create a new proposal"),
                                        title=_("Create a proposal"),
@@ -215,6 +229,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 votingamendments = SubProcessDefinitionAmendments(pd='ballotprocess', contexts=[VotingAmendments],
                                        description=_("Start voting for amendments"),
                                        title=_("Start voting for amendments"),
+                                       groups=[]),
+                alert = ActivityDefinition(contexts=[Alert],
+                                       description=_("Alert"),
+                                       title=_("Alert"),
                                        groups=[]),
                 amendable = ActivityDefinition(contexts=[Amendable],
                                        description=_("Change the state to amendable"),
@@ -284,7 +302,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('eg3', 'amendable', eg3_amendable_condition),
                 TransitionDefinition('eg3', 'publish', eg3_publish_condition),
                 TransitionDefinition('amendable', 'timer'),
-                TransitionDefinition('timer', 'votingamendments'),
+                TransitionDefinition('timer', 'eg4'),
+                TransitionDefinition('eg4', 'votingamendments', eg4_votingamendments_condition),
+                TransitionDefinition('eg4', 'alert', eg4_alert_condition),
+                TransitionDefinition('alert', 'eg2'),
                 TransitionDefinition('votingamendments', 'amendmentsresult'),
                 TransitionDefinition('amendmentsresult', 'eg2'),
                 TransitionDefinition('publish', 'end'),

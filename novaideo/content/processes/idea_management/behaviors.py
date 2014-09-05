@@ -55,6 +55,7 @@ class CreateIdea(InfiniteCardinality):
         idea.state.append('to work')
         grant_roles(roles=(('Owner', idea), ))
         idea.setproperty('author', get_current())
+        idea.reindex()
         self.newcontext = idea
         return True
 
@@ -86,7 +87,6 @@ class DuplicateIdea(InfiniteCardinality):
         appstruct['keywords_ref'] = result
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
-        copy_of_idea.set_data(appstruct)
         root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.setproperty('originalentity', context)
         copy_of_idea.setproperty('version', None)
@@ -94,6 +94,8 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.state = PersistentList(['to work'])
         copy_of_idea.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_idea), ))
+        copy_of_idea.set_data(appstruct)
+        context.reindex()
         self.newcontext = copy_of_idea
         return True
 
@@ -163,11 +165,12 @@ class EditIdea(InfiniteCardinality):
 
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
-        copy_of_idea.set_data(appstruct)
         context.state = PersistentList(['deprecated'])
         copy_of_idea.setproperty('version', context)
         root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.setproperty('author', get_current())
+        copy_of_idea.set_data(appstruct)
+        context.reindex()
         grant_roles(roles=(('Owner', copy_of_idea), ))
         grant_roles(roles=(('Owner', context), ))#TODO attribute SubstanceD.Folder.moving
         user = get_current()
@@ -215,6 +218,7 @@ class PublishIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('to work')
         context.state.append('published')
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
@@ -244,6 +248,7 @@ class AbandonIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('to work')
         context.state.append('abandoned')
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
@@ -272,6 +277,7 @@ class RecuperateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('abandoned')
         context.state.append('to work')
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
@@ -302,6 +308,7 @@ class CommentIdea(InfiniteCardinality):
         context.addtoproperty('comments', comment)
         user = get_current()
         comment.setproperty('author', user)
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):

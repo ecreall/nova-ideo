@@ -1,6 +1,6 @@
 <div class="media-body">
-<h3 tal:condition="proposal.state"><span class="label label-primary pull-right">${proposal.state[0].capitalize()}</span></h3>
-<h3>${proposal.title}</h3>
+  <h3 tal:condition="proposal.state"><span class="label label-primary pull-right">${proposal.state[0].capitalize()}</span></h3>
+  <h3>${proposal.title}</h3>
 </div>
 
 <div class="jumbotron well proposal-well">
@@ -18,17 +18,26 @@
 	<dd>
           <span tal:replace="layout.to_localized_time(proposal.created_at, date_only=True)"/> à ${proposal.created_at.hour}:${proposal.created_at.minute}:${proposal.created_at.second} par <a tal:attributes="href request.resource_url(proposal.author, '@@index')">${((proposal.author is current_user) and 'Vous') or proposal.author.name}</a>
         </dd>
-        <dt>Groupe de travail</dt>
-	<dd>
-          <tal:loop repeat="m proposal.working_group.members">
-            <a tal:attributes="href request.resource_url(m, '@@index')">${m.name}</a>
-              <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
-          </tal:loop>
-        </dd>
+        <div tal:omit-tag="" tal:condition="proposal.originalentity is not None">
+          <dt>Proposition d'originie</dt>
+	  <dd>
+             <a tal:attributes="href request.resource_url(proposal.originalentity, '@@index')">${proposal.originalentity.title}</a>
+          </dd>
+        </div>
+        <div tal:omit-tag="" tal:condition="proposal.working_group is not None">
+          <dt>Groupe de travail</dt>
+	  <dd>
+            <tal:loop repeat="m proposal.working_group.members">
+              <a tal:attributes="href request.resource_url(m, '@@index')">${m.name}</a>
+                <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
+           </tal:loop>
+          </dd>
+        </div>
     </dl>
 </div>
+
 <div id="proposaltext">
-${structure:proposal.text}
+  ${structure:proposal.text}
 </div>
 
 <div id="proposal_actions">
@@ -37,51 +46,39 @@ ${structure:proposal.text}
           <a tal:attributes="href a['url']" class="btn btn-default">${a['title']}</a>
         </tal:loop>
   </div>
-
 </div>
 
-            <div tal:condition="'voteaction' in voteaction"  id="voteaction">
-                <div tal:omit-tag="" tal:define="voteaction voteaction['voteaction']">
-                 <a id="${voteaction['action_id']}-btn" 
-                      class="btn btn-default btn-xs dace-action pull-right"
-                      style="max-width: 300px;"
-                      href="${voteaction['actionurl']}"   
-                      data-toggle="modal"
-                      data-actionid ="${voteaction['action_id']}" 
-                      data-target="#${voteaction['action_id']}"
-                      data-updateurl="${voteaction['actionurl_update']}"
-                      data-toreplay="${'toreplay' in voteaction}">
-                     <span class="glyphicon glyphicon-pencil"></span> ${voteaction['action'].title}
-                   </a>
-                   <script >       
-                        $(document).ready(function(){
-                             $(${'\'#'+voteaction['action_id']+'-btn\''}).click();
-                        });
-                   </script>  
-                   <script>
-                        $(document).ready(function(){
-                            $(${'\'#'+voteaction['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
-                               after_execution(${'\"'+voteaction['actionurl_after']+'\"'})
-                              })
-                        });
-                   </script>
-                <!-- Modal -->
-                   <div class="modal fade" 
-                       id="${voteaction['action_id']}-modal" 
-                       role="dialog" 
-                       aria-labelledby="myModalLabel" 
-                       aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                           <div class="modal-header">
-                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                               <h4 class="modal-title" id="myModalLabel"> ${voteaction['action'].title}</h4>
-                           </div>
-                           <div class="modal-body">
-                              ${structure:voteaction['body']}
-                           </div>
-                         </div>
+<div tal:condition="voteactions"  id="voteactions">
+    <script >       
+        $(document).ready(function(){
+             $('#vote-actions-modal').modal('show');
+        });
+     </script>  
+     <!-- Modal -->
+     <div class="modal fade" 
+          id="vote-actions-modal" 
+          role="dialog" 
+          aria-labelledby="myModalLabel" 
+          aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content modal-amendments-vote">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                     <h4 class="modal-title" id="myModalLabel">Votes</h4>
+                  </div>
+                  <div class="modal-body">
+                      <div id="panel-actions-vote" class="panel-group">
+                         <tal:loop repeat="a voteactions">
+                             ${structure:a['body']}
+                         </tal:loop>
+                         <script >       
+                              $(document).ready(function(){
+                                    $($('#panel-actions-vote').find("a.panel-title").first()).click();
+                              });
+                          </script> 
                       </div>
                    </div>
-                </div>
-            </div>
+              </div>
+          </div>
+     </div>
+</div>
