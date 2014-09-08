@@ -23,7 +23,7 @@ from .duplicate_idea import DuplicateIdeaView
 from .comment_idea import CommentIdeaView
 from .associate import AssociateView
 from .compare_idea import CompareIdeaView
-from add_to_proposals import AddToProposalsView
+from .add_to_proposals import AddToProposalsView
 
 
 
