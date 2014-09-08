@@ -35,7 +35,7 @@ def members_choice(node, kw):
         root = context.__parent__.__parent__
 
     principals = find_service(root, 'principals')
-    prop = principals['users'].values()
+    prop = list(principals['users'].values())
     values = [(i, i.name) for i in prop if getattr(i, 'organization', None) in (None, context)]
     return Select2Widget(values=values, multiple=True)
 

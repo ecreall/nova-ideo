@@ -772,7 +772,7 @@ class AmendmentsResult(ElementaryAction):
             result_ballot = "Group " + str(group_nb) + ": \n"
             for oid,result_vote in ballot.report.result.items():
                 obj = get_obj(oid)
-                result_vote = [judgment+": "+str(result[judgment]) for judgment in ballot.report.ballottype.judgments.keys()]
+                result_vote = [judgment+": "+str(result_vote[judgment]) for judgment in ballot.report.ballottype.judgments.keys()]
                 result.append(obj.title + " :" + ",".join(result_vote))
 
             result_ballot += "\n    ".join(result)

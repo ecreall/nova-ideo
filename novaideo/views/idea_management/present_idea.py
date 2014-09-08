@@ -69,7 +69,7 @@ def members_choice(node, kw):
     root = getSite(context)
     user = get_current()
     principals = find_service(root, 'principals')
-    prop = principals['users'].values()
+    prop = list(principals['users'].values())
     values = [(i, i.name) for i in prop if not(user is i)]
     return Select2WidgetCreateSearchChoice(values=values, multiple=True)
 

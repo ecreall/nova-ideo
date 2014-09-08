@@ -26,6 +26,6 @@ class DelAmendmentView(BasicView):
 
     def update(self):
         self.execute(None)        
-        return self.behaviorinstances.values()[0].redirect(self.context, self.request)
+        return list(self.behaviorinstances.values())[0].redirect(self.context, self.request)
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({DelAmendment:DelAmendmentView})

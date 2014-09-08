@@ -162,7 +162,7 @@ class MajorityJudgment(object):
         if len_voters == 0:
             return None
 
-        judgments = sorted(self.judgments.keys(), key=lambda o: self.judgments[o])
+        judgments = sorted(list(self.judgments.keys()), key=lambda o: self.judgments[o])
         object_results = dict([(oid, 0) for oid in result.keys()])
         for oid in result.keys():
             object_result = 0
@@ -172,7 +172,7 @@ class MajorityJudgment(object):
                     object_results[oid] = self.judgments[judgment]
                     break
 
-        sorted_results = sorted(object_results.keys(), key=lambda o: object_results[o], reverse=True)
+        sorted_results = sorted(list(object_results.keys()), key=lambda o: object_results[o], reverse=True)
         if sorted_results:
             try:
                 object = get_obj(sorted_results[0])

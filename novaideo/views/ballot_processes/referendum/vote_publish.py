@@ -23,7 +23,7 @@ class VoteViewStudyReport(BasicView):
         result = {}
         ballot_report = None
         try:
-            ballot_report = self.parent.children[1].behaviorinstances.values()[0].process.ballot.report
+            ballot_report = list(self.parent.children[1].behaviorinstances.values())[0].process.ballot.report
         except Exception:
             pass
 
