@@ -768,16 +768,17 @@ class AmendmentsResult(ElementaryAction):
         amendments_vote_result = []
         for ballot in self.process.amendments_ballots: 
             result = []
+            group_nb += 1
             result_ballot = "Group " + str(group_nb) + ": \n"
             for oid,result_vote in ballot.report.result.items():
                 obj = get_obj(oid)
-                result_vote = [judgment+": "+str(nbvote) for (judgment, nbvote) in result_vote.items()]
+                result_vote = [judgment+": "+str(result[judgment]) for judgment in ballot.report.ballottype.judgments.keys()]
                 result.append(obj.title + " :" + ",".join(result_vote))
 
             result_ballot += "\n    ".join(result)
             amendments_vote_result.append(result_ballot)
 
-        message_result = "\n".join(amendments_vote_result)
+        message_result = "\n \n".join(amendments_vote_result)
         electeds_result = "\n".join([e.title for e in electeds])
         url = request.resource_url(context, "@@index")
         subject = RESULT_VOTE_AMENDMENT_SUBJECT.format(subject_title=context.title)
@@ -809,7 +810,7 @@ class AmendmentsResult(ElementaryAction):
         amendments = [a for a in result if isinstance(a, Amendment)]
         wg = context.working_group
         root = getSite()
-        self.newcontext = context
+        self.newcontext = context 
         if amendments:
             self._send_ballot_result(context, request, result, wg.members)
             replaced_ideas = [a.replaced_idea for a in amendments if a.replaced_idea is not None]
@@ -822,10 +823,10 @@ class AmendmentsResult(ElementaryAction):
             copy_of_proposal.text = merged_text
             #TODO correlation idea of replacement ideas... del replaced_idea
             self.newcontext = copy_of_proposal
+            copy_of_proposal.reindex()
         else:
             context.state = PersistentList(['amendable'])
 
-        copy_of_proposal.reindex()
         context.reindex()
         return True
 

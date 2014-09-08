@@ -162,13 +162,14 @@ class MajorityJudgment(object):
         if len_voters == 0:
             return None
 
+        judgments = sorted(self.judgments.keys(), key=lambda o: self.judgments[o])
         object_results = dict([(oid, 0) for oid in result.keys()])
         for oid in result.keys():
             object_result = 0
-            for judgment in result[oid].keys():
+            for judgment in judgments:
                 object_result += float(result[oid][judgment]) / float(len_voters) * 100
                 if object_result >= 50:
-                    object_results[oid] = result[oid][judgment]
+                    object_results[oid] = self.judgments[judgment]
                     break
 
         sorted_results = sorted(object_results.keys(), key=lambda o: object_results[o], reverse=True)

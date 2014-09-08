@@ -135,7 +135,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             isadded = False
             for group in groups:
                 for a in group:
-                    if text_analyzer.hasConflict(a.text, [amendment.text]) or amendment.replaced_idea is a.replaced_idea:
+                    if text_analyzer.hasConflict(a.text, [amendment.text]) or (amendment.replaced_idea is not None and (amendment.replaced_idea is a.replaced_idea)):
                         group.append(amendment)
                         isadded = True
 
