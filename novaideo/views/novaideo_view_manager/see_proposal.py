@@ -6,7 +6,7 @@ from pyramid.threadlocal import get_current_registry
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, allSubobjectsOfType
-from dace.objectofcollaboration.principal.util import get_current
+from dace.objectofcollaboration.principal.util import get_current, has_any_roles
 from pontus.view import BasicView, ViewError, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.widget import CheckboxChoiceWidget, RichTextWidget
@@ -59,10 +59,16 @@ class DetailProposalView(BasicView):
         actions_urls = []
         for action in actions:
             actions_urls.append({'title':action.title, 'url':action.url})
+      
+        text = self.context.text
+        corrections = [c for c in self.context.corrections if 'in process' in c.state]
+        if corrections and has_any_roles(user=user, roles=(('Participant', self.context),)):
+            text = corrections[-1].get_adapted_text(user)
 
         result = {}
         values = {
                 'proposal': self.context,
+                'text': text,
                 'current_user': user,
                 'actions': actions_urls,
                 'voteactions': vote_actions

@@ -22,7 +22,8 @@ requires = [
     'htmldiff',
     'Genshi',
     'html5lib',
-    'html2text' 
+    'html2text',
+    'beautifulsoup4' 
     ]
 
 setup(name='novaideo',

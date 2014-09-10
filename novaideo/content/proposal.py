@@ -72,6 +72,7 @@ class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntit
     working_group = SharedUniqueProperty('working_group', 'proposal')
     tokens = CompositeMultipleProperty('tokens')
     amendments = CompositeMultipleProperty('amendments', 'proposal')
+    corrections = CompositeMultipleProperty('corrections', 'proposal')
 
 
     def __init__(self, **kwargs):

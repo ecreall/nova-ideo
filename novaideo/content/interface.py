@@ -1,10 +1,13 @@
 from zope.interface import Interface
 
 
+class ICorrection(Interface):
+    pass
 
 
 class IPresentableEntity(Interface):
     pass
+
 
 class IVote(Interface):
     pass

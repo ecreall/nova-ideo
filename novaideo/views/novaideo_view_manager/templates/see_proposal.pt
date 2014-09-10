@@ -37,7 +37,7 @@
 </div>
 
 <div id="proposaltext">
-  ${structure:proposal.text}
+  ${structure:text}
 </div>
 
 <div id="proposal_actions">

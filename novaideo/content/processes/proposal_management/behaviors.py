@@ -1,9 +1,13 @@
 # -*- coding: utf8 -*-
 import datetime
 from datetime import timedelta
+import htmldiff
+from bs4 import BeautifulSoup
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
-from pyramid.threadlocal import get_current_registry
+from pyramid.threadlocal import get_current_request, get_current_registry
+from pyramid import renderers
+from substanced.util import get_oid
 
 from dace.util import (
     getSite,
@@ -13,9 +17,10 @@ from dace.util import (
     get_obj)
 from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current, revoke_roles
 from dace.processinstance.activity import InfiniteCardinality, ActionType, LimitedCardinality, ElementaryAction
+from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
 from novaideo.ips.mailer import mailer_send
-from novaideo.content.interface import INovaIdeoApplication, IProposal, ICorrelableEntity
+from novaideo.content.interface import INovaIdeoApplication, IProposal, ICorrelableEntity, ICorrection
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.mail import ALERT_SUBJECT, ALERT_MESSAGE,  RESULT_VOTE_AMENDMENT_SUBJECT,  RESULT_VOTE_AMENDMENT_MESSAGE
 from novaideo import _
@@ -398,7 +403,8 @@ def improve_roles_validation(process, context):
 
 
 def improve_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    correction_in_process = any(('in process' in c.state for c in context.corrections))
+    return global_user_processsecurity(process, context) and not correction_in_process
 
 
 def improve_state_validation(process, context):
@@ -464,6 +470,95 @@ class ImproveProposal(InfiniteCardinality):
             return HTTPFound(request.resource_url(self.newcontext, "@@editidea"))
 
 
+def correctitem_relation_validation(process, context):
+    return process.execution_context.has_relation(context.proposal, 'proposal')
+
+
+def correctitem_roles_validation(process, context):
+    return has_any_roles(roles=(('Participant', context.proposal),))
+
+
+def correctitem_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def correctitem_state_validation(process, context):
+    wg = context.proposal.working_group
+    return 'active' in wg.state and 'amendable' in context.proposal.state
+
+
+class CorrectItem(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    isSequential = True
+    context = ICorrection
+    relation_validation = correctitem_relation_validation
+    roles_validation = correctitem_roles_validation
+    processsecurity_validation = correctitem_processsecurity_validation
+    state_validation = correctitem_state_validation
+
+    def _include_to_proposal(self, context, request):
+        text, in_process = self. _include_items(context, request, [item for item in context.corrections.keys() if not('included' in context.corrections[item])])
+        soup = BeautifulSoup(text)
+        diff_tags = soup.find_all("div", {'class': 'diff'})
+        if diff_tags:
+            diff_tags[0].unwrap()
+          
+        context.proposal.text = str(soup.body.contents[0]).replace('\xa0', '')
+                
+ 
+    def _include_items(self, context, request, items, to_add=False):
+        tag_type = "del"
+        if to_add:
+            tag_type = "ins"
+
+        soup = BeautifulSoup(context.text)
+        for item in items:
+            correction_item = soup.find_all('span',{'id':'correction', 'data-item':item})[0]
+            tags = correction_item.find_all(tag_type)
+            if tags: 
+                tag = correction_item.find_all(tag_type)[0]
+                correction_item.clear()
+                correction_item.replace_with(tag)
+                tag.unwrap()
+            else:
+                correction_item.extract()
+
+        return str(soup.body.contents[0]).replace('\xa0', ''), (len(soup.find_all("span", id="correction")) > 0)
+
+    def start(self, context, request, appstruct, **kw):
+        item = appstruct['item']
+        vote = (appstruct['vote'].lower() == 'true')
+        user = get_current()
+        user_oid = get_oid(user)
+        correction_data = context.corrections[item]
+        if not(user_oid in correction_data['favour']) and not(user_oid in correction_data['against']):
+            if vote:
+                context.corrections[item]['favour'].append(get_oid(user))
+                if len(context.corrections[item]['favour']) >= 2:
+                    context.text, in_process = self._include_items(context, request, [item], True)
+                    if not in_process:
+                        context.state.remove('in process')
+                        context.state.append('processed')
+
+                    context.corrections[item]['included'] = True
+                    self._include_to_proposal(context, request)
+            else:
+                context.corrections[item]['against'].append(get_oid(user))
+                if len(context.corrections[item]['against']) >= 2:
+                    context.text, in_process= self._include_items(context, request, [item])
+                    if not in_process:
+                        context.state.remove('in process')
+                        context.state.append('processed')
+
+                    context.corrections[item]['included'] = True
+                    self._include_to_proposal(context, request)
+            
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
 def correct_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
@@ -473,7 +568,8 @@ def correct_roles_validation(process, context):
 
 
 def correct_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    correction_in_process = any(('in process' in c.state for c in context.corrections))
+    return global_user_processsecurity(process, context) and not correction_in_process
 
 
 def correct_state_validation(process, context):
@@ -483,15 +579,90 @@ def correct_state_validation(process, context):
 
 class CorrectProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    isSequential = False
+    isSequential = True
     context = IProposal
     relation_validation = correct_relation_validation
     roles_validation = correct_roles_validation
     processsecurity_validation = correct_processsecurity_validation
     state_validation = correct_state_validation
 
+    def _add_vote_actions(self, tag, correction, request):
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
+        if not hasattr(self, 'correctitemaction'):
+            correctitemnode = self.process['correctitem']
+            correctitem_wis = [wi for wi in correctitemnode.workitems if wi.node is correctitemnode]
+            if correctitem_wis:
+                self.correctitemaction = correctitem_wis[0].actions[0]
+        if hasattr(self, 'correctitemaction'):
+            actionurl_update = dace_ui_api.updateaction_viewurl(request=request, action_uid=str(get_oid(self.correctitemaction)), context_uid=str(get_oid(correction)))
+            values= {'favour_action_url':actionurl_update,
+                     'against_action_url':actionurl_update}
+            template = 'novaideo:views/proposal_management/templates/correction_item.pt'
+            body = renderers.render(template, values, request)
+            correction_item_soup = BeautifulSoup(body)
+            correction_item_soup.body
+            tag.append(correction_item_soup.body)
+            tag.body.unwrap()
+
+    def _identify_corrections(self, diff, correction, descriminator, request):
+        correction_oid = str(get_oid(correction))
+        user = get_current()
+        user_oid = get_oid(user)
+        soup = BeautifulSoup(diff)
+        ins_tags = soup.find_all('ins')
+        del_tags = soup.find_all('del')
+        del_included = []
+
+        for ins_tag in ins_tags:
+            new_correction_tag = soup.new_tag("span", id="correction")
+            new_correction_tag['data-correction'] = correction_oid
+            new_correction_tag['data-item'] = str(descriminator)
+            init_vote = {'favour':[user_oid], 'against':[]}
+            correction.corrections[str(descriminator)] = init_vote
+            descriminator += 1
+            previous_del_tag = ins_tag.find_previous_sibling('del')
+            correct_exist = False
+            if previous_del_tag is not None:
+                tofind = str(previous_del_tag) +' '+str(ins_tag)
+                correction_exist = (diff.find(tofind) >=0)
+                if correction_exist:
+                    previous_del_tag.wrap(new_correction_tag)
+                    new_correction_tag.append(ins_tag)
+                    del_included.append(previous_del_tag)
+                    self._add_vote_actions(new_correction_tag, correction, request)
+                    continue
+
+            ins_tag.wrap(new_correction_tag)
+            self._add_vote_actions(new_correction_tag, correction, request)
+
+        for del_tag in del_tags:
+            if not(del_tag in del_included):
+                new_correction_tag = soup.new_tag("span", id="correction")
+                new_correction_tag['data-correction'] = correction_oid
+                new_correction_tag['data-item'] = str(descriminator)
+                init_vote = {'favour':[user_oid], 'against':[]}
+                correction.corrections[str(descriminator)] = init_vote
+                descriminator += 1
+                del_tag.wrap(new_correction_tag)
+                self._add_vote_actions(new_correction_tag, correction, request)
+
+        return soup
+        
     def start(self, context, request, appstruct, **kw):
-        #TODO
+        user = get_current()
+        correction = appstruct['_object_data']
+        correction.setproperty('author', user)
+        context.addtoproperty('corrections', correction)
+        textdiff = htmldiff.render_html_diff(getattr(context, 'text', '').replace('&nbsp;', ''), getattr(correction, 'text', '').replace('&nbsp;', ''))
+        descriptiondiff = htmldiff.render_html_diff(getattr(correction, 'description', ''), getattr(context, 'description', ''))
+        descriminator = 0
+        souptextdiff = self._identify_corrections(textdiff, correction, descriminator, request)
+        soupdescriptiondiff = self._identify_corrections(descriptiondiff, correction, descriminator, request)
+        correction.text = str(souptextdiff.body.contents[0]).replace('\xa0', '')
+        context.originaltext = str(correction.text)
+        correction.description = str(soupdescriptiondiff.body.contents[0]).replace('\xa0', '')
+        if souptextdiff.find_all("span", id="correction"):
+            correction.state.append('in process')
         return True
 
     def redirect(self, context, request, **kw):

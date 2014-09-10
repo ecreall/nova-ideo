@@ -108,11 +108,11 @@ margin-bottom:15px;
 }
 
 del {
-  background-color: red;
+  background-color: #ef827d;
 }
 
 ins {
-  background-color: springgreen;
+  background-color: #89e189;
 }
 
 #amendment-diff del {
@@ -213,5 +213,15 @@ ins {
 .modal-amendments-vote form .panel{
     box-shadow: 5px 6px 5px rgba(25, 40, 21, 0.2);
     background-color: #f2f6fa;
+}
+
+.correction-favour-vote {
+    border: 3px solid #44f144;
+    border-radius: 4px;
+}
+
+.correction-against-vote {
+    border: 3px solid #ff0d11;
+    border-radius: 4px;
 }
 
