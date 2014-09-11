@@ -45,12 +45,6 @@ def default_content_types_choices(node, kw):
 class SearchSchema(Schema):
     widget = SearchFormWidget()
 
-    text = colander.SchemaNode(
-        colander.String(),
-        widget=SearchTextInputWidget(),
-        title=_(''),
-        missing='',
-        )
     content_types = colander.SchemaNode(
                 colander.Set(),
                 widget=content_types_choices, 
@@ -58,6 +52,14 @@ class SearchSchema(Schema):
                 default=default_content_types_choices,
                 missing=default_content_types_choices,
                 )
+
+    text = colander.SchemaNode(
+        colander.String(),
+        widget=SearchTextInputWidget(),
+        title=_(''),
+        missing='',
+        )
+
 
 
 @view_config(
@@ -78,6 +80,8 @@ class SearchView(FormView):
         form, reqts = self._build_form()
         form.formid = self.viewid + '_' + form.formid
         posted_formid = None
+        default_content = list(default_serchable_content.keys())
+        default_content.remove("Person")
         if '__formid__' in post:
             posted_formid = post['__formid__']
 
@@ -89,7 +93,7 @@ class SearchView(FormView):
                 if 'content_types' in validated:
                     return validated
                 else:
-                    validated['content_types'] = default_serchable_content.keys()
+                    validated['content_types'] = default_content
                     return validated
             except Exception as e:
                 pass
@@ -100,7 +104,7 @@ class SearchView(FormView):
             text = ''
 
         if content_types is None:
-            content_types = default_serchable_content.keys()
+            content_types = default_content
 
         return {'content_types':content_types, 'text':text} 
 

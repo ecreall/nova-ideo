@@ -10,7 +10,7 @@
        <input type="text" name="${name}" value="${cstruct}" 
            tal:attributes="class string: form-control ${css_class};
                            style style"
-           id="${oid}" placeholder="Text to search">
+           id="${oid}" placeholder="">
         <span class="input-group-btn">
            <button class="btn btn-default" type="submit">Search</button>
         </span>
@@ -18,12 +18,20 @@
    <p class="help-block" >
     <small>Saisissez les mots clés séparés par une virgule. (ex: public, animation)</small>
    </p>
+    <script type="text/javascript">
+      deform.addCallback(
+         '${oid}',
+         function (oid) {
+            $("#req-"+oid).hide()
+         });
+    </script>
     <script tal:condition="mask" type="text/javascript">
       deform.addCallback(
          '${oid}',
          function (oid) {
             $("#" + oid).mask("${mask}", 
                  {placeholder:"${mask_placeholder}"});
+            $("#req-"+oid).hide()
          });
     </script>
 </span>

@@ -357,7 +357,7 @@ def present_relation_validation(process, context):
 
 
 def present_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context),))
+    return has_any_roles(roles=('Member',))
 
 
 def present_processsecurity_validation(process, context):

@@ -8,7 +8,7 @@ from dace.util import (
     copy,
     find_entities)
 from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
-from dace.processinstance.activity import InfiniteCardinality, ActionType
+from dace.processinstance.activity import InfiniteCardinality, ElementaryAction, ActionType
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IAmendment, ICorrelableEntity
@@ -27,6 +27,52 @@ try:
 except NameError:
       basestring = str
 
+def del_roles_validation(process, context):
+    return has_any_roles(roles=(('Participant', context.proposal),))
+
+
+def duplicate_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) and \
+           (('draft' in context.state and has_any_roles(roles=(('Owner', context),))) or \
+             'published' in context.state)
+
+
+def duplicate_state_validation(process, context):
+    proposal = context.proposal
+    wg = proposal.working_group
+    return 'amendable' in proposal.state and 'active' in wg.state
+
+
+class DuplicateAmendment(ElementaryAction):
+    style = 'button' #TODO add style abstract class
+    context = IAmendment
+    roles_validation =del_roles_validation
+    processsecurity_validation = duplicate_processsecurity_validation
+    state_validation = duplicate_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        copy_of_amendment = copy(context)
+        keywords_ids = appstruct.pop('keywords')
+        result, newkeywords = root.get_keywords(keywords_ids)
+        for nk in newkeywords:
+            root.addtoproperty('keywords', nk)
+
+        result.extend(newkeywords)
+        appstruct['keywords_ref'] = result
+        copy_of_amendment.set_data(appstruct)
+        context.proposal.addtoproperty('amendments', copy_of_amendment)
+        copy_of_amendment.setproperty('originalentity', context)
+        copy_of_amendment.state = PersistentList(['draft'])
+        copy_of_amendment.setproperty('author', get_current())
+        grant_roles(roles=(('Owner', copy_of_amendment), ))
+        copy_of_amendment.reindex()
+        context.reindex()
+        self.newcontext = copy_of_amendment
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
 def del_roles_validation(process, context):

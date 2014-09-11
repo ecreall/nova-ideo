@@ -300,7 +300,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('submit', 'pg3'),
                 TransitionDefinition('pg3', 'comment'),
                 TransitionDefinition('pg3', 'editamendments'),
-                TransitionDefinition('pg3', 'associate'),
+                TransitionDefinition('pg2', 'associate'),
                 TransitionDefinition('pg3', 'present'),
                 TransitionDefinition('pg3', 'resign'),
                 TransitionDefinition('pg3', 'participate'),

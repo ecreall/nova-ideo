@@ -23,7 +23,6 @@ from .duplicate_idea import DuplicateIdeaView
 from .comment_idea import CommentIdeaView
 from .associate import AssociateView
 from .compare_idea import CompareIdeaView
-from .add_to_proposals import AddToProposalsView
 
 
 
@@ -66,7 +65,7 @@ class SeeIdeaActionsView(MultipleView):
     title = _('actions')
     name = 'seeiactionsdea'
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (AddToProposalsView, AssociateView, PresentIdeaView, CommentIdeaView, CompareIdeaView)
+    views = (AssociateView, PresentIdeaView, CommentIdeaView, CompareIdeaView)
 
 
 @view_config(

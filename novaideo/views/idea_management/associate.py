@@ -16,7 +16,6 @@ from novaideo.content.processes.idea_management.behaviors import  Associate
 from novaideo.content.correlation import CorrelationSchema, Correlation
 from novaideo.content.idea import Idea
 from novaideo import _
-from .add_to_proposals import targets_choice
 from novaideo.core import can_access
 
 

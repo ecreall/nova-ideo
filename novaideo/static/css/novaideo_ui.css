@@ -225,3 +225,25 @@ ins {
     border-radius: 4px;
 }
 
+/*http://helping.probb.fr/t14-code-css-pour-aligner-un-texte-incline-au-centre-d-une-page-a4*/
+#filigrane{
+    color: #cccccc;
+    font-family: Arial Black;
+    font-size: 46px;
+    height: 9cm;
+    left: 50%;
+    margin-left: -19cm;
+    margin-top: -1cm;
+    opacity: 0.49;
+    filter : alpha(opacity=30); /**pour la transparence sous IE mais le texte n'est pas incliné!!!**/
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: rotate(305deg);
+    width: 40cm;
+        -ms-transform:rotate(305deg);   
+        transform: rotate(305deg);
+        -moz-transform: rotate(305deg);
+        -webkit-transform: rotate(305deg);
+        -khtml-transform: rotate(305deg);
+}

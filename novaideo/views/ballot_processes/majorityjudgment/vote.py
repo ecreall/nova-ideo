@@ -110,7 +110,7 @@ class VoteFormView(FormView):
         trimed_texts = []
         if len(trimed_text) > 499:
             texts = trimed_text.split('\n')
-            length = 500 / len(texts)
+            length = int(500 / len(texts))
             for t in texts:
                 if len(t) > length-1:
                     t = t[:length]

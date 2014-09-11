@@ -51,6 +51,17 @@ class DetailProposalView(BasicView):
         resources = merge_dicts(va_resources, vb_resources)
         return actions, resources, messages, isactive
 
+    def _get_adapted_text(self, user):
+        is_participant = has_any_roles(user=user, roles=(('Participant', self.context),))
+        text = getattr(self.context, 'text', '')
+        corrections = [c for c in self.context.corrections if 'in process' in c.state]
+        if corrections and is_participant:
+            text = corrections[-1].get_adapted_text(user)
+        elif not is_participant and not ('published' in self.context.state):
+            text += "<div id=\"filigrane\">PROJET</div>"
+
+        return text
+
     def update(self):
         self.execute(None)
         user = get_current()
@@ -61,11 +72,7 @@ class DetailProposalView(BasicView):
         for action in actions:
             actions_urls.append({'title':action.title, 'url':action.url})
       
-        text = self.context.text
-        corrections = [c for c in self.context.corrections if 'in process' in c.state]
-        if corrections and has_any_roles(user=user, roles=(('Participant', self.context),)):
-            text = corrections[-1].get_adapted_text(user)
-
+        text = self._get_adapted_text(user)
         result = {}
         values = {
                 'proposal': self.context,

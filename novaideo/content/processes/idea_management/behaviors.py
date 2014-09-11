@@ -441,41 +441,6 @@ class CompareIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-def addtoproposals_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           (has_any_roles(roles=(('Owner', context),)) or \
-           (has_any_roles(roles=('Member',)) and 'published' in context.state))
-
-
-#def addtoproposals_state_validation(process, context):
-#    return 'published' in context.state
-
-
-class AddToProposals(InfiniteCardinality):
-    context = Iidea
-    processsecurity_validation = addtoproposals_processsecurity_validation
-    #state_validation = addtoproposals_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        proposals = appstruct['targets']
-        root = getSite()
-        datas = {'author': get_current(),
-                 'targets': [context],
-                 'comment': appstruct['comment'],
-                 'intention': appstruct['intention']}
-        for proposal in proposals:
-            correlation = Correlation()
-            datas['source'] = proposal
-            correlation.set_data(datas)
-            correlation.tags.extend(['related_proposals', 'related_ideas'])
-            correlation.type = 1
-            root.addtoproperty('correlations', correlation)
-
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
-
 #TODO behaviors
 
 validation_by_context[Idea] = CommentIdea

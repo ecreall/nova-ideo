@@ -17,7 +17,8 @@ from .behaviors import (
     CommentAmendment,
     PresentAmendment,
     Associate,
-    SeeAmendment)
+    SeeAmendment,
+    DuplicateAmendment)
 from novaideo import _
 
 
@@ -37,6 +38,10 @@ class AmendmentManagement(ProcessDefinition, VisualisableElement):
                 delamendment = ActivityDefinition(contexts=[DelAmendment],
                                        description=_("Delet the amendment"),
                                        title=_("Delet"),
+                                       groups=[]),
+                duplicate = ActivityDefinition(contexts=[DuplicateAmendment],
+                                       description=_("Duplicate the amendment"),
+                                       title=_("Duplicate"),
                                        groups=[]),
                 edit = ActivityDefinition(contexts=[EditAmendment],
                                        description=_("Edit the amendment"),
@@ -71,10 +76,12 @@ class AmendmentManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('pg', 'submit'),
                 TransitionDefinition('pg', 'delamendment'),
+                TransitionDefinition('pg', 'duplicate'),
                 TransitionDefinition('pg', 'comment'),
                 TransitionDefinition('pg', 'present'),
                 TransitionDefinition('pg', 'associate'),
                 TransitionDefinition('pg', 'see'),
+                TransitionDefinition('duplicate', 'eg'),
                 TransitionDefinition('submit', 'eg'),
                 TransitionDefinition('delamendment', 'eg'),
                 TransitionDefinition('edit', 'eg'),

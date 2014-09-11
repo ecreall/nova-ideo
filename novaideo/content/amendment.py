@@ -28,6 +28,7 @@ from novaideo.core import (
     CorrelableEntity,
     Commentable,
     PresentableEntity,
+    DuplicableEntity,
     can_access)
 from novaideo import _
 from novaideo.views.widget import ConfirmationWidget
@@ -142,7 +143,7 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IAmendment)
-class Amendment(Commentable, CorrelableEntity, SearchableEntity, PresentableEntity):
+class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntity, PresentableEntity):
     name = renamer()
     result_template = 'novaideo:views/templates/amendment_result.pt'
     author = SharedUniqueProperty('author')

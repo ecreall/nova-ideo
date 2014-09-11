@@ -59,7 +59,9 @@ class IComment(ICommentable):
 
 class IAmendment(ICommentable, 
                  ICorrelableEntity,
-                 IPresentableEntity):
+                 IPresentableEntity,
+                 IDuplicableEntity,
+                 ISearchableEntity):
     pass
 
 
@@ -100,6 +102,7 @@ class IPerson(ISearchableEntity,
 class IProposal(ICommentable,
                 ISearchableEntity,
                 ICorrelableEntity,
+                IDuplicableEntity,
                 IPresentableEntity):
     pass
 
