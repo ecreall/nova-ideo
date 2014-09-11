@@ -396,11 +396,11 @@ class Associate(InfiniteCardinality):
         correlation.setproperty('author', get_current())
         root = getSite()
         root.addtoproperty('correlations', correlation)
-        self.newcontext = correlation
+        #self.newcontext = correlation
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 def seeidea_processsecurity_validation(process, context):

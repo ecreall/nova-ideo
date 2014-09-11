@@ -12,56 +12,60 @@ from pontus.widget import Select2Widget
 from pontus.view import BasicView
 from pontus.view_operation import MultipleView
 
-from novaideo.content.processes.idea_management.behaviors import  AddToProposals
+from novaideo.content.processes.proposal_management.behaviors import  AddIdeas
 from novaideo.content.correlation import CorrelationSchema, Correlation
-from novaideo.content.idea import Idea
-from novaideo.content.interface import IProposal
+from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.core import can_access
 
 
-addtoproposals_message = {'0': u"""Pas de propositions utilisant l'dée""",
-                          '1': u"""Voir la proposition utilisant l'idée""",
-                          '*': u"""Voir les {len_proposals} propositions utilisant l'dée"""}
+addideas_message = {'0': u"""Pas d'idées utilisées""",
+                   '1': u"""Voir l'idée utilisée""",
+                   '*': u"""Voir les {len_ideas} idées utilisées"""}
 
 
 @colander.deferred
 def targets_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
+    root = getSite()
+    user = get_current()
     values = []
-    entities = getattr(get_current(), 'proposals', [])
+    entities = [idea for idea in root.ideas if can_access(user, idea) and not (idea in context.related_ideas)]
     values = [(i, i.title) for i in entities]
     values = sorted(values, key=lambda p: p[1])
     return Select2Widget(values=values, multiple=True)
 
 
-class RelatedProposalsView(BasicView):
-    title = _('Related proposals')
-    name = 'relatedproposals'
+class RelatedIdeasView(BasicView):
+    title = _('Related ideas')
+    name = 'relatedideas'
     template = 'novaideo:views/idea_management/templates/related_contents.pt'
     item_template = 'pontus:templates/subview_sample.pt'
-    viewid = 'relatedproposals'
+    viewid = 'relatedideas'
 
 
     def update(self):
         root = getSite()
         user = get_current()
-        correlations = [c for c in self.context.target_correlations if ((c.type==1) and ('related_proposals' in c.tags) and can_access(user, c))]
-        relatedproposals = []
+        correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_ideas' in c.tags) and can_access(user, c))]
+        related_ideas = [target for targets in correlations for target in targets]
+        relatedideas = []
+        len_ideas = 0       
         for c in correlations:
-            proposal = c.source
-            relatedproposals.append({'content':proposal, 'url':proposal.url(self.request), 'correlation': c})
+            targets = c.targets
+            len_ideas += len(targets)
+            for target in targets:
+                relatedideas.append({'content':target, 'url':target.url(self.request), 'correlation': c})
 
-        len_proposals = len(relatedproposals)
-        index = str(len_proposals)
-        if len_proposals>1:
+        index = str(len_ideas)
+        if len_ideas>1:
             index = '*'
 
-        message = addtoproposals_message[index].format(len_proposals=len_proposals)
+        message = addideas_message[index].format(len_ideas=len_ideas)
         result = {}
         values = {
-                'relatedcontents': relatedproposals,
+                'relatedcontents': relatedideas,
                 'current_user': user,
                 'message': message
                }
@@ -71,41 +75,42 @@ class RelatedProposalsView(BasicView):
         return result
 
 
-class AddToProposalsFormView(FormView):
+class AddIdeasFormView(FormView):
 
-    title = _('Add to proposals form')
+    title = _('Add ideas')
     schema = select(CorrelationSchema(),['targets', 'intention', 'comment'])
-    behaviors = [AddToProposals]
-    formid = 'formaddtoproposals'
-    name='formaddtoproposals'
+    behaviors = [AddIdeas]
+    formid = 'formaddtoideas'
+    name='formaddtoideas'
 
     def before_update(self):
         target = self.schema.get('targets')
         target.widget = targets_choice
-        target.title = _("Related proposals")
+        target.title = _("Related ideas")
 
 
 @view_config(
-    name='addtoproposals',
-    context=Idea,
+    name='addideas',
+    context=Proposal,
     renderer='pontus:templates/view.pt',
     )
-class AddToProposalsView(MultipleView):
-    title = _('Add to proposals')
-    name = 'addtoproposals'
+class AddIdeasView(MultipleView):
+    title = _('Add ideas')
+    name = 'addideas'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
-    views = (AddToProposalsFormView, RelatedProposalsView)
+    views = (AddIdeasFormView, RelatedIdeasView)
 
     def get_message(self):
         user = get_current()
-        correlations = [c.targets for c in self.context.target_correlations if ((c.type==1) and ('related_proposals' in c.tags) and can_access(user, c))]
-        len_proposals = len(correlations)
-        index = str(len_proposals)
-        if len_proposals>1:
+        related_ideas = [idea for idea in self.context.related_ideas if can_access(user, idea)]
+        len_ideas = len(related_ideas)
+        index = str(len_ideas)
+        if len_ideas>1:
             index = '*'
-        message = (addtoproposals_message[index]).format(len_proposals=len_proposals)
+
+        message = addideas_message[index].format(len_ideas=len_ideas)
         return message
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({AddToProposals:AddToProposalsView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({AddIdeas:AddIdeasView})

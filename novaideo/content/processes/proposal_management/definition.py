@@ -38,7 +38,8 @@ from .behaviors import (
     EditAmendments,
     AddParagraph,
     Alert,
-    CorrectItem)
+    CorrectItem,
+    AddIdeas)
 from novaideo import _
 from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
@@ -264,6 +265,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Associate the proposal"),
                                        title=_("Associate"),
                                        groups=[]),
+                addideas = ActivityDefinition(contexts=[AddIdeas],
+                                       description=_("Add an idea to the proposal"),
+                                       title=_("Add an idea"),
+                                       groups=[]),
                 correct = ActivityDefinition(contexts=[CorrectProposal],
                                        description=_("Correct proposal"),
                                        title=_("Correct"),
@@ -291,6 +296,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('eg1', 'pg2'),
                 TransitionDefinition('pg2', 'submit'),
                 TransitionDefinition('pg2', 'edit'),
+                TransitionDefinition('pg2', 'addideas'),
                 TransitionDefinition('submit', 'pg3'),
                 TransitionDefinition('pg3', 'comment'),
                 TransitionDefinition('pg3', 'editamendments'),

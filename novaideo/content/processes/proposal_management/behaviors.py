@@ -41,6 +41,7 @@ try:
 except NameError:
       basestring = str
 
+default_nb_correctors = 1
 
 def createproposal_roles_validation(process, context):
     return has_any_roles(roles=('Member',))
@@ -394,6 +395,50 @@ class Associate(AssociateIdea):
     relation_validation = associate_relation_validation
 
 
+def addideas_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'proposal')
+
+
+def addideas_roles_validation(process, context):
+    return has_any_roles(roles=(('Participant', context),)) 
+
+
+def addideas_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) 
+
+
+def addideas_state_validation(process, context):
+    wg = context.working_group
+    return ('active' in wg.state and 'amendable' in context.state) or \
+           ('draft' in context.state and has_any_roles(roles=(('Owner', context),))) 
+
+
+class AddIdeas(InfiniteCardinality):
+    context = IProposal
+    processsecurity_validation = addideas_processsecurity_validation
+    roles_validation = addideas_roles_validation
+    state_validation = addideas_state_validation
+    relation_validation = addideas_relation_validation
+
+    def start(self, context, request, appstruct, **kw):
+        ideas = appstruct['targets']
+        root = getSite()
+        datas = {'author': get_current(),
+                 'targets': ideas,
+                 'comment': appstruct['comment'],
+                 'intention': appstruct['intention'],
+                 'source': context}
+        correlation = Correlation()
+        correlation.set_data(datas)
+        correlation.tags.extend(['related_proposals', 'related_ideas'])
+        correlation.type = 1
+        root.addtoproperty('correlations', correlation)
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
 def improve_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
@@ -487,6 +532,19 @@ def correctitem_state_validation(process, context):
     return 'active' in wg.state and 'amendable' in context.proposal.state
 
 
+def _normalize_text(soup, first=True):
+    corrections = soup.find_all("span", id="correction")
+    text =  str(soup.body.contents[0])
+    if first:
+        for correction in corrections:
+            index = text.find(str(correction))
+            index += str(correction).__len__()
+            if text[index] == ' ':
+                text = text[:index]+text[index+1:]
+
+    return text.replace('\xa0', '')
+
+
 class CorrectItem(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     isSequential = True
@@ -503,9 +561,8 @@ class CorrectItem(InfiniteCardinality):
         if diff_tags:
             diff_tags[0].unwrap()
           
-        context.proposal.text = str(soup.body.contents[0]).replace('\xa0', '')
+        context.proposal.text = _normalize_text(soup, False)
                 
- 
     def _include_items(self, context, request, items, to_add=False):
         tag_type = "del"
         if to_add:
@@ -523,7 +580,7 @@ class CorrectItem(InfiniteCardinality):
             else:
                 correction_item.extract()
 
-        return str(soup.body.contents[0]).replace('\xa0', ''), (len(soup.find_all("span", id="correction")) > 0)
+        return _normalize_text(soup, False), (len(soup.find_all("span", id="correction")) > 0)
 
     def start(self, context, request, appstruct, **kw):
         item = appstruct['item']
@@ -534,7 +591,7 @@ class CorrectItem(InfiniteCardinality):
         if not(user_oid in correction_data['favour']) and not(user_oid in correction_data['against']):
             if vote:
                 context.corrections[item]['favour'].append(get_oid(user))
-                if len(context.corrections[item]['favour']) >= 2:
+                if (len(context.corrections[item]['favour'])-1) >= default_nb_correctors:
                     context.text, in_process = self._include_items(context, request, [item], True)
                     if not in_process:
                         context.state.remove('in process')
@@ -544,7 +601,7 @@ class CorrectItem(InfiniteCardinality):
                     self._include_to_proposal(context, request)
             else:
                 context.corrections[item]['against'].append(get_oid(user))
-                if len(context.corrections[item]['against']) >= 2:
+                if len(context.corrections[item]['against']) >= default_nb_correctors:
                     context.text, in_process= self._include_items(context, request, [item])
                     if not in_process:
                         context.state.remove('in process')
@@ -618,33 +675,45 @@ class CorrectProposal(InfiniteCardinality):
             new_correction_tag['data-correction'] = correction_oid
             new_correction_tag['data-item'] = str(descriminator)
             init_vote = {'favour':[user_oid], 'against':[]}
-            correction.corrections[str(descriminator)] = init_vote
-            descriminator += 1
             previous_del_tag = ins_tag.find_previous_sibling('del')
             correct_exist = False
+            inst_string = ins_tag.string
             if previous_del_tag is not None:
-                tofind = str(previous_del_tag) +' '+str(ins_tag)
-                correction_exist = (diff.find(tofind) >=0)
-                if correction_exist:
-                    previous_del_tag.wrap(new_correction_tag)
-                    new_correction_tag.append(ins_tag)
-                    del_included.append(previous_del_tag)
-                    self._add_vote_actions(new_correction_tag, correction, request)
-                    continue
+                previous_del_tag_string = previous_del_tag.string
+                del_included.append(previous_del_tag)
+                if previous_del_tag_string != inst_string:
+                    tofind = str(previous_del_tag) +' '+str(ins_tag)
+                    correction_exist = (diff.find(tofind) >=0)
+                    if correction_exist:
+                        correction.corrections[str(descriminator)] = init_vote
+                        descriminator += 1 
+                        previous_del_tag.wrap(new_correction_tag)
+                        new_correction_tag.append(ins_tag)
+                        self._add_vote_actions(new_correction_tag, correction, request)
+                        continue
+                else:
+                    ins_tag.unwrap()
+                    previous_del_tag.extract()
 
-            ins_tag.wrap(new_correction_tag)
-            self._add_vote_actions(new_correction_tag, correction, request)
+            if ins_tag.parent is not None:
+                correction.corrections[str(descriminator)] = init_vote
+                descriminator += 1
+                ins_tag.wrap(new_correction_tag)
+                self._add_vote_actions(new_correction_tag, correction, request)
 
         for del_tag in del_tags:
             if not(del_tag in del_included):
-                new_correction_tag = soup.new_tag("span", id="correction")
-                new_correction_tag['data-correction'] = correction_oid
-                new_correction_tag['data-item'] = str(descriminator)
-                init_vote = {'favour':[user_oid], 'against':[]}
-                correction.corrections[str(descriminator)] = init_vote
-                descriminator += 1
-                del_tag.wrap(new_correction_tag)
-                self._add_vote_actions(new_correction_tag, correction, request)
+                if del_tag.string is not None:
+                    new_correction_tag = soup.new_tag("span", id="correction")
+                    new_correction_tag['data-correction'] = correction_oid
+                    new_correction_tag['data-item'] = str(descriminator)
+                    init_vote = {'favour':[user_oid], 'against':[]}
+                    correction.corrections[str(descriminator)] = init_vote
+                    descriminator += 1
+                    del_tag.wrap(new_correction_tag)
+                    self._add_vote_actions(new_correction_tag, correction, request)
+                else:
+                    del_tag.extract()        
 
         return soup
         
@@ -658,9 +727,9 @@ class CorrectProposal(InfiniteCardinality):
         descriminator = 0
         souptextdiff = self._identify_corrections(textdiff, correction, descriminator, request)
         soupdescriptiondiff = self._identify_corrections(descriptiondiff, correction, descriminator, request)
-        correction.text = str(souptextdiff.body.contents[0]).replace('\xa0', '')
+        correction.text = _normalize_text(souptextdiff)
         context.originaltext = str(correction.text)
-        correction.description = str(soupdescriptiondiff.body.contents[0]).replace('\xa0', '')
+        correction.description = _normalize_text(soupdescriptiondiff)
         if souptextdiff.find_all("span", id="correction"):
             correction.state.append('in process')
         return True
