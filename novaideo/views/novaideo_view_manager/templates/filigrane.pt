@@ -3,7 +3,6 @@
    $(document).ready(function(){ 
       var height = $("#proposaltext").height();
       var width = $("#proposaltext").width();
-       //On fait un calcul savant, l'exemple ici est stupide
        var font_size =  Math.floor((0.03*width)  + (0.13*height) );
        var left =  Math.floor((0.035*width)  - (0.026*height) );
        var top =  Math.floor((0.0005*width)  - (0.05*height) );
