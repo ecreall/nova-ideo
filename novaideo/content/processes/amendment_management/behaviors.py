@@ -45,6 +45,8 @@ def duplicate_state_validation(process, context):
 
 class DuplicateAmendment(ElementaryAction):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 3
     context = IAmendment
     roles_validation =del_roles_validation
     processsecurity_validation = duplicate_processsecurity_validation
@@ -89,6 +91,8 @@ def del_state_validation(process, context):
 
 class DelAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 2
     context = IAmendment
     roles_validation = del_roles_validation
     processsecurity_validation = del_processsecurity_validation
@@ -118,6 +122,8 @@ def edit_state_validation(process, context):
 
 class EditAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_order = 1
     context = IAmendment
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation
@@ -154,6 +160,8 @@ def pub_state_validation(process, context):
 
 class SubmitAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 1
     context = IAmendment
     roles_validation = pub_roles_validation
     processsecurity_validation = pub_processsecurity_validation

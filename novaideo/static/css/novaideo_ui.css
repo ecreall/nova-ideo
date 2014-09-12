@@ -225,8 +225,26 @@ ins {
     border-radius: 4px;
 }
 
+.global-actions {
+    margin-top: -52px
+}
+
+.content-text{
+    margin-left: 19px; 
+    margin-right: 19px;
+}
+
+.content-title{
+    margin-left: 19px; 
+    margin-right: 19px;
+}
+
+.btn-text-action {
+    width: 125pt
+}
+
 /*http://helping.probb.fr/t14-code-css-pour-aligner-un-texte-incline-au-centre-d-une-page-a4*/
-#proposaltext #filigrane{ 
+.content-text #filigrane{ 
     color: #ef827d;
     display: inline-block;
     font-family: Arial Black;

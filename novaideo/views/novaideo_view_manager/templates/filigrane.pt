@@ -1,8 +1,8 @@
 <div id="filigrane">PROJET</div>
 <script>
    $(document).ready(function(){ 
-      var height = $("#proposaltext").height();
-      var width = $("#proposaltext").width();
+      var height = $(".content-text").height();
+      var width = $(".content-text").width();
        var font_size =  Math.floor((0.03*width)  + (0.13*height) );
        var left =  Math.floor((0.035*width)  - (0.026*height) );
        var top =  Math.floor((0.0005*width)  - (0.05*height) );

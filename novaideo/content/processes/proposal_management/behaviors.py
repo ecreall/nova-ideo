@@ -20,7 +20,7 @@ from dace.processinstance.activity import InfiniteCardinality, ActionType, Limit
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
 from novaideo.ips.mailer import mailer_send
-from novaideo.content.interface import INovaIdeoApplication, IProposal, ICorrelableEntity, ICorrection
+from novaideo.content.interface import INovaIdeoApplication, IProposal, ICorrelableEntity, ICorrection, Iidea
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.mail import ALERT_SUBJECT, ALERT_MESSAGE,  RESULT_VOTE_AMENDMENT_SUBJECT,  RESULT_VOTE_AMENDMENT_MESSAGE
 from novaideo import _
@@ -106,6 +106,72 @@ class CreateProposal(ElementaryAction):
         return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
+def pap_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context),))
+
+
+def pap_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def pap_state_validation(process, context):
+    return "to work" in context.state
+
+
+class PublishAsProposal(ElementaryAction):
+    style = 'button' #TODO add style abstract class
+    context = Iidea
+    style_descriminator = 'global-action'
+    roles_validation = pap_roles_validation
+    processsecurity_validation = pap_processsecurity_validation
+    state_validation = pap_state_validation
+
+    def _associate(self, related_ideas, proposal):
+        root = getSite()
+        datas = {'author': get_current(),
+                 'source': proposal,
+                 'comment': _('Publish the idea as a proposal'),
+                 'intention': 'Creation'}
+        for idea in related_ideas:
+            correlation = Correlation()
+            datas['targets'] = [idea]
+            correlation.set_data(datas)
+            correlation.tags.extend(['related_proposals', 'related_ideas'])
+            correlation.type = 1
+            root.addtoproperty('correlations', correlation)
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        proposal = Proposal()
+        root.addtoproperty('proposals', proposal)
+        for k in context.keywords_ref:
+            proposal.addtoproperty('keywords_ref', k)
+
+        proposal.title = context.title
+        proposal.description = context.description
+        proposal.text = context.text
+        proposal.state.append('draft')
+        context.state = PersistentList(['published'])
+        grant_roles(roles=(('Owner', proposal), ))
+        grant_roles(roles=(('Participant', proposal), ))
+        proposal.setproperty('author', get_current())
+        self.process.execution_context.add_created_entity('proposal', proposal)
+        wg = WorkingGroup()
+        root.addtoproperty('working_groups', wg)
+        wg.setproperty('proposal', proposal)
+        wg.addtoproperty('members', get_current())
+        wg.state.append('deactivated')
+        self._associate([context], proposal)
+        proposal.reindex()
+        wg.reindex()
+        context.reindex()
+        self.newcontext = proposal
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+
+
 def submit_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
@@ -124,6 +190,8 @@ def submit_state_validation(process, context):
 
 class SubmitProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 1
     context = IProposal
     relation_validation = submit_relation_validation
     roles_validation = submit_roles_validation
@@ -151,6 +219,8 @@ def duplicate_processsecurity_validation(process, context):
 
 class DuplicateProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 3
     context = IProposal
     processsecurity_validation = duplicate_processsecurity_validation
 
@@ -199,6 +269,8 @@ def edit_state_validation(process, context):
 
 class EditProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_order = 1
     context = IProposal
     relation_validation = edit_relation_validation
     roles_validation = edit_roles_validation
@@ -234,6 +306,8 @@ def pub_state_validation(process, context):
 
 class PublishProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 2
     context = IProposal
     roles_validation = pub_roles_validation
     relation_validation = pub_relation_validation
@@ -263,6 +337,8 @@ def alert_state_validation(process, context):
 
 class Alert(ElementaryAction):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 4
     context = IProposal
     roles_validation = alert_roles_validation
     relation_validation = alert_relation_validation
@@ -459,6 +535,8 @@ def improve_state_validation(process, context):
 
 class ImproveProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_order = 4
     isSequential = False
     context = IProposal
     relation_validation = improve_relation_validation
@@ -636,6 +714,8 @@ def correct_state_validation(process, context):
 
 class CorrectProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_order = 2
     isSequential = True
     context = IProposal
     relation_validation = correct_relation_validation
@@ -740,6 +820,8 @@ class CorrectProposal(InfiniteCardinality):
 
 class AddParagraph(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_order = 3
     isSequential = False
     context = IProposal
     relation_validation = correct_relation_validation
@@ -773,6 +855,8 @@ def decision_state_validation(process, context):
 
 class VotingPublication(ElementaryAction):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 5
     context = IProposal
     relation_validation = decision_relation_validation
     roles_validation = decision_roles_validation
@@ -809,6 +893,9 @@ def withdraw_state_validation(process, context):
 
 class Withdraw(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'wg-action'
+    style_order = 3
+    style_css_class = 'btn-warning'
     isSequential = False
     context = IProposal
     relation_validation = withdraw_relation_validation
@@ -844,6 +931,9 @@ def resign_state_validation(process, context):
 
 class Resign(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'wg-action'
+    style_order = 2
+    style_css_class = 'btn-danger'
     isSequential = False
     context = IProposal
     relation_validation = resign_relation_validation
@@ -909,6 +999,9 @@ def participate_state_validation(process, context):
 
 class Participate(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'wg-action'
+    style_order = 1
+    style_css_class = 'btn-success'
     isSequential = False
     context = IProposal
     relation_validation = participate_relation_validation
@@ -959,6 +1052,8 @@ def va_state_validation(process, context):
 
 class VotingAmendments(ElementaryAction):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 6
     context = IProposal
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
@@ -980,6 +1075,8 @@ def ar_state_validation(process, context):
 
 class AmendmentsResult(ElementaryAction):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 7
     context = IProposal
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
@@ -1081,6 +1178,8 @@ def ta_state_validation(process, context):
 
 class Amendable(ElementaryAction):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 8
     context = IProposal
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation

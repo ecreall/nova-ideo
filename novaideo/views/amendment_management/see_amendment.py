@@ -38,9 +38,10 @@ class DetailAmendmentView(BasicView):
         self.execute(None) 
         user = get_current()
         actions = [a for a in self.context.actions if getattr(a.action, 'style', '') == 'button']
-        actions_urls = []
-        for action in actions:
-            actions_urls.append({'title':action.title, 'url':action.url})
+        global_actions = [a for a in actions if getattr(a.action, 'style_descriminator','') == 'global-action']
+        text_actions = [a for a in  actions if getattr(a.action, 'style_descriminator','') == 'text-action']
+        global_actions = sorted(global_actions, key=lambda e: getattr(e.action, 'style_order',0))
+        text_actions = sorted(text_actions, key=lambda e: getattr(e.action, 'style_order',0))
 
         result = {}
         textdiff = ''
@@ -62,7 +63,8 @@ class DetailAmendmentView(BasicView):
                 'descriptiondiff':descriptiondiff,
                 'keywordsdiff':keywordsdiff,
                 'current_user': user,
-                'actions': actions_urls
+                'global_actions': global_actions,
+                'text_actions': text_actions,
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

@@ -77,7 +77,7 @@ function correct_handler(event){
     var vote = Boolean($(this).data('favour'));
     var correction_item = parseInt(correction.data('item'));
     var correction_id = parseInt(correction.data('correction'));
-    var target = $($(this).parents('#proposaltext').first());
+    var target = $($(this).parents('.content-text').first());
     var url = $(this).data('url');
     dict_post = {};
     dict_post['vote'] = vote;

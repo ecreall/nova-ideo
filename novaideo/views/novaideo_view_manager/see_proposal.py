@@ -70,17 +70,21 @@ class DetailProposalView(BasicView):
         actions = self.context.actions
         vote_actions, resources, messages, isactive = self._vote_action()
         actions = [a for a in actions if getattr(a.action, 'style', '') == 'button']
-        actions_urls = []
-        for action in actions:
-            actions_urls.append({'title':action.title, 'url':action.url})
-      
+        global_actions = [a for a in actions if getattr(a.action, 'style_descriminator','') == 'global-action']
+        wg_actions = [a for a in actions if getattr(a.action, 'style_descriminator','') == 'wg-action']
+        text_actions = [a for a in  actions if getattr(a.action, 'style_descriminator','') == 'text-action']
+        global_actions = sorted(global_actions, key=lambda e: getattr(e.action, 'style_order',0))
+        wg_actions = sorted(wg_actions, key=lambda e: getattr(e.action, 'style_order',0))
+        text_actions = sorted(text_actions, key=lambda e: getattr(e.action, 'style_order',0))
         text = self._get_adapted_text(user)
         result = {}
         values = {
                 'proposal': self.context,
                 'text': text,
                 'current_user': user,
-                'actions': actions_urls,
+                'global_actions': global_actions,
+                'wg_actions': wg_actions,
+                'text_actions': text_actions,
                 'voteactions': vote_actions
                }
         body = self.content(result=values, template=self.template)['body']

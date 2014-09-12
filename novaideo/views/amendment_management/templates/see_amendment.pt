@@ -1,4 +1,11 @@
-<div class="media-body">
+<div id="global-actions">
+  <div tal:condition="global_actions" class="pull-right global-actions">
+        <tal:loop repeat="a global_actions">
+          <a tal:attributes="href a.url" class="btn btn-success btn-sm">${a.title}</a>
+        </tal:loop>
+  </div>
+</div>
+<div class="media-body content-title">
 <h3 tal:condition="amendment.state"><span class="label label-primary pull-right">${amendment.state[0].capitalize()}</span></h3>
 <h3>${amendment.title}</h3>
 </div>
@@ -30,15 +37,14 @@
       </dd>
     </dl>
   </div>
-  <div id="amendmenttext">
+  <div id="contenttext" class="content-text">
     ${structure:textdiff}
   </div>
 </div>
-<div id="idea_actions">
-  <div tal:condition="actions" class="btn-group btn-group-justified">
-        <tal:loop repeat="a actions">
-          <a tal:attributes="href a['url']" class="btn btn-default">${a['title']}</a>
+<div id="text-actions">
+  <div tal:condition="text_actions" class="text-actions">
+        <tal:loop repeat="a text_actions">
+          <a tal:attributes="href a.url" class="btn btn-default btn-text-action">${a.title}</a>
         </tal:loop>
   </div>
-
 </div>
