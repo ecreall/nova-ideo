@@ -39,7 +39,9 @@ from .behaviors import (
     AddParagraph,
     Alert,
     CorrectItem,
-    AddIdeas)
+    PublishAsProposal,
+    AddIdeas
+    )
 from novaideo import _
 from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
@@ -199,6 +201,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Create a new proposal"),
                                        title=_("Create a proposal"),
                                        groups=[_('Add')]),
+                publishasproposal = ActivityDefinition(contexts=[PublishAsProposal],
+                                       description=_("Publish the idea as a proposal"),
+                                       title=_("Publish as a proposal"),
+                                       groups=[]),
                 duplicate = ActivityDefinition(contexts=[DuplicateProposal],
                                        description=_("Duplicate this proposal"),
                                        title=_("Duplicate"),
@@ -290,8 +296,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
         self.defineTransitions(
                 TransitionDefinition('start', 'eg0'),
                 TransitionDefinition('eg0', 'creat'),
+                TransitionDefinition('eg0', 'publishasproposal'),
                 TransitionDefinition('eg0', 'duplicate'),
                 TransitionDefinition('creat', 'eg1'),
+                TransitionDefinition('publishasproposal', 'eg1'),
                 TransitionDefinition('duplicate', 'eg1'),
                 TransitionDefinition('eg1', 'pg2'),
                 TransitionDefinition('pg2', 'submit'),

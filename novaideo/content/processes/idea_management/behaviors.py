@@ -70,6 +70,8 @@ def duplicate_processsecurity_validation(process, context):
 
 class DuplicateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 5
     context = Iidea
     processsecurity_validation = duplicate_processsecurity_validation
 
@@ -117,6 +119,8 @@ def del_state_validation(process, context):
 
 class DelIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 4
     context = Iidea
     roles_validation = del_roles_validation
     processsecurity_validation = del_processsecurity_validation
@@ -146,6 +150,8 @@ def edit_state_validation(process, context):
 
 class EditIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_order = 1
     context = Iidea
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation
@@ -210,6 +216,8 @@ def pub_state_validation(process, context):
 
 class PublishIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 1
     context = Iidea
     roles_validation = pub_roles_validation
     processsecurity_validation = pub_processsecurity_validation
@@ -240,6 +248,8 @@ def ab_state_validation(process, context):
 
 class AbandonIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 2
     context = Iidea
     roles_validation = ab_roles_validation
     processsecurity_validation = ab_processsecurity_validation
@@ -269,6 +279,8 @@ def re_state_validation(process, context):
 
 class RecuperateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 3
     context = Iidea
     roles_validation = re_roles_validation
     processsecurity_validation = re_processsecurity_validation
