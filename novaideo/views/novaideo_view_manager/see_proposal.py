@@ -1,6 +1,7 @@
 import re
 import colander
 from pyramid.view import view_config
+from pyramid import renderers
 from pyramid.threadlocal import get_current_registry
 
 from dace.util import find_catalog
@@ -31,7 +32,7 @@ class DetailProposalView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/see_proposal.pt'
     item_template = 'pontus:templates/subview_sample.pt'
     viewid = 'seeproposal'
-
+    filigrane_template = 'novaideo:views/novaideo_view_manager/templates/filigrane.pt'
 
     def _vote_action(self):
         isactive = False
@@ -58,7 +59,8 @@ class DetailProposalView(BasicView):
         if corrections and is_participant:
             text = corrections[-1].get_adapted_text(user)
         elif not is_participant and not ('published' in self.context.state):
-            text += "<div id=\"filigrane\">PROJET</div>"
+            filigrane =  renderers.render(self.filigrane_template, {}, self.request)
+            text += filigrane
 
         return text
 
