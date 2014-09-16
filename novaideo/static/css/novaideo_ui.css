@@ -126,14 +126,14 @@ ins {
 .legend-carre-del{
 	width:20px;
 	height:20px;
-	background:red;
+	background:#ef827d;
         display: inline-block;; 
 }
 
 .legend-carre-ins{
 	width:20px;
 	height:20px;
-	background:springgreen;
+	background:#89e189;
         display: inline-block;; 
 }
 
@@ -234,14 +234,51 @@ ins {
     margin-right: 19px;
 }
 
+.filigrane-project{
+    background-image: url("../images/filigran.png");
+    background-repeat: repeat;
+}
+
 .content-title{
     margin-left: 19px; 
     margin-right: 19px;
 }
 
 .btn-text-action {
-    width: 125pt
+    width: 100pt
 }
+
+.btn-wg {
+    border-radius: 4px;
+}
+
+.col-confirmation {
+    border: 1px solid graytext;
+    border-radius: 13px;
+    height: 206px;
+    margin-bottom: 10px;
+    padding: 10px 10px 0;
+}
+
+.proposal-support {
+    margin-bottom: 10px;
+}
+
+.proposal-support .label .glyphicon {
+    vertical-align:middle;
+    font-size: 16px
+}
+
+.proposal-support .label .support-nb {
+    vertical-align:middle;
+    font-size: 16px
+}
+
+.proposal-support .label-danger {
+    margin-left: 5px
+}
+
+
 
 /*http://helping.probb.fr/t14-code-css-pour-aligner-un-texte-incline-au-centre-d-une-page-a4*/
 .content-text #filigrane{ 

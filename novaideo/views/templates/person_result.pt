@@ -1,9 +1,9 @@
 <div class="thumbnail right-caption span4" >
   <img tal:condition="object.picture is not None" tal:attributes="src object.picture.url(request)"  width="100"/>
-  <div tal:condition="object.picture is None" id="person-image">
+  <div tal:condition="object.picture is None" id="person-image" class="content-image">
   </div>
   <div class="media-body" style="width:auto;">
-    <h3 tal:condition="getattr(object, 'state', None) is not None"><span class="label label-primary pull-right">${object.state[0].capitalize()}</span></h3>
+    <h4 tal:condition="getattr(object, 'state', None) is not None"><span class="label label-primary pull-right">${object.state[0].capitalize()}</span></h4>
       <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${((object is current_user) and 'Vous') or object.name} </h3></a>
       <dl>
         <dt tal:condition="getattr(object, 'keywords', [])">Centres d'intérêt</dt>
