@@ -186,6 +186,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/person_result.pt'
     name = renamer()
     tokens = CompositeMultipleProperty('tokens')
+    tokens_ref = SharedMultipleProperty('tokens_ref')
     organization = SharedUniqueProperty('organization', 'members')
     picture = CompositeUniqueProperty('picture')
     ideas = SharedMultipleProperty('ideas', 'author')
@@ -217,4 +218,13 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
         result.extend(self.proposals)
         #TODO 
         return result
+
+    @property
+    def supports(self):
+        result = [] #[t.__parent__ for t in self.tokens_ref if not(t.__parent__ is self)] Error TODO
+        for t in self.tokens_ref:
+            if not(t.__parent__ is self):
+                result.append(t.__parent__)
+
+        return list(set(result))
     

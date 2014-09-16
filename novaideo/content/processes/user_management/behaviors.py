@@ -71,8 +71,10 @@ class Registration(InfiniteCardinality):
 
         result.extend(newkeywords)
         person.setproperty('keywords_ref', result)
-        for i in range(root.tokens_mini-1):
+        for i in range(root.tokens_mini):
+            import pdb; pdb.set_trace()
             token = Token(title='Token_'+str(i))
+            person.addtoproperty('tokens_ref', token)
             person.addtoproperty('tokens', token)
             token.setproperty('owner', person)
 
