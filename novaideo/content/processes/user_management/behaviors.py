@@ -15,6 +15,7 @@ from dace.processinstance.activity import (
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IPerson
+from novaideo.content.token import Token
 from novaideo.mail import CONFIRMATION_MESSAGE
 from novaideo import _
 from novaideo.core import acces_action
@@ -70,9 +71,16 @@ class Registration(InfiniteCardinality):
 
         result.extend(newkeywords)
         person.setproperty('keywords_ref', result)
+        for i in range(root.tokens_mini-1):
+            token = Token(title='Token_'+str(i))
+            person.addtoproperty('tokens', token)
+            token.setproperty('owner', person)
+
         message = CONFIRMATION_MESSAGE.format(person=person)
         mailer_send(subject='Confirmation de votre inscription',
                 recipients=[person.email], body=message)
+
+        
         return True
 
     def redirect(self, context, request, **kw):

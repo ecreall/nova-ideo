@@ -185,7 +185,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     result_template = 'novaideo:views/templates/person_result.pt'
     name = renamer()
-    tokens = CompositeMultipleProperty('tokens', 'owner')
+    tokens = CompositeMultipleProperty('tokens')
     organization = SharedUniqueProperty('organization', 'members')
     picture = CompositeUniqueProperty('picture')
     ideas = SharedMultipleProperty('ideas', 'author')

@@ -1,9 +1,9 @@
 <div class="thumbnail right-caption span4 " >
-  <div id="idea-image">
+  <div id="idea-image" class="content-image">
   <img src="${request.static_url('novaideo:static/images/idea.png')}" width="100">
   </div>
   <div class="media-body">
-    <h3 tal:condition="object.state"><span class="label label-primary pull-right">${object.state[0].capitalize()}</span></h3>
+    <h4 tal:condition="object.state"><span class="label label-primary pull-right">${object.state[0].capitalize()}</span></h4>
     <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
     <dl >
       <dt>Résumé</dt><dd>${object.description}</dd>

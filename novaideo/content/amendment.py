@@ -16,7 +16,7 @@ from dace.descriptors import (
     SharedUniqueProperty,
     SharedMultipleProperty
 )
-from pontus.widget import RichTextWidget,Select2Widget
+from pontus.widget import RichTextWidget,Select2Widget, CheckboxChoiceWidget
 from pontus.core import VisualisableElementSchema
 from pontus.schema import Schema
 from pontus.file import Object as ObjectType
@@ -31,7 +31,8 @@ from novaideo.core import (
     DuplicableEntity,
     can_access)
 from novaideo import _
-from novaideo.views.widget import ConfirmationWidget
+from novaideo.views.widget import ConfirmationWidget, SearchContentWidget
+from novaideo.views.novaideo_view_manager.widget import SearchTextInputWidget
 
 
 @colander.deferred
@@ -86,6 +87,40 @@ def ideas_replacement_choice(node, kw):
     return Select2Widget(values=values)
 
 
+@colander.deferred
+def selection_choices(node, kw):
+    selections = ['My contents', 'My participations', 'My selections', 'My supports']
+    values =[(k, k) for k in selections]
+    return CheckboxChoiceWidget(values=values)
+
+
+@colander.deferred
+def search_text_widget(node, kw):
+    root = getSite()
+    context = node.bindings['context']
+    request = node.bindings['request']
+    return SearchTextInputWidget(button_type='button', 
+                                 url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
+
+
+class SearchIdeaSchema(Schema):
+
+#    selections  = colander.SchemaNode(
+#        colander.Set(),
+#        widget=selection_choices,
+#        title=_(''),
+#        missing=[],
+#        default=[],
+#        )
+
+    text = colander.SchemaNode(
+        colander.String(),
+        widget=search_text_widget,
+        title=_(''),
+        missing='',
+        )
+
+
 class IdeaOfReplacementSchema(Schema):
 
     idea_of_replacement = colander.SchemaNode(
@@ -95,6 +130,8 @@ class IdeaOfReplacementSchema(Schema):
             missing=None,
             description=_('Choose the idea of replacement')
         )
+ 
+    serach_idea = SearchIdeaSchema(widget=SearchContentWidget(css_class="search-content"))
 
     new_idea =  colander.SchemaNode(
         colander.Boolean(),
@@ -103,6 +140,7 @@ class IdeaOfReplacementSchema(Schema):
         title =_(''),
         missing=False
         )
+
 
 class AmendmentConfirmationSchema(Schema):
 
@@ -118,9 +156,9 @@ class AmendmentConfirmationSchema(Schema):
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         )
 
-    replaced_idea = ReplacedIdeaSchema(widget=deform.widget.MappingWidget())
+    replaced_idea = ReplacedIdeaSchema(widget=deform.widget.MappingWidget(mapping_css_class='col-confirmation'))
 
-    idea_of_replacement = IdeaOfReplacementSchema(widget=deform.widget.MappingWidget())
+    idea_of_replacement = IdeaOfReplacementSchema(widget=deform.widget.MappingWidget(mapping_css_class='dynamic-selection col-confirmation'))
 
 
 class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):

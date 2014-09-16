@@ -40,7 +40,10 @@ from .behaviors import (
     Alert,
     CorrectItem,
     PublishAsProposal,
-    AddIdeas
+    AddIdeas,
+    SupportProposal,
+    OpposeProposal,
+    WithdrawToken
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
@@ -93,6 +96,7 @@ def eg4_votingamendments_condition(process):
 
 def eg4_alert_condition(process):
     return not eg4_votingamendments_condition(process)
+
 
 
 class SubProcessDefinition(OriginSubProcessDefinition):
@@ -197,6 +201,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 eg2 = ExclusiveGatewayDefinition(),
                 eg3 = ExclusiveGatewayDefinition(),
                 eg4 = ExclusiveGatewayDefinition(),
+                pg6 = ParallelGatewayDefinition(),
                 creat = ActivityDefinition(contexts=[CreateProposal],
                                        description=_("Create a new proposal"),
                                        title=_("Create a proposal"),
@@ -250,6 +255,18 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 publish = ActivityDefinition(contexts=[PublishProposal],
                                        description=_("Publish the proposal"),
                                        title=_("Publish"),
+                                       groups=[]),
+                support = ActivityDefinition(contexts=[SupportProposal],
+                                       description=_("Support the proposal"),
+                                       title=_("Support"),
+                                       groups=[]),
+                oppose = ActivityDefinition(contexts=[OpposeProposal],
+                                       description=_("To oppose a proposal"),
+                                       title=_("Oppose"),
+                                       groups=[]),
+                withdraw_token = ActivityDefinition(contexts=[WithdrawToken],
+                                       description=_("Withdraw token from proposal"),
+                                       title=_("Withdraw my token"),
                                        groups=[]),
                 amendmentsresult = ActivityDefinition(contexts=[AmendmentsResult],
                                        description=_("Amendments result"),
@@ -321,12 +338,16 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('votingpublication', 'eg3'),
                 TransitionDefinition('eg3', 'amendable', eg3_amendable_condition),
                 TransitionDefinition('eg3', 'publish', eg3_publish_condition),
+                TransitionDefinition('publish', 'pg6'),
+                TransitionDefinition('pg6', 'support'),
+                TransitionDefinition('pg6', 'oppose'),
+                TransitionDefinition('pg6', 'withdraw_token'),
                 TransitionDefinition('amendable', 'timer'),
                 TransitionDefinition('timer', 'eg4'),
-                TransitionDefinition('eg4', 'votingamendments', eg4_votingamendments_condition),
-                TransitionDefinition('eg4', 'alert', eg4_alert_condition),
+                TransitionDefinition('eg4', 'votingamendments', eg4_votingamendments_condition, sync=True),
+                TransitionDefinition('eg4', 'alert', eg4_alert_condition, sync=True),
                 TransitionDefinition('alert', 'eg2'),
                 TransitionDefinition('votingamendments', 'amendmentsresult'),
                 TransitionDefinition('amendmentsresult', 'eg2'),
-                TransitionDefinition('publish', 'end'),
+                #TransitionDefinition('publish', 'end'),
         )

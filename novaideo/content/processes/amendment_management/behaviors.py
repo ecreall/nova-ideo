@@ -54,7 +54,7 @@ class DuplicateAmendment(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        copy_of_amendment = copy(context)
+        copy_of_amendment = copy(context, (context.proposal, 'amendments'))
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
@@ -63,7 +63,7 @@ class DuplicateAmendment(ElementaryAction):
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
         copy_of_amendment.set_data(appstruct)
-        context.proposal.addtoproperty('amendments', copy_of_amendment)
+        #context.proposal.addtoproperty('amendments', copy_of_amendment)
         copy_of_amendment.setproperty('originalentity', context)
         copy_of_amendment.state = PersistentList(['draft'])
         copy_of_amendment.setproperty('author', get_current())

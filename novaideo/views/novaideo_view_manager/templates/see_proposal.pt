@@ -11,6 +11,16 @@
 </div>
 
 <div class="jumbotron well proposal-well">
+  <div class="proposal-support pull-right">
+    <span class="label label-success">
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        <span class="support-nb">${len(proposal.tokens_support)}</span>
+    </span>
+    <span class="label label-danger">
+        <span class="glyphicon glyphicon-thumbs-down"></span>
+        <span class="support-nb">${len(proposal.tokens_opposition)}</span>
+    </span>
+  </div>
     <dl >
         <dt>Résumé</dt>
 	<dd>${proposal.description}</dd>
@@ -43,7 +53,7 @@
             <div id="wg-actions">
                <div tal:condition="wg_actions" class="btn-group wg-actions">
                     <tal:loop repeat="a wg_actions">
-                      <a tal:attributes="href a.url" class="btn btn-primary btn-xs">${a.title}</a>
+                      <a tal:attributes="href a.url" class="btn btn-primary btn-xs btn-wg">${a.title}</a>
                     </tal:loop>
                </div>
              </div>
@@ -52,14 +62,14 @@
     </dl>
 </div>
 
-<div id="contenttext" class="content-text">
+<div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} content-text">
   ${structure:text}
 </div>
 
 <div id="text-actions">
   <div tal:condition="text_actions" class="text-actions">
         <tal:loop repeat="a text_actions">
-          <a tal:attributes="href a.url" class="btn btn-default btn-text-action">${a.title}</a>
+          <a tal:attributes="href a.url" class="btn btn-default btn-sm btn-text-action">${a.title}</a>
         </tal:loop>
   </div>
 </div>

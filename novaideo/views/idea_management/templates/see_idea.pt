@@ -48,7 +48,7 @@ ${structure:idea.text}
 <div id="text-actions">
   <div tal:condition="text_actions" class="text-actions">
         <tal:loop repeat="a text_actions">
-          <a tal:attributes="href a.url" class="btn btn-default btn-text-action">${a.title}</a>
+          <a tal:attributes="href a.url" class="btn btn-default btn-sm btn-text-action">${a.title}</a>
         </tal:loop>
   </div>
 </div>

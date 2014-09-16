@@ -1,12 +1,13 @@
 <div id="filigrane">PROJET</div>
 <script>
    $(document).ready(function(){ 
-      var height = $(".content-text").height();
-      var width = $(".content-text").width();
-       var font_size =  Math.floor((0.03*width)  + (0.13*height) );
+       var window_width = $(window).width();//TODO dep de la taille de l'ecran
+       var height = $(".content-text").height();
+       var width = $(".content-text").width();
+       var font_size =  Math.floor((0.071*width)  + (0.083*height) );
        var left =  Math.floor((0.035*width)  - (0.026*height) );
-       var top =  Math.floor((0.0005*width)  - (0.05*height) );
-       if (font_size > 190){font_size = 190; top = -120; left = 0}
+       var top =  Math.floor((0.007*width)  - (0.12*height) );
+       if (font_size > 126){font_size = 126; left = -6}
        $("#filigrane").css('font-size', font_size+'pt');
        $("#filigrane").css('margin-left', left+'%');
        $("#filigrane").css('margin-top', top+'%');

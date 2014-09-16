@@ -70,7 +70,8 @@ class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntit
     name = renamer()
     author = SharedUniqueProperty('author')
     working_group = SharedUniqueProperty('working_group', 'proposal')
-    tokens = CompositeMultipleProperty('tokens')
+    tokens_opposition = CompositeMultipleProperty('tokens_opposition')
+    tokens_support = CompositeMultipleProperty('tokens_support')
     amendments = CompositeMultipleProperty('amendments', 'proposal')
     corrections = CompositeMultipleProperty('corrections', 'proposal')
 
@@ -84,3 +85,8 @@ class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntit
         lists = [c.targets for c in self.source_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
         return [target for targets in lists for target in targets]
 
+    @property
+    def tokens(self):
+        result = list(self.tokens_opposition)
+        result.extend(list(self.tokens_support))
+        return result

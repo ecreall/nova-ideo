@@ -29,4 +29,5 @@ class TokenSchema(VisualisableElementSchema):
 @implementer(IToken)
 class Token(VisualisableElement, Entity):
     name = renamer()
-    owner = SharedUniqueProperty('owner', 'tokens')
+    owner = SharedUniqueProperty('owner')
+    proposal = SharedUniqueProperty('proposal')

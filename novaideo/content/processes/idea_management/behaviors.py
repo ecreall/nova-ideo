@@ -77,9 +77,10 @@ class DuplicateIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        copy_of_idea = copy(context)
-        copy_of_idea.created_at = datetime.datetime.today()
-        copy_of_idea.modified_at = datetime.datetime.today()
+        import pdb; pdb.set_trace()
+        copy_of_idea = copy(context, (root, 'ideas'))
+        #copy_of_idea.created_at = datetime.datetime.today()
+        #copy_of_idea.modified_at = datetime.datetime.today()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
@@ -89,10 +90,10 @@ class DuplicateIdea(InfiniteCardinality):
         appstruct['keywords_ref'] = result
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
-        root.addtoproperty('ideas', copy_of_idea)
+        #root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.setproperty('originalentity', context)
-        copy_of_idea.setproperty('version', None)
-        copy_of_idea.setproperty('nextversion', None)
+        #copy_of_idea.setproperty('version', None)
+        #copy_of_idea.setproperty('nextversion', None)
         copy_of_idea.state = PersistentList(['to work'])
         copy_of_idea.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_idea), ))
@@ -159,9 +160,9 @@ class EditIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        copy_of_idea = copy(context)
-        copy_of_idea.created_at = datetime.datetime.today()
-        copy_of_idea.modified_at = datetime.datetime.today()
+        copy_of_idea = copy(context, (root, 'ideas'), roles=True)
+        #copy_of_idea.created_at = datetime.datetime.today()
+        #copy_of_idea.modified_at = datetime.datetime.today()
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         keywords_ids = appstruct.pop('keywords')
@@ -173,12 +174,12 @@ class EditIdea(InfiniteCardinality):
         appstruct['keywords_ref'] = result
         context.state = PersistentList(['deprecated'])
         copy_of_idea.setproperty('version', context)
-        root.addtoproperty('ideas', copy_of_idea)
+        #root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.setproperty('author', get_current())
         copy_of_idea.set_data(appstruct)
         context.reindex()
-        grant_roles(roles=(('Owner', copy_of_idea), ))
-        grant_roles(roles=(('Owner', context), ))#TODO attribute SubstanceD.Folder.moving
+        #grant_roles(roles=(('Owner', copy_of_idea), ))
+        #grant_roles(roles=(('Owner', context), ))#TODO attribute SubstanceD.Folder.moving
         user = get_current()
         self.newcontext = copy_of_idea
         if 'abandoned' in copy_of_idea.state:

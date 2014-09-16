@@ -29,6 +29,7 @@ from ..comment_management.behaviors import validation_by_context
 from novaideo.core import acces_action
 from novaideo.content.correlation import Correlation
 from novaideo.content.idea import Idea
+from novaideo.content.token import Token
 from novaideo.content.amendment import Amendment
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.ballot import Ballot
@@ -51,25 +52,28 @@ def createproposal_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context)
 
 
+def associate_to_proposal(related_ideas, proposal, add_idea_text=True):
+    root = getSite()
+    datas = {'author': get_current(),
+             'source': proposal,
+             'comment': '',
+             'intention': 'Creation'}
+    for idea in related_ideas:
+        correlation = Correlation()
+        datas['targets'] = [idea]
+        correlation.set_data(datas)
+        correlation.tags.extend(['related_proposals', 'related_ideas'])
+        correlation.type = 1
+        root.addtoproperty('correlations', correlation)
+        if add_idea_text:
+            proposal.text = getattr(proposal, 'text', '') + '<div>'+idea.text+'</div>'
+
+
 class CreateProposal(ElementaryAction):
     context = INovaIdeoApplication
     roles_validation = createproposal_roles_validation
     processsecurity_validation = createproposal_processsecurity_validation
 
-    def _associate(self, related_ideas, proposal):
-        root = getSite()
-        datas = {'author': get_current(),
-                 'source': proposal,
-                 'comment': '',
-                 'intention': 'Creation'}
-        for idea in related_ideas:
-            correlation = Correlation()
-            datas['targets'] = [idea]
-            correlation.set_data(datas)
-            correlation.tags.extend(['related_proposals', 'related_ideas'])
-            correlation.type = 1
-            root.addtoproperty('correlations', correlation)
-            proposal.text = getattr(proposal, 'text', '') + '<div>'+idea.text+'</div>'
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
@@ -95,7 +99,7 @@ class CreateProposal(ElementaryAction):
         wg.addtoproperty('members', get_current())
         wg.state.append('deactivated')
         if related_ideas:
-            self._associate(related_ideas, proposal)
+            associate_to_proposal(related_ideas, proposal)
 
         proposal.reindex()
         wg.reindex()
@@ -226,9 +230,9 @@ class DuplicateProposal(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        copy_of_proposal = copy(context)
-        copy_of_proposal.created_at = datetime.datetime.today()
-        copy_of_proposal.modified_at = datetime.datetime.today()
+        copy_of_proposal = copy(context, (root, 'proposals'))
+        #copy_of_proposal.created_at = datetime.datetime.today()
+        #copy_of_proposal.modified_at = datetime.datetime.today()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
@@ -237,11 +241,23 @@ class DuplicateProposal(ElementaryAction):
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
         copy_of_proposal.set_data(appstruct)
-        root.addtoproperty('proposals', copy_of_proposal)
+        #root.addtoproperty('proposals', copy_of_proposal)
         copy_of_proposal.setproperty('originalentity', context)
         copy_of_proposal.state = PersistentList(['draft'])
         copy_of_proposal.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_proposal), ))
+        grant_roles(roles=(('Participant', copy_of_proposal), ))
+        copy_of_proposal.setproperty('author', get_current())
+        self.process.execution_context.add_created_entity('proposal', copy_of_proposal)
+        wg = WorkingGroup()
+        root.addtoproperty('working_groups', wg)
+        wg.setproperty('proposal', copy_of_proposal)
+        wg.addtoproperty('members', get_current())
+        wg.state.append('deactivated')
+        if context.related_ideas:
+            associate_to_proposal(context.related_ideas, copy_of_proposal, False)
+
+        wg.reindex()
         copy_of_proposal.reindex()
         context.reindex()
         self.newcontext = copy_of_proposal
@@ -315,8 +331,17 @@ class PublishProposal(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         #TODO wg desactive, members vide...
+        wg = context.working_group
         context.state.remove('votes for publishing')
         context.state.append('published')
+        wg.state = PersistentList(['archived'])
+        for member in  wg.members:
+            token = Token(title='Token_'+context.title)
+            token.setproperty('proposal', context)
+            member.setproperty('tokens', token)
+            token.setproperty('owner', member)
+
+        wg.reindex()
         context.reindex()
         return True
 
@@ -324,11 +349,115 @@ class PublishProposal(ElementaryAction):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def support_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'proposal')
+
+
+def support_roles_validation(process, context):
+    return has_any_roles(roles=('Member',)) #System
+
+
+def support_processsecurity_validation(process, context):
+    user = get_current()
+    return global_user_processsecurity(process, context) and \
+           user.tokens and  \
+           not (user in [t.owner for t in context.tokens])
+
+def support_state_validation(process, context):
+    return 'published' in context.state
+
+
+class SupportProposal(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 2
+    context = IProposal
+    roles_validation = support_roles_validation
+    relation_validation = support_relation_validation
+    processsecurity_validation = support_processsecurity_validation
+    state_validation = support_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        token = None
+        for t in user.tokens:
+            if t.proposal is context:
+                token = t
+
+        if token is None:
+            token = user.tokens[-1]
+
+        context.addtoproperty('tokens_support', token)
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+
+class OpposeProposal(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 3
+    context = IProposal
+    roles_validation = support_roles_validation
+    relation_validation = support_relation_validation
+    processsecurity_validation = support_processsecurity_validation
+    state_validation = support_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        token = None
+        for t in user.tokens:
+            if t.proposal is context:
+                token = t
+
+        if token is None:
+            token = user.tokens[-1]
+
+        context.addtoproperty('tokens_opposition', token)
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def withdrawt_processsecurity_validation(process, context):
+    user = get_current()
+    return global_user_processsecurity(process, context) and \
+           [t for t in context.tokens if (t.owner is user) and t.proposal is None]
+
+
+class WithdrawToken(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 2
+    context = IProposal
+    roles_validation = support_roles_validation
+    relation_validation = support_relation_validation
+    processsecurity_validation = withdrawt_processsecurity_validation
+    state_validation = support_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        user_tokens = [t for t in context.tokens if (t.owner is user) and t.proposal is None]
+        token = user_tokens[-1]
+        context.delproperty(token.__property__, token)
+        user.addtoproperty('tokens', token)
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+
 def alert_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
+
 def alert_roles_validation(process, context):
     return has_any_roles(roles=(('Participant', context),)) #System
+
 
 def alert_state_validation(process, context):
     wg = context.working_group
@@ -817,6 +946,8 @@ class CorrectProposal(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+def addp_state_validation(process, context):
+    return False
 
 class AddParagraph(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
@@ -827,7 +958,7 @@ class AddParagraph(InfiniteCardinality):
     relation_validation = correct_relation_validation
     roles_validation = correct_roles_validation
     processsecurity_validation = correct_processsecurity_validation
-    state_validation = correct_state_validation
+    state_validation = addp_state_validation#correct_state_validation
 
     def start(self, context, request, appstruct, **kw):
         #TODO
@@ -1083,19 +1214,20 @@ class AmendmentsResult(ElementaryAction):
     state_validation = ar_state_validation
 
     def _get_copy(self, context, root, wg):
-        copy_of_proposal = copy(context)
-        copy_of_proposal.created_at = datetime.datetime.today()
-        copy_of_proposal.modified_at = datetime.datetime.today()
+        copy_of_proposal = copy(context, (root, 'proposals'), roles=True)
+        #copy_of_proposal.created_at = datetime.datetime.today()
+        #copy_of_proposal.modified_at = datetime.datetime.today()
         copy_of_proposal.setproperty('originalentity', context)
-        copy_of_proposal.setproperty('version', None)
-        copy_of_proposal.setproperty('nextversion', None)
+        #copy_of_proposal.setproperty('version', None)
+        #copy_of_proposal.setproperty('nextversion', None)
         copy_of_proposal.state = PersistentList(['amendable'])
-        root.addtoproperty('proposals', copy_of_proposal)
-        for user in wg.members: #TODO la copy des roles: option de copy
-            grant_roles(user=user, roles=(('Participant', copy_of_proposal), ))
+        copy_of_proposal.setproperty('author', context.author)
+        #root.addtoproperty('proposals', copy_of_proposal)
+        #for user in wg.members: #TODO la copy des roles: option de copy
+        #    grant_roles(user=user, roles=(('Participant', copy_of_proposal), ))
 
-        grant_roles(user=context.author, roles=(('Owner', copy_of_proposal), ))#TODO la copy des roles: option de copy
-        grant_roles(user=context.author, roles=(('Owner', context), ))
+        #grant_roles(user=context.author, roles=(('Owner', copy_of_proposal), ))#TODO la copy des roles: option de copy
+        #grant_roles(user=context.author, roles=(('Owner', context), ))
         self.process.execution_context.add_created_entity('proposal', copy_of_proposal)
         wg.setproperty('proposal', copy_of_proposal)
         return copy_of_proposal
