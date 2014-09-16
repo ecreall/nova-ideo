@@ -278,7 +278,9 @@ ins {
     margin-left: 5px
 }
 
-
+.form-proposal-confirmation{
+    display: none;
+}
 
 /*http://helping.probb.fr/t14-code-css-pour-aligner-un-texte-incline-au-centre-d-une-page-a4*/
 .content-text #filigrane{ 

@@ -88,7 +88,7 @@ def eg3_amendable_condition(process):
 
 def eg4_votingamendments_condition(process):
     proposal = process.execution_context.created_entity('proposal')
-    if proposal.amendments:
+    if [a for a in proposal.amendments if 'published' in a.state]:
         return True
 
     return False

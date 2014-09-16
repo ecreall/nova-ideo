@@ -89,6 +89,8 @@ class SeeAmendmentView(MultipleView):
     name = 'seeamendment'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (DetailAmendmentView, SeeAmendmentActionsView)
+    requirements = {'css_links':[],
+                    'js_links':['novaideo:static/js/comment.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeAmendment:SeeAmendmentView})

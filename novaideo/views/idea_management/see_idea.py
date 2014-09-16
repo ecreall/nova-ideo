@@ -80,6 +80,9 @@ class SeeIdeaView(MultipleView):
     name = 'seeidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (DetailIdeaView, SeeIdeaActionsView)
+    requirements = {'css_links':[],
+                    'js_links':['novaideo:static/js/compare_idea.js',
+                                'novaideo:static/js/comment.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeIdea:SeeIdeaView})

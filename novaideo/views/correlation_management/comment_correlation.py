@@ -54,6 +54,8 @@ class CommentCorrelationView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     #item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CommentCorrelationFormView, CommentsCorrelationView)
+    requirements = {'css_links':[],
+                    'js_links':['novaideo:static/js/comment.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CommentCorrelation: CommentCorrelationView})

@@ -60,8 +60,6 @@ class DetailProposalView(BasicView):
         if corrections and is_participant:
             text = corrections[-1].get_adapted_text(user)
         elif not is_participant and not ('published' in self.context.state):
-            #filigrane =  renderers.render(self.filigrane_template, {}, self.request)
-            #text += filigrane
             add_filigrane = True
 
         return text, add_filigrane
@@ -115,6 +113,9 @@ class SeeProposalView(MultipleView):
     title = _('Details')
     name = 'seeproposal'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
+    requirements = {'css_links':[],
+                    'js_links':['novaideo:static/js/correct_proposal.js',
+                                'novaideo:static/js/comment.js']}
     views = (DetailProposalView, SeeProposalActionsView)
 
 

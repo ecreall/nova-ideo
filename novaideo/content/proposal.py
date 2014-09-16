@@ -14,6 +14,7 @@ from dace.descriptors import (
 )
 from pontus.widget import RichTextWidget,Select2Widget
 from pontus.core import VisualisableElementSchema
+from pontus.schema import Schema
 
 from .interface import IProposal
 from novaideo.core import Commentable, can_access
@@ -40,6 +41,15 @@ def context_is_a_proposal(context, request):
     return request.registry.content.istype(context, 'proposal')
 
 
+class RelatedIdeasSchema(Schema):
+
+    related_ideas  = colander.SchemaNode(
+        colander.Set(),
+        widget=ideas_choice,
+        title=_('Related ideas'),
+        default=[],
+        )
+
 class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
@@ -49,14 +59,6 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     text = colander.SchemaNode(
         colander.String(),
         widget= RichTextWidget(),
-        )
-
-    related_ideas  = colander.SchemaNode(
-        colander.Set(),
-        widget=ideas_choice,
-        title=_('Related ideas'),
-        missing=[],
-        default=[],
         )
 
 

@@ -48,6 +48,8 @@ class SeeCorrelationView(MultipleView):
     name='seecorrelation'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (DetailCorrelation, CommentCorrelationView)
+    requirements = {'css_links':[],
+                    'js_links':['novaideo:static/js/comment.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeCorrelation:SeeCorrelationView})

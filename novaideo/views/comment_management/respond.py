@@ -28,6 +28,8 @@ class RespondView(FormView):
     behaviors = [Respond]
     formid = 'formrespond'
     name='respond'
+    requirements = {'css_links':[],
+                    'js_links':['novaideo:static/js/comment.js']}
 
     def before_update(self):
         formwidget = deform.widget.FormWidget(css_class='respondform')

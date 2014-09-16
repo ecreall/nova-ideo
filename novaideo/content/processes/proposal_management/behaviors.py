@@ -77,15 +77,17 @@ class CreateProposal(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        keywords_ids = appstruct.pop('keywords')
-        related_ideas = appstruct.pop('related_ideas')
+        appstruct_proposal = appstruct.pop('proposal')
+        appstruct_related_ideas = appstruct.pop('related_ideas')
+        keywords_ids = appstruct_proposal.pop('keywords')
+        related_ideas = appstruct_related_ideas.pop('related_ideas')
         
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
             root.addtoproperty('keywords', nk)
 
         result.extend(newkeywords)
-        proposal = appstruct['_object_data']
+        proposal = appstruct_proposal['_object_data']
         root.addtoproperty('proposals', proposal)
         proposal.setproperty('keywords_ref', result)
         proposal.state.append('draft')

@@ -31,8 +31,7 @@ class ImproveProposalView(FormView):
                      'text', 
                      'confirmation'])
     requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/action_confirmation.js']}
-
+                    'js_links':['novaideo:static/js/improve_proposal.js']}
 
 
     def default_data(self):
