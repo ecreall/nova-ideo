@@ -55,14 +55,16 @@ class DetailProposalView(BasicView):
     def _get_adapted_text(self, user):
         is_participant = has_any_roles(user=user, roles=(('Participant', self.context),))
         text = getattr(self.context, 'text', '')
+        add_filigrane = False
         corrections = [c for c in self.context.corrections if 'in process' in c.state]
         if corrections and is_participant:
             text = corrections[-1].get_adapted_text(user)
         elif not is_participant and not ('published' in self.context.state):
-            filigrane =  renderers.render(self.filigrane_template, {}, self.request)
-            text += filigrane
+            #filigrane =  renderers.render(self.filigrane_template, {}, self.request)
+            #text += filigrane
+            add_filigrane = True
 
-        return text
+        return text, add_filigrane
 
     def update(self):
         self.execute(None)
@@ -76,7 +78,7 @@ class DetailProposalView(BasicView):
         global_actions = sorted(global_actions, key=lambda e: getattr(e.action, 'style_order',0))
         wg_actions = sorted(wg_actions, key=lambda e: getattr(e.action, 'style_order',0))
         text_actions = sorted(text_actions, key=lambda e: getattr(e.action, 'style_order',0))
-        text = self._get_adapted_text(user)
+        text, add_filigrane = self._get_adapted_text(user)
         result = {}
         values = {
                 'proposal': self.context,
@@ -85,7 +87,8 @@ class DetailProposalView(BasicView):
                 'global_actions': global_actions,
                 'wg_actions': wg_actions,
                 'text_actions': text_actions,
-                'voteactions': vote_actions
+                'voteactions': vote_actions,
+                'filigrane': add_filigrane
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
