@@ -4,13 +4,14 @@ import colander
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
-from substanced.util import Batch
+from substanced.util import Batch, get_oid
 
 from dace.util import find_catalog
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, allSubobjectsOfType
 from dace.objectofcollaboration.principal.util import get_current
+from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView, ViewError, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.widget import CheckboxChoiceWidget, RichTextWidget
@@ -33,13 +34,13 @@ default_serchable_content = {'Idea': Iidea,
 
 @colander.deferred
 def content_types_choices(node, kw):
-    values =[(k, k) for k in default_serchable_content.keys()]
+    values =[(k, k) for k in sorted(default_serchable_content.keys())]
     return CheckboxChoiceWidget(values=values, inline=True)
 
 
 @colander.deferred
 def default_content_types_choices(node, kw):
-    return default_serchable_content.keys()
+    return sorted(default_serchable_content.keys())
 
 
 class SearchSchema(Schema):
@@ -55,7 +56,8 @@ class SearchSchema(Schema):
 
     text = colander.SchemaNode(
         colander.String(),
-        widget=SearchTextInputWidget(),
+        widget=SearchTextInputWidget(button_type='submit',
+                                     description=_('The keyword search is done using commas between keywords.')),
         title=_(''),
         missing='',
         )
@@ -105,6 +107,8 @@ class SearchView(FormView):
 
         if content_types is None:
             content_types = default_content
+        elif not isinstance(content_types, (list, tuple)):
+            content_types = [content_types]
 
         return {'content_types':content_types, 'text':text} 
 
@@ -115,6 +119,56 @@ class SearchView(FormView):
     def default_data(self):
         appstruct = self._get_appstruct()
         return appstruct
+
+def search(text, content_types, user):
+    if text == '':
+        text = None
+
+    if text is not None:
+        text = [t.lower() for t in text.split(', ')]
+        result = []
+        for t in text:
+            result.extend(t.split(','))
+
+        text = result
+
+    root = getSite()
+    interfaces = [default_serchable_content[i].__identifier__ for i in content_types]
+    #catalog
+    dace_catalog = find_catalog('dace')
+    novaideo_catalog = find_catalog('novaideo')
+    system_catalog = find_catalog('system')
+    #index
+    title_index = dace_catalog['object_title']
+    description_index = dace_catalog['object_description']
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    containers_oids_index = dace_catalog['containers_oids']
+    keywords_index = novaideo_catalog['object_keywords']
+    text_index = system_catalog['text']
+    name_index = system_catalog['name']
+    #query
+    query = None
+    if text is not None:
+        query = keywords_index.any(text) | \
+                name_index.any(text) | \
+                states_index.any(text)
+
+        for t in text: #TODO
+            query = query | \
+                    title_index.contains(t) | \
+                    description_index.contains(t) | \
+                    text_index.contains(t)
+
+    if query is None:
+        query = object_provides_index.any(interfaces)
+    else:
+        query = (query) & object_provides_index.any(interfaces)
+
+    query = (query) & states_index.notany(('deprecated',)) 
+    resultset = query.execute()
+    objects = [o for o in resultset.all() if can_access(user, o)] 
+    return objects
 
 
 @view_config(
@@ -129,61 +183,14 @@ class SearchResultView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'search_result'
 
-
     def update(self):
+        user = get_current()
         formviewinstance = SearchView(self.context, self.request)
         formviewinstance.postedform = self.request.POST
         appstruct = formviewinstance._get_appstruct()
         content_types = appstruct['content_types']
         text = appstruct['text']
-        if text == '':
-            text = None
-
-        if text is not None:
-            text = [t.lower() for t in text.split(', ')]
-            result = []
-            for t in text:
-                result.extend(t.split(','))
-
-            text = result
-
-        root = getSite()
-        interfaces = [default_serchable_content[i].__identifier__ for i in content_types]
-        #catalog
-        dace_catalog = find_catalog('dace')
-        novaideo_catalog = find_catalog('novaideo')
-        system_catalog = find_catalog('system')
-        #index
-        title_index = dace_catalog['object_title']
-        description_index = dace_catalog['object_description']
-        states_index = dace_catalog['object_states']
-        object_provides_index = dace_catalog['object_provides']
-        containers_oids_index = dace_catalog['containers_oids']
-        keywords_index = novaideo_catalog['object_keywords']
-        text_index = system_catalog['text']
-        name_index = system_catalog['name']
-        #query
-        query = None
-        if text is not None:
-            query = keywords_index.any(text) | \
-                    name_index.any(text) | \
-                    states_index.any(text)
-
-            for t in text: #TODO
-                query = query | \
-                        title_index.contains(t) | \
-                        description_index.contains(t) | \
-                        text_index.contains(t)
-
-        if query is None:
-            query = object_provides_index.any(interfaces)
-        else:
-            query = (query) & object_provides_index.any(interfaces)
-
-        query = (query) & states_index.notany(('deprecated',)) 
-        resultset = query.execute()
-        user = get_current()
-        objects = [o for o in resultset.all() if can_access(user, o, self.request, root)]
+        objects = search(text, content_types, user)
         url = self.request.resource_url(self.context, '', query={'content_types':content_types, 'text':appstruct['text']})
         batch = Batch(objects, self.request, url=url, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results"
@@ -206,6 +213,34 @@ class SearchResultView(BasicView):
         result['coordinates'] = {self.coordinates:[item]}
         result  = merge_dicts(self.requirements_copy, result)
         return result
+
+
+@view_config(name='search',
+             context=Entity,
+             xhr=True,
+             renderer='json')
+class Search_Json(BasicView):
+
+    def toselect(self):
+        user = get_current()
+        content_types = self.params('content_types')
+        if not isinstance(content_types, (list, tuple)):
+            content_types = [content_types]
+
+        text = self.params('text')
+        objects = search(text, content_types, user)
+        result = {'':'- Select -'}
+        result.update(dict([(get_oid(obj), obj.title) for obj in objects]))
+        return result
+
+    def __call__(self):
+        operation_name = self.params('op')
+        if operation_name is not None:
+            operation = getattr(self, operation_name, None)
+            if operation is not None:
+                return operation()
+
+        return {}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Search:SearchView})

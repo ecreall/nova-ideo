@@ -119,6 +119,28 @@ $(document).ready(function(){
 
      });
 
+  $('.search-content button').on('click',function(event){
+        var button = $(this)
+        var parent = $(button.parents('.dynamic-selection').first());
+        var target = parent.find('select');
+        var dict_post = {};
+        var text = $($(button.parents('.input-group').first()).children().filter('input[type|="text"]')).val();
+        dict_post['text'] = text;
+        var url = button.data('url');
+        $(button).addClass('disabled');
+        $.get(url, dict_post, function(data) {
+            if (data){
+                $(target).empty();
+                for(var d in data){
+                   $(target).append('<option class="newselection" value="'+d+'">'+data[d]+'</option>')
+                }
+            };
+             $(button).removeClass('disabled');
+             $(target).select2("open")
+         });
+
+     });
+
   $("[name='globalmenuswitch']").bootstrapSwitch();
 
   init_switch();

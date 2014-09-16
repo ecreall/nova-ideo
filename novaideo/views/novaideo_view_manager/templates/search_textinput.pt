@@ -1,0 +1,35 @@
+<span tal:define="name name|field.name;
+                  css_class css_class|field.widget.css_class;
+                  button_type button_type|getattr(field.widget,'button_type', 'submit');
+                  oid oid|field.oid;
+                  description description|getattr(field.widget, 'description', '');
+                  mask mask|field.widget.mask;
+                  mask_placeholder mask_placeholder|field.widget.mask_placeholder;
+                  style style|field.widget.style;
+                  url url|getattr(field.widget, 'url', '');
+"
+      tal:omit-tag="">
+      <div class="input-group input-group-sm">
+       <input type="text" name="${name}" value="${cstruct}" 
+           tal:attributes="class string: form-control ${css_class};
+                           style style"
+           id="${oid}" placeholder="">
+        <span class="input-group-btn">
+           <button class="btn btn-default" type="${button_type}" data-url="${url}">Search</button>
+        </span>
+      </div>
+   <p class="help-block" >
+    <small tal:condition='description'>${description}</small>
+   </p>
+    <script type="text/javascript">
+       $("#req-${oid}").hide()
+    </script>
+    <script tal:condition="mask" type="text/javascript">
+      deform.addCallback(
+         '${oid}',
+         function (oid) {
+            $("#" + oid).mask("${mask}", 
+                 {placeholder:"${mask_placeholder}"});
+         });
+    </script>
+</span>

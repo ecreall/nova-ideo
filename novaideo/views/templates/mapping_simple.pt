@@ -1,13 +1,10 @@
 <tal:def tal:define="title title|field.title;
                      description description|field.description;
                      errormsg errormsg|field.errormsg;
-                     item_template item_template|field.widget.item_template;
-                     css_class css_class|getattr(field.widget, 'mapping_css_class', '')"
+                     item_template item_template|field.widget.item_template"
          i18n:domain="deform">
   
-  <div class="col-md-6" title="${description}">
-    <div class="${css_class}">
-
+    <div class="${getattr(field.widget, 'css_class', '')}">
       <div tal:condition="errormsg" 
            class="clearfix alert alert-message error">
         <p i18n:translate="">
@@ -25,8 +22,6 @@
            tal:replace="structure child.render_template(item_template)" >
       </div>     
       ${field.end_mapping()}
-
-    </div>
   </div>
 
 </tal:def>
