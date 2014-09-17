@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 from collections import OrderedDict
+from pyramid import renderers
 from pyramid_layout.panel import panel_config
 
 from dace.objectofcollaboration.entity import Entity
@@ -14,6 +15,7 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMySupports)
 from novaideo.content.processes.proposal_management.behaviors import CreateProposal
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
+from novaideo.content.proposal import Proposal
 
 user_menu_actions = {'menu1': [SeeMyContents, SeeMyParticipations],
                      'menu2': [SeeMySelections, SeeMySupports],
@@ -130,3 +132,37 @@ class UserNavBarPanel(object):
         result['search_body'] = search_body
         result['view'] = self
         return result
+
+
+@panel_config(
+    name = 'steps',
+    context = Entity ,
+    renderer='templates/panels/steps.pt'
+    )
+class StepsPanel(object):
+    step4_template = 'novaideo:views/templates/panels/step4.pt'
+    step3_template = 'novaideo:views/templates/panels/step3.pt'
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+
+    def __call__(self):
+        root = getSite()
+        result = {}
+        result['condition'] = True
+        result['current_step'] = 1
+        result['step4_message'] = ""
+        result['step3_message'] = ""
+        if isinstance(self.context, Proposal):
+            if 'draft' in self.context.state:
+                result['current_step'] = 2
+            elif 'published' in self.context.state:
+                result['current_step'] = 4
+                result['step4_message'] = renderers.render(self.step4_template, {'context':self.context}, self.request)
+            else:
+                result['current_step'] = 3
+                result['step3_message'] =  renderers.render(self.step3_template, {'context':self.context}, self.request)
+        return result
+

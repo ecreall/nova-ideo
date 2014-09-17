@@ -30,6 +30,8 @@
           rel="stylesheet"/>
     <link href="${su('novaideo:static/css/novaideo_ui.css')}"
           rel="stylesheet"/>
+    <link href="${su('novaideo:static/css/steps/steps.css')}"
+          rel="stylesheet"/>
     <link href="${su('novaideo:static/css/switch-master/dist/css/bootstrap3/bootstrap-switch.css')}"
           rel="stylesheet"/>
 
@@ -107,6 +109,7 @@
             </div>
 
             <div class="inner-content">
+               ${panel('steps')}
                <div metal:define-slot="main"></div>
             </div>
 

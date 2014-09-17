@@ -1,0 +1,3 @@
+<small>
+  (${len(context.tokens_support)} jetons Pour, ${len(context.tokens_opposition)} jetons Contre)
+</small>

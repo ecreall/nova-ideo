@@ -1,0 +1,3 @@
+<small>
+   (${len(context.working_group.members)} participants)
+</small>

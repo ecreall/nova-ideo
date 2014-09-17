@@ -1,0 +1,27 @@
+<div tal:condition="condition" class="steps-container">
+	<div class="steps">
+  	  <ul>
+    	    <li class="step step-1 ${(current_step == 1)  and 'current-step'}">
+      	      <a href="#"><strong style="vertical-align: sub;">Recueil de l'idée</strong></a>
+            </li>
+            <li class="step step-2 ${(current_step == 2)  and 'current-step'}">
+      	      <a href="#"><strong style="vertical-align: sub;">Rédaction de la proposition</strong></a>
+            </li>
+            <li class="step step-3 ${(current_step == 3)  and 'current-step'}">
+      	       <a href="#">
+                 <strong tal:condition="current_step == 3">Amélioration de la proposition</strong>
+                 <strong tal:condition="current_step != 3" style="vertical-align: sub;">Amélioration de la proposition</strong>
+                 <br />${structure:step3_message}
+               </a>
+            </li>
+            <li class="step step-4 ${(current_step == 4)  and 'current-step'}">
+      	       <a href="#">
+                 <strong tal:condition="current_step == 4">Soutien de la proposition</strong>
+                 <strong tal:condition="current_step != 4" style="vertical-align: sub;">Soutien de la proposition</strong>
+                 <br />${structure:step4_message}
+               </a>
+            </li>
+          </ul>
+      </div>
+</div>
+
