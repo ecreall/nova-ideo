@@ -72,9 +72,21 @@ function initscroll(){
 
 };
 
+function resize_search_result(){
+     var results = $('.search-item'); 
+     for (d=0; d< results.length; d++){
+        var element = $(results[d]);
+        var item = element.children().filter('.content-image')
+        item.height(element.height()+9)
+     }
+};
 
 $(document).ready(function(){
   
+  $( window ).resize(function(){
+    resize_search_result()
+  });
+
   $('.search-content button').on('click',function(event){
         var button = $(this)
         var parent = $(button.parents('.dynamic-selection').first());

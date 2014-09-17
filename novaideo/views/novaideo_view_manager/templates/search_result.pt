@@ -10,11 +10,7 @@ ${length} elements trouvés
   </div>
   <script  type="text/javascript">
    $(document).ready(function(){
-     for (d=0; d< $('.thumbnail.right-caption.span4').length; d++){
-        var element = $($('.thumbnail.right-caption.span4')[d]);
-        var item = element.children().filter('.content-image')
-        item.height(element.height()+9)
-     }
+     resize_search_result()
     });
   </script>
 </div>
