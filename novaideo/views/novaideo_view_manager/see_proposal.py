@@ -1,7 +1,6 @@
 import re
 import colander
 from pyramid.view import view_config
-from pyramid import renderers
 from pyramid.threadlocal import get_current_registry
 
 from dace.util import find_catalog
@@ -113,7 +112,7 @@ class SeeProposalView(MultipleView):
     title = _('Details')
     name = 'seeproposal'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    requirements = {'css_links':[],
+    requirements = {'css_links':['novaideo:static/css/steps/steps.css'],
                     'js_links':['novaideo:static/js/correct_proposal.js',
                                 'novaideo:static/js/comment.js']}
     views = (DetailProposalView, SeeProposalActionsView)

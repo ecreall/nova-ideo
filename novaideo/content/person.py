@@ -221,7 +221,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
 
     @property
     def supports(self):
-        result = [] #[t.__parent__ for t in self.tokens_ref if not(t.__parent__ is self)] Error TODO
+        result = [] #[t.__parent__ for t in self.tokens_ref if not(t.__parent__ is self)] Error TODO add cache system
         for t in self.tokens_ref:
             if not(t.__parent__ is self):
                 result.append(t.__parent__)

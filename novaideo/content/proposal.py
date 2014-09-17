@@ -1,4 +1,5 @@
 import colander
+from persistent.list import PersistentList
 from zope.interface import implementer
 
 from substanced.content import content
@@ -81,6 +82,8 @@ class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntit
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
         self.set_data(kwargs)
+        # [(user_oid, date, support_type), ...] support_type = {1:support, 0:oppose, -1:withdraw}
+        self.support_history = PersistentList()
 
     @property
     def related_ideas(self):

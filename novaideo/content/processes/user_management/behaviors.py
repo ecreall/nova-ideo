@@ -81,7 +81,7 @@ class Registration(InfiniteCardinality):
         mailer_send(subject='Confirmation de votre inscription',
                 recipients=[person.email], body=message)
 
-        
+        person.reindex()
         return True
 
     def redirect(self, context, request, **kw):
