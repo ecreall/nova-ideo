@@ -209,7 +209,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
 
     @property
     def participations(self):
-        result = list(self.proposals)
+        result = [p for p in list(self.proposals) if not('draft' in p.state)]
         return result
 
     @property

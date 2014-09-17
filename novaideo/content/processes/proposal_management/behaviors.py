@@ -206,7 +206,11 @@ def submit_roles_validation(process, context):
 
 
 def submit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    user = get_current()
+    root = getSite()
+    wgs = [w for w in user.working_groups if not('draft' in w.proposal.state)]
+    return global_user_processsecurity(process, context) and \
+          len(wgs) < root.participations_maxi
 
 
 def submit_state_validation(process, context):
@@ -1128,7 +1132,8 @@ class Resign(InfiniteCardinality):
 
     def _get_next_user(self, users, root):
         for user in users:
-            if 'active' in user.state and len(user.working_groups) < root.participations_maxi:
+            wgs = [w for w in user.working_groups if not('draft' in w.proposal.state)]
+            if 'active' in user.state and len(wgs) < root.participations_maxi:
                 return user
 
         return None 
@@ -1191,9 +1196,10 @@ def participate_roles_validation(process, context):
 def participate_processsecurity_validation(process, context):
     user = get_current()
     root = getSite()
+    wgs = [w for w in user.working_groups if not('draft' in w.proposal.state)]
     return global_user_processsecurity(process, context) and \
            not(user in context.working_group.wating_list) and \
-           len(user.working_groups) < root.participations_maxi 
+           len(wgs) < root.participations_maxi 
 
 
 def participate_state_validation(process, context):
