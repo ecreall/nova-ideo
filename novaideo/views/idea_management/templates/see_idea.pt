@@ -7,7 +7,7 @@
 </div>
 <div class="media-body content-title">
 <h3 tal:condition="idea.state"><span class="label label-primary pull-right">${idea.state[0].capitalize()}</span></h3>
-<h3>${idea.title}</h3>
+<h3><img src="${request.static_url('novaideo:static/images/idea_picto32.png')}"> ${idea.title}</h3>
 </div>
 
 <div class="jumbotron well idea-well">
