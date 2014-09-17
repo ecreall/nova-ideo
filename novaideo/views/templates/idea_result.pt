@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 " >
+<div class="thumbnail right-caption span4 search-item" >
   <div id="idea-image" class="content-image">
   <img src="${request.static_url('novaideo:static/images/idea.png')}" width="100">
   </div>

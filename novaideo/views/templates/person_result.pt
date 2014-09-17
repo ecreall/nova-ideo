@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4" >
+<div class="thumbnail right-caption span4 search-item" >
   <img tal:condition="object.picture is not None" tal:attributes="src object.picture.url(request)"  width="100"/>
   <div tal:condition="object.picture is None" id="person-image" class="content-image">
   </div>
