@@ -44,6 +44,13 @@
 	background: transparent url(step-off.png) center right no-repeat;
 	padding-right: 25px;
 }
+.steps li.step:not(.current-step) strong{
+   vertical-align: sub;
+}
+
+.steps li.step.no-message strong{
+   vertical-align: sub;
+}
 
 .steps li.current-step a{
 background: transparent url(step.png) center right no-repeat;
