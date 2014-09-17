@@ -66,7 +66,7 @@ RESULT_VOTE_AMENDMENT_SUBJECT= u"""Les resultat du vote sur amendments : {subjec
 RESULT_VOTE_AMENDMENT_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Les résultats du vote sur amendements concernant la proposition {subject_url} sont les suivants:
+Les résultats du vote sur amendements concernant la proposition {subject_title} ({subject_url}) sont les suivants:
 
 {message_result}
 
@@ -76,3 +76,72 @@ Les amendements élus, après calcule, du vote:
 
 """ + PORTAL_SIGNATURE
 
+
+PUBLISHPROPOSAL_SUBJECT= u"""Publication : {subject_title}"""
+
+PUBLISHPROPOSAL_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+La proposition {subject_title} ({subject_url}) est publiée.
+
+""" + PORTAL_SIGNATURE
+
+
+VOTINGPUBLICATION_SUBJECT= u"""Debut de vote sur la publication : {subject_title}"""
+
+VOTINGPUBLICATION_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+Le vote sur publication de la proposition {subject_title} ({subject_url}) à commencé.
+
+""" + PORTAL_SIGNATURE
+
+
+VOTINGAMENDMENTS_SUBJECT= u"""Debut de vote sur les amendements : {subject_title}"""
+
+VOTINGAMENDMENTS_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+Le vote sur les amendements de la proposition {subject_title} ({subject_url}) à commencé.
+
+""" + PORTAL_SIGNATURE
+
+
+WITHDRAW_SUBJECT= u"""Désinscription de la liste d'attente: {subject_title}"""
+
+WITHDRAW_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+Vous ne faite plus partie de la liste d'attente du groupe de travaille de la proposition {subject_title} ({subject_url}).
+
+""" + PORTAL_SIGNATURE
+
+
+PARTICIPATE_SUBJECT= u"""Partcipation au groupe de travail : {subject_title}"""
+
+PARTICIPATE_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+Vous faite partie du groupe de travaille de la proposition {subject_title} ({subject_url}).
+
+""" + PORTAL_SIGNATURE
+
+
+RESIGN_SUBJECT= u"""Démission du groupe de travail : {subject_title}"""
+
+RESIGN_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+Vous ne faite plus partie du groupe de travaille de la proposition {subject_title} ({subject_url}).
+
+""" + PORTAL_SIGNATURE
+
+
+WATINGLIST_SUBJECT= u"""Partcipation au groupe de travail : {subject_title}"""
+
+WATINGLIST_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
+
+Vous faite partie de la liste d'attente du groupe de travaille de la proposition {subject_title} ({subject_url}).
+
+""" + PORTAL_SIGNATURE

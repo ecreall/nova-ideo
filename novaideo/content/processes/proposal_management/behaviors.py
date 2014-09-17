@@ -22,7 +22,26 @@ from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IProposal, ICorrelableEntity, ICorrection, Iidea
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.mail import ALERT_SUBJECT, ALERT_MESSAGE,  RESULT_VOTE_AMENDMENT_SUBJECT,  RESULT_VOTE_AMENDMENT_MESSAGE
+from novaideo.mail import (
+    ALERT_SUBJECT,
+    ALERT_MESSAGE,
+    RESULT_VOTE_AMENDMENT_SUBJECT,
+    RESULT_VOTE_AMENDMENT_MESSAGE,
+    PUBLISHPROPOSAL_SUBJECT,
+    PUBLISHPROPOSAL_MESSAGE,
+    VOTINGPUBLICATION_SUBJECT,
+    VOTINGPUBLICATION_MESSAGE,
+    VOTINGAMENDMENTS_SUBJECT,
+    VOTINGAMENDMENTS_MESSAGE,
+    WITHDRAW_SUBJECT,
+    WITHDRAW_MESSAGE,
+    PARTICIPATE_SUBJECT,
+    PARTICIPATE_MESSAGE,
+    RESIGN_SUBJECT,
+    RESIGN_MESSAGE,
+    WATINGLIST_SUBJECT,
+    WATINGLIST_MESSAGE)
+
 from novaideo import _
 from novaideo.content.proposal import Proposal
 from ..comment_management.behaviors import validation_by_context
@@ -332,7 +351,6 @@ class PublishProposal(ElementaryAction):
     state_validation = pub_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #TODO wg desactive, members vide...
         wg = context.working_group
         context.state.remove('votes for publishing')
         context.state.append('published')
@@ -340,11 +358,25 @@ class PublishProposal(ElementaryAction):
         for member in  wg.members:
             token = Token(title='Token_'+context.title)
             token.setproperty('proposal', context)
-            member.setproperty('tokens', token)
+            member.addtoproperty('tokens_ref', token)
+            member.addtoproperty('tokens', token)
             token.setproperty('owner', member)
 
         wg.reindex()
         context.reindex()
+        members = context.working_group.members
+        url = request.resource_url(context, "@@index")
+        subject = PUBLISHPROPOSAL_SUBJECT.format(subject_title=context.title)
+        for member in members:
+            message = PUBLISHPROPOSAL_MESSAGE.format(
+                recipient_title=getattr(member, 'user_title',''),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name',''),
+                subject_title=context.title,
+                subject_url=url
+                 )
+            mailer_send(subject=subject, recipients=[member.email], body=message)
+        #TODO wg desactive, members vide...
         return True
 
     def redirect(self, context, request, **kw):
@@ -390,6 +422,7 @@ class SupportProposal(InfiniteCardinality):
             token = user.tokens[-1]
 
         context.addtoproperty('tokens_support', token)
+        context.support_history.append((get_oid(user), datetime.datetime.today(), 1))
         return True
 
     def redirect(self, context, request, **kw):
@@ -418,6 +451,7 @@ class OpposeProposal(InfiniteCardinality):
             token = user.tokens[-1]
 
         context.addtoproperty('tokens_opposition', token)
+        context.support_history.append((get_oid(user), datetime.datetime.today(), 0))
         return True
 
     def redirect(self, context, request, **kw):
@@ -446,6 +480,7 @@ class WithdrawToken(InfiniteCardinality):
         token = user_tokens[-1]
         context.delproperty(token.__property__, token)
         user.addtoproperty('tokens', token)
+        context.support_history.append((get_oid(user), datetime.datetime.today(), -1))
         return True
 
     def redirect(self, context, request, **kw):
@@ -480,17 +515,13 @@ class Alert(ElementaryAction):
         url = request.resource_url(context, "@@index")
         subject = ALERT_SUBJECT.format(subject_title=context.title)
         for member in members:
-            recipient_title = getattr(member, 'user_title','')
-            recipient_first_name = getattr(member, 'first_name', member.name)
-            recipient_last_name = getattr(member, 'last_name','')
-            member_email = member.email
             message = ALERT_MESSAGE.format(
-                recipient_title=recipient_title,
-                recipient_first_name=recipient_first_name,
-                recipient_last_name=recipient_last_name,
+                recipient_title=getattr(member, 'user_title',''),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name',''),
                 subject_url=url
                  )
-            mailer_send(subject=subject, recipients=[member_email], body=message)
+            mailer_send(subject=subject, recipients=[member.email], body=message)
 
         return True
 
@@ -999,6 +1030,18 @@ class VotingPublication(ElementaryAction):
         context.state.remove('amendable')
         context.state.append('votes for publishing')
         context.reindex()
+        members = context.working_group.members
+        url = request.resource_url(context, "@@index")
+        subject = VOTINGPUBLICATION_SUBJECT.format(subject_title=context.title)
+        for member in members:
+            message = VOTINGPUBLICATION_MESSAGE.format(
+                recipient_title=getattr(member, 'user_title',''),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name',''),
+                subject_title=context.title,
+                subject_url=url
+                 )
+            mailer_send(subject=subject, recipients=[member.email], body=message)
         return True
 
 
@@ -1040,6 +1083,15 @@ class Withdraw(InfiniteCardinality):
         user = get_current()
         wg = context.working_group
         wg.delproperty('wating_list', user)
+        subject = WITHDRAW_SUBJECT.format(subject_title=context.title)
+        message = WITHDRAW_MESSAGE.format(
+                recipient_title=getattr(user, 'user_title',''),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name',''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index")
+                 )
+        mailer_send(subject=subject, recipients=[user.email], body=message)
         return True
 
     def redirect(self, context, request, **kw):
@@ -1087,21 +1139,40 @@ class Resign(InfiniteCardinality):
         wg = context.working_group
         wg.delproperty('members', user)
         revoke_roles(user, (('Participant', context),))
+        url = request.resource_url(context, "@@index")
         if wg.wating_list:
             next_user = self._get_next_user(wg.wating_list, root)
             if next_user is not None:
                 wg.delproperty('wating_list', next_user)
                 wg.addtoproperty('members', next_user)
                 grant_roles(next_user, (('Participant', context),))
-                #TODO send mail to next_user
+                subject = PARTICIPATE_SUBJECT.format(subject_title=context.title)
+                message = PARTICIPATE_MESSAGE.format(
+                        recipient_title=getattr(next_user, 'user_title',''),
+                        recipient_first_name=getattr(next_user, 'first_name', next_user.name),
+                        recipient_last_name=getattr(next_user, 'last_name',''),
+                        subject_title=context.title,
+                        subject_url=url
+                 )
+                mailer_send(subject=subject, recipients=[next_user.email], body=message)
 
         participants = wg.members
         len_participants = len(participants)
-        if len_participants < root.participants_mini:
+        if len_participants < root.participants_mini and not ('open to a working group' in context.state):
             context.state = PersistentList(['open to a working group'])
             wg.state = PersistentList(['deactivated'])
             wg.reindex()
             context.reindex()
+
+        subject = RESIGN_SUBJECT.format(subject_title=context.title)
+        message = RESIGN_MESSAGE.format(
+                recipient_title=getattr(user, 'user_title',''),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name',''),
+                subject_title=context.title,
+                subject_url=url
+                 )
+        mailer_send(subject=subject, recipients=[user.email], body=message)
 
         return True
 
@@ -1142,6 +1213,17 @@ class Participate(InfiniteCardinality):
     processsecurity_validation = participate_processsecurity_validation
     state_validation = participate_state_validation
 
+    def _send_mail_to_user(self, subject_template, message_template, user, context, request):
+        subject = subject_template.format(subject_title=context.title)
+        message = message_template.format(
+                recipient_title=getattr(user, 'user_title',''),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name',''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index")
+                 )
+        mailer_send(subject=subject, recipients=[user.email], body=message)
+
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
@@ -1159,9 +1241,13 @@ class Participate(InfiniteCardinality):
 
                 context.state.append('amendable')
                 context.reindex()
+
+            self._send_mail_to_user(PARTICIPATE_SUBJECT, PARTICIPATE_MESSAGE, user, context, request)
         else:
             wg.addtoproperty('wating_list', user)
             wg.reindex()
+            self._send_mail_to_user(WATINGLIST_SUBJECT, WATINGLIST_MESSAGE, user, context, request)
+
 
         return True
 
@@ -1195,6 +1281,18 @@ class VotingAmendments(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         context.state = PersistentList(['votes for amendments'])
         context.reindex()
+        members = context.working_group.members
+        url = request.resource_url(context, "@@index")
+        subject = VOTINGAMENDMENTS_SUBJECT.format(subject_title=context.title)
+        for member in members:
+            message = VOTINGAMENDMENTS_MESSAGE.format(
+                recipient_title=getattr(member, 'user_title',''),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name',''),
+                subject_title=context.title,
+                subject_url=url
+                 )
+            mailer_send(subject=subject, recipients=[member.email], body=message)
         return True
 
     def redirect(self, context, request, **kw):
@@ -1254,21 +1352,17 @@ class AmendmentsResult(ElementaryAction):
         url = request.resource_url(context, "@@index")
         subject = RESULT_VOTE_AMENDMENT_SUBJECT.format(subject_title=context.title)
         for member in members:
-            recipient_title = getattr(member, 'user_title','')
-            recipient_first_name = getattr(member, 'first_name', member.name)
-            recipient_last_name = getattr(member, 'last_name','')
-            member_email = member.email
             message = RESULT_VOTE_AMENDMENT_MESSAGE.format(
-                recipient_title=recipient_title,
-                recipient_first_name=recipient_first_name,
-                recipient_last_name=recipient_last_name,
+                recipient_title=getattr(member, 'user_title',''),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name',''),
                 subject_url=url,
+                subject_title=context.title,
                 message_result=message_result,
                 electeds_result=electeds_result
                  )
-            mailer_send(subject=subject, recipients=[member_email], body=message)
+            mailer_send(subject=subject, recipients=[member.email], body=message)
         
-
 
     def start(self, context, request, appstruct, **kw):
         result = set()
