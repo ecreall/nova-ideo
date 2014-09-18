@@ -1204,7 +1204,7 @@ def participate_processsecurity_validation(process, context):
 
 def participate_state_validation(process, context):
     wg = context.working_group
-    return  'amendable' in context.state or 'open to a working group' in context.state
+    return  not('closed' in wg.state) and ('amendable' in context.state or 'open to a working group' in context.state)
 
 
 class Participate(InfiniteCardinality):
@@ -1286,6 +1286,7 @@ class VotingAmendments(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         context.state = PersistentList(['votes for amendments'])
+        context.working_group.state.append('closed')
         context.reindex()
         members = context.working_group.members
         url = request.resource_url(context, "@@index")
@@ -1421,7 +1422,21 @@ class Amendable(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('votes for publishing')
+        wg = context.working_group
+        if self.process.first_decision:
+            self.process.first_decision = False
+
         context.state.append('amendable')
+        reopening_ballot = getattr(self.process, 'reopening_configuration_ballot', None)
+        if reopening_ballot is not None:
+            report = reopening_ballot.report
+            voters_len = len(report.voters)
+            electors_len = len(report.electors)
+            report.calculate_votes()
+            if (voters_len == electors_len) and (report.result['False'] == 0) and 'closed' in wg.state:
+                wg.state.remove('closed')
+                wg.reindex()
+
         context.reindex()
         return True
 

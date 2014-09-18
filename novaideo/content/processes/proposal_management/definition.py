@@ -1,4 +1,4 @@
-from datetime import timedelta
+import datetime
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
 
@@ -50,21 +50,30 @@ from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
-vp_default_duration = timedelta(minutes=30)
+vp_default_duration = datetime.timedelta(minutes=30)
 
+amendments_cycle_default_duration = {"Three minutes": datetime.timedelta(minutes=3),#pour les testes
+                                     "Three days": datetime.timedelta(days=3),
+                                     "One week": datetime.timedelta(weeks=1),
+                                     "Two weeks": datetime.timedelta(weeks=2)}
 
-amendments_vote_default_duration = timedelta(minutes=3) #TODO 
+amendments_vote_default_duration = datetime.timedelta(minutes=3) #TODO 
 
-amendments_cycle_default_duration = timedelta(minutes=3)
 
 
 def amendments_cycle_duration(process):
-    return amendments_cycle_default_duration
+    duration_ballot = getattr(process, 'duration_configuration_ballot', None)
+    if duration_ballot is not None:
+        electeds = duration_ballot.report.get_electeds()
+        if electeds:
+            return amendments_cycle_default_duration[electeds[0]]+datetime.datetime.today()
+
+    return amendments_cycle_default_duration[_("One week")]+datetime.datetime.today()
 
 
 def eg3_publish_condition(process):
     report = process.vp_ballot.report
-    if hasattr(process, 'first_decision'):
+    if getattr(process, 'first_decision', True):
         electeds = report.get_electeds()
         if electeds:
             return True
@@ -76,6 +85,7 @@ def eg3_publish_condition(process):
     if voters_len != electors_len:
         return False
 
+    report.calculate_votes()
     if report.result['False'] == 0:
         return True
 
@@ -105,20 +115,46 @@ class SubProcessDefinition(OriginSubProcessDefinition):
     def _init_subprocess(self, process, subprocess):
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
-        electors = proposal.working_group.members[:root.participants_mini]
-        if hasattr(process, 'first_decision'):
-            electors = proposal.working_group.members
+        wg = proposal.working_group
+        electors = wg.members[:root.participants_mini]
+        if getattr(process, 'first_decision', True):
+            electors = wg.members
 
         subjects = [proposal]
         ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
+        ballot.report.description = _("Vote for publishing")
         #TODO add ballot informations
         processes = ballot.run_ballot()
-        subprocess.execution_context.add_involved_collection('vote_processes', processes)
-        proposal.working_group.addtoproperty('ballots', ballot)
+        wg.addtoproperty('ballots', ballot)
         subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
-        subprocess.duration = vp_default_duration
         process.vp_ballot = ballot #vp for voting for publishing
+
+        if not getattr(process, 'first_decision', True):
+            #@TODO Lancement du vote sur reouverture
+            subjects = [wg]
+            ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
+            ballot.report.description = _("Vote for reopening working group.")
+            ballot.title = 'reopening working group'
+            #TODO add ballot informations
+            processes.extend(ballot.run_ballot(context=proposal))
+            wg.addtoproperty('ballots', ballot)
+            subprocess.ballots.append(ballot)
+            process.reopening_configuration_ballot = ballot
+
+        if len(wg.members) < root.participants_maxi:
+            group = list(amendments_cycle_default_duration.keys())#@TODO Durees
+            ballot = Ballot('FPTP' , electors, group, vp_default_duration)
+            ballot.title = 'amendment duration'
+            ballot.report.description = _("Vote for the duration of the amendment period.")
+            #TODO add ballot informations
+            processes.extend(ballot.run_ballot(context=proposal))
+            wg.addtoproperty('ballots', ballot)
+            subprocess.ballots.append(ballot)
+            process.duration_configuration_ballot = ballot
+
+        subprocess.execution_context.add_involved_collection('vote_processes', processes)
+        subprocess.duration = vp_default_duration
 
 
 class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
@@ -169,6 +205,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         #TODO Start For
         subprocess.ballots = PersistentList()
         process.amendments_ballots = PersistentList()
+        
         for group in groups:
             ballot = Ballot('MajorityJudgment' , electors, group, amendments_vote_default_duration)
             #TODO add ballot informations
@@ -179,6 +216,8 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         #TODO End For
         subprocess.execution_context.add_involved_collection('vote_processes', processes)
         subprocess.duration = amendments_vote_default_duration
+
+
 
 
 @process_definition(name='proposalmanagement', id='proposalmanagement')
@@ -251,7 +290,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Change the state to amendable"),
                                        title=_("Amendable"),
                                        groups=[]),
-                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_duration=amendments_cycle_duration)),
+                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=amendments_cycle_duration)),
                 publish = ActivityDefinition(contexts=[PublishProposal],
                                        description=_("Publish the proposal"),
                                        title=_("Publish"),
