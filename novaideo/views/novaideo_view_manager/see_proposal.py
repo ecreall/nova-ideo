@@ -36,20 +36,11 @@ class DetailProposalView(BasicView):
     def _vote_action(self):
         isactive = False
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
-        vb_action_updated, vb_messages, vb_resources, vb_actions = dace_ui_api._actions(self.request, self.context, 'referendumprocess', 'favour')
-        va_action_updated, va_messages, va_resources, va_actions = dace_ui_api._actions(self.request, self.context, 'majorityjudgmentprocess', 'vote')
-        isactive = vb_action_updated or va_action_updated
-        actions = []
-        if vb_actions:
-            actions = [vb_actions[0]]
-
-        actions.extend(va_actions)
+        action_updated, messages, resources, actions = dace_ui_api._actions(self.request, self.context, process_discriminator='Vote process')
         for action in actions:
             action['body'] = dace_ui_api.get_action_body(self.context, self.request, action['action'], True)
            
-        messages = merge_dicts(va_messages, vb_messages)
-        resources = merge_dicts(va_resources, vb_resources)
-        return actions, resources, messages, isactive
+        return actions, resources, messages, action_updated
 
     def _get_adapted_text(self, user):
         is_participant = has_any_roles(user=user, roles=(('Participant', self.context),))

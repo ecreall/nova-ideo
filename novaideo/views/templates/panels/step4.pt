@@ -1,3 +1,12 @@
 <small>
-  (${len(context.tokens_support)} jetons Pour, ${len(context.tokens_opposition)} jetons Contre)
+  <div tal:condition="'published' in context.state" class="proposal-support">
+    <span class="label label-success">
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+        <span class="support-nb">${len(context.tokens_support)}</span>
+    </span>
+    <span class="label label-danger">
+        <span class="glyphicon glyphicon-thumbs-down"></span>
+        <span class="support-nb">${len(context.tokens_opposition)}</span>
+    </span>
+  </div>
 </small>

@@ -6,6 +6,8 @@
 .steps {
 	padding: 1px 0;
 	overflow: hidden;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
 
 }
 .steps ul, .steps li {
@@ -29,6 +31,7 @@
 	color: #fff;
 	line-height: 1em;
 	text-decoration: none;
+  text-align:center;
 }
 .steps li a:hover { background: #666; }
 .steps li.step, .steps li.step a {
@@ -42,26 +45,37 @@
 
 .steps li.step-1 a, .steps li.step-2 a, .steps li.step-3 a , .steps li.step-4 a {
 	background: transparent url(step-off.png) center right no-repeat;
-	padding-right: 25px;
+        padding-bottom: 4px;
+        padding-right: 25px;
+        padding-top: 4px;
 }
-.steps li.step:not(.current-step) strong{
+/*.steps li.step:not(.current-step) strong{
    vertical-align: sub;
 }
 
 .steps li.step.no-message strong{
    vertical-align: sub;
 }
-
+*/
 .steps li.current-step a{
-background: transparent url(step.png) center right no-repeat;
+        background: transparent url(step.png) center right no-repeat;
 }
 
+.step-text{
+    display: inline-block;
+    line-height: unset;
+    text-align: center;
+    vertical-align: sub;
+    width: 100%;
+
+}
 .steps li.step-2, .steps li.step-3, .steps li.step-4 { margin-left: -29px; }
 .steps li.step-2 a, .steps li.step-3 a { padding-left: 45px; }
 .steps li.step-4 a {
 	padding-left: 45px;
 	padding-right: 10px;
-  background-position: center left;
+        background-position: center left;
+        width: 113%;
 }
 .steps li.step a:hover { background: transparent url(step_over.png) center right no-repeat; }
 .steps li.step-4 a:hover { background-position: center left; }

@@ -262,6 +262,13 @@ ins {
 
 .proposal-support {
     margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.proposal-members-nb {
+    font-size: 16px;
+    vertical-align: middle;
+    margin-top: 5px;
 }
 
 .proposal-support .label .glyphicon {
