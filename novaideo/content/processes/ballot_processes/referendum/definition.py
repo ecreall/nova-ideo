@@ -15,7 +15,7 @@ from dace.objectofcollaboration.services.processdef_container import process_def
 
 from pontus.core import VisualisableElement
 
-from .behaviors import Favour, Against
+from .behaviors import Vote
 from novaideo import _
 
 
@@ -29,6 +29,7 @@ class ReferendumProcess(ProcessDefinition, VisualisableElement):
     isUnique = True
     isVolatile = True
     isControlled = True
+    discriminator = 'Vote process'
 
     def __init__(self, **kwargs):
         super(ReferendumProcess, self).__init__(**kwargs)
@@ -39,13 +40,9 @@ class ReferendumProcess(ProcessDefinition, VisualisableElement):
         self.defineNodes(
                 start = StartEventDefinition(),
                 eg = ExclusiveGatewayDefinition(),
-                favour = ActivityDefinition(contexts=[Favour],
-                                       description=_("Vote in favour"),
-                                       title=_("Vote in favour"),
-                                       groups=[]),
-                against = ActivityDefinition(contexts=[Against],
-                                       description=_("Vote against"),
-                                       title=_("Vote against"),
+                vote = ActivityDefinition(contexts=[Vote],
+                                       description=_("Vote"),
+                                       title=_("Vote"),
                                        groups=[]),
                 timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_duration=time_duration)),
                 eg1 = ExclusiveGatewayDefinition(),
@@ -53,11 +50,9 @@ class ReferendumProcess(ProcessDefinition, VisualisableElement):
         )
         self.defineTransitions(
                 TransitionDefinition('start', 'eg'),
-                TransitionDefinition('eg', 'favour'),
-                TransitionDefinition('eg', 'against'),
+                TransitionDefinition('eg', 'vote'),
                 TransitionDefinition('eg', 'timer'),
-                TransitionDefinition('favour', 'eg1'),
-                TransitionDefinition('against', 'eg1'),
+                TransitionDefinition('vote', 'eg1'),
                 TransitionDefinition('timer', 'eg1'),
                 TransitionDefinition('eg1', 'end'),
 

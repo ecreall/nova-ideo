@@ -24,17 +24,17 @@ def time_duration(process):
     return getattr(process.ballot, 'duration')
 
 
-@process_definition(name='majorityjudgmentprocess', id='majorityjudgmentprocess')
-class MajorityJudgmentProcess(ProcessDefinition, VisualisableElement):
+@process_definition(name='fptpprocess', id='fptpprocess')
+class FPTPProcess(ProcessDefinition, VisualisableElement):
     isUnique = True
     isVolatile = True
     isControlled = True
     discriminator = 'Vote process'
 
     def __init__(self, **kwargs):
-        super(MajorityJudgmentProcess, self).__init__(**kwargs)
-        self.title = _('Majority judgment Process')
-        self.description = _('Majority judgment Process')
+        super(FPTPProcess, self).__init__(**kwargs)
+        self.title = _('FPTP Process')
+        self.description = _('FPTP Process')
 
     def _init_definition(self):
         self.defineNodes(

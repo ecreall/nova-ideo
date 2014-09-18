@@ -37,9 +37,9 @@ class ReferendumVote(VisualisableElement, Entity):
 @implementer(IBallotType)
 class Referendum(object):
     vote_factory = ReferendumVote
-    vote_process_id = 'referendumprocess'
 
-    def __init__(self, report):
+    def __init__(self, report, vote_process_id='referendumprocess'):
+        self.vote_process_id = vote_process_id
         self.report = report
         if isinstance(self.report.subjects, (list, tuple, PersistentList)):
             self.subject = self.report.subjects[0]
@@ -113,9 +113,9 @@ class MajorityJudgmentVote(VisualisableElement, Entity):
 @implementer(IBallotType)
 class MajorityJudgment(object):
     vote_factory = MajorityJudgmentVote
-    vote_process_id = 'majorityjudgmentprocess'
 
-    def __init__(self, report):
+    def __init__(self, report, vote_process_id='majorityjudgmentprocess'):
+        self.vote_process_id = vote_process_id
         self.report = report
         self.judgments = default_judgments
 
@@ -183,8 +183,88 @@ class MajorityJudgment(object):
         return None
 
 
+@content(
+    'fptpvote',
+    icon='glyphicon glyphicon-align-left',
+    )
+@implementer(IVote)
+class FPTPVote(VisualisableElement, Entity):
+    name = renamer()
+
+    def __init__(self, value=None, **kwargs):
+        super(FPTPVote, self).__init__(**kwargs)
+        self.value = value
+        #value  = object
+
+        
+@implementer(IBallotType)
+class FPTP(object):
+    vote_factory = FPTPVote
+
+    def __init__(self, report, vote_process_id='fptpprocess'):
+        self.vote_process_id = vote_process_id
+        self.report = report
+
+    def run_ballot(self, context=None):
+        processes = []
+        def_container = find_service('process_definition_container')
+        runtime = find_service('runtime')
+        pd = def_container.get_definition(self.vote_process_id)
+        if context is None:
+            context = self.report.subjects[0].__parent__
+
+        for elector in self.report.electors:
+            proc = pd()
+            proc.__name__ = proc.id
+            runtime.addtoproperty('processes', proc)
+            proc.defineGraph(pd)
+            proc.execution_context.add_involved_entity('elector', elector)
+            proc.execution_context.add_involved_entity('subject', context)
+            grant_roles(elector, (('Elector', proc),))
+            proc.ballot = self.report.ballot
+            proc.execute()
+            processes.append(proc)
+
+        return processes
+
+    def calculate_votes(self, votes):
+        
+        result = {}
+        for subject in self.report.subjects:
+            try:
+                _id = get_oid(subject)
+            except Exception:
+                _id = subject
+
+            result[_id] = 0
+
+        for vote in votes:
+            _object = get_obj(vote.value)
+            if _object is None:
+                _object = vote.value
+
+            _id = vote.value
+            if _object in self.report.subjects:
+                    result[_id] += 1
+
+        return result
+
+    def get_electeds(self, result):
+        electeds_ids = sorted(list(result.keys()), key=lambda o: result[o], reverse=True)
+        electeds = [] 
+        if electeds_ids:
+            elected_id = electeds_ids[0]
+            elected = get_obj(elected_id)
+            if elected is None:
+                elected = elected_id
+
+            return [elected]
+
+        return None
+
 ballot_types = {'Referendum': Referendum,
-                'MajorityJudgment': MajorityJudgment} #TODO add ballot types
+                'MajorityJudgment': MajorityJudgment,
+                'FPTP': FPTP} #TODO add ballot types
 
 
 @content(
@@ -205,6 +285,9 @@ class Report(VisualisableElement, Entity):
         [self.addtoproperty('electors', elector) for elector in electors]
         [self.addtoproperty('subjects', subject) for subject in subjects]
         self.ballottype = ballot_types[ballottype](self)
+        if 'vote_process_id' in kwargs:
+            self.ballottype.vote_process_id = kwargs['vote_process_id']
+
         self.result = None
         self.calculated = False
 

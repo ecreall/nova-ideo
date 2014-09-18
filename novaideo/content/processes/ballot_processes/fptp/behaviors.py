@@ -15,6 +15,7 @@ from dace.processinstance.activity import (
     StartStep,
     EndStep)
 from pontus.schema import select, omit
+from pontus.file import OBJECT_DATA
 
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo.content.interface import IInvitation
@@ -45,12 +46,18 @@ class Vote(ElementaryAction):
     processsecurity_validation = vote_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        vote = appstruct['vote']
+        vote_result = {}
+        elected_id = appstruct['elected']
+        try:
+            id = get_oid(elected_id[OBJECT_DATA])
+        except Exception:
+            id = elected_id
+
         user = get_current()
         ballot = self.process.ballot
         report = ballot.report
         votefactory = report.ballottype.vote_factory
-        ballot.ballot_box.addtoproperty('votes', votefactory(vote))
+        ballot.ballot_box.addtoproperty('votes', votefactory(id))
         report.addtoproperty('voters', user)
         return True
 
