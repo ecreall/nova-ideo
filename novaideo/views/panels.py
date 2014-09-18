@@ -16,6 +16,7 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
 from novaideo.content.processes.proposal_management.behaviors import CreateProposal
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.proposal import Proposal
+from novaideo.content.idea import Idea
 
 user_menu_actions = {'menu1': [SeeMyContents, SeeMyParticipations],
                      'menu2': [SeeMySelections, SeeMySupports],
@@ -151,7 +152,7 @@ class StepsPanel(object):
     def __call__(self):
         root = getSite()
         result = {}
-        result['condition'] = True
+        result['condition'] = isinstance(self.context, (Proposal, Idea))#@TODO context: abstract class (Proposal, Idea)
         result['current_step'] = 1
         result['step4_message'] = ""
         result['step3_message'] = ""
