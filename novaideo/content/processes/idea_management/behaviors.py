@@ -77,7 +77,6 @@ class DuplicateIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        import pdb; pdb.set_trace()
         copy_of_idea = copy(context, (root, 'ideas'))
         #copy_of_idea.created_at = datetime.datetime.today()
         #copy_of_idea.modified_at = datetime.datetime.today()
