@@ -2,10 +2,14 @@
   tal:omit-tag="">
    <nav id="navbaruser" class="navbar navbar-default navbar" role="navigation">
      <div class="container">
-
-        <div class="row" >
-            <div class="col-md-4" tal:condition="actions['menu3']" tal:repeat="(k, a) actions['menu3'].items()">
-                <a class="btn btn-default ${((actions['menu3'][k] is None) and 'disabled') or ''} btn-sm" style="width: 300px;" href="${actions['menu3'][k]}" >
+        <div class="row global-actions-menu" tal:define="keys list(actions['menu3'].keys())">
+            <div class="col-md-3 action-1"  tal:condition="actions['menu3']" tal:define="k keys[0]; a actions['menu3'][k]">
+                <a class="btn btn-default ${((a is None) and 'disabled') or ''} btn-sm"  href="${a}" >
+                   ${k}
+                </a>
+            </div>
+            <div class="col-md-3"  tal:condition="actions['menu3']" tal:define="k keys[1]; a actions['menu3'][k]">
+                <a class="btn btn-default ${((a is None) and 'disabled') or ''} btn-sm"  href="${a}" >
                    ${k}
                 </a>
             </div>

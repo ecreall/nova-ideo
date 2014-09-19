@@ -289,6 +289,19 @@ ins {
     display: none;
 }
 
+.global-actions-menu{
+    margin-bottom: 8px; 
+}
+
+.global-actions-menu .action-1 {
+    margin-left: 390px;
+} 
+
+.global-actions-menu a {
+    width: 262px;
+}
+
+
 /*http://helping.probb.fr/t14-code-css-pour-aligner-un-texte-incline-au-centre-d-une-page-a4*/
 .content-text #filigrane{ 
     color: #ef827d;
@@ -309,3 +322,5 @@ ins {
         -webkit-transform: rotate(325deg);
         -khtml-transform: rotate(325deg);
 }
+
+.mce-edit-area body { font-size: 14px; }
