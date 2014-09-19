@@ -754,7 +754,7 @@ class ImproveProposal(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         if isinstance(self.newcontext, Amendment):
-            return HTTPFound(request.resource_url(context, "@@index"))
+            return HTTPFound(request.resource_url(self.newcontext, "@@index"))
         else:
             return HTTPFound(request.resource_url(self.newcontext, "@@editidea"))
 
@@ -1393,7 +1393,14 @@ class AmendmentsResult(ElementaryAction):
             copy_of_proposal = self._get_copy(context, root, wg)
             context.state = PersistentList(['deprecated'])
             copy_of_proposal.text = merged_text
-            #TODO correlation idea of replacement ideas... del replaced_idea
+            #correlation idea of replacement ideas... del replaced_idea
+            ideas_of_replacement = list(set([a.idea_of_replacement for a in amendments if a.idea_of_replacement is not None]))
+            replaced_ideas = list(set([a.replaced_idea for a in amendments if a.idea_of_replacement is not None]))
+            not_modified_ideas = [i for i in context.related_ideas if not (i in replaced_ideas)]
+            new_ideas = not_modified_ideas
+            new_ideas.extend(ideas_of_replacement)
+            new_ideas = list(set(new_ideas))
+            associate_to_proposal(new_ideas, copy_of_proposal, False)
             self.newcontext = copy_of_proposal
             copy_of_proposal.reindex()
         else:
