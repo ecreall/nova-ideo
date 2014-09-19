@@ -17,12 +17,12 @@ requires = [
     'pyramid_tm',
     'substanced',
     'waitress',
-    'xlrd', 
+    'xlrd',
     'diff-match-patch',
     'Genshi',
     'html5lib',
     'html2text',
-    'beautifulsoup4' 
+    'beautifulsoup4'
     ]
 
 setup(name='novaideo',
@@ -45,6 +45,12 @@ setup(name='novaideo',
       install_requires=requires,
       tests_require=requires,
       test_suite="novaideo",
+      message_extractors={
+          'novaideo': [
+              ('**.py', 'python', None), # babel extractor supports plurals
+              ('**.pt', 'chameleon', None),
+          ],
+      },
       extras_require = dict(
           test=[],
       ),
