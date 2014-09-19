@@ -19,7 +19,6 @@ requires = [
     'waitress',
     'xlrd', 
     'diff-match-patch',
-    'htmldiff',
     'Genshi',
     'html5lib',
     'html2text',

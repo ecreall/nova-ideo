@@ -1,8 +1,4 @@
 import colander
-import deform
-import htmldiff
-import re
-import html2text
 from pyramid.view import view_config
 
 from dace.util import get_obj

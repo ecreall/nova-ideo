@@ -1,6 +1,4 @@
 import colander
-import deform
-import htmldiff
 import re
 import html2text
 from pyramid.view import view_config
@@ -14,13 +12,14 @@ from pontus.view import BasicView, View, merge_dicts, ViewError
 from pontus.default_behavior import Cancel
 from pontus.schema import select, omit, Schema
 from pontus.widget import RadioChoiceWidget
+from pontus.file import OBJECT_OID
 
 from novaideo.content.processes.ballot_processes.majorityjudgment.behaviors import  Vote
 from novaideo.content.proposal import Proposal
 from novaideo.content.amendment import AmendmentSchema
 from novaideo import _
 from novaideo.views.widget import InLineWidget, ObjectWidget
-from pontus.file import OBJECT_OID
+from novaideo.ips.htmldiff import htmldiff
 
 
 class VoteViewStudyReport(BasicView):

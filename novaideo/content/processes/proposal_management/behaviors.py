@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 import datetime
 from datetime import timedelta
-import htmldiff
 from bs4 import BeautifulSoup
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
@@ -54,6 +53,7 @@ from novaideo.content.working_group import WorkingGroup
 from novaideo.content.ballot import Ballot
 from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
 from novaideo.utilities.text_analyzer import ITextAnalyzer
+from novaideo.ips.htmldiff import htmldiff
 
 
 try:

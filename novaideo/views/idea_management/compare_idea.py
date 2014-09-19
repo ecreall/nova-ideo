@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 import colander
 import deform
-import htmldiff
 from zope.interface import invariant
 from pyramid.view import view_config
 
@@ -19,6 +18,7 @@ from pontus.file import  Object as ObjectType
 
 from novaideo.content.processes.idea_management.behaviors import  CompareIdea
 from novaideo.content.idea import Idea
+from novaideo.ips.htmldiff import htmldiff
 from novaideo import _
 
 
