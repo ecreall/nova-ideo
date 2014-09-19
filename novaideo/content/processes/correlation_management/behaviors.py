@@ -59,12 +59,25 @@ class CommentCorrelation(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
+def see_processsecurity_validation(process, context):
+    source = context.source
+    targets = context.targets
+    user = get_current()
+    root = getSite()
+    for target in targets:
+        if not can_access(user, target, None, root):
+            return False
+
+    return can_access(user, source, None, root)
+
+
 @acces_action()
 class SeeCorrelation(InfiniteCardinality):
     title = _('Details')
     context = ICorrelation
     actionType = ActionType.automatic
-    processsecurity_validation = comm_processsecurity_validation
+    processsecurity_validation = see_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return True
