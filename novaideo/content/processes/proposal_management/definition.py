@@ -123,6 +123,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         subjects = [proposal]
         ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
         ballot.report.description = _("Vote for publishing")
+        ballot.title = _("Publish the proposal")
         #TODO add ballot informations
         processes = ballot.run_ballot()
         wg.addtoproperty('ballots', ballot)
@@ -135,7 +136,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             subjects = [wg]
             ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
             ballot.report.description = _("Vote for reopening working group.")
-            ballot.title = 'reopening working group'
+            ballot.title = 'Reopening working group'
             #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))
             wg.addtoproperty('ballots', ballot)
@@ -145,7 +146,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         if len(wg.members) < root.participants_maxi:
             group = list(amendments_cycle_default_duration.keys())#@TODO Durees
             ballot = Ballot('FPTP' , electors, group, vp_default_duration)
-            ballot.title = 'amendment duration'
+            ballot.title = _('Amendment duration')
             ballot.report.description = _("Vote for the duration of the amendment period.")
             #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))
@@ -205,14 +206,17 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         #TODO Start For
         subprocess.ballots = PersistentList()
         process.amendments_ballots = PersistentList()
-        
+        i = 1
         for group in groups:
             ballot = Ballot('MajorityJudgment' , electors, group, amendments_vote_default_duration)
+            ballot.report.description = _("Vote for amendments")
+            ballot.title = _('Group of independent amendments')+ '('+str(i)+')'
             #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))
             proposal.working_group.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
             process.amendments_ballots.append(ballot)
+            i += 1
         #TODO End For
         subprocess.execution_context.add_involved_collection('vote_processes', processes)
         subprocess.duration = amendments_vote_default_duration
