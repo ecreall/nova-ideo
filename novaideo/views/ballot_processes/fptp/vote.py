@@ -95,9 +95,18 @@ class VoteViewMultipleView(MultipleView):
     name = 'votefptp'
     viewid = 'votefptp'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    item_template = 'novaideo:views/proposal_management/templates/panel_item.pt'
+    item_template = 'novaideo:views/ballot_processes/templates/panel_item.pt'
     views = (VoteViewStudyReport, VoteFormView)
     validators = [Vote.get_validator()]
+
+    def get_message(self):
+        ballot_report = None
+        try:
+            ballot_report = list(self.children[1].behaviorinstances.values())[0].process.ballot.report
+        except Exception:
+            pass
+
+        return ballot_report.ballot.title
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Vote:VoteViewMultipleView})
