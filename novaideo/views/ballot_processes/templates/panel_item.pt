@@ -1,0 +1,12 @@
+<div class="panel panel-default" tal:define="view subitem['view']">
+  <div class="panel-heading">
+    <a href="#${subitem['view'].viewid}" data-parent="#panel-actions-vote" data-toggle="collapse" class="panel-title collapsed">
+        <small><span class="glyphicon glyphicon-plus"></span> <span tal:omit-tag="" tal:condition="hasattr(view, 'get_message')">${view.get_message()}</span></small>
+    </a>
+  </div>
+  <div class="panel-collapse collapse" id="${subitem['view'].viewid}" style="height: auto;">
+    <div  class="panel-body">
+      <div tal:replace="structure subitem['body']" />
+    </div>
+  </div>
+</div>
