@@ -1,6 +1,6 @@
 import deform
-from pontus.widget import SequenceWidget
-
+from deform.widget import default_resource_registry
+from pontus.widget import SequenceWidget, Select2Widget
 
 
 class ConfirmationWidget(deform.widget.MappingWidget):
@@ -21,3 +21,13 @@ class ObjectWidget(deform.widget.MappingWidget):
 
 class SearchContentWidget(deform.widget.MappingWidget):
     template = 'novaideo:views/templates/mapping_simple.pt'
+
+
+class Select2WidgetSearch(Select2Widget):
+    template = 'novaideo:views/templates/select2.pt'
+    requirements = (('deform', None), ('select2search', None))
+
+default_resource_registry.set_js_resources('select2search', None, 'pontus.dace_ui_extension:static/select2/select2.js',
+                                                                  'novaideo:static/select2_search/select2_search.js'  )
+default_resource_registry.set_css_resources('select2search', None, 'pontus.dace_ui_extension:static/select2/select2.css',
+                                                                  'novaideo:static/select2_search/select2_search.css'  )

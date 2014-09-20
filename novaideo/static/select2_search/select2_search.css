@@ -1,0 +1,22 @@
+
+.select-search-text{
+    height: 25px;
+    width: 101%
+}
+
+.select-search-btn{
+    height: 25px
+    
+}
+
+.select-search-call {
+    background: transparent url(searchB.png) center right no-repeat;
+    padding-bottom: 6px;
+    padding-right: 48px;
+    padding-top: 1px;
+}
+
+.select-search-call:hover {
+     background: transparent url(searchB_over.png) center right no-repeat; 
+
+}

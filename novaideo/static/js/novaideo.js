@@ -81,33 +81,11 @@ function resize_search_result(){
      }
 };
 
+
 $(document).ready(function(){
-  
   $( window ).resize(function(){
     resize_search_result()
   });
-
-  $('.search-content button').on('click',function(event){
-        var button = $(this)
-        var parent = $(button.parents('.dynamic-selection').first());
-        var target = parent.find('select');
-        var dict_post = {};
-        var text = $($(button.parents('.input-group').first()).children().filter('input[type|="text"]')).val();
-        dict_post['text'] = text;
-        var url = button.data('url');
-        $(button).addClass('disabled');
-        $.get(url, dict_post, function(data) {
-            if (data){
-                $(target).empty();
-                for(var d in data){
-                   $(target).append('<option class="newselection" value="'+d+'">'+data[d]+'</option>')
-                }
-            };
-             $(button).removeClass('disabled');
-             $(target).select2("open")
-         });
-
-     });
 
   $("[name='globalmenuswitch']").bootstrapSwitch();
 
@@ -151,36 +129,5 @@ $(document).ready(function(){
     });
 
   initscroll();
-});
-
-
-
-//select text
-if(!window.Kolich){
-  Kolich = {};
-}
-
-Kolich.Selector = {};
-Kolich.Selector.getSelected = function(){
-  var t = '';
-  if(window.getSelection){
-    t = window.getSelection();
-  }else if(document.getSelection){
-    t = document.getSelection();
-  }else if(document.selection){
-    t = document.selection.createRange().text;
-  }
-  return t;
-}
-
-Kolich.Selector.mouseup = function(){
-  var st = Kolich.Selector.getSelected();
-  if(st!=''){
-    alert("You selected:\n"+st);
-  }
-}
-
-$(document).ready(function(){
-  $(document).bind("mouseup", Kolich.Selector.mouseup);
 });
 
