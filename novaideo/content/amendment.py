@@ -31,8 +31,8 @@ from novaideo.core import (
     DuplicableEntity,
     can_access)
 from novaideo import _
-from novaideo.views.widget import ConfirmationWidget, SearchContentWidget
-from novaideo.views.novaideo_view_manager.widget import SearchTextInputWidget
+from novaideo.views.widget import ConfirmationWidget, Select2WidgetSearch
+from novaideo.content.idea import Idea
 
 
 @colander.deferred
@@ -79,12 +79,17 @@ class ReplacedIdeaSchema(Schema):
 
 @colander.deferred
 def ideas_replacement_choice(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
     root = getSite()
     user = get_current()
-    ideas = [i for i in root.ideas if can_access(user, i)]
+    _ideas = list(user.ideas)
+    _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
+    ideas = [i for i in _ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
     values.insert(0, ('', '- Select -'))
-    return Select2Widget(values=values)
+    return Select2WidgetSearch(values=values,
+                               url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
 
 
 @colander.deferred
@@ -92,33 +97,6 @@ def selection_choices(node, kw):
     selections = ['My contents', 'My participations', 'My selections', 'My supports']
     values =[(k, k) for k in selections]
     return CheckboxChoiceWidget(values=values)
-
-
-@colander.deferred
-def search_text_widget(node, kw):
-    root = getSite()
-    context = node.bindings['context']
-    request = node.bindings['request']
-    return SearchTextInputWidget(button_type='button', 
-                                 url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
-
-
-class SearchIdeaSchema(Schema):
-
-#    selections  = colander.SchemaNode(
-#        colander.Set(),
-#        widget=selection_choices,
-#        title=_(''),
-#        missing=[],
-#        default=[],
-#        )
-
-    text = colander.SchemaNode(
-        colander.String(),
-        widget=search_text_widget,
-        title=_(''),
-        missing='',
-        )
 
 
 class IdeaOfReplacementSchema(Schema):
@@ -131,7 +109,6 @@ class IdeaOfReplacementSchema(Schema):
             description=_('Choose the idea of replacement')
         )
  
-    serach_idea = SearchIdeaSchema(widget=SearchContentWidget(css_class="search-content"))
 
     new_idea =  colander.SchemaNode(
         colander.Boolean(),
