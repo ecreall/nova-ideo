@@ -123,7 +123,7 @@ class CompareIdeaFormView(FormView):
 
     def before_update(self):
         formwidget = deform.widget.FormWidget(css_class='compareform')
-        formwidget.template = 'novaideo:views/templates/form.pt'
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
         view_name = 'compareidea'
         formwidget.ajax_url = self.request.resource_url(self.context, '@@'+view_name)

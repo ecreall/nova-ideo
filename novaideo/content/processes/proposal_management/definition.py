@@ -40,10 +40,12 @@ from .behaviors import (
     Alert,
     CorrectItem,
     PublishAsProposal,
-    AddIdeas,
+#    AddIdeas,
     SupportProposal,
     OpposeProposal,
-    WithdrawToken
+    WithdrawToken,
+#    DelIdeas,
+    SeeRelatedIdeas
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
@@ -168,6 +170,11 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
 
         return result
 
+    def _contains_any(self, list1, list2):
+        for e in list1:
+            if e in list2:
+                return True
+
     def _init_subprocess(self, process, subprocess):
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
@@ -180,7 +187,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             isadded = False
             for group in groups:
                 for a in group:
-                    if text_analyzer.hasConflict(a.text, [amendment.text]) or (amendment.replaced_idea is not None and (amendment.replaced_idea is a.replaced_idea)):
+                    if text_analyzer.hasConflict(a.text, [amendment.text]) or (amendment.replaced_idea and self._contains_any(amendment.replaced_ideas, a.replaced_ideas)):
                         group.append(amendment)
                         isadded = True
 
@@ -331,10 +338,18 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Associate the proposal"),
                                        title=_("Associate"),
                                        groups=[]),
-                addideas = ActivityDefinition(contexts=[AddIdeas],
-                                       description=_("Add an idea to the proposal"),
-                                       title=_("Add an idea"),
+                seerelatedideas = ActivityDefinition(contexts=[SeeRelatedIdeas],
+                                       description=_("Related ideas"),
+                                       title=_("Related ideas"),
                                        groups=[]),
+#                addideas = ActivityDefinition(contexts=[AddIdeas],
+#                                       description=_("Add an idea to the proposal"),
+#                                       title=_("Add an idea"),
+#                                       groups=[]),
+#                delideas = ActivityDefinition(contexts=[DelIdeas],
+#                                       description=_("Remove an idea from the proposal"),
+#                                       title=_("Remove an idea"),
+#                                       groups=[]),
                 correct = ActivityDefinition(contexts=[CorrectProposal],
                                        description=_("Correct proposal"),
                                        title=_("Correct"),
@@ -364,7 +379,9 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('eg1', 'pg2'),
                 TransitionDefinition('pg2', 'submit'),
                 TransitionDefinition('pg2', 'edit'),
-                TransitionDefinition('pg2', 'addideas'),
+#                TransitionDefinition('pg2', 'addideas'),
+#                TransitionDefinition('pg2', 'delideas'),
+                TransitionDefinition('pg2', 'seerelatedideas'),
                 TransitionDefinition('submit', 'pg3'),
                 TransitionDefinition('pg3', 'comment'),
                 TransitionDefinition('pg3', 'editamendments'),

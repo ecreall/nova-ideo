@@ -252,12 +252,9 @@ ins {
     border-radius: 4px;
 }
 
-.col-confirmation {
+.col-bloc {
     border: 1px solid graytext;
     border-radius: 13px;
-    height: 206px;
-    margin-bottom: 10px;
-    padding: 10px 10px 0;
 }
 
 .proposal-support {
@@ -301,7 +298,27 @@ ins {
     width: 262px;
 }
 
+.item-closed {
+	background: transparent url(../images/open_button.png) center right no-repeat;
+        padding-bottom: 12px;
+        padding-right: 32px;
+        padding-top: 4px;
+}
 
+.del-item {
+	background: transparent url(../images/del_button.png) center right no-repeat;
+        padding-bottom: 12px;
+        padding-right: 38px;
+        padding-top: 4px;
+}
+
+.item-closed:hover { background: transparent url(../images/open_button_over.png) center right no-repeat; }
+
+.del-item:hover { background: transparent url(../images/del_button_over.png) center right no-repeat; }
+
+.hide-bloc{
+    display: none;
+}
 /*http://helping.probb.fr/t14-code-css-pour-aligner-un-texte-incline-au-centre-d-une-page-a4*/
 .content-text #filigrane{ 
     color: #ef827d;

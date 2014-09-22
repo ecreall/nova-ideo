@@ -12,7 +12,7 @@
               formid formid|field.formid;
               action action|field.action or None;
               method method|field.method;
-              toconfirm toconfirm|getattr(field.widget,'to_confirm', False) "
+              ajax_button ajax_button|getattr(field.widget,'ajax_button', None) "
   tal:attributes="autocomplete autocomplete;
                   style style;
                   class css_class;
@@ -53,8 +53,8 @@
               tal:attributes="disabled button.disabled if button.disabled else None"
               id="${formid+button.name}"
               name="${button.name}"
-              type="${((toconfirm != button.title) and button.type) or 'button'}"
-              class="btn ${btn_disposition} ${button.css_class} ${((toconfirm == button.title) and 'toconfirm ') }"
+              type="${((ajax_button != button.title) and button.type) or 'button'}"
+              class="btn ${btn_disposition} ${button.css_class} ${((ajax_button == button.title) and 'ajax-button ') }"
               value="${button.value}">
           <i tal:condition="btn_icon" class="${btn_icon}"> </i>
           ${button.title}

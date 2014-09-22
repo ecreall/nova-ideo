@@ -1,0 +1,13 @@
+<div id="controllableitems" >
+   <ul class="list-group controllable-items" data-target="${target}">
+    <li class="list-group-item controllable-item" tal:repeat="item items">
+     <span >${item['title']}</span>
+     <span class="actions pull-right" data-id="${item['id']}">
+        <span class="item-closed"></span>
+        <span class="del-item"></span>
+     </span>
+     </li>
+   </ul>
+</div>
+
+

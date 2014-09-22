@@ -54,26 +54,16 @@ def replaced_ideas_choice(node, kw):
     user = get_current()
     ideas = [i for i in context.related_ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
-    values.insert(0, ('', '- Select -'))
-    return Select2Widget(values=values)
+    return Select2Widget(values=values, multiple=True)
 
 
-class ReplacedIdeaSchema(Schema):
+class ReplacedIdeasSchema(Schema):
 
-    replaced_idea = colander.SchemaNode(
-            ObjectType(),
+    replaced_ideas = colander.SchemaNode(
+            colander.Set(),
             widget=replaced_ideas_choice,
             title=_('Replaced ideas'),
-            missing=None,
-            description=_('Choose the replaced idea')
-        )
-
-    not_identified =  colander.SchemaNode(
-        colander.Boolean(),
-        widget=deform.widget.CheckboxWidget(),
-        label=_('Idea not identified'),
-        title =_(''),
-        missing=False
+            missing=[]
         )
 
 
@@ -87,55 +77,25 @@ def ideas_replacement_choice(node, kw):
     _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
     ideas = [i for i in _ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
-    values.insert(0, ('', '- Select -'))
-    return Select2WidgetSearch(values=values,
-                               url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
+    return Select2Widget(values=values, multiple=True)
 
 
-@colander.deferred
-def selection_choices(node, kw):
-    selections = ['My contents', 'My participations', 'My selections', 'My supports']
-    values =[(k, k) for k in selections]
-    return CheckboxChoiceWidget(values=values)
 
+class IdeasOfReplacementSchema(Schema):
 
-class IdeaOfReplacementSchema(Schema):
-
-    idea_of_replacement = colander.SchemaNode(
-            ObjectType(),
+    ideas_of_replacement = colander.SchemaNode(
+            colander.Set(),
             widget=ideas_replacement_choice,
-            title=_('Idea of replacement'),
-            missing=None,
-            description=_('Choose the idea of replacement')
-        )
- 
-
-    new_idea =  colander.SchemaNode(
-        colander.Boolean(),
-        widget=deform.widget.CheckboxWidget(),
-        label=_('Creat a new idea'),
-        title =_(''),
-        missing=False
+            title=_('Ideas of replacement'),
+            missing=[],
         )
 
 
-class AmendmentConfirmationSchema(Schema):
+class AmendmentIdeaManagmentSchema(Schema):
 
-    intention = colander.SchemaNode(
-        colander.String(),
-        widget=intention_choice,
-        title=_('Intention'),
-        )
+    replaced_ideas = ReplacedIdeasSchema(widget=deform.widget.MappingWidget(mapping_css_class='col-md-6 col-bloc'))
 
-    comment = colander.SchemaNode(
-        colander.String(),
-        validator=colander.Length(max=500),
-        widget=deform.widget.TextAreaWidget(rows=4, cols=60),
-        )
-
-    replaced_idea = ReplacedIdeaSchema(widget=deform.widget.MappingWidget(mapping_css_class='col-confirmation'))
-
-    idea_of_replacement = IdeaOfReplacementSchema(widget=deform.widget.MappingWidget(mapping_css_class='dynamic-selection col-confirmation'))
+    ideas_of_replacement = IdeasOfReplacementSchema(widget=deform.widget.MappingWidget(mapping_css_class='col-md-6 col-bloc'))
 
 
 class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
@@ -149,7 +109,7 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
         widget=RichTextWidget()
         )
 
-    confirmation = AmendmentConfirmationSchema(widget=ConfirmationWidget(css_class='confirmation'))
+    ideas = AmendmentIdeaManagmentSchema(widget=deform.widget.MappingWidget(mapping_css_class='row hide-bloc'))
 
 
 
@@ -163,8 +123,8 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
     result_template = 'novaideo:views/templates/amendment_result.pt'
     author = SharedUniqueProperty('author')
     proposal = SharedUniqueProperty('proposal', 'amendments')
-    replaced_idea = SharedUniqueProperty('replaced_idea')
-    idea_of_replacement = SharedUniqueProperty('idea_of_replacement')
+    replaced_ideas = SharedMultipleProperty('replaced_ideas', isunique=True)
+    ideas_of_replacement = SharedMultipleProperty('ideas_of_replacement', isunique=True)
 
     def __init__(self, **kwargs):
         super(Amendment, self).__init__(**kwargs)

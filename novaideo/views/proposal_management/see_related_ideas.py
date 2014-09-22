@@ -12,8 +12,7 @@ from pontus.widget import Select2Widget
 from pontus.view import BasicView
 from pontus.view_operation import MultipleView
 
-from novaideo.content.processes.proposal_management.behaviors import  AddIdeas
-from novaideo.content.correlation import CorrelationSchema, Correlation
+from novaideo.content.processes.proposal_management.behaviors import  SeeRelatedIdeas
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.core import can_access
@@ -23,29 +22,22 @@ addideas_message = {'0': u"""Pas d'idées utilisées""",
                    '1': u"""Voir l'idée utilisée""",
                    '*': u"""Voir les {len_ideas} idées utilisées"""}
 
-
-@colander.deferred
-def targets_choice(node, kw):
-    context = node.bindings['context']
-    request = node.bindings['request']
-    root = getSite()
-    user = get_current()
-    values = []
-    entities = [idea for idea in root.ideas if can_access(user, idea) and not (idea in context.related_ideas)]
-    values = [(i, i.title) for i in entities]
-    values = sorted(values, key=lambda p: p[1])
-    return Select2Widget(values=values, multiple=True)
-
-
-class RelatedIdeasView(BasicView):
+@view_config(
+    name='addideas',
+    context=Proposal,
+    renderer='pontus:templates/view.pt',
+    )
+class SeeRelatedIdeasView(BasicView):
     title = _('Related ideas')
     name = 'relatedideas'
+    behaviors = [SeeRelatedIdeas]
     template = 'novaideo:views/idea_management/templates/related_contents.pt'
-    item_template = 'pontus:templates/subview_sample.pt'
+    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     viewid = 'relatedideas'
 
 
     def update(self):
+        self.execute(None)
         root = getSite()
         user = get_current()
         correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_ideas' in c.tags) and can_access(user, c))]
@@ -74,33 +66,6 @@ class RelatedIdeasView(BasicView):
         result['coordinates'] = {self.coordinates:[item]}
         return result
 
-
-class AddIdeasFormView(FormView):
-
-    title = _('Add ideas')
-    schema = select(CorrelationSchema(),['targets', 'intention', 'comment'])
-    behaviors = [AddIdeas]
-    formid = 'formaddtoideas'
-    name='formaddtoideas'
-
-    def before_update(self):
-        target = self.schema.get('targets')
-        target.widget = targets_choice
-        target.title = _("Related ideas")
-
-
-@view_config(
-    name='addideas',
-    context=Proposal,
-    renderer='pontus:templates/view.pt',
-    )
-class AddIdeasView(MultipleView):
-    title = _('Add ideas')
-    name = 'addideas'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
-    views = (AddIdeasFormView, RelatedIdeasView)
-
     def get_message(self):
         user = get_current()
         related_ideas = [idea for idea in self.context.related_ideas if can_access(user, idea)]
@@ -113,4 +78,4 @@ class AddIdeasView(MultipleView):
         return message
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({AddIdeas:AddIdeasView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeRelatedIdeas:SeeRelatedIdeasView})

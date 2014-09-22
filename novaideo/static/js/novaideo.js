@@ -83,6 +83,8 @@ function resize_search_result(){
 
 
 $(document).ready(function(){
+
+
   $( window ).resize(function(){
     resize_search_result()
   });
@@ -94,9 +96,7 @@ $(document).ready(function(){
   $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
      menuSwitchChange(state, false);
   });
-  $('#ideatext p').on('select',function(event){
-               alert(event)
-     });
+
   $('.panel-collapse.collapse .results').attr('class', 'results-collapse');
 
   $('.panel-collapse').on('hidden.bs.collapse', function () {

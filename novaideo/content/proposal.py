@@ -1,4 +1,5 @@
 import colander
+import deform
 from persistent.list import PersistentList
 from zope.interface import implementer
 
@@ -60,6 +61,13 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     text = colander.SchemaNode(
         colander.String(),
         widget= RichTextWidget(),
+        )
+
+    related_ideas = colander.SchemaNode(
+        colander.Set(),
+        widget=ideas_choice,
+        title=_('Related ideas'),
+        default=[],
         )
 
 

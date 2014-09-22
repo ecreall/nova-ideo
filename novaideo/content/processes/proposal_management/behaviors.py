@@ -318,8 +318,40 @@ class EditProposal(InfiniteCardinality):
     processsecurity_validation = edit_processsecurity_validation
     state_validation = edit_state_validation
 
+    def _add_related_ideas(self, context, request, root, ideas, comment, intention):
+        datas = {'author': get_current(),
+                 'targets': ideas,
+                 'comment': comment,
+                 'intention': intention,
+                 'source': context}
+        correlation = Correlation()
+        correlation.set_data(datas)
+        correlation.tags.extend(['related_proposals', 'related_ideas'])
+        correlation.type = 1
+        root.addtoproperty('correlations', correlation)
+        return True
+
+
+    def _del_related_ideas(self, context, request, root, ideas):
+        correlations = [c for c in context.source_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
+        for idea in ideas:
+            for c in correlations:
+                if idea in c.targets:
+                    root.delproperty('correlations', c)
+                    c.delproperty('source',context)
+                    for target in c.targets:
+                        c.delpropety('targets', target)
+        return True
+
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        if 'related_ideas' in appstruct:
+            relatedideas = appstruct['related_ideas']
+            related_ideas_to_add = [i for i in relatedideas if not(i in context.related_ideas)]
+            related_ideas_to_del = [i for i in context.related_ideas if not(i in relatedideas) and not (i in related_ideas_to_add)]
+            self._add_related_ideas(context, request, root, related_ideas_to_add, 'Add ideas from proposal', 'Edit proposal')
+            self._del_related_ideas(context, request, root, related_ideas_to_del, 'Remove ideas from proposal', 'Edit proposal')
+
         context.modified_at = datetime.datetime.today()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
@@ -637,44 +669,31 @@ class Associate(AssociateIdea):
     relation_validation = associate_relation_validation
 
 
-def addideas_relation_validation(process, context):
+def seeideas_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
 
-def addideas_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context),)) 
+def seeideas_roles_validation(process, context):
+    return has_any_roles(roles=('Member',)) 
 
 
-def addideas_processsecurity_validation(process, context):
+def seeideas_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) 
 
 
-def addideas_state_validation(process, context):
-    wg = context.working_group
-    return ('active' in wg.state and 'amendable' in context.state) or \
+def seeideas_state_validation(process, context):
+    return not ('draft' in context.state) or \
            ('draft' in context.state and has_any_roles(roles=(('Owner', context),))) 
 
 
-class AddIdeas(InfiniteCardinality):
+class SeeRelatedIdeas(InfiniteCardinality):
     context = IProposal
-    processsecurity_validation = addideas_processsecurity_validation
-    roles_validation = addideas_roles_validation
-    state_validation = addideas_state_validation
-    relation_validation = addideas_relation_validation
+    processsecurity_validation = seeideas_processsecurity_validation
+    roles_validation = seeideas_roles_validation
+    state_validation = seeideas_state_validation
+    relation_validation = seeideas_relation_validation
 
     def start(self, context, request, appstruct, **kw):
-        ideas = appstruct['targets']
-        root = getSite()
-        datas = {'author': get_current(),
-                 'targets': ideas,
-                 'comment': appstruct['comment'],
-                 'intention': appstruct['intention'],
-                 'source': context}
-        correlation = Correlation()
-        correlation.set_data(datas)
-        correlation.tags.extend(['related_proposals', 'related_ideas'])
-        correlation.type = 1
-        root.addtoproperty('correlations', correlation)
         return True
 
     def redirect(self, context, request, **kw):
@@ -730,21 +749,8 @@ class ImproveProposal(InfiniteCardinality):
         new_idea = appstruct['confirmation']['idea_of_replacement']['new_idea']
         amendment = Amendment()
         self.newcontext = amendment
-        if not not_identified:
-            data['replaced_idea'] = appstruct['confirmation']['replaced_idea']['replaced_idea']
-
-        if not new_idea:
-            data['idea_of_replacement'] = appstruct['confirmation']['idea_of_replacement']['idea_of_replacement']
-        else:
-            newidea = Idea(title='Idea for '+context.title)
-            root.addtoproperty('ideas', newidea)
-            newidea.state.append('to work')
-            grant_roles(roles=(('Owner', newidea), ))
-            newidea.setproperty('author', get_current())
-            data['idea_of_replacement'] = newidea
-            newidea.reindex()
-            self.newcontext = newidea
-
+        data['replaced_ideas'] = appstruct['confirmation']['replaced_ideas']['replaced_ideas']
+        data['ideas_of_replacement'] = appstruct['confirmation']['ideas_of_replacement']['ideas_of_replacement']
         amendment.set_data(data)
         context.addtoproperty('amendments', amendment)
         amendment.state.append('draft')
@@ -753,10 +759,7 @@ class ImproveProposal(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        if isinstance(self.newcontext, Amendment):
-            return HTTPFound(request.resource_url(self.newcontext, "@@index"))
-        else:
-            return HTTPFound(request.resource_url(self.newcontext, "@@editidea"))
+        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
 def correctitem_relation_validation(process, context):
@@ -1385,8 +1388,6 @@ class AmendmentsResult(ElementaryAction):
         self.newcontext = context 
         if amendments:
             self._send_ballot_result(context, request, result, wg.members)
-            replaced_ideas = [a.replaced_idea for a in amendments if a.replaced_idea is not None]
-            ideas_of_replacement = [a.idea_of_replacement for a in amendments if a.idea_of_replacement is not None]
             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
             merged_text = text_analyzer.merge(context.text, [a.text for a in amendments])
             #TODO merged_keywords + merged_description
@@ -1394,8 +1395,11 @@ class AmendmentsResult(ElementaryAction):
             context.state = PersistentList(['deprecated'])
             copy_of_proposal.text = merged_text
             #correlation idea of replacement ideas... del replaced_idea
-            ideas_of_replacement = list(set([a.idea_of_replacement for a in amendments if a.idea_of_replacement is not None]))
-            replaced_ideas = list(set([a.replaced_idea for a in amendments if a.idea_of_replacement is not None]))
+            ideas_of_replacement = [a.ideas_of_replacement for a in amendments]
+            ideas_of_replacement = list(set([item for sublist in ideas_of_replacement for item in sublist if item is not None]))
+
+            replaced_ideas = [a.replaced_ideas for a in amendments]
+            replaced_ideas = list(set([item for sublist in replaced_ideas for item in sublist if item is not None]))
             not_modified_ideas = [i for i in context.related_ideas if not (i in replaced_ideas)]
             new_ideas = not_modified_ideas
             new_ideas.extend(ideas_of_replacement)

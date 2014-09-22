@@ -1,22 +1,150 @@
+import colander
+import deform
 from pyramid.view import view_config
+from substanced.util import get_oid
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.util import getSite
+from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select
+from pontus.schema import select, Schema
+from pontus.view_operation import MultipleView
+from pontus.view import BasicView
+from pontus.file import Object as ObjectType
+from pontus.widget import MappingWidget, Select2Widget
 
 from novaideo.content.processes.proposal_management.behaviors import  EditProposal
 from novaideo.content.proposal import ProposalSchema, Proposal
+from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
+from novaideo.core import can_access
+from novaideo.views.widget import Select2WidgetSearch
 
 
-@view_config(
-    name='editproposal',
-    context=Proposal,
-    renderer='pontus:templates/view.pt',
-    )
-class EditProposalView(FormView):
+@colander.deferred
+def ideas_replacement_choice(node, kw):
+     context = node.bindings['context']
+     request = node.bindings['request']
+     root = getSite()
+     user = get_current()
+     _ideas = list(user.ideas)
+     _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
+     ideas = [i for i in _ideas if can_access(user, i)]
+     values = [(i, i.title) for i in ideas]
+     values.insert(0, ('', '- Select -'))
+     return Select2WidgetSearch(values=values, item_css_class='search-idea-form',
+                                url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
+
+
+class AddIdeaSchema(Schema):
+
+    idea = colander.SchemaNode(
+        ObjectType(),
+        widget=ideas_replacement_choice,
+        title=_('Add a new idea to the proposal'),
+        missing=None,
+        description=_('Choose an idea')
+        )
+
+    new_idea_choice = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(css_class="new-idea-control"),
+        label=_('Creat a new idea'),
+        title =_(''),
+        missing=False
+        )
+
+    new_idea = select(IdeaSchema(factory=Idea, editable=True,
+                               omit=['keywords'], widget=MappingWidget(item_css_class='hide-bloc new-idea-form')),
+                    ['title',
+                     'description',
+                     'keywords'])
+
+
+from pyramid.httpexceptions import HTTPFound
+
+from dace.processinstance.core import  Behavior
+
+
+class AddIdea(Behavior):
+
+    behavior_id = "addidea"
+    title = _("Validate")
+    description = _("Add an indea to the proposal")
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class AddIdeaFormView(FormView):
+
+    title = _('Add a new idea')
+    schema = AddIdeaSchema()
+    formid = 'formaddidea'
+    behaviors = [AddIdea]
+    name='addideaform'
+    coordinates = 'right'
+
+    def before_update(self):
+        root = getSite()
+        formwidget = deform.widget.FormWidget(css_class='add-idea-form')
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
+        formwidget.ajax_url = self.request.resource_url(root, '@@createidea', query={'op':'creat_idea'})
+        self.schema.widget = formwidget
+        self.schema.widget.ajax_button = _('Validate')
+        self.schema.get('new_idea').get('keywords').default = []
+        self.schema.get('new_idea').get('description').widget = deform.widget.TextAreaWidget(rows=4, cols=60)
+
+
+class RelatedIdeasView(BasicView):
+    title = _('Related Ideas')
+    name = 'relatedideas'
+    template = 'novaideo:views/proposal_management/templates/ideas_management.pt'
+    viewid = 'relatedideas'
+    coordinates = 'right'
+
+    def update(self):
+        root = getSite()
+        user = get_current()
+        related_ideas = [i for i in self.context.related_ideas if can_access(user, i)]
+        result = {}
+        target = None
+        try:
+            editform = self.parent.parent.children[0]
+            target = editform.viewid+'_'+editform.formid 
+        except Exception:
+            pass
+        values = {
+                'items': [{'title': i.title, 'id':get_oid(i)} for i in related_ideas],
+                'target' : target
+               }
+        body = self.content(result=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates:[item]}
+        return result
+
+
+class IdeaManagementView(MultipleView):
+    title = _('Ideas management')
+    name = 'ideasmanagementproposal'
+    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
+    views = (RelatedIdeasView, AddIdeaFormView)
+    coordinates = 'right'
+
+def ideas_choice():
+    root = getSite()
+    user = get_current()
+    ideas = [i for i in root.ideas if can_access(user, i)]
+    values = [(i, i.title) for i in ideas]
+    return Select2Widget(values=values, multiple=True)
+
+
+class EditProposalFormView(FormView):
 
     title = _('Edit')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
@@ -24,13 +152,34 @@ class EditProposalView(FormView):
                     ['title',
                      'description',
                      'keywords',
-                     'text'])
+                     'text',
+                     'related_ideas'])
     behaviors = [EditProposal, Cancel]
     formid = 'formeditproposal'
-    name='editproposal'
+    name='editproposalform'
 
     def default_data(self):
         return self.context
+
+    def before_update(self):
+        ideas_widget = ideas_choice()
+        ideas_widget.item_css_class = 'hide-bloc'
+        ideas_widget.css_class = 'controlled-items'
+        self.schema.get('related_ideas').widget = ideas_widget
+
+
+@view_config(
+    name='editproposal',
+    context=Proposal,
+    renderer='pontus:templates/view.pt',
+    )
+class EditProposalView(MultipleView):
+    title = _('Edit')
+    name = 'editproposal'
+    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
+    requirements = {'css_links':[],
+                    'js_links':['novaideo:static/js/ideas_management.js']}
+    views = (EditProposalFormView, IdeaManagementView)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({EditProposal: EditProposalView})

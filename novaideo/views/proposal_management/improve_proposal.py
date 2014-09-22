@@ -29,7 +29,7 @@ class ImproveProposalView(FormView):
                      'description',
                      'keywords', 
                      'text', 
-                     'confirmation'])
+                     'ideas'])
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/improve_proposal.js']}
 
@@ -39,10 +39,11 @@ class ImproveProposalView(FormView):
 
 
     def before_update(self):
-        self.schema.widget.template = 'novaideo:views/templates/form.pt'
-        self.schema.widget.to_confirm = _('Improve')
-        self.schema.get('confirmation').get('replaced_idea').widget.template = 'novaideo:views/templates/mapping_col.pt'
-        self.schema.get('confirmation').get('idea_of_replacement').widget.template = 'novaideo:views/templates/mapping_col.pt'
+        #self.schema.widget.template = 'novaideo:views/templates/ajax_form.pt'
+        #self.schema.widget.ajax_button = _('Improve')
+        self.schema.get('ideas').widget.template = 'novaideo:views/templates/mapping_simple.pt'
+        self.schema.get('ideas').get('replaced_ideas').widget.template = 'novaideo:views/templates/mapping_col.pt'
+        self.schema.get('ideas').get('ideas_of_replacement').widget.template = 'novaideo:views/templates/mapping_col.pt'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({ImproveProposal:ImproveProposalView})

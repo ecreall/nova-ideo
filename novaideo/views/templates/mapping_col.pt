@@ -5,8 +5,7 @@
                      css_class css_class|getattr(field.widget, 'mapping_css_class', '')"
          i18n:domain="deform">
   
-  <div class="col-md-6" title="${description}">
-    <div class="${css_class}">
+    <div class="${css_class}" title="${description}">
 
       <div tal:condition="errormsg" 
            class="clearfix alert alert-message error">
@@ -27,6 +26,5 @@
       ${field.end_mapping()}
 
     </div>
-  </div>
 
 </tal:def>

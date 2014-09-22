@@ -14,11 +14,11 @@ from novaideo import _
 
 class CreateProposalSchema(Schema):
 
-    related_ideas  = RelatedIdeasSchema(widget=deform.widget.MappingWidget(css_class='form-idea-select'))
+    related_ideas  = RelatedIdeasSchema(widget=deform.widget.MappingWidget(mapping_css_class='form-idea-select'))
 
     proposal = select(ProposalSchema(factory=Proposal, 
                                      editable=True, 
-                                     widget=deform.widget.MappingWidget(css_class='form-proposal-confirmation'),
+                                     widget=deform.widget.MappingWidget(mapping_css_class='form-proposal-confirmation'),
                                      omit=['keywords']),
                      ['title', 'description', 'keywords'])
 

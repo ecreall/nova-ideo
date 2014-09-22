@@ -32,7 +32,7 @@ class CommentProposalFormView(CommentIdeaFormView):
 
     def before_update(self):
         formwidget = deform.widget.FormWidget(css_class='commentform')
-        formwidget.template = 'novaideo:views/templates/form.pt'
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         view_name = self.request.view_name
         if self.request.view_name == 'dace-ui-api-view':
             view_name = 'commentproposal'

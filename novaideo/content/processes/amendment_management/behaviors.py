@@ -129,6 +129,18 @@ class EditAmendment(InfiniteCardinality):
     processsecurity_validation = edit_processsecurity_validation
     state_validation = edit_state_validation
 
+    def _add_replacedideas(self, context, request, ideas):
+        for idea in ideas:
+            context.addtoproperty('replaced_ideas', idea)
+
+        return True
+
+    def _del_ideasofreplacement(self, context, request, ideas):
+        for idea in ideas:
+            context.delproperty('ideas_of_replacement', idea)
+
+        return True
+
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         keywords_ids = appstruct.pop('keywords')
@@ -144,6 +156,7 @@ class EditAmendment(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+    
 
 
 def pub_roles_validation(process, context):

@@ -19,6 +19,8 @@ from .behaviors import (
     Associate,
     SeeAmendment,
     DuplicateAmendment)
+#    AddReplacedIdea,
+ #   AddIdeaReplacement)
 from novaideo import _
 
 
@@ -47,6 +49,15 @@ class AmendmentManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Edit the amendment"),
                                        title=_("Edit"),
                                        groups=[]),
+#                add_idea_of_replacement = ActivityDefinition(contexts=[AddIdeaReplacement],
+#                                       description=_("Add idea of replacement"),
+##                                       title=_("Add idea of replacement"),
+#                                       groups=[]),
+#                add_repalced_idea = ActivityDefinition(contexts=[AddReplacedIdea],
+#                                       description=_("Add replaced idea"),
+#                                       title=_("Add replaced idea"),
+#                                       groups=[]),
+
                 submit = ActivityDefinition(contexts=[SubmitAmendment],
                                        description=_("Submit the amendment"),
                                        title=_("Submit"),
@@ -74,6 +85,8 @@ class AmendmentManagement(ProcessDefinition, VisualisableElement):
         self.defineTransitions(
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'edit'),
+#                TransitionDefinition('pg', 'add_idea_of_replacement'),
+#                TransitionDefinition('pg', 'add_repalced_idea'),
                 TransitionDefinition('pg', 'submit'),
                 TransitionDefinition('pg', 'delamendment'),
                 TransitionDefinition('pg', 'duplicate'),

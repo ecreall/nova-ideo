@@ -15,15 +15,21 @@
 	<dd>${amendment.intention}</dd>
         <dt>Objet</dt>
 	<dd>${amendment.comment}</dd>
-        <dt>Idée remplacée</dt>
+        <dt>Idées remplacées</dt>
 	<dd>
-              <a tal:condition="amendment.replaced_idea is not None" tal:attributes="href request.resource_url(amendment.replaced_idea, '@@index')">${amendment.replaced_idea.title}</a>
-              <span tal:condition="amendment.replaced_idea is None"> Non identifiée </span>  
-        </dd>
-        <dt>Idée de remplacement</dt>
+             <tal:loop repeat="ri amendment.replaced_ideas">
+                <a  tal:attributes="href request.resource_url(ri, '@@index')">${ri.title}</a>
+                <tal:separator condition="not: repeat['ri'].end">, </tal:separator>
+              </tal:loop> 
+              <span tal:condition="len(amendment.replaced_ideas) == 0"> Non identifiée </span>  
+            </dd>
+        <dt>Idées de remplacement</dt>
         <dd>
-              <a tal:condition="amendment.idea_of_replacement is not None" tal:attributes="href request.resource_url(amendment.idea_of_replacement, '@@index')">${amendment.idea_of_replacement.title}</a>
-              <span tal:condition="amendment.idea_of_replacement is None"> Non identifiée </span>
+              <tal:loop repeat="ri amendment.ideas_of_replacement">
+                <a  tal:attributes="href request.resource_url(ri, '@@index')">${ri.title}</a>
+                <tal:separator condition="not: repeat['ri'].end">, </tal:separator>
+              </tal:loop> 
+              <span tal:condition="len(amendment.ideas_of_replacement) == 0"> Non identifiée </span>  
         </dd>
         <dt>Dernière modification</dt>
 	<dd>

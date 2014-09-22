@@ -4,7 +4,7 @@
                      item_template item_template|field.widget.item_template"
          i18n:domain="deform">
   
-    <div class="${getattr(field.widget, 'css_class', '')}">
+    <div class="${getattr(field.widget, 'mapping_css_class', '')}">
       <div tal:condition="errormsg" 
            class="clearfix alert alert-message error">
         <p i18n:translate="">

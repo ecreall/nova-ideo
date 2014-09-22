@@ -5,7 +5,7 @@
                      buttons buttons|form.buttons;
                      formid formid|field.get_root().formid;
                      item_template item_template|field.widget.item_template;
-                     toconfirm toconfirm| getattr(form.widget, 'to_confirm', False)"
+                     ajax_button ajax_button| getattr(form.widget, 'ajax_button', False)"
          i18n:domain="deform">
 
  <div class="modal fade" 
@@ -53,7 +53,7 @@
                        class="btn ${btn_disposition} ${button.css_class}"
                        value="${button.value}">
                    <i tal:condition="btn_icon" class="${btn_icon}"> </i>
-                   ${((toconfirm == button.title) and ('Confirm '+button.title)) or button.title}
+                   ${((ajax_button == button.title) and ('Confirm '+button.title)) or button.title}
                  </button>
                </tal:loop>
              </div>
