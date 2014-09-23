@@ -22,13 +22,13 @@ from novaideo import _
 
 default_titles = [_('Mr'), _('Madam'), _('Miss')]
 
-default_comment_intentions = [_('Ironie'), _('Humour'), _('Remarque')]
+default_comment_intentions = [_('Irony'), _('Humor'), _('Remark')]
 
-default_correlation_intentions = [_('Ironie'), _('Humour'), _('Remarque')]
+default_correlation_intentions = [_('Irony'), _('Humor'), _('Remark')]
 
-default_idea_intentions = [_('Ammelioration'), _('Humour'), _('Ironie')]
+default_idea_intentions = [_('Improvement'), _('Humor'), _('Irony')]
 
-default_amendment_intentions = [_('Ammelioration'), _('Humour'), _('Ironie')]
+default_amendment_intentions = [_('Improvement'), _('Humor'), _('Irony')]
 
 
 def context_is_a_root(context, request):
