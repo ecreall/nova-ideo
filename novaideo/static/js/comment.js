@@ -9,10 +9,9 @@ $(document).ready(function(){
 
         var parent = $($(this).parents('.panel-body').first());
         var target = parent.find('.scroll-able.comments-scroll');
-        var commentmessageinfo = parent.find('#commentmessageinfo');
-        var commentmessageinfo = parent.find('#commentmessageinfo');
-        var commentmessagesuccess = parent.find('#commentmessagesuccess');
-        var commentmessagedanger = parent.find('#commentmessagedanger');
+        var commentmessageinfo = parent.find('#messageinfo');
+        var commentmessagesuccess = parent.find('#messagesuccess');
+        var commentmessagedanger = parent.find('#messagedanger');
         var progress = parent.find('#progress');
         //POST dict
         var dict_post = {};

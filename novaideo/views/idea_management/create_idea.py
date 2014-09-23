@@ -1,7 +1,9 @@
 from pyramid.view import view_config
 from substanced.util import get_oid
+from pyramid import renderers
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.util import get_obj
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
@@ -36,12 +38,13 @@ class CreateIdeaView(FormView):
 
 
 
-@view_config(name='createidea',
+@view_config(name='ideasmanagement',
              context=NovaIdeoApplication,
              xhr=True,
              renderer='json')
 class CreateIdeaView_Json(BasicView):
 
+    idea_template = 'novaideo:views/proposal_management/templates/idea_data.pt'
     behaviors = [CreateIdea]
 
     def creat_idea(self):
@@ -57,10 +60,30 @@ class CreateIdeaView_Json(BasicView):
                          'keywords': self.params('keywords')}
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
-            result = {'oid':str(oid), 'title':idea.title}
+            data = {'title': idea.title,
+                    'oid': str(oid),
+                    'body': renderers.render(self.idea_template, {'idea':idea}, self.request)
+                    }
+            result = data
             return result
         except Exception:
-            return {}
+            return {} #TODO Error messages
+
+    def get_idea(self):
+        try:
+            oid = int(self.params('oid'))
+            idea = get_obj(oid)
+            values = {'title': idea.title,
+                      'description': idea.description,
+                      'text': getattr(idea, 'text', '')}
+            data = {'title': idea.title,
+                    'oid': str(oid),
+                    'body': renderers.render(self.idea_template, {'idea':idea}, self.request)
+                    }
+            result = data
+            return result
+        except Exception:
+            return {}#TODO Error messages
 
 
     def __call__(self):

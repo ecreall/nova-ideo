@@ -159,9 +159,9 @@ class EditIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        copy_of_idea = copy(context, (root, 'ideas'), roles=True)
-        #copy_of_idea.created_at = datetime.datetime.today()
-        #copy_of_idea.modified_at = datetime.datetime.today()
+        last_version = context.version
+        copy_of_idea = copy(context, (context, 'version'), roles=True)
+        copy_of_idea.setproperty('version', last_version)
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         keywords_ids = appstruct.pop('keywords')
@@ -171,29 +171,25 @@ class EditIdea(InfiniteCardinality):
 
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
-        context.state = PersistentList(['deprecated'])
-        copy_of_idea.setproperty('version', context)
-        #root.addtoproperty('ideas', copy_of_idea)
+        copy_of_idea.state = PersistentList(['deprecated'])
+        
         copy_of_idea.setproperty('author', get_current())
-        copy_of_idea.set_data(appstruct)
+        context.set_data(appstruct)
         context.reindex()
-        #grant_roles(roles=(('Owner', copy_of_idea), ))
-        #grant_roles(roles=(('Owner', context), ))#TODO attribute SubstanceD.Folder.moving
         user = get_current()
-        self.newcontext = copy_of_idea
-        if 'abandoned' in copy_of_idea.state:
+        if 'abandoned' in context.state:
             recuperate_actions = getBusinessAction('ideamanagement',
                                                    'recuperate',
                                                    '',
                                                     request,
-                                                    copy_of_idea)
+                                                    context)
             if recuperate_actions:
-                recuperate_actions[0].execute(copy_of_idea, request, appstruct, **kw)
+                recuperate_actions[0].execute(context, request, appstruct, **kw)
 
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 

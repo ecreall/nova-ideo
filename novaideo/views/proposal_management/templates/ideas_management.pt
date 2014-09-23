@@ -1,13 +1,25 @@
-<div id="controllableitems" >
-   <ul class="list-group controllable-items" data-target="${target}">
-    <li class="list-group-item controllable-item" tal:repeat="item items">
-     <span >${item['title']}</span>
-     <span class="actions pull-right" data-id="${item['id']}">
-        <span class="item-closed"></span>
-        <span class="del-item"></span>
-     </span>
-     </li>
-   </ul>
-</div>
+ <div id="panel-controllableitems" class="panel-group controllable-items" data-target="${target}">
+   <div tal:repeat="item items" class="panel controllable-item">
+	 <div class="panel-heading">
+	   <a  href="#panel-element-${item['id']}" data-parent="#panel-controllableitems" data-toggle="collapse" class="panel-title">
+              <span class="glyphicon glyphicon-plus"> </span>  ${item['title']}
+	   </a>
+           <span class="actions pull-right" data-id="${item['id']}" data-title="${item['title']}">
+              <span class="${(len(items)==1) and 'disabled-'}del-item"></span>
+           </span>
+	 </div>
+	 <div class="panel-collapse collapse" id="panel-element-${item['id']}" style="height: auto;">
+           <div class="panel-body">
+             ${structure:item['body']}
+	   </div>
+	 </div>
 
+   </div>
+
+ </div>
+   <div id="controllable-items-messages">
+       <span id="messageinfo" class="label label-info"></span>
+       <span id="messagesuccess" class="label label-success"></span>
+       <span id="messagedanger" class="label  label-danger"></span>
+   </div>
 

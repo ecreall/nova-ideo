@@ -307,17 +307,67 @@ ins {
 
 .del-item {
 	background: transparent url(../images/del_button.png) center right no-repeat;
-        padding-bottom: 12px;
-        padding-right: 38px;
-        padding-top: 4px;
+    margin-right: -3px;
+    padding-bottom: 10.5px;
+    padding-right: 39px;
+    padding-top: 5px;
+}
+
+.disabled-del-item {
+	background: transparent url(../images/del_button_disabled.png) center right no-repeat;
+    margin-right: -3px;
+    padding-bottom: 10.5px;
+    padding-right: 39px;
+    padding-top: 5px;
 }
 
 .item-closed:hover { background: transparent url(../images/open_button_over.png) center right no-repeat; }
 
 .del-item:hover { background: transparent url(../images/del_button_over.png) center right no-repeat; }
 
+.panel-group .panel.controllable-item{
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+}
+.controllable-items .panel-heading {
+   padding: 3px 1px 6px 3px;
+}
+
+.panel-group .panel.controllable-item {
+    border: 1px solid #e1e2e3;
+}
+
+.panel.controllable-item .panel-title {
+    font-size: 15px;
+}
+
 .hide-bloc{
     display: none;
+}
+
+#item-datas.scroll-able {
+    height: 200px
+}
+/*.idea-managements.navbar-fixed-top {
+    border-width: 0 0 1px;
+    margin-left: 75%;
+    top: 0;
+    width: 24%;
+}*/
+
+.idea-managements{
+ margin-top: 22%
+}
+
+.idea-managements .panel-body{
+    padding: 3px;
+}
+
+.add-idea-form{
+  border: solid 1px #e1e2e3; 
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 /*http://helping.probb.fr/t14-code-css-pour-aligner-un-texte-incline-au-centre-d-une-page-a4*/
 .content-text #filigrane{ 

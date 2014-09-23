@@ -96,17 +96,15 @@ class CreateProposal(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        appstruct_proposal = appstruct.pop('proposal')
-        appstruct_related_ideas = appstruct.pop('related_ideas')
-        keywords_ids = appstruct_proposal.pop('keywords')
-        related_ideas = appstruct_related_ideas.pop('related_ideas')
+        keywords_ids = appstruct.pop('keywords')
+        related_ideas = appstruct.pop('related_ideas')
         
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
             root.addtoproperty('keywords', nk)
 
         result.extend(newkeywords)
-        proposal = appstruct_proposal['_object_data']
+        proposal = appstruct['_object_data']
         root.addtoproperty('proposals', proposal)
         proposal.setproperty('keywords_ref', result)
         proposal.state.append('draft')
@@ -340,7 +338,7 @@ class EditProposal(InfiniteCardinality):
                     root.delproperty('correlations', c)
                     c.delproperty('source',context)
                     for target in c.targets:
-                        c.delpropety('targets', target)
+                        c.delproperty('targets', target)
         return True
 
     def start(self, context, request, appstruct, **kw):
@@ -349,8 +347,8 @@ class EditProposal(InfiniteCardinality):
             relatedideas = appstruct['related_ideas']
             related_ideas_to_add = [i for i in relatedideas if not(i in context.related_ideas)]
             related_ideas_to_del = [i for i in context.related_ideas if not(i in relatedideas) and not (i in related_ideas_to_add)]
-            self._add_related_ideas(context, request, root, related_ideas_to_add, 'Add ideas from proposal', 'Edit proposal')
-            self._del_related_ideas(context, request, root, related_ideas_to_del, 'Remove ideas from proposal', 'Edit proposal')
+            self._add_related_ideas(context, request, root, related_ideas_to_add, 'Add ideas to the proposal', 'Edit proposal')
+            self._del_related_ideas(context, request, root, related_ideas_to_del)
 
         context.modified_at = datetime.datetime.today()
         keywords_ids = appstruct.pop('keywords')

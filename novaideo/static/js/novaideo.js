@@ -81,10 +81,18 @@ function resize_search_result(){
      }
 };
 
+function init_seemore(){
+  $('.seemore').on('click', function(){
+      var item = $(this).parents('#item-datas').first();
+      var child = $(item).find('.more-item.hide-bloc').first();
+      $(child).removeClass('hide-bloc');
+      child = $(item).find('.more-item.hide-bloc');
+      if (child.length == 0) {$(this).addClass('hide-bloc')} 
+   });
+
+};
 
 $(document).ready(function(){
-
-
   $( window ).resize(function(){
     resize_search_result()
   });
@@ -128,6 +136,8 @@ $(document).ready(function(){
       }
     });
 
+  init_seemore();
+  
   initscroll();
 });
 

@@ -1,0 +1,13 @@
+<div id="item-datas" class="scroll-able">
+  <div >
+        <strong>Résumé</strong><br/>
+	${idea.description}
+  </div>
+  <div class="more-item hide-bloc">
+        <strong>Texte</strong><br/>
+	${structure:idea.text}
+  </div>
+ <div>
+  <span class="seemore pull-right" style="font-size:11px; color: blue">See more...</span>
+</div>
+</div>

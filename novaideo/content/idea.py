@@ -55,7 +55,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
     description = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=300),
-        widget=deform.widget.TextAreaWidget(rows=10, cols=30),
+        widget=deform.widget.TextAreaWidget(rows=5, cols=30),
         title=_("Abstract"),
         description=_("(300 caracteres maximum)")
         )

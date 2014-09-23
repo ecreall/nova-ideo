@@ -1,10 +1,13 @@
 import colander
 import deform
 from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPFound
+from pyramid import renderers
 from substanced.util import get_oid
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite
+from dace.processinstance.core import  Behavior
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
@@ -24,7 +27,7 @@ from novaideo.views.widget import Select2WidgetSearch
 
 
 @colander.deferred
-def ideas_replacement_choice(node, kw):
+def idea_choice(node, kw):
      context = node.bindings['context']
      request = node.bindings['request']
      root = getSite()
@@ -42,7 +45,7 @@ class AddIdeaSchema(Schema):
 
     idea = colander.SchemaNode(
         ObjectType(),
-        widget=ideas_replacement_choice,
+        widget=idea_choice,
         title=_('Add a new idea to the proposal'),
         missing=None,
         description=_('Choose an idea')
@@ -62,10 +65,6 @@ class AddIdeaSchema(Schema):
                      'description',
                      'keywords'])
 
-
-from pyramid.httpexceptions import HTTPFound
-
-from dace.processinstance.core import  Behavior
 
 
 class AddIdea(Behavior):
@@ -94,7 +93,7 @@ class AddIdeaFormView(FormView):
         root = getSite()
         formwidget = deform.widget.FormWidget(css_class='add-idea-form')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
-        formwidget.ajax_url = self.request.resource_url(root, '@@createidea', query={'op':'creat_idea'})
+        formwidget.ajax_url = self.request.resource_url(root, '@@ideasmanagement')
         self.schema.widget = formwidget
         self.schema.widget.ajax_button = _('Validate')
         self.schema.get('new_idea').get('keywords').default = []
@@ -105,6 +104,7 @@ class RelatedIdeasView(BasicView):
     title = _('Related Ideas')
     name = 'relatedideas'
     template = 'novaideo:views/proposal_management/templates/ideas_management.pt'
+    idea_template = 'novaideo:views/proposal_management/templates/idea_data.pt'
     viewid = 'relatedideas'
     coordinates = 'right'
 
@@ -119,8 +119,17 @@ class RelatedIdeasView(BasicView):
             target = editform.viewid+'_'+editform.formid 
         except Exception:
             pass
+
+        ideas = []
+        for i in related_ideas:
+            data = {'title': i.title,
+                    'id': get_oid(i),
+                    'body': renderers.render(self.idea_template, {'idea':i}, self.request)
+                    }
+            ideas.append(data)
+
         values = {
-                'items': [{'title': i.title, 'id':get_oid(i)} for i in related_ideas],
+                'items': ideas,
                 'target' : target
                }
         body = self.content(result=values, template=self.template)['body']
@@ -135,6 +144,7 @@ class IdeaManagementView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (RelatedIdeasView, AddIdeaFormView)
     coordinates = 'right'
+    css_class = 'idea-managements panel-success'
 
 def ideas_choice():
     root = getSite()
@@ -148,7 +158,7 @@ class EditProposalFormView(FormView):
 
     title = _('Edit')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
-                               omit=['keywords']),
+                               omit=['keywords', 'related_ideas']),
                     ['title',
                      'description',
                      'keywords',
