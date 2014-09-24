@@ -12,25 +12,21 @@
   <div class="jumbotron well amendment-well">
     <dl >
         <dt>Intention</dt>
-	<dd>${amendment.intention}</dd>
+	<dd>${getattr(amendment, 'intention', 'Not specified')}</dd>
         <dt>Objet</dt>
-	<dd>${amendment.comment}</dd>
-        <dt>Idées remplacées</dt>
-	<dd>
-             <tal:loop repeat="ri amendment.replaced_ideas">
-                <a  tal:attributes="href request.resource_url(ri, '@@index')">${ri.title}</a>
-                <tal:separator condition="not: repeat['ri'].end">, </tal:separator>
-              </tal:loop> 
-              <span tal:condition="len(amendment.replaced_ideas) == 0"> Non identifiée </span>  
-            </dd>
-        <dt>Idées de remplacement</dt>
-        <dd>
-              <tal:loop repeat="ri amendment.ideas_of_replacement">
-                <a  tal:attributes="href request.resource_url(ri, '@@index')">${ri.title}</a>
-                <tal:separator condition="not: repeat['ri'].end">, </tal:separator>
-              </tal:loop> 
-              <span tal:condition="len(amendment.ideas_of_replacement) == 0"> Non identifiée </span>  
-        </dd>
+	<dd>${getattr(amendment, 'comment', 'Not specified')}</dd>
+        <div tal:omit-tag="" tal:condition="amendment.replaced_idea">
+           <dt >Idées remplacée</dt>
+	   <dd >
+             <a  tal:attributes="href request.resource_url(amendment.replaced_idea, '@@index')">${ri.title}</a>
+           </dd>
+        </div>
+        <div tal:omit-tag="" tal:condition="amendment.idea_of_replacement">
+          <dt >Idée de remplacement</dt>
+          <dd>
+             <a  tal:attributes="href request.resource_url(amendment.idea_of_replacement, '@@index')">${ri.title}</a>
+          </dd>
+        </div>
         <dt>Dernière modification</dt>
 	<dd>
           <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.created_at.hour}:${amendment.created_at.minute}:${amendment.created_at.second} par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a>

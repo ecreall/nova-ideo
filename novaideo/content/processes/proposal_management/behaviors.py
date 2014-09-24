@@ -733,6 +733,9 @@ class ImproveProposal(InfiniteCardinality):
         data = {}
         data['title'] = appstruct['title']
         data['text'] = appstruct['text']
+        data['intention'] = 'Improvement'
+        data['comment'] = 'Add a new amendment'
+        data['description'] = appstruct['description']
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
@@ -740,15 +743,9 @@ class ImproveProposal(InfiniteCardinality):
 
         result.extend(newkeywords)
         data['keywords_ref'] = result
-        data['description'] = appstruct['description']
-        data['comment'] = appstruct['confirmation']['comment']
-        data['intention'] = appstruct['confirmation']['intention']
-        not_identified = appstruct['confirmation']['replaced_idea']['not_identified']
-        new_idea = appstruct['confirmation']['idea_of_replacement']['new_idea']
         amendment = Amendment()
         self.newcontext = amendment
-        data['replaced_ideas'] = appstruct['confirmation']['replaced_ideas']['replaced_ideas']
-        data['ideas_of_replacement'] = appstruct['confirmation']['ideas_of_replacement']['ideas_of_replacement']
+        data['related_ideas'] = appstruct['related_ideas']
         amendment.set_data(data)
         context.addtoproperty('amendments', amendment)
         amendment.state.append('draft')
@@ -1393,11 +1390,8 @@ class AmendmentsResult(ElementaryAction):
             context.state = PersistentList(['deprecated'])
             copy_of_proposal.text = merged_text
             #correlation idea of replacement ideas... del replaced_idea
-            ideas_of_replacement = [a.ideas_of_replacement for a in amendments]
-            ideas_of_replacement = list(set([item for sublist in ideas_of_replacement for item in sublist if item is not None]))
-
-            replaced_ideas = [a.replaced_ideas for a in amendments]
-            replaced_ideas = list(set([item for sublist in replaced_ideas for item in sublist if item is not None]))
+            ideas_of_replacement = [a.idea_of_replacement for a in amendments if a.idea_of_replacement is not None]
+            replaced_ideas = [a.replaced_idea for a in amendments if a.replaced_idea is not None]
             not_modified_ideas = [i for i in context.related_ideas if not (i in replaced_ideas)]
             new_ideas = not_modified_ideas
             new_ideas.extend(ideas_of_replacement)

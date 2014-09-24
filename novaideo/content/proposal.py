@@ -34,7 +34,7 @@ from novaideo.core import (
 def ideas_choice(node, kw):
     root = getSite()
     user = get_current()
-    ideas = [i for i in root.ideas if can_access(user, i)]
+    ideas = [i for i in root.ideas if can_access(user, i) and not('deprecated' in i.state)]
     values = [(i, i.title) for i in ideas]
     return Select2Widget(values=values, multiple=True)
 
@@ -43,14 +43,6 @@ def context_is_a_proposal(context, request):
     return request.registry.content.istype(context, 'proposal')
 
 
-class RelatedIdeasSchema(Schema):
-
-    related_ideas  = colander.SchemaNode(
-        colander.Set(),
-        widget=ideas_choice,
-        title=_('Related ideas'),
-        default=[],
-        )
 
 class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
 
@@ -71,7 +63,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         widget= RichTextWidget(),
         )
 
-    related_ideas = colander.SchemaNode(
+    related_ideas  = colander.SchemaNode(
         colander.Set(),
         widget=ideas_choice,
         title=_('Related ideas'),

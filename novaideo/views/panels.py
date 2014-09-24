@@ -17,6 +17,7 @@ from novaideo.content.processes.proposal_management.behaviors import CreatePropo
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.proposal import Proposal
 from novaideo.content.idea import Idea
+from novaideo.content.amendment import Amendment
 
 user_menu_actions = {'menu1': [SeeMyContents, SeeMyParticipations],
                      'menu2': [SeeMySelections, SeeMySupports],
@@ -148,24 +149,32 @@ class StepsPanel(object):
         self.context = context
         self.request = request
 
+    def _get_process_context(self):
+        if isinstance(self.context, Amendment):
+            return self.context.proposal
+
+        return self.context
+        
 
     def __call__(self):
         root = getSite()
         result = {}
-        result['condition'] = isinstance(self.context, (Proposal, Idea))#@TODO context: abstract class (Proposal, Idea)
+        context = self._get_process_context()
+        result['condition'] = isinstance(context, (Proposal, Idea))#@TODO context: abstract class (Proposal, Idea)
         result['current_step'] = 1
         result['step4_message'] = ""
         result['step3_message'] = ""
-        if isinstance(self.context, Proposal):
-            if 'draft' in self.context.state:
+
+        if isinstance(context, Proposal):
+            if 'draft' in context.state:
                 result['current_step'] = 2
-            elif 'published' in self.context.state:
+            elif 'published' in context.state:
                 result['current_step'] = 4
-                result['step4_message'] = renderers.render(self.step4_template, {'context':self.context}, self.request)
-            elif not ('deprecated' in self.context.state):
+                result['step4_message'] = renderers.render(self.step4_template, {'context':context}, self.request)
+            elif not ('deprecated' in context.state):
                 result['current_step'] = 3
-                result['step3_message'] =  renderers.render(self.step3_template, {'context':self.context}, self.request)
-            elif 'deprecated' in self.context.state:
+                result['step3_message'] =  renderers.render(self.step3_template, {'context':context}, self.request)
+            elif 'deprecated' in context.state:
                 result['current_step'] = 0
 
         return result

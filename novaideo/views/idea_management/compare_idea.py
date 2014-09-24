@@ -35,6 +35,7 @@ class DiffView(BasicView):
     validators = [CompareIdea.get_validator()]
     template = 'novaideo:views/idea_management/templates/diff_result.pt'
 
+    #TODO current version
     def update(self):
         version = self.params('version')
         textdiff = ''

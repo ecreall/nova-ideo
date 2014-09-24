@@ -6,26 +6,22 @@
     <div class="scroll-able amendment-intention">
         <span tal:condition="is_proposal" style="color: red;">(Texte d'origine)</span>
         <dl  tal:condition="not is_proposal">
-            <dt>Intention</dt>
-	    <dd>${amendment.intention}</dd>
-            <dt>Objectif</dt>
-	    <dd>${amendment.comment}</dd>
-            <dt>Idées remplacées</dt>
-	    <dd>
-             <tal:loop repeat="ri amendment.replaced_ideas">
-                <a  tal:attributes="href request.resource_url(ri, '@@index')">${ri.title}</a>
-                <tal:separator condition="not: repeat['ri'].end">, </tal:separator>
-              </tal:loop> 
-              <span tal:condition="len(amendment.replaced_ideas) == 0"> Non identifiée </span>  
-            </dd>
-            <dt>Idées de remplacement</dt>
-	    <dd>
-              <tal:loop repeat="ri amendment.ideas_of_replacement">
-                <a  tal:attributes="href request.resource_url(ri, '@@index')">${ri.title}</a>
-                <tal:separator condition="not: repeat['ri'].end">, </tal:separator>
-              </tal:loop> 
-              <span tal:condition="len(amendment.ideas_of_replacement) == 0"> Non identifiée </span>  
-            </dd>
+        <dt>Intention</dt>
+	<dd>${getattr(amendment, 'intention', 'Not specified')}</dd>
+        <dt>Objet</dt>
+	<dd>${getattr(amendment, 'comment', 'Not specified')}</dd>
+        <div tal:omit-tag="" tal:condition="amendment.replaced_idea">
+           <dt >Idées remplacée</dt>
+	   <dd >
+             <a  tal:attributes="href request.resource_url(amendment.replaced_idea, '@@index')">${ri.title}</a>
+           </dd>
+        </div>
+        <div tal:omit-tag="" tal:condition="amendment.idea_of_replacement">
+          <dt >Idée de remplacement</dt>
+          <dd>
+             <a  tal:attributes="href request.resource_url(amendment.idea_of_replacement, '@@index')">${ri.title}</a>
+          </dd>
+        </div>
         </dl>
    </div>
 </div>

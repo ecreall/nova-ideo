@@ -311,6 +311,8 @@ ins {
     padding-bottom: 10.5px;
     padding-right: 39px;
     padding-top: 5px;
+    cursor: -moz-grab;
+
 }
 
 .disabled-del-item {
@@ -319,6 +321,7 @@ ins {
     padding-bottom: 10.5px;
     padding-right: 39px;
     padding-top: 5px;
+    cursor: no-drop;
 }
 
 .item-closed:hover { background: transparent url(../images/open_button_over.png) center right no-repeat; }
@@ -356,7 +359,7 @@ ins {
 }*/
 
 .idea-managements{
- margin-top: 22%
+ margin-top: 66px;
 }
 
 .idea-managements .panel-body{

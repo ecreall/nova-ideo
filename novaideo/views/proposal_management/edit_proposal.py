@@ -34,7 +34,7 @@ def idea_choice(node, kw):
      user = get_current()
      _ideas = list(user.ideas)
      _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
-     ideas = [i for i in _ideas if can_access(user, i)]
+     ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
      values = [(i, i.title) for i in ideas]
      values.insert(0, ('', '- Select -'))
      return Select2WidgetSearch(values=values, item_css_class='search-idea-form',
@@ -54,7 +54,7 @@ class AddIdeaSchema(Schema):
     new_idea_choice = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="new-idea-control"),
-        label=_('Creat a new idea'),
+        label=_('Create a new idea'),
         title =_(''),
         missing=False
         )
@@ -149,7 +149,7 @@ class IdeaManagementView(MultipleView):
 def ideas_choice():
     root = getSite()
     user = get_current()
-    ideas = [i for i in root.ideas if can_access(user, i)]
+    ideas = [i for i in root.ideas if can_access(user, i) and not('deprecated' in i.state)]
     values = [(i, i.title) for i in ideas]
     return Select2Widget(values=values, multiple=True)
 

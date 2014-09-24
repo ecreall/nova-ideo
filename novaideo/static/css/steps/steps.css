@@ -24,7 +24,7 @@
 	float: left;
 	width: 27%;
 }
-.steps li a {
+.steps li .step-content {
 	display: block;
 	padding: 15px 20px;
 	background: #d0d0d0;
@@ -33,17 +33,17 @@
 	text-decoration: none;
   text-align:center;
 }
-.steps li a:hover { background: #666; }
-.steps li.step, .steps li.step a {
+.steps li .step-content:hover { background: #666; }
+.steps li.step, .steps li.step .step-content {
 	position: relative;
 	z-index: 4;
         height: 4em;
 }
-.steps li.step-2, .steps li.step-2 a { z-index: 3; }
-.steps li.step-3, .steps li.step-3 a { z-index: 2; }
-.steps li.step-4, .steps li.step-4 a { z-index: 1; }
+.steps li.step-2, .steps li.step-2 .step-content { z-index: 3; }
+.steps li.step-3, .steps li.step-3 .step-content { z-index: 2; }
+.steps li.step-4, .steps li.step-4 .step-content { z-index: 1; }
 
-.steps li.step-1 a, .steps li.step-2 a, .steps li.step-3 a , .steps li.step-4 a {
+.steps li.step-1 .step-content, .steps li.step-2 .step-content, .steps li.step-3 .step-content , .steps li.step-4 .step-content {
 	background: transparent url(step-off.png) center right no-repeat;
         padding-bottom: 4px;
         padding-right: 25px;
@@ -57,7 +57,7 @@
    vertical-align: sub;
 }
 */
-.steps li.current-step a{
+.steps li.current-step .step-content{
         background: transparent url(step.png) center right no-repeat;
 }
 
@@ -70,12 +70,12 @@
 
 }
 .steps li.step-2, .steps li.step-3, .steps li.step-4 { margin-left: -29px; }
-.steps li.step-2 a, .steps li.step-3 a { padding-left: 45px; }
-.steps li.step-4 a {
+.steps li.step-2 .step-content, .steps li.step-3 .step-content { padding-left: 45px; }
+.steps li.step-4 .step-content {
 	padding-left: 45px;
 	padding-right: 10px;
         background-position: center left;
         width: 113%;
 }
-.steps li.step a:hover { background: transparent url(step_over.png) center right no-repeat; }
-.steps li.step-4 a:hover { background-position: center left; }
+.steps li.step .step-content:hover { background: transparent url(step_over.png) center right no-repeat; }
+.steps li.step-4 .step-content:hover { background-position: center left; }

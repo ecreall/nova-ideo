@@ -5,7 +5,7 @@
               <span class="glyphicon glyphicon-plus"> </span>  ${item['title']}
 	   </a>
            <span class="actions pull-right" data-id="${item['id']}" data-title="${item['title']}">
-              <span class="${(len(items)==1) and 'disabled-'}del-item"></span>
+              <span title="Retirer de la liste" class="${(len(items)==1) and 'disabled-'}del-item"></span>
            </span>
 	 </div>
 	 <div class="panel-collapse collapse" id="panel-element-${item['id']}" style="height: auto;">

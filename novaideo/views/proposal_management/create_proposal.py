@@ -17,7 +17,7 @@ from pontus.file import Object as ObjectType
 from pontus.widget import MappingWidget, Select2Widget
 
 from novaideo.content.processes.proposal_management.behaviors import  CreateProposal
-from novaideo.content.proposal import ProposalSchema, RelatedIdeasSchema, Proposal
+from novaideo.content.proposal import ProposalSchema, Proposal
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.core import can_access
@@ -65,23 +65,14 @@ class IdeaManagementView(MultipleView):
     css_class = 'panel-success'
 
 
-class CreateProposalSchema(Schema):
-
-    related_ideas  = RelatedIdeasSchema(widget=deform.widget.MappingWidget(mapping_css_class='form-idea-select'))
-
-    proposal = select(ProposalSchema(factory=Proposal, 
-                                     editable=True, 
-                                     widget=deform.widget.MappingWidget(mapping_css_class='form-proposal-confirmation'),
-                                     omit=['keywords']),
-                     ['title', 'description', 'keywords'])
-
 
 def ideas_choice():
     root = getSite()
     user = get_current()
-    ideas = [i for i in root.ideas if can_access(user, i)]
+    ideas = [i for i in root.ideas if can_access(user, i) and not('deprecated' in i.state)]
     values = [(i, i.title) for i in ideas]
     return Select2Widget(values=values, multiple=True)
+
 
 class CreateProposalFormView(FormView):
 

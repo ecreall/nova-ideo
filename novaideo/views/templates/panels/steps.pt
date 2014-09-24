@@ -2,26 +2,26 @@
 	<div class="steps">
   	  <ul>
     	    <li class="step step-1 no-message ${(current_step == 1)  and 'current-step'}">
-      	      <a href="#"><div class="step-text"><strong>Recueil de l'idée</strong></div></a>
+      	      <span class="step-content"><div class="step-text"><strong>Recueil de l'idée</strong></div></span>
             </li>
             <li class="step step-2 no-message ${(current_step == 2)  and 'current-step'}">
-      	      <a href="#"><div class="step-text"><strong>Rédaction de la proposition</strong></div></a>
+      	      <span class="step-content"><div class="step-text"><strong>Rédaction de la proposition</strong></div></span>
             </li>
             <li class="step step-3 ${(current_step == 3)  and 'current-step'}">
-      	       <a href="#">
+      	       <span class="step-content">
                  <div class="step-text">
                    <strong >Amélioration de la proposition</strong>
                    <br />${structure:step3_message}
                  </div>
-               </a>
+               </span>
             </li>
             <li class="step step-4 ${(current_step == 4)  and 'current-step'}">
-      	       <a href="#">
+      	       <span class="step-content">
                  <div class="step-text">
                    <strong>Soutien de la proposition</strong>
                    <br />${structure:step4_message}
                  </div>
-               </a>
+               </span>
             </li>
           </ul>
       </div>

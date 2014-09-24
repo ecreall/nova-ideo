@@ -43,32 +43,20 @@ def intention_choice(node, kw):
     values.insert(0, ('', '- Select -'))
     return Select2Widget(values=values)
 
-def context_is_a_amendment(context, request):
-    return request.registry.content.istype(context, 'amendment')
-
 
 @colander.deferred
-def replaced_ideas_choice(node, kw):
+def replaced_idea_choice(node, kw):
     context = node.bindings['context']
     root = getSite()
     user = get_current()
     ideas = [i for i in context.related_ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
-    return Select2Widget(values=values, multiple=True)
+    return Select2Widget(values=values)
 
-
-class ReplacedIdeasSchema(Schema):
-
-    replaced_ideas = colander.SchemaNode(
-            colander.Set(),
-            widget=replaced_ideas_choice,
-            title=_('Replaced ideas'),
-            missing=[]
-        )
 
 
 @colander.deferred
-def ideas_replacement_choice(node, kw):
+def idea_replacement_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
     root = getSite()
@@ -77,25 +65,20 @@ def ideas_replacement_choice(node, kw):
     _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
     ideas = [i for i in _ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
+    return Select2Widget(values=values)
+
+
+@colander.deferred
+def ideas_choice(node, kw):
+    root = getSite()
+    user = get_current()
+    ideas = [i for i in root.ideas if can_access(user, i) and not('deprecated' in i.state)]
+    values = [(i, i.title) for i in ideas]
     return Select2Widget(values=values, multiple=True)
 
 
-
-class IdeasOfReplacementSchema(Schema):
-
-    ideas_of_replacement = colander.SchemaNode(
-            colander.Set(),
-            widget=ideas_replacement_choice,
-            title=_('Ideas of replacement'),
-            missing=[],
-        )
-
-
-class AmendmentIdeaManagmentSchema(Schema):
-
-    replaced_ideas = ReplacedIdeasSchema(widget=deform.widget.MappingWidget(mapping_css_class='col-md-6 col-bloc'))
-
-    ideas_of_replacement = IdeasOfReplacementSchema(widget=deform.widget.MappingWidget(mapping_css_class='col-md-6 col-bloc'))
+def context_is_a_amendment(context, request):
+    return request.registry.content.istype(context, 'amendment')
 
 
 class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
@@ -109,8 +92,26 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
         widget=RichTextWidget()
         )
 
-    ideas = AmendmentIdeaManagmentSchema(widget=deform.widget.MappingWidget(mapping_css_class='row hide-bloc'))
+    related_ideas = colander.SchemaNode(
+        colander.Set(),
+        widget=ideas_choice,
+        title=_('Related ideas'),
+        default=[],
+        )
 
+    replaced_idea = colander.SchemaNode(
+            ObjectType(),
+            widget=replaced_idea_choice,
+            title=_('Replaced idea'),
+            missing=[]
+        )
+
+    ideas_of_replacement = colander.SchemaNode(
+            ObjectType(),
+            widget=idea_replacement_choice,
+            title=_('Idea of replacement'),
+            missing=[],
+        )
 
 
 @content(
@@ -123,8 +124,9 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
     result_template = 'novaideo:views/templates/amendment_result.pt'
     author = SharedUniqueProperty('author')
     proposal = SharedUniqueProperty('proposal', 'amendments')
-    replaced_ideas = SharedMultipleProperty('replaced_ideas', isunique=True)
-    ideas_of_replacement = SharedMultipleProperty('ideas_of_replacement', isunique=True)
+    replaced_idea = SharedUniqueProperty('replaced_idea', isunique=True)
+    idea_of_replacement = SharedUniqueProperty('idea_of_replacement', isunique=True)
+    related_ideas = SharedMultipleProperty('related_ideas', isunique=True)
 
     def __init__(self, **kwargs):
         super(Amendment, self).__init__(**kwargs)
