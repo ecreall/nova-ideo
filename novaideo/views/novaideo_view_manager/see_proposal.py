@@ -93,6 +93,9 @@ class SeeProposalActionsView(MultipleView):
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
     views = (EditAmendmentsView, AssociateView, SeeRelatedIdeasView, PresentProposalView, CommentProposalView)
 
+    def _activate(self, items):
+        pass
+
 
 @view_config(
     name='seeproposal',

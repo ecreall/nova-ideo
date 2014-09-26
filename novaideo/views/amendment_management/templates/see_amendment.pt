@@ -5,16 +5,22 @@
         </tal:loop>
   </div>
 </div>
-<div class="media-body content-title">
-<h3 tal:condition="amendment.state"><span class="label label-primary pull-right">${amendment.state[0].capitalize()}</span></h3>
-<h3>${amendment.title}</h3>
+<div class="media-body content-title-body">
+<h3 tal:condition="amendment.state"><span class="label label-basic pull-right">${amendment.state[0].capitalize()}</span></h3>
+<h2 class="content-title">${amendment.title}</h2>
 </div>
-  <div class="jumbotron well amendment-well">
+  <div class="amendment-well">
     <dl >
         <dt>Intention</dt>
 	<dd>${getattr(amendment, 'intention', 'Not specified')}</dd>
         <dt>Objet</dt>
 	<dd>${getattr(amendment, 'comment', 'Not specified')}</dd>
+        <div tal:omit-tag="" tal:condition="amendment.originalentity is not None">
+          <dt>Amendement d'originie</dt>
+	  <dd>
+             <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a>
+          </dd>
+        </div>
         <div tal:omit-tag="" tal:condition="amendment.replaced_idea">
            <dt >Idées remplacée</dt>
 	   <dd >
@@ -29,14 +35,15 @@
         </div>
         <dt>Dernière modification</dt>
 	<dd>
-          <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.created_at.hour}:${amendment.created_at.minute}:${amendment.created_at.second} par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a>
+          <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a>
         </dd>
     </dl>
   </div>
 
-<h3>Les modifications apportées à la proposition (<a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a>)</h3>
-<div id="amendment-diff">
-  <div class="jumbotron well diff-well">
+<div class="amendment-diff">
+ <h3>Les modifications apportées à la proposition (<a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a>)</h3>
+ <div id="diff-container">
+  <div class="proposal-well">
     <dl >
         <dt>Résumé</dt>
 	<dd>${structure:descriptiondiff}</dd>
@@ -52,7 +59,9 @@
   <div id="contenttext" class="content-text">
     ${structure:textdiff}
   </div>
+ </div>
 </div>
+
 <div id="text-actions">
   <div tal:condition="text_actions" class="text-actions">
         <tal:loop repeat="a text_actions">

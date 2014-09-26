@@ -78,6 +78,9 @@ class SeeAmendmentActionsView(MultipleView):
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
     views = (AssociateView, PresentAmendmentView, CommentAmendmentView)
 
+    def _activate(self, items):
+        pass
+
 
 @view_config(
     name='seeamendment',

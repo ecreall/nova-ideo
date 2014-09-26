@@ -18,7 +18,7 @@
                       data-target="#${correlationaction['action_id']}"
                       data-updateurl="${correlationaction['actionurl_update']}"
                       data-toreplay="${'toreplay' in correlationaction}">
-                     <span class="glyphicon glyphicon-pencil"></span> ${correlationaction['action'].title}
+                     <span class="glyphicon glyphicon-comment"></span> ${correlationaction['action'].title}
                    </a>
                    <script tal:condition="'toreplay' in correlationaction">       
                         $(document).ready(function(){

@@ -1,1 +1,1 @@
-<a href="${request.resource_url(object, '@@index')}" i18n:translate="">${object.title}</a> modifiée le <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> à ${object.created_at.hour}:${object.created_at.minute}:${object.created_at.second}
+<a href="${request.resource_url(object, '@@index')}" i18n:translate="">${object.title}</a> modifiée le <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> à ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second}

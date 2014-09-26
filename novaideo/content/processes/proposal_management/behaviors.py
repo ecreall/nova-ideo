@@ -129,25 +129,22 @@ class CreateProposal(ElementaryAction):
         return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
-def pap_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
-
 
 def pap_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    if getattr(context, 'originalentity', None):
+        originalentity = getattr(context, 'originalentity')
+        if originalentity.text == context.text:
+            return False
 
-
-def pap_state_validation(process, context):
-    return "to work" in context.state
+    return has_any_roles(roles=(('Owner', context),)) or \
+           (has_any_roles(roles=('Member',)) and ('published' in context.state))
 
 
 class PublishAsProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     context = Iidea
     style_descriminator = 'global-action'
-    roles_validation = pap_roles_validation
     processsecurity_validation = pap_processsecurity_validation
-    state_validation = pap_state_validation
 
     def _associate(self, related_ideas, proposal):
         root = getSite()
@@ -170,11 +167,13 @@ class PublishAsProposal(ElementaryAction):
         for k in context.keywords_ref:
             proposal.addtoproperty('keywords_ref', k)
 
-        proposal.title = context.title
+        proposal.title = context.title + _(" (The proposal)") 
         proposal.description = context.description
         proposal.text = context.text
         proposal.state.append('draft')
-        context.state = PersistentList(['published'])
+        if ('to work' in context.state):
+            context.state = PersistentList(['published'])
+
         grant_roles(roles=(('Owner', proposal), ))
         grant_roles(roles=(('Participant', proposal), ))
         proposal.setproperty('author', get_current())
@@ -239,6 +238,7 @@ class SubmitProposal(ElementaryAction):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
 def duplicate_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) and \
            not ('draft' in context.state)
@@ -254,17 +254,16 @@ class DuplicateProposal(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         copy_of_proposal = copy(context, (root, 'proposals'))
-        #copy_of_proposal.created_at = datetime.datetime.today()
-        #copy_of_proposal.modified_at = datetime.datetime.today()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
             root.addtoproperty('keywords', nk)
 
         result.extend(newkeywords)
+        
+        related_ideas = appstruct.pop('related_ideas')
         appstruct['keywords_ref'] = result
         copy_of_proposal.set_data(appstruct)
-        #root.addtoproperty('proposals', copy_of_proposal)
         copy_of_proposal.setproperty('originalentity', context)
         copy_of_proposal.state = PersistentList(['draft'])
         copy_of_proposal.setproperty('author', get_current())
@@ -277,8 +276,8 @@ class DuplicateProposal(ElementaryAction):
         wg.setproperty('proposal', copy_of_proposal)
         wg.addtoproperty('members', get_current())
         wg.state.append('deactivated')
-        if context.related_ideas:
-            associate_to_proposal(context.related_ideas, copy_of_proposal, False)
+        if related_ideas:
+            associate_to_proposal(related_ideas, copy_of_proposal, False)
 
         wg.reindex()
         copy_of_proposal.reindex()
@@ -1320,19 +1319,11 @@ class AmendmentsResult(ElementaryAction):
 
     def _get_copy(self, context, root, wg):
         copy_of_proposal = copy(context, (root, 'proposals'), roles=True)
-        #copy_of_proposal.created_at = datetime.datetime.today()
-        #copy_of_proposal.modified_at = datetime.datetime.today()
+        copy_keywords, newkeywords = root.get_keywords(context.keywords)
+        copy_of_proposal.setproperty('keywords_ref', copy_keywords)
         copy_of_proposal.setproperty('originalentity', context)
-        #copy_of_proposal.setproperty('version', None)
-        #copy_of_proposal.setproperty('nextversion', None)
         copy_of_proposal.state = PersistentList(['amendable'])
         copy_of_proposal.setproperty('author', context.author)
-        #root.addtoproperty('proposals', copy_of_proposal)
-        #for user in wg.members: #TODO la copy des roles: option de copy
-        #    grant_roles(user=user, roles=(('Participant', copy_of_proposal), ))
-
-        #grant_roles(user=context.author, roles=(('Owner', copy_of_proposal), ))#TODO la copy des roles: option de copy
-        #grant_roles(user=context.author, roles=(('Owner', context), ))
         self.process.execution_context.add_created_entity('proposal', copy_of_proposal)
         wg.setproperty('proposal', copy_of_proposal)
         return copy_of_proposal

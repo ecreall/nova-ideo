@@ -16,7 +16,7 @@ from dace.descriptors import (
     SharedUniqueProperty,
     SharedMultipleProperty
 )
-from pontus.widget import RichTextWidget,Select2Widget, CheckboxChoiceWidget
+from pontus.widget import RichTextWidget,Select2Widget, CheckboxChoiceWidget, Length
 from pontus.core import VisualisableElementSchema
 from pontus.schema import Schema
 from pontus.file import Object as ObjectType
@@ -96,6 +96,7 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.Set(),
         widget=ideas_choice,
         title=_('Related ideas'),
+        validator=Length(_, min=1), #TODO message
         default=[],
         )
 

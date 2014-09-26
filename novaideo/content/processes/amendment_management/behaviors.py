@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 import datetime
+from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import (
@@ -27,6 +28,7 @@ try:
 except NameError:
       basestring = str
 
+
 def del_roles_validation(process, context):
     return has_any_roles(roles=(('Participant', context.proposal),))
 
@@ -43,7 +45,7 @@ def duplicate_state_validation(process, context):
     return 'amendable' in proposal.state and 'active' in wg.state
 
 
-class DuplicateAmendment(ElementaryAction):
+class DuplicateAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_order = 3

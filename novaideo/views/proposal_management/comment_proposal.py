@@ -48,6 +48,8 @@ class CommentProposalFormView(CommentIdeaFormView):
     renderer='pontus:templates/view.pt',
     )
 class CommentProposalView(CommentIdeaView):
+    title = _('Comment the proposal')
+    description = _('Comment the proposal')
     name='commentidea'
     views = (CommentProposalFormView, CommentsView)
 

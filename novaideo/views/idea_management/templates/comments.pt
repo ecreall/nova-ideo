@@ -28,7 +28,7 @@
                       data-target="#${commentaction['action_id']}"
                       data-updateurl="${commentaction['actionurl_update']}"
                       data-toreplay="${'toreplay' in commentaction}">
-                     <span class="glyphicon glyphicon-pencil"></span> ${commentaction['action'].title}
+                     <span class="glyphicon glyphicon-comment"></span> ${commentaction['action'].title}
                    </a>
                    <script tal:condition="'toreplay' in commentaction">       
                         $(document).ready(function(){

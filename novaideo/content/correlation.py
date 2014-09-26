@@ -19,6 +19,7 @@ from novaideo.core import Commentable, can_access
 from novaideo import _
 
 
+
 @colander.deferred
 def targets_choice(node, kw):
     context = node.bindings['context']
@@ -29,7 +30,7 @@ def targets_choice(node, kw):
     entities = find_entities([ICorrelableEntity])
     values = [(i, i.title) for i in entities if not(i is context) and can_access(user, i, request, root)] #i.actions
     values = sorted(values, key=lambda p: p[1])
-    return Select2Widget(values=values, multiple=True)
+    return Select2Widget(values=values, multiple=True, min_len=1)
 
 
 
@@ -68,6 +69,7 @@ class CorrelationSchema(VisualisableElementSchema):
     targets = colander.SchemaNode(
         ObjectType(),
         widget=targets_choice,
+        validator = colander.Length(min=1),
         title=_('Targets'),
         )
 

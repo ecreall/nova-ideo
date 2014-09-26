@@ -3,12 +3,12 @@
    <nav id="navbaruser" class="navbar navbar-default navbar" role="navigation">
      <div class="container">
         <div class="row global-actions-menu" tal:define="keys list(actions['menu3'].keys())">
-            <div class="col-md-3 action-1"  tal:condition="actions['menu3']" tal:define="k keys[0]; a actions['menu3'][k]">
+            <div class="col-md-3 action-1"  tal:condition="actions['menu3']" tal:define="k keys[0]; a actions['menu3'][k]['url'] ">
                 <a class="btn btn-default ${((a is None) and 'disabled') or ''} btn-sm"  href="${a}" >
                    ${k}
                 </a>
             </div>
-            <div class="col-md-3"  tal:condition="actions['menu3']" tal:define="k keys[1]; a actions['menu3'][k]">
+            <div class="col-md-3"  tal:condition="actions['menu3']" tal:define="k keys[1]; a actions['menu3'][k]['url'] ">
                 <a class="btn btn-default ${((a is None) and 'disabled') or ''} btn-sm"  href="${a}" >
                    ${k}
                 </a>
@@ -23,19 +23,19 @@
             </div>
             <div class="col-sm-6 col-md-6">
                     <div class="row">
-                        <div class="col-md-6">
-                          <ul tal:condition="actions['menu1']"  class="nav nav-pills nav-stacked">
+                        <div class="col-md-6" style="padding-right: 0px">
+                          <ul tal:condition="actions['menu1']"  class="nav access-menu">
                              <li tal:repeat="(k, a) actions['menu1'].items()">
-                                <a class="btn btn-primary ${((actions['menu1'][k] is None) and 'disabled') or ''} btn-sm" style="max-width: 300px;" href="${actions['menu1'][k]}" >
-                                   ${k}
+                                <a class="menu-access-action ${(request.view_name == actions['menu1'][k]['view_name']) and 'active'} ${((actions['menu1'][k]['url']  is None) and 'disabled') or ''}" href="${actions['menu1'][k]['url']}" >
+                                   ${k} 
                                 </a>
                              </li>
                           </ul>
                         </div>
-                        <div class="col-md-6" >
-                          <ul tal:condition="actions['menu2']"  class="nav nav-pills nav-stacked">
+                        <div class="col-md-6" style="padding-left: 0px">
+                          <ul tal:condition="actions['menu2']"  class="nav access-menu">
                              <li tal:repeat="(k, a) actions['menu2'].items()">
-                                <a class="btn btn-primary ${((actions['menu2'][k] is None) and 'disabled') or ''} btn-sm" style="max-width: 300px;" href="${actions['menu2'][k]}" >
+                                <a class="menu-access-action ${(request.view_name == actions['menu2'][k]['view_name']) and 'active'} ${((actions['menu2'][k]['url'] is None) and 'disabled') or ''}"  href="${actions['menu2'][k]['url'] }" >
                                    ${k}
                                 </a>
                              </li>

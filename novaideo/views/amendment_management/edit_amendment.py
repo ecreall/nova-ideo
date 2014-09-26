@@ -10,7 +10,7 @@ from pontus.view_operation import MultipleView
 from novaideo.content.processes.amendment_management.behaviors import  EditAmendment
 from novaideo.content.amendment import AmendmentSchema, Amendment
 from novaideo import _
-from novaideo.views.proposal_management.edit_proposal import AddIdeaSchema, AddIdea, AddIdeaFormView, RelatedIdeasView, IdeaManagementView
+from novaideo.views.proposal_management.edit_proposal import IdeaManagementView
 from novaideo.views.proposal_management.create_proposal import ideas_choice
 
 

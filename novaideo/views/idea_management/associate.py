@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import deform
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
@@ -20,8 +21,8 @@ from novaideo.core import can_access
 
 
 associate_messages = {'0': u"""Pas de contenus asociés""",
-                      '1': u"""Voir le contenu asocié""",
-                      '*': u"""Voir les {lenassociated} contenus asociés"""}
+                      '1': u"""Un contenu asocié""",
+                      '*': u"""{lenassociated} contenus asociés"""}
 
 
 class RelatedContentsView(BasicView):
@@ -110,9 +111,17 @@ class AssociateFormView(FormView):
     formid = 'formassociate'
     name='associateform'
 
+
     def before_update(self):
         target = self.schema.get('targets')
         target.title = _("Related contents")
+        formwidget = deform.widget.FormWidget(css_class='associate-form', 
+                                              activable=True,
+                                              button_css_class="pull-right",
+                                              picto_css_class="glyphicon glyphicon-link",
+                                              button_title="Associate")
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
+        self.schema.widget = formwidget
 
 
 @view_config(
@@ -121,11 +130,12 @@ class AssociateFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class AssociateView(MultipleView):
-    title = _('Associate')
+    title = _('Associate the idea')
     name = 'associate'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
-    views = (AssociateFormView, RelatedContentsView)
+    views = (RelatedContentsView, AssociateFormView)
+    description=_("Associate the idea to an other content")
 
     def get_message(self):
         root = getSite()

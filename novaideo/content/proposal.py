@@ -14,7 +14,7 @@ from dace.descriptors import (
     SharedUniqueProperty,
     SharedMultipleProperty
 )
-from pontus.widget import RichTextWidget,Select2Widget
+from pontus.widget import RichTextWidget,Select2Widget, Length
 from pontus.core import VisualisableElementSchema
 from pontus.schema import Schema
 
@@ -67,6 +67,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.Set(),
         widget=ideas_choice,
         title=_('Related ideas'),
+        validator = Length(_, min=1),#TODO error message
         default=[],
         )
 

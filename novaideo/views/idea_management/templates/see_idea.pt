@@ -5,12 +5,12 @@
         </tal:loop>
   </div>
 </div>
-<div class="media-body content-title">
-<h3 tal:condition="idea.state"><span class="label label-primary pull-right">${idea.state[0].capitalize()}</span></h3>
-<h3><img src="${request.static_url('novaideo:static/images/idea_picto32.png')}"> ${idea.title}</h3>
+<div class="media-body content-title-body">
+<h3 tal:condition="idea.state"><span class="label label-basic pull-right">${idea.state[0].capitalize()}</span></h3>
+<h2 class="content-title"><img src="${request.static_url('novaideo:static/images/idea_picto32.png')}"> ${idea.title}</h2>
 </div>
 
-<div class="jumbotron well idea-well">
+<div class="idea-well">
     <dl >
         <dt>Résumé</dt>
 	<dd>${idea.description}</dd>
@@ -21,9 +21,15 @@
             <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
         </tal:loop>
       </dd>
+        <div tal:omit-tag="" tal:condition="idea.originalentity is not None">
+          <dt>Idée d'originie</dt>
+	  <dd>
+             <a tal:attributes="href request.resource_url(idea.originalentity, '@@index')">${idea.originalentity.title}</a>
+          </dd>
+        </div>
         <dt>Dernière modification</dt>
 	<dd>
-          <span tal:replace="layout.to_localized_time(idea.modified_at, date_only=True)"/> à ${idea.created_at.hour}:${idea.created_at.minute}:${idea.created_at.second} par <a tal:attributes="href request.resource_url(idea.author, '@@index')">${((idea.author is current_user) and 'Vous') or idea.author.name}</a>
+          <span tal:replace="layout.to_localized_time(idea.modified_at, date_only=True)"/> à ${idea.modified_at.hour}:${idea.modified_at.minute}:${idea.modified_at.second} par <a tal:attributes="href request.resource_url(idea.author, '@@index')">${((idea.author is current_user) and 'Vous') or idea.author.name}</a>
         </dd>
     </dl>
 </div>

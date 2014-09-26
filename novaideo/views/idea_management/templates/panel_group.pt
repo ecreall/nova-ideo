@@ -1,4 +1,4 @@
-<div id="panel-actions-idea" class="panel-group">
+<div id="panel-actions-content" class="panel-group">
     <div tal:omit-tag="" tal:define=" items subitem['items'];
                                   itemslen len(items)|0">
           <tal:loop repeat="item items">

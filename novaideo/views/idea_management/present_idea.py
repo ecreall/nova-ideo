@@ -10,7 +10,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select, Schema
-from pontus.widget import Select2WidgetCreateSearchChoice
+from pontus.widget import Select2WidgetCreateSearchChoice, Length
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 
@@ -28,8 +28,8 @@ except NameError:
 
 
 presentidea_message = {'0': u"""Pas de personnes contactées""",
-                       '1': u"""Voir la personne contactée""",
-                       '*': u"""Voir les {len_persons_contacted} personnes contactées"""}
+                       '1': u"""Une personne contactée""",
+                       '*': u"""{len_persons_contacted} personnes contactées"""}
 
 
 class SentToView(BasicView):
@@ -79,6 +79,7 @@ class PresentIdeaSchema(Schema):
     members = colander.SchemaNode(
         colander.Set(),
         widget=members_choice,
+        validator = Length(_, min=1, min_message="Vous devez sélectionner au moins {min} membre, ou saisir {min} adresse courrier électronique."),
         title=_('Recipients')
         )
 
@@ -104,7 +105,6 @@ class PresentIdeaSchema(Schema):
         )
 
 
-
 class PresentIdeaFormView(FormView):
 
     title = _('Present idea')
@@ -113,6 +113,15 @@ class PresentIdeaFormView(FormView):
     formid = 'formpresentideaform'
     name='presentideaform'
 
+    def before_update(self):
+        formwidget = deform.widget.FormWidget(css_class='associate-form', 
+                                              activable=True,
+                                              button_css_class="pull-right",
+                                              picto_css_class="glyphicon glyphicon-envelope",
+                                              button_title="Present")
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
+        self.schema.widget = formwidget
+
 
 @view_config(
     name='presentidea',
@@ -120,11 +129,12 @@ class PresentIdeaFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class PresentIdeaView(MultipleView):
-    title = _('Present idea')
+    title = _('Present the idea')
+    description = _('Present the idea')
     name='presentidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
-    views = (PresentIdeaFormView, SentToView)
+    views = (SentToView, PresentIdeaFormView)
 
     def get_message(self):
         len_persons_contacted = len(self.context.persons_contacted)

@@ -160,8 +160,13 @@ class EditIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         last_version = context.version
-        copy_of_idea = copy(context, (context, 'version'), roles=True)
+        copy_of_idea = copy(context, (context, 'version'), select=('modified_at',), omit=('created_at',), roles=True)
+        copy_keywords, newkeywords = root.get_keywords(context.keywords)
+        copy_of_idea.setproperty('keywords_ref', copy_keywords)
         copy_of_idea.setproperty('version', last_version)
+        if last_version is not None:
+            grant_roles(roles=(('Owner', last_version), ))
+
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         keywords_ids = appstruct.pop('keywords')
@@ -175,6 +180,8 @@ class EditIdea(InfiniteCardinality):
         
         copy_of_idea.setproperty('author', get_current())
         context.set_data(appstruct)
+        context.modified_at = datetime.datetime.today()
+        copy_of_idea.reindex()
         context.reindex()
         user = get_current()
         if 'abandoned' in context.state:

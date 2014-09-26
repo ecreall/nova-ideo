@@ -1,4 +1,4 @@
- <div id="panel-controllableitems" class="panel-group controllable-items" data-target="${target}">
+<div id="panel-controllableitems" class="panel-group controllable-items" data-target="${target}">
    <div tal:repeat="item items" class="panel controllable-item">
 	 <div class="panel-heading">
 	   <a  href="#panel-element-${item['id']}" data-parent="#panel-controllableitems" data-toggle="collapse" class="panel-title">

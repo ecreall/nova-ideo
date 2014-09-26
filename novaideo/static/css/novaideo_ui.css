@@ -1,3 +1,33 @@
+dd {
+  margin-bottom: 7px; 
+  margin-left: 10px
+}
+
+dt {
+  margin-bottom: 3px; 
+}
+
+.content-title {
+  font-weight: bold;
+  margin-bottom: 22px
+}
+
+.pontus-main-view .panel-heading{
+  /* TODO*/  
+}
+
+
+a:focus {
+
+    outline: medium none;
+}
+
+a:hover, a:focus {
+
+    text-decoration: none;
+}
+
+
 .thumbnail.right-caption>img{float: left;margin-right: 9px;}
 .thumbnail.right-caption{float: unset;}
 .thumbnail.right-caption>.caption{padding: 4px;}
@@ -45,11 +75,12 @@
     overflow: auto;
 }
 
-.scroll_choice {
+.scroll-choice {
 
     border: 1px solid threedlightshadow;
     border-radius: 6px;
     height: 132px;
+    padding: 10px;
 
 }
 
@@ -99,7 +130,7 @@ margin-bottom:15px;
    padding-left:0;
 }
 
-#panel-actions-idea {
+#panel-actions-content {
     margin-top: 20px;
 }
 
@@ -115,13 +146,20 @@ ins {
   background-color: #89e189;
 }
 
-#amendment-diff del {
+.amendment-diff del {
   background-color: #cc66cc;
 }
 
-#amendment-diff ins {
+.amendment-diff ins {
   background-color: #f19cf0;
 }
+
+.amendment-diff {
+    margin-left: 19px; 
+    margin-right: 19px;
+}
+
+
 
 .legend-carre-del{
 	width:20px;
@@ -137,16 +175,33 @@ ins {
         display: inline-block;; 
 }
 
+
 .idea-well {
-    background-image: linear-gradient(to bottom, #adcce7 0%, #d2e8fd 100%);
-    border-color: #adcce7;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(70, 178, 226, 0.16);
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    min-height: 20px;
+    padding: 19px;
 }
 
 .amendment-well {
-    background-image: linear-gradient(to bottom, #eadcea 0%, #eadcea 100%);
-    border-color: #dbd0db;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(207, 35, 0, 0.20);
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    min-height: 20px;
+    padding: 19px;
 }
 
+.proposal-well {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(76, 164, 76, 0.16);
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    min-height: 20px;
+    padding: 19px;
+}
 
 .thumbnail.right-caption > #idea-image {
     /**background-image: linear-gradient(to left, #effdea -100%, #93d91a 123%);**/
@@ -180,7 +235,7 @@ ins {
 }
 
 .thumbnail.right-caption > #amendment-image {
-    background-image: linear-gradient(to left, #eadcea -100%, #eadcea 123%);
+    background-image: linear-gradient(to left, #fdb677 -100%, #fdb677 123%);
     float: left;
     height: 205px;
     margin-left: -4px;
@@ -239,7 +294,7 @@ ins {
     background-repeat: repeat;
 }
 
-.content-title{
+.content-title-body{
     margin-left: 19px; 
     margin-right: 19px;
 }
@@ -331,14 +386,20 @@ ins {
 .panel-group .panel.controllable-item{
     border-bottom-right-radius: 15px;
     border-top-right-radius: 15px;
+   border: 1px solid #c0c0c0;
 }
 .controllable-items .panel-heading {
    padding: 3px 1px 6px 3px;
 }
 
-.panel-group .panel.controllable-item {
-    border: 1px solid #e1e2e3;
+.controllable-items {
+    background-color: #e3e5e1;
+    border: 1px solid #c0c0c0;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    padding: 5px;
 }
+
 
 .panel.controllable-item .panel-title {
     font-size: 15px;
@@ -371,6 +432,88 @@ ins {
   padding: 8px;
   border-radius: 4px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.label-basic {
+    border: 1px solid steelblue;
+    color: steelblue;
+    background-color: white;
+    font-size: 65%;
+
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset,  0 3px 2px rgba(0, 0, 0, 0.1);
+}
+
+.panel-heading .label-basic{
+    font-size: 14px
+}
+
+.menu-access-action{
+    background: none repeat scroll 0 0 steelblue;
+    border: 4px solid white;
+    border-radius: unset;
+    color: white;
+    font-size: 14px;
+    margin-bottom: -9px;
+    max-width: 300px;
+    text-align: center;
+}
+
+.access-menu > li > a {
+    display: block;
+    padding: 10px 0;
+    position: relative;
+    width: 101%;
+}
+
+.menu-access-action.disabled{
+    background: none repeat scroll 0 0 #adcce7;
+    cursor: not-allowed;
+}
+
+.access-menu > li {
+    display: block;
+    margin: 0;
+    position: relative;
+    width: 100%;
+}
+
+.nav.access-menu {
+ padding-left: 0;
+ margin-top: 18px;
+}
+
+
+.nav.access-menu > li > a:hover, .nav > li > a:focus {
+    background-color: #5cb85c;
+    color: white;
+    text-decoration: none;
+}
+
+.nav.access-menu > li > a.disabled:hover, .nav > li > a.disabled:focus {
+    background: #adcce7;
+    color: white;
+    text-decoration: none;
+}
+
+.menu-access-action.active{
+    background-color: #5cb85c;
+    color: white;
+    text-decoration: none;
+}
+
+.ajax-form .ajax-form-button {
+    color: gray;
+    cursor: grab;
+    font-size: 15px;
+    font-weight: lighter;
+}
+
+.ajax-form .ajax-form-button:hover {
+    color: #4ca44c;
+}
+
+.ajax-form form {
+    padding: 20px;
 }
 /*http://helping.probb.fr/t14-code-css-pour-aligner-un-texte-incline-au-centre-d-une-page-a4*/
 .content-text #filigrane{ 

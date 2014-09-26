@@ -19,8 +19,8 @@ from novaideo.core import can_access
 
 
 addideas_message = {'0': u"""Pas d'idées utilisées""",
-                   '1': u"""Voir l'idée utilisée""",
-                   '*': u"""Voir les {len_ideas} idées utilisées"""}
+                   '1': u"""Une idée utilisée""",
+                   '*': u"""{len_ideas} idées utilisées"""}
 
 @view_config(
     name='addideas',
@@ -28,7 +28,8 @@ addideas_message = {'0': u"""Pas d'idées utilisées""",
     renderer='pontus:templates/view.pt',
     )
 class SeeRelatedIdeasView(BasicView):
-    title = _('Related ideas')
+    title = _('See related ideas')
+    description = _('See related ideas')
     name = 'relatedideas'
     behaviors = [SeeRelatedIdeas]
     template = 'novaideo:views/idea_management/templates/related_contents.pt'

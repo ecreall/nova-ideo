@@ -15,8 +15,8 @@ from novaideo.core import BATCH_DEFAULT_SIZE, can_access
 
 
 amendments_messages = {'0': u"""Pas d'amendements""",
-                      '1': u"""Voir l'amendement""",
-                      '*': u"""Voir les {lenamendments} amendements"""}
+                      '1': u"""Un amendement proposé""",
+                      '*': u"""{lenamendments} amendements proposés"""}
 
 
 @view_config(
@@ -25,8 +25,9 @@ amendments_messages = {'0': u"""Pas d'amendements""",
     renderer='pontus:templates/view.pt',
     )
 class EditAmendmentsView(BasicView):
-    title = _('Edit amendments')
+    title = _('See amendments')
     name = 'editamendments'
+    description=_("See amendments")
     behaviors = [EditAmendments]
     template = 'novaideo:views/amendment_management/templates/edit_amendments.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'

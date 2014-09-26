@@ -94,8 +94,8 @@ class VersionableEntity(Entity):
 @implementer(IDuplicableEntity)
 class DuplicableEntity(Entity):
 
-    originalentity = SharedUniqueProperty('originalentity')
-
+    originalentity = SharedUniqueProperty('originalentity')#('originalentity', 'children')
+    #TODO children = = SharedMultipleProperty('children', 'originalentity')
 
 @colander.deferred
 def keywords_choice(node, kw):
@@ -164,8 +164,6 @@ class PresentableEntity(Entity):
                 result.append(email)
 
         return set(result)
-
-
 
 
 @implementer(ICorrelableEntity)

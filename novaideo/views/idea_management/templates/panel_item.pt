@@ -1,13 +1,15 @@
-<div class="panel panel-default">
+<div tal:define="error subitem['isactive'] and not getattr(subitem['view'], 'finished_successfully', True) and getattr(subitem['view'], 'isexecutable', False)"
+     title="${subitem['view'].description}" class="panel panel-${(error and 'danger') or 'default'}">
   <div class="panel-heading">
-    <a href="#${subitem['view'].viewid}" data-parent="#panel-actions-idea" data-toggle="collapse" class="panel-title collapsed">
+    <a href="#${subitem['view'].viewid}" data-parent="#panel-actions-content" data-toggle="collapse" class="panel-title ${(not error and 'collapsed')}">
         <small><span class="glyphicon glyphicon-plus"></span> ${subitem['view'].title}</small>
     </a>
-  <big><span class="label label-primary pull-right">${subitem['view'].get_message()}</span></big>
+  <big><span class="label label-basic pull-right">${subitem['view'].get_message()}</span></big>
   </div>
-  <div class="panel-collapse collapse" id="${subitem['view'].viewid}" style="height: auto;">
+  <div class="panel-collapse ${(error and 'in') or 'collapse'}" id="${subitem['view'].viewid}" style="height: auto;">
     <div  class="panel-body">
       <div tal:replace="structure subitem['body']" />
     </div>
   </div>
 </div>
+

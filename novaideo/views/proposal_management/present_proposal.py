@@ -50,6 +50,15 @@ class PresentProposalFormView(FormView):
     formid = 'formpresentproposalform'
     name='presentproposalform'
 
+    def before_update(self):
+        formwidget = deform.widget.FormWidget(css_class='associate-form', 
+                                              activable=True,
+                                              button_css_class="pull-right",
+                                              picto_css_class="glyphicon glyphicon-envelope",
+                                              button_title="Present")
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
+        self.schema.widget = formwidget
+
 
 @view_config(
     name='presentproposal',
@@ -57,9 +66,10 @@ class PresentProposalFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class PresentProposalView(PresentIdeaView):
-    title = _('Present proposal')
+    title = _('Present the proposal')
+    description = _('Present the proposal')
     name='presentproposal'
-    views = (PresentProposalFormView, SentToView)
+    views = (SentToView, PresentProposalFormView)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({PresentProposal:PresentProposalView})

@@ -34,6 +34,7 @@ def idea_choice(node, kw):
      user = get_current()
      _ideas = list(user.ideas)
      _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
+     _ideas = set(_ideas) 
      ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
      values = [(i, i.title) for i in ideas]
      values.insert(0, ('', '- Select -'))

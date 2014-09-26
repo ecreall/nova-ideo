@@ -101,8 +101,26 @@ $(document).ready(function(){
 
   init_switch();
 
+  /*$($('.alert.alert-danger').parents('.panel.panel-default').first()).on('shown.bs.collapse', function () {
+      if ($(this).find('pan'))
+      resize_search_result()
+  });
+*/
+
+   $('.ajax-form-button').on('click', function(){
+        var form = $($(this).parents('div.ajax-form').first()).find('form').first();
+        if (form.hasClass('hide-bloc')) {
+            form.removeClass('hide-bloc')           
+        }else{
+            form.addClass('hide-bloc')       }
+    });
+
   $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
      menuSwitchChange(state, false);
+  });
+
+  $($('.search-item').parents('.panel-group').first()).find('.panel-collapse').on('shown.bs.collapse', function () {
+      resize_search_result()
   });
 
   $('.panel-collapse.collapse .results').attr('class', 'results-collapse');

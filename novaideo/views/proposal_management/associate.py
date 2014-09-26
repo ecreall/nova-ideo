@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import deform
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -23,6 +24,13 @@ class AssociateFormView(FormView):
     def before_update(self):
         target = self.schema.get('targets')
         target.title = _("Related contents")
+        formwidget = deform.widget.FormWidget(css_class='associate-form', 
+                                              activable=True,
+                                              button_css_class="pull-right",
+                                              picto_css_class="glyphicon glyphicon-link",
+                                              button_title="Associate")
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
+        self.schema.widget = formwidget
 
 
 @view_config(
@@ -31,7 +39,9 @@ class AssociateFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class AssociateView(AssociateIdeaView):
-    views = (AssociateFormView, RelatedContentsView)
+    title = _('Associate the proposal')
+    description=_("Associate the proposal to an other content")
+    views = (RelatedContentsView, AssociateFormView)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Associate:AssociateView})

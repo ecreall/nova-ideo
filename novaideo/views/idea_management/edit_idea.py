@@ -36,6 +36,10 @@ class EditIdeaActionsView(MultipleView):
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
     views = (CompareIdeaView,)
 
+    def _activate(self, items):
+        pass
+
+
 
 @view_config(
     name='editidea',

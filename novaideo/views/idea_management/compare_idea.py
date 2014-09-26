@@ -136,7 +136,7 @@ class CompareIdeaFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class CompareIdeaView(MultipleView):
-    title = _('Compare idea')
+    title = _('Compare the idea')
     name='compareidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'

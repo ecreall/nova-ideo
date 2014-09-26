@@ -115,8 +115,8 @@ class CommentIdeaFormView(FormView):
 
 
 commentide_message = {'0': u"""Pas de fils de discussion""",
-                      '1': u"""Voir la fil de discussion""",
-                      '*': u"""Voir les {lencomments} fils de discussion"""} 
+                      '1': u"""Une fil de discussion""",
+                      '*': u"""{lencomments} fils de discussion"""} 
 
 @view_config(
     name='commentidea',
@@ -124,7 +124,8 @@ commentide_message = {'0': u"""Pas de fils de discussion""",
     renderer='pontus:templates/view.pt',
     )
 class CommentIdeaView(MultipleView):
-    title = _('Comment')
+    title = _('Comment the idea')
+    description = _('Comment the idea')
     name='commentidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'

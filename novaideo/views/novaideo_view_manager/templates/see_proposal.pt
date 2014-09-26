@@ -5,12 +5,12 @@
         </tal:loop>
   </div>
 </div>
-<div class="media-body content-title">
-  <h3 tal:condition="proposal.state"><span class="label label-primary pull-right">${proposal.state[0].capitalize()}</span></h3>
-  <h3><img src="${request.static_url('novaideo:static/images/proposal_picto32.png')}"> ${proposal.title}</h3>
+<div class="media-body content-title-body">
+  <h3 tal:condition="proposal.state"><span class="label label-basic pull-right">${proposal.state[0].capitalize()}</span></h3>
+  <h2 class="content-title"><img src="${request.static_url('novaideo:static/images/proposal_picto32.png')}"> ${proposal.title}</h2>
 </div>
 
-<div class="jumbotron well proposal-well">
+<div class="proposal-well">
     <dl >
         <dt>Résumé</dt>
 	<dd>${proposal.description}</dd>
