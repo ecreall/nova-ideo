@@ -2,6 +2,9 @@ import re
 import colander
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
+from pyramid.httpexceptions import HTTPFound
+from pyramid import renderers
+from substanced.util import get_oid
 
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -22,7 +25,58 @@ from novaideo.ips.htmldiff import htmldiff
 from .present_amendment import PresentAmendmentView
 from .comment_amendment import CommentAmendmentView
 from .associate import AssociateView
+from novaideo.core import can_access
 
+
+class RelatedIdeasView(BasicView):
+    title = _('Explanation')
+    name = 'relatedideasexplanation'
+    template = 'novaideo:views/amendment_management/templates/ideas_management_explanation.pt'
+    idea_template = 'novaideo:views/proposal_management/templates/idea_data.pt'
+    item_template = 'pontus:templates/subview_sample.pt'
+    viewid = 'relatedideasexplanation'
+    coordinates = 'right'
+
+    def _get_ideas(self, items):
+        ideas = []
+        for i in items:
+            data = {'idea': i,
+                    'id': get_oid(i),
+                    'body': renderers.render(self.idea_template, {'idea':i}, self.request)
+                    }
+            ideas.append(data)
+
+        return ideas
+
+    def update(self):
+        root = getSite()
+        user = get_current()
+        related_ideas = [i for i in self.context.related_ideas if can_access(user, i)]
+        proposal_ideas = [i for i in self.context.proposal.related_ideas if can_access(user, i)]
+
+        added_ideas = [i for i in related_ideas if not (i in proposal_ideas)]
+        deleted_ideas = [i for i in proposal_ideas if not (i in related_ideas)]
+        old_ideas = [i for i in related_ideas if i in proposal_ideas]
+
+        result = {}
+        #target = None
+        #try:
+        #    editform = self.parent.parent.children[0]
+        #    target = editform.viewid+'_'+editform.formid 
+        #except Exception:
+        #    pass
+
+
+        values = {
+                'old_items': self._get_ideas(old_ideas),
+                'added_items': self._get_ideas(added_ideas),
+                'deleted_items': self._get_ideas(deleted_ideas),
+                #'target' : target
+               }
+        body = self.content(result=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates:[item]}
+        return result
 
 
 class DetailAmendmentView(BasicView):
@@ -91,9 +145,9 @@ class SeeAmendmentView(MultipleView):
     title = _('Details')
     name = 'seeamendment'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    views = (DetailAmendmentView, SeeAmendmentActionsView)
+    views = (DetailAmendmentView, SeeAmendmentActionsView, RelatedIdeasView)
     requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/comment.js']}
+                    'js_links':['novaideo:static/js/comment.js', 'novaideo:static/js/explanation_amendment.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeAmendment:SeeAmendmentView})

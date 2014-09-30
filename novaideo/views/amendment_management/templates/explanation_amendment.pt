@@ -1,0 +1,16 @@
+<span class="explanation-amendment">
+  <span  id="${id}" type="button" class="btn btn-black global-action">${id}</span>
+  <span class="items-control hide-bloc">
+    <span class="btn-group-vertical btn-group-xs explanation-items">
+      <span  id="${id}-replaced" data-globalid="${id}" type="button" class="explanation-item btn btn-success" draggable="true"><span class="glyphicon glyphicon-plus"></span>${id}</span> 
+      <span  id="${id}-both" data-globalid="${id}" type="button" class="explanation-item btn btn-warning" draggable="true"><span class="glyphicon glyphicon-pencil"></span>${id}</span>
+      <span  id="${id}-replacement" data-globalid="${id}" type="button" class="explanation-item btn btn-danger" draggable="true"><span class="glyphicon glyphicon-minus"></span>${id}</span>
+   </span>
+
+  <span class="btn-group-vertical btn-group-xs explanation-items explanation-items-container">
+    <span id="${id}-replaced-container" class="btn ideas-container"></span>
+    <span id="${id}-both-container" class="btn ideas-container"></span>
+    <span id="${id}-replacement-container" class="btn ideas-container"></span>
+  </span>
+ </span>
+</span>
