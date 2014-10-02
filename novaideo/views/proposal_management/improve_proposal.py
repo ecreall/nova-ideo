@@ -13,36 +13,6 @@ from novaideo.content.processes.proposal_management.behaviors import  ImprovePro
 from novaideo.content.proposal import Proposal
 from novaideo.content.amendment import AmendmentSchema
 from novaideo import _
-from .edit_proposal import AddIdeaSchema, AddIdea, AddIdeaFormView, RelatedIdeasView, IdeaManagementView
-from .create_proposal import ideas_choice
-
-
-class ImproveProposalFormView(FormView):
-    title = _('Improve')
-    name = 'improveproposal'
-    viewid = 'improveproposal'
-    formid = 'formimproveproposal'
-    behaviors = [ImproveProposal, Cancel]
-    schema = select(AmendmentSchema(widget=deform.widget.FormWidget(css_class='amendmentform',omit=['keywords', 'related_ideas'])),
-                    ['title',
-                     'description',
-                     'keywords', 
-                     'text', 
-                     'related_ideas'])
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/improve_proposal.js']}
-
-
-    def default_data(self):
-        return self.context
-
-
-    def before_update(self):
-        ideas_widget = ideas_choice()
-        ideas_widget.item_css_class = 'hide-bloc'
-        ideas_widget.css_class = 'controlled-items'
-        self.schema.get('related_ideas').widget = ideas_widget 
-
 
 
 @view_config(
@@ -50,12 +20,23 @@ class ImproveProposalFormView(FormView):
     context=Proposal,
     renderer='pontus:templates/view.pt',
     )
-class ImproveProposalView(MultipleView):
+class ImproveProposalView(FormView):
     title = _('Improve')
     name = 'improveproposal'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
+    viewid = 'improveproposal'
+    formid = 'formimproveproposal'
+    behaviors = [ImproveProposal, Cancel]
+    schema = select(AmendmentSchema(),
+                    ['title',
+                     'description',
+                     'keywords', 
+                     'text'])
     requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/ideas_management.js']}
-    views = (ImproveProposalFormView, IdeaManagementView)
+                    'js_links':['novaideo:static/js/improve_proposal.js']}
+
+
+    def default_data(self):
+        return self.context
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({ImproveProposal:ImproveProposalView})

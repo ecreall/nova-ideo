@@ -538,105 +538,13 @@ ins {
 
 .mce-edit-area body { font-size: 14px; }
 
-.amendment-item-replacment {
-    border: 3px solid #44f144;
-    border-radius: 4px;
-}
-
-
-.amendment-item {
-
-    background-image: linear-gradient(to bottom, #5cb85c 0%, #419641 100%);
-    background-repeat: repeat-x;
-    background-color: #5cb85c;
-    border-color: #4cae4c;
-    color: #ffffff;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 1px 1px rgba(0, 0, 0, 0.075);
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-    margin-left: 5px
-}
-
-.exists-item{
-    background-color:  #ef827d;
-}
-
-.not-exists-item{
-    background-color:  #89e189;
-}
-
-.amendment-item:hover {
-    text-decoration: none;
-    border-color: #398439;
-    color: #ffffff;
-}
-
-.droped-item{
-  padding: 2px;
-  margin-left: 4px
-}
-
-.explanation-amendment .explanation-items{
- margin-left: -4px
-}
-
-.explanation-amendment .global-action{
- padding: 6px
-}
-
-.explanation-container{
-  min-height:30px;
-  padding: 2px;
-  border: dashed 1px gray;
-}
-
-.explanation-items.btn-group-vertical > .btn:last-child:not(:first-child) {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
-.explanation-items.btn-group-vertical > .btn:first-child:not(:last-child) {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-}
-
-.explanation-items-container.btn-group-vertical > .btn:last-child:not(:first-child) {
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
-.explanation-items-container.btn-group-vertical > .btn:first-child:not(:last-child) {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 10px;
-}
-
-
-
-.ideas-container{
-  min-height:30px;
-  padding: 2px;
-  border: dashed 1px gray;
-  min-height: 22px;
-  min-width:27px
-}
-
-.label-basic.idea-item{
-  margin-left: 3px;
-  font-size: 84%;
-
-}
 
 .btn-black {
     background-image: linear-gradient(to bottom, black 0%, #3d3d3d 100%);
     background-repeat: repeat-x;
     border-color: black;
     color: #ffffff;
+    padding: 6px;
 }
 
 .btn-black:hover, .btn-black:focus, .btn-black:active {

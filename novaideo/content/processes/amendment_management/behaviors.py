@@ -2,25 +2,36 @@
 import datetime
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
+from pyramid.threadlocal import get_current_request, get_current_registry
+from pyramid import renderers
+from substanced.util import get_oid
+from bs4 import BeautifulSoup
+
+
 
 from dace.util import (
     getSite,
     getBusinessAction,
     copy,
-    find_entities)
+    find_entities,
+    get_obj)
 from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
 from dace.processinstance.activity import InfiniteCardinality, ElementaryAction, ActionType
+
+from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IAmendment, ICorrelableEntity
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.mail import PRESENTATION_AMENDMENT_MESSAGE, PRESENTATION_AMENDMENT_SUBJECT
 from novaideo import _
-from novaideo.content.amendment import Amendment
+from novaideo.content.amendment import Amendment, IntentionSchema
 from novaideo.content.correlation import Correlation
 from ..comment_management.behaviors import validation_by_context
 from novaideo.core import acces_action
 from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
+from novaideo.utilities.text_analyzer import ITextAnalyzer
+from novaideo.ips.htmldiff import htmldiff
 
 
 try:
@@ -158,7 +169,198 @@ class EditAmendment(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
-    
+  
+def edit_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context),))
+
+
+def edit_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def edit_state_validation(process, context):
+    return ('draft' in context.state)
+
+
+class ExplanationAmendment(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_order = 2
+    context = IAmendment
+    roles_validation = edit_roles_validation
+    processsecurity_validation = edit_processsecurity_validation
+    state_validation = edit_state_validation
+
+
+    def _add_modal(self, soup, tag, context, request):
+        context_oid = get_oid(context)
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
+        if not hasattr(self, 'explanationitemaction'):
+            explanationitemnode = self.process['explanationitem']
+            explanationitem_wis = [wi for wi in explanationitemnode.workitems if wi.node is explanationitemnode]
+            if explanationitem_wis:
+                self.explanationitemaction = explanationitem_wis[0].actions[0]
+        if hasattr(self, 'explanationitemaction'):
+            values= {'url':request.resource_url(context, '@@explanationjson', query={'op':'getform', 'itemid':tag['data-item']}),
+                     'item': context.explanations[tag['data-item']],
+                    }
+            template = 'novaideo:views/amendment_management/templates/explanation_item.pt'
+            body = renderers.render(template, values, request)
+            explanation_item_soup = BeautifulSoup(body)
+
+            actionurl_update = dace_ui_api.updateaction_viewurl(request=request, action_uid=str(get_oid(self.explanationitemaction)), context_uid=str(context_oid))
+            values= {'url':actionurl_update,
+                     'item': context.explanations[tag['data-item']],
+                    }
+            template = 'novaideo:views/amendment_management/templates/explanation_modal_item.pt'
+            modal_body = renderers.render(template, values, request)
+            explanation_item_modal_soup = BeautifulSoup(modal_body)
+            soup.body.append(explanation_item_modal_soup.body)
+            tag.append(explanation_item_soup.body)
+            tag.body.unwrap()
+
+    def _identify_explanations(self, context, request, diff, descriminator):
+        context_oid = str(get_oid(context))
+        user = get_current()
+        user_oid = get_oid(user)
+        soup = BeautifulSoup(diff)
+        ins_tags = soup.find_all('ins')
+        del_tags = soup.find_all('del')
+        del_included = []
+
+        for ins_tag in ins_tags:
+            new_explanation_tag = soup.new_tag("span", id="explanation")
+            new_explanation_tag['data-context'] = context_oid
+            new_explanation_tag['data-item'] = str(descriminator)
+            init_vote = {'oid':descriminator, 'intention':None}
+            previous_del_tag = ins_tag.find_previous_sibling('del')
+            correct_exist = False
+            inst_string = ins_tag.string
+            if previous_del_tag is not None:
+                previous_del_tag_string = previous_del_tag.string
+                del_included.append(previous_del_tag)
+                if previous_del_tag_string != inst_string:
+                    tofind = str(previous_del_tag) +' '+str(ins_tag)
+                    explanation_exist = (diff.find(tofind) >=0)
+                    if explanation_exist:
+                        if not(str(descriminator) in context.explanations): 
+                            context.explanations[str(descriminator)] = init_vote
+
+                        descriminator += 1 
+                        previous_del_tag.wrap(new_explanation_tag)
+                        new_explanation_tag.append(ins_tag)
+                        self._add_modal(soup, new_explanation_tag, context, request)
+                        continue
+                else:
+                    ins_tag.unwrap()
+                    previous_del_tag.extract()
+
+            if ins_tag.parent is not None:
+                if not(str(descriminator) in context.explanations): 
+                    context.explanations[str(descriminator)] = init_vote
+
+                descriminator += 1
+                ins_tag.wrap(new_explanation_tag)
+                self._add_modal(soup, new_explanation_tag, context, request)
+
+        for del_tag in del_tags:
+            if not(del_tag in del_included):
+                if del_tag.string is not None:
+                    new_explanation_tag = soup.new_tag("span", id="explanation")
+                    new_explanation_tag['data-context'] = context_oid
+                    new_explanation_tag['data-item'] = str(descriminator)
+                    init_vote = {'oid':descriminator, 'intention':None}
+                    if not(str(descriminator) in context.explanations): 
+                        context.explanations[str(descriminator)] = init_vote
+
+                    descriminator += 1
+                    del_tag.wrap(new_explanation_tag)
+                    self._add_modal(soup, new_explanation_tag, context, request)
+                else:
+                    del_tag.extract()        
+
+        return soup
+
+    def start(self, context, request, appstruct, **kw):
+        proposal = context.proposal
+        textdiff = htmldiff.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''))
+        descriminator = 0
+        souptextdiff = self._identify_explanations(context, request, textdiff, descriminator)
+        context.textdiff = souptextdiff
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+ 
+
+class ExplanationItem(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    isSequential = True
+    context = IAmendment
+    roles_validation = edit_roles_validation
+    processsecurity_validation = edit_processsecurity_validation
+    state_validation = edit_state_validation
+
+    def _include_to_proposal(self, context, request):
+        text, in_process = self. _include_items(context, request, [item for item in context.corrections.keys() if not('included' in context.corrections[item])])
+        soup = BeautifulSoup(text)
+        diff_tags = soup.find_all("div", {'class': 'diff'})
+        if diff_tags:
+            diff_tags[0].unwrap()
+          
+        context.proposal.text = _normalize_text(soup, False)
+                
+    def _include_items(self, context, request, items, to_add=False):
+        tag_type = "del"
+        if to_add:
+            tag_type = "ins"
+
+        soup = BeautifulSoup(context.text)
+        for item in items:
+            correction_item = soup.find_all('span',{'id':'correction', 'data-item':item})[0]
+            tags = correction_item.find_all(tag_type)
+            if tags: 
+                tag = correction_item.find_all(tag_type)[0]
+                correction_item.clear()
+                correction_item.replace_with(tag)
+                tag.unwrap()
+            else:
+                correction_item.extract()
+
+        return _normalize_text(soup, False), (len(soup.find_all("span", id="correction")) > 0)
+
+    def start(self, context, request, appstruct, **kw):
+        item = appstruct['item']
+        vote = (appstruct['vote'].lower() == 'true')
+        user = get_current()
+        user_oid = get_oid(user)
+        correction_data = context.corrections[item]
+        if not(user_oid in correction_data['favour']) and not(user_oid in correction_data['against']):
+            if vote:
+                context.corrections[item]['favour'].append(get_oid(user))
+                if (len(context.corrections[item]['favour'])-1) >= default_nb_correctors:
+                    context.text, in_process = self._include_items(context, request, [item], True)
+                    if not in_process:
+                        context.state.remove('in process')
+                        context.state.append('processed')
+
+                    context.corrections[item]['included'] = True
+                    self._include_to_proposal(context, request)
+            else:
+                context.corrections[item]['against'].append(get_oid(user))
+                if len(context.corrections[item]['against']) >= default_nb_correctors:
+                    context.text, in_process= self._include_items(context, request, [item])
+                    if not in_process:
+                        context.state.remove('in process')
+                        context.state.append('processed')
+
+                    context.corrections[item]['included'] = True
+                    self._include_to_proposal(context, request)
+            
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 def pub_roles_validation(process, context):

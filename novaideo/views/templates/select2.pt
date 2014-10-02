@@ -5,7 +5,8 @@
      css_class css_class|field.widget.css_class;
      optgroup_class optgroup_class|field.widget.optgroup_class;
      multiple multiple|field.widget.multiple;
-     url url|getattr(field.widget, 'url', '');"
+     url url|getattr(field.widget, 'url', '');
+     id oid+'-'+field.get_root().formid"
      tal:omit-tag="">
 
    <style>
@@ -40,19 +41,22 @@
   <input type="hidden" name="__start__" value="${name}:sequence"
          tal:condition="multiple" />
 
-<div class="select-search">
+<div  id="${id}-search" class="select-search">
    <span class="select-search-call search_disabled"></span>
    <div  class="input-group input-group-sm select-search-input">
        <input type="text" class="select-search-text  form-control "
            placeholder="" style="height:25px">
         <span class="input-group-btn">
-           <button class="select-search-btn btn btn-primary " type="button" data-url="${url}" data-target="${oid}" style="width: 0px; height:25px"><span class="glyphicon glyphicon-search"></span></button>
+           <button class="select-search-btn btn btn-primary " type="button" data-url="${url}" data-target="${id}" style="width: 0px; height:25px"><span class="glyphicon glyphicon-search"></span></button>
         </span>
+       <script>
+         init_select_search("#${id}-search");
+       </script>
    </div>
 </div>
   <select tal:attributes="
           name name;
-          id oid;
+          id id;
           class string: form-control ${css_class};
           data-placeholder field.widget.placeholder|None;
           multiple multiple;
@@ -76,7 +80,7 @@
 
   <script type="text/javascript">
    deform.addCallback(
-     '${field.oid}',
+     '${id}',
      function(oid) {
        <div tal:omit-tag="" tal:condition="field.widget.create" >
        var init_ops = {tokenSeparators: [","], 

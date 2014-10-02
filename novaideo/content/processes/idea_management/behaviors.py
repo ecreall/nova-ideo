@@ -97,6 +97,7 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_idea), ))
         copy_of_idea.set_data(appstruct)
+        copy_of_idea.reindex()
         context.reindex()
         self.newcontext = copy_of_idea
         return True

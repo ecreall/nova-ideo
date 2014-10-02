@@ -25,11 +25,14 @@ function onclick(event){
 
 };
 
-$(document).ready(function(){
-  $('.select-search-input').hide();
-  $('span.select-search-call').on('click',onclick);
 
-  $('.select-search button').on('click',function(event){
+function init_select_search(select){
+
+  
+  $($(select).find('.select-search-input').first()).hide();
+  $($(select).find('span.select-search-call').first()).on('click',onclick);
+
+  $(select+' button').on('click',function(event){
         var button = $(this);
         var select_parent = $(button.parents('.select-search-input').first());
         var parent = $(button.parents('form').first());
@@ -52,6 +55,9 @@ $(document).ready(function(){
          });
 
      });
+}
+
+$(document).ready(function(){
 
 });
 

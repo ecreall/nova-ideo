@@ -744,7 +744,6 @@ class ImproveProposal(InfiniteCardinality):
         data['keywords_ref'] = result
         amendment = Amendment()
         self.newcontext = amendment
-        data['related_ideas'] = appstruct['related_ideas']
         amendment.set_data(data)
         context.addtoproperty('amendments', amendment)
         amendment.state.append('draft')
@@ -775,7 +774,7 @@ def correctitem_state_validation(process, context):
 
 def _normalize_text(soup, first=True):
     corrections = soup.find_all("span", id="correction")
-    text =  str(soup.body.contents[0])
+    text = ''.join([str(t) for t in soup.body.contents])
     if first:
         for correction in corrections:
             index = text.find(str(correction))

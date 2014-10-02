@@ -1,0 +1,4 @@
+  <div id="contenttext" class="content-text">
+    ${structure:textdiff}
+  </div>
+
