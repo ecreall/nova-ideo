@@ -2,7 +2,7 @@
                      description description|field.description;
                      errormsg errormsg|field.errormsg;
                      item_template item_template|field.widget.item_template;
-                     css_class css_class|getattr(field.widget, 'mapping_css_class', '')"
+                     css_class css_class|getattr(field.widget, 'item_css_class', '')"
          i18n:domain="deform">
   
     <div class="${css_class}" title="${description}">

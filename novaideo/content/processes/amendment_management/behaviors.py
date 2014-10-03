@@ -1,13 +1,12 @@
 # -*- coding: utf8 -*-
 import datetime
 from persistent.list import PersistentList
+from persistent.dict import PersistentDict
 from pyramid.httpexceptions import HTTPFound
 from pyramid.threadlocal import get_current_request, get_current_registry
 from pyramid import renderers
 from substanced.util import get_oid
 from bs4 import BeautifulSoup
-
-
 
 from dace.util import (
     getSite,
@@ -126,7 +125,8 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity(process, context) and \
+           not(context.explanations and any(e['intention'] is not None for e in context.explanations.values()))
 
 
 def edit_state_validation(process, context):
@@ -200,6 +200,7 @@ class ExplanationAmendment(InfiniteCardinality):
             explanationitem_wis = [wi for wi in explanationitemnode.workitems if wi.node is explanationitemnode]
             if explanationitem_wis:
                 self.explanationitemaction = explanationitem_wis[0].actions[0]
+
         if hasattr(self, 'explanationitemaction'):
             values= {'url':request.resource_url(context, '@@explanationjson', query={'op':'getform', 'itemid':tag['data-item']}),
                      'item': context.explanations[tag['data-item']],
@@ -227,7 +228,6 @@ class ExplanationAmendment(InfiniteCardinality):
         ins_tags = soup.find_all('ins')
         del_tags = soup.find_all('del')
         del_included = []
-
         for ins_tag in ins_tags:
             new_explanation_tag = soup.new_tag("span", id="explanation")
             new_explanation_tag['data-context'] = context_oid
@@ -244,7 +244,7 @@ class ExplanationAmendment(InfiniteCardinality):
                     explanation_exist = (diff.find(tofind) >=0)
                     if explanation_exist:
                         if not(str(descriminator) in context.explanations): 
-                            context.explanations[str(descriminator)] = init_vote
+                            context.explanations[str(descriminator)] = PersistentDict(init_vote)
 
                         descriminator += 1 
                         previous_del_tag.wrap(new_explanation_tag)
@@ -257,7 +257,7 @@ class ExplanationAmendment(InfiniteCardinality):
 
             if ins_tag.parent is not None:
                 if not(str(descriminator) in context.explanations): 
-                    context.explanations[str(descriminator)] = init_vote
+                    context.explanations[str(descriminator)] = PersistentDict(init_vote)
 
                 descriminator += 1
                 ins_tag.wrap(new_explanation_tag)
@@ -271,7 +271,7 @@ class ExplanationAmendment(InfiniteCardinality):
                     new_explanation_tag['data-item'] = str(descriminator)
                     init_vote = {'oid':descriminator, 'intention':None}
                     if not(str(descriminator) in context.explanations): 
-                        context.explanations[str(descriminator)] = init_vote
+                        context.explanations[str(descriminator)] = PersistentDict(init_vote)
 
                     descriminator += 1
                     del_tag.wrap(new_explanation_tag)
@@ -301,62 +301,10 @@ class ExplanationItem(InfiniteCardinality):
     processsecurity_validation = edit_processsecurity_validation
     state_validation = edit_state_validation
 
-    def _include_to_proposal(self, context, request):
-        text, in_process = self. _include_items(context, request, [item for item in context.corrections.keys() if not('included' in context.corrections[item])])
-        soup = BeautifulSoup(text)
-        diff_tags = soup.find_all("div", {'class': 'diff'})
-        if diff_tags:
-            diff_tags[0].unwrap()
-          
-        context.proposal.text = _normalize_text(soup, False)
-                
-    def _include_items(self, context, request, items, to_add=False):
-        tag_type = "del"
-        if to_add:
-            tag_type = "ins"
-
-        soup = BeautifulSoup(context.text)
-        for item in items:
-            correction_item = soup.find_all('span',{'id':'correction', 'data-item':item})[0]
-            tags = correction_item.find_all(tag_type)
-            if tags: 
-                tag = correction_item.find_all(tag_type)[0]
-                correction_item.clear()
-                correction_item.replace_with(tag)
-                tag.unwrap()
-            else:
-                correction_item.extract()
-
-        return _normalize_text(soup, False), (len(soup.find_all("span", id="correction")) > 0)
 
     def start(self, context, request, appstruct, **kw):
-        item = appstruct['item']
-        vote = (appstruct['vote'].lower() == 'true')
-        user = get_current()
-        user_oid = get_oid(user)
-        correction_data = context.corrections[item]
-        if not(user_oid in correction_data['favour']) and not(user_oid in correction_data['against']):
-            if vote:
-                context.corrections[item]['favour'].append(get_oid(user))
-                if (len(context.corrections[item]['favour'])-1) >= default_nb_correctors:
-                    context.text, in_process = self._include_items(context, request, [item], True)
-                    if not in_process:
-                        context.state.remove('in process')
-                        context.state.append('processed')
-
-                    context.corrections[item]['included'] = True
-                    self._include_to_proposal(context, request)
-            else:
-                context.corrections[item]['against'].append(get_oid(user))
-                if len(context.corrections[item]['against']) >= default_nb_correctors:
-                    context.text, in_process= self._include_items(context, request, [item])
-                    if not in_process:
-                        context.state.remove('in process')
-                        context.state.append('processed')
-
-                    context.corrections[item]['included'] = True
-                    self._include_to_proposal(context, request)
-            
+        context.explanations[appstruct['item']]['intention'] = PersistentDict(appstruct['intention'])
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
@@ -368,7 +316,8 @@ def pub_roles_validation(process, context):
 
 
 def pub_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity(process, context) and \
+           not context.explanations or  not(context.explanations and any(e['intention'] is None for e in context.explanations.values()))
 
 
 def pub_state_validation(process, context):

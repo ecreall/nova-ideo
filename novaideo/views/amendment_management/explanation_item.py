@@ -6,7 +6,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
 from novaideo.content.processes.amendment_management.behaviors import  ExplanationItem
-from novaideo.content.amendment import Amendment
+from novaideo.content.amendment import Amendment, explanation_intentions
 from novaideo import _
 
 
@@ -25,8 +25,19 @@ class ExplanationItemView(BasicView):
 
     def update(self):
         item = self.params('item')
-        import pdb; pdb.set_trace()
-        #self.execute({'item':item})
+        intentionid = self.params('intention')
+        relatedexplanation = self.params('relatedexplanation')
+        intention = None
+        if relatedexplanation is not None and relatedexplanation[0] != '':
+            intention = dict(self.context.explanations[relatedexplanation[0]]['intention'])
+        else:
+            intentionclass = explanation_intentions[intentionid]
+            intention = intentionclass.get_intention(self)
+
+        if intention is None:
+            return {}
+
+        self.execute({'item':item, 'intention':intention})
         result = {}
         values = {
                 'text': 'mon text'#self.context.get_adapted_text(get_current()),

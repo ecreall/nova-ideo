@@ -2,6 +2,7 @@ import colander
 import deform
 from zope.interface import implementer
 from pyramid.threadlocal import get_current_request
+from persistent.dict import PersistentDict
 
 from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
@@ -16,9 +17,9 @@ from dace.descriptors import (
     SharedUniqueProperty,
     SharedMultipleProperty
 )
-from pontus.widget import RichTextWidget,Select2Widget, CheckboxChoiceWidget, Length, SimpleMappingWidget
+from pontus.widget import RichTextWidget, Select2Widget, CheckboxChoiceWidget, Length, SimpleMappingWidget
 from pontus.core import VisualisableElementSchema
-from pontus.schema import Schema
+from pontus.schema import Schema, select
 from pontus.file import Object as ObjectType
 
 from .interface import IAmendment
@@ -32,7 +33,7 @@ from novaideo.core import (
     can_access)
 from novaideo import _
 from novaideo.views.widget import ConfirmationWidget, Select2WidgetSearch
-from novaideo.content.idea import Idea
+from novaideo.content.idea import Idea, IdeaSchema
 
 
 
@@ -57,37 +58,88 @@ class IntentionItemSchema(Schema):
     comment = colander.SchemaNode(
         colander.String(),
         title= _('Object'),
-        validator=colander.Length(max=2000),
+        description=_('The object of your intention (300 caracteres maximum).'),
+        validator=colander.Length(max=300),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         )
+
+
+class NewIdeaSchema(Schema):
+
+    new_idea = select(IdeaSchema(factory=Idea, 
+                                 editable=True,
+                                 omit=['keywords'], 
+                                 widget=SimpleMappingWidget(item_css_class='hide-bloc new-idea-form')),
+                      ['title',
+                       'description',
+                       'keywords'])
+
 
 class Intention(object):
     intention_id = NotImplemented
     title = NotImplemented
     schema = NotImplemented
-    parameters = []
 
     @classmethod
-    def get_explanation_dict(cls, **args):
+    def get_intention(cls, view):
         result = {}
+        schemainstance = cls.schema()
+        parameters = [ c.name for c in schemainstance.children if c.name != '_csrf_token_']
+        for param in parameters:
+            result[param] = view.params(param)
+
+        result['id'] = cls.intention_id
+        return result
+
+    @classmethod
+    def get_explanation_dict(cls, args):
+        result = {}
+        schemainstance = cls.schema()
+        parameters = [ c.name for c in schemainstance.children if c.name != '_csrf_token_']
         for (k, value) in args.items():
-            if k in cls.parameters:
+            if k in parameters:
                 try:
-                    result[k] = get_oid(value)
+                    if isinstance(value, list):
+                        listvalue = []
+                        for v in value:
+                            listvalue.append[get_oid(v)]
+
+                        result[k] = listvalue
+                    else:
+                        result[k] = get_oid(value)
                 except Exception:
-                    result[K] = value
+                    result[k] = value
 
         return result
 
     @classmethod
-    def get_explanation_data(cls, **args):
+    def get_explanation_data(cls, args):
         result = {}
+        schemainstance = cls.schema()
+        parameters = [ c.name for c in schemainstance.children if c.name != '_csrf_token_']
         for (k, value) in args.items():
-            if k in cls.parameters:
+            if k in parameters:
                 try:
-                    result[k] = get_obj(value)
+                    if isinstance(value, list):
+                        listvalue = []
+                        for v in value:
+                            obj = get_obj(int(v))
+                            if obj is None:
+                                raise Exception()
+ 
+                            listvalue.append[obj]
+
+                        result[k] = listvalue
+
+                    else:
+                        obj = get_obj(int(value))
+                        if obj is None:
+                            raise Exception()
+                       
+                        result[k] = obj
+
                 except Exception:
-                    result[K] = value
+                    result[k] = value
 
         return result
 
@@ -97,17 +149,17 @@ class RemoveIdeasSchema(IntentionItemSchema):
     ideas = colander.SchemaNode(
         colander.Set(),
         widget=idea_choice,
-        title=_('Preciser les idees'),
+        title=_('Ideas to remove'),
+        description=_('Choose ideas to remove.'),
         validator=Length(_, min=1), #TODO message
         default=[],
         )
 
 
 class RemoveIdeas(Intention):
-    itention_id = "removeideas"
+    intention_id = "removeideas"
     title = "Remove ideas"
-    schema = RemoveIdeasSchema()
-    parameters = ['ideas']
+    schema = RemoveIdeasSchema
 
 
 class AddIdeasSchema(IntentionItemSchema):
@@ -115,17 +167,17 @@ class AddIdeasSchema(IntentionItemSchema):
     ideas = colander.SchemaNode(
         colander.Set(),
         widget=idea_choice,
-        title=_('Ajouter des idees'),
+        title=_('Ideas to add'),
+        description=_('Choose ideas to add.'),
         validator=Length(_, min=1), #TODO message
         default=[],
         )
 
 
 class AddIdeas(Intention):
-    itention_id = "addideas"
+    intention_id = "addideas"
     title = "Add ideas"
-    schema = AddIdeasSchema()
-    parameters = ['ideas']
+    schema = AddIdeasSchema
 
 
 class CompleteIdeasSchema(IntentionItemSchema):
@@ -133,17 +185,17 @@ class CompleteIdeasSchema(IntentionItemSchema):
     ideas = colander.SchemaNode(
         colander.Set(),
         widget=idea_choice,
-        title=_('Completer les idees'),
+        title=_('Ideas to complete'),
+        description=_('Choose ideas to complete.'),
         validator=Length(_, min=1), #TODO message
         default=[],
         )
 
 
 class CompleteIdeas(Intention):
-    itention_id = "completeideas"
+    intention_id = "completeideas"
     title = "Complete ideas"
-    schema = CompleteIdeasSchema()
-    parameters = ['ideas']
+    schema = CompleteIdeasSchema
 
 
 @colander.deferred
@@ -155,8 +207,10 @@ def replacedideas_choice(node, kw):
     ideas = [i for i in context.proposal.related_ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
     values.insert(0, ('', '- Select -'))
-    return Select2WidgetSearch(multiple= True, values=values, item_css_class='search-idea-form',
-                                url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
+    return Select2WidgetSearch(multiple= True, 
+                               values=values,
+                               item_css_class='search-idea-form search-idea-bloc col-md-6',
+                               url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
 
 
 @colander.deferred
@@ -171,8 +225,10 @@ def ideasofreplacement_choice(node, kw):
     ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
     values = [(i, i.title) for i in ideas]
     values.insert(0, ('', '- Select -'))
-    return Select2WidgetSearch(multiple= True, values=values, item_css_class='search-idea-form',
-                                url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
+    return Select2WidgetSearch(multiple= True, 
+                               values=values, 
+                               item_css_class='search-idea-form search-idea-bloc col-md-6',
+                               url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
 
 
 class ReplaceIdeasSchema(IntentionItemSchema):
@@ -181,6 +237,7 @@ class ReplaceIdeasSchema(IntentionItemSchema):
         colander.Set(),
         widget=replacedideas_choice,
         title=_('Replaced ideas'),
+        description=_('Choose ideas to replace.'),
         validator=Length(_, min=1), #TODO message
         default=[],
         )
@@ -189,63 +246,64 @@ class ReplaceIdeasSchema(IntentionItemSchema):
         colander.Set(),
         widget=ideasofreplacement_choice,
         title=_('Ideas of replacement'),
+        description=_('Choose ideas of replacement.'),
         validator=Length(_, min=1), #TODO message
         default=[],
         )
 
 
 class ReplaceIdeas(Intention):
-    itention_id = "replaceideas"
+    intention_id = "replaceideas"
     title = "Replace ideas"
-    schema = ReplaceIdeasSchema()
-    parameters = ['replacedideas', 'ideasofreplacement']
+    schema = ReplaceIdeasSchema
 
 
 class CompleteText(Intention):
-    itention_id = "completetext"
+    intention_id = "completetext"
     title = "Complete text"
-    schema = IntentionItemSchema()
-    parameters = []
+    schema = IntentionItemSchema
 
 
-explanation_intentions = {RemoveIdeas.itention_id: RemoveIdeas, 
-                          AddIdeas.itention_id: AddIdeas, 
-                          CompleteIdeas.itention_id: CompleteIdeas, 
-                          ReplaceIdeas.itention_id: ReplaceIdeas, 
-                          CompleteText.itention_id: CompleteText}
+explanation_intentions = {RemoveIdeas.intention_id: RemoveIdeas, 
+                          AddIdeas.intention_id: AddIdeas, 
+                          CompleteIdeas.intention_id: CompleteIdeas, 
+                          ReplaceIdeas.intention_id: ReplaceIdeas, 
+                          CompleteText.intention_id: CompleteText}
 
 
 @colander.deferred
 def intention_choice(node, kw):
     root = getSite()
-    values = [(i.itention_id, i.title) for i in explanation_intentions.values()]
+    values = [(i.intention_id, i.title) for i in explanation_intentions.values()]
+    values = sorted(values, key=lambda e: e[1])
     values.insert(0, ('', '- Select -'))
     return Select2Widget(values=values, css_class="explanation-intention")
 
 
-class IntentionSchema(Schema):
+class RelatedExplanationSchema(Schema):
 
     relatedexplanation = colander.SchemaNode(
         colander.Integer(),
-        title=_('Appliquer l in tention de la modification'),
+        title=_('Apply the same intention'),
+        description=_('Choose the intention to apply'),
         missing=None
         )
+
+class NewIntentionSchema(Schema):
 
     intention = colander.SchemaNode(
         colander.String(),
         widget=intention_choice,
         title=_('Intention'),
+        description=_('Choose your intention.'),
         )
 
-    remove = RemoveIdeasSchema(widget=SimpleMappingWidget(item_css_class="removeideas-intention form-intention hide-bloc"))
 
-    add = AddIdeasSchema(widget=SimpleMappingWidget(item_css_class="addideas-intention form-intention hide-bloc"))
+class IntentionSchema(Schema):
 
-    complete = CompleteIdeasSchema(widget=SimpleMappingWidget(item_css_class="completeideas-intention form-intention hide-bloc"))
+    relatedexplanation = RelatedExplanationSchema(widget=SimpleMappingWidget())
 
-    replaced = ReplaceIdeasSchema(widget=SimpleMappingWidget(item_css_class="replaceideas-intention form-intention hide-bloc"))
-
-    completetext = IntentionItemSchema(widget=SimpleMappingWidget(item_css_class="completetext-intention form-intention hide-bloc"))
+    intention = NewIntentionSchema(widget=SimpleMappingWidget(item_css_class="intention-bloc"))
 
 
 def context_is_a_amendment(context, request):
@@ -279,6 +337,6 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
 
     def __init__(self, **kwargs):
         super(Amendment, self).__init__(**kwargs)
-        self.explanations = {}
+        self.explanations = PersistentDict()
         self.set_data(kwargs)
 

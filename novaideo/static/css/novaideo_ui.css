@@ -126,7 +126,7 @@ ins {
   background-color: #89e189;
 }
 
-.amendment-diff del {
+/*.amendment-diff del {
   background-color: #cc66cc;
 }
 
@@ -138,7 +138,7 @@ ins {
     margin-left: 19px; 
     margin-right: 19px;
 }
-
+*/
 
 
 .legend-carre-del{
@@ -527,9 +527,38 @@ ins {
     padding: 6px;
 }
 
+
+.btn-white {
+    background-image: linear-gradient(to bottom, white 0%, white 100%);
+    background-repeat: repeat-x;
+    border-color: gray;
+    color: black;
+    padding: 6px;
+}
+
+.btn-white:hover, .btn-white:focus, .btn-white:active {
+    background-color: #272727;
+    background-image: linear-gradient(to bottom, black 0%, #272727 100%);
+    border-color: black;
+    color: #ffffff;
+}
+
 .btn-black:hover, .btn-black:focus, .btn-black:active {
     background-color: #272727;
     background-image: linear-gradient(to bottom, black 0%, #272727 100%);
     border-color: black;
     color: #ffffff;
+}
+
+.search-idea-bloc{
+    border: solid 1px gray;
+    border-radius: 11px;
+    margin-left: 5px;
+    width: 260px;
+}
+
+.intention-bloc{
+    border-top: 3px double gray; 
+    padding: 9px; 
+    margin-top: 12px
 }

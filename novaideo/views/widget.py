@@ -3,6 +3,12 @@ from deform.widget import default_resource_registry
 from pontus.widget import SequenceWidget, Select2Widget
 
 
+
+class MappinColgWidget(deform.widget.MappingWidget):
+
+    template = 'novaideo:views/templates/mapping_col.pt'
+
+
 class ConfirmationWidget(deform.widget.MappingWidget):
     template = 'novaideo:views/templates/confirmation_form.pt'
 
