@@ -5,7 +5,7 @@ from pyramid.view import view_config
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, allSubobjectsOfType
-from dace.objectofcollaboration.principal.util import get_current
+from dace.objectofcollaboration.principal.util import get_current, has_any_roles
 from pontus.view import BasicView, ViewError, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.widget import CheckboxChoiceWidget, RichTextWidget
@@ -21,6 +21,7 @@ from novaideo.ips.htmldiff import htmldiff
 from .present_amendment import PresentAmendmentView
 from .comment_amendment import CommentAmendmentView
 from .associate import AssociateView
+from .explanation_amendment import get_intention_form
 
 
 
@@ -32,6 +33,19 @@ class DetailAmendmentView(BasicView):
     item_template = 'pontus:templates/subview_sample.pt'
     viewid = 'seeamendment'
 
+    def _get_adapted_text(self, user):
+        is_owner = has_any_roles(user=user, roles=(('Owner', self.context),))
+        text = getattr(self.context, 'text', '')
+        if is_owner and ('explanation' in self.context.state):
+            self.requirements = {'js_links': [], 'css_links': [],}
+            intentionform = get_intention_form(self.context, self.request)
+            intentionformresult = intentionform()
+            self.requirements['js_links'] = intentionformresult['js_links']
+            self.requirements['css_links'] = intentionformresult['css_links']
+            self.requirements['js_links'].append('novaideo:static/js/explanation_amendment.js')
+            return self.context.explanationtext
+        else:
+            return htmldiff.render_html_diff(getattr(self.context.proposal, 'text', ''), getattr(self.context, 'text', ''))
 
     def update(self):
         self.execute(None) 
@@ -47,7 +61,8 @@ class DetailAmendmentView(BasicView):
         descriptiondiff = ''
         keywordsdiff = []
         proposal = self.context.proposal
-        textdiff = htmldiff.render_html_diff(getattr(proposal, 'text', ''), getattr(self.context, 'text', ''))
+        
+        textdiff =self._get_adapted_text(user)
         descriptiondiff = htmldiff.render_html_diff('<div>'+getattr(proposal, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
         for k in proposal.keywords:
             if k in self.context.keywords:
@@ -68,6 +83,7 @@ class DetailAmendmentView(BasicView):
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
+        result = merge_dicts(self.requirements_copy, result)
         return result
 
 

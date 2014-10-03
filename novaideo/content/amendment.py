@@ -102,7 +102,7 @@ class Intention(object):
                     if isinstance(value, list):
                         listvalue = []
                         for v in value:
-                            listvalue.append[get_oid(v)]
+                            listvalue.append(get_oid(v))
 
                         result[k] = listvalue
                     else:
@@ -127,7 +127,7 @@ class Intention(object):
                             if obj is None:
                                 raise Exception()
  
-                            listvalue.append[obj]
+                            listvalue.append(obj)
 
                         result[k] = listvalue
 

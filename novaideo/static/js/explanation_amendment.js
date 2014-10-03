@@ -32,6 +32,7 @@ function get_explanation_form(url){
 };
 
 function submit_explanation(url){
+       var button = $(this);
        var target = $($(this).parents('.modal.fade').first());
        var selectintention = $(target.find('.explanation-intention').first());
        var intention_bloc = selectintention.select2('val');
@@ -56,6 +57,14 @@ function submit_explanation(url){
                   };
        $.getJSON(url,datas, function(data) {
              $(target).modal('hide');
+             var explanation = $(".btn.explanation-action[data-target=\'#"+button.data('item')+"\']");
+             if(intention !='' || (relatedexplanation.length>0 && relatedexplanation[0]!='')){
+                explanation.addClass("btn-white");
+                explanation.removeClass("btn-black")
+             }else{
+                explanation.removeClass("btn-white");
+                explanation.addClass("btn-black")
+              }
        });
        return false;
 };

@@ -142,17 +142,6 @@ class EditAmendment(InfiniteCardinality):
     processsecurity_validation = edit_processsecurity_validation
     state_validation = edit_state_validation
 
-    def _add_replacedideas(self, context, request, ideas):
-        for idea in ideas:
-            context.addtoproperty('replaced_ideas', idea)
-
-        return True
-
-    def _del_ideasofreplacement(self, context, request, ideas):
-        for idea in ideas:
-            context.delproperty('ideas_of_replacement', idea)
-
-        return True
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
@@ -170,27 +159,162 @@ class EditAmendment(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
   
-def edit_roles_validation(process, context):
+def exp_roles_validation(process, context):
     return has_any_roles(roles=(('Owner', context),))
 
 
-def edit_processsecurity_validation(process, context):
+def exp_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context)
 
 
-def edit_state_validation(process, context):
-    return ('draft' in context.state)
+def exp_state_validation(process, context):
+    return ('draft' in context.state) and not('explanation' in context.state)
 
 
 class ExplanationAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
-    style_order = 2
+    style_descriminator = 'global-action'
+    style_order = 1
     context = IAmendment
-    roles_validation = edit_roles_validation
-    processsecurity_validation = edit_processsecurity_validation
-    state_validation = edit_state_validation
+    roles_validation = exp_roles_validation
+    processsecurity_validation = exp_processsecurity_validation
+    state_validation = exp_state_validation
 
+    def start(self, context, request, appstruct, **kw):
+        context.state.append('explanation')
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index")) 
+
+
+def expitem_state_validation(process, context):
+    return ('draft' in context.state) and ('explanation' in context.state)
+
+
+class ExplanationItem(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    isSequential = True
+    context = IAmendment
+    roles_validation = exp_roles_validation
+    processsecurity_validation = exp_processsecurity_validation
+    state_validation = expitem_state_validation
+
+
+    def start(self, context, request, appstruct, **kw):
+        if appstruct['intention'] is not None: 
+            context.explanations[appstruct['item']]['intention'] = PersistentDict(appstruct['intention'])
+        else:
+            context.explanations[appstruct['item']]['intention'] = None
+
+        context.reindex()
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def pub_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context),))
+
+
+def pub_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) and \
+           not context.explanations or  not(context.explanations and any(e['intention'] is None for e in context.explanations.values()))
+
+
+def pub_state_validation(process, context):
+    return ('explanation' in context.state) and ('draft' in context.state)
+
+
+class SubmitAmendment(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 1
+    context = IAmendment
+    roles_validation = pub_roles_validation
+    processsecurity_validation = pub_processsecurity_validation
+    state_validation = pub_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state.remove('draft')
+        context.state.remove('explanation')
+        context.state.append('published')
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def comm_roles_validation(process, context):
+    return has_any_roles(roles=(('Participant', context.proposal),))
+
+
+def comm_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def comm_state_validation(process, context):
+    return 'published' in context.state
+
+
+class CommentAmendment(InfiniteCardinality):
+    isSequential = False
+    context = IAmendment
+    roles_validation = comm_roles_validation
+    processsecurity_validation = comm_processsecurity_validation
+    state_validation = comm_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        comment = appstruct['_object_data']
+        context.addtoproperty('comments', comment)
+        user = get_current()
+        comment.setproperty('author', user)
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def present_roles_validation(process, context):
+    return has_any_roles(roles=(('Participant', context.proposal),))
+
+
+def present_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def present_state_validation(process, context):
+    return 'published' in context.state
+
+
+class PresentAmendment(PresentIdea):
+    context = IAmendment
+    roles_validation = present_roles_validation
+    processsecurity_validation = present_processsecurity_validation
+    state_validation = present_state_validation
+
+
+def associate_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) and \
+           (has_any_roles(roles=(('Owner', context),)) or \
+           (has_any_roles(roles=('Member',)) and 'published' in context.state))
+
+
+class Associate(AssociateIdea):
+    context = IAmendment
+    processsecurity_validation = associate_processsecurity_validation
+
+
+def seeamendment_processsecurity_validation(process, context):
+    return ('published' in context.state or has_any_roles(roles=(('Owner', context),)))
+
+@acces_action()
+class SeeAmendment(InfiniteCardinality):
+    title = _('Details')
+    context = IAmendment
+    actionType = ActionType.automatic
+    processsecurity_validation = seeamendment_processsecurity_validation
 
     def _add_modal(self, soup, tag, context, request):
         context_oid = get_oid(context)
@@ -282,138 +406,13 @@ class ExplanationAmendment(InfiniteCardinality):
         return soup
 
     def start(self, context, request, appstruct, **kw):
-        proposal = context.proposal
-        textdiff = htmldiff.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''))
-        descriminator = 0
-        souptextdiff = self._identify_explanations(context, request, textdiff, descriminator)
-        context.textdiff = souptextdiff
-        return True
+        if 'explanation' in context.state:
+            proposal = context.proposal
+            textdiff = htmldiff.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''))
+            descriminator = 1
+            souptextdiff = self._identify_explanations(context, request, textdiff, descriminator)
+            context.explanationtext = souptextdiff
 
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
- 
-
-class ExplanationItem(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    isSequential = True
-    context = IAmendment
-    roles_validation = edit_roles_validation
-    processsecurity_validation = edit_processsecurity_validation
-    state_validation = edit_state_validation
-
-
-    def start(self, context, request, appstruct, **kw):
-        context.explanations[appstruct['item']]['intention'] = PersistentDict(appstruct['intention'])
-        context.reindex()
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
-
-
-def pub_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
-
-
-def pub_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           not context.explanations or  not(context.explanations and any(e['intention'] is None for e in context.explanations.values()))
-
-
-def pub_state_validation(process, context):
-    return ('draft' in context.state)
-
-
-class SubmitAmendment(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
-    style_order = 1
-    context = IAmendment
-    roles_validation = pub_roles_validation
-    processsecurity_validation = pub_processsecurity_validation
-    state_validation = pub_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        context.state.remove('draft')
-        context.state.append('published')
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
-
-
-def comm_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context.proposal),))
-
-
-def comm_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
-
-
-def comm_state_validation(process, context):
-    return 'published' in context.state
-
-
-class CommentAmendment(InfiniteCardinality):
-    isSequential = False
-    context = IAmendment
-    roles_validation = comm_roles_validation
-    processsecurity_validation = comm_processsecurity_validation
-    state_validation = comm_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        comment = appstruct['_object_data']
-        context.addtoproperty('comments', comment)
-        user = get_current()
-        comment.setproperty('author', user)
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
-
-
-def present_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
-
-
-def present_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
-
-
-def present_state_validation(process, context):
-    return 'published' in context.state
-
-
-class PresentAmendment(PresentIdea):
-    context = IAmendment
-    roles_validation = present_roles_validation
-    processsecurity_validation = present_processsecurity_validation
-    state_validation = present_state_validation
-
-
-def associate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           (has_any_roles(roles=(('Owner', context),)) or \
-           (has_any_roles(roles=('Member',)) and 'published' in context.state))
-
-
-
-class Associate(AssociateIdea):
-    context = IAmendment
-    processsecurity_validation = associate_processsecurity_validation
-
-
-def seeamendment_processsecurity_validation(process, context):
-    return ('published' in context.state or has_any_roles(roles=(('Owner', context),)))
-
-@acces_action()
-class SeeAmendment(InfiniteCardinality):
-    title = _('Details')
-    context = IAmendment
-    actionType = ActionType.automatic
-    processsecurity_validation = seeamendment_processsecurity_validation
-
-    def start(self, context, request, appstruct, **kw):
         return True
 
     def redirect(self, context, request, **kw):

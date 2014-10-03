@@ -10,6 +10,7 @@ from pontus.view import BasicView, ViewError, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.widget import CheckboxChoiceWidget, RichTextWidget, Select2Widget, SimpleMappingWidget
 from pontus.schema import Schema, omit
+from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
 
@@ -26,7 +27,7 @@ from .associate import AssociateView
 def modif_choice(context):
     root = getSite()
     explanations = [e['oid'] for e in context.explanations.values() if e['intention'] is not None]
-    values = [(i, i) for i in explanations]
+    values = [(i, i) for i in sorted(explanations)]
     values.insert(0, ('', '- Select -'))
     return Select2Widget(values=values)
 
@@ -72,39 +73,41 @@ def get_intention_form(context, request, descriminator=None):
     return form
 
 
+class ExplanationViewStudyReport(BasicView):
+    title = _('Alert for explanation')
+    name='alertforexplanation'
+    template ='novaideo:views/amendment_management/templates/explanations_amendment.pt'
+
+    def update(self):
+        result = {}
+        values = {}
+        body = self.content(result=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates:[item]}
+        return result
+
+
+class ExplanationFormView(FormView):
+    title = _('Explanation')
+    name = 'formexplanationamendment'
+    behaviors = [ExplanationAmendment, Cancel]
+    viewid = 'formexplanationamendment'
+    formid = 'explanationamendmentform'
+
+
 @view_config(
     name='explanationamendment',
     context=Amendment,
     renderer='pontus:templates/view.pt',
     )
-class ExplanationView(BasicView):
+class ExplanationView(MultipleView):
     title = _('Explanation')
     name = 'explanationamendment'
     behaviors = [ExplanationAmendment]
-    template = 'novaideo:views/amendment_management/templates/explanations_amendment.pt'
     viewid = 'explanationamendment'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/explanation_amendment.js']}
-
-    def update(self):
-        self.execute(None) 
-        #proposal = self.context.proposal
-        result = {}
-        #textdiff = htmldiff.render_html_diff(getattr(proposal, 'text', ''), getattr(self.context, 'text', ''))
-        
-        values = {
-                'amendment': self.context,
-                'textdiff': self.context.textdiff,
-               }
-        body = self.content(result=values, template=self.template)['body']
-        item = self.adapt_item(body, self.viewid)
-        intentionform = get_intention_form(self.context, self.request)
-        intentionformresult = intentionform() 
-        result['js_links'] = intentionformresult['js_links']
-        result['css_links'] = intentionformresult['css_links']
-        result = merge_dicts(self.requirements_copy, result)
-        result['coordinates'] = {self.coordinates:[item]}
-        return result
+    template = 'pontus.dace_ui_extension:templates/mergedmultipleview.pt'
+    views = (ExplanationViewStudyReport, ExplanationFormView)
+    validators = [ExplanationAmendment.get_validator()]
 
 
 @view_config(name='explanationjson',

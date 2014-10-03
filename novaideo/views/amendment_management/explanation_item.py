@@ -30,12 +30,12 @@ class ExplanationItemView(BasicView):
         intention = None
         if relatedexplanation is not None and relatedexplanation[0] != '':
             intention = dict(self.context.explanations[relatedexplanation[0]]['intention'])
-        else:
+        elif intentionid != '':
             intentionclass = explanation_intentions[intentionid]
             intention = intentionclass.get_intention(self)
 
-        if intention is None:
-            return {}
+       # if intention is None:
+       #     return {}
 
         self.execute({'item':item, 'intention':intention})
         result = {}
