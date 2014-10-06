@@ -165,6 +165,20 @@ class Intention(object):
     def get_explanation_default_data(cls, args):
         return cls.get_explanation_data(args)
 
+    @classmethod
+    def eq(cls, intention1, intention2):
+        if intention1['id'] != intention2['id']:
+            return False
+
+        ideas1 = intention1['ideas']
+        ideas2 = intention2['ideas']
+        if len(ideas1) != len(ideas2):
+            return False
+ 
+        if any(not(e in ideas2) for e in ideas1):
+            return False
+
+        return True
 
 
 class RemoveIdeasSchema(IntentionItemSchema):
@@ -332,6 +346,30 @@ class ReplaceIdeas(Intention):
         data = cls.get_explanation_data(args);
         data['ideas'] = {'replacedideas': data.pop('replacedideas'), 'ideasofreplacement': data.pop('ideasofreplacement')}
         return data
+
+    @classmethod
+    def eq(cls, intention1, intention2):
+        if intention1['id'] != intention2['id']:
+            return False
+
+        replacedideas1 = intention1['replacedideas']
+        replacedideas2 = intention2['replacedideas']
+        if len(replacedideas1) != len(replacedideas2):
+            return False
+ 
+        ideasofreplacement1 = intention1['ideasofreplacement']
+        ideasofreplacement2 = intention2['ideasofreplacement']
+        if len(ideasofreplacement1) != len(ideasofreplacement2):
+            return False
+
+        if any(not(e in replacedideas2) for e in replacedideas1):
+            return False 
+
+        if any(not(e in ideasofreplacement2) for e in ideasofreplacement1):
+            return False
+
+        return True
+
 
 
 class CompleteText(Intention):

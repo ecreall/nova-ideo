@@ -63,6 +63,7 @@ class DetailAmendmentView(BasicView):
         proposal = self.context.proposal
         
         textdiff =self._get_adapted_text(user)
+        import pdb; pdb.set_trace()
         descriptiondiff = htmldiff.render_html_diff('<div>'+getattr(proposal, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
         for k in proposal.keywords:
             if k in self.context.keywords:

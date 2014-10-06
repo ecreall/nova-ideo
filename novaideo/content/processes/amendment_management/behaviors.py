@@ -24,7 +24,7 @@ from novaideo.content.interface import INovaIdeoApplication, IAmendment, ICorrel
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.mail import PRESENTATION_AMENDMENT_MESSAGE, PRESENTATION_AMENDMENT_SUBJECT
 from novaideo import _
-from novaideo.content.amendment import Amendment, IntentionSchema
+from novaideo.content.amendment import Amendment, IntentionSchema, explanation_intentions
 from novaideo.content.correlation import Correlation
 from ..comment_management.behaviors import validation_by_context
 from novaideo.core import acces_action
@@ -228,6 +228,18 @@ def pub_state_validation(process, context):
     return ('explanation' in context.state) and ('draft' in context.state)
 
 
+def _normalize_text(soup, first=True):
+    corrections = soup.find_all("span", id="correction")
+    text = ''.join([str(t) for t in soup.body.contents])
+    if first:
+        for correction in corrections:
+            index = text.find(str(correction))
+            index += str(correction).__len__()
+            if text[index] == ' ':
+                text = text[:index]+text[index+1:]
+
+    return text.replace('\xa0', '')
+
 class SubmitAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
@@ -236,11 +248,88 @@ class SubmitAmendment(InfiniteCardinality):
     roles_validation = pub_roles_validation
     processsecurity_validation = pub_processsecurity_validation
     state_validation = pub_state_validation
+   
+    def _includr_explanations(self, explanations, todel, toins):
+        for explanation in explanations:
+            del_tags = explanation.find_all(todel)
+            ins_tags = explanation.find_all(toins)
+            if del_tags:
+                for del_tag in del_tags:
+                    del_tag.unwrap()
+
+            if ins_tags:
+                for ins_tag in ins_tags:
+                    ins_tag.extract()
+
+            actions = explanation.find_all('span', {'id':'explanation_action'})
+            for action in actions:
+                action.extract()
+
+            if explanation.contents[explanation.contents.__len__()-1]=='\n':
+                explanation.contents.pop()
+
+            explanation.unwrap()
+
+    def _get_amendment_text(self, context, group):
+        items = [str(e['oid']) for e in group]
+        soup = BeautifulSoup(context.explanationtext)
+        allexplanations = soup.find_all('span',{'id':'explanation'})
+        explanations = [tag for tag in allexplanations if not (tag['data-item'] in items)]
+        self._includr_explanations(explanations, "del", "ins")
+        explanations = [tag for tag in allexplanations if (tag['data-item'] in items)]
+        self._includr_explanations(explanations, "ins", "del")
+        allmodal = [ m for m in soup.find_all('div',{'class':'modal'}) if m['id'].endswith("explanation_modal")]
+        for modal in allmodal:
+            modal.extract()
+
+        text = ''.join([str(t) for t in soup.body.contents])
+        return text
+
+    def _get_sub_amendment(self, context, group):
+        intentionclass = explanation_intentions[group[0]['intention']['id']]
+        intention = intentionclass.title
+        comment =  "\n".join(list(set([i['intention']['comment'] for i in group])))
+        text = self._get_amendment_text(context, group)
+        keywords_ref = context.keywords_ref
+        description = context.description
+        amendment = Amendment()
+        for k in keywords_ref:
+            amendment.addtoproperty('keywords_ref', k)
+
+        amendment.text = text
+        amendment.title = context.title + '('+'-'.join([str(i['oid']) for i in group ])+')' 
+        amendment.comment = comment
+        amendment.intention = intention
+        amendment.description = description
+        context.proposal.addtoproperty('amendments', amendment)
+        amendment.state.append('published')
+        grant_roles(roles=(('Owner', amendment), ))
+        amendment.setproperty('author', get_current())
+        #intentionclass.init_amendment(amendment)
+        return amendment
+        
+    def _get_groups(self, context):
+        explanations = context.explanations
+        groups = []
+        grouped_explanations = []
+        for explanation in explanations.values():
+            if not(explanation in grouped_explanations):
+                group = [e for e in explanations.values() if explanation_intentions[explanation['intention']['id']].eq(explanation['intention'], e['intention'])]
+                grouped_explanations.extend(group)
+                groups.append(group)
+                if len(grouped_explanations) == len(explanations):
+                    break
+
+        return groups
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('draft')
         context.state.remove('explanation')
         context.state.append('published')
+        groups = self._get_groups(context)
+        for group in groups:
+            amendment = self._get_sub_amendment(context, group)
+            
         return True
 
     def redirect(self, context, request, **kw):
@@ -412,7 +501,7 @@ class SeeAmendment(InfiniteCardinality):
             textdiff = htmldiff.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''))
             descriminator = 1
             souptextdiff = self._identify_explanations(context, request, textdiff, descriminator)
-            context.explanationtext = souptextdiff
+            context.explanationtext = ''.join([str(t) for t in souptextdiff.body.contents])
 
         return True
 
