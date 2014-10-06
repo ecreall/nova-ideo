@@ -423,8 +423,9 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
             return result
 
         for explanation in self.explanations.values():
-            intention_class = explanation_intentions[explanation['intention']['id']]
-            result.extend(intention_class.get_explanation_ideas(explanation['intention']))
+            if explanation['intention'] is not None:
+                intention_class = explanation_intentions[explanation['intention']['id']]
+                result.extend(intention_class.get_explanation_ideas(explanation['intention']))
 
         return result
  
