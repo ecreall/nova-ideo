@@ -207,6 +207,7 @@ class ExplanationItem(InfiniteCardinality):
         else:
             context.explanations[appstruct['item']]['intention'] = None
 
+        context.get_used_ideas.invalidate()
         context.reindex()
         return True
 
@@ -406,7 +407,7 @@ class SeeAmendment(InfiniteCardinality):
         return soup
 
     def start(self, context, request, appstruct, **kw):
-        if 'explanation' in context.state:
+        if 'explanation' in context.state: #TODO Optimization
             proposal = context.proposal
             textdiff = htmldiff.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''))
             descriminator = 1

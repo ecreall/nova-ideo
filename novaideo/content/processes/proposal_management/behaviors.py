@@ -732,8 +732,6 @@ class ImproveProposal(InfiniteCardinality):
         data = {}
         data['title'] = appstruct['title']
         data['text'] = appstruct['text']
-        data['intention'] = 'Improvement'
-        data['comment'] = 'Add a new amendment'
         data['description'] = appstruct['description']
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)

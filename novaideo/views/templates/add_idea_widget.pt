@@ -1,0 +1,40 @@
+<tal:def tal:define="title title|field.title;
+                     oid oid|field.oid;
+                     description description|field.description;
+                     errormsg errormsg|field.errormsg;
+                     item_template item_template|field.widget.item_template;
+                     url field.widget.url;
+                     id oid+field.get_root().formid;"
+         i18n:domain="deform" >
+ <div class="ajax-form"> 
+    <span class="control-form-button new-idea-btn pull-right"><span class="glyphicon glyphicon-file"></span> Add a new idea</span>
+     <span id="messageinfo" class="label label-info"></span>
+     <span id="messagesuccess" class="label label-success"></span>
+     <span id="messagedanger" class="label  label-danger"></span>
+    <div id="${id}_newideaform" class="${field.widget.item_css_class or ''}">
+      <div tal:condition="errormsg" 
+           class="clearfix alert alert-message error">
+        <p i18n:translate="">
+           There was a problem with this section
+        </p>
+        <p>${errormsg}</p>
+      </div>
+
+      <div tal:condition="description">
+        ${description}
+      </div>
+
+      ${field.start_mapping()}
+       <input tal:condition="'__objectid__' in cstruct" type="hidden" name="__objectid__" value="${cstruct['__objectid__']}" id="${oid}-__objectid__"/>
+      <div tal:repeat="child field.children"
+           tal:replace="structure child.render_template(item_template)" >
+      </div>     
+      ${field.end_mapping()}
+    <button class="btn btn-primary ajax-button validate-btn btn-sm" type="button" data-url="${url}">Validate</button>
+    </div>
+  <script>
+    var btn = $($("#${id}_newideaform").parents('.ajax-form').first()).find('.control-form-button.new-idea-btn').first();
+    init_btn_control(btn)
+  </script>
+ </div>
+</tal:def>

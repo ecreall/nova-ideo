@@ -6,10 +6,15 @@
     <h3 tal:condition="object.state"><span class="label label-basic pull-right">${object.state[0].capitalize()}</span></h3>
     <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
     <dl >
-        <dt>Intention</dt>
-	<dd>${getattr(object, 'intention', 'Not specified')}</dd>
-        <dt>Objet</dt>
-	<dd>${getattr(object, 'comment', 'Not specified')}</dd>
+        <div tal:omit-tag=""  tal:condition="hasattr(object, 'intention')">
+          <dt >Intention</dt>
+	  <dd>${getattr(object, 'intention', 'Not specified')}</dd>
+        </div>
+        <div tal:omit-tag=""  tal:condition="hasattr(object, 'comment')">
+          <dt>Objet</dt>
+	  <dd>${getattr(object, 'comment', 'Not specified')}</dd>
+        </div>
+
         <dt>Proposé le</dt>
 	<dd>
           <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> à ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} par <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>

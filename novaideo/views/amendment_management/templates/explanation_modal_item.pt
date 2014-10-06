@@ -8,6 +8,9 @@
       <div class="modal-body">
       </div>
       <div class="modal-footer">
+     <span id="messageinfo" class="label label-info"></span>
+     <span id="messagesuccess" class="label label-success"></span>
+     <span id="messagedanger" class="label  label-danger"></span>
         <button data-item="${item['oid']}" data-url="${url}" type="button" class="btn btn-primary explanation-validation btn-sm">Save intention</button>
       </div>
     </div><!-- /.modal-content -->

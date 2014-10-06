@@ -24,12 +24,12 @@ from .comment_amendment import CommentAmendmentView
 from .associate import AssociateView
 
 
-def modif_choice(context):
+def modif_choice(context, itemid=None):
     root = getSite()
-    explanations = [e['oid'] for e in context.explanations.values() if e['intention'] is not None]
+    explanations = [e['oid'] for e in context.explanations.values() if e['intention'] is not None and str(e['oid'])!=itemid]
     values = [(i, i) for i in sorted(explanations)]
     values.insert(0, ('', '- Select -'))
-    return Select2Widget(values=values)
+    return Select2Widget(values=values, item_css_class="related-explanation")
 
 
 class IntentionFormView(FormView):
@@ -66,7 +66,7 @@ def get_intention_form(context, request, descriminator=None):
 
         form.schema.get('intention').children.append(intention.schema(name=id, widget=schemawidget))
 
-    form.schema.get('relatedexplanation').get('relatedexplanation').widget = modif_choice(context)
+    form.schema.get('relatedexplanation').get('relatedexplanation').widget = modif_choice(context, descriminator)
     hasintention = any((v['intention'] is not None and (descriminator is not None and v['oid'] is not int(descriminator)) for v in context.explanations.values()))
     if not hasintention:
         form.schema.children.remove(form.schema.get('relatedexplanation'))

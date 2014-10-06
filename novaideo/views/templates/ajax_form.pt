@@ -2,7 +2,7 @@
  <div tal:omit-tag="not activable" class="ajax-form" tal:define="button_css_class button_css_class|getattr(field.widget,'button_css_class', '');
                                                                  picto_css_class picto_css_class|getattr(field.widget,'picto_css_class', '');
                                                                  button_title button_title|getattr(field.widget,'button_title', '')">
- <span tal:condition="activable" class="ajax-form-button ${button_css_class}"><span class="${picto_css_class}"></span> ${button_title}</span>
+ <span tal:condition="activable" class="control-form-button ${button_css_class}"><span class="${picto_css_class}"></span> ${button_title}</span>
   <form
      tal:define="style style|field.widget.style;
               css_class css_class|string:${field.widget.css_class or field.css_class or ''};

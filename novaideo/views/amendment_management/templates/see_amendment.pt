@@ -11,10 +11,14 @@
 </div>
   <div class="amendment-well">
     <dl >
-        <dt>Intention</dt>
-	<dd>${getattr(amendment, 'intention', 'Not specified')}</dd>
-        <dt>Objet</dt>
-	<dd>${getattr(amendment, 'comment', 'Not specified')}</dd>
+        <div tal:omit-tag=""  tal:condition="hasattr(amendment, 'intention')">
+          <dt >Intention</dt>
+	  <dd>${getattr(amendment, 'intention', 'Not specified')}</dd>
+        </div>
+        <div tal:omit-tag=""  tal:condition="hasattr(amendment, 'comment')">
+          <dt>Objet</dt>
+	  <dd>${getattr(amendment, 'comment', 'Not specified')}</dd>
+        </div>
         <div tal:omit-tag="" tal:condition="amendment.originalentity is not None">
           <dt>Amendement d'originie</dt>
 	  <dd>

@@ -481,14 +481,14 @@ ins {
     text-decoration: none;
 }
 
-.ajax-form .ajax-form-button {
+.ajax-form .control-form-button {
     color: gray;
     cursor: grab;
     font-size: 15px;
     font-weight: lighter;
 }
 
-.ajax-form .ajax-form-button:hover {
+.ajax-form .control-form-button:hover {
     color: #4ca44c;
 }
 
@@ -555,10 +555,34 @@ ins {
     border-radius: 11px;
     margin-left: 5px;
     width: 260px;
+    margin-bottom: 34px
 }
 
 .intention-bloc{
-    border-top: 3px double gray; 
+    border-top: 3px double gray;
+    margin-top: 12px;
+    padding: 30px 9px 9px;
+}
+
+.explanations-bloc{
     padding: 9px; 
-    margin-top: 12px
+}
+
+.new-idea-form{
+    padding: 13px;
+    margin-top:33px;
+}
+
+.intention-separator{
+    background-color: white;
+    color: gray;
+    float: left;
+    font-size: 24px;
+    margin-left: -24px;
+    padding-left: 10px;
+    padding-right: 7px;
+}
+
+.new-idea-btn{
+  margin-top: -22px
 }

@@ -32,8 +32,9 @@ from novaideo.core import (
     DuplicableEntity,
     can_access)
 from novaideo import _
-from novaideo.views.widget import ConfirmationWidget, Select2WidgetSearch
+from novaideo.views.widget import ConfirmationWidget, Select2WidgetSearch, AddIdeaWidget
 from novaideo.content.idea import Idea, IdeaSchema
+from novaideo.cache import region
 
 
 
@@ -41,16 +42,37 @@ from novaideo.content.idea import Idea, IdeaSchema
 def idea_choice(node, kw):
      context = node.bindings['context']
      request = node.bindings['request']
+     _used_ideas = context.get_used_ideas()
      root = getSite()
      user = get_current()
      _ideas = list(user.ideas)
      _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
+     _ideas.extend(_used_ideas)
      _ideas = set(_ideas) 
      ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
      values = [(i, i.title) for i in ideas]
      values.insert(0, ('', '- Select -'))
      return Select2WidgetSearch(multiple= True, values=values, item_css_class='search-idea-form',
                                 url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
+
+@colander.deferred
+def add_new_idea_widget(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    root = getSite()
+    url = request.resource_url(root, '@@ideasmanagement')
+    return AddIdeaWidget(url=url, item_css_class='new-idea-form hide-bloc')
+    
+
+class NewIdeaSchema(Schema):
+
+    new_idea = select(IdeaSchema(factory=Idea, 
+                                 editable=True,
+                                 omit=['keywords'], 
+                                 widget=SimpleMappingWidget()),
+                      ['title',
+                       'description',
+                       'keywords'])
 
 
 class IntentionItemSchema(Schema):
@@ -62,17 +84,6 @@ class IntentionItemSchema(Schema):
         validator=colander.Length(max=300),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         )
-
-
-class NewIdeaSchema(Schema):
-
-    new_idea = select(IdeaSchema(factory=Idea, 
-                                 editable=True,
-                                 omit=['keywords'], 
-                                 widget=SimpleMappingWidget(item_css_class='hide-bloc new-idea-form')),
-                      ['title',
-                       'description',
-                       'keywords'])
 
 
 class Intention(object):
@@ -143,6 +154,12 @@ class Intention(object):
 
         return result
 
+    @classmethod
+    def get_explanation_ideas(cls, args):
+        pass
+
+    
+
 
 class RemoveIdeasSchema(IntentionItemSchema):
 
@@ -155,11 +172,18 @@ class RemoveIdeasSchema(IntentionItemSchema):
         default=[],
         )
 
+    add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
+
 
 class RemoveIdeas(Intention):
     intention_id = "removeideas"
     title = "Remove ideas"
     schema = RemoveIdeasSchema
+
+    @classmethod
+    def get_explanation_ideas(cls, args):
+        data = cls.get_explanation_data(args)
+        return data['ideas']
 
 
 class AddIdeasSchema(IntentionItemSchema):
@@ -173,11 +197,18 @@ class AddIdeasSchema(IntentionItemSchema):
         default=[],
         )
 
+    add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
+
 
 class AddIdeas(Intention):
     intention_id = "addideas"
     title = "Add ideas"
     schema = AddIdeasSchema
+
+    @classmethod
+    def get_explanation_ideas(cls, args):
+        data = cls.get_explanation_data(args)
+        return data['ideas']
 
 
 class CompleteIdeasSchema(IntentionItemSchema):
@@ -191,20 +222,29 @@ class CompleteIdeasSchema(IntentionItemSchema):
         default=[],
         )
 
+    add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
 
 class CompleteIdeas(Intention):
     intention_id = "completeideas"
     title = "Complete ideas"
     schema = CompleteIdeasSchema
 
+    @classmethod
+    def get_explanation_ideas(cls, args):
+        data = cls.get_explanation_data(args)
+        return data['ideas']
+
 
 @colander.deferred
 def replacedideas_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
+    _used_ideas = context.get_used_ideas()
     root = getSite()
     user = get_current()
-    ideas = [i for i in context.proposal.related_ideas if can_access(user, i)]
+    ideas = list(context.proposal.related_ideas)
+    ideas.extend(_used_ideas)
+    ideas = [i for i in ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
     values.insert(0, ('', '- Select -'))
     return Select2WidgetSearch(multiple= True, 
@@ -217,10 +257,12 @@ def replacedideas_choice(node, kw):
 def ideasofreplacement_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
+    _used_ideas = context.get_used_ideas()
     root = getSite()
     user = get_current()
     _ideas = list(user.ideas)
     _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
+    _ideas.extend(_used_ideas)
     _ideas = set(_ideas) 
     ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
     values = [(i, i.title) for i in ideas]
@@ -251,11 +293,20 @@ class ReplaceIdeasSchema(IntentionItemSchema):
         default=[],
         )
 
+    add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
+
 
 class ReplaceIdeas(Intention):
     intention_id = "replaceideas"
     title = "Replace ideas"
     schema = ReplaceIdeasSchema
+
+    @classmethod
+    def get_explanation_ideas(cls, args):
+        data = cls.get_explanation_data(args)
+        result = data['replacedideas']
+        result.extend(data['ideasofreplacement'])
+        return result
 
 
 class CompleteText(Intention):
@@ -301,7 +352,7 @@ class NewIntentionSchema(Schema):
 
 class IntentionSchema(Schema):
 
-    relatedexplanation = RelatedExplanationSchema(widget=SimpleMappingWidget())
+    relatedexplanation = RelatedExplanationSchema(widget=SimpleMappingWidget(item_css_class="explanations-bloc"))
 
     intention = NewIntentionSchema(widget=SimpleMappingWidget(item_css_class="intention-bloc"))
 
@@ -340,3 +391,15 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
         self.explanations = PersistentDict()
         self.set_data(kwargs)
 
+    @region.cache_on_arguments() 
+    def get_used_ideas(self):
+        result = []
+        if not hasattr(self, 'explanations'):
+            return result
+
+        for explanation in self.explanations.values():
+            intention_class = explanation_intentions[explanation['intention']['id']]
+            result.extend(intention_class.get_explanation_ideas(explanation['intention']))
+
+        return result
+ 
