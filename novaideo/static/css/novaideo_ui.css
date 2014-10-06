@@ -31,37 +31,17 @@ a:hover, a:focus {
 .thumbnail.right-caption>img{float: left;margin-right: 9px;}
 .thumbnail.right-caption{float: unset;}
 .thumbnail.right-caption>.caption{padding: 4px;}
-.navbar .brand {
-    color: #53564e;
-    display: block;
-    float: left;
-    font-size: 19px;
-    font-weight: 400;
-    line-height: 40px;
-    margin-left: -20px;
-    padding: 0 20px;
-    text-shadow: 2px 2px 1px #fff;
-    text-transform: uppercase;
-}
-.navbar .brand:hover, .navbar .brand:focus {
-    text-decoration: none;
-}
+
+.switchchoice { padding-left: 10%;}
 
 .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group {
     margin-left: -1px;
     margin-top: 0;
 }
 
-#searchform label {
-  display: none;
-}
-
+#searchform label,
 #searchform p {
   display: none;
-}
-
-.switchchoice{
-    margin-top:12px;
 }
 
 .attached_files{
