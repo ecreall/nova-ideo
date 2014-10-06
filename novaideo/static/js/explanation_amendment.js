@@ -69,6 +69,15 @@ function get_explanation_form(url){
               return false;
 };
 
+function get_data(selecteds){
+    var selecteds = jQuery.makeArray(selecteds);
+    var result= [];
+    for(i=0;i<selecteds.length; i++){
+       result[i] = selecteds[i].id
+    };
+    return result
+};
+
 function submit_explanation(url){
        var button = $(this);
        var target = $($(this).parents('.modal.fade').first());
@@ -82,16 +91,16 @@ function submit_explanation(url){
        var commentmessagesuccess = target.find('#messagesuccess');
        var commentmessagedanger = target.find('#messagedanger');
        var comment = $(intention_form.find("textarea[name='comment']").first()).val();
-       var ideas = $(intention_form.find("select[name='ideas']").first()).select2('val');
-       var replacedideas = $(intention_form.find("select[name='replacedideas']").first()).select2('val');
-       var ideasofreplacement = $(intention_form.find("select[name='ideasofreplacement']").first()).select2('val');
+       var ideas = $(intention_form.find("select[name='ideas']").first()).select2('data');
+       var replacedideas = $(intention_form.find("select[name='replacedideas']").first()).select2('data');
+       var ideasofreplacement = $(intention_form.find("select[name='ideasofreplacement']").first()).select2('data');
        var relatedexplanation = $(form.find("select[name='relatedexplanation']").first()).select2('val');
        var intention = $(form.find("select[name='intention']").first()).select2('val');
        if (!(typeof relatedexplanation == "string")){relatedexplanation=""};
        var datas = {'comment': comment,
-                   'ideas' : jQuery.makeArray(ideas),
-                   'replacedideas': jQuery.makeArray(replacedideas),
-                   'ideasofreplacement': jQuery.makeArray(ideasofreplacement),
+                   'ideas' : get_data(ideas),
+                   'replacedideas': get_data(replacedideas),
+                   'ideasofreplacement': get_data(ideasofreplacement),
                    'relatedexplanation': relatedexplanation,
                    'intention': intention,
                    'item':item

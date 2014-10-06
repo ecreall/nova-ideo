@@ -551,11 +551,11 @@ ins {
 }
 
 .search-idea-bloc{
-    border: solid 1px gray;
+    border: 1px solid #e3e3e3;
     border-radius: 11px;
-    margin-left: 5px;
-    width: 260px;
-    margin-bottom: 34px
+    margin-bottom: 34px;
+    margin-left: 6px;
+    width: 279px;
 }
 
 .intention-bloc{
@@ -571,6 +571,9 @@ ins {
 .new-idea-form{
     padding: 13px;
     margin-top:33px;
+   border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(122, 122, 122, 0.2);
 }
 
 .intention-separator{

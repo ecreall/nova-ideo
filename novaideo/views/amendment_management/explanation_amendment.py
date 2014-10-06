@@ -43,7 +43,7 @@ class IntentionFormView(FormView):
         if itemid is not None and itemid in self.context.explanations:
             intention = self.context.explanations[itemid]['intention']
             if intention is not None:
-                return {'intention':{intention['id']: explanation_intentions[intention['id']].get_explanation_data(intention), 
+                return {'intention':{intention['id']: explanation_intentions[intention['id']].get_explanation_default_data(intention), 
                                     'intention':intention['id']}}
 
         return {}

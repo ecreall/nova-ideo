@@ -19,7 +19,7 @@ from dace.descriptors import (
 )
 from pontus.widget import RichTextWidget, Select2Widget, CheckboxChoiceWidget, Length, SimpleMappingWidget
 from pontus.core import VisualisableElementSchema
-from pontus.schema import Schema, select
+from pontus.schema import Schema, select, omit
 from pontus.file import Object as ObjectType
 
 from .interface import IAmendment
@@ -92,10 +92,15 @@ class Intention(object):
     schema = NotImplemented
 
     @classmethod
-    def get_intention(cls, view):
-        result = {}
+    def get_parameters(cls):
         schemainstance = cls.schema()
         parameters = [ c.name for c in schemainstance.children if c.name != '_csrf_token_']
+        return parameters
+    
+    @classmethod
+    def get_intention(cls, view):
+        result = {}
+        parameters = cls.get_parameters()
         for param in parameters:
             result[param] = view.params(param)
 
@@ -105,8 +110,7 @@ class Intention(object):
     @classmethod
     def get_explanation_dict(cls, args):
         result = {}
-        schemainstance = cls.schema()
-        parameters = [ c.name for c in schemainstance.children if c.name != '_csrf_token_']
+        parameters = cls.get_parameters()
         for (k, value) in args.items():
             if k in parameters:
                 try:
@@ -126,8 +130,7 @@ class Intention(object):
     @classmethod
     def get_explanation_data(cls, args):
         result = {}
-        schemainstance = cls.schema()
-        parameters = [ c.name for c in schemainstance.children if c.name != '_csrf_token_']
+        parameters = cls.get_parameters()
         for (k, value) in args.items():
             if k in parameters:
                 try:
@@ -158,7 +161,10 @@ class Intention(object):
     def get_explanation_ideas(cls, args):
         pass
 
-    
+    @classmethod
+    def get_explanation_default_data(cls, args):
+        return cls.get_explanation_data(args)
+
 
 
 class RemoveIdeasSchema(IntentionItemSchema):
@@ -244,6 +250,7 @@ def replacedideas_choice(node, kw):
     user = get_current()
     ideas = list(context.proposal.related_ideas)
     ideas.extend(_used_ideas)
+    ideas = set(ideas)
     ideas = [i for i in ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
     values.insert(0, ('', '- Select -'))
@@ -273,7 +280,7 @@ def ideasofreplacement_choice(node, kw):
                                url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
 
 
-class ReplaceIdeasSchema(IntentionItemSchema):
+class IdeasRowSchema(Schema):
 
     replacedideas = colander.SchemaNode(
         colander.Set(),
@@ -293,6 +300,10 @@ class ReplaceIdeasSchema(IntentionItemSchema):
         default=[],
         )
 
+class ReplaceIdeasSchema(IntentionItemSchema):
+
+    ideas = IdeasRowSchema(widget=SimpleMappingWidget(item_css_class="row"))
+
     add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
 
 
@@ -302,11 +313,25 @@ class ReplaceIdeas(Intention):
     schema = ReplaceIdeasSchema
 
     @classmethod
+    def get_parameters(cls):
+        schemainstanceideas = cls.schema().get('ideas')
+        schemainstance = omit(cls.schema(), ['ideas', 'add_new_idea'])
+        parameters = [ c.name for c in schemainstanceideas.children if c.name != '_csrf_token_']
+        parameters.extend([ c.name for c in schemainstance.children if c.name != '_csrf_token_'])
+        return parameters
+
+    @classmethod
     def get_explanation_ideas(cls, args):
         data = cls.get_explanation_data(args)
         result = data['replacedideas']
         result.extend(data['ideasofreplacement'])
         return result
+
+    @classmethod
+    def get_explanation_default_data(cls, args):
+        data = cls.get_explanation_data(args);
+        data['ideas'] = {'replacedideas': data.pop('replacedideas'), 'ideasofreplacement': data.pop('ideasofreplacement')}
+        return data
 
 
 class CompleteText(Intention):
