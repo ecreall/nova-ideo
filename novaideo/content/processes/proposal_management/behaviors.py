@@ -771,14 +771,14 @@ def correctitem_state_validation(process, context):
 
 
 def _normalize_text(soup, first=True):
-    corrections = soup.find_all("span", id="correction")
+    #corrections = soup.find_all("span", id="correction")
     text = ''.join([str(t) for t in soup.body.contents])
-    if first:
-        for correction in corrections:
-            index = text.find(str(correction))
-            index += str(correction).__len__()
-            if text[index] == ' ':
-                text = text[:index]+text[index+1:]
+    #if first:
+    #    for correction in corrections:
+    #        index = text.find(str(correction))
+    #        index += str(correction).__len__()
+    #        if text[index] == ' ':
+    #            text = text[:index]+text[index+1:]
 
     return text.replace('\xa0', '')
 
@@ -901,6 +901,11 @@ class CorrectProposal(InfiniteCardinality):
             tag.append(correction_item_soup.body)
             tag.body.unwrap()
 
+    def _add_actions(self, correction, request, soup):
+        corrections_tags = soup.find_all('span', {'id':'correction'})
+        for correction_tag in corrections_tags:
+            self._add_vote_actions(correction_tag, correction, request)
+
     def _identify_corrections(self, diff, correction, descriminator, request):
         correction_oid = str(get_oid(correction))
         user = get_current()
@@ -909,7 +914,6 @@ class CorrectProposal(InfiniteCardinality):
         ins_tags = soup.find_all('ins')
         del_tags = soup.find_all('del')
         del_included = []
-
         for ins_tag in ins_tags:
             new_correction_tag = soup.new_tag("span", id="correction")
             new_correction_tag['data-correction'] = correction_oid
@@ -922,14 +926,13 @@ class CorrectProposal(InfiniteCardinality):
                 previous_del_tag_string = previous_del_tag.string
                 del_included.append(previous_del_tag)
                 if previous_del_tag_string != inst_string:
-                    tofind = str(previous_del_tag) +' '+str(ins_tag)
+                    tofind = str(previous_del_tag) + str(ins_tag)
                     correction_exist = (diff.find(tofind) >=0)
                     if correction_exist:
                         correction.corrections[str(descriminator)] = init_vote
                         descriminator += 1 
                         previous_del_tag.wrap(new_correction_tag)
                         new_correction_tag.append(ins_tag)
-                        self._add_vote_actions(new_correction_tag, correction, request)
                         continue
                 else:
                     ins_tag.unwrap()
@@ -939,7 +942,6 @@ class CorrectProposal(InfiniteCardinality):
                 correction.corrections[str(descriminator)] = init_vote
                 descriminator += 1
                 ins_tag.wrap(new_correction_tag)
-                self._add_vote_actions(new_correction_tag, correction, request)
 
         for del_tag in del_tags:
             if not(del_tag in del_included):
@@ -951,22 +953,25 @@ class CorrectProposal(InfiniteCardinality):
                     correction.corrections[str(descriminator)] = init_vote
                     descriminator += 1
                     del_tag.wrap(new_correction_tag)
-                    self._add_vote_actions(new_correction_tag, correction, request)
                 else:
                     del_tag.extract()        
 
         return soup
-        
+
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         correction = appstruct['_object_data']
         correction.setproperty('author', user)
         context.addtoproperty('corrections', correction)
         textdiff = htmldiff.render_html_diff(getattr(context, 'text', '').replace('&nbsp;', ''), getattr(correction, 'text', '').replace('&nbsp;', ''))
+        textdiff = textdiff.replace('</del> <ins>','</del><ins>')
         descriptiondiff = htmldiff.render_html_diff(getattr(correction, 'description', ''), getattr(context, 'description', ''))
+        descriptiondiff = descriptiondiff.replace('</del> <ins>','</del><ins>')
         descriminator = 0
         souptextdiff = self._identify_corrections(textdiff, correction, descriminator, request)
+        self._add_actions(correction, request, souptextdiff)
         soupdescriptiondiff = self._identify_corrections(descriptiondiff, correction, descriminator, request)
+        #self._add_actions(correction, request, soupdescriptiondiff)
         correction.text = _normalize_text(souptextdiff)
         context.originaltext = str(correction.text)
         correction.description = _normalize_text(soupdescriptiondiff)

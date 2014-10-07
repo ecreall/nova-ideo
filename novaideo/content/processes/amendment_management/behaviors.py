@@ -434,6 +434,11 @@ class SeeAmendment(InfiniteCardinality):
             tag.append(explanation_item_soup.body)
             tag.body.unwrap()
 
+    def _add_actions(self, context, request, soup):
+        explanations_tags = soup.find_all('span', {'id':'explanation'})
+        for explanation_tag in explanations_tags:
+            self._add_modal(soup, explanation_tag, context, request)
+
     def _identify_explanations(self, context, request, diff, descriminator):
         context_oid = str(get_oid(context))
         user = get_current()
@@ -454,7 +459,7 @@ class SeeAmendment(InfiniteCardinality):
                 previous_del_tag_string = previous_del_tag.string
                 del_included.append(previous_del_tag)
                 if previous_del_tag_string != inst_string:
-                    tofind = str(previous_del_tag) +' '+str(ins_tag)
+                    tofind = str(previous_del_tag) +str(ins_tag)
                     explanation_exist = (diff.find(tofind) >=0)
                     if explanation_exist:
                         if not(str(descriminator) in context.explanations): 
@@ -463,7 +468,6 @@ class SeeAmendment(InfiniteCardinality):
                         descriminator += 1 
                         previous_del_tag.wrap(new_explanation_tag)
                         new_explanation_tag.append(ins_tag)
-                        self._add_modal(soup, new_explanation_tag, context, request)
                         continue
                 else:
                     ins_tag.unwrap()
@@ -475,7 +479,6 @@ class SeeAmendment(InfiniteCardinality):
 
                 descriminator += 1
                 ins_tag.wrap(new_explanation_tag)
-                self._add_modal(soup, new_explanation_tag, context, request)
 
         for del_tag in del_tags:
             if not(del_tag in del_included):
@@ -489,7 +492,6 @@ class SeeAmendment(InfiniteCardinality):
 
                     descriminator += 1
                     del_tag.wrap(new_explanation_tag)
-                    self._add_modal(soup, new_explanation_tag, context, request)
                 else:
                     del_tag.extract()        
 
@@ -499,8 +501,10 @@ class SeeAmendment(InfiniteCardinality):
         if 'explanation' in context.state: #TODO Optimization
             proposal = context.proposal
             textdiff = htmldiff.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''))
+            textdiff = textdiff.replace('</del> <ins>','</del><ins>')
             descriminator = 1
             souptextdiff = self._identify_explanations(context, request, textdiff, descriminator)
+            self._add_actions(context, request, souptextdiff)
             context.explanationtext = ''.join([str(t) for t in souptextdiff.body.contents])
 
         return True

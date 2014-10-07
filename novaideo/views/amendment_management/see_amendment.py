@@ -45,7 +45,9 @@ class DetailAmendmentView(BasicView):
             self.requirements['js_links'].append('novaideo:static/js/explanation_amendment.js')
             return self.context.explanationtext
         else:
-            return htmldiff.render_html_diff(getattr(self.context.proposal, 'text', ''), getattr(self.context, 'text', ''))
+            textdiff =  htmldiff.render_html_diff(getattr(self.context.proposal, 'text', ''), getattr(self.context, 'text', ''))
+            textdiff = textdiff.replace('</del> <ins>','</del><ins>')
+            return textdiff
 
     def update(self):
         self.execute(None) 
@@ -63,7 +65,6 @@ class DetailAmendmentView(BasicView):
         proposal = self.context.proposal
         
         textdiff =self._get_adapted_text(user)
-        import pdb; pdb.set_trace()
         descriptiondiff = htmldiff.render_html_diff('<div>'+getattr(proposal, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
         for k in proposal.keywords:
             if k in self.context.keywords:
