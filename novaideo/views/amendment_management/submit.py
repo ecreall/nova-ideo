@@ -1,17 +1,68 @@
+import colander
+import deform
 from pyramid.view import view_config
 
 from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
-from pontus.schema import select
+from pontus.schema import Schema, select, omit
 from pontus.view import BasicView, View, merge_dicts, ViewError
 from pontus.default_behavior import Cancel
+from pontus.widget import Select2Widget, SequenceWidget
 
 from novaideo.content.processes.amendment_management.behaviors import  SubmitAmendment
-from novaideo.content.amendment import Amendment
+from novaideo.content.amendment import Amendment, Intention
 from novaideo import _
 
+
+
+def get_default_explanations_groups(context):
+    explanations = context.explanations
+    groups = []
+    grouped_explanations = []
+    for explanation in explanations.values():
+        if not(explanation in grouped_explanations):
+            group = [e for e in explanations.values() if Intention.eq(explanation['intention'], e['intention'])]
+            grouped_explanations.extend(group)
+            groups.append(group)
+            if len(grouped_explanations) == len(explanations):
+                break
+
+    return groups
+
+
+@colander.deferred
+def explanations_choice(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    values = [e['oid'] for e in context.explanations.values()]
+    values = [(i, i) for i in values]
+    return Select2Widget(values=values, multiple=True)
+
+
+class ExplanationGroupSchema(Schema):
+
+    title = colander.SchemaNode(
+        colander.String(),
+        widget=deform.widget.TextInputWidget()
+        )
+
+    explanations =  colander.SchemaNode(
+        colander.Set(),
+        widget=explanations_choice,
+        title=_('Explanations'),
+        )    
+
+
+class ExplanationGroupsSchema(Schema):
+
+    groups = colander.SchemaNode(
+        colander.Sequence(),
+        omit(ExplanationGroupSchema(name='Amendment'),['_csrf_token_']),
+        widget=SequenceWidget(),
+        title=_('Amendments')
+        )
 
 
 class SubmitAmendmentViewStudyReport(BasicView):
@@ -32,8 +83,19 @@ class SubmitAmendmentView(FormView):
     title =  _('Submit')
     name ='submitamendmentform'
     formid = 'formsubmitamendment'
+    schema = ExplanationGroupsSchema()
     behaviors = [SubmitAmendment, Cancel]
     validate_behaviors = False
+
+    def default_data(self):
+        groups = get_default_explanations_groups(self.context)
+        data = {'groups': []}
+        for group in groups:
+            group_data = {'title':self.context.title + '('+'-'.join([str(i['oid']) for i in group ])+')',
+                          'explanations': [str(e['oid']) for e in group]}
+            data['groups'].append(group_data)
+
+        return data
 
 
 @view_config(

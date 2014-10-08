@@ -1,6 +1,7 @@
 import re
 import colander
 from pyramid.view import view_config
+from pyramid.threadlocal import get_current_registry
 
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -17,12 +18,11 @@ from novaideo.content.processes.amendment_management.behaviors import  SeeAmendm
 from novaideo.content.amendment import Amendment
 from novaideo import _
 from novaideo.views.novaideo_view_manager.search import SearchResultView
-from novaideo.ips.htmldiff import htmldiff
 from .present_amendment import PresentAmendmentView
 from .comment_amendment import CommentAmendmentView
 from .associate import AssociateView
-from .explanation_amendment import get_intention_form
-
+from .explanation_amendment import IntentionFormView
+from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 class DetailAmendmentView(BasicView):
@@ -38,20 +38,24 @@ class DetailAmendmentView(BasicView):
         text = getattr(self.context, 'text', '')
         if is_owner and ('explanation' in self.context.state):
             self.requirements = {'js_links': [], 'css_links': [],}
-            intentionform = get_intention_form(self.context, self.request)
+            intentionform = IntentionFormView(self.context, self.request)
             intentionformresult = intentionform()
             self.requirements['js_links'] = intentionformresult['js_links']
             self.requirements['css_links'] = intentionformresult['css_links']
             self.requirements['js_links'].append('novaideo:static/js/explanation_amendment.js')
             return self.context.explanationtext
+
+        elif 'published' in self.context.state:
+            return self.context.explanationtext 
         else:
-            textdiff =  htmldiff.render_html_diff(getattr(self.context.proposal, 'text', ''), getattr(self.context, 'text', ''))
-            textdiff = textdiff.replace('</del> <ins>','</del><ins>')
+            text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+            textdiff =  text_analyzer.render_html_diff(getattr(self.context.proposal, 'text', ''), getattr(self.context, 'text', ''))
             return textdiff
 
     def update(self):
         self.execute(None) 
         user = get_current()
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
         actions = [a for a in self.context.actions if getattr(a.action, 'style', '') == 'button']
         global_actions = [a for a in actions if getattr(a.action, 'style_descriminator','') == 'global-action']
         text_actions = [a for a in  actions if getattr(a.action, 'style_descriminator','') == 'text-action']
@@ -63,9 +67,8 @@ class DetailAmendmentView(BasicView):
         descriptiondiff = ''
         keywordsdiff = []
         proposal = self.context.proposal
-        
         textdiff =self._get_adapted_text(user)
-        descriptiondiff = htmldiff.render_html_diff('<div>'+getattr(proposal, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
+        descriptiondiff = text_analyzer.render_html_diff('<div>'+getattr(proposal, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
         for k in proposal.keywords:
             if k in self.context.keywords:
                 keywordsdiff.append({'title':k,'state':'nothing'})

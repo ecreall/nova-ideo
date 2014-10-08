@@ -24,13 +24,12 @@ from novaideo.content.interface import INovaIdeoApplication, IAmendment, ICorrel
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.mail import PRESENTATION_AMENDMENT_MESSAGE, PRESENTATION_AMENDMENT_SUBJECT
 from novaideo import _
-from novaideo.content.amendment import Amendment, IntentionSchema, explanation_intentions
+from novaideo.content.amendment import Amendment, IntentionSchema, Intention
 from novaideo.content.correlation import Correlation
 from ..comment_management.behaviors import validation_by_context
 from novaideo.core import acces_action
 from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
 from novaideo.utilities.text_analyzer import ITextAnalyzer
-from novaideo.ips.htmldiff import htmldiff
 
 
 try:
@@ -202,7 +201,7 @@ class ExplanationItem(InfiniteCardinality):
 
 
     def start(self, context, request, appstruct, **kw):
-        if appstruct['intention'] is not None: 
+        if appstruct['intention'] is not None:
             context.explanations[appstruct['item']]['intention'] = PersistentDict(appstruct['intention'])
         else:
             context.explanations[appstruct['item']]['intention'] = None
@@ -249,35 +248,27 @@ class SubmitAmendment(InfiniteCardinality):
     processsecurity_validation = pub_processsecurity_validation
     state_validation = pub_state_validation
    
-    def _includr_explanations(self, explanations, todel, toins):
+    def _include_explanations(self, explanations, todel, toins, soup):
+        explanations_data = []
         for explanation in explanations:
-            del_tags = explanation.find_all(todel)
-            ins_tags = explanation.find_all(toins)
-            if del_tags:
-                for del_tag in del_tags:
-                    del_tag.unwrap()
+            explanation_data = {'tag': explanation,
+                                'todel': todel,
+                                'toins': toins,
+                                'blocstodel': ('span', {'id':'explanation_action'})
+                                }
+            explanations_data.append(explanation_data)
 
-            if ins_tags:
-                for ins_tag in ins_tags:
-                    ins_tag.extract()
-
-            actions = explanation.find_all('span', {'id':'explanation_action'})
-            for action in actions:
-                action.extract()
-
-            if explanation.contents[explanation.contents.__len__()-1]=='\n':
-                explanation.contents.pop()
-
-            explanation.unwrap()
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        text_analyzer.unwrap_diff(explanations_data, soup)
 
     def _get_amendment_text(self, context, group):
         items = [str(e['oid']) for e in group]
         soup = BeautifulSoup(context.explanationtext)
         allexplanations = soup.find_all('span',{'id':'explanation'})
         explanations = [tag for tag in allexplanations if not (tag['data-item'] in items)]
-        self._includr_explanations(explanations, "del", "ins")
+        self._include_explanations(explanations, "ins", "del", soup)
         explanations = [tag for tag in allexplanations if (tag['data-item'] in items)]
-        self._includr_explanations(explanations, "ins", "del")
+        self._include_explanations(explanations, "del", "ins", soup)
         allmodal = [ m for m in soup.find_all('div',{'class':'modal'}) if m['id'].endswith("explanation_modal")]
         for modal in allmodal:
             modal.extract()
@@ -285,55 +276,63 @@ class SubmitAmendment(InfiniteCardinality):
         text = ''.join([str(t) for t in soup.body.contents])
         return text
 
-    def _get_sub_amendment(self, context, group):
-        intentionclass = explanation_intentions[group[0]['intention']['id']]
-        intention = intentionclass.title
-        comment =  "\n".join(list(set([i['intention']['comment'] for i in group])))
-        text = self._get_amendment_text(context, group)
+    def _get_explanation_data(self, context, group):
+        data = {
+            'title': group['title'] ,
+            'comment':  "\n".join(list(set([i['intention']['comment'] for i in group['explanations']]))),
+            'text': self._get_amendment_text(context, group['explanations']),
+            'description': context.description #TODO,
+        }
+        return data
+
+    def _add_sub_amendment(self, context, group):
+        data = self._get_explanation_data(context, group)
         keywords_ref = context.keywords_ref
-        description = context.description
         amendment = Amendment()
         for k in keywords_ref:
             amendment.addtoproperty('keywords_ref', k)
 
-        amendment.text = text
-        amendment.title = context.title + '('+'-'.join([str(i['oid']) for i in group ])+')' 
-        amendment.comment = comment
-        amendment.intention = intention
-        amendment.description = description
+        amendment.set_data(data)
         context.proposal.addtoproperty('amendments', amendment)
         amendment.state.append('published')
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
-        #intentionclass.init_amendment(amendment)
+        amendment.setproperty('originalentity', context)
+        explanations = sorted(group['explanations'], key=lambda e: e['oid'])
+        i = 1
+        for e in explanations:
+            e['oid'] = i
+            amendment.explanations[str(i)] = e
+            i+=1
+ 
         return amendment
-        
-    def _get_groups(self, context):
-        explanations = context.explanations
-        groups = []
-        grouped_explanations = []
-        for explanation in explanations.values():
-            if not(explanation in grouped_explanations):
-                group = [e for e in explanations.values() if explanation_intentions[explanation['intention']['id']].eq(explanation['intention'], e['intention'])]
-                grouped_explanations.extend(group)
-                groups.append(group)
-                if len(grouped_explanations) == len(explanations):
-                    break
-
-        return groups
 
     def start(self, context, request, appstruct, **kw):
+        groups = appstruct['groups']
+        for group in groups:
+            group['explanations'] = [context.explanations[e] for e in group['explanations']]
+            
         context.state.remove('draft')
         context.state.remove('explanation')
-        context.state.append('published')
-        groups = self._get_groups(context)
-        for group in groups:
-            amendment = self._get_sub_amendment(context, group)
-            
+        if len(groups) == 1:
+            group = groups[0]
+            data = self._get_explanation_data(context, group)
+            data['title'] = group['title']
+            data.pop('description')
+            data.pop('text')
+            context.set_data(data)
+            context.state.append('published')
+        else:
+            for group in groups:
+                self._add_sub_amendment(context, group)
+
+            context.state.append('deprecated')
+
+        context.reindex()         
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context.proposal, "@@index"))
 
 
 def comm_roles_validation(process, context):
@@ -434,77 +433,59 @@ class SeeAmendment(InfiniteCardinality):
             tag.append(explanation_item_soup.body)
             tag.body.unwrap()
 
+    def _add_modal_details(self, soup, tag, context, request):
+        context_oid = get_oid(context)
+        values= {'item': context.explanations[tag['data-item']], 'data': Intention.get_explanation_data(context.explanations[tag['data-item']]['intention'])}
+        template = 'novaideo:views/amendment_management/templates/readonly/explanation_item.pt'
+        body = renderers.render(template, values, request)
+        explanation_item_soup = BeautifulSoup(body)
+        template = 'novaideo:views/amendment_management/templates/readonly/explanation_modal_item.pt'
+        modal_body = renderers.render(template, values, request)
+        explanation_item_modal_soup = BeautifulSoup(modal_body)
+        soup.body.append(explanation_item_modal_soup.body)
+        tag.append(explanation_item_soup.body)
+        tag.body.unwrap()
+
     def _add_actions(self, context, request, soup):
         explanations_tags = soup.find_all('span', {'id':'explanation'})
         for explanation_tag in explanations_tags:
             self._add_modal(soup, explanation_tag, context, request)
 
+    def _add_details(self, context, request, soup):
+        explanations_tags = soup.find_all('span', {'id':'explanation'})
+        for explanation_tag in explanations_tags:
+            self._add_modal_details(soup, explanation_tag, context, request)
+
     def _identify_explanations(self, context, request, diff, descriminator):
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        soup = text_analyzer.wrap_diff(diff, "explanation")
+        correction_tags = soup.find_all('span', {'id': "explanation"})
         context_oid = str(get_oid(context))
         user = get_current()
         user_oid = get_oid(user)
-        soup = BeautifulSoup(diff)
-        ins_tags = soup.find_all('ins')
-        del_tags = soup.find_all('del')
-        del_included = []
-        for ins_tag in ins_tags:
-            new_explanation_tag = soup.new_tag("span", id="explanation")
-            new_explanation_tag['data-context'] = context_oid
-            new_explanation_tag['data-item'] = str(descriminator)
+        for correction_tag in correction_tags:
+            correction_tag['data-context'] = context_oid
+            correction_tag['data-item'] = str(descriminator)
             init_vote = {'oid':descriminator, 'intention':None}
-            previous_del_tag = ins_tag.find_previous_sibling('del')
-            correct_exist = False
-            inst_string = ins_tag.string
-            if previous_del_tag is not None:
-                previous_del_tag_string = previous_del_tag.string
-                del_included.append(previous_del_tag)
-                if previous_del_tag_string != inst_string:
-                    tofind = str(previous_del_tag) +str(ins_tag)
-                    explanation_exist = (diff.find(tofind) >=0)
-                    if explanation_exist:
-                        if not(str(descriminator) in context.explanations): 
-                            context.explanations[str(descriminator)] = PersistentDict(init_vote)
+            if not(str(descriminator) in context.explanations): 
+                context.explanations[str(descriminator)] = PersistentDict(init_vote)
 
-                        descriminator += 1 
-                        previous_del_tag.wrap(new_explanation_tag)
-                        new_explanation_tag.append(ins_tag)
-                        continue
-                else:
-                    ins_tag.unwrap()
-                    previous_del_tag.extract()
-
-            if ins_tag.parent is not None:
-                if not(str(descriminator) in context.explanations): 
-                    context.explanations[str(descriminator)] = PersistentDict(init_vote)
-
-                descriminator += 1
-                ins_tag.wrap(new_explanation_tag)
-
-        for del_tag in del_tags:
-            if not(del_tag in del_included):
-                if del_tag.string is not None:
-                    new_explanation_tag = soup.new_tag("span", id="explanation")
-                    new_explanation_tag['data-context'] = context_oid
-                    new_explanation_tag['data-item'] = str(descriminator)
-                    init_vote = {'oid':descriminator, 'intention':None}
-                    if not(str(descriminator) in context.explanations): 
-                        context.explanations[str(descriminator)] = PersistentDict(init_vote)
-
-                    descriminator += 1
-                    del_tag.wrap(new_explanation_tag)
-                else:
-                    del_tag.extract()        
-
+            descriminator += 1   
+    
         return soup
 
     def start(self, context, request, appstruct, **kw):
-        if 'explanation' in context.state: #TODO Optimization
+        if 'explanation' in context.state or 'published' in context.state: #TODO Optimization
             proposal = context.proposal
-            textdiff = htmldiff.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''))
-            textdiff = textdiff.replace('</del> <ins>','</del><ins>')
+            text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+            textdiff = text_analyzer.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''))
             descriminator = 1
             souptextdiff = self._identify_explanations(context, request, textdiff, descriminator)
-            self._add_actions(context, request, souptextdiff)
+            if 'explanation' in context.state:
+                self._add_actions(context, request, souptextdiff)
+            else:
+                self._add_details(context, request, souptextdiff)
+ 
             context.explanationtext = ''.join([str(t) for t in souptextdiff.body.contents])
 
         return True

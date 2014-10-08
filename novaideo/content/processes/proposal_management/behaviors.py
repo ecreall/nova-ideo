@@ -53,7 +53,6 @@ from novaideo.content.working_group import WorkingGroup
 from novaideo.content.ballot import Ballot
 from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
 from novaideo.utilities.text_analyzer import ITextAnalyzer
-from novaideo.ips.htmldiff import htmldiff
 
 
 try:
@@ -780,7 +779,7 @@ def _normalize_text(soup, first=True):
     #        if text[index] == ' ':
     #            text = text[:index]+text[index+1:]
 
-    return text.replace('\xa0', '')
+    return text.replace('\xa0', ' ')
 
 
 class CorrectItem(InfiniteCardinality):
@@ -802,22 +801,28 @@ class CorrectItem(InfiniteCardinality):
         context.proposal.text = _normalize_text(soup, False)
                 
     def _include_items(self, context, request, items, to_add=False):
-        tag_type = "del"
+        todel = "ins"
+        toins = "del"
         if to_add:
-            tag_type = "ins"
+            todel = "del"
+            toins = "ins"
 
         soup = BeautifulSoup(context.text)
+        tags = []
         for item in items:
-            correction_item = soup.find_all('span',{'id':'correction', 'data-item':item})[0]
-            tags = correction_item.find_all(tag_type)
-            if tags: 
-                tag = correction_item.find_all(tag_type)[0]
-                correction_item.clear()
-                correction_item.replace_with(tag)
-                tag.unwrap()
-            else:
-                correction_item.extract()
+            tags.extend(soup.find_all('span',{'id':'correction', 'data-item':item}))
 
+        corrections_data = []
+        for correction in tags:
+            correction_data = {'tag': correction,
+                                'todel': todel,
+                                'toins': toins,
+                                'blocstodel': ('span', {'id':'correction_actions'})
+                                }
+            corrections_data.append(correction_data)
+
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        text_analyzer.unwrap_diff(corrections_data, soup)
         return _normalize_text(soup, False), (len(soup.find_all("span", id="correction")) > 0)
 
     def start(self, context, request, appstruct, **kw):
@@ -906,56 +911,19 @@ class CorrectProposal(InfiniteCardinality):
         for correction_tag in corrections_tags:
             self._add_vote_actions(correction_tag, correction, request)
 
-    def _identify_corrections(self, diff, correction, descriminator, request):
+    def _identify_corrections(self, diff, correction, descriminator):
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        soup = text_analyzer.wrap_diff(diff, "correction")
+        correction_tags = soup.find_all('span', {'id': "correction"})
         correction_oid = str(get_oid(correction))
         user = get_current()
         user_oid = get_oid(user)
-        soup = BeautifulSoup(diff)
-        ins_tags = soup.find_all('ins')
-        del_tags = soup.find_all('del')
-        del_included = []
-        for ins_tag in ins_tags:
-            new_correction_tag = soup.new_tag("span", id="correction")
-            new_correction_tag['data-correction'] = correction_oid
-            new_correction_tag['data-item'] = str(descriminator)
+        for correction_tag in correction_tags:
+            correction_tag['data-correction'] = correction_oid
+            correction_tag['data-item'] = str(descriminator)
             init_vote = {'favour':[user_oid], 'against':[]}
-            previous_del_tag = ins_tag.find_previous_sibling('del')
-            correct_exist = False
-            inst_string = ins_tag.string
-            if previous_del_tag is not None:
-                previous_del_tag_string = previous_del_tag.string
-                del_included.append(previous_del_tag)
-                if previous_del_tag_string != inst_string:
-                    tofind = str(previous_del_tag) + str(ins_tag)
-                    correction_exist = (diff.find(tofind) >=0)
-                    if correction_exist:
-                        correction.corrections[str(descriminator)] = init_vote
-                        descriminator += 1 
-                        previous_del_tag.wrap(new_correction_tag)
-                        new_correction_tag.append(ins_tag)
-                        continue
-                else:
-                    ins_tag.unwrap()
-                    previous_del_tag.extract()
-
-            if ins_tag.parent is not None:
-                correction.corrections[str(descriminator)] = init_vote
-                descriminator += 1
-                ins_tag.wrap(new_correction_tag)
-
-        for del_tag in del_tags:
-            if not(del_tag in del_included):
-                if del_tag.string is not None:
-                    new_correction_tag = soup.new_tag("span", id="correction")
-                    new_correction_tag['data-correction'] = correction_oid
-                    new_correction_tag['data-item'] = str(descriminator)
-                    init_vote = {'favour':[user_oid], 'against':[]}
-                    correction.corrections[str(descriminator)] = init_vote
-                    descriminator += 1
-                    del_tag.wrap(new_correction_tag)
-                else:
-                    del_tag.extract()        
-
+            correction.corrections[str(descriminator)] = init_vote
+            descriminator += 1       
         return soup
 
     def start(self, context, request, appstruct, **kw):
@@ -963,14 +931,13 @@ class CorrectProposal(InfiniteCardinality):
         correction = appstruct['_object_data']
         correction.setproperty('author', user)
         context.addtoproperty('corrections', correction)
-        textdiff = htmldiff.render_html_diff(getattr(context, 'text', '').replace('&nbsp;', ''), getattr(correction, 'text', '').replace('&nbsp;', ''))
-        textdiff = textdiff.replace('</del> <ins>','</del><ins>')
-        descriptiondiff = htmldiff.render_html_diff(getattr(correction, 'description', ''), getattr(context, 'description', ''))
-        descriptiondiff = descriptiondiff.replace('</del> <ins>','</del><ins>')
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        textdiff = text_analyzer.render_html_diff(getattr(context, 'text', ''), getattr(correction, 'text', ''))
+        descriptiondiff = text_analyzer.render_html_diff(getattr(correction, 'description', ''), getattr(context, 'description', ''))
         descriminator = 0
-        souptextdiff = self._identify_corrections(textdiff, correction, descriminator, request)
+        souptextdiff = self._identify_corrections(textdiff, correction, descriminator)
         self._add_actions(correction, request, souptextdiff)
-        soupdescriptiondiff = self._identify_corrections(descriptiondiff, correction, descriminator, request)
+        soupdescriptiondiff = self._identify_corrections(descriptiondiff, correction, descriminator)
         #self._add_actions(correction, request, soupdescriptiondiff)
         correction.text = _normalize_text(souptextdiff)
         context.originaltext = str(correction.text)
@@ -1383,11 +1350,13 @@ class AmendmentsResult(ElementaryAction):
             context.state = PersistentList(['deprecated'])
             copy_of_proposal.text = merged_text
             #correlation idea of replacement ideas... del replaced_idea
-            ideas_of_replacement = [a.idea_of_replacement for a in amendments if a.idea_of_replacement is not None]
-            replaced_ideas = [a.replaced_idea for a in amendments if a.replaced_idea is not None]
-            not_modified_ideas = [i for i in context.related_ideas if not (i in replaced_ideas)]
+            added_ideas = [a.added_ideas for a in amendments]
+            added_ideas = [item for sublist in added_ideas for item in sublist]
+            removed_ideas = [a.removed_ideas for a in amendments]
+            removed_ideas = [item for sublist in removed_ideas for item in sublist]
+            not_modified_ideas = [i for i in context.related_ideas if not (i in removed_ideas)]
             new_ideas = not_modified_ideas
-            new_ideas.extend(ideas_of_replacement)
+            new_ideas.extend(added_ideas)
             new_ideas = list(set(new_ideas))
             associate_to_proposal(new_ideas, copy_of_proposal, False)
             self.newcontext = copy_of_proposal

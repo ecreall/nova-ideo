@@ -11,30 +11,10 @@
 </div>
   <div class="amendment-well">
     <dl >
-        <div tal:omit-tag=""  tal:condition="hasattr(amendment, 'intention')">
-          <dt >Intention</dt>
-	  <dd>${getattr(amendment, 'intention', 'Not specified')}</dd>
-        </div>
-        <div tal:omit-tag=""  tal:condition="hasattr(amendment, 'comment')">
-          <dt>Objet</dt>
-	  <dd>${getattr(amendment, 'comment', 'Not specified')}</dd>
-        </div>
         <div tal:omit-tag="" tal:condition="amendment.originalentity is not None">
           <dt>Amendement d'originie</dt>
 	  <dd>
              <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a>
-          </dd>
-        </div>
-        <div tal:omit-tag="" tal:condition="amendment.replaced_idea">
-           <dt >Idées remplacée</dt>
-	   <dd >
-             <a  tal:attributes="href request.resource_url(amendment.replaced_idea, '@@index')">${ri.title}</a>
-           </dd>
-        </div>
-        <div tal:omit-tag="" tal:condition="amendment.idea_of_replacement">
-          <dt >Idée de remplacement</dt>
-          <dd>
-             <a  tal:attributes="href request.resource_url(amendment.idea_of_replacement, '@@index')">${ri.title}</a>
           </dd>
         </div>
         <dt>Dernière modification</dt>

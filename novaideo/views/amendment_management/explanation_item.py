@@ -6,7 +6,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
 from novaideo.content.processes.amendment_management.behaviors import  ExplanationItem
-from novaideo.content.amendment import Amendment, explanation_intentions
+from novaideo.content.amendment import Amendment, Intention
 from novaideo import _
 
 
@@ -31,8 +31,7 @@ class ExplanationItemView(BasicView):
         if relatedexplanation is not None and relatedexplanation != '':
             intention = dict(self.context.explanations[relatedexplanation]['intention'])
         elif intentionid != '':
-            intentionclass = explanation_intentions[intentionid]
-            intention = intentionclass.get_intention(self)
+            intention = Intention.get_intention(self)
 
        # if intention is None:
        #     return {}

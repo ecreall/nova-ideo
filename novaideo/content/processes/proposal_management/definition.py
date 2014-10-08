@@ -175,6 +175,8 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             if e in list2:
                 return True
 
+        return False
+
     def _init_subprocess(self, process, subprocess):
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
@@ -185,10 +187,16 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         groups = []
         for amendment in amendments:
             isadded = False
+            related_ideas_amendment = list(amendment.edited_ideas)
+            related_ideas_amendment.extend(list(amendment.removed_ideas))
+            related_ideas_amendment = list(set(related_ideas_amendment))
             for group in groups:
                 for a in group:
+                    related_ideas_a = list(a.edited_ideas)
+                    related_ideas_a.extend(list(a.removed_ideas))
+                    related_ideas_a = list(set(related_ideas_a))
                     if text_analyzer.hasConflict(a.text, [amendment.text]) or \
-                       ((amendment.replaced_idea is not None) and (amendment.replaced_idea is a.replaced_idea)):
+                       ((amendment.replaced_idea is not None) and self._contains_any(related_ideas_amendment, related_ideas_a)):
                         group.append(amendment)
                         isadded = True
 

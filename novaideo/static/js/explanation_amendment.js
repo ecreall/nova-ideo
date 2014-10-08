@@ -1,17 +1,12 @@
 
-intentions_schema = { 'replaceideas' : ['comment', 'ideasofreplacement', 'replacedideas'],
-                      'completetext' : ['comment'],
-                      'completeideas' : ['comment', 'ideas'],
-                      'addideas' : ['comment', 'ideas'],
-                      'removeideas' : ['comment', 'ideas'],
-                      '' : []
-                  };
+intention_schema = ['comment', 'edited_ideas', 'added_ideas', 'removed_ideas']
 
 
-function validate_intention(intention, datas){
-    var schema = intentions_schema[intention]
-    for (i=0; i<schema.length; i++){
-        if (datas[schema[i]].length==0){
+function validate_intention(datas){
+    return (datas['comment'].length>0)
+
+    for (i=0; i<intention_schema.length; i++){
+        if (datas[intention_schema[i]].length==0){
             return false
        }
     };
@@ -20,15 +15,6 @@ function validate_intention(intention, datas){
 
 
 function init_explanation_select(){
-  $('.explanation-intention').on('change', function(e){
-       var intention_bloc = e.val;
-       var intention_form = $($($(this).parents('form').first()).find('.'+intention_bloc+'-intention').first());
-       var intention_forms = $($($(this).parents('form').first()).find('.form-intention'));
-       intention_forms.addClass('hide-bloc')
-       if (intention_form.hasClass('hide-bloc')){
-           intention_form.removeClass('hide-bloc')
-       }
-   });
 
   $('.related-explanation').on('change', function(e){
        var intention = e.val;
@@ -81,31 +67,27 @@ function get_data(selecteds){
 function submit_explanation(url){
        var button = $(this);
        var target = $($(this).parents('.modal.fade').first());
-       var selectintention = $(target.find('.explanation-intention').first());
-       var intention_bloc = selectintention.select2('val');
-       var form = $(selectintention.parents('form').first());
-       var intention_form = $(form.find('.'+intention_bloc+'-intention').first());
+       var form = $(target.find('form').first());
+       var intention_form = $(form.find('.intention-bloc').first());
        var url = $(this).data('url');
        var item = $(this).data('item');
        var commentmessageinfo = target.find('#messageinfo');
        var commentmessagesuccess = target.find('#messagesuccess');
        var commentmessagedanger = target.find('#messagedanger');
        var comment = $(intention_form.find("textarea[name='comment']").first()).val();
-       var ideas = $(intention_form.find("select[name='ideas']").first()).select2('data');
-       var replacedideas = $(intention_form.find("select[name='replacedideas']").first()).select2('data');
-       var ideasofreplacement = $(intention_form.find("select[name='ideasofreplacement']").first()).select2('data');
+       var added_ideas = $(intention_form.find("select[name='added_ideas']").first()).select2('data');
+       var removed_ideas = $(intention_form.find("select[name='removed_ideas']").first()).select2('data');
+       var edited_ideas = $(intention_form.find("select[name='edited_ideas']").first()).select2('data');
        var relatedexplanation = $(form.find("select[name='relatedexplanation']").first()).select2('val');
-       var intention = $(form.find("select[name='intention']").first()).select2('val');
        if (!(typeof relatedexplanation == "string")){relatedexplanation=""};
        var datas = {'comment': comment,
-                   'ideas' : get_data(ideas),
-                   'replacedideas': get_data(replacedideas),
-                   'ideasofreplacement': get_data(ideasofreplacement),
+                   'added_ideas' : get_data(added_ideas),
+                   'removed_ideas': get_data(removed_ideas),
+                   'edited_ideas': get_data(edited_ideas),
                    'relatedexplanation': relatedexplanation,
-                   'intention': intention,
                    'item':item
                   };
-        if(relatedexplanation == "" && !validate_intention(intention, datas)){
+        if(relatedexplanation == "" && !validate_intention(datas)){
               $( commentmessagedanger).text( "There was a problem with your submission." ).show().fadeOut( 4000 );
               return false
         };

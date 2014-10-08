@@ -1,0 +1,45 @@
+<div class="modal fade" id="${item['oid']}explanation_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title"><span class="glyphicon glyphicon-comment"></span> The intention of changes (${item['oid']})</h4>
+      </div>
+      <div class="modal-body">
+      <dl >
+        <dt >Objet</dt>
+	<dd>${data['comment']}</dd>
+        <div tal:omit-tag="" tal:condition="data['edited_ideas']">
+          <dt>Idées modifiées</dt>
+	  <dd>
+            <tal:loop repeat="idea data['edited_ideas']">
+               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
+               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
+            </tal:loop>
+          </dd>
+        </div>
+        <div tal:omit-tag="" tal:condition="data['added_ideas']">
+          <dt>Idées ajoutées</dt>
+	  <dd>
+            <tal:loop repeat="idea data['added_ideas']">
+               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
+               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
+            </tal:loop>
+          </dd>
+        </div>
+        <div tal:omit-tag="" tal:condition="data['removed_ideas']">
+          <dt>Idées supprimées</dt>
+	  <dd>
+            <tal:loop repeat="idea data['removed_ideas']">
+               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
+               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
+            </tal:loop>
+          </dd>
+        </div>
+      </dl>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
