@@ -911,8 +911,7 @@ class CorrectProposal(InfiniteCardinality):
         for correction_tag in corrections_tags:
             self._add_vote_actions(correction_tag, correction, request)
 
-    def _identify_corrections(self, diff, correction, descriminator):
-        soup = BeautifulSoup(diff)
+    def _identify_corrections(self, soup, correction, descriminator):
         correction_tags = soup.find_all('span', {'id': "correction"})
         correction_oid = str(get_oid(correction))
         user = get_current()
@@ -923,7 +922,6 @@ class CorrectProposal(InfiniteCardinality):
             init_vote = {'favour':[user_oid], 'against':[]}
             correction.corrections[str(descriminator)] = init_vote
             descriminator += 1       
-        return soup
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
@@ -931,12 +929,12 @@ class CorrectProposal(InfiniteCardinality):
         correction.setproperty('author', user)
         context.addtoproperty('corrections', correction)
         text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-        textdiff = text_analyzer.render_html_diff(getattr(context, 'text', ''), getattr(correction, 'text', ''), "correction")
-        descriptiondiff = text_analyzer.render_html_diff(getattr(correction, 'description', ''), getattr(context, 'description', ''), "correction")
+        souptextdiff, textdiff = text_analyzer.render_html_diff(getattr(context, 'text', ''), getattr(correction, 'text', ''), "correction")
+        soupdescriptiondiff, descriptiondiff = text_analyzer.render_html_diff(getattr(correction, 'description', ''), getattr(context, 'description', ''), "correction")
         descriminator = 0
-        souptextdiff = self._identify_corrections(textdiff, correction, descriminator)
+        self._identify_corrections(souptextdiff, correction, descriminator)
         self._add_actions(correction, request, souptextdiff)
-        soupdescriptiondiff = self._identify_corrections(descriptiondiff, correction, descriminator)
+        self._identify_corrections(soupdescriptiondiff, correction, descriminator)
         #self._add_actions(correction, request, soupdescriptiondiff)
         correction.text = _normalize_text(souptextdiff)
         context.originaltext = str(correction.text)

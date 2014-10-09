@@ -456,8 +456,7 @@ class SeeAmendment(InfiniteCardinality):
         for explanation_tag in explanations_tags:
             self._add_modal_details(soup, explanation_tag, context, request)
 
-    def _identify_explanations(self, context, request, diff, descriminator):
-        soup = BeautifulSoup(diff)
+    def _identify_explanations(self, context, request, soup, descriminator):
         correction_tags = soup.find_all('span', {'id': "explanation"})
         context_oid = str(get_oid(context))
         user = get_current()
@@ -471,15 +470,14 @@ class SeeAmendment(InfiniteCardinality):
 
             descriminator += 1   
     
-        return soup
 
     def start(self, context, request, appstruct, **kw):
         if 'explanation' in context.state or 'published' in context.state: #TODO Optimization
             proposal = context.proposal
             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-            textdiff = text_analyzer.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''), "explanation")
+            souptextdiff, textdiff = text_analyzer.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''), "explanation")
             descriminator = 1
-            souptextdiff = self._identify_explanations(context, request, textdiff, descriminator)
+            self._identify_explanations(context, request, souptextdiff, descriminator)
             if 'explanation' in context.state:
                 self._add_actions(context, request, souptextdiff)
             else:

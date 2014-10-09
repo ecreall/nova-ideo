@@ -2,6 +2,7 @@ import colander
 import re
 import html2text
 from pyramid.view import view_config
+from pyramid.threadlocal import get_current_registry
 
 from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -132,7 +133,7 @@ class VoteFormView(FormView):
                 values['is_proposal'] = True
             else:
                 text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-                textdiff =  text_analyzer.render_html_diff(getattr(self.context, 'text', ''), getattr(object, 'text', ''))
+                soup, textdiff =  text_analyzer.render_html_diff(getattr(self.context, 'text', ''), getattr(object, 'text', ''))
                 values['text'] = self._get_added_texts(textdiff)
 
             body = self.content(result=values, template=description_template)['body']

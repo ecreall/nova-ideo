@@ -69,7 +69,7 @@ class TextAnalyzer(object):
         text2 = text2.replace('&nbsp;', '')
         result = htmldiff.render_html_diff(text1, text2)
         soup = self.wrap_diff(result.replace('\xa0',' '), diffid)
-        return u''.join([str(t) for t in soup.body.contents])
+        return soup, u''.join([str(t) for t in soup.body.contents])
   
     def _del_next_s(self, soup, tag):
         next_sibling = tag.next_sibling
@@ -151,8 +151,7 @@ class TextAnalyzer(object):
             tag.unwrap()
 
     def render_html_diff_del(self, text1, text2):
-        diff = self.render_html_diff(text1, text2)
-        soup = self.wrap_diff(diff, "modif")
+        soup, diff = self.render_html_diff(text1, text2, "modif")
         modifs_data = []
         modifs = soup.find_all('span', {'id':'modif'})
         for modif in modifs:
@@ -172,11 +171,10 @@ class TextAnalyzer(object):
 
 
     def update_text(self, new_text, old_text, text):
-        deleted_text = self.render_html_diff_del(old_text, text)
-        diff = self.render_html_diff(new_text, deleted_text)
-        soup = BeautifulSoup(diff)
-        ins_tags = soup.find_all('ins')
-        del_tags = soup.find_all('del')
+        soup, deleted_text = self.render_html_diff_del(old_text, text, "modif")
+        soupdiff, diff = self.render_html_diff(new_text, deleted_text, "modif")
+        ins_tags = soupdiff.find_all('ins')
+        del_tags = soupdiff.find_all('del')
         valid_del_tags = []
         valid_ins_tags = []
         for del_tag in del_tags:
@@ -194,19 +192,18 @@ class TextAnalyzer(object):
             valid_ins_tags.append(ins_tag)
 
         for tag in valid_del_tags:
-            new_tag = soup.new_tag('span', type='del')
+            new_tag = soupdiff.new_tag('span', type='del')
             tag.wrap(new_tag)
             tag.unwrap()
 
         for tag in valid_ins_tags:
-            new_tag = soup.new_tag('span', type='ins')
+            new_tag = soupdiff.new_tag('span', type='ins')
             tag.wrap(new_tag)
             tag.unwrap()
 
-        diff = u''.join([str(t) for t in soup.body.contents])
-        soup = self.wrap_diff(diff, "modif")
+        diff = u''.join([str(t) for t in soupdiff.body.contents])
         modifs_data = []
-        modifs = soup.find_all('span', {'id':'modif'})
+        modifs = soupdiff.find_all('span', {'id':'modif'})
         for modif in modifs:
             modif_data = {'tag': modif,
                                 'todel': "ins",
@@ -215,22 +212,22 @@ class TextAnalyzer(object):
                                 }
             modifs_data.append(modif_data)
 
-        self.unwrap_diff(modifs_data, soup)
-        del_tags = soup.find_all('span', {'type':'del'})
-        ins_tags = soup.find_all('span', {'type':'ins'})
+        self.unwrap_diff(modifs_data, soupdiff)
+        del_tags = soupdiff.find_all('span', {'type':'del'})
+        ins_tags = soupdiff.find_all('span', {'type':'ins'})
         for tag in ins_tags:
-            new_tag = soup.new_tag('ins')
+            new_tag = soupdiff.new_tag('ins')
             tag.wrap(new_tag)
             tag.unwrap()
 
         for tag in del_tags:
-            new_tag = soup.new_tag('del')
+            new_tag = soupdiff.new_tag('del')
             tag.wrap(new_tag)
             tag.unwrap()
 
-        soup = self.wrap_diff(diff, "modif")
+        soupdiff = self.wrap_diff(diff, "modif")
         modifs_data = []
-        modifs = soup.find_all('span', {'id':'modif'})
+        modifs = soupdiff.find_all('span', {'id':'modif'})
         for modif in modifs:
             modif_data = {'tag': modif,
                                 'todel': "del",
@@ -239,14 +236,6 @@ class TextAnalyzer(object):
                                 }
             modifs_data.append(modif_data)
 
-        self.unwrap_diff(modifs_data, soup)
-        new_diff = u''.join([str(t) for t in soup.body.contents])
+        self.unwrap_diff(modifs_data, soupdiff)
+        new_diff = u''.join([str(t) for t in soupdiff.body.contents])
         return self.merge(new_text, [text, new_diff])
-        
-
-       
-
-       
-        
-        
-        

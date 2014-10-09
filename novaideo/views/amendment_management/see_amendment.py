@@ -49,7 +49,7 @@ class DetailAmendmentView(BasicView):
             return self.context.explanationtext 
         else:
             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-            textdiff =  text_analyzer.render_html_diff(getattr(self.context.proposal, 'text', ''), getattr(self.context, 'text', ''))
+            soup, textdiff =  text_analyzer.render_html_diff(getattr(self.context.proposal, 'text', ''), getattr(self.context, 'text', ''))
             return textdiff
 
     def update(self):
@@ -68,7 +68,7 @@ class DetailAmendmentView(BasicView):
         keywordsdiff = []
         proposal = self.context.proposal
         textdiff =self._get_adapted_text(user)
-        descriptiondiff = text_analyzer.render_html_diff('<div>'+getattr(proposal, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
+        soup, descriptiondiff = text_analyzer.render_html_diff('<div>'+getattr(proposal, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
         for k in proposal.keywords:
             if k in self.context.keywords:
                 keywordsdiff.append({'title':k,'state':'nothing'})

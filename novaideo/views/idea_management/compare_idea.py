@@ -3,6 +3,7 @@ import colander
 import deform
 from zope.interface import invariant
 from pyramid.view import view_config
+from pyramid.threadlocal import get_current_registry
 
 from substanced.util import find_service
 
@@ -45,8 +46,8 @@ class DiffView(BasicView):
         if version is not None:
              versionobj = get_obj(int(version))
              text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-             textdiff =  text_analyzer.render_html_diff(getattr(versionobj, 'text', ''), getattr(self.context, 'text', ''))
-             descriptiondiff = text_analyzer.render_html_diff('<div>'+getattr(versionobj, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
+             soupt, textdiff =  text_analyzer.render_html_diff(getattr(versionobj, 'text', ''), getattr(self.context, 'text', ''))
+             soupd, descriptiondiff = text_analyzer.render_html_diff('<div>'+getattr(versionobj, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
              for k in versionobj.keywords:
                  if k in self.context.keywords:
                      keywordsdiff.append({'title':k,'state':'nothing'})
