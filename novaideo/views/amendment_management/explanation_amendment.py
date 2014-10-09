@@ -18,7 +18,6 @@ from novaideo.content.processes.amendment_management.behaviors import  Explanati
 from novaideo.content.amendment import Amendment, IntentionSchema, Intention
 from novaideo import _
 from novaideo.views.novaideo_view_manager.search import SearchResultView
-from novaideo.ips.htmldiff import htmldiff
 from .present_amendment import PresentAmendmentView
 from .comment_amendment import CommentAmendmentView
 from .associate import AssociateView

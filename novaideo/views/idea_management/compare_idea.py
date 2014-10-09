@@ -18,8 +18,8 @@ from pontus.file import  Object as ObjectType
 
 from novaideo.content.processes.idea_management.behaviors import  CompareIdea
 from novaideo.content.idea import Idea
-from novaideo.ips.htmldiff import htmldiff
 from novaideo import _
+from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 compare_message = {'0': u"""Pas de versions""",
@@ -44,8 +44,9 @@ class DiffView(BasicView):
         versionobj = None
         if version is not None:
              versionobj = get_obj(int(version))
-             textdiff = htmldiff.render_html_diff(getattr(versionobj, 'text', ''), getattr(self.context, 'text', ''))
-             descriptiondiff = htmldiff.render_html_diff('<div>'+getattr(versionobj, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
+             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+             textdiff =  text_analyzer.render_html_diff(getattr(versionobj, 'text', ''), getattr(self.context, 'text', ''))
+             descriptiondiff = text_analyzer.render_html_diff('<div>'+getattr(versionobj, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
              for k in versionobj.keywords:
                  if k in self.context.keywords:
                      keywordsdiff.append({'title':k,'state':'nothing'})

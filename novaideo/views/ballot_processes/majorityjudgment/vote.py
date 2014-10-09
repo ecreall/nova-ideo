@@ -19,7 +19,7 @@ from novaideo.content.proposal import Proposal
 from novaideo.content.amendment import AmendmentSchema
 from novaideo import _
 from novaideo.views.widget import InLineWidget, ObjectWidget
-from novaideo.ips.htmldiff import htmldiff
+from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 class VoteViewStudyReport(BasicView):
@@ -131,7 +131,8 @@ class VoteFormView(FormView):
                 values['text'] = self._get_trimed_text(object.text)
                 values['is_proposal'] = True
             else:
-                textdiff = htmldiff.render_html_diff(getattr(self.context, 'text', ''), getattr(object, 'text', ''))
+                text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+                textdiff =  text_analyzer.render_html_diff(getattr(self.context, 'text', ''), getattr(object, 'text', ''))
                 values['text'] = self._get_added_texts(textdiff)
 
             body = self.content(result=values, template=description_template)['body']
