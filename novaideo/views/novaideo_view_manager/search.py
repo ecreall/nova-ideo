@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import re
 import colander
+import datetime
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
@@ -168,6 +169,7 @@ def search(text, content_types, user):
     query = (query) & states_index.notany(('deprecated',)) 
     resultset = query.execute()
     objects = [o for o in resultset.all() if can_access(user, o)] 
+    objects = sorted(objects, key=lambda e: getattr(e, 'modified_at', datetime.datetime.today()), reverse=True)
     return objects
 
 
