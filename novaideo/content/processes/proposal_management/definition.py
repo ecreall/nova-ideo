@@ -45,7 +45,8 @@ from .behaviors import (
     OpposeProposal,
     WithdrawToken,
 #    DelIdeas,
-    SeeRelatedIdeas
+    SeeRelatedIdeas,
+    ProofreadingDone
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
@@ -196,7 +197,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
                     related_ideas_a.extend(list(a.removed_ideas))
                     related_ideas_a = list(set(related_ideas_a))
                     if text_analyzer.hasConflict(a.text, [amendment.text]) or \
-                       ((amendment.replaced_idea is not None) and self._contains_any(related_ideas_amendment, related_ideas_a)):
+                       (related_ideas_amendment and self._contains_any(related_ideas_amendment, related_ideas_a)):
                         group.append(amendment)
                         isadded = True
 
@@ -367,6 +368,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Correct item"),
                                        title=_("Correct"),
                                        groups=[]),
+                proofreading = ActivityDefinition(contexts=[ProofreadingDone],
+                                       description=_("Proofreading done"),
+                                       title=_("Proofreading done"),
+                                       groups=[]),
                 addparagraph = ActivityDefinition(contexts=[AddParagraph],
                                        description=_("Add a paragraph"),
                                        title=_("Add a paragraph"),
@@ -399,6 +404,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg3', 'resign'),
                 TransitionDefinition('pg3', 'participate'),
                 TransitionDefinition('pg3', 'correct'),
+                TransitionDefinition('pg3', 'proofreading'),
                 TransitionDefinition('pg3', 'correctitem'),
                 TransitionDefinition('pg3', 'addparagraph'),
                 TransitionDefinition('pg3', 'improve'),

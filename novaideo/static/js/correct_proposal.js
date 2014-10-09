@@ -15,7 +15,12 @@ function correct_handler(event){
         var content = $(data['body']).find('#correction_text');
         if (content){
              $(target).html($(content).html());
-             $(target).find('.correction-action').on('click', correct_handler)
+             var corrections = $(target).find('.correction-action');
+             if (corrections.length>0){
+                 corrections.on('click', correct_handler)
+             }else{
+                 location.reload();
+             }
         }else{
            location.reload();
            return false

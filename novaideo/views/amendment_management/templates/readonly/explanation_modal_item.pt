@@ -7,8 +7,8 @@
       </div>
       <div class="modal-body">
       <dl >
-        <dt >Objet</dt>
-	<dd>${data['comment']}</dd>
+        <dt >Explication</dt>
+	<dd>${structure:data['comment']}</dd>
         <div tal:omit-tag="" tal:condition="data['edited_ideas']">
           <dt>Idées modifiées</dt>
 	  <dd>

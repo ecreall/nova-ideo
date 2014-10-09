@@ -362,6 +362,41 @@ class EditProposal(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+def proofreading_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'proposal')
+
+def proofreading_roles_validation(process, context):
+    return has_any_roles(roles=(('Participant', context),)) #System
+
+def proofreading_processsecurity_validation(process, context):
+    correction_in_process = any(('in process' in c.state for c in context.corrections))
+    return global_user_processsecurity(process, context) and not correction_in_process
+
+def proofreading_state_validation(process, context):
+    wg = context.working_group
+    return 'active' in wg.state and 'proofreading' in context.state
+
+
+class ProofreadingDone(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_order = 2
+    context = IProposal
+    roles_validation = proofreading_roles_validation
+    relation_validation = proofreading_relation_validation
+    processsecurity_validation = proofreading_processsecurity_validation
+    state_validation = proofreading_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state.remove('proofreading')
+        context.state.append('amendable')
+        context.reindex()
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
 def pub_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
@@ -705,8 +740,8 @@ def improve_roles_validation(process, context):
 
 
 def improve_processsecurity_validation(process, context):
-    correction_in_process = any(('in process' in c.state for c in context.corrections))
-    return global_user_processsecurity(process, context) and not correction_in_process
+    #correction_in_process = any(('in process' in c.state for c in context.corrections))
+    return global_user_processsecurity(process, context) #and not correction_in_process
 
 
 def improve_state_validation(process, context):
@@ -766,7 +801,7 @@ def correctitem_processsecurity_validation(process, context):
 
 def correctitem_state_validation(process, context):
     wg = context.proposal.working_group
-    return 'active' in wg.state and 'amendable' in context.proposal.state
+    return 'active' in wg.state and 'proofreading' in context.proposal.state
 
 
 def _normalize_text(soup, first=True):
@@ -874,7 +909,7 @@ def correct_processsecurity_validation(process, context):
 
 def correct_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and 'amendable' in context.state
+    return 'active' in wg.state and 'proofreading' in context.state
 
 
 class CorrectProposal(InfiniteCardinality):
@@ -981,7 +1016,7 @@ def decision_roles_validation(process, context):
 
 def decision_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and 'amendable' in context.state
+    return 'active' in wg.state and ('proofreading' in context.state or 'amendable' in context.state)
 
 
 class VotingPublication(ElementaryAction):
@@ -994,7 +1029,8 @@ class VotingPublication(ElementaryAction):
     state_validation = decision_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('amendable')
+        state = context.state[0] 
+        context.state.remove(state)
         context.state.append('votes for publishing')
         context.reindex()
         members = context.working_group.members
@@ -1031,7 +1067,7 @@ def withdraw_processsecurity_validation(process, context):
 
 def withdraw_state_validation(process, context):
     wg = context.working_group
-    return  'amendable' in context.state
+    return  'amendable' in context.state or 'proofreading' in context.state
 
 
 class Withdraw(InfiniteCardinality):
@@ -1078,7 +1114,7 @@ def resign_processsecurity_validation(process, context):
 
 
 def resign_state_validation(process, context):
-    return  'amendable' in context.state or 'open to a working group' in context.state #TODO
+    return  'amendable' in context.state or 'proofreading' in context.state or 'open to a working group' in context.state #TODO
 
 
 class Resign(InfiniteCardinality):
@@ -1167,7 +1203,7 @@ def participate_processsecurity_validation(process, context):
 
 def participate_state_validation(process, context):
     wg = context.working_group
-    return  not('closed' in wg.state) and ('amendable' in context.state or 'open to a working group' in context.state)
+    return  not('closed' in wg.state) and ('proofreading' in context.state or 'amendable' in context.state or 'open to a working group' in context.state)
 
 
 class Participate(InfiniteCardinality):
@@ -1208,7 +1244,7 @@ class Participate(InfiniteCardinality):
                 if not hasattr(self.process, 'first_decision'):
                     self.process.first_decision = True
 
-                context.state.append('amendable')
+                context.state.append('proofreading')
                 context.reindex()
 
             self._send_mail_to_user(PARTICIPATE_SUBJECT, PARTICIPATE_MESSAGE, user, context, request)
@@ -1288,7 +1324,7 @@ class AmendmentsResult(ElementaryAction):
         copy_keywords, newkeywords = root.get_keywords(context.keywords)
         copy_of_proposal.setproperty('keywords_ref', copy_keywords)
         copy_of_proposal.setproperty('originalentity', context)
-        copy_of_proposal.state = PersistentList(['amendable'])
+        copy_of_proposal.state = PersistentList(['proofreading'])
         copy_of_proposal.setproperty('author', context.author)
         self.process.execution_context.add_created_entity('proposal', copy_of_proposal)
         wg.setproperty('proposal', copy_of_proposal)
@@ -1359,7 +1395,7 @@ class AmendmentsResult(ElementaryAction):
             self.newcontext = copy_of_proposal
             copy_of_proposal.reindex()
         else:
-            context.state = PersistentList(['amendable'])
+            context.state = PersistentList(['proofreading'])
 
         context.reindex()
         return True
@@ -1388,7 +1424,7 @@ class Amendable(ElementaryAction):
         if self.process.first_decision:
             self.process.first_decision = False
 
-        context.state.append('amendable')
+        context.state.append('proofreading')
         reopening_ballot = getattr(self.process, 'reopening_configuration_ballot', None)
         if reopening_ballot is not None:
             report = reopening_ballot.report

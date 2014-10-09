@@ -332,7 +332,8 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
     def added_ideas(self):
         result = []
         for explanation in self.explanations.values():
-            result.extend(Intention.get_explanation_data(explanation['intention'])['added_idea'])
+            if explanation['intention'] is not None:
+                result.extend(Intention.get_explanation_data(explanation['intention'])['added_ideas'])
 
         return list(set(result))
 
@@ -340,7 +341,8 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
     def edited_ideas(self):
         result = []
         for explanation in self.explanations.values():
-            result.extend(Intention.get_explanation_data(explanation['intention'])['edited_idea'])
+            if explanation['intention'] is not None:
+                result.extend(Intention.get_explanation_data(explanation['intention'])['edited_ideas'])
 
         return list(set(result))
 
@@ -348,7 +350,21 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
     def removed_ideas(self):
         result = []
         for explanation in self.explanations.values():
-            result.extend(Intention.get_explanation_data(explanation['intention'])['removed_idea'])
+            if explanation['intention'] is not None:
+                result.extend(Intention.get_explanation_data(explanation['intention'])['removed_ideas'])
 
         return list(set(result))
+
+    @property
+    def explanation(self):
+        result = []
+        values = sorted(list(self.explanations.values()), key=lambda e: e['oid'])
+        for explanation in values:
+            if explanation['intention'] is not None:
+                result.append('<p>'+(Intention.get_explanation_data(explanation['intention'])['comment'])+'</p>')
+
+        if result:
+            return '<div>'+"\n".join(result)+'</div>'
+    
+        return ''
 
