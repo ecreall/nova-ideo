@@ -35,10 +35,10 @@
       </li>
     </ul>
     <div tal:condition="request.user is None" class="btn-group navbar-right">
-       <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary ">
+       <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary " id="log-in">
           <i class="glyphicon glyphicon-log-in"> </i> Log In
        </a>
-       <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary ">
+       <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary " id="registration">
           <i class="glyphicon glyphicon-pencil"> </i> Registration
        </a>
     </div>

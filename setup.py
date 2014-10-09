@@ -23,7 +23,8 @@ requires = [
     'Genshi',
     'html5lib',
     'html2text',
-    'beautifulsoup4'
+    'beautifulsoup4',
+    'pyramid_robot',
     ]
 
 setup(name='novaideo',
@@ -53,7 +54,7 @@ setup(name='novaideo',
           ],
       },
       extras_require = dict(
-          test=[],
+          test=['pyramid_robot'],
       ),
       entry_points="""\
       [paste.app_factory]
