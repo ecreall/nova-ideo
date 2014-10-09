@@ -64,12 +64,19 @@ class TextAnalyzer(object):
 
         return texteresult
 
-    def render_html_diff(self, text1, text2):
-        text1 = text1.replace('&nbsp;', ' ')
-        text2 = text2.replace('&nbsp;', ' ')
+    def render_html_diff(self, text1, text2, diffid="diffid"):
+        text1 = text1.replace('&nbsp;', '')
+        text2 = text2.replace('&nbsp;', '')
         result = htmldiff.render_html_diff(text1, text2)
-        #result = result.replace('</del> <ins>','</del><ins>')
-        return result.replace('\xa0',' ')
+        soup = self.wrap_diff(result.replace('\xa0',' '), diffid)
+        return u''.join([str(t) for t in soup.body.contents])
+  
+    def _del_next_s(self, soup, tag):
+        next_sibling = tag.next_sibling
+        if isinstance(next_sibling, NavigableString):
+            if next_sibling[0] == ' ':
+                new_string = soup.new_string(tag.next_sibling[1:next_sibling.__len__()])
+                tag.next_sibling.replace_with(new_string)
 
     def wrap_diff(self, diff, diffid):
         soup = BeautifulSoup(diff)
@@ -83,15 +90,17 @@ class TextAnalyzer(object):
             inst_string = ins_tag.string
             if previous_del_tag is not None:
                 previous_del_tag_string = previous_del_tag.string
-                del_included.append(previous_del_tag)
-                if previous_del_tag_string != inst_string:
-                    tofind = str(previous_del_tag) +' *'+ str(ins_tag)
-                    modif_exist = (len(re.findall(tofind, diff)) >0)
-                    if modif_exist:
-                        previous_del_tag.wrap(new_tag)
-                        new_tag.append(ins_tag)
-                        continue
-                else:
+                tofind = str(previous_del_tag) +' *'+ str(ins_tag)
+                modif_exist = (len(re.findall(tofind, diff)) >0)
+                if previous_del_tag_string != inst_string and modif_exist:
+                    self._del_next_s(soup, previous_del_tag)
+                    previous_del_tag.wrap(new_tag)
+                    new_tag.append(ins_tag)
+                    del_included.append(previous_del_tag)
+                    continue
+                elif modif_exist:
+                    del_included.append(previous_del_tag)
+                    self._del_next_s(soup, previous_del_tag)
                     ins_tag.unwrap()
                     previous_del_tag.extract()
 
@@ -101,14 +110,15 @@ class TextAnalyzer(object):
         for del_tag in del_tags:
             if not(del_tag in del_included):
                 if del_tag.string is not None:
-                    new__tag = soup.new_tag("span", id=diffid)
+                    new_tag = soup.new_tag("span", id=diffid)
                     del_tag.wrap(new_tag)
                 else:
+                    self._del_next_s(soup, del_tag)
                     del_tag.extract()        
 
         return soup
 
-    def unwrap_diff(self, tags_data, soup):
+    def unwrap_diff(self, tags_data, soup, unwrap_ins=True):
         for tag_data in tags_data:
             tag = tag_data['tag']
             todel = tag_data['todel']
@@ -122,24 +132,121 @@ class TextAnalyzer(object):
                 for del_tag in del_tags:
                     del_tag.extract()
 
-            if ins_tags:
+            if ins_tags and unwrap_ins:
                 for ins_tag in ins_tags:
                     ins_tag.unwrap()
 
-            if bloctodel:
+            if bloctodel is not None:
                 blocs = tag.find_all(bloctodel[0], bloctodel[1])
                 for bloc in blocs:
                     bloc.extract()
 
-            if tag.contents[tag.contents.__len__()-1]=='\n':
+            if tag.contents and tag.contents[tag.contents.__len__()-1]=='\n':
                 tag.contents.pop()
 
-            if del_tags_empty and not ins_tags_empty:
+            if not del_tags_empty and ins_tags_empty:
                 #TODO del space
-                next_sibling = tag.next_sibling
-                if isinstance(next_sibling, NavigableString):
-                    if next_sibling[0] == ' ':
-                        new_string = soup.new_string(tag.next_sibling[1:next_sibling.__len__()])
-                        tag.next_sibling.replace_with(new_string)
+                self._del_next_s(soup, tag)
 
             tag.unwrap()
+
+    def render_html_diff_del(self, text1, text2):
+        diff = self.render_html_diff(text1, text2)
+        soup = self.wrap_diff(diff, "modif")
+        modifs_data = []
+        modifs = soup.find_all('span', {'id':'modif'})
+        for modif in modifs:
+            modif_data = {'tag': modif,
+                                'todel': "ins",
+                                'toins': "del",
+                                'blocstodel': None
+                                }
+            modifs_data.append(modif_data)
+
+        self.unwrap_diff(modifs_data, soup, False)
+        diff_div = soup.find_all('div', {'class':'diff'})
+        for d in diff_div:
+            d.unwrap()
+
+        return u''.join([str(t) for t in soup.body.contents])
+
+
+    def update_text(self, new_text, old_text, text):
+        deleted_text = self.render_html_diff_del(old_text, text)
+        diff = self.render_html_diff(new_text, deleted_text)
+        soup = BeautifulSoup(diff)
+        ins_tags = soup.find_all('ins')
+        del_tags = soup.find_all('del')
+        valid_del_tags = []
+        valid_ins_tags = []
+        for del_tag in del_tags:
+            del_parents = del_tag.find_parents('del')
+            if del_parents:
+                continue
+ 
+            valid_del_tags.append(del_tag)
+
+        for ins_tag in ins_tags:
+            ins_parents = ins_tag.find_parents('del')
+            if ins_parents:
+                continue
+ 
+            valid_ins_tags.append(ins_tag)
+
+        for tag in valid_del_tags:
+            new_tag = soup.new_tag('span', type='del')
+            tag.wrap(new_tag)
+            tag.unwrap()
+
+        for tag in valid_ins_tags:
+            new_tag = soup.new_tag('span', type='ins')
+            tag.wrap(new_tag)
+            tag.unwrap()
+
+        diff = u''.join([str(t) for t in soup.body.contents])
+        soup = self.wrap_diff(diff, "modif")
+        modifs_data = []
+        modifs = soup.find_all('span', {'id':'modif'})
+        for modif in modifs:
+            modif_data = {'tag': modif,
+                                'todel': "ins",
+                                'toins': "del",
+                                'blocstodel': None
+                                }
+            modifs_data.append(modif_data)
+
+        self.unwrap_diff(modifs_data, soup)
+        del_tags = soup.find_all('span', {'type':'del'})
+        ins_tags = soup.find_all('span', {'type':'ins'})
+        for tag in ins_tags:
+            new_tag = soup.new_tag('ins')
+            tag.wrap(new_tag)
+            tag.unwrap()
+
+        for tag in del_tags:
+            new_tag = soup.new_tag('del')
+            tag.wrap(new_tag)
+            tag.unwrap()
+
+        soup = self.wrap_diff(diff, "modif")
+        modifs_data = []
+        modifs = soup.find_all('span', {'id':'modif'})
+        for modif in modifs:
+            modif_data = {'tag': modif,
+                                'todel': "del",
+                                'toins': "ins",
+                                'blocstodel': None
+                                }
+            modifs_data.append(modif_data)
+
+        self.unwrap_diff(modifs_data, soup)
+        new_diff = u''.join([str(t) for t in soup.body.contents])
+        return self.merge(new_text, [text, new_diff])
+        
+
+       
+
+       
+        
+        
+        
