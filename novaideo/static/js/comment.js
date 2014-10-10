@@ -32,9 +32,12 @@ $(document).ready(function(){
           $.post(url, dict_post, function(data) {
                  var content = $(data).find('.scroll-able.comments-scroll');//TODO chercher le bon scrollable
                  if (content){
-                     $(target).html($(content).html());
-                     $( commentmessagesuccess).text( "Your comment is integrated" ).show().fadeOut( 3000 );
-                     textarea.val('')
+                     
+                   var label = $($(content).parents(".panel").first()).find('.panel-heading span.label').text();
+                   $($(target).parents(".panel").first()).find('.panel-heading span.label').text(label);
+                   $(target).html($(content).html());
+                   $( commentmessagesuccess).text( "Your comment is integrated" ).show().fadeOut( 3000 );
+                   textarea.val('')
                   }else{
                      location.reload();
                      return false

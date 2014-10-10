@@ -1,0 +1,44 @@
+<div tal:define="
+     name name|field.name;
+     style field.widget.style;
+     oid oid|field.oid;
+     css_class css_class|field.widget.css_class;
+     item_css_class item_class|field.widget.item_css_class;
+     id oid+'-'+field.get_root().formid"
+     tal:omit-tag="">
+
+  <input type="hidden" name="__start__" value="${name}:sequence"
+          />
+
+   <div id="container-${id}" class="select-container ${css_class}">
+    <tal:loop tal:repeat="item values">
+      <span tal:condition=" (item[0] in cstruct or item[0] == cstruct)"
+            id="item-${item[0]}" 
+            class="btn btn-white select-item ${item_css_class}"
+            data-item="${item[0]}"
+            dat-value="${item[1]}"
+            draggable="true">
+         ${item[1]}
+      </span>
+    </tal:loop>
+   </div>
+
+  <select tal:attributes="
+          name name;
+          id id;
+          class string: form-control  hide-bloc;
+          data-placeholder field.widget.placeholder|None;
+          style style;">
+    <tal:loop tal:repeat="item values">
+      <option tal:attributes="
+              selected (item[0] in cstruct or item[0] == cstruct) and 'selected';
+              value item[0]">${item[1]}</option>
+    </tal:loop>
+  </select>
+
+  <script type="text/javascript">
+  </script>
+
+  <input type="hidden" name="__end__" value="${name}:sequence" />
+</div>
+

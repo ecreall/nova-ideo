@@ -1,0 +1,25 @@
+<div tal:define="error_class error_class|field.widget.error_class;
+                 description description|field.description;
+                 title title|field.title;
+                 oid oid|field.oid;
+                 hidden hidden|field.widget.hidden;
+                 category category|field.widget.category;
+                 structural hidden or category == 'structural';
+                 required required|field.required;"
+     class="form-group ${field.error and 'has-error' or ''} ${field.widget.item_css_class or ''}"
+     title="${description}"
+     id="item-${oid}"
+     tal:omit-tag="structural"
+     i18n:domain="deform">
+  <div tal:define="input_prepend field.widget.input_prepend | None;
+                   input_append field.widget.input_append  | None"
+       tal:omit-tag="not (input_prepend or input_append)"
+       class="input-group">
+    <span class="input-group-addon"
+          tal:condition="input_prepend">${input_prepend}</span
+    ><span tal:replace="structure field.serialize(cstruct).strip()"
+    /><span class="input-group-addon"
+            tal:condition="input_append">${input_append}</span>
+  </div>
+
+</div>

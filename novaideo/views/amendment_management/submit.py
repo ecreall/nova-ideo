@@ -9,10 +9,11 @@ from pontus.view_operation import MultipleView
 from pontus.schema import Schema, select, omit
 from pontus.view import BasicView, View, merge_dicts, ViewError
 from pontus.default_behavior import Cancel
-from pontus.widget import Select2Widget, SequenceWidget
+from pontus.widget import Select2Widget, SequenceWidget, SimpleMappingWidget, TextInputWidget
 
 from novaideo.content.processes.amendment_management.behaviors import  SubmitAmendment
 from novaideo.content.amendment import Amendment, Intention
+from novaideo.views.widget import DragDropSelect2Widget, DragDropSequenceWidget, DragDropMappingWidget
 from novaideo import _
 
 
@@ -38,14 +39,14 @@ def explanations_choice(node, kw):
     request = node.bindings['request']
     values = [e['oid'] for e in context.explanations.values()]
     values = [(i, i) for i in values]
-    return Select2Widget(values=values, multiple=True)
+    return DragDropSelect2Widget(values=values)
 
 
 class ExplanationGroupSchema(Schema):
 
     title = colander.SchemaNode(
         colander.String(),
-        widget=deform.widget.TextInputWidget()
+        widget=TextInputWidget(css_class="title-select-item", placeholder="New amendment title")
         )
 
     explanations =  colander.SchemaNode(
@@ -59,8 +60,8 @@ class ExplanationGroupsSchema(Schema):
 
     groups = colander.SchemaNode(
         colander.Sequence(),
-        omit(ExplanationGroupSchema(name='Amendment'),['_csrf_token_']),
-        widget=SequenceWidget(),
+        omit(ExplanationGroupSchema(name='Amendment', widget=DragDropMappingWidget()),['_csrf_token_']),
+        widget=DragDropSequenceWidget(),
         title=_('Amendments')
         )
 
@@ -88,7 +89,6 @@ class SubmitAmendmentView(FormView):
     validate_behaviors = False
 
     def default_data(self):
-        import pdb; pdb.set_trace()
         groups = get_default_explanations_groups(self.context)
         data = {'groups': []}
         for group in groups:

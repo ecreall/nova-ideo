@@ -59,6 +59,10 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/novaideo.js')}"
           type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/organize_amendments.js')}"
+          type="text/javascript"></script>
+
+
 
     <more tal:omit-tag="" metal:define-slot="head-more"></more>
     <script src="${su('novaideo:static/css/switch-master/dist/js/bootstrap-switch.js')}"

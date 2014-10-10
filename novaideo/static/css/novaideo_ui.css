@@ -601,3 +601,65 @@ ins {
 .new-idea-btn{
   margin-top: -22px
 }
+
+.select-container{
+    background-color: white;
+    border: 1px dashed gray;
+    margin-top: -15px;
+    min-height: 50px;
+    padding: 7px;
+}
+
+.select-item{
+ margin-right: 4px;
+}
+
+.title-select-item{
+    height: 23px;
+    padding: 1px;
+    border-radius: 0px
+}
+
+.remove-item{
+    background: url("../images/remove_button.png") no-repeat scroll right center transparent;
+    float: right;
+    height: 28px;
+    margin-top: -13px;
+    width: 28px;
+    cursor: -moz-grab;
+}
+
+.remove-item:hover{
+    background: url("../images/remove_button_over.png") no-repeat scroll right center transparent;
+}
+
+.disabled-remove-item{
+    background: url("../images/remove_button_disabled.png") no-repeat scroll right center transparent;
+    float: right;
+    height: 28px;
+    margin-top: -13px;
+    width: 28px;
+}
+
+.sequence-add-item{
+    background: url("../images/add_button.png") no-repeat scroll right center transparent;
+    cursor: grab;
+    float: right;
+    height: 28px;
+    margin-top: -28px;
+    width: 28px;
+
+}
+
+.sequence-add-item:hover{
+    background: url("../images/add_button_over.png") no-repeat scroll right center transparent;
+}
+
+.sequence-item{
+    background-color: #adcce7;
+    border: 1px solid #7ea2c1;
+    border-radius: 7px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 3px 2px rgba(0, 0, 0, 0.3);
+    margin-left: 10px;
+    padding: 5px 5px 0;
+}  

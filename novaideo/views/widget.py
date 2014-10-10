@@ -37,6 +37,25 @@ class AddIdeaWidget(deform.widget.MappingWidget):
     template = 'novaideo:views/templates/add_idea_widget.pt'
     requirements = (('deform', None), ('addnewidea', None))
 
+
+#drag and drop
+
+
+class DragDropSequenceWidget(SequenceWidget):
+
+    template = 'novaideo:views/templates/dragdrop_sequence/sequence.pt'
+    item_template = 'novaideo:views/templates/dragdrop_sequence/sequence_item.pt'
+
+class DragDropSelect2Widget(Select2Widget):
+    template = 'novaideo:views/templates/dragdrop_sequence/select2.pt'
+
+
+class DragDropMappingWidget(deform.widget.MappingWidget):
+
+    template = 'novaideo:views/templates/dragdrop_sequence/mapping.pt'
+    item_template = 'novaideo:views/templates/dragdrop_sequence/mapping_item.pt'
+
+
 default_resource_registry.set_js_resources('addnewidea', None, 'novaideo:static/js/add_new_idea.js'  )
 default_resource_registry.set_js_resources('select2search', None, 'pontus.dace_ui_extension:static/select2/select2.js',
                                                                   'novaideo:static/select2_search/select2_search.js'  )

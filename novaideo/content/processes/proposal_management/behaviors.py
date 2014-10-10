@@ -1278,6 +1278,7 @@ class VotingAmendments(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_order = 6
+    system = True
     context = IProposal
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation

@@ -1,0 +1,26 @@
+<div tal:omit-tag="field.widget.hidden"
+     tal:define="hidden hidden|field.widget.hidden;
+                 error_class error_class|field.widget.error_class;
+                 description description|field.description;
+                 title title|field.title;
+                 oid oid|field.oid"
+     title="${description}"
+     class="form-group deformSeqItem sequence-item col-md-3 ${field.widget.item_css_class or ''}"
+     i18n:domain="deform">
+  <div >
+
+    <span tal:replace="structure field.serialize(cstruct)"/>
+
+  </div>
+    <div  style="padding:0">
+    <!-- sequence_item -->   
+      <a class="remove-item"
+       id="${oid}-close"
+       tal:condition="not field.widget.hidden"
+       title="Remove"
+       i18n:attributes="title"
+       onclick="javascript:deform.removeSequenceItem(this);"></a>
+    </div>
+  <!-- /sequence_item -->
+</div>
+
