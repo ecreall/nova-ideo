@@ -1375,7 +1375,6 @@ class AmendmentsResult(ElementaryAction):
         root = getSite()
         self.newcontext = context 
         if amendments:
-            import pdb; pdb.set_trace()
             self._send_ballot_result(context, request, result, wg.members)
             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
             merged_text = text_analyzer.merge(context.text, [a.text for a in amendments])
