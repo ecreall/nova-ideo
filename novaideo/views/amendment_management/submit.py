@@ -112,6 +112,8 @@ class SubmitAmendmentViewMultipleView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/mergedmultipleview.pt'
     views = (SubmitAmendmentViewStudyReport, SubmitAmendmentView)
     validators = [SubmitAmendment.get_validator()]
+    requirements = {'css_links':[],
+                    'js_links':['novaideo:static/js/organize_amendments.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SubmitAmendment:SubmitAmendmentViewMultipleView})
