@@ -92,7 +92,7 @@ VOTINGPUBLICATION_SUBJECT= u"""Debut de vote sur la publication : {subject_title
 VOTINGPUBLICATION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Le vote sur publication de la proposition {subject_title} ({subject_url}) à commencé.
+Le vote sur publication de la proposition {subject_title} ({subject_url}) a commencé.
 
 """ + PORTAL_SIGNATURE
 
@@ -102,7 +102,7 @@ VOTINGAMENDMENTS_SUBJECT= u"""Debut de vote sur les amendements : {subject_title
 VOTINGAMENDMENTS_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Le vote sur les amendements de la proposition {subject_title} ({subject_url}) à commencé.
+Le vote sur les amendements de la proposition {subject_title} ({subject_url}) a commencé.
 
 """ + PORTAL_SIGNATURE
 
@@ -112,7 +112,7 @@ WITHDRAW_SUBJECT= u"""Désinscription de la liste d'attente: {subject_title}"""
 WITHDRAW_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Vous ne faite plus partie de la liste d'attente du groupe de travaille de la proposition {subject_title} ({subject_url}).
+Vous ne faite plus partie de la liste d'attente du groupe de travail de la proposition {subject_title} ({subject_url}).
 
 """ + PORTAL_SIGNATURE
 
@@ -122,7 +122,7 @@ PARTICIPATE_SUBJECT= u"""Partcipation au groupe de travail : {subject_title}"""
 PARTICIPATE_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Vous faite partie du groupe de travaille de la proposition {subject_title} ({subject_url}).
+Vous faite partie du groupe de travail de la proposition {subject_title} ({subject_url}).
 
 """ + PORTAL_SIGNATURE
 
@@ -132,7 +132,7 @@ RESIGN_SUBJECT= u"""Démission du groupe de travail : {subject_title}"""
 RESIGN_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Vous ne faite plus partie du groupe de travaille de la proposition {subject_title} ({subject_url}).
+Vous ne faite plus partie du groupe de travail de la proposition {subject_title} ({subject_url}).
 
 """ + PORTAL_SIGNATURE
 
@@ -142,6 +142,6 @@ WATINGLIST_SUBJECT= u"""Partcipation au groupe de travail : {subject_title}"""
 WATINGLIST_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Vous faite partie de la liste d'attente du groupe de travaille de la proposition {subject_title} ({subject_url}).
+Vous faite partie de la liste d'attente du groupe de travail de la proposition {subject_title} ({subject_url}).
 
 """ + PORTAL_SIGNATURE

@@ -18,13 +18,13 @@ from novaideo import _
 
 
 def get_default_explanations_groups(context):
-    explanations = context.explanations
+    explanations = dict(context.explanations)
     groups = []
     grouped_explanations = []
     for explanation in explanations.values():
-        if not(explanation in grouped_explanations):
+        if not(explanation['oid'] in grouped_explanations):
             group = [e for e in explanations.values() if Intention.eq(explanation['intention'], e['intention'])]
-            grouped_explanations.extend(group)
+            grouped_explanations.extend([e['oid'] for e in group])
             groups.append(group)
             if len(grouped_explanations) == len(explanations):
                 break
@@ -88,6 +88,7 @@ class SubmitAmendmentView(FormView):
     validate_behaviors = False
 
     def default_data(self):
+        import pdb; pdb.set_trace()
         groups = get_default_explanations_groups(self.context)
         data = {'groups': []}
         for group in groups:

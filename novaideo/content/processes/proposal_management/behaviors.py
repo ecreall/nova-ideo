@@ -252,7 +252,7 @@ class DuplicateProposal(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        copy_of_proposal = copy(context, (root, 'proposals'))
+        copy_of_proposal = copy(context, (root, 'proposals'), omit=('created_at', 'modified_at'))
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
@@ -1375,6 +1375,7 @@ class AmendmentsResult(ElementaryAction):
         root = getSite()
         self.newcontext = context 
         if amendments:
+            import pdb; pdb.set_trace()
             self._send_ballot_result(context, request, result, wg.members)
             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
             merged_text = text_analyzer.merge(context.text, [a.text for a in amendments])
@@ -1423,8 +1424,11 @@ class Amendable(ElementaryAction):
         wg = context.working_group
         if self.process.first_decision:
             self.process.first_decision = False
+        if context.amendments:
+            context.state.append('amendable')
+        else:
+            context.state.append('proofreading')
 
-        context.state.append('proofreading')
         reopening_ballot = getattr(self.process, 'reopening_configuration_ballot', None)
         if reopening_ballot is not None:
             report = reopening_ballot.report

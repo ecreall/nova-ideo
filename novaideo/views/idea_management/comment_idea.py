@@ -115,7 +115,7 @@ class CommentIdeaFormView(FormView):
 
 
 commentide_message = {'0': u"""Pas de fils de discussion""",
-                      '1': u"""Une fil de discussion""",
+                      '1': u"""Un fil de discussion""",
                       '*': u"""{lencomments} fils de discussion"""} 
 
 @view_config(

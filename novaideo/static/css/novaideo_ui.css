@@ -593,6 +593,10 @@ ins {
     text-shadow: 0 3px 2px rgba(0, 0, 0, 0.5)
 }
 
+.explanation-comment:hover{
+    color: #eced1b;
+}
+
 
 .new-idea-btn{
   margin-top: -22px
