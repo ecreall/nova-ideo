@@ -469,7 +469,6 @@ class SeeAmendment(InfiniteCardinality):
                 context.explanations[str(descriminator)] = PersistentDict(init_vote)
 
             descriminator += 1   
-    
 
     def start(self, context, request, appstruct, **kw):
         if 'explanation' in context.state or 'published' in context.state: #TODO Optimization

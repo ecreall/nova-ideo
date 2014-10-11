@@ -48,6 +48,7 @@ class DragDropSequenceWidget(SequenceWidget):
 
 class DragDropSelect2Widget(Select2Widget):
     template = 'novaideo:views/templates/dragdrop_sequence/select2.pt'
+    requirements = (('deform', None), ('select2dragdrop', None))
 
 
 class DragDropMappingWidget(deform.widget.MappingWidget):
@@ -60,4 +61,9 @@ default_resource_registry.set_js_resources('addnewidea', None, 'novaideo:static/
 default_resource_registry.set_js_resources('select2search', None, 'pontus.dace_ui_extension:static/select2/select2.js',
                                                                   'novaideo:static/select2_search/select2_search.js'  )
 default_resource_registry.set_css_resources('select2search', None, 'pontus.dace_ui_extension:static/select2/select2.css',
+                                                                  'novaideo:static/select2_search/select2_search.css'  )
+
+default_resource_registry.set_js_resources('select2dragdrop', None, 'pontus.dace_ui_extension:static/select2/select2.js',
+                                                                  'novaideo:static/js/dragdrop_select.js'  )
+default_resource_registry.set_css_resources('select2dragdrop', None, 'pontus.dace_ui_extension:static/select2/select2.css',
                                                                   'novaideo:static/select2_search/select2_search.css'  )

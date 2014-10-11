@@ -2,3 +2,7 @@
 Votre amendement sera publiée. Tous les participant du groupe de travail auront le droit de le commenter. Êtes-vous certain de vouloir publier votre amendement?
 </div>
 
+<div id="amendment-diff" class="amendment-diff-scroll scroll-able">
+    ${structure:context.explanationtext}
+</div>
+

@@ -32,7 +32,7 @@
     <tal:loop tal:repeat="item values">
       <option tal:attributes="
               selected (item[0] in cstruct or item[0] == cstruct) and 'selected';
-              value item[0]">${item[1]}</option>
+              value item[0]">${str(item[1]) + str(cstruct)}</option>
     </tal:loop>
   </select>
 

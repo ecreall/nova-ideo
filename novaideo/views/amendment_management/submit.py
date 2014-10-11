@@ -52,6 +52,7 @@ class ExplanationGroupSchema(Schema):
     explanations =  colander.SchemaNode(
         colander.Set(),
         widget=explanations_choice,
+        default=[],
         title=_('Explanations'),
         )    
 
@@ -62,7 +63,7 @@ class ExplanationGroupsSchema(Schema):
         colander.Sequence(),
         omit(ExplanationGroupSchema(name='Amendment', widget=DragDropMappingWidget()),['_csrf_token_']),
         widget=DragDropSequenceWidget(),
-        title=_('Amendments')
+        title=_('Organize your amendments')
         )
 
 
@@ -112,7 +113,7 @@ class SubmitAmendmentViewMultipleView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/mergedmultipleview.pt'
     views = (SubmitAmendmentViewStudyReport, SubmitAmendmentView)
     validators = [SubmitAmendment.get_validator()]
-    requirements = {'css_links':[],
+    requirements = {'css_links':['novaideo:static/css/organize_amendments.css'],
                     'js_links':['novaideo:static/js/organize_amendments.js']}
 
 

@@ -56,7 +56,7 @@
       <a href="#"
          class="btn deformSeqAdd sequence-add-item"
          id="${field.oid}-seqAdd"
-         onclick="javascript: deform.appendSequenceItem(this); init_dragdropselect(this); init_remove_button(); return false;">
+         onclick="javascript: deform.appendSequenceItem(this); $(this).trigger( jQuery.Event( 'itemadded' ) ); return false;">
       </a>
 
       <script type="text/javascript">
