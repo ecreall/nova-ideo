@@ -471,7 +471,7 @@ class SeeAmendment(InfiniteCardinality):
             descriminator += 1   
 
     def start(self, context, request, appstruct, **kw):
-        if 'explanation' in context.state or 'published' in context.state: #TODO Optimization
+        if 'explanation' in context.state or 'published' in context.state: #TODO Optimization: any(s in context.state for s in ['explanation', 'published'])
             proposal = context.proposal
             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
             souptextdiff, textdiff = text_analyzer.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''), "explanation")

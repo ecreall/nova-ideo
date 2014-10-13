@@ -39,7 +39,7 @@ def explanations_choice(node, kw):
     request = node.bindings['request']
     values = [e['oid'] for e in context.explanations.values()]
     values = [(i, i) for i in values]
-    return DragDropSelect2Widget(values=values)
+    return DragDropSelect2Widget(values=values, multiple=True)
 
 
 class ExplanationGroupSchema(Schema):
