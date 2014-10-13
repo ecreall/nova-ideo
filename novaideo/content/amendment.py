@@ -318,6 +318,7 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
         super(Amendment, self).__init__(**kwargs)
         self.explanations = PersistentDict()
         self.set_data(kwargs)
+        self.amendments_counter = 1
 
     @region.cache_on_arguments() 
     def get_used_ideas(self):

@@ -24,6 +24,9 @@ Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
 PRESENTATION_IDEA_SUBJECT = u"""Présentation : {subject_title}""" 
 
+
+CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription"""
+
 CONFIRMATION_MESSAGE = u"""
 Bonjour {person.user_title} {person.last_name} {person.first_name},
 

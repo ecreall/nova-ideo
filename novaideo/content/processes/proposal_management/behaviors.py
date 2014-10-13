@@ -764,7 +764,7 @@ class ImproveProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         data = {}
-        data['title'] = appstruct['title']
+        data['title'] = context.title+'_Amended version '+str(getattr(context, 'amendment_counter', 1))
         data['text'] = appstruct['text']
         data['description'] = appstruct['description']
         keywords_ids = appstruct.pop('keywords')
@@ -781,6 +781,7 @@ class ImproveProposal(InfiniteCardinality):
         amendment.state.append('draft')
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
+        context.amendment_counter = getattr(context, 'amendment_counter', 1) + 1
         return True
 
     def redirect(self, context, request, **kw):

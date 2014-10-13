@@ -49,7 +49,7 @@ class ExplanationGroupSchema(Schema):
     title = colander.SchemaNode(
         colander.String(),
         missing="",
-        widget=TextInputWidget(css_class="title-select-item", placeholder="New amendment title")
+        widget=TextInputWidget(css_class="title-select-item", readonly=True)
         )
 
     explanations =  colander.SchemaNode(
@@ -61,12 +61,18 @@ class ExplanationGroupSchema(Schema):
         )    
 
 
+@colander.deferred
+def groups_widget(node, kw):
+    context = node.bindings['context']
+    return DragDropSequenceWidget(item_css_class="explanation-groups", item_title_template=context.title+'-', max_len=len(context.explanations))
+
+
 class ExplanationGroupsSchema(Schema):
 
     groups = colander.SchemaNode(
         colander.Sequence(),
         omit(ExplanationGroupSchema(name='Amendment', widget=DragDropMappingWidget()),['_csrf_token_']),
-        widget=DragDropSequenceWidget(item_css_class="explanation-groups"),
+        widget=groups_widget,
         title=_('Organize your amendments')
         )
 
@@ -112,10 +118,12 @@ class SubmitAmendmentView(FormView):
     def default_data(self):
         groups = get_default_explanations_groups(self.context)
         data = {'groups': []}
+        i = 1
         for group in groups:
-            group_data = {'title':self.context.title + '('+'-'.join([str(i['oid']) for i in group ])+')',
+            group_data = {'title':self.context.title +'-'+str(i),
                           'explanations': [str(e['oid']) for e in group]}
             data['groups'].append(group_data)
+            i+=1
 
         return data
 

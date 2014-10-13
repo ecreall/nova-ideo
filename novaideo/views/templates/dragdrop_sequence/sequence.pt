@@ -9,7 +9,8 @@
                  orderable orderable|field.widget.orderable;
                  orderable orderable and 1 or 0;
                  prototype field.widget.prototype(field);
-                 title title|field.title;"
+                 title title|field.title;
+                 item_title item_title|field.widget.item_title_template;"
      class="deformSeq"
      id="${oid}">
 
@@ -47,7 +48,8 @@
                  min_len min_len;
                  max_len max_len;
                  now_len now_len;
-                 orderable orderable;"></span>
+                 orderable orderable;
+                 item_title item_title;"></span>
       </div>
 
     </div>

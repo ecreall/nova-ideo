@@ -139,7 +139,11 @@ ins {
     margin-right: 19px;
 }
 */
-
+.amendment-description{
+  margin-top: -23px; 
+  margin-bottom: 22px; 
+  color:gray;
+}
 
 .legend-carre-del{
 	width:20px;

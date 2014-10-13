@@ -27,8 +27,7 @@ class ImproveProposalView(FormView):
     formid = 'formimproveproposal'
     behaviors = [ImproveProposal, Cancel]
     schema = select(AmendmentSchema(),
-                    ['title',
-                     'description',
+                    ['description',
                      'keywords', 
                      'text'])
     requirements = {'css_links':[],

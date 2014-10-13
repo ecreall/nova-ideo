@@ -16,7 +16,7 @@ from dace.processinstance.activity import (
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IPerson
 from novaideo.content.token import Token
-from novaideo.mail import CONFIRMATION_MESSAGE
+from novaideo.mail import CONFIRMATION_MESSAGE, CONFIRMATION_SUBJECT
 from novaideo import _
 from novaideo.core import acces_action
 
@@ -64,13 +64,6 @@ class Registration(InfiniteCardinality):
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
         root = getSite()
-        keywords_ids = appstruct.pop('keywords')
-        result, newkeywords = root.get_keywords(keywords_ids)
-        for nk in newkeywords:
-            root.addtoproperty('keywords', nk)
-
-        result.extend(newkeywords)
-        person.setproperty('keywords_ref', result)
         for i in range(root.tokens_mini):
             token = Token(title='Token_'+str(i))
             person.addtoproperty('tokens_ref', token)
@@ -78,7 +71,7 @@ class Registration(InfiniteCardinality):
             token.setproperty('owner', person)
 
         message = CONFIRMATION_MESSAGE.format(person=person)
-        mailer_send(subject='Confirmation de votre inscription',
+        mailer_send(subject=CONFIRMATION_SUBJECT,
                 recipients=[person.email], body=message)
 
         person.reindex()
