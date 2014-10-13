@@ -1,6 +1,7 @@
 import colander
 import deform
 from pyramid.view import view_config
+from pyramid.threadlocal import get_current_registry
 
 from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -11,10 +12,11 @@ from pontus.view import BasicView, View, merge_dicts, ViewError
 from pontus.default_behavior import Cancel
 from pontus.widget import Select2Widget, SequenceWidget, SimpleMappingWidget, TextInputWidget
 
-from novaideo.content.processes.amendment_management.behaviors import  SubmitAmendment
+from novaideo.content.processes.amendment_management.behaviors import  SubmitAmendment, SeeAmendmentManager as OriginSeeAmendmentManager
 from novaideo.content.amendment import Amendment, Intention
 from novaideo.views.widget import DragDropSelect2Widget, DragDropSequenceWidget, DragDropMappingWidget
 from novaideo import _
+from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 
@@ -46,12 +48,14 @@ class ExplanationGroupSchema(Schema):
 
     title = colander.SchemaNode(
         colander.String(),
+        missing="",
         widget=TextInputWidget(css_class="title-select-item", placeholder="New amendment title")
         )
 
     explanations =  colander.SchemaNode(
         colander.Set(),
         widget=explanations_choice,
+        missing=[],
         default=[],
         title=_('Explanations'),
         )    
@@ -62,9 +66,21 @@ class ExplanationGroupsSchema(Schema):
     groups = colander.SchemaNode(
         colander.Sequence(),
         omit(ExplanationGroupSchema(name='Amendment', widget=DragDropMappingWidget()),['_csrf_token_']),
-        widget=DragDropSequenceWidget(),
+        widget=DragDropSequenceWidget(item_css_class="explanation-groups"),
         title=_('Organize your amendments')
         )
+
+    single_amendment = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(css_class="single-amendment-control"),
+        label=_('Single amendment'),
+        title =_(''),
+        missing=False
+        )
+
+
+class SeeAmendmentManager(OriginSeeAmendmentManager):
+    readonly_explanation_template = 'novaideo:views/amendment_management/templates/readonly/submit_explanation_item.pt'
 
 
 class SubmitAmendmentViewStudyReport(BasicView):
@@ -74,7 +90,11 @@ class SubmitAmendmentViewStudyReport(BasicView):
 
     def update(self):
         result = {}
-        values = {'context': self.context}
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        souptextdiff, textdiff = SeeAmendmentManager._get_explanation_diff(self.context, self.request)
+        SeeAmendmentManager._add_details(self.context, self.request, souptextdiff)
+        explanationtext = text_analyzer.soup_to_text(souptextdiff)
+        values = {'context': self.context, 'explanationtext': explanationtext}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}

@@ -31,7 +31,6 @@ from novaideo.core import acces_action
 from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
-
 try:
       basestring
 except NameError:
@@ -227,18 +226,6 @@ def pub_state_validation(process, context):
     return ('explanation' in context.state) and ('draft' in context.state)
 
 
-def _normalize_text(soup, first=True):
-    corrections = soup.find_all("span", id="correction")
-    text = ''.join([str(t) for t in soup.body.contents])
-    if first:
-        for correction in corrections:
-            index = text.find(str(correction))
-            index += str(correction).__len__()
-            if text[index] == ' ':
-                text = text[:index]+text[index+1:]
-
-    return text.replace('\xa0', '')
-
 class SubmitAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
@@ -262,6 +249,7 @@ class SubmitAmendment(InfiniteCardinality):
         text_analyzer.unwrap_diff(explanations_data, soup)
 
     def _get_amendment_text(self, context, group):
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
         items = [str(e['oid']) for e in group]
         soup = BeautifulSoup(context.explanationtext)
         allexplanations = soup.find_all('span',{'id':'explanation'})
@@ -273,7 +261,7 @@ class SubmitAmendment(InfiniteCardinality):
         for modal in allmodal:
             modal.extract()
 
-        text = ''.join([str(t) for t in soup.body.contents])
+        text = text_analyzer.soup_to_text(soup)
         return text
 
     def _get_explanation_data(self, context, group):
@@ -308,9 +296,15 @@ class SubmitAmendment(InfiniteCardinality):
         return amendment
 
     def start(self, context, request, appstruct, **kw):
-        groups = appstruct['groups']
-        for group in groups:
-            group['explanations'] = [context.explanations[e] for e in group['explanations']]
+        single_amendment = appstruct['single_amendment']
+        groups = []
+        if single_amendment:
+           group = {'title':context.title, 'explanations': list(context.explanations.values())}
+           groups = [group]             
+        else:
+            groups = appstruct['groups']
+            for group in groups:
+                group['explanations'] = [context.explanations[e] for e in group['explanations']]
             
         context.state.remove('draft')
         context.state.remove('explanation')
@@ -398,65 +392,75 @@ class Associate(AssociateIdea):
 def seeamendment_processsecurity_validation(process, context):
     return ('published' in context.state or has_any_roles(roles=(('Owner', context),)))
 
-@acces_action()
-class SeeAmendment(InfiniteCardinality):
-    title = _('Details')
-    context = IAmendment
-    actionType = ActionType.automatic
-    processsecurity_validation = seeamendment_processsecurity_validation
+class SeeAmendmentManager(object):
 
-    def _add_modal(self, soup, tag, context, request):
+    explanation_template = 'novaideo:views/amendment_management/templates/explanation_item.pt'
+    modal_template = 'novaideo:views/amendment_management/templates/explanation_modal_item.pt'
+    readonly_explanation_template = 'novaideo:views/amendment_management/templates/readonly/explanation_item.pt'
+    readonly_modal_template = 'novaideo:views/amendment_management/templates/readonly/explanation_modal_item.pt'
+
+    @classmethod
+    def _get_explanation_diff(cls, context, request):
+        proposal = context.proposal
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        souptextdiff, textdiff = text_analyzer.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''), "explanation")
+        descriminator = 1
+        cls._identify_explanations(context, request, souptextdiff, descriminator)
+        return souptextdiff, textdiff
+
+    @classmethod
+    def _add_modal(cls, action, soup, tag, context, request):
         context_oid = get_oid(context)
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
-        if not hasattr(self, 'explanationitemaction'):
-            explanationitemnode = self.process['explanationitem']
+        if not hasattr(action, 'explanationitemaction'):
+            explanationitemnode = action.process['explanationitem']
             explanationitem_wis = [wi for wi in explanationitemnode.workitems if wi.node is explanationitemnode]
             if explanationitem_wis:
-                self.explanationitemaction = explanationitem_wis[0].actions[0]
+                action.explanationitemaction = explanationitem_wis[0].actions[0]
 
-        if hasattr(self, 'explanationitemaction'):
+        if hasattr(action, 'explanationitemaction'):
             values= {'url':request.resource_url(context, '@@explanationjson', query={'op':'getform', 'itemid':tag['data-item']}),
                      'item': context.explanations[tag['data-item']],
                     }
-            template = 'novaideo:views/amendment_management/templates/explanation_item.pt'
-            body = renderers.render(template, values, request)
+            body = renderers.render(cls.explanation_template, values, request)
             explanation_item_soup = BeautifulSoup(body)
 
-            actionurl_update = dace_ui_api.updateaction_viewurl(request=request, action_uid=str(get_oid(self.explanationitemaction)), context_uid=str(context_oid))
+            actionurl_update = dace_ui_api.updateaction_viewurl(request=request, action_uid=str(get_oid(action.explanationitemaction)), context_uid=str(context_oid))
             values= {'url':actionurl_update,
                      'item': context.explanations[tag['data-item']],
                     }
-            template = 'novaideo:views/amendment_management/templates/explanation_modal_item.pt'
-            modal_body = renderers.render(template, values, request)
+            modal_body = renderers.render(cls.modal_template, values, request)
             explanation_item_modal_soup = BeautifulSoup(modal_body)
             soup.body.append(explanation_item_modal_soup.body)
             tag.append(explanation_item_soup.body)
             tag.body.unwrap()
 
-    def _add_modal_details(self, soup, tag, context, request):
+    @classmethod
+    def _add_modal_details(cls, soup, tag, context, request):
         context_oid = get_oid(context)
         values= {'item': context.explanations[tag['data-item']], 'data': Intention.get_explanation_data(context.explanations[tag['data-item']]['intention'])}
-        template = 'novaideo:views/amendment_management/templates/readonly/explanation_item.pt'
-        body = renderers.render(template, values, request)
+        body = renderers.render(cls.readonly_explanation_template, values, request)
         explanation_item_soup = BeautifulSoup(body)
-        template = 'novaideo:views/amendment_management/templates/readonly/explanation_modal_item.pt'
-        modal_body = renderers.render(template, values, request)
+        modal_body = renderers.render(cls.readonly_modal_template, values, request)
         explanation_item_modal_soup = BeautifulSoup(modal_body)
         soup.body.append(explanation_item_modal_soup.body)
         tag.append(explanation_item_soup.body)
         tag.body.unwrap()
 
-    def _add_actions(self, context, request, soup):
+    @classmethod
+    def _add_actions(cls, action, context, request, soup):
         explanations_tags = soup.find_all('span', {'id':'explanation'})
         for explanation_tag in explanations_tags:
-            self._add_modal(soup, explanation_tag, context, request)
+            cls._add_modal(action, soup, explanation_tag, context, request)
 
-    def _add_details(self, context, request, soup):
+    @classmethod
+    def _add_details(cls, context, request, soup):
         explanations_tags = soup.find_all('span', {'id':'explanation'})
         for explanation_tag in explanations_tags:
-            self._add_modal_details(soup, explanation_tag, context, request)
+            cls._add_modal_details(soup, explanation_tag, context, request)
 
-    def _identify_explanations(self, context, request, soup, descriminator):
+    @classmethod
+    def _identify_explanations(cls, context, request, soup, descriminator):
         correction_tags = soup.find_all('span', {'id': "explanation"})
         context_oid = str(get_oid(context))
         user = get_current()
@@ -468,22 +472,26 @@ class SeeAmendment(InfiniteCardinality):
             if not(str(descriminator) in context.explanations): 
                 context.explanations[str(descriminator)] = PersistentDict(init_vote)
 
-            descriminator += 1   
+            descriminator += 1
+
+
+@acces_action()
+class SeeAmendment(InfiniteCardinality):
+    title = _('Details')
+    context = IAmendment
+    actionType = ActionType.automatic
+    processsecurity_validation = seeamendment_processsecurity_validation  
 
     def start(self, context, request, appstruct, **kw):
         if 'explanation' in context.state or 'published' in context.state: #TODO Optimization: any(s in context.state for s in ['explanation', 'published'])
-            proposal = context.proposal
             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-            souptextdiff, textdiff = text_analyzer.render_html_diff(getattr(proposal, 'text', ''), getattr(context, 'text', ''), "explanation")
-            descriminator = 1
-            self._identify_explanations(context, request, souptextdiff, descriminator)
+            souptextdiff, textdiff = SeeAmendmentManager._get_explanation_diff(context, request)
             if 'explanation' in context.state:
-                self._add_actions(context, request, souptextdiff)
+                SeeAmendmentManager._add_actions(self, context, request, souptextdiff)
             else:
-                self._add_details(context, request, souptextdiff)
+                SeeAmendmentManager._add_details(context, request, souptextdiff)
  
-            context.explanationtext = ''.join([str(t) for t in souptextdiff.body.contents])
-
+            context.explanationtext = text_analyzer.soup_to_text(souptextdiff)
         return True
 
     def redirect(self, context, request, **kw):

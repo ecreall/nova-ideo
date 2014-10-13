@@ -44,8 +44,42 @@ function scrollto(){
 
 
 $(document).ready(function(){
+  $('.form-group.explanation-groups label').hide();
+   $('.single-amendment-control').click(function(){
+        var form = $($(this).parents('form').first());
+        if (this.checked) {
+            form.find('.form-group.explanation-groups').addClass('hide-bloc');
+        }else{
+            form.find('.form-group.explanation-groups').removeClass('hide-bloc');
+        }
+    });
   init_remove_button();
   $('.select-item').on('droped', init_remove_button);
   $('.btn.deformSeqAdd').on('itemadded', init_select); 
   $('.select-item').on('click', scrollto);
+
+  $(document).on('submit','form', function( event ) {
+        var button = $(this).find('button');
+        if (!$('.single-amendment-control')[0].checked){
+          if (button.attr('name') != 'Cancel'){
+             var parent = $($(this).parents('.panel-body').first());
+             var commentmessagedanger = $(parent.find('#messagedanger'));  
+             var items = $('.sequence-item');
+             for (i=0; i<items.length; i++){
+                 var item = $(items[i]);
+                 var title = item.find('input[name="title"]').val();
+                 var selected = $(item.find('select[name="explanations"]'));
+                 var values = $($(selected).find("option[selected='selected']")).map(function(){ return this.value }).get().join(", ");
+                 if (values.length==0 || title == ''){
+                     item.addClass('sequence-item-error');
+                     $(commentmessagedanger).removeClass('hide-bloc');
+                     $( commentmessagedanger.find('.errorMsgLbl')).text( "There was a problem with your submission." ).show();
+                     event.preventDefault();
+                 }else{ item.removeClass('sequence-item-error')};
+             }       
+         }
+       }
+   });
+
+
 });

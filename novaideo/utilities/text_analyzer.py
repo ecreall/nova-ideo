@@ -71,7 +71,7 @@ class TextAnalyzer(object):
         soup = self.wrap_diff(result.replace('\xa0',' '), diffid)
         return soup, u''.join([str(t) for t in soup.body.contents])
   
-    def _del_next_s(self, soup, tag):
+    def _del_next_space(self, soup, tag):
         next_sibling = tag.next_sibling
         if isinstance(next_sibling, NavigableString):
             if next_sibling[0] == ' ':
@@ -93,14 +93,14 @@ class TextAnalyzer(object):
                 tofind = str(previous_del_tag) +' *'+ str(ins_tag)
                 modif_exist = (len(re.findall(tofind, diff)) >0)
                 if previous_del_tag_string != inst_string and modif_exist:
-                    self._del_next_s(soup, previous_del_tag)
+                    self._del_next_space(soup, previous_del_tag)
                     previous_del_tag.wrap(new_tag)
                     new_tag.append(ins_tag)
                     del_included.append(previous_del_tag)
                     continue
                 elif modif_exist:
                     del_included.append(previous_del_tag)
-                    self._del_next_s(soup, previous_del_tag)
+                    self._del_next_space(soup, previous_del_tag)
                     ins_tag.unwrap()
                     previous_del_tag.extract()
 
@@ -113,7 +113,7 @@ class TextAnalyzer(object):
                     new_tag = soup.new_tag("span", id=diffid)
                     del_tag.wrap(new_tag)
                 else:
-                    self._del_next_s(soup, del_tag)
+                    self._del_next_space(soup, del_tag)
                     del_tag.extract()        
 
         return soup
@@ -150,6 +150,14 @@ class TextAnalyzer(object):
 
             tag.unwrap()
 
+    def soup_to_text(self, soup):
+        divs_diff = soup.find_all('div', {'class': 'diff'})
+        for div_diff in divs_diff:
+            div_diff.unwrap()
+
+        return ''.join([str(t) for t in soup.body.contents])
+
+    #experimental, don't test it.
     def render_html_diff_del(self, text1, text2):
         soup, diff = self.render_html_diff(text1, text2, "modif")
         modifs_data = []
@@ -169,7 +177,7 @@ class TextAnalyzer(object):
 
         return u''.join([str(t) for t in soup.body.contents])
 
-
+    #experimental, don't test it.
     def update_text(self, new_text, old_text, text):
         soup, deleted_text = self.render_html_diff_del(old_text, text, "modif")
         soupdiff, diff = self.render_html_diff(new_text, deleted_text, "modif")

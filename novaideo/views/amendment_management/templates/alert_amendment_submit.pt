@@ -3,6 +3,13 @@ Votre amendement sera publiée. Tous les participant du groupe de travail auront
 </div>
 
 <div id="amendment-diff" class="amendment-diff-scroll scroll-able">
-    ${structure:context.explanationtext}
+    ${structure:explanationtext}
+</div>
+
+<div id="messages">
+    <div id="messagedanger" class="alert alert-danger hide-bloc">
+      <div class="errorMsgLbl"></div>
+      <p class="errorMsg"></p>
+    </div>
 </div>
 

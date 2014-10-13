@@ -23,7 +23,7 @@
     </tal:loop>
    </div>
 
-  <select tal:attributes="
+  <select multiple="${field.widget.multiple and 'multiple'}" tal:attributes="
           name name;
           id id;
           class string: form-control  hide-bloc;

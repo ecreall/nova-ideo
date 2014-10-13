@@ -804,19 +804,6 @@ def correctitem_state_validation(process, context):
     return 'active' in wg.state and 'proofreading' in context.proposal.state
 
 
-def _normalize_text(soup, first=True):
-    #corrections = soup.find_all("span", id="correction")
-    text = u''.join([str(t) for t in soup.body.contents])
-    #if first:
-    #    for correction in corrections:
-    #        index = text.find(str(correction))
-    #        index += str(correction).__len__()
-    #        if text[index] == ' ':
-    #            text = text[:index]+text[index+1:]
-
-    return text.replace('\xa0', ' ')
-
-
 class CorrectItem(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     isSequential = True
@@ -827,13 +814,8 @@ class CorrectItem(InfiniteCardinality):
     state_validation = correctitem_state_validation
 
     def _include_to_proposal(self, context, request):
-        text, in_process = self. _include_items(context, request, [item for item in context.corrections.keys() if not('included' in context.corrections[item])])
-        soup = BeautifulSoup(text)
-        diff_tags = soup.find_all("div", {'class': 'diff'})
-        if diff_tags:
-            diff_tags[0].unwrap()
-        
-        context.proposal.text = _normalize_text(soup, False)
+        text, in_process = self._include_items(context, request, [item for item in context.corrections.keys() if not('included' in context.corrections[item])])
+        context.proposal.text = text
                 
     def _include_items(self, context, request, items, to_add=False):
         todel = "ins"
@@ -858,7 +840,7 @@ class CorrectItem(InfiniteCardinality):
 
         text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
         text_analyzer.unwrap_diff(corrections_data, soup)
-        return _normalize_text(soup, False), (len(soup.find_all("span", id="correction")) > 0)
+        return text_analyzer.soup_to_text(soup), (len(soup.find_all("span", id="correction")) > 0)
 
     def start(self, context, request, appstruct, **kw):
         item = appstruct['item']
@@ -971,9 +953,9 @@ class CorrectProposal(InfiniteCardinality):
         self._add_actions(correction, request, souptextdiff)
         self._identify_corrections(soupdescriptiondiff, correction, descriminator)
         #self._add_actions(correction, request, soupdescriptiondiff)
-        correction.text = _normalize_text(souptextdiff)
+        correction.text = text_analyzer.soup_to_text(souptextdiff)
         context.originaltext = str(correction.text)
-        correction.description = _normalize_text(soupdescriptiondiff)
+        correction.description = text_analyzer.soup_to_text(soupdescriptiondiff)
         if souptextdiff.find_all("span", id="correction"):
             correction.state.append('in process')
         return True
