@@ -218,6 +218,7 @@ class SubmitProposal(ElementaryAction):
     style_descriminator = 'global-action'
     style_order = 1
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = submit_relation_validation
     roles_validation = submit_roles_validation
     processsecurity_validation = submit_processsecurity_validation
@@ -309,6 +310,7 @@ class EditProposal(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_order = 1
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = edit_relation_validation
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation
@@ -362,15 +364,19 @@ class EditProposal(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
 def proofreading_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
+
 
 def proofreading_roles_validation(process, context):
     return has_any_roles(roles=(('Participant', context),)) #System
 
+
 def proofreading_processsecurity_validation(process, context):
     correction_in_process = any(('in process' in c.state for c in context.corrections))
     return global_user_processsecurity(process, context) and not correction_in_process
+
 
 def proofreading_state_validation(process, context):
     wg = context.working_group
@@ -382,6 +388,7 @@ class ProofreadingDone(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_order = 2
     context = IProposal
+    processs_relation_id = 'proposal'
     roles_validation = proofreading_roles_validation
     relation_validation = proofreading_relation_validation
     processsecurity_validation = proofreading_processsecurity_validation
@@ -413,6 +420,7 @@ class PublishProposal(ElementaryAction):
     style_descriminator = 'global-action'
     style_order = 2
     context = IProposal
+    processs_relation_id = 'proposal'
     roles_validation = pub_roles_validation
     relation_validation = pub_relation_validation
     state_validation = pub_state_validation
@@ -473,6 +481,7 @@ class SupportProposal(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_order = 2
     context = IProposal
+    processs_relation_id = 'proposal'
     roles_validation = support_roles_validation
     relation_validation = support_relation_validation
     processsecurity_validation = support_processsecurity_validation
@@ -502,6 +511,7 @@ class OpposeProposal(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_order = 3
     context = IProposal
+    processs_relation_id = 'proposal'
     roles_validation = support_roles_validation
     relation_validation = support_relation_validation
     processsecurity_validation = support_processsecurity_validation
@@ -536,6 +546,7 @@ class WithdrawToken(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_order = 2
     context = IProposal
+    processs_relation_id = 'proposal'
     roles_validation = support_roles_validation
     relation_validation = support_relation_validation
     processsecurity_validation = withdrawt_processsecurity_validation
@@ -573,6 +584,7 @@ class Alert(ElementaryAction):
     style_descriminator = 'global-action'
     style_order = 4
     context = IProposal
+    processs_relation_id = 'proposal'
     roles_validation = alert_roles_validation
     relation_validation = alert_relation_validation
     state_validation = alert_state_validation
@@ -615,6 +627,7 @@ def comm_state_validation(process, context):
 class CommentProposal(InfiniteCardinality):
     isSequential = False
     context = IProposal
+    processs_relation_id = 'proposal'
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
@@ -646,6 +659,7 @@ def edita_processsecurity_validation(process, context):
 class EditAmendments(InfiniteCardinality):
     isSequential = False
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = edita_relation_validation
     roles_validation = edita_roles_validation
     processsecurity_validation = edita_processsecurity_validation
@@ -675,6 +689,7 @@ def present_state_validation(process, context):
 
 class PresentProposal(PresentIdea):
     context = IProposal
+    processs_relation_id = 'proposal'
     roles_validation = present_roles_validation
     processsecurity_validation = present_processsecurity_validation
     state_validation = present_state_validation
@@ -695,6 +710,7 @@ def associate_processsecurity_validation(process, context):
 
 class Associate(AssociateIdea):
     context = IProposal
+    processs_relation_id = 'proposal'
     processsecurity_validation = associate_processsecurity_validation
     roles_validation = associate_roles_validation
     relation_validation = associate_relation_validation
@@ -719,6 +735,7 @@ def seeideas_state_validation(process, context):
 
 class SeeRelatedIdeas(InfiniteCardinality):
     context = IProposal
+    processs_relation_id = 'proposal'
     processsecurity_validation = seeideas_processsecurity_validation
     roles_validation = seeideas_roles_validation
     state_validation = seeideas_state_validation
@@ -755,6 +772,7 @@ class ImproveProposal(InfiniteCardinality):
     style_order = 4
     isSequential = False
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = improve_relation_validation
     roles_validation = improve_roles_validation
     processsecurity_validation = improve_processsecurity_validation
@@ -901,6 +919,7 @@ class CorrectProposal(InfiniteCardinality):
     style_order = 2
     isSequential = True
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = correct_relation_validation
     roles_validation = correct_roles_validation
     processsecurity_validation = correct_processsecurity_validation
@@ -973,6 +992,7 @@ class AddParagraph(InfiniteCardinality):
     style_order = 3
     isSequential = False
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = correct_relation_validation
     roles_validation = correct_roles_validation
     processsecurity_validation = correct_processsecurity_validation
@@ -1007,6 +1027,7 @@ class VotingPublication(ElementaryAction):
     style_descriminator = 'global-action'
     style_order = 5
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = decision_relation_validation
     roles_validation = decision_roles_validation
     state_validation = decision_state_validation
@@ -1060,6 +1081,7 @@ class Withdraw(InfiniteCardinality):
     style_css_class = 'btn-warning'
     isSequential = False
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = withdraw_relation_validation
     roles_validation = withdraw_roles_validation
     processsecurity_validation = withdraw_processsecurity_validation
@@ -1107,6 +1129,7 @@ class Resign(InfiniteCardinality):
     style_css_class = 'btn-danger'
     isSequential = False
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = resign_relation_validation
     roles_validation = resign_roles_validation
     processsecurity_validation = resign_processsecurity_validation
@@ -1196,6 +1219,7 @@ class Participate(InfiniteCardinality):
     style_css_class = 'btn-success'
     isSequential = False
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = participate_relation_validation
     roles_validation = participate_roles_validation
     processsecurity_validation = participate_processsecurity_validation
@@ -1263,6 +1287,7 @@ class VotingAmendments(ElementaryAction):
     style_order = 6
     system = True
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
     state_validation = va_state_validation
@@ -1299,6 +1324,7 @@ class AmendmentsResult(ElementaryAction):
     style_descriminator = 'global-action'
     style_order = 7
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
     state_validation = ar_state_validation
@@ -1398,6 +1424,7 @@ class Amendable(ElementaryAction):
     style_descriminator = 'global-action'
     style_order = 8
     context = IProposal
+    processs_relation_id = 'proposal'
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
     state_validation = ta_state_validation

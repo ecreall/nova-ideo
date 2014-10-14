@@ -41,6 +41,7 @@ class Vote(ElementaryAction):
     title = _('Vote')
     access_controled = True
     context = IEntity
+    processs_relation_id = 'subject'
     relation_validation = vote_relation_validation
     roles_validation = vote_roles_validation
     processsecurity_validation = vote_processsecurity_validation
