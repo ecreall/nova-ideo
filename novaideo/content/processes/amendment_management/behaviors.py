@@ -395,7 +395,7 @@ class Associate(AssociateIdea):
 
 
 def seeamendment_processsecurity_validation(process, context):
-    return ('published' in context.state or (has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))))
+    return (has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),)))
 
 class SeeAmendmentManager(object):
 
