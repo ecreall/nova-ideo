@@ -192,8 +192,8 @@ class Intention(object):
                     if isinstance(value, list):
                         listvalue = []
                         for v in value:
-                            obj = get_obj(int(v))
-                            if obj is None:
+                            obj = get_obj(int(v), True)
+                            if obj is None :
                                 raise Exception()
  
                             listvalue.append(obj)
@@ -201,8 +201,8 @@ class Intention(object):
                         result[k] = listvalue
 
                     else:
-                        obj = get_obj(int(value))
-                        if obj is None:
+                        obj = get_obj(int(value), True)
+                        if obj is None :
                             raise Exception()
                        
                         result[k] = obj
@@ -320,7 +320,7 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
         self.set_data(kwargs)
         self.amendments_counter = 1
 
-    @region.cache_on_arguments() 
+   # @region.cache_on_arguments() 
     def get_used_ideas(self):
         result = []
         if not hasattr(self, 'explanations'):

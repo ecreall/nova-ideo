@@ -2,7 +2,7 @@ import colander
 import deform
 from bs4 import BeautifulSoup
 from zope.interface import implementer
-from pyramid.threadlocal import get_current_request
+from pyramid.threadlocal import get_current_request, get_current_registry
 
 from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
@@ -20,6 +20,8 @@ from pontus.core import VisualisableElementSchema, VisualisableElement
 
 from .interface import ICorrection
 from novaideo import _
+from novaideo.utilities.text_analyzer import ITextAnalyzer
+
 
 
 def context_is_a_correction(context, request):
@@ -79,6 +81,7 @@ class Correction(VisualisableElement, Entity):
                 voters_against =  any((get_obj(v) is user for v in correction_data['against']))
                 if voters_against:
                     self._adapt_correction(correction, False)
-
-        return soup.body.contents[0]
+       
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        return text_analyzer.soup_to_text(soup)
 

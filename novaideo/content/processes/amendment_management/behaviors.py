@@ -209,7 +209,7 @@ class ExplanationItem(InfiniteCardinality):
         else:
             context.explanations[appstruct['item']]['intention'] = None
 
-        context.get_used_ideas.invalidate()
+        #context.get_used_ideas.invalidate()
         context.reindex()
         return True
 

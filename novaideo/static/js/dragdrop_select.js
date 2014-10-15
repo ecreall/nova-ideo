@@ -9,7 +9,10 @@ function add_option(select, option){
        $(oldoption[0]).attr('selected', 'selected')
     }else{
        $(select).append(get_option({'value':id, 'content':id}));
-    }
+    };
+    var selecteds  = $(select).find("option[selected='selected']");
+    var first = $(select).find("option").first();
+    selecteds.insertBefore($(first));
 }
 
 
@@ -18,7 +21,10 @@ function remove_option(select, option){
     var oldoption = $($(select).find('option[value=\''+id+'\']'))
     if (oldoption.length>0){
        $(oldoption[0]).removeAttr('selected')
-    }
+    };
+    var selecteds  = $(select).find("option[selected='selected']");
+    var first = $(select).find("option").first();
+    selecteds.insertBefore($(first));
 }
 
 
@@ -100,8 +106,8 @@ function drop(e){
     $('.select-container').removeClass('selected-container');
     var targetselect = $(target.parents('.form-group').first()).find('select').first();
     var oldselect = $(draggedElement.parents('.form-group').first()).find('select').first();
-    add_option(targetselect, draggedElement);
     remove_option(oldselect, draggedElement)
+    add_option(targetselect, draggedElement);
     $(target).append(draggedElement);
     target.removeClass("not-exists-item");
     var event = jQuery.Event( "droped" );
