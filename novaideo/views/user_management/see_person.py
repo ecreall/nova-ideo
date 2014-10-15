@@ -20,7 +20,7 @@ from novaideo.core import BATCH_DEFAULT_SIZE, can_access
     renderer='pontus:templates/view.pt',
     )
 class SeePersonView(BasicView):
-    title = _('Details')
+    title = _('')
     name = 'seeperson'
     behaviors = [SeePerson]
     template = 'novaideo:views/user_management/templates/see_person.pt'
@@ -31,12 +31,7 @@ class SeePersonView(BasicView):
         self.execute(None)
         user = self.context
         root = getSite()
-
         actions = [a for a in self.context.actions if getattr(a.action, 'style', '') == 'button']
-        actions_urls = []
-        for action in actions:
-            actions_urls.append({'title':action.title, 'url':action.url})
-
         objects = [o for o in getattr(user, 'contents', []) if not('deprecated' in o.state) and can_access(user, o, self.request, root)]
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_contents"
@@ -60,7 +55,7 @@ class SeePersonView(BasicView):
         values = {'contents': (result_body and contents_body) or None,
                   'proposals': None,
                   'user': self.context,
-                  'actions': actions_urls}
+                  'actions': actions}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

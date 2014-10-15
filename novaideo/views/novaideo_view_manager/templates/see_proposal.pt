@@ -1,16 +1,30 @@
-<div id="global-actions">
-  <div tal:condition="global_actions" class="pull-right global-actions">
-        <tal:loop repeat="a global_actions">
-          <a tal:attributes="href a.url" class="btn btn-success btn-sm">${a.title}</a>
+<nav class="navbar navbar-entity" role="navigation">
+  <div class="container-fluid">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" >
+      <ul class="nav navbar-nav">
+        <tal:loop repeat="a text_actions">
+          <li><a tal:attributes="href a.url" class="btn btn-sm"><span class="${getattr(a.action,'style_picto','')}" ></span> ${a.title}</a></li>
         </tal:loop>
-  </div>
-</div>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <tal:loop repeat="a global_actions">
+          <li><a tal:attributes="href a.url" class="btn btn-sm"><span class="${getattr(a.action,'style_picto','')}" ></span> ${a.title}</a></li>
+        </tal:loop>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 <div class="media-body content-title-body">
   <h3 tal:condition="proposal.state"><span class="label label-basic pull-right">${proposal.state[0].capitalize()}</span></h3>
   <h2 class="content-title"><img src="${request.static_url('novaideo:static/images/proposal_picto32.png')}"> ${proposal.title}</h2>
+  <div class="object-description">
+   <small >(Proposée par <a tal:attributes="href request.resource_url(proposal.author, '@@index')">${((proposal.author is current_user) and 'Vous') or proposal.author.name}</a> le <span tal:replace="layout.to_localized_time(proposal.modified_at, date_only=True)"/> à ${proposal.modified_at.hour}:${proposal.modified_at.minute}:${proposal.modified_at.second} <span tal:omit-tag="" tal:condition="proposal.originalentity is not None">dupliquée à partir de la proposition <a tal:attributes="href request.resource_url(proposal.originalentity, '@@index')">${proposal.originalentity.title}</a></span>)
+   </small>
+  </div>
 </div>
 
-<div class="proposal-well">
+<div class="object-well proposal-well">
     <dl >
         <dt>Résumé</dt>
 	<dd>${proposal.description}</dd>
@@ -21,16 +35,6 @@
             <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
         </tal:loop>
       </dd>
-        <dt>Proposée le </dt>
-	<dd>
-          <span tal:replace="layout.to_localized_time(proposal.created_at, date_only=True)"/> à ${proposal.created_at.hour}:${proposal.created_at.minute}:${proposal.created_at.second} par <a tal:attributes="href request.resource_url(proposal.author, '@@index')">${((proposal.author is current_user) and 'Vous') or proposal.author.name}</a>
-        </dd>
-        <div tal:omit-tag="" tal:condition="proposal.originalentity is not None">
-          <dt>Proposition d'originie</dt>
-	  <dd>
-             <a tal:attributes="href request.resource_url(proposal.originalentity, '@@index')">${proposal.originalentity.title}</a>
-          </dd>
-        </div>
         <div tal:omit-tag="" tal:condition="proposal.working_group is not None">
           <dt>Groupe de travail</dt>
 	  <dd>
@@ -54,14 +58,6 @@
 
 <div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} content-text">
   ${structure:text}
-</div>
-
-<div id="text-actions">
-  <div tal:condition="text_actions" class="text-actions">
-        <tal:loop repeat="a text_actions">
-          <a tal:attributes="href a.url" class="btn btn-default btn-sm btn-text-action">${a.title}</a>
-        </tal:loop>
-  </div>
 </div>
 
 <div tal:condition="voteactions"  id="voteactions">

@@ -92,6 +92,15 @@ function init_seemore(){
 
 };
 
+function init_content_text(){
+     var texts = $('.content-text');
+     for(i=0; i<texts.length; i++){
+         if ($(texts[i]).height()>600){
+             $(texts[i]).addClass("content-text-scroll")
+         }
+     }
+};
+
 
 $(document).ready(function(){
 
@@ -102,7 +111,7 @@ $(document).ready(function(){
   $("[name='globalmenuswitch']").bootstrapSwitch();
 
   init_switch();
-
+  init_content_text();
   /*$($('.alert.alert-danger').parents('.panel.panel-default').first()).on('shown.bs.collapse', function () {
       if ($(this).find('pan'))
       resize_search_result()

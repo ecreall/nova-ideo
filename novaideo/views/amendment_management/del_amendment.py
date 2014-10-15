@@ -18,7 +18,7 @@ from novaideo import _
     renderer='pontus:templates/view.pt',
     )
 class DelAmendmentView(BasicView):
-    title = _('Delet')
+    title = _('Delete')
     name = 'delamendment'
     behaviors = [DelAmendment]
     viewid = 'delamendment'

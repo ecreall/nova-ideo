@@ -1,6 +1,6 @@
 <div class="compare-result">
 <div tal:omit-tag="" tal:condition="version">
-<div class="idea-well">
+<div class="object-well idea-well">
     <dl >
         <dt>Résumé</dt>
 	<dd>${structure:descriptiondiff}</dd>

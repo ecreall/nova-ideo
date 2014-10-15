@@ -1,3 +1,7 @@
+.panel.pontus-main-view > .panel-heading{
+    height: 41px;
+}
+
 dd {
   margin-bottom: 7px; 
   margin-left: 10px
@@ -11,11 +15,6 @@ dt {
   font-weight: bold;
   margin-bottom: 22px
 }
-
-.pontus-main-view .panel-heading{
-  /* TODO*/  
-}
-
 
 a:focus {
 
@@ -54,6 +53,7 @@ a:hover, a:focus {
 .scroll-able {
     overflow: auto;
 }
+
 
 .scroll-choice {
 
@@ -130,7 +130,7 @@ ins {
   background-color: #cc66cc;
 }
 
-.amendment-diff ins {
+.amendment-diff ins {padding: 19px 19px 0;
   background-color: #f19cf0;
 }
 
@@ -139,10 +139,10 @@ ins {
     margin-right: 19px;
 }
 */
-.amendment-description{
-  margin-top: -23px; 
-  margin-bottom: 22px; 
-  color:gray;
+.object-description{
+    margin-bottom: 40px;
+    margin-top: -20px;
+    color:gray;
 }
 
 .legend-carre-del{
@@ -159,32 +159,24 @@ ins {
         display: inline-block;; 
 }
 
-
-.idea-well {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(70, 178, 226, 0.16);
+.object-well{
     border: 1px solid #e3e3e3;
     border-radius: 4px;
     margin-bottom: 20px;
     min-height: 20px;
-    padding: 19px;
+    padding: 19px 19px 0;
+}
+
+.idea-well {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(70, 178, 226, 0.16);
 }
 
 .amendment-well {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(207, 35, 0, 0.20);
-    border: 1px solid #e3e3e3;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    min-height: 20px;
-    padding: 19px;
 }
 
 .proposal-well {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(76, 164, 76, 0.16);
-    border: 1px solid #e3e3e3;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    min-height: 20px;
-    padding: 19px;
 }
 
 .thumbnail.right-caption > #idea-image {
@@ -264,13 +256,78 @@ ins {
     border-radius: 4px;
 }
 
-.global-actions {
-    margin-top: -52px
+.navbar-entity{
+   margin-top: -57px;
 }
+
+.navbar-entity .navbar-collapse{
+    margin-left: -47px; 
+    margin-right: -33px
+}
+
+.navbar-entity .nav > li > a {
+    background-image: linear-gradient(to bottom, #d9eaf9 -100%, #9bbcd8 88%);
+    background-repeat: repeat-x;
+    border-color: #ddd;
+    border-radius: 0;
+    color: white;
+    font-weight: bold;
+    height: 42px;
+    line-height: 10pt;
+    min-width: 70px;
+    padding: 10px;
+}
+
+.navbar-entity .navbar-nav{
+    margin-top: -9px;
+}
+
+.navbar-entity .nav > li > a span{
+  font-size: 15px
+}
+
+.navbar-entity .nav > li > a:hover, .navbar-entity .nav > li > a:focus, .navbar-entity .nav > li > a:active {
+    background-image: linear-gradient(to bottom, #d9eaf9 -31%, #9bbcd8 0%);
+    background-repeat: repeat-x;
+    color: white;
+    height: 42px;
+    border-radius: 0px;
+    border-color: #ddd;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.navbar-entity .nav.navbar-right > li > a{
+  margin-left: -5px;
+}
+
+.navbar-entity .nav:not(.navbar-right) > li > a{
+  margin-right: -5px;
+}
+
+.user-global-actions {
+    margin-right: -16px;
+    margin-top: -57px;
+}
+
+.user-global-actions .btn span{
+  font-size: 15px
+}
+
+
+#text-actions{
+    height: 42px
+}
+
 
 .content-text{
     margin-left: 19px; 
     margin-right: 19px;
+}
+
+.content-text-scroll{
+   height:600px;
+   overflow: auto;
 }
 
 .filigrane-project{
@@ -280,12 +337,10 @@ ins {
 
 .content-title-body{
     margin-left: 19px; 
-    margin-right: 19px;
+    margin-right: 0;
+    margin-top: 15px;
 }
 
-.btn-text-action {
-    width: 100pt
-}
 
 .btn-wg {
     border-radius: 4px;
@@ -533,7 +588,7 @@ ins {
 
 
 .btn-white {
-    background-image: linear-gradient(to bottom, white 0%, #e6e3df 100%);
+    background-image: linear-gradient(to bottom, white 0%, #e4e4e4 100%);
     background-repeat: repeat-x;
     border-color: #b5b3b0;
     color: #585d52;

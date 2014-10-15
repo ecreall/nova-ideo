@@ -143,6 +143,7 @@ class PublishAsProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     context = Iidea
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-file'
     processsecurity_validation = pap_processsecurity_validation
 
     def _associate(self, related_ideas, proposal):
@@ -216,6 +217,7 @@ def submit_state_validation(process, context):
 class SubmitProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-share'
     style_order = 1
     context = IProposal
     processs_relation_id = 'proposal'
@@ -247,6 +249,7 @@ def duplicate_processsecurity_validation(process, context):
 class DuplicateProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-resize-full'
     style_order = 3
     context = IProposal
     processsecurity_validation = duplicate_processsecurity_validation
@@ -308,6 +311,7 @@ def edit_state_validation(process, context):
 class EditProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
     context = IProposal
     processs_relation_id = 'proposal'
@@ -385,6 +389,7 @@ def proofreading_state_validation(process, context):
 
 class ProofreadingDone(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_picto = 'glyphicon glyphicon-ok'
     style_descriminator = 'text-action'
     style_order = 2
     context = IProposal
@@ -418,6 +423,7 @@ def pub_state_validation(process, context):
 class PublishProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-certificate'
     style_order = 2
     context = IProposal
     processs_relation_id = 'proposal'
@@ -479,6 +485,7 @@ def support_state_validation(process, context):
 class SupportProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-thumbs-up'
     style_order = 2
     context = IProposal
     processs_relation_id = 'proposal'
@@ -509,6 +516,7 @@ class SupportProposal(InfiniteCardinality):
 class OpposeProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-thumbs-down'
     style_order = 3
     context = IProposal
     processs_relation_id = 'proposal'
@@ -544,6 +552,7 @@ def withdrawt_processsecurity_validation(process, context):
 class WithdrawToken(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-hand-up'
     style_order = 2
     context = IProposal
     processs_relation_id = 'proposal'
@@ -769,6 +778,7 @@ def improve_state_validation(process, context):
 class ImproveProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-edit'
     style_order = 4
     isSequential = False
     context = IProposal
@@ -916,6 +926,7 @@ def correct_state_validation(process, context):
 class CorrectProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-check'
     style_order = 2
     isSequential = True
     context = IProposal

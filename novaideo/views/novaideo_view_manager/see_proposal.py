@@ -103,7 +103,7 @@ class SeeProposalActionsView(MultipleView):
     renderer='pontus:templates/view.pt',
     )
 class SeeProposalView(MultipleView):
-    title = _('Details')
+    title = _('')
     name = 'seeproposal'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     requirements = {'css_links':['novaideo:static/css/steps/steps.css'],

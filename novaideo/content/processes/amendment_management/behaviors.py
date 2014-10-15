@@ -56,6 +56,7 @@ def duplicate_state_validation(process, context):
 class DuplicateAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-resize-full'
     style_order = 3
     context = IAmendment
     roles_validation =del_roles_validation
@@ -102,6 +103,7 @@ def del_state_validation(process, context):
 class DelAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-trash'
     style_order = 2
     context = IAmendment
     roles_validation = del_roles_validation
@@ -134,6 +136,7 @@ def edit_state_validation(process, context):
 class EditAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
     context = IAmendment
     roles_validation = edit_roles_validation
@@ -172,6 +175,7 @@ def exp_state_validation(process, context):
 class ExplanationAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-question-sign'
     style_order = 1
     context = IAmendment
     roles_validation = exp_roles_validation
@@ -229,6 +233,7 @@ def pub_state_validation(process, context):
 class SubmitAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-share'
     style_order = 1
     context = IAmendment
     roles_validation = pub_roles_validation
@@ -285,7 +290,7 @@ class SubmitAmendment(InfiniteCardinality):
         amendment.state.append('published')
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
-        amendment.setproperty('originalentity', context)
+        #amendment.setproperty('originalentity', context)
         explanations = sorted(group['explanations'], key=lambda e: e['oid'])
         i = 1
         for e in explanations:

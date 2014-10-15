@@ -77,5 +77,5 @@
         background-position: center left;
         width: 113%;
 }
-.steps li.step .step-content:hover { background: transparent url(step_over.png) center right no-repeat; }
+/*.steps li.step .step-content:hover { background: transparent url(step_over.png) center right no-repeat; }*/
 .steps li.step-4 .step-content:hover { background-position: center left; }

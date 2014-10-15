@@ -18,7 +18,7 @@ from novaideo import _
     renderer='pontus:templates/view.pt',
     )
 class DelIdeaView(BasicView):
-    title = _('Delet')
+    title = _('Delete')
     name = 'delidea'
     behaviors = [DelIdea]
     viewid = 'delidea'
