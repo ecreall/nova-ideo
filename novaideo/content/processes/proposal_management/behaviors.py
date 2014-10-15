@@ -657,7 +657,7 @@ def edita_relation_validation(process, context):
 
 
 def edita_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_any_roles(roles=(('Participant', context),))
 
 
 def edita_processsecurity_validation(process, context):
