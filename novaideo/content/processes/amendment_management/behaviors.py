@@ -89,7 +89,7 @@ class DuplicateAmendment(InfiniteCardinality):
 
 
 def del_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))
 
 
 def del_processsecurity_validation(process, context):
@@ -121,7 +121,7 @@ class DelAmendment(InfiniteCardinality):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))
 
 
 def edit_processsecurity_validation(process, context):
@@ -161,7 +161,7 @@ class EditAmendment(InfiniteCardinality):
 
   
 def exp_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))
 
 
 def exp_processsecurity_validation(process, context):
@@ -218,7 +218,7 @@ class ExplanationItem(InfiniteCardinality):
 
 
 def pub_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))
 
 
 def pub_processsecurity_validation(process, context):
@@ -395,7 +395,7 @@ class Associate(AssociateIdea):
 
 
 def seeamendment_processsecurity_validation(process, context):
-    return ('published' in context.state or has_any_roles(roles=(('Owner', context),)))
+    return ('published' in context.state or (has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))))
 
 class SeeAmendmentManager(object):
 
