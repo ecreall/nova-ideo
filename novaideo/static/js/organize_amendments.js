@@ -76,7 +76,7 @@ $(document).ready(function(){
              for (i=0; i<items.length; i++){
                  var item = $(items[i]);
                  var selected = $(item.find('select[name="explanations"]'));
-                 var values = $($(selected).find("option[selected='selected']")).map(function(){ return this.value }).get().join(", ");
+                 var values = $($(selected).find("option:selected")).map(function(){ return this.value }).get().join(", ");
                  if (values.length==0){
                      item.addClass('sequence-item-error');
                      $(commentmessagedanger).removeClass('hide-bloc');

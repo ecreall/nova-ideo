@@ -6,13 +6,10 @@ function add_option(select, option){
     var id = $(option).data('item');
     var oldoption = $($(select).find('option[value=\''+id+'\']'))
     if (oldoption.length>0){
-       $(oldoption[0]).attr('selected', 'selected')
+       $(oldoption[0]).prop('selected', true)
     }else{
        $(select).append(get_option({'value':id, 'content':id}));
     };
-    var selecteds  = $(select).find("option[selected='selected']");
-    var first = $(select).find("option").first();
-    selecteds.insertBefore($(first));
 }
 
 
@@ -20,11 +17,8 @@ function remove_option(select, option){
     var id = $(option).data('item');
     var oldoption = $($(select).find('option[value=\''+id+'\']'))
     if (oldoption.length>0){
-       $(oldoption[0]).removeAttr('selected')
+       $(oldoption[0]).prop('selected', false)
     };
-    var selecteds  = $(select).find("option[selected='selected']");
-    var first = $(select).find("option").first();
-    selecteds.insertBefore($(first));
 }
 
 
