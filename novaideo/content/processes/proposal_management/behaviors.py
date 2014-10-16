@@ -552,7 +552,7 @@ def withdrawt_processsecurity_validation(process, context):
 class WithdrawToken(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_picto = 'glyphicon glyphicon-hand-up'
+    style_picto = 'glyphicon glyphicon-share-alt'
     style_order = 2
     context = IProposal
     processs_relation_id = 'proposal'
