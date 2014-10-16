@@ -67,7 +67,7 @@ class SeeIdeaActionsView(MultipleView):
     title = _('actions')
     name = 'seeiactionsdea'
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (AssociateView, PresentIdeaView, CommentIdeaView, CompareIdeaView)
+    views = (PresentIdeaView, CompareIdeaView, AssociateView, CommentIdeaView)
 
     def _activate(self, items):
         pass
