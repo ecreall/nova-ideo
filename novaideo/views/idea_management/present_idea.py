@@ -55,6 +55,7 @@ class SentToView(BasicView):
                 'members': members,
                 'basestring': basestring,
                }
+        self.message = message
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
@@ -137,12 +138,10 @@ class PresentIdeaView(MultipleView):
     views = (SentToView, PresentIdeaFormView)
 
     def get_message(self):
-        len_persons_contacted = len(self.context.persons_contacted)
-        index = str(len_persons_contacted)
-        if len_persons_contacted>1:
-            index = '*'
-        message = (presentidea_message[index]).format(len_persons_contacted=len_persons_contacted)
-        return message
+        message = (presentidea_message['0']).format()
+        if self.children:
+            message = getattr(self.children[0], 'message', message)
 
+        return message
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({PresentIdea:PresentIdeaView})

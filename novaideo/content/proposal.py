@@ -79,6 +79,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(IProposal)
 class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntity, CorrelableEntity, PresentableEntity):
     result_template = 'novaideo:views/templates/proposal_result.pt'
+    template = 'novaideo:views/templates/proposal_list_element.pt'
     name = renamer()
     author = SharedUniqueProperty('author')
     working_group = SharedUniqueProperty('working_group', 'proposal')

@@ -318,7 +318,6 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
         super(Amendment, self).__init__(**kwargs)
         self.explanations = PersistentDict()
         self.set_data(kwargs)
-        self.amendments_counter = 1
 
    # @region.cache_on_arguments() 
     def get_used_ideas(self):
@@ -328,7 +327,10 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
 
         for explanation in self.explanations.values():
             if explanation['intention'] is not None:
-                result.extend(Intention.get_explanation_ideas(explanation['intention']))
+                try:
+                    result.extend(Intention.get_explanation_ideas(explanation['intention']))
+                except Exception:
+                    pass
 
         return result
 
@@ -337,7 +339,10 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
         result = []
         for explanation in self.explanations.values():
             if explanation['intention'] is not None:
-                result.extend(Intention.get_explanation_data(explanation['intention'])['added_ideas'])
+                try:
+                    result.extend(Intention.get_explanation_data(explanation['intention'])['added_ideas'])
+                except Exception:
+                    pass
 
         return list(set(result))
 
@@ -346,7 +351,10 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
         result = []
         for explanation in self.explanations.values():
             if explanation['intention'] is not None:
-                result.extend(Intention.get_explanation_data(explanation['intention'])['edited_ideas'])
+                try:
+                    result.extend(Intention.get_explanation_data(explanation['intention'])['edited_ideas'])
+                except Exception:
+                    pass
 
         return list(set(result))
 
@@ -355,7 +363,11 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
         result = []
         for explanation in self.explanations.values():
             if explanation['intention'] is not None:
-                result.extend(Intention.get_explanation_data(explanation['intention'])['removed_ideas'])
+                try:
+                    result.extend(Intention.get_explanation_data(explanation['intention'])['removed_ideas'])
+                except Exception:
+                    pass
+
 
         return list(set(result))
 
@@ -365,7 +377,10 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
         values = sorted(list(self.explanations.values()), key=lambda e: e['oid'])
         for explanation in values:
             if explanation['intention'] is not None:
-                result.append('<p>'+(Intention.get_explanation_data(explanation['intention'])['comment'])+'</p>')
+                try:
+                    result.append('<p>'+(Intention.get_explanation_data(explanation['intention'])['comment'])+'</p>')
+                except Exception:
+                    pass
 
         if result:
             return '<div>'+"\n".join(result)+'</div>'

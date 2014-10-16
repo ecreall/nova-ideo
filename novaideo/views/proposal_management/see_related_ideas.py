@@ -62,21 +62,14 @@ class SeeRelatedIdeasView(BasicView):
                 'current_user': user,
                 'message': message
                }
+        self.message = message
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
 
     def get_message(self):
-        user = get_current()
-        related_ideas = [idea for idea in self.context.related_ideas if can_access(user, idea)]
-        len_ideas = len(related_ideas)
-        index = str(len_ideas)
-        if len_ideas>1:
-            index = '*'
-
-        message = addideas_message[index].format(len_ideas=len_ideas)
-        return message
+        return self.message
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeRelatedIdeas:SeeRelatedIdeasView})

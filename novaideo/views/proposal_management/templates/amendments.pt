@@ -1,0 +1,16 @@
+<h4 tal:condition="message">${message}</h4>
+
+<ul >
+  <tal:loop repeat="amendment amendments">
+    <li >
+      <div>
+        <h4 class="content-title content-title-sm"><a tal:attributes="href request.resource_url(amendment, '@@index')">${amendment.title}</a> (${amendment.state[0].capitalize()})</h4>
+        <div class="object-description object-description-sm">
+          <small >(Version amendée par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> le <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} <span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, dupliquée à partir de la version amendée <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
+          </small>
+         </div>
+      </div>
+    </li>
+  </tal:loop>
+</ul>
+

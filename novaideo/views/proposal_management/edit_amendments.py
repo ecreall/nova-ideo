@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import datetime
 from pyramid.view import view_config
 
 from substanced.util import Batch
@@ -30,7 +31,7 @@ class EditAmendmentsView(BasicView):
     name = 'editamendments'
     description=_("See amendments")
     behaviors = [EditAmendments]
-    template = 'novaideo:views/amendment_management/templates/edit_amendments.pt'
+    template = 'novaideo:views/proposal_management/templates/amendments.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     viewid = 'editamendments'
 
@@ -40,38 +41,26 @@ class EditAmendmentsView(BasicView):
         user = get_current()
         root = getSite()
         objects = [o for o in getattr( self.context, 'amendments', []) if not('deprecated' in o.state) and can_access(user, o, self.request, root)]
-        len_result = len(objects)
-        result_body = []
+        objects = sorted(objects, key=lambda e: getattr(e, 'modified_at', datetime.datetime.today()), reverse=True)
+        lenamendments = len(objects)
+        index = str(lenamendments)
+        if lenamendments>1:
+            index = '*'
+        message = (amendments_messages[index]).format(lenamendments=lenamendments)
+
         result = {}
-        for o in objects:
-            editaction = None
-            editactions = [a for a in o.actions if a.action.node_id == 'edit']
-            if editactions:
-                editaction = editactions[0]
-
-            object_values = {'object': o, 'action': editaction, 'current_user': user}
-            body = self.content(result=object_values,
-                    template=o.result_template)['body']
-            result_body.append(body)
-
-        values = {'bodies': result_body,
-                  'length': len_result,
+        values = {'amendments': objects,
+                  'current_user': user,
+                  'message': message
                    }
+        self.message = message
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
 
     def get_message(self):
-        root = getSite()
-        user = get_current()
-        amendments = [o for o in getattr( self.context, 'amendments', []) if not('deprecated' in o.state) and can_access(user, o, self.request, root)]
-        lenamendments = len(amendments)
-        index = str(lenamendments)
-        if lenamendments>1:
-            index = '*'
-        message = (amendments_messages[index]).format(lenamendments=lenamendments)
-        return message
+        return self.message
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({EditAmendments:EditAmendmentsView})

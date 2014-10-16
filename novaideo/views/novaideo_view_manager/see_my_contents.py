@@ -1,5 +1,6 @@
 import re
 import colander
+import datetime
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
@@ -39,6 +40,7 @@ class SeeMyContentsView(BasicView):
         self.execute(None)
         user = get_current()
         objects = [o for o in getattr(user, 'contents', []) if not('deprecated' in o.state)]
+        objects = sorted(objects, key=lambda e: getattr(e, 'modified_at', datetime.datetime.today()), reverse=True)
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_contents"
         len_result = batch.seqlen

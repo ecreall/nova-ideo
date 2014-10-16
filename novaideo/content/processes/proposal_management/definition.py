@@ -46,7 +46,8 @@ from .behaviors import (
     WithdrawToken,
 #    DelIdeas,
     SeeRelatedIdeas,
-    ProofreadingDone
+    ProofreadingDone,
+    CompareProposal
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
@@ -380,6 +381,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Improve proposal"),
                                        title=_("Improve"),
                                        groups=[]),
+                compare = ActivityDefinition(contexts=[CompareProposal],
+                                       description=_("Compare"),
+                                       title=_("Compare"),
+                                       groups=[]),
                 end = EndEventDefinition(),
         )
         self.defineTransitions(
@@ -398,6 +403,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg2', 'seerelatedideas'),
                 TransitionDefinition('submit', 'pg3'),
                 TransitionDefinition('pg3', 'comment'),
+                TransitionDefinition('pg3', 'compare'),
                 TransitionDefinition('pg3', 'editamendments'),
                 TransitionDefinition('pg2', 'associate'),
                 TransitionDefinition('pg3', 'present'),

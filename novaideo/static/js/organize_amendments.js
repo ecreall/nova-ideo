@@ -44,11 +44,9 @@ function scrollto(){
  var scrollvalue = source.scrollTop() + element.offset().top - source.offset().top - (source.height()/2);
  source.animate({
     scrollTop: scrollvalue
-    }, 1000);
+    }, 500);
 
 };
-
- 
 
 
 $(document).ready(function(){

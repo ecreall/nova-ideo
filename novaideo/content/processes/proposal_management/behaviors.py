@@ -708,20 +708,16 @@ def associate_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
 
-def associate_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
-
-
 def associate_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) and \
            (has_any_roles(roles=(('Owner', context),)) or \
            (has_any_roles(roles=('Member',)) and not ('draft' in context.state)))
 
+
 class Associate(AssociateIdea):
     context = IProposal
     processs_relation_id = 'proposal'
     processsecurity_validation = associate_processsecurity_validation
-    roles_validation = associate_roles_validation
     relation_validation = associate_relation_validation
 
 
@@ -1341,10 +1337,10 @@ class AmendmentsResult(ElementaryAction):
     state_validation = ar_state_validation
 
     def _get_copy(self, context, root, wg):
-        copy_of_proposal = copy(context, (root, 'proposals'), roles=True)
+        copy_of_proposal = copy(context, (root, 'proposals'), omit=('created_at','modified_at'),roles=True)
         copy_keywords, newkeywords = root.get_keywords(context.keywords)
         copy_of_proposal.setproperty('keywords_ref', copy_keywords)
-        copy_of_proposal.setproperty('originalentity', context)
+        copy_of_proposal.setproperty('version', context)
         copy_of_proposal.state = PersistentList(['proofreading'])
         copy_of_proposal.setproperty('author', context.author)
         self.process.execution_context.add_created_entity('proposal', copy_of_proposal)
@@ -1398,6 +1394,7 @@ class AmendmentsResult(ElementaryAction):
         if amendments:
             self._send_ballot_result(context, request, result, wg.members)
             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+            #pdb
             merged_text = text_analyzer.merge(context.text, [a.text for a in amendments])
             #TODO merged_keywords + merged_description
             copy_of_proposal = self._get_copy(context, root, wg)
@@ -1417,6 +1414,9 @@ class AmendmentsResult(ElementaryAction):
             copy_of_proposal.reindex()
         else:
             context.state = PersistentList(['proofreading'])
+            for amendment in context.amendments:
+                amendment.state = PersistentList(['deprecated'])
+                amendment.reindex()
 
         context.reindex()
         return True
@@ -1465,6 +1465,27 @@ class Amendable(ElementaryAction):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def compare_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) and \
+           getattr(context, 'version', None) is not None and \
+           (has_any_roles(roles=(('Owner', context),)) or \
+           (has_any_roles(roles=('Member',)) and not ('draft' in context.state)))
+
+
+class CompareProposal(InfiniteCardinality):
+    title = _('Compare')
+    context = IProposal
+    relation_validation = associate_relation_validation
+    processsecurity_validation = compare_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
 
 #TODO behaviors
 

@@ -16,6 +16,10 @@ dt {
   margin-bottom: 22px
 }
 
+.content-title-sm {
+    font-weight: normal;
+}
+
 a:focus {
 
     outline: medium none;
@@ -143,6 +147,10 @@ ins {
     margin-bottom: 40px;
     margin-top: -20px;
     color:gray;
+}
+
+.object-description-sm {
+    margin-bottom: 10px;
 }
 
 .legend-carre-del{

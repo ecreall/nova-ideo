@@ -87,6 +87,7 @@ class RelatedContentsView(BasicView):
             index = '*'
 
         message = associate_messages[index].format(lenassociated=len_contents)
+        self.message = message
         result = {}
         values = {
                 'relatedcontents': relatedcontents,
@@ -138,18 +139,10 @@ class AssociateView(MultipleView):
     description=_("Associate the idea to an other content")
 
     def get_message(self):
-        root = getSite()
-        user = get_current()
-        correlations = [c.targets for c in self.context.source_correlations if c.type==0 and can_access(user, c, self.request, root)]
-        targets  = [item for t in correlations for item in t]
-        sources = [c.source for c in self.context.target_correlations if c.type==0 and can_access(user, c, self.request, root)]
-        targets.extend(sources)
-        all_associated = set(targets)
-        lenassociated = len(all_associated)
-        index = str(lenassociated)
-        if lenassociated>1:
-            index = '*'
-        message = (associate_messages[index]).format(lenassociated=lenassociated)
+        message = (associate_messages['0']).format()
+        if self.children:
+            message = getattr(self.children[0], 'message', message)
+
         return message
 
 

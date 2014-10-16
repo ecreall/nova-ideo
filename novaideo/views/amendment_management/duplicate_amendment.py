@@ -23,8 +23,7 @@ from novaideo import _
 class DuplicateAmendmentView(FormView):
     title = _('Duplicate')
     name = 'duplicateamendment'
-    schema = select(AmendmentSchema(), ['title',
-                     'description',
+    schema = select(AmendmentSchema(), ['description',
                      'keywords',
                      'text'])
 

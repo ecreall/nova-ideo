@@ -22,6 +22,7 @@ from novaideo.views.proposal_management.comment_proposal import CommentProposalV
 from novaideo.views.proposal_management.associate import AssociateView
 from novaideo.views.proposal_management.edit_amendments import EditAmendmentsView
 from novaideo.views.proposal_management.see_related_ideas import SeeRelatedIdeasView
+from novaideo.views.proposal_management.compare_proposal import CompareProposalView
 
 
 class DetailProposalView(BasicView):
@@ -91,7 +92,7 @@ class SeeProposalActionsView(MultipleView):
     title = _('actions')
     name = 'seeiactionsdea'
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (EditAmendmentsView, AssociateView, SeeRelatedIdeasView, PresentProposalView, CommentProposalView)
+    views = (EditAmendmentsView, AssociateView, SeeRelatedIdeasView, PresentProposalView, CompareProposalView, CommentProposalView)
 
     def _activate(self, items):
         pass
@@ -108,7 +109,8 @@ class SeeProposalView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     requirements = {'css_links':['novaideo:static/css/steps/steps.css'],
                     'js_links':['novaideo:static/js/correct_proposal.js',
-                                'novaideo:static/js/comment.js']}
+                                'novaideo:static/js/comment.js',
+                                'novaideo:static/js/compare_idea.js']}
     views = (DetailProposalView, SeeProposalActionsView)
 
 

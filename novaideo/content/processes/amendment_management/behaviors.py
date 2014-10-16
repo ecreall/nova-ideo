@@ -65,7 +65,7 @@ class DuplicateAmendment(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        copy_of_amendment = copy(context, (context.proposal, 'amendments'))
+        copy_of_amendment = copy(context, (context.proposal, 'amendments'), omit=('explanations',))
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
@@ -78,6 +78,7 @@ class DuplicateAmendment(InfiniteCardinality):
         copy_of_amendment.setproperty('originalentity', context)
         copy_of_amendment.state = PersistentList(['draft'])
         copy_of_amendment.setproperty('author', get_current())
+        copy_of_amendment.title = context.proposal.title+'_Amended version '+str(getattr(context.proposal, 'amendment_counter', 1)) 
         grant_roles(roles=(('Owner', copy_of_amendment), ))
         copy_of_amendment.reindex()
         context.reindex()
@@ -323,7 +324,10 @@ class SubmitAmendment(InfiniteCardinality):
             context.state.append('published')
         else:
             for group in groups:
-                self._add_sub_amendment(context, group)
+                amendment = self._add_sub_amendment(context, group)
+                #publish used ideas
+                for idea in [i for i in amendment.get_used_ideas() if not('published' in i.state)]:
+                    idea.state = PersistentList(['published'])
 
             context.state.append('deprecated')
 
@@ -443,7 +447,13 @@ class SeeAmendmentManager(object):
     @classmethod
     def _add_modal_details(cls, soup, tag, context, request):
         context_oid = get_oid(context)
-        values= {'item': context.explanations[tag['data-item']], 'data': Intention.get_explanation_data(context.explanations[tag['data-item']]['intention'])}
+        data = {}
+        try:
+            data = Intention.get_explanation_data(context.explanations[tag['data-item']]['intention'])
+        except Exception:
+            pass
+
+        values= {'item': context.explanations[tag['data-item']], 'data': data}
         body = renderers.render(cls.readonly_explanation_template, values, request)
         explanation_item_soup = BeautifulSoup(body)
         modal_body = renderers.render(cls.readonly_modal_template, values, request)

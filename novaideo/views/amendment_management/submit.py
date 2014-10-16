@@ -100,7 +100,8 @@ class SubmitAmendmentViewStudyReport(BasicView):
         souptextdiff, textdiff = SeeAmendmentManager._get_explanation_diff(self.context, self.request)
         SeeAmendmentManager._add_details(self.context, self.request, souptextdiff)
         explanationtext = text_analyzer.soup_to_text(souptextdiff)
-        values = {'context': self.context, 'explanationtext': explanationtext}
+        not_published_ideas = [i for i in self.context.get_used_ideas() if not('published' in i.state)]
+        values = {'context': self.context, 'explanationtext': explanationtext, 'ideas': not_published_ideas}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
