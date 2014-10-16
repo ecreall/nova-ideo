@@ -71,12 +71,19 @@ class TextAnalyzer(object):
         soup = self.wrap_diff(result.replace('\xa0',' '), diffid)
         return soup, u''.join([str(t) for t in soup.body.contents])
 
-    def _del_next_space(self, soup, tag):
+    def _del_added_space(self, soup, tag):
         next_sibling = tag.next_sibling
-        if isinstance(next_sibling, NavigableString):
+        if next_sibling is not None and isinstance(next_sibling, NavigableString):
             if next_sibling[0] == ' ':
-                new_string = soup.new_string(tag.next_sibling[1:next_sibling.__len__()])
+                new_string = soup.new_string(next_sibling[1:next_sibling.__len__()])
                 tag.next_sibling.replace_with(new_string)
+
+        elif next_sibling is None:
+            previous_sibling = tag.previous_sibling
+            if previous_sibling is not None and isinstance(previous_sibling, NavigableString):
+                if previous_sibling[previous_sibling.__len__()-1] == ' ':
+                    new_string = soup.new_string(previous_sibling[0:(previous_sibling.__len__()-1)])
+                    tag.previous_sibling.replace_with(new_string)
 
     def wrap_diff(self, diff, diffid):
         soup = BeautifulSoup(diff)
@@ -93,14 +100,14 @@ class TextAnalyzer(object):
                 tofind = str(previous_del_tag) +' *'+ str(ins_tag)
                 modif_exist = (len(re.findall(tofind, diff)) >0)
                 if previous_del_tag_string != inst_string and modif_exist:
-                    self._del_next_space(soup, previous_del_tag)
+                    self._del_added_space(soup, previous_del_tag)
                     previous_del_tag.wrap(new_tag)
                     new_tag.append(ins_tag)
                     del_included.append(previous_del_tag)
                     continue
                 elif modif_exist:
                     del_included.append(previous_del_tag)
-                    self._del_next_space(soup, previous_del_tag)
+                    self._del_added_space(soup, previous_del_tag)
                     ins_tag.unwrap()
                     previous_del_tag.extract()
 
@@ -113,7 +120,7 @@ class TextAnalyzer(object):
                     new_tag = soup.new_tag("span", id=diffid)
                     del_tag.wrap(new_tag)
                 else:
-                    self._del_next_space(soup, del_tag)
+                    self._del_added_space(soup, del_tag)
                     del_tag.extract()
 
         return soup
@@ -145,8 +152,7 @@ class TextAnalyzer(object):
                 tag.contents.pop()
 
             if not del_tags_empty and ins_tags_empty:
-                #TODO del space
-                self._del_next_space(soup, tag)
+                self._del_added_space(soup, tag)
 
             tag.unwrap()
 
