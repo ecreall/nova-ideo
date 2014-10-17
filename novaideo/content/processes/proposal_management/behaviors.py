@@ -135,7 +135,7 @@ def pap_processsecurity_validation(process, context):
         if originalentity.text == context.text:
             return False
 
-    return has_any_roles(roles=(('Owner', context),)) or \
+    return has_any_roles(roles=(('Owner', context),)) and ('to work' in context.state) or \
            (has_any_roles(roles=('Member',)) and ('published' in context.state))
 
 
