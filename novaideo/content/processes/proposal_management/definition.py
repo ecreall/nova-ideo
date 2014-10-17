@@ -409,6 +409,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg3', 'present'),
                 TransitionDefinition('pg3', 'resign'),
                 TransitionDefinition('pg3', 'participate'),
+                TransitionDefinition('pg3', 'withdraw'),
                 TransitionDefinition('pg3', 'correct'),
                 TransitionDefinition('pg3', 'proofreading'),
                 TransitionDefinition('pg3', 'correctitem'),

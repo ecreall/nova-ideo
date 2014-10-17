@@ -205,7 +205,7 @@ def submit_roles_validation(process, context):
 def submit_processsecurity_validation(process, context):
     user = get_current()
     root = getSite()
-    wgs = [w for w in user.working_groups if not('draft' in w.proposal.state)]
+    wgs = user.active_working_groups
     return global_user_processsecurity(process, context) and \
           len(wgs) < root.participations_maxi
 
@@ -436,19 +436,16 @@ class PublishProposal(ElementaryAction):
         context.state.remove('votes for publishing')
         context.state.append('published')
         wg.state = PersistentList(['archived'])
-        for member in  wg.members:
+        members = wg.members
+        url = request.resource_url(context, "@@index")
+        subject = PUBLISHPROPOSAL_SUBJECT.format(subject_title=context.title)
+        for member in  members:
             token = Token(title='Token_'+context.title)
             token.setproperty('proposal', context)
             member.addtoproperty('tokens_ref', token)
             member.addtoproperty('tokens', token)
             token.setproperty('owner', member)
-
-        wg.reindex()
-        context.reindex()
-        members = context.working_group.members
-        url = request.resource_url(context, "@@index")
-        subject = PUBLISHPROPOSAL_SUBJECT.format(subject_title=context.title)
-        for member in members:
+            revoke_roles(member, (('Participant', context),))
             message = PUBLISHPROPOSAL_MESSAGE.format(
                 recipient_title=getattr(member, 'user_title',''),
                 recipient_first_name=getattr(member, 'first_name', member.name),
@@ -457,6 +454,9 @@ class PublishProposal(ElementaryAction):
                 subject_url=url
                  )
             mailer_send(subject=subject, recipients=[member.email], body=message)
+
+        wg.reindex()
+        context.reindex()
         #TODO wg desactive, members vide...
         return True
 
@@ -788,7 +788,7 @@ class ImproveProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         data = {}
-        data['title'] = context.title+'_Amended version '+str(getattr(context, 'amendment_counter', 1))
+        data['title'] = context.title+'_A '+str(getattr(context, 'amendment_counter', 1))
         data['text'] = appstruct['text']
         data['description'] = appstruct['description']
         keywords_ids = appstruct.pop('keywords')
@@ -1026,7 +1026,7 @@ def decision_roles_validation(process, context):
 
 def decision_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and ('proofreading' in context.state or 'amendable' in context.state)
+    return 'active' in wg.state and any(s in context.state for s in ['proofreading', 'amendable'])
 
 
 class VotingPublication(ElementaryAction):
@@ -1078,7 +1078,7 @@ def withdraw_processsecurity_validation(process, context):
 
 def withdraw_state_validation(process, context):
     wg = context.working_group
-    return  'amendable' in context.state or 'proofreading' in context.state
+    return  any(s in context.state for s in ['proofreading', 'amendable'])
 
 
 class Withdraw(InfiniteCardinality):
@@ -1126,7 +1126,7 @@ def resign_processsecurity_validation(process, context):
 
 
 def resign_state_validation(process, context):
-    return  'amendable' in context.state or 'proofreading' in context.state or 'open to a working group' in context.state #TODO
+    return  any(s in context.state for s in ['proofreading', 'amendable', 'open to a working group'])
 
 
 class Resign(InfiniteCardinality):
@@ -1144,7 +1144,7 @@ class Resign(InfiniteCardinality):
 
     def _get_next_user(self, users, root):
         for user in users:
-            wgs = [w for w in user.working_groups if not('draft' in w.proposal.state)]
+            wgs = user.active_working_groups
             if 'active' in user.state and len(wgs) < root.participations_maxi:
                 return user
 
@@ -1155,6 +1155,7 @@ class Resign(InfiniteCardinality):
         user = get_current()
         wg = context.working_group
         wg.delproperty('members', user)
+        #ajouter le user a demission..
         revoke_roles(user, (('Participant', context),))
         url = request.resource_url(context, "@@index")
         if wg.wating_list:
@@ -1208,7 +1209,7 @@ def participate_roles_validation(process, context):
 def participate_processsecurity_validation(process, context):
     user = get_current()
     root = getSite()
-    wgs = [w for w in user.working_groups if not('draft' in w.proposal.state)]
+    wgs = user.active_working_groups
     return global_user_processsecurity(process, context) and \
            not(user in context.working_group.wating_list) and \
            len(wgs) < root.participations_maxi 
@@ -1216,7 +1217,7 @@ def participate_processsecurity_validation(process, context):
 
 def participate_state_validation(process, context):
     wg = context.working_group
-    return  not('closed' in wg.state) and ('proofreading' in context.state or 'amendable' in context.state or 'open to a working group' in context.state)
+    return  not('closed' in wg.state) and any(s in context.state for s in ['proofreading', 'amendable', 'open to a working group']) 
 
 
 class Participate(InfiniteCardinality):
@@ -1258,7 +1259,11 @@ class Participate(InfiniteCardinality):
                 if not hasattr(self.process, 'first_decision'):
                     self.process.first_decision = True
 
-                context.state.append('proofreading')
+                if any(not('deprecated' in a.state) for a in context.amendments):
+                    context.state.append('amendable')
+                else:
+                    context.state.append('proofreading')
+ 
                 context.reindex()
 
             self._send_mail_to_user(PARTICIPATE_SUBJECT, PARTICIPATE_MESSAGE, user, context, request)
@@ -1386,7 +1391,6 @@ class AmendmentsResult(ElementaryAction):
             if electeds is not None:
                 result.update(electeds)
 
-        #TODO merg result
         amendments = [a for a in result if isinstance(a, Amendment)]
         wg = context.working_group
         root = getSite()

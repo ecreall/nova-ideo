@@ -227,4 +227,8 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
                 result.append(t.__parent__)
 
         return list(set(result))
+
+    @property
+    def active_working_groups(self):
+        return [w for w in self.working_groups if not any(s in w.proposal.state for s in ['draft', 'published'])]
     
