@@ -1407,7 +1407,7 @@ class AmendmentsResult(ElementaryAction):
             added_ideas = [a.added_ideas for a in amendments]
             added_ideas = [item for sublist in added_ideas for item in sublist]
             removed_ideas = [a.removed_ideas for a in amendments]
-            removed_ideas = [item for sublist in removed_ideas for item in sublist]
+            removed_ideas = [item for sublist in removed_ideas for item in sublist] #TODO removed idea vs added idea
             not_modified_ideas = [i for i in context.related_ideas if not (i in removed_ideas)]
             new_ideas = not_modified_ideas
             new_ideas.extend(added_ideas)

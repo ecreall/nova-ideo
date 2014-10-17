@@ -77,7 +77,7 @@ def amendments_cycle_duration(process):
 
 def eg3_publish_condition(process):
     report = process.vp_ballot.report
-    if getattr(process, 'first_decision', True):
+    if not getattr(process, 'first_decision', True):
         electeds = report.get_electeds()
         if electeds:
             return True
