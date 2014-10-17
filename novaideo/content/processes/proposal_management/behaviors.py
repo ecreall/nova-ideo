@@ -128,7 +128,6 @@ class CreateProposal(ElementaryAction):
         return HTTPFound(request.resource_url(self.newcontext, "@@index"))
 
 
-
 def pap_processsecurity_validation(process, context):
     if getattr(context, 'originalentity', None):
         originalentity = getattr(context, 'originalentity')
