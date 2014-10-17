@@ -121,7 +121,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         proposal = process.execution_context.created_entity('proposal')
         wg = proposal.working_group
         electors = wg.members[:root.participants_mini]
-        if getattr(process, 'first_decision', True):
+        if not getattr(process, 'first_decision', True):
             electors = wg.members
 
         subjects = [proposal]
@@ -147,7 +147,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             subprocess.ballots.append(ballot)
             process.reopening_configuration_ballot = ballot
 
-        if len(wg.members) < root.participants_maxi:
+        if len(wg.members) <= root.participants_maxi:
             group = list(amendments_cycle_default_duration.keys())#@TODO Durees
             ballot = Ballot('FPTP' , electors, group, vp_default_duration)
             ballot.title = _('Amendment duration')
