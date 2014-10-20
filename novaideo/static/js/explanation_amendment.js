@@ -33,9 +33,11 @@ function init_explanation_select(){
 };
 
 function get_explanation_form(url){
+              var btn = $(this);
               var modal = $(this).data('target')+'explanation_modal';
               var target = $($('.novaideo-right').find('div').first());
               var url = $(this).data('url');
+              
               $.getJSON(url,{}, function(data) {
                  var action_body = data['body'];
                  if (action_body){
@@ -46,6 +48,8 @@ function get_explanation_form(url){
                      $(target.find('.modal-content')).addClass('explanation-modal');
                      target.show();
                      init_explanation_select();
+                     ($('.content-text').find('.explanation-action.btn-blue')).removeClass('btn-blue');
+                     btn.addClass('btn-blue');
                      $('.explanation-validation').on('click', submit_explanation);
                      $('.explanation-close').on('click', close_explanation);
                      target.find('.explanations-bloc').append("<div class=\"intention-separator\">Or</div>")
@@ -72,6 +76,7 @@ function get_data(selecteds){
 
 function close_explanation(url){
        var button = $(this);
+       ($('.content-text').find('.explanation-action.btn-blue')).removeClass('btn-blue');
        var parent = $($(this).parents('.explanation-modal').first());
        parent.remove();
 }

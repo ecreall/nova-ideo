@@ -119,7 +119,7 @@ $(document).ready(function(){
 */
 
    $('.control-form-button').on('click', function(){
-        var form = $($(this).parents('div.ajax-form').first()).find('form').first();
+        var form = $($(this).parents('div.ajax-form').first()).find('.controled-form').first();
         if (form.hasClass('hide-bloc')) {
             form.removeClass('hide-bloc')           
         }else{

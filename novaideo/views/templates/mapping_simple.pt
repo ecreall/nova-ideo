@@ -1,9 +1,11 @@
 <tal:def tal:define="title title|field.title;
                      description description|field.description;
                      errormsg errormsg|field.errormsg;
-                     item_template item_template|field.widget.item_template"
+                     item_template item_template|field.widget.item_template;
+                     ajax ajax|field.widget.ajax"
          i18n:domain="deform">
-  
+   <div tal:omit-tag="not ajax" class="ajax-form">
+    <span class="control-form-button pull-right"><span tal:condition="ajax" class="${field.widget.activator_css_class}"></span> ${field.widget.activator_title}</span>
     <div class="${getattr(field.widget, 'mapping_css_class', '')}">
       <div tal:condition="errormsg" 
            class="clearfix alert alert-message error">
@@ -23,5 +25,5 @@
       </div>     
       ${field.end_mapping()}
   </div>
-
+ </div>
 </tal:def>

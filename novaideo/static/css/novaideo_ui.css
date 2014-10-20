@@ -558,7 +558,7 @@ margin-bottom: 22px;
     margin-top: 30px
 }
 
-.ajax-form .control-form-button {
+.ajax-form .control-form-button{
     color: gray;
     cursor: grab;
     font-size: 15px;
@@ -620,7 +620,22 @@ margin-bottom: 22px;
     color: #ffffff;
 }
 
-.btn-black:hover, .btn-black:focus, .btn-black:active {
+.btn-blue,
+.btn-blue:hover, 
+.btn-blue:focus, 
+.btn-blue:active{
+    background-image: linear-gradient(to bottom, #3e85c3 0%, #3e85c3 100%);
+    background-repeat: repeat-x;
+    border-color: #3e85c3;
+    color: #ffffff;
+    padding: 6px;
+}
+
+
+.btn-black:hover, 
+.btn-black:focus, 
+.btn-black:active,
+ {
     background-color: #272727;
     background-image: linear-gradient(to bottom, black 0%, #272727 100%);
     border-color: black;
@@ -666,7 +681,7 @@ margin-bottom: 22px;
     color: gray;
     float: left;
     font-size: 24px;
-    margin-left: -24px;
+    margin-left: -12px;
     padding-left: 10px;
     padding-right: 7px;
 }

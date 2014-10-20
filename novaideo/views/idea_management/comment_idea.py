@@ -98,7 +98,7 @@ class CommentsView(BasicView):
 class CommentIdeaFormView(FormView):
 
     title = _('Comment')
-    schema = select(CommentSchema(factory=Comment, editable=True),['intention', 'comment'])
+    schema = select(CommentSchema(factory=Comment, editable=True, omit=('related_contents',)),['intention', 'comment', 'related_contents'])
     behaviors = [CommentIdea]
     formid = 'formcommentidea'
     name='commentideaform'

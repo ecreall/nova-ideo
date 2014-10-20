@@ -37,6 +37,7 @@ function init_select_search(select){
         var select_parent = $(button.parents('.select-search-input').first());
         var parent = $(button.parents('form').first());
         var target = parent.find('#'+button.data('target'));
+        var ismultiple = $(target).attr('multiple') == 'multiple';
         var dict_post = {};
         var text = $($(button.parents('.input-group').first()).children().filter('input[type|="text"]')).val();
         dict_post['text'] = text;
@@ -46,7 +47,7 @@ function init_select_search(select){
             if (data && data.constructor == Object ){
                 //$(target).empty();
                 for(var d in data){
-                   if ($(target).find('option[value=\"'+d+'\"]').length == 0)
+                   if ($(target).find('option[value=\"'+d+'\"]').length == 0 && !(ismultiple && d==""))
                    {
                        $(target).append('<option class="newselection" value="'+d+'">'+data[d]+'</option>')
                    }

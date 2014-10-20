@@ -1,38 +1,35 @@
+function get_data(selecteds){
+    var selecteds = jQuery.makeArray(selecteds);
+    var result= [];
+    for(i=0;i<selecteds.length; i++){
+       result[i] = selecteds[i].id
+    };
+    return result
+};
+
 $(document).ready(function(){
 
     $(document).on('submit','.commentform', function( event ) {
-        var button = $(this).find('button')
-
+        var button = $(this).find('button').last();
         var intention = $(this).find('.select2-chosen').text();
+        var related_contents = get_data($($(this).find("select[name='related_contents']").first()).select2('data'));
         var textarea = $(this).find('textarea');
         var comment = textarea.val();
-
         var parent = $($(this).parents('.panel-body').first());
         var target = parent.find('.scroll-able.comments-scroll');
         var commentmessageinfo = parent.find('#messageinfo');
         var commentmessagesuccess = parent.find('#messagesuccess');
         var commentmessagedanger = parent.find('#messagedanger');
         var progress = parent.find('#progress');
-        //POST dict
-        var dict_post = {};
-        var inputs = $($(event.target).children().filter('fieldset')[0]).children().filter('input');
-        var i = 0;
-        while(i<inputs.length){
-           dict_post[$(inputs[i]).attr('name')] = $(inputs[i]).val();
-           i++;
-        };
-        dict_post['comment'] = comment;
-        dict_post['intention'] = intention;
-        dict_post[button.val()] = '';
         var url = $(event.target).data('url');
         if (comment !='' && intention!=''){
           progress.show();// TODO
           $(button).addClass('disabled');
           $( commentmessageinfo).text( "Comment sent" ).show().fadeOut( 1000 );
-          $.post(url, dict_post, function(data) {
+          var values = $(this).serialize()+'&'+button.val()+'='+button.val();
+          $.post(url, values, function(data) {
                  var content = $(data).find('.scroll-able.comments-scroll');//TODO chercher le bon scrollable
                  if (content){
-                     
                    var label = $($(content).parents(".panel").first()).find('.panel-heading span.label').text();
                    $($(target).parents(".panel").first()).find('.panel-heading span.label').text(label);
                    $(target).html($(content).html());

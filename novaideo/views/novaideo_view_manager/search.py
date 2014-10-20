@@ -22,7 +22,7 @@ from pontus.form import FormView
 from novaideo.content.processes.novaideo_view_manager.behaviors import  Search
 from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
 from novaideo import _
-from novaideo.content.interface import Iidea, IProposal, IPerson
+from novaideo.content.interface import Iidea, IProposal, IPerson, ICorrelableEntity
 from .widget import SearchTextInputWidget, SearchFormWidget
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.core import can_access
@@ -31,6 +31,12 @@ from novaideo.core import can_access
 default_serchable_content = {'Idea': Iidea,
                              'Proposal': IProposal,
                              'Person': IPerson}
+
+serchable_content = {'Idea': Iidea,
+                     'Proposal': IProposal,
+                     'Person': IPerson,
+                     'CorrelableEntity': ICorrelableEntity,
+                } #TODO Optimization 
 
 
 @colander.deferred
@@ -134,7 +140,7 @@ def search(text, content_types, user):
         text = result
 
     root = getSite()
-    interfaces = [default_serchable_content[i].__identifier__ for i in content_types]
+    interfaces = [serchable_content[i].__identifier__ for i in content_types]
     #catalog
     dace_catalog = find_catalog('dace')
     novaideo_catalog = find_catalog('novaideo')

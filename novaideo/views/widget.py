@@ -25,7 +25,7 @@ class ObjectWidget(deform.widget.MappingWidget):
     item_template = 'novaideo:views/templates/object_mapping_item.pt'
 
 
-class SearchContentWidget(deform.widget.MappingWidget):
+class SimpleMappingtWidget(deform.widget.MappingWidget):
     template = 'novaideo:views/templates/mapping_simple.pt'
 
 

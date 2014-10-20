@@ -116,7 +116,7 @@ class AssociateFormView(FormView):
     def before_update(self):
         target = self.schema.get('targets')
         target.title = _("Related contents")
-        formwidget = deform.widget.FormWidget(css_class='associate-form', 
+        formwidget = deform.widget.FormWidget(css_class='controled-form', 
                                               activable=True,
                                               button_css_class="pull-right",
                                               picto_css_class="glyphicon glyphicon-link",

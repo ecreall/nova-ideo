@@ -326,6 +326,7 @@ class CommentIdea(InfiniteCardinality):
     state_validation = comm_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        related_contents = appstruct['related_contents']['related_contents'] #TODO creat correlations
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
         user = get_current()
