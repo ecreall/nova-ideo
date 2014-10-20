@@ -43,11 +43,10 @@ class TestTextAnalyzerIntegration(FunctionalTests):
         soup_to_text = self.text_analyzer.soup_to_text(soup_wrapped)
         return soup_to_text
 
-    def assert_text(self, results):
-        for result in results:
-            self.assertNotIn("&nbsp", result)
-            self.assertNotIn("\xa0", result)
-            self.assertNotIn("  ", result)
+    def merge(self, text_origin, listtexts):
+        self.text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        textresult = self.text_analyzer.merge(text_origin, listtexts)
+        return textresult
 
 # - - - - - - - - - - - - - - - - - - - - - Beginning deletion
 
@@ -372,3 +371,52 @@ class TestTextAnalyzerIntegration(FunctionalTests):
         result2 = self._entry_to_result(text1, text2, 'refuse_modif')
         self.assertEqual(result1,"Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois du 24/09/2014 au 19/10/2014. Programme: - conferences - expositions - autres")
         self.assertEqual(result2,"Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres")
+
+# - - - - - - - - - - - - - - - - - - - - - merge texts
+
+    def test_merge_add_sentences(self):
+        text_origin="Organiser des animations lors de la Fete de la science."
+        text1="Programme d'octobre prochain. Organiser des animations lors de la Fete de la science."
+        text2="Organiser des animations lors de la Fete de la science. Avec un budget de 5000€."
+        texts=[text1, text2]
+        result= self.merge(text_origin, texts)
+        self.assertEqual(result, "Programme d'octobre prochain. Organiser des animations lors de la Fete de la science. Avec un budget de 5000€.")
+
+    def test_merge_delete_sentences(self):
+        text_origin="Programme d'octobre prochain. Organiser des animations lors de la Fete de la science."
+        text1="Organiser des animations lors de la Fete de la science."
+        text2="Organiser des animations lors de la Fete de la Science."
+        texts=[text1, text2]
+        result= self.merge(text_origin, texts)
+        self.assertEqual(result, "Organiser des animations lors de la Fete de la Science.")
+
+    def test_merge_modify_words(self):
+        text_origin = "Organiser des animations lors de la Fete de la science."
+        text1 = "Programmer une animation lors de la Fete de la science en octobre prochain."
+        text2 = "Organiser une animation lors de la Fete de la Science."
+        texts = [text1, text2]
+        result = self.merge(text_origin, texts)
+        self.assertEqual(result, "Programmer une animation lors de la Fete de la Science en octobre prochain.")
+
+    def test_merge_modify_characters(self):
+        text_origin = "#1 Organiser des animation lors de la Fete de la science !"
+        text1 = "#1 Organiser des animation lors de la Fete de la science."
+        text2 = "Organiser des animations lors de la Fete de la science & de l'innovation."
+        texts = [text1, text2]
+        result = self.merge(text_origin, texts)
+        self.assertEqual(result, "Organiser des animations lors de la Fete de la science & de l'innovation.")
+
+        text_origin2 = "Organiser des animations lors de la Fete de la science."
+        text3 = "Organiser des animations lors de la Fete de la science ?"
+        text4 = "Organiser des animations; eventuellement, lors de la Fete de la science."
+        texts2 = [text3, text4]
+        result2 = self.merge(text_origin2, texts2)
+        self.assertEqual(result2, "Organiser des animations; eventuellement, lors de la Fete de la science ?")
+
+        text_origin3 = "Organiser des animations lors de la Fete de la science. Leur nombre dependra du budget alloue."
+        text5 = "Organiser des animations le 24/09/2014."
+        text6 = "Organiser des animations le 24/09/2014. Eventuellement, lors de la Fete de la Science."
+        texts3 = [text5, text6]
+        result3 = self.merge(text_origin3, texts3)
+        self.assertEqual(result3, "Organiser des animations le 24/09/2014. Eventuellement, lors de la Fete de la Science.")
+
