@@ -236,6 +236,12 @@ ins {
     padding: 6px;
     margin: -20px 0;
 }
+
+.amendment-body h3.content-title{
+    font-weight: normal;
+}
+
+margin-bottom: 22px;
 .amendment-trimmed-text {
   height: 150px
 }
@@ -548,6 +554,10 @@ ins {
     text-decoration: none;
 }
 
+.ajax-form{
+    margin-top: 30px
+}
+
 .ajax-form .control-form-button {
     color: gray;
     cursor: grab;
@@ -633,6 +643,14 @@ ins {
 
 .explanations-bloc{
     padding: 9px; 
+}
+
+.explanation-modal{
+    margin-top: 66px
+}
+
+.explanation-modal .modal-body {
+    padding: 4px;
 }
 
 .new-idea-form{

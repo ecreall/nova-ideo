@@ -63,8 +63,7 @@ class Correction(VisualisableElement, Entity):
 
         correction_tag['class'] = vote_class
  
-    def get_adapted_text(self, user):
-        text = self.text
+    def _get_adapted_content(self, user, text):
         soup = BeautifulSoup(text)
         corrections = soup.find_all("span", id='correction')
         if user is self.author:
@@ -84,4 +83,10 @@ class Correction(VisualisableElement, Entity):
        
         text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
         return text_analyzer.soup_to_text(soup)
+
+    def get_adapted_description(self, user):
+        return self._get_adapted_content(user, self.description)
+
+    def get_adapted_text(self, user):
+        return self._get_adapted_content(user, self.text)
 

@@ -5,6 +5,7 @@ from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
 from dace.util import get_obj
+from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
@@ -47,7 +48,7 @@ def judgments_choice(report):
     judgments = report.ballottype.judgments
     judgments = sorted(judgments.keys(), key=lambda o: judgments[o], reverse=True )
     values = [(i, i) for i in judgments]
-    widget = RadioChoiceWidget(values=values)
+    widget = RadioChoiceWidget(values=values, inline=True)
     #widget.template = 'novaideo:views/idea_management/templates/radio_choice.pt'
     return widget
 
@@ -125,9 +126,10 @@ class VoteFormView(FormView):
     def get_description(self, field, cstruct): 
         description_template = 'novaideo:views/amendment_management/templates/description_amendments.pt'
         oid = cstruct[OBJECT_OID]
+        current_user = get_current()
         try:
             object = get_obj(oid)
-            values = {'amendment': object, 'is_proposal': False}
+            values = {'amendment': object, 'is_proposal': False, 'current_user': current_user}
             if isinstance(object, Proposal):
                 values['text'] = self._get_trimed_text(object.text)
                 values['is_proposal'] = True

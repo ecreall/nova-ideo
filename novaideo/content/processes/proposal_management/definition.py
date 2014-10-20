@@ -54,6 +54,14 @@ from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
+vote_publishing_message =_("Vote for publishing.")
+
+vote_duration_message =_("Voting results may not be known until the end of the period for voting. In the case where the majority are for the continuation of improvements of the proposal, your vote for the duration of the amendment period will be useful.")
+
+vote_reopening_message =_("Voting results may not be known until the end of the period for voting. In the case where the majority are for the continuation of improvements of the proposal, your vote for reopening working group will be useful.")
+
+vote_amendments_message =_("Vote for amendments.")
+
 vp_default_duration = datetime.timedelta(minutes=30)
 
 amendments_cycle_default_duration = {"Three minutes": datetime.timedelta(minutes=3),#pour les testes
@@ -61,7 +69,7 @@ amendments_cycle_default_duration = {"Three minutes": datetime.timedelta(minutes
                                      "One week": datetime.timedelta(weeks=1),
                                      "Two weeks": datetime.timedelta(weeks=2)}
 
-amendments_vote_default_duration = datetime.timedelta(minutes=3) #TODO 
+amendments_vote_default_duration = datetime.timedelta(minutes=30) #TODO 
 
 
 
@@ -72,7 +80,7 @@ def amendments_cycle_duration(process):
         if electeds:
             return amendments_cycle_default_duration[electeds[0]]+datetime.datetime.today()
 
-    return amendments_cycle_default_duration[_("One week")]+datetime.datetime.today()
+    return amendments_cycle_default_duration["One week"]+datetime.datetime.today()
 
 
 def eg3_publish_condition(process):
@@ -126,7 +134,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
         subjects = [proposal]
         ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
-        ballot.report.description = _("Vote for publishing")
+        ballot.report.description = vote_publishing_message
         ballot.title = _("Publish the proposal")
         #TODO add ballot informations
         processes = ballot.run_ballot()
@@ -139,7 +147,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             #@TODO Lancement du vote sur reouverture
             subjects = [wg]
             ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
-            ballot.report.description = _("Vote for reopening working group.")
+            ballot.report.description = vote_reopening_message
             ballot.title = 'Reopening working group'
             #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))
@@ -151,7 +159,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             group = list(amendments_cycle_default_duration.keys())#@TODO Durees
             ballot = Ballot('FPTP' , electors, group, vp_default_duration)
             ballot.title = _('Amendment duration')
-            ballot.report.description = _("Vote for the duration of the amendment period.")
+            ballot.report.description = vote_duration_message
             #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))
             wg.addtoproperty('ballots', ballot)
@@ -227,7 +235,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         i = 1
         for group in groups:
             ballot = Ballot('MajorityJudgment' , electors, group, amendments_vote_default_duration)
-            ballot.report.description = _("Vote for amendments")
+            ballot.report.description = vote_amendments_message
             ballot.title = _('Group of independent amendments')+ '('+str(i)+')'
             #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))

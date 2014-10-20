@@ -44,9 +44,12 @@ function init_select_search(select){
         $(button).addClass('disabled');
         $.get(url, dict_post, function(data) {
             if (data && data.constructor == Object ){
-                $(target).empty();
+                //$(target).empty();
                 for(var d in data){
-                   $(target).append('<option class="newselection" value="'+d+'">'+data[d]+'</option>')
+                   if ($(target).find('option[value=\"'+d+'\"]').length == 0)
+                   {
+                       $(target).append('<option class="newselection" value="'+d+'">'+data[d]+'</option>')
+                   }
                 }
             };
              $(button).removeClass('disabled');

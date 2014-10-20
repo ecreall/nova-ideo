@@ -26,10 +26,12 @@ class CorrectItemView(BasicView):
     def update(self):
         item = self.params('item')
         vote = self.params('vote')
-        self.execute({'item':item, 'vote':vote})
+        content = self.params('content')
+        self.execute({'item':item, 'vote':vote, 'content':content})
         result = {}
         values = {
                 'text': self.context.get_adapted_text(get_current()),
+                'description': self.context.get_adapted_description(get_current()),
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

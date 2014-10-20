@@ -2,7 +2,6 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title"><span class="glyphicon glyphicon-exclamation-sign"></span> Specify the intention of your changes (${item['oid']})</h4>
       </div>
       <div class="modal-body">
@@ -11,7 +10,8 @@
      <span id="messageinfo" class="label label-info"></span>
      <span id="messagesuccess" class="label label-success"></span>
      <span id="messagedanger" class="label  label-danger"></span>
-        <button data-item="${item['oid']}" data-url="${url}" type="button" class="btn btn-primary explanation-validation btn-sm">Save intention</button>
+        <button data-item="${item['oid']}" data-url="${url}" type="button" class="btn btn-primary explanation-validation btn-sm">Save intention</button> 
+       <button type="button" type="button" class="btn btn-default btn-sm explanation-close" >Cancel</button>
       </div>
     </div>
   </div>

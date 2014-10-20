@@ -116,7 +116,7 @@ def del_processsecurity_validation(process, context):
 
 
 def del_state_validation(process, context):
-    return any(s in context.state for s in ['abandoned', 'to work'])
+    return 'abandoned' in context.state
 
 
 class DelIdea(InfiniteCardinality):

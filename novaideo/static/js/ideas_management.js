@@ -215,3 +215,5 @@ $(document).ready(function(){
         });
    });
 });
+
+//TODO ajout nouvel idee: il faut l'ajouter aux selects

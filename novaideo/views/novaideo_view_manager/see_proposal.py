@@ -46,14 +46,16 @@ class DetailProposalView(BasicView):
     def _get_adapted_text(self, user):
         is_participant = has_any_roles(user=user, roles=(('Participant', self.context),))
         text = getattr(self.context, 'text', '')
+        description = getattr(self.context, 'description', '')
         add_filigrane = False
         corrections = [c for c in self.context.corrections if 'in process' in c.state]
         if corrections and is_participant:
             text = corrections[-1].get_adapted_text(user)
+            description = corrections[-1].get_adapted_description(user)
         elif not is_participant and not ('published' in self.context.state):
             add_filigrane = True
 
-        return text, add_filigrane
+        return description, text, add_filigrane
 
     def update(self):
         self.execute(None)
@@ -67,11 +69,12 @@ class DetailProposalView(BasicView):
         global_actions = sorted(global_actions, key=lambda e: getattr(e.action, 'style_order',0))
         wg_actions = sorted(wg_actions, key=lambda e: getattr(e.action, 'style_order',0))
         text_actions = sorted(text_actions, key=lambda e: getattr(e.action, 'style_order',0))
-        text, add_filigrane = self._get_adapted_text(user)
+        description, text, add_filigrane = self._get_adapted_text(user)
         result = {}
         values = {
                 'proposal': self.context,
                 'text': text,
+                'description': description,
                 'current_user': user,
                 'global_actions': global_actions,
                 'wg_actions': wg_actions,

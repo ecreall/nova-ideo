@@ -33,16 +33,22 @@ function init_explanation_select(){
 };
 
 function get_explanation_form(url){
-              var target = $(this).data('target')+'explanation_modal';
+              var modal = $(this).data('target')+'explanation_modal';
+              var target = $($('.novaideo-right').find('div').first());
               var url = $(this).data('url');
               $.getJSON(url,{}, function(data) {
                  var action_body = data['body'];
                  if (action_body){
-                     var modal_body = $($(target).find('.modal-body')); 
+                     var modal_content = $($(modal).find('.modal-dialog')); 
+                     target.html(modal_content.html());
+                     var modal_body = $(target.find('.modal-body')); 
                      modal_body.html(action_body);
-                     $(target).modal('show');
+                     $(target.find('.modal-content')).addClass('explanation-modal');
+                     target.show();
                      init_explanation_select();
-                     modal_body.find('.explanations-bloc').append("<div class=\"intention-separator\">Or</div>")
+                     $('.explanation-validation').on('click', submit_explanation);
+                     $('.explanation-close').on('click', close_explanation);
+                     target.find('.explanations-bloc').append("<div class=\"intention-separator\">Or</div>")
                      try {
                           deform.processCallbacks();
                       }
@@ -64,9 +70,16 @@ function get_data(selecteds){
     return result
 };
 
+function close_explanation(url){
+       var button = $(this);
+       var parent = $($(this).parents('.explanation-modal').first());
+       parent.remove();
+}
+
+
 function submit_explanation(url){
        var button = $(this);
-       var target = $($(this).parents('.modal.fade').first());
+       var target = $($(this).parents('.modal-content').first());
        var form = $(target.find('form').first());
        var intention_form = $(form.find('.intention-bloc').first());
        var url = $(this).data('url');
@@ -111,7 +124,10 @@ $(document).ready(function(){
   init_explanation_select();
 
   $(document).on('click', '.explanation-action', get_explanation_form);
-  $('.explanation-validation').on('click', submit_explanation);
+ // $('.explanation-validation').on('click', submit_explanation);
 
 });
+
+//TODO on change pour les selects : supprimer ce qu'il faut.
+//TODO ajout nouvel idee: il faut l'ajouter aux selects
 

@@ -1,6 +1,7 @@
+<div class="object-well idea-well"> 
  <dl >
      <dt>Sujet du vote</dt>
-     <dd>${ballot_report.description}</dd>
+     <dd><div class="alert alert-warning">${ballot_report.description}</div></dd>
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
        <dt tal:condition="ballot_report.electors">Electeurs</dt>
        <dd tal:condition="ballot_report.electors">
@@ -22,5 +23,5 @@
        </dd>
      </div>
  </dl>
-
+</div>
 

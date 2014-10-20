@@ -27,7 +27,7 @@
 <div class="object-well proposal-well">
     <dl >
         <dt>Résumé</dt>
-	<dd>${proposal.description}</dd>
+	<dd class="content-description">${structure:description}</dd>
       <dt tal:condition="proposal.keywords">Mots clés</dt>
       <dd tal:condition="proposal.keywords">
         <tal:loop repeat="k proposal.keywords">

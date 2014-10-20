@@ -51,7 +51,6 @@ def idea_choice(node, kw):
      _ideas = set(_ideas) 
      ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
      values = [(i, i.title) for i in ideas]
-     values.insert(0, ('', '- Select -'))
      return Select2WidgetSearch(multiple= True, values=values, item_css_class='search-idea-form',
                                 url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
 
@@ -76,7 +75,6 @@ def replacedideas_choice(node, kw):
     ideas = set(ideas)
     ideas = [i for i in ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
-    values.insert(0, ('', '- Select -'))
     return Select2WidgetSearch(multiple= True, 
                                values=values,
                                item_css_class='search-idea-form',
@@ -96,7 +94,6 @@ def ideasofreplacement_choice(node, kw):
     _ideas = set(_ideas) 
     ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
     values = [(i, i.title) for i in ideas]
-    values.insert(0, ('', '- Select -'))
     return Select2WidgetSearch(multiple= True, 
                                values=values, 
                                item_css_class='search-idea-form',
@@ -126,20 +123,20 @@ class NewIdeaSchema(Schema):
 
 class IdeasRowSchema(Schema):
 
-    removed_ideas = colander.SchemaNode(
-        colander.Set(),
-        widget=replacedideas_choice,
-        title=_('Removed ideas'),
-        description=_('Choose ideas to remove.'),
-        missing=[],
-        default=[],
-        )
-
     edited_ideas = colander.SchemaNode(
         colander.Set(),
         widget=replacedideas_choice,
         title=_('Edited ideas'),
         description=_('Choose ideas to edit.'),
+        missing=[],
+        default=[],
+        )
+
+    removed_ideas = colander.SchemaNode(
+        colander.Set(),
+        widget=replacedideas_choice,
+        title=_('Removed ideas'),
+        description=_('Choose ideas to remove.'),
         missing=[],
         default=[],
         )

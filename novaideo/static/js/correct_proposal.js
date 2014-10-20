@@ -1,18 +1,17 @@
 function correct_handler(event){
     var correction = $($(this).parents('#correction').first());
-    var vote = Boolean($(this).data('favour'));
-    var correction_item = parseInt(correction.data('item'));
-    var correction_id = parseInt(correction.data('correction'));
-    var target = $($(this).parents('.content-text').first());
+    var correction_attr = correction.data('content');
+    var target = $($(this).parents('.content-'+correction_attr).first());
     var url = $(this).data('url');
     dict_post = {};
-    dict_post['vote'] = vote;
-    dict_post['item'] = correction_item;
-    dict_post['correction_id'] = correction_id;
+    dict_post['vote'] = Boolean($(this).data('favour'));;
+    dict_post['item'] = parseInt(correction.data('item'));
+    dict_post['content'] = correction_attr;
+    dict_post['correction_id'] = parseInt(correction.data('correction'));
     $.get(url, dict_post, function(data) {
       //recuperer le text et le remplacer
       if (data){
-        var content = $(data['body']).find('#correction_text');
+        var content = $(data['body']).find('#correction_'+correction_attr);
         if (content){
              $(target).html($(content).html());
              var corrections = $(target).find('.correction-action');

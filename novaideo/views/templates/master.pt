@@ -83,17 +83,15 @@
       ${panel('usernavbar')}
 
       <metal:slot metal:define-slot="outer-content">
-
+        
         <div class="row clearfix">
 
-          <div class="col-md-2 column ui-sortable">
+          <div class="col-md-2 column ui-sortable novaideo-left">
              <div metal:define-slot="left"></div>
           </div>
 
-          <div class="col-md-7 column ui-sortable">
-            <div class="above-content">
-            </div>
-
+          <div class="col-md-7 column ui-sortable novaideo-main">
+            <div class="above-content"></div>
             <div id="messages"
                  tal:attributes="class request.is_xhr and 'ajax-replace' or None">
               <div tal:repeat="queue ('', 'info', 'success', 'warning', 'danger')"
@@ -113,17 +111,16 @@
                <div metal:define-slot="main"></div>
             </div>
 
-            <div class="below-content">
-            </div>
+            <div class="below-content"></div>
           </div>
 
-          <div class="col-md-3 column ui-sortable" style="margin-left: -22px">
+          <div class="col-md-3 column ui-sortable novaideo-right" style="margin-left: -22px;">
              <div metal:define-slot="right"></div>
           </div>
         </div>
 
         <div class="row clearfix">
-          <div class="col-md-12 column ui-sortable">
+          <div class="col-md-12 column ui-sortable novaideo-footer">
              <div metal:define-slot="footer"></div>
           </div>
          </div>

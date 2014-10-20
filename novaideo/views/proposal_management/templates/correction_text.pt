@@ -1,3 +1,6 @@
+<div id="correction_description">
+ ${structure:description}
+</div>
 <div id="correction_text">
  ${structure:text}
 </div>

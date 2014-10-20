@@ -661,7 +661,7 @@ def edita_roles_validation(process, context):
 
 def edita_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) and \
-           context.amendments
+           any(not('deprecated' in a.state) for a in context.amendments)
 
 
 class EditAmendments(InfiniteCardinality):
@@ -837,18 +837,21 @@ class CorrectItem(InfiniteCardinality):
     processsecurity_validation = correctitem_processsecurity_validation
     state_validation = correctitem_state_validation
 
-    def _include_to_proposal(self, context, request):
-        text, in_process = self._include_items(context, request, [item for item in context.corrections.keys() if not('included' in context.corrections[item])])
-        context.proposal.text = text
-                
-    def _include_items(self, context, request, items, to_add=False):
+    def _include_to_proposal(self, context, text_to_correct, request, content):
+        text = self._include_items(text_to_correct, request, [item for item in context.corrections.keys() if not('included' in context.corrections[item])])
+        if content == 'description':
+            text = text.replace('<p>', '').replace('</p>', '')
+
+        setattr(context.proposal, content, text)
+
+    def _include_items(self, text, request, items, to_add=False):
         todel = "ins"
         toins = "del"
         if to_add:
             todel = "del"
             toins = "ins"
 
-        soup = BeautifulSoup(context.text)
+        soup = BeautifulSoup(text)
         tags = []
         for item in items:
             tags.extend(soup.find_all('span',{'id':'correction', 'data-item':item}))
@@ -864,35 +867,41 @@ class CorrectItem(InfiniteCardinality):
 
         text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
         text_analyzer.unwrap_diff(corrections_data, soup)
-        return text_analyzer.soup_to_text(soup), (len(soup.find_all("span", id="correction")) > 0)
+        return text_analyzer.soup_to_text(soup)
 
     def start(self, context, request, appstruct, **kw):
         item = appstruct['item']
+        content = appstruct['content']
         vote = (appstruct['vote'].lower() == 'true')
         user = get_current()
         user_oid = get_oid(user)
         correction_data = context.corrections[item]
+        text_to_correct = getattr(context, content,'')
         if not(user_oid in correction_data['favour']) and not(user_oid in correction_data['against']):
             if vote:
                 context.corrections[item]['favour'].append(get_oid(user))
                 if (len(context.corrections[item]['favour'])-1) >= default_nb_correctors:
-                    context.text, in_process = self._include_items(context, request, [item], True)
-                    if not in_process:
+                    text = self._include_items(text_to_correct, request, [item], True)
+                    setattr(context, content, text)
+                    text_to_correct = getattr(context, content,'')
+                    context.corrections[item]['included'] = True
+                    if not any(not('included' in context.corrections[c]) for c in context.corrections.keys()):
                         context.state.remove('in process')
                         context.state.append('processed')
 
-                    context.corrections[item]['included'] = True
-                    self._include_to_proposal(context, request)
+                    self._include_to_proposal(context, text_to_correct, request, content)
             else:
                 context.corrections[item]['against'].append(get_oid(user))
                 if len(context.corrections[item]['against']) >= default_nb_correctors:
-                    context.text, in_process= self._include_items(context, request, [item])
-                    if not in_process:
+                    text= self._include_items(text_to_correct, request, [item])
+                    setattr(context, content, text)
+                    text_to_correct = getattr(context, content,'')
+                    context.corrections[item]['included'] = True
+                    if not any(not('included' in context.corrections[c]) for c in context.corrections.keys()):
                         context.state.remove('in process')
                         context.state.append('processed')
 
-                    context.corrections[item]['included'] = True
-                    self._include_to_proposal(context, request)
+                    self._include_to_proposal(context, text_to_correct, request, content)
             
         return True
 
@@ -954,7 +963,7 @@ class CorrectProposal(InfiniteCardinality):
         for correction_tag in corrections_tags:
             self._add_vote_actions(correction_tag, correction, request)
 
-    def _identify_corrections(self, soup, correction, descriminator):
+    def _identify_corrections(self, soup, correction, descriminator, content):
         correction_tags = soup.find_all('span', {'id': "correction"})
         correction_oid = str(get_oid(correction))
         user = get_current()
@@ -962,9 +971,12 @@ class CorrectProposal(InfiniteCardinality):
         for correction_tag in correction_tags:
             correction_tag['data-correction'] = correction_oid
             correction_tag['data-item'] = str(descriminator)
+            correction_tag['data-content'] = content
             init_vote = {'favour':[user_oid], 'against':[]}
             correction.corrections[str(descriminator)] = init_vote
-            descriminator += 1       
+            descriminator += 1
+
+        return descriminator      
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
@@ -973,14 +985,14 @@ class CorrectProposal(InfiniteCardinality):
         context.addtoproperty('corrections', correction)
         text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
         souptextdiff, textdiff = text_analyzer.render_html_diff(getattr(context, 'text', ''), getattr(correction, 'text', ''), "correction")
-        soupdescriptiondiff, descriptiondiff = text_analyzer.render_html_diff(getattr(correction, 'description', ''), getattr(context, 'description', ''), "correction")
+        soupdescriptiondiff, descriptiondiff = text_analyzer.render_html_diff(getattr(context, 'description', ''), getattr(correction, 'description', ''), "correction")
         descriminator = 0
-        self._identify_corrections(souptextdiff, correction, descriminator)
+        descriminator = self._identify_corrections(soupdescriptiondiff, correction, descriminator, 'description')
+        self._add_actions(correction, request, soupdescriptiondiff)
+        self._identify_corrections(souptextdiff, correction, descriminator, 'text')
         self._add_actions(correction, request, souptextdiff)
-        self._identify_corrections(soupdescriptiondiff, correction, descriminator)
-        #self._add_actions(correction, request, soupdescriptiondiff)
         correction.text = text_analyzer.soup_to_text(souptextdiff)
-        context.originaltext = str(correction.text)
+        context.originaltext = correction.text
         correction.description = text_analyzer.soup_to_text(soupdescriptiondiff)
         if souptextdiff.find_all("span", id="correction"):
             correction.state.append('in process')
@@ -1448,7 +1460,7 @@ class Amendable(ElementaryAction):
         wg = context.working_group
         if self.process.first_decision:
             self.process.first_decision = False
-        if context.amendments:
+        if any(not('deprecated' in a.state) for a in context.amendments):
             context.state.append('amendable')
         else:
             context.state.append('proofreading')

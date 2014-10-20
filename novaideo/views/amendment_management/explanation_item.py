@@ -39,7 +39,8 @@ class ExplanationItemView(BasicView):
         self.execute({'item':item, 'intention':intention})
         result = {}
         values = {
-                'text': 'mon text'#self.context.get_adapted_text(get_current()),
+                'text': 'mon text',
+                'description': 'description'#self.context.get_adapted_text(get_current()),
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
