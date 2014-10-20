@@ -49,24 +49,357 @@ class TestTextAnalyzerIntegration(FunctionalTests):
             self.assertNotIn("\xa0", result)
             self.assertNotIn("  ", result)
 
-    def test_full_process_result(self):
-        results=[]
-        #deletion
-        text1 = "<p>Organisation !</p>"
-        text2 = "<p>Organisation</p>"
+# - - - - - - - - - - - - - - - - - - - - - Beginning deletion
+
+    def test_beginning_deletion_word(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>Fete de la science</p>"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
-        results.append(result1)
-        self.assertEqual(result1,'<p>Organisation</p>')
-        #insertion
-        text3 = "<p>Organisation</p>"
-        text4 = "<p>Organisation !</p>"
-        result2 = self._entry_to_result(text3, text4, 'refuse_modif')
-        results.append(result2)
-        self.assertEqual(result2,'<p>Organisation</p>')
-        #replacement
-        text5 = "<p>Organisation&nbsp!</p>"
-        text6 = "<p>Organisation de conferences\xa0?</p>"
-        result3 = self._entry_to_result(text5, text6, 'accept_modif')
-        results.append(result3)
-        self.assertEqual(result3,'<p>Organisation de conferences ?</p>')
-        self.assert_text(results)
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Fete de la science</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la science</p>')
+    def test_beginning_deletion_paragraph(self):
+        text1 = "<p>Premierement : </p><p>- conferences</p><p>- animations</p><p>- expositions</p>"
+        text2 = "<p>- conferences</p><p>- animations</p><p>- expositions</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>- conferences</p><p>- animations</p><p>- expositions</p>')
+        self.assertEqual(result2,'<p>Premierement : </p><p>- conferences</p><p>- animations</p><p>- expositions</p>')
+
+    def test_beginning_deletion_spaces(self):
+        text1 = "<p> Organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p> Organisation de conferences lors de la Fete de la science</p>')
+
+        text3 = "<p>    Organisation de conferences lors de la Fete de la science</p>"
+        text4 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result3 = self._entry_to_result(text3, text4, 'accept_modif')
+        result4 = self._entry_to_result(text3, text4, 'refuse_modif')
+        self.assertEqual(result3,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result4,'<p>    Organisation de conferences lors de la Fete de la science</p>')
+
+    def test_beginning_deletion_special_character(self):
+        text1 = "<p>! Organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>! Organisation de conferences lors de la Fete de la science</p>')
+
+        text3 = "<p>-Organisation de conferences lors de la Fete de la science</p>"
+        text4 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result3 = self._entry_to_result(text3, text4, 'accept_modif')
+        result4 = self._entry_to_result(text3, text4, 'refuse_modif')
+        self.assertEqual(result3,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result4,'<p>-Organisation de conferences lors de la Fete de la science</p>')
+
+        text5 = "<p>$Organisation de conferences lors de la Fete de la science</p>"
+        text6 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result5 = self._entry_to_result(text5, text6, 'accept_modif')
+        result6 = self._entry_to_result(text5, text6, 'refuse_modif')
+        self.assertEqual(result5,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result6,'<p>$Organisation de conferences lors de la Fete de la science</p>')
+
+    def test_beginning_deletion_word_part(self):
+        text1 = "<p>Reorganisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Reorganisation de conferences lors de la Fete de la science</p>')
+
+    def test_beginning_deletion_word_followed_by_exclamation_point(self):
+        text1 = "<p>Fête! Organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Fête! Organisation de conferences lors de la Fete de la science</p>')
+
+        text3 = "<p>Fête ! Organisation de conferences lors de la Fete de la science</p>"
+        text4 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result3 = self._entry_to_result(text3, text4, 'accept_modif')
+        result4 = self._entry_to_result(text3, text4, 'refuse_modif')
+        self.assertEqual(result3,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result4,'<p>Fête ! Organisation de conferences lors de la Fete de la science</p>')
+
+# -------------------------------------- Beginning insertion
+
+    def test_beginning_insertion_word(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>1/ Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>1/ Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la science</p>')
+
+    def test_beginning_insertion_paragraph(self):
+        text1 = "<p>- conferences</p><p>- animations</p><p>- expositions</p>"
+        text2 = "<p>Premierement : </p><p>- conferences</p><p>- animations</p><p>- expositions</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Premierement : </p><p>- conferences</p><p>- animations</p><p>- expositions</p>')
+        self.assertEqual(result2,'<p>- conferences</p><p>- animations</p><p>- expositions</p>')
+
+    def test_beginning_insertion_spaces(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p> Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p> Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la science</p>')
+
+        text3 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        text4 = "<p>    Organisation de conferences lors de la Fete de la science</p>"
+        result3 = self._entry_to_result(text3, text4, 'accept_modif')
+        result4 = self._entry_to_result(text3, text4, 'refuse_modif')
+        self.assertEqual(result3,'<p>    Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result4,'<p>Organisation de conferences lors de la Fete de la science</p>')
+
+    def test_beginning_insertion_special_character(self):
+        text1 = '<p>Organisation de conferences lors de la Fete de la science</p>'
+        text2 = '<p>"Organisation de conferences !" lors de la Fete de la science</p>'
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>"Organisation de conferences !" lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la science</p>')
+
+        text3 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        text4 = "<p>- Organisation de conferences lors de la Fete de la science</p>"
+        result3 = self._entry_to_result(text3, text4, 'accept_modif')
+        result4 = self._entry_to_result(text3, text4, 'refuse_modif')
+        self.assertEqual(result3,'<p>- Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result4,'<p>Organisation de conferences lors de la Fete de la science</p>')
+
+        text5 = "<p>$Organisation de conferences lors de la Fete de la science</p>"
+        text6 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result5 = self._entry_to_result(text5, text6, 'accept_modif')
+        result6 = self._entry_to_result(text5, text6, 'refuse_modif')
+        self.assertEqual(result5,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result6,'<p>$Organisation de conferences lors de la Fete de la science</p>')
+
+    def test_beginning_insertion_word_part(self):
+        text1 = "<p>organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>Reorganisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Reorganisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>organisation de conferences lors de la Fete de la science</p>')
+
+# - - - - - - - - - - - - - - - - - - - - - Beginning replacement
+
+    def test_beginning_replacement_word(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>Programmation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Programmation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la science</p>')
+
+    def test_beginning_replacement_special_character(self):
+        text1 = '<p>- Organisation de conferences lors de la Fete de la science</p>'
+        text2 = '<p>" Organisation de conferences ! " lors de la Fete de la science</p>'
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>" Organisation de conferences ! " lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>- Organisation de conferences lors de la Fete de la science</p>')
+
+# - - - - - - - - - - - - - - - - - - - - - End deletion
+
+    def test_end_deletion_word(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de la science etc.</p>"
+        text2 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la science etc.</p>')
+
+    def test_end_deletion_paragraph(self):
+        text1 = "<p>Programme : </p><p>- conferences</p><p>- expositions</p><p>- animations</p>"
+        text2 = "<p>Programme : </p><p>- conferences</p><p>- expositions</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Programme : </p><p>- conferences</p><p>- expositions</p>')
+        self.assertEqual(result2,'<p>Programme : </p><p>- conferences</p><p>- expositions</p><p>- animations</p>')
+
+    def test_end_deletion_special_character(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de la science !</p>"
+        text2 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la science !</p>')
+
+        text3 = "<p>Organisation de conferences lors de la Fete de la science.</p>"
+        text4 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result3 = self._entry_to_result(text3, text4, 'accept_modif')
+        result4 = self._entry_to_result(text3, text4, 'refuse_modif')
+        self.assertEqual(result3,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result4,'<p>Organisation de conferences lors de la Fete de la science.</p>')
+
+        text5 = "<p>Organisation de conferences lors de la Fete de la science$</p>"
+        text6 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result5 = self._entry_to_result(text5, text6, 'accept_modif')
+        result6 = self._entry_to_result(text5, text6, 'refuse_modif')
+        self.assertEqual(result5,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result6,'<p>Organisation de conferences lors de la Fete de la science$</p>')
+
+    def test_end_deletion_word_part(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de la sciences</p>"
+        text2 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la sciences</p>')
+
+# - - - - - - - - - - - - - - - - - - - - - End insertion
+
+    def test_end_insertion_word(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de la</p>"
+        text2 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la</p>')
+
+    def test_end_insertion_paragraph(self):
+        text1 = "<p>Programme : </p><p>- conferences</p><p>- animations</p>"
+        text2 = "<p>Programme : </p><p>- conferences</p><p>- animations</p><p>- expositions</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Programme : </p><p>- conferences</p><p>- animations</p><p>- expositions</p>')
+        self.assertEqual(result2,'<p>Programme : </p><p>- conferences</p><p>- animations</p>')
+
+    def test_end_insertion_special_character(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>Organisation de conferences lors de la Fete de la science !</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Organisation de conferences lors de la Fete de la science !</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la science</p>')
+
+        text3 = "<p>Organisation de conferences lors de la Fete de la science pour un budget de 5000</p>"
+        text4 = "<p>Organisation de conferences lors de la Fete de la science pour un budget de 5000€</p>"
+        result3 = self._entry_to_result(text3, text4, 'accept_modif')
+        result4 = self._entry_to_result(text3, text4, 'refuse_modif')
+        self.assertEqual(result3,'<p>Organisation de conferences lors de la Fete de la science pour un budget de 5000€</p>')
+        self.assertEqual(result4,'<p>Organisation de conferences lors de la Fete de la science pour un budget de 5000</p>')
+
+        text5 = "<p>Organisation de conferences lors de la Fete de la science pour un budget de 5000</p>"
+        text6 = "<p>Organisation de conferences lors de la Fete de la science pour un budget de 5000$</p>"
+        result5 = self._entry_to_result(text5, text6, 'accept_modif')
+        result6 = self._entry_to_result(text5, text6, 'refuse_modif')
+        self.assertEqual(result5,'<p>Organisation de conferences lors de la Fete de la science pour un budget de 5000$</p>')
+        self.assertEqual(result6,'<p>Organisation de conferences lors de la Fete de la science pour un budget de 5000</p>')
+
+    def test_end_insertion_word_part(self):
+        text1 = "<p>organisation de conferences lors de la Fete de la scien</p>"
+        text2 = "<p>Reorganisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Reorganisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>organisation de conferences lors de la Fete de la scien</p>')
+
+# - - - - - - - - - - - - - - - - - - - - - End replacement
+
+    def test_end_replacement_word(self):
+        text1 = "<p>Organisation de conferences lors de la Fete de l'innovation</p>"
+        text2 = "<p>Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,"<p>Organisation de conferences lors de la Fete de la science</p>")
+        self.assertEqual(result2,"<p>Organisation de conferences lors de la Fete de l'innovation</p>")
+
+    def test_end_replacement_special_character(self):
+        text1 = '<p>Organisation de conferences lors de la Fete de la science!</p>'
+        text2 = '<p>Organisation de conferences lors de la Fete de la science ?</p>'
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Organisation de conferences lors de la Fete de la science ?</p>')
+        self.assertEqual(result2,'<p>Organisation de conferences lors de la Fete de la science!</p>')
+
+# - - - - - - - - - - - - - - - - - - - - - Middle deletion
+
+    def test_middle_deletion_spaces(self):
+        text1= "<p>Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme:    - conferences - expositions - autres</p>"
+        text2= "<p>Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,"<p>Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>")
+        self.assertEqual(result2,"<p>Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme:    - conferences - expositions - autres</p>")
+
+    def test_middle_deletion_special_characters(self):
+        text1= "<p>Fete de la science !! Organiser des $animations lors de la Fete de la science qui se deroule au mois d'octobre... Programme: - conferences - expositions - autres</p>"
+        text2= "<p>Fete de la science! Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,"<p>Fete de la science! Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>")
+        self.assertEqual(result2,"<p>Fete de la science !! Organiser des $animations lors de la Fete de la science qui se deroule au mois d'octobre... Programme: - conferences - expositions - autres</p>")
+
+        text3= "<p>Fete de la science. Organiser des animations lors de la Fete de la science (qui se deroule au mois d'octobre)... ! Programme: - conferences - expositions - autres</p>"
+        text4= "<p>Fete de la science. Organiser des animations lors de la Fete de la science (qui se deroule au mois d'octobre). Programme: - conferences - expositions - autres</p>"
+        result3 = self._entry_to_result(text3, text4, 'accept_modif')
+        result4 = self._entry_to_result(text3, text4, 'refuse_modif')
+        self.assertEqual(result3,"<p>Fete de la science. Organiser des animations lors de la Fete de la science (qui se deroule au mois d'octobre). Programme: - conferences - expositions - autres</p>")
+        self.assertEqual(result4,"<p>Fete de la science. Organiser des animations lors de la Fete de la science (qui se deroule au mois d'octobre)... ! Programme: - conferences - expositions - autres</p>")
+
+        text5= "<p>Fete de la science. Organiser des animations lors de la Fete de la science [qui se deroule au mois d'octobre]... ! Programme: - conferences - expositions - autres</p>"
+        text6= "<p>Fete de la science. Organiser des animations lors de la Fete de la science [qui se deroule au mois d'octobre]. Programme: - conferences - expositions - autres</p>"
+        result5 = self._entry_to_result(text5, text6, 'accept_modif')
+        result6 = self._entry_to_result(text5, text6, 'refuse_modif')
+        self.assertEqual(result5,"<p>Fete de la science. Organiser des animations lors de la Fete de la science [qui se deroule au mois d'octobre]. Programme: - conferences - expositions - autres</p>")
+        self.assertEqual(result6,"<p>Fete de la science. Organiser des animations lors de la Fete de la science [qui se deroule au mois d'octobre]... ! Programme: - conferences - expositions - autres</p>")
+
+# - - - - - - - - - - - - - - - - - - - - - Middle insertion
+
+    def test_middle_insertion_special_characters(self):
+        text1= "<p>Fete de la science. Organiser des animations lors de la Fete de la science elle se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>"
+        text2= "<p>Fete de la science. Organiser des animations lors de la Fete de la science, elle se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,"<p>Fete de la science. Organiser des animations lors de la Fete de la science, elle se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>")
+        self.assertEqual(result2,"<p>Fete de la science. Organiser des animations lors de la Fete de la science elle se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>")
+
+        text1= "<p>Fete de la science. Organiser des animations lors de la Fete de la science elle se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>"
+        text2= "<p>Fete de la science. Organiser des animations lors de la Fete de la science ! Elle se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,"<p>Fete de la science. Organiser des animations lors de la Fete de la science ! Elle se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>")
+        self.assertEqual(result2,"<p>Fete de la science. Organiser des animations lors de la Fete de la science elle se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>")
+
+    def test_middle_insertion_spaces(self):
+        text1 = "<p>-Organisation de conferences lors de la Fete de la science</p>"
+        text2 = "<p>- Organisation de conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>- Organisation de conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>-Organisation de conferences lors de la Fete de la science</p>')
+
+# - - - - - - - - - - - - - - - - - - - - - Middle replacement
+
+    def test_middle_replacement_word(self):
+        text1= "<p>Fete de la science. Organiser des conferences lors de la Fete de la science</p>"
+        text2= "<p>Fete de la science. Organiser des animations lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Fete de la science. Organiser des animations lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Fete de la science. Organiser des conferences lors de la Fete de la science</p>')
+
+    def test_middle_replacement_word_part(self):
+        text1= "<p>Fete de la science. Organiser des animations lors de la Fete de la science</p>"
+        text2= "<p>Fete de la science. Organiser des conferences lors de la Fete de la science</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,'<p>Fete de la science. Organiser des conferences lors de la Fete de la science</p>')
+        self.assertEqual(result2,'<p>Fete de la science. Organiser des animations lors de la Fete de la science</p>')
+
+    def test_middle_replacement_special_characters(self):
+        text1= "<p>Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>"
+        text2= "<p>Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois du 24/09/2014 au 19/10/2014. Programme: - conferences - expositions - autres</p>"
+        result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        result2 = self._entry_to_result(text1, text2, 'refuse_modif')
+        self.assertEqual(result1,"<p>Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois du 24/09/2014 au 19/10/2014. Programme: - conferences - expositions - autres</p>")
+        self.assertEqual(result2,"<p>Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres</p>")
