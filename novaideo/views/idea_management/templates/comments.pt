@@ -2,8 +2,7 @@
   <tal:loop repeat="item comments">
     <li class="commentli" data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" tal:define="diff view._datetimedelta(item['comment'].created_at); comment item['comment']">
        <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
-          <img tal:condition="comment.author.picture is not None" tal:attributes="src comment.author.picture.url(request)"  width="60"/>
-          <img tal:condition="comment.author.picture is None" tal:attributes="src 'http://www.websco.fr/images/slides/User-green-icon.png'" width="60"/>
+          <img tal:condition="comment.author.picture is not None" tal:attributes="src comment.author.picture.url(request)"  class="img-circle" width="60"/>
           <div class="media-body" style="width:auto;">
            <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span> Association</div>
             <small>

@@ -43,7 +43,7 @@ ${structure:idea.text}
 </div>
 <div id="idea_files">
 <small>
- <blockquote class="attached_files">
+ <blockquote class="attached_contents">
    <dl >
    <dt tal:condition="len(files)>1">Pièces jointes:</dt><dt tal:condition="len(files)==1">Pièce jointe:</dt>
    <dd tal:condition="files">

@@ -24,9 +24,7 @@ class EditView(FormView):
                                                      'last_name',
                                                      'email',
                                                      'keywords',
-                                                     'picture', 
-                                                     'password',
-                                                     'organization',])
+                                                     'picture'])
     behaviors = [Edit, Cancel]
     formid = 'formedit'
     name='edit'

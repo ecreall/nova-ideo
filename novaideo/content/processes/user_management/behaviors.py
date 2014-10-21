@@ -133,6 +133,9 @@ def edit_state_validation(process, context):
 
 class Edit(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-pencil'
+    style_order = 1
     title = _('Edit')
     context = IPerson
     relation_validation = edit_relation_validation

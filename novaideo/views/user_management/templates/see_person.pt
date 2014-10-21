@@ -12,7 +12,6 @@
 </nav>
 <div class="thumbnail right-caption span4" >
   <img tal:condition="user.picture is not None" tal:attributes="src user.picture.url(request)"  width="100"/>
-  <img tal:condition="user.picture is None" tal:attributes="src 'http://www.websco.fr/images/slides/User-green-icon.png'" width="100"/>
   <div class="media-body" style="width:auto;">
     <h3 tal:condition="getattr(user, 'state', None) is not None"><span class="label label-basic pull-right">${user.state[0].capitalize()}</span></h3>
       <h3>${user.name}</h3>

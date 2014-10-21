@@ -112,6 +112,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         default=default_keywords_choice,
         widget=keywords_choice,
         title=_('Preferences'),
+        missing=[]
         )
 
     email = colander.SchemaNode(
@@ -162,12 +163,17 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     @invariant
     def person_name_invariant(self, appstruct):
+        context = self.bindings['context']
+        request = self.bindings['request']
         root = getSite()
         name = ''
         if 'first_name' in appstruct:
             name = name + appstruct['first_name']
             if 'last_name' in appstruct:
                 name = name + ' ' + appstruct['last_name']
+
+        if context.name == name:
+            return 
 
         system_catalog = find_catalog('system')
         name_index = system_catalog['name']
