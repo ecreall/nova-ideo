@@ -6,7 +6,7 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
-from dace.descriptors import CompositeMultipleProperty, SharedUniqueProperty
+from dace.descriptors import CompositeMultipleProperty, SharedUniqueProperty, SharedMultipleProperty
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.core import VisualisableElementSchema
@@ -54,6 +54,14 @@ class RelatedContentsSchema(Schema):
         default=[],
         )
 
+    associate = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(css_class="hide-bloc"),
+        label=_(''),
+        title =_(''),
+        default=False,
+        missing=False
+        )
 
 def context_is_a_comment(context, request):
     return request.registry.content.istype(context, 'comment')
@@ -77,7 +85,7 @@ class CommentSchema(VisualisableElementSchema):
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         )
 
-    related_contents = RelatedContentsSchema(widget=SimpleMappingtWidget(mapping_css_class="controled-form hide-bloc",
+    related_contents = RelatedContentsSchema(widget=SimpleMappingtWidget(mapping_css_class="controled-form associate-form hide-bloc",
                                                                    ajax=True,
                                                                    activator_css_class="glyphicon glyphicon-link",
                                                                    activator_title=_('Associate')))
@@ -91,6 +99,7 @@ class CommentSchema(VisualisableElementSchema):
 class Comment(Commentable):
     name = renamer()
     author = SharedUniqueProperty('author')
+    related_correlation = SharedUniqueProperty('related_correlation')
 
     def __init__(self, **kwargs):
         super(Comment, self).__init__(**kwargs)

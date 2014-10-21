@@ -28,7 +28,7 @@ from novaideo.content.amendment import Amendment, IntentionSchema, Intention
 from novaideo.content.correlation import Correlation
 from ..comment_management.behaviors import validation_by_context
 from novaideo.core import acces_action
-from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
+from novaideo.content.processes.idea_management.behaviors import PresentIdea, CommentIdea, Associate as AssociateIdea
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 try:
@@ -350,22 +350,12 @@ def comm_state_validation(process, context):
     return 'published' in context.state
 
 
-class CommentAmendment(InfiniteCardinality):
+class CommentAmendment(CommentIdea):
     isSequential = False
     context = IAmendment
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        comment = appstruct['_object_data']
-        context.addtoproperty('comments', comment)
-        user = get_current()
-        comment.setproperty('author', user)
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 def present_roles_validation(process, context):

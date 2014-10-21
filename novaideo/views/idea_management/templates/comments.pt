@@ -1,10 +1,11 @@
 <ul class="${(origin and 'commentulorigin') or 'commentul'}">
   <tal:loop repeat="item comments">
-    <li class="commentli" tal:define="diff view._datetimedelta(item['comment'].created_at); comment item['comment']">
-       <div class="thumbnail right-caption span4 comment-data" >
+    <li class="commentli" data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" tal:define="diff view._datetimedelta(item['comment'].created_at); comment item['comment']">
+       <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
           <img tal:condition="comment.author.picture is not None" tal:attributes="src comment.author.picture.url(request)"  width="60"/>
           <img tal:condition="comment.author.picture is None" tal:attributes="src 'http://www.websco.fr/images/slides/User-green-icon.png'" width="60"/>
           <div class="media-body" style="width:auto;">
+           <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span> Association</div>
             <small>
               <a tal:attributes="href request.resource_url(comment.author, '@@index')">${comment.author.name}</a> - 
               <div  tal:omit-tag="" tal:condition="diff">Il y a 
@@ -17,6 +18,21 @@
               <span tal:condition="getattr(comment, 'intention', None)">${comment.intention}</span>
             </small>
             <p>${comment.comment}</p>
+            <div tal:condition="comment.related_correlation is not None" id="related_contents">
+               <small tal:define="contents comment.related_correlation.targets">
+                  <blockquote class="attached_contents">
+                    <dl >
+                     <dt tal:condition="len(contents)>1">Associated contents:</dt><dt tal:condition="len(contents)==1">Associated content:</dt>
+                     <dd tal:condition="contents">
+                       <tal:loop repeat="f contents">
+                           <a tal:attributes="href request.resource_url(f, '@@index')">${f.title}</a>
+                           <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+                       </tal:loop>
+                     </dd>
+                    </dl>
+                   </blockquote>
+               </small>
+            </div>
             <div tal:condition="'commentaction' in item"  id="commentaction">
                 <div tal:omit-tag="" tal:define="commentaction item['commentaction']">
                  <a id="${commentaction['action_id']}-btn" 

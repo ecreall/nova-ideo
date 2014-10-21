@@ -51,7 +51,7 @@ from novaideo.content.token import Token
 from novaideo.content.amendment import Amendment
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.ballot import Ballot
-from novaideo.content.processes.idea_management.behaviors import PresentIdea, Associate as AssociateIdea
+from novaideo.content.processes.idea_management.behaviors import PresentIdea, CommentIdea, Associate as AssociateIdea
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
@@ -632,23 +632,13 @@ def comm_state_validation(process, context):
     return  not('draft' in context.state)
 
 
-class CommentProposal(InfiniteCardinality):
+class CommentProposal(CommentIdea):
     isSequential = False
     context = IProposal
     processs_relation_id = 'proposal'
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        comment = appstruct['_object_data']
-        context.addtoproperty('comments', comment)
-        user = get_current()
-        comment.setproperty('author', user)
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 def edita_relation_validation(process, context):

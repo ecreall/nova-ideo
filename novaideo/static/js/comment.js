@@ -7,12 +7,25 @@ function get_data(selecteds){
     return result
 };
 
+function init_select_association(){
+    $('.select-associations').click(function(){
+        var comments = $($($($(this).parents('.comments-scroll').first()).find('ul.commentulorigin').first()).children().filter("li[data-association='false']"));
+        if (this.checked) {
+            comments.addClass('hide-bloc')            
+        }else{
+           comments.removeClass('hide-bloc')
+        }
+    });
+};
+
 $(document).ready(function(){
+    init_select_association()
 
     $(document).on('submit','.commentform', function( event ) {
         var button = $(this).find('button').last();
         var intention = $(this).find('.select2-chosen').text();
-        var related_contents = get_data($($(this).find("select[name='related_contents']").first()).select2('data'));
+        var select_related_contents = $($(this).find("select[name='related_contents']").first());
+        var related_contents = get_data(select_related_contents.select2('data'));
         var textarea = $(this).find('textarea');
         var comment = textarea.val();
         var parent = $($(this).parents('.panel-body').first());
@@ -22,19 +35,23 @@ $(document).ready(function(){
         var commentmessagedanger = parent.find('#messagedanger');
         var progress = parent.find('#progress');
         var url = $(event.target).data('url');
-        if (comment !='' && intention!=''){
+        if (comment !='' && intention!='- Select -'){
           progress.show();// TODO
           $(button).addClass('disabled');
           $( commentmessageinfo).text( "Comment sent" ).show().fadeOut( 1000 );
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
-                 var content = $(data).find('.scroll-able.comments-scroll');//TODO chercher le bon scrollable
+                 var content = $(data).find('.scroll-able.comments-scroll');
                  if (content){
                    var label = $($(content).parents(".panel").first()).find('.panel-heading span.label').text();
                    $($(target).parents(".panel").first()).find('.panel-heading span.label').text(label);
                    $(target).html($(content).html());
                    $( commentmessagesuccess).text( "Your comment is integrated" ).show().fadeOut( 3000 );
-                   textarea.val('')
+                   textarea.val('');
+                   select_related_contents.parents('.controled-form').first().addClass('hide-bloc');
+                   $($(select_related_contents.parents('.controled-form').first()).find("input[name='associate']").first()).prop('checked', false);
+                   select_related_contents.select2('data', []);
+                   init_select_association();
                   }else{
                      location.reload();
                      return false
@@ -55,6 +72,18 @@ $(document).ready(function(){
        };
        event.preventDefault();
    });
+  
+
+
+    $('.commentform .control-form-button').on('click', function(event){
+        var form = $($(this).parents('.ajax-form').find(".controled-form").first());
+        var associate = $(form.find("input[name='associate']").first());
+        if(!form.hasClass('hide-bloc')){
+            associate.prop('checked', true)
+        }else{
+            associate.prop('checked', false)
+        }
+    });
 
     $(document).on('submit','.respondform', function( event ) {
         var formid = $(this).attr('id');
@@ -99,6 +128,7 @@ $(document).ready(function(){
                       var content = $(data).find('.scroll-able.comments-scroll');//TODO chercher le bon scrollable
                       if (content){
                          $(target).html($(content).html());
+                         init_select_association();
                       }else{
                          location.reload();
                          return false

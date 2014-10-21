@@ -326,11 +326,22 @@ class CommentIdea(InfiniteCardinality):
     state_validation = comm_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        related_contents = appstruct['related_contents']['related_contents'] #TODO creat correlations
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
         user = get_current()
         comment.setproperty('author', user)
+        if appstruct['related_contents']['associate']:
+            root = getSite()
+            datas = {'author': user,
+                     'source': context,
+                     'comment': comment.comment,
+                     'intention': comment.intention}
+            correlation = Correlation()
+            datas['targets'] = list(appstruct['related_contents']['related_contents'])
+            correlation.set_data(datas)
+            root.addtoproperty('correlations', correlation)
+            comment.setproperty('related_correlation', correlation)
+
         context.reindex()
         return True
 

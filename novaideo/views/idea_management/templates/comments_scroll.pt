@@ -16,6 +16,10 @@
               </div>
             </div>
             <div class="scroll-able comments-scroll">
+  <label >
+    <input id="select_associations" type="checkbox" value="false" class="select-associations">
+    Associations
+  </label>
                <div tal:replace="structure item['body']" />
             </div>
         </div>

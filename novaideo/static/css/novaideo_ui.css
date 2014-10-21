@@ -47,11 +47,16 @@ a:hover, a:focus {
   display: none;
 }
 
-.attached_files{
+.attached_contents{
     border-left: 4px solid #eeeeee;
     font-size: 13.5px;
-    margin: 0 0 20px;
+    margin: 15px 0 0;
     padding: 0 11px;
+}
+
+.association-tag{
+    font-size: 15px; 
+    color: #5cb85c
 }
 
 .scroll-able {
@@ -84,6 +89,10 @@ a:hover, a:focus {
 
 .comment-data {
     border-radius: 13px;
+}
+
+.comment-association{
+    background-color: #f7f7f7;
 }
 
 .comment-data, .img-thumbnail {
