@@ -1,14 +1,21 @@
+# -*- coding: utf-8 -*-
+"""Tests for text_analyzer utility
+"""
+from pyramid.threadlocal import get_current_registry #pylint: disable=F0401
+
 from novaideo.testing import FunctionalTests
 from novaideo.utilities.text_analyzer import ITextAnalyzer
-from pyramid.threadlocal import get_current_registry
 
 
-class TestTextAnalyzerIntegration(FunctionalTests):
+class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
+    """Test TextAnalyzer integration"""
 
     def setUp(self):
         super(TestTextAnalyzerIntegration, self).setUp()
+        self.text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
+                                                               'text_analyzer')
 
-    def _include_spanids(self, spanids, todel, toins, soup):
+    def _include_spanids(self, spanids, todel, toins):
         spanids_data = []
         for spanid in spanids:
             spanid_data = {'tag': spanid,
@@ -26,27 +33,20 @@ class TestTextAnalyzerIntegration(FunctionalTests):
         return spans_list
 
     def _unwrap_spans(self, span_id, decision, soup_wrapped):
+        spans_list = self._list_all_spans(span_id, soup_wrapped)
         if span_id == 'diffid' or decision == 'accept_modif':
-            spans_list = self._list_all_spans(span_id, soup_wrapped)
-            spanids_data = self._include_spanids(spans_list, "del", "ins", soup_wrapped)
-            self.text_analyzer.unwrap_diff(spanids_data, soup_wrapped)
+            spanids_data = self._include_spanids(spans_list, "del", "ins")
 
         elif decision == 'refuse_modif':
-            spans_list = self._list_all_spans(span_id, soup_wrapped)
-            spanids_data = self._include_spanids(spans_list, "ins", "del", soup_wrapped)
-            self.text_analyzer.unwrap_diff(spanids_data, soup_wrapped)
+            spanids_data = self._include_spanids(spans_list, "ins", "del")
+
+        self.text_analyzer.unwrap_diff(spanids_data, soup_wrapped)
 
     def _entry_to_result(self, text1, text2, decision):
-        self.text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
         soup_wrapped, textdiff = self.text_analyzer.render_html_diff(text1, text2, 'modif')
         self._unwrap_spans('modif', decision, soup_wrapped)
         soup_to_text = self.text_analyzer.soup_to_text(soup_wrapped)
         return soup_to_text
-
-    def merge(self, text_origin, listtexts):
-        self.text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-        textresult = self.text_analyzer.merge(text_origin, listtexts)
-        return textresult
 
 # - - - - - - - - - - - - - - - - - - - - - Beginning deletion
 
@@ -54,62 +54,62 @@ class TestTextAnalyzerIntegration(FunctionalTests):
         text1 = "Organisation de conferences lors de la Fete de la science"
         text2 = "Fete de la science"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
+        self.assertEqual(result1, 'Fete de la science')
         result2 = self._entry_to_result(text1, text2, 'refuse_modif')
-        self.assertEqual(result1,'Fete de la science')
-        self.assertEqual(result2,'Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result2, 'Organisation de conferences lors de la Fete de la science')
 
     def test_beginning_deletion_spaces(self):
         text1 = " Organisation de conferences lors de la Fete de la science"
         text2 = "Organisation de conferences lors de la Fete de la science"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
         result2 = self._entry_to_result(text1, text2, 'refuse_modif')
-        self.assertEqual(result1,'Organisation de conferences lors de la Fete de la science')
-        self.assertEqual(result2,' Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result1, 'Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result2, ' Organisation de conferences lors de la Fete de la science')
 
         text3 = "    Organisation de conferences lors de la Fete de la science"
         text4 = "Organisation de conferences lors de la Fete de la science"
         result3 = self._entry_to_result(text3, text4, 'accept_modif')
         result4 = self._entry_to_result(text3, text4, 'refuse_modif')
-        self.assertEqual(result3,'Organisation de conferences lors de la Fete de la science')
-        self.assertEqual(result4,'    Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result3, 'Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result4, '    Organisation de conferences lors de la Fete de la science')
 
     def test_beginning_deletion_special_character(self):
         text1 = "! Organisation de conferences lors de la Fete de la science"
         text2 = "Organisation de conferences lors de la Fete de la science"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
         result2 = self._entry_to_result(text1, text2, 'refuse_modif')
-        self.assertEqual(result1,'Organisation de conferences lors de la Fete de la science')
-        self.assertEqual(result2,'! Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result1, 'Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result2, '! Organisation de conferences lors de la Fete de la science')
 
         text3 = "-Organisation de conferences lors de la Fete de la science"
         text4 = "Organisation de conferences lors de la Fete de la science"
         result3 = self._entry_to_result(text3, text4, 'accept_modif')
         result4 = self._entry_to_result(text3, text4, 'refuse_modif')
-        self.assertEqual(result3,'Organisation de conferences lors de la Fete de la science')
-        self.assertEqual(result4,'-Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result3, 'Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result4, '-Organisation de conferences lors de la Fete de la science')
 
         text5 = "$Organisation de conferences lors de la Fete de la science"
         text6 = "Organisation de conferences lors de la Fete de la science"
         result5 = self._entry_to_result(text5, text6, 'accept_modif')
         result6 = self._entry_to_result(text5, text6, 'refuse_modif')
-        self.assertEqual(result5,'Organisation de conferences lors de la Fete de la science')
-        self.assertEqual(result6,'$Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result5, 'Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result6, '$Organisation de conferences lors de la Fete de la science')
 
     def test_beginning_deletion_word_part(self):
         text1 = "Reorganisation de conferences lors de la Fete de la science"
         text2 = "organisation de conferences lors de la Fete de la science"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
         result2 = self._entry_to_result(text1, text2, 'refuse_modif')
-        self.assertEqual(result1,'organisation de conferences lors de la Fete de la science')
-        self.assertEqual(result2,'Reorganisation de conferences lors de la Fete de la science')
+        self.assertEqual(result1, 'organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result2, 'Reorganisation de conferences lors de la Fete de la science')
 
     def test_beginning_deletion_word_followed_by_exclamation_point(self):
         text1 = "Fête! Organisation de conferences lors de la Fete de la science"
         text2 = "Organisation de conferences lors de la Fete de la science"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
         result2 = self._entry_to_result(text1, text2, 'refuse_modif')
-        self.assertEqual(result1,'Organisation de conferences lors de la Fete de la science')
-        self.assertEqual(result2,'Fête! Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result1, 'Organisation de conferences lors de la Fete de la science')
+        self.assertEqual(result2, 'Fête! Organisation de conferences lors de la Fete de la science')
 
         text3 = "Fête ! Organisation de conferences lors de la Fete de la science"
         text4 = "Organisation de conferences lors de la Fete de la science"
@@ -375,48 +375,44 @@ class TestTextAnalyzerIntegration(FunctionalTests):
 # - - - - - - - - - - - - - - - - - - - - - merge texts
 
     def test_merge_add_sentences(self):
-        text_origin="Organiser des animations lors de la Fete de la science."
-        text1="Programme d'octobre prochain. Organiser des animations lors de la Fete de la science."
-        text2="Organiser des animations lors de la Fete de la science. Avec un budget de 5000€."
-        texts=[text1, text2]
-        result= self.merge(text_origin, texts)
-        self.assertEqual(result, "Programme d'octobre prochain. Organiser des animations lors de la Fete de la science. Avec un budget de 5000€.")
+        text_origin = "Organiser des animations lors de la Fete de la science."
+        text1 = "Programme d'octobre prochain. Organiser des animations lors de la Fete de la science."
+        text2 = "Organiser des animations lors de la Fete de la science. Avec un budget de 5000€."
+        result = self.text_analyzer.merge(text_origin, [text1, text2])
+        self.assertEqual(result,
+                         "Programme d'octobre prochain. Organiser des "\
+                         "animations lors de la Fete de la science. Avec "\
+                         "un budget de 5000€.")
 
     def test_merge_delete_sentences(self):
         text_origin="Programme d'octobre prochain. Organiser des animations lors de la Fete de la science."
         text1="Organiser des animations lors de la Fete de la science."
         text2="Organiser des animations lors de la Fete de la Science."
-        texts=[text1, text2]
-        result= self.merge(text_origin, texts)
+        result = self.text_analyzer.merge(text_origin, [text1, text2])
         self.assertEqual(result, "Organiser des animations lors de la Fete de la Science.")
 
     def test_merge_modify_words(self):
         text_origin = "Organiser des animations lors de la Fete de la science."
         text1 = "Programmer une animation lors de la Fete de la science en octobre prochain."
         text2 = "Organiser une animation lors de la Fete de la Science."
-        texts = [text1, text2]
-        result = self.merge(text_origin, texts)
+        result = self.text_analyzer.merge(text_origin, [text1, text2])
         self.assertEqual(result, "Programmer une animation lors de la Fete de la Science en octobre prochain.")
 
     def test_merge_modify_characters(self):
         text_origin = "#1 Organiser des animation lors de la Fete de la science !"
         text1 = "#1 Organiser des animation lors de la Fete de la science."
         text2 = "Organiser des animations lors de la Fete de la science & de l'innovation."
-        texts = [text1, text2]
-        result = self.merge(text_origin, texts)
+        result = self.text_analyzer.merge(text_origin, [text1, text2])
         self.assertEqual(result, "Organiser des animations lors de la Fete de la science & de l'innovation.")
 
         text_origin2 = "Organiser des animations lors de la Fete de la science."
         text3 = "Organiser des animations lors de la Fete de la science ?"
         text4 = "Organiser des animations; eventuellement, lors de la Fete de la science."
-        texts2 = [text3, text4]
-        result2 = self.merge(text_origin2, texts2)
+        result2 = self.text_analyzer.merge(text_origin2, [text3, text4])
         self.assertEqual(result2, "Organiser des animations; eventuellement, lors de la Fete de la science ?")
 
         text_origin3 = "Organiser des animations lors de la Fete de la science. Leur nombre dependra du budget alloue."
         text5 = "Organiser des animations le 24/09/2014."
         text6 = "Organiser des animations le 24/09/2014. Eventuellement, lors de la Fete de la Science."
-        texts3 = [text5, text6]
-        result3 = self.merge(text_origin3, texts3)
+        result3 = self.text_analyzer.merge(text_origin3, [text5, text6])
         self.assertEqual(result3, "Organiser des animations le 24/09/2014. Eventuellement, lors de la Fete de la Science.")
-
