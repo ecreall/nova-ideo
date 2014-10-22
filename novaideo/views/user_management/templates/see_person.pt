@@ -14,7 +14,7 @@
   <img tal:condition="user.picture is not None" tal:attributes="src user.picture.url(request)"  width="100"/>
   <div class="media-body" style="width:auto;">
     <h3 tal:condition="getattr(user, 'state', None) is not None"><span class="label label-basic pull-right">${user.state[0].capitalize()}</span></h3>
-      <h3>${user.name}</h3>
+      <h3>${getattr(user, 'title', user.name)}</h3>
       <dl>
         <dt tal:condition="getattr(user, 'keywords', [])">Centres d'intérêt</dt>
         <dd tal:condition="getattr(user, 'keywords', [])">

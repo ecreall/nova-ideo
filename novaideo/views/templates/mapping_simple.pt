@@ -8,7 +8,7 @@
     <span class="control-form-button pull-right"><span tal:condition="ajax" class="${field.widget.activator_css_class}"></span> ${field.widget.activator_title}</span>
     <div class="${getattr(field.widget, 'mapping_css_class', '')}">
       <div tal:condition="errormsg" 
-           class="clearfix alert alert-message error">
+           class="clearfix alert alert-message alert-danger error">
         <p i18n:translate="">
            There was a problem with this section
         </p>

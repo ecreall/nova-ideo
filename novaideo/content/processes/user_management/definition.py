@@ -16,7 +16,6 @@ from dace.objectofcollaboration.services.processdef_container import process_def
 from pontus.core import VisualisableElement
 
 from .behaviors import (
-    EditSuper,
     Registration,
     Edit,
     Activate,
@@ -42,10 +41,6 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                                        description=_("User registration"),
                                        title=_("User registration"),
                                        groups=[]),
-                editsuper = ActivityDefinition(contexts=[EditSuper],
-                                       description=_("Edit"),
-                                       title=_("Edit"),
-                                       groups=[]),
                 edit = ActivityDefinition(contexts=[Edit],
                                        description=_("Edit"),
                                        title=_("Edit"),
@@ -68,9 +63,7 @@ class UserManagement(ProcessDefinition, VisualisableElement):
         self.defineTransitions(
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'registration'),
-                TransitionDefinition('pg', 'editsuper'),
                 TransitionDefinition('pg', 'edit'),
-                TransitionDefinition('editsuper', 'eg'),
                 TransitionDefinition('edit', 'eg'),
                 TransitionDefinition('registration', 'eg'),
                 TransitionDefinition('pg', 'deactivate'),

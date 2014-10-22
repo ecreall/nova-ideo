@@ -203,6 +203,9 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
         super(Person, self).__init__(**kwargs)
         kwargs.pop('password')
         self.set_data(kwargs)
+        self.set_title()
+
+    def set_title(self):
         self.title = self.first_name + ' ' + self.last_name
 
     @property

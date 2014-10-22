@@ -15,7 +15,7 @@
       </dd>
         <dt>Associés par</dt>
 	<dd>
-          <a tal:attributes="href request.resource_url(correlation.author, '@@index')">${correlation.author.name}</a> 
+          <a tal:attributes="href request.resource_url(correlation.author, '@@index')">${getattr(correlation.author, 'title', correlation.author.name)}</a> 
         </dd>
     </dl>
 </div>

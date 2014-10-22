@@ -20,7 +20,7 @@
   <h3 tal:condition="amendment.state"><span class="label label-basic pull-right">${amendment.state[0].capitalize()}</span></h3>
   <h2 class="content-title">${amendment.title}</h2>
   <div class="object-description">
-   <small >(Version amendée par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> le <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} de la proposition <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, dupliquée à partir de la version amendée <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
+   <small >(Version amendée par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or getattr(amendment.author, 'title', amendment.author.name)}</a> le <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} de la proposition <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, dupliquée à partir de la version amendée <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
    </small>
   </div>
 </div>

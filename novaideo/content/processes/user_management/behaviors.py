@@ -82,39 +82,6 @@ class Registration(InfiniteCardinality):
         return HTTPFound(request.resource_url(root))
 
 
-def editsup_relation_validation(process, context):
-    return True
-
-
-def editsup_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',))
-
-
-def editsup_processsecurity_validation(process, context):
-    return True
-
-
-def editsup_state_validation(process, context):
-    return 'active' in context.state
-
-
-class EditSuper(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    title = _('Edit')
-    context = IPerson
-    relation_validation = editsup_relation_validation
-    roles_validation = editsup_roles_validation
-    processsecurity_validation = editsup_processsecurity_validation
-    state_validation = editsup_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        context.modified_at = datetime.datetime.today()
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
-
-
 def edit_relation_validation(process, context):
     return True
 
@@ -144,6 +111,13 @@ class Edit(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        changepassword = appstruct['change_password']['changepassword']
+        current_user_password = appstruct['change_password']['currentuserpassword']
+        user = get_current()
+        if changepassword and user.check_password(current_user_password):
+            password = appstruct['change_password']['password']
+            context.set_password(password)
+
         root = getSite()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
@@ -152,6 +126,7 @@ class Edit(InfiniteCardinality):
 
         result.extend(newkeywords)
         context.setproperty('keywords_ref', result)
+        context.set_title()
         context.modified_at = datetime.datetime.today()
         return True
 
@@ -168,7 +143,7 @@ def deactivate_roles_validation(process, context):
 
 
 def deactivate_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def deactivate_state_validation(process, context):
@@ -202,7 +177,7 @@ def activate_roles_validation(process, context):
 
 
 def activate_processsecurity_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 def activate_state_validation(process, context):

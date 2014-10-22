@@ -22,7 +22,7 @@
 
          <p id="password-reset-link"
               metal:define-macro="password-reset-link">
-           <a href="${request.sdiapi.mgmt_path(request.virtual_root, '@@resetpassword')}" i18n:translate=""
+           <a href="${request.resource_url(request.virtual_root, '@@resetpassword')}" i18n:translate=""
                 >Forgot your password?</a>
          </p>
 

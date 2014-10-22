@@ -572,6 +572,7 @@ margin-bottom: 22px;
     cursor: grab;
     font-size: 15px;
     font-weight: lighter;
+    margin-top: -20px
 }
 
 .ajax-form .control-form-button:hover {

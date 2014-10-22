@@ -6,7 +6,7 @@
           <div class="media-body" style="width:auto;">
            <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span> Association</div>
             <small>
-              <a tal:attributes="href request.resource_url(comment.author, '@@index')">${comment.author.name}</a> - 
+              <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
               <div  tal:omit-tag="" tal:condition="diff">Il y a 
                 <span tal:condition="'days' in diff">${diff['days']} jour(s)</span> 
                 <span tal:condition="'hours' in diff">${diff['hours']} heur(s)</span> 
