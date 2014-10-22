@@ -23,7 +23,7 @@
     height: 28px;
     margin-top: -13px;
     width: 28px;
-    cursor: -moz-grab;
+    cursor: pointer;
 }
 
 .remove-item:hover{
@@ -40,7 +40,7 @@
 
 .sequence-add-item{
     background: url("../images/add_button.png") no-repeat scroll right center transparent;
-    cursor: grab;
+    cursor: pointer;
     float: right;
     height: 28px;
     margin-top: -28px;

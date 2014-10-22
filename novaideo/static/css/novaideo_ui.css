@@ -428,7 +428,7 @@ margin-bottom: 22px;
     padding-bottom: 10.5px;
     padding-right: 39px;
     padding-top: 5px;
-    cursor: -moz-grab;
+    cursor: pointer;
 
 }
 
@@ -569,7 +569,7 @@ margin-bottom: 22px;
 
 .ajax-form .control-form-button, .comment-replay-nb{
     color: gray;
-    cursor: grab;
+    cursor: pointer;
     font-size: 15px;
     font-weight: lighter;
     margin-top: -20px
