@@ -1,4 +1,4 @@
-<ul class="${(origin and 'commentulorigin') or 'commentul'}">
+<ul class="${(origin and 'commentulorigin') or 'commentul hide-bloc'}">
   <tal:loop repeat="item comments">
     <li class="commentli" data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" tal:define="diff view._datetimedelta(item['comment'].created_at); comment item['comment']">
        <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
@@ -32,10 +32,15 @@
                    </blockquote>
                </small>
             </div>
-            <div tal:condition="'commentaction' in item"  id="commentaction">
+            <div tal:condition="'commentaction' in item"  id="commentaction" class="pull-right">
+                <span tal:condition="comment.comments" 
+                      class="comment-replay-nb"
+                      onclick="javascript:replays_show(this);">
+                  <small><span class="glyphicon glyphicon-chevron-down"></span> ${len(comment.comments)} Replay(s)</small>
+                </span>
                 <div tal:omit-tag="" tal:define="commentaction item['commentaction']">
                  <a id="${commentaction['action_id']}-btn" 
-                      class="btn btn-default btn-xs dace-action pull-right"
+                      class="btn btn-default btn-xs dace-action"
                       style="max-width: 300px;"
                       href="${commentaction['actionurl']}"   
                       data-toggle="modal"

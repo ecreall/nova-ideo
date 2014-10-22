@@ -18,8 +18,20 @@ function init_select_association(){
     });
 };
 
+function replays_show(element){
+    var replays = $($($(element).parents('li').first()).find('ul').first());
+    if(replays.hasClass('hide-bloc')){
+       replays.removeClass('hide-bloc');
+       $($(element).find('span').first()).attr('class', 'glyphicon glyphicon-chevron-up');
+    }else{
+       replays.addClass('hide-bloc');
+       $($(element).find('span').first()).attr('class', 'glyphicon glyphicon-chevron-down');
+    }
+
+};
+
 $(document).ready(function(){
-    init_select_association()
+    init_select_association();
 
     $(document).on('submit','.commentform', function( event ) {
         var button = $(this).find('button').last();
