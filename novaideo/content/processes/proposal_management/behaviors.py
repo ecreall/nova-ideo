@@ -1340,6 +1340,7 @@ class AmendmentsResult(ElementaryAction):
     style_order = 7
     context = IProposal
     processs_relation_id = 'proposal'
+    actionType = ActionType.system
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
     state_validation = ar_state_validation
