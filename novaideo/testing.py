@@ -18,6 +18,7 @@ class BaseFunctionalTests(object):
                     'substanced.secret': 'sosecret',
                     'substanced.initial_login': 'admin',
                     'substanced.initial_password': 'admin',
+                    'novaideo.secret' : 'seekri1',
                     'novaideo.admin_email': 'admin@example.com',
                     'pyramid.includes': [
                         'substanced',
