@@ -416,3 +416,30 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
         text6 = "Organiser des animations le 24/09/2014. Eventuellement, lors de la Fete de la Science."
         result3 = self.text_analyzer.merge(text_origin3, [text5, text6])
         self.assertEqual(result3, "Organiser des animations le 24/09/2014. Eventuellement, lors de la Fete de la Science.")
+
+
+# - - - - - - - - - - accept and refuse modifications within a single sentence
+
+    def test_different_treatments_in_one_sentence(self):
+        text1 = "fete de la science.Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres"
+        text2 = "Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois du 24/09/2014 au 19/10/2014. Programme: - conferences - expositions - autres"
+        soup, textdiff = self.text_analyzer.render_html_diff(text1, text2, 'modif')
+
+        spanids_data = []
+        spans = soup.find_all('span', {'id': "modif"})
+        descriminator = 1
+        for span in spans:
+            span['data-item'] = str(descriminator)
+            descriminator += 1
+
+        fselection = self._include_spanids(spans[0:2], "del", "ins")
+        for span in fselection:
+             spanids_data.append(span)
+
+        lselection = self._include_spanids(spans[2:], "ins", "del")
+        for span in lselection:
+             spanids_data.append(span)
+
+        self.text_analyzer.unwrap_diff(spanids_data, soup)
+        soup_to_text = self.text_analyzer.soup_to_text(soup)
+        self.assertEqual(soup_to_text, "Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres")
