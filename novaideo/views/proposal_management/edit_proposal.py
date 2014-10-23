@@ -191,6 +191,7 @@ class EditProposalView(MultipleView):
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/ideas_management.js']}
     views = (EditProposalFormView, IdeaManagementView)
+    validators = [EditProposal.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({EditProposal: EditProposalView})

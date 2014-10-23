@@ -45,7 +45,8 @@ class LoginView(BasicView):
     def update(self):
         request = self.request
         context = self.context
-        login_url = request.resource_url(request.context, '@@login')
+        login_url = request.resource_url(request.context, 'login')
+        login_url2 = request.resource_url(request.context, '@@login')
         referrer = request.path_url
         if '/auditstream-sse' in referrer:
             # If we're being invoked as the result of a failed request to the
@@ -55,10 +56,10 @@ class LoginView(BasicView):
             # they see e.g. "id: 0-10\ndata: " when they log in successfully.
             return HTTPForbidden()
 
-        if login_url in referrer:
+        if login_url in referrer or login_url2 in referrer:
             # never use the login form itself as came_from
             referrer = request.resource_url(request.virtual_root)
-        came_from = request.session.setdefault('sdi.came_from', referrer)
+        came_from = request.session.setdefault('novaideo.came_from', referrer)
         login = ''
         password = ''
         message = None
@@ -81,7 +82,7 @@ class LoginView(BasicView):
                     adapter = DefaultUserLocator(context, request)
                 user = adapter.get_user_by_email(login)
                 if user is not None and user.check_password(password):
-                    request.session.pop('sdi.came_from', None)
+                    request.session.pop('novaideo.came_from', None)
                     headers = remember(request, get_oid(user))
                     request.registry.notify(LoggedIn(login, user, context, request))
                     return HTTPFound(location = came_from, headers = headers)

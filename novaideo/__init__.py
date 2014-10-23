@@ -8,7 +8,7 @@ from substanced.db import root_factory
 
 _ = TranslationStringFactory('novaideo')
 
-default_session_timeout = None
+default_session_timeout = 25200
 
 
 def my_locale_negotiator(request):
