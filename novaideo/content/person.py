@@ -218,7 +218,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
 
     @property
     def participations(self):
-        result = [p for p in list(self.proposals) if not('draft' in p.state)]
+        result = [p for p in list(self.proposals) if not any(s in p.state for s in ['draft', 'published'])]
         return result
 
     @property
@@ -239,5 +239,6 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
 
     @property
     def active_working_groups(self):
-        return [w for w in self.working_groups if not any(s in w.proposal.state for s in ['draft', 'published'])]
+        return [p.working_group for p in self.participations]
+        #[w for w in self.working_groups if not any(s in w.proposal.state for s in ['draft', 'published'])]
     

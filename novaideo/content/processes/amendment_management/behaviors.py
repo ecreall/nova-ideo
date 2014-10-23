@@ -301,6 +301,11 @@ class SubmitAmendment(InfiniteCardinality):
  
         return amendment
 
+    def _publish_ideas(self, amendment):
+        for idea in [i for i in amendment.get_used_ideas() if not('published' in i.state)]:
+            idea.state = PersistentList(['published'])
+            idea.reindex()
+
     def start(self, context, request, appstruct, **kw):
         single_amendment = appstruct['single_amendment']
         groups = []
@@ -322,12 +327,12 @@ class SubmitAmendment(InfiniteCardinality):
             data.pop('text')
             context.set_data(data)
             context.state.append('published')
+            self._publish_ideas(context)
         else:
             for group in groups:
                 amendment = self._add_sub_amendment(context, group)
                 #publish used ideas
-                for idea in [i for i in amendment.get_used_ideas() if not('published' in i.state)]:
-                    idea.state = PersistentList(['published'])
+                self._publish_ideas(amendment)
 
             context.state.append('deprecated')
 

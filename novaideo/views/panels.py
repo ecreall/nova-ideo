@@ -108,9 +108,9 @@ class UserNavBarPanel(object):
                 process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
                 action, view = _getaction(self, process_id, action_id)
                 if not (None in (action, view)):
-                    actions_url[menu][action.title] = {'url':action.url(root), 'view_name': getattr(view,'name', None)}
+                    actions_url[menu][action.title] = {'action':action, 'url':action.url(root), 'view_name': getattr(view,'name', None)}
                 else:
-                    actions_url[menu][actionclass.node_definition.title] = {'url':None, 'view_name': getattr(view,'name', None)}
+                    actions_url[menu][actionclass.node_definition.title] = {'action':None, 'url':None, 'view_name': getattr(view,'name', None)}
 
         posted_formid = None
         if self.request.POST :

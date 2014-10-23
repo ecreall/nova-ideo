@@ -99,6 +99,10 @@ class SeeMyContents(InfiniteCardinality):
     processsecurity_validation = seemyc_processsecurity_validation
     state_validation = seemy_state_validation
 
+    def contents_nb(self):
+        user = get_current()
+        return len([o for o in getattr(user, 'contents', []) if not('deprecated' in o.state)])
+
     def start(self, context, request, appstruct, **kw):
         return True
 
@@ -115,6 +119,10 @@ class SeeMySelections(InfiniteCardinality):
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemys_processsecurity_validation
     state_validation = seemy_state_validation
+
+    def contents_nb(self):
+        user = get_current()
+        return len([o for o in getattr(user, 'selections', []) if not('deprecated' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
         return True
@@ -133,6 +141,11 @@ class SeeMyParticipations(InfiniteCardinality):
     processsecurity_validation = seemypa_processsecurity_validation
     state_validation = seemy_state_validation
 
+
+    def contents_nb(self):
+        user = get_current()
+        return len(getattr(user, 'participations', []))
+
     def start(self, context, request, appstruct, **kw):
         return True
 
@@ -149,6 +162,10 @@ class SeeMySupports(InfiniteCardinality):
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemysu_processsecurity_validation
     state_validation = seemy_state_validation
+
+    def contents_nb(self):
+        user = get_current()
+        return len([o for o in getattr(user, 'supports', []) if not('deprecated' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
         return True

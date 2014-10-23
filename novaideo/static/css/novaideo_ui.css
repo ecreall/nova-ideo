@@ -408,11 +408,15 @@ margin-bottom: 22px;
 }
 
 .global-actions-menu .action-1 {
-    margin-left: 390px;
+    margin-left: 394px;
+}
+
+.global-actions-menu .action-2 {
+    margin-left: -16px;
 } 
 
 .global-actions-menu a {
-    width: 262px;
+    width: 271px;
 }
 
 .item-closed {
@@ -527,6 +531,16 @@ margin-bottom: 22px;
     width: 101%;
 }
 
+.access-menu > li > a > span.badge{ 
+    background-color: white;
+    color:steelblue;
+}
+
+.access-menu > li > a.active > span.badge{ 
+    background-color: white;
+    color: #5cb85c;
+}
+
 .menu-access-action.disabled{
     background: none repeat scroll 0 0 #adcce7;
     cursor: not-allowed;
@@ -549,6 +563,15 @@ margin-bottom: 22px;
     background-color: #5cb85c;
     color: white;
     text-decoration: none;
+    .nav.access-menu > li > a > span.badge{
+        background-color: white;
+        color: #5cb85c;
+     }
+}
+
+.nav.access-menu > li > a:hover > span.badge, .nav > li > a:focus > span.badge{
+        background-color: white;
+        color: #5cb85c;
 }
 
 .nav.access-menu > li > a.disabled:hover, .nav > li > a.disabled:focus {
