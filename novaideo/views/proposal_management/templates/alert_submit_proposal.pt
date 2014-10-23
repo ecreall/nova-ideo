@@ -1,0 +1,14 @@
+<div tal:condition="ideas" class="alert alert-danger">
+<strong>Oups!</strong><br>
+Les idées suivantes sont utilisées dans votre proposition, mais pas encore publiées. La soumission de la proposition entraine, automatiquement, la publication des idées utilisées. Souhaitez-vous les finaliser avant la soumission de votre proposition. Une fois, les idées sont publics, vous ne pouvez plus les modifier.<br>
+  <ol class="list-unstyled">
+    <tal:loop repeat="i ideas">
+      <li><a class="btn btn-danger btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+    </tal:loop>
+  <ol>
+</div>
+
+<div class="alert alert-info">
+Votre proposition sera ouverte pour la constitution du groupe de travail. Les membres intéressés auront la possibilité de rejoindre le groupe de travail. Une fois, le groupe de travail est constitué, le travail collectif démarrera automatiquement. Nous vous invitons à communiquer votre proposition afin de composer le groupe de travail le plus rapidement possible.
+</div>
+

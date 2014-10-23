@@ -233,7 +233,12 @@ class SubmitProposal(ElementaryAction):
             context.state.append('open to a working group')
         else:
             context.state.append('votes for publishing')
-        
+
+        for idea in [i for i in context.related_ideas if not('published' in i.state)]:
+            idea.state = PersistentList(['published'])
+            idea.reindex()
+
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
@@ -1352,6 +1357,7 @@ class AmendmentsResult(ElementaryAction):
         copy_of_proposal.setproperty('version', context)
         copy_of_proposal.state = PersistentList(['proofreading'])
         copy_of_proposal.setproperty('author', context.author)
+        copy_of_proposal.setproperty('comments', context.comments)
         self.process.execution_context.add_created_entity('proposal', copy_of_proposal)
         wg.setproperty('proposal', copy_of_proposal)
         return copy_of_proposal

@@ -228,7 +228,6 @@ class FPTP(object):
         return processes
 
     def calculate_votes(self, votes):
-        
         result = {}
         for subject in self.report.subjects:
             try:
