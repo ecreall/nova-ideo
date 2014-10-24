@@ -78,9 +78,10 @@ class DuplicateAmendment(InfiniteCardinality):
         copy_of_amendment.setproperty('originalentity', context)
         copy_of_amendment.state = PersistentList(['draft'])
         copy_of_amendment.setproperty('author', get_current())
-        copy_of_amendment.title = context.proposal.title+'_Amended version '+str(getattr(context.proposal, 'amendment_counter', 1)) 
+        copy_of_amendment.title = context.proposal.title+'_A '+str(getattr(context.proposal, '_amendments_counter', 1)) 
         grant_roles(roles=(('Owner', copy_of_amendment), ))
         copy_of_amendment.reindex()
+        context.proposal._amendments_counter = getattr(context.proposal, '_amendments_counter', 1) + 1
         context.reindex()
         self.newcontext = copy_of_amendment
         return True

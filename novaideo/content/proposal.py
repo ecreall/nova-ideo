@@ -93,8 +93,8 @@ class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntit
         super(Proposal, self).__init__(**kwargs)
         self.set_data(kwargs)
         # [(user_oid, date, support_type), ...] support_type = {1:support, 0:oppose, -1:withdraw}
-        self.support_history = PersistentList()
-        self.amendments_counter = 1
+        self._support_history = PersistentList()
+        self._amendments_counter = 1
 
     @property
     def related_ideas(self):

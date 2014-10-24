@@ -1,3 +1,4 @@
+import datetime
 from dace.interfaces import IProcessDefinition
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
@@ -21,7 +22,7 @@ from novaideo import _
 
 
 def time_duration(process):
-    return getattr(process.ballot, 'duration')
+    return getattr(process.ballot, 'duration') + datetime.datetime.today()
 
 
 @process_definition(name='referendumprocess', id='referendumprocess')
@@ -44,7 +45,7 @@ class ReferendumProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Vote"),
                                        title=_("Vote"),
                                        groups=[]),
-                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_duration=time_duration)),
+                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=time_duration)),
                 eg1 = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )

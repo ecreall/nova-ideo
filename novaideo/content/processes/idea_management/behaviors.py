@@ -405,7 +405,7 @@ class PresentIdea(InfiniteCardinality):
                  )
             mailer_send(subject=subject, recipients=[member_email], body=message)
             if not (member is user):
-                context.email_persons_contacted.append(member_email)
+                context._email_persons_contacted.append(member_email)
 
         return True
 

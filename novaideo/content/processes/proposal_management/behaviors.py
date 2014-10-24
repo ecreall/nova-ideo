@@ -383,7 +383,9 @@ def proofreading_roles_validation(process, context):
 
 def proofreading_processsecurity_validation(process, context):
     correction_in_process = any(('in process' in c.state for c in context.corrections))
-    return global_user_processsecurity(process, context) and not correction_in_process
+    return global_user_processsecurity(process, context) and \
+           not correction_in_process and \
+           not getattr(process, 'first_decision', True)
 
 
 def proofreading_state_validation(process, context):
@@ -510,7 +512,7 @@ class SupportProposal(InfiniteCardinality):
             token = user.tokens[-1]
 
         context.addtoproperty('tokens_support', token)
-        context.support_history.append((get_oid(user), datetime.datetime.today(), 1))
+        context._support_history.append((get_oid(user), datetime.datetime.today(), 1))
         return True
 
     def redirect(self, context, request, **kw):
@@ -541,7 +543,7 @@ class OpposeProposal(InfiniteCardinality):
             token = user.tokens[-1]
 
         context.addtoproperty('tokens_opposition', token)
-        context.support_history.append((get_oid(user), datetime.datetime.today(), 0))
+        context._support_history.append((get_oid(user), datetime.datetime.today(), 0))
         return True
 
     def redirect(self, context, request, **kw):
@@ -572,7 +574,7 @@ class WithdrawToken(InfiniteCardinality):
         token = user_tokens[-1]
         context.delproperty(token.__property__, token)
         user.addtoproperty('tokens', token)
-        context.support_history.append((get_oid(user), datetime.datetime.today(), -1))
+        context._support_history.append((get_oid(user), datetime.datetime.today(), -1))
         return True
 
     def redirect(self, context, request, **kw):
@@ -759,7 +761,7 @@ def improve_roles_validation(process, context):
 
 def improve_processsecurity_validation(process, context):
     #correction_in_process = any(('in process' in c.state for c in context.corrections))
-    return global_user_processsecurity(process, context) #and not correction_in_process
+    return global_user_processsecurity(process, context)
 
 
 def improve_state_validation(process, context):
@@ -784,7 +786,7 @@ class ImproveProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         data = {}
-        data['title'] = context.title+'_A '+str(getattr(context, 'amendment_counter', 1))
+        data['title'] = context.title+'_A '+str(getattr(context, '_amendments_counter', 1))
         data['text'] = appstruct['text']
         data['description'] = appstruct['description']
         keywords_ids = appstruct.pop('keywords')
@@ -801,7 +803,7 @@ class ImproveProposal(InfiniteCardinality):
         amendment.state.append('draft')
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
-        context.amendment_counter = getattr(context, 'amendment_counter', 1) + 1
+        context._amendments_counter = getattr(context, '_amendments_counter', 1) + 1
         return True
 
     def redirect(self, context, request, **kw):
@@ -916,7 +918,8 @@ def correct_roles_validation(process, context):
 
 def correct_processsecurity_validation(process, context):
     correction_in_process = any(('in process' in c.state for c in context.corrections))
-    return global_user_processsecurity(process, context) and not correction_in_process
+    return global_user_processsecurity(process, context) and not correction_in_process and \
+           not getattr(process, 'first_decision', True)
 
 
 def correct_state_validation(process, context):

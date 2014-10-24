@@ -57,6 +57,12 @@ class DetailProposalView(BasicView):
 
         return description, text, add_filigrane
 
+    def _cant_submit_alert(self, actions):
+        if 'draft' in self.context.state:
+            return not any(a.title == 'Submit' for a in actions)
+
+        return False
+
     def update(self):
         self.execute(None)
         user = get_current()
@@ -80,7 +86,8 @@ class DetailProposalView(BasicView):
                 'wg_actions': wg_actions,
                 'text_actions': text_actions,
                 'voteactions': vote_actions,
-                'filigrane': add_filigrane
+                'filigrane': add_filigrane,
+                'cant_submit': self._cant_submit_alert(global_actions)
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

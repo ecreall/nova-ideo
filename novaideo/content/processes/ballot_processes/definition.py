@@ -22,7 +22,7 @@ from novaideo import _
 
 
 def time_duration(process):
-    return process.duration
+    return process.duration + datetime.today()
 
 
 def event_condition(process):
@@ -53,7 +53,7 @@ class BallotProcess(ProcessDefinition, VisualisableElement):
         self.defineNodes(
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
-                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_duration=time_duration)),
+                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=time_duration)),
                 conditional = IntermediateCatchEventDefinition(ConditionalEventDefinition(event_condition)),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),

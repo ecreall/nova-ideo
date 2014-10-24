@@ -143,7 +143,7 @@ class PresentableEntity(Entity):
 
     def __init__(self, **kwargs):
         super(PresentableEntity, self).__init__(**kwargs)
-        self.email_persons_contacted = PersistentList()
+        self._email_persons_contacted = PersistentList()
 
     @property
     def persons_contacted(self):
@@ -156,7 +156,7 @@ class PresentableEntity(Entity):
             adapter = DefaultUserLocator(self, request)
 
         result = []
-        for email in self.email_persons_contacted:
+        for email in self._email_persons_contacted:
             user = adapter.get_user_by_email(email)
             if user is not None:
                 result.append(user)
