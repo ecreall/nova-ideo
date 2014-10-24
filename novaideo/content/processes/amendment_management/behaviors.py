@@ -65,7 +65,7 @@ class DuplicateAmendment(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        copy_of_amendment = copy(context, (context.proposal, 'amendments'), omit=('explanations',))
+        copy_of_amendment = copy(context, (context.proposal, 'amendments'), omit=('created_at', 'modified_at', 'explanations'))
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
