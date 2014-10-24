@@ -88,8 +88,8 @@ def seemy_state_validation(process, context):
 
 def seemyc_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and \
-           (getattr(user, 'proposals', []) or getattr(user, 'ideas', []))
+    contents = [o for o in getattr(user, 'contents', []) if not('deprecated' in o.state)]
+    return global_user_processsecurity(process, context) and contents
 
 class SeeMyContents(InfiniteCardinality):
     isSequential = False
@@ -108,8 +108,8 @@ class SeeMyContents(InfiniteCardinality):
 
 def seemys_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and \
-           (getattr(user, 'selections', []) or getattr(user, 'contacts', []))
+    selections = [o for o in getattr(user, 'selections', []) if not('deprecated' in o.state)]
+    return global_user_processsecurity(process, context) and selections
 
 
 class SeeMySelections(InfiniteCardinality):
@@ -152,7 +152,8 @@ class SeeMyParticipations(InfiniteCardinality):
 
 def seemysu_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and getattr(user, 'supports', [])
+    supports = [o for o in getattr(user, 'supports', []) if not('deprecated' in o.state)]
+    return global_user_processsecurity(process, context) and supports
 
 
 class SeeMySupports(InfiniteCardinality):
