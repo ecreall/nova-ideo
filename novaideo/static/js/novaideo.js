@@ -1,19 +1,19 @@
 function switchon(){
-    if (!$('#navbaruser').is(':visible')){
-       $('#navbaruser').slideToggle("fast");
+    if ($('#navbaruser').hasClass('hide-bloc')){
+       $('#navbaruser').removeClass('hide-bloc');
     };
-    if ($('#searchform').is(':visible')){
-       $('#searchform').slideToggle("fast");
+    if (!$('#searchform').hasClass('hide-bloc')){
+       $('#searchform').addClass('hide-bloc');
     };
 };
 
 
 function switchoff(){
-    if ($('#navbaruser').is(':visible')){
-       $('#navbaruser').slideToggle("fast");
+    if (!$('#navbaruser').hasClass('hide-bloc')){
+       $('#navbaruser').addClass('hide-bloc');
     };
-    if (!$('#searchform').is(':visible')){
-       $('#searchform').slideToggle("fast");
+    if ($('#searchform').hasClass('hide-bloc')){
+       $('#searchform').removeClass('hide-bloc');
     };
 };
 
