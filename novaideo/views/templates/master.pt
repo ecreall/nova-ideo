@@ -84,7 +84,7 @@
 
       <metal:slot metal:define-slot="outer-content">
         
-        <div class="row clearfix">
+        <div class="row clearfix novaideo-content">
 
           <div class="col-md-2 column ui-sortable novaideo-left">
              <div metal:define-slot="left"></div>
@@ -114,7 +114,7 @@
             <div class="below-content"></div>
           </div>
 
-          <div class="col-md-3 column ui-sortable novaideo-right" style="margin-left: -22px;">
+          <div class="col-md-3 column ui-sortable novaideo-right">
              <div metal:define-slot="right"></div>
           </div>
         </div>

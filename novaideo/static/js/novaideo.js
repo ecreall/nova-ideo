@@ -1,6 +1,7 @@
 function switchon(){
     if ($('#navbaruser').hasClass('hide-bloc')){
        $('#navbaruser').removeClass('hide-bloc');
+       $('.novaideo-content').css('margin-top', '0px')
     };
     if (!$('#searchform').hasClass('hide-bloc')){
        $('#searchform').addClass('hide-bloc');
@@ -11,6 +12,7 @@ function switchon(){
 function switchoff(){
     if (!$('#navbaruser').hasClass('hide-bloc')){
        $('#navbaruser').addClass('hide-bloc');
+       $('.novaideo-content').css('margin-top', '20px')
     };
     if ($('#searchform').hasClass('hide-bloc')){
        $('#searchform').removeClass('hide-bloc');
