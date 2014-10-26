@@ -39,8 +39,7 @@ def get_default_explanations_groups(context):
 def explanations_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
-    values = [e['oid'] for e in context.explanations.values()]
-    values = [(i, i) for i in values]
+    values = [(i['oid'], i['oid']) for i in context.explanations.values()]
     return DragDropSelect2Widget(values=values, multiple=True)
 
 

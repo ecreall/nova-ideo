@@ -41,7 +41,7 @@ class SeeRelatedIdeasView(BasicView):
         self.execute(None)
         root = getSite()
         user = get_current()
-        correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_ideas' in c.tags) and can_access(user, c))]
+        correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
         related_ideas = [target for targets in correlations for target in targets]
         relatedideas = []
         len_ideas = 0       

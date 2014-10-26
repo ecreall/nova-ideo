@@ -39,8 +39,7 @@ class EditAmendmentsView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        root = getSite()
-        objects = [o for o in getattr( self.context, 'amendments', []) if not('deprecated' in o.state) and can_access(user, o, self.request, root)]
+        objects = [o for o in getattr( self.context, 'amendments', []) if not('archived' in o.state) and can_access(user, o)]
         objects = sorted(objects, key=lambda e: getattr(e, 'modified_at', datetime.datetime.today()), reverse=True)
         lenamendments = len(objects)
         index = str(lenamendments)

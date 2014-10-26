@@ -34,8 +34,7 @@ from novaideo.core import (
 def ideas_choice(node, kw):
     root = getSite()
     user = get_current()
-    ideas = [i for i in root.ideas if can_access(user, i) and not('deprecated' in i.state)]
-    values = [(i, i.title) for i in ideas]
+    values = [(i, i.title) for i in root.ideas if can_access(user, i) and not('archived' in i.state)]
     return Select2Widget(values=values, multiple=True)
 
 

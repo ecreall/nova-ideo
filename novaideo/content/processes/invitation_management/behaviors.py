@@ -2,7 +2,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from substanced.util import get_oid
 from dace.util import find_service, getSite
-from dace.objectofcollaboration.principal.util import has_any_roles
+from dace.objectofcollaboration.principal.util import has_role
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
@@ -20,7 +20,7 @@ def uploaduser_relation_validation(process, context):
 
 
 def uploaduser_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def uploaduser_processsecurity_validation(process, context):
@@ -82,7 +82,7 @@ def inviteuser_relation_validation(process, context):
 
 
 def inviteuser_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def inviteuser_processsecurity_validation(process, context):
@@ -134,7 +134,7 @@ class InviteUsers(InfiniteCardinality):
 
 
 def seeinv_processsecurity_validation(process, context):
-    return has_any_roles(roles=('Anonymous',)) and not has_any_roles(roles=('Administrator',))
+    return has_role(role=('Anonymous',)) and not has_role(role=('Administrator',))
 
 @acces_action()
 class SeeInvitation(InfiniteCardinality):
@@ -156,7 +156,7 @@ def seeinvs_relation_validation(process, context):
 
 
 def seeinvs_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def seeinvs_processsecurity_validation(process, context):
@@ -187,7 +187,7 @@ def edit_relation_validation(process, context):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def edit_processsecurity_validation(process, context):
@@ -218,7 +218,7 @@ def editinv_relation_validation(process, context):
 
 
 def editinv_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def editinv_processsecurity_validation(process, context):

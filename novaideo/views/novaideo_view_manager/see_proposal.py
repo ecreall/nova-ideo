@@ -6,7 +6,7 @@ from pyramid.threadlocal import get_current_registry
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, allSubobjectsOfType
-from dace.objectofcollaboration.principal.util import get_current, has_any_roles
+from dace.objectofcollaboration.principal.util import get_current, has_role
 from pontus.view import BasicView, ViewError, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.widget import CheckboxChoiceWidget, RichTextWidget
@@ -33,6 +33,7 @@ class DetailProposalView(BasicView):
     item_template = 'pontus:templates/subview_sample.pt'
     viewid = 'seeproposal'
     filigrane_template = 'novaideo:views/novaideo_view_manager/templates/filigrane.pt'
+    validate_behaviors = False
 
     def _vote_action(self):
         isactive = False
@@ -44,7 +45,7 @@ class DetailProposalView(BasicView):
         return actions, resources, messages, action_updated
 
     def _get_adapted_text(self, user):
-        is_participant = has_any_roles(user=user, roles=(('Participant', self.context),))
+        is_participant = has_role(user=user, role=('Participant', self.context))
         text = getattr(self.context, 'text', '')
         description = getattr(self.context, 'description', '')
         add_filigrane = False
@@ -122,6 +123,7 @@ class SeeProposalView(MultipleView):
                                 'novaideo:static/js/comment.js',
                                 'novaideo:static/js/compare_idea.js']}
     views = (DetailProposalView, SeeProposalActionsView)
+    validators = [SeeProposal.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeProposal:SeeProposalView})

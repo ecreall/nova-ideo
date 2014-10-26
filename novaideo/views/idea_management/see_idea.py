@@ -33,6 +33,7 @@ class DetailIdeaView(BasicView):
     template = 'novaideo:views/idea_management/templates/see_idea.pt'
     item_template = 'pontus:templates/subview_sample.pt'
     viewid = 'seeidea'
+    validate_behaviors = False
 
 
     def update(self):
@@ -86,6 +87,7 @@ class SeeIdeaView(MultipleView):
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/compare_idea.js',
                                 'novaideo:static/js/comment.js']}
+    validators = [SeeIdea.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeIdea:SeeIdeaView})

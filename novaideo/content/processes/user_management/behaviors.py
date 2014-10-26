@@ -4,7 +4,7 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current, Anonymous
+from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current, Anonymous
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
@@ -16,43 +16,27 @@ from dace.processinstance.activity import (
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IPerson
 from novaideo.content.token import Token
+from novaideo.content.person import Person
 from novaideo.mail import CONFIRMATION_MESSAGE, CONFIRMATION_SUBJECT
 from novaideo import _
 from novaideo.core import acces_action
 
 
 def global_user_processsecurity(process, context):
+    if has_role(role=('Admin',)):
+        return True
+
     user = get_current()
-    state = list(getattr(user, 'state', []))
-
-    if has_any_roles(roles=('Admin',)) and not 'active' in state:
-        state.append('active')
-
-    return 'active' in state
-
-
-def reg_relation_validation(process, context):
-    return True
+    return 'active' in list(getattr(user, 'state', []))
 
 
 def reg_roles_validation(process, context):
-    return has_any_roles(roles=('Anonymous',))
-
-
-def reg_processsecurity_validation(process, context):
-    return True
-
-
-def reg_state_validation(process, context):
-    return True
+    return has_role(role=('Anonymous',))
 
 
 class Registration(InfiniteCardinality):
     context = INovaIdeoApplication
-    relation_validation = reg_relation_validation
     roles_validation = reg_roles_validation
-    processsecurity_validation = reg_processsecurity_validation
-    state_validation = reg_state_validation
 
     def start(self, context, request, appstruct, **kw):
         person = appstruct['_object_data']
@@ -82,12 +66,8 @@ class Registration(InfiniteCardinality):
         return HTTPFound(request.resource_url(root))
 
 
-def edit_relation_validation(process, context):
-    return True
-
-
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def edit_processsecurity_validation(process, context):
@@ -105,7 +85,6 @@ class Edit(InfiniteCardinality):
     style_order = 1
     title = _('Edit')
     context = IPerson
-    relation_validation = edit_relation_validation
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation
     state_validation = edit_state_validation
@@ -134,12 +113,8 @@ class Edit(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-def deactivate_relation_validation(process, context):
-    return True
-
-
 def deactivate_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',))
+    return has_role(role=('Admin',))
 
 
 def deactivate_processsecurity_validation(process, context):
@@ -154,7 +129,6 @@ class Deactivate(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     title = _('Deactivate')
     context = IPerson
-    relation_validation = deactivate_relation_validation
     roles_validation = deactivate_roles_validation
     processsecurity_validation = deactivate_processsecurity_validation
     state_validation = deactivate_state_validation
@@ -168,12 +142,8 @@ class Deactivate(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-def activate_relation_validation(process, context):
-    return True
-
-
 def activate_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',))
+    return has_role(role=('Admin',))
 
 
 def activate_processsecurity_validation(process, context):
@@ -188,7 +158,6 @@ class Activate(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     title = _('Activate')
     context = IPerson
-    relation_validation = activate_relation_validation
     roles_validation = activate_roles_validation
     processsecurity_validation = activate_processsecurity_validation
     state_validation = activate_state_validation

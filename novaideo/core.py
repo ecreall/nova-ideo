@@ -31,7 +31,7 @@ from novaideo.content.interface import (
 
 
 
-BATCH_DEFAULT_SIZE = 5
+BATCH_DEFAULT_SIZE = 100
 
 
 novaideo_acces_actions = {}
@@ -53,9 +53,7 @@ class acces_action(object):
 def can_access(user, context, request=None, root=None):
     declared = context.__provides__.declared[0]
     if declared in novaideo_acces_actions:
-        for action in novaideo_acces_actions[declared]:
-            if action.processsecurity_validation(None, context):
-                return True
+        return any(action.processsecurity_validation(None, context) for action in novaideo_acces_actions[declared])
 
     return False
 

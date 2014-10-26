@@ -3,7 +3,7 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service, get_oid
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles
+from dace.objectofcollaboration.principal.util import grant_roles, has_role
 from dace.processinstance.activity import (
     ElementaryAction,
     InfiniteCardinality)
@@ -23,7 +23,7 @@ def accept_relation_validation(process, context):
 
 
 def accept_roles_validation(process, context):
-    return has_any_roles(roles=('Anonymous',)) and not has_any_roles(roles=('Admin',))
+    return has_role(role=('Anonymous',)) and not has_role(role=('Admin',))
 
 
 def accept_processsecurity_validation(process, context):
@@ -74,7 +74,7 @@ def refuse_relation_validation(process, context):
 
 
 def refuse_roles_validation(process, context):
-    return has_any_roles(roles=('Anonymous',)) and not has_any_roles(roles=('Admin',))
+    return has_role(role=('Anonymous',)) and not has_role(role=('Admin',))
 
 
 def refuse_processsecurity_validation(process, context):
@@ -106,7 +106,7 @@ def remove_relation_validation(process, context):
 
 
 def remove_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def remove_processsecurity_validation(process, context):
@@ -139,7 +139,7 @@ def reinvite_relation_validation(process, context):
 
 
 def reinvite_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def reinvite_processsecurity_validation(process, context):
@@ -179,7 +179,7 @@ def remind_relation_validation(process, context):
 
 
 def remind_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def remind_processsecurity_validation(process, context):

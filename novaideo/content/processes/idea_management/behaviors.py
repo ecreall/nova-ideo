@@ -8,7 +8,7 @@ from dace.util import (
     getBusinessAction,
     copy,
     find_entities)
-from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
+from dace.objectofcollaboration.principal.util import has_role, grant_roles, get_current
 from dace.processinstance.activity import InfiniteCardinality, ActionType
 
 from novaideo.ips.mailer import mailer_send
@@ -29,7 +29,7 @@ except NameError:
 
 
 def createidea_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_role(role=('Member',))
 
 
 def createidea_processsecurity_validation(process, context):
@@ -64,8 +64,8 @@ class CreateIdea(InfiniteCardinality):
 
 
 def duplicate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           ((has_any_roles(roles=(('Owner', context), )) and not ('abandoned' in context.state)) or 'published' in context.state)
+    return ((has_role(role=('Owner', context)) and not ('archived' in context.state)) or 'published' in context.state) and \
+           global_user_processsecurity(process, context) 
 
 
 class DuplicateIdea(InfiniteCardinality):
@@ -108,7 +108,7 @@ class DuplicateIdea(InfiniteCardinality):
 
 
 def del_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def del_processsecurity_validation(process, context):
@@ -116,7 +116,7 @@ def del_processsecurity_validation(process, context):
 
 
 def del_state_validation(process, context):
-    return 'abandoned' in context.state
+    return 'archived' in context.state
 
 
 class DelIdea(InfiniteCardinality):
@@ -140,7 +140,7 @@ class DelIdea(InfiniteCardinality):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def edit_processsecurity_validation(process, context):
@@ -148,7 +148,7 @@ def edit_processsecurity_validation(process, context):
 
 
 def edit_state_validation(process, context):
-    return not ("published" in context.state) and not("deprecated" in context.state)
+    return not ("published" in context.state) and not("archived" in context.state)
 
 
 class EditIdea(InfiniteCardinality):
@@ -180,7 +180,7 @@ class EditIdea(InfiniteCardinality):
 
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
-        copy_of_idea.state = PersistentList(['deprecated'])
+        copy_of_idea.state = PersistentList(['archived'])
         
         copy_of_idea.setproperty('author', get_current())
         context.set_data(appstruct)
@@ -188,7 +188,7 @@ class EditIdea(InfiniteCardinality):
         copy_of_idea.reindex()
         context.reindex()
         user = get_current()
-        if 'abandoned' in context.state:
+        if 'archived' in context.state:
             recuperate_actions = getBusinessAction('ideamanagement',
                                                    'recuperate',
                                                    '',
@@ -203,9 +203,8 @@ class EditIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-
 def pub_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def pub_processsecurity_validation(process, context):
@@ -243,7 +242,7 @@ class PublishIdea(InfiniteCardinality):
 
 
 def ab_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def ab_processsecurity_validation(process, context):
@@ -266,7 +265,7 @@ class AbandonIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('to work')
-        context.state.append('abandoned')
+        context.state.append('archived')
         context.reindex()
         return True
 
@@ -275,7 +274,7 @@ class AbandonIdea(InfiniteCardinality):
 
 
 def re_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def re_processsecurity_validation(process, context):
@@ -283,7 +282,7 @@ def re_processsecurity_validation(process, context):
 
 
 def re_state_validation(process, context):
-    return 'abandoned' in context.state
+    return 'archived' in context.state
 
 
 class RecuperateIdea(InfiniteCardinality):
@@ -297,7 +296,7 @@ class RecuperateIdea(InfiniteCardinality):
     state_validation = re_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('abandoned')
+        context.state.remove('archived')
         context.state.append('to work')
         context.reindex()
         return True
@@ -307,7 +306,7 @@ class RecuperateIdea(InfiniteCardinality):
 
 
 def comm_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_role(role=('Member',))
 
 
 def comm_processsecurity_validation(process, context):
@@ -350,7 +349,7 @@ class CommentIdea(InfiniteCardinality):
 
 
 def present_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def present_processsecurity_validation(process, context):
@@ -414,9 +413,9 @@ class PresentIdea(InfiniteCardinality):
 
 
 def associate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           (has_any_roles(roles=(('Owner', context),)) or \
-           (has_any_roles(roles=('Member',)) and 'published' in context.state))
+    return (has_role(role=('Owner', context)) or \
+           (has_role(role=('Member',)) and 'published' in context.state)) and \
+           global_user_processsecurity(process, context) 
 
 
 
@@ -438,7 +437,7 @@ class Associate(InfiniteCardinality):
 
 
 def seeidea_processsecurity_validation(process, context):
-    return ('published' in context.state or has_any_roles(roles=(('Owner', context),)))
+    return ('published' in context.state or has_role(role=('Owner', context)))
 
 @acces_action()
 class SeeIdea(InfiniteCardinality):
@@ -455,7 +454,7 @@ class SeeIdea(InfiniteCardinality):
 
 
 def compare_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def compare_processsecurity_validation(process, context):

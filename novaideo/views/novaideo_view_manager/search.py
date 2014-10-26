@@ -172,7 +172,7 @@ def search(text, content_types, user):
     else:
         query = (query) & object_provides_index.any(interfaces)
 
-    query = (query) & states_index.notany(('deprecated',)) 
+    query = (query) & states_index.notany(('archived',)) 
     resultset = query.execute()
     objects = [o for o in resultset.all() if can_access(user, o)] 
     objects = sorted(objects, key=lambda e: getattr(e, 'modified_at', datetime.datetime.today()), reverse=True)

@@ -4,7 +4,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid import renderers
 from substanced.util import get_oid
 
-from dace.util import getSite
+from dace.util import getSite, find_entities
 from dace.processinstance.core import  Behavior
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -18,6 +18,7 @@ from pontus.widget import MappingWidget, Select2Widget
 
 from novaideo.content.processes.proposal_management.behaviors import  CreateProposal
 from novaideo.content.proposal import ProposalSchema, Proposal
+from novaideo.content.idea import Iidea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.core import can_access
@@ -69,8 +70,8 @@ class IdeaManagementView(MultipleView):
 def ideas_choice():
     root = getSite()
     user = get_current()
-    ideas = [i for i in root.ideas if can_access(user, i) and not('deprecated' in i.state)]
-    values = [(i, i.title) for i in ideas]
+    ideas = find_entities([Iidea], states=('archived',), not_any=True)    
+    values = [(i, i.title) for i in ideas if can_access(user, i)]
     return Select2Widget(values=values, multiple=True)
 
 

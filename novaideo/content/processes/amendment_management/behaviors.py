@@ -14,7 +14,7 @@ from dace.util import (
     copy,
     find_entities,
     get_obj)
-from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current
+from dace.objectofcollaboration.principal.util import has_role, grant_roles, get_current
 from dace.processinstance.activity import InfiniteCardinality, ElementaryAction, ActionType
 
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
@@ -38,19 +38,18 @@ except NameError:
 
 
 def del_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context.proposal),))
+    return has_role(role=('Participant', context.proposal))
 
 
 def duplicate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           (('draft' in context.state and has_any_roles(roles=(('Owner', context),))) or \
-             'published' in context.state)
+    return ('published' in context.state or \
+            ('draft' in context.state and has_role(role=('Owner', context)))) and \
+           global_user_processsecurity(process, context)
 
 
 def duplicate_state_validation(process, context):
-    proposal = context.proposal
-    wg = proposal.working_group
-    return 'amendable' in proposal.state and 'active' in wg.state
+    return 'amendable' in context.proposal.state and \
+           'active' in context.proposal.working_group.state
 
 
 class DuplicateAmendment(InfiniteCardinality):
@@ -91,7 +90,7 @@ class DuplicateAmendment(InfiniteCardinality):
 
 
 def del_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Participant', context.proposal)) and has_role(role=('Owner', context))
 
 
 def del_processsecurity_validation(process, context):
@@ -123,12 +122,12 @@ class DelAmendment(InfiniteCardinality):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Participant', context.proposal)) and has_role(role=('Owner', context))
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           not(context.explanations and any(e['intention'] is not None for e in context.explanations.values()))
+    return not(context.explanations and any(e['intention'] is not None for e in context.explanations.values())) and \
+           global_user_processsecurity(process, context) 
 
 
 def edit_state_validation(process, context):
@@ -163,7 +162,7 @@ class EditAmendment(InfiniteCardinality):
 
   
 def exp_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Participant', context.proposal)) and has_role(role=('Owner', context))
 
 
 def exp_processsecurity_validation(process, context):
@@ -220,12 +219,12 @@ class ExplanationItem(InfiniteCardinality):
 
 
 def pub_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context.proposal),)) and has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Participant', context.proposal)) and has_role(role=('Owner', context))
 
 
 def pub_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           not context.explanations or  not(context.explanations and any(e['intention'] is None for e in context.explanations.values()))
+    return not context.explanations or  not(context.explanations and any(e['intention'] is None for e in context.explanations.values())) and \
+           global_user_processsecurity(process, context)
 
 
 def pub_state_validation(process, context):
@@ -335,7 +334,7 @@ class SubmitAmendment(InfiniteCardinality):
                 #publish used ideas
                 self._publish_ideas(amendment)
 
-            context.state.append('deprecated')
+            context.state.append('archived')
 
         context.reindex()         
         return True
@@ -345,7 +344,7 @@ class SubmitAmendment(InfiniteCardinality):
 
 
 def comm_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context.proposal),))
+    return has_role(role=('Participant', context.proposal))
 
 
 def comm_processsecurity_validation(process, context):
@@ -365,7 +364,7 @@ class CommentAmendment(CommentIdea):
 
 
 def present_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context.proposal),))
+    return has_role(role=('Participant', context.proposal))
 
 
 def present_processsecurity_validation(process, context):
@@ -384,9 +383,9 @@ class PresentAmendment(PresentIdea):
 
 
 def associate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           (has_any_roles(roles=(('Owner', context),)) or \
-           (has_any_roles(roles=('Member',)) and 'published' in context.state))
+    return (has_role(role=('Owner', context)) or \
+           ('published' in context.state and has_role(role=('Member',)))) and \
+           global_user_processsecurity(process, context) 
 
 
 class Associate(AssociateIdea):
@@ -395,8 +394,8 @@ class Associate(AssociateIdea):
 
 
 def seeamendment_processsecurity_validation(process, context):
-    return ((has_any_roles(roles=(('Participant', context.proposal),)) and 'published' in context.state) or \
-            (has_any_roles(roles=(('Owner', context),)) and 'draft' in context.state))
+    return ('published' in context.state and has_role(role=('Participant', context.proposal))) or \
+           ('draft' in context.state and has_role(role=('Owner', context)))
 
 class SeeAmendmentManager(object):
 

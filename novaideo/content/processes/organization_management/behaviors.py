@@ -1,7 +1,7 @@
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import has_any_roles
+from dace.objectofcollaboration.principal.util import has_role
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
@@ -22,7 +22,7 @@ def add_relation_validation(process, context):
 
 
 def add_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def add_processsecurity_validation(process, context):
@@ -58,7 +58,7 @@ def creatorg_relation_validation(process, context):
 
 
 def creatorg_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def creatorg_processsecurity_validation(process, context):
@@ -96,7 +96,7 @@ def edit_relation_validation(process, context):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def edit_processsecurity_validation(process, context):
@@ -127,7 +127,7 @@ def seeorgs_relation_validation(process, context):
 
 
 def seeorgs_roles_validation(process, context):
-    return has_any_roles(roles=('Collaborator',))
+    return has_role(role=('Collaborator',))
 
 
 def seeorgs_processsecurity_validation(process, context):
@@ -155,7 +155,7 @@ class SeeOrganizations(InfiniteCardinality):
 
 
 def see_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and has_any_roles(roles=('Member',))
+    return global_user_processsecurity(process, context) and has_role(role=('Member',))
 
 
 @acces_action()
@@ -178,7 +178,7 @@ def editorg_relation_validation(process, context):
 
 
 def editorg_roles_validation(process, context):
-    return has_any_roles(roles=('Moderator',))
+    return has_role(role=('Moderator',))
 
 
 def editorg_processsecurity_validation(process, context):

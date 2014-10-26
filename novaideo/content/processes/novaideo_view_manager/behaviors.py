@@ -2,7 +2,7 @@
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current
+from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
@@ -18,29 +18,20 @@ from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.core import acces_action
 
-def seeideas_relation_validation(process, context):
-    return True
-
 
 def seeideas_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_role(role=('Member',))
 
 
 def seeideas_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and len(context.ideas)>=1
-
-
-def seeideas_state_validation(process, context):
-    return True
+    return len(context.ideas)>=1 and global_user_processsecurity(process, context)
 
 
 class SeeIdeas(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
-    relation_validation = seeideas_relation_validation
     roles_validation = seeideas_roles_validation
     processsecurity_validation = seeideas_processsecurity_validation
-    state_validation = seeideas_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True
@@ -49,15 +40,11 @@ class SeeIdeas(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
-def search_processsecurity_validation(process, context):
-    return True
-
 @acces_action()
 class Search(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     actionType = ActionType.automatic
-    processsecurity_validation = search_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         self.content_types = appstruct['content_types']
@@ -69,60 +56,44 @@ class Search(InfiniteCardinality):
         return HTTPFound(request.resource_url(root, query={'text': self.text, 'content_types': ",".join(self.content_types)}))
 
 #see
-def seemy_relation_validation(process, context):
-    return True
-
 
 def seemy_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
-
-
-def seemy_processsecurity_validation(process, context):
-    user = get_current()
-    return global_user_processsecurity(process, context) and getattr(user, 'ideas', [])
-
-
-def seemy_state_validation(process, context):
-    return True
+    return has_role(role=('Member',))
 
 
 def seemyc_processsecurity_validation(process, context):
     user = get_current()
-    contents = [o for o in getattr(user, 'contents', []) if not('deprecated' in o.state)]
-    return global_user_processsecurity(process, context) and contents
+    contents = [o for o in getattr(user, 'contents', []) if not('archived' in o.state)]
+    return contents and global_user_processsecurity(process, context)
 
 class SeeMyContents(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
-    relation_validation = seemy_relation_validation
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemyc_processsecurity_validation
-    state_validation = seemy_state_validation
 
     def contents_nb(self):
         user = get_current()
-        return len([o for o in getattr(user, 'contents', []) if not('deprecated' in o.state)])
+        return len([o for o in getattr(user, 'contents', []) if not('archived' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
         return True
 
 def seemys_processsecurity_validation(process, context):
     user = get_current()
-    selections = [o for o in getattr(user, 'selections', []) if not('deprecated' in o.state)]
-    return global_user_processsecurity(process, context) and selections
+    selections = [o for o in getattr(user, 'selections', []) if not('archived' in o.state)]
+    return selections and global_user_processsecurity(process, context)
 
 
 class SeeMySelections(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
-    relation_validation = seemy_relation_validation
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemys_processsecurity_validation
-    state_validation = seemy_state_validation
 
     def contents_nb(self):
         user = get_current()
-        return len([o for o in getattr(user, 'selections', []) if not('deprecated' in o.state)])
+        return len([o for o in getattr(user, 'selections', []) if not('archived' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
         return True
@@ -130,16 +101,14 @@ class SeeMySelections(InfiniteCardinality):
 
 def seemypa_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and getattr(user, 'participations', [])
+    return getattr(user, 'participations', []) and global_user_processsecurity(process, context)
 
 
 class SeeMyParticipations(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
-    relation_validation = seemy_relation_validation
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemypa_processsecurity_validation
-    state_validation = seemy_state_validation
 
 
     def contents_nb(self):
@@ -152,29 +121,28 @@ class SeeMyParticipations(InfiniteCardinality):
 
 def seemysu_processsecurity_validation(process, context):
     user = get_current()
-    supports = [o for o in getattr(user, 'supports', []) if not('deprecated' in o.state)]
-    return global_user_processsecurity(process, context) and supports
+    supports = [o for o in getattr(user, 'supports', []) if not('archived' in o.state)]
+    return supports and global_user_processsecurity(process, context)
 
 
 class SeeMySupports(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
-    relation_validation = seemy_relation_validation
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemysu_processsecurity_validation
-    state_validation = seemy_state_validation
 
     def contents_nb(self):
         user = get_current()
-        return len([o for o in getattr(user, 'supports', []) if not('deprecated' in o.state)])
+        return len([o for o in getattr(user, 'supports', []) if not('archived' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
         return True
 
-def seeproposal_processsecurity_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),)) or \
-           not ('draft' in context.state)
 
+def seeproposal_processsecurity_validation(process, context):
+    return not ('draft' in context.state) or \
+           has_role(role=('Owner', context))
+           
 
 @acces_action()
 class SeeProposal(InfiniteCardinality):

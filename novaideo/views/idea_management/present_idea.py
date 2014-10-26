@@ -5,7 +5,7 @@ from pyramid.view import view_config
 from substanced.util import find_service
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite
+from dace.util import getSite, find_entities
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
@@ -16,6 +16,7 @@ from pontus.view import BasicView
 
 from novaideo.content.processes.idea_management.behaviors import  PresentIdea
 from novaideo.content.idea import Idea
+from novaideo.content.interface import IPerson
 from novaideo import _
 from novaideo.mail import PRESENTATION_IDEA_MESSAGE, PRESENTATION_IDEA_SUBJECT
 
@@ -69,9 +70,9 @@ def members_choice(node, kw):
     values = []
     root = getSite(context)
     user = get_current()
-    principals = find_service(root, 'principals')
-    prop = list(principals['users'].values())
-    values = [(i, i.name) for i in prop if not(user is i) and not(i.name in ('admin', 'system'))]
+    prop = list(find_entities([IPerson], states=['active']))
+    prop.remove(user)
+    values = [(i, i.name) for i in prop]
     return Select2WidgetCreateSearchChoice(values=values, multiple=True)
 
 

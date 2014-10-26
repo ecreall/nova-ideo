@@ -6,7 +6,7 @@ from pyramid.threadlocal import get_current_registry
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, allSubobjectsOfType
-from dace.objectofcollaboration.principal.util import get_current, has_any_roles
+from dace.objectofcollaboration.principal.util import get_current, has_role
 from pontus.view import BasicView, ViewError, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.widget import CheckboxChoiceWidget, RichTextWidget
@@ -32,9 +32,10 @@ class DetailAmendmentView(BasicView):
     template = 'novaideo:views/amendment_management/templates/see_amendment.pt'
     item_template = 'pontus:templates/subview_sample.pt'
     viewid = 'seeamendment'
+    validate_behaviors = False
 
     def _get_adapted_text(self, user):
-        is_owner = has_any_roles(user=user, roles=(('Owner', self.context),))
+        is_owner = has_role(user=user, role=('Owner', self.context))
         text = getattr(self.context, 'text', '')
         if is_owner and ('explanation' in self.context.state):
             self.requirements = {'js_links': [], 'css_links': [],}
@@ -114,6 +115,7 @@ class SeeAmendmentView(MultipleView):
     views = (DetailAmendmentView, SeeAmendmentActionsView)
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/comment.js', 'novaideo:static/js/explanation_amendment.js']}
+    validators = [SeeAmendment.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeAmendment:SeeAmendmentView})

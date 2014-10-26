@@ -5,7 +5,7 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service, get_oid
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current
+from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current
 from dace.interfaces import IEntity
 from dace.processinstance.activity import (
     ElementaryAction,
@@ -29,12 +29,12 @@ def vote_relation_validation(process, context):
 
 
 def vote_roles_validation(process, context):
-    return has_any_roles(roles=(('Elector', process),))
+    return has_role(role=('Elector', process))
 
 def vote_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and \
-           not (user in process.ballot.report.voters)
+    return not (user in process.ballot.report.voters) and \
+           global_user_processsecurity(process, context) 
 
 
 class Vote(ElementaryAction):

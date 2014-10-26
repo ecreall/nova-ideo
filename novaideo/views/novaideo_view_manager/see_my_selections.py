@@ -40,7 +40,7 @@ class SeeMySelectionsView(BasicView):
     def update(self):
         self.execute(None) 
         user = get_current()
-        objects = [o for o in getattr(user, 'selections', []) if not('deprecated' in o.state)]
+        objects = [o for o in getattr(user, 'selections', []) if not('archived' in o.state)]
         objects = sorted(objects, key=lambda e: getattr(e, 'modified_at', datetime.datetime.today()), reverse=True)
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_selections"

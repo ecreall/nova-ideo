@@ -5,7 +5,7 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service, get_oid
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current
+from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
@@ -65,7 +65,7 @@ def respond_state_validation(process, context):
 
 
 class Respond(InfiniteCardinality):
-    title = _('Respond')
+    title = _('Replay')
     access_controled = True
     context = IComment
     relation_validation = respond_relation_validation

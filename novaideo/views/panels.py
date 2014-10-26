@@ -171,10 +171,10 @@ class StepsPanel(object):
             elif 'published' in context.state:
                 result['current_step'] = 4
                 result['step4_message'] = renderers.render(self.step4_template, {'context':context}, self.request)
-            elif not ('deprecated' in context.state):
+            elif not ('archived' in context.state):
                 result['current_step'] = 3
                 result['step3_message'] =  renderers.render(self.step3_template, {'context':context}, self.request)
-            elif 'deprecated' in context.state:
+            elif 'archived' in context.state:
                 result['current_step'] = 0
 
         return result

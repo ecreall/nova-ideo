@@ -6,7 +6,7 @@ from pyramid import renderers
 from substanced.util import get_oid
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite
+from dace.util import getSite, find_entities
 from dace.processinstance.core import  Behavior
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
@@ -19,7 +19,7 @@ from pontus.widget import MappingWidget, Select2Widget
 
 from novaideo.content.processes.proposal_management.behaviors import  EditProposal
 from novaideo.content.proposal import ProposalSchema, Proposal
-from novaideo.content.idea import IdeaSchema, Idea
+from novaideo.content.idea import IdeaSchema, Idea, Iidea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.core import can_access
@@ -33,10 +33,9 @@ def idea_choice(node, kw):
      root = getSite()
      user = get_current()
      _ideas = list(user.ideas)
-     _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
-     _ideas = set(_ideas) 
-     ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
-     values = [(i, i.title) for i in ideas]
+     _ideas.extend([ i for i in user.selections if isinstance(i, Idea) and can_access(user, i)])
+     ideas = set(_ideas) 
+     values = [(i, i.title) for i in ideas if not('archived' in i.state)]
      values.insert(0, ('', '- Select -'))
      return Select2WidgetSearch(values=values, item_css_class='search-idea-form',
                                 url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
@@ -150,8 +149,8 @@ class IdeaManagementView(MultipleView):
 def ideas_choice():
     root = getSite()
     user = get_current()
-    ideas = [i for i in root.ideas if can_access(user, i) and not('deprecated' in i.state)]
-    values = [(i, i.title) for i in ideas]
+    ideas = find_entities([Iidea], states=('archived',), not_any=True) 
+    values = [(i, i.title) for i in ideas if can_access(user, i)]
     return Select2Widget(values=values, multiple=True)
 
 

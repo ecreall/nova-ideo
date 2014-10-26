@@ -19,9 +19,9 @@ class PublishAsProposalView(BasicView):
     behaviors = [PublishAsProposal]
     viewid = 'publishasproposal'
 
-
     def update(self):
-        self.execute(None)        
+        self.execute(None)
         return list(self.behaviorinstances.values())[0].redirect(self.context, self.request)
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({PublishAsProposal:PublishAsProposalView})

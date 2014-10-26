@@ -5,7 +5,7 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service, get_oid
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, get_current
+from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current
 from dace.processinstance.activity import (
     ElementaryAction,
     LimitedCardinality,
@@ -25,7 +25,7 @@ from novaideo.core import can_access, acces_action
 
 
 def comm_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_role(role=('Member',))
 
 
 def comm_processsecurity_validation(process, context):

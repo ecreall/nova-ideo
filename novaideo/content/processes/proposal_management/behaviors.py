@@ -14,7 +14,7 @@ from dace.util import (
     copy,
     find_entities,
     get_obj)
-from dace.objectofcollaboration.principal.util import has_any_roles, grant_roles, get_current, revoke_roles
+from dace.objectofcollaboration.principal.util import has_role, grant_roles, get_current, revoke_roles
 from dace.processinstance.activity import InfiniteCardinality, ActionType, LimitedCardinality, ElementaryAction
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
@@ -63,7 +63,7 @@ except NameError:
 default_nb_correctors = 1
 
 def createproposal_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_role(role=('Member',))
 
 
 def createproposal_processsecurity_validation(process, context):
@@ -134,8 +134,8 @@ def pap_processsecurity_validation(process, context):
         if originalentity.text == context.text:
             return False
 
-    return has_any_roles(roles=(('Owner', context),)) and ('to work' in context.state) or \
-           (has_any_roles(roles=('Member',)) and ('published' in context.state))
+    return ('to work' in context.state) and has_role(role=('Owner', context))  or \
+           (('published' in context.state) and has_role(role=('Member',)))
 
 
 class PublishAsProposal(ElementaryAction):
@@ -198,16 +198,15 @@ def submit_relation_validation(process, context):
 
 
 def submit_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def submit_processsecurity_validation(process, context):
     user = get_current()
     root = getSite()
-    wgs = user.active_working_groups
-    return global_user_processsecurity(process, context) and \
-          len(wgs) < root.participations_maxi
-
+    return len(user.active_working_groups) < root.participations_maxi and \
+           global_user_processsecurity(process, context)
+          
 
 def submit_state_validation(process, context):
     return "draft" in context.state
@@ -246,8 +245,8 @@ class SubmitProposal(ElementaryAction):
 
 
 def duplicate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           not ('draft' in context.state)
+    return not ('draft' in context.state) and \
+           global_user_processsecurity(process, context)
 
 
 class DuplicateProposal(ElementaryAction):
@@ -267,7 +266,6 @@ class DuplicateProposal(ElementaryAction):
             root.addtoproperty('keywords', nk)
 
         result.extend(newkeywords)
-        
         related_ideas = appstruct.pop('related_ideas')
         appstruct['keywords_ref'] = result
         copy_of_proposal.set_data(appstruct)
@@ -301,7 +299,7 @@ def edit_relation_validation(process, context):
 
 
 def edit_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context),))
+    return has_role(role=('Owner', context))
 
 
 def edit_processsecurity_validation(process, context):
@@ -378,14 +376,14 @@ def proofreading_relation_validation(process, context):
 
 
 def proofreading_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context),))
+    return has_role(role=('Participant', context))
 
 
 def proofreading_processsecurity_validation(process, context):
     correction_in_process = any(('in process' in c.state for c in context.corrections))
-    return global_user_processsecurity(process, context) and \
-           not correction_in_process and \
-           not getattr(process, 'first_decision', True)
+    return not correction_in_process and \
+           not getattr(process, 'first_decision', True) and \
+           global_user_processsecurity(process, context)
 
 
 def proofreading_state_validation(process, context):
@@ -419,11 +417,10 @@ def pub_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
 def pub_roles_validation(process, context):
-    return has_any_roles(roles=('System',)) #System
+    return has_role(role=('System',)) #System
 
 def pub_state_validation(process, context):
-    wg = context.working_group
-    return 'active' in wg.state and 'votes for publishing' in context.state
+    return 'active' in context.working_group.state and 'votes for publishing' in context.state
 
 
 class PublishProposal(ElementaryAction):
@@ -476,14 +473,14 @@ def support_relation_validation(process, context):
 
 
 def support_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_role(role=('Member',))
 
 
 def support_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and \
-           user.tokens and  \
-           not (user in [t.owner for t in context.tokens])
+    return user.tokens and  \
+           not (user in [t.owner for t in context.tokens]) and \
+           global_user_processsecurity(process, context)
 
 def support_state_validation(process, context):
     return 'published' in context.state
@@ -519,7 +516,6 @@ class SupportProposal(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-
 class OpposeProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
@@ -552,8 +548,8 @@ class OpposeProposal(InfiniteCardinality):
 
 def withdrawt_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and \
-           [t for t in context.tokens if (t.owner is user) and t.proposal is None]
+    return [t for t in context.tokens if (t.owner is user) and t.proposal is None] and \
+           global_user_processsecurity(process, context)
 
 
 class WithdrawToken(InfiniteCardinality):
@@ -587,7 +583,7 @@ def alert_relation_validation(process, context):
 
 
 def alert_roles_validation(process, context):
-    return has_any_roles(roles=('System',))
+    return has_role(role=('System',))
 
 
 def alert_state_validation(process, context):
@@ -630,7 +626,7 @@ def comm_relation_validation(process, context):
 
 
 def comm_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_role(role=('Member',))
 
 
 def comm_processsecurity_validation(process, context):
@@ -655,12 +651,12 @@ def edita_relation_validation(process, context):
 
 
 def edita_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context),))
+    return has_role(role=('Participant', context))
 
 
 def edita_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           any(not('deprecated' in a.state) for a in context.amendments)
+    return any(not('archived' in a.state) for a in context.amendments) and \
+          global_user_processsecurity(process, context)
 
 
 class EditAmendments(InfiniteCardinality):
@@ -683,7 +679,7 @@ def present_relation_validation(process, context):
 
 
 def present_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_role(role=('Member',))
 
 
 def present_processsecurity_validation(process, context):
@@ -707,9 +703,9 @@ def associate_relation_validation(process, context):
 
 
 def associate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           (has_any_roles(roles=(('Owner', context),)) or \
-           (has_any_roles(roles=('Member',)) and not ('draft' in context.state)))
+    return (has_role(role=('Owner', context)) or \
+           (has_role(role=('Member',)) and not ('draft' in context.state))) and \
+           global_user_processsecurity(process, context)
 
 
 class Associate(AssociateIdea):
@@ -724,7 +720,7 @@ def seeideas_relation_validation(process, context):
 
 
 def seeideas_roles_validation(process, context):
-    return has_any_roles(roles=('Member',)) 
+    return has_role(role=('Member',)) 
 
 
 def seeideas_processsecurity_validation(process, context):
@@ -733,7 +729,7 @@ def seeideas_processsecurity_validation(process, context):
 
 def seeideas_state_validation(process, context):
     return not ('draft' in context.state) or \
-           ('draft' in context.state and has_any_roles(roles=(('Owner', context),))) 
+           ('draft' in context.state and has_role(role=('Owner', context))) 
 
 
 class SeeRelatedIdeas(InfiniteCardinality):
@@ -756,7 +752,7 @@ def improve_relation_validation(process, context):
 
 
 def improve_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context),))
+    return has_role(role=('Participant', context))
 
 
 def improve_processsecurity_validation(process, context):
@@ -815,7 +811,7 @@ def correctitem_relation_validation(process, context):
 
 
 def correctitem_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context.proposal),))
+    return has_role(role=('Participant', context.proposal))
 
 
 def correctitem_processsecurity_validation(process, context):
@@ -823,8 +819,7 @@ def correctitem_processsecurity_validation(process, context):
 
 
 def correctitem_state_validation(process, context):
-    wg = context.proposal.working_group
-    return 'active' in wg.state and 'proofreading' in context.proposal.state
+    return 'active' in context.proposal.working_group.state and 'proofreading' in context.proposal.state
 
 
 class CorrectItem(InfiniteCardinality):
@@ -913,18 +908,18 @@ def correct_relation_validation(process, context):
 
 
 def correct_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context),))
+    return has_role(role=('Participant', context))
 
 
 def correct_processsecurity_validation(process, context):
     correction_in_process = any(('in process' in c.state for c in context.corrections))
-    return global_user_processsecurity(process, context) and not correction_in_process and \
-           not getattr(process, 'first_decision', True)
+    return not correction_in_process and \
+           not getattr(process, 'first_decision', True) and \
+           global_user_processsecurity(process, context)
 
 
 def correct_state_validation(process, context):
-    wg = context.working_group
-    return 'active' in wg.state and 'proofreading' in context.state
+    return 'active' in context.working_group.state and 'proofreading' in context.state
 
 
 class CorrectProposal(InfiniteCardinality):
@@ -1029,15 +1024,11 @@ def decision_relation_validation(process, context):
 
 
 def decision_roles_validation(process, context):
-     #has_first_decision = hasattr(process, 'first_decision')
-     #return (has_first_decision and has_any_roles(roles=(('Participant', context),))) or \
-     #       (has_first_decision and has_any_roles(roles=('System',)))
-    return has_any_roles(roles=('System',))
+    return has_role(role=('System',))
 
 
 def decision_state_validation(process, context):
-    wg = context.working_group
-    return 'active' in wg.state and any(s in context.state for s in ['proofreading', 'amendable'])
+    return 'active' in context.working_group.state and any(s in context.state for s in ['proofreading', 'amendable'])
 
 
 class VotingPublication(ElementaryAction):
@@ -1080,16 +1071,16 @@ def withdraw_relation_validation(process, context):
 
 
 def withdraw_roles_validation(process, context):
-    return has_any_roles(roles=('Member',))
+    return has_role(role=('Member',))
 
 
 def withdraw_processsecurity_validation(process, context):
     user = get_current()
-    return global_user_processsecurity(process, context) and user in context.working_group.wating_list
+    return user in context.working_group.wating_list and \
+           global_user_processsecurity(process, context)
 
 
 def withdraw_state_validation(process, context):
-    wg = context.working_group
     return  any(s in context.state for s in ['proofreading', 'amendable'])
 
 
@@ -1130,7 +1121,7 @@ def resign_relation_validation(process, context):
 
 
 def resign_roles_validation(process, context):
-    return has_any_roles(roles=(('Participant', context),))
+    return has_role(role=('Participant', context))
 
 
 def resign_processsecurity_validation(process, context):
@@ -1215,16 +1206,16 @@ def participate_relation_validation(process, context):
 
 
 def participate_roles_validation(process, context):
-    return has_any_roles(roles=('Member',)) and not has_any_roles(roles=(('Participant', context),))
+    return has_role(role=('Member',)) and not has_role(role=('Participant', context))
 
 
 def participate_processsecurity_validation(process, context):
     user = get_current()
     root = getSite()
     wgs = user.active_working_groups
-    return global_user_processsecurity(process, context) and \
-           not(user in context.working_group.wating_list) and \
-           len(wgs) < root.participations_maxi 
+    return not(user in context.working_group.wating_list) and \
+           len(wgs) < root.participations_maxi and \
+           global_user_processsecurity(process, context)
 
 
 def participate_state_validation(process, context):
@@ -1271,7 +1262,7 @@ class Participate(InfiniteCardinality):
                 if not hasattr(self.process, 'first_decision'):
                     self.process.first_decision = True
 
-                if any(not('deprecated' in a.state) for a in context.amendments):
+                if any(not('archived' in a.state) for a in context.amendments):
                     context.state.append('amendable')
                 else:
                     context.state.append('proofreading')
@@ -1296,12 +1287,11 @@ def va_relation_validation(process, context):
 
 
 def va_roles_validation(process, context):
-    return has_any_roles(roles=('System',))
+    return has_role(role=('System',))
 
 
 def va_state_validation(process, context):
-    wg = context.working_group
-    return 'active' in wg.state and 'amendable' in context.state
+    return 'active' in context.working_group.state and 'amendable' in context.state
 
 
 class VotingAmendments(ElementaryAction):
@@ -1338,8 +1328,7 @@ class VotingAmendments(ElementaryAction):
 
 
 def ar_state_validation(process, context):
-    wg = context.working_group
-    return 'active' in wg.state and 'votes for amendments' in context.state
+    return 'active' in context.working_group.state and 'votes for amendments' in context.state
 
 
 class AmendmentsResult(ElementaryAction):
@@ -1415,7 +1404,7 @@ class AmendmentsResult(ElementaryAction):
             merged_text = text_analyzer.merge(context.text, [a.text for a in amendments])
             #TODO merged_keywords + merged_description
             copy_of_proposal = self._get_copy(context, root, wg)
-            context.state = PersistentList(['deprecated'])
+            context.state = PersistentList(['archived'])
             copy_of_proposal.text = merged_text
             #correlation idea of replacement ideas... del replaced_idea
             added_ideas = [a.added_ideas for a in amendments]
@@ -1432,7 +1421,7 @@ class AmendmentsResult(ElementaryAction):
         else:
             context.state = PersistentList(['proofreading'])
             for amendment in context.amendments:
-                amendment.state = PersistentList(['deprecated'])
+                amendment.state = PersistentList(['archived'])
                 amendment.reindex()
 
         context.reindex()
@@ -1443,8 +1432,7 @@ class AmendmentsResult(ElementaryAction):
 
 
 def ta_state_validation(process, context):
-    wg = context.working_group
-    return 'active' in wg.state and 'votes for publishing' in context.state
+    return 'active' in context.working_group.state and 'votes for publishing' in context.state
 
 
 class Amendable(ElementaryAction):
@@ -1463,7 +1451,7 @@ class Amendable(ElementaryAction):
         wg = context.working_group
         if self.process.first_decision:
             self.process.first_decision = False
-        if any(not('deprecated' in a.state) for a in context.amendments):
+        if any(not('archived' in a.state) for a in context.amendments):
             context.state.append('amendable')
         else:
             context.state.append('proofreading')
@@ -1486,10 +1474,10 @@ class Amendable(ElementaryAction):
 
 
 def compare_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           getattr(context, 'version', None) is not None and \
-           (has_any_roles(roles=(('Owner', context),)) or \
-           (has_any_roles(roles=('Member',)) and not ('draft' in context.state)))
+    return getattr(context, 'version', None) is not None and \
+           (has_role(role=('Owner', context)) or \
+           (has_role(role=('Member',)) and not ('draft' in context.state))) and \
+           global_user_processsecurity(process, context)
 
 
 class CompareProposal(InfiniteCardinality):

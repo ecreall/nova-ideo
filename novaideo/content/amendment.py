@@ -46,11 +46,10 @@ def idea_choice(node, kw):
      root = getSite()
      user = get_current()
      _ideas = list(user.ideas)
-     _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
+     _ideas.extend([ i for i in user.selections if isinstance(i, Idea) and can_access(user, i)])
      _ideas.extend(_used_ideas)
-     _ideas = set(_ideas) 
-     ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
-     values = [(i, i.title) for i in ideas]
+     ideas = set(_ideas) 
+     values = [(i, i.title) for i in ideas if not('archived' in i.state)]
      return Select2WidgetSearch(multiple= True, values=values, item_css_class='search-idea-form',
                                 url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
 
@@ -73,7 +72,6 @@ def replacedideas_choice(node, kw):
     ideas = list(context.proposal.related_ideas)
     ideas.extend(_used_ideas)
     ideas = set(ideas)
-    ideas = [i for i in ideas if can_access(user, i)]
     values = [(i, i.title) for i in ideas]
     return Select2WidgetSearch(multiple= True, 
                                values=values,
@@ -89,11 +87,10 @@ def ideasofreplacement_choice(node, kw):
     root = getSite()
     user = get_current()
     _ideas = list(user.ideas)
-    _ideas.extend([ i for i in user.selections if isinstance(i, Idea)])
+    _ideas.extend([ i for i in user.selections if isinstance(i, Idea) and can_access(user, i)])
     _ideas.extend(_used_ideas)
-    _ideas = set(_ideas) 
-    ideas = [i for i in _ideas if can_access(user, i) and not('deprecated' in i.state)]
-    values = [(i, i.title) for i in ideas]
+    ideas = set(_ideas) 
+    values = [(i, i.title) for i in ideas if not('archived' in i.state)]
     return Select2WidgetSearch(multiple= True, 
                                values=values, 
                                item_css_class='search-idea-form',
@@ -329,7 +326,7 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
                 except Exception:
                     pass
 
-        return result
+        return list(set(result))
 
     @property
     def added_ideas(self):
@@ -380,7 +377,7 @@ class Amendment(Commentable, CorrelableEntity, SearchableEntity, DuplicableEntit
                     pass
 
         if result:
-            return '<div>'+"\n".join(result)+'</div>'
+            return '<div>'+"\n".join(list(set(result)))+'</div>'
     
         return ''
 
