@@ -4,7 +4,7 @@
     <dl >
       <dt  i18n:translate="">Abstract</dt>
       <dd>${structure:descriptiondiff}</dd>
-      <dt tal:condition="keywordsdiff"  i18n:translate="">Key words</dt>
+      <dt tal:condition="keywordsdiff"  i18n:translate="">Keywords</dt>
       <dd tal:condition="keywordsdiff">
         <tal:loop repeat="k keywordsdiff">
           <a tal:attributes="href request.resource_url(request.root, '', query={'text':k['title']})"><del tal:condition="k['state']=='del'">${k['title']}</del><ins tal:condition="k['state']=='ins'">${k['title']}</ins><span tal:condition="k['state']=='nothing'">${k['title']}</span></a>

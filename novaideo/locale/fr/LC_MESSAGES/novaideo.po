@@ -1,4 +1,11 @@
 #: novaideo/core.py:124
+#: novaideo/views/idea_management/templates/diff_result.pt:13
+#: novaideo/views/idea_management/templates/see_idea.pt:67
+#: novaideo/views/proposal_management/templates/diff_result.pt:15
+#: novaideo/views/templates/idea_result.pt:25
+#: novaideo/views/templates/proposal_result.pt:22
+#: novaideo/views/amendment_management/templates/see_amendment.pt:73
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:79
 msgid "Keywords"
 msgstr ""
 
@@ -239,16 +246,6 @@ msgstr ""
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:73
 #: novaideo/content/idea.py:59 novaideo/content/proposal.py:56
 msgid "Abstract"
-msgstr ""
-
-#: novaideo/views/idea_management/templates/diff_result.pt:13
-#: novaideo/views/idea_management/templates/see_idea.pt:67
-#: novaideo/views/proposal_management/templates/diff_result.pt:15
-#: novaideo/views/templates/idea_result.pt:25
-#: novaideo/views/templates/proposal_result.pt:22
-#: novaideo/views/amendment_management/templates/see_amendment.pt:73
-#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:79
-msgid "Key words"
 msgstr ""
 
 #: novaideo/views/idea_management/templates/diff_result.pt:40
@@ -751,6 +748,9 @@ msgstr ""
 
 #: novaideo/views/templates/add_idea_widget.pt:18
 #: novaideo/views/templates/confirmation_form.pt:26
+#: novaideo/views/templates/mapping_simple.pt:12
+#: novaideo/views/templates/object_mapping.pt:10
+#: novaideo/views/templates/mapping_col.pt:9
 msgid "There was a problem with this section"
 msgstr ""
 
@@ -766,6 +766,11 @@ msgstr ""
 msgid ""
 "Modifie le <dynamic element>  ${object.modified_at.hour}:${object."
 "modified_at.minute}:${object.modified_at.second} par <dynamic element>"
+msgstr ""
+
+#: novaideo/views/templates/ajax_form.pt:25
+#: novaideo/views/novaideo_view_manager/templates/search_form.pt:18
+msgid "There was a problem with your submission"
 msgstr ""
 
 #: novaideo/views/templates/amendment_result.pt:20
@@ -1020,10 +1025,6 @@ msgstr ""
 
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:165
 msgid "Votes"
-msgstr ""
-
-#: novaideo/views/novaideo_view_manager/templates/search_form.pt:18
-msgid "There was a problem with your submission"
 msgstr ""
 
 #: novaideo/views/correlation_management/comment_correlation.py:29

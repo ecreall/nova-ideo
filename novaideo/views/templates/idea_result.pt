@@ -8,7 +8,7 @@
     <dl >
       <dt i18n:translate="">Abstract</dt>
       <dd>${object.description}</dd>
-      <dt tal:condition="object.keywords" i18n:translate="">Key words</dt>
+      <dt tal:condition="object.keywords" i18n:translate="">Keywords</dt>
       <dd tal:condition="object.keywords">
         <tal:loop repeat="k object.keywords">
           <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>

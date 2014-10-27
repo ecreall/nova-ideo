@@ -10,7 +10,7 @@
      title="${description}"
      id="item-${oid}"
      tal:omit-tag="structural"
-     i18n:domain="deform">
+     i18n:domain="novaideo">
   <div tal:define="input_prepend field.widget.input_prepend | None;
                    input_append field.widget.input_append  | None"
        tal:omit-tag="not (input_prepend or input_append)"

@@ -3,7 +3,7 @@
                      errormsg errormsg|field.errormsg;
                      item_template item_template|field.widget.item_template;
                      css_class css_class|getattr(field.widget, 'item_css_class', '')"
-         i18n:domain="deform">
+         i18n:domain="novaideo">
   
     <div class="${css_class}" title="${description}">
 

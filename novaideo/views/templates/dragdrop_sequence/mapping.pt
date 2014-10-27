@@ -2,7 +2,7 @@
                      description description|field.description;
                      errormsg errormsg|field.errormsg;
                      item_template item_template|field.widget.item_template"
-         i18n:domain="deform">
+         i18n:domain="novaideo">
       ${field.start_mapping()}
       <div tal:repeat="child field.children"
            tal:replace="structure child.render_template(item_template)" >

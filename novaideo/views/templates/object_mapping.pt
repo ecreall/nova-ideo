@@ -2,7 +2,7 @@
                      description description|field.description;
                      errormsg errormsg|field.errormsg;
                      item_template item_template|field.widget.item_template"
-         i18n:domain="deform">
+         i18n:domain="novaideo">
   
   <div class="panel panel-default" title="${description}">
     <div class="panel-body amendment-body">

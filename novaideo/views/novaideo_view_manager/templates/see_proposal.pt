@@ -32,7 +32,7 @@
     <dl >
         <dt  i18n:translate="">Abstract</dt>
 	<dd class="content-description">${structure:description}</dd>
-      <dt tal:condition="proposal.keywords" i18n:translate="">Key words</dt>
+      <dt tal:condition="proposal.keywords" i18n:translate="">Keywords</dt>
       <dd tal:condition="proposal.keywords">
         <tal:loop repeat="k proposal.keywords">
           <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>

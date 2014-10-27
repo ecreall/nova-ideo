@@ -6,7 +6,7 @@
                  oid oid|field.oid"
      title="${description}"
      class="form-group deformSeqItem sequence-item col-md-3 ${field.widget.item_css_class or ''}"
-     i18n:domain="deform">
+     i18n:domain="novaideo">
   <div >
 
     <span tal:replace="structure field.serialize(cstruct)"/>

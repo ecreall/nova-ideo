@@ -10,7 +10,7 @@
      title="${description}"
      id="item-${oid}"
      tal:omit-tag="structural"
-     i18n:domain="deform">
+     i18n:domain="novaideo">
 
   <label for="${oid}"
          class="control-label ${required and 'required' or ''}"
