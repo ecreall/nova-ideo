@@ -199,10 +199,10 @@ class SearchResultView(BasicView):
         content_types = appstruct['content_types']
         text = appstruct['text']
         objects = search(text, content_types, user)
-        url = self.request.resource_url(self.context, '', query={'content_types':content_types, 'text':appstruct['text']})
+        url = self.request.resource_url(self.context, '', 
+                                        query={'content_types':content_types, 'text':appstruct['text']})
         batch = Batch(objects, self.request, url=url, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results"
-        
         len_result = batch.seqlen
         result_body = []
         for o in batch:
@@ -215,7 +215,7 @@ class SearchResultView(BasicView):
                 'bodies': result_body,
                 'length': len_result,
                 'batch': batch,
-               }
+                 }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
