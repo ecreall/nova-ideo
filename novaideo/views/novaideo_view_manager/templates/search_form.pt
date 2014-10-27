@@ -20,7 +20,7 @@
   method="${method}"
   enctype="multipart/form-data"
   accept-charset="utf-8"
-  i18n:domain="deform"
+  i18n:domain="novaideo"
   >
 
   <fieldset class="deformFormFieldset">

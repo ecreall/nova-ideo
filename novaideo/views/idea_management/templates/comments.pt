@@ -1,19 +1,19 @@
-<ul class="${(origin and 'commentulorigin') or 'commentul hide-bloc'}">
+<ul class="${(origin and 'commentulorigin') or 'commentul hide-bloc'}" i18n:domain="novaideo">
   <tal:loop repeat="item comments">
     <li class="commentli" data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" tal:define="diff view._datetimedelta(item['comment'].created_at); comment item['comment']">
        <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
           <img tal:condition="comment.author.picture is not None" tal:attributes="src comment.author.picture.url(request)"  class="img-circle" width="60"/>
           <div class="media-body" style="width:auto;">
-           <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span> Association</div>
+           <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right" i18n:translate=""><span class="glyphicon glyphicon-link"></span> Association</div>
             <small>
               <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
-              <div  tal:omit-tag="" tal:condition="diff">Il y a 
-                <span tal:condition="'days' in diff">${diff['days']} jour(s)</span> 
-                <span tal:condition="'hours' in diff">${diff['hours']} heur(s)</span> 
-                <span tal:condition="'minutes' in diff">${diff['minutes']} minute(s)</span>
-                <span tal:condition="len(diff.keys()) == 1 and 'seconds' in diff">${diff['seconds']} seconde(s)</span>
+              <div  tal:omit-tag="" tal:condition="diff" i18n:translate="">Il y a 
+                <span tal:condition="'days' in diff"  i18n:translate="">${diff['days']} jour(s)</span> 
+                <span tal:condition="'hours' in diff"  i18n:translate="">${diff['hours']} heur(s)</span> 
+                <span tal:condition="'minutes' in diff" i18n:translate="">${diff['minutes']} minute(s)</span>
+                <span tal:condition="len(diff.keys()) == 1 and 'seconds' in diff" i18n:translate="">${diff['seconds']} seconde(s)</span>
               </div>
-              <span tal:condition="len(diff.keys()) == 0">Maintenant</span> - Son intention: 
+              <span tal:condition="len(diff.keys()) == 0" i18n:translate="">Maintenant</span> - Son intention: 
               <span tal:condition="getattr(comment, 'intention', None)">${comment.intention}</span>
             </small>
             <p>${comment.comment}</p>
@@ -21,7 +21,8 @@
                <small tal:define="contents comment.related_correlation.targets">
                   <blockquote class="attached_contents">
                     <dl >
-                     <dt tal:condition="len(contents)>1">Associated contents:</dt><dt tal:condition="len(contents)==1">Associated content:</dt>
+                     <dt tal:condition="len(contents)>1" i18n:translate="">Associated contents:</dt>
+                    <dt tal:condition="len(contents)==1" i18n:translate="">Associated content:</dt>
                      <dd tal:condition="contents">
                        <tal:loop repeat="f contents">
                            <a tal:attributes="href request.resource_url(f, '@@index')">${f.title}</a>
@@ -36,7 +37,7 @@
                 <span tal:condition="comment.comments" 
                       class="comment-replay-nb"
                       onclick="javascript:replays_show(this);">
-                  <small><span class="glyphicon glyphicon-chevron-down"></span> ${len(comment.comments)} Replay(s)</small>
+                  <small i18n:translate=""><span class="glyphicon glyphicon-chevron-down"></span> ${len(comment.comments)} Replay(s)</small>
                 </span>
                 <div tal:omit-tag="" tal:define="commentaction item['commentaction']">
                  <a id="${commentaction['action_id']}-btn" 

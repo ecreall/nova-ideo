@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item" >
+<div class="thumbnail right-caption span4 search-item" i18n:domain="novaideo">
   <img tal:condition="object.picture is not None" tal:attributes="src object.picture.url(request)"  width="100"/>
   <div tal:condition="object.picture is None" id="person-image" class="content-image">
   </div>
@@ -6,7 +6,7 @@
     <h4 tal:condition="getattr(object, 'state', None) is not None"><span class="label label-basic pull-right">${object.state[0].capitalize()}</span></h4>
       <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)} </h3></a>
       <dl>
-        <dt tal:condition="getattr(object, 'keywords', [])">Centres d'intérêt</dt>
+        <dt tal:condition="getattr(object, 'keywords', [])" i18n:translate="">Centres d'intérêt</dt>
         <dd tal:condition="getattr(object, 'keywords', [])">
           <tal:loop repeat="k object.keywords">
             <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>

@@ -16,20 +16,20 @@
   </div><!-- /.container-fluid -->
 </nav>
 
-<div class="media-body content-title-body">
+<div class="media-body content-title-body"  i18n:domain="novaideo">
 <h3 tal:condition="idea.state"><span class="label label-basic pull-right">${idea.state[0].capitalize()}</span></h3>
 <h2 class="content-title"><img src="${request.static_url('novaideo:static/images/idea_picto32.png')}"> ${idea.title}</h2>
   <div class="object-description">
-   <small >(Proposée par <a tal:attributes="href request.resource_url(idea.author, '@@index')">${((idea.author is current_user) and 'Vous') or getattr(idea.author, 'title', idea.author.name)}</a> le <span tal:replace="layout.to_localized_time(idea.modified_at, date_only=True)"/> à ${idea.modified_at.hour}:${idea.modified_at.minute}:${idea.modified_at.second} <span tal:omit-tag="" tal:condition="idea.originalentity is not None">, dupliquée à partir de l'idée <a tal:attributes="href request.resource_url(idea.originalentity, '@@index')">${idea.originalentity.title}</a></span>)
+   <small i18n:translate="">(Proposée par <a tal:attributes="href request.resource_url(idea.author, '@@index')">${((idea.author is current_user) and 'Vous') or getattr(idea.author, 'title', idea.author.name)}</a> le <span tal:replace="layout.to_localized_time(idea.modified_at, date_only=True)"/> à ${idea.modified_at.hour}:${idea.modified_at.minute}:${idea.modified_at.second} <span tal:omit-tag="" tal:condition="idea.originalentity is not None">, dupliquée à partir de l'idée <a tal:attributes="href request.resource_url(idea.originalentity, '@@index')">${idea.originalentity.title}</a></span>)
    </small>
   </div>
 </div>
 
-<div class="object-well idea-well">
+<div class="object-well idea-well"  i18n:domain="novaideo">
     <dl >
-        <dt>Résumé</dt>
+        <dt i18n:translate="">Abstract</dt>
 	<dd>${idea.description}</dd>
-      <dt tal:condition="idea.keywords">Mots clés</dt>
+      <dt tal:condition="idea.keywords" i18n:translate="">Key words</dt>
       <dd tal:condition="idea.keywords">
         <tal:loop repeat="k idea.keywords">
           <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>
@@ -41,11 +41,12 @@
 <div id="contenttext" class="content-text">
 ${structure:idea.text}
 </div>
-<div id="idea_files">
+<div id="idea_files"  i18n:domain="novaideo">
 <small>
  <blockquote class="attached_contents">
    <dl >
-   <dt tal:condition="len(files)>1">Pièces jointes:</dt><dt tal:condition="len(files)==1">Pièce jointe:</dt>
+   <dt tal:condition="len(files)>1" i18n:translate="">Pièces jointes:</dt>
+   <dt tal:condition="len(files)==1" i18n:translate="">Pièce jointe:</dt>
    <dd tal:condition="files">
         <tal:loop repeat="f files">
           <a tal:attributes="href f['url']">${f['title']}</a>

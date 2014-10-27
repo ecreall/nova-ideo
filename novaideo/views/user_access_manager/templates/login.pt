@@ -1,6 +1,6 @@
-<div class="row">
+<div class="row" i18n:domain="novaideo">
   <div class="col-sm-12">
-       <h2 class="form-signin-heading" ><p class="text-center" i18n:domain="novaideo" i18n:translate="">Log In</p></h2>
+       <h2 class="form-signin-heading" ><p class="text-center" i18n:translate="">Log In</p></h2>
        <form action="${url}" method="post"
              class="form-signin"
              metal:define-macro="login-form">
@@ -22,7 +22,7 @@
 
          <p id="password-reset-link"
               metal:define-macro="password-reset-link">
-           <a href="${request.resource_url(request.virtual_root, '@@resetpassword')}" i18n:domain="novaideo" i18n:translate=""
+           <a href="${request.resource_url(request.virtual_root, '@@resetpassword')}" i18n:translate=""
                 >Forgot your password?</a>
          </p>
 

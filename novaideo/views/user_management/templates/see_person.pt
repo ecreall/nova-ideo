@@ -10,13 +10,13 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div class="thumbnail right-caption span4" >
+<div class="thumbnail right-caption span4" i18n:domain="novaideo">
   <img tal:condition="user.picture is not None" tal:attributes="src user.picture.url(request)"  width="100"/>
   <div class="media-body" style="width:auto;">
     <h3 tal:condition="getattr(user, 'state', None) is not None"><span class="label label-basic pull-right">${user.state[0].capitalize()}</span></h3>
       <h3>${getattr(user, 'title', user.name)}</h3>
       <dl>
-        <dt tal:condition="getattr(user, 'keywords', [])">Centres d'intérêt</dt>
+        <dt tal:condition="getattr(user, 'keywords', [])" i18n:translate="">Centres d'intérêt</dt>
         <dd tal:condition="getattr(user, 'keywords', [])">
           <tal:loop repeat="k user.keywords">
             <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>
@@ -29,10 +29,10 @@
       </span>
   </div>
 </div>
-<div id="panel-contributions" class="panel-group">
+<div id="panel-contributions" class="panel-group" i18n:domain="novaideo">
   <div tal:condition="contents" class="panel panel-default">
     <div class="panel-heading">
-      <a  href="#contents" data-parent="#contributions" data-toggle="collapse" class="panel-title">
+      <a  href="#contents" data-parent="#contributions" data-toggle="collapse" class="panel-title" i18n:translate="">
 	Contents
       </a>
     </div>

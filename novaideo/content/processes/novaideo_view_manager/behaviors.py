@@ -19,27 +19,6 @@ from ..user_management.behaviors import global_user_processsecurity
 from novaideo.core import acces_action
 
 
-def seeideas_roles_validation(process, context):
-    return has_role(role=('Member',))
-
-
-def seeideas_processsecurity_validation(process, context):
-    return len(context.ideas)>=1 and global_user_processsecurity(process, context)
-
-
-class SeeIdeas(InfiniteCardinality):
-    isSequential = False
-    context = INovaIdeoApplication
-    roles_validation = seeideas_roles_validation
-    processsecurity_validation = seeideas_processsecurity_validation
-
-    def start(self, context, request, appstruct, **kw):
-        return True
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
-
-
 @acces_action()
 class Search(InfiniteCardinality):
     isSequential = False

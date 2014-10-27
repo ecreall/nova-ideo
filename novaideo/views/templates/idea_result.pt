@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item" >
+<div class="thumbnail right-caption span4 search-item" i18n:domain="novaideo">
   <div id="idea-image" class="content-image">
   <img src="${request.static_url('novaideo:static/images/idea.png')}" width="100">
   </div>
@@ -6,8 +6,9 @@
     <h4 tal:condition="object.state"><span class="label label-basic pull-right">${object.state[0].capitalize()}</span></h4>
     <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
     <dl >
-      <dt>Résumé</dt><dd>${object.description}</dd>
-      <dt tal:condition="object.keywords">Mots clés</dt>
+      <dt i18n:translate="">Abstract</dt>
+      <dd>${object.description}</dd>
+      <dt tal:condition="object.keywords" i18n:translate="">Key words</dt>
       <dd tal:condition="object.keywords">
         <tal:loop repeat="k object.keywords">
           <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>
@@ -15,6 +16,6 @@
         </tal:loop>
       </dd>
     </dl>
-    Modifiée le <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> à ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} par <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
+    <span i18n:translate="">Modifiée le <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> à ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} par <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a></span>
   </div>
 </div>

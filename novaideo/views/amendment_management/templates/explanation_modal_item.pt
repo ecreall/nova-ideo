@@ -1,8 +1,8 @@
-<div class="modal fade" id="${item['oid']}explanation_modal">
+<div class="modal fade" id="${item['oid']}explanation_modal" i18n:domain="novaideo">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title"><button type="button" class="btn btn-blue">${item['oid']}</button> Specify the intention of your changes <span class="glyphicon glyphicon-exclamation-sign"></span></h4>
+        <h4 class="modal-title"  i18n:translate=""><button type="button" class="btn btn-blue">${item['oid']}</button> Specify the intention of your changes <span class="glyphicon glyphicon-exclamation-sign"></span></h4>
       </div>
       <div class="modal-body">
       </div>
@@ -10,8 +10,8 @@
      <span id="messageinfo" class="label label-info"></span>
      <span id="messagesuccess" class="label label-success"></span>
      <span id="messagedanger" class="label  label-danger"></span>
-        <button data-item="${item['oid']}" data-url="${url}" type="button" class="btn btn-primary explanation-validation btn-sm">Save intention</button> 
-       <button type="button" type="button" class="btn btn-default btn-sm explanation-close" >Cancel</button>
+        <button data-item="${item['oid']}" data-url="${url}" type="button" class="btn btn-primary explanation-validation btn-sm" i18n:translate="">Save intention</button> 
+       <button type="button" type="button" class="btn btn-default btn-sm explanation-close" i18n:translate="">Cancel</button>
       </div>
     </div>
   </div>

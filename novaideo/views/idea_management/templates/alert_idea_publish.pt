@@ -1,4 +1,4 @@
-<div class="alert alert-info">
+<div class="alert alert-info" i18n:domain="novaideo" i18n:translate="">
 Votre idée sera publiée. Tous les membres de l'application auront le droit de la commenter et de la dupliquer. Êtes-vous certain de vouloir publier votre idée.
 </div>
 

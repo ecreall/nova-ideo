@@ -2,18 +2,18 @@
 <h3>${correlation.intention}</h3>
 </div>
 
-<div class="jumbotron well">
+<div class="jumbotron well" i18n:domain="novaideo">
     <dl >
-      <dt>Texte</dt>
+      <dt i18n:translate="">Text</dt>
       <dd>${correlation.comment}</dd>
-      <dt tal:condition="correlation.ends">Les contenus associés</dt>
+      <dt tal:condition="correlation.ends" i18n:translate="">Associated contents</dt>
       <dd tal:condition="correlation.ends">
         <tal:loop repeat="c correlation.ends">
           <a tal:attributes="href request.resource_url(c, '@@index')">${c.title}</a>
             <tal:separator condition="not: repeat['c'].end">, </tal:separator> 
         </tal:loop>
       </dd>
-        <dt>Associés par</dt>
+        <dt i18n:translate="">Associés par</dt>
 	<dd>
           <a tal:attributes="href request.resource_url(correlation.author, '@@index')">${getattr(correlation.author, 'title', correlation.author.name)}</a> 
         </dd>

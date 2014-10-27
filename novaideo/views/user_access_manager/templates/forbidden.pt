@@ -1,4 +1,4 @@
-<html metal:extend-macro="login_template" i18n:domain="substanced">
+<html metal:extend-macro="login_template" i18n:domain="novaideo">
  <head>
     <metal:slot metal:define-slot="head-more" />
  </head>

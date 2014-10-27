@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item" >
+<div class="thumbnail right-caption span4 search-item"  i18n:domain="novaideo">
   <div id="amendment-image" class="content-image">
 
   </div>
@@ -7,13 +7,13 @@
     <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
     <dl >
         <div tal:omit-tag="" tal:condition="object.explanation">
-          <dt>Explication</dt>
+          <dt  i18n:translate="">Explanation</dt>
 	  <dd>
               ${structure:object.explanation}
           </dd>
         </div> 
         <div tal:omit-tag="" tal:condition="object.edited_ideas">
-          <dt>Idées modifiées</dt>
+          <dt  i18n:translate="">Edited ideas</dt>
 	  <dd>
             <tal:loop repeat="idea object.edited_ideas">
                <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
@@ -22,7 +22,7 @@
           </dd>
         </div>
         <div tal:omit-tag="" tal:condition="object.added_ideas">
-          <dt>Idées ajoutées</dt>
+          <dt  i18n:translate="">Added ideas</dt>
 	  <dd>
             <tal:loop repeat="idea object.added_ideas">
                <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
@@ -31,7 +31,7 @@
           </dd>
         </div>
         <div tal:omit-tag="" tal:condition="object.removed_ideas">
-          <dt>Idées supprimées</dt>
+          <dt  i18n:translate="">Removed ideas</dt>
 	  <dd>
             <tal:loop repeat="idea object.removed_ideas">
                <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
@@ -39,8 +39,8 @@
             </tal:loop>
           </dd>
         </div>
-        <dt>Proposé le</dt>
-	<dd>
+        <dt  i18n:translate="">Proposé le</dt>
+	<dd  i18n:translate="">
           <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> à ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} par <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
         </dd>
     </dl>

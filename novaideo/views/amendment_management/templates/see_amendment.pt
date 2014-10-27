@@ -16,21 +16,21 @@
   </div><!-- /.container-fluid -->
 </nav>
 
-<div class="media-body content-title-body">
+<div class="media-body content-title-body" i18n:domain="novaideo">
   <h3 tal:condition="amendment.state"><span class="label label-basic pull-right">${amendment.state[0].capitalize()}</span></h3>
   <h2 class="content-title">${amendment.title}</h2>
   <div class="object-description">
-   <small >(Version amendée par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or getattr(amendment.author, 'title', amendment.author.name)}</a> le <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} de la proposition <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, dupliquée à partir de la version amendée <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
+   <small  i18n:translate="">(Version amendée par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or getattr(amendment.author, 'title', amendment.author.name)}</a> le <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} de la proposition <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, dupliquée à partir de la version amendée <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
    </small>
   </div>
 </div>
-<div class="amendment-diff">
+<div class="amendment-diff" i18n:domain="novaideo">
  <div id="diff-container">
   <div class="object-well proposal-well">
     <dl >
-        <dt>Résumé</dt>
+        <dt i18n:translate="">Abstract</dt>
 	<dd>${structure:descriptiondiff}</dd>
-      <dt tal:condition="keywordsdiff">Mots clés</dt>
+      <dt tal:condition="keywordsdiff" i18n:translate="">Key words</dt>
       <dd tal:condition="keywordsdiff">
         <tal:loop repeat="k keywordsdiff">
           <a tal:attributes="href request.resource_url(request.root, '', query={'text':k['title']})"><del tal:condition="k['state']=='del'">${k['title']}</del><ins tal:condition="k['state']=='ins'">${k['title']}</ins><span tal:condition="k['state']=='nothing'">${k['title']}</span></a>

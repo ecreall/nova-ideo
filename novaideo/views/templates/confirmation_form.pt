@@ -6,7 +6,7 @@
                      formid formid|field.get_root().formid;
                      item_template item_template|field.widget.item_template;
                      ajax_button ajax_button| getattr(form.widget, 'ajax_button', False)"
-         i18n:domain="deform">
+         i18n:domain="novaideo">
 
  <div class="modal fade" 
       id="confirmation-modal" 

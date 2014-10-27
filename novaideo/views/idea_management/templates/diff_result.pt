@@ -1,10 +1,10 @@
-<div class="compare-result">
+<div class="compare-result" i18n:domain="novaideo">
 <div tal:omit-tag="" tal:condition="version">
 <div class="object-well idea-well">
     <dl >
-        <dt>Résumé</dt>
+        <dt i18n:translate="">Abstract</dt>
 	<dd>${structure:descriptiondiff}</dd>
-      <dt tal:condition="keywordsdiff">Mots clés</dt>
+      <dt tal:condition="keywordsdiff" i18n:translate="">Key words</dt>
       <dd tal:condition="keywordsdiff">
         <tal:loop repeat="k keywordsdiff">
           <a tal:attributes="href request.resource_url(request.root, '', query={'text':k['title']})"><del tal:condition="k['state']=='del'">${k['title']}</del><ins tal:condition="k['state']=='ins'">${k['title']}</ins><span tal:condition="k['state']=='nothing'">${k['title']}</span></a>
@@ -17,8 +17,8 @@
 ${structure:textdiff}
 
   <div id="legend">
-    <div><div class="legend-carre-ins"></div> : Texte ajouté dans ${idee.title}</div>
-    <div><div class="legend-carre-del"></div> : Texte supprimé dans ${idee.title}</div>
+    <div i18n:translate=""><div class="legend-carre-ins"></div> : Texte ajouté dans ${idee.title}</div>
+    <div i18n:translate=""><div class="legend-carre-del"></div> : Texte supprimé dans ${idee.title}</div>
   </div>
  </div>
 </div>

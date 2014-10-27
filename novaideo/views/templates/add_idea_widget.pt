@@ -5,9 +5,9 @@
                      item_template item_template|field.widget.item_template;
                      url field.widget.url;
                      id oid+field.get_root().formid;"
-         i18n:domain="deform" >
+         i18n:domain="novaideo" >
  <div class="ajax-form"> 
-    <span class="control-form-button new-idea-btn pull-right"><span class="glyphicon glyphicon-file"></span> Add a new idea</span>
+    <span class="control-form-button new-idea-btn pull-right"  i18n:translate=""><span class="glyphicon glyphicon-file"></span> Add a new idea</span>
      <span id="messageinfo" class="label label-info"></span>
      <span id="messagesuccess" class="label label-success"></span>
      <span id="messagedanger" class="label  label-danger"></span>
@@ -30,7 +30,7 @@
            tal:replace="structure child.render_template(item_template)" >
       </div>     
       ${field.end_mapping()}
-    <button class="btn btn-primary ajax-button validate-btn btn-sm" type="button" data-url="${url}">Validate</button>
+    <button class="btn btn-primary ajax-button validate-btn btn-sm" type="button" data-url="${url}"  i18n:translate="">Validate</button>
     </div>
   <script>
     var btn = $($("#${id}_newideaform").parents('.ajax-form').first()).find('.control-form-button.new-idea-btn').first();

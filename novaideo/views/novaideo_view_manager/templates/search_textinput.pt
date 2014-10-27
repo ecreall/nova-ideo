@@ -15,7 +15,7 @@
                            style style"
            id="${oid}" placeholder="">
         <span class="input-group-btn">
-           <button class="btn btn-default" type="${button_type}" data-url="${url}">Search</button>
+           <button class="btn btn-default" type="${button_type}" data-url="${url}" i18n:domain="novaideo" i18n:translate="">Search</button>
         </span>
       </div>
    <p class="help-block" >

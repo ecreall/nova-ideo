@@ -17,7 +17,7 @@
             </div>
             <div class="scroll-able comments-scroll">
   <label >
-    <input id="select_associations" type="checkbox" value="false" class="select-associations">
+    <input id="select_associations" type="checkbox" value="false" class="select-associations" i18n:domain="novaideo" i18n:translate="">
     Associations
   </label>
                <div tal:replace="structure item['body']" />
