@@ -92,12 +92,10 @@ class CreateProposal(ElementaryAction):
     roles_validation = createproposal_roles_validation
     processsecurity_validation = createproposal_processsecurity_validation
 
-
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         keywords_ids = appstruct.pop('keywords')
         related_ideas = appstruct.pop('related_ideas')
-        
         result, newkeywords = root.get_keywords(keywords_ids)
         for nk in newkeywords:
             root.addtoproperty('keywords', nk)
@@ -416,8 +414,10 @@ class ProofreadingDone(InfiniteCardinality):
 def pub_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
+
 def pub_roles_validation(process, context):
     return has_role(role=('System',)) #System
+
 
 def pub_state_validation(process, context):
     return 'active' in context.working_group.state and 'votes for publishing' in context.state
@@ -481,6 +481,7 @@ def support_processsecurity_validation(process, context):
     return user.tokens and  \
            not (user in [t.owner for t in context.tokens]) and \
            global_user_processsecurity(process, context)
+
 
 def support_state_validation(process, context):
     return 'published' in context.state
@@ -548,7 +549,7 @@ class OpposeProposal(InfiniteCardinality):
 
 def withdrawt_processsecurity_validation(process, context):
     user = get_current()
-    return [t for t in context.tokens if (t.owner is user) and t.proposal is None] and \
+    return any((t.owner is user) and t.proposal is None for t in context.tokens) and \
            global_user_processsecurity(process, context)
 
 
@@ -575,7 +576,6 @@ class WithdrawToken(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
-
 
 
 def alert_relation_validation(process, context):
@@ -832,7 +832,8 @@ class CorrectItem(InfiniteCardinality):
     state_validation = correctitem_state_validation
 
     def _include_to_proposal(self, context, text_to_correct, request, content):
-        text = self._include_items(text_to_correct, request, [item for item in context.corrections.keys() if not('included' in context.corrections[item])])
+        corrections = [item for item in context.corrections.keys() if not('included' in context.corrections[item])]
+        text = self._include_items(text_to_correct, request, corrections)
         if content == 'description':
             text = text.replace('<p>', '').replace('</p>', '')
 
@@ -853,9 +854,9 @@ class CorrectItem(InfiniteCardinality):
         corrections_data = []
         for correction in tags:
             correction_data = {'tag': correction,
-                                'todel': todel,
-                                'toins': toins,
-                                'blocstodel': ('span', {'id':'correction_actions'})
+                               'todel': todel,
+                               'toins': toins,
+                               'blocstodel': ('span', {'id':'correction_actions'})
                                 }
             corrections_data.append(correction_data)
 
@@ -942,6 +943,7 @@ class CorrectProposal(InfiniteCardinality):
             correctitem_wis = [wi for wi in correctitemnode.workitems if wi.node is correctitemnode]
             if correctitem_wis:
                 self.correctitemaction = correctitem_wis[0].actions[0]
+
         if hasattr(self, 'correctitemaction'):
             actionurl_update = dace_ui_api.updateaction_viewurl(request=request, action_uid=str(get_oid(self.correctitemaction)), context_uid=str(get_oid(correction)))
             values= {'favour_action_url':actionurl_update,
@@ -991,13 +993,16 @@ class CorrectProposal(InfiniteCardinality):
         correction.description = text_analyzer.soup_to_text(soupdescriptiondiff)
         if souptextdiff.find_all("span", id="correction"):
             correction.state.append('in process')
+
         return True
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
 def addp_state_validation(process, context):
     return False
+
 
 class AddParagraph(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
@@ -1220,7 +1225,8 @@ def participate_processsecurity_validation(process, context):
 
 def participate_state_validation(process, context):
     wg = context.working_group
-    return  not('closed' in wg.state) and any(s in context.state for s in ['proofreading', 'amendable', 'open to a working group']) 
+    return  not('closed' in wg.state) and \
+            any(s in context.state for s in ['proofreading', 'amendable', 'open to a working group']) 
 
 
 class Participate(InfiniteCardinality):

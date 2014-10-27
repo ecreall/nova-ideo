@@ -34,7 +34,6 @@ def targets_choice(node, kw):
     return Select2Widget(values=values, multiple=True, min_len=1)
 
 
-
 @colander.deferred
 def intention_choice(node, kw):
     root = getSite()
@@ -53,7 +52,6 @@ class CorrelationSchema(VisualisableElementSchema):
     name = NameSchemaNode(
         editing=context_is_a_correlation,
         )
-
 
     intention = colander.SchemaNode(
         colander.String(),

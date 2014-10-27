@@ -92,9 +92,7 @@ def eg3_publish_condition(process):
         else:
             return False
 
-    voters_len = len(report.voters)
-    electors_len = len(report.electors)
-    if voters_len != electors_len:
+    if len(report.voters) != len(report.electors):
         return False
 
     report.calculate_votes()
@@ -110,7 +108,7 @@ def eg3_amendable_condition(process):
 
 def eg4_votingamendments_condition(process):
     proposal = process.execution_context.created_entity('proposal')
-    if [a for a in proposal.amendments if 'published' in a.state]:
+    if any('published' in a.state for a in proposal.amendments):
         return True
 
     return False
@@ -120,9 +118,7 @@ def eg4_alert_condition(process):
     return not eg4_votingamendments_condition(process)
 
 
-
 class SubProcessDefinition(OriginSubProcessDefinition):
-
 
     def _init_subprocess(self, process, subprocess):
         root = getSite()
@@ -136,7 +132,6 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
         ballot.report.description = vote_publishing_message
         ballot.title = _("Publish the proposal")
-        #TODO add ballot informations
         processes = ballot.run_ballot()
         wg.addtoproperty('ballots', ballot)
         subprocess.ballots = PersistentList()
@@ -144,23 +139,20 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         process.vp_ballot = ballot #vp for voting for publishing
 
         if not getattr(process, 'first_decision', True):
-            #@TODO Lancement du vote sur reouverture
             subjects = [wg]
             ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
             ballot.report.description = vote_reopening_message
             ballot.title = 'Reopening working group'
-            #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))
             wg.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
             process.reopening_configuration_ballot = ballot
 
         if len(wg.members) <= root.participants_maxi:
-            group = list(amendments_cycle_default_duration.keys())#@TODO Durees
+            group = list(amendments_cycle_default_duration.keys())
             ballot = Ballot('FPTP' , electors, group, vp_default_duration)
             ballot.title = _('Amendment duration')
             ballot.report.description = vote_duration_message
-            #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))
             wg.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
@@ -172,20 +164,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
 class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
 
-    def _get_commun_groups(self, amendment, groups):
-        result = []
-        for group in groups:
-            if amendment in group:
-                result.append(group)
-
-        return result
-
     def _contains_any(self, list1, list2):
-        for e in list1:
-            if e in list2:
-                return True
-
-        return False
+        return any(e in list2 for e in list1)
 
     def _init_subprocess(self, process, subprocess):
         root = getSite()
@@ -209,15 +189,13 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
                        (related_ideas_amendment and self._contains_any(related_ideas_amendment, related_ideas_a)):
                         group.append(amendment)
                         isadded = True
-
-                    if isadded:
                         break
 
             if not isadded:
                 groups.append([amendment])
 
         for amendment in amendments:
-            commungroups = self._get_commun_groups(amendment, groups)
+            commungroups = [group for group in groups if amendment in group]
             new_group = set()
             for g in commungroups:
                 new_group.update(g)
@@ -228,8 +206,6 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         for group in groups:
             group.insert(0, proposal)
 
-        #TODO calcul des groups d'amendements. Pour chaque groupe creer un ballot de type Jugement Majoritaire
-        #TODO Start For
         subprocess.ballots = PersistentList()
         process.amendments_ballots = PersistentList()
         i = 1
@@ -237,17 +213,14 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             ballot = Ballot('MajorityJudgment' , electors, group, amendments_vote_default_duration)
             ballot.report.description = vote_amendments_message
             ballot.title = _('Group of independent amendments')+ '('+str(i)+')'
-            #TODO add ballot informations
             processes.extend(ballot.run_ballot(context=proposal))
             proposal.working_group.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
             process.amendments_ballots.append(ballot)
             i += 1
-        #TODO End For
+
         subprocess.execution_context.add_involved_collection('vote_processes', processes)
         subprocess.duration = amendments_vote_default_duration
-
-
 
 
 @process_definition(name='proposalmanagement', id='proposalmanagement')
@@ -361,14 +334,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Related ideas"),
                                        title=_("Related ideas"),
                                        groups=[]),
-#                addideas = ActivityDefinition(contexts=[AddIdeas],
-#                                       description=_("Add an idea to the proposal"),
-#                                       title=_("Add an idea"),
-#                                       groups=[]),
-#                delideas = ActivityDefinition(contexts=[DelIdeas],
-#                                       description=_("Remove an idea from the proposal"),
-#                                       title=_("Remove an idea"),
-#                                       groups=[]),
                 correct = ActivityDefinition(contexts=[CorrectProposal],
                                        description=_("Correct proposal"),
                                        title=_("Correct"),
@@ -406,8 +371,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('eg1', 'pg2'),
                 TransitionDefinition('pg2', 'submit'),
                 TransitionDefinition('pg2', 'edit'),
-#                TransitionDefinition('pg2', 'addideas'),
-#                TransitionDefinition('pg2', 'delideas'),
                 TransitionDefinition('pg2', 'seerelatedideas'),
                 TransitionDefinition('submit', 'pg3'),
                 TransitionDefinition('pg3', 'comment'),
@@ -439,5 +402,4 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('alert', 'eg2'),
                 TransitionDefinition('votingamendments', 'amendmentsresult'),
                 TransitionDefinition('amendmentsresult', 'eg2'),
-                #TransitionDefinition('publish', 'end'),
         )

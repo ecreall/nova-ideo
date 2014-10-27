@@ -126,7 +126,8 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return not(context.explanations and any(e['intention'] is not None for e in context.explanations.values())) and \
+    return not(context.explanations and \
+           any(e['intention'] is not None for e in context.explanations.values())) and \
            global_user_processsecurity(process, context) 
 
 
@@ -223,7 +224,8 @@ def pub_roles_validation(process, context):
 
 
 def pub_processsecurity_validation(process, context):
-    return not context.explanations or  not(context.explanations and any(e['intention'] is None for e in context.explanations.values())) and \
+    return not context.explanations or \
+           not(context.explanations and any(e['intention'] is None for e in context.explanations.values())) and \
            global_user_processsecurity(process, context)
 
 
@@ -424,7 +426,8 @@ class SeeAmendmentManager(object):
                 action.explanationitemaction = explanationitem_wis[0].actions[0]
 
         if hasattr(action, 'explanationitemaction'):
-            values= {'url':request.resource_url(context, '@@explanationjson', query={'op':'getform', 'itemid':tag['data-item']}),
+            values= {'url':request.resource_url(context, '@@explanationjson', 
+                                                query={'op':'getform', 'itemid':tag['data-item']}),
                      'item': context.explanations[tag['data-item']],
                     }
             body = renderers.render(cls.explanation_template, values, request)
@@ -494,7 +497,7 @@ class SeeAmendment(InfiniteCardinality):
     processsecurity_validation = seeamendment_processsecurity_validation  
 
     def start(self, context, request, appstruct, **kw):
-        if 'explanation' in context.state or 'published' in context.state: #TODO Optimization: any(s in context.state for s in ['explanation', 'published'])
+        if any(s in context.state for s in ['explanation', 'published']):
             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
             souptextdiff, textdiff = SeeAmendmentManager._get_explanation_diff(context, request)
             if 'explanation' in context.state:

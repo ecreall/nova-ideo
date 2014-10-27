@@ -231,20 +231,20 @@ class FPTP(object):
         result = {}
         for subject in self.report.subjects:
             try:
-                _id = get_oid(subject)
+                id = get_oid(subject)
             except Exception:
-                _id = subject
+                id = subject
 
-            result[_id] = 0
+            result[id] = 0
 
         for vote in votes:
-            _object = get_obj(vote.value)
-            if _object is None:
-                _object = vote.value
+            object = get_obj(vote.value)
+            if object is None:
+                object = vote.value
 
-            _id = vote.value
-            if _object in self.report.subjects:
-                    result[_id] += 1
+            id = vote.value
+            if object in self.report.subjects:
+                    result[id] += 1
 
         return result
 
