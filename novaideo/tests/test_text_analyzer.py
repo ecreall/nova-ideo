@@ -34,7 +34,7 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
 
     def _unwrap_spans(self, span_id, decision, soup_wrapped):
         spans_list = self._list_all_spans(span_id, soup_wrapped)
-        if span_id == 'diffid' or decision == 'accept_modif':
+        if span_id == 'diff_id' or decision == 'accept_modif':
             spanids_data = self._include_spanids(spans_list, "del", "ins")
 
         elif decision == 'refuse_modif':

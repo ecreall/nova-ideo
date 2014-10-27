@@ -69,7 +69,7 @@ amendments_cycle_default_duration = {"Three minutes": datetime.timedelta(minutes
                                      "One week": datetime.timedelta(weeks=1),
                                      "Two weeks": datetime.timedelta(weeks=2)}
 
-amendments_vote_default_duration = datetime.timedelta(minutes=30) #TODO 
+amendments_vote_default_duration = datetime.timedelta(minutes=30) #TODO
 
 
 
@@ -114,7 +114,7 @@ def eg4_votingamendments_condition(process):
         return True
 
     return False
- 
+
 
 def eg4_alert_condition(process):
     return not eg4_votingamendments_condition(process)
@@ -123,7 +123,7 @@ def eg4_alert_condition(process):
 
 class SubProcessDefinition(OriginSubProcessDefinition):
 
-    
+
     def _init_subprocess(self, process, subprocess):
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
@@ -205,7 +205,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
                     related_ideas_a = list(a.edited_ideas)
                     related_ideas_a.extend(list(a.removed_ideas))
                     related_ideas_a = list(set(related_ideas_a))
-                    if text_analyzer.hasConflict(a.text, [amendment.text]) or \
+                    if text_analyzer.has_conflict(a.text, [amendment.text]) or \
                        (related_ideas_amendment and self._contains_any(related_ideas_amendment, related_ideas_a)):
                         group.append(amendment)
                         isadded = True
@@ -227,7 +227,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
 
         for group in groups:
             group.insert(0, proposal)
-     
+
         #TODO calcul des groups d'amendements. Pour chaque groupe creer un ballot de type Jugement Majoritaire
         #TODO Start For
         subprocess.ballots = PersistentList()
