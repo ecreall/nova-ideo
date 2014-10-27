@@ -1,6 +1,6 @@
 <div tal:condition="ideas" class="alert alert-danger">
 <strong>Oups!</strong><br>
-Les idées suivantes sont utilisées dans votre amendement, mais pas encore publiées. La soumission de l'amendement entraine, automatiquement, la publication des idées utilisées. Souhaitez-vous les finaliser avant la soumission de votre amendement. Une fois, les idées sont publics, vous ne pouvez plus les modifier.<br>
+<p i18n:domain="novaideo" i18n:translate="">Les idées suivantes sont utilisées dans votre amendement, mais pas encore publiées. La soumission de l'amendement entraine, automatiquement, la publication des idées utilisées. Souhaitez-vous les finaliser avant la soumission de votre amendement. Une fois, les idées sont publics, vous ne pouvez plus les modifier.</p><br>
   <ol class="list-unstyled">
     <tal:loop repeat="i ideas">
       <li><a class="btn btn-danger btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
@@ -9,7 +9,7 @@ Les idées suivantes sont utilisées dans votre amendement, mais pas encore publ
 </div>
 
 <div class="alert alert-info">
-Le regroupement des amendements permet d'avoir des amendements cohérents et augmente la chance de voir vos modifications retenues par les autres participants. Vous pouvez regrouper vos modifications en glissant déposant les modifications ces derniers dans les conteneurs correspondants. Chaque conteneur correspond à un nouvel amendement. Vous pouvez aussi choisir de soumettre en un seul amendement.
+<p i18n:domain="novaideo" i18n:translate="">Le regroupement des amendements permet d'avoir des amendements cohérents et augmente la chance de voir vos modifications retenues par les autres participants. Vous pouvez regrouper vos modifications en glissant déposant les modifications ces derniers dans les conteneurs correspondants. Chaque conteneur correspond à un nouvel amendement. Vous pouvez aussi choisir de soumettre en un seul amendement.</p>
 </div>
 
 <div id="amendment-diff" class="amendment-diff-scroll scroll-able">

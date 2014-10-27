@@ -1,24 +1,24 @@
 <div tal:condition="amendment is not None" >
     <h3 class="content-title"><a tal:attributes="href request.resource_url(amendment, '@@index')">${amendment.title}</a></h3>
   <div tal:condition="not is_proposal" class="object-description">
-   <small >(Version amendée par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> le <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} de la proposition <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, dupliquée à partir de la version amendée <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
+   <small i18n:domain="novaideo" i18n:translate="">(Version amendée par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> le <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} de la proposition <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, dupliquée à partir de la version amendée <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
    </small>
   </div>
   <div tal:condition="is_proposal" class="object-description">
-   <small >(Version d'origine par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> proposée le <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} <span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, dupliquée à partir de la proposition <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
+   <small i18n:domain="novaideo" i18n:translate="">(Version d'origine par <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> proposée le <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} <span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, dupliquée à partir de la proposition <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
    </small>
   </div>
 
     <div class="scroll-able">
         <dl  tal:condition="not is_proposal">
         <div tal:omit-tag="" tal:condition="amendment.explanation">
-          <dt>Explication</dt>
+          <dt i18n:domain="novaideo" i18n:translate="">Explanation</dt>
 	  <dd>
               ${structure:amendment.explanation}
           </dd>
         </div> 
         <div tal:omit-tag="" tal:condition="amendment.edited_ideas">
-          <dt>Idées modifiées</dt>
+          <dt i18n:domain="novaideo" i18n:translate="">Edited ideas</dt>
 	  <dd>
             <tal:loop repeat="idea amendment.edited_ideas">
                <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
@@ -27,7 +27,7 @@
           </dd>
         </div>
         <div tal:omit-tag="" tal:condition="amendment.added_ideas">
-          <dt>Idées ajoutées</dt>
+          <dt i18n:domain="novaideo" i18n:translate="">Added ideas</dt>
 	  <dd>
             <tal:loop repeat="idea amendment.added_ideas">
                <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
@@ -36,7 +36,7 @@
           </dd>
         </div>
         <div tal:omit-tag="" tal:condition="amendment.removed_ideas">
-          <dt>Idées supprimées</dt>
+          <dt i18n:domain="novaideo" i18n:translate="">Removed ideas</dt>
 	  <dd>
             <tal:loop repeat="idea amendment.removed_ideas">
                <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
