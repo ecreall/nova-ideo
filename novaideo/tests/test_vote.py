@@ -156,7 +156,7 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result[self.oid_subject1]['Insufficient'], 1)
         self.assertEqual(result[self.oid_subject1]['Good'], 2)
         #electeds = self.vote_type.get_electeds(result)
-        #self.assertEqual(electeds, 'Good') # One subject: does electeds return the judgment sentence?
+        #self.assertEqual(electeds, 'Good') # One subject: what does electeds return?
 
     def test_MajorityJudgment_None(self):
         self.init_majority_judgment_tests()
@@ -208,5 +208,5 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result[self.oid_subject3]['Fairly well'], 3)
         self.assertEqual(result[self.oid_subject3]['Reject'], 1)
         #electeds = self.vote_type.get_electeds(result)
-        #self.assertEqual(electeds, 'self.oid_subject3')
+        #self.assertEqual(electeds, 'self.oid_subject3') # Several subjects: what does electeds return?
 
