@@ -160,7 +160,7 @@ def seeinvs_roles_validation(process, context):
 
 
 def seeinvs_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and len(context.invitations)>=1
+    return global_user_processsecurity(process, context) and context.invitations
 
 
 def seeinvs_state_validation(process, context):
@@ -191,7 +191,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and len(context.invitations)>=1
+    return global_user_processsecurity(process, context) and context.invitations
 
 
 def edit_state_validation(process, context):

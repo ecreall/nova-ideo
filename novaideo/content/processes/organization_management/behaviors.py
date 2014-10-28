@@ -100,7 +100,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and len(context.organizations)>=1
+    return global_user_processsecurity(process, context) and context.organizations
 
 
 def edit_state_validation(process, context):
@@ -131,7 +131,7 @@ def seeorgs_roles_validation(process, context):
 
 
 def seeorgs_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and len(context.organizations)>=1
+    return global_user_processsecurity(process, context) and context.organizations
 
 
 def seeorgs_state_validation(process, context):

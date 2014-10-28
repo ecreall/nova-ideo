@@ -41,13 +41,13 @@
 <div id="contenttext" class="content-text">
 ${structure:idea.text}
 </div>
-<div id="idea_files"  i18n:domain="novaideo">
+<div tal:condition="files" id="idea_files"  i18n:domain="novaideo">
 <small>
- <blockquote class="attached_contents">
+ <blockquote class="attached_contents" tal:define="file_len len(files)">
    <dl >
-   <dt tal:condition="len(files)>1" i18n:translate="">Pièces jointes:</dt>
-   <dt tal:condition="len(files)==1" i18n:translate="">Pièce jointe:</dt>
-   <dd tal:condition="files">
+   <dt tal:condition="file_len>1" i18n:translate="">Pièces jointes:</dt>
+   <dt tal:condition="file_len==1" i18n:translate="">Pièce jointe:</dt>
+   <dd>
         <tal:loop repeat="f files">
           <a tal:attributes="href f['url']">${f['title']}</a>
             <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
