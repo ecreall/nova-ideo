@@ -33,7 +33,7 @@ class ReferendumVote(VisualisableElement, Entity):
         super(ReferendumVote, self).__init__(**kwargs)
         self.value = value
 
-        
+
 @implementer(IBallotType)
 class Referendum(object):
     vote_factory = ReferendumVote
@@ -109,7 +109,7 @@ class MajorityJudgmentVote(VisualisableElement, Entity):
         self.value = value
         #value  = {objectoid: 'Judgment', ...}
 
-        
+
 @implementer(IBallotType)
 class MajorityJudgment(object):
     vote_factory = MajorityJudgmentVote
@@ -178,7 +178,7 @@ class MajorityJudgment(object):
                 object = get_obj(sorted_results[0])
                 return [object]
             except Exception:
-                return None                   
+                return None
 
         return None
 
@@ -196,7 +196,7 @@ class FPTPVote(VisualisableElement, Entity):
         self.value = value
         #value  = object
 
-        
+
 @implementer(IBallotType)
 class FPTP(object):
     vote_factory = FPTPVote
@@ -242,7 +242,7 @@ class FPTP(object):
             if object is None:
                 object = vote.value
 
-            id = vote.value
+            id = get_oid(vote.value)
             if object in self.report.subjects:
                     result[id] += 1
 
@@ -250,7 +250,7 @@ class FPTP(object):
 
     def get_electeds(self, result):
         electeds_ids = sorted(list(result.keys()), key=lambda o: result[o], reverse=True)
-        electeds = [] 
+        electeds = []
         if electeds_ids:
             elected_id = electeds_ids[0]
             elected = get_obj(elected_id)
