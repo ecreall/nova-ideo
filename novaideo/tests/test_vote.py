@@ -143,9 +143,11 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         subjects =[self.root['subject1'], self.root['subject2'], self.root['subject3']]
         report = Report('MajorityJudgment',electors, subjects)
         self.vote_type = report.ballottype
+        return report
 
     def test_MajorityJudgment_one_subject(self):
-        self.init_majority_judgment_tests()
+        report = self.init_majority_judgment_tests()
+        report.setproperty('voters', report.electors) # add voters
         vote1 = MajorityJudgmentVote({self.oid_subject1: 'Very good'})
         vote2 = MajorityJudgmentVote({self.oid_subject1: 'Insufficient'})
         vote3 = MajorityJudgmentVote({self.oid_subject1: 'Good'})
@@ -155,8 +157,9 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result[self.oid_subject1]['Very good'], 1)
         self.assertEqual(result[self.oid_subject1]['Insufficient'], 1)
         self.assertEqual(result[self.oid_subject1]['Good'], 2)
-        #electeds = self.vote_type.get_electeds(result)
-        #self.assertEqual(electeds, 'Good') # One subject: what does electeds return?
+        electeds = self.vote_type.get_electeds(result)
+        self.assertEqual(len(electeds), 1)
+        self.assertIn(self.root['subject1'], electeds) # One subject: what does electeds return?
 
     def test_MajorityJudgment_None(self):
         self.init_majority_judgment_tests()
