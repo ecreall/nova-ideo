@@ -416,7 +416,7 @@ def pub_relation_validation(process, context):
 
 
 def pub_roles_validation(process, context):
-    return has_role(role=('System',)) #System
+    return has_role(role=('Member',))#has_role(role=('System',)) #System
 
 
 def pub_state_validation(process, context):
@@ -430,7 +430,7 @@ class PublishProposal(ElementaryAction):
     style_order = 2
     context = IProposal
     processs_relation_id = 'proposal'
-    actionType = ActionType.system
+    #actionType = ActionType.system
     roles_validation = pub_roles_validation
     relation_validation = pub_relation_validation
     state_validation = pub_state_validation
@@ -583,7 +583,7 @@ def alert_relation_validation(process, context):
 
 
 def alert_roles_validation(process, context):
-    return has_role(role=('System',))
+    return has_role(role=('Member',))#has_role(role=('System',))
 
 
 def alert_state_validation(process, context):
@@ -596,7 +596,7 @@ class Alert(ElementaryAction):
     style_descriminator = 'global-action'
     style_order = 4
     context = IProposal
-    actionType = ActionType.system
+    #actionType = ActionType.system
     processs_relation_id = 'proposal'
     roles_validation = alert_roles_validation
     relation_validation = alert_relation_validation
@@ -1029,7 +1029,7 @@ def decision_relation_validation(process, context):
 
 
 def decision_roles_validation(process, context):
-    return has_role(role=('System',))
+    return has_role(role=('Member',))#has_role(role=('System',))
 
 
 def decision_state_validation(process, context):
@@ -1042,7 +1042,7 @@ class VotingPublication(ElementaryAction):
     style_order = 5
     context = IProposal
     processs_relation_id = 'proposal'
-    actionType = ActionType.system
+    #actionType = ActionType.system
     relation_validation = decision_relation_validation
     roles_validation = decision_roles_validation
     state_validation = decision_state_validation
@@ -1293,7 +1293,7 @@ def va_relation_validation(process, context):
 
 
 def va_roles_validation(process, context):
-    return has_role(role=('System',))
+    return has_role(role=('Member',))#has_role(role=('System',))
 
 
 def va_state_validation(process, context):
@@ -1306,7 +1306,7 @@ class VotingAmendments(ElementaryAction):
     style_order = 6
     context = IProposal
     processs_relation_id = 'proposal'
-    actionType = ActionType.system
+    #actionType = ActionType.system
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
     state_validation = va_state_validation
@@ -1343,7 +1343,7 @@ class AmendmentsResult(ElementaryAction):
     style_order = 7
     context = IProposal
     processs_relation_id = 'proposal'
-    actionType = ActionType.system
+    #actionType = ActionType.system
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
     state_validation = ar_state_validation
@@ -1447,7 +1447,7 @@ class Amendable(ElementaryAction):
     style_order = 8
     context = IProposal
     processs_relation_id = 'proposal'
-    actionType = ActionType.system
+    #actionType = ActionType.system
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
     state_validation = ta_state_validation
