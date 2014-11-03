@@ -1,3 +1,18 @@
+.steps .popover.bottom{
+    top: 53px; 
+    display: block; 
+    min-width:325px;
+    z-index: -1010;
+}
+
+.steps .popover.bottom .arrow{
+    top: -11px;
+    left: 162px
+}
+
+.steps #message-step-3.popover.bottom{
+    left: 300px;
+}
 
 .steps-container {
 	width: 100%;
@@ -59,6 +74,7 @@
 */
 .steps li.current-step .step-content{
         background: transparent url(step.png) center right no-repeat;
+        cursor: pointer;
 }
 
 .step-text{
@@ -77,5 +93,162 @@
         background-position: center left;
         width: 113%;
 }
-/*.steps li.step .step-content:hover { background: transparent url(step_over.png) center right no-repeat; }*/
+.steps li.current-step .step-content:hover,  .steps li.current-step .step-content:focus{ 
+    background: transparent url(step_over.png) center right no-repeat; }
 .steps li.step-4 .step-content:hover { background-position: center left; }
+
+
+
+
+.sub-steps li.step, .sub-steps li.step .step-content {
+	position: relative;
+	z-index: 4;
+        height: 6.5em;
+        
+}
+
+.sub-steps li.sub-step-2, .sub-steps li.sub-step-4{
+        height: 13.5em;
+         width: 90px;
+}
+
+.sub-steps li.sub-step-1{
+    right: -48px;
+    top: 0;
+    z-index: 5;
+
+}
+
+.sub-steps li.sub-step-2{
+    right: -180px;
+    top: -52px;
+    z-index: 4;
+}
+
+.sub-steps li.sub-step-3{
+    left: 35px;
+    top: -125px;
+    z-index: 3;
+}
+
+.sub-steps li.sub-step-4{
+    left: 11px;
+    top: -349px;
+    z-index: 2;
+}
+
+.sub-steps .step-text{
+    width: 80px;
+    color: #325f32;
+}
+
+.sub-step-1 .step-text{
+    margin-left: 5px;
+    margin-top: 9px;
+}
+
+.sub-step-2 .step-text{
+    margin-top: 55px;
+    margin-left:8px;
+}
+
+.sub-step-3 .step-text{
+    margin-top: 47px;
+}
+
+.sub-step-4 .step-text{
+    margin-top: 74px;
+    margin-left: -25px;
+}
+
+.sub-steps {
+	padding: 1px 0;
+	overflow: hidden;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+
+}
+.sub-steps ul, .steps li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.sub-steps ul { 
+    float: left;
+    height: 246px;
+    width: 90px;
+ }
+
+.sub-steps li {
+	float: left;
+        width: 200px;
+}
+
+.sub-steps li .step-content {
+	display: block;
+	padding: 15px 20px;
+	background: #d0d0d0;
+	color: #fff;
+	line-height: 1em;
+	text-decoration: none;
+       text-align:center;
+}
+
+.sub-steps li.sub-step-1 .step-content{
+	background: transparent url(step-pub.png) center right no-repeat;
+        background-size: cover;
+        padding-bottom: 4px;
+        padding-right: 25px;
+        padding-top: 4px;
+}
+.sub-steps li.sub-step-2 .step-content{
+	background: transparent url(step-corr.png) center right no-repeat;
+        background-size: 90px;
+        height: 13.5em;
+        padding-bottom: 4px;
+        padding-right: 25px;
+        padding-top: 4px;
+}
+.sub-steps li.sub-step-3 .step-content {
+	background: transparent url(step-imp.png) center right no-repeat;
+        background-size: cover;
+        padding-bottom: 4px;
+        padding-right: 25px;
+        padding-top: 4px;
+}
+.sub-steps li.sub-step-4 .step-content {
+	background: transparent url(step-am.png) center right no-repeat;
+        background-size: 90px;
+        height: 13.5em;
+        padding-bottom: 4px;
+        padding-right: 25px;
+        padding-top: 4px;
+}
+
+.sub-steps li.sub-step-1.off .step-content{
+	background: transparent url(step-pub-off.png) center right no-repeat;
+        background-size: cover;
+}
+
+.sub-steps li.sub-step-2.off .step-content{
+	background: transparent url(step-corr-off.png) center right no-repeat;
+        background-size: 90px;
+}
+
+.sub-steps li.sub-step-3.off .step-content{
+	background: transparent url(step-imp-off.png) center right no-repeat;
+        background-size: cover;
+}
+
+.sub-steps li.sub-step-4.off .step-content{
+	background: transparent url(step-am-off.png) center right no-repeat;
+        background-size: 90px;
+}
+
+.glyphicons-group{
+    background: transparent url(glyphicons_043_group.png) center no-repeat;  
+    background-size: cover;
+    height: 18px;
+    width: 25px;
+}

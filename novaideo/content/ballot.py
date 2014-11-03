@@ -242,7 +242,11 @@ class FPTP(object):
             if object is None:
                 object = vote.value
 
-            id = get_oid(vote.value)
+            try:
+                id = get_oid(vote.value)
+            except Exception:
+                id = vote.value
+            
             if object in self.report.subjects:
                     result[id] += 1
 

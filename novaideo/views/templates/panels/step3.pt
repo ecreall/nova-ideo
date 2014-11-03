@@ -1,3 +1,36 @@
-<div class="proposal-members-nb">
-   <span class="glyphicon glyphicon-user"></span> ${len(context.working_group.members)}
+<div class="proposal-members-nb" i18n:domain="novaideo"  i18n:translate="">
+   <span class="glyphicon glyphicons-group"></span> ${len(context.working_group.members)} participants (${context.working_group.state[0].capitalize()})<br>
+   <span tal:condition="date_iteration is not None"><span class="glyphicon glyphicon-time"></span> ${date_iteration[0]} jours ${date_iteration[1]}:${date_iteration[2]}</span>
 </div>
+<div class="sub-steps" i18n:domain="novaideo">
+  	  <ul>
+    	    <li class="step sub-step-1 ${( 'votes for publishing' not in context.state) and 'off'}">
+      	      <span class="step-content">
+                  <div class="step-text" i18n:translate="">
+                     Votes for publishing
+                  </div>
+              </span>
+            </li>
+            <li class="step sub-step-2 ${( 'proofreading' not in context.state) and 'off'}">
+      	      <span class="step-content">
+                 <div class="step-text" i18n:translate="">
+                   Correction of the proposal
+                 </div>
+              </span>
+            </li>
+            <li class="step sub-step-3 ${( 'amendable' not in context.state) and 'off'}">
+      	       <span data-step="message-step-3" class="step-content">
+                 <div class="step-text" i18n:translate="">
+                   Proposal improvement
+                 </div>
+               </span>
+            </li>
+            <li class="step sub-step-4 ${( 'votes for amendments' not in context.state) and 'off'} ">
+      	       <span class="step-content">
+                 <div class="step-text" i18n:translate="">
+                   Votes for amendments
+                 </div>
+               </span>
+            </li>
+          </ul>
+      </div>

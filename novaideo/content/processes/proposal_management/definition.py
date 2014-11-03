@@ -138,7 +138,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         subprocess.ballots.append(ballot)
         process.vp_ballot = ballot #vp for voting for publishing
 
-        if not getattr(process, 'first_decision', True):
+        if not getattr(process, 'first_decision', True) and 'closed' in wg.state:
             subjects = [wg]
             ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
             ballot.report.description = vote_reopening_message

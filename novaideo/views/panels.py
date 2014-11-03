@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import datetime
 from collections import OrderedDict
 from pyramid import renderers
 from pyramid_layout.panel import panel_config
@@ -154,26 +155,40 @@ class StepsPanel(object):
             return self.context.proposal
 
         return self.context
-        
 
+    def _days_hours_minutes(self, td):
+        return td.days, td.seconds//3600, (td.seconds//60)%60
+        
     def __call__(self):
         root = getSite()
         result = {}
         context = self._get_process_context()
-        result['condition'] = isinstance(context, (Proposal, Idea))#@TODO context: abstract class (Proposal, Idea)
+        result['condition'] = isinstance(context, (Proposal, Idea))
         result['current_step'] = 1
         result['step4_message'] = ""
         result['step3_message'] = ""
-
         if isinstance(context, Proposal):
             if 'draft' in context.state:
                 result['current_step'] = 2
             elif 'published' in context.state:
                 result['current_step'] = 4
-                result['step4_message'] = renderers.render(self.step4_template, {'context':context}, self.request)
+                result['step4_message'] = renderers.render(
+                                             self.step4_template,
+                                             {'context':context},
+                                             self.request)
             elif not ('archived' in context.state):
                 result['current_step'] = 3
-                result['step3_message'] =  renderers.render(self.step3_template, {'context':context}, self.request)
+                date_iteration = context.creator['timer'].eventKind.time_date
+                time_delta = None
+                if date_iteration is not None:
+                    time_delta = date_iteration - datetime.datetime.today()
+                    time_delta = self._days_hours_minutes(time_delta)
+
+                result['step3_message'] =  renderers.render(
+                                             self.step3_template,
+                                             {'context':context, 
+                                              'date_iteration':time_delta},
+                                             self.request)
             elif 'archived' in context.state:
                 result['current_step'] = 0
 

@@ -1,5 +1,13 @@
 <div tal:condition="condition" class="steps-container"  i18n:domain="novaideo">
 	<div class="steps">
+          <div id="messages">
+            <div id="message-step-3" role="tooltip" class="popover fade bottom">
+              <div class="arrow"></div>
+              <div class="popover-content">
+                  ${structure:step3_message}
+              </div>
+            </div>
+          </div>
   	  <ul>
     	    <li class="step step-1 no-message ${(current_step == 1)  and 'current-step'}">
       	      <span class="step-content"><div class="step-text"><strong i18n:translate="" >Recueil de l'idée</strong></div></span>
@@ -8,10 +16,10 @@
       	      <span class="step-content"><div class="step-text"><strong i18n:translate="" >Rédaction de la proposition</strong></div></span>
             </li>
             <li class="step step-3 ${(current_step == 3)  and 'current-step'}">
-      	       <span class="step-content">
-                 <div class="step-text">
+      	       <span class="step-content" data-step="message-step-3">
+                 <div class="step-text" >
                    <strong i18n:translate="" >Amélioration de la proposition</strong>
-                   <br />${structure:step3_message}
+                   <br /><span tal:condition="current_step == 3" class="glyphicon glyphicon-info-sign step-message" ></span>
                  </div>
                </span>
             </li>
