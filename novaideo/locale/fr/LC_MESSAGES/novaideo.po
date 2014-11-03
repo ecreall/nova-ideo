@@ -814,20 +814,55 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: novaideo/views/templates/panels/steps.pt:9
+#: novaideo/views/templates/panels/steps.pt:24
 msgid "Recueil de l'ide"
 msgstr ""
 
-#: novaideo/views/templates/panels/steps.pt:16
+#: novaideo/views/templates/panels/steps.pt:31
 msgid "Rdaction de la proposition"
 msgstr ""
 
-#: novaideo/views/templates/panels/steps.pt:27
+#: novaideo/views/templates/panels/steps.pt:42
 msgid "Amlioration de la proposition"
 msgstr ""
 
-#: novaideo/views/templates/panels/steps.pt:44
+#: novaideo/views/templates/panels/steps.pt:59
 msgid "Soutien de la proposition"
+msgstr ""
+
+#: novaideo/views/templates/panels/step3.pt:10
+msgid "${duration[0]} day(s)"
+msgstr ""
+
+#: novaideo/views/templates/panels/step3.pt:13
+msgid "${duration[1]} hour(s)"
+msgstr ""
+
+#: novaideo/views/templates/panels/step3.pt:16
+msgid "${duration[2]} minute(s)"
+msgstr ""
+
+#: novaideo/views/templates/panels/step3.pt:1
+msgid ""
+"<dynamic element> ${len(context.working_group.members)} participants "
+"(${context.working_group.state[0].capitalize()})<dynamic element> <dynamic "
+"element>"
+msgstr ""
+
+#: novaideo/views/templates/panels/step3.pt:27
+msgid "Votes for publishing"
+msgstr ""
+
+#: novaideo/views/templates/panels/step3.pt:40
+msgid "Correction of the proposal"
+msgstr ""
+
+#: novaideo/views/templates/panels/step3.pt:53
+msgid "Proposal improvement"
+msgstr ""
+
+#: novaideo/views/templates/panels/step3.pt:66
+msgid "Votes for amendments"
 msgstr ""
 
 #: novaideo/views/templates/panels/usermenu.pt:42
