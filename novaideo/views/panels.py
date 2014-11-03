@@ -158,7 +158,27 @@ class StepsPanel(object):
 
     def _days_hours_minutes(self, td):
         return td.days, td.seconds//3600, (td.seconds//60)%60
-        
+
+    def _get_duration(self, context):
+         time_delta = None
+         if any(s in context.state for s in ['proofreading','amendable']):
+             date_iteration = context.creator['timer'].eventKind.time_date
+             if date_iteration is not None:
+                 time_delta = date_iteration - datetime.datetime.today()
+                 time_delta = self._days_hours_minutes(time_delta)
+         elif 'votes for publishing'  in context.state:
+             date_finished = context.creator.vp_ballot.finished_at
+             if date_finished is not None:
+                 time_delta = date_finished - datetime.datetime.today()
+                 time_delta = self._days_hours_minutes(time_delta)
+         elif 'votes for amendments'  in context.state:
+             date_finished = context.creator.amendments_ballots[-1].finished_at
+             if date_finished is not None:
+                 time_delta = date_finished - datetime.datetime.today()
+                 time_delta = self._days_hours_minutes(time_delta)
+
+         return time_delta          
+             
     def __call__(self):
         root = getSite()
         result = {}
@@ -178,16 +198,11 @@ class StepsPanel(object):
                                              self.request)
             elif not ('archived' in context.state):
                 result['current_step'] = 3
-                date_iteration = context.creator['timer'].eventKind.time_date
-                time_delta = None
-                if date_iteration is not None:
-                    time_delta = date_iteration - datetime.datetime.today()
-                    time_delta = self._days_hours_minutes(time_delta)
-
+                time_delta = self._get_duration(context)
                 result['step3_message'] =  renderers.render(
                                              self.step3_template,
                                              {'context':context, 
-                                              'date_iteration':time_delta},
+                                              'duration':time_delta},
                                              self.request)
             elif 'archived' in context.state:
                 result['current_step'] = 0

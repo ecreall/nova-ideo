@@ -231,8 +231,8 @@ class Intention(object):
         ideas2.extend(list(intention2['edited_ideas']))
         added_ideas1 = list(intention1['added_ideas'])
         added_ideas2 = list(intention2['added_ideas'])
-        edited_inter = any((e in ideas2) for e in ideas1)
-        added_inter = any((e in added_ideas2) for e in added_ideas1)
+        edited_inter =  (not ideas1 and not ideas2) or any((e in ideas2) for e in ideas1)
+        added_inter = (not added_ideas1 and not added_ideas2) or any((e in added_ideas2) for e in added_ideas1)
         return edited_inter or added_inter
 
     @classmethod

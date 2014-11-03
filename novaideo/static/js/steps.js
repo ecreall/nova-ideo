@@ -9,9 +9,11 @@ $(document).ready(function(){
             $(message).css('z-index', '-1010');
             inprogress = false
         }else{
-            message.addClass('in')
-            $(this).addClass('message-in');
             $(message).css('z-index', '1010');
+            message.addClass('in');
+            var left = $($(this).parents('li').first()).position().left-80;
+            message.css('left', String(left)+'px');
+            $(this).addClass('message-in');
             inprogress = true
 
        }

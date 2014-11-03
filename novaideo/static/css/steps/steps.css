@@ -11,7 +11,8 @@
 }
 
 .steps #message-step-3.popover.bottom{
-    left: 300px;
+    left: 226pt;
+    text-align: center;
 }
 
 .steps-container {
