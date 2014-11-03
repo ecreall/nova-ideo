@@ -1,3 +1,15 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2014-11-03 16:53+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 #: novaideo/core.py:124
 #: novaideo/views/idea_management/templates/diff_result.pt:13
 #: novaideo/views/idea_management/templates/see_idea.pt:67
@@ -5,14 +17,14 @@
 #: novaideo/views/templates/idea_result.pt:25
 #: novaideo/views/templates/proposal_result.pt:22
 #: novaideo/views/amendment_management/templates/see_amendment.pt:73
-#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:79
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:80
 msgid "Keywords"
 msgstr ""
 
 #: novaideo/views/idea_management/edit_idea.py:17
 #: novaideo/views/idea_management/edit_idea.py:50
 msgid "Edit idea"
-msgstr ""
+msgstr "Éditer l'idée"
 
 #: novaideo/views/idea_management/edit_idea.py:34
 msgid "Actions"
@@ -20,7 +32,7 @@ msgstr ""
 
 #: novaideo/views/idea_management/create_idea.py:25
 msgid "Create an idea"
-msgstr ""
+msgstr "Enregistrer une idée"
 
 #: novaideo/views/idea_management/del_idea.py:21
 #: novaideo/views/amendment_management/del_amendment.py:21
@@ -190,50 +202,52 @@ msgstr ""
 msgid "Abandon"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/comments.pt:13
-msgid "<dynamic element> Association"
+#: novaideo/views/idea_management/templates/comments.pt:14
+msgid "Association"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/comments.pt:23
+#: novaideo/views/idea_management/templates/comments.pt:22
+msgid "Il y a"
+msgstr ""
+
+#: novaideo/views/idea_management/templates/comments.pt:25
 msgid "${diff['days']} jour(s)"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/comments.pt:26
+#: novaideo/views/idea_management/templates/comments.pt:28
 msgid "${diff['hours']} heur(s)"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/comments.pt:29
+#: novaideo/views/idea_management/templates/comments.pt:31
 msgid "${diff['minutes']} minute(s)"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/comments.pt:32
+#: novaideo/views/idea_management/templates/comments.pt:34
 msgid "${diff['seconds']} seconde(s)"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/comments.pt:21
-msgid ""
-"Il y a <dynamic element> <dynamic element> <dynamic element> <dynamic "
-"element>"
-msgstr ""
-
-#: novaideo/views/idea_management/templates/comments.pt:37
+#: novaideo/views/idea_management/templates/comments.pt:39
 msgid "Maintenant"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/comments.pt:56
+#: novaideo/views/idea_management/templates/comments.pt:58
 msgid "Associated contents:"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/comments.pt:59
+#: novaideo/views/idea_management/templates/comments.pt:61
 msgid "Associated content:"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/comments.pt:88
-msgid "<dynamic element> ${len(comment.comments)} Replay(s)"
+#: novaideo/views/idea_management/templates/comments.pt:91
+msgid "${len(comment.comments)} Replay(s)"
 msgstr ""
 
 #: novaideo/views/idea_management/templates/related_contents.pt:19
-msgid "(Par <dynamic element>, le <dynamic element>"
+msgid "(Par"
+msgstr ""
+
+#: novaideo/views/idea_management/templates/related_contents.pt:21
+msgid ", le"
 msgstr ""
 
 #: novaideo/views/idea_management/templates/diff_result.pt:7
@@ -243,45 +257,51 @@ msgstr ""
 #: novaideo/views/templates/idea_result.pt:19
 #: novaideo/views/templates/proposal_result.pt:18
 #: novaideo/views/amendment_management/templates/see_amendment.pt:67
-#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:73
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:74
 #: novaideo/content/idea.py:59 novaideo/content/proposal.py:56
 msgid "Abstract"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/diff_result.pt:40
-#: novaideo/views/proposal_management/templates/diff_result.pt:50
-msgid "<dynamic element> : Texte ajout dans ${idee.title}"
+#: novaideo/views/idea_management/templates/diff_result.pt:41
+#: novaideo/views/proposal_management/templates/diff_result.pt:51
+msgid "Texte ajouté dans ${idee.title}"
 msgstr ""
 
-#: novaideo/views/idea_management/templates/diff_result.pt:43
-#: novaideo/views/proposal_management/templates/diff_result.pt:53
-msgid "<dynamic element> : Texte supprim dans ${idee.title}"
+#: novaideo/views/idea_management/templates/diff_result.pt:45
+#: novaideo/views/proposal_management/templates/diff_result.pt:55
+msgid "Texte supprimé dans ${idee.title}"
 msgstr ""
 
 #: novaideo/views/idea_management/templates/alert_idea_publish.pt:1
 msgid ""
-"Votre ide sera publie. Tous les membres de l'application auront le droit de "
-"la commenter et de la dupliquer. tes-vous certain de vouloir publier votre "
-"ide."
+"Votre idée sera publiée. Tous les membres de l'application auront le droit "
+"de la commenter et de la dupliquer. Êtes-vous certain de vouloir publier "
+"votre idée."
 msgstr ""
 
-#: novaideo/views/idea_management/templates/sent_to.pt:6
-msgid "L'ide a t envoye : <dynamic element>"
+#: novaideo/views/idea_management/templates/sent_to.pt:8
+msgid "L'idée a été envoyée à:"
 msgstr ""
 
 #: novaideo/views/idea_management/templates/see_idea.pt:44
-msgid ""
-"(Propose par <dynamic element> le <dynamic element>  ${idea.modified_at."
-"hour}:${idea.modified_at.minute}:${idea.modified_at.second} <dynamic "
-"element>)"
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:57
+msgid "(Proposée par"
+msgstr ""
+
+#: novaideo/views/idea_management/templates/see_idea.pt:46
+#: novaideo/views/proposal_management/templates/amendments.pt:20
+#: novaideo/views/amendment_management/templates/see_amendment.pt:48
+#: novaideo/views/amendment_management/templates/description_amendments.pt:10
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:59
+msgid "le"
 msgstr ""
 
 #: novaideo/views/idea_management/templates/see_idea.pt:96
-msgid "Pices jointes:"
+msgid "Pièces jointes:"
 msgstr ""
 
 #: novaideo/views/idea_management/templates/see_idea.pt:99
-msgid "Pice jointe:"
+msgid "Pièce jointe:"
 msgstr ""
 
 #: novaideo/views/invitation_management/invite_user.py:37
@@ -352,12 +372,13 @@ msgid "Change Password"
 msgstr ""
 
 #: novaideo/views/user_management/registration.py:21
+#: novaideo/views/templates/panels/usermenu.pt:77
 msgid "Registration"
 msgstr ""
 
 #: novaideo/views/user_management/templates/see_person.pt:38
 #: novaideo/views/templates/person_result.pt:19
-msgid "Centres d'intrt"
+msgid "Centres d'intérêt"
 msgstr ""
 
 #: novaideo/views/user_management/templates/see_person.pt:57
@@ -424,15 +445,31 @@ msgstr ""
 #: novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:45
 #: novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:44
 #: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:45
-msgid "Dure"
+msgid "Durée"
 msgstr ""
 
-#: novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:48
-#: novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:47
-#: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:48
-msgid ""
-"le vote  commenc le <dynamic element>  ${run.hour}:${run.minute}:${run."
-"second}. <dynamic element>"
+#: novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:50
+#: novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:49
+#: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:50
+msgid "le vote à commencé le"
+msgstr ""
+
+#: novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:51
+#: novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:50
+#: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:51
+msgid "à ${run.hour}:${run.minute}:${run.second}."
+msgstr ""
+
+#: novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:52
+#: novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:51
+#: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:52
+msgid "La fin du vote est prévue pour le"
+msgstr ""
+
+#: novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:53
+#: novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:52
+#: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:53
+msgid "à ${finish.hour}:${finish.minute}:${finish.second}."
 msgstr ""
 
 #: novaideo/views/ballot_processes/fptp/vote.py:24
@@ -500,14 +537,17 @@ msgstr ""
 msgid "Forgot your password?"
 msgstr ""
 
-#: novaideo/views/user_access_manager/templates/forbidden.pt:17
+#: novaideo/views/user_access_manager/templates/forbidden.pt:19
 msgid ""
 "Sorry, your account is not permitted to perform the requested action. You "
-"can try to log in using a different account below or you can <dynamic "
-"element>."
+"can try to log in using a different account below or you can"
 msgstr ""
 
-#: novaideo/views/user_access_manager/templates/forbidden.pt:36
+#: novaideo/views/user_access_manager/templates/forbidden.pt:23
+msgid "return to where you were"
+msgstr ""
+
+#: novaideo/views/user_access_manager/templates/forbidden.pt:38
 msgid "Log In as Another User"
 msgstr ""
 
@@ -630,6 +670,7 @@ msgid "Add an indea to the proposal"
 msgstr ""
 
 #: novaideo/views/proposal_management/edit_proposal.py:85
+#: novaideo/views/templates/add_idea_widget.pt:5
 msgid "Add a new idea"
 msgstr ""
 
@@ -713,37 +754,42 @@ msgid "See more..."
 msgstr ""
 
 #: novaideo/views/proposal_management/templates/amendments.pt:18
+#: novaideo/views/amendment_management/templates/see_amendment.pt:46
+#: novaideo/views/amendment_management/templates/description_amendments.pt:8
+msgid "(Version amendée par"
+msgstr ""
+
+#: novaideo/views/proposal_management/templates/amendments.pt:21
+#: novaideo/views/templates/idea_list_element.pt:5
+#: novaideo/views/templates/proposal_list_element.pt:5
+msgid "à"
+msgstr ""
+
+#: novaideo/views/proposal_management/templates/amendments.pt:24
+msgid "dupliquée à partir de la version amendée"
+msgstr ""
+
+#: novaideo/views/proposal_management/templates/sent_to.pt:8
+msgid "La proposition a été envoyée à"
+msgstr ""
+
+#: novaideo/views/proposal_management/templates/alert_submit_proposal.pt:7
 msgid ""
-"(Version amende par <dynamic element> le <dynamic element>  ${amendment."
-"modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at."
-"second} <dynamic element>)"
+"Les idées suivantes sont utilisées dans votre proposition, mais pas encore "
+"publiées. La soumission de la proposition entraine, automatiquement, la "
+"publication des idées utilisées. Souhaitez-vous les finaliser avant la "
+"soumission de votre proposition. Une fois, les idées sont publics, vous ne "
+"pouvez plus les modifier."
 msgstr ""
 
-#: novaideo/views/proposal_management/templates/sent_to.pt:6
-msgid "La proposition a t envoye : <dynamic element>"
-msgstr ""
-
-#: novaideo/views/proposal_management/templates/alert_submit_proposal.pt:3
-msgid ""
-"<dynamic element><dynamic element> Les ides suivantes sont utilises dans "
-"votre proposition, mais pas encore publies. La soumission de la proposition "
-"entraine, automatiquement, la publication des ides utilises. Souhaitez-vous "
-"les finaliser avant la soumission de votre proposition. Une fois, les ides "
-"sont publics, vous ne pouvez plus les modifier.<dynamic element> <dynamic "
-"element> <dynamic element> <dynamic element>"
-msgstr ""
-
-#: novaideo/views/proposal_management/templates/alert_submit_proposal.pt:24
+#: novaideo/views/proposal_management/templates/alert_submit_proposal.pt:25
 msgid ""
 "Votre proposition sera ouverte pour la constitution du groupe de travail. "
-"Les membres intresss auront la possibilit de rejoindre le groupe de travail. "
-"Une fois, le groupe de travail est constitu, le travail collectif dmarrera "
-"automatiquement. Nous vous invitons  communiquer votre proposition afin de "
-"composer le groupe de travail le plus rapidement possible."
-msgstr ""
-
-#: novaideo/views/templates/add_idea_widget.pt:5
-msgid "<dynamic element> Add a new idea"
+"Les membres intéressés auront la possibilité de rejoindre le groupe de "
+"travail. Une fois, le groupe de travail est constitué, le travail collectif "
+"démarrera automatiquement. Nous vous invitons à communiquer votre "
+"proposition afin de composer le groupe de travail le plus rapidement "
+"possible."
 msgstr ""
 
 #: novaideo/views/templates/add_idea_widget.pt:18
@@ -754,18 +800,22 @@ msgstr ""
 msgid "There was a problem with this section"
 msgstr ""
 
-#: novaideo/views/templates/idea_list_element.pt:1
-#: novaideo/views/templates/proposal_list_element.pt:1
-msgid ""
-"<dynamic element> modifie le <dynamic element>  ${object.modified_at.hour}:"
-"${object.modified_at.minute}:${object.modified_at.second}"
+#: novaideo/views/templates/idea_list_element.pt:4
+#: novaideo/views/templates/proposal_list_element.pt:4
+msgid "modifiée le"
 msgstr ""
 
 #: novaideo/views/templates/idea_result.pt:44
 #: novaideo/views/templates/proposal_result.pt:41
+msgid "Modifiée le"
+msgstr ""
+
+#: novaideo/views/templates/idea_result.pt:45
+#: novaideo/views/templates/proposal_result.pt:42
+#: novaideo/views/templates/amendment_result.pt:98
 msgid ""
-"Modifie le <dynamic element>  ${object.modified_at.hour}:${object."
-"modified_at.minute}:${object.modified_at.second} par <dynamic element>"
+"à ${object.modified_at.hour}:${object.modified_at.minute}:${object."
+"modified_at.second} par"
 msgstr ""
 
 #: novaideo/views/templates/ajax_form.pt:25
@@ -801,13 +851,7 @@ msgid "Removed ideas"
 msgstr ""
 
 #: novaideo/views/templates/amendment_result.pt:93
-msgid "Propos le"
-msgstr ""
-
-#: novaideo/views/templates/amendment_result.pt:96
-msgid ""
-"<dynamic element>  ${object.modified_at.hour}:${object.modified_at.minute}:"
-"${object.modified_at.second} par <dynamic element>"
+msgid "Proposé le"
 msgstr ""
 
 #: novaideo/views/templates/dragdrop_sequence/sequence_item.pt:15
@@ -815,19 +859,25 @@ msgid "Remove"
 msgstr ""
 
 #: novaideo/views/templates/panels/steps.pt:24
-msgid "Recueil de l'ide"
+msgid "Recueil de l'idée"
 msgstr ""
 
 #: novaideo/views/templates/panels/steps.pt:31
-msgid "Rdaction de la proposition"
+msgid "Rédaction de la proposition"
 msgstr ""
 
 #: novaideo/views/templates/panels/steps.pt:42
-msgid "Amlioration de la proposition"
+msgid "Amélioration de la proposition"
 msgstr ""
 
 #: novaideo/views/templates/panels/steps.pt:59
 msgid "Soutien de la proposition"
+msgstr ""
+
+#: novaideo/views/templates/panels/step3.pt:3
+msgid ""
+"${len(context.working_group.members)} participants (${context.working_group."
+"state[0].capitalize()})"
 msgstr ""
 
 #: novaideo/views/templates/panels/step3.pt:10
@@ -840,13 +890,6 @@ msgstr ""
 
 #: novaideo/views/templates/panels/step3.pt:16
 msgid "${duration[2]} minute(s)"
-msgstr ""
-
-#: novaideo/views/templates/panels/step3.pt:1
-msgid ""
-"<dynamic element> ${len(context.working_group.members)} participants "
-"(${context.working_group.state[0].capitalize()})<dynamic element> <dynamic "
-"element>"
 msgstr ""
 
 #: novaideo/views/templates/panels/step3.pt:27
@@ -871,10 +914,6 @@ msgstr ""
 
 #: novaideo/views/templates/panels/usermenu.pt:51
 msgid "${icon} Log Out"
-msgstr ""
-
-#: novaideo/views/templates/panels/usermenu.pt:73
-msgid "<dynamic element> Registration"
 msgstr ""
 
 #: novaideo/views/comment_management/respond.py:26
@@ -935,31 +974,34 @@ msgstr ""
 msgid ""
 "Pour que les autres participants se prononcent sur vos modifications, vous "
 "devez expliquer pour chacune d'elles votre intention. Une intention peut "
-"porter sur plusieurs modifications  la fois. Une fois que vous avez expliqu "
-"l'ensemble de vos modifications, vous pouvez les regrouper et les soumettre "
-"aux autres participants."
+"porter sur plusieurs modifications à la fois. Une fois que vous avez "
+"expliqué l'ensemble de vos modifications, vous pouvez les regrouper et les "
+"soumettre aux autres participants."
 msgstr ""
 
-#: novaideo/views/amendment_management/templates/see_amendment.pt:46
-#: novaideo/views/amendment_management/templates/description_amendments.pt:8
+#: novaideo/views/amendment_management/templates/see_amendment.pt:49
+#: novaideo/views/amendment_management/templates/description_amendments.pt:11
 msgid ""
-"(Version amende par <dynamic element> le <dynamic element>  ${amendment."
-"modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at."
-"second} de la proposition <dynamic element><dynamic element>)"
+"à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment."
+"modified_at.second} de la proposition"
+msgstr ""
+
+#: novaideo/views/amendment_management/templates/see_amendment.pt:51
+#: novaideo/views/amendment_management/templates/description_amendments.pt:13
+msgid ", dupliquée à partir de la version amendée"
 msgstr ""
 
 #: novaideo/views/amendment_management/templates/edit_amendments.pt:2
 msgid ""
-"Pas d'amendements accessibles. Des amendements sont en cours de rdaction."
+"Pas d'amendements accessibles. Des amendements sont en cours de rédaction."
 msgstr ""
 
-#: novaideo/views/amendment_management/templates/sent_to.pt:6
-msgid "L'amendement a t envoy : <dynamic element>"
+#: novaideo/views/amendment_management/templates/sent_to.pt:8
+msgid "L'amendement a été envoyé à:"
 msgstr ""
 
-#: novaideo/views/amendment_management/templates/explanation_modal_item.pt:9
-msgid ""
-"<dynamic element> Specify the intention of your changes <dynamic element>"
+#: novaideo/views/amendment_management/templates/explanation_modal_item.pt:10
+msgid "Specify the intention of your changes"
 msgstr ""
 
 #: novaideo/views/amendment_management/templates/explanation_modal_item.pt:27
@@ -971,28 +1013,40 @@ msgid "Cancel"
 msgstr ""
 
 #: novaideo/views/amendment_management/templates/description_amendments.pt:23
+msgid "(Version d'origine par"
+msgstr ""
+
+#: novaideo/views/amendment_management/templates/description_amendments.pt:25
+msgid "proposée le"
+msgstr ""
+
+#: novaideo/views/amendment_management/templates/description_amendments.pt:26
 msgid ""
-"(Version d'origine par <dynamic element> propose le <dynamic element>  "
-"${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment."
-"modified_at.second} <dynamic element>)"
+"à ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment."
+"modified_at.second}"
+msgstr ""
+
+#: novaideo/views/amendment_management/templates/description_amendments.pt:27
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:61
+msgid ", dupliquée à partir de la proposition"
 msgstr ""
 
 #: novaideo/views/amendment_management/templates/alert_amendment_submit.pt:4
 msgid ""
-"Les ides suivantes sont utilises dans votre amendement, mais pas encore "
-"publies. La soumission de l'amendement entraine, automatiquement, la "
-"publication des ides utilises. Souhaitez-vous les finaliser avant la "
-"soumission de votre amendement. Une fois, les ides sont publics, vous ne "
+"Les idées suivantes sont utilisées dans votre amendement, mais pas encore "
+"publiées. La soumission de l'amendement entraine, automatiquement, la "
+"publication des idées utilisées. Souhaitez-vous les finaliser avant la "
+"soumission de votre amendement. Une fois, les idées sont publics, vous ne "
 "pouvez plus les modifier."
 msgstr ""
 
 #: novaideo/views/amendment_management/templates/alert_amendment_submit.pt:20
 msgid ""
-"Le regroupement des amendements permet d'avoir des amendements cohrents et "
+"Le regroupement des amendements permet d'avoir des amendements cohérents et "
 "augmente la chance de voir vos modifications retenues par les autres "
-"participants. Vous pouvez regrouper vos modifications en glissant dposant "
+"participants. Vous pouvez regrouper vos modifications en glissant déposant "
 "les modifications ces derniers dans les conteneurs correspondants. Chaque "
-"conteneur correspond  un nouvel amendement. Vous pouvez aussi choisir de "
+"conteneur correspond à un nouvel amendement. Vous pouvez aussi choisir de "
 "soumettre en un seul amendement."
 msgstr ""
 
@@ -1032,33 +1086,31 @@ msgid "My participations"
 msgstr ""
 
 #: novaideo/views/novaideo_view_manager/templates/search_result.pt:2
-msgid "${length} elements trouvs"
+msgid "${length} elements trouvés"
 msgstr ""
 
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:43
+msgid ""
+"Vous avez atteint la limite de participations autorisées. Afin de pouvoir "
+"soumettre votre proposition, veuillez démissionner de l'un de"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:44
 msgid "vos groupes de travail actuels"
 msgstr ""
 
-#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:37
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:60
 msgid ""
-"<dynamic element> Vous avez atteint la limite de participations autorises. "
-"Afin de pouvoir soumettre votre proposition, veuillez dmissionner de l'un de "
-"<dynamic element>."
+"à ${proposal.modified_at.hour}:${proposal.modified_at.minute}:${proposal."
+"modified_at.second}"
 msgstr ""
 
-#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:56
-msgid ""
-"(Propose par <dynamic element> le <dynamic element>  ${proposal.modified_at."
-"hour}:${proposal.modified_at.minute}:${proposal.modified_at.second} <dynamic "
-"element>)"
-msgstr ""
-
-#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:98
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:99
 #: novaideo/content/novaideo_application.py:100
 msgid "Working group"
 msgstr ""
 
-#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:165
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:166
 msgid "Votes"
 msgstr ""
 
@@ -1078,7 +1130,7 @@ msgid "Associated contents"
 msgstr ""
 
 #: novaideo/views/correlation_management/templates/see_correlation.pt:33
-msgid "Associs par"
+msgid "Associés par"
 msgstr ""
 
 #: novaideo/views/invitation_validation/refuse_invitatio.py:23
@@ -1347,7 +1399,7 @@ msgstr ""
 
 #: novaideo/content/processes/idea_management/definition.py:44
 msgid "Create idea"
-msgstr ""
+msgstr "Enregistrer une idée"
 
 #: novaideo/content/processes/idea_management/definition.py:47
 msgid "Duplicate this idea"
@@ -1384,7 +1436,7 @@ msgstr ""
 #: novaideo/content/processes/idea_management/behaviors.py:465
 #: novaideo/content/processes/proposal_management/definition.py:358
 #: novaideo/content/processes/proposal_management/definition.py:359
-#: novaideo/content/processes/proposal_management/behaviors.py:1490
+#: novaideo/content/processes/proposal_management/behaviors.py:1503
 msgid "Compare"
 msgstr ""
 
@@ -1577,11 +1629,11 @@ msgstr ""
 msgid "Improve proposal"
 msgstr ""
 
-#: novaideo/content/processes/proposal_management/behaviors.py:150
+#: novaideo/content/processes/proposal_management/behaviors.py:151
 msgid "Publish the idea as a proposal"
 msgstr ""
 
-#: novaideo/content/processes/proposal_management/behaviors.py:167
+#: novaideo/content/processes/proposal_management/behaviors.py:168
 msgid " (The proposal)"
 msgstr ""
 

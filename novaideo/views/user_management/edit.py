@@ -73,6 +73,7 @@ class EditView(FormView):
                                                      'first_name', 
                                                      'last_name',
                                                      'email',
+                                                     'locale',
                                                      'keywords',
                                                      'picture',
                                                      'change_password'])

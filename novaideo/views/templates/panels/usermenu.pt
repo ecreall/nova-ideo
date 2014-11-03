@@ -38,8 +38,8 @@
        <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary " id="log-in">
           <i class="glyphicon glyphicon-log-in"> </i> Log In
        </a>
-       <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary " id="registration" i18n:translate="">
-          <i class="glyphicon glyphicon-pencil"> </i> Registration
+       <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary " id="registration" >
+          <i class="glyphicon glyphicon-pencil"> </i> <span  i18n:translate="">Registration</span>
        </a>
     </div>
     <div id="searchform" class="navbar-form navbar-right">

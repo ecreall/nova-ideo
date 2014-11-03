@@ -15,6 +15,7 @@ from dace.util import (
     find_entities,
     get_obj)
 from dace.objectofcollaboration.principal.util import has_role, grant_roles, get_current, revoke_roles
+from dace.objectofcollaboration import system
 from dace.processinstance.activity import InfiniteCardinality, ActionType, LimitedCardinality, ElementaryAction
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
@@ -1253,12 +1254,20 @@ class Participate(InfiniteCardinality):
                  )
         mailer_send(subject=subject, recipients=[user.email], body=message)
 
+    def _call_votingpublication(self, context, request):
+        try:
+            action = self.process.getWorkItems()['proposalmanagement.votingpublication'].actions[0]
+            action.execute(context, request, {})
+        except Exception:
+            pass
+
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
         wg = context.working_group
         participants = wg.members
         len_participants = len(participants)
+        first_decision = False
         if len_participants < root.participants_maxi:
             wg.addtoproperty('members', user)
             grant_roles(user, (('Participant', context),))
@@ -1267,15 +1276,19 @@ class Participate(InfiniteCardinality):
                 wg.state = PersistentList(['active'])
                 if not hasattr(self.process, 'first_decision'):
                     self.process.first_decision = True
+                    first_decision = True
 
                 if any(not('archived' in a.state) for a in context.amendments):
                     context.state.append('amendable')
                 else:
                     context.state.append('proofreading')
- 
+
+                wg.reindex()
                 context.reindex()
 
             self._send_mail_to_user(PARTICIPATE_SUBJECT, PARTICIPATE_MESSAGE, user, context, request)
+            if first_decision:
+                self._call_votingpublication(context, request)
         else:
             wg.addtoproperty('wating_list', user)
             wg.reindex()

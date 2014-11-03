@@ -4,10 +4,10 @@
        <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
           <img tal:condition="comment.author.picture is not None" tal:attributes="src comment.author.picture.url(request)"  class="img-circle" width="60"/>
           <div class="media-body" style="width:auto;">
-           <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right" i18n:translate=""><span class="glyphicon glyphicon-link"></span> Association</div>
+           <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Association</span></div>
             <small tal:define="diff_len  len(diff.keys())">
               <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
-              <div  tal:omit-tag="" tal:condition="diff" i18n:translate="">Il y a 
+              <div  tal:omit-tag="" tal:condition="diff"><span i18n:translate="">Il y a </span> 
                 <span tal:condition="'days' in diff"  i18n:translate="">${diff['days']} jour(s)</span> 
                 <span tal:condition="'hours' in diff"  i18n:translate="">${diff['hours']} heur(s)</span> 
                 <span tal:condition="'minutes' in diff" i18n:translate="">${diff['minutes']} minute(s)</span>
@@ -37,7 +37,7 @@
                 <span tal:condition="comment.comments" 
                       class="comment-replay-nb"
                       onclick="javascript:replays_show(this);">
-                  <small i18n:translate=""><span class="glyphicon glyphicon-chevron-down"></span> ${len(comment.comments)} Replay(s)</small>
+                  <small><span class="glyphicon glyphicon-chevron-down"></span> <span i18n:translate="">${len(comment.comments)} Replay(s)</span></small>
                 </span>
                 <div tal:omit-tag="" tal:define="commentaction item['commentaction']">
                  <a id="${commentaction['action_id']}-btn" 

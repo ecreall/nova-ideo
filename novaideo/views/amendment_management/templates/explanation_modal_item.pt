@@ -2,7 +2,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title"  i18n:translate=""><button type="button" class="btn btn-blue">${item['oid']}</button> Specify the intention of your changes <span class="glyphicon glyphicon-exclamation-sign"></span></h4>
+        <h4 class="modal-title" ><button type="button" class="btn btn-blue">${item['oid']}</button><span  i18n:translate=""> Specify the intention of your changes </span><span class="glyphicon glyphicon-exclamation-sign"></span></h4>
       </div>
       <div class="modal-body">
       </div>

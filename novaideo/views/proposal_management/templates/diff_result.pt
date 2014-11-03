@@ -20,8 +20,8 @@
     init_content_text()
   </script>
   <div id="legend">
-    <div i18n:translate=""><div class="legend-carre-ins"></div> : Texte ajouté dans ${idee.title}</div>
-    <div i18n:translate=""><div class="legend-carre-del"></div> : Texte supprimé dans ${idee.title}</div>
+    <div><div class="legend-carre-ins"></div> : <span i18n:translate="">Texte ajouté dans ${idee.title}</span></div>
+    <div><div class="legend-carre-del"></div> : <span i18n:translate="">Texte supprimé dans ${idee.title}</span></div>
   </div>
  </div>
 </div>

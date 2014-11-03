@@ -1,5 +1,5 @@
-<div class="proposal-members-nb" i18n:domain="novaideo"  i18n:translate="">
-   <span class="glyphicon glyphicons-group"></span> ${len(context.working_group.members)} participants (${context.working_group.state[0].capitalize()})<br>
+<div class="proposal-members-nb" i18n:domain="novaideo">
+   <span class="glyphicon glyphicons-group"></span><span  i18n:translate=""> ${len(context.working_group.members)} participants (${context.working_group.state[0].capitalize()})</span><br>
    <span tal:condition="duration is not None"  style="color:#d9534f;">
        <span class="glyphicon glyphicon-time"></span>
        <span tal:omit-tag="" tal:condition="duration[0]>0" i18n:translate="">${duration[0]} day(s)</span>
