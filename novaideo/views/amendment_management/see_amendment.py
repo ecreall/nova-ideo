@@ -109,7 +109,7 @@ class SeeAmendmentActionsView(MultipleView):
     renderer='pontus:templates/view.pt',
     )
 class SeeAmendmentView(MultipleView):
-    title = _('')
+    title = ''
     name = 'seeamendment'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (DetailAmendmentView, SeeAmendmentActionsView)

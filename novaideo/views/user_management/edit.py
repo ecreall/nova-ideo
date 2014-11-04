@@ -46,8 +46,8 @@ class UserPasswordSchema(Schema):
     changepassword = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="hide-bloc"),
-        label=_(''),
-        title =_(''),
+        label='',
+        title ='',
         default=False,
         missing=False
         )
@@ -56,9 +56,9 @@ class UserPasswordSchema(Schema):
 class EditPersonSchema(PersonSchema):
 
     change_password = UserPasswordSchema(widget=SimpleMappingtWidget(mapping_css_class="controled-form change-password-form hide-bloc",
-                                                                   ajax=True,
-                                                                   activator_css_class="glyphicon glyphicon-asterisk",
-                                                                   activator_title=_('Change Password')),
+                                                                     ajax=True,
+                                                                     activator_css_class="glyphicon glyphicon-asterisk",
+                                                                     activator_title=_('Change Password')),
                                          validator=Password_validator())
 
 @view_config(
@@ -69,14 +69,17 @@ class EditPersonSchema(PersonSchema):
 class EditView(FormView):
 
     title = _('Edit')
-    schema = select(EditPersonSchema(factory=Person, editable=True, omit=('keywords','change_password')),['user_title',
-                                                     'first_name', 
-                                                     'last_name',
-                                                     'email',
-                                                     'locale',
-                                                     'keywords',
-                                                     'picture',
-                                                     'change_password'])
+    schema = select(EditPersonSchema(factory=Person,
+                                     editable=True,
+                                     omit=('keywords','change_password')),
+                    ['user_title',
+                     'first_name', 
+                     'last_name',
+                     'email',
+                     'locale',
+                     'keywords',
+                     'picture',
+                     'change_password'])
     behaviors = [Edit, Cancel]
     formid = 'formedit'
     name='edit'

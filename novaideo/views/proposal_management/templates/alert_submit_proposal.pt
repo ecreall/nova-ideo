@@ -1,10 +1,9 @@
 <div  i18n:domain="novaideo">
- <div tal:condition="ideas" class="alert alert-danger">
-  <strong>Oups!</strong><br>
+ <div tal:condition="ideas" class="alert alert-warning">
 <span i18n:translate="">Les idées suivantes sont utilisées dans votre proposition, mais pas encore publiées. La soumission de la proposition entraine, automatiquement, la publication des idées utilisées. Souhaitez-vous les finaliser avant la soumission de votre proposition. Une fois, les idées sont publics, vous ne pouvez plus les modifier.</span><br>
   <ol class="list-unstyled">
     <tal:loop repeat="i ideas">
-      <li><a class="btn btn-danger btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+      <li><a class="btn btn-warning btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
     </tal:loop>
   <ol>
  </div>

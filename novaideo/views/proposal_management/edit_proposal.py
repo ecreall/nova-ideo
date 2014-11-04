@@ -55,7 +55,7 @@ class AddIdeaSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="new-idea-control"),
         label=_('Create a new idea'),
-        title =_(''),
+        title ='',
         missing=False
         )
 

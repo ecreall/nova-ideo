@@ -20,7 +20,7 @@ from novaideo.core import BATCH_DEFAULT_SIZE, can_access
     renderer='pontus:templates/view.pt',
     )
 class SeePersonView(BasicView):
-    title = _('')
+    title = ''
     name = 'seeperson'
     behaviors = [SeePerson]
     template = 'novaideo:views/user_management/templates/see_person.pt'

@@ -25,7 +25,7 @@ class CommentsView(CommentsIdeaView):
 
 class CommentProposalFormView(CommentIdeaFormView):
 
-    title = _('Comment')
+    title = _('Discuss the proposal')
     behaviors = [CommentProposal]
     formid = 'formcommentproposal'
     name='commentproposalform'
@@ -48,8 +48,8 @@ class CommentProposalFormView(CommentIdeaFormView):
     renderer='pontus:templates/view.pt',
     )
 class CommentProposalView(CommentIdeaView):
-    title = _('Comment the proposal')
-    description = _('Comment the proposal')
+    title = _('Discuss the proposal')
+    description = _('Discuss the proposal')
     name='commentidea'
     views = (CommentProposalFormView, CommentsView)
 

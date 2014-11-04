@@ -8,10 +8,10 @@
             <small tal:define="diff_len  len(diff.keys())">
               <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
               <div  tal:omit-tag="" tal:condition="diff"><span i18n:translate="">Il y a</span>  
-                <span tal:condition="'days' in diff"  i18n:translate="">${diff['days']} jour(s)</span> 
-                <span tal:condition="'hours' in diff"  i18n:translate="">${diff['hours']} heur(s)</span> 
-                <span tal:condition="'minutes' in diff" i18n:translate="">${diff['minutes']} minute(s)</span>
-                <span tal:condition="diff_len == 1 and 'seconds' in diff" i18n:translate="">${diff['seconds']} seconde(s)</span>
+                <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
+                <span tal:condition="'hours' in diff">${diff['hours']} <span i18n:translate="">hour(s)</span></span> 
+                <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>
+                <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">seconde(s)</span></span>
               </div>
               <span tal:condition="diff_len == 0" i18n:translate="">Maintenant</span> <span i18n:translate="">- Son intention:</span> 
               <span tal:condition="getattr(comment, 'intention', None)">${comment.intention}</span>
@@ -37,7 +37,7 @@
                 <span tal:condition="comment.comments" 
                       class="comment-replay-nb"
                       onclick="javascript:replays_show(this);">
-                  <small><span class="glyphicon glyphicon-chevron-down"></span> <span i18n:translate="">${len(comment.comments)} Replay(s)</span></small>
+                  <small><span class="glyphicon glyphicon-chevron-down"></span>${len(comment.comments)} <span i18n:translate="">Replay(s)</span></small>
                 </span>
                 <div tal:omit-tag="" tal:define="commentaction item['commentaction']">
                  <a id="${commentaction['action_id']}-btn" 

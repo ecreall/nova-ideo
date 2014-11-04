@@ -17,8 +17,8 @@
 ${structure:textdiff}
 
   <div id="legend">
-    <div><div class="legend-carre-ins"></div> : <span i18n:translate="">Texte ajouté dans ${idee.title}</span></div>
-    <div><div class="legend-carre-del"></div> : <span i18n:translate="">Texte supprimé dans ${idee.title}</span></div>
+    <div><div class="legend-carre-ins"></div> : <span i18n:translate="">Texte ajouté dans</span> ${idee.title}</div>
+    <div><div class="legend-carre-del"></div> : <span i18n:translate="">Texte supprimé dans</span> ${idee.title}</div>
   </div>
  </div>
 </div>

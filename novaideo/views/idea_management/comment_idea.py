@@ -97,7 +97,7 @@ class CommentsView(BasicView):
 
 class CommentIdeaFormView(FormView):
 
-    title = _('Comment')
+    title = _('Discuss the idea')
     schema = select(CommentSchema(factory=Comment, editable=True, omit=('related_contents',)),['intention', 'comment', 'related_contents'])
     behaviors = [CommentIdea]
     formid = 'formcommentidea'
@@ -114,9 +114,9 @@ class CommentIdeaFormView(FormView):
         self.schema.widget = formwidget
 
 
-commentide_message = {'0': u"""Pas de fils de discussion""",
-                      '1': u"""Un fil de discussion""",
-                      '*': u"""{lencomments} fils de discussion"""} 
+commentide_message = {'0': _(u"""Pas de fils de discussion"""),
+                      '1': _(u"""Un fil de discussion"""),
+                      '*': _(u"""${lencomments} fils de discussion""")} 
 
 @view_config(
     name='commentidea',
@@ -124,8 +124,8 @@ commentide_message = {'0': u"""Pas de fils de discussion""",
     renderer='pontus:templates/view.pt',
     )
 class CommentIdeaView(MultipleView):
-    title = _('Comment the idea')
-    description = _('Comment the idea')
+    title = _('Discuss the idea')
+    description = _('Discuss the idea')
     name='commentidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
@@ -134,9 +134,10 @@ class CommentIdeaView(MultipleView):
     def get_message(self):
         lencomments = len(self.context.comments)
         index = str(lencomments)
-        if lencomments>1:
+        if lencomments > 1:
             index = '*'
-        message = (commentide_message[index]).format(lencomments=lencomments)
+
+        message = _(commentide_message[index], mapping={'lencomments':lencomments})
         return message
 
 

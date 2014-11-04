@@ -1065,6 +1065,8 @@ class VotingPublication(ElementaryAction):
                 subject_url=url
                  )
             mailer_send(subject=subject, recipients=[member.email], body=message)
+
+        self.process.iteration = getattr(self.process, 'iteration', 0) + 1
         return True
 
 

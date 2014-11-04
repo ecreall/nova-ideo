@@ -65,7 +65,7 @@ class SearchSchema(Schema):
         colander.String(),
         widget=SearchTextInputWidget(button_type='submit',
                                      description=_('The keyword search is done using commas between keywords.')),
-        title=_(''),
+        title='',
         missing='',
         )
 

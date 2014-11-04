@@ -80,7 +80,7 @@ class SeeIdeaActionsView(MultipleView):
     renderer='pontus:templates/view.pt',
     )
 class SeeIdeaView(MultipleView):
-    title = _('')
+    title = ''
     name = 'seeidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (DetailIdeaView, SeeIdeaActionsView)

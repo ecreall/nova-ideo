@@ -28,9 +28,9 @@ except NameError:
 
 
 
-presentidea_message = {'0': u"""Pas de personnes contactées""",
-                       '1': u"""Une personne contactée""",
-                       '*': u"""{len_persons_contacted} personnes contactées"""}
+presentidea_message = {'0': _(u"""Pas de personnes contactées"""),
+                       '1': _(u"""Une personne contactée"""),
+                       '*': _(u"""${len_persons_contacted} personnes contactées""")}
 
 
 class SentToView(BasicView):
@@ -49,7 +49,7 @@ class SentToView(BasicView):
         if len_members>1:
             index = '*'
 
-        message = presentidea_message[index].format(len_persons_contacted=len_members)
+        message = _(presentidea_message[index], mapping={'len_persons_contacted': len_members})
         result = {}
         values = {
                 'message': message,
