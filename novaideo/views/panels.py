@@ -19,6 +19,7 @@ from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.proposal import Proposal
 from novaideo.content.idea import Idea
 from novaideo.content.amendment import Amendment
+from novaideo.core import _
 
 user_menu_actions = {'menu1': [SeeMyContents, SeeMyParticipations],
                      'menu2': [SeeMySelections, SeeMySupports],
@@ -144,7 +145,10 @@ class UserNavBarPanel(object):
     )
 class StepsPanel(object):
     step4_template = 'novaideo:views/templates/panels/step4.pt'
-    step3_template = 'novaideo:views/templates/panels/step3.pt'
+    step3_0_template = 'novaideo:views/templates/panels/step3_0.pt'
+    step3_1_template = 'novaideo:views/templates/panels/step3_1.pt'
+    step3_2_template = 'novaideo:views/templates/panels/step3_2.pt'
+    step3_3_template = 'novaideo:views/templates/panels/step3_3.pt'
 
     def __init__(self, context, request):
         self.context = context
@@ -159,26 +163,58 @@ class StepsPanel(object):
     def _days_hours_minutes(self, td):
         return td.days, td.seconds//3600, (td.seconds//60)%60
 
-    def _get_duration(self, context):
+    def _get_step3_informations(self, context, request):
          time_delta = None
+         process = context.creator
          if any(s in context.state for s in ['proofreading','amendable']):
-             date_iteration = context.creator['timer'].eventKind.time_date
+             date_iteration = process['timer'].eventKind.time_date
              if date_iteration is not None:
                  time_delta = date_iteration - datetime.datetime.today()
                  time_delta = self._days_hours_minutes(time_delta)
+
+             return renderers.render(self.step3_1_template,
+                                     {'context':context, 
+                                      'duration':time_delta,
+                                      'process': process},
+                                     request)
          elif 'votes for publishing'  in context.state:
-             date_finished = context.creator.vp_ballot.finished_at
-             if date_finished is not None:
-                 time_delta = date_finished - datetime.datetime.today()
-                 time_delta = self._days_hours_minutes(time_delta)
-         elif 'votes for amendments'  in context.state:
-             date_finished = context.creator.amendments_ballots[-1].finished_at
-             if date_finished is not None:
-                 time_delta = date_finished - datetime.datetime.today()
+             ballot = process.vp_ballot
+             if ballot.finished_at is not None:
+                 time_delta = ballot.finished_at - datetime.datetime.today()
                  time_delta = self._days_hours_minutes(time_delta)
 
-         return time_delta          
-             
+             return renderers.render(self.step3_3_template,
+                                     {'context': context, 
+                                      'duration': time_delta,
+                                      'process': process,
+                                      'ballot_report': ballot.report},
+                                     request)
+         elif 'votes for amendments'  in context.state:
+             ballot = process.amendments_ballots[-1].finished_at
+             if ballot.finished_at is not None:
+                 time_delta = ballot.finished_at - datetime.datetime.today()
+                 time_delta = self._days_hours_minutes(time_delta)
+
+             return renderers.render(self.step3_2_template,
+                                     {'context':context, 
+                                      'duration':time_delta,
+                                      'process': process,
+                                      'ballot_report': ballot.report},
+                                     request)
+         elif 'open to a working group'  in context.state:
+             return renderers.render(self.step3_0_template,
+                                     {'context':context, 
+                                      'process': process,
+                                      'min_members': getSite().participants_mini},
+                                     request)
+
+         return _('No more Information.')
+
+    def _get_step4_informations(self, context, request):       
+        return renderers.render(self.step4_template,
+                                {'context':context},
+                                request)
+
     def __call__(self):
         root = getSite()
         result = {}
@@ -192,18 +228,10 @@ class StepsPanel(object):
                 result['current_step'] = 2
             elif 'published' in context.state:
                 result['current_step'] = 4
-                result['step4_message'] = renderers.render(
-                                             self.step4_template,
-                                             {'context':context},
-                                             self.request)
+                result['step4_message'] = self._get_step4_informations(context, self.request)
             elif not ('archived' in context.state):
                 result['current_step'] = 3
-                time_delta = self._get_duration(context)
-                result['step3_message'] =  renderers.render(
-                                             self.step3_template,
-                                             {'context':context, 
-                                              'duration':time_delta},
-                                             self.request)
+                result['step3_message'] = self._get_step3_informations(context, self.request)
             elif 'archived' in context.state:
                 result['current_step'] = 0
 

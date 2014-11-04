@@ -1,3 +1,11 @@
+.nb-iteration{
+    position: absolute;
+    color: #7cc67c;
+    font-size: 53pt;
+    margin-top: 76px;
+    margin-left: 121px;
+}
+
 .steps .popover.bottom{
     top: 53px; 
     display: block; 

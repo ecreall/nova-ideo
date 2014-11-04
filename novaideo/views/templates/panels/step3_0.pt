@@ -1,0 +1,3 @@
+<div class="proposal-members-nb" i18n:domain="novaideo">
+   <span class="glyphicon glyphicon-bullhorn"></span> <span  i18n:translate="">Composition of the working group</span><br> <span style="color:#d9534f;">(${len(context.working_group.members)} <span  i18n:translate="">member(s)</span> / ${min_members} <span  i18n:translate="">minimum)</span></span>
+</div>
