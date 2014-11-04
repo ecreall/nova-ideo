@@ -41,7 +41,7 @@
         </div>
         <dt  i18n:translate="">Proposé le</dt>
 	<dd >
-          <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/><span i18n:translate=""> à ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} par </span><a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
+          <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span i18n:translate="">à ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} par</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
         </dd>
     </dl>
     <div tal:omit-tag="" tal:on-error="nothing">

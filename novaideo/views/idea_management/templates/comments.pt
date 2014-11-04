@@ -7,13 +7,13 @@
            <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Association</span></div>
             <small tal:define="diff_len  len(diff.keys())">
               <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
-              <div  tal:omit-tag="" tal:condition="diff"><span i18n:translate="">Il y a </span> 
+              <div  tal:omit-tag="" tal:condition="diff"><span i18n:translate="">Il y a</span>  
                 <span tal:condition="'days' in diff"  i18n:translate="">${diff['days']} jour(s)</span> 
                 <span tal:condition="'hours' in diff"  i18n:translate="">${diff['hours']} heur(s)</span> 
                 <span tal:condition="'minutes' in diff" i18n:translate="">${diff['minutes']} minute(s)</span>
                 <span tal:condition="diff_len == 1 and 'seconds' in diff" i18n:translate="">${diff['seconds']} seconde(s)</span>
               </div>
-              <span tal:condition="diff_len == 0" i18n:translate="">Maintenant</span> - Son intention: 
+              <span tal:condition="diff_len == 0" i18n:translate="">Maintenant</span> <span i18n:translate="">- Son intention:</span> 
               <span tal:condition="getattr(comment, 'intention', None)">${comment.intention}</span>
             </small>
             <p>${comment.comment}</p>

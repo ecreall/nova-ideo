@@ -6,7 +6,7 @@ from zope.interface import implementer, invariant
 from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
-from substanced.principal import UserSchema
+from substanced.principal import UserSchema, get_locales
 from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
 
@@ -97,6 +97,21 @@ def default_contacts(node, kw):
     return prop
 
 
+_LOCALES = get_locales()
+
+
+@colander.deferred
+def locale_widget(node, kw):
+    locales = zip(_LOCALES, _LOCALES)
+    sorted_locales = sorted(locales)
+    return Select2Widget(values=sorted_locales)
+
+
+@colander.deferred
+def locale_missing(node, kw):
+    return kw['request'].locale_name
+
+
 def context_is_a_person(context, request):
     return request.registry.content.istype(context, 'person')
 
@@ -146,6 +161,14 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         widget=titles_choice,
         title=_('Title'),
         )
+
+    locale = colander.SchemaNode(
+        colander.String(),
+        title='Locale',
+        widget=locale_widget,
+        missing=locale_missing,
+        validator=colander.OneOf(_LOCALES),
+    )
 
     password = colander.SchemaNode(
         colander.String(),
