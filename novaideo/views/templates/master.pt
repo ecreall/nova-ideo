@@ -68,7 +68,6 @@
   </head>
 
   <body>
-
     <img class="loading-indicator"
          id="sdi-loading-img"
          src="${su('substanced.sdi:static/img/progress_bar.gif')}"
@@ -132,6 +131,13 @@
     <!--/div-->
 
     <more tal:omit-tag="" metal:define-slot="tail-more"></more>
+    <div class="navbar navbar-fixed-bottom">
+      <div class="container global-pilot">
+        <span style="" class="pull-right ">
+          <img src="${request.static_url('novaideo:static/images/pilote.png')}">
+        </span>
+      </div>
+    </div>
   </body>
 
 </html>

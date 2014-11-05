@@ -1,3 +1,7 @@
+.global-pilot{
+    width: 101%
+}
+
 .panel.pontus-main-view > .panel-heading{
     height: 41px;
 }
