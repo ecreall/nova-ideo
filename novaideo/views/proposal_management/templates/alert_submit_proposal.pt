@@ -1,6 +1,6 @@
 <div  i18n:domain="novaideo">
  <div tal:condition="ideas" class="alert alert-warning">
-<span i18n:translate="">Les idées suivantes sont utilisées dans votre proposition, mais pas encore publiées. La soumission de la proposition entraine, automatiquement, la publication des idées utilisées. Souhaitez-vous les finaliser avant la soumission de votre proposition. Une fois, les idées sont publics, vous ne pouvez plus les modifier.</span><br>
+<span i18n:translate="">Les ides suivantes sont utilises dans votre proposition, mais pas encore publies. La soumission de la proposition entraine, automatiquement, la publication des ides utilises. Souhaitez-vous les finaliser avant la soumission de votre proposition. Une fois, les ides sont publics, vous ne pouvez plus les modifier.</span><br>
   <ol class="list-unstyled">
     <tal:loop repeat="i ideas">
       <li><a class="btn btn-warning btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
@@ -9,7 +9,7 @@
  </div>
 
  <div class="alert alert-info">
-<span i18n:translate="">Votre proposition sera ouverte pour la constitution du groupe de travail. Les membres intéressés auront la possibilité de rejoindre le groupe de travail. Une fois, le groupe de travail est constitué, le travail collectif démarrera automatiquement. Nous vous invitons à communiquer votre proposition afin de composer le groupe de travail le plus rapidement possible.</span>
+<span i18n:translate="">As soon as the proposal has been published, it will be opened to a working group. The working group is active as soon as it reaches three persons. Once active, the working group can submit the proposal to the appreciation of the collective or decide to work together for improving it.</span>
  </div>
 </div>
 

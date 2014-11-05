@@ -19,7 +19,7 @@ from novaideo import _
 
 
 class CommentsView(BasicView):
-    title = _('Comments')
+    title = _('Messages')
     name = 'comments'
     validators = [CommentIdea.get_validator()]
     template = 'novaideo:views/idea_management/templates/comments.pt'

@@ -14,7 +14,7 @@ from novaideo import _
     renderer='pontus:templates/view.pt',
     )
 class AbandonIdeaView(BasicView):
-    title = _('Abandon')
+    title = _('Archive')
     name = 'abandonidea'
     behaviors = [AbandonIdea]
     viewid = 'abandonidea'

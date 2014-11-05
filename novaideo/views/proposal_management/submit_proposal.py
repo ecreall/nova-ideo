@@ -12,7 +12,7 @@ from novaideo import _
 
 
 class SubmitProposalStudyReport(BasicView):
-    title = _('Alert for explanation')
+    title = _('Alert for justification')
     name='alertforexplanation'
     template ='novaideo:views/proposal_management/templates/alert_submit_proposal.pt'
 

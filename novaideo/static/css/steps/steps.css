@@ -6,6 +6,11 @@
     margin-left: 121px;
 }
 
+.step-message{
+   font-size: 20px;
+   line-height: 25px
+}
+
 .steps .popover.bottom{
     top: 53px; 
     display: block; 

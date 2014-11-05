@@ -37,7 +37,7 @@ class CompareProposalFormView(CompareIdeaFormView):
     renderer='pontus:templates/view.pt',
     )
 class CompareProposalView(CompareIdeaView):
-    title = _('Compare the proposal')
+    title = _('Compare versions')
     name='compareproposal'
     views = (CompareProposalFormView, DiffView)
 

@@ -102,14 +102,14 @@ class PresentIdeaSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
         label=_('Send to me'),
-        title =_(''),
+        title ='',
         missing=False
         )
 
 
 class PresentIdeaFormView(FormView):
 
-    title = _('Present idea')
+    title = _('Submit the idea to others')
     schema = select(PresentIdeaSchema(), ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentIdea]
     formid = 'formpresentideaform'
@@ -131,8 +131,8 @@ class PresentIdeaFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class PresentIdeaView(MultipleView):
-    title = _('Present the idea')
-    description = _('Present the idea')
+    title = _('Submit the idea to others')
+    description = _('Submit the idea to others')
     name='presentidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'

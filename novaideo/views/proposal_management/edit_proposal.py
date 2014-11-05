@@ -46,7 +46,7 @@ class AddIdeaSchema(Schema):
     idea = colander.SchemaNode(
         ObjectType(),
         widget=idea_choice,
-        title=_('Add a new idea to the proposal'),
+        title=_('Use an idea'),
         missing=None,
         description=_('Choose an idea')
         )
@@ -54,7 +54,7 @@ class AddIdeaSchema(Schema):
     new_idea_choice = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="new-idea-control"),
-        label=_('Create a new idea'),
+        label=_('Create an idea'),
         title ='',
         missing=False
         )
@@ -71,7 +71,7 @@ class AddIdea(Behavior):
 
     behavior_id = "addidea"
     title = _("Validate")
-    description = _("Add an indea to the proposal")
+    description = _("Use an idea")
 
     def start(self, context, request, appstruct, **kw):
         return True
@@ -82,7 +82,7 @@ class AddIdea(Behavior):
 
 class AddIdeaFormView(FormView):
 
-    title = _('Add a new idea')
+    title = _('Create an idea')
     schema = AddIdeaSchema()
     formid = 'formaddidea'
     behaviors = [AddIdea]

@@ -7,7 +7,7 @@
     <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
     <dl >
         <div tal:omit-tag="" tal:condition="object.explanation">
-          <dt  i18n:translate="">Explanation</dt>
+          <dt  i18n:translate="">Justification</dt>
 	  <dd>
               ${structure:object.explanation}
           </dd>
@@ -39,9 +39,9 @@
             </tal:loop>
           </dd>
         </div>
-        <dt  i18n:translate="">Proposé le</dt>
+        <dt  i18n:translate="">Proposed the</dt>
 	<dd >
-          <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span i18n:translate="">à</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">par</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
+          <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
         </dd>
     </dl>
     <div tal:omit-tag="" tal:on-error="nothing">

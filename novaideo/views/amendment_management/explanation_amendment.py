@@ -56,7 +56,7 @@ class IntentionFormView(FormView):
 
 
 class ExplanationViewStudyReport(BasicView):
-    title = _('Alert for explanation')
+    title = _('Alert for justification')
     name='alertforexplanation'
     template ='novaideo:views/amendment_management/templates/explanations_amendment.pt'
 
@@ -70,7 +70,7 @@ class ExplanationViewStudyReport(BasicView):
 
 
 class ExplanationFormView(FormView):
-    title = _('Explanation')
+    title = _('Justification')
     name = 'formexplanationamendment'
     behaviors = [ExplanationAmendment, Cancel]
     viewid = 'formexplanationamendment'
@@ -83,7 +83,7 @@ class ExplanationFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class ExplanationView(MultipleView):
-    title = _('Explanation')
+    title = _('Justification')
     name = 'explanationamendment'
     behaviors = [ExplanationAmendment]
     viewid = 'explanationamendment'

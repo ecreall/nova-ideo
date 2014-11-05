@@ -14,7 +14,7 @@ from novaideo import _
     renderer='pontus:templates/view.pt',
     )
 class PublishProposalView(BasicView):
-    title = _('Publish proposal')
+    title = _('Publish the proposal')
     name = 'publishproposal'
     behaviors = [PublishProposal]
     viewid = 'publishproposal'

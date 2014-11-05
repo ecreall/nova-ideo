@@ -14,7 +14,7 @@ from novaideo import _
     renderer='pontus:templates/view.pt',
     )
 class SupportProposalView(BasicView):
-    title = _('Support')
+    title = _('Appreciation')
     name = 'supportproposal'
     behaviors = [SupportProposal]
     viewid = 'supportproposal'

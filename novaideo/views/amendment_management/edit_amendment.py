@@ -18,7 +18,7 @@ from novaideo import _
     renderer='pontus:templates/view.pt',
     )
 class EditAmendmentView(FormView):
-    title = _('Edit amendment')
+    title = _('Edit the amendment')
     schema = select(AmendmentSchema(factory=Amendment, editable=True, omit=['keywords']),
                     ['title',
                      'description',

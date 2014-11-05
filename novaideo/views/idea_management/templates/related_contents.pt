@@ -6,7 +6,7 @@
       <div>
         <h4 class="content-title content-title-sm"><a tal:attributes="href url">${content.title} </a> <span tal:condition="getattr(correlation, 'intention', None)">(${correlation.intention})</span></h4>
         <div class="object-description object-description-sm">
-          <small><span i18n:translate="">(Par</span> <a tal:attributes="href request.resource_url(correlation.author, '@@index')">${((correlation.author is current_user) and 'Vous') or correlation.author.name}</a><span i18n:translate="">, le </span><span tal:replace="layout.to_localized_time(correlation.modified_at, date_only=True)"/></small>)</div>
+          <small><span i18n:translate="">(By</span> <a tal:attributes="href request.resource_url(correlation.author, '@@index')">${((correlation.author is current_user) and 'Vous') or correlation.author.name}</a><span i18n:translate="">, the </span><span tal:replace="layout.to_localized_time(correlation.modified_at, date_only=True)"/></small>)</div>
         <p>${correlation.comment}</p>
             <div tal:condition="'correlationaction' in content_dict"  id="correlationaction">
                 <div tal:omit-tag="" tal:define="correlationaction content_dict['correlationaction']">

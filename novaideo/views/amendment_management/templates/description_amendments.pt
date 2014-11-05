@@ -1,18 +1,18 @@
 <div tal:condition="amendment is not None" i18n:domain="novaideo">
     <h3 class="content-title"><a tal:attributes="href request.resource_url(amendment, '@@index')">${amendment.title}</a></h3>
   <div tal:condition="not is_proposal" class="object-description">
-   <small><span  i18n:translate="">(Version amendée par</span> <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> <span  i18n:translate="">le</span> <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> <span  i18n:translate="">à</span> ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} <span  i18n:translate="">de la proposition</span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, dupliquée à partir de la version amendée</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
+   <small><span  i18n:translate="">(Amended version by</span> <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> <span  i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} <span  i18n:translate="">of the proposal</span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the amended version</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
    </small>
   </div>
   <div tal:condition="is_proposal" class="object-description">
-   <small><span  i18n:translate="">(Version d'origine par</span> <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> <span  i18n:translate="">proposée le</span> <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/><span  i18n:translate="">à</span> ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} <span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, dupliquée à partir de la proposition</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
+   <small><span  i18n:translate="">(Original version by</span> <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> <span  i18n:translate="">proposed the</span> <span tal:replace="layout.to_localized_time(amendment.modified_at, date_only=True)"/><span  i18n:translate="">at</span> ${amendment.modified_at.hour}:${amendment.modified_at.minute}:${amendment.modified_at.second} <span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the proposal</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
    </small>
   </div>
 
     <div class="scroll-able">
         <dl  tal:condition="not is_proposal">
         <div tal:omit-tag="" tal:condition="amendment.explanation">
-          <dt i18n:translate="">Explanation</dt>
+          <dt i18n:translate="">Justification</dt>
 	  <dd>
               ${structure:amendment.explanation}
           </dd>

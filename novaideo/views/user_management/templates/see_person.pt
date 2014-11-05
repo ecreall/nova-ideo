@@ -16,7 +16,7 @@
     <h3 tal:condition="getattr(user, 'state', None) is not None"><span class="label label-basic pull-right">${user.state[0].capitalize()}</span></h3>
       <h3>${getattr(user, 'title', user.name)}</h3>
       <dl>
-        <dt tal:condition="getattr(user, 'keywords', [])" i18n:translate="">Centres d'intérêt</dt>
+        <dt tal:condition="getattr(user, 'keywords', [])" i18n:translate="">Preferences</dt>
         <dd tal:condition="getattr(user, 'keywords', [])">
           <tal:loop repeat="k user.keywords">
             <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>
@@ -25,7 +25,7 @@
         </dd>
       </dl>
       <span class="date">
-        <span  i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(user.modified_at, date_only=True)" i18n:name="date"/>
+        <span  i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(user.modified_at, date_only=True)"/>
       </span>
   </div>
 </div>

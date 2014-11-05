@@ -10,15 +10,15 @@
           </div>
   	  <ul>
     	    <li class="step step-1 no-message ${(current_step == 1)  and 'current-step'}">
-      	      <span class="step-content"><div class="step-text"><strong i18n:translate="" >Recueil de l'idée</strong></div></span>
+      	      <span class="step-content"><div class="step-text"><strong i18n:translate="" >Collection of the idea</strong></div></span>
             </li>
             <li class="step step-2 no-message ${(current_step == 2)  and 'current-step'}">
-      	      <span class="step-content"><div class="step-text"><strong i18n:translate="" >Rédaction de la proposition</strong></div></span>
+      	      <span class="step-content"><div class="step-text"><strong i18n:translate="" >Writing of the proposal</strong></div></span>
             </li>
             <li class="step step-3 ${(current_step == 3)  and 'current-step'}">
       	       <span class="step-content" data-step="message-step-3">
                  <div class="step-text" >
-                   <strong i18n:translate="" >Amélioration de la proposition</strong>
+                   <strong i18n:translate="" >Improvement of the proposal</strong>
                    <br /><span tal:condition="current_step == 3" class="glyphicon glyphicon-info-sign step-message" ></span>
                  </div>
                </span>
@@ -26,7 +26,7 @@
             <li class="step step-4 ${(current_step == 4)  and 'current-step'}">
       	       <span class="step-content">
                  <div class="step-text">
-                   <strong i18n:translate="" >Soutien de la proposition</strong>
+                   <strong i18n:translate="" >Support of the proposal</strong>
                    <br />${structure:step4_message}
                  </div>
                </span>

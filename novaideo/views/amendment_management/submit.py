@@ -56,7 +56,7 @@ class ExplanationGroupSchema(Schema):
         widget=explanations_choice,
         missing=[],
         default=[],
-        title=_('Explanations'),
+        title=_('Justifications'),
         )    
 
 
@@ -72,14 +72,14 @@ class ExplanationGroupsSchema(Schema):
         colander.Sequence(),
         omit(ExplanationGroupSchema(name='Amendment', widget=DragDropMappingWidget()),['_csrf_token_']),
         widget=groups_widget,
-        title=_('Organize your amendments')
+        title=_('Organize your changes in amendments')
         )
 
     single_amendment = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="single-amendment-control"),
-        label=_('Single amendment'),
-        title =_(''),
+        label=_('Gather changes in a single amendment'),
+        title ='',
         missing=False
         )
 

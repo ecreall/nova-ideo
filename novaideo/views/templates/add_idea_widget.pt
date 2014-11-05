@@ -7,7 +7,7 @@
                      id oid+field.get_root().formid;"
          i18n:domain="novaideo" >
  <div class="ajax-form"> 
-    <span class="control-form-button new-idea-btn pull-right" ><span class="glyphicon glyphicon-file"></span><span i18n:translate=""> Add a new idea</span></span>
+    <span class="control-form-button new-idea-btn pull-right" ><span class="glyphicon glyphicon-file"></span><span i18n:translate=""> Create an idea</span></span>
      <span id="messageinfo" class="label label-info"></span>
      <span id="messagesuccess" class="label label-success"></span>
      <span id="messagedanger" class="label  label-danger"></span>

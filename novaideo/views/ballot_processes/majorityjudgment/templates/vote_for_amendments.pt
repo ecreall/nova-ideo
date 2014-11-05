@@ -1,25 +1,25 @@
 <div class="object-well idea-well" i18n:domain="novaideo"> 
  <dl >
-     <dt i18n:translate="">Sujet du vote</dt>
+     <dt i18n:translate="">Subject of the vote</dt>
      <dd><div class="alert alert-warning">${ballot_report.description}</div></dd>
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
-       <dt tal:condition="ballot_report.electors" i18n:translate="">Electeurs</dt>
+       <dt tal:condition="ballot_report.electors" i18n:translate="">Participant voting</dt>
        <dd tal:condition="ballot_report.electors">
          <tal:loop repeat="e ballot_report.electors">
            <a tal:attributes="href request.resource_url(e, '@@index')">${e.name}</a>
            <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
          </tal:loop>
        </dd>
-       <dt tal:condition="ballot_report.voters" i18n:translate="">Votants</dt>
+       <dt tal:condition="ballot_report.voters" i18n:translate="">Voters</dt>
        <dd tal:condition="ballot_report.voters">
          <tal:loop repeat="e ballot_report.voters">
              ${e.name}
              <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
          </tal:loop>
        </dd>
-       <dt i18n:translate="">Durée</dt>
+       <dt i18n:translate="">Period</dt>
        <dd tal:define="run ballot_report.ballot.run_at; finish  ballot_report.ballot.finished_at">
-          <span i18n:translate="">le vote à commencé le</span> <span tal:replace="layout.to_localized_time(run, date_only=True)"/> <span i18n:translate="">à</span> ${run.hour}:${run.minute}:${run.second}. <span tal:condition="finish is not None"><span i18n:translate="">La fin du vote est prévue pour le</span> <span tal:replace="layout.to_localized_time(finish, date_only=True)"/> <span i18n:translate="">à</span> ${finish.hour}:${finish.minute}:${finish.second}.</span>
+          <span i18n:translate="">Vote begins at</span> <span tal:replace="layout.to_localized_time(run, date_only=True)"/> <span i18n:translate="">at</span> ${run.hour}:${run.minute}:${run.second}. <span tal:condition="finish is not None"><span i18n:translate="">La fin du vote est prévue pour le</span> <span tal:replace="layout.to_localized_time(finish, date_only=True)"/> <span i18n:translate="">at</span> ${finish.hour}:${finish.minute}:${finish.second}.</span>
        </dd>
      </div>
  </dl>

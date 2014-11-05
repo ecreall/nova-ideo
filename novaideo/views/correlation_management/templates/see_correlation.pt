@@ -13,7 +13,7 @@
             <tal:separator condition="not: repeat['c'].end">, </tal:separator> 
         </tal:loop>
       </dd>
-        <dt i18n:translate="">Associés par</dt>
+        <dt i18n:translate="">Associated by</dt>
 	<dd>
           <a tal:attributes="href request.resource_url(correlation.author, '@@index')">${getattr(correlation.author, 'title', correlation.author.name)}</a> 
         </dd>

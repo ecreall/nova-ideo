@@ -15,7 +15,7 @@
         </tal:loop>
       </dd>
     </dl>
-    <span><span  i18n:translate="">Modifiée le</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">à</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">par</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a></span>
+    <span><span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a></span>
   <div tal:condition="'published' in object.state" class="proposal-support pull-right">
     <span class="label label-success">
         <span class="glyphicon glyphicon-thumbs-up"></span>

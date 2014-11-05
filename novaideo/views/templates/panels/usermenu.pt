@@ -36,7 +36,7 @@
     </ul>
     <div tal:condition="request.user is None" class="btn-group navbar-right">
        <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary " id="log-in">
-          <i class="glyphicon glyphicon-log-in"> </i> Log In
+          <i class="glyphicon glyphicon-log-in"> </i> <span i18n:translate="">Log In</span>
        </a>
        <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary " id="registration" >
           <i class="glyphicon glyphicon-pencil"> </i> <span  i18n:translate="">Registration</span>

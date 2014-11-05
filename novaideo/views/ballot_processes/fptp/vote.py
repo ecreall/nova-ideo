@@ -60,7 +60,7 @@ class CondidatesSchema(Schema):
 
     elected = colander.SchemaNode(
             colander.String(),
-            title=_('Condidates'),
+            title=_('Choices'),
             default=[],
         )
     

@@ -44,7 +44,7 @@ class PresentProposalSchema(PresentIdeaSchema):
 
 class PresentProposalFormView(FormView):
 
-    title = _('Present proposal')
+    title = _('Submit the proposal to others')
     schema = select(PresentProposalSchema(), ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentProposal]
     formid = 'formpresentproposalform'
@@ -66,8 +66,8 @@ class PresentProposalFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class PresentProposalView(PresentIdeaView):
-    title = _('Present the proposal')
-    description = _('Present the proposal')
+    title = _('Submit the proposal to others')
+    description = _('Submit the proposal to others')
     name='presentproposal'
     views = (SentToView, PresentProposalFormView)
 

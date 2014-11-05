@@ -16,7 +16,7 @@ from novaideo import _
     renderer='pontus:templates/view.pt',
     )
 class ExplanationItemView(BasicView):
-    title = _('Explanation item')
+    title = _('Justification item')
     name = 'explanationitem'
     template = 'novaideo:views/proposal_management/templates/correction_text.pt'
     behaviors = [ExplanationItem]

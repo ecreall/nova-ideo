@@ -57,8 +57,8 @@ class RelatedContentsSchema(Schema):
     associate = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="hide-bloc"),
-        label=_(''),
-        title =_(''),
+        label='',
+        title ='',
         default=False,
         missing=False
         )

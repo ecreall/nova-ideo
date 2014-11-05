@@ -44,7 +44,7 @@ class PresentAmendmentSchema(PresentIdeaSchema):
 
 class PresentAmendmentFormView(FormView):
 
-    title = _('Present amendment')
+    title = _('Submit the amendment to others')
     schema = select(PresentAmendmentSchema(), ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentAmendment]
     formid = 'formpresentamendmentform'
@@ -66,7 +66,7 @@ class PresentAmendmentFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class PresentAmendmentView(PresentIdeaView):
-    title = _('Present amendment')
+    title = _('Submit the amendment to others')
     name='presentamendment'
     views = (SentToView, PresentAmendmentFormView)
 
