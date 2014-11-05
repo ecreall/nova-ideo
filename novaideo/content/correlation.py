@@ -63,6 +63,7 @@ class CorrelationSchema(VisualisableElementSchema):
         colander.String(),
         validator=colander.Length(max=500),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
+        title=_("Message")
         )
 
     targets = colander.SchemaNode(

@@ -190,7 +190,10 @@ class StepsPanel(object):
                                       'ballot_report': ballot.report},
                                      request)
          elif 'votes for amendments'  in context.state:
-             ballot = process.amendments_ballots[-1].finished_at
+             voters = []
+             [voters.extend(b.report.voters) for b in process.amendments_ballots]
+             voters = list(set(voters))
+             ballot = process.amendments_ballots[-1]
              if ballot.finished_at is not None:
                  time_delta = ballot.finished_at - datetime.datetime.today()
                  time_delta = self._days_hours_minutes(time_delta)
@@ -199,7 +202,8 @@ class StepsPanel(object):
                                      {'context':context, 
                                       'duration':time_delta,
                                       'process': process,
-                                      'ballot_report': ballot.report},
+                                      'ballot_report': ballot.report,
+                                      'voters': voters},
                                      request)
          elif 'open to a working group'  in context.state:
              return renderers.render(self.step3_0_template,

@@ -164,7 +164,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     locale = colander.SchemaNode(
         colander.String(),
-        title='Locale',
+        title=_('Locale'),
         widget=locale_widget,
         missing=locale_missing,
         validator=colander.OneOf(_LOCALES),
@@ -174,6 +174,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         colander.String(),
         widget = deform.widget.CheckedPasswordWidget(),
         validator=colander.Length(min=3, max=100),
+        title=_("Password")
         )
 
     organization = colander.SchemaNode(

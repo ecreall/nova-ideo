@@ -28,20 +28,21 @@ from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.core import can_access
 
 
-default_serchable_content = {'Idea': Iidea,
-                             'Proposal': IProposal,
-                             'Person': IPerson}
+default_serchable_content = {_('Idea'): Iidea,
+                             _('Proposal'): IProposal,
+                             _('Person'): IPerson
+                            }
 
 serchable_content = {'Idea': Iidea,
                      'Proposal': IProposal,
                      'Person': IPerson,
                      'CorrelableEntity': ICorrelableEntity,
-                } #TODO Optimization 
+                    } #TODO Optimization 
 
 
 @colander.deferred
 def content_types_choices(node, kw):
-    values =[(k, k) for k in sorted(default_serchable_content.keys())]
+    values =[(str(k), k) for k in sorted(default_serchable_content.keys())]
     return CheckboxChoiceWidget(values=values, inline=True)
 
 

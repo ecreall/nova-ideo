@@ -83,6 +83,7 @@ class CommentSchema(VisualisableElementSchema):
         colander.String(),
         validator=colander.Length(max=2000),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
+        title=_("Message")
         )
 
     related_contents = RelatedContentsSchema(widget=SimpleMappingtWidget(mapping_css_class="controled-form associate-form hide-bloc",
@@ -117,4 +118,4 @@ class AddCommentSchema(Schema):
 
     comment = omit(CommentSchema(factory=Comment,
                                  editable=True,
-                                 name=_('Comment')), ['_csrf_token_'])
+                                 name=_('Message')), ['_csrf_token_'])

@@ -60,6 +60,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     text = colander.SchemaNode(
         colander.String(),
         widget= RichTextWidget(),
+        title=_("Text")
         )
 
     related_ideas  = colander.SchemaNode(

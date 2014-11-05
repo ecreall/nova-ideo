@@ -17,9 +17,9 @@
            <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
          </tal:loop>
        </dd>
-       <dt tal:condition="ballot_report.voters"><span i18n:translate="">Voters</span> <span style="color:#d9534f;">(${len(ballot_report.voters)}/${len(ballot_report.electors)})</span></dt>
-       <dd tal:condition="ballot_report.voters">
-         <tal:loop repeat="e ballot_report.voters">
+       <dt tal:condition="voters"><span i18n:translate="">Voters</span> <span style="color:#d9534f;">(${len(voters)}/${len(ballot_report.electors)})</span></dt>
+       <dd tal:condition="voters">
+         <tal:loop repeat="e voters">
              ${e.name}
              <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
          </tal:loop>

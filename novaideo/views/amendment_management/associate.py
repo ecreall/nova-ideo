@@ -28,7 +28,7 @@ class AssociateFormView(FormView):
                                               activable=True,
                                               button_css_class="pull-right",
                                               picto_css_class="glyphicon glyphicon-link",
-                                              button_title="Associate")
+                                              button_title=_("Associate"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 

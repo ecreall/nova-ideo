@@ -124,7 +124,7 @@ class IdeasRowSchema(Schema):
         colander.Set(),
         widget=replacedideas_choice,
         title=_('Edited ideas'),
-        description=_('Choose ideas to edit.'),
+        description=_('Choose edited ideas.'),
         missing=[],
         default=[],
         )
@@ -133,7 +133,7 @@ class IdeasRowSchema(Schema):
         colander.Set(),
         widget=replacedideas_choice,
         title=_('Removed ideas'),
-        description=_('Choose ideas to remove.'),
+        description=_('Choose removed ideas.'),
         missing=[],
         default=[],
         )
@@ -142,7 +142,7 @@ class IdeasRowSchema(Schema):
         colander.Set(),
         widget=ideasofreplacement_choice,
         title=_('Added ideas'),
-        description=_('Choose ideas to add.'),
+        description=_('Choose added ideas.'),
         missing=[],
         default=[],
         )
@@ -291,9 +291,18 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
         editing=context_is_a_amendment,
         )
 
+    description = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(max=300),
+        widget=deform.widget.TextAreaWidget(rows=5, cols=30),
+        title=_("Abstract"),
+        description=_("(300 caracteres maximum)")
+        )
+
     text = colander.SchemaNode(
         colander.String(),
-        widget=RichTextWidget()
+        widget=RichTextWidget(),
+        title=_("Text")
         )
 
 

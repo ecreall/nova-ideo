@@ -120,7 +120,7 @@ class PresentIdeaFormView(FormView):
                                               activable=True,
                                               button_css_class="pull-right",
                                               picto_css_class="glyphicon glyphicon-envelope",
-                                              button_title="Present")
+                                              button_title=_("Present"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 

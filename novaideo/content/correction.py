@@ -36,7 +36,8 @@ class CorrectionSchema(VisualisableElementSchema):
 
     text = colander.SchemaNode(
         colander.String(),
-        widget=RichTextWidget()
+        widget=RichTextWidget(),
+        title=_("Text")
         )
 
 

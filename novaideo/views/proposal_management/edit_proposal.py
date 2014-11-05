@@ -23,7 +23,7 @@ from novaideo.content.idea import IdeaSchema, Idea, Iidea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.core import can_access
-from novaideo.views.widget import Select2WidgetSearch
+from novaideo.views.widget import Select2WidgetSearch, SimpleMappingtWidget
 
 
 @colander.deferred
@@ -60,7 +60,7 @@ class AddIdeaSchema(Schema):
         )
 
     new_idea = select(IdeaSchema(factory=Idea, editable=True,
-                               omit=['keywords'], widget=MappingWidget(item_css_class='hide-bloc new-idea-form')),
+                               omit=['keywords'], widget=SimpleMappingtWidget(mapping_css_class='hide-bloc new-idea-form', ajax=False)),
                     ['title',
                      'description',
                      'keywords'])

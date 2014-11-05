@@ -72,7 +72,8 @@ class OrganizationSchema(VisualisableElementSchema):
          )
 
     fax = colander.SchemaNode(
-         colander.String()
+         colander.String(),
+         title=_("Fax"),
          )
 
     members = colander.SchemaNode(

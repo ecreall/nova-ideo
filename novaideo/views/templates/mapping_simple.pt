@@ -5,7 +5,7 @@
                      ajax ajax|field.widget.ajax"
          i18n:domain="novaideo">
    <div tal:omit-tag="not ajax" class="ajax-form">
-    <span class="control-form-button pull-right"><span tal:condition="ajax" class="${field.widget.activator_css_class}"></span> ${field.widget.activator_title}</span>
+    <span tal:condition="ajax" class="control-form-button pull-right"><span class="${field.widget.activator_css_class}"></span> ${field.widget.activator_title}</span>
     <div class="${getattr(field.widget, 'mapping_css_class', '')}">
       <div tal:condition="errormsg" 
            class="clearfix alert alert-message alert-danger error">

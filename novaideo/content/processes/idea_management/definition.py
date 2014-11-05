@@ -84,7 +84,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Details"),
                                        groups=[]),
                 compare = ActivityDefinition(contexts=[CompareIdea],
-                                       description=_("Compare"),
+                                       description=_("Compare versions"),
                                        title=_("Compare"),
                                        groups=[]),
                 pg = ParallelGatewayDefinition(),
