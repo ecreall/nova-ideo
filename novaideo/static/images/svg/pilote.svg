@@ -91,6 +91,32 @@
        y1="96.231133"
        x2="421.2309"
        y2="154.81998" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3761"
+       id="linearGradient3771"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0,1,-1,0,194.66308,537.89426)"
+       x1="484.00833"
+       y1="96.231133"
+       x2="421.2309"
+       y2="154.81998" />
+    <filter
+       inkscape:collect="always"
+       id="filter3795">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="2.2734271"
+         id="feGaussianBlur3797" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3825">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="2.0780592"
+         id="feGaussianBlur3827" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -100,14 +126,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="65.498979"
-     inkscape:cy="101.58517"
+     inkscape:cx="53.078884"
+     inkscape:cy="52.833121"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1855"
-     inkscape:window-height="1056"
-     inkscape:window-x="1431"
+     inkscape:window-width="1301"
+     inkscape:window-height="744"
+     inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
   <metadata
@@ -118,7 +144,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -127,37 +153,35 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-940.36218)">
-    <g
-       id="g3872"
-       transform="translate(15.571428,0.21428575)">
-      <path
-         transform="matrix(0,1,-1,0,150.80738,559.39825)"
-         inkscape:connector-curvature="0"
-         id="rect2985-0-9"
-         d="m 382.41675,38.548857 105.41291,121.828933 0,-60.0536 -53.43375,-61.775333 -51.97916,0 z"
-         style="fill:#808080;fill-opacity:1;fill-rule:evenodd;stroke:none;filter:url(#filter3833)" />
-      <path
-         inkscape:connector-curvature="0"
-         id="rect2985-0"
-         d="m 115.14404,940.29977 -128.24999,110.96873 63.21876,0 65.03123,-56.24998 0,-54.71875 z"
-         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
-      <path
-         inkscape:connector-curvature="0"
-         id="rect2985"
-         d="m 114.66064,940.87613 -128.24999,110.96877 63.21875,0 65.03124,-56.25002 0,-54.71875 z"
-         style="fill:url(#linearGradient3879);fill-opacity:1;fill-rule:evenodd;stroke:#ff4804;stroke-width:0.24957757px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-      <text
-         transform="matrix(0.75581132,-0.65478947,0.65478947,0.75581132,0,0)"
-         sodipodi:linespacing="125%"
-         id="text3769"
-         y="813.13428"
-         x="-646.01544"
-         style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#c05917;fill-opacity:0.94117647;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
-         xml:space="preserve"><tspan
-           y="813.13428"
-           x="-646.01544"
-           id="tspan3771"
-           sodipodi:role="line">Pilote</tspan></text>
-    </g>
+    <rect
+       style="opacity:0.7670251;fill:#808080;filter:url(#filter3825)"
+       id="rect3799"
+       width="91.785713"
+       height="26.071428"
+       x="-663.13763"
+       y="800.47736"
+       transform="matrix(0.75606569,-0.65449575,0.65449575,0.75606569,26.201019,-1.8698052)" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="M 130.71547,940.51406 2.465478,1051.4828 l 63.21876,0 65.031232,-56.24999 0,-54.71875 z"
+       id="rect2985-0"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:url(#linearGradient3771);fill-opacity:1;fill-rule:evenodd;stroke:#ff4804;stroke-width:0.24957757px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 130.23207,941.09042 1.982078,1052.0592 l 63.21875,0 65.031242,-56.25003 0,-54.71875 z"
+       id="rect2985"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:32px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#c05917;fill-opacity:0.94117647;stroke:none;font-family:Bitstream Charter;-inkscape-font-specification:Bitstream Charter"
+       x="-634.38672"
+       y="823.49225"
+       id="text3769"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.75581132,-0.65478947,0.65478947,0.75581132,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3771"
+         x="-634.38672"
+         y="823.49225">Pilote</tspan></text>
   </g>
 </svg>
