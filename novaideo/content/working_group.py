@@ -5,13 +5,13 @@ from substanced.util import renamer
 from substanced.schema import NameSchemaNode
 
 from dace.objectofcollaboration.entity import Entity
-from dace.descriptors import SharedMultipleProperty, SharedUniqueProperty, CompositeMultipleProperty
-from pontus.schema import omit
+from dace.descriptors import (
+    SharedMultipleProperty, 
+    SharedUniqueProperty, 
+    CompositeMultipleProperty)
 from pontus.core import VisualisableElement, VisualisableElementSchema
 
-from .proposal import ProposalSchema, Proposal
 from .interface import IWorkingGroup
-from novaideo import _
 
 
 def context_is_a_workinggroup(context, request):

@@ -87,10 +87,6 @@ class CreateProposalFormView(FormView):
     behaviors = [CreateProposal, Cancel]
     formid = 'formcreateproposal'
     name='createproposal'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/creat_proposal.js']}
-
-
 
     def before_update(self):
         ideas_widget = ideas_choice()

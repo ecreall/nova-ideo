@@ -35,7 +35,6 @@ function menuSwitchChange(state, is_init) {
     }else{
       if (is_init){
           $('input[name="globalmenuswitch"]').bootstrapSwitch('state', false);
-          //$('.switchchoice').click();
       };
       switchoff(!is_init);
     }
@@ -117,12 +116,8 @@ $(document).ready(function(){
   $("[name='globalmenuswitch']").bootstrapSwitch();
 
   init_switch();
+
   init_content_text();
-  /*$($('.alert.alert-danger').parents('.panel.panel-default').first()).on('shown.bs.collapse', function () {
-      if ($(this).find('pan'))
-      resize_search_result()
-  });
-*/
 
    $('.control-form-button').on('click', function(){
         var form = $($(this).parents('div.ajax-form').first()).find('.controled-form').first();

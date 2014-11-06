@@ -1,3 +1,4 @@
+
 import colander
 import deform
 from persistent.list import PersistentList
@@ -11,12 +12,9 @@ from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
 from dace.descriptors import (
     CompositeMultipleProperty,
-    SharedUniqueProperty,
-    SharedMultipleProperty
-)
-from pontus.widget import RichTextWidget,Select2Widget, Length
+    SharedUniqueProperty)
+from pontus.widget import RichTextWidget, Select2Widget, Length
 from pontus.core import VisualisableElementSchema
-from pontus.schema import Schema
 
 from .interface import IProposal
 from novaideo.core import Commentable, can_access
@@ -34,7 +32,8 @@ from novaideo.core import (
 def ideas_choice(node, kw):
     root = getSite()
     user = get_current()
-    values = [(i, i.title) for i in root.ideas if can_access(user, i) and not('archived' in i.state)]
+    values = [(i, i.title) for i in root.ideas \
+              if can_access(user, i) and not('archived' in i.state)]
     return Select2Widget(values=values, multiple=True)
 
 
@@ -67,7 +66,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.Set(),
         widget=ideas_choice,
         title=_('Related ideas'),
-        validator = Length(_, min=1),#TODO error message
+        validator = Length(_, min=1),
         default=[],
         )
 
@@ -77,7 +76,12 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IProposal)
-class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntity, CorrelableEntity, PresentableEntity):
+class Proposal(Commentable,
+               VersionableEntity,
+               SearchableEntity, 
+               DuplicableEntity, 
+               CorrelableEntity, 
+               PresentableEntity):
     result_template = 'novaideo:views/templates/proposal_result.pt'
     template = 'novaideo:views/templates/proposal_list_element.pt'
     name = renamer()
@@ -98,7 +102,8 @@ class Proposal(Commentable, VersionableEntity, SearchableEntity, DuplicableEntit
 
     @property
     def related_ideas(self):
-        lists = [c.targets for c in self.source_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
+        lists = [c.targets for c in self.source_correlations \
+                 if ((c.type==1) and ('related_ideas' in c.tags))]
         return [target for targets in lists for target in targets]
 
     @property

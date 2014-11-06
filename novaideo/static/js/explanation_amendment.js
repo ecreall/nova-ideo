@@ -28,8 +28,6 @@ function init_explanation_select(){
 
        }
    });
-
-
 };
 
 function get_explanation_form(url){
@@ -112,14 +110,6 @@ function submit_explanation(url){
        $.getJSON(url,datas, function(data) {
              $(target).modal('hide');
              location.reload();
-             /*var explanation = $(".btn.explanation-action[data-target=\'#"+button.data('item')+"\']");
-             if(intention !='' || (relatedexplanation.length>0 && relatedexplanation[0]!='')){
-                explanation.addClass("btn-white");
-                explanation.removeClass("btn-black")
-             }else{
-                explanation.removeClass("btn-white");
-                explanation.addClass("btn-black")
-              }*/
        });
        return false;
 };
@@ -129,7 +119,6 @@ $(document).ready(function(){
   init_explanation_select();
 
   $(document).on('click', '.explanation-action', get_explanation_form);
- // $('.explanation-validation').on('click', submit_explanation);
 
 });
 

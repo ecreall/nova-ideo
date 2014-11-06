@@ -1,3 +1,4 @@
+
 import colander
 from zope.interface import implementer
 
@@ -36,7 +37,8 @@ def members_choice(node, kw):
 
     principals = find_service(root, 'principals')
     prop = list(principals['users'].values())
-    values = [(i, i.name) for i in prop if getattr(i, 'organization', None) in (None, context)]
+    values = [(i, i.name) for i in prop \
+              if getattr(i, 'organization', None) in (None, context)]
     return Select2Widget(values=values, multiple=True)
 
 

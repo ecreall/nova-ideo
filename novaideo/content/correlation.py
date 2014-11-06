@@ -1,3 +1,4 @@
+
 import colander
 import deform
 from zope.interface import implementer
@@ -27,9 +28,11 @@ def targets_choice(node, kw):
     root = getSite()
     user = get_current()
     values = []
-    entities = find_entities([ICorrelableEntity], states=('archived',), not_any=True)
+    entities = find_entities([ICorrelableEntity], 
+        states=('archived',), not_any=True)
     entities.remove(context)
-    values = [(i, i.title) for i in entities if can_access(user, i, request, root)] #i.actions
+    values = [(i, i.title) for i in entities \
+              if can_access(user, i, request, root)] #i.actions
     values = sorted(values, key=lambda p: p[1])
     return Select2Widget(values=values, multiple=True, min_len=1)
 
@@ -93,6 +96,7 @@ class Correlation(Commentable):
 
     @property
     def ends(self):
+        """Return the ends of the correlation"""
         result = list(self.targets)
         result .append(self.source) 
         return result

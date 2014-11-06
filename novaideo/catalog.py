@@ -1,3 +1,4 @@
+
 from substanced.catalog import (
     catalog_factory,
     Keyword,
@@ -5,13 +6,16 @@ from substanced.catalog import (
     indexview_defaults,
     )
 
+
 @indexview_defaults(catalog_name='novaideo')
 class NovaideoCatalogViews(object):
+
     def __init__(self, resource):
         self.resource = resource
 
     @indexview()
     def object_keywords(self, default):
+        """index objects by their keywords"""
         if self.resource is None:
             return default
 

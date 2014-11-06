@@ -1,8 +1,10 @@
+import transaction
+from transaction._transaction import Status
+
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Attachment, Message
 from pyramid.threadlocal import get_current_request
-import transaction
-from transaction._transaction import Status
+
 
 def mailer_send(subject="!",
                 sender=None,
@@ -20,12 +22,15 @@ def mailer_send(subject="!",
                           recipients=recipients,
                           body=body)
         for attachment in attachments:
-            attachment = Attachment(attachment.title, attachment.mimetype,
+            attachment = Attachment(attachment.title,
+                                    attachment.mimetype,
                                     attachment)
             message.attach(attachment)
+
         if transaction.get().status == Status.COMMITTED:
             mailer.send_immediately(message)
         else:
             mailer.send(message)
+
     except Exception:
         pass

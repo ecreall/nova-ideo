@@ -40,9 +40,7 @@ function dragstart(e){
     $(this).bind('mouseout', mouseout_item);
     for (d=0; d< explanation_containers.length; d++){
         var target = $(explanation_containers[d]);
-        //if (exists_constraint(target, draggedId, itemid, global_id )){
            target.addClass('selected-container');
-        //};
     };
 };
 
@@ -59,8 +57,7 @@ function dragover(e){
     var draggedElement = $('#' + draggedId);
     var draggedText = draggedElement.text();
     var target = $(e.currentTarget);
-//       target.addClass('exists-item');
-       target.addClass('not-exists-item');
+    target.addClass('not-exists-item');
     event.dataTransfer.dropEffect = 'copy';
     return false;
 };
@@ -74,7 +71,6 @@ function dragleave(e) {
     var target = $(e.currentTarget);
     target.removeClass("exists-item");
     target.removeClass("not-exists-item");
-    //$('.explanation-container').removeClass('selected-container');
 }
 
 

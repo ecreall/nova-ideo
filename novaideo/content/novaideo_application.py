@@ -1,3 +1,4 @@
+
 import colander
 from zope.interface import implementer
 
@@ -20,15 +21,15 @@ from .keyword import KeywordSchema, Keyword
 from novaideo import _
 
 
-default_titles = [_('Mr'), _('Madam'), _('Miss')]
+DEFAULT_TITLES = [_('Mr'), _('Madam'), _('Miss')]
 
-default_comment_intentions = [_('Irony'), _('Humor'), _('Remark')]
+DEFAULT_COMMENT_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
 
-default_correlation_intentions = [_('Irony'), _('Humor'), _('Remark')]
+DEFAULT_CORRELATION_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
 
-default_idea_intentions = [_('Improvement'), _('Humor'), _('Irony')]
+DEFAULT_IDEA_INTENTIONS = [_('Improvement'), _('Humor'), _('Irony')]
 
-default_amendment_intentions = [_('Improvement'), _('Humor'), _('Irony')]
+DEFAULT_AMENDMENT_INTENTIONS = [_('Improvement'), _('Humor'), _('Irony')]
 
 
 def context_is_a_root(context, request):
@@ -48,7 +49,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
             name=_("Title")
             ),
         widget=SequenceWidget(),
-        default=default_titles,
+        default=DEFAULT_TITLES,
         title=_('List of titles'),
         )
 
@@ -59,7 +60,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
             name=_("Comment intention")
             ),
         widget=SequenceWidget(),
-        default=default_comment_intentions,
+        default=DEFAULT_COMMENT_INTENTIONS,
         title=_('Comment intentions'),
         )
 
@@ -70,7 +71,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
             name=_("Idea intention")
             ),
         widget=SequenceWidget(),
-        default=default_idea_intentions,
+        default=DEFAULT_IDEA_INTENTIONS,
         title=_('Idea intentions'),
         )
 
@@ -81,7 +82,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
             name=_("Amendment intention")
             ),
         widget=SequenceWidget(),
-        default=default_amendment_intentions,
+        default=DEFAULT_AMENDMENT_INTENTIONS,
         title=_('Amendment intentions'),
         )
 
@@ -174,17 +175,23 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.participants_maxi = 12
         self.participations_maxi = 5
         self.tokens_mini = 7
-        self.titles = default_titles
-        self.comment_intentions = default_comment_intentions
-        self.correlation_intentions = default_correlation_intentions
-        self.idea_intentions = default_idea_intentions
-        self.amendment_intentions = default_idea_intentions
+        self.titles = DEFAULT_TITLES
+        self.comment_intentions = DEFAULT_COMMENT_INTENTIONS
+        self.correlation_intentions = DEFAULT_CORRELATION_INTENTIONS
+        self.idea_intentions = DEFAULT_IDEA_INTENTIONS
+        self.amendment_intentions = DEFAULT_AMENDMENT_INTENTIONS
 
     @property
     def keywords_ids(self):
+        """Return titles of keywords"""
+
         return dict([(k.title, k) for k in self.keywords])
 
     def get_keywords(self, keywords_ids):
+        """
+        Return existing Keywords objects in the application 
+        if keyword is in the application otherwise return a new key object
+        """
         result = []
         newkeywords = []
         for k in keywords_ids:

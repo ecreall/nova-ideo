@@ -189,7 +189,6 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     def person_name_invariant(self, appstruct):
         context = self.bindings['context']
         request = self.bindings['request']
-        root = getSite()
         name = ''
         if 'first_name' in appstruct:
             name = name + appstruct['first_name']
@@ -204,7 +203,8 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         query = name_index.eq(name)
         resultset = query.execute()
         if resultset.__len__() > 0:
-            raise colander.Invalid(self, _('The user ' + name + ' already exists!'))
+            raise colander.Invalid(self, _
+                        ('The user ' + name + ' already exists!'))
 
 
 @content(
@@ -242,27 +242,22 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
 
     @property
     def participations(self):
-        result = [p for p in list(self.proposals) if not any(s in p.state for s in ['draft', 'published'])]
+        result = [p for p in list(self.proposals) \
+                  if not any(s in p.state for s in ['draft', 'published'])]
         return result
 
     @property
     def contents(self):
         result = list(self.ideas)
         result.extend(self.proposals)
-        #TODO 
         return result
 
     @property
     def supports(self):
-        result = [] #[t.__parent__ for t in self.tokens_ref if not(t.__parent__ is self)] Error TODO add cache system
-        for t in self.tokens_ref:
-            if not(t.__parent__ is self):
-                result.append(t.__parent__)
-
+        result = [t.__parent__ for t in self.tokens_ref \
+                  if not(t.__parent__ is self)]
         return list(set(result))
 
     @property
     def active_working_groups(self):
-        return [p.working_group for p in self.participations]
-        #[w for w in self.working_groups if not any(s in w.proposal.state for s in ['draft', 'published'])]
-    
+        return [p.working_group for p in self.participations]   

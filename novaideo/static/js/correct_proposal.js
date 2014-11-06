@@ -9,7 +9,6 @@ function correct_handler(event){
     dict_post['content'] = correction_attr;
     dict_post['correction_id'] = parseInt(correction.data('correction'));
     $.get(url, dict_post, function(data) {
-      //recuperer le text et le remplacer
       if (data){
         var content = $(data['body']).find('#correction_'+correction_attr);
         if (content){

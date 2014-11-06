@@ -1,17 +1,14 @@
+
 import colander
-import deform
 from bs4 import BeautifulSoup
 from zope.interface import implementer
-from pyramid.threadlocal import get_current_request, get_current_registry
+from pyramid.threadlocal import get_current_registry
 
-from substanced.interfaces import IUserLocator
-from substanced.principal import DefaultUserLocator
 from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
-from dace.util import getSite, get_obj
-from dace.objectofcollaboration.principal.util import get_current
+from dace.util import get_obj
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedUniqueProperty
 
@@ -57,6 +54,11 @@ class Correction(VisualisableElement, Entity):
         self.corrections = {}
     
     def _adapt_correction(self, correction_tag, is_favour):
+        """
+        Add 'correction-favour-vote' css_class to the 'correction_tag'
+        if 'is_favour' is True
+        """
+
         correction_tag.find("span", id="correction_actions").decompose()
         vote_class = 'correction-favour-vote'
         if not is_favour:
@@ -65,6 +67,8 @@ class Correction(VisualisableElement, Entity):
         correction_tag['class'] = vote_class
  
     def _get_adapted_content(self, user, text):
+        """Return the appropriate text to the user"""
+
         soup = BeautifulSoup(text)
         corrections = soup.find_all("span", id='correction')
         if user is self.author:
@@ -73,21 +77,27 @@ class Correction(VisualisableElement, Entity):
         else:    
             for correction in corrections:
                 correction_data = self.corrections[correction["data-item"]]
-                voters_favour =  any((get_obj(v) is user for v in correction_data['favour']))
+                voters_favour =  any((get_obj(v) is user \
+                                     for v in correction_data['favour']))
                 if voters_favour:
                     self._adapt_correction(correction, True)
                     continue
 
-                voters_against =  any((get_obj(v) is user for v in correction_data['against']))
+                voters_against =  any((get_obj(v) is user \
+                                       for v in correction_data['against']))
                 if voters_against:
                     self._adapt_correction(correction, False)
        
-        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        registry = get_current_registry()
+        text_analyzer = registry.getUtility(ITextAnalyzer,'text_analyzer')
         return text_analyzer.soup_to_text(soup)
 
     def get_adapted_description(self, user):
+        """Return the appropriate description to the user"""
+
         return self._get_adapted_content(user, self.description)
 
     def get_adapted_text(self, user):
-        return self._get_adapted_content(user, self.text)
+        """Return the appropriate text to the user"""
 
+        return self._get_adapted_content(user, self.text)

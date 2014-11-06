@@ -1,3 +1,4 @@
+
 import colander
 import deform.widget
 from zope.interface import implementer
@@ -6,12 +7,11 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
-from dace.descriptors import CompositeMultipleProperty, SharedUniqueProperty, SharedMultipleProperty
+from dace.descriptors import SharedUniqueProperty
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.core import VisualisableElementSchema
-from pontus.widget import SequenceWidget, FileWidget, Select2Widget
-from pontus.file import ObjectData, File
+from pontus.widget import Select2Widget
 from pontus.schema import Schema, omit
 
 from .interface import IComment
@@ -31,7 +31,6 @@ def intention_choice(node, kw):
 
 @colander.deferred
 def relatedcontents_choice(node, kw):
-    context = node.bindings['context']
     request = node.bindings['request']
     root = getSite()
     user = get_current()
@@ -40,7 +39,10 @@ def relatedcontents_choice(node, kw):
     return Select2WidgetSearch(multiple= True, 
                                values=values,
                                item_css_class='search-idea-form',
-                               url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['CorrelableEntity']}))
+                               url=request.resource_url(root, '@@search', 
+                                    query={'op':'toselect', 
+                                           'content_types':['CorrelableEntity']}
+                               ))
 
 
 class RelatedContentsSchema(Schema):
@@ -86,10 +88,12 @@ class CommentSchema(VisualisableElementSchema):
         title=_("Message")
         )
 
-    related_contents = RelatedContentsSchema(widget=SimpleMappingtWidget(mapping_css_class="controled-form associate-form hide-bloc",
-                                                                   ajax=True,
-                                                                   activator_css_class="glyphicon glyphicon-link",
-                                                                   activator_title=_('Associate')))
+    related_contents = RelatedContentsSchema(
+                widget=SimpleMappingtWidget(
+                    mapping_css_class="controled-form associate-form hide-bloc",
+                    ajax=True,
+                    activator_css_class="glyphicon glyphicon-link",
+                    activator_title=_('Associate')))
 
 
 @content(
@@ -108,6 +112,8 @@ class Comment(Commentable):
 
     @property
     def subject(self):
+        """Return the commented entity"""
+
         if not isinstance(self.__parent__, Comment):
             return self.__parent__
         else:

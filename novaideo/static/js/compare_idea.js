@@ -19,7 +19,7 @@ $(document).ready(function(){
           progress.show();// TODO
           $(button).addClass('disabled');
           $.get(url, dict_post, function(data) {
-                 var content = $(data).find('.compare-result');//TODO chercher le bon scrollable
+                 var content = $(data).find('.compare-result');
                  if (content){
                      $(target).html($(content).html());
                   }else{

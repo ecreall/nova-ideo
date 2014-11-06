@@ -12,9 +12,6 @@ def toBoolean(value):
 def toString(value):
     return value
 
-#float...
-#multiplicity: metadata[1] (true or false)
-
 
 transformation_rols = {("String", False): toString,
                        ("Integer", False): toInteger,
@@ -24,7 +21,7 @@ transformation_rols = {("String", False): toString,
 # properties = {'at1':('Type', Multiplicity),...}
 def create_object_from_xl(file, factory, properties):
     book = xlrd.open_workbook(file_contents=file.fp.read())
-    sheet = book.sheet_by_index(0) # ou: sheet_by_name("Ma feuille")
+    sheet = book.sheet_by_index(0)# or: sheet_by_name("Ma feuille") 
     header = []
     for col_index in xrange(sheet.ncols):
         value = sheet.cell(rowx=0,colx=col_index).value

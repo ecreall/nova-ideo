@@ -1,13 +1,11 @@
 # -*- coding: utf8 -*-
-
+""" The contents of e-mails"""
 
 PORTAL_SIGNATURE = """
-
 Cordialement,
                                                                                 
 La Plateforme NovaIdeo
 """
-
 
 INVITATION_MESSAGE = u"""
 Bonjour,
@@ -54,7 +52,7 @@ Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 PRESENTATION_AMENDMENT_SUBJECT = u"""Présentation : {subject_title}"""
 
 
-ALERT_SUBJECT= u"""Inactivité : {subject_title}"""
+ALERT_SUBJECT = u"""Inactivité : {subject_title}"""
 
 ALERT_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -63,8 +61,9 @@ Aucun amendement n'a été publié pour la proposition sous {subject_url}.
 
 """ + PORTAL_SIGNATURE
 
-
-RESULT_VOTE_AMENDMENT_SUBJECT= u"""Les resultat du vote sur amendments : {subject_title}"""
+RESULT_VOTE_AMENDMENT_SUBJECT = u"""
+Les resultat du vote sur amendments : {subject_title}
+"""
 
 RESULT_VOTE_AMENDMENT_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -80,7 +79,7 @@ Les amendements élus, après calcule, du vote:
 """ + PORTAL_SIGNATURE
 
 
-PUBLISHPROPOSAL_SUBJECT= u"""Publication : {subject_title}"""
+PUBLISHPROPOSAL_SUBJECT = u"""Publication : {subject_title}"""
 
 PUBLISHPROPOSAL_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -90,7 +89,9 @@ La proposition {subject_title} ({subject_url}) est publiée.
 """ + PORTAL_SIGNATURE
 
 
-VOTINGPUBLICATION_SUBJECT= u"""Debut de vote sur la publication : {subject_title}"""
+VOTINGPUBLICATION_SUBJECT = u"""
+Debut de vote sur la publication : {subject_title}
+"""
 
 VOTINGPUBLICATION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -100,7 +101,9 @@ Le vote sur publication de la proposition {subject_title} ({subject_url}) a comm
 """ + PORTAL_SIGNATURE
 
 
-VOTINGAMENDMENTS_SUBJECT= u"""Debut de vote sur les amendements : {subject_title}"""
+VOTINGAMENDMENTS_SUBJECT = u"""
+Debut de vote sur les amendements : {subject_title}
+"""
 
 VOTINGAMENDMENTS_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -109,8 +112,9 @@ Le vote sur les amendements de la proposition {subject_title} ({subject_url}) a 
 
 """ + PORTAL_SIGNATURE
 
-
-WITHDRAW_SUBJECT= u"""Désinscription de la liste d'attente: {subject_title}"""
+WITHDRAW_SUBJECT = u"""
+Désinscription de la liste d'attente: {subject_title}
+"""
 
 WITHDRAW_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -119,8 +123,7 @@ Vous ne faite plus partie de la liste d'attente du groupe de travail de la propo
 
 """ + PORTAL_SIGNATURE
 
-
-PARTICIPATE_SUBJECT= u"""Partcipation au groupe de travail : {subject_title}"""
+PARTICIPATE_SUBJECT = u"""Partcipation au groupe de travail : {subject_title}"""
 
 PARTICIPATE_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -129,8 +132,7 @@ Vous faite partie du groupe de travail de la proposition {subject_title} ({subje
 
 """ + PORTAL_SIGNATURE
 
-
-RESIGN_SUBJECT= u"""Démission du groupe de travail : {subject_title}"""
+RESIGN_SUBJECT = u"""Démission du groupe de travail : {subject_title}"""
 
 RESIGN_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -139,8 +141,7 @@ Vous ne faite plus partie du groupe de travail de la proposition {subject_title}
 
 """ + PORTAL_SIGNATURE
 
-
-WATINGLIST_SUBJECT= u"""Partcipation au groupe de travail : {subject_title}"""
+WATINGLIST_SUBJECT = u"""Partcipation au groupe de travail : {subject_title}"""
 
 WATINGLIST_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},

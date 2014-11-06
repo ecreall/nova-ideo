@@ -8,18 +8,14 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.util import getSite
-from dace.objectofcollaboration.entity import Entity
-from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty, SharedMultipleProperty
-from pontus.core import VisualisableElement, VisualisableElementSchema
+from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
+from pontus.core import VisualisableElementSchema
 from pontus.widget import (
     RichTextWidget,
-    LineWidget,
-    TableWidget,
     Select2Widget,
     SequenceWidget,
     FileWidget)
 from pontus.file import ObjectData, File
-from pontus.schema import omit
 
 from .interface import Iidea
 from novaideo.core import Commentable
@@ -106,4 +102,7 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
 
     @property
     def related_proposals(self):
-        return [c.source for c in self.source_correlations if ((c.type==1) and ('related_proposals' in c.tags))]
+        """Return all proposals that uses this idea"""
+
+        return [c.source for c in self.source_correlations\
+                if ((c.type==1) and ('related_proposals' in c.tags))]

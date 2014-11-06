@@ -135,9 +135,8 @@ $(document).ready(function(){
           $( commentmessageinfo).text( "Comment sent" ).show().fadeOut( 1000 );
           $.post(url, dict_post, function(data) {
                  $( commentmessagesuccess).text( "Your comment is integrated" ).show().fadeOut( 3000 );
-                 //find comments scroll div
                  $.post(urlparent, {}, function(data) {
-                      var content = $(data).find('.scroll-able.comments-scroll');//TODO chercher le bon scrollable
+                      var content = $(data).find('.scroll-able.comments-scroll');
                       if (content){
                          $(target).html($(content).html());
                          init_select_association();

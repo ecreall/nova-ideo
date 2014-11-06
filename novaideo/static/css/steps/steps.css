@@ -32,6 +32,7 @@
 	width: 100%;
         margin: 4px 0;
 }
+
 .steps {
 	padding: 1px 0;
 	overflow: hidden;
@@ -39,20 +40,24 @@
         border-top-right-radius: 5px;
 
 }
+
 .steps ul, .steps li {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
+
 .steps ul { 
         float: left;
         width: 100%;
 
  }
+
 .steps li {
 	float: left;
 	width: 27%;
 }
+
 .steps li .step-content {
 	display: block;
 	padding: 15px 20px;
@@ -62,6 +67,7 @@
 	text-decoration: none;
   text-align:center;
 }
+
 .steps li .step-content:hover { background: #666; }
 .steps li.step, .steps li.step .step-content {
 	position: relative;
@@ -99,6 +105,7 @@
     width: 100%;
 
 }
+
 .steps li.step-2, .steps li.step-3, .steps li.step-4 { margin-left: -29px; }
 .steps li.step-2 .step-content, .steps li.step-3 .step-content { padding-left: 45px; }
 .steps li.step-4 .step-content {
@@ -107,12 +114,13 @@
         background-position: center left;
         width: 113%;
 }
+
 .steps li.current-step .step-content:hover,  .steps li.current-step .step-content:focus{ 
     background: transparent url(step_over.png) center right no-repeat; }
 .steps li.step-4 .step-content:hover { background-position: center left; }
 
 
-
+/*Sub-steps*/
 
 .sub-steps li.step, .sub-steps li.step .step-content {
 	position: relative;
@@ -182,6 +190,7 @@
         border-top-right-radius: 5px;
 
 }
+
 .sub-steps ul, .steps li {
 	margin: 0;
 	padding: 0;
@@ -192,7 +201,7 @@
     float: left;
     height: 246px;
     width: 90px;
- }
+}
 
 .sub-steps li {
 	float: left;
@@ -216,6 +225,7 @@
         padding-right: 25px;
         padding-top: 4px;
 }
+
 .sub-steps li.sub-step-2 .step-content{
 	background: transparent url(step-corr.png) center right no-repeat;
         background-size: 90px;
@@ -224,6 +234,7 @@
         padding-right: 25px;
         padding-top: 4px;
 }
+
 .sub-steps li.sub-step-3 .step-content {
 	background: transparent url(step-imp.png) center right no-repeat;
         background-size: cover;
@@ -231,6 +242,7 @@
         padding-right: 25px;
         padding-top: 4px;
 }
+
 .sub-steps li.sub-step-4 .step-content {
 	background: transparent url(step-am.png) center right no-repeat;
         background-size: 90px;

@@ -1,3 +1,4 @@
+
 from pyramid.config import Configurator
 from pyramid.exceptions import ConfigurationError
 from pyramid.i18n import TranslationStringFactory
@@ -8,7 +9,7 @@ from substanced.db import root_factory
 
 _ = TranslationStringFactory('novaideo')
 
-default_session_timeout = 25200
+DEFAULT_SESSION_TIMEOUT = 25200
 
 
 def my_locale_negotiator(request):
@@ -24,13 +25,17 @@ def main(global_config, **settings):
     config.add_translation_dirs('colander:locale/')
     config.scan()
     YEAR = 86400 * 365
-    config.add_static_view('novaideostatic', 'novaideo:static', cache_max_age=YEAR)
+    config.add_static_view('novaideostatic',
+                           'novaideo:static', 
+                           cache_max_age=YEAR)
     #    config.set_locale_negotiator(my_locale_negotiator)
     settings = config.registry.settings
     secret = settings.get('novaideo.secret')
     if secret is None:
         raise ConfigurationError(
             'You must set a novaideo.secret key in your .ini file')
-    session_factory = UnencryptedCookieSessionFactoryConfig(secret, timeout=default_session_timeout)#TODO 
+
+    session_factory = UnencryptedCookieSessionFactoryConfig(secret, 
+                       timeout=DEFAULT_SESSION_TIMEOUT) 
     config.set_session_factory(session_factory)
     return config.make_wsgi_app()
