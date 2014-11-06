@@ -42,6 +42,20 @@ class BaseFunctionalTests(object):
 
 
     def tearDown(self):
+        from dace.processinstance import event
+        with event.callbacks_lock:
+            for dc_or_stream in event.callbacks.values():
+                if hasattr(dc_or_stream, 'close'):
+                    dc_or_stream.close()
+                else:
+                    dc_or_stream.stop()
+
+            event.callbacks = {}
+
+        from dace.objectofcollaboration.system import CRAWLERS
+        for crawler in CRAWLERS:
+            crawler.stop()
+
         import shutil
         testing.tearDown()
         self.db.close()
