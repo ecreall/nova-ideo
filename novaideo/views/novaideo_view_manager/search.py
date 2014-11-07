@@ -3,52 +3,53 @@ import re
 import colander
 import datetime
 from pyramid.view import view_config
-from pyramid.threadlocal import get_current_registry
 
 from substanced.util import Batch, get_oid
 
 from dace.util import find_catalog
-
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite, allSubobjectsOfType
+from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
-from pontus.view import BasicView, ViewError, merge_dicts
-from pontus.dace_ui_extension.interfaces import IDaceUIAPI
-from pontus.widget import CheckboxChoiceWidget, RichTextWidget
+from pontus.view import BasicView, merge_dicts
+from pontus.widget import CheckboxChoiceWidget
 from pontus.schema import Schema
 from pontus.form import FormView
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import  Search
-from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
+from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
-from novaideo.content.interface import Iidea, IProposal, IPerson, ICorrelableEntity
+from novaideo.content.interface import (
+    Iidea, 
+    IProposal, 
+    IPerson, 
+    ICorrelableEntity)
 from .widget import SearchTextInputWidget, SearchFormWidget
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.core import can_access
 
 
-default_serchable_content = {_('Idea'): Iidea,
+DEFAULT_SEARCHABLE_CONTENT = {_('Idea'): Iidea,
                              _('Proposal'): IProposal,
                              _('Person'): IPerson
                             }
 
-serchable_content = {'Idea': Iidea,
+SEARCHABLE_CONTENT = {'Idea': Iidea,
                      'Proposal': IProposal,
                      'Person': IPerson,
                      'CorrelableEntity': ICorrelableEntity,
-                    } #TODO Optimization 
+                    } 
 
 
 @colander.deferred
 def content_types_choices(node, kw):
-    values =[(str(k), k) for k in sorted(default_serchable_content.keys())]
+    values = [(str(k), k) for k in sorted(DEFAULT_SEARCHABLE_CONTENT.keys())]
     return CheckboxChoiceWidget(values=values, inline=True)
 
 
 @colander.deferred
 def default_content_types_choices(node, kw):
-    return sorted(default_serchable_content.keys())
+    return sorted(DEFAULT_SEARCHABLE_CONTENT.keys())
 
 
 class SearchSchema(Schema):
@@ -64,12 +65,13 @@ class SearchSchema(Schema):
 
     text = colander.SchemaNode(
         colander.String(),
-        widget=SearchTextInputWidget(button_type='submit',
-                                     description=_('The keyword search is done using commas between keywords.')),
+        widget=SearchTextInputWidget(
+            button_type='submit',
+            description=_("The keyword search is done using"
+                          " commas between keywords.")),
         title='',
         missing='',
         )
-
 
 
 @view_config(
@@ -85,12 +87,12 @@ class SearchView(FormView):
     formid = 'formsearch'
     item_template = 'pontus:templates/subview_sample.pt'
 
-    def _get_appstruct(self):
+    def get_appstruct(self):
         post = getattr(self, 'postedform', self.request.POST)
         form, reqts = self._build_form()
         form.formid = self.viewid + '_' + form.formid
         posted_formid = None
-        default_content = list(default_serchable_content.keys())
+        default_content = list(DEFAULT_SEARCHABLE_CONTENT.keys())
         default_content.remove("Person")
         if '__formid__' in post:
             posted_formid = post['__formid__']
@@ -105,7 +107,7 @@ class SearchView(FormView):
                 else:
                     validated['content_types'] = default_content
                     return validated
-            except Exception as e:
+            except Exception:
                 pass
 
         content_types = self.params('content_types')
@@ -129,19 +131,10 @@ class SearchView(FormView):
         return appstruct
 
 def search(text, content_types, user):
-    if text == '':
-        text = None
+    if text:
+        text = [t.lower() for t in re.split(', *', text)]
 
-    if text is not None:
-        text = [t.lower() for t in text.split(', ')]
-        result = []
-        for t in text:
-            result.extend(t.split(','))
-
-        text = result
-
-    root = getSite()
-    interfaces = [serchable_content[i].__identifier__ for i in content_types]
+    interfaces = [SEARCHABLE_CONTENT[i].__identifier__ for i in content_types]
     #catalog
     dace_catalog = find_catalog('dace')
     novaideo_catalog = find_catalog('novaideo')
@@ -151,22 +144,21 @@ def search(text, content_types, user):
     description_index = dace_catalog['object_description']
     states_index = dace_catalog['object_states']
     object_provides_index = dace_catalog['object_provides']
-    containers_oids_index = dace_catalog['containers_oids']
     keywords_index = novaideo_catalog['object_keywords']
     text_index = system_catalog['text']
     name_index = system_catalog['name']
     #query
     query = None
-    if text is not None:
+    if text:
         query = keywords_index.any(text) | \
                 name_index.any(text) | \
                 states_index.any(text)
 
-        for t in text: #TODO
+        for keyword in text:
             query = query | \
-                    title_index.contains(t) | \
-                    description_index.contains(t) | \
-                    text_index.contains(t)
+                    title_index.contains(keyword) | \
+                    description_index.contains(keyword) | \
+                    text_index.contains(keyword)
 
     if query is None:
         query = object_provides_index.any(interfaces)
@@ -176,7 +168,10 @@ def search(text, content_types, user):
     query = (query) & states_index.notany(('archived',)) 
     resultset = query.execute()
     objects = [o for o in resultset.all() if can_access(user, o)] 
-    objects = sorted(objects, key=lambda e: getattr(e, 'modified_at', datetime.datetime.today()), reverse=True)
+    objects = sorted(objects, 
+                      key=lambda e: getattr(e, 'modified_at',
+                                            datetime.datetime.today()),
+                     reverse=True)
     return objects
 
 
@@ -196,19 +191,24 @@ class SearchResultView(BasicView):
         user = get_current()
         formviewinstance = SearchView(self.context, self.request)
         formviewinstance.postedform = self.request.POST
-        appstruct = formviewinstance._get_appstruct()
+        appstruct = formviewinstance.get_appstruct()
         content_types = appstruct['content_types']
         text = appstruct['text']
         objects = search(text, content_types, user)
         url = self.request.resource_url(self.context, '', 
-                                        query={'content_types':content_types, 'text':appstruct['text']})
-        batch = Batch(objects, self.request, url=url, default_size=BATCH_DEFAULT_SIZE)
+                                        query={'content_types':content_types,
+                                               'text':appstruct['text']})
+        batch = Batch(objects, 
+                      self.request, 
+                      url=url, 
+                      default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results"
         len_result = batch.seqlen
         result_body = []
-        for o in batch:
-            object_values = {'object':o, 'current_user': user}
-            body = self.content(result=object_values, template=o.result_template)['body']
+        for obj in batch:
+            object_values = {'object':obj, 'current_user': user}
+            body = self.content(result=object_values,
+                                template=obj.result_template)['body']
             result_body.append(body)
 
         result = {}

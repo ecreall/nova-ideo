@@ -1,10 +1,12 @@
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.schema import select
 
-from novaideo.content.processes.organization_management.behaviors import  EditOrganization
+from novaideo.content.processes.organization_management.behaviors import (
+  EditOrganization)
 from novaideo.content.organization import OrganizationSchema, Organization
 from novaideo import _
 
@@ -17,7 +19,7 @@ from novaideo import _
 class EditOrganizationView(FormView):
 
     title = _('Edit organization')
-    schema = select(OrganizationSchema(editable=True),['title',
+    schema = select(OrganizationSchema(editable=True), ['title',
                                                        'description',
                                                        'email',
                                                        'phone',
@@ -26,7 +28,7 @@ class EditOrganizationView(FormView):
                                                        'members'])
     behaviors = [EditOrganization]
     formid = 'formeditorganization'
-    name='editorganization'
+    name = 'editorganization'
 
     def default_data(self):
         return self.context

@@ -1,12 +1,13 @@
+
 import colander
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
-from pontus.widget import TableWidget, LineWidget
 from pontus.schema import Schema, omit, select
 
-from novaideo.content.processes.organization_management.behaviors import  CreatOrganizations
+from novaideo.content.processes.organization_management.behaviors import (
+    CreatOrganizations)
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.organization import OrganizationSchema, Organization
 from novaideo import _
@@ -18,13 +19,15 @@ class CreatOrganizationsSchema(Schema):
                 colander.Sequence(),
                 select(omit(OrganizationSchema(factory=Organization,
                                                editable=True,
-                                               name='Organization'),['_csrf_token_']), ['title',
-                                                                                        'description',
-                                                                                        'email',
-                                                                                        'phone',
-                                                                                        'fax',
-                                                                                        'logo',
-                                                                                        'members']),
+                                               name='Organization'), 
+                            ['_csrf_token_']),
+                       ['title',
+                        'description',
+                        'email',
+                        'phone',
+                        'fax',
+                        'logo',
+                        'members']),
                 title=_('Organizations to creat')
                 )
 
@@ -40,7 +43,7 @@ class CreatOrganizationsView(FormView):
     schema = CreatOrganizationsSchema()
     behaviors = [CreatOrganizations]
     formid = 'formcreatorganizations'
-    name='creatorganizations'
+    name = 'creatorganizations'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CreatOrganizations:CreatOrganizationsView})

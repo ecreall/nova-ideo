@@ -1,13 +1,12 @@
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from pontus.form import FormView
 from pontus.view import BasicView
-from pontus.view_operation import CallSelectedContextsViews
-from pontus.schema import select
 
-from novaideo.content.processes.organization_management.behaviors import  SeeOrganization
-from novaideo.content.organization import OrganizationSchema, Organization
+from novaideo.content.processes.organization_management.behaviors import (
+    SeeOrganization)
+from novaideo.content.organization import Organization
 from novaideo import _
 
 
@@ -29,7 +28,8 @@ class SeeOrganizationView(BasicView):
         result = {}
         logo = {}
         if getattr(self.context, 'logo', None):
-            logo = {'url':self.context.logo.url(self.request), 'title':self.context.logo.title}
+            logo = {'url':self.context.logo.url(self.request), 
+                    'title':self.context.logo.title}
 
         values = {
                 'title': self.context.title,

@@ -1,14 +1,11 @@
-import colander
-import deform.widget
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
-from pontus.schema import Schema, select, omit
-from pontus.widget import FileWidget
-from pontus.file import ObjectData, File
 
-from novaideo.content.processes.invitation_validation.behaviors import RefuseInvitation
+from novaideo.content.processes.invitation_validation.behaviors import (
+    RefuseInvitation)
 from novaideo.content.invitation import Invitation
 from novaideo import _
 
@@ -22,7 +19,7 @@ class RefuseInvitationView(BasicView):
 
     title = _('Refuse invitation')
     behaviors = [RefuseInvitation]
-    name='refuse_invitation'
+    name = 'refuse_invitation'
 
     def update(self):
         self.execute(None)

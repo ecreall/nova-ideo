@@ -1,14 +1,15 @@
+
 import re
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from pontus.view import BasicView, ViewError, merge_dicts
+from pontus.view import BasicView, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
-from novaideo.content.processes.organization_management.behaviors import  SeeOrganizations
-from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
+from novaideo.content.processes.organization_management.behaviors import (
+    SeeOrganizations)
+from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 
 
@@ -34,7 +35,8 @@ class SeeOrganizationsView(BasicView):
         all_resources['js_links'] = []
         all_resources['css_links'] = []
         all_organization_data = {'organizations':[]}
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
+                                                        'dace_ui_api')
         for organization in self.context.organizations:
             action_updated, messages, resources, actions = dace_ui_api._actions(self.request, organization)
             if action_updated and not isactive:
@@ -52,14 +54,15 @@ class SeeOrganizationsView(BasicView):
 
             logo = {}
             if getattr(organization, 'logo', None):
-                logo = {'url':organization.logo.url(self.request), 'title':organization.logo.title}
+                logo = {'url':organization.logo.url(self.request), 
+                        'title':organization.logo.title}
 
-            #http://www.developpez.net/forums/d81553/autres-langages/python-zope/general-python/chaine-caracteres-couper-trouver-remplacer/
             description = organization.description
             reduced_description = description
             if len(description) > 249:
                 description = description[:250]
-                reduced_description = re.sub('\s[a-z0-9._-]+$', ' ...', description)
+                reduced_description = re.sub('\s[a-z0-9._-]+$', ' ...',
+                                             description)
 
             organization_dic = { 
                 'actions': actions,
@@ -69,8 +72,10 @@ class SeeOrganizationsView(BasicView):
                 'logo': logo}
             all_organization_data['organizations'].append(organization_dic)
          
-        all_organization_data['tabid'] = self.__class__.__name__+'OrganizationActions'
-        body = self.content(result=all_organization_data, template=self.template)['body']
+        all_organization_data['tabid'] = self.__class__.__name__ + \
+                                         'OrganizationActions'
+        body = self.content(result=all_organization_data, 
+                            template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = all_messages
         item['isactive'] = isactive
@@ -78,7 +83,5 @@ class SeeOrganizationsView(BasicView):
         result.update(all_resources)
         result  = merge_dicts(self.requirements_copy, result)
         return result
-
-
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeOrganizations:SeeOrganizationsView})

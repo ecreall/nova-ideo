@@ -22,6 +22,7 @@ class AmendableView(BasicView):
 
     def update(self):
         self.execute(None)        
-        return list(self.behaviorinstances.values())[0].redirect(self.context, self.request)
+        return list(self.behaviorinstances.values())[0].redirect(
+                                       self.context, self.request)
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Amendable:AmendableView})

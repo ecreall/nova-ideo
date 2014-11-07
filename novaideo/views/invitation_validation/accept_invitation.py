@@ -1,3 +1,4 @@
+
 import colander
 import deform.widget
 from pyramid.view import view_config
@@ -5,11 +6,10 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import Schema, select, omit
-from pontus.widget import FileWidget
-from pontus.file import ObjectData, File
+from pontus.schema import Schema
 
-from novaideo.content.processes.invitation_validation.behaviors import AcceptInvitation
+from novaideo.content.processes.invitation_validation.behaviors import (
+    AcceptInvitation)
 from novaideo.content.invitation import Invitation
 from novaideo import _
 
@@ -34,7 +34,7 @@ class AcceptInvitationView(FormView):
     schema = AcceptInvitationSchema()
     behaviors = [AcceptInvitation, Cancel]
     formid = 'formacceptinvitation'
-    name='accept_invitation'
+    name = 'accept_invitation'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({AcceptInvitation:AcceptInvitationView})
