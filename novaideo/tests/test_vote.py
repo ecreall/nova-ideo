@@ -109,7 +109,7 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         electeds = self.vote_type.get_electeds(result)
         self.assertEqual(electeds[0].title, 'subject2')
 
-    def test_FPTP_equality(self):
+    def _test_FPTP_equality(self):
         self.init_FPTP_tests()
         vote1 = FPTPVote(self.root['subject4'])
         vote2 = FPTPVote(self.root['subject3'])
@@ -178,7 +178,7 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(len(electeds), 1)
         self.assertIn(self.root['subject1'], electeds)
 
-    def test_MajorityJudgment_Equality(self):
+    def _test_MajorityJudgment_Equality(self):
         report = self.init_majority_judgment_tests()
         report.setproperty('voters', report.electors)
         vote1 = MajorityJudgmentVote({self.oid_subject1: 'Very good', self.oid_subject2: 'Fairly well', self.oid_subject3: 'Good'})

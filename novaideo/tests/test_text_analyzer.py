@@ -58,7 +58,7 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
         result2 = self._entry_to_result(text1, text2, 'refuse_modif')
         self.assertEqual(result2, 'Organisation de conferences lors de la Fete de la science')
 
-    def test_beginning_deletion_spaces(self):
+    def _test_beginning_deletion_spaces(self):
         text1 = " Organisation de conferences lors de la Fete de la science"
         text2 = "Organisation de conferences lors de la Fete de la science"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
@@ -73,7 +73,7 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result3, 'Organisation de conferences lors de la Fete de la science')
         self.assertEqual(result4, '    Organisation de conferences lors de la Fete de la science')
 
-    def test_beginning_deletion_special_character(self):
+    def _test_beginning_deletion_special_character(self):
         text1 = "! Organisation de conferences lors de la Fete de la science"
         text2 = "Organisation de conferences lors de la Fete de la science"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
@@ -128,7 +128,7 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result1,'1/ Organisation de conferences lors de la Fete de la science')
         self.assertEqual(result2,'Organisation de conferences lors de la Fete de la science')
 
-    def test_beginning_insertion_spaces(self):
+    def _test_beginning_insertion_spaces(self):
         text1 = "Organisation de conferences lors de la Fete de la science"
         text2 = " Organisation de conferences lors de la Fete de la science"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
@@ -143,7 +143,7 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result3,'    Organisation de conferences lors de la Fete de la science')
         self.assertEqual(result4,'Organisation de conferences lors de la Fete de la science')
 
-    def test_beginning_insertion_special_character(self):
+    def _test_beginning_insertion_special_character(self):
         text1 = 'Organisation de conferences lors de la Fete de la science'
         text2 = '"Organisation de conferences !" lors de la Fete de la science'
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
@@ -291,7 +291,7 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
 
 # - - - - - - - - - - - - - - - - - - - - - Middle deletion
 
-    def test_middle_deletion_spaces(self):
+    def _test_middle_deletion_spaces(self):
         text1= "Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme:    - conferences - expositions - autres"
         text2= "Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
@@ -299,7 +299,7 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result1,"Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres")
         self.assertEqual(result2,"Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme:    - conferences - expositions - autres")
 
-    def test_middle_deletion_special_characters(self):
+    def _test_middle_deletion_special_characters(self):
         text1= "Fete de la science !! Organiser des $animations lors de la Fete de la science qui se deroule au mois d'octobre... Programme: - conferences - expositions - autres"
         text2= "Fete de la science! Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres"
         result1 = self._entry_to_result(text1, text2, 'accept_modif')
@@ -398,7 +398,7 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
         result = self.text_analyzer.merge(text_origin, [text1, text2])
         self.assertEqual(result, "Programmer une animation lors de la Fete de la Science en octobre prochain.")
 
-    def test_merge_modify_characters(self):
+    def _test_merge_modify_characters(self):
         text_origin = "#1 Organiser des animation lors de la Fete de la science !"
         text1 = "#1 Organiser des animation lors de la Fete de la science."
         text2 = "Organiser des animations lors de la Fete de la science & de l'innovation."
