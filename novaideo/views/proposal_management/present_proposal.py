@@ -2,23 +2,22 @@
 import colander
 import deform
 from pyramid.view import view_config
-from substanced.util import find_service
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite
-from dace.objectofcollaboration.principal.util import get_current
-from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select, Schema
-from pontus.widget import Select2WidgetCreateSearchChoice
-from pontus.view_operation import MultipleView
-from pontus.view import BasicView
+from pontus.schema import select
 
-from novaideo.content.processes.proposal_management.behaviors import  PresentProposal
+from novaideo.content.processes.proposal_management.behaviors import (
+    PresentProposal)
 from novaideo.content.proposal import Proposal
 from novaideo import _
-from novaideo.mail import PRESENTATION_PROPOSAL_MESSAGE, PRESENTATION_PROPOSAL_SUBJECT
-from novaideo.views.idea_management.present_idea import PresentIdeaView, PresentIdeaSchema, SentToView as IdeaSentToView
+from novaideo.mail import (
+    PRESENTATION_PROPOSAL_MESSAGE, 
+    PRESENTATION_PROPOSAL_SUBJECT)
+from novaideo.views.idea_management.present_idea import (
+    PresentIdeaView, 
+    PresentIdeaSchema, 
+    SentToView as IdeaSentToView)
 
 
 class SentToView(IdeaSentToView):
@@ -45,10 +44,11 @@ class PresentProposalSchema(PresentIdeaSchema):
 class PresentProposalFormView(FormView):
 
     title = _('Submit the proposal to others')
-    schema = select(PresentProposalSchema(), ['members', 'subject', 'message', 'send_to_me'])
+    schema = select(PresentProposalSchema(), 
+                   ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentProposal]
     formid = 'formpresentproposalform'
-    name='presentproposalform'
+    name = 'presentproposalform'
 
     def before_update(self):
         formwidget = deform.widget.FormWidget(css_class='controled-form', 
@@ -68,7 +68,7 @@ class PresentProposalFormView(FormView):
 class PresentProposalView(PresentIdeaView):
     title = _('Submit the proposal to others')
     description = _('Submit the proposal to others')
-    name='presentproposal'
+    name = 'presentproposal'
     views = (SentToView, PresentProposalFormView)
 
 

@@ -1,3 +1,4 @@
+
 import colander
 import deform
 from pyramid.view import view_config
@@ -12,7 +13,6 @@ from pontus.schema import Schema
 
 from novaideo import _
 from novaideo.content.novaideo_application import NovaIdeoApplication
-
 
 
 class Send(Behavior):

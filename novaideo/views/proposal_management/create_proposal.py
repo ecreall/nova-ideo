@@ -1,29 +1,24 @@
-import deform 
+
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
-from pyramid import renderers
-from substanced.util import get_oid
 
 from dace.util import getSite, find_entities
-from dace.processinstance.core import  Behavior
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select, Schema
+from pontus.schema import select
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
-from pontus.file import Object as ObjectType
-from pontus.widget import MappingWidget, Select2Widget
+from pontus.widget import Select2Widget
 
-from novaideo.content.processes.proposal_management.behaviors import  CreateProposal
+from novaideo.content.processes.proposal_management.behaviors import (
+    CreateProposal)
 from novaideo.content.proposal import ProposalSchema, Proposal
 from novaideo.content.idea import Iidea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.core import can_access
-from novaideo.views.widget import Select2WidgetSearch
-from .edit_proposal import AddIdeaSchema, AddIdea, AddIdeaFormView
+from .edit_proposal import AddIdeaFormView
 
 
 
@@ -36,13 +31,11 @@ class RelatedIdeasView(BasicView):
     coordinates = 'right'
 
     def update(self):
-        root = getSite()
-        user = get_current()
         result = {}
         target = None
         try:
             editform = self.parent.parent.children[0]
-            target = editform.viewid+'_'+editform.formid 
+            target = editform.viewid + '_' + editform.formid 
         except Exception:
             pass
 
@@ -68,7 +61,6 @@ class IdeaManagementView(MultipleView):
 
 
 def ideas_choice():
-    root = getSite()
     user = get_current()
     ideas = find_entities([Iidea], states=('archived',), not_any=True)    
     values = [(i, i.title) for i in ideas if can_access(user, i)]
@@ -86,7 +78,7 @@ class CreateProposalFormView(FormView):
                      'related_ideas'])
     behaviors = [CreateProposal, Cancel]
     formid = 'formcreateproposal'
-    name='createproposal'
+    name = 'createproposal'
 
     def before_update(self):
         ideas_widget = ideas_choice()
@@ -107,5 +99,6 @@ class CreateProposalView(MultipleView):
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/ideas_management.js']}
     views = (CreateProposalFormView, IdeaManagementView)
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CreateProposal: CreateProposalView})

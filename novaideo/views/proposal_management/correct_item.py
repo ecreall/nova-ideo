@@ -1,12 +1,13 @@
-import deform
+
 from pyramid.view import view_config
 
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.proposal_management.behaviors import  CorrectItem
-from novaideo.content.correction import Correction, CorrectionSchema
+from novaideo.content.processes.proposal_management.behaviors import (
+    CorrectItem)
+from novaideo.content.correction import Correction
 from novaideo import _
 
 
@@ -22,16 +23,16 @@ class CorrectItemView(BasicView):
     behaviors = [CorrectItem]
     viewid = 'correctitem'
 
-
     def update(self):
         item = self.params('item')
         vote = self.params('vote')
         content = self.params('content')
         self.execute({'item':item, 'vote':vote, 'content':content})
         result = {}
+        user = get_current()
         values = {
                 'text': self.context.get_adapted_text(get_current()),
-                'description': self.context.get_adapted_description(get_current()),
+                'description': self.context.get_adapted_description(user),
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

@@ -1,19 +1,14 @@
+
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import forget
 
-from substanced.interfaces import IUserLocator
-from substanced.principal import DefaultUserLocator
-from substanced.event import LoggedIn
-
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from pontus.view import BasicView, ViewError
+from pontus.view import BasicView
 
 from novaideo.content.processes.user_access_manager.behaviors import  LogOut
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
-
-
 
 @view_config(
     name='logout',
@@ -29,7 +24,8 @@ class LogoutView(BasicView):
     def update(self):
         self.execute(None)
         headers = forget(self.request)
-        return HTTPFound(location = self.request.resource_url(self.request.context),
+        return HTTPFound(location = self.request.resource_url(
+                                         self.request.context),
                      headers = headers)
 
 

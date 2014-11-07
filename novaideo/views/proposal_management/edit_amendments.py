@@ -2,21 +2,20 @@
 import datetime
 from pyramid.view import view_config
 
-from substanced.util import Batch
 
-from dace.util import getSite
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
-from pontus.view import BasicView, merge_dicts
+from pontus.view import BasicView
 
-from novaideo.content.processes.proposal_management.behaviors import  EditAmendments
+from novaideo.content.processes.proposal_management.behaviors import (
+    EditAmendments)
 from novaideo.content.proposal import Proposal
 from novaideo import _
-from novaideo.core import BATCH_DEFAULT_SIZE, can_access
+from novaideo.core import can_access
 
 
 
-amendments_messages = {'0': u"""Pas d'amendements""",
+AMENDMENTS_MESSAGES = {'0': u"""Pas d'amendements""",
                       '1': u"""Un amendement proposé""",
                       '*': u"""{lenamendments} amendements proposés"""}
 
@@ -29,7 +28,7 @@ amendments_messages = {'0': u"""Pas d'amendements""",
 class EditAmendmentsView(BasicView):
     title = _('See amendments')
     name = 'editamendments'
-    description=_("See amendments")
+    description = _("See amendments")
     behaviors = [EditAmendments]
     template = 'novaideo:views/proposal_management/templates/amendments.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
@@ -39,13 +38,19 @@ class EditAmendmentsView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        objects = [o for o in getattr( self.context, 'amendments', []) if not('archived' in o.state) and can_access(user, o)]
-        objects = sorted(objects, key=lambda e: getattr(e, 'modified_at', datetime.datetime.today()), reverse=True)
+        objects = [o for o in getattr( self.context, 'amendments', []) \
+                  if not('archived' in o.state) and can_access(user, o)]
+        objects = sorted(objects, 
+                         key=lambda e: getattr(e, 'modified_at', 
+                                               datetime.datetime.today()), 
+                         reverse=True)
         lenamendments = len(objects)
         index = str(lenamendments)
-        if lenamendments>1:
+        if lenamendments > 1:
             index = '*'
-        message = (amendments_messages[index]).format(lenamendments=lenamendments)
+
+        message = (AMENDMENTS_MESSAGES[index]).format(
+                                    lenamendments=lenamendments)
 
         result = {}
         values = {'amendments': objects,

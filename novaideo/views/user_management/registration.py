@@ -1,3 +1,4 @@
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -19,14 +20,16 @@ from novaideo import _
 class RegistrationView(FormView):
 
     title = _('Registration')
-    schema = select(PersonSchema(factory=Person, editable=True),['user_title',
-                                                     'first_name', 
-                                                     'last_name',
-                                                     'email',
-                                                     'password'])
+    schema = select(PersonSchema(factory=Person, 
+                                 editable=True),
+                    ['user_title',
+                     'first_name', 
+                     'last_name',
+                     'email',
+                     'password'])
     behaviors = [Registration, Cancel]
     formid = 'formregistration'
-    name='registration'
+    name = 'registration'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Registration:RegistrationView})

@@ -1,24 +1,18 @@
 # -*- coding: utf8 -*-
-import colander
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import find_entities, getSite
+from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
-from pontus.default_behavior import Cancel
-from pontus.form import FormView
-from pontus.schema import select
-from pontus.widget import Select2Widget
 from pontus.view import BasicView
-from pontus.view_operation import MultipleView
 
-from novaideo.content.processes.proposal_management.behaviors import  SeeRelatedIdeas
+from novaideo.content.processes.proposal_management.behaviors import (
+    SeeRelatedIdeas)
 from novaideo.content.proposal import Proposal
 from novaideo import _
-from novaideo.core import can_access
 
 
-addideas_message = {'0': u"""Pas d'idées utilisées""",
+ADDIDEAS_MESSAGES = {'0': u"""Pas d'idées utilisées""",
                    '1': u"""Une idée utilisée""",
                    '*': u"""{len_ideas} idées utilisées"""}
 
@@ -39,23 +33,24 @@ class SeeRelatedIdeasView(BasicView):
 
     def update(self):
         self.execute(None)
-        root = getSite()
         user = get_current()
-        correlations = [c for c in self.context.source_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
-        related_ideas = [target for targets in correlations for target in targets]
+        correlations = [c for c in self.context.source_correlations \
+                        if ((c.type==1) and ('related_ideas' in c.tags))]
         relatedideas = []
         len_ideas = 0       
-        for c in correlations:
-            targets = c.targets
+        for correlation in correlations:
+            targets = correlation.targets
             len_ideas += len(targets)
             for target in targets:
-                relatedideas.append({'content':target, 'url':target.url(self.request), 'correlation': c})
+                relatedideas.append({'content':target, 
+                                     'url':target.url(self.request),
+                                      'correlation': correlation})
 
         index = str(len_ideas)
-        if len_ideas>1:
+        if len_ideas > 1:
             index = '*'
 
-        message = addideas_message[index].format(len_ideas=len_ideas)
+        message = ADDIDEAS_MESSAGES[index].format(len_ideas=len_ideas)
         result = {}
         values = {
                 'relatedcontents': relatedideas,

@@ -7,12 +7,7 @@ from pyramid.httpexceptions import (
     )
 from pyramid.renderers import get_renderer
 from pyramid.session import check_csrf_token
-from pyramid.security import (
-    remember,
-    forget,
-    Authenticated,
-    NO_PERMISSION_REQUIRED,
-    )
+from pyramid.security import remember
 
 from substanced.util import get_oid
 
@@ -21,7 +16,7 @@ from substanced.principal import DefaultUserLocator
 from substanced.event import LoggedIn
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from pontus.view import BasicView, ViewError, merge_dicts
+from pontus.view import BasicView, ViewError
 
 from novaideo import _
 from novaideo.content.processes.user_access_manager.behaviors import  LogIn
@@ -84,9 +79,10 @@ class LoginView(BasicView):
                 if user is not None and user.check_password(password):
                     request.session.pop('novaideo.came_from', None)
                     headers = remember(request, get_oid(user))
-                    request.registry.notify(LoggedIn(login, user, context, request))
+                    request.registry.notify(LoggedIn(login, user, 
+                                               context, request))
                     return HTTPFound(location = came_from, headers = headers)
-                error =ViewError()
+                error = ViewError()
                 error.principalmessage = u"Failed login"
                 message = self._get_message(error)
                 messages.update({error.type: [message]})

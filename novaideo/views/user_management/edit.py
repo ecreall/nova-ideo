@@ -10,7 +10,6 @@ from pontus.schema import select, Schema
 
 from novaideo.content.processes.user_management.behaviors import  Edit
 from novaideo.content.person import PersonSchema, Person
-from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo import _
 
@@ -20,12 +19,14 @@ class Password_validator(object):
         """ Returns a ``colander.Function`` validator that uses the context (user)
         to validate the password."""
         user = get_current()
-        if value['changepassword'] and not user.check_password(value['currentuserpassword']):
+        if value['changepassword'] and \
+           not user.check_password(value['currentuserpassword']):
             raise colander.Invalid(node.get('currentuserpassword'),
                         _(' Invalid current password'))
 
         if value['changepassword']:
-            colander.Length(min=3, max=100)(node.get('password'), value['password'])
+            colander.Length(min=3, max=100)(node.get('password'), 
+                                            value['password'])
 
 
 class UserPasswordSchema(Schema):
@@ -55,11 +56,13 @@ class UserPasswordSchema(Schema):
 
 class EditPersonSchema(PersonSchema):
 
-    change_password = UserPasswordSchema(widget=SimpleMappingtWidget(mapping_css_class="controled-form change-password-form hide-bloc",
-                                                                     ajax=True,
-                                                                     activator_css_class="glyphicon glyphicon-asterisk",
-                                                                     activator_title=_('Change Password')),
-                                         validator=Password_validator())
+    change_password = UserPasswordSchema(
+                      widget=SimpleMappingtWidget(
+                            mapping_css_class="controled-form change-password-form hide-bloc",
+                            ajax=True,
+                            activator_css_class="glyphicon glyphicon-asterisk",
+                            activator_title=_('Change Password')),
+                      validator=Password_validator())
 
 @view_config(
     name='edit',
@@ -82,7 +85,7 @@ class EditView(FormView):
                      'change_password'])
     behaviors = [Edit, Cancel]
     formid = 'formedit'
-    name='edit'
+    name = 'edit'
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/user_management.js']}
 

@@ -1,11 +1,13 @@
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 
 from pontus.form import FormView
-from pontus.schema import select, omit
+from pontus.schema import select
 
-from novaideo.content.processes.working_group_management.behaviors import EditAction
+from novaideo.content.processes.working_group_management.behaviors import (
+    EditAction)
 from novaideo.content.working_group import WorkingGroup, WorkingGroupSchema
 from novaideo import _
 
@@ -18,7 +20,8 @@ from novaideo import _
 class EditView(FormView):
 
     title = _('Edit')
-    schema = select(WorkingGroupSchema(factory=WorkingGroup, editable=True), [u'title'])
+    schema = select(WorkingGroupSchema(factory=WorkingGroup, 
+                                       editable=True), [u'title'])
     behaviors = [EditAction]
     formid = 'formeditaction'
     name = 'edit_wg'

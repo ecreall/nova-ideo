@@ -1,15 +1,13 @@
-import deform
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from pontus.view import BasicView
 from pontus.form import FormView
 from pontus.schema import select
 from pontus.default_behavior import Cancel
-from pontus.view_operation import MultipleView
-from pontus.file import Object as ObjectType
 
-from novaideo.content.processes.proposal_management.behaviors import  ImproveProposal
+from novaideo.content.processes.proposal_management.behaviors import (
+    ImproveProposal)
 from novaideo.content.proposal import Proposal
 from novaideo.content.amendment import AmendmentSchema
 from novaideo import _
@@ -32,7 +30,6 @@ class ImproveProposalView(FormView):
                      'text'])
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/improve_proposal.js']}
-
 
     def default_data(self):
         return self.context

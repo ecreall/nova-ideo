@@ -1,3 +1,4 @@
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -6,19 +7,21 @@ from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
 
-from novaideo.content.processes.proposal_management.behaviors import  SubmitProposal
+from novaideo.content.processes.proposal_management.behaviors import (
+    SubmitProposal)
 from novaideo.content.proposal import Proposal
 from novaideo import _
 
 
 class SubmitProposalStudyReport(BasicView):
     title = _('Alert for justification')
-    name='alertforexplanation'
+    name = 'alertforexplanation'
     template ='novaideo:views/proposal_management/templates/alert_submit_proposal.pt'
 
     def update(self):
         result = {}
-        not_published_ideas = [i for i in self.context.related_ideas if not('published' in i.state)]
+        not_published_ideas = [i for i in self.context.related_ideas \
+                              if not('published' in i.state)]
         values = {'ideas': not_published_ideas}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
@@ -41,7 +44,6 @@ class SubmitProposalFormView(FormView):
 class SubmitProposalView(MultipleView):
     title = _('Submit')
     name = 'submitproposal'
-    #behaviors = [SubmitProposal]
     viewid = 'submitproposal'
     template = 'pontus.dace_ui_extension:templates/mergedmultipleview.pt'
     views = (SubmitProposalStudyReport, SubmitProposalFormView)

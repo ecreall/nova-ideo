@@ -1,3 +1,4 @@
+
 from pyramid.view import view_config
 
 from substanced.util import Batch
@@ -5,11 +6,10 @@ from substanced.util import Batch
 from dace.util import getSite
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
-from pontus.view import BasicView, merge_dicts
+from pontus.view import BasicView
 
 from novaideo.content.processes.user_management.behaviors import  SeePerson
 from novaideo.content.person import Person
-from novaideo import _
 from novaideo.views.novaideo_view_manager.search import SearchResultView
 from novaideo.core import BATCH_DEFAULT_SIZE, can_access
 
@@ -31,23 +31,26 @@ class SeePersonView(BasicView):
         self.execute(None)
         user = self.context
         current_user = get_current()
-        root = getSite()
-        actions = [a for a in self.context.actions if getattr(a.action, 'style', '') == 'button']
+        actions = [a for a in self.context.actions \
+                   if getattr(a.action, 'style', '') == 'button']
         objects = []
         if current_user is  user:
-            objects = [o for o in getattr(user, 'contents', []) if not('archived' in o.state)]
+            objects = [o for o in getattr(user, 'contents', []) \
+                      if not('archived' in o.state)]
         else:
-            objects = [o for o in getattr(user, 'contents', []) if not('archived' in o.state) and can_access(current_user, o, self.request, root)]
+            objects = [o for o in getattr(user, 'contents', []) \
+                      if not('archived' in o.state) and\
+                         can_access(current_user, o)]
       
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_contents"
         len_result = batch.seqlen
         result_body = []
         result = {}
-        for o in batch:
-            object_values = {'object': o, 'current_user': current_user}
+        for obj in batch:
+            object_values = {'object': obj, 'current_user': current_user}
             body = self.content(result=object_values,
-                    template=o.result_template)['body']
+                    template=obj.result_template)['body']
             result_body.append(body)
 
         values = {'bodies': result_body,

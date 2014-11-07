@@ -1,3 +1,4 @@
+
 import colander
 import deform
 from pyramid.view import view_config
@@ -15,12 +16,12 @@ from pontus.schema import select, Schema
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.file import Object as ObjectType
-from pontus.widget import MappingWidget, Select2Widget
+from pontus.widget import Select2Widget
 
-from novaideo.content.processes.proposal_management.behaviors import  EditProposal
+from novaideo.content.processes.proposal_management.behaviors import (
+    EditProposal)
 from novaideo.content.proposal import ProposalSchema, Proposal
 from novaideo.content.idea import IdeaSchema, Idea, Iidea
-from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.core import can_access
 from novaideo.views.widget import Select2WidgetSearch, SimpleMappingtWidget
@@ -28,17 +29,18 @@ from novaideo.views.widget import Select2WidgetSearch, SimpleMappingtWidget
 
 @colander.deferred
 def idea_choice(node, kw):
-     context = node.bindings['context']
-     request = node.bindings['request']
-     root = getSite()
-     user = get_current()
-     _ideas = list(user.ideas)
-     _ideas.extend([ i for i in user.selections if isinstance(i, Idea) and can_access(user, i)])
-     ideas = set(_ideas) 
-     values = [(i, i.title) for i in ideas if not('archived' in i.state)]
-     values.insert(0, ('', '- Select -'))
-     return Select2WidgetSearch(values=values, item_css_class='search-idea-form',
-                                url=request.resource_url(root, '@@search', query={'op':'toselect', 'content_types':['Idea']}))
+    request = node.bindings['request']
+    root = getSite()
+    user = get_current()
+    ideas = list(user.ideas)
+    ideas.extend([ i for i in user.selections if isinstance(i, Idea) and can_access(user, i)])
+    ideas = set(ideas) 
+    values = [(i, i.title) for i in ideas if not('archived' in i.state)]
+    values.insert(0, ('', '- Select -'))
+    return Select2WidgetSearch(values=values, item_css_class='search-idea-form',
+                                url=request.resource_url(root, '@@search', 
+                                            query={'op':'toselect', 
+                                                     'content_types':['Idea']}))
 
 
 class AddIdeaSchema(Schema):
@@ -59,12 +61,15 @@ class AddIdeaSchema(Schema):
         missing=False
         )
 
-    new_idea = select(IdeaSchema(factory=Idea, editable=True,
-                               omit=['keywords'], widget=SimpleMappingtWidget(mapping_css_class='hide-bloc new-idea-form', ajax=False)),
+    new_idea = select(IdeaSchema(factory=Idea, 
+                                 editable=True,
+                                 omit=['keywords'], 
+                                 widget=SimpleMappingtWidget(
+                                         mapping_css_class='hide-bloc new-idea-form',
+                                        ajax=False)),
                     ['title',
                      'description',
                      'keywords'])
-
 
 
 class AddIdea(Behavior):
@@ -86,18 +91,20 @@ class AddIdeaFormView(FormView):
     schema = AddIdeaSchema()
     formid = 'formaddidea'
     behaviors = [AddIdea]
-    name='addideaform'
+    name = 'addideaform'
     coordinates = 'right'
 
     def before_update(self):
         root = getSite()
         formwidget = deform.widget.FormWidget(css_class='add-idea-form')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
-        formwidget.ajax_url = self.request.resource_url(root, '@@ideasmanagement')
+        formwidget.ajax_url = self.request.resource_url(root, 
+                                           '@@ideasmanagement')
         self.schema.widget = formwidget
         self.schema.widget.ajax_button = _('Validate')
         self.schema.get('new_idea').get('keywords').default = []
-        self.schema.get('new_idea').get('description').widget = deform.widget.TextAreaWidget(rows=4, cols=60)
+        description_node = self.schema.get('new_idea').get('description')
+        description_node.widget = deform.widget.TextAreaWidget(rows=4, cols=60)
 
 
 class RelatedIdeasView(BasicView):
@@ -109,9 +116,9 @@ class RelatedIdeasView(BasicView):
     coordinates = 'right'
 
     def update(self):
-        root = getSite()
         user = get_current()
-        related_ideas = [i for i in self.context.related_ideas if can_access(user, i)]
+        related_ideas = [i for i in self.context.related_ideas \
+                         if can_access(user, i)]
         result = {}
         target = None
         try:
@@ -124,7 +131,8 @@ class RelatedIdeasView(BasicView):
         for i in related_ideas:
             data = {'title': i.title,
                     'id': get_oid(i),
-                    'body': renderers.render(self.idea_template, {'idea':i}, self.request)
+                    'body': renderers.render(self.idea_template, 
+                                             {'idea':i}, self.request)
                     }
             ideas.append(data)
 
@@ -147,7 +155,6 @@ class IdeaManagementView(MultipleView):
     css_class = 'idea-managements panel-success'
 
 def ideas_choice():
-    root = getSite()
     user = get_current()
     ideas = find_entities([Iidea], states=('archived',), not_any=True) 
     values = [(i, i.title) for i in ideas if can_access(user, i)]
@@ -155,7 +162,6 @@ def ideas_choice():
 
 
 class EditProposalFormView(FormView):
-
     title = _('Edit')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
                                omit=['keywords', 'related_ideas']),
@@ -166,7 +172,7 @@ class EditProposalFormView(FormView):
                      'related_ideas'])
     behaviors = [EditProposal, Cancel]
     formid = 'formeditproposal'
-    name='editproposalform'
+    name = 'editproposalform'
 
     def default_data(self):
         return self.context
