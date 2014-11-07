@@ -1,10 +1,13 @@
+
 import datetime
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
 
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.util import getSite
-from dace.processdefinition.activitydef import ActivityDefinition, SubProcessDefinition as OriginSubProcessDefinition
+from dace.processdefinition.activitydef import (
+  ActivityDefinition, 
+  SubProcessDefinition as OriginSubProcessDefinition)
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
@@ -14,7 +17,8 @@ from dace.processdefinition.eventdef import (
     EndEventDefinition,
     IntermediateCatchEventDefinition,
     TimerEventDefinition)
-from dace.objectofcollaboration.services.processdef_container import process_definition
+from dace.objectofcollaboration.services.processdef_container import (
+  process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import (
@@ -40,11 +44,9 @@ from .behaviors import (
     Alert,
     CorrectItem,
     PublishAsProposal,
-#    AddIdeas,
     SupportProposal,
     OpposeProposal,
     WithdrawToken,
-#    DelIdeas,
     SeeRelatedIdeas,
     ProofreadingDone,
     CompareProposal
@@ -54,22 +56,31 @@ from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
-vote_publishing_message =_("Vote for publishing.")
+VOTE_PUBLISHING_MESSAGE = _("Vote for publishing.")
 
-vote_duration_message =_("Voting results may not be known until the end of the period for voting. In the case where the majority are for the continuation of improvements of the proposal, your vote for the duration of the amendment period will be useful.")
+VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
+                          " the period for voting. In the case where the"
+                          " majority are for the continuation of improvements"
+                          " of the proposal, your vote for the duration of the"
+                          " amendment period will be useful.")
 
-vote_reopening_message =_("Voting results may not be known until the end of the period for voting. In the case where the majority are for the continuation of improvements of the proposal, your vote for reopening working group will be useful.")
+VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
+                           " the period for voting. In the case where the"
+                           " majority are for the continuation of improvements"
+                           " of the proposal, your vote for reopening working"
+                           " group will be useful.")
 
-vote_amendments_message =_("Vote for amendments.")
+VOTE_AMENDMENTS_MESSAGE = _("Vote for amendments.")
 
-vp_default_duration = datetime.timedelta(minutes=30)
+VB_DEFAULT_DURATION = datetime.timedelta(minutes=30)
 
-amendments_cycle_default_duration = {"Three minutes": datetime.timedelta(minutes=3),#pour les testes
-                                     "Three days": datetime.timedelta(days=3),
-                                     "One week": datetime.timedelta(weeks=1),
-                                     "Two weeks": datetime.timedelta(weeks=2)}
+AMENDMENTS_CYCLE_DEFAULT_DURATION = {
+              "Three minutes": datetime.timedelta(minutes=3),
+              "Three days": datetime.timedelta(days=3),
+              "One week": datetime.timedelta(weeks=1),
+              "Two weeks": datetime.timedelta(weeks=2)}
 
-amendments_vote_default_duration = datetime.timedelta(minutes=30) #TODO
+AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(minutes=30)
 
 
 
@@ -78,9 +89,11 @@ def amendments_cycle_duration(process):
     if duration_ballot is not None:
         electeds = duration_ballot.report.get_electeds()
         if electeds:
-            return amendments_cycle_default_duration[electeds[0]]+datetime.datetime.today()
+            return AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]] + \
+                   datetime.datetime.today()
 
-    return amendments_cycle_default_duration["One week"]+datetime.datetime.today()
+    return AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"] + \
+           datetime.datetime.today()
 
 
 def eg3_publish_condition(process):
@@ -129,8 +142,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             electors = wg.members
 
         subjects = [proposal]
-        ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
-        ballot.report.description = vote_publishing_message
+        ballot = Ballot('Referendum' , electors, subjects, VB_DEFAULT_DURATION)
+        ballot.report.description = VOTE_PUBLISHING_MESSAGE
         ballot.title = _("Publish the proposal")
         processes = ballot.run_ballot()
         wg.addtoproperty('ballots', ballot)
@@ -138,10 +151,12 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         subprocess.ballots.append(ballot)
         process.vp_ballot = ballot #vp for voting for publishing
 
-        if not getattr(process, 'first_decision', True) and 'closed' in wg.state:
+        if not getattr(process, 'first_decision', True) and \
+          'closed' in wg.state:
             subjects = [wg]
-            ballot = Ballot('Referendum' , electors, subjects, vp_default_duration)
-            ballot.report.description = vote_reopening_message
+            ballot = Ballot('Referendum' , electors,
+                            subjects, VB_DEFAULT_DURATION)
+            ballot.report.description = VOTE_REOPENING_MESSAGE
             ballot.title = 'Reopening working group'
             processes.extend(ballot.run_ballot(context=proposal))
             wg.addtoproperty('ballots', ballot)
@@ -149,31 +164,31 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             process.reopening_configuration_ballot = ballot
 
         if len(wg.members) <= root.participants_maxi:
-            group = list(amendments_cycle_default_duration.keys())
-            ballot = Ballot('FPTP' , electors, group, vp_default_duration)
+            group = list(AMENDMENTS_CYCLE_DEFAULT_DURATION.keys())
+            ballot = Ballot('FPTP' , electors, group, VB_DEFAULT_DURATION)
             ballot.title = _('Amendment duration')
-            ballot.report.description = vote_duration_message
+            ballot.report.description = VOTE_DURATION_MESSAGE
             processes.extend(ballot.run_ballot(context=proposal))
             wg.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
             process.duration_configuration_ballot = ballot
 
-        subprocess.execution_context.add_involved_collection('vote_processes', processes)
-        subprocess.duration = vp_default_duration
+        subprocess.execution_context.add_involved_collection(
+                                      'vote_processes', processes)
+        subprocess.duration = VB_DEFAULT_DURATION
 
 
 class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
 
-    def _contains_any(self, list1, list2):
-        return any(e in list2 for e in list1)
 
     def _init_subprocess(self, process, subprocess):
-        root = getSite()
         proposal = process.execution_context.created_entity('proposal')
         electors = proposal.working_group.members
         amendments = [a for a in proposal.amendments if 'published' in a.state]
         processes = []
-        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
+        text_analyzer = get_current_registry().getUtility(
+                                                  ITextAnalyzer,
+                                                  'text_analyzer')
         groups = []
         for amendment in amendments:
             isadded = False
@@ -181,12 +196,15 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             related_ideas_amendment.extend(list(amendment.removed_ideas))
             related_ideas_amendment = list(set(related_ideas_amendment))
             for group in groups:
-                for a in group:
-                    related_ideas_a = list(a.edited_ideas)
-                    related_ideas_a.extend(list(a.removed_ideas))
+                for amt in group:
+                    related_ideas_a = list(amt.edited_ideas)
+                    related_ideas_a.extend(list(amt.removed_ideas))
                     related_ideas_a = list(set(related_ideas_a))
-                    if text_analyzer.has_conflict(a.text, [amendment.text]) or \
-                       (related_ideas_amendment and self._contains_any(related_ideas_amendment, related_ideas_a)):
+                    if text_analyzer.has_conflict(amt.text, 
+                                                  [amendment.text]) or \
+                       (related_ideas_amendment and \
+                        any(e in related_ideas_amendment \
+                            for e in related_ideas_a)):
                         group.append(amendment)
                         isadded = True
                         break
@@ -197,9 +215,9 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         for amendment in amendments:
             commungroups = [group for group in groups if amendment in group]
             new_group = set()
-            for g in commungroups:
-                new_group.update(g)
-                groups.pop(groups.index(g))
+            for group in commungroups:
+                new_group.update(group)
+                groups.pop(groups.index(group))
 
             groups.append(list(new_group))
 
@@ -210,8 +228,9 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         process.amendments_ballots = PersistentList()
         i = 1
         for group in groups:
-            ballot = Ballot('MajorityJudgment' , electors, group, amendments_vote_default_duration)
-            ballot.report.description = vote_amendments_message
+            ballot = Ballot('MajorityJudgment' , electors, 
+                       group, AMENDMENTS_VOTE_DEFAULT_DURATION)
+            ballot.report.description = VOTE_AMENDMENTS_MESSAGE
             ballot.title = _('Group of independent amendments')+ '('+str(i)+')'
             processes.extend(ballot.run_ballot(context=proposal))
             proposal.working_group.addtoproperty('ballots', ballot)
@@ -219,8 +238,9 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             process.amendments_ballots.append(ballot)
             i += 1
 
-        subprocess.execution_context.add_involved_collection('vote_processes', processes)
-        subprocess.duration = amendments_vote_default_duration
+        subprocess.execution_context.add_involved_collection(
+                       'vote_processes', processes)
+        subprocess.duration = AMENDMENTS_VOTE_DEFAULT_DURATION
 
 
 @process_definition(name='proposalmanagement', id='proposalmanagement')

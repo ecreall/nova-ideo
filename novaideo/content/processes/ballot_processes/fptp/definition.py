@@ -1,19 +1,17 @@
+
 import datetime
-from dace.interfaces import IProcessDefinition
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
-    ExclusiveGatewayDefinition, 
-    ParallelGatewayDefinition)
+    ExclusiveGatewayDefinition)
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
     EndEventDefinition,
     IntermediateCatchEventDefinition,
-    ConditionalEventDefinition,
     TimerEventDefinition)
-from dace.objectofcollaboration.services.processdef_container import process_definition
-
+from dace.objectofcollaboration.services.processdef_container import(
+    process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import Vote
@@ -45,7 +43,8 @@ class FPTPProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Vote"),
                                        title=_("Vote"),
                                        groups=[]),
-                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=time_duration)),
+                timer = IntermediateCatchEventDefinition(
+                            TimerEventDefinition(time_date=time_duration)),
                 eg1 = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -56,5 +55,4 @@ class FPTPProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('vote', 'eg1'),
                 TransitionDefinition('timer', 'eg1'),
                 TransitionDefinition('eg1', 'end'),
-
         )

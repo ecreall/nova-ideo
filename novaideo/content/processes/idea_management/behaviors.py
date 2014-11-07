@@ -6,26 +6,27 @@ from persistent.list import PersistentList
 from dace.util import (
     getSite,
     getBusinessAction,
-    copy,
-    find_entities)
-from dace.objectofcollaboration.principal.util import has_role, grant_roles, get_current
+    copy)
+from dace.objectofcollaboration.principal.util import (
+    has_role, 
+    grant_roles, 
+    get_current)
 from dace.processinstance.activity import InfiniteCardinality, ActionType
 
 from novaideo.ips.mailer import mailer_send
-from novaideo.content.interface import INovaIdeoApplication, Iidea, ICorrelableEntity
+from novaideo.content.interface import INovaIdeoApplication, Iidea
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.mail import PRESENTATION_IDEA_MESSAGE, PRESENTATION_IDEA_SUBJECT
 from novaideo import _
 from novaideo.content.idea import Idea
 from novaideo.content.correlation import Correlation
-from ..comment_management.behaviors import validation_by_context
+from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.core import acces_action
 
 
 try:
-      basestring
+    basestring
 except NameError:
-      basestring = str
+    basestring = str
 
 
 def createidea_roles_validation(process, context):
@@ -45,8 +46,8 @@ class CreateIdea(InfiniteCardinality):
         root = getSite()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
-        for nk in newkeywords:
-            root.addtoproperty('keywords', nk)
+        for nkw in newkeywords:
+            root.addtoproperty('keywords', nkw)
 
         result.extend(newkeywords)
         idea = appstruct['_object_data']
@@ -64,7 +65,9 @@ class CreateIdea(InfiniteCardinality):
 
 
 def duplicate_processsecurity_validation(process, context):
-    return ((has_role(role=('Owner', context)) and not ('archived' in context.state)) or 'published' in context.state) and \
+    return ((has_role(role=('Owner', context)) and \
+             not ('archived' in context.state)) or \
+           'published' in context.state) and \
            global_user_processsecurity(process, context) 
 
 
@@ -79,21 +82,16 @@ class DuplicateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         copy_of_idea = copy(context, (root, 'ideas'))
-        #copy_of_idea.created_at = datetime.datetime.today()
-        #copy_of_idea.modified_at = datetime.datetime.today()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
-        for nk in newkeywords:
-            root.addtoproperty('keywords', nk)
+        for nkw in newkeywords:
+            root.addtoproperty('keywords', nkw)
 
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
-        #root.addtoproperty('ideas', copy_of_idea)
         copy_of_idea.setproperty('originalentity', context)
-        #copy_of_idea.setproperty('version', None)
-        #copy_of_idea.setproperty('nextversion', None)
         copy_of_idea.state = PersistentList(['to work'])
         copy_of_idea.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_idea), ))
@@ -148,7 +146,8 @@ def edit_processsecurity_validation(process, context):
 
 
 def edit_state_validation(process, context):
-    return not ("published" in context.state) and not("archived" in context.state)
+    return not ("published" in context.state) and\
+           not("archived" in context.state)
 
 
 class EditIdea(InfiniteCardinality):
@@ -164,7 +163,11 @@ class EditIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         last_version = context.version
-        copy_of_idea = copy(context, (context, 'version'), select=('modified_at',), omit=('created_at',), roles=True)
+        copy_of_idea = copy(context, 
+                        (context, 'version'), 
+                        select=('modified_at',), 
+                        omit=('created_at',), 
+                        roles=True)
         copy_keywords, newkeywords = root.get_keywords(context.keywords)
         copy_of_idea.setproperty('keywords_ref', copy_keywords)
         copy_of_idea.setproperty('version', last_version)
@@ -175,8 +178,8 @@ class EditIdea(InfiniteCardinality):
         appstruct['attached_files'] = files
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
-        for nk in newkeywords:
-            root.addtoproperty('keywords', nk)
+        for nkw in newkeywords:
+            root.addtoproperty('keywords', nkw)
 
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
@@ -187,7 +190,6 @@ class EditIdea(InfiniteCardinality):
         context.modified_at = datetime.datetime.today()
         copy_of_idea.reindex()
         context.reindex()
-        user = get_current()
         if 'archived' in context.state:
             recuperate_actions = getBusinessAction('ideamanagement',
                                                    'recuperate',
@@ -336,7 +338,8 @@ class CommentIdea(InfiniteCardinality):
                      'comment': comment.comment,
                      'intention': comment.intention}
             correlation = Correlation()
-            datas['targets'] = list(appstruct['related_contents']['related_contents'])
+            related_contents = appstruct['related_contents']['related_contents']
+            datas['targets'] = list(related_contents)
             correlation.set_data(datas)
             root.addtoproperty('correlations', correlation)
             comment.setproperty('related_correlation', correlation)
@@ -373,9 +376,9 @@ class PresentIdea(InfiniteCardinality):
         if send_to_me:
             members.append(user)
 
-        user_title=getattr(user, 'user_title','')
-        user_first_name=getattr(user, 'first_name', user.name)
-        user_last_name=getattr(user, 'last_name','')
+        user_title = getattr(user, 'user_title','')
+        user_first_name = getattr(user, 'first_name', user.name)
+        user_last_name = getattr(user, 'last_name','')
         url = request.resource_url(context, "@@index")
         presentation_subject = appstruct['subject']
         presentation_message = appstruct['message']
@@ -402,7 +405,9 @@ class PresentIdea(InfiniteCardinality):
                 my_first_name=user_first_name,
                 my_last_name=user_last_name
                  )
-            mailer_send(subject=subject, recipients=[member_email], body=message)
+            mailer_send(subject=subject,
+                  recipients=[member_email],
+                  body=message)
             if not (member is user):
                 context._email_persons_contacted.append(member_email)
 
@@ -429,7 +434,6 @@ class Associate(InfiniteCardinality):
         correlation.setproperty('author', get_current())
         root = getSite()
         root.addtoproperty('correlations', correlation)
-        #self.newcontext = correlation
         return True
 
     def redirect(self, context, request, **kw):
@@ -438,6 +442,7 @@ class Associate(InfiniteCardinality):
 
 def seeidea_processsecurity_validation(process, context):
     return ('published' in context.state or has_role(role=('Owner', context)))
+
 
 @acces_action()
 class SeeIdea(InfiniteCardinality):
@@ -476,4 +481,4 @@ class CompareIdea(InfiniteCardinality):
 
 #TODO behaviors
 
-validation_by_context[Idea] = CommentIdea
+VALIDATOR_BY_CONTEXT[Idea] = CommentIdea

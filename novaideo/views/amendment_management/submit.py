@@ -1,5 +1,6 @@
 import colander
 import deform
+from persistent.dict import PersistentDict
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
@@ -12,11 +13,12 @@ from pontus.view import BasicView, View, merge_dicts, ViewError
 from pontus.default_behavior import Cancel
 from pontus.widget import Select2Widget, SequenceWidget, SimpleMappingWidget, TextInputWidget
 
-from novaideo.content.processes.amendment_management.behaviors import  SubmitAmendment, SeeAmendmentManager as OriginSeeAmendmentManager
+from novaideo.content.processes.amendment_management.behaviors import  SubmitAmendment
 from novaideo.content.amendment import Amendment, Intention
 from novaideo.views.widget import DragDropSelect2Widget, DragDropSequenceWidget, DragDropMappingWidget
 from novaideo import _
 from novaideo.utilities.text_analyzer import ITextAnalyzer
+from novaideo.utilities.amendment_viewer import IAmendmentViewer
 
 
 
@@ -84,23 +86,33 @@ class ExplanationGroupsSchema(Schema):
         )
 
 
-class SeeAmendmentManager(OriginSeeAmendmentManager):
-    readonly_explanation_template = 'novaideo:views/amendment_management/templates/readonly/submit_explanation_item.pt'
-
-
 class SubmitAmendmentViewStudyReport(BasicView):
     title = _('Alert for publication')
-    name='alertforpublication'
-    template ='novaideo:views/amendment_management/templates/alert_amendment_submit.pt'
+    name = 'alertforpublication'
+    template = 'novaideo:views/amendment_management/templates/alert_amendment_submit.pt'
+    readonly_explanation_template = 'novaideo:views/amendment_management/templates/readonly/submit_explanation_item.pt'
 
     def update(self):
         result = {}
-        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-        souptextdiff, textdiff = SeeAmendmentManager._get_explanation_diff(self.context, self.request)
-        SeeAmendmentManager._add_details(self.context, self.request, souptextdiff)
+        text_analyzer = get_current_registry().getUtility(
+                                                  ITextAnalyzer,
+                                                  'text_analyzer')
+        amendment_viewer = get_current_registry().getUtility(
+                                                   IAmendmentViewer,
+                                                   'amendment_viewer')
+        souptextdiff, explanations = amendment_viewer.get_explanation_diff(
+                                                    self.context, self.request)
+        self.context.explanations = PersistentDict(explanations)
+        amendment_viewer.add_details(self.context,
+                                     self.request,
+                                     souptextdiff,
+                                     self.readonly_explanation_template)
         explanationtext = text_analyzer.soup_to_text(souptextdiff)
-        not_published_ideas = [i for i in self.context.get_used_ideas() if not('published' in i.state)]
-        values = {'context': self.context, 'explanationtext': explanationtext, 'ideas': not_published_ideas}
+        not_published_ideas = [i for i in self.context.get_used_ideas() \
+                               if not('published' in i.state)]
+        values = {'context': self.context,
+                  'explanationtext': explanationtext,
+                  'ideas': not_published_ideas}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
@@ -109,7 +121,7 @@ class SubmitAmendmentViewStudyReport(BasicView):
 
 class SubmitAmendmentView(FormView):
     title =  _('Submit')
-    name ='submitamendmentform'
+    name = 'submitamendmentform'
     formid = 'formsubmitamendment'
     schema = ExplanationGroupsSchema()
     behaviors = [SubmitAmendment, Cancel]
@@ -136,10 +148,10 @@ class SubmitAmendmentView(FormView):
 class SubmitAmendmentViewMultipleView(MultipleView):
     title = _('Submit')
     name = 'submitamendment'
-    behaviors = [SubmitAmendment]
     viewid = 'submitamendment'
     template = 'pontus.dace_ui_extension:templates/mergedmultipleview.pt'
     views = (SubmitAmendmentViewStudyReport, SubmitAmendmentView)
+    behaviors = [SubmitAmendment]
     validators = [SubmitAmendment.get_validator()]
     requirements = {'css_links':['novaideo:static/css/organize_amendments.css'],
                     'js_links':['novaideo:static/js/organize_amendments.js']}

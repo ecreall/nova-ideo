@@ -26,10 +26,6 @@ def accept_roles_validation(process, context):
     return has_role(role=('Anonymous',)) and not has_role(role=('Admin',))
 
 
-def accept_processsecurity_validation(process, context):
-    return True
-
-
 def accept_state_validation(process, context):
     return 'pending' in context.state
 
@@ -38,24 +34,24 @@ class AcceptInvitation(ElementaryAction):
     context = IInvitation
     relation_validation = accept_relation_validation
     roles_validation = accept_roles_validation
-    processsecurity_validation = accept_processsecurity_validation
     state_validation = accept_state_validation
 
     def start(self, context, request, appstruct, **kw):
-
-        datas = context.get_data(select(omit(InvitationSchema(), ['_csrf_token_']),['user_title',
-                                                            'roles',
-                                                            'first_name',
-                                                            'last_name',
-                                                            'email',
-                                                            'organization']))
+        datas = context.get_data(select(omit(InvitationSchema(), 
+                                             ['_csrf_token_']), 
+                                        ['user_title',
+                                        'roles',
+                                        'first_name',
+                                        'last_name',
+                                        'email',
+                                        'organization']))
         roles = datas.pop('roles')
         password = appstruct['password']
         person = Person(password=password)
         person.set_data(datas)
         root = getSite(context)
         principals = find_service(root, 'principals')
-        name = person.first_name + ' ' +person.last_name
+        name = person.first_name + ' ' + person.last_name
         principals['users'][name] = person
         grant_roles(person, roles)
         grant_roles(person, (('Owner', person),))
@@ -77,10 +73,6 @@ def refuse_roles_validation(process, context):
     return has_role(role=('Anonymous',)) and not has_role(role=('Admin',))
 
 
-def refuse_processsecurity_validation(process, context):
-    return True
-
-
 def refuse_state_validation(process, context):
     return 'pending' in context.state
 
@@ -89,7 +81,6 @@ class RefuseInvitation(ElementaryAction):
     context = IInvitation
     relation_validation = refuse_relation_validation
     roles_validation = refuse_roles_validation
-    processsecurity_validation = refuse_processsecurity_validation
     state_validation = refuse_state_validation
 
     def start(self, context, request, appstruct, **kw):
@@ -113,16 +104,11 @@ def remove_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context)
 
 
-def remove_state_validation(process, context):
-    return True
-
-
 class RemoveInvitation(ElementaryAction):
     context = IInvitation
     relation_validation = remove_relation_validation
     roles_validation = remove_roles_validation
     processsecurity_validation = remove_processsecurity_validation
-    state_validation = remove_state_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
@@ -159,13 +145,16 @@ class ReinviteUser(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        url = request.resource_url(root, "@@seeinvitation", query={'invitation_id':str(get_oid(context))})
+        url = request.resource_url(root, "@@seeinvitation", 
+                          query={'invitation_id':str(get_oid(context))})
         message = INVITATION_MESSAGE.format(
             invitation=context,
             user_title=getattr(context, 'user_title', ''),
             invitation_url=url,
             roles=", ".join(getattr(context, 'roles', [])))
-        mailer_send(subject='Invitation', recipients=[context.email], body=message )
+        mailer_send(subject='Invitation', 
+                    recipients=[context.email], 
+                    body=message )
         context.state.remove('refused')
         context.state.append('pending')
         return True
@@ -200,13 +189,16 @@ class RemindInvitation(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        url = request.resource_url(root, "@@seeinvitation", query={'invitation_id':str(get_oid(context))})
+        url = request.resource_url(root, "@@seeinvitation", 
+                                query={'invitation_id':str(get_oid(context))})
         message = INVITATION_MESSAGE.format(
             invitation=context,
             user_title=getattr(context, 'user_title', ''),
             invitation_url=url,
             roles=", ".join(getattr(context, 'roles', [])))
-        mailer_send(subject='Invitation', recipients=[context.email], body=message )
+        mailer_send(subject='Invitation', 
+            recipients=[context.email], 
+            body=message )
         return True
 
     def redirect(self, context, request, **kw):

@@ -1,9 +1,7 @@
-from datetime import timedelta, datetime
-from persistent.list import PersistentList
 
-from dace.interfaces import IProcessDefinition
+from datetime import datetime
+
 from dace.processdefinition.processdef import ProcessDefinition
-from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition, 
     ParallelGatewayDefinition)
@@ -14,8 +12,8 @@ from dace.processdefinition.eventdef import (
     IntermediateCatchEventDefinition,
     ConditionalEventDefinition,
     TimerEventDefinition)
-from dace.objectofcollaboration.services.processdef_container import process_definition
-
+from dace.objectofcollaboration.services.processdef_container import (
+    process_definition)
 from pontus.core import VisualisableElement
 
 from novaideo import _
@@ -26,9 +24,10 @@ def time_duration(process):
 
 
 def event_condition(process):
-    processes = process.execution_context.get_involved_collection('vote_processes')
-    for p in processes:
-        if not p._finished:
+    execution_context = process.execution_context
+    processes = execution_context.get_involved_collection('vote_processes')
+    for ballot_process in processes:
+        if not ballot_process._finished:
             return False
 
     for ballot in process.ballots:
@@ -53,8 +52,10 @@ class BallotProcess(ProcessDefinition, VisualisableElement):
         self.defineNodes(
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
-                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=time_duration)),
-                conditional = IntermediateCatchEventDefinition(ConditionalEventDefinition(event_condition)),
+                timer = IntermediateCatchEventDefinition(
+                           TimerEventDefinition(time_date=time_duration)),
+                conditional = IntermediateCatchEventDefinition(
+                             ConditionalEventDefinition(event_condition)),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )

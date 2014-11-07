@@ -160,6 +160,20 @@ class TextAnalyzer(object):
 
             tag.unwrap()
 
+    def include_diffs(self, soup, diffs, todel, toins, blocstodel=None):
+        """Include diffs to text"""
+        diffs_data = []
+        for diff in diffs:
+            diff_data = {'tag': diff,
+                         'todel': todel,
+                         'toins': toins,
+                         'blocstodel': blocstodel
+                        }
+            diffs_data.append(diff_data)
+
+        self.unwrap_diff(diffs_data, soup)
+        return soup
+
     def soup_to_text(self, soup):
         """Convert soup data to string"""
         divs_diff = soup.find_all('div', {'class': 'diff'})

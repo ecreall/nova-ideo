@@ -1,26 +1,31 @@
 # -*- coding: utf8 -*-
 import datetime
-from datetime import timedelta
 from bs4 import BeautifulSoup
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
-from pyramid.threadlocal import get_current_request, get_current_registry
+from pyramid.threadlocal import get_current_registry
 from pyramid import renderers
 from substanced.util import get_oid
 
 from dace.util import (
     getSite,
-    getBusinessAction,
     copy,
-    find_entities,
     get_obj)
-from dace.objectofcollaboration.principal.util import has_role, grant_roles, get_current, revoke_roles
-from dace.objectofcollaboration import system
-from dace.processinstance.activity import InfiniteCardinality, ActionType, LimitedCardinality, ElementaryAction
+from dace.objectofcollaboration.principal.util import (
+    has_role, 
+    grant_roles, 
+    get_current, 
+    revoke_roles)
+#from dace.objectofcollaboration import system
+from dace.processinstance.activity import InfiniteCardinality, ElementaryAction
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
 from novaideo.ips.mailer import mailer_send
-from novaideo.content.interface import INovaIdeoApplication, IProposal, ICorrelableEntity, ICorrection, Iidea
+from novaideo.content.interface import (
+    INovaIdeoApplication, 
+    IProposal, 
+    ICorrection, 
+    Iidea)
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.mail import (
     ALERT_SUBJECT,
@@ -44,24 +49,24 @@ from novaideo.mail import (
 
 from novaideo import _
 from novaideo.content.proposal import Proposal
-from ..comment_management.behaviors import validation_by_context
-from novaideo.core import acces_action
+from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.content.correlation import Correlation
-from novaideo.content.idea import Idea
 from novaideo.content.token import Token
 from novaideo.content.amendment import Amendment
 from novaideo.content.working_group import WorkingGroup
-from novaideo.content.ballot import Ballot
-from novaideo.content.processes.idea_management.behaviors import PresentIdea, CommentIdea, Associate as AssociateIdea
+from novaideo.content.processes.idea_management.behaviors import (
+    PresentIdea, 
+    CommentIdea, 
+    Associate as AssociateIdea)
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 try:
-      basestring
+    basestring
 except NameError:
-      basestring = str
+    basestring = str
 
-default_nb_correctors = 1
+DEFAULT_NB_CORRECTORS = 1
 
 def createproposal_roles_validation(process, context):
     return has_role(role=('Member',))
@@ -85,7 +90,8 @@ def associate_to_proposal(related_ideas, proposal, add_idea_text=True):
         correlation.type = 1
         root.addtoproperty('correlations', correlation)
         if add_idea_text:
-            proposal.text = getattr(proposal, 'text', '') + '<div>'+idea.text+'</div>'
+            proposal.text = getattr(proposal, 'text', '') + \
+                            ('<div>' + idea.text + '</div>')
 
 
 class CreateProposal(ElementaryAction):
@@ -98,8 +104,8 @@ class CreateProposal(ElementaryAction):
         keywords_ids = appstruct.pop('keywords')
         related_ideas = appstruct.pop('related_ideas')
         result, newkeywords = root.get_keywords(keywords_ids)
-        for nk in newkeywords:
-            root.addtoproperty('keywords', nk)
+        for nkw in newkeywords:
+            root.addtoproperty('keywords', nkw)
 
         result.extend(newkeywords)
         proposal = appstruct['_object_data']
@@ -232,7 +238,8 @@ class SubmitProposal(ElementaryAction):
         else:
             context.state.append('votes for publishing')
 
-        for idea in [i for i in context.related_ideas if not('published' in i.state)]:
+        for idea in [i for i in context.related_ideas \
+                     if not('published' in i.state)]:
             idea.state = PersistentList(['published'])
             idea.reindex()
 
@@ -258,11 +265,12 @@ class DuplicateProposal(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        copy_of_proposal = copy(context, (root, 'proposals'), omit=('created_at', 'modified_at'))
+        copy_of_proposal = copy(context, (root, 'proposals'), 
+                             omit=('created_at', 'modified_at'))
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
-        for nk in newkeywords:
-            root.addtoproperty('keywords', nk)
+        for nkw in newkeywords:
+            root.addtoproperty('keywords', nkw)
 
         result.extend(newkeywords)
         related_ideas = appstruct.pop('related_ideas')
@@ -274,7 +282,8 @@ class DuplicateProposal(ElementaryAction):
         grant_roles(roles=(('Owner', copy_of_proposal), ))
         grant_roles(roles=(('Participant', copy_of_proposal), ))
         copy_of_proposal.setproperty('author', get_current())
-        self.process.execution_context.add_created_entity('proposal', copy_of_proposal)
+        self.process.execution_context.add_created_entity(
+                                       'proposal', copy_of_proposal)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
         wg.setproperty('proposal', copy_of_proposal)
@@ -321,7 +330,7 @@ class EditProposal(InfiniteCardinality):
     processsecurity_validation = edit_processsecurity_validation
     state_validation = edit_state_validation
 
-    def _add_related_ideas(self, context, request, root, ideas, comment, intention):
+    def _add_related_ideas(self, context, root, ideas, comment, intention):
         datas = {'author': get_current(),
                  'targets': ideas,
                  'comment': comment,
@@ -335,31 +344,37 @@ class EditProposal(InfiniteCardinality):
         return True
 
 
-    def _del_related_ideas(self, context, request, root, ideas):
-        correlations = [c for c in context.source_correlations if ((c.type==1) and ('related_ideas' in c.tags))]
+    def _del_related_ideas(self, context, root, ideas):
+        correlations = [c for c in context.source_correlations \
+                        if ((c.type==1) and ('related_ideas' in c.tags))]
         for idea in ideas:
-            for c in correlations:
-                if idea in c.targets:
-                    root.delproperty('correlations', c)
-                    c.delproperty('source',context)
-                    for target in c.targets:
-                        c.delproperty('targets', target)
+            for correlation in correlations:
+                if idea in correlation.targets:
+                    root.delproperty('correlations', correlation)
+                    correlation.delproperty('source', context)
+                    for target in correlation.targets:
+                        correlation.delproperty('targets', target)
         return True
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         if 'related_ideas' in appstruct:
             relatedideas = appstruct['related_ideas']
-            related_ideas_to_add = [i for i in relatedideas if not(i in context.related_ideas)]
-            related_ideas_to_del = [i for i in context.related_ideas if not(i in relatedideas) and not (i in related_ideas_to_add)]
-            self._add_related_ideas(context, request, root, related_ideas_to_add, 'Add ideas to the proposal', 'Edit proposal')
-            self._del_related_ideas(context, request, root, related_ideas_to_del)
+            related_ideas_to_add = [i for i in relatedideas \
+                                    if not(i in context.related_ideas)]
+            related_ideas_to_del = [i for i in context.related_ideas \
+                                     if not(i in relatedideas) and \
+                                        not (i in related_ideas_to_add)]
+            self._add_related_ideas(context, root,
+                                    related_ideas_to_add,
+                                   'Add ideas to the proposal', 'Edit proposal')
+            self._del_related_ideas(context, root, related_ideas_to_del)
 
         context.modified_at = datetime.datetime.today()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
-        for nk in newkeywords:
-            root.addtoproperty('keywords', nk)
+        for nkw in newkeywords:
+            root.addtoproperty('keywords', nkw)
 
         result.extend(newkeywords)
         datas = {'keywords_ref': result}
@@ -458,7 +473,9 @@ class PublishProposal(ElementaryAction):
                 subject_title=context.title,
                 subject_url=url
                  )
-            mailer_send(subject=subject, recipients=[member.email], body=message)
+            mailer_send(subject=subject,
+              recipients=[member.email],
+              body=message)
 
         wg.reindex()
         context.reindex()
@@ -503,9 +520,9 @@ class SupportProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         token = None
-        for t in user.tokens:
-            if t.proposal is context:
-                token = t
+        for tok in user.tokens:
+            if tok.proposal is context:
+                token = tok
 
         if token is None:
             token = user.tokens[-1]
@@ -533,9 +550,9 @@ class OpposeProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         token = None
-        for t in user.tokens:
-            if t.proposal is context:
-                token = t
+        for tok in user.tokens:
+            if tok.proposal is context:
+                token = tok
 
         if token is None:
             token = user.tokens[-1]
@@ -550,7 +567,8 @@ class OpposeProposal(InfiniteCardinality):
 
 def withdrawt_processsecurity_validation(process, context):
     user = get_current()
-    return any((t.owner is user) and t.proposal is None for t in context.tokens) and \
+    return any((t.owner is user) and \
+                t.proposal is None for t in context.tokens) and \
            global_user_processsecurity(process, context)
 
 
@@ -568,7 +586,8 @@ class WithdrawToken(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
-        user_tokens = [t for t in context.tokens if (t.owner is user) and t.proposal is None]
+        user_tokens = [t for t in context.tokens \
+                       if (t.owner is user) and t.proposal is None]
         token = user_tokens[-1]
         context.delproperty(token.__property__, token)
         user.addtoproperty('tokens', token)
@@ -589,7 +608,8 @@ def alert_roles_validation(process, context):
 
 def alert_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and any(s in context.state for s in ['proofreading', 'amendable'])
+    return 'active' in wg.state and any(s in context.state \
+                                        for s in ['proofreading', 'amendable'])
 
 
 class Alert(ElementaryAction):
@@ -614,7 +634,9 @@ class Alert(ElementaryAction):
                 recipient_last_name=getattr(member, 'last_name',''),
                 subject_url=url
                  )
-            mailer_send(subject=subject, recipients=[member.email], body=message)
+            mailer_send(subject=subject, 
+                recipients=[member.email], 
+                body=message)
 
         return True
 
@@ -705,7 +727,8 @@ def associate_relation_validation(process, context):
 
 def associate_processsecurity_validation(process, context):
     return (has_role(role=('Owner', context)) or \
-           (has_role(role=('Member',)) and not ('draft' in context.state))) and \
+           (has_role(role=('Member',)) and \
+            not ('draft' in context.state))) and \
            global_user_processsecurity(process, context)
 
 
@@ -783,13 +806,14 @@ class ImproveProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         data = {}
-        data['title'] = context.title+'_A '+str(getattr(context, '_amendments_counter', 1))
+        data['title'] = context.title + '_A ' + \
+                        str(getattr(context, '_amendments_counter', 1))
         data['text'] = appstruct['text']
         data['description'] = appstruct['description']
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
-        for nk in newkeywords:
-            root.addtoproperty('keywords', nk)
+        for nkw in newkeywords:
+            root.addtoproperty('keywords', nkw)
 
         result.extend(newkeywords)
         data['keywords_ref'] = result
@@ -820,7 +844,8 @@ def correctitem_processsecurity_validation(process, context):
 
 
 def correctitem_state_validation(process, context):
-    return 'active' in context.proposal.working_group.state and 'proofreading' in context.proposal.state
+    return 'active' in context.proposal.working_group.state and \
+           'proofreading' in context.proposal.state
 
 
 class CorrectItem(InfiniteCardinality):
@@ -833,7 +858,8 @@ class CorrectItem(InfiniteCardinality):
     state_validation = correctitem_state_validation
 
     def _include_to_proposal(self, context, text_to_correct, request, content):
-        corrections = [item for item in context.corrections.keys() if not('included' in context.corrections[item])]
+        corrections = [item for item in context.corrections.keys() \
+                       if not('included' in context.corrections[item])]
         text = self._include_items(text_to_correct, request, corrections)
         if content == 'description':
             text = text.replace('<p>', '').replace('</p>', '')
@@ -841,6 +867,8 @@ class CorrectItem(InfiniteCardinality):
         setattr(context.proposal, content, text)
 
     def _include_items(self, text, request, items, to_add=False):
+        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
+                                                          'text_analyzer')
         todel = "ins"
         toins = "del"
         if to_add:
@@ -848,21 +876,14 @@ class CorrectItem(InfiniteCardinality):
             toins = "ins"
 
         soup = BeautifulSoup(text)
-        tags = []
+        corrections = []
         for item in items:
-            tags.extend(soup.find_all('span',{'id':'correction', 'data-item':item}))
+            corrections.extend(soup.find_all('span', {'id':'correction', 
+                                                      'data-item': item}))
 
-        corrections_data = []
-        for correction in tags:
-            correction_data = {'tag': correction,
-                               'todel': todel,
-                               'toins': toins,
-                               'blocstodel': ('span', {'id':'correction_actions'})
-                                }
-            corrections_data.append(correction_data)
-
-        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-        text_analyzer.unwrap_diff(corrections_data, soup)
+        blocstodel = ('span', {'id':'correction_actions'})
+        soup = text_analyzer.include_diffs(soup, corrections,
+                        todel, toins, blocstodel)
         return text_analyzer.soup_to_text(soup)
 
     def start(self, context, request, appstruct, **kw):
@@ -873,31 +894,39 @@ class CorrectItem(InfiniteCardinality):
         user_oid = get_oid(user)
         correction_data = context.corrections[item]
         text_to_correct = getattr(context, content,'')
-        if not(user_oid in correction_data['favour']) and not(user_oid in correction_data['against']):
+        if not(user_oid in correction_data['favour']) and \
+               not(user_oid in correction_data['against']):
             if vote:
                 context.corrections[item]['favour'].append(get_oid(user))
-                if (len(context.corrections[item]['favour'])-1) >= default_nb_correctors:
-                    text = self._include_items(text_to_correct, request, [item], True)
+                if (len(context.corrections[item]['favour'])-1) >= \
+                    DEFAULT_NB_CORRECTORS:
+                    text = self._include_items(text_to_correct, 
+                                   request, [item], True)
                     setattr(context, content, text)
                     text_to_correct = getattr(context, content,'')
                     context.corrections[item]['included'] = True
-                    if not any(not('included' in context.corrections[c]) for c in context.corrections.keys()):
+                    if not any(not('included' in context.corrections[c]) \
+                               for c in context.corrections.keys()):
                         context.state.remove('in process')
                         context.state.append('processed')
 
-                    self._include_to_proposal(context, text_to_correct, request, content)
+                    self._include_to_proposal(context, text_to_correct, 
+                                              request, content)
             else:
                 context.corrections[item]['against'].append(get_oid(user))
-                if len(context.corrections[item]['against']) >= default_nb_correctors:
-                    text= self._include_items(text_to_correct, request, [item])
+                if len(context.corrections[item]['against']) >= \
+                   DEFAULT_NB_CORRECTORS:
+                    text = self._include_items(text_to_correct, request, [item])
                     setattr(context, content, text)
                     text_to_correct = getattr(context, content,'')
                     context.corrections[item]['included'] = True
-                    if not any(not('included' in context.corrections[c]) for c in context.corrections.keys()):
+                    if not any(not('included' in context.corrections[c]) \
+                               for c in context.corrections.keys()):
                         context.state.remove('in process')
                         context.state.append('processed')
 
-                    self._include_to_proposal(context, text_to_correct, request, content)
+                    self._include_to_proposal(context, text_to_correct,
+                                              request, content)
             
         return True
 
@@ -941,18 +970,21 @@ class CorrectProposal(InfiniteCardinality):
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
         if not hasattr(self, 'correctitemaction'):
             correctitemnode = self.process['correctitem']
-            correctitem_wis = [wi for wi in correctitemnode.workitems if wi.node is correctitemnode]
+            correctitem_wis = [wi for wi in correctitemnode.workitems \
+                               if wi.node is correctitemnode]
             if correctitem_wis:
                 self.correctitemaction = correctitem_wis[0].actions[0]
 
         if hasattr(self, 'correctitemaction'):
-            actionurl_update = dace_ui_api.updateaction_viewurl(request=request, action_uid=str(get_oid(self.correctitemaction)), context_uid=str(get_oid(correction)))
-            values= {'favour_action_url':actionurl_update,
-                     'against_action_url':actionurl_update}
+            actionurl_update = dace_ui_api.updateaction_viewurl(
+                               request=request, 
+                               action_uid=str(get_oid(self.correctitemaction)), 
+                               context_uid=str(get_oid(correction)))
+            values = {'favour_action_url': actionurl_update,
+                     'against_action_url': actionurl_update}
             template = 'novaideo:views/proposal_management/templates/correction_item.pt'
             body = renderers.render(template, values, request)
             correction_item_soup = BeautifulSoup(body)
-            correction_item_soup.body
             tag.append(correction_item_soup.body)
             tag.body.unwrap()
 
@@ -981,13 +1013,25 @@ class CorrectProposal(InfiniteCardinality):
         correction = appstruct['_object_data']
         correction.setproperty('author', user)
         context.addtoproperty('corrections', correction)
-        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-        souptextdiff, textdiff = text_analyzer.render_html_diff(getattr(context, 'text', ''), getattr(correction, 'text', ''), "correction")
-        soupdescriptiondiff, descriptiondiff = text_analyzer.render_html_diff(getattr(context, 'description', ''), getattr(correction, 'description', ''), "correction")
+        text_analyzer = get_current_registry().getUtility(
+                                                ITextAnalyzer,
+                                                'text_analyzer')
+        souptextdiff, textdiff = text_analyzer.render_html_diff(
+                                       getattr(context, 'text', ''), 
+                                       getattr(correction, 'text', ''),
+                                       "correction")
+        soupdescriptiondiff, descriptiondiff = text_analyzer.render_html_diff(
+                                        getattr(context, 'description', ''), 
+                                        getattr(correction, 'description', ''), 
+                                        "correction")
         descriminator = 0
-        descriminator = self._identify_corrections(soupdescriptiondiff, correction, descriminator, 'description')
+        descriminator = self._identify_corrections(soupdescriptiondiff, 
+                                                   correction, 
+                                                   descriminator, 
+                                                   'description')
         self._add_actions(correction, request, soupdescriptiondiff)
-        self._identify_corrections(souptextdiff, correction, descriminator, 'text')
+        self._identify_corrections(souptextdiff, correction, 
+                                   descriminator, 'text')
         self._add_actions(correction, request, souptextdiff)
         correction.text = text_analyzer.soup_to_text(souptextdiff)
         context.originaltext = correction.text
@@ -1034,7 +1078,8 @@ def decision_roles_validation(process, context):
 
 
 def decision_state_validation(process, context):
-    return 'active' in context.working_group.state and any(s in context.state for s in ['proofreading', 'amendable'])
+    return 'active' in context.working_group.state and \
+           any(s in context.state for s in ['proofreading', 'amendable'])
 
 
 class VotingPublication(ElementaryAction):
@@ -1064,7 +1109,9 @@ class VotingPublication(ElementaryAction):
                 subject_title=context.title,
                 subject_url=url
                  )
-            mailer_send(subject=subject, recipients=[member.email], body=message)
+            mailer_send(subject=subject, 
+                recipients=[member.email], 
+                body=message)
 
         self.process.iteration = getattr(self.process, 'iteration', 0) + 1
         return True
@@ -1117,7 +1164,9 @@ class Withdraw(InfiniteCardinality):
                 subject_title=context.title,
                 subject_url=request.resource_url(context, "@@index")
                  )
-        mailer_send(subject=subject, recipients=[user.email], body=message)
+        mailer_send(subject=subject, 
+            recipients=[user.email], 
+            body=message)
         return True
 
     def redirect(self, context, request, **kw):
@@ -1137,7 +1186,8 @@ def resign_processsecurity_validation(process, context):
 
 
 def resign_state_validation(process, context):
-    return  any(s in context.state for s in ['proofreading', 'amendable', 'open to a working group'])
+    return  any(s in context.state for s in \
+                ['proofreading', 'amendable', 'open to a working group'])
 
 
 class Resign(InfiniteCardinality):
@@ -1178,7 +1228,8 @@ class Resign(InfiniteCardinality):
                 subject = PARTICIPATE_SUBJECT.format(subject_title=context.title)
                 message = PARTICIPATE_MESSAGE.format(
                         recipient_title=getattr(next_user, 'user_title',''),
-                        recipient_first_name=getattr(next_user, 'first_name', next_user.name),
+                        recipient_first_name=getattr(next_user, 
+                                               'first_name', next_user.name),
                         recipient_last_name=getattr(next_user, 'last_name',''),
                         subject_title=context.title,
                         subject_url=url
@@ -1187,7 +1238,8 @@ class Resign(InfiniteCardinality):
 
         participants = wg.members
         len_participants = len(participants)
-        if len_participants < root.participants_mini and not ('open to a working group' in context.state):
+        if len_participants < root.participants_mini and \
+            not ('open to a working group' in context.state):
             context.state = PersistentList(['open to a working group'])
             wg.state = PersistentList(['deactivated'])
             wg.reindex()
@@ -1201,7 +1253,9 @@ class Resign(InfiniteCardinality):
                 subject_title=context.title,
                 subject_url=url
                  )
-        mailer_send(subject=subject, recipients=[user.email], body=message)
+        mailer_send(subject=subject, 
+             recipients=[user.email], 
+             body=message)
 
         return True
 
@@ -1229,7 +1283,8 @@ def participate_processsecurity_validation(process, context):
 def participate_state_validation(process, context):
     wg = context.working_group
     return  not('closed' in wg.state) and \
-            any(s in context.state for s in ['proofreading', 'amendable', 'open to a working group']) 
+            any(s in context.state for s in \
+                ['proofreading', 'amendable', 'open to a working group']) 
 
 
 class Participate(InfiniteCardinality):
@@ -1288,13 +1343,15 @@ class Participate(InfiniteCardinality):
                 wg.reindex()
                 context.reindex()
 
-            self._send_mail_to_user(PARTICIPATE_SUBJECT, PARTICIPATE_MESSAGE, user, context, request)
+            self._send_mail_to_user(PARTICIPATE_SUBJECT, PARTICIPATE_MESSAGE,
+                 user, context, request)
             if first_decision:
                 self._call_votingpublication(context, request)
         else:
             wg.addtoproperty('wating_list', user)
             wg.reindex()
-            self._send_mail_to_user(WATINGLIST_SUBJECT, WATINGLIST_MESSAGE, user, context, request)
+            self._send_mail_to_user(WATINGLIST_SUBJECT, WATINGLIST_MESSAGE,
+                 user, context, request)
 
 
         return True
@@ -1312,7 +1369,8 @@ def va_roles_validation(process, context):
 
 
 def va_state_validation(process, context):
-    return 'active' in context.working_group.state and 'amendable' in context.state
+    return 'active' in context.working_group.state and \
+           'amendable' in context.state
 
 
 class VotingAmendments(ElementaryAction):
@@ -1341,7 +1399,9 @@ class VotingAmendments(ElementaryAction):
                 subject_title=context.title,
                 subject_url=url
                  )
-            mailer_send(subject=subject, recipients=[member.email], body=message)
+            mailer_send(subject=subject, 
+                 recipients=[member.email], 
+                 body=message)
         return True
 
     def redirect(self, context, request, **kw):
@@ -1349,13 +1409,16 @@ class VotingAmendments(ElementaryAction):
 
 
 def ar_state_validation(process, context):
-    return 'active' in context.working_group.state and 'votes for amendments' in context.state
+    return 'active' in context.working_group.state and \
+           'votes for amendments' in context.state
 
 
 class AmendmentsResult(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_order = 7
+    amendments_group_result_template = 'novaideo:views/proposal_management/templates/amendments_group_result.pt'
+    amendments_vote_result_template = 'novaideo:views/proposal_management/templates/amendments_vote_result.pt'
     context = IProposal
     processs_relation_id = 'proposal'
     #actionType = ActionType.system
@@ -1364,14 +1427,16 @@ class AmendmentsResult(ElementaryAction):
     state_validation = ar_state_validation
 
     def _get_copy(self, context, root, wg):
-        copy_of_proposal = copy(context, (root, 'proposals'), omit=('created_at','modified_at'),roles=True)
+        copy_of_proposal = copy(context, (root, 'proposals'), 
+                             omit=('created_at','modified_at'),roles=True)
         copy_keywords, newkeywords = root.get_keywords(context.keywords)
         copy_of_proposal.setproperty('keywords_ref', copy_keywords)
         copy_of_proposal.setproperty('version', context)
         copy_of_proposal.state = PersistentList(['proofreading'])
         copy_of_proposal.setproperty('author', context.author)
         copy_of_proposal.setproperty('comments', context.comments)
-        self.process.execution_context.add_created_entity('proposal', copy_of_proposal)
+        self.process.execution_context.add_created_entity('proposal', 
+                                           copy_of_proposal)
         wg.setproperty('proposal', copy_of_proposal)
         return copy_of_proposal
 
@@ -1379,32 +1444,32 @@ class AmendmentsResult(ElementaryAction):
         group_nb = 0
         amendments_vote_result = []
         for ballot in self.process.amendments_ballots: 
-            result = []
             group_nb += 1
-            result_ballot = "Group " + str(group_nb) + ": \n"
-            for oid,result_vote in ballot.report.result.items():
-                obj = get_obj(oid)
-                result_vote = [judgment+": "+str(result_vote[judgment]) for judgment in ballot.report.ballottype.judgments.keys()]
-                result.append(obj.title + " :" + ",".join(result_vote))
+            values = {'group_nb': group_nb,
+                      'report': ballot.report,
+                      'get_obj': get_obj}
+            group_body = renderers.render(
+                self.amendments_group_result_template, values, request)
+            amendments_vote_result.append(group_body)
 
-            result_ballot += "\n    ".join(result)
-            amendments_vote_result.append(result_ballot)
-
-        message_result = "\n \n".join(amendments_vote_result)
-        electeds_result = "\n".join([e.title for e in electeds])
-        url = request.resource_url(context, "@@index")
-        subject = RESULT_VOTE_AMENDMENT_SUBJECT.format(subject_title=context.title)
+        values = {'amendments_vote_result': amendments_vote_result,
+                  'electeds': electeds,
+                  'subject': context}
+        result_body = renderers.render(self.amendments_vote_result_template,
+                                 values, request)
+        subject = RESULT_VOTE_AMENDMENT_SUBJECT.format(
+                        subject_title=context.title)
+        import pdb; pdb.set_trace()
         for member in members:
             message = RESULT_VOTE_AMENDMENT_MESSAGE.format(
                 recipient_title=getattr(member, 'user_title',''),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
-                subject_url=url,
-                subject_title=context.title,
-                message_result=message_result,
-                electeds_result=electeds_result
+                message_result=result_body
                  )
-            mailer_send(subject=subject, recipients=[member.email], body=message)
+            mailer_send(subject=subject, 
+                 recipients=[member.email], 
+                 html=message)
         
 
     def start(self, context, request, appstruct, **kw):
@@ -1420,9 +1485,10 @@ class AmendmentsResult(ElementaryAction):
         self.newcontext = context 
         if amendments:
             self._send_ballot_result(context, request, result, wg.members)
-            text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-            #pdb
-            merged_text = text_analyzer.merge(context.text, [a.text for a in amendments])
+            text_analyzer = get_current_registry().getUtility(
+                                            ITextAnalyzer,'text_analyzer')
+            merged_text = text_analyzer.merge(context.text, 
+                                 [a.text for a in amendments])
             #TODO merged_keywords + merged_description
             copy_of_proposal = self._get_copy(context, root, wg)
             context.state = PersistentList(['archived'])
@@ -1431,8 +1497,10 @@ class AmendmentsResult(ElementaryAction):
             added_ideas = [a.added_ideas for a in amendments]
             added_ideas = [item for sublist in added_ideas for item in sublist]
             removed_ideas = [a.removed_ideas for a in amendments]
-            removed_ideas = [item for sublist in removed_ideas for item in sublist] #TODO removed idea vs added idea
-            not_modified_ideas = [i for i in context.related_ideas if not (i in removed_ideas)]
+            removed_ideas = [item for sublist in removed_ideas \
+                             for item in sublist]
+            not_modified_ideas = [i for i in context.related_ideas \
+                                  if not (i in removed_ideas)]
             new_ideas = not_modified_ideas
             new_ideas.extend(added_ideas)
             new_ideas = list(set(new_ideas))
@@ -1453,7 +1521,8 @@ class AmendmentsResult(ElementaryAction):
 
 
 def ta_state_validation(process, context):
-    return 'active' in context.working_group.state and 'votes for publishing' in context.state
+    return 'active' in context.working_group.state and \
+           'votes for publishing' in context.state
 
 
 class Amendable(ElementaryAction):
@@ -1477,13 +1546,16 @@ class Amendable(ElementaryAction):
         else:
             context.state.append('proofreading')
 
-        reopening_ballot = getattr(self.process, 'reopening_configuration_ballot', None)
+        reopening_ballot = getattr(self.process, 
+                            'reopening_configuration_ballot', None)
         if reopening_ballot is not None:
             report = reopening_ballot.report
             voters_len = len(report.voters)
             electors_len = len(report.electors)
             report.calculate_votes()
-            if (voters_len == electors_len) and (report.result['False'] == 0) and 'closed' in wg.state:
+            if (voters_len == electors_len) and \
+               (report.result['False'] == 0) and \
+               'closed' in wg.state:
                 wg.state.remove('closed')
                 wg.reindex()
 
@@ -1497,7 +1569,8 @@ class Amendable(ElementaryAction):
 def compare_processsecurity_validation(process, context):
     return getattr(context, 'version', None) is not None and \
            (has_role(role=('Owner', context)) or \
-           (has_role(role=('Member',)) and not ('draft' in context.state))) and \
+           (has_role(role=('Member',)) and\
+            not ('draft' in context.state))) and \
            global_user_processsecurity(process, context)
 
 
@@ -1516,4 +1589,4 @@ class CompareProposal(InfiniteCardinality):
 
 #TODO behaviors
 
-validation_by_context[Proposal] = CommentProposal
+VALIDATOR_BY_CONTEXT[Proposal] = CommentProposal

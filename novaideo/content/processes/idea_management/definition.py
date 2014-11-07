@@ -1,3 +1,4 @@
+
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
@@ -7,7 +8,8 @@ from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
     EndEventDefinition)
-from dace.objectofcollaboration.services.processdef_container import process_definition
+from dace.objectofcollaboration.services.processdef_container import (
+  process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import (
@@ -88,9 +90,6 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Compare"),
                                        groups=[]),
                 pg = ParallelGatewayDefinition(),
-                #pg2 = ParallelGatewayDefinition(),
-                #eg1 = ExclusiveGatewayDefinition(),
-                #eg2 = ExclusiveGatewayDefinition(),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -122,27 +121,3 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('compare', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
-
-        #self.defineTransitions(
-        #        TransitionDefinition('start', 'egs'),
-        #        TransitionDefinition('egs', 'creat'),
-        #        TransitionDefinition('egs', 'duplicate'),
-        #        TransitionDefinition('creat', 'eg1'),
-        #        TransitionDefinition('duplicate', 'eg1'),
-        #        TransitionDefinition('eg1', 'pg'),
-        #        TransitionDefinition('pg', 'edit'),
-        #        TransitionDefinition('pg', 'publish'),
-        #        TransitionDefinition('pg', 'eg2'),
-        #        TransitionDefinition('pg', 'delidea'),
-        #        TransitionDefinition('eg2', 'abandon'),
-        #        TransitionDefinition('abandon', 'recuperate'),
-        #        TransitionDefinition('recuperate', 'eg2'),
-        #        TransitionDefinition('publish', 'pg2'),
-        #        TransitionDefinition('pg2', 'comment'),
-        #        TransitionDefinition('pg2', 'present'),
-        #        TransitionDefinition('delidea', 'eg3'),
-        #        TransitionDefinition('edit', 'eg3'),
-        #        TransitionDefinition('comment', 'eg3'),
-        #        TransitionDefinition('present', 'eg3'),
-        #        TransitionDefinition('eg3', 'end'),
-       # )

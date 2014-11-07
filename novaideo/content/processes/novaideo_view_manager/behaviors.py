@@ -2,16 +2,10 @@
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current
+from dace.objectofcollaboration.principal.util import has_role, get_current
 from dace.processinstance.activity import (
-    ElementaryAction,
-    LimitedCardinality,
     InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
-from pontus.view import BasicView
-from pontus.schema import select, omit
+    ActionType)
 
 from novaideo.content.interface import INovaIdeoApplication, IProposal
 from novaideo import _
@@ -32,9 +26,11 @@ class Search(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, query={'text': self.text, 'content_types': ",".join(self.content_types)}))
+        return HTTPFound(
+                  request.resource_url(root, 
+                        query={'text': self.text,
+                               'content_types': ",".join(self.content_types)}))
 
-#see
 
 def seemy_roles_validation(process, context):
     return has_role(role=('Member',))
@@ -42,7 +38,8 @@ def seemy_roles_validation(process, context):
 
 def seemyc_processsecurity_validation(process, context):
     user = get_current()
-    contents = [o for o in getattr(user, 'contents', []) if not('archived' in o.state)]
+    contents = [o for o in getattr(user, 'contents', []) \
+                if not('archived' in o.state)]
     return contents and global_user_processsecurity(process, context)
 
 class SeeMyContents(InfiniteCardinality):
@@ -53,14 +50,16 @@ class SeeMyContents(InfiniteCardinality):
 
     def contents_nb(self):
         user = get_current()
-        return len([o for o in getattr(user, 'contents', []) if not('archived' in o.state)])
+        return len([o for o in getattr(user, 'contents', []) \
+                    if not('archived' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
         return True
 
 def seemys_processsecurity_validation(process, context):
     user = get_current()
-    selections = [o for o in getattr(user, 'selections', []) if not('archived' in o.state)]
+    selections = [o for o in getattr(user, 'selections', []) \
+                  if not('archived' in o.state)]
     return selections and global_user_processsecurity(process, context)
 
 
@@ -72,7 +71,8 @@ class SeeMySelections(InfiniteCardinality):
 
     def contents_nb(self):
         user = get_current()
-        return len([o for o in getattr(user, 'selections', []) if not('archived' in o.state)])
+        return len([o for o in getattr(user, 'selections', []) \
+                    if not('archived' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
         return True
@@ -80,7 +80,8 @@ class SeeMySelections(InfiniteCardinality):
 
 def seemypa_processsecurity_validation(process, context):
     user = get_current()
-    return getattr(user, 'participations', []) and global_user_processsecurity(process, context)
+    return getattr(user, 'participations', []) and \
+                   global_user_processsecurity(process, context)
 
 
 class SeeMyParticipations(InfiniteCardinality):
@@ -100,7 +101,8 @@ class SeeMyParticipations(InfiniteCardinality):
 
 def seemysu_processsecurity_validation(process, context):
     user = get_current()
-    supports = [o for o in getattr(user, 'supports', []) if not('archived' in o.state)]
+    supports = [o for o in getattr(user, 'supports', []) \
+                if not('archived' in o.state)]
     return supports and global_user_processsecurity(process, context)
 
 
@@ -112,7 +114,8 @@ class SeeMySupports(InfiniteCardinality):
 
     def contents_nb(self):
         user = get_current()
-        return len([o for o in getattr(user, 'supports', []) if not('archived' in o.state)])
+        return len([o for o in getattr(user, 'supports', []) \
+                    if not('archived' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
         return True

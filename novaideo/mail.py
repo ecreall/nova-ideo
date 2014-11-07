@@ -61,21 +61,14 @@ Aucun amendement n'a été publié pour la proposition sous {subject_url}.
 
 """ + PORTAL_SIGNATURE
 
-RESULT_VOTE_AMENDMENT_SUBJECT = u"""
-Les resultat du vote sur amendments : {subject_title}
-"""
+RESULT_VOTE_AMENDMENT_SUBJECT = u"""Les resultat du vote sur amendments : {subject_title}"""
 
 RESULT_VOTE_AMENDMENT_MESSAGE = u"""
+<div>
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Les résultats du vote sur amendements concernant la proposition {subject_title} ({subject_url}) sont les suivants:
-
 {message_result}
-
-Les amendements élus, après calcule, du vote:
-
-{electeds_result}
-
+</div>
 """ + PORTAL_SIGNATURE
 
 
@@ -89,9 +82,7 @@ La proposition {subject_title} ({subject_url}) est publiée.
 """ + PORTAL_SIGNATURE
 
 
-VOTINGPUBLICATION_SUBJECT = u"""
-Debut de vote sur la publication : {subject_title}
-"""
+VOTINGPUBLICATION_SUBJECT = u"""Debut de vote sur la publication : {subject_title}"""
 
 VOTINGPUBLICATION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -101,9 +92,7 @@ Le vote sur publication de la proposition {subject_title} ({subject_url}) a comm
 """ + PORTAL_SIGNATURE
 
 
-VOTINGAMENDMENTS_SUBJECT = u"""
-Debut de vote sur les amendements : {subject_title}
-"""
+VOTINGAMENDMENTS_SUBJECT = u"""Debut de vote sur les amendements : {subject_title}"""
 
 VOTINGAMENDMENTS_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
@@ -112,9 +101,7 @@ Le vote sur les amendements de la proposition {subject_title} ({subject_url}) a 
 
 """ + PORTAL_SIGNATURE
 
-WITHDRAW_SUBJECT = u"""
-Désinscription de la liste d'attente: {subject_title}
-"""
+WITHDRAW_SUBJECT = u"""Désinscription de la liste d'attente: {subject_title}"""
 
 WITHDRAW_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},

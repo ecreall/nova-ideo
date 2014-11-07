@@ -1,4 +1,4 @@
-from dace.interfaces import IProcessDefinition
+
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
@@ -7,12 +7,9 @@ from dace.processdefinition.gatewaydef import (
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
-    EndEventDefinition,
-    IntermediateCatchEventDefinition,
-    ConditionalEventDefinition,
-    TimerEventDefinition)
-from dace.objectofcollaboration.services.processdef_container import process_definition
-
+    EndEventDefinition)
+from dace.objectofcollaboration.services.processdef_container import (
+    process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import CommentCorrelation, SeeCorrelation
@@ -50,5 +47,4 @@ class CorrelationManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('see', 'eg'),
                 TransitionDefinition('eg', 'end'),
-
         )

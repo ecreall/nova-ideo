@@ -32,7 +32,7 @@
           rel="stylesheet"/>
     <link href="${su('novaideo:static/css/steps/steps.css')}"
           rel="stylesheet"/>
-    <link href="${su('novaideo:static/css/switch-master/dist/css/bootstrap3/bootstrap-switch.css')}"
+    <link href="${su('novaideo:static/switch-master/dist/css/bootstrap3/bootstrap-switch.css')}"
           rel="stylesheet"/>
 
     <!-- Fav icons -->

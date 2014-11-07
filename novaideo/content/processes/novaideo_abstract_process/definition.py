@@ -1,4 +1,4 @@
-from dace.interfaces import IProcessDefinition
+
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
@@ -7,12 +7,9 @@ from dace.processdefinition.gatewaydef import (
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
-    EndEventDefinition,
-    IntermediateCatchEventDefinition,
-    ConditionalEventDefinition,
-    TimerEventDefinition)
-from dace.objectofcollaboration.services.processdef_container import process_definition
-
+    EndEventDefinition)
+from dace.objectofcollaboration.services.processdef_container import (
+    process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import (
@@ -35,13 +32,13 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
                 select = ActivityDefinition(contexts=[SelectEntity],
-                                       description=_("Add to my selections"),
-                                       title=_("Add to my selections"),
-                                       groups=[]),
+                                    description=_("Add to my selections"),
+                                    title=_("Add to my selections"),
+                                    groups=[]),
                 deselect = ActivityDefinition(contexts=[DeselectEntity],
-                                       description=_("Remove from my selections"),
-                                       title=_("Remove from my selections"),
-                                       groups=[]),
+                                    description=_("Remove from my selections"),
+                                    title=_("Remove from my selections"),
+                                    groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )

@@ -1,26 +1,14 @@
 # -*- coding: utf8 -*-
-from zope.interface import Interface
-
 from pyramid.httpexceptions import HTTPFound
-from substanced.util import find_service, get_oid
+from substanced.util import get_oid
 
-from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current
+from dace.objectofcollaboration.principal.util import has_role, get_current
 from dace.interfaces import IEntity
 from dace.processinstance.activity import (
-    ElementaryAction,
-    LimitedCardinality,
-    InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
-from pontus.schema import select, omit
+    ElementaryAction)
 from pontus.file import OBJECT_DATA
 
 from ...user_management.behaviors import global_user_processsecurity
-from novaideo.content.interface import IInvitation
-from novaideo.content.person import Person
-from novaideo.content.interface import IComment
 from novaideo import _
 
 
@@ -30,6 +18,7 @@ def vote_relation_validation(process, context):
 
 def vote_roles_validation(process, context):
     return has_role(role=('Elector', process))
+
 
 def vote_processsecurity_validation(process, context):
     user = get_current()
@@ -47,24 +36,22 @@ class Vote(ElementaryAction):
     processsecurity_validation = vote_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        vote_result = {}
         elected_id = appstruct['elected']
         try:
-            id = get_oid(elected_id[OBJECT_DATA])
+            subject_id = get_oid(elected_id[OBJECT_DATA])
         except Exception:
-            id = elected_id
+            subject_id = elected_id
 
         user = get_current()
         ballot = self.process.ballot
         report = ballot.report
         votefactory = report.ballottype.vote_factory
-        ballot.ballot_box.addtoproperty('votes', votefactory(id))
+        ballot.ballot_box.addtoproperty('votes', votefactory(subject_id))
         report.addtoproperty('voters', user)
         return True
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@index'))
-
 
 
 #TODO behaviors

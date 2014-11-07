@@ -1,0 +1,14 @@
+<div  i18n:domain="novaideo">
+  <span i18n:translate="">Group</span> ${group_nb}:
+  <tal:loop repeat="(oid, result_vote) report.result.items()">
+    <div>
+      ${get_obj(oid).title}: 
+      <ul>
+        <tal:loop repeat="judgment report.ballottype.judgments.keys()">
+          <li>${judgment}: ${str(result_vote[judgment])}</li>
+        </tal:loop>
+      </ul>
+    </div>
+  </tal:loop>
+</div>
+

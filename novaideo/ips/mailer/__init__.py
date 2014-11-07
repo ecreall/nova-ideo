@@ -9,7 +9,8 @@ from pyramid.threadlocal import get_current_request
 def mailer_send(subject="!",
                 sender=None,
                 recipients=[],
-                body="",
+                body=None,
+                html=None,
                 attachments=[]):
     try:
         request = get_current_request()
@@ -20,7 +21,8 @@ def mailer_send(subject="!",
         message = Message(subject=subject,
                           sender=sender,
                           recipients=recipients,
-                          body=body)
+                          body=body,
+                          html=html)
         for attachment in attachments:
             attachment = Attachment(attachment.title,
                                     attachment.mimetype,

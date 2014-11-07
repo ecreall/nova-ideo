@@ -1,25 +1,15 @@
 # -*- coding: utf8 -*-
-from zope.interface import Interface
-
 from pyramid.httpexceptions import HTTPFound
-from substanced.util import find_service, get_oid
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current
-from dace.processinstance.activity import (
-    ElementaryAction,
-    LimitedCardinality,
-    InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
-from pontus.schema import select, omit
+from dace.objectofcollaboration.principal.util import has_role, get_current
+from dace.processinstance.activity import InfiniteCardinality, ActionType
 
 from novaideo.content.correlation import Correlation
 from novaideo.content.interface import ICorrelation
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
-from ..comment_management.behaviors import validation_by_context
+from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.core import can_access, acces_action
 
 
@@ -35,12 +25,8 @@ def comm_processsecurity_validation(process, context):
     source = context.source
     targets = context.targets
     user = get_current()
-    root = getSite()
-    for target in targets:
-        if not can_access(user, target, None, root):
-            return False
-
-    return can_access(user, source, None, root)
+    return can_access(user, source) and \
+           not any(not can_access(user, target) for target in targets)
 
 
 class CommentCorrelation(InfiniteCardinality):
@@ -64,12 +50,8 @@ def see_processsecurity_validation(process, context):
     source = context.source
     targets = context.targets
     user = get_current()
-    root = getSite()
-    for target in targets:
-        if not can_access(user, target, None, root):
-            return False
-
-    return can_access(user, source, None, root)
+    return can_access(user, source) and \
+           not any(not can_access(user, target) for target in targets)
 
 
 @acces_action()
@@ -86,4 +68,4 @@ class SeeCorrelation(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 #TODO behaviors
-validation_by_context[Correlation] = CommentCorrelation
+VALIDATOR_BY_CONTEXT[Correlation] = CommentCorrelation

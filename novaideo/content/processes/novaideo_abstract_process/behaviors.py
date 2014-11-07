@@ -1,23 +1,12 @@
 # -*- coding: utf8 -*-
 from pyramid.httpexceptions import HTTPFound
 
-from dace.util import getSite
 from dace.interfaces import IEntity
-from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current
-from dace.processinstance.activity import (
-    ElementaryAction,
-    LimitedCardinality,
-    InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
-from pontus.view import BasicView
-from pontus.schema import select, omit
+from dace.objectofcollaboration.principal.util import has_role, get_current
+from dace.processinstance.activity import InfiniteCardinality
 
-from novaideo.content.interface import INovaIdeoApplication
-from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.core import acces_action, can_access
+from novaideo.core import can_access
 
 
 
@@ -27,7 +16,8 @@ def select_roles_validation(process, context):
 
 def select_processsecurity_validation(process, context):
     user =  get_current()
-    return can_access(user, context) and not (context in getattr(user, 'selections', [])) and \
+    return can_access(user, context) and \
+           not (context in getattr(user, 'selections', [])) and \
            global_user_processsecurity(process, context)
 
 
@@ -50,19 +40,20 @@ class SelectEntity(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, '@@index'))
 
 
-
 def deselect_roles_validation(process, context):
     return has_role(role=('Member',))
 
 
 def deselect_processsecurity_validation(process, context):
     user =  get_current()
-    return can_access(user, context) and (context in getattr(user, 'selections', [])) and \
+    return can_access(user, context) and \
+           (context in getattr(user, 'selections', [])) and \
            global_user_processsecurity(process, context)
 
 
 def deselect_state_validation(process, context):
     return True
+
 
 class DeselectEntity(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
