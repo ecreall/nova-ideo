@@ -1,3 +1,4 @@
+
 from pyramid.view import view_config
 from substanced.util import get_oid
 from pyramid import renderers
@@ -32,10 +33,7 @@ class CreateIdeaView(FormView):
                      'attached_files'])
     behaviors = [CreateIdea, Cancel]
     formid = 'formcreateidea'
-    name='createidea'
-
-
-
+    name = 'createidea'
 
 
 @view_config(name='ideasmanagement',
@@ -56,35 +54,35 @@ class CreateIdeaView_Json(BasicView):
                       'text': ''}
             idea = Idea()
             idea.set_data(values) 
-            appstruct= { '_object_data': idea,
+            appstruct = {'_object_data': idea,
                          'keywords': self.params('keywords')}
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
             data = {'title': idea.title,
                     'oid': str(oid),
-                    'body': renderers.render(self.idea_template, {'idea':idea}, self.request)
+                    'body': renderers.render(self.idea_template,
+                                             {'idea':idea},
+                                             self.request)
                     }
             result = data
             return result
         except Exception:
-            return {} #TODO Error messages
+            return {}
 
     def get_idea(self):
         try:
             oid = int(self.params('oid'))
             idea = get_obj(oid)
-            values = {'title': idea.title,
-                      'description': idea.description,
-                      'text': getattr(idea, 'text', '')}
             data = {'title': idea.title,
                     'oid': str(oid),
-                    'body': renderers.render(self.idea_template, {'idea':idea}, self.request)
+                    'body': renderers.render(self.idea_template, 
+                                             {'idea':idea}, 
+                                             self.request)
                     }
             result = data
             return result
         except Exception:
-            return {}#TODO Error messages
-
+            return {}
 
     def __call__(self):
         operation_name = self.params('op')

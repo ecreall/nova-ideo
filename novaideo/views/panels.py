@@ -14,16 +14,17 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMySelections,
     SeeMyParticipations,
     SeeMySupports)
-from novaideo.content.processes.proposal_management.behaviors import CreateProposal
+from novaideo.content.processes.proposal_management.behaviors import (
+    CreateProposal)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.proposal import Proposal
 from novaideo.content.idea import Idea
 from novaideo.content.amendment import Amendment
 from novaideo.core import _
 
-user_menu_actions = {'menu1': [SeeMyContents, SeeMyParticipations],
+USER_MENU_ACTIONS = {'menu1': [SeeMyContents, SeeMyParticipations],
                      'menu2': [SeeMySelections, SeeMySupports],
-                     'menu3': [CreateIdea, CreateProposal]}  #TODO add CreateProposal...
+                     'menu3': [CreateIdea, CreateProposal]}
 
 
 def _getaction(view, process_id, action_id):
@@ -64,18 +65,21 @@ class Usermenu_panel(object):
             if '__formid__' in self.request.POST:
                 posted_formid = self.request.POST['__formid__']
 
-            if posted_formid and posted_formid.startswith(search_view_instance.viewid):
+            if posted_formid and \
+              posted_formid.startswith(search_view_instance.viewid):
                 search_view_instance.postedform = self.request.POST.copy()
                 self.request.POST.clear()
 
-        search_view_instance.schema = select(search_view_instance.schema, ['text'])
+        search_view_instance.schema = select(search_view_instance.schema,
+                                             ['text'])
         search_view_result = search_view_instance()
         search_body = ''
-        if isinstance(search_view_result, dict) and 'coordinates' in search_view_result:
+        if isinstance(search_view_result, dict) and \
+          'coordinates' in search_view_result:
             search_body = search_view_instance.render_item(
-                              search_view_result['coordinates'][search_view_instance.coordinates][0],
-                              search_view_instance.coordinates,
-                              None)
+                    search_view_result['coordinates'][search_view_instance.coordinates][0],
+                    search_view_instance.coordinates,
+                    None)
 
         result = {}
         result['search_body'] = search_body
@@ -105,27 +109,33 @@ class UserNavBarPanel(object):
         actions_url = {'menu1': OrderedDict(),
                        'menu2': OrderedDict(),
                        'menu3': OrderedDict()}
-        for (menu, actions) in user_menu_actions.items():
+        for (menu, actions) in USER_MENU_ACTIONS.items():
             for actionclass in actions:
                 process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
                 action, view = _getaction(self, process_id, action_id)
                 if not (None in (action, view)):
-                    actions_url[menu][action.title] = {'action':action, 'url':action.url(root), 'view_name': getattr(view,'name', None)}
+                    actions_url[menu][action.title] = {'action':action,
+                                                       'url':action.url(root),
+                                                       'view_name': getattr(view,'name', None)}
                 else:
-                    actions_url[menu][actionclass.node_definition.title] = {'action':None, 'url':None, 'view_name': getattr(view,'name', None)}
+                    actions_url[menu][actionclass.node_definition.title] = {'action':None,
+                                                                            'url':None,
+                                                                            'view_name': getattr(view,'name', None)}
 
         posted_formid = None
         if self.request.POST :
             if '__formid__' in self.request.POST:
                 posted_formid = self.request.POST['__formid__']
 
-            if posted_formid and posted_formid.startswith(search_view_instance.viewid):
+            if posted_formid and \
+               posted_formid.startswith(search_view_instance.viewid):
                 search_view_instance.postedform = self.request.POST.copy()
                 self.request.POST.clear()
 
         search_view_result = search_view_instance()
         search_body = ''
-        if isinstance(search_view_result, dict) and 'coordinates' in search_view_result:
+        if isinstance(search_view_result, dict) and \
+           'coordinates' in search_view_result:
             search_body = search_view_instance.render_item(
                               search_view_result['coordinates'][search_view_instance.coordinates][0],
                               search_view_instance.coordinates,
@@ -164,55 +174,56 @@ class StepsPanel(object):
         return td.days, td.seconds//3600, (td.seconds//60)%60
 
     def _get_step3_informations(self, context, request):
-         time_delta = None
-         process = context.creator
-         if any(s in context.state for s in ['proofreading','amendable']):
-             date_iteration = process['timer'].eventKind.time_date
-             if date_iteration is not None:
-                 time_delta = date_iteration - datetime.datetime.today()
-                 time_delta = self._days_hours_minutes(time_delta)
+        time_delta = None
+        process = context.creator
+        if any(s in context.state for s in ['proofreading','amendable']):
+            date_iteration = process['timer'].eventKind.time_date
+            if date_iteration is not None:
+                time_delta = date_iteration - datetime.datetime.today()
+                time_delta = self._days_hours_minutes(time_delta)
 
-             return renderers.render(self.step3_1_template,
-                                     {'context':context, 
-                                      'duration':time_delta,
-                                      'process': process},
-                                     request)
-         elif 'votes for publishing'  in context.state:
-             ballot = process.vp_ballot
-             if ballot.finished_at is not None:
-                 time_delta = ballot.finished_at - datetime.datetime.today()
-                 time_delta = self._days_hours_minutes(time_delta)
+            return renderers.render(self.step3_1_template,
+                                    {'context':context, 
+                                     'duration':time_delta,
+                                     'process': process},
+                                    request)
+        elif 'votes for publishing'  in context.state:
+            ballot = process.vp_ballot
+            if ballot.finished_at is not None:
+                time_delta = ballot.finished_at - datetime.datetime.today()
+                time_delta = self._days_hours_minutes(time_delta)
 
-             return renderers.render(self.step3_3_template,
-                                     {'context': context, 
-                                      'duration': time_delta,
-                                      'process': process,
-                                      'ballot_report': ballot.report},
-                                     request)
-         elif 'votes for amendments'  in context.state:
-             voters = []
-             [voters.extend(b.report.voters) for b in process.amendments_ballots]
-             voters = list(set(voters))
-             ballot = process.amendments_ballots[-1]
-             if ballot.finished_at is not None:
-                 time_delta = ballot.finished_at - datetime.datetime.today()
-                 time_delta = self._days_hours_minutes(time_delta)
+            return renderers.render(self.step3_3_template,
+                                    {'context': context, 
+                                     'duration': time_delta,
+                                     'process': process,
+                                     'ballot_report': ballot.report},
+                                    request)
+        elif 'votes for amendments'  in context.state:
+            voters = []
+            [voters.extend(b.report.voters) \
+            for b in process.amendments_ballots]
+            voters = list(set(voters))
+            ballot = process.amendments_ballots[-1]
+            if ballot.finished_at is not None:
+                time_delta = ballot.finished_at - datetime.datetime.today()
+                time_delta = self._days_hours_minutes(time_delta)
 
-             return renderers.render(self.step3_2_template,
-                                     {'context':context, 
-                                      'duration':time_delta,
-                                      'process': process,
-                                      'ballot_report': ballot.report,
-                                      'voters': voters},
-                                     request)
-         elif 'open to a working group'  in context.state:
-             return renderers.render(self.step3_0_template,
-                                     {'context':context, 
-                                      'process': process,
-                                      'min_members': getSite().participants_mini},
-                                     request)
+            return renderers.render(self.step3_2_template,
+                                    {'context':context, 
+                                     'duration':time_delta,
+                                     'process': process,
+                                     'ballot_report': ballot.report,
+                                     'voters': voters},
+                                    request)
+        elif 'open to a working group'  in context.state:
+            return renderers.render(self.step3_0_template,
+                                   {'context':context, 
+                                    'process': process,
+                                    'min_members': getSite().participants_mini},
+                                   request)
 
-         return _('No more Information.')
+        return _('No more Information.')
 
     def _get_step4_informations(self, context, request):       
         return renderers.render(self.step4_template,
@@ -232,12 +243,13 @@ class StepsPanel(object):
                 result['current_step'] = 2
             elif 'published' in context.state:
                 result['current_step'] = 4
-                result['step4_message'] = self._get_step4_informations(context, self.request)
+                result['step4_message'] = self._get_step4_informations(context,
+                                                                   self.request)
             elif not ('archived' in context.state):
                 result['current_step'] = 3
-                result['step3_message'] = self._get_step3_informations(context, self.request)
+                result['step3_message'] = self._get_step3_informations(context,
+                                                                   self.request)
             elif 'archived' in context.state:
                 result['current_step'] = 0
 
         return result
-

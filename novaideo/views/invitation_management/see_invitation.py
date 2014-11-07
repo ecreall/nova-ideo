@@ -1,17 +1,15 @@
+
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
 from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
-from pontus.form import FormView
-from pontus.view_operation import CallSelectedContextsViews
-from pontus.schema import select
-from pontus.view import BasicView, View, merge_dicts, ViewError
+from pontus.view import BasicView, merge_dicts, ViewError
 
-from novaideo.content.processes.invitation_management.behaviors import  SeeInvitation
+from novaideo.content.processes.invitation_management.behaviors import (
+    SeeInvitation)
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from .see_invitations import SeeInvitationsView
 from novaideo import _
 
 
@@ -33,12 +31,14 @@ class SeeInvitationView(BasicView):
         try:
             invitation = get_obj(int(invitation_id)) 
         except Exception:
-            e = ViewError()
-            e.principalmessage = _("Invitation is not valid")
-            raise e
+            error = ViewError()
+            error.principalmessage = _("Invitation is not valid")
+            raise error
 
         self.execute(None)   
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')     
+        dace_ui_api = get_current_registry().getUtility(
+                                                IDaceUIAPI,
+                                                'dace_ui_api')     
         action_updated, messages, resources, actions = dace_ui_api._actions(self.request, invitation)
         result = {}
         state = None

@@ -1,16 +1,16 @@
+
 import colander
 from pyramid.view import view_config
 
-from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
-from pontus.schema import select, Schema
-from pontus.view import BasicView, View, merge_dicts, ViewError
-from pontus.default_behavior import Cancel
+from pontus.schema import Schema
+from pontus.view import BasicView
 from pontus.widget import RadioChoiceWidget
 
-from novaideo.content.processes.ballot_processes.referendum.behaviors import  Vote
+from novaideo.content.processes.ballot_processes.referendum.behaviors import (
+    Vote)
 from novaideo.content.proposal import Proposal
 from novaideo import _
 
@@ -18,8 +18,8 @@ from novaideo import _
 
 class VoteViewStudyReport(BasicView):
     title = _('Ballot report')
-    name='ballotreport'
-    template ='novaideo:views/ballot_processes/referendum/templates/referendum_vote.pt'
+    name = 'ballotreport'
+    template = 'novaideo:views/ballot_processes/referendum/templates/referendum_vote.pt'
 
     def update(self):
         result = {}
@@ -53,7 +53,7 @@ class VoteSchema(Schema):
 
 class VoteFormView(FormView):
     title =  _('Vote')
-    name ='voteform'
+    name = 'voteform'
     formid = 'formvote'
     behaviors = [Vote]
     schema = VoteSchema()

@@ -1,14 +1,14 @@
-import re
+
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from pontus.view import BasicView, ViewError, merge_dicts
+from pontus.view import BasicView, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
-from novaideo.content.processes.invitation_management.behaviors import  SeeInvitations
-from novaideo.content.novaideo_application import NovaIdeoApplicationSchema, NovaIdeoApplication
+from novaideo.content.processes.invitation_management.behaviors import (
+    SeeInvitations)
+from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 
 
@@ -34,7 +34,8 @@ class SeeInvitationsView(BasicView):
         all_resources['js_links'] = []
         all_resources['css_links'] = []
         all_invitation_data = {'invitations':[]}
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
+                                                        'dace_ui_api')
         for invitation in self.context.invitations:
             action_updated, messages, resources, actions = dace_ui_api._actions(self.request, invitation)
             if action_updated and not isactive:
@@ -65,7 +66,7 @@ class SeeInvitationsView(BasicView):
                 'state':state}
             all_invitation_data['invitations'].append(invitation_dic)
          
-        all_invitation_data['tabid'] = self.__class__.__name__+'InvitationActions'
+        all_invitation_data['tabid'] = self.__class__.__name__ + 'InvitationActions'
         body = self.content(result=all_invitation_data, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = all_messages
@@ -74,7 +75,6 @@ class SeeInvitationsView(BasicView):
         result.update(all_resources)
         result  = merge_dicts(self.requirements_copy, result)
         return result
-
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeInvitations:SeeInvitationsView})

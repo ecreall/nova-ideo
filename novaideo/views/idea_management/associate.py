@@ -5,8 +5,6 @@ from pyramid.threadlocal import get_current_registry
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
-from dace.util import getSite
-from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
 from pontus.view_operation import MultipleView
@@ -20,7 +18,7 @@ from novaideo import _
 from novaideo.core import can_access
 
 
-associate_messages = {'0': _(u"""Pas de contenus asociés"""),
+ASSOCIATION_MESSAGES = {'0': _(u"""Pas de contenus asociés"""),
                       '1': _(u"""Un contenu asocié"""),
                       '*': _(u"""${lenassociated} contenus asociés""")}
 
@@ -33,9 +31,14 @@ class RelatedContentsView(BasicView):
     viewid = 'relatedcontents'
 
     def _correlation_action(self, correlation):
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
+        dace_ui_api = get_current_registry().getUtility(
+                                               IDaceUIAPI,'dace_ui_api')
         correlation_action = {}
-        action_updated, messages, resources, actions = dace_ui_api._actions(self.request, correlation, 'correlationmanagement', 'comment')
+        action_updated, messages, resources, actions = dace_ui_api._actions(
+                                                         self.request, 
+                                                         correlation, 
+                                                         'correlationmanagement', 
+                                                         'comment')
         if actions: 
             correlation_action['correlationaction'] = actions[0]
 
@@ -50,43 +53,50 @@ class RelatedContentsView(BasicView):
 
             if 'css_links' in resources:
                 all_resources['css_links'].extend(resources['css_links'])
-                all_resources['css_links'] =list(set(all_resources['css_links']))
+                all_resources['css_links'] = list(set(all_resources['css_links']))
 
 
     def update(self):
         user = get_current()
-        root = getSite()
-        correlations = [c for c in self.context.source_correlations if c.type==0 and can_access(user, c, self.request, root)]
-        target_correlations = [c for c in self.context.target_correlations if c.type==0 and can_access(user, c, self.request, root)]
+        correlations = [c for c in self.context.source_correlations \
+                        if c.type == 0 and can_access(user, c)]
+        target_correlations = [c for c in self.context.target_correlations \
+                               if c.type == 0 and can_access(user, c)]
         relatedcontents = []
         all_messages = {}
         isactive = False
         all_resources = {}
         all_resources['js_links'] = []
         all_resources['css_links'] = []
-        for c in correlations:
-            contents = c.targets
+        for correlation in correlations:
+            contents = correlation.targets
             for content in contents:
-                correlation_data, resources, messages, action_updated =  self._correlation_action(c)
-                correlation_data.update({'content':content, 'url':content.url(self.request), 'correlation': c})
+                correlation_data, resources, messages, action_updated =  self._correlation_action(correlation)
+                correlation_data.update({'content':content, 
+                                        'url':content.url(self.request), 
+                                        'correlation': correlation})
                 relatedcontents.append(correlation_data)
                 isactive = action_updated or isactive
-                self._update_data(messages, resources, all_messages, all_resources)
+                self._update_data(messages, resources, 
+                                  all_messages, all_resources)
 
-        for c in target_correlations:
-            content = c.source
-            correlation_data, resources, messages, action_updated =  self._correlation_action(c)
-            correlation_data.update({'content':content, 'url':content.url(self.request), 'correlation': c})
+        for correlation in target_correlations:
+            content = correlation.source
+            correlation_data, resources, messages, action_updated =  self._correlation_action(correlation)
+            correlation_data.update({'content':content, 
+                                     'url':content.url(self.request), 
+                                     'correlation': correlation})
             relatedcontents.append(correlation_data)
             isactive = action_updated or isactive
             self._update_data(messages, resources, all_messages, all_resources)
 
         len_contents = len(relatedcontents)
         index = str(len_contents)
-        if len_contents>1:
+        if len_contents > 1:
             index = '*'
 
-        message = _(associate_messages[index], mapping={'lenassociated':len_contents})
+        message = _(ASSOCIATION_MESSAGES[index], 
+                    mapping={'lenassociated':len_contents})
         self.message = message
         result = {}
         values = {
@@ -107,20 +117,22 @@ class RelatedContentsView(BasicView):
 class AssociateFormView(FormView):
 
     title = _('Associate')
-    schema = select(CorrelationSchema(factory=Correlation, editable=True),['targets', 'intention','comment'])
+    schema = select(CorrelationSchema(factory=Correlation, 
+                                      editable=True),
+                    ['targets', 'intention','comment'])
     behaviors = [Associate]
     formid = 'formassociate'
-    name='associateform'
+    name = 'associateform'
 
 
     def before_update(self):
         target = self.schema.get('targets')
         target.title = _("Related contents")
         formwidget = deform.widget.FormWidget(css_class='controled-form', 
-                                              activable=True,
-                                              button_css_class="pull-right",
-                                              picto_css_class="glyphicon glyphicon-link",
-                                              button_title=_("Associate"))
+                                activable=True,
+                                button_css_class="pull-right",
+                                picto_css_class="glyphicon glyphicon-link",
+                                button_title=_("Associate"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 
@@ -136,10 +148,10 @@ class AssociateView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (RelatedContentsView, AssociateFormView)
-    description=_("Associate the idea to an other content")
+    description = _("Associate the idea to an other content")
 
     def get_message(self):
-        message = (associate_messages['0']).format()
+        message = (ASSOCIATION_MESSAGES['0']).format()
         if self.children:
             message = getattr(self.children[0], 'message', message)
 

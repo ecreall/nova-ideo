@@ -1,21 +1,25 @@
+
 import colander
 import deform
 from persistent.dict import PersistentDict
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
-from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
-from pontus.schema import Schema, select, omit
-from pontus.view import BasicView, View, merge_dicts, ViewError
+from pontus.schema import Schema, omit
+from pontus.view import BasicView
 from pontus.default_behavior import Cancel
-from pontus.widget import Select2Widget, SequenceWidget, SimpleMappingWidget, TextInputWidget
+from pontus.widget import TextInputWidget
 
-from novaideo.content.processes.amendment_management.behaviors import  SubmitAmendment
+from novaideo.content.processes.amendment_management.behaviors import (
+    SubmitAmendment)
 from novaideo.content.amendment import Amendment, Intention
-from novaideo.views.widget import DragDropSelect2Widget, DragDropSequenceWidget, DragDropMappingWidget
+from novaideo.views.widget import (
+    DragDropSelect2Widget, 
+    DragDropSequenceWidget, 
+    DragDropMappingWidget)
 from novaideo import _
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
@@ -28,7 +32,8 @@ def get_default_explanations_groups(context):
     grouped_explanations = []
     for explanation in explanations.values():
         if not(explanation['oid'] in grouped_explanations):
-            group = [e for e in explanations.values() if Intention.eq(explanation['intention'], e['intention'])]
+            group = [e for e in explanations.values() \
+                     if Intention.eq(explanation['intention'], e['intention'])]
             grouped_explanations.extend([e['oid'] for e in group])
             groups.append(group)
             if len(grouped_explanations) == len(explanations):
@@ -40,7 +45,6 @@ def get_default_explanations_groups(context):
 @colander.deferred
 def explanations_choice(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
     values = [(i['oid'], i['oid']) for i in context.explanations.values()]
     return DragDropSelect2Widget(values=values, multiple=True)
 
@@ -65,14 +69,18 @@ class ExplanationGroupSchema(Schema):
 @colander.deferred
 def groups_widget(node, kw):
     context = node.bindings['context']
-    return DragDropSequenceWidget(item_css_class="explanation-groups", item_title_template=context.title+'-', max_len=len(context.explanations))
+    return DragDropSequenceWidget(item_css_class="explanation-groups", 
+                                  item_title_template=context.title+'-', 
+                                  max_len=len(context.explanations))
 
 
 class ExplanationGroupsSchema(Schema):
 
     groups = colander.SchemaNode(
         colander.Sequence(),
-        omit(ExplanationGroupSchema(name='Amendment', widget=DragDropMappingWidget()),['_csrf_token_']),
+        omit(ExplanationGroupSchema(name='Amendment', 
+                                    widget=DragDropMappingWidget()),
+             ['_csrf_token_']),
         widget=groups_widget,
         title=_('Organize your changes in amendments')
         )
@@ -135,7 +143,7 @@ class SubmitAmendmentView(FormView):
             group_data = {'title':self.context.title +'-'+str(i),
                           'explanations': [str(e['oid']) for e in group]}
             data['groups'].append(group_data)
-            i+=1
+            i += 1
 
         return data
 

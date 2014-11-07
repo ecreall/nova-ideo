@@ -1,3 +1,4 @@
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -18,7 +19,6 @@ class AbandonIdeaView(BasicView):
     name = 'abandonidea'
     behaviors = [AbandonIdea]
     viewid = 'abandonidea'
-
 
     def update(self):
         self.execute(None)        

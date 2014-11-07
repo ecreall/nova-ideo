@@ -2,12 +2,10 @@
 import colander
 import deform
 from pyramid.view import view_config
-from substanced.util import find_service
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite, find_entities
 from dace.objectofcollaboration.principal.util import get_current
-from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select, Schema
 from pontus.widget import Select2WidgetCreateSearchChoice, Length
@@ -22,13 +20,13 @@ from novaideo.mail import PRESENTATION_IDEA_MESSAGE, PRESENTATION_IDEA_SUBJECT
 
 
 try:
-      basestring
+    basestring
 except NameError:
-      basestring = str
+    basestring = str
 
 
 
-presentidea_message = {'0': _(u"""Pas de personnes contactées"""),
+PRESENT_MESSAGE = {'0': _(u"""Pas de personnes contactées"""),
                        '1': _(u"""Une personne contactée"""),
                        '*': _(u"""${len_persons_contacted} personnes contactées""")}
 
@@ -46,10 +44,11 @@ class SentToView(BasicView):
         members = self.context.persons_contacted
         len_members = len(members)
         index = str(len_members)
-        if len_members>1:
+        if len_members > 1:
             index = '*'
 
-        message = _(presentidea_message[index], mapping={'len_persons_contacted': len_members})
+        message = _(PRESENT_MESSAGE[index], 
+                    mapping={'len_persons_contacted': len_members})
         result = {}
         values = {
                 'message': message,
@@ -66,9 +65,7 @@ class SentToView(BasicView):
 @colander.deferred
 def members_choice(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
     values = []
-    root = getSite(context)
     user = get_current()
     prop = list(find_entities([IPerson], states=['active']))
     prop.remove(user)
@@ -81,7 +78,8 @@ class PresentIdeaSchema(Schema):
     members = colander.SchemaNode(
         colander.Set(),
         widget=members_choice,
-        validator = Length(_, min=1, min_message="Vous devez sélectionner au moins {min} membre, ou saisir {min} adresse courrier électronique."),
+        validator = Length(_, min=1,
+                           min_message="Vous devez sélectionner au moins {min} membre, ou saisir {min} adresse courrier électronique."),
         title=_('Recipients')
         )
 
@@ -110,17 +108,18 @@ class PresentIdeaSchema(Schema):
 class PresentIdeaFormView(FormView):
 
     title = _('Submit the idea to others')
-    schema = select(PresentIdeaSchema(), ['members', 'subject', 'message', 'send_to_me'])
+    schema = select(PresentIdeaSchema(), 
+                    ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentIdea]
     formid = 'formpresentideaform'
-    name='presentideaform'
+    name = 'presentideaform'
 
     def before_update(self):
         formwidget = deform.widget.FormWidget(css_class='controled-form', 
-                                              activable=True,
-                                              button_css_class="pull-right",
-                                              picto_css_class="glyphicon glyphicon-envelope",
-                                              button_title=_("Present"))
+                                activable=True,
+                                button_css_class="pull-right",
+                                picto_css_class="glyphicon glyphicon-envelope",
+                                button_title=_("Present"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 
@@ -133,16 +132,17 @@ class PresentIdeaFormView(FormView):
 class PresentIdeaView(MultipleView):
     title = _('Submit the idea to others')
     description = _('Submit the idea to others')
-    name='presentidea'
+    name = 'presentidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (SentToView, PresentIdeaFormView)
 
     def get_message(self):
-        message = (presentidea_message['0']).format()
+        message = (PRESENT_MESSAGE['0']).format()
         if self.children:
             message = getattr(self.children[0], 'message', message)
 
         return message
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({PresentIdea:PresentIdeaView})

@@ -1,20 +1,14 @@
-import datetime
+
 from pyramid.view import view_config
-from pyramid.threadlocal import get_current_registry
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from pontus.default_behavior import Cancel
-from pontus.form import FormView
-from pontus.schema import select
 from pontus.view_operation import MultipleView
-from pontus.view import BasicView, merge_dicts
-from pontus.dace_ui_extension.interfaces import IDaceUIAPI
+from pontus.view import BasicView
 
-from novaideo.content.processes.correlation_management.behaviors import  SeeCorrelation
-from novaideo.content.comment import CommentSchema, Comment
+from novaideo.content.processes.correlation_management.behaviors import (
+    SeeCorrelation)
 from novaideo.content.correlation import Correlation
 from novaideo import _
-from ..idea_management.comment_idea import CommentsView
 from .comment_correlation import CommentCorrelationView
 
 
@@ -45,7 +39,7 @@ class DetailCorrelation(BasicView):
     )
 class SeeCorrelationView(MultipleView):
     title = _('Detail')
-    name='seecorrelation'
+    name = 'seecorrelation'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (DetailCorrelation, CommentCorrelationView)
     requirements = {'css_links':[],

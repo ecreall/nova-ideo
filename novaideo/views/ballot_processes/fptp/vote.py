@@ -1,29 +1,24 @@
+
 import colander
 from pyramid.view import view_config
 
-from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.entity import Entity
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
-from pontus.schema import select
-from pontus.view import BasicView, View, merge_dicts, ViewError
-from pontus.default_behavior import Cancel
-from pontus.schema import select, omit, Schema
-from pontus.widget import RadioChoiceWidget, Select2Widget
-from pontus.file import OBJECT_OID, Object as ObjectType
+from pontus.view import BasicView
+from pontus.schema import Schema
+from pontus.widget import Select2Widget
 
 from novaideo.content.processes.ballot_processes.fptp.behaviors import  Vote
 from novaideo.content.proposal import Proposal
 from novaideo import _
-from novaideo.views.widget import InLineWidget, ObjectWidget
-
 
 
 class VoteViewStudyReport(BasicView):
     title = _('FPTP vote')
-    name='votefptp'
-    template ='novaideo:views/ballot_processes/fptp/templates/fptp_vote.pt'
+    name = 'votefptp'
+    template = 'novaideo:views/ballot_processes/fptp/templates/fptp_vote.pt'
 
     def update(self):
         result = {}
@@ -51,7 +46,6 @@ def subjects_choice(ballot_report):
 
     values = [(i, get_title(i)) for i in subjects]
     values = sorted(values, key=lambda e: e[1])
-   # widget = RadioChoiceWidget(values=values)
     return Select2Widget(values=values)
 
 
@@ -67,7 +61,7 @@ class CondidatesSchema(Schema):
 
 class VoteFormView(FormView):
     title =  _('Vote')
-    name ='voteform'
+    name = 'voteform'
     formid = 'formvote'
     behaviors = [Vote]
     validate_behaviors = False

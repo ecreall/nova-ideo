@@ -1,10 +1,10 @@
+
 import datetime
 import deform
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
 from pontus.view_operation import MultipleView
@@ -32,16 +32,16 @@ class CommentsView(BasicView):
         hours, remainder = divmod(delta.seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
         result = {}
-        if delta.days>0:
+        if delta.days > 0:
             result['days'] = delta.days
 
-        if hours>0:
+        if hours > 0:
             result['hours'] = hours
 
-        if minutes>0:
+        if minutes > 0:
             result['minutes'] = minutes
 
-        if seconds>0:
+        if seconds > 0:
             result['seconds'] = seconds
 
         return result
@@ -53,10 +53,15 @@ class CommentsView(BasicView):
         all_resources['js_links'] = []
         all_resources['css_links'] = []
         all_comments = []
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
+        dace_ui_api = get_current_registry().getUtility(
+                                               IDaceUIAPI,'dace_ui_api')
         for comment in comments:
             comment_data = {'comment':comment}
-            action_updated, messages, resources, actions = dace_ui_api._actions(self.request, comment, 'commentmanagement', 'respond')
+            action_updated, messages, resources, actions = dace_ui_api._actions(
+                                                           self.request,
+                                                           comment, 
+                                                           'commentmanagement', 
+                                                           'respond')
             if action_updated and not isactive:
                 isactive = True
 
@@ -98,10 +103,13 @@ class CommentsView(BasicView):
 class CommentIdeaFormView(FormView):
 
     title = _('Discuss the idea')
-    schema = select(CommentSchema(factory=Comment, editable=True, omit=('related_contents',)),['intention', 'comment', 'related_contents'])
+    schema = select(CommentSchema(factory=Comment, 
+                                  editable=True, 
+                                  omit=('related_contents',)),
+                    ['intention', 'comment', 'related_contents'])
     behaviors = [CommentIdea]
     formid = 'formcommentidea'
-    name='commentideaform'
+    name = 'commentideaform'
 
     def before_update(self):
         formwidget = deform.widget.FormWidget(css_class='commentform')
@@ -110,11 +118,12 @@ class CommentIdeaFormView(FormView):
         if self.request.view_name == 'dace-ui-api-view':
             view_name = 'commentidea'
 
-        formwidget.ajax_url = self.request.resource_url(self.context, '@@'+view_name)
+        formwidget.ajax_url = self.request.resource_url(self.context, 
+                                                        '@@'+view_name)
         self.schema.widget = formwidget
 
 
-commentide_message = {'0': _(u"""Pas de fils de discussion"""),
+COMMENT_MESSAGE = {'0': _(u"""Pas de fils de discussion"""),
                       '1': _(u"""Un fil de discussion"""),
                       '*': _(u"""${lencomments} fils de discussion""")} 
 
@@ -126,7 +135,7 @@ commentide_message = {'0': _(u"""Pas de fils de discussion"""),
 class CommentIdeaView(MultipleView):
     title = _('Discuss the idea')
     description = _('Discuss the idea')
-    name='commentidea'
+    name = 'commentidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CommentIdeaFormView, CommentsView)
@@ -137,7 +146,8 @@ class CommentIdeaView(MultipleView):
         if lencomments > 1:
             index = '*'
 
-        message = _(commentide_message[index], mapping={'lencomments':lencomments})
+        message = _(COMMENT_MESSAGE[index], 
+                    mapping={'lencomments':lencomments})
         return message
 
 

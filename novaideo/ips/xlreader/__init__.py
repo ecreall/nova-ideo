@@ -24,7 +24,7 @@ def create_object_from_xl(file, factory, properties):
     sheet = book.sheet_by_index(0)# or: sheet_by_name("Ma feuille") 
     header = []
     for col_index in xrange(sheet.ncols):
-        value = sheet.cell(rowx=0,colx=col_index).value
+        value = sheet.cell(rowx=0, colx=col_index).value
         header.append(value)
 
     objects = []
@@ -33,7 +33,7 @@ def create_object_from_xl(file, factory, properties):
         obj = factory()
         appstruct = {}
         for col_index in xrange(sheet.ncols):
-            value = sheet.cell(rowx=row_index,colx=col_index).value
+            value = sheet.cell(rowx=row_index, colx=col_index).value
             key = header[col_index].lower()
             if key in properties_keys:
                 metadata = properties[key]

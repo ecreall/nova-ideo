@@ -1,15 +1,11 @@
 # -*- coding: utf8 -*-
 import colander
 import deform
-from zope.interface import invariant
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
-from substanced.util import find_service
-
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite, get_obj
-from pontus.default_behavior import Cancel
+from dace.util import get_obj
 from pontus.form import FormView
 from pontus.schema import select, Schema
 from pontus.widget import CheckboxChoiceWidget, RadioChoiceWidget
@@ -23,7 +19,7 @@ from novaideo import _
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
-compare_message = {'0': _(u"""Pas de versions"""),
+COMPARE_MESSAGE = {'0': _(u"""Pas de versions"""),
                    '1': _(u"""Voir la version"""),
                    '*': _(u"""Voir les ${len_history} versions""")}
 
@@ -44,17 +40,24 @@ class DiffView(BasicView):
         keywordsdiff = []
         versionobj = None
         if version is not None:
-             versionobj = get_obj(int(version))
-             text_analyzer = get_current_registry().getUtility(ITextAnalyzer,'text_analyzer')
-             soupt, textdiff =  text_analyzer.render_html_diff(getattr(versionobj, 'text', ''), getattr(self.context, 'text', ''))
-             soupd, descriptiondiff = text_analyzer.render_html_diff('<div>'+getattr(versionobj, 'description', '')+'</div>', '<div>'+getattr(self.context, 'description', '')+'</div>')
-             for k in versionobj.keywords:
-                 if k in self.context.keywords:
-                     keywordsdiff.append({'title':k,'state':'nothing'})
-                 else:
-                     keywordsdiff.append({'title':k,'state':'del'})
+            versionobj = get_obj(int(version))
+            text_analyzer = get_current_registry().getUtility(
+                                                     ITextAnalyzer,
+                                                     'text_analyzer')
+            soupt, textdiff =  text_analyzer.render_html_diff(
+                                   getattr(versionobj, 'text', ''), 
+                                   getattr(self.context, 'text', ''))
+            soupd, descriptiondiff = text_analyzer.render_html_diff(
+                                '<div>'+getattr(versionobj, 'description', '')+'</div>', 
+                                '<div>'+getattr(self.context, 'description', '')+'</div>')
+            for k in versionobj.keywords:
+                if k in self.context.keywords:
+                    keywordsdiff.append({'title':k, 'state':'nothing'})
+                else:
+                    keywordsdiff.append({'title':k, 'state':'del'})
                   
-             [keywordsdiff.append({'title':k,'state':'ins'}) for k in self.context.keywords if k not in versionobj.keywords]
+            [keywordsdiff.append({'title':k, 'state':'ins'}) \
+             for k in self.context.keywords if k not in versionobj.keywords]
 
         result = {}
         values = {
@@ -75,7 +78,8 @@ def version_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
     current_version = context.current_version
-    values = [(i, i.get_view(request)) for i in current_version.history if not(i is current_version)]
+    values = [(i, i.get_view(request)) for i in current_version.history \
+              if not(i is current_version)]
     values = sorted(values, key=lambda v: v[0].modified_at, reverse=True) 
     widget = RadioChoiceWidget(values=values)
     widget.template = 'novaideo:views/idea_management/templates/radio_choice.pt'
@@ -94,7 +98,6 @@ def current_version_choice(node, kw):
 @colander.deferred
 def default_current_version_choice(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
     values = [context.current_version]
     return values
 
@@ -122,14 +125,15 @@ class CompareIdeaFormView(FormView):
     schema = select(CompareIdeaSchema(), ['current_version', 'versions'])
     behaviors = [CompareIdea]
     formid = 'formcompareidea'
-    name='compareideaform'
+    name = 'compareideaform'
 
     def before_update(self):
         formwidget = deform.widget.FormWidget(css_class='compareform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
         view_name = 'compareidea'
-        formwidget.ajax_url = self.request.resource_url(self.context, '@@'+view_name)
+        formwidget.ajax_url = self.request.resource_url(self.context, 
+                                                        '@@'+view_name)
 
 
 @view_config(
@@ -139,7 +143,7 @@ class CompareIdeaFormView(FormView):
     )
 class CompareIdeaView(MultipleView):
     title = _('Compare versions')
-    name='compareidea'
+    name = 'compareidea'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CompareIdeaFormView, DiffView)
@@ -147,9 +151,10 @@ class CompareIdeaView(MultipleView):
     def get_message(self):
         len_history = len(self.context.history)
         index = str(len_history)
-        if len_history>1:
+        if len_history > 1:
             index = '*'
-        message = _(compare_message[index], mapping={'len_history':len_history})
+
+        message = _(COMPARE_MESSAGE[index], mapping={'len_history':len_history})
         return message
 
 

@@ -958,6 +958,7 @@ class CorrectProposal(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-check'
     style_order = 2
+    correction_item_template = 'novaideo:views/proposal_management/templates/correction_item.pt'
     isSequential = True
     context = IProposal
     processs_relation_id = 'proposal'
@@ -968,22 +969,21 @@ class CorrectProposal(InfiniteCardinality):
 
     def _add_vote_actions(self, tag, correction, request):
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
-        if not hasattr(self, 'correctitemaction'):
+        if not hasattr(self, '_correctitemaction'):
             correctitemnode = self.process['correctitem']
             correctitem_wis = [wi for wi in correctitemnode.workitems \
                                if wi.node is correctitemnode]
             if correctitem_wis:
-                self.correctitemaction = correctitem_wis[0].actions[0]
+                self._correctitemaction = correctitem_wis[0].actions[0]
 
-        if hasattr(self, 'correctitemaction'):
+        if hasattr(self, '_correctitemaction'):
             actionurl_update = dace_ui_api.updateaction_viewurl(
                                request=request, 
-                               action_uid=str(get_oid(self.correctitemaction)), 
+                               action_uid=str(get_oid(self._correctitemaction)), 
                                context_uid=str(get_oid(correction)))
             values = {'favour_action_url': actionurl_update,
                      'against_action_url': actionurl_update}
-            template = 'novaideo:views/proposal_management/templates/correction_item.pt'
-            body = renderers.render(template, values, request)
+            body = renderers.render(self.correction_item_template, values, request)
             correction_item_soup = BeautifulSoup(body)
             tag.append(correction_item_soup.body)
             tag.body.unwrap()
@@ -1216,7 +1216,6 @@ class Resign(InfiniteCardinality):
         user = get_current()
         wg = context.working_group
         wg.delproperty('members', user)
-        #ajouter le user a demission..
         revoke_roles(user, (('Participant', context),))
         url = request.resource_url(context, "@@index")
         if wg.wating_list:
@@ -1234,7 +1233,9 @@ class Resign(InfiniteCardinality):
                         subject_title=context.title,
                         subject_url=url
                  )
-                mailer_send(subject=subject, recipients=[next_user.email], body=message)
+                mailer_send(subject=subject, 
+                    recipients=[next_user.email], 
+                    body=message)
 
         participants = wg.members
         len_participants = len(participants)
@@ -1313,7 +1314,9 @@ class Participate(InfiniteCardinality):
 
     def _call_votingpublication(self, context, request):
         try:
-            action = self.process.getWorkItems()['proposalmanagement.votingpublication'].actions[0]
+            workitems = self.process.getWorkItems()
+            publication_wi = workitems['proposalmanagement.votingpublication']
+            action = publication_wi.actions[0]
             action.execute(context, request, {})
         except Exception:
             pass
@@ -1329,7 +1332,7 @@ class Participate(InfiniteCardinality):
             wg.addtoproperty('members', user)
             grant_roles(user, (('Participant', context),))
             if (len_participants+1) == root.participants_mini:
-                context.state = PersistentList()#.remove('open to a working group')
+                context.state = PersistentList()
                 wg.state = PersistentList(['active'])
                 if not hasattr(self.process, 'first_decision'):
                     self.process.first_decision = True
@@ -1459,7 +1462,6 @@ class AmendmentsResult(ElementaryAction):
                                  values, request)
         subject = RESULT_VOTE_AMENDMENT_SUBJECT.format(
                         subject_title=context.title)
-        import pdb; pdb.set_trace()
         for member in members:
             message = RESULT_VOTE_AMENDMENT_MESSAGE.format(
                 recipient_title=getattr(member, 'user_title',''),
@@ -1471,7 +1473,6 @@ class AmendmentsResult(ElementaryAction):
                  recipients=[member.email], 
                  html=message)
         
-
     def start(self, context, request, appstruct, **kw):
         result = set()
         for ballot in self.process.amendments_ballots:

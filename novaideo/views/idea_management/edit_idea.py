@@ -1,3 +1,4 @@
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -15,7 +16,7 @@ from .compare_idea import CompareIdeaView
 class EditIdeaFormView(FormView):
 
     title = _('Edit idea')
-    schema = select(IdeaSchema(),['intention',
+    schema = select(IdeaSchema(), ['intention',
                                   'title',
                                   'description',
                                   'keywords',
@@ -24,7 +25,7 @@ class EditIdeaFormView(FormView):
     behaviors = [EditIdea, Cancel]
     formid = 'formeditidea'
     item_template = 'pontus:templates/subview_sample.pt'
-    name='editIdea'
+    name = 'editIdea'
 
     def default_data(self):
         return self.context
@@ -38,7 +39,6 @@ class EditIdeaActionsView(MultipleView):
 
     def _activate(self, items):
         pass
-
 
 
 @view_config(

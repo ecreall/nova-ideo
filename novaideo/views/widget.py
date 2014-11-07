@@ -1,3 +1,4 @@
+
 import deform
 from deform.widget import default_resource_registry
 from pontus.widget import SequenceWidget, Select2Widget
@@ -33,18 +34,17 @@ class Select2WidgetSearch(Select2Widget):
     template = 'novaideo:views/templates/select2.pt'
     requirements = (('deform', None), ('select2search', None))
 
+
 class AddIdeaWidget(deform.widget.MappingWidget):
     template = 'novaideo:views/templates/add_idea_widget.pt'
     requirements = (('deform', None), ('addnewidea', None))
-
-
-#drag and drop
 
 
 class DragDropSequenceWidget(SequenceWidget):
 
     template = 'novaideo:views/templates/dragdrop_sequence/sequence.pt'
     item_template = 'novaideo:views/templates/dragdrop_sequence/sequence_item.pt'
+
 
 class DragDropSelect2Widget(Select2Widget):
     template = 'novaideo:views/templates/dragdrop_sequence/select2.pt'

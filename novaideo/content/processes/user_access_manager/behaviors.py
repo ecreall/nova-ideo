@@ -1,22 +1,10 @@
 # -*- coding: utf8 -*-
-from zope.interface import Interface
-
 from pyramid.httpexceptions import HTTPFound
-from substanced.util import find_service, get_oid
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_any_roles, has_role
-from dace.processinstance.activity import (
-    ElementaryAction,
-    LimitedCardinality,
-    InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
-from pontus.schema import select, omit
+from dace.objectofcollaboration.principal.util import has_any_roles, has_role
+from dace.processinstance.activity import InfiniteCardinality
 
-from novaideo.content.interface import IInvitation
-from novaideo.content.person import Person
 from novaideo.content.interface import INovaIdeoApplication
 from novaideo import _
 

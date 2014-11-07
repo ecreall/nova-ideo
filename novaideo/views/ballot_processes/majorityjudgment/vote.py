@@ -1,3 +1,4 @@
+
 import colander
 import re
 import html2text
@@ -9,16 +10,14 @@ from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
-from pontus.schema import select
-from pontus.view import BasicView, View, merge_dicts, ViewError
-from pontus.default_behavior import Cancel
-from pontus.schema import select, omit, Schema
+from pontus.view import BasicView
+from pontus.schema import omit, Schema
 from pontus.widget import RadioChoiceWidget
 from pontus.file import OBJECT_OID
 
-from novaideo.content.processes.ballot_processes.majorityjudgment.behaviors import  Vote
+from novaideo.content.processes.ballot_processes.majorityjudgment.behaviors import (
+    Vote)
 from novaideo.content.proposal import Proposal
-from novaideo.content.amendment import AmendmentSchema
 from novaideo import _
 from novaideo.views.widget import InLineWidget, ObjectWidget
 from novaideo.utilities.text_analyzer import ITextAnalyzer
@@ -26,8 +25,8 @@ from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 class VoteViewStudyReport(BasicView):
     title = _('Vote for amendments')
-    name='voteforamendments'
-    template ='novaideo:views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt'
+    name = 'voteforamendments'
+    template = 'novaideo:views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt'
 
     def update(self):
         result = {}
@@ -46,10 +45,11 @@ class VoteViewStudyReport(BasicView):
 
 def judgments_choice(report):
     judgments = report.ballottype.judgments
-    judgments = sorted(judgments.keys(), key=lambda o: judgments[o], reverse=True )
+    judgments = sorted(judgments.keys(), 
+                       key=lambda o: judgments[o], 
+                       reverse=True )
     values = [(i, i) for i in judgments]
     widget = RadioChoiceWidget(values=values, inline=True)
-    #widget.template = 'novaideo:views/idea_management/templates/radio_choice.pt'
     return widget
 
 
@@ -63,14 +63,17 @@ class CondidateSchema(Schema):
 class CondidatesSchema(Schema):
     condidates =  colander.SchemaNode(
         colander.Sequence(),
-        omit(CondidateSchema(widget=ObjectWidget() ,editable=True, name='condidate', omit=['judgment']),['_csrf_token_']),
+        omit(CondidateSchema(widget=ObjectWidget(), 
+                             editable=True, 
+                             name='condidate', 
+                             omit=['judgment']),['_csrf_token_']),
         widget=InLineWidget(),
         title='Condidates'
         )
 
 class VoteFormView(FormView):
     title =  _('Vote')
-    name ='voteform'
+    name = 'voteform'
     formid = 'formvote'
     behaviors = [Vote]
     validate_behaviors = False
@@ -84,10 +87,10 @@ class VoteFormView(FormView):
             return
 
         judgments_widget = judgments_choice(ballot_report)
-        self.schema.get('condidates').children[0].get('judgment').widget = judgments_widget
+        judgment_nd = self.schema.get('condidates').children[0].get('judgment')
+        judgment_nd.widget = judgments_widget
         self.schema.get('condidates').children[0].editable = False
         self.schema.view = self
-
 
     def default_data(self):
         ballot_report = None
