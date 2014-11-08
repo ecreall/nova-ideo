@@ -127,7 +127,7 @@ class SearchView(FormView):
         self.action = self.request.resource_url(root, '')
 
     def default_data(self):
-        appstruct = self._get_appstruct()
+        appstruct = self.get_appstruct()
         return appstruct
 
 def search(text, content_types, user):
