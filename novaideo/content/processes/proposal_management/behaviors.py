@@ -50,7 +50,7 @@ from novaideo.mail import (
 from novaideo import _
 from novaideo.content.proposal import Proposal
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
-from novaideo.content.correlation import Correlation
+from novaideo.content.correlation import CorrelationType, Correlation
 from novaideo.content.token import Token
 from novaideo.content.amendment import Amendment
 from novaideo.content.working_group import WorkingGroup
@@ -59,6 +59,7 @@ from novaideo.content.processes.idea_management.behaviors import (
     CommentIdea, 
     Associate as AssociateIdea)
 from novaideo.utilities.text_analyzer import ITextAnalyzer
+from novaideo.utilities.util import connect, disconnect
 
 
 try:
@@ -76,31 +77,20 @@ def createproposal_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context)
 
 
-def associate_to_proposal(related_ideas, proposal, add_idea_text=True):
-    root = getSite()
-    datas = {'author': get_current(),
-             'source': proposal,
-             'comment': '',
-             'intention': 'Creation'}
-    for idea in related_ideas:
-        correlation = Correlation()
-        datas['targets'] = [idea]
-        correlation.set_data(datas)
-        correlation.tags.extend(['related_proposals', 'related_ideas'])
-        correlation.type = 1
-        root.addtoproperty('correlations', correlation)
-        if add_idea_text:
-            proposal.text = getattr(proposal, 'text', '') + \
-                            ('<div>' + idea.text + '</div>')
-
+def include_ideas_texts(proposal, related_ideas):
+    proposal.text = getattr(proposal, 'text', '') +\
+                    ''.join(['<div>' + idea.text + '</div>' \
+                             for idea in related_ideas])
 
 class CreateProposal(ElementaryAction):
     context = INovaIdeoApplication
     roles_validation = createproposal_roles_validation
     processsecurity_validation = createproposal_processsecurity_validation
 
+
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        user = get_current()
         keywords_ids = appstruct.pop('keywords')
         related_ideas = appstruct.pop('related_ideas')
         result, newkeywords = root.get_keywords(keywords_ids)
@@ -114,7 +104,7 @@ class CreateProposal(ElementaryAction):
         proposal.state.append('draft')
         grant_roles(roles=(('Owner', proposal), ))
         grant_roles(roles=(('Participant', proposal), ))
-        proposal.setproperty('author', get_current())
+        proposal.setproperty('author', user)
         self.process.execution_context.add_created_entity('proposal', proposal)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
@@ -122,7 +112,16 @@ class CreateProposal(ElementaryAction):
         wg.addtoproperty('members', get_current())
         wg.state.append('deactivated')
         if related_ideas:
-            associate_to_proposal(related_ideas, proposal)
+            connect(proposal, 
+                    related_ideas,
+                    {'comment': _('Add related ideas'),
+                     'type': _('Creation')},
+                    user,
+                    ['related_proposals', 'related_ideas'],
+                    CorrelationType.solid)
+            proposal.text = getattr(proposal, 'text', '') +\
+                            ''.join(['<div>' + idea.text + '</div>' \
+                                    for idea in related_ideas])
 
         proposal.reindex()
         wg.reindex()
@@ -150,22 +149,9 @@ class PublishAsProposal(ElementaryAction):
     style_picto = 'glyphicon glyphicon-file'
     processsecurity_validation = pap_processsecurity_validation
 
-    def _associate(self, related_ideas, proposal):
-        root = getSite()
-        datas = {'author': get_current(),
-                 'source': proposal,
-                 'comment': _('Publish the idea as a proposal'),
-                 'intention': 'Creation'}
-        for idea in related_ideas:
-            correlation = Correlation()
-            datas['targets'] = [idea]
-            correlation.set_data(datas)
-            correlation.tags.extend(['related_proposals', 'related_ideas'])
-            correlation.type = 1
-            root.addtoproperty('correlations', correlation)
-
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        user = get_current()
         proposal = Proposal()
         root.addtoproperty('proposals', proposal)
         for k in context.keywords_ref:
@@ -180,14 +166,20 @@ class PublishAsProposal(ElementaryAction):
 
         grant_roles(roles=(('Owner', proposal), ))
         grant_roles(roles=(('Participant', proposal), ))
-        proposal.setproperty('author', get_current())
+        proposal.setproperty('author', user)
         self.process.execution_context.add_created_entity('proposal', proposal)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
         wg.setproperty('proposal', proposal)
-        wg.addtoproperty('members', get_current())
+        wg.addtoproperty('members', user)
         wg.state.append('deactivated')
-        self._associate([context], proposal)
+        connect(proposal,
+                [context],
+                {'comment': _('Publish the idea as a proposal'),
+                 'type': _('Creation')},
+                user,
+                ['related_proposals', 'related_ideas'],
+                CorrelationType.solid)
         proposal.reindex()
         wg.reindex()
         context.reindex()
@@ -238,7 +230,7 @@ class SubmitProposal(ElementaryAction):
         else:
             context.state.append('votes for publishing')
 
-        for idea in [i for i in context.related_ideas \
+        for idea in [i for i in context.related_ideas.keys() \
                      if not('published' in i.state)]:
             idea.state = PersistentList(['published'])
             idea.reindex()
@@ -265,6 +257,7 @@ class DuplicateProposal(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        user = get_current()
         copy_of_proposal = copy(context, (root, 'proposals'), 
                              omit=('created_at', 'modified_at'))
         keywords_ids = appstruct.pop('keywords')
@@ -278,10 +271,9 @@ class DuplicateProposal(ElementaryAction):
         copy_of_proposal.set_data(appstruct)
         copy_of_proposal.setproperty('originalentity', context)
         copy_of_proposal.state = PersistentList(['draft'])
-        copy_of_proposal.setproperty('author', get_current())
         grant_roles(roles=(('Owner', copy_of_proposal), ))
         grant_roles(roles=(('Participant', copy_of_proposal), ))
-        copy_of_proposal.setproperty('author', get_current())
+        copy_of_proposal.setproperty('author', user)
         self.process.execution_context.add_created_entity(
                                        'proposal', copy_of_proposal)
         wg = WorkingGroup()
@@ -290,7 +282,13 @@ class DuplicateProposal(ElementaryAction):
         wg.addtoproperty('members', get_current())
         wg.state.append('deactivated')
         if related_ideas:
-            associate_to_proposal(related_ideas, copy_of_proposal, False)
+            connect(copy_of_proposal, 
+                    related_ideas,
+                    {'comment': _('Add related ideas'),
+                     'type': _('Duplicate')},
+                    user,
+                    ['related_proposals', 'related_ideas'],
+                    CorrelationType.solid)
 
         wg.reindex()
         copy_of_proposal.reindex()
@@ -330,45 +328,30 @@ class EditProposal(InfiniteCardinality):
     processsecurity_validation = edit_processsecurity_validation
     state_validation = edit_state_validation
 
-    def _add_related_ideas(self, context, root, ideas, comment, intention):
-        datas = {'author': get_current(),
-                 'targets': ideas,
-                 'comment': comment,
-                 'intention': intention,
-                 'source': context}
-        correlation = Correlation()
-        correlation.set_data(datas)
-        correlation.tags.extend(['related_proposals', 'related_ideas'])
-        correlation.type = 1
-        root.addtoproperty('correlations', correlation)
-        return True
-
-
-    def _del_related_ideas(self, context, root, ideas):
-        correlations = [c for c in context.source_correlations \
-                        if ((c.type==1) and ('related_ideas' in c.tags))]
-        for idea in ideas:
-            for correlation in correlations:
-                if idea in correlation.targets:
-                    root.delproperty('correlations', correlation)
-                    correlation.delproperty('source', context)
-                    for target in correlation.targets:
-                        correlation.delproperty('targets', target)
-        return True
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        user = get_current
         if 'related_ideas' in appstruct:
             relatedideas = appstruct['related_ideas']
+            current_related_ideas = list(context.related_ideas.keys())
             related_ideas_to_add = [i for i in relatedideas \
-                                    if not(i in context.related_ideas)]
-            related_ideas_to_del = [i for i in context.related_ideas \
+                                    if not(i in current_related_ideas)]
+            related_ideas_to_del = [i for i in current_related_ideas \
                                      if not(i in relatedideas) and \
                                         not (i in related_ideas_to_add)]
-            self._add_related_ideas(context, root,
-                                    related_ideas_to_add,
-                                   'Add ideas to the proposal', 'Edit proposal')
-            self._del_related_ideas(context, root, related_ideas_to_del)
+            connect(context,
+                    related_ideas_to_add,
+                    {'comment': _('Add related ideas'),
+                     'type': _('Edit the proposal')},
+                    user,
+                    ['related_proposals', 'related_ideas'],
+                    CorrelationType.solid,
+                    True)
+            disconnect(context, 
+                       related_ideas_to_del,
+                       'related_ideas',
+                       CorrelationType.solid)
 
         context.modified_at = datetime.datetime.today()
         keywords_ids = appstruct.pop('keywords')
@@ -394,7 +377,8 @@ def proofreading_roles_validation(process, context):
 
 
 def proofreading_processsecurity_validation(process, context):
-    correction_in_process = any(('in process' in c.state for c in context.corrections))
+    correction_in_process = any(('in process' in c.state \
+                                 for c in context.corrections))
     return not correction_in_process and \
            not getattr(process, 'first_decision', True) and \
            global_user_processsecurity(process, context)
@@ -943,14 +927,16 @@ def correct_roles_validation(process, context):
 
 
 def correct_processsecurity_validation(process, context):
-    correction_in_process = any(('in process' in c.state for c in context.corrections))
+    correction_in_process = any(('in process' in c.state \
+                                 for c in context.corrections))
     return not correction_in_process and \
            not getattr(process, 'first_decision', True) and \
            global_user_processsecurity(process, context)
 
 
 def correct_state_validation(process, context):
-    return 'active' in context.working_group.state and 'proofreading' in context.state
+    return 'active' in context.working_group.state and\
+           'proofreading' in context.state
 
 
 class CorrectProposal(InfiniteCardinality):
@@ -968,7 +954,8 @@ class CorrectProposal(InfiniteCardinality):
     state_validation = correct_state_validation
 
     def _add_vote_actions(self, tag, correction, request):
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,'dace_ui_api')
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
+                                                        'dace_ui_api')
         if not hasattr(self, '_correctitemaction'):
             correctitemnode = self.process['correctitem']
             correctitem_wis = [wi for wi in correctitemnode.workitems \
@@ -983,7 +970,8 @@ class CorrectProposal(InfiniteCardinality):
                                context_uid=str(get_oid(correction)))
             values = {'favour_action_url': actionurl_update,
                      'against_action_url': actionurl_update}
-            body = renderers.render(self.correction_item_template, values, request)
+            body = renderers.render(
+                             self.correction_item_template, values, request)
             correction_item_soup = BeautifulSoup(body)
             tag.append(correction_item_soup.body)
             tag.body.unwrap()
@@ -1458,8 +1446,8 @@ class AmendmentsResult(ElementaryAction):
         values = {'amendments_vote_result': amendments_vote_result,
                   'electeds': electeds,
                   'subject': context}
-        result_body = renderers.render(self.amendments_vote_result_template,
-                                 values, request)
+        result_body = renderers.render(
+            self.amendments_vote_result_template, values, request)
         subject = RESULT_VOTE_AMENDMENT_SUBJECT.format(
                         subject_title=context.title)
         for member in members:
@@ -1483,6 +1471,7 @@ class AmendmentsResult(ElementaryAction):
         amendments = [a for a in result if isinstance(a, Amendment)]
         wg = context.working_group
         root = getSite()
+        user = get_current()
         self.newcontext = context 
         if amendments:
             self._send_ballot_result(context, request, result, wg.members)
@@ -1500,12 +1489,18 @@ class AmendmentsResult(ElementaryAction):
             removed_ideas = [a.removed_ideas for a in amendments]
             removed_ideas = [item for sublist in removed_ideas \
                              for item in sublist]
-            not_modified_ideas = [i for i in context.related_ideas \
+            not_modified_ideas = [i for i in context.related_ideas.keys() \
                                   if not (i in removed_ideas)]
             new_ideas = not_modified_ideas
             new_ideas.extend(added_ideas)
             new_ideas = list(set(new_ideas))
-            associate_to_proposal(new_ideas, copy_of_proposal, False)
+            connect(copy_of_proposal, 
+                    new_ideas,
+                    {'comment': _('Add related ideas'),
+                     'type': _('New version')},
+                    user,
+                    ['related_proposals', 'related_ideas'],
+                    CorrelationType.solid)
             self.newcontext = copy_of_proposal
             copy_of_proposal.reindex()
         else:

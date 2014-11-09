@@ -17,6 +17,7 @@ from pontus.widget import RichTextWidget, Select2Widget, Length
 from pontus.core import VisualisableElementSchema
 
 from .interface import IProposal
+from novaideo.content.correlation import CorrelationType
 from novaideo.core import Commentable, can_access
 from novaideo import _
 from novaideo.core import (
@@ -102,9 +103,11 @@ class Proposal(Commentable,
 
     @property
     def related_ideas(self):
-        lists = [c.targets for c in self.source_correlations \
-                 if ((c.type==1) and ('related_ideas' in c.tags))]
-        return [target for targets in lists for target in targets]
+        lists_targets = [(c.targets, c) for c in self.source_correlations \
+                          if ((c.type==CorrelationType.solid) and \
+                              ('related_ideas' in c.tags))]
+        return dict([(target, c) for targets, c in lists_targets \
+                     for target in targets])
 
     @property
     def tokens(self):

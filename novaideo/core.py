@@ -199,7 +199,6 @@ class CorrelableEntity(Entity):
     @property
     def correlations(self):
         """Return all source correlations and target correlations"""
-
         result = [c.target for c in self.source_correlations]
         result.extend([c.source for c in self.target_correlations])
         return list(set(result))

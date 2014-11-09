@@ -55,7 +55,6 @@ class RelatedContentsView(BasicView):
                 all_resources['css_links'].extend(resources['css_links'])
                 all_resources['css_links'] = list(set(all_resources['css_links']))
 
-
     def update(self):
         user = get_current()
         correlations = [c for c in self.context.source_correlations \

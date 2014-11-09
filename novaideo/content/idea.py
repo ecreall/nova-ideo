@@ -18,6 +18,7 @@ from pontus.widget import (
 from pontus.file import ObjectData, File
 
 from .interface import Iidea
+from novaideo.content.correlation import CorrelationType
 from novaideo.core import Commentable
 from novaideo import _
 from novaideo.core import (
@@ -103,6 +104,6 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     @property
     def related_proposals(self):
         """Return all proposals that uses this idea"""
-
-        return [c.source for c in self.source_correlations\
-                if ((c.type==1) and ('related_proposals' in c.tags))]
+        return dict([(c.source, c) for c in self.source_correlations\
+                if ((c.type==CorrelationType.solid) and \
+                    ('related_proposals' in c.tags))])

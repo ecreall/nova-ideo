@@ -66,7 +66,7 @@ def replacedideas_choice(node, kw):
     request = node.bindings['request']
     used_ideas = context.get_used_ideas()
     root = getSite()
-    ideas = list(context.proposal.related_ideas)
+    ideas = list(context.proposal.related_ideas.keys())
     ideas.extend(used_ideas)
     ideas = set(ideas)
     values = [(i, i.title) for i in ideas]

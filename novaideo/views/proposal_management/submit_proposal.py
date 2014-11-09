@@ -20,7 +20,7 @@ class SubmitProposalStudyReport(BasicView):
 
     def update(self):
         result = {}
-        not_published_ideas = [i for i in self.context.related_ideas \
+        not_published_ideas = [i for i in self.context.related_ideas.keys() \
                               if not('published' in i.state)]
         values = {'ideas': not_published_ideas}
         body = self.content(result=values, template=self.template)['body']

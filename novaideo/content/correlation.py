@@ -20,6 +20,10 @@ from novaideo.core import Commentable, can_access
 from novaideo import _
 
 
+class CorrelationType:
+    weak = 0
+    solid = 1
+
 
 @colander.deferred
 def targets_choice(node, kw):
@@ -91,7 +95,7 @@ class Correlation(Commentable):
     def __init__(self, **kwargs):
         super(Correlation, self).__init__(**kwargs)
         self.set_data(kwargs)
-        self.type = 0
+        self.type = CorrelationType.weak
         self.tags = PersistentList()
 
     @property

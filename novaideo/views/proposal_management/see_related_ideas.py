@@ -8,6 +8,7 @@ from pontus.view import BasicView
 
 from novaideo.content.processes.proposal_management.behaviors import (
     SeeRelatedIdeas)
+from novaideo.content.correlation import CorrelationType
 from novaideo.content.proposal import Proposal
 from novaideo import _
 
@@ -34,17 +35,12 @@ class SeeRelatedIdeasView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        correlations = [c for c in self.context.source_correlations \
-                        if ((c.type==1) and ('related_ideas' in c.tags))]
-        relatedideas = []
-        len_ideas = 0       
-        for correlation in correlations:
-            targets = correlation.targets
-            len_ideas += len(targets)
-            for target in targets:
-                relatedideas.append({'content':target, 
-                                     'url':target.url(self.request),
-                                      'correlation': correlation})
+        relatedideas = [{'content':target, 
+                          'url':target.url(self.request),
+                          'correlation': correlation} \
+                        for target, correlation in \
+                         self.context.related_ideas.items()]
+        len_ideas = len(relatedideas)
 
         index = str(len_ideas)
         if len_ideas > 1:
