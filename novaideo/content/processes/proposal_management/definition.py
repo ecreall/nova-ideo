@@ -1,4 +1,7 @@
-
+"""
+This module represent the Proposal management process definition 
+powered by the dace engine.
+"""
 import datetime
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
@@ -39,7 +42,7 @@ from .behaviors import (
     VotingAmendments,
     AmendmentsResult,
     Amendable,
-    EditAmendments,
+    SeeAmendments,
     AddParagraph,
     Alert,
     CorrectItem,
@@ -132,6 +135,8 @@ def eg4_alert_condition(process):
 
 
 class SubProcessDefinition(OriginSubProcessDefinition):
+    """Run the voting process for proposal publishing 
+       and working group configuration"""
 
     def _init_subprocess(self, process, subprocess):
         root = getSite()
@@ -179,7 +184,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
 
 class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
-
+    """Run the voting process for amendments"""
 
     def _init_subprocess(self, process, subprocess):
         proposal = process.execution_context.created_entity('proposal')
@@ -342,7 +347,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Discuss the proposal"),
                                        title=_("Discuss"),
                                        groups=[]),
-                editamendments = ActivityDefinition(contexts=[EditAmendments],
+                seeamendments = ActivityDefinition(contexts=[SeeAmendments],
                                        description=_("Amendments"),
                                        title=_("Amendments"),
                                        groups=[]),
@@ -395,7 +400,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('submit', 'pg3'),
                 TransitionDefinition('pg3', 'comment'),
                 TransitionDefinition('pg3', 'compare'),
-                TransitionDefinition('pg3', 'editamendments'),
+                TransitionDefinition('pg3', 'seeamendments'),
                 TransitionDefinition('pg2', 'associate'),
                 TransitionDefinition('pg3', 'present'),
                 TransitionDefinition('pg3', 'resign'),

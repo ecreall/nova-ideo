@@ -1,4 +1,8 @@
-
+"""
+This module represent the Idea management process definition 
+powered by the dace engine. This process is unique, which means that 
+this process is instantiated only once.
+"""
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (

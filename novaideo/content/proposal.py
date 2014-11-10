@@ -45,6 +45,7 @@ def context_is_a_proposal(context, request):
 
 
 class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
+    """Schema for Proposal"""
 
     name = NameSchemaNode(
         editing=context_is_a_proposal,
@@ -84,6 +85,8 @@ class Proposal(Commentable,
                DuplicableEntity, 
                CorrelableEntity, 
                PresentableEntity):
+    """Proposal class"""
+
     result_template = 'novaideo:views/templates/proposal_result.pt'
     template = 'novaideo:views/templates/proposal_list_element.pt'
     name = renamer()
@@ -98,7 +101,7 @@ class Proposal(Commentable,
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
         self.set_data(kwargs)
-        # [(user_oid, date, support_type), ...] support_type = {1:support, 0:oppose, -1:withdraw}
+        # [(user_oid, date, support_type), ...], support_type = {1:support, 0:oppose, -1:withdraw}
         self._support_history = PersistentList()
         self._amendments_counter = 1
 

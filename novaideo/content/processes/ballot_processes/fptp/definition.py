@@ -1,3 +1,9 @@
+"""
+This module represent the FPTP election process definition 
+powered by the dace engine. This process is vlolatile, which means 
+that this process is automatically removed after the end. And is controlled, 
+which means that this process is not automatically instanciated.
+"""
 
 import datetime
 from dace.processdefinition.processdef import ProcessDefinition
@@ -25,7 +31,6 @@ def time_duration(process):
 
 @process_definition(name='fptpprocess', id='fptpprocess')
 class FPTPProcess(ProcessDefinition, VisualisableElement):
-    isUnique = True
     isVolatile = True
     isControlled = True
     discriminator = 'Vote process'

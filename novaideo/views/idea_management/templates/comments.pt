@@ -11,7 +11,7 @@
                 <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
                 <span tal:condition="'hours' in diff">${diff['hours']} <span i18n:translate="">hour(s)</span></span> 
                 <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>
-                <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">seconde(s)</span></span>
+                <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">second(s)</span></span>
               </div>
               <span tal:condition="diff_len == 0" i18n:translate="">Now</span> <span i18n:translate="">- Son intention:</span> 
               <span tal:condition="getattr(comment, 'intention', None)">${comment.intention}</span>

@@ -4,7 +4,9 @@
        <span class="glyphicon glyphicon-time"></span>
        <span tal:omit-tag="" tal:condition="duration[0]>0">${duration[0]} <span i18n:translate="">day(s)</span></span>
        <span tal:omit-tag="" tal:condition="duration[1]>0"> ${duration[1]} <span i18n:translate="">hour(s)</span></span>
-       <span tal:omit-tag="" tal:condition="duration[2]>0"> ${duration[2]} <span i18n:translate="">minute(s)</span></span></span>
+       <span tal:omit-tag="" tal:condition="duration[2]>0"> ${duration[2]} <span i18n:translate="">minute(s)</span></span>
+       <span tal:omit-tag="" tal:condition="duration[0] == 0 and duration[1] == 0 and duration[3]>0"> ${duration[3]} <span i18n:translate="">second(s)</span></span>
+   </span>
 </div>
 
 <div class="nb-iteration">${getattr(process, 'iteration', 1)}</div>

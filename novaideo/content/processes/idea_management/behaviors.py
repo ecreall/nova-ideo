@@ -1,4 +1,8 @@
 # -*- coding: utf8 -*-
+"""
+This module represent all of behaviors used in the 
+Idea management process definition. 
+"""
 import datetime
 from pyramid.httpexceptions import HTTPFound
 from persistent.list import PersistentList
@@ -444,6 +448,7 @@ def seeidea_processsecurity_validation(process, context):
 
 @acces_action()
 class SeeIdea(InfiniteCardinality):
+    """SeeIdea is the behavior allowing access to context"""
     title = _('Details')
     context = Iidea
     actionType = ActionType.automatic

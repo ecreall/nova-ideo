@@ -1,4 +1,8 @@
-
+"""
+This module represent the Amendments management process definition 
+powered by the dace engine. This process is unique, which means that 
+this process is instantiated only once.
+"""
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
@@ -8,7 +12,8 @@ from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
     EndEventDefinition)
-from dace.objectofcollaboration.services.processdef_container import process_definition
+from dace.objectofcollaboration.services.processdef_container import (
+  process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import (

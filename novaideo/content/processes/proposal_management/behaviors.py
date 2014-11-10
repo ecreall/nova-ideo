@@ -1,4 +1,8 @@
 # -*- coding: utf8 -*-
+"""
+This module represent all of behaviors used in the 
+Proposal management process definition. 
+"""
 import datetime
 from bs4 import BeautifulSoup
 from persistent.list import PersistentList
@@ -654,26 +658,26 @@ class CommentProposal(CommentIdea):
     state_validation = comm_state_validation
 
 
-def edita_relation_validation(process, context):
+def seea_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
 
-def edita_roles_validation(process, context):
+def seea_roles_validation(process, context):
     return has_role(role=('Participant', context))
 
 
-def edita_processsecurity_validation(process, context):
+def seea_processsecurity_validation(process, context):
     return any(not('archived' in a.state) for a in context.amendments) and \
           global_user_processsecurity(process, context)
 
 
-class EditAmendments(InfiniteCardinality):
+class SeeAmendments(InfiniteCardinality):
     isSequential = False
     context = IProposal
     processs_relation_id = 'proposal'
-    relation_validation = edita_relation_validation
-    roles_validation = edita_roles_validation
-    processsecurity_validation = edita_processsecurity_validation
+    relation_validation = seea_relation_validation
+    roles_validation = seea_roles_validation
+    processsecurity_validation = seea_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return True

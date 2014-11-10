@@ -1,4 +1,8 @@
 # -*- coding: utf8 -*-
+"""
+This module represent all of behaviors used in the 
+Correlation management process definition. 
+"""
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
@@ -56,6 +60,7 @@ def see_processsecurity_validation(process, context):
 
 @acces_action()
 class SeeCorrelation(InfiniteCardinality):
+    """SeeCorrelation is the behavior allowing access to context"""
     title = _('Details')
     context = ICorrelation
     actionType = ActionType.automatic

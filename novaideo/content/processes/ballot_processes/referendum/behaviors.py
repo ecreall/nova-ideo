@@ -1,4 +1,8 @@
 # -*- coding: utf8 -*-
+"""
+This module represent all of behaviors used in the 
+Referendum election process definition. 
+"""
 from pyramid.httpexceptions import HTTPFound
 
 from dace.objectofcollaboration.principal.util import has_role, get_current

@@ -124,6 +124,7 @@ def context_is_a_person(context, request):
 
 
 class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema):
+    """Schema for Person"""
 
     name = NameSchemaNode(
         editing=context_is_a_person,
@@ -195,7 +196,6 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     @invariant
     def person_name_invariant(self, appstruct):
         context = self.bindings['context']
-        request = self.bindings['request']
         name = ''
         if 'first_name' in appstruct:
             name = name + appstruct['first_name']
@@ -220,6 +220,8 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     )
 @implementer(IPerson)
 class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
+    """Person class"""
+
     result_template = 'novaideo:views/templates/person_result.pt'
     name = renamer()
     tokens = CompositeMultipleProperty('tokens')

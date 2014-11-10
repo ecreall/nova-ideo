@@ -19,6 +19,7 @@ def context_is_a_workinggroup(context, request):
 
 
 class WorkingGroupSchema(VisualisableElementSchema):
+    """Schema for working group"""
 
     name = NameSchemaNode(
         editing=context_is_a_workinggroup,
@@ -31,6 +32,8 @@ class WorkingGroupSchema(VisualisableElementSchema):
     )
 @implementer(IWorkingGroup)
 class WorkingGroup(VisualisableElement, Entity):
+    """Working group class"""
+
     name = renamer()
     template = 'pontus:templates/visualisable_templates/object.pt'
     proposal = SharedUniqueProperty('proposal', 'working_group')

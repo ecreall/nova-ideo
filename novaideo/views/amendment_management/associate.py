@@ -14,6 +14,7 @@ from novaideo.views.idea_management.associate import (
     AssociateView as AssociateIdeaView)
 from novaideo.content.correlation import CorrelationSchema, Correlation
 
+
 class AssociateFormView(FormView):
 
     title = _('Associate')

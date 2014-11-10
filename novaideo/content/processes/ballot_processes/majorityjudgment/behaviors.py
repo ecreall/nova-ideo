@@ -1,4 +1,8 @@
 # -*- coding: utf8 -*-
+"""
+This module represent all of behaviors used in the 
+Majority Judgment election process definition. 
+"""
 from pyramid.httpexceptions import HTTPFound
 from substanced.util import get_oid
 

@@ -114,13 +114,15 @@ class UserNavBarPanel(object):
                 process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
                 action, view = _getaction(self, process_id, action_id)
                 if not (None in (action, view)):
-                    actions_url[menu][action.title] = {'action':action,
-                                                       'url':action.url(root),
-                                                       'view_name': getattr(view,'name', None)}
+                    actions_url[menu][action.title] = {
+                                'action':action,
+                                'url':action.url(root),
+                                'view_name': getattr(view,'name', None)}
                 else:
-                    actions_url[menu][actionclass.node_definition.title] = {'action':None,
-                                                                            'url':None,
-                                                                            'view_name': getattr(view,'name', None)}
+                    actions_url[menu][actionclass.node_definition.title] = {
+                                'action':None,
+                                'url':None,
+                                'view_name': getattr(view,'name', None)}
 
         posted_formid = None
         if self.request.POST :
@@ -148,6 +150,13 @@ class UserNavBarPanel(object):
         return result
 
 
+def days_hours_minutes(timed):
+    return (timed.days, 
+           timed.seconds//3600,
+           (timed.seconds//60)%60, 
+           timed.seconds%60)
+
+
 @panel_config(
     name = 'steps',
     context = Entity ,
@@ -170,9 +179,6 @@ class StepsPanel(object):
 
         return self.context
 
-    def _days_hours_minutes(self, td):
-        return td.days, td.seconds//3600, (td.seconds//60)%60
-
     def _get_step3_informations(self, context, request):
         time_delta = None
         process = context.creator
@@ -180,7 +186,7 @@ class StepsPanel(object):
             date_iteration = process['timer'].eventKind.time_date
             if date_iteration is not None:
                 time_delta = date_iteration - datetime.datetime.today()
-                time_delta = self._days_hours_minutes(time_delta)
+                time_delta = days_hours_minutes(time_delta)
 
             return renderers.render(self.step3_1_template,
                                     {'context':context, 
@@ -191,7 +197,7 @@ class StepsPanel(object):
             ballot = process.vp_ballot
             if ballot.finished_at is not None:
                 time_delta = ballot.finished_at - datetime.datetime.today()
-                time_delta = self._days_hours_minutes(time_delta)
+                time_delta = days_hours_minutes(time_delta)
 
             return renderers.render(self.step3_3_template,
                                     {'context': context, 
@@ -207,7 +213,7 @@ class StepsPanel(object):
             ballot = process.amendments_ballots[-1]
             if ballot.finished_at is not None:
                 time_delta = ballot.finished_at - datetime.datetime.today()
-                time_delta = self._days_hours_minutes(time_delta)
+                time_delta = days_hours_minutes(time_delta)
 
             return renderers.render(self.step3_2_template,
                                     {'context':context, 
@@ -231,7 +237,6 @@ class StepsPanel(object):
                                 request)
 
     def __call__(self):
-        root = getSite()
         result = {}
         context = self._get_process_context()
         result['condition'] = isinstance(context, (Proposal, Idea))

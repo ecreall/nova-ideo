@@ -16,8 +16,8 @@ from novaideo.views.proposal_management.present_proposal import (
     PresentProposalView)
 from novaideo.views.proposal_management.comment_proposal import (
     CommentProposalView)
-from novaideo.views.proposal_management.edit_amendments import (
-    EditAmendmentsView)
+from novaideo.views.proposal_management.see_amendments import (
+    SeeAmendmentsView)
 from novaideo.views.proposal_management.see_related_ideas import (
     SeeRelatedIdeasView)
 from novaideo.views.proposal_management.compare_proposal import (
@@ -34,10 +34,13 @@ class DetailProposalView(BasicView):
     filigrane_template = 'novaideo:views/novaideo_view_manager/templates/filigrane.pt'
     validate_behaviors = False
 
-    def _vote_action(self):
+    def _vote_actions(self):
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
                                                        'dace_ui_api')
-        action_updated, messages, resources, actions = dace_ui_api._actions(self.request, self.context, process_discriminator='Vote process')
+        action_updated, messages, resources, actions = dace_ui_api._actions(
+                                        self.request, 
+                                        self.context, 
+                                        process_discriminator='Vote process')
         for action in actions:
             action['body'] = dace_ui_api.get_action_body(self.context, 
                                                          self.request, 
@@ -71,7 +74,7 @@ class DetailProposalView(BasicView):
         self.execute(None)
         user = get_current()
         actions = self.context.actions
-        vote_actions, resources, messages, isactive = self._vote_action()
+        vote_actions, resources, messages, isactive = self._vote_actions()
         actions = [a for a in actions \
                    if getattr(a.action, 'style', '') == 'button']
         global_actions = [a for a in actions \
@@ -117,7 +120,7 @@ class SeeProposalActionsView(MultipleView):
     title = _('actions')
     name = 'seeiactionsdea'
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (EditAmendmentsView, 
+    views = (SeeAmendmentsView, 
              SeeRelatedIdeasView, 
              PresentProposalView, 
              CompareProposalView, 
@@ -136,7 +139,7 @@ class SeeProposalView(MultipleView):
     title = ''
     name = 'seeproposal'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    requirements = {'css_links':['novaideo:static/css/steps/steps.css'],
+    requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/correct_proposal.js',
                                 'novaideo:static/js/comment.js',
                                 'novaideo:static/js/compare_idea.js']}

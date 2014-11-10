@@ -1,4 +1,8 @@
 # -*- coding: utf8 -*-
+"""
+This module represent all of behaviors used in the 
+Comment management process definition. 
+"""
 from pyramid.httpexceptions import HTTPFound
 
 from dace.objectofcollaboration.principal.util import get_current

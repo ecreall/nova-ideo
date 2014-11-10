@@ -1,4 +1,8 @@
 # -*- coding: utf8 -*-
+"""
+This module represent all of behaviors used in the 
+Amendments management process definition. 
+"""
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
 from pyramid.httpexceptions import HTTPFound

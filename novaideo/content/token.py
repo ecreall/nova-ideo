@@ -12,23 +12,14 @@ from pontus.core import VisualisableElement, VisualisableElementSchema
 from .interface import IToken
 
 
-def context_is_a_token(context, request):
-    return request.registry.content.istype(context, 'token')
-
-
-class TokenSchema(VisualisableElementSchema):
-
-    name = NameSchemaNode(
-        editing=context_is_a_token,
-        )
-
-
 @content(
     'token',
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IToken)
 class Token(VisualisableElement, Entity):
+    """Token class""" 
+
     name = renamer()
     owner = SharedUniqueProperty('owner')
     proposal = SharedUniqueProperty('proposal')

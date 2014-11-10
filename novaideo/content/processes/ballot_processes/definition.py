@@ -1,4 +1,10 @@
-
+"""
+This module represent the Ballot global process definition 
+powered by the dace engine. This process is unique, which means that 
+this process is instantiated only once. And is used as part of a sub-process.
+And is vlolatile, which means that this process is automatically removed after 
+the end.
+"""
 from datetime import datetime
 
 from dace.processdefinition.processdef import ProcessDefinition
