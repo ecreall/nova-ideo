@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import colander
 import deform.widget
+from webob.multidict import MultiDict
 from zope.interface import implementer
 
 from substanced.content import content
@@ -104,6 +105,6 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     @property
     def related_proposals(self):
         """Return all proposals that uses this idea"""
-        return dict([(c.source, c) for c in self.source_correlations\
+        return MultiDict([(c.source, c) for c in self.source_correlations\
                 if ((c.type==CorrelationType.solid) and \
                     ('related_proposals' in c.tags))])

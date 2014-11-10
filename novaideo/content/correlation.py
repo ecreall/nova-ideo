@@ -34,9 +34,9 @@ def targets_choice(node, kw):
     values = []
     entities = find_entities([ICorrelableEntity], 
         states=('archived',), not_any=True)
-    entities.remove(context)
     values = [(i, i.title) for i in entities \
               if can_access(user, i, request, root)] #i.actions
+    values.remove((context, context.title))
     values = sorted(values, key=lambda p: p[1])
     return Select2Widget(values=values, multiple=True, min_len=1)
 

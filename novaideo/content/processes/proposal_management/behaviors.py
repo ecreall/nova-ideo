@@ -50,13 +50,13 @@ from novaideo.mail import (
 from novaideo import _
 from novaideo.content.proposal import Proposal
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
-from novaideo.content.correlation import CorrelationType, Correlation
+from novaideo.content.correlation import CorrelationType
 from novaideo.content.token import Token
 from novaideo.content.amendment import Amendment
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea, 
-    CommentIdea, 
+    CommentIdea,
     Associate as AssociateIdea)
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 from novaideo.utilities.util import connect, disconnect
@@ -362,6 +362,7 @@ class EditProposal(InfiniteCardinality):
         result.extend(newkeywords)
         datas = {'keywords_ref': result}
         context.set_data(datas)
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
@@ -802,12 +803,13 @@ class ImproveProposal(InfiniteCardinality):
         result.extend(newkeywords)
         data['keywords_ref'] = result
         amendment = Amendment()
-        self.newcontext = amendment
         amendment.set_data(data)
         context.addtoproperty('amendments', amendment)
         amendment.state.append('draft')
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
+        self.newcontext = amendment
+        amendment.reindex()
         context._amendments_counter = getattr(context, '_amendments_counter', 1) + 1
         return True
 
@@ -870,6 +872,30 @@ class CorrectItem(InfiniteCardinality):
                         todel, toins, blocstodel)
         return text_analyzer.soup_to_text(soup)
 
+    def _include_vote(self, context, request, item, content, vote, user_oid):
+        text_to_correct = getattr(context, content, '')
+        context.corrections[item][vote].append(user_oid)
+        len_vote = len(context.corrections[item][vote])
+        vote_bool = False
+        if vote == 'favour':
+            len_vote -= 1
+            vote_bool = True
+
+        if len_vote >= \
+            DEFAULT_NB_CORRECTORS:
+            text = self._include_items(text_to_correct, 
+                           request, [item], vote_bool)
+            setattr(context, content, text)
+            text_to_correct = getattr(context, content,'')
+            context.corrections[item]['included'] = True
+            if not any(not('included' in context.corrections[c]) \
+                       for c in context.corrections.keys()):
+                context.state.remove('in process')
+                context.state.append('processed')
+
+            self._include_to_proposal(context, text_to_correct, 
+                                      request, content)
+
     def start(self, context, request, appstruct, **kw):
         item = appstruct['item']
         content = appstruct['content']
@@ -877,40 +903,16 @@ class CorrectItem(InfiniteCardinality):
         user = get_current()
         user_oid = get_oid(user)
         correction_data = context.corrections[item]
-        text_to_correct = getattr(context, content,'')
         if not(user_oid in correction_data['favour']) and \
                not(user_oid in correction_data['against']):
             if vote:
-                context.corrections[item]['favour'].append(get_oid(user))
-                if (len(context.corrections[item]['favour'])-1) >= \
-                    DEFAULT_NB_CORRECTORS:
-                    text = self._include_items(text_to_correct, 
-                                   request, [item], True)
-                    setattr(context, content, text)
-                    text_to_correct = getattr(context, content,'')
-                    context.corrections[item]['included'] = True
-                    if not any(not('included' in context.corrections[c]) \
-                               for c in context.corrections.keys()):
-                        context.state.remove('in process')
-                        context.state.append('processed')
-
-                    self._include_to_proposal(context, text_to_correct, 
-                                              request, content)
+                self._include_vote(context, request, 
+                                   item, content,
+                                   'favour', user_oid)
             else:
-                context.corrections[item]['against'].append(get_oid(user))
-                if len(context.corrections[item]['against']) >= \
-                   DEFAULT_NB_CORRECTORS:
-                    text = self._include_items(text_to_correct, request, [item])
-                    setattr(context, content, text)
-                    text_to_correct = getattr(context, content,'')
-                    context.corrections[item]['included'] = True
-                    if not any(not('included' in context.corrections[c]) \
-                               for c in context.corrections.keys()):
-                        context.state.remove('in process')
-                        context.state.append('processed')
-
-                    self._include_to_proposal(context, text_to_correct,
-                                              request, content)
+                self._include_vote(context, request, 
+                                   item, content,
+                                   'against', user_oid)
             
         return True
 
@@ -1377,9 +1379,12 @@ class VotingAmendments(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         context.state = PersistentList(['votes for amendments'])
-        context.working_group.state.append('closed')
+        wg = context.working_group
+        if 'closed' not in wg.state:
+            wg.state.append('closed')
+
         context.reindex()
-        members = context.working_group.members
+        members = wg.members
         url = request.resource_url(context, "@@index")
         subject = VOTINGAMENDMENTS_SUBJECT.format(subject_title=context.title)
         for member in members:
@@ -1417,17 +1422,21 @@ class AmendmentsResult(ElementaryAction):
     roles_validation = va_roles_validation
     state_validation = ar_state_validation
 
-    def _get_copy(self, context, root, wg):
-        copy_of_proposal = copy(context, (root, 'proposals'), 
-                             omit=('created_at','modified_at'),roles=True)
+    def _get_newversion(self, context, root, wg):
+        copy_of_proposal = copy(context, 
+                                (root, 'proposals'), 
+                                new_name=context.__name__,
+                                omit=('created_at','modified_at'),
+                                roles=True)
         copy_keywords, newkeywords = root.get_keywords(context.keywords)
         copy_of_proposal.setproperty('keywords_ref', copy_keywords)
+
         copy_of_proposal.setproperty('version', context)
         copy_of_proposal.state = PersistentList(['proofreading'])
         copy_of_proposal.setproperty('author', context.author)
         copy_of_proposal.setproperty('comments', context.comments)
         self.process.execution_context.add_created_entity('proposal', 
-                                           copy_of_proposal)
+                                                          copy_of_proposal)
         wg.setproperty('proposal', copy_of_proposal)
         return copy_of_proposal
 
@@ -1474,13 +1483,14 @@ class AmendmentsResult(ElementaryAction):
         user = get_current()
         self.newcontext = context 
         if amendments:
-            self._send_ballot_result(context, request, result, wg.members)
             text_analyzer = get_current_registry().getUtility(
                                             ITextAnalyzer,'text_analyzer')
             merged_text = text_analyzer.merge(context.text, 
                                  [a.text for a in amendments])
             #TODO merged_keywords + merged_description
-            copy_of_proposal = self._get_copy(context, root, wg)
+            copy_of_proposal = self._get_newversion(context, root, wg)
+            self._send_ballot_result(copy_of_proposal, request, 
+                                     result, wg.members)
             context.state = PersistentList(['archived'])
             copy_of_proposal.text = merged_text
             #correlation idea of replacement ideas... del replaced_idea
@@ -1549,6 +1559,7 @@ class Amendable(ElementaryAction):
             voters_len = len(report.voters)
             electors_len = len(report.electors)
             report.calculate_votes()
+            #absolute majority
             if (voters_len == electors_len) and \
                (report.result['False'] == 0) and \
                'closed' in wg.state:

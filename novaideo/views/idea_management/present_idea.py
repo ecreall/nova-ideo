@@ -68,7 +68,9 @@ def members_choice(node, kw):
     values = []
     user = get_current()
     prop = list(find_entities([IPerson], states=['active']))
-    prop.remove(user)
+    if user in prop:
+        prop.remove(user)
+        
     values = [(i, i.name) for i in prop]
     return Select2WidgetCreateSearchChoice(values=values, multiple=True)
 

@@ -28,7 +28,9 @@ def connect(source,
         correlation.tags.extend(tags)
         correlation.type = correlation_type
         root.addtoproperty('correlations', correlation)
+        return correlation
     else:
+        correlations = []
         for content in targets:
             correlation = Correlation()
             datas['targets'] = [content]
@@ -36,6 +38,9 @@ def connect(source,
             correlation.tags.extend(tags)
             correlation.type = correlation_type
             root.addtoproperty('correlations', correlation)
+            correlations.append(correlation)
+
+        return correlations
 
 
 def disconnect(source, 

@@ -34,7 +34,7 @@ def relatedcontents_choice(node, kw):
     request = node.bindings['request']
     root = getSite()
     user = get_current()
-    contents = list(user.contents)
+    contents = list(getattr(user, 'contents', []))
     values = [(i, i.title) for i in contents]
     return Select2WidgetSearch(multiple= True, 
                                values=values,

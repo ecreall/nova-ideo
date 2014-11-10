@@ -1,6 +1,7 @@
 
 import colander
 import deform
+from webob.multidict import MultiDict
 from persistent.list import PersistentList
 from zope.interface import implementer
 
@@ -106,7 +107,7 @@ class Proposal(Commentable,
         lists_targets = [(c.targets, c) for c in self.source_correlations \
                           if ((c.type==CorrelationType.solid) and \
                               ('related_ideas' in c.tags))]
-        return dict([(target, c) for targets, c in lists_targets \
+        return MultiDict([(target, c) for targets, c in lists_targets \
                      for target in targets])
 
     @property

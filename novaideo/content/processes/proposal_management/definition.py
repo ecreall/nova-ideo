@@ -72,7 +72,7 @@ VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
 
 VOTE_AMENDMENTS_MESSAGE = _("Vote for amendments.")
 
-VB_DEFAULT_DURATION = datetime.timedelta(minutes=30)
+VP_DEFAULT_DURATION = datetime.timedelta(minutes=30)
 
 AMENDMENTS_CYCLE_DEFAULT_DURATION = {
               "Three minutes": datetime.timedelta(minutes=3),
@@ -142,7 +142,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             electors = wg.members
 
         subjects = [proposal]
-        ballot = Ballot('Referendum' , electors, subjects, VB_DEFAULT_DURATION)
+        ballot = Ballot('Referendum' , electors, subjects, VP_DEFAULT_DURATION)
         ballot.report.description = VOTE_PUBLISHING_MESSAGE
         ballot.title = _("Publish the proposal")
         processes = ballot.run_ballot()
@@ -155,7 +155,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
           'closed' in wg.state:
             subjects = [wg]
             ballot = Ballot('Referendum' , electors,
-                            subjects, VB_DEFAULT_DURATION)
+                            subjects, VP_DEFAULT_DURATION)
             ballot.report.description = VOTE_REOPENING_MESSAGE
             ballot.title = 'Reopening working group'
             processes.extend(ballot.run_ballot(context=proposal))
@@ -165,7 +165,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
         if len(wg.members) <= root.participants_maxi:
             group = list(AMENDMENTS_CYCLE_DEFAULT_DURATION.keys())
-            ballot = Ballot('FPTP' , electors, group, VB_DEFAULT_DURATION)
+            ballot = Ballot('FPTP' , electors, group, VP_DEFAULT_DURATION)
             ballot.title = _('Amendment duration')
             ballot.report.description = VOTE_DURATION_MESSAGE
             processes.extend(ballot.run_ballot(context=proposal))
@@ -175,7 +175,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
         subprocess.execution_context.add_involved_collection(
                                       'vote_processes', processes)
-        subprocess.duration = VB_DEFAULT_DURATION
+        subprocess.duration = VP_DEFAULT_DURATION
 
 
 class SubProcessDefinitionAmendments(OriginSubProcessDefinition):

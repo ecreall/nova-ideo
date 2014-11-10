@@ -18,9 +18,9 @@ from novaideo.content.interface import INovaIdeoApplication, Iidea
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo import _
 from novaideo.content.idea import Idea
-from novaideo.content.correlation import Correlation
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.core import acces_action
+from novaideo.utilities.util import connect
 
 
 try:
@@ -164,7 +164,8 @@ class EditIdea(InfiniteCardinality):
         root = getSite()
         last_version = context.version
         copy_of_idea = copy(context, 
-                        (context, 'version'), 
+                        (context, 'version'),
+                        new_name=context.__name__,
                         select=('modified_at',), 
                         omit=('created_at',), 
                         roles=True)
@@ -332,16 +333,13 @@ class CommentIdea(InfiniteCardinality):
         user = get_current()
         comment.setproperty('author', user)
         if appstruct['related_contents']['associate']:
-            root = getSite()
-            datas = {'author': user,
-                     'source': context,
-                     'comment': comment.comment,
-                     'intention': comment.intention}
-            correlation = Correlation()
             related_contents = appstruct['related_contents']['related_contents']
-            datas['targets'] = list(related_contents)
-            correlation.set_data(datas)
-            root.addtoproperty('correlations', correlation)
+            correlation = connect(context, 
+                             list(related_contents),
+                             {'comment': comment.comment,
+                              'type': comment.intention},
+                              user,
+                              unique=True)
             comment.setproperty('related_correlation', correlation)
 
         context.reindex()
