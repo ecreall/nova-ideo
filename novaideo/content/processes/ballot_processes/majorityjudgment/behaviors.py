@@ -32,6 +32,7 @@ def vote_processsecurity_validation(process, context):
 
 class Vote(ElementaryAction):
     title = _('Vote')
+    submission_title = _('Save')
     access_controled = True
     context = IEntity
     processs_relation_id = 'subject'

@@ -35,6 +35,7 @@ def reg_roles_validation(process, context):
 
 
 class Registration(InfiniteCardinality):
+    submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = reg_roles_validation
 
@@ -84,6 +85,7 @@ class Edit(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
     title = _('Edit')
+    submission_title = _('Save')
     context = IPerson
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation

@@ -42,6 +42,7 @@ def createidea_processsecurity_validation(process, context):
 
 
 class CreateIdea(InfiniteCardinality):
+    submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = createidea_roles_validation
     processsecurity_validation = createidea_processsecurity_validation
@@ -80,6 +81,7 @@ class DuplicateIdea(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-resize-full'
     style_order = 5
+    submission_title = _('Save')
     context = Iidea
     processsecurity_validation = duplicate_processsecurity_validation
 
@@ -126,6 +128,7 @@ class DelIdea(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-trash'
     style_order = 4
+    submission_title = _('Continue')
     context = Iidea
     roles_validation = del_roles_validation
     processsecurity_validation = del_processsecurity_validation
@@ -159,6 +162,7 @@ class EditIdea(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
+    submission_title = _('Save')
     context = Iidea
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation
@@ -196,11 +200,10 @@ class EditIdea(InfiniteCardinality):
         copy_of_idea.reindex()
         context.reindex()
         if 'archived' in context.state:
-            recuperate_actions = getBusinessAction('ideamanagement',
-                                                   'recuperate',
-                                                   '',
-                                                    request,
-                                                    context)
+            recuperate_actions = getBusinessAction(context,
+                                                   request,
+                                                   'ideamanagement',
+                                                   'recuperate')
             if recuperate_actions:
                 recuperate_actions[0].execute(context, request, appstruct, **kw)
 
@@ -232,6 +235,7 @@ class PublishIdea(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 1
+    submission_title = _('Continue')
     context = Iidea
     roles_validation = pub_roles_validation
     processsecurity_validation = pub_processsecurity_validation

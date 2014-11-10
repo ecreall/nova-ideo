@@ -29,7 +29,7 @@ USER_MENU_ACTIONS = {'menu1': [SeeMyContents, SeeMyParticipations],
 
 def _getaction(view, process_id, action_id):
     root = getSite()
-    actions = getBusinessAction(process_id, action_id, '', view.request, root)
+    actions = getBusinessAction(root, view.request, process_id, action_id)
     action = None
     action_view = None
     if actions is not None:

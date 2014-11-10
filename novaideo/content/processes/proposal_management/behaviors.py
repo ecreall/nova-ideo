@@ -87,6 +87,7 @@ def include_ideas_texts(proposal, related_ideas):
                              for idea in related_ideas])
 
 class CreateProposal(ElementaryAction):
+    submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = createproposal_roles_validation
     processsecurity_validation = createproposal_processsecurity_validation
@@ -218,6 +219,7 @@ class SubmitProposal(ElementaryAction):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 1
+    submission_title = _('Continue')
     context = IProposal
     processs_relation_id = 'proposal'
     relation_validation = submit_relation_validation
@@ -256,6 +258,7 @@ class DuplicateProposal(ElementaryAction):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-resize-full'
     style_order = 3
+    submission_title = _('Save')
     context = IProposal
     processsecurity_validation = duplicate_processsecurity_validation
 
@@ -325,6 +328,7 @@ class EditProposal(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
+    submission_title = _('Save')
     context = IProposal
     processs_relation_id = 'proposal'
     relation_validation = edit_relation_validation
@@ -783,6 +787,7 @@ class ImproveProposal(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-edit'
     style_order = 4
+    submission_title = _('Save')
     isSequential = False
     context = IProposal
     processs_relation_id = 'proposal'
@@ -950,6 +955,7 @@ class CorrectProposal(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-check'
     style_order = 2
+    submission_title = _('Save')
     correction_item_template = 'novaideo:views/proposal_management/templates/correction_item.pt'
     isSequential = True
     context = IProposal

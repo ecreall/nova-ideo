@@ -58,6 +58,7 @@ class DuplicateAmendment(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-resize-full'
     style_order = 3
+    submission_title = _('Save')
     context = IAmendment
     roles_validation = duplicate_roles_validation
     processsecurity_validation = duplicate_processsecurity_validation
@@ -150,6 +151,7 @@ class EditAmendment(InfiniteCardinality):
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
+    submission_title = _('Save')
     context = IAmendment
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation
@@ -189,6 +191,7 @@ class ExplanationAmendment(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-question-sign'
     style_order = 1
+    submission_title = _('Continue')
     context = IAmendment
     roles_validation = exp_roles_validation
     processsecurity_validation = exp_processsecurity_validation
@@ -250,6 +253,7 @@ class SubmitAmendment(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 1
+    submission_title = _('Save')
     context = IAmendment
     roles_validation = pub_roles_validation
     processsecurity_validation = pub_processsecurity_validation
