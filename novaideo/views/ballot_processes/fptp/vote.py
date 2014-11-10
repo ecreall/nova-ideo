@@ -50,7 +50,7 @@ def subjects_choice(ballot_report):
 
 
 
-class CondidatesSchema(Schema):
+class CandidatesSchema(Schema):
 
     elected = colander.SchemaNode(
             colander.String(),
@@ -65,7 +65,7 @@ class VoteFormView(FormView):
     formid = 'formvote'
     behaviors = [Vote]
     validate_behaviors = False
-    schema = CondidatesSchema()
+    schema = CandidatesSchema()
 
     def before_update(self):
         ballot_report = None

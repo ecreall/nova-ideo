@@ -37,8 +37,8 @@ class Vote(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         vote_result = {}
-        for condidate in appstruct['condidates']:
-            vote_result[get_oid(condidate[OBJECT_DATA])] = condidate['judgment']
+        for candidate in appstruct['candidates']:
+            vote_result[get_oid(candidate[OBJECT_DATA])] = candidate['judgment']
 
         user = get_current()
         ballot = self.process.ballot

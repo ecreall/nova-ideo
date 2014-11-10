@@ -53,22 +53,22 @@ def judgments_choice(report):
     return widget
 
 
-class CondidateSchema(Schema):
+class CandidateSchema(Schema):
 
     judgment = colander.SchemaNode(
         colander.String(),
         title=_('Judgment')
         )
     
-class CondidatesSchema(Schema):
-    condidates =  colander.SchemaNode(
+class CandidatesSchema(Schema):
+    candidates =  colander.SchemaNode(
         colander.Sequence(),
-        omit(CondidateSchema(widget=ObjectWidget(), 
+        omit(CandidateSchema(widget=ObjectWidget(), 
                              editable=True, 
-                             name='condidate', 
+                             name='candidate', 
                              omit=['judgment']),['_csrf_token_']),
         widget=InLineWidget(),
-        title='Condidates'
+        title=_('Candidates')
         )
 
 class VoteFormView(FormView):
@@ -77,7 +77,7 @@ class VoteFormView(FormView):
     formid = 'formvote'
     behaviors = [Vote]
     validate_behaviors = False
-    schema = CondidatesSchema()
+    schema = CandidatesSchema()
 
     def before_update(self):
         ballot_report = None
@@ -87,9 +87,9 @@ class VoteFormView(FormView):
             return
 
         judgments_widget = judgments_choice(ballot_report)
-        judgment_nd = self.schema.get('condidates').children[0].get('judgment')
+        judgment_nd = self.schema.get('candidates').children[0].get('judgment')
         judgment_nd.widget = judgments_widget
-        self.schema.get('condidates').children[0].editable = False
+        self.schema.get('candidates').children[0].editable = False
         self.schema.view = self
 
     def default_data(self):
@@ -99,7 +99,7 @@ class VoteFormView(FormView):
         except Exception:
             return
         
-        return {'condidates': ballot_report.subjects}
+        return {'candidates': ballot_report.subjects}
 
     def _get_added_texts(self, text):
         result = text.split("<ins>")

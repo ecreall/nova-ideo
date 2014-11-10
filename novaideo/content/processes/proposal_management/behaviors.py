@@ -175,7 +175,7 @@ class PublishAsProposal(ElementaryAction):
         wg.state.append('deactivated')
         connect(proposal,
                 [context],
-                {'comment': _('Publish the idea as a proposal'),
+                {'comment': _('Transform the idea as a proposal'),
                  'type': _('Creation')},
                 user,
                 ['related_proposals', 'related_ideas'],
