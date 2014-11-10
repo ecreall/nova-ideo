@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2014-11-05 15:22+0100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
+"Last-Translator: Vincent Fretin <vincent.fretin@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -280,7 +280,7 @@ msgstr "jour(s)"
 #: novaideo/views/templates/panels/step3_3.pt:17
 #: novaideo/views/templates/panels/step3_2.pt:17
 msgid "hour(s)"
-msgstr "heur(s)"
+msgstr "heures)"
 
 #: novaideo/views/idea_management/templates/comments.pt:34
 #: novaideo/views/templates/panels/step3_1.pt:21
@@ -303,11 +303,11 @@ msgstr ""
 
 #: novaideo/views/idea_management/templates/comments.pt:64
 msgid "Associated contents:"
-msgstr "Contenus associés:"
+msgstr "Contenus associés :"
 
 #: novaideo/views/idea_management/templates/comments.pt:67
 msgid "Associated content:"
-msgstr "Contenu associé:"
+msgstr "Contenu associé :"
 
 #: novaideo/views/idea_management/templates/comments.pt:97
 msgid "Replay(s)"
@@ -351,7 +351,7 @@ msgstr ""
 
 #: novaideo/views/idea_management/templates/sent_to.pt:8
 msgid "The idea has been sent:"
-msgstr "L'idée a été envoyée:"
+msgstr "L'idée a été envoyée :"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:44
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:57
@@ -392,11 +392,11 @@ msgstr ", dupliquée à partir de l'idée"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:102
 msgid "Attachments:"
-msgstr "Pièces jointes:"
+msgstr "Pièces jointes :"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:105
 msgid "Attachment:"
-msgstr "Pièce jointe:"
+msgstr "Pièce jointe :"
 
 #: novaideo/views/invitation_management/invite_user.py:37
 #: novaideo/content/processes/invitation_management/definition.py:41
@@ -1194,7 +1194,7 @@ msgstr "Associés par"
 
 #: novaideo/views/invitation_validation/refuse_invitatio.py:23
 msgid "Refuse invitation"
-msgstr "Réfuser l'invitation"
+msgstr "Refuser l'invitation"
 
 #: novaideo/views/invitation_validation/reinvite_user.py:23
 msgid "Reinvite user"
@@ -1419,7 +1419,7 @@ msgstr "Appliquer la même intention"
 
 #: novaideo/content/amendment.py:105
 msgid "Choose the intention to apply"
-msgstr "Choisissez l'intetion à appliquer"
+msgstr "Choisissez l'intention à appliquer"
 
 #: novaideo/content/amendment.py:127
 msgid "Choose edited ideas."
@@ -1452,7 +1452,7 @@ msgstr ""
 #: novaideo/content/person.py:79
 #, python-format
 msgid "${email} email address already in use"
-msgstr "${email} adresse de couriel déjà utilisée"
+msgstr "Adresse courriel ${email} déjà utilisée"
 
 #: novaideo/content/person.py:151
 msgid "First name"
@@ -1660,7 +1660,7 @@ msgstr ""
 
 #: novaideo/content/processes/proposal_management/definition.py:302
 msgid "Appreciate the proposal"
-msgstr "Apprecier la proposition"
+msgstr "Apprécier la proposition"
 
 #: novaideo/content/processes/proposal_management/definition.py:306
 msgid "To oppose a proposal"
