@@ -414,6 +414,8 @@ def seeamendment_processsecurity_validation(process, context):
 
 @acces_action()
 class SeeAmendment(InfiniteCardinality):
+    """SeeAmendment is the behavior allowing access to context"""
+    
     title = _('Details')
     context = IAmendment
     actionType = ActionType.automatic

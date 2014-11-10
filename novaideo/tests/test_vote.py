@@ -3,9 +3,14 @@
 """
 
 from novaideo.testing import FunctionalTests
-from novaideo.content.ballot import ReferendumVote, Report, FPTPVote, MajorityJudgmentVote
+from novaideo.content.ballot import (
+    ReferendumVote, 
+    Report, 
+    FPTPVote, 
+    MajorityJudgmentVote)
 from novaideo.tests.example.app import SubjectType, User
 from substanced.util import get_oid
+
 
 class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
     """Test Vote integration"""
@@ -27,9 +32,9 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.oid_subject4 = get_oid(self.subject4)
 
     def init_referendum_tests(self):
-        electors = [self.user1, self.user2, self.user3, self.user4];
-        subjects =[self.root['subject1']]
-        report = Report('Referendum',electors, subjects)
+        electors = [self.user1, self.user2, self.user3, self.user4]
+        subjects = [self.root['subject1']]
+        report = Report('Referendum', electors, subjects)
         self.vote_type = report.ballottype
 
     def test_referendum_majority_false(self):
@@ -76,8 +81,9 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(electeds, None)
 
     def init_FPTP_tests(self):
-        electors = [self.user1, self.user2, self.user3, self.user4];
-        subjects =[self.root['subject1'], self.root['subject2'], self.root['subject3'], self.root['subject4']]
+        electors = [self.user1, self.user2, self.user3, self.user4]
+        subjects = [self.root['subject1'], self.root['subject2'], 
+                    self.root['subject3'], self.root['subject4']]
         report = Report('FPTP', electors, subjects)
         self.vote_type = report.ballottype
 
@@ -109,7 +115,7 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         electeds = self.vote_type.get_electeds(result)
         self.assertEqual(electeds[0].title, 'subject2')
 
-    def _test_FPTP_equality(self):
+    def test_FPTP_equality(self):
         self.init_FPTP_tests()
         vote1 = FPTPVote(self.root['subject4'])
         vote2 = FPTPVote(self.root['subject3'])
@@ -122,7 +128,8 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result[self.oid_subject3], 1)
         self.assertEqual(result[self.oid_subject4], 1)
         electeds = self.vote_type.get_electeds(result)
-        self.assertIs(electeds, None)
+        self.assertEqual(len(electeds), 1)        
+        self.assertIn(electeds[0], self.vote_type.report.subjects)
 
     def test_FPTP_more_votes_than_users(self):
         self.init_FPTP_tests()
@@ -137,11 +144,11 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(len(electeds), 1)
         self.assertIn(self.root['subject4'], electeds)
 
-
     def init_majority_judgment_tests(self):
-        electors = [self.user1, self.user2, self.user3, self.user4];
-        subjects =[self.root['subject1'], self.root['subject2'], self.root['subject3']]
-        report = Report('MajorityJudgment',electors, subjects)
+        electors = [self.user1, self.user2, self.user3, self.user4]
+        subjects = [self.root['subject1'], self.root['subject2'],
+                    self.root['subject3']]
+        report = Report('MajorityJudgment', electors, subjects)
         self.vote_type = report.ballottype
         return report
 
@@ -161,35 +168,25 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(len(electeds), 1)
         self.assertIn(self.root['subject1'], electeds)
 
-    def _test_MajorityJudgment_None(self):# Le teste n'est pas necessaire: le user ne vote jamais None. C'est des contraintes sur le schema. (to remove)
+    def test_MajorityJudgment_Equality(self):
         report = self.init_majority_judgment_tests()
         report.setproperty('voters', report.electors)
-        vote1 = MajorityJudgmentVote({self.oid_subject1: 'Very good'})
-        vote2 = MajorityJudgmentVote({self.oid_subject1: None})
-        vote3 = MajorityJudgmentVote({self.oid_subject1: 'Good'})
-        vote4 = MajorityJudgmentVote({self.oid_subject1: 'Good'})
+        vote1 = MajorityJudgmentVote({self.oid_subject1: 'Fairly well', 
+                                      self.oid_subject2: 'Fairly well', 
+                                      self.oid_subject3: 'Good'})
+        vote2 = MajorityJudgmentVote({self.oid_subject1: 'Fairly well', 
+                                      self.oid_subject2: 'Very good', 
+                                      self.oid_subject3: 'Good'})
+        vote3 = MajorityJudgmentVote({self.oid_subject1: 'Good', 
+                                      self.oid_subject2: 'Passable', 
+                                      self.oid_subject3: 'Fairly well'})
+        vote4 = MajorityJudgmentVote({self.oid_subject1: 'Good', 
+                                      self.oid_subject2: 'Passable', 
+                                      self.oid_subject3: 'Fairly well'})
         votes = [vote1, vote2, vote3, vote4]
         result = self.vote_type.calculate_votes(votes)
-        self.assertEqual(result[self.oid_subject1]['Very good'], 1)
-        self.assertEqual(result[self.oid_subject1]['None'], 1)
         self.assertEqual(result[self.oid_subject1]['Good'], 2)
-        self.assertEqual(result[self.oid_subject1]['Insufficient'], 0)
-        electeds = self.vote_type.get_electeds(result)
-        self.assertEqual(len(electeds), 1)
-        self.assertIn(self.root['subject1'], electeds)
-
-    def _test_MajorityJudgment_Equality(self):
-        report = self.init_majority_judgment_tests()
-        report.setproperty('voters', report.electors)
-        vote1 = MajorityJudgmentVote({self.oid_subject1: 'Very good', self.oid_subject2: 'Fairly well', self.oid_subject3: 'Good'})
-        vote2 = MajorityJudgmentVote({self.oid_subject1: 'Insufficient', self.oid_subject2: 'Very good', self.oid_subject3: 'Good'})
-        vote3 = MajorityJudgmentVote({self.oid_subject1: 'Good', self.oid_subject2: 'Passable', self.oid_subject3: 'Fairly well'})
-        vote4 = MajorityJudgmentVote({self.oid_subject1: 'Good', self.oid_subject2: 'Passable', self.oid_subject3: 'Fairly well'})
-        votes = [vote1, vote2, vote3, vote4]
-        result = self.vote_type.calculate_votes(votes)
-        self.assertEqual(result[self.oid_subject1]['Very good'], 1)
-        self.assertEqual(result[self.oid_subject1]['Insufficient'], 1)
-        self.assertEqual(result[self.oid_subject1]['Good'], 2)
+        self.assertEqual(result[self.oid_subject1]['Fairly well'], 2)
         self.assertEqual(result[self.oid_subject2]['Fairly well'], 1)
         self.assertEqual(result[self.oid_subject2]['Very good'], 1)
         self.assertEqual(result[self.oid_subject2]['Passable'], 2)
@@ -197,15 +194,24 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result[self.oid_subject3]['Fairly well'], 2)
         electeds = self.vote_type.get_electeds(result)
         self.assertEqual(len(electeds), 1)
-        self.assertIn(None, electeds)
+        self.assertIn(electeds[0], [self.root['subject1'], 
+                                    self.root['subject3']])
 
     def test_MajorityJudgment_several_subjects(self):
         report = self.init_majority_judgment_tests()
         report.setproperty('voters', report.electors)
-        vote1 = MajorityJudgmentVote({self.oid_subject1: 'Very good', self.oid_subject2: 'Very good', self.oid_subject3: 'Fairly well'})
-        vote2 = MajorityJudgmentVote({self.oid_subject1: 'Insufficient', self.oid_subject2: 'Very good', self.oid_subject3: 'Reject'})
-        vote3 = MajorityJudgmentVote({self.oid_subject1: 'Good', self.oid_subject2: 'Passable', self.oid_subject3: 'Fairly well'})
-        vote4 = MajorityJudgmentVote({self.oid_subject1: 'Good', self.oid_subject2: 'Passable', self.oid_subject3: 'Fairly well'})
+        vote1 = MajorityJudgmentVote({self.oid_subject1: 'Very good', 
+                                      self.oid_subject2: 'Very good', 
+                                      self.oid_subject3: 'Fairly well'})
+        vote2 = MajorityJudgmentVote({self.oid_subject1: 'Insufficient', 
+                                      self.oid_subject2: 'Very good', 
+                                      self.oid_subject3: 'Reject'})
+        vote3 = MajorityJudgmentVote({self.oid_subject1: 'Good', 
+                                      self.oid_subject2: 'Passable', 
+                                      self.oid_subject3: 'Fairly well'})
+        vote4 = MajorityJudgmentVote({self.oid_subject1: 'Good', 
+                                      self.oid_subject2: 'Passable', 
+                                      self.oid_subject3: 'Fairly well'})
         votes = [vote1, vote2, vote3, vote4]
         result = self.vote_type.calculate_votes(votes)
         self.assertEqual(result[self.oid_subject1]['Very good'], 1)
@@ -227,10 +233,18 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
     def test_MajorityJudgment_unanimity(self):
         report = self.init_majority_judgment_tests()
         report.setproperty('voters', report.electors)
-        vote1 = MajorityJudgmentVote({self.oid_subject1: 'Good', self.oid_subject2: 'Very good', self.oid_subject3: 'Fairly well'})
-        vote2 = MajorityJudgmentVote({self.oid_subject1: 'Insufficient', self.oid_subject2: 'Very good', self.oid_subject3: 'Reject'})
-        vote3 = MajorityJudgmentVote({self.oid_subject1: 'Good', self.oid_subject2: 'Very good', self.oid_subject3: 'Fairly well'})
-        vote4 = MajorityJudgmentVote({self.oid_subject1: 'Good', self.oid_subject2: 'Very good', self.oid_subject3: 'Fairly well'})
+        vote1 = MajorityJudgmentVote({self.oid_subject1: 'Good', 
+                                      self.oid_subject2: 'Very good', 
+                                      self.oid_subject3: 'Fairly well'})
+        vote2 = MajorityJudgmentVote({self.oid_subject1: 'Insufficient', 
+                                      self.oid_subject2: 'Very good', 
+                                      self.oid_subject3: 'Reject'})
+        vote3 = MajorityJudgmentVote({self.oid_subject1: 'Good', 
+                                      self.oid_subject2: 'Very good', 
+                                      self.oid_subject3: 'Fairly well'})
+        vote4 = MajorityJudgmentVote({self.oid_subject1: 'Good', 
+                                      self.oid_subject2: 'Very good', 
+                                      self.oid_subject3: 'Fairly well'})
         votes = [vote1, vote2, vote3, vote4]
         result = self.vote_type.calculate_votes(votes)
         self.assertEqual(result[self.oid_subject1]['Very good'], 0)
