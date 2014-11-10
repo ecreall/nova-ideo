@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import os
 import colander
 import deform.widget
 from zope.interface import implementer, invariant
@@ -6,7 +7,7 @@ from zope.interface import implementer, invariant
 from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
-from substanced.principal import UserSchema, get_locales
+from substanced.principal import UserSchema
 from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
 
@@ -95,6 +96,12 @@ def default_contacts(node, kw):
     context = node.bindings['context']
     prop = sorted(context.contacts, key=lambda p: p.name)
     return prop
+
+
+def get_locales():
+    dir_ = os.listdir(os.path.join(os.path.dirname(__file__),
+                                   '..', 'locale'))
+    return list(filter(lambda x: not x.endswith('.pot'), dir_)) + ['en']
 
 
 _LOCALES = get_locales()

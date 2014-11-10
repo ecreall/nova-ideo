@@ -47,6 +47,7 @@ def context_is_a_organization(context, request):
 
 
 class OrganizationSchema(VisualisableElementSchema):
+    """Schema for Organization"""
 
     name = NameSchemaNode(
         editing=context_is_a_organization,
@@ -92,6 +93,8 @@ class OrganizationSchema(VisualisableElementSchema):
     )
 @implementer(IOrganization)
 class Organization(VisualisableElement, Entity):
+    """Organization class"""
+    
     name = renamer()
     members = SharedMultipleProperty('members', 'organization')
     logo = CompositeUniqueProperty('logo')

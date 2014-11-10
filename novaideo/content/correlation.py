@@ -55,6 +55,7 @@ def context_is_a_correlation(context, request):
 
 
 class CorrelationSchema(VisualisableElementSchema):
+    """Schema for correlation"""
 
     name = NameSchemaNode(
         editing=context_is_a_correlation,
@@ -87,6 +88,7 @@ class CorrelationSchema(VisualisableElementSchema):
     )
 @implementer(ICorrelation)
 class Correlation(Commentable):
+    """Correlation class"""
     name = renamer()
     source = SharedUniqueProperty('source', 'source_correlations')
     targets = SharedMultipleProperty('targets', 'target_correlations')

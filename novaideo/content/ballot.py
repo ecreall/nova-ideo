@@ -24,6 +24,7 @@ from .interface import IVote, IBallotType, IReport, IBallot, IBallotBox
     )
 @implementer(IVote)
 class ReferendumVote(VisualisableElement, Entity):
+    """Referendum vote"""
     name = renamer()
 
     def __init__(self, value=None, **kwargs):
@@ -33,6 +34,7 @@ class ReferendumVote(VisualisableElement, Entity):
 
 @implementer(IBallotType)
 class Referendum(object):
+    """Referendum election"""
     vote_factory = ReferendumVote
 
     def __init__(self, report, vote_process_id='referendumprocess'):
@@ -105,6 +107,7 @@ DEFAULT_JUDGMENTS = {'Excellent': 7,
     )
 @implementer(IVote)
 class MajorityJudgmentVote(VisualisableElement, Entity):
+    """Majority judgment vote"""
     name = renamer()
 
     def __init__(self, value=None, **kwargs):
@@ -115,6 +118,7 @@ class MajorityJudgmentVote(VisualisableElement, Entity):
 
 @implementer(IBallotType)
 class MajorityJudgment(object):
+    """Majority judgment election"""
     vote_factory = MajorityJudgmentVote
 
     def __init__(self, report, vote_process_id='majorityjudgmentprocess'):
@@ -202,16 +206,18 @@ class MajorityJudgment(object):
     )
 @implementer(IVote)
 class FPTPVote(VisualisableElement, Entity):
+    """FPTP vote class"""
     name = renamer()
 
     def __init__(self, value=None, **kwargs):
         super(FPTPVote, self).__init__(**kwargs)
         self.value = value
-        #value  = object
+        #value  = object_oid
 
 
 @implementer(IBallotType)
 class FPTP(object):
+    """A first-past-the-post (abbreviated FPTP or FPP) election"""
     vote_factory = FPTPVote
 
     def __init__(self, report, vote_process_id='fptpprocess'):
@@ -297,6 +303,7 @@ BALLOT_TYPES = {'Referendum': Referendum,
     )
 @implementer(IReport)
 class Report(VisualisableElement, Entity):
+    """Report of ballot class"""
     name = renamer()
     electors = SharedMultipleProperty('electors')
     voters = SharedMultipleProperty('voters')
@@ -340,6 +347,7 @@ class Report(VisualisableElement, Entity):
     )
 @implementer(IBallotBox)
 class BallotBox(VisualisableElement, Entity):
+    """Ballot box class"""
     name = renamer()
     votes = CompositeMultipleProperty('votes')
 
@@ -350,6 +358,7 @@ class BallotBox(VisualisableElement, Entity):
     )
 @implementer(IBallot)
 class Ballot(VisualisableElement, Entity):
+    """Ballot class"""
     name = renamer()
     ballot_box = CompositeUniqueProperty('ballot_box')
     report = CompositeUniqueProperty('report', 'ballot')

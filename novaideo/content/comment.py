@@ -12,7 +12,7 @@ from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.core import VisualisableElementSchema
 from pontus.widget import Select2Widget
-from pontus.schema import Schema, omit
+from pontus.schema import Schema
 
 from .interface import IComment
 from novaideo.core import Commentable
@@ -46,6 +46,7 @@ def relatedcontents_choice(node, kw):
 
 
 class RelatedContentsSchema(Schema):
+    """Schema for associtation"""
 
     related_contents = colander.SchemaNode(
         colander.Set(),
@@ -65,11 +66,13 @@ class RelatedContentsSchema(Schema):
         missing=False
         )
 
+
 def context_is_a_comment(context, request):
     return request.registry.content.istype(context, 'comment')
 
 
 class CommentSchema(VisualisableElementSchema):
+    """Schema for comment"""
 
     name = NameSchemaNode(
         editing=context_is_a_comment,
@@ -102,6 +105,7 @@ class CommentSchema(VisualisableElementSchema):
     )
 @implementer(IComment)
 class Comment(Commentable):
+    """Comment class"""
     name = renamer()
     author = SharedUniqueProperty('author')
     related_correlation = SharedUniqueProperty('related_correlation')
@@ -118,10 +122,3 @@ class Comment(Commentable):
             return self.__parent__
         else:
             return self.__parent__.subject 
-
-
-class AddCommentSchema(Schema):
-
-    comment = omit(CommentSchema(factory=Comment,
-                                 editable=True,
-                                 name=_('Message')), ['_csrf_token_'])

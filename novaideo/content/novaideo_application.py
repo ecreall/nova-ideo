@@ -37,6 +37,7 @@ def context_is_a_root(context, request):
 
 
 class NovaIdeoApplicationSchema(VisualisableElementSchema):
+    """Schema for Nova-Ideo configuration"""
 
     name = NameSchemaNode(
         editing=context_is_a_root,
@@ -159,6 +160,8 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
     )
 @implementer(INovaIdeoApplication)
 class NovaIdeoApplication(VisualisableElement, Application):
+    """Nova-Ideo class (Root)"""
+
     name = renamer()
     working_groups = CompositeMultipleProperty('working_groups')
     proposals = CompositeMultipleProperty('proposals')

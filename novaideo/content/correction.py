@@ -26,7 +26,7 @@ def context_is_a_correction(context, request):
 
 
 class CorrectionSchema(VisualisableElementSchema):
-
+    """Schema for correction of a proposal"""
     name = NameSchemaNode(
         editing=context_is_a_correction,
         )
@@ -44,6 +44,7 @@ class CorrectionSchema(VisualisableElementSchema):
     )
 @implementer(ICorrection)
 class Correction(VisualisableElement, Entity):
+    """Correction class"""
     name = renamer()
     author = SharedUniqueProperty('author')
     proposal = SharedUniqueProperty('proposal', 'corrections')

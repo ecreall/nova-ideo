@@ -45,6 +45,7 @@ def context_is_a_idea(context, request):
 
 
 class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
+    """Schema for idea"""
 
     name = NameSchemaNode(
         editing=context_is_a_idea,
@@ -92,6 +93,8 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(Iidea)
 class Idea(Commentable, VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity):
+    """Idea class""" 
+
     result_template = 'novaideo:views/templates/idea_result.pt'
     template = 'novaideo:views/templates/idea_list_element.pt'
     name = renamer()

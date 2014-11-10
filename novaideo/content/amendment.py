@@ -37,8 +37,8 @@ def idea_choice(node, kw):
     used_ideas = context.get_used_ideas()
     root = getSite()
     user = get_current()
-    ideas = list(user.ideas)
-    ideas.extend([ i for i in user.selections \
+    ideas = list(getattr(user, 'ideas', []))
+    ideas.extend([ i for i in getattr(user, 'selections', []) \
                    if isinstance(i, Idea) and can_access(user, i)])
     ideas.extend(used_ideas)
     ideas = set(ideas) 
@@ -86,8 +86,8 @@ def ideasofreplacement_choice(node, kw):
     used_ideas = context.get_used_ideas()
     root = getSite()
     user = get_current()
-    ideas = list(user.ideas)
-    ideas.extend([ i for i in user.selections \
+    ideas = list(getattr(user, 'ideas', []))
+    ideas.extend([ i for i in getattr(user, 'selections', []) \
                    if isinstance(i, Idea) and can_access(user, i)])
     ideas.extend(used_ideas)
     ideas = set(ideas) 
@@ -102,6 +102,7 @@ def ideasofreplacement_choice(node, kw):
 
 
 class RelatedExplanationSchema(Schema):
+    """Schema for related explanation"""
 
     relatedexplanation = colander.SchemaNode(
         colander.Integer(),
@@ -113,6 +114,7 @@ class RelatedExplanationSchema(Schema):
 
 class NewIdeaSchema(Schema):
 
+
     new_idea = select(IdeaSchema(factory=Idea, 
                                  editable=True,
                                  omit=['keywords'], 
@@ -122,7 +124,8 @@ class NewIdeaSchema(Schema):
                        'keywords'])
 
 
-class IdeasRowSchema(Schema):
+class IdeasSchema(Schema):
+    """Schema for related ideas"""
 
     edited_ideas = colander.SchemaNode(
         colander.Set(),
@@ -153,6 +156,7 @@ class IdeasRowSchema(Schema):
 
 
 class IntentionItemSchema(Schema):
+    """Schema for Intention item"""
 
     comment = colander.SchemaNode(
         colander.String(),
@@ -162,12 +166,13 @@ class IntentionItemSchema(Schema):
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         )
 
-    related_ideas = IdeasRowSchema(widget=SimpleMappingWidget())
+    related_ideas = IdeasSchema(widget=SimpleMappingWidget())
 
     add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
 
 
 class Intention(object):
+    """Intention class"""
 
     schema = IntentionItemSchema
     parameters = ['comment', 'edited_ideas', 'removed_ideas', 'added_ideas']
@@ -256,6 +261,7 @@ class Intention(object):
 
 
 class IntentionSchema(Schema):
+    """Schema for Intention"""
 
     relatedexplanation = RelatedExplanationSchema(
                          widget=SimpleMappingWidget(
@@ -273,6 +279,7 @@ def context_is_a_amendment(context, request):
 
 
 class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
+    """Schema for Amendment"""
 
     name = NameSchemaNode(
         editing=context_is_a_amendment,
@@ -303,6 +310,7 @@ class Amendment(Commentable,
                 SearchableEntity,
                 DuplicableEntity,
                 PresentableEntity):
+    """Amendment class"""
 
     name = renamer()
     result_template = 'novaideo:views/templates/amendment_result.pt'

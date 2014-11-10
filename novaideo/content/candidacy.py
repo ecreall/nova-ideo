@@ -19,6 +19,7 @@ def context_is_a_candidacy(context, request):
 
 
 class CandidacySchema(VisualisableElementSchema):
+    """Schema for Candidacy"""
 
     name = NameSchemaNode(
         editing=context_is_a_candidacy,
@@ -37,4 +38,5 @@ class CandidacySchema(VisualisableElementSchema):
     )
 @implementer(ICandidacy)
 class Candidacy(VisualisableElement, Entity):
+    """Candidacy class"""
     name = renamer()

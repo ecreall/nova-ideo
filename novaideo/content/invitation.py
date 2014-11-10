@@ -28,6 +28,7 @@ def context_is_a_invitation(context, request):
 
 
 class InvitationSchema(PersonSchema):
+    """Schema for invitation"""
 
     roles = colander.SchemaNode(
         colander.Set(),
@@ -44,6 +45,8 @@ class InvitationSchema(PersonSchema):
     )
 @implementer(IInvitation)
 class Invitation(VisualisableElement, Entity):
+    """Invitation class"""
+
     name = renamer()
     organization = SharedUniqueProperty('organization')
 
