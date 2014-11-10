@@ -831,7 +831,7 @@ msgstr "Voir plus..."
 
 #: novaideo/views/proposal_management/templates/amendments_group_result.pt:3
 msgid "Group"
-msgstr ""
+msgstr "Groupe"
 
 #: novaideo/views/proposal_management/templates/amendments.pt:18
 #: novaideo/views/amendment_management/templates/see_amendment.pt:46
