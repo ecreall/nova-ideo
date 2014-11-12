@@ -358,7 +358,7 @@ class CommentIdea(InfiniteCardinality):
 
 
 def present_roles_validation(process, context):
-    return has_role(role=('Owner', context))
+    return has_role(role=('Member',))
 
 
 def present_processsecurity_validation(process, context):
@@ -370,6 +370,7 @@ def present_state_validation(process, context):
 
 
 class PresentIdea(InfiniteCardinality):
+    submission_title = _('Send')
     context = Iidea
     roles_validation = present_roles_validation
     processsecurity_validation = present_processsecurity_validation

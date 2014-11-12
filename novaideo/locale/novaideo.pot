@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-11-12 12:55+0100\n"
+"POT-Creation-Date: 2014-11-12 18:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,7 +63,7 @@ msgstr ""
 #: ./novaideo/views/organization_management/see_organization.py:19
 #: ./novaideo/content/processes/idea_management/definition.py:89
 #: ./novaideo/content/processes/idea_management/definition.py:90
-#: ./novaideo/content/processes/idea_management/behaviors.py:456
+#: ./novaideo/content/processes/idea_management/behaviors.py:457
 #: ./novaideo/content/processes/invitation_management/definition.py:46
 #: ./novaideo/content/processes/invitation_management/behaviors.py:142
 #: ./novaideo/content/processes/user_management/definition.py:54
@@ -199,30 +199,30 @@ msgstr ""
 msgid "Sent to"
 msgstr ""
 
-#: ./novaideo/views/idea_management/present_idea.py:112
-#: ./novaideo/views/idea_management/present_idea.py:135
 #: ./novaideo/views/idea_management/present_idea.py:136
+#: ./novaideo/views/idea_management/present_idea.py:159
+#: ./novaideo/views/idea_management/present_idea.py:160
 #: ./novaideo/content/processes/idea_management/definition.py:77
 msgid "Submit the idea to others"
 msgstr ""
 
-#: ./novaideo/views/idea_management/present_idea.py:85
+#: ./novaideo/views/idea_management/present_idea.py:109
 msgid "Recipients"
 msgstr ""
 
-#: ./novaideo/views/idea_management/present_idea.py:91
-#: ./novaideo/views/proposal_management/present_proposal.py:33
-#: ./novaideo/views/amendment_management/present_amendment.py:33
+#: ./novaideo/views/idea_management/present_idea.py:115
+#: ./novaideo/views/proposal_management/present_proposal.py:57
+#: ./novaideo/views/amendment_management/present_amendment.py:57
 msgid "Subject"
 msgstr ""
 
-#: ./novaideo/views/idea_management/present_idea.py:104
+#: ./novaideo/views/idea_management/present_idea.py:128
 msgid "Send to me"
 msgstr ""
 
-#: ./novaideo/views/idea_management/present_idea.py:124
-#: ./novaideo/views/proposal_management/present_proposal.py:58
-#: ./novaideo/views/amendment_management/present_amendment.py:58
+#: ./novaideo/views/idea_management/present_idea.py:148
+#: ./novaideo/views/proposal_management/present_proposal.py:82
+#: ./novaideo/views/amendment_management/present_amendment.py:82
 msgid "Present"
 msgstr ""
 
@@ -307,18 +307,18 @@ msgid "Now"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:45
-msgid "- Son intention:"
+msgid "- Her intention:"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:64
+#: ./novaideo/views/idea_management/templates/comments.pt:63
 msgid "Associated contents:"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:67
+#: ./novaideo/views/idea_management/templates/comments.pt:66
 msgid "Associated content:"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:97
+#: ./novaideo/views/idea_management/templates/comments.pt:96
 msgid "Replay(s)"
 msgstr ""
 
@@ -484,7 +484,7 @@ msgstr ""
 
 #: ./novaideo/views/user_management/templates/see_person.pt:37
 #: ./novaideo/views/templates/person_result.pt:18
-#: ./novaideo/content/person.py:137
+#: ./novaideo/content/person.py:140
 msgid "Preferences"
 msgstr ""
 
@@ -602,6 +602,7 @@ msgstr ""
 
 #: ./novaideo/views/user_access_manager/reset_password.py:21
 #: ./novaideo/views/user_access_manager/reset_password.py:85
+#: ./novaideo/content/processes/idea_management/behaviors.py:373
 msgid "Send"
 msgstr ""
 
@@ -632,7 +633,7 @@ msgid "Email"
 msgstr ""
 
 #: ./novaideo/views/user_access_manager/templates/login.pt:17
-#: ./novaideo/content/person.py:185
+#: ./novaideo/content/person.py:189
 msgid "Password"
 msgstr ""
 
@@ -672,9 +673,9 @@ msgstr ""
 msgid "Publish the proposal"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/present_proposal.py:46
-#: ./novaideo/views/proposal_management/present_proposal.py:69
 #: ./novaideo/views/proposal_management/present_proposal.py:70
+#: ./novaideo/views/proposal_management/present_proposal.py:93
+#: ./novaideo/views/proposal_management/present_proposal.py:94
 #: ./novaideo/content/processes/proposal_management/definition.py:343
 msgid "Submit the proposal to others"
 msgstr ""
@@ -998,19 +999,19 @@ msgstr ""
 msgid "Electors"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:24
+#: ./novaideo/views/templates/panels/steps.pt:30
 msgid "Collection of the idea"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:31
+#: ./novaideo/views/templates/panels/steps.pt:45
 msgid "Writing of the proposal"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:42
+#: ./novaideo/views/templates/panels/steps.pt:60
 msgid "Improvement of the proposal"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:59
+#: ./novaideo/views/templates/panels/steps.pt:77
 msgid "Support of the proposal"
 msgstr ""
 
@@ -1055,8 +1056,8 @@ msgstr ""
 msgid "Associate the amendment to an other content"
 msgstr ""
 
-#: ./novaideo/views/amendment_management/present_amendment.py:46
-#: ./novaideo/views/amendment_management/present_amendment.py:69
+#: ./novaideo/views/amendment_management/present_amendment.py:70
+#: ./novaideo/views/amendment_management/present_amendment.py:93
 #: ./novaideo/content/processes/amendment_management/definition.py:71
 msgid "Submit the amendment to others"
 msgstr ""
@@ -1368,7 +1369,7 @@ msgid "Remark"
 msgstr ""
 
 #: ./novaideo/content/novaideo_application.py:30
-#: ./novaideo/content/novaideo_application.py:32
+#: ./novaideo/content/novaideo_application.py:32 ./novaideo/content/idea.py:73
 msgid "Improvement"
 msgstr ""
 
@@ -1417,7 +1418,7 @@ msgid "Minimum number of tokens by member"
 msgstr ""
 
 #: ./novaideo/content/novaideo_application.py:50
-#: ./novaideo/content/person.py:170
+#: ./novaideo/content/person.py:174
 msgid "Title"
 msgstr ""
 
@@ -1434,7 +1435,7 @@ msgid "Amendment intention"
 msgstr ""
 
 #: ./novaideo/content/novaideo_application.py:110
-#: ./novaideo/content/person.py:192
+#: ./novaideo/content/person.py:196
 msgid "Organization"
 msgstr ""
 
@@ -1443,18 +1444,16 @@ msgstr ""
 msgid "(300 caracteres maximum)"
 msgstr ""
 
-#: ./novaideo/content/idea.py:73
-#: ./novaideo/content/processes/proposal_management/behaviors.py:184
-#: ./novaideo/content/processes/proposal_management/behaviors.py:123
-msgid "Creation"
+#: ./novaideo/content/idea.py:86
+msgid "Attached files"
 msgstr ""
 
-#: ./novaideo/content/idea.py:85
-msgid "Files"
-msgstr ""
-
-#: ./novaideo/content/idea.py:80
+#: ./novaideo/content/idea.py:81
 msgid "File"
+msgstr ""
+
+#: ./novaideo/content/idea.py:84
+msgid "Add file"
 msgstr ""
 
 #: ./novaideo/content/invitation.py:36
@@ -1503,20 +1502,24 @@ msgstr ""
 msgid "Candidacy"
 msgstr ""
 
-#: ./novaideo/content/person.py:80
+#: ./novaideo/content/person.py:83
 #, python-format
 msgid "${email} email address already in use"
 msgstr ""
 
-#: ./novaideo/content/person.py:159
+#: ./novaideo/content/person.py:156
+msgid "Picture"
+msgstr ""
+
+#: ./novaideo/content/person.py:163
 msgid "First name"
 msgstr ""
 
-#: ./novaideo/content/person.py:164
+#: ./novaideo/content/person.py:168
 msgid "Last name"
 msgstr ""
 
-#: ./novaideo/content/person.py:175
+#: ./novaideo/content/person.py:179
 msgid "Locale"
 msgstr ""
 
@@ -1627,7 +1630,7 @@ msgid "Discuss"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:94
-#: ./novaideo/content/processes/idea_management/behaviors.py:477
+#: ./novaideo/content/processes/idea_management/behaviors.py:478
 #: ./novaideo/content/processes/proposal_management/definition.py:384
 #: ./novaideo/content/processes/proposal_management/behaviors.py:1595
 msgid "Compare"
@@ -1863,6 +1866,11 @@ msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/behaviors.py:165
 msgid " (The proposal)"
+msgstr ""
+
+#: ./novaideo/content/processes/proposal_management/behaviors.py:184
+#: ./novaideo/content/processes/proposal_management/behaviors.py:123
+msgid "Creation"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/behaviors.py:122

@@ -35,7 +35,7 @@ from novaideo.core import (
 def intention_choice(node, kw):
     root = getSite()
     intentions = sorted(root.idea_intentions)
-    values = [(i, i) for i in intentions ]
+    values = [(str(i), i) for i in intentions ]
     values.insert(0, ('', '- Select -'))
     return Select2Widget(values=values)
 
@@ -70,7 +70,8 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.String(),
         widget=intention_choice,
         title=_('Intention'),
-        default=_('Creation'),
+        default=_('Improvement'),
+        missing='Improvement'
         )
 
     attached_files = colander.SchemaNode(
@@ -80,9 +81,9 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             name=_("File"),
             widget=FileWidget()
             ),
-        widget=SequenceWidget(),
+        widget=SequenceWidget(add_subitem_text_template = _('Add file')),
         missing=[],
-        title=_('Files'),
+        title=_('Attached files'),
         )
 
 

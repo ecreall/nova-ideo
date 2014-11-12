@@ -32,6 +32,9 @@ from .interface import IPerson
 from novaideo import _
 
 
+DEFAULT_LOCALE = 'fr'
+
+
 @colander.deferred
 def organization_choice(node, kw):
     context = node.bindings['context']
@@ -49,7 +52,7 @@ def organization_choice(node, kw):
 @colander.deferred
 def titles_choice(node, kw):
     root = getSite()
-    values = [(i, i) for i in root.titles]
+    values = [(str(i),  i) for i in root.titles]
     values.insert(0, ('', '- Select -'))
     return Select2Widget(values=values)
 
@@ -150,6 +153,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     picture = colander.SchemaNode(
         ObjectData(Image),
         widget=FileWidget(),
+        title=_('Picture'),
         required=False,
         missing=None,
         )
@@ -233,6 +237,9 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     working_groups = SharedMultipleProperty('working_groups', 'members')
 
     def __init__(self, **kwargs):
+        if 'locale' not in kwargs:
+            kwargs['locale'] = DEFAULT_LOCALE
+
         super(Person, self).__init__(**kwargs)
         kwargs.pop('password')
         self.set_data(kwargs)

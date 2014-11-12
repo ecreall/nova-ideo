@@ -4,7 +4,7 @@ import deform
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite, find_entities
+from dace.util import find_entities
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.form import FormView
 from pontus.schema import select, Schema
@@ -75,6 +75,30 @@ def members_choice(node, kw):
     return Select2WidgetCreateSearchChoice(values=values, multiple=True)
 
 
+@colander.deferred
+def default_subject(node, kw):
+    context = node.bindings['context']
+    return PRESENTATION_IDEA_SUBJECT.format(subject_title=context.title)
+
+
+@colander.deferred
+def default_message(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    url = request.resource_url(context, "@@index")
+    user = get_current()
+    return PRESENTATION_IDEA_MESSAGE.format(
+                recipient_title='',
+                recipient_first_name='',
+                recipient_last_name='',
+                subject_url=url,
+                my_title=getattr(user, 'user_title',''),
+                my_first_name=getattr(user, 'first_name', user.name),
+                my_last_name=getattr(user, 'last_name','')
+                 )
+
+
+
 class PresentIdeaSchema(Schema):
 
     members = colander.SchemaNode(
@@ -87,14 +111,14 @@ class PresentIdeaSchema(Schema):
 
     subject =  colander.SchemaNode(
         colander.String(),
-        default=PRESENTATION_IDEA_SUBJECT,
+        default=default_subject,
         title=_('Subject'),
         )
 
     message = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=2000),
-        default=PRESENTATION_IDEA_MESSAGE,
+        default=default_message,
         widget=deform.widget.TextAreaWidget(rows=10, cols=60),
         )
 

@@ -24,7 +24,7 @@ from novaideo.views.widget import Select2WidgetSearch, SimpleMappingtWidget
 def intention_choice(node, kw):
     root = getSite()
     intentions = sorted(root.comment_intentions)
-    values = [(i, i) for i in intentions ]
+    values = [(str(i), i) for i in intentions ]
     values.insert(0, ('', '- Select -'))
     return Select2Widget(values=values)
 
@@ -82,6 +82,7 @@ class CommentSchema(VisualisableElementSchema):
         colander.String(),
         widget=intention_choice,
         title=_('Intention'),
+        default=_('Remark')
         )
 
     comment = colander.SchemaNode(

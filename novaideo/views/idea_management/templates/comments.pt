@@ -13,8 +13,8 @@
                 <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>
                 <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">second(s)</span></span>
               </div>
-              <span tal:condition="diff_len == 0" i18n:translate="">Now</span> <span i18n:translate="">- Son intention:</span> 
-              <span tal:condition="getattr(comment, 'intention', None)">${comment.intention}</span>
+              <span tal:condition="diff_len == 0" i18n:translate="">Now</span> <span i18n:translate="">- Her intention:</span> 
+              <span tal:condition="getattr(comment, 'intention', None)" i18n:translate="" tal:content="comment.intention"/>
             </small>
             <p>${comment.comment}</p>
             <div tal:condition="comment.related_correlation is not None" id="related_contents">

@@ -73,7 +73,7 @@ $(document).ready(function(){
               progress.hide();
         }else{
            var errormessage = '';
-           if (intention == ''){
+           if (intention == '- Select -'){
                errormessage =  "intention";
            };
            if (comment == ''){
@@ -116,24 +116,13 @@ $(document).ready(function(){
         var commentmessagesuccess = parent.find('#commentmessagesuccess');
         var commentmessagedanger = parent.find('#commentmessagedanger');
         var progress = parent.find('#progress');
-        //POST dict
-        var dict_post = {};
-        var inputs = $($(event.target).children().filter('fieldset')[0]).children().filter('input');
-        var i = 0;
-        while(i<inputs.length){
-           dict_post[$(inputs[i]).attr('name')] = $(inputs[i]).val();
-           i++;
-        };
-        dict_post['comment'] = comment;
-        dict_post['intention'] = intention;
-        dict_post[button.val()] = '';
-
         var url = $(event.target).data('url');
-        if (comment !='' && intention!=''){
+        if (comment !='' && intention!='- Select -'){
           progress.show();// TODO
           $(modal).modal('hide');
           $( commentmessageinfo).text( "Comment sent" ).show().fadeOut( 1000 );
-          $.post(url, dict_post, function(data) {
+          var values = $(this).serialize()+'&'+button.val()+'='+button.val();
+          $.post(url, values, function(data) {
                  $( commentmessagesuccess).text( "Your comment is integrated" ).show().fadeOut( 3000 );
                  $.post(urlparent, {}, function(data) {
                       var content = $(data).find('.scroll-able.comments-scroll');
@@ -149,7 +138,7 @@ $(document).ready(function(){
                  progress.hide();
         }else{
            var errormessage = '';
-           if (intention == ''){
+           if (intention == '- Select -'){
                errormessage =  "intention";
            };
            if (comment == ''){
