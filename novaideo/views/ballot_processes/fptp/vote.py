@@ -42,7 +42,7 @@ def subjects_choice(ballot_report):
         if isinstance(ob, Entity):
             return ob.title
         else:
-            return ob
+            return _(ob)
 
     values = [(i, get_title(i)) for i in subjects]
     values = sorted(values, key=lambda e: e[1])
