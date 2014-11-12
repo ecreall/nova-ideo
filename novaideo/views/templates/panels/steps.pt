@@ -1,37 +1,46 @@
-<div tal:condition="condition" class="steps-container"  i18n:domain="novaideo">
-	<div class="steps">
-          <div id="messages">
-            <div id="message-step-3" role="tooltip" class="popover fade bottom">
+<div tal:condition="condition" class="steps-container row"  i18n:domain="novaideo">
+    <div class="col-md-2"></div>
+	<div class="steps col-md-10">
+      <div id="messages">
+          <div id="message-step-3" role="tooltip" class="popover fade bottom">
               <div class="arrow"></div>
               <div class="popover-content">
                   ${structure:step3_message}
               </div>
-            </div>
           </div>
-  	  <ul>
-    	    <li class="step step-1 no-message ${(current_step == 1)  and 'current-step'}">
-      	      <span class="step-content"><div class="step-text"><strong i18n:translate="" >Collection of the idea</strong></div></span>
-            </li>
-            <li class="step step-2 no-message ${(current_step == 2)  and 'current-step'}">
-      	      <span class="step-content"><div class="step-text"><strong i18n:translate="" >Writing of the proposal</strong></div></span>
-            </li>
-            <li class="step step-3 ${(current_step == 3)  and 'current-step'}">
-      	       <span class="step-content" data-step="message-step-3">
+      </div>
+      <ul class="nav nav-steps">
+         <li class="0 first ${(current_step == 1)  and 'active'}">
+            <span class="${(current_step == 1)  and 'active'} step-content">
+              <div class="step-text">
+                <span i18n:translate="" >Collection of the idea</span>
+              </div>
+            </span>
+         </li>
+         <li class="1 ${(current_step == 2)  and 'active'}">
+            <span class="${(current_step == 2)  and 'active'} step-content">
+              <div class="step-text">
+                <span i18n:translate="" >Writing of the proposal</span>
+              </div>
+            </span>
+         </li>
+         <li class="2 ${(current_step == 3)  and 'active'}">
+               <span class="${(current_step == 3)  and 'active'} step-content" data-step="message-step-3">
                  <div class="step-text" >
-                   <strong i18n:translate="" >Improvement of the proposal</strong>
-                   <br /><span tal:condition="current_step == 3" class="glyphicon glyphicon-info-sign step-message" ></span>
+                   <span i18n:translate="" >Improvement of the proposal</span>
+                   <br />
                  </div>
                </span>
-            </li>
-            <li class="step step-4 ${(current_step == 4)  and 'current-step'}">
-      	       <span class="step-content">
+         </li>
+         <li class="3 last ${(current_step == 4)  and 'active'}">
+               <span class="${(current_step == 4)  and 'active'} step-content">
                  <div class="step-text">
-                   <strong i18n:translate="" >Support of the proposal</strong>
+                   <span i18n:translate="" >Support of the proposal</span>
                    <br />${structure:step4_message}
                  </div>
                </span>
-            </li>
-          </ul>
-      </div>
+         </li>
+      </ul>
+  </div>
 </div>
 

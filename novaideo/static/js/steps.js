@@ -11,8 +11,11 @@ $(document).ready(function(){
         }else{
             $(message).css('z-index', '1010');
             message.addClass('in');
-            var left = $($(this).parents('li').first()).position().left-80;
-            message.css('left', String(left)+'px');
+            var position = $($(this).parents('li').first()).position();
+            var height = $($(this).parents('li').first()).height();
+            var top = $($(this).parents('li').first()).position();
+            message.css('left', String(position.left)+'px');
+            message.css('top', String(position.top+height)+'px');
             $(this).addClass('message-in');
             inprogress = true
 

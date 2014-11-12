@@ -83,7 +83,7 @@
     </div>
     <!-- bar  -->
     ${panel('usernavbar')}
-
+    ${panel('steps')}
       <metal:slot metal:define-slot="outer-content">
         
         <div class="row clearfix novaideo-content">
@@ -109,7 +109,6 @@
             </div>
 
             <div class="inner-content">
-               ${panel('steps')}
                <div metal:define-slot="main"></div>
             </div>
 

@@ -35,9 +35,10 @@
 
 .steps {
 	padding: 1px 0;
+    position: unset;
 	overflow: hidden;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 
 }
 
@@ -47,55 +48,16 @@
 	list-style: none;
 }
 
-.steps ul { 
-        float: left;
-        width: 100%;
-
- }
-
-.steps li {
-	float: left;
-	width: 27%;
-}
 
 .steps li .step-content {
 	display: block;
-	padding: 15px 20px;
-	background: #d0d0d0;
 	color: #fff;
 	line-height: 1em;
 	text-decoration: none;
-  text-align:center;
+    text-align:center;
 }
 
 .steps li .step-content:hover { background: #666; }
-.steps li.step, .steps li.step .step-content {
-	position: relative;
-	z-index: 4;
-        height: 4em;
-}
-.steps li.step-2, .steps li.step-2 .step-content { z-index: 3; }
-.steps li.step-3, .steps li.step-3 .step-content { z-index: 2; }
-.steps li.step-4, .steps li.step-4 .step-content { z-index: 1; }
-
-.steps li.step-1 .step-content, .steps li.step-2 .step-content, .steps li.step-3 .step-content , .steps li.step-4 .step-content {
-	background: transparent url(step-off.png) center right no-repeat;
-        padding-bottom: 4px;
-        padding-right: 25px;
-        padding-top: 4px;
-}
-/*.steps li.step:not(.current-step) strong{
-   vertical-align: sub;
-}
-
-.steps li.step.no-message strong{
-   vertical-align: sub;
-}
-*/
-.steps li.current-step .step-content{
-        background: transparent url(step.png) center right no-repeat;
-        cursor: pointer;
-}
 
 .step-text{
     display: inline-block;
@@ -105,20 +67,6 @@
     width: 100%;
 
 }
-
-.steps li.step-2, .steps li.step-3, .steps li.step-4 { margin-left: -29px; }
-.steps li.step-2 .step-content, .steps li.step-3 .step-content { padding-left: 45px; }
-.steps li.step-4 .step-content {
-	padding-left: 45px;
-	padding-right: 10px;
-        background-position: center left;
-        width: 113%;
-}
-
-.steps li.current-step .step-content:hover,  .steps li.current-step .step-content:focus{ 
-    background: transparent url(step_over.png) center right no-repeat; }
-.steps li.step-4 .step-content:hover { background-position: center left; }
-
 
 /*Sub-steps*/
 
@@ -215,7 +163,7 @@
 	color: #fff;
 	line-height: 1em;
 	text-decoration: none;
-       text-align:center;
+    text-align:center;
 }
 
 .sub-steps li.sub-step-1 .step-content{
@@ -282,20 +230,20 @@
 /*steps*/
 
 
-.nav-steps li a.active:after {
-    border-left-color: #007acc;
+.nav-steps li .step-content.active:after {
+    border-left-color: steelblue;
 }
 
-.nav-steps li a.active {
-    background: none repeat scroll 0 0 #007acc;
+.nav-steps li .step-content.active {
+    background: none repeat scroll 0 0 steelblue;
     color: #fff;
 }
 
-.nav-steps li:first-child a:before {
+.nav-steps li:first-child .step-content:before {
     border: medium none;
 }
-.nav-steps li a:before {
-    border-bottom: 20px inset transparent;
+.nav-steps li .step-content:before {
+    border-bottom: 21px inset transparent;
     border-left: 20px solid #f2f2f2;
     border-top: 20px inset transparent;
     content: "";
@@ -305,8 +253,8 @@
     top: 0;
     width: 0;
 }
-.nav-steps li a:after {
-    border-bottom: 20px inset transparent;
+.nav-steps li .step-content:after {
+    border-bottom: 21px inset transparent;
     border-left: 20px solid #565656;
     border-top: 20px inset transparent;
     content: "";
@@ -317,10 +265,10 @@
     width: 0;
     z-index: 2;
 }
-.nav-steps li:first-child a {
+.nav-steps li:first-child .step-content {
     padding-left: 15px;
 }
-.nav-steps li a {
+.nav-steps li .step-content {
     background: none repeat scroll 0 0 #565656;
     color: #ffffff;
     display: inline-block;
@@ -328,6 +276,7 @@
     padding: 10px 12px 10px 30px;
     position: relative;
     text-decoration: none;
+    min-height: 41px;
 }
 
 .nav-steps li {
@@ -361,8 +310,8 @@ ul, ol {
     padding: 0;
 }
 
-.nav-steps li a:hover {
-    background-color: #ffffff;
+.nav-steps li .step-content:hover {
+    background-color: #dddddd;
     color: #565656;
     cursor: pointer;
 }
@@ -372,6 +321,6 @@ ul, ol {
     text-decoration: none;
 }
 */
-.nav-steps li a:hover:after {
-    border-left: 20px solid #ffffff;
+.nav-steps li .step-content:hover:after {
+    border-left: 20px solid #dddddd;
 }
