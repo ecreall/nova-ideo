@@ -8,6 +8,7 @@ from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.idea_management.behaviors import  SeeIdea
 from novaideo.content.idea import Idea
+from novaideo.content.processes import get_states_mapping
 from novaideo import _
 from .present_idea import PresentIdeaView
 from .comment_idea import CommentIdeaView
@@ -50,6 +51,7 @@ class DetailIdeaView(BasicView):
         result = {}
         values = {
                 'idea': self.context,
+                'state': get_states_mapping(user, self.context, self.context.state[0]),
                 'current_user': user,
                 'files': files_urls,
                 'global_actions': global_actions,

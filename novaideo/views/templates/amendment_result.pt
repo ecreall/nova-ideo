@@ -3,7 +3,7 @@
 
   </div>
   <div class="media-body">
-    <h3 tal:condition="object.state"><span class="label label-basic pull-right">${object.state[0].capitalize()}</span></h3>
+    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
     <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
     <dl >
         <div tal:omit-tag="" tal:condition="object.explanation">

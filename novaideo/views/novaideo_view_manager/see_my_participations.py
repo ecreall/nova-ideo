@@ -12,6 +12,7 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeMyParticipations)
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
+from novaideo.content.processes import get_states_mapping
 from novaideo.core import BATCH_DEFAULT_SIZE
 
 
@@ -41,7 +42,10 @@ class SeeMyParticipationsView(BasicView):
         len_result = batch.seqlen
         result_body = []
         for obj in batch:
-            object_values = {'object':obj, 'current_user':user}
+            object_values = {'object': obj, 
+                           'current_user': user, 
+                           'state': get_states_mapping(user, obj, 
+                                   getattr(obj, 'state', [None])[0])}
             body = self.content(result=object_values, 
                                 template=obj.result_template)['body']
             result_body.append(body)

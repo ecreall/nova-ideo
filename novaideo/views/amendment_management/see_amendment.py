@@ -10,6 +10,7 @@ from pontus.view_operation import MultipleView
 from novaideo.content.processes.amendment_management.behaviors import (
     SeeAmendment)
 from novaideo.content.amendment import Amendment
+from novaideo.content.processes import get_states_mapping
 from novaideo import _
 from .present_amendment import PresentAmendmentView
 from .comment_amendment import CommentAmendmentView
@@ -80,12 +81,13 @@ class DetailAmendmentView(BasicView):
          for k in self.context.keywords if k not in proposal.keywords]
         values = {
                 'amendment': self.context,
+                'state': get_states_mapping(user, self.context, self.context.state[0]),
                 'textdiff': textdiff,
                 'descriptiondiff':descriptiondiff,
                 'keywordsdiff':keywordsdiff,
                 'current_user': user,
                 'global_actions': global_actions,
-                'text_actions': text_actions,
+                'text_actions': text_actions
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

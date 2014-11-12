@@ -6,6 +6,7 @@ from pyramid_layout.panel import panel_config
 
 from dace.objectofcollaboration.entity import Entity
 from dace.util import getBusinessAction, getSite
+from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.schema import select
 
@@ -21,6 +22,8 @@ from novaideo.content.proposal import Proposal
 from novaideo.content.idea import Idea
 from novaideo.content.amendment import Amendment
 from novaideo.core import _
+from novaideo.content.processes import get_states_mapping
+
 
 USER_MENU_ACTIONS = {'menu1': [SeeMyContents, SeeMyParticipations],
                      'menu2': [SeeMySelections, SeeMySupports],
@@ -182,6 +185,10 @@ class StepsPanel(object):
     def _get_step3_informations(self, context, request):
         time_delta = None
         process = context.creator
+        wg = context.working_group
+        user = get_current()
+        working_group_states = [_(get_states_mapping(user, wg, s)) \
+                                for s in wg.state]
         if any(s in context.state for s in ['proofreading','amendable']):
             date_iteration = process['timer'].eventKind.time_date
             if date_iteration is not None:
@@ -189,7 +196,8 @@ class StepsPanel(object):
                 time_delta = days_hours_minutes(time_delta)
 
             return renderers.render(self.step3_1_template,
-                                    {'context':context, 
+                                    {'context':context,
+                                     'working_group_states': working_group_states,
                                      'duration':time_delta,
                                      'process': process},
                                     request)
@@ -201,6 +209,7 @@ class StepsPanel(object):
 
             return renderers.render(self.step3_3_template,
                                     {'context': context, 
+                                     'working_group_states': working_group_states,
                                      'duration': time_delta,
                                      'process': process,
                                      'ballot_report': ballot.report},
@@ -216,7 +225,8 @@ class StepsPanel(object):
                 time_delta = days_hours_minutes(time_delta)
 
             return renderers.render(self.step3_2_template,
-                                    {'context':context, 
+                                    {'context':context,
+                                     'working_group_states': working_group_states,
                                      'duration':time_delta,
                                      'process': process,
                                      'ballot_report': ballot.report,

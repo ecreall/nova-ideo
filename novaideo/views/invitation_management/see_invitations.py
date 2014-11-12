@@ -3,12 +3,14 @@ from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView, merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
 from novaideo.content.processes.invitation_management.behaviors import (
     SeeInvitations)
 from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.content.processes import get_states_mapping
 from novaideo import _
 
 
@@ -27,6 +29,7 @@ class SeeInvitationsView(BasicView):
 
     def update(self):
         self.execute(None)
+        user = get_current()
         result = {}
         all_messages = {}
         isactive = False
@@ -63,7 +66,7 @@ class SeeInvitationsView(BasicView):
                 'user_title': getattr(invitation, 'user_title', ''),
                 'roles':getattr(invitation, 'roles', ''),
                 'organization':getattr(invitation, 'organization', None),
-                'state':state}
+                'state': get_states_mapping(user, invitation, state)}
             all_invitation_data['invitations'].append(invitation_dic)
          
         all_invitation_data['tabid'] = self.__class__.__name__ + 'InvitationActions'

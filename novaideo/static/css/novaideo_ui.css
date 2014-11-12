@@ -416,7 +416,8 @@ margin-bottom: 22px;
 }
 
 .global-actions-menu{
-    margin-bottom: 8px; 
+    margin-bottom: 5px;
+    margin-top: 10px; 
 }
 
 .global-actions-menu .action-1 {

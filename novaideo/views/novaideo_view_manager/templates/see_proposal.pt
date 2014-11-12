@@ -20,7 +20,7 @@
      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
       <span  i18n:translate="">Vous avez atteint la limite de participations autorisées. Afin de pouvoir soumettre votre proposition, veuillez démissionner de l'un de </span><a tal:attributes="href request.resource_url(request.virtual_root, '@@seemyparticipations')"  i18n:translate="">vos groupes de travail actuels</a>. 
   </div>
-  <h3 tal:condition="proposal.state"><span class="label label-basic pull-right">${proposal.state[0].capitalize()}</span></h3>
+  <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
   <h2 class="content-title"><img src="${request.static_url('novaideo:static/images/proposal_picto32.png')}"> ${proposal.title}</h2>
   <div class="object-description">
    <small><span  i18n:translate="">(Submitted by</span> <a tal:attributes="href request.resource_url(proposal.author, '@@index')">${((proposal.author is current_user) and 'Vous') or getattr(proposal.author, 'title', proposal.author.name)}</a> <span  i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(proposal.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${proposal.modified_at.hour}:${proposal.modified_at.minute}:${proposal.modified_at.second} <span tal:omit-tag="" tal:condition="proposal.originalentity is not None"><span  i18n:translate="">, duplicated from the proposal</span> <a tal:attributes="href request.resource_url(proposal.originalentity, '@@index')">${proposal.originalentity.title}</a></span>)

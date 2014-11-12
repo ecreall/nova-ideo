@@ -3,6 +3,7 @@ from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
 from dace.util import get_obj
+from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.view import BasicView, merge_dicts, ViewError
@@ -10,6 +11,7 @@ from pontus.view import BasicView, merge_dicts, ViewError
 from novaideo.content.processes.invitation_management.behaviors import (
     SeeInvitation)
 from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.content.processes import get_states_mapping
 from novaideo import _
 
 
@@ -27,6 +29,7 @@ class SeeInvitationView(BasicView):
 
 
     def update(self):
+        user = get_current()
         invitation_id = self.params('invitation_id')
         try:
             invitation = get_obj(int(invitation_id)) 
@@ -52,7 +55,7 @@ class SeeInvitationView(BasicView):
                 'user_title': getattr(invitation, 'user_title', ''),
                 'roles':getattr(invitation, 'roles', ''),
                 'organization':getattr(invitation, 'organization', None),
-                'state': state
+                'state': get_states_mapping(user, invitation, state)
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

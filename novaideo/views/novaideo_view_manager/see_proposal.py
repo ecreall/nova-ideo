@@ -12,6 +12,7 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeProposal)
 from novaideo.content.proposal import Proposal
 from novaideo import _
+from novaideo.content.processes import get_states_mapping
 from novaideo.views.proposal_management.present_proposal import (
     PresentProposalView)
 from novaideo.views.proposal_management.comment_proposal import (
@@ -97,6 +98,8 @@ class DetailProposalView(BasicView):
         result = {}
         values = {
                 'proposal': self.context,
+                'state': get_states_mapping(user, self.context, 
+                                            self.context.state[0]),
                 'text': text,
                 'description': description,
                 'current_user': user,

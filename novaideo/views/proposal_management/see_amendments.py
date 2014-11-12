@@ -11,6 +11,7 @@ from novaideo.content.processes.proposal_management.behaviors import (
     SeeAmendments)
 from novaideo.content.proposal import Proposal
 from novaideo import _
+from novaideo.content.processes import get_states_mapping
 from novaideo.core import can_access
 
 
@@ -55,7 +56,8 @@ class SeeAmendmentsView(BasicView):
         result = {}
         values = {'amendments': objects,
                   'current_user': user,
-                  'message': message
+                  'message': message,
+                  'get_states_mapping': get_states_mapping
                    }
         self.message = message
         body = self.content(result=values, template=self.template)['body']

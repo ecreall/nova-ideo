@@ -12,6 +12,7 @@ from novaideo.content.processes.user_management.behaviors import  SeePerson
 from novaideo.content.person import Person
 from novaideo.views.novaideo_view_manager.search import SearchResultView
 from novaideo.core import BATCH_DEFAULT_SIZE, can_access
+from novaideo.content.processes import get_states_mapping
 
 
 @view_config(
@@ -48,7 +49,11 @@ class SeePersonView(BasicView):
         result_body = []
         result = {}
         for obj in batch:
-            object_values = {'object': obj, 'current_user': current_user}
+            object_values = {'object': obj, 
+                             'current_user': current_user, 
+                             'state': get_states_mapping(current_user, obj, 
+                                   getattr(obj, 'state', [None])[0])
+                             }
             body = self.content(result=object_values,
                     template=obj.result_template)['body']
             result_body.append(body)
@@ -63,6 +68,8 @@ class SeePersonView(BasicView):
         values = {'contents': (result_body and contents_body) or None,
                   'proposals': None,
                   'user': self.context,
+                  'state': get_states_mapping(current_user, user, 
+                                getattr(user, 'state', [None])[0]), 
                   'actions': actions}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
