@@ -519,15 +519,10 @@ ins {
 #item-datas.scroll-able {
     height: 200px
 }
-/*.idea-managements.navbar-fixed-top {
-    border-width: 0 0 1px;
-    margin-left: 75%;
-    top: 0;
-    width: 24%;
-}*/
-
-.idea-managements{
- margin-top: 66px;
+.idea-managements.panel-success > .panel-heading{
+    background-image: linear-gradient(to bottom, #565656 0%, #565656 100%);
+    background-repeat: repeat-x;
+    color: white;
 }
 
 .idea-managements .panel-body{
@@ -746,7 +741,7 @@ ins {
 
 .new-idea-form{
     padding: 13px;
-    margin-top:33px;
+    margin-bottom: 10px;
    border: 1px solid #e3e3e3;
     border-radius: 4px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(122, 122, 122, 0.2);

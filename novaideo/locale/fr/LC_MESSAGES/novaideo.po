@@ -596,7 +596,7 @@ msgstr "Envoyer"
 
 #: novaideo/views/user_access_manager/reset_password.py:76
 msgid "Request Password Reset"
-msgstr "Mot de passe réinitialisé"
+msgstr "Réinitialisation du mot de passe"
 
 #: novaideo/views/user_access_manager/reset_password.py:111
 msgid "Reset Password"

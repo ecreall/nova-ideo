@@ -76,7 +76,6 @@ class ResetRequestView(FormView):
     title = _('Request Password Reset')
     schema = ResetRequestSchema()
     behaviors = [Send]
-    item_template = 'pontus:templates/subview_sample.pt'
 
 
 
@@ -111,6 +110,5 @@ class ResetView(FormView):
     title = _('Reset Password')
     schema = ResetSchema()
     behaviors = [Reset]
-    item_template = 'pontus:templates/subview_sample.pt'
 
 
