@@ -30,9 +30,25 @@ function replays_show(element){
 
 };
 
+function init_comment_scroll(){
+  var last_child = $('.comments-scroll ul.commentulorigin > .commentli:last-child');
+  if (last_child.length > 0){
+      var top = last_child.offset().top - $('.comments-scroll').offset().top  + last_child.height() + 10;
+      if (top < 700){
+       $('.comments-scroll').height(top)
+      }
+  }else{
+       $('.comments-scroll').height(100)
+  }
+};
+
+
 $(document).ready(function(){
     init_select_association();
-
+    
+     $($('.commentform').parents('.panel').first()).on('shown.bs.collapse', function () {
+       init_comment_scroll();
+     });
     $(document).on('submit','.commentform', function( event ) {
         var button = $(this).find('button').last();
         var intention = $(this).find("select[name=\'intention\']").select2('val');
@@ -64,6 +80,7 @@ $(document).ready(function(){
                    $($(select_related_contents.parents('.controled-form').first()).find("input[name='associate']").first()).prop('checked', false);
                    select_related_contents.select2('data', []);
                    init_select_association();
+                   init_comment_scroll();
                   }else{
                      location.reload();
                      return false
@@ -128,6 +145,7 @@ $(document).ready(function(){
                       if (content){
                          $(target).html($(content).html());
                          init_select_association();
+                         init_comment_scroll()
                       }else{
                          location.reload();
                          return false
