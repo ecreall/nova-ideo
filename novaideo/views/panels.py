@@ -5,7 +5,7 @@ from pyramid import renderers
 from pyramid_layout.panel import panel_config
 
 from dace.objectofcollaboration.entity import Entity
-from dace.util import getBusinessAction, getSite
+from dace.util import getBusinessAction, getSite, find_catalog
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.schema import select
@@ -20,7 +20,9 @@ from novaideo.content.processes.proposal_management.behaviors import (
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.proposal import Proposal
 from novaideo.content.idea import Idea
+from novaideo.content.interface import IPerson, Iidea, IProposal
 from novaideo.content.amendment import Amendment
+from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.core import _
 from novaideo.content.processes import get_states_mapping
 
@@ -153,6 +155,38 @@ class UserNavBarPanel(object):
         return result
 
 
+@panel_config(
+    name = 'novaideo_contents',
+    context = NovaIdeoApplication ,
+    renderer='templates/panels/novaideo_contents.pt'
+    )
+class NovaideoContents(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        dace_catalog = find_catalog('dace')
+        states_index = dace_catalog['object_states']
+        object_provides_index = dace_catalog['object_provides']
+        query = object_provides_index.any((IPerson.__identifier__ ,)) & \
+                states_index.notany(['deactivated']) 
+        nb_person = query.execute().__len__()
+        query = object_provides_index.any((Iidea.__identifier__ ,)) & \
+                states_index.notany(['archived']) 
+        nb_idea = query.execute().__len__()
+        query = object_provides_index.any((IProposal.__identifier__ ,)) & \
+                states_index.notany(['archived']) 
+        nb_proposal = query.execute().__len__()
+        result = {}
+        result['nb_person'] = nb_person
+        result['nb_idea'] = nb_idea
+        result['nb_proposal'] = nb_proposal
+        return result
+
+
+
 def days_hours_minutes(timed):
     return (timed.days, 
            timed.seconds//3600,
@@ -241,9 +275,17 @@ class StepsPanel(object):
 
         return _('No more Information.')
 
-    def _get_step4_informations(self, context, request):       
+    def _get_step4_informations(self, context, request):
+        user = get_current()
+        support = 0
+        if any(t.owner is user for t in context.tokens_support):
+            support = 1
+        elif any(t.owner is user for t in context.tokens_opposition):
+            support = -1
+
         return renderers.render(self.step4_template,
-                                {'context':context},
+                                {'context':context,
+                                 'support': support},
                                 request)
 
     def __call__(self):

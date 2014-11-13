@@ -15,7 +15,7 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
+<hr class="soften">
 <div class="media-body content-title-body"  i18n:domain="novaideo">
 <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
 <h2 class="content-title"><img src="${request.static_url('novaideo:static/images/idea_picto32.png')}"> ${idea.title}</h2>

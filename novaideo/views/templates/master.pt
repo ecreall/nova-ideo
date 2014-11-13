@@ -83,6 +83,7 @@
     </div>
     <!-- bar  -->
     ${panel('usernavbar')}
+    ${panel('novaideo_contents')}
     ${panel('steps')}
       <metal:slot metal:define-slot="outer-content">
         

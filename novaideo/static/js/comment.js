@@ -35,7 +35,7 @@ $(document).ready(function(){
 
     $(document).on('submit','.commentform', function( event ) {
         var button = $(this).find('button').last();
-        var intention = $(this).find('.select2-chosen').text();
+        var intention = $(this).find("select[name=\'intention\']").select2('val');
         var select_related_contents = $($(this).find("select[name='related_contents']").first());
         var related_contents = get_data(select_related_contents.select2('data'));
         var textarea = $(this).find('textarea');
@@ -47,7 +47,7 @@ $(document).ready(function(){
         var commentmessagedanger = parent.find('#messagedanger');
         var progress = parent.find('#progress');
         var url = $(event.target).data('url');
-        if (comment !='' && intention!='- Select -'){
+        if (comment !='' && intention!=''){
           progress.show();// TODO
           $(button).addClass('disabled');
           $( commentmessageinfo).text( "Comment sent" ).show().fadeOut( 1000 );
@@ -73,7 +73,7 @@ $(document).ready(function(){
               progress.hide();
         }else{
            var errormessage = '';
-           if (intention == '- Select -'){
+           if (intention == ''){
                errormessage =  "intention";
            };
            if (comment == ''){
@@ -101,7 +101,7 @@ $(document).ready(function(){
         var formid = $(this).attr('id');
         var button = $(this).find('button')
 
-        var intention = $(this).find('.select2-chosen').text();
+        var intention = $(this).find("select[name=\'intention\']").select2('val');
         var textarea = $(this).find('textarea');
         var comment = textarea.val();
 
@@ -111,13 +111,12 @@ $(document).ready(function(){
         var urlparent = $(parentform).data('url');
 
         var target = parent.find('.scroll-able.comments-scroll');
-        var commentmessageinfo = parent.find('#commentmessageinfo');
-        var commentmessageinfo = parent.find('#commentmessageinfo');
-        var commentmessagesuccess = parent.find('#commentmessagesuccess');
-        var commentmessagedanger = parent.find('#commentmessagedanger');
+        var commentmessageinfo = parent.find('#messageinfo');
+        var commentmessagesuccess = parent.find('#messagesuccess');
+        var commentmessagedanger = parent.find('#messagedanger');
         var progress = parent.find('#progress');
         var url = $(event.target).data('url');
-        if (comment !='' && intention!='- Select -'){
+        if (comment !='' && intention!=''){
           progress.show();// TODO
           $(modal).modal('hide');
           $( commentmessageinfo).text( "Comment sent" ).show().fadeOut( 1000 );
@@ -138,7 +137,7 @@ $(document).ready(function(){
                  progress.hide();
         }else{
            var errormessage = '';
-           if (intention == '- Select -'){
+           if (intention == ''){
                errormessage =  "intention";
            };
            if (comment == ''){

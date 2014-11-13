@@ -34,7 +34,7 @@
 }
 
 .steps {
-	padding: 1px 0;
+	padding-left: 6px;
     position: unset;
 	overflow: hidden;
     border-top-left-radius: 5px;
@@ -58,6 +58,10 @@
 }
 
 .nav-steps li:first-child .step-content:before {
+    border: medium none;
+}
+
+.nav-steps li:last-child .step-content:after {
     border: medium none;
 }
 
@@ -103,7 +107,7 @@
 
 .nav-steps li {
     float: left;
-    width: 17%;
+    width: 17.58%;
 }
 
 li {

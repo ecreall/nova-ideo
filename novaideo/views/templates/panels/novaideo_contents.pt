@@ -1,0 +1,20 @@
+<nav class="navbar novaideo-contents" i18n:domain="novaideo">
+        <div class="container">
+            <div class="novaideo-contents-list">
+                    <ul>
+                        <div tal:omit-tag="" tal:condition="nb_person > 0">
+                           <li tal:condition="nb_person == 1"><strong>${nb_person}</strong> <span i18n:translate="">Member</span></li>
+                           <li tal:condition="nb_person > 1"><strong>${nb_person}</strong> <span i18n:translate="">Members</span></li>
+                        </div>    
+                        <div tal:omit-tag="" tal:condition="nb_idea > 0">
+                           <li tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Idea</span></li>
+                           <li tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Ideas</span></li>
+                        </div> 
+                        <div tal:omit-tag="" tal:condition="nb_proposal > 0">
+                           <li tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Proposal</span></li>
+                           <li tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Proposals</span></li>
+                        </div>                    
+                    </ul>
+            </div>
+        </div>
+</nav>

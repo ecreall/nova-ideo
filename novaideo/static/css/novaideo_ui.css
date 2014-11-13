@@ -1,3 +1,17 @@
+body{
+    background-color: #fafafa;
+}
+
+.pontus-main{
+    box-shadow: 0px 7px 11px #888888
+}
+
+#navbaruser{
+    background-color: #ffffff; 
+    background-image: none; 
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.28) inset; 
+}
+
 .global-pilot{
     bottom: 0;
     left: 0;
@@ -6,8 +20,23 @@
     z-index: -1;
 }
 
-.panel.pontus-main-view > .panel-heading{
+.pontus-main > .panel> .panel-heading{
+    background-color: white;
+    background-image: none;
+    border-color: white;
     height: 41px;
+    color: inherit;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+     font-size: 24px;
+}
+
+hr.soften{
+    background-image: -moz-linear-gradient(left center , rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    border: 0 none;
+    height: 1px;
+    margin-top: -40px;
 }
 
 .novaideo-right{
@@ -296,7 +325,7 @@ ins {
 
 .navbar-entity .navbar-collapse{
     margin-left: -47px; 
-    margin-right: -33px
+    margin-right: -32.5px;
 }
 
 .navbar-entity .nav > li > a {
@@ -744,7 +773,35 @@ ins {
     color: #eced1b;
 }
 
-
 .new-idea-btn{
   margin-top: -22px
+}
+
+.novaideo-contents{
+    background-color: #8d8d8d;
+    border-bottom: 1px solid rgb(216, 216, 216);
+    box-shadow: 0 4px 15px -13px rgb(68, 68, 68);
+    margin-top: -20px;
+    width: 100%;
+    z-index: 1020;
+
+}
+
+.novaideo-contents li {
+    color: #e6e6e6;
+    float: left;
+    font-size: 16px;
+    line-height: 44px;
+    list-style: outside none none;
+    margin-right: 55px;
+}
+
+.novaideo-contents strong {
+    color: #ffffff;
+    font-size: 22px;
+    margin-right: 5px;
+}
+
+.novaideo-contents-list{
+    float: left;
 }

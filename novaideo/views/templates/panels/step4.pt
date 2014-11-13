@@ -1,12 +1,34 @@
-<small>
-  <div tal:condition="'published' in context.state" class="proposal-support">
-    <span class="label label-success">
-        <span class="glyphicon glyphicon-thumbs-up"></span>
-        <span class="support-nb">${len(context.tokens_support)}</span>
-    </span>
-    <span class="label label-danger">
-        <span class="glyphicon glyphicon-thumbs-down"></span>
-        <span class="support-nb">${len(context.tokens_opposition)}</span>
-    </span>
-  </div>
-</small>
+<div style="text-align: center;" i18n:domain="novaideo">  
+ <dl >
+       <dt  i18n:translate="">My appreciation</dt>
+       <dd tal:condition="support == 1">
+            <span class="label label-success">
+                <span class="glyphicon glyphicon-thumbs-up"></span>
+           </span>
+       </dd>
+        <dd tal:condition="support == -1">
+            <span class="label label-danger">
+                <span class="glyphicon glyphicon-thumbs-down"></span>
+           </span>
+       </dd>
+        <dd tal:condition="support == 0" i18n:translate="">
+            No appreciation
+       </dd>
+       <dt i18n:translate="">Total appreciations</dt>
+       <dd>
+        <small>
+           <div tal:condition="'published' in context.state" class="proposal-support">
+             <span class="label label-success">
+                <span class="glyphicon glyphicon-thumbs-up"></span>
+                <span class="support-nb">${len(context.tokens_support)}</span>
+             </span>
+             <span class="label label-danger">
+                <span class="glyphicon glyphicon-thumbs-down"></span>
+                <span class="support-nb">${len(context.tokens_opposition)}</span>
+             </span>
+            </div>
+        </small>
+    </dd>
+ </dl>
+</div>
+
