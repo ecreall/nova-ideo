@@ -56,7 +56,7 @@ class IdeaManagementView(MultipleView):
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (RelatedIdeasView, AddIdeaFormView)
     coordinates = 'right'
-    css_class = 'panel-success'
+    css_class = 'idea-managements panel-success'
 
 
 
