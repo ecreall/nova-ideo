@@ -12,10 +12,55 @@ body{
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.28) inset; 
 }
 
-.global-pilot{
-    bottom: 0;
+#footer {
+    background: none repeat scroll 0 0 #e7e7e7;
+    color: #7d7d7d;
+    font-size: 0.9em;
+    height: 70px;
+    padding-top: 30px;
+    position: absolute;
+    text-align: center;
+    width: 101%;
+    z-index: -2;
+}
+
+
+#custom-footer {
+    margin: 0 auto;
+    min-width: 1000px;
+    position: relative;
+    width: 0;
+}
+
+#footer a#logo {
+    background: url("../images/novaideo32_over.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    margin: -9px 15px;
+}
+
+#logo {
+    display: block;
+    float: left;
+    height: 32px;
     left: 0;
+    position: relative;
+    width: 32px;
+}
+
+#footer #portal-colophon .colophonWrapper {
+    float: right;
+    width: 90%;   
+}
+
+
+#footer #portal-colophon a {
+    color: #7d7d7d;
+    font-style: italic;
+    text-decoration: none;
+}
+
+.global-pilot{
     position: fixed;
+    bottom: 0;
     right: 0;
     z-index: -1;
 }
@@ -207,7 +252,7 @@ ins {
 	width:20px;
 	height:20px;
 	background:#ef827d;
-        display: inline-block;; 
+    display: inline-block;; 
 }
 
 .legend-carre-ins{

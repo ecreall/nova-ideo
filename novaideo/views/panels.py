@@ -310,3 +310,17 @@ class StepsPanel(object):
                 result['current_step'] = 0
 
         return result
+
+
+@panel_config(
+    name = 'novaideo_footer',
+    renderer='templates/panels/novaideo_footer.pt'
+    )
+class NovaideoFooter(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        return {}

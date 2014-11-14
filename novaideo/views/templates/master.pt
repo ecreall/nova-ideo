@@ -132,11 +132,9 @@
     <!--/div-->
 
     <more tal:omit-tag="" metal:define-slot="tail-more"></more>
-      <div class="global-pilot">
-        <span style="" class="pull-right ">
-          <img src="${request.static_url('novaideo:static/images/pilote.png')}">
-        </span>
-      </div>
+    ${panel('novaideo_footer')}
+    <!--TODO footer panel-->
+
   </body>
 
 </html>

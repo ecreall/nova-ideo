@@ -1,0 +1,21 @@
+    <div id="footer">
+        <div id="custom-footer">
+          <a id="logo" href="${request.resource_url(request.virtual_root, '')}"></a>
+          <div id="portal-colophon">
+            <div class="colophonWrapper">
+              <span>
+                <a href="#">Mentions légales</a>
+                - 
+                <a href="#">Accessibilité</a>
+                - 
+                <a href="#" title="">Réalisé avec Pyramid &amp; Python</a>
+                -  Copyright © 2014
+                  <a href="http://www.ecreall.com">Ecréall</a>
+              </span>
+           </div>
+          </div>
+        </div>
+        <span class="global-pilot">
+          <img src="${request.static_url('novaideo:static/images/pilote.png')}">
+        </span>
+    </div>
