@@ -14,7 +14,10 @@ from pontus.core import VisualisableElement
 
 from .behaviors import (
     SelectEntity,
-    DeselectEntity)
+    DeselectEntity,
+    CreateFile,
+    SeeFile,
+    EditFile)
 from novaideo import _
 
 
@@ -39,6 +42,18 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                                     description=_("Remove from my selections"),
                                     title=_("Remove from my selections"),
                                     groups=[]),
+                creat = ActivityDefinition(contexts=[CreateFile],
+                                       description=_("Create a file"),
+                                       title=_("Create a file"),
+                                       groups=[_('Add')]),
+                editfile = ActivityDefinition(contexts=[EditFile],
+                                       description=_("Edit the file"),
+                                       title=_("Edit the file"),
+                                       groups=[]),
+                seefile = ActivityDefinition(contexts=[SeeFile],
+                                       description=_("Details"),
+                                       title=_("Details"),
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -46,6 +61,12 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'select'),
                 TransitionDefinition('select', 'eg'),
+                TransitionDefinition('pg', 'creat'),
+                TransitionDefinition('creat', 'eg'),
+                TransitionDefinition('pg', 'seefile'),
+                TransitionDefinition('seefile', 'eg'),
+                TransitionDefinition('pg', 'editfile'),
+                TransitionDefinition('editfile', 'eg'),
                 TransitionDefinition('pg', 'deselect'),
                 TransitionDefinition('deselect', 'eg'),
                 TransitionDefinition('eg', 'end'),

@@ -225,8 +225,9 @@ class StepsPanel(object):
                                 for s in wg.state]
         if any(s in context.state for s in ['proofreading','amendable']):
             date_iteration = process['timer'].eventKind.time_date
-            if date_iteration is not None:
-                time_delta = date_iteration - datetime.datetime.today()
+            today = datetime.datetime.today()
+            if date_iteration is not None and date_iteration > today:
+                time_delta = date_iteration - today
                 time_delta = days_hours_minutes(time_delta)
 
             return renderers.render(self.step3_1_template,
@@ -237,8 +238,9 @@ class StepsPanel(object):
                                     request)
         elif 'votes for publishing'  in context.state:
             ballot = process.vp_ballot
-            if ballot.finished_at is not None:
-                time_delta = ballot.finished_at - datetime.datetime.today()
+            today = datetime.datetime.today()
+            if ballot.finished_at is not None and ballot.finished_at > today:
+                time_delta = ballot.finished_at - today
                 time_delta = days_hours_minutes(time_delta)
 
             return renderers.render(self.step3_3_template,
@@ -254,8 +256,9 @@ class StepsPanel(object):
             for b in process.amendments_ballots]
             voters = list(set(voters))
             ballot = process.amendments_ballots[-1]
-            if ballot.finished_at is not None:
-                time_delta = ballot.finished_at - datetime.datetime.today()
+            today = datetime.datetime.today()
+            if ballot.finished_at is not None and ballot.finished_at > today:
+                time_delta = ballot.finished_at - today
                 time_delta = days_hours_minutes(time_delta)
 
             return renderers.render(self.step3_2_template,

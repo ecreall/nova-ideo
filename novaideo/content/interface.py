@@ -73,6 +73,8 @@ class Iidea(ICommentable,
             IPresentableEntity):
     pass
 
+class IFile(ISearchableEntity):
+    pass
 
 class ICorrelation(ICommentable):
     pass

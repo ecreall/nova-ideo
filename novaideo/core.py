@@ -17,8 +17,8 @@ from dace.descriptors import (
     CompositeMultipleProperty)
 from dace.util import getSite
 from pontus.schema import Schema
-from pontus.core import VisualisableElement
-from pontus.widget import Select2WidgetCreateSearchChoice
+from pontus.core import VisualisableElement, VisualisableElementSchema
+from pontus.widget import RichTextWidget, Select2WidgetCreateSearchChoice
 
 from novaideo import _
 from novaideo.content.interface import (
@@ -27,7 +27,8 @@ from novaideo.content.interface import (
     ISearchableEntity,
     ICommentable,
     ICorrelableEntity,
-    IPresentableEntity)
+    IPresentableEntity,
+    IFile)
 
 
 
@@ -202,3 +203,23 @@ class CorrelableEntity(Entity):
         result = [c.target for c in self.source_correlations]
         result.extend([c.source for c in self.target_correlations])
         return list(set(result))
+
+
+class FileSchema(VisualisableElementSchema, SearchableEntitySchema):
+
+    text = colander.SchemaNode(
+        colander.String(),
+        widget= RichTextWidget(),
+        title=_("Text")
+        )
+
+
+@implementer(IFile)
+class FileEntity(SearchableEntity):
+    """ A file entity is an entity that can be searched"""
+
+    result_template = 'novaideo:templates/views/default_result.pt'
+
+    def __init__(self, **kwargs):
+        super(FileEntity, self).__init__(**kwargs)
+        self.set_data(kwargs)

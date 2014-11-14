@@ -170,6 +170,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     ideas = CompositeMultipleProperty('ideas')
     keywords = CompositeMultipleProperty('keywords')
     correlations = CompositeMultipleProperty('correlations')
+    files = CompositeMultipleProperty('files')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)

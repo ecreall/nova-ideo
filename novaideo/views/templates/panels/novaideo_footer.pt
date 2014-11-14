@@ -4,11 +4,9 @@
           <div id="portal-colophon">
             <div class="colophonWrapper">
               <span>
-                <a href="#">Mentions légales</a>
+                <a href="${request.resource_url(request.virtual_root.ml_file, '@@index')}">Mentions légales</a>
                 - 
-                <a href="#">Accessibilité</a>
-                - 
-                <a href="#" title="">Réalisé avec Pyramid &amp; Python</a>
+                <a href="http://www.pylonsproject.org/" title="">Réalisé avec Pyramid &amp; Python</a>
                 -  Copyright © 2014
                   <a href="http://www.ecreall.com">Ecréall</a>
               </span>

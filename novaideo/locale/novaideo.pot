@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-11-14 14:53+0100\n"
+"POT-Creation-Date: 2014-11-14 15:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
-#: ./novaideo/views/panels.py:276
+#: ./novaideo/views/panels.py:279
 msgid "No more Information."
 msgstr ""
 
@@ -550,8 +550,8 @@ msgstr ""
 #: ./novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:30
 #: ./novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:29
 #: ./novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:30
-#: ./novaideo/views/templates/panels/step3_3.pt:62
-#: ./novaideo/views/templates/panels/step3_2.pt:62
+#: ./novaideo/views/templates/panels/step3_3.pt:65
+#: ./novaideo/views/templates/panels/step3_2.pt:65
 msgid "Voters"
 msgstr ""
 
@@ -997,36 +997,42 @@ msgstr ""
 msgid "participants"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/step3_1.pt:51
-#: ./novaideo/views/templates/panels/step3_3.pt:95
-#: ./novaideo/views/templates/panels/step3_2.pt:95
+#: ./novaideo/views/templates/panels/step3_1.pt:39
+#: ./novaideo/views/templates/panels/step3_3.pt:39
+#: ./novaideo/views/templates/panels/step3_2.pt:39
+msgid "Period expired"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/step3_1.pt:54
+#: ./novaideo/views/templates/panels/step3_3.pt:98
+#: ./novaideo/views/templates/panels/step3_2.pt:98
 #: ./novaideo/content/processes/__init__.py:22
 #: ./novaideo/content/processes/__init__.py:52
 msgid "Votes for publishing"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/step3_1.pt:64
-#: ./novaideo/views/templates/panels/step3_3.pt:108
-#: ./novaideo/views/templates/panels/step3_2.pt:108
+#: ./novaideo/views/templates/panels/step3_1.pt:67
+#: ./novaideo/views/templates/panels/step3_3.pt:111
+#: ./novaideo/views/templates/panels/step3_2.pt:111
 msgid "Correction of the proposal"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/step3_1.pt:77
-#: ./novaideo/views/templates/panels/step3_3.pt:121
-#: ./novaideo/views/templates/panels/step3_2.pt:121
+#: ./novaideo/views/templates/panels/step3_1.pt:80
+#: ./novaideo/views/templates/panels/step3_3.pt:124
+#: ./novaideo/views/templates/panels/step3_2.pt:124
 msgid "Proposal improvement"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/step3_1.pt:90
-#: ./novaideo/views/templates/panels/step3_3.pt:134
-#: ./novaideo/views/templates/panels/step3_2.pt:134
+#: ./novaideo/views/templates/panels/step3_1.pt:93
+#: ./novaideo/views/templates/panels/step3_3.pt:137
+#: ./novaideo/views/templates/panels/step3_2.pt:137
 #: ./novaideo/content/processes/__init__.py:23
 #: ./novaideo/content/processes/__init__.py:53
 msgid "Votes for amendments"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/step3_3.pt:45
-#: ./novaideo/views/templates/panels/step3_2.pt:45
+#: ./novaideo/views/templates/panels/step3_3.pt:48
+#: ./novaideo/views/templates/panels/step3_2.pt:48
 msgid "Electors"
 msgstr ""
 

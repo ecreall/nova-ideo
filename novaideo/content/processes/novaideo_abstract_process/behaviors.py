@@ -1,12 +1,21 @@
 # -*- coding: utf8 -*-
+import datetime
 from pyramid.httpexceptions import HTTPFound
 
+from dace.util import getSite
+from dace.objectofcollaboration.principal.util import (
+    has_role, 
+    grant_roles, 
+    get_current)
 from dace.interfaces import IEntity
-from dace.objectofcollaboration.principal.util import has_role, get_current
-from dace.processinstance.activity import InfiniteCardinality
+from dace.processinstance.activity import (
+    InfiniteCardinality,
+    ActionType)
 
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.core import can_access
+from novaideo.content.interface import INovaIdeoApplication, IFile
+from novaideo.core import acces_action, can_access, FileEntity
+from novaideo import _
 
 
 
@@ -72,5 +81,71 @@ class DeselectEntity(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@index'))
+
+
+def seefile_processsecurity_validation(process, context):
+    return True
+
+
+@acces_action()
+class SeeFile(InfiniteCardinality):
+    """SeeFile is the behavior allowing access to context"""
+    title = _('Details')
+    context = IFile
+    actionType = ActionType.automatic
+    processsecurity_validation = seefile_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def createfile_roles_validation(process, context):
+    return has_role(role=('Admin',))
+
+
+class CreateFile(InfiniteCardinality):
+    submission_title = _('Save')
+    context = INovaIdeoApplication
+    roles_validation = createfile_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        newfile = appstruct['_object_data']
+        root.addtoproperty('files', newfile)
+        newfile.state.append('published')
+        grant_roles(roles=(('Owner', newfile), ))
+        newfile.setproperty('author', get_current())
+        newfile.reindex()
+        self.newcontext = newfile
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+
+
+def edit_roles_validation(process, context):
+    return has_role(role=('Admin', ))
+
+
+class EditFile(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-pencil'
+    style_order = 1
+    submission_title = _('Save')
+    context = IFile
+    roles_validation = edit_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.modified_at = datetime.datetime.today()
+        context.reindex()
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
 
 #TODO behaviors

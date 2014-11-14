@@ -1,0 +1,5 @@
+<h1>${getattr(file, 'title', '')}</h1>
+<br>
+<div id="contenttext" class="content-text">
+${structure:getattr(file, 'text', '')}
+</div>
