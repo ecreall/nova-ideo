@@ -37,7 +37,7 @@ class Referendum(object):
     """Referendum election"""
     vote_factory = ReferendumVote
 
-    def __init__(self, report, vote_process_id='referendumprocess'):
+    def __init__(self, report, vote_process_id='referendumprocess', **kwargs):
         self.vote_process_id = vote_process_id
         self.report = report
         if isinstance(self.report.subjects, (list, tuple, PersistentList)):
@@ -121,7 +121,7 @@ class MajorityJudgment(object):
     """Majority judgment election"""
     vote_factory = MajorityJudgmentVote
 
-    def __init__(self, report, vote_process_id='majorityjudgmentprocess'):
+    def __init__(self, report, vote_process_id='majorityjudgmentprocess', **kwargs):
         self.vote_process_id = vote_process_id
         self.report = report
         self.judgments = DEFAULT_JUDGMENTS
@@ -220,7 +220,7 @@ class FPTP(object):
     """A first-past-the-post (abbreviated FPTP or FPP) election"""
     vote_factory = FPTPVote
 
-    def __init__(self, report, vote_process_id='fptpprocess'):
+    def __init__(self, report, vote_process_id='fptpprocess', **kwargs):
         self.vote_process_id = vote_process_id
         self.report = report
 
@@ -292,7 +292,102 @@ class FPTP(object):
         return None
 
 
-BALLOT_TYPES = {'Referendum': Referendum,
+class DateSubjectMedian(object):
+    vote_type = 'date'
+
+    @classmethod
+    def calculate_votes(cls, ballottype, votes):
+        """Return the result of ballot"""
+        return [vote.value for vote in votes]
+
+    @classmethod
+    def get_electeds(cls, ballottype, result):
+        """Return the elected subject"""
+        result_set = list(set(result))
+        if len(result) == 0:
+            return []
+
+        sorted_results = sorted(result_set)
+        len_result = len(result_set)
+        median = len_result // 2
+        if median == 0:
+            return [sorted_results[-1]]
+        else:
+            if len_result % 2 == 0:
+                return [sorted_results[median+1]]
+            else:
+                return [sorted_results[median]]
+
+
+SUBJECT_TYPES_MANAGER = {'datemedian': DateSubjectMedian}
+
+@content(
+    'rangevote',
+    icon='glyphicon glyphicon-align-left',
+    )
+@implementer(IVote)
+class RangeVote(VisualisableElement, Entity):
+    """Range vote class"""
+    name = renamer()
+
+    def __init__(self, value=None, **kwargs):
+        super(RangeVote, self).__init__(**kwargs)
+        self.value = value
+        #value  = object_oid
+
+
+@implementer(IBallotType)
+class RangeVoting(object):
+    """Range voting class"""
+    vote_factory = RangeVote
+
+    def __init__(self, report, vote_process_id='rangevotingprocess', **kwargs):
+        self.vote_process_id = vote_process_id
+        self.report = report
+        self.subject_type = kwargs.get('subject_type', 'string').lower()
+        self.subject_type_manager = SUBJECT_TYPES_MANAGER.get(self.subject_type,
+                                                              None)
+
+    def run_ballot(self, context=None):
+        """Run range voting processes for all electors"""
+        processes = []
+        def_container = find_service('process_definition_container')
+        runtime = find_service('runtime')
+        pd = def_container.get_definition(self.vote_process_id)
+        if context is None:
+            context = self.report.subjects[0].__parent__
+
+        for elector in self.report.electors:
+            proc = pd()
+            proc.__name__ = proc.id
+            runtime.addtoproperty('processes', proc)
+            proc.defineGraph(pd)
+            proc.execution_context.add_involved_entity('elector', elector)
+            proc.execution_context.add_involved_entity('subject', context)
+            grant_roles(elector, (('Elector', proc),))
+            proc.ballot = self.report.ballot
+            proc.execute()
+            processes.append(proc)
+
+        return processes
+
+    def calculate_votes(self, votes):
+        """Return the result of ballot"""
+        if self.subject_type_manager:
+            return self.subject_type_manager.calculate_votes(self, votes)
+
+        return None
+
+    def get_electeds(self, result):
+        """Return the elected subject"""
+        if self.subject_type_manager:
+            return self.subject_type_manager.get_electeds(self, result)
+
+        return None
+
+
+BALLOT_TYPES = {'RangeVoting': RangeVoting,
+                'Referendum': Referendum,
                 'MajorityJudgment': MajorityJudgment,
                 'FPTP': FPTP}
 
@@ -315,7 +410,7 @@ class Report(VisualisableElement, Entity):
         super(Report, self).__init__(**kwargs)
         [self.addtoproperty('electors', elector) for elector in electors]
         [self.addtoproperty('subjects', subject) for subject in subjects]
-        self.ballottype = BALLOT_TYPES[ballottype](self)
+        self.ballottype = BALLOT_TYPES[ballottype](self, **kwargs)
         if 'vote_process_id' in kwargs:
             self.ballottype.vote_process_id = kwargs['vote_process_id']
 
@@ -366,9 +461,10 @@ class Ballot(VisualisableElement, Entity):
     def __init__(self, ballot_type, electors, subjects, duration, **kwargs):
         super(Ballot, self).__init__(**kwargs)
         self.setproperty('ballot_box', BallotBox())
-        self.setproperty('report', Report(ballottype=ballot_type,
-                                          electors=electors,
-                                          subjects=subjects))
+        self.setproperty('report', Report(ballot_type,
+                                          electors,
+                                          subjects,
+                                          **kwargs))
         self.run_at = None
         self.duration = duration
         self.finished_at = None
