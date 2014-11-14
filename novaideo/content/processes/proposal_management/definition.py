@@ -79,6 +79,9 @@ VP_DEFAULT_DURATION = datetime.timedelta(minutes=30)
 
 AMENDMENTS_CYCLE_DEFAULT_DURATION = {
               "Three minutes": datetime.timedelta(minutes=3),
+              "Five minutes": datetime.timedelta(minutes=5),
+              "Ten minutes": datetime.timedelta(minutes=10),
+              "Twenty minutes": datetime.timedelta(minutes=20),
               "Three days": datetime.timedelta(days=3),
               "One week": datetime.timedelta(weeks=1),
               "Two weeks": datetime.timedelta(weeks=2)}
