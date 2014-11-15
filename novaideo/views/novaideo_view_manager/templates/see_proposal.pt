@@ -36,7 +36,7 @@
       <dt tal:condition="proposal.keywords" i18n:translate="">Keywords</dt>
       <dd tal:condition="proposal.keywords">
         <tal:loop repeat="k proposal.keywords">
-          <a tal:attributes="href request.resource_url(request.root, '', query={'text':k})">${k}</a>
+          <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
             <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
         </tal:loop>
       </dd>

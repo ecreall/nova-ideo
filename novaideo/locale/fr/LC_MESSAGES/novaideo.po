@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2014-11-14 15:07+0100\n"
+"POT-Creation-Date: 2014-11-15 15:58+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: novaideo/core.py:139
+#: novaideo/core.py:140
 #: novaideo/views/idea_management/templates/diff_result.pt:13
 #: novaideo/views/idea_management/templates/see_idea.pt:72
 #: novaideo/views/proposal_management/templates/diff_result.pt:15
@@ -20,6 +20,16 @@ msgstr ""
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:86
 msgid "Keywords"
 msgstr "Mots clés"
+
+#: novaideo/core.py:213
+#: novaideo/views/proposal_management/templates/idea_data.pt:13
+#: novaideo/views/correlation_management/templates/see_correlation.pt:10
+#: novaideo/content/idea.py:65
+#: novaideo/content/correction.py:37
+#: novaideo/content/proposal.py:65
+#: novaideo/content/amendment.py:299
+msgid "Text"
+msgstr "Texte"
 
 #: novaideo/views/panels.py:279
 msgid "No more Information."
@@ -73,6 +83,9 @@ msgstr "Supprimer"
 #: novaideo/content/processes/correlation_management/behaviors.py:64
 #: novaideo/content/processes/organization_management/definition.py:60
 #: novaideo/content/processes/organization_management/behaviors.py:126
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:54
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:55
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:93
 msgid "Details"
 msgstr "Détails"
 
@@ -785,6 +798,17 @@ msgstr "Valider"
 msgid "Use an idea"
 msgstr "Utiliser une idée"
 
+#: novaideo/views/proposal_management/edit_proposal.py:39
+#: novaideo/views/amendment_management/explanation_amendment.py:23
+#: novaideo/views/novaideo_view_manager/search.py:245
+#: novaideo/content/correlation.py:49
+#: novaideo/content/idea.py:39
+#: novaideo/content/comment.py:28
+#: novaideo/content/person.py:48
+#: novaideo/content/person.py:56
+msgid "- Select -"
+msgstr "- Sélectionner -"
+
 #: novaideo/views/proposal_management/edit_proposal.py:53
 msgid "Choose an idea"
 msgstr "Sélectionner une idée"
@@ -840,15 +864,6 @@ msgstr "Voir les idées utilisées"
 #: novaideo/content/processes/proposal_management/definition.py:318
 msgid "Alert"
 msgstr "Alerte"
-
-#: novaideo/views/proposal_management/templates/idea_data.pt:13
-#: novaideo/views/correlation_management/templates/see_correlation.pt:10
-#: novaideo/content/idea.py:65
-#: novaideo/content/correction.py:37
-#: novaideo/content/proposal.py:65
-#: novaideo/content/amendment.py:299
-msgid "Text"
-msgstr "Texte"
 
 #: novaideo/views/proposal_management/templates/idea_data.pt:21
 msgid "See more..."
@@ -1152,15 +1167,15 @@ msgstr ""
 msgid "L'amendement a été envoyé à:"
 msgstr ""
 
-#: novaideo/views/amendment_management/templates/explanation_modal_item.pt:10
+#: novaideo/views/amendment_management/templates/explanation_modal_item.pt:11
 msgid "Specify the intention of your changes"
 msgstr "Spécifier l'intention de vos modifications"
 
-#: novaideo/views/amendment_management/templates/explanation_modal_item.pt:27
+#: novaideo/views/amendment_management/templates/explanation_modal_item.pt:29
 msgid "Save intention"
 msgstr "Enregistrer l'intention"
 
-#: novaideo/views/amendment_management/templates/explanation_modal_item.pt:30
+#: novaideo/views/amendment_management/templates/explanation_modal_item.pt:32
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -1323,17 +1338,29 @@ msgstr ""
 msgid "Organizations to creat"
 msgstr ""
 
+#: novaideo/views/novaideo_abstract_process/create_file.py:23
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:46
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:47
+msgid "Create a file"
+msgstr "Ajouter un document"
+
 #: novaideo/views/novaideo_abstract_process/select.py:19
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:35
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:36
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:38
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:39
 msgid "Add to my selections"
 msgstr "Ajouter à mes sélections"
 
 #: novaideo/views/novaideo_abstract_process/deselect.py:19
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:39
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:40
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:42
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:43
 msgid "Remove from my selections"
 msgstr "Retirer de mes sélections"
+
+#: novaideo/views/novaideo_abstract_process/edit_file.py:22
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:50
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:51
+msgid "Edit the file"
+msgstr "Modifier le document"
 
 #: novaideo/content/organization.py:60
 msgid "Logo"
@@ -1658,6 +1685,7 @@ msgstr "Comparer"
 #: novaideo/content/processes/proposal_management/definition.py:278
 #: novaideo/content/processes/organization_management/definition.py:41
 #: novaideo/content/processes/organization_management/definition.py:45
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:48
 msgid "Add"
 msgstr "Ajouter"
 
@@ -1678,6 +1706,8 @@ msgstr "Ajouter"
 #: novaideo/content/processes/amendment_management/behaviors.py:61
 #: novaideo/content/processes/amendment_management/behaviors.py:154
 #: novaideo/content/processes/amendment_management/behaviors.py:256
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:110
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:138
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -2013,8 +2043,8 @@ msgstr ""
 msgid "See organization"
 msgstr ""
 
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:27
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:28
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:30
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:31
 msgid "Abstract process"
 msgstr ""
 

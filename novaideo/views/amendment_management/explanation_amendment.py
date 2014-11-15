@@ -2,7 +2,6 @@
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite
 from pontus.view import BasicView
 from pontus.widget import Select2Widget
 from pontus.default_behavior import Cancel
@@ -16,11 +15,10 @@ from novaideo import _
 
 
 def modif_choice(context, itemid=None):
-    root = getSite()
     explanations = [e['oid'] for e in context.explanations.values() \
                     if e['intention'] is not None and str(e['oid'])!=itemid]
     values = [(i, i) for i in sorted(explanations)]
-    values.insert(0, ('', '- Select -'))
+    values.insert(0, ('', _('- Select -')))
     return Select2Widget(values=values, item_css_class="related-explanation")
 
 

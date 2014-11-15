@@ -36,7 +36,7 @@ def idea_choice(node, kw):
     ideas.extend([ i for i in user.selections if isinstance(i, Idea) and can_access(user, i)])
     ideas = set(ideas) 
     values = [(i, i.title) for i in ideas if not('archived' in i.state)]
-    values.insert(0, ('', '- Select -'))
+    values.insert(0, ('', _('- Select -')))
     return Select2WidgetSearch(values=values, item_css_class='search-idea-form',
                                 url=request.resource_url(root, '@@search', 
                                             query={'op':'toselect', 

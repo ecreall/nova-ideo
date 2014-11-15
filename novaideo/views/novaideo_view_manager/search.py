@@ -64,7 +64,7 @@ class SearchSchema(Schema):
                 missing=default_content_types_choices,
                 )
 
-    text = colander.SchemaNode(
+    text_to_search = colander.SchemaNode(
         colander.String(),
         widget=SearchTextInputWidget(
             button_type='submit',
@@ -112,7 +112,7 @@ class SearchView(FormView):
                 pass
 
         content_types = self.params('content_types')
-        text = self.params('text')
+        text = self.params('text_to_search')
         if text is None:
             text = ''
 
@@ -121,7 +121,7 @@ class SearchView(FormView):
         elif not isinstance(content_types, (list, tuple)):
             content_types = [content_types]
 
-        return {'content_types':content_types, 'text':text} 
+        return {'content_types':content_types, 'text_to_search':text} 
 
     def before_update(self):
         root = getSite()
@@ -194,11 +194,11 @@ class SearchResultView(BasicView):
         formviewinstance.postedform = self.request.POST
         appstruct = formviewinstance.get_appstruct()
         content_types = appstruct['content_types']
-        text = appstruct['text']
+        text = appstruct['text_to_search']
         objects = search(text, content_types, user)
         url = self.request.resource_url(self.context, '', 
                                         query={'content_types':content_types,
-                                               'text':appstruct['text']})
+                                               'text_to_search':appstruct['text_to_search']})
         batch = Batch(objects, 
                       self.request, 
                       url=url, 
@@ -240,9 +240,9 @@ class Search_Json(BasicView):
         if not isinstance(content_types, (list, tuple)):
             content_types = [content_types]
 
-        text = self.params('text')
+        text = self.params('text_to_search')
         objects = search(text, content_types, user)
-        result = {'':'- Select -'}
+        result = {'': _('- Select -')}
         result.update(dict([(get_oid(obj), obj.title) for obj in objects]))
         return result
 

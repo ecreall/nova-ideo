@@ -21,14 +21,14 @@ class Search(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         self.content_types = appstruct['content_types']
-        self.text = appstruct['text']
+        self.text = appstruct['text_to_search']
         return True
 
     def redirect(self, context, request, **kw):
         root = getSite()
         return HTTPFound(
                   request.resource_url(root, 
-                        query={'text': self.text,
+                        query={'text_to_search': self.text,
                                'content_types': ",".join(self.content_types)}))
 
 

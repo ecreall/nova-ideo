@@ -76,7 +76,7 @@ class Usermenu_panel(object):
                 self.request.POST.clear()
 
         search_view_instance.schema = select(search_view_instance.schema,
-                                             ['text'])
+                                             ['text_to_search'])
         search_view_result = search_view_instance()
         search_body = ''
         if isinstance(search_view_result, dict) and \

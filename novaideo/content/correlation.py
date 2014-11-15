@@ -46,7 +46,7 @@ def intention_choice(node, kw):
     root = getSite()
     intentions = sorted(root.correlation_intentions)
     values = [(i, i) for i in intentions ]
-    values.insert(0, ('', '- Select -'))
+    values.insert(0, ('', _('- Select -')))
     return Select2Widget(values=values)
 
 
