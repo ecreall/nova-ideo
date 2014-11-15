@@ -175,7 +175,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
         self.title = 'NovaIdeo'
-        self.participants_mini = 2
+        self.participants_mini = 3
         self.participants_maxi = 12
         self.participations_maxi = 5
         self.tokens_mini = 7

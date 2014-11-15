@@ -14,7 +14,7 @@ from dace.processinstance.activity import (
 
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.content.interface import INovaIdeoApplication, IFile
-from novaideo.core import acces_action, can_access, FileEntity
+from novaideo.core import acces_action, can_access
 from novaideo import _
 
 

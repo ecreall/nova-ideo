@@ -758,7 +758,7 @@ msgstr "Idées utilisées"
 #: novaideo/content/processes/idea_management/definition.py:41
 #: novaideo/content/processes/idea_management/definition.py:42
 msgid "Ideas management"
-msgstr ""
+msgstr "Gestionnaire d'idées"
 
 #: novaideo/views/proposal_management/create_proposal.py:72
 #: novaideo/views/proposal_management/create_proposal.py:96
@@ -1012,7 +1012,7 @@ msgstr "Amélioration de la proposition"
 #: novaideo/content/processes/__init__.py:23
 #: novaideo/content/processes/__init__.py:53
 msgid "Votes for amendments"
-msgstr "Votes pour les amendements"
+msgstr "Votes sur les amendements"
 
 #: novaideo/views/templates/panels/step3_3.pt:48
 #: novaideo/views/templates/panels/step3_2.pt:48
@@ -1358,15 +1358,15 @@ msgstr ""
 
 #: novaideo/content/novaideo_application.py:24
 msgid "Mr"
-msgstr "M."
+msgstr "Monsieur"
 
 #: novaideo/content/novaideo_application.py:24
 msgid "Madam"
-msgstr "Mme"
+msgstr "Madame"
 
 #: novaideo/content/novaideo_application.py:24
 msgid "Miss"
-msgstr "Mlle"
+msgstr "Mademoiselle"
 
 #: novaideo/content/novaideo_application.py:26
 #: novaideo/content/novaideo_application.py:28
@@ -1860,7 +1860,7 @@ msgstr "Commencer le vote pour soumission"
 #: novaideo/content/processes/proposal_management/definition.py:313
 #: novaideo/content/processes/proposal_management/definition.py:314
 msgid "Start voting for amendments"
-msgstr "Commencer le vote pour amendements"
+msgstr "Commencer le vote sur les amendements"
 
 #: novaideo/content/processes/proposal_management/definition.py:321
 msgid "Change the state to amendable"

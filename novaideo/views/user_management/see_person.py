@@ -3,7 +3,6 @@ from pyramid.view import view_config
 
 from substanced.util import Batch
 
-from dace.util import getSite
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
@@ -34,6 +33,8 @@ class SeePersonView(BasicView):
         current_user = get_current()
         actions = [a for a in self.context.actions \
                    if getattr(a.action, 'style', '') == 'button']
+        actions = sorted(actions, 
+                         key=lambda e: getattr(e.action, 'style_order', 0))
         objects = []
         if current_user is  user:
             objects = [o for o in getattr(user, 'contents', []) \

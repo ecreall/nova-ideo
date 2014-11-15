@@ -2,8 +2,8 @@
    <span class="glyphicon glyphicons-group"></span> ${len(context.working_group.members)} <span  i18n:translate="">participants</span> 
       (<tal:loop repeat="state working_group_states">
          ${state}
-         <tal:separator condition="not: repeat['state'].end">, </tal:separator>)
-      </tal:loop>
+         <tal:separator condition="not: repeat['state'].end">, </tal:separator>
+      </tal:loop>)
     <br>
    <span tal:condition="duration is not None"  style="color:#d9534f;">
        <span class="glyphicon glyphicon-time"></span>
