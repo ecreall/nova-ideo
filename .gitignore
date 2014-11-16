@@ -4,3 +4,4 @@
 .directory
 src/
 __pycache__
+.env
