@@ -162,7 +162,8 @@ class PublishAsProposal(ElementaryAction):
         for k in context.keywords_ref:
             proposal.addtoproperty('keywords_ref', k)
 
-        proposal.title = context.title + _(" (The proposal)")
+        localizer = request.localizer
+        proposal.title = context.title + localizer.translate(_(" (The proposal)"))
         proposal.description = context.description
         proposal.text = context.text
         proposal.state.append('draft')

@@ -154,6 +154,7 @@ class IdeaManagementView(MultipleView):
     coordinates = 'right'
     css_class = 'idea-managements panel-success'
 
+
 def ideas_choice():
     user = get_current()
     ideas = find_entities([Iidea], states=('archived',), not_any=True) 

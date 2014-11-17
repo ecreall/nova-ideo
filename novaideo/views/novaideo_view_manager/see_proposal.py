@@ -4,7 +4,8 @@ from pyramid.threadlocal import get_current_registry
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import get_current, has_role
+from dace.objectofcollaboration.principal.util import (
+    get_current, has_role, Anonymous)
 from pontus.view import BasicView
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 from pontus.view_operation import MultipleView
@@ -98,10 +99,14 @@ class DetailProposalView(BasicView):
         text_actions = sorted(text_actions, 
                               key=lambda e: getattr(e.action, 'style_order', 0))
 
-        ct_participate = user not in wg.members and \
-                         'archived' not in wg.state
-        ct_participate_closed = 'closed' in wg.state
         ct_participate_max = len(wg.members) == root.participants_maxi
+        ct_participate_closed = 'closed' in wg.state
+        ct_participate = 'archived' not in wg.state and \
+                         not isinstance(user, Anonymous) and \
+                         user not in wg.members and \
+                         (ct_participate_max or ct_participate_closed)
+        
+        
         description, text, add_filigrane = self._get_adapted_text(user)
         result = {}
         values = {
