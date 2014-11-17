@@ -3,6 +3,7 @@ from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current, has_role
 from pontus.view import BasicView
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
@@ -74,6 +75,8 @@ class DetailProposalView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
+        root = getSite()
+        wg = self.context.working_group
         actions = self.context.actions
         vote_actions, resources, messages, isactive = self._vote_actions()
         actions = [a for a in actions \
@@ -94,6 +97,11 @@ class DetailProposalView(BasicView):
                             key=lambda e: getattr(e.action, 'style_order', 0))
         text_actions = sorted(text_actions, 
                               key=lambda e: getattr(e.action, 'style_order', 0))
+
+        ct_participate = user not in wg.members and \
+                         'archived' not in wg.state
+        ct_participate_closed = 'closed' in wg.state
+        ct_participate_max = len(wg.members) == root.participants_maxi
         description, text, add_filigrane = self._get_adapted_text(user)
         result = {}
         values = {
@@ -108,7 +116,10 @@ class DetailProposalView(BasicView):
                 'text_actions': text_actions,
                 'voteactions': vote_actions,
                 'filigrane': add_filigrane,
-                'cant_submit': self._cant_submit_alert(global_actions)
+                'cant_submit': self._cant_submit_alert(global_actions),
+                'ct_participate': ct_participate,
+                'ct_participate_closed': ct_participate_closed,
+                'ct_participate_max': ct_participate_max
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

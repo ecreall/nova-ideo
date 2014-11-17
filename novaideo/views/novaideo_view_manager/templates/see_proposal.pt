@@ -49,13 +49,18 @@
            </tal:loop>
           </dd>
           <dd>
-            <div id="wg-actions">
-               <div tal:condition="wg_actions" class="btn-group wg-actions">
+            <span tal:condition="ct_participate" class="alert alert-warning alert-wg-closed" role="alert">
+             <span tal:condition="ct_participate_closed" i18n:translate="">The working group is closed!</span>
+             <span tal:condition="not ct_participate_closed and ct_participate_max" i18n:translate="">Le nombre maximum de participants a été atteint!</span>
+            </span>
+            <div tal:condition="wg_actions" id="wg-actions">
+               <div  class="btn-group wg-actions">
                     <tal:loop repeat="a wg_actions">
                       <a tal:attributes="href a.url" class="btn btn-primary btn-xs btn-wg">${a.title}</a>
                     </tal:loop>
                </div>
              </div>
+
           </dd>
         </div>
     </dl>

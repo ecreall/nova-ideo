@@ -842,3 +842,7 @@ ins {
 .novaideo-contents-list{
     float: left;
 }
+
+.alert-wg-closed{
+   padding: 4px 14px
+}

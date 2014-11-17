@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2014-11-15 15:58+0100\n"
+"POT-Creation-Date: 2014-11-17 12:28+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -63,7 +63,7 @@ msgstr "Supprimer"
 #: novaideo/views/idea_management/see_idea.py:20
 #: novaideo/views/invitation_management/see_invitation.py:24
 #: novaideo/views/amendment_management/see_amendment.py:22
-#: novaideo/views/novaideo_view_manager/see_proposal.py:29
+#: novaideo/views/novaideo_view_manager/see_proposal.py:30
 #: novaideo/views/correlation_management/see_correlation.py:16
 #: novaideo/views/organization_management/see_organization.py:19
 #: novaideo/content/processes/idea_management/definition.py:89
@@ -73,7 +73,7 @@ msgstr "Supprimer"
 #: novaideo/content/processes/invitation_management/behaviors.py:142
 #: novaideo/content/processes/user_management/definition.py:54
 #: novaideo/content/processes/user_management/definition.py:55
-#: novaideo/content/processes/user_management/behaviors.py:182
+#: novaideo/content/processes/user_management/behaviors.py:184
 #: novaideo/content/processes/amendment_management/definition.py:83
 #: novaideo/content/processes/amendment_management/definition.py:84
 #: novaideo/content/processes/amendment_management/behaviors.py:423
@@ -91,7 +91,7 @@ msgstr "Détails"
 
 #: novaideo/views/idea_management/see_idea.py:67
 #: novaideo/views/amendment_management/see_amendment.py:100
-#: novaideo/views/novaideo_view_manager/see_proposal.py:123
+#: novaideo/views/novaideo_view_manager/see_proposal.py:137
 msgid "actions"
 msgstr "actions"
 
@@ -456,7 +456,7 @@ msgstr "L'invitation n'est pas valide"
 #: novaideo/content/processes/invitation_management/definition.py:59
 #: novaideo/content/processes/user_management/definition.py:42
 #: novaideo/content/processes/user_management/definition.py:43
-#: novaideo/content/processes/user_management/behaviors.py:87
+#: novaideo/content/processes/user_management/behaviors.py:89
 #: novaideo/content/processes/proposal_management/definition.py:293
 #: novaideo/content/processes/amendment_management/definition.py:56
 #: novaideo/content/processes/organization_management/definition.py:49
@@ -799,7 +799,7 @@ msgid "Use an idea"
 msgstr "Utiliser une idée"
 
 #: novaideo/views/proposal_management/edit_proposal.py:39
-#: novaideo/views/amendment_management/explanation_amendment.py:23
+#: novaideo/views/amendment_management/explanation_amendment.py:21
 #: novaideo/views/novaideo_view_manager/search.py:245
 #: novaideo/content/correlation.py:49
 #: novaideo/content/idea.py:39
@@ -823,7 +823,7 @@ msgid "Withdraw my token"
 msgstr "Retirer son appréciation"
 
 #: novaideo/views/proposal_management/submit_proposal.py:17
-#: novaideo/views/amendment_management/explanation_amendment.py:57
+#: novaideo/views/amendment_management/explanation_amendment.py:55
 msgid "Alert for justification"
 msgstr "Alerte pour justification"
 
@@ -925,8 +925,8 @@ msgid "There was a problem with your submission"
 msgstr "Il y a eu un soucis avec votre soumission"
 
 #: novaideo/views/templates/amendment_result.pt:19
-#: novaideo/views/amendment_management/explanation_amendment.py:71
-#: novaideo/views/amendment_management/explanation_amendment.py:84
+#: novaideo/views/amendment_management/explanation_amendment.py:69
+#: novaideo/views/amendment_management/explanation_amendment.py:82
 #: novaideo/views/amendment_management/templates/description_amendments.pt:55
 #: novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:24
 #: novaideo/content/processes/__init__.py:13
@@ -1098,7 +1098,7 @@ msgstr "Répondre"
 msgid "Edit the amendment"
 msgstr "Modifier l'amendement"
 
-#: novaideo/views/amendment_management/explanation_amendment.py:28
+#: novaideo/views/amendment_management/explanation_amendment.py:26
 #: novaideo/content/correlation.py:67
 #: novaideo/content/idea.py:72
 #: novaideo/content/comment.py:84
@@ -1256,7 +1256,15 @@ msgstr ""
 msgid "Working group"
 msgstr "Groupe de travail"
 
-#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:172
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:126
+msgid "The working group is closed!"
+msgstr "Le groupe de travail est fermé!"
+
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:129
+msgid "Le nombre maximum de participants a été atteint!"
+msgstr "Le nombre maximum de participants a été atteint!"
+
+#: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:183
 msgid "Votes"
 msgstr "Votes"
 
@@ -1693,7 +1701,7 @@ msgstr "Ajouter"
 #: novaideo/content/processes/idea_management/behaviors.py:84
 #: novaideo/content/processes/idea_management/behaviors.py:165
 #: novaideo/content/processes/user_management/behaviors.py:38
-#: novaideo/content/processes/user_management/behaviors.py:88
+#: novaideo/content/processes/user_management/behaviors.py:90
 #: novaideo/content/processes/ballot_processes/rangevoting/behaviors.py:33
 #: novaideo/content/processes/ballot_processes/referendum/behaviors.py:33
 #: novaideo/content/processes/ballot_processes/fptp/behaviors.py:35
@@ -1747,13 +1755,13 @@ msgstr ""
 
 #: novaideo/content/processes/user_management/definition.py:46
 #: novaideo/content/processes/user_management/definition.py:47
-#: novaideo/content/processes/user_management/behaviors.py:132
+#: novaideo/content/processes/user_management/behaviors.py:134
 msgid "Deactivate"
 msgstr "Désactivier"
 
 #: novaideo/content/processes/user_management/definition.py:50
 #: novaideo/content/processes/user_management/definition.py:51
-#: novaideo/content/processes/user_management/behaviors.py:161
+#: novaideo/content/processes/user_management/behaviors.py:163
 msgid "Activate"
 msgstr "Activer"
 
