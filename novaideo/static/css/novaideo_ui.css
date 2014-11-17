@@ -9,6 +9,7 @@ body{
 #navbaruser{
     background-color: #ffffff; 
     background-image: none; 
+    border-radius: 0;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.28) inset; 
 }
 
@@ -816,6 +817,7 @@ ins {
 
 .novaideo-contents{
     background-color: #8d8d8d;
+    border-radius: 0;
     border-bottom: 1px solid rgb(216, 216, 216);
     box-shadow: 0 4px 15px -13px rgb(68, 68, 68);
     margin-top: -20px;
