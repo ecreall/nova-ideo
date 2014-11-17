@@ -28,7 +28,7 @@ CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription"""
 CONFIRMATION_MESSAGE = u"""
 Bonjour {person.user_title} {person.last_name} {person.first_name},
 
-Bienvenue sur le plateforme NovaIdeo.
+Bienvenue sur l'application NovaIdeo. L'accès à l'application se fait sous {login_url}. Pour y ajouter des idées ou des propositions, vous devez préalablement vous identifier avec votre courriel et votre mot de passe.
 """ + PORTAL_SIGNATURE
 
 
@@ -82,12 +82,12 @@ La proposition {subject_title} ({subject_url}) est publiée.
 """ + PORTAL_SIGNATURE
 
 
-VOTINGPUBLICATION_SUBJECT = u"""Debut de vote sur la publication : {subject_title}"""
+VOTINGPUBLICATION_SUBJECT = u"""Début de vote pour soumettre au collectif la proposition \"{subject_title}\" """
 
 VOTINGPUBLICATION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Le vote sur publication de la proposition {subject_title} ({subject_url}) a commencé.
+Le vote pour soumettre au collectif la proposition \"{subject_title}\" qui se trouve sous {subject_url} a commencé. Merci de prendre part au vote.
 
 """ + PORTAL_SIGNATURE
 
@@ -110,12 +110,12 @@ Vous ne faite plus partie de la liste d'attente du groupe de travail de la propo
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_SUBJECT = u"""Partcipation au groupe de travail : {subject_title}"""
+PARTICIPATE_SUBJECT = u"""Participation au groupe de travail sur la proposition \"{subject_title}\" """
 
 PARTICIPATE_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_first_name} {recipient_last_name},
 
-Vous faite partie du groupe de travail de la proposition {subject_title} ({subject_url}).
+Vous faites partie du groupe de travail sur la proposition \"{subject_title}\" qui se trouve sous {subject_url}. Dès que trois participants ont rejoint le groupe de travail, vous pourrez participer au vote pour soumettre au collectif la proposition.
 
 """ + PORTAL_SIGNATURE
 

@@ -283,28 +283,28 @@ msgstr "Il y a"
 #: novaideo/views/templates/panels/step3_3.pt:22
 #: novaideo/views/templates/panels/step3_2.pt:22
 msgid "day(s)"
-msgstr "jour(s)"
+msgstr "j"
 
 #: novaideo/views/idea_management/templates/comments.pt:28
 #: novaideo/views/templates/panels/step3_1.pt:26
 #: novaideo/views/templates/panels/step3_3.pt:26
 #: novaideo/views/templates/panels/step3_2.pt:26
 msgid "hour(s)"
-msgstr "heure(s)"
+msgstr "h"
 
 #: novaideo/views/idea_management/templates/comments.pt:32
 #: novaideo/views/templates/panels/step3_1.pt:30
 #: novaideo/views/templates/panels/step3_3.pt:30
 #: novaideo/views/templates/panels/step3_2.pt:30
 msgid "minute(s)"
-msgstr "minute(s)"
+msgstr "'"
 
 #: novaideo/views/idea_management/templates/comments.pt:36
 #: novaideo/views/templates/panels/step3_1.pt:34
 #: novaideo/views/templates/panels/step3_3.pt:34
 #: novaideo/views/templates/panels/step3_2.pt:34
 msgid "second(s)"
-msgstr "seconde(s)"
+msgstr "''"
 
 #: novaideo/views/idea_management/templates/comments.pt:41
 msgid "Now"
@@ -693,7 +693,7 @@ msgstr "Soutenir"
 #: novaideo/content/processes/proposal_management/definition.py:155
 #: novaideo/content/processes/proposal_management/definition.py:326
 msgid "Publish the proposal"
-msgstr "Publier la proposition"
+msgstr "Soumettre la proposition au collectif"
 
 #: novaideo/views/proposal_management/present_proposal.py:70
 #: novaideo/views/proposal_management/present_proposal.py:93
@@ -1007,7 +1007,7 @@ msgstr "Durée expirée"
 #: novaideo/content/processes/__init__.py:22
 #: novaideo/content/processes/__init__.py:52
 msgid "Votes for publishing"
-msgstr "Vote pour soumettre au collectif"
+msgstr "Vote pour soumettre la proposition au collectif"
 
 #: novaideo/views/templates/panels/step3_1.pt:67
 #: novaideo/views/templates/panels/step3_3.pt:111
@@ -1032,7 +1032,7 @@ msgstr "Votes sur les amendements"
 #: novaideo/views/templates/panels/step3_3.pt:48
 #: novaideo/views/templates/panels/step3_2.pt:48
 msgid "Electors"
-msgstr "Electeurs"
+msgstr "Participants au vote"
 
 #: novaideo/views/templates/panels/steps.pt:41
 msgid "Collection of the idea"
@@ -1764,9 +1764,8 @@ msgstr ""
 
 #: novaideo/content/processes/ballot_processes/rangevoting/definition.py:39
 #: novaideo/content/processes/ballot_processes/rangevoting/definition.py:40
-#, fuzzy
 msgid "Range voting process"
-msgstr "En progression"
+msgstr ""
 
 #: novaideo/content/processes/ballot_processes/referendum/definition.py:39
 #: novaideo/content/processes/ballot_processes/referendum/definition.py:40
@@ -1821,7 +1820,7 @@ msgstr "Une semaine"
 
 #: novaideo/content/processes/proposal_management/__init__.py:12
 msgid "Two weeks"
-msgstr "Deux semaine"
+msgstr "Deux semaines"
 
 #: novaideo/content/processes/proposal_management/definition.py:62
 msgid "Vote for publishing."
@@ -1829,11 +1828,11 @@ msgstr "Vote pour soumettre au collectif."
 
 #: novaideo/content/processes/proposal_management/definition.py:64
 msgid "Voting results may not be known until the end of the period for voting. In the case where the majority are for the continuation of improvements of the proposal, your vote for the duration of the amendment period will be useful."
-msgstr ""
+msgstr "Quelque soit votre décision de soumettre la proposition en l'état ou non, il se peut que la majorité décide d'améliorer la proposition avant de la soumettre au collectif et dans quel cas, il est nécessaire que vous ayez préalablement voté sur la durée du cycle d'amélioration."
 
 #: novaideo/content/processes/proposal_management/definition.py:70
 msgid "Voting results may not be known until the end of the period for voting. In the case where the majority are for the continuation of improvements of the proposal, your vote for reopening working group will be useful."
-msgstr ""
+msgstr "Quelque soit votre décision de soumettre la proposition en l'état ou non, il se peut que la majorité décide d'améliorer la proposition avant de la soumettre au collectif et dans quel cas, il est nécessaire que vous ayez préalablement voté sur la réouverture du groupe de travail."
 
 #: novaideo/content/processes/proposal_management/definition.py:76
 msgid "Vote for amendments."
@@ -1846,7 +1845,7 @@ msgstr ""
 
 #: novaideo/content/processes/proposal_management/definition.py:177
 msgid "Amendment duration"
-msgstr ""
+msgstr "Durée du cycle d'amélioration"
 
 #: novaideo/content/processes/proposal_management/definition.py:242
 msgid "Group of independent amendments"

@@ -13,8 +13,8 @@
        <dt tal:condition="ballot_report.voters" i18n:translate="">Voters</dt>
        <dd tal:condition="ballot_report.voters">
          <tal:loop repeat="e ballot_report.voters">
-             ${e.name}
-             <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
+          ${e.name}
+          <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
          </tal:loop>
        </dd>
        <dt i18n:translate="">Period</dt>

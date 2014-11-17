@@ -55,7 +55,9 @@ class Registration(InfiniteCardinality):
             person.addtoproperty('tokens', token)
             token.setproperty('owner', person)
 
-        message = CONFIRMATION_MESSAGE.format(person=person)
+        message = CONFIRMATION_MESSAGE.format(
+                    person=person,
+                    login_url=request.resource_url(root, '@@login'))
         mailer_send(subject=CONFIRMATION_SUBJECT,
                 recipients=[person.email], body=message)
 
