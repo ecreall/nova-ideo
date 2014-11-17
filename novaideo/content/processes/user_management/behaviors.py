@@ -4,19 +4,15 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import grant_roles, has_role, get_current, Anonymous
+from dace.objectofcollaboration.principal.util import (
+    grant_roles, has_role, get_current)
 from dace.processinstance.activity import (
-    ElementaryAction,
-    LimitedCardinality,
     InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
+    ActionType)
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IPerson
 from novaideo.content.token import Token
-from novaideo.content.person import Person
 from novaideo.mail import CONFIRMATION_MESSAGE, CONFIRMATION_SUBJECT
 from novaideo import _
 from novaideo.core import acces_action
@@ -49,6 +45,7 @@ class Registration(InfiniteCardinality):
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
         root = getSite()
+        localizer = request.localizer
         for i in range(root.tokens_mini):
             token = Token(title='Token_'+str(i))
             person.addtoproperty('tokens_ref', token)
@@ -57,6 +54,7 @@ class Registration(InfiniteCardinality):
 
         message = CONFIRMATION_MESSAGE.format(
                     person=person,
+                    user_title=localizer.translate(_(getattr(person, 'user_title', ''))),
                     login_url=request.resource_url(root, '@@login'))
         mailer_send(subject=CONFIRMATION_SUBJECT,
                 recipients=[person.email], body=message)
@@ -104,8 +102,8 @@ class Edit(InfiniteCardinality):
         root = getSite()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
-        for nk in newkeywords:
-            root.addtoproperty('keywords', nk)
+        for nkw in newkeywords:
+            root.addtoproperty('keywords', nkw)
 
         result.extend(newkeywords)
         context.setproperty('keywords_ref', result)

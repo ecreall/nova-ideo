@@ -85,6 +85,7 @@ def default_subject(node, kw):
 def default_message(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
+    localizer = request.localizer
     url = request.resource_url(context, "@@index")
     user = get_current()
     return PRESENTATION_IDEA_MESSAGE.format(
@@ -92,7 +93,7 @@ def default_message(node, kw):
                 recipient_first_name='',
                 recipient_last_name='',
                 subject_url=url,
-                my_title=getattr(user, 'user_title',''),
+                my_title=localizer.translate(_(getattr(user, 'user_title',''))),
                 my_first_name=getattr(user, 'first_name', user.name),
                 my_last_name=getattr(user, 'last_name','')
                  )

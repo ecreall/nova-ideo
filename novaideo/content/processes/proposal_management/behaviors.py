@@ -453,6 +453,7 @@ class PublishProposal(ElementaryAction):
         members = wg.members
         url = request.resource_url(context, "@@index")
         subject = PUBLISHPROPOSAL_SUBJECT.format(subject_title=context.title)
+        localizer = request.localizer
         for member in  members:
             token = Token(title='Token_'+context.title)
             token.setproperty('proposal', context)
@@ -461,7 +462,7 @@ class PublishProposal(ElementaryAction):
             token.setproperty('owner', member)
             revoke_roles(member, (('Participant', context),))
             message = PUBLISHPROPOSAL_MESSAGE.format(
-                recipient_title=getattr(member, 'user_title',''),
+                recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
                 subject_title=context.title,
@@ -621,9 +622,11 @@ class Alert(ElementaryAction):
         members = context.working_group.members
         url = request.resource_url(context, "@@index")
         subject = ALERT_SUBJECT.format(subject_title=context.title)
+        localizer = request.localizer
         for member in members:
             message = ALERT_MESSAGE.format(
-                recipient_title=getattr(member, 'user_title',''),
+                recipient_title=localizer.translate(_(getattr(member, 
+                                                    'user_title',''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
                 subject_url=url
@@ -1102,9 +1105,10 @@ class VotingPublication(ElementaryAction):
         members = context.working_group.members
         url = request.resource_url(context, "@@index")
         subject = VOTINGPUBLICATION_SUBJECT.format(subject_title=context.title)
+        localizer = request.localizer
         for member in members:
             message = VOTINGPUBLICATION_MESSAGE.format(
-                recipient_title=getattr(member, 'user_title',''),
+                recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
                 subject_title=context.title,
@@ -1157,9 +1161,10 @@ class Withdraw(InfiniteCardinality):
         user = get_current()
         wg = context.working_group
         wg.delproperty('wating_list', user)
+        localizer = request.localizer
         subject = WITHDRAW_SUBJECT.format(subject_title=context.title)
         message = WITHDRAW_MESSAGE.format(
-                recipient_title=getattr(user, 'user_title',''),
+                recipient_title=localizer.translate(_(getattr(user, 'user_title',''))),
                 recipient_first_name=getattr(user, 'first_name', user.name),
                 recipient_last_name=getattr(user, 'last_name',''),
                 subject_title=context.title,
@@ -1219,6 +1224,7 @@ class Resign(InfiniteCardinality):
         wg.delproperty('members', user)
         revoke_roles(user, (('Participant', context),))
         url = request.resource_url(context, "@@index")
+        localizer = request.localizer
         if wg.wating_list:
             next_user = self._get_next_user(wg.wating_list, root)
             if next_user is not None:
@@ -1227,7 +1233,7 @@ class Resign(InfiniteCardinality):
                 grant_roles(next_user, (('Participant', context),))
                 subject = PARTICIPATE_SUBJECT.format(subject_title=context.title)
                 message = PARTICIPATE_MESSAGE.format(
-                        recipient_title=getattr(next_user, 'user_title',''),
+                        recipient_title=localizer.translate(_(getattr(next_user, 'user_title',''))),
                         recipient_first_name=getattr(next_user, 
                                                'first_name', next_user.name),
                         recipient_last_name=getattr(next_user, 'last_name',''),
@@ -1249,7 +1255,7 @@ class Resign(InfiniteCardinality):
 
         subject = RESIGN_SUBJECT.format(subject_title=context.title)
         message = RESIGN_MESSAGE.format(
-                recipient_title=getattr(user, 'user_title',''),
+                recipient_title=localizer.translate(_(getattr(user, 'user_title',''))),
                 recipient_first_name=getattr(user, 'first_name', user.name),
                 recipient_last_name=getattr(user, 'last_name',''),
                 subject_title=context.title,
@@ -1303,9 +1309,10 @@ class Participate(InfiniteCardinality):
     state_validation = participate_state_validation
 
     def _send_mail_to_user(self, subject_template, message_template, user, context, request):
+        localizer = request.localizer
         subject = subject_template.format(subject_title=context.title)
         message = message_template.format(
-                recipient_title=getattr(user, 'user_title',''),
+                recipient_title=localizer.translate(_(getattr(user, 'user_title',''))),
                 recipient_first_name=getattr(user, 'first_name', user.name),
                 recipient_last_name=getattr(user, 'last_name',''),
                 subject_title=context.title,
@@ -1397,10 +1404,11 @@ class VotingAmendments(ElementaryAction):
         context.reindex()
         members = wg.members
         url = request.resource_url(context, "@@index")
+        localizer = request.localizer
         subject = VOTINGAMENDMENTS_SUBJECT.format(subject_title=context.title)
         for member in members:
             message = VOTINGAMENDMENTS_MESSAGE.format(
-                recipient_title=getattr(member, 'user_title',''),
+                recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
                 subject_title=context.title,
@@ -1468,11 +1476,12 @@ class AmendmentsResult(ElementaryAction):
                   'subject': context}
         result_body = renderers.render(
             self.amendments_vote_result_template, values, request)
+        localizer = request.localizer
         subject = RESULT_VOTE_AMENDMENT_SUBJECT.format(
                         subject_title=context.title)
         for member in members:
             message = RESULT_VOTE_AMENDMENT_MESSAGE.format(
-                recipient_title=getattr(member, 'user_title',''),
+                recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
                 message_result=result_body

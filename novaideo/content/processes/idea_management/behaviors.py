@@ -383,7 +383,8 @@ class PresentIdea(InfiniteCardinality):
         if send_to_me:
             members.append(user)
 
-        user_title = getattr(user, 'user_title','')
+        localizer = request.localizer
+        user_title = localizer.translate(_(getattr(user, 'user_title','')))
         user_first_name = getattr(user, 'first_name', user.name)
         user_last_name = getattr(user, 'last_name','')
         url = request.resource_url(context, "@@index")
@@ -396,7 +397,7 @@ class PresentIdea(InfiniteCardinality):
             recipient_last_name = ''
             member_email = ''
             if not isinstance(member, basestring):
-                recipient_title = getattr(member, 'user_title','')
+                recipient_title = localizer.translate(_(getattr(member, 'user_title','')))
                 recipient_first_name = getattr(member, 'first_name', member.name)
                 recipient_last_name = getattr(member, 'last_name','')
                 member_email = member.email

@@ -55,13 +55,9 @@ class acces_action(object):
 
 def can_access(user, context, request=None, root=None):
     """ Return 'True' if the user can access to the context"""
-
     declared = context.__provides__.declared[0]
-    if declared in NOVAIDO_ACCES_ACTIONS:
-        return any(action.processsecurity_validation(None, context) \
-                   for action in NOVAIDO_ACCES_ACTIONS[declared])
-
-    return False
+    return any(action.processsecurity_validation(None, context) \
+                for action in NOVAIDO_ACCES_ACTIONS.get(declared, []))
 
 
 @implementer(ICommentable)
