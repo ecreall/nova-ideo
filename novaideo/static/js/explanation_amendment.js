@@ -1,7 +1,6 @@
 
 intention_schema = ['comment', 'edited_ideas', 'added_ideas', 'removed_ideas']
 
-
 function validate_intention(datas){
     return (datas['comment'].length>0)
 
@@ -50,7 +49,7 @@ function get_explanation_form(){
                      btn.addClass('btn-blue');
                      $('.explanation-validation').on('click', submit_explanation);
                      $('.explanation-close').on('click', close_explanation);
-                     target.find('.explanations-bloc').append("<div class=\"intention-separator\">Or</div>")
+                     target.find('.explanations-bloc').append("<div class=\"intention-separator\">"+novaideo_translate('Or')+"</div>")
                      try {
                           deform.processCallbacks();
                       }
