@@ -21,6 +21,8 @@ def main(global_config, **settings):
     """
     config = Configurator(settings=settings, root_factory=root_factory)
     config.add_translation_dirs('novaideo:locale/')
+    config.add_translation_dirs('pontus:locale/')
+    config.add_translation_dirs('dace:locale/')
     config.add_translation_dirs('deform:locale/')
     config.add_translation_dirs('colander:locale/')
     config.scan()

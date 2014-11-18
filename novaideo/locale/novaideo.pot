@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-11-18 15:35+0100\n"
+"POT-Creation-Date: 2014-11-18 17:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -452,8 +452,8 @@ msgid "Invitation is not valid"
 msgstr ""
 
 #: ./novaideo/views/user_management/edit.py:74
-#: ./novaideo/views/proposal_management/edit_proposal.py:166
-#: ./novaideo/views/proposal_management/edit_proposal.py:194
+#: ./novaideo/views/proposal_management/edit_proposal.py:167
+#: ./novaideo/views/proposal_management/edit_proposal.py:195
 #: ./novaideo/views/working_group_management/edit.py:22
 #: ./novaideo/content/processes/idea_management/definition.py:62
 #: ./novaideo/content/processes/invitation_management/definition.py:55
@@ -770,12 +770,12 @@ msgid "Improve"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/create_proposal.py:26
-#: ./novaideo/views/proposal_management/edit_proposal.py:111
+#: ./novaideo/views/proposal_management/edit_proposal.py:112
 msgid "Related Ideas"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/create_proposal.py:54
-#: ./novaideo/views/proposal_management/edit_proposal.py:150
+#: ./novaideo/views/proposal_management/edit_proposal.py:151
 msgid "Used ideas"
 msgstr ""
 
@@ -793,23 +793,23 @@ msgstr ""
 msgid "Voting amendments"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/edit_proposal.py:78
-#: ./novaideo/views/proposal_management/edit_proposal.py:104
+#: ./novaideo/views/proposal_management/edit_proposal.py:79
+#: ./novaideo/views/proposal_management/edit_proposal.py:105
 #: ./novaideo/views/templates/add_idea_widget.pt:43
 msgid "Validate"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/edit_proposal.py:79
-#: ./novaideo/views/proposal_management/edit_proposal.py:51
+#: ./novaideo/views/proposal_management/edit_proposal.py:80
+#: ./novaideo/views/proposal_management/edit_proposal.py:52
 msgid "Use an idea"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/edit_proposal.py:90
-#: ./novaideo/views/proposal_management/edit_proposal.py:59
+#: ./novaideo/views/proposal_management/edit_proposal.py:91
+#: ./novaideo/views/proposal_management/edit_proposal.py:60
 msgid "Add a new idea"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/edit_proposal.py:39
+#: ./novaideo/views/proposal_management/edit_proposal.py:40
 #: ./novaideo/views/amendment_management/explanation_amendment.py:21
 #: ./novaideo/views/novaideo_view_manager/search.py:245
 #: ./novaideo/content/correlation.py:49 ./novaideo/content/idea.py:39
@@ -818,7 +818,7 @@ msgstr ""
 msgid "- Select -"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/edit_proposal.py:53
+#: ./novaideo/views/proposal_management/edit_proposal.py:54
 msgid "Choose an idea"
 msgstr ""
 
