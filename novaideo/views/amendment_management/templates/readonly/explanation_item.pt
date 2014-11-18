@@ -1,3 +1,4 @@
 <span id="explanation_action">
-     <span  type="button" class="glyphicon glyphicon-comment explanation-comment" data-toggle="modal" data-target="#${item['oid']}explanation_modal"></span>
+	<!--span  type="button" class="glyphicon glyphicon-comment explanation-comment" data-toggle="modal" data-target="explanation_modal"></span -->
+     <span  type="button" class="glyphicon glyphicon-comment explanation-comment" data-target="#${item['oid']}explanation_inline"></span>
 </span>

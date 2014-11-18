@@ -9,42 +9,8 @@
    </small>
   </div>
 
-    <div class="scroll-able">
-        <dl  tal:condition="not is_proposal">
-        <div tal:omit-tag="" tal:condition="amendment.explanation">
-          <dt i18n:translate="">Justification</dt>
-	  <dd>
-              ${structure:amendment.explanation}
-          </dd>
-        </div> 
-        <div tal:omit-tag="" tal:condition="amendment.edited_ideas">
-          <dt i18n:translate="">Edited ideas</dt>
-	  <dd>
-            <tal:loop repeat="idea amendment.edited_ideas">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
-               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
-            </tal:loop>
-          </dd>
-        </div>
-        <div tal:omit-tag="" tal:condition="amendment.added_ideas">
-          <dt i18n:translate="">Added ideas</dt>
-	  <dd>
-            <tal:loop repeat="idea amendment.added_ideas">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
-               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
-            </tal:loop>
-          </dd>
-        </div>
-        <div tal:omit-tag="" tal:condition="amendment.removed_ideas">
-          <dt i18n:translate="">Removed ideas</dt>
-	  <dd>
-            <tal:loop repeat="idea amendment.removed_ideas">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
-               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
-            </tal:loop>
-          </dd>
-        </div>
-        </dl>
+   <div class="scroll-able amendment-trimmed-text">
+    ${structure:text}
    </div>
 </div>
 

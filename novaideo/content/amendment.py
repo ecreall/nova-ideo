@@ -160,8 +160,8 @@ class IntentionItemSchema(Schema):
 
     comment = colander.SchemaNode(
         colander.String(),
-        title= _('Object'),
-        description=_('The object of your intention (300 caracteres maximum).'),
+        title= _('Explanation'),
+        description=_('The explanation of your intention (300 caracteres maximum)'),
         validator=colander.Length(max=300),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         )

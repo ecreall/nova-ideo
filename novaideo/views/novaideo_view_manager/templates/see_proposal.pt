@@ -1,4 +1,4 @@
-<nav class="navbar navbar-entity" role="navigation">
+<nav class="navbar navbar-entity" role="navigation" i18n:domain="novaideo">
   <div class="container-fluid">
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" >
@@ -8,6 +8,11 @@
         </tal:loop>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li tal:condition="voteactions">
+          <a class="btn btn-sm" onclick="javascript: location.reload();">
+            <span class="glyphicon glyphicon-stats" ></span> <span tal:omit-tag="" i18n:translate="">Vote</span>
+          </a>
+        </li>
         <tal:loop repeat="a global_actions">
           <li><a tal:attributes="href a.url" class="btn btn-sm"><span class="${getattr(a.action,'style_picto','')}" ></span> ${a.title}</a></li>
         </tal:loop>
@@ -50,8 +55,8 @@
           </dd>
           <dd>
             <span tal:condition="ct_participate" class="alert alert-warning alert-wg-closed" role="alert">
-             <span tal:condition="ct_participate_closed" i18n:translate="">The working group is closed!</span>
-             <span tal:condition="not ct_participate_closed and ct_participate_max" i18n:translate="">Le nombre maximum de participants a été atteint!</span>
+             <span tal:condition="ct_participate_closed" i18n:translate="">The working group is closed</span>
+             <span tal:condition="not ct_participate_closed and ct_participate_max" i18n:translate="">Le nombre maximum de participants a été atteint</span>
             </span>
             <div tal:condition="wg_actions" id="wg-actions">
                <div  class="btn-group wg-actions">

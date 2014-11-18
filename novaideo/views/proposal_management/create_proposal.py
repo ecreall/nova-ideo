@@ -51,7 +51,7 @@ class RelatedIdeasView(BasicView):
 
 
 class IdeaManagementView(MultipleView):
-    title = _('Ideas management')
+    title = _('Used ideas')
     name = 'ideasmanagementproposal'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (RelatedIdeasView, AddIdeaFormView)

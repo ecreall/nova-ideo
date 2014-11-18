@@ -220,6 +220,7 @@ class StepsPanel(object):
         time_delta = None
         process = context.creator
         wg = context.working_group
+        is_closed = 'closed' in wg.state
         user = get_current()
         working_group_states = [_(get_states_mapping(user, wg, s)) \
                                 for s in wg.state]
@@ -233,6 +234,7 @@ class StepsPanel(object):
             return renderers.render(self.step3_1_template,
                                     {'context':context,
                                      'working_group_states': working_group_states,
+                                     'is_closed': is_closed,
                                      'duration':time_delta,
                                      'process': process},
                                     request)
@@ -246,6 +248,7 @@ class StepsPanel(object):
             return renderers.render(self.step3_3_template,
                                     {'context': context, 
                                      'working_group_states': working_group_states,
+                                     'is_closed': is_closed,
                                      'duration': time_delta,
                                      'process': process,
                                      'ballot_report': ballot.report},
@@ -264,6 +267,7 @@ class StepsPanel(object):
             return renderers.render(self.step3_2_template,
                                     {'context':context,
                                      'working_group_states': working_group_states,
+                                     'is_closed': is_closed,
                                      'duration':time_delta,
                                      'process': process,
                                      'ballot_report': ballot.report,

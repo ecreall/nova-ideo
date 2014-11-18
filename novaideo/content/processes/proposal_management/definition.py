@@ -59,21 +59,21 @@ from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
-VOTE_PUBLISHING_MESSAGE = _("Vote for publishing.")
+VOTE_PUBLISHING_MESSAGE = _("Vote for publishing")
 
 VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
                           " the period for voting. In the case where the"
                           " majority are for the continuation of improvements"
                           " of the proposal, your vote for the duration of the"
-                          " amendment period will be useful.")
+                          " amendment period will be useful")
 
 VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
                            " the period for voting. In the case where the"
                            " majority are for the continuation of improvements"
                            " of the proposal, your vote for reopening working"
-                           " group will be useful.")
+                           " group will be useful")
 
-VOTE_AMENDMENTS_MESSAGE = _("Vote for amendments.")
+VOTE_AMENDMENTS_MESSAGE = _("Vote for amendments")
 
 VP_DEFAULT_DURATION = datetime.timedelta(minutes=30)
 

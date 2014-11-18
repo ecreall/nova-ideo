@@ -30,7 +30,7 @@ function init_explanation_select(){
    });
 };
 
-function get_explanation_form(url){
+function get_explanation_form(){
               var btn = $(this);
               var modal = $(this).data('target')+'explanation_modal';
               var target = $($('.novaideo-right').find('div').first());
@@ -72,7 +72,7 @@ function get_data(selecteds){
     return result
 };
 
-function close_explanation(url){
+function close_explanation(){
        var button = $(this);
        ($('.content-text').find('.explanation-action.btn-blue')).removeClass('btn-blue');
        var parent = $($(this).parents('.explanation-modal').first());
@@ -80,7 +80,7 @@ function close_explanation(url){
 }
 
 
-function submit_explanation(url){
+function submit_explanation(){
        var button = $(this);
        var target = $($(this).parents('.modal-content').first());
        var form = $(target.find('form').first());
@@ -114,11 +114,30 @@ function submit_explanation(url){
        return false;
 };
 
+function init_explanation(){
+      var btn = $(this);
+      var target = $(btn.parents('span').first());
+      var current_del = $(target.find('dl'))
+      if (current_del.length>0){
+          var dl = $(current_del.first());
+          dl.slideToggle("fast");
+          dl.remove();
+          btn.removeClass('explanation-comment-on');
+      }else{
+          var dl = $($(btn.data('target')).find('dl').first()).clone(); 
+          target.append(dl);
+          dl.slideToggle("fast");
+          btn.addClass('explanation-comment-on');
+      }
+      
+}
+
 $(document).ready(function(){
 
   init_explanation_select();
 
   $(document).on('click', '.explanation-action', get_explanation_form);
+  $(document).on('click', '.explanation-comment', init_explanation);
 
 });
 

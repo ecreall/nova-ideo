@@ -8,7 +8,7 @@
 </div>
 
 <div class="alert alert-info">
-<p i18n:domain="novaideo" i18n:translate="">Le regroupement des amendements permet d'avoir des amendements cohérents et augmente la chance de voir vos modifications retenues par les autres participants. Vous pouvez regrouper vos modifications en glissant déposant les modifications ces derniers dans les conteneurs correspondants. Chaque conteneur correspond à un nouvel amendement. Vous pouvez aussi choisir de soumettre en un seul amendement.</p>
+<p i18n:domain="novaideo" i18n:translate="">Le regroupement des amendements permet d'avoir des amendements cohérents et augmente la chance de voir vos modifications retenues par les autres participants. Vous pouvez regrouper vos modifications en glissant déposant les modifications dans les conteneurs correspondants. Vous pouvez aussi choisir de les soumettre en un seul amendement.</p>
 </div>
 
 <div id="amendment-diff" class="amendment-diff-scroll scroll-able">

@@ -36,7 +36,8 @@ class AmendmentViewer(object):
     explanation_template = 'novaideo:views/amendment_management/templates/explanation_item.pt'
     modal_template = 'novaideo:views/amendment_management/templates/explanation_modal_item.pt'
     readonly_explanation_template = 'novaideo:views/amendment_management/templates/readonly/explanation_item.pt'
-    readonly_modal_template = 'novaideo:views/amendment_management/templates/readonly/explanation_modal_item.pt'
+    #readonly_modal_template = 'novaideo:views/amendment_management/templates/readonly/explanation_modal_item.pt'
+    readonly_inline_template = 'novaideo:views/amendment_management/templates/readonly/explanation_inline_item.pt'
 
     def _add_modal(self, action, soup, tag, context, request):
         context_oid = get_oid(context)
@@ -88,7 +89,8 @@ class AmendmentViewer(object):
                                 values,
                                 request)
         explanation_item_soup = BeautifulSoup(body)
-        modal_body = renderers.render(self.readonly_modal_template,
+        #readonly_modal_template,
+        modal_body = renderers.render(self.readonly_inline_template,
                                       values, 
                                       request)
         explanation_item_modal_soup = BeautifulSoup(modal_body)
@@ -97,12 +99,12 @@ class AmendmentViewer(object):
         tag.body.unwrap()
 
     def _identify_explanations(self, context, request, soup, descriminator):
-        correction_tags = soup.find_all('span', {'id': "explanation"})
+        explanation_tags = soup.find_all('span', {'id': "explanation"})
         context_oid = str(get_oid(context))
         explanations = dict(context.explanations)
-        for correction_tag in correction_tags:
-            correction_tag['data-context'] = context_oid
-            correction_tag['data-item'] = str(descriminator)
+        for explanation_tag in explanation_tags:
+            explanation_tag['data-context'] = context_oid
+            explanation_tag['data-item'] = str(descriminator)
             init_vote = {'oid':descriminator, 'intention':None}
             if not(str(descriminator) in explanations): 
                 explanations[str(descriminator)] = PersistentDict(init_vote)

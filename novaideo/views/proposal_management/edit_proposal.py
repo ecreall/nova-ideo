@@ -33,7 +33,8 @@ def idea_choice(node, kw):
     root = getSite()
     user = get_current()
     ideas = list(user.ideas)
-    ideas.extend([ i for i in user.selections if isinstance(i, Idea) and can_access(user, i)])
+    ideas.extend([ i for i in user.selections \
+                   if isinstance(i, Idea) and can_access(user, i)])
     ideas = set(ideas) 
     values = [(i, i.title) for i in ideas if not('archived' in i.state)]
     values.insert(0, ('', _('- Select -')))
@@ -56,7 +57,7 @@ class AddIdeaSchema(Schema):
     new_idea_choice = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="new-idea-control"),
-        label=_('Create an idea'),
+        label=_('Add a new idea'),
         title ='',
         missing=False
         )
@@ -87,7 +88,7 @@ class AddIdea(Behavior):
 
 class AddIdeaFormView(FormView):
 
-    title = _('Create an idea')
+    title = _('Add a new idea')
     schema = AddIdeaSchema()
     formid = 'formaddidea'
     behaviors = [AddIdea]
@@ -147,7 +148,7 @@ class RelatedIdeasView(BasicView):
 
 
 class IdeaManagementView(MultipleView):
-    title = _('Ideas management')
+    title = _('Used ideas')
     name = 'ideasmanagementproposal'
     template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
     views = (RelatedIdeasView, AddIdeaFormView)

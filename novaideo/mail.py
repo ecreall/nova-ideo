@@ -57,7 +57,7 @@ ALERT_SUBJECT = u"""Inactivité : {subject_title}"""
 ALERT_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Aucun amendement n'a été publié pour la proposition sous {subject_url}.
+Alors que la durée du cycle d'amélioration a expiré, aucun amendement n'a été soumis pour la proposition \"{subject_title}\" qui se trouve sous {subject_url}. Vous allez devoir procéder au vote pour soumettre au collectif la proposition en l'état ou pour commencer un nouveau cycle d'amélioration. 
 
 """ + PORTAL_SIGNATURE
 
@@ -119,12 +119,12 @@ Vous faites partie du groupe de travail sur la proposition \"{subject_title}\" q
 
 """ + PORTAL_SIGNATURE
 
-RESIGN_SUBJECT = u"""Démission du groupe de travail : {subject_title}"""
+RESIGN_SUBJECT = u"""Démission du groupe de travail sur la proposition \"{subject_title}\" """
 
 RESIGN_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Vous ne faite plus partie du groupe de travail de la proposition {subject_title} ({subject_url}).
+Vous avez quitté le groupe de travail sur la proposition \"{subject_title}\"  qui se trouve sous ({subject_url}). S'il est ouvert, vous pourrez de nouveau le rejoindre en cliquant sur l'action "Participer".
 
 """ + PORTAL_SIGNATURE
 
