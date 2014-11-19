@@ -123,7 +123,7 @@ class NewIdeaSchema(Schema):
                                  omit=['keywords'], 
                                  widget=SimpleMappingWidget()),
                       ['title',
-                       'description',
+                       'text',
                        'keywords'])
 
 

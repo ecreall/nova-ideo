@@ -293,6 +293,10 @@ ins {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(76, 164, 76, 0.16);
 }
 
+.entity-well {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(76, 164, 76, 0.16);
+}
+
 .thumbnail.right-caption > #idea-image {
     /**background-image: linear-gradient(to left, #effdea -100%, #93d91a 123%);**/
     background-image: linear-gradient(to left, #adcce7 -100%, #adcce7 123%);
