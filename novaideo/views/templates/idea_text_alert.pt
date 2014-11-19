@@ -1,0 +1,1 @@
+<div class="alert alert-warning" role="alert" i18n:domain="novaideo"><span i18n:translate="">Attention les ${limit} caractères maximum sont atteints. Pour continuer à travailler sur votre idée, vous pouvez transformer l'idée en proposition.</span></div>

@@ -1,0 +1,1 @@
+<div class="alert alert-warning" role="alert"><span i18n:translate="">Attention les ${limit} caractères maximum sont atteints.</span></div>

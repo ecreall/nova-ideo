@@ -1,0 +1,19 @@
+<div tal:define="rows rows|field.widget.rows;
+                      cols cols|field.widget.cols;
+                      css_class css_class|field.widget.css_class;
+                      oid oid|field.oid;
+                      name name|field.name;
+                      style style|field.widget.style;
+                      limit field.widget.limit;
+                      alert field.widget.alert_message"
+    id="${oid}-container">
+  <div id="alert_message" class="hide-bloc">${structure:alert}</div>
+  <textarea tal:attributes="rows rows;
+                          cols cols;
+                          class string: form-control ${css_class};
+                          style style"
+          id="${oid}"
+          name="${name}">${cstruct}</textarea>
+  <div id="desc" ></div>
+  <script>init_textarea(${'\'#'+oid+'\''}, ${limit})</script>
+</div>

@@ -1,9 +1,33 @@
 
 import deform
 from deform.widget import default_resource_registry
+from pyramid.threadlocal import get_current_request
+from pyramid import renderers
+
 from pontus.widget import SequenceWidget, Select2Widget
 
 
+
+class LimitedTextAreaWidget(deform.widget.TextAreaWidget):
+    template = 'novaideo:views/templates/textarea.pt'
+    default_alert_template = 'novaideo:views/templates/textarea_default_alert.pt'
+    requirements = ( ('jquery.maskedinput', None), 
+                     ('limitedtextarea', None)) 
+
+    @property
+    def alert_message(self):
+        alert_values = {'limit': self.limit}
+        template = self.default_alert_template
+        if hasattr(self, 'alert_template'):
+            template = self.alert_template
+
+        if hasattr(self, 'alert_values'):
+            alert_values = self.alert_values
+
+        request = get_current_request()
+        body = renderers.render(
+               template, alert_values, request)
+        return body
 
 class MappinColgWidget(deform.widget.MappingWidget):
 
@@ -67,3 +91,6 @@ default_resource_registry.set_js_resources('select2dragdrop', None, 'pontus.dace
                                                                   'novaideo:static/js/dragdrop_select.js'  )
 default_resource_registry.set_css_resources('select2dragdrop', None, 'pontus.dace_ui_extension:static/select2/select2.css',
                                                                   'novaideo:static/select2_search/select2_search.css'  )
+
+default_resource_registry.set_js_resources('limitedtextarea', None, 'novaideo:static/limitedtextarea/limitedtextarea.js'  )
+default_resource_registry.set_css_resources('limitedtextarea', None, 'novaideo:static/limitedtextarea/limitedtextarea.css'  )
