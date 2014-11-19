@@ -27,9 +27,8 @@ class CreateIdeaView(FormView):
     schema = select(IdeaSchema(factory=Idea, editable=True,
                                omit=['keywords']),
                     ['title',
-                     'description',
-                     'keywords',
                      'text',
+                     'keywords',
                      'attached_files'])
     behaviors = [CreateIdea, Cancel]
     formid = 'formcreateidea'
@@ -50,8 +49,7 @@ class CreateIdeaView_Json(BasicView):
         try:
             behavior = self.behaviorinstances['Create_an_idea']
             values = {'title': self.params('title'),
-                      'description': self.params('description'),
-                      'text': ''}
+                      'text': self.params('text')}
             idea = Idea()
             idea.set_data(values) 
             appstruct = {'_object_data': idea,

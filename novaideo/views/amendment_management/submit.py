@@ -62,7 +62,7 @@ class ExplanationGroupSchema(Schema):
         widget=explanations_choice,
         missing=[],
         default=[],
-        title=_('Justifications'),
+        title=_('Explanations'),
         )    
 
 

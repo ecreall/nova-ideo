@@ -44,7 +44,7 @@
 
     <!-- Scripts -->
     <script type="text/javascript">
-      function get_language(){
+      function novaideo_get_language(){
         return  '<tal:block >${request.locale_name}</tal:block>'
       };
     </script>

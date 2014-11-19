@@ -21,6 +21,7 @@ from .interface import IProposal
 from novaideo.content.correlation import CorrelationType
 from novaideo.core import Commentable, can_access
 from novaideo import _
+from novaideo.views.widget import LimitedTextAreaWidget
 from novaideo.core import (
     SearchableEntity,
     SearchableEntitySchema,
@@ -54,9 +55,10 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     description = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=300),
-        widget=deform.widget.TextAreaWidget(rows=5, cols=30),
-        title=_("Abstract"),
-        description=_("(300 caracteres maximum)")
+        widget=LimitedTextAreaWidget(rows=5, 
+                                     cols=30, 
+                                     limit=300),
+        title=_("Abstract")
         )
 
     text = colander.SchemaNode(

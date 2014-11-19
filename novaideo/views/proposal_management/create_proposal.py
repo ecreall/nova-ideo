@@ -75,6 +75,7 @@ class CreateProposalFormView(FormView):
                     ['title',
                      'description',
                      'keywords',
+                     'text',
                      'related_ideas'])
     behaviors = [CreateProposal, Cancel]
     formid = 'formcreateproposal'

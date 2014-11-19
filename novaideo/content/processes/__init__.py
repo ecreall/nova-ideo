@@ -10,7 +10,7 @@ STATES_PARTICIPANT_MAPPING = {
 	    'published': _('Published'),
 	    'archived': _('Archived'),
         #Amendment
-	    'explanation': _('Justification'),
+	    'explanation': _('Explanation'),
 	    #Ideas
 	    'to work': _('To work'),
 	    #Invitation
@@ -40,7 +40,7 @@ STATES_MEMBER_MAPPING = {
 	    'published': _('Published'),
 	    'archived': _('Archived'),
         #Amendment
-	    'explanation': _('Justification'),
+	    'explanation': _('Explication'),
 	    #Ideas
 	    'to work': _('To work'),
 	    #Invitation

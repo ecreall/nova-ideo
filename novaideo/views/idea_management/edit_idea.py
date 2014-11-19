@@ -18,7 +18,6 @@ class EditIdeaFormView(FormView):
     title = _('Edit idea')
     schema = select(IdeaSchema(), ['intention',
                                   'title',
-                                  'description',
                                   'keywords',
                                   'text',
                                   'attached_files'])

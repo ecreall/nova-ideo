@@ -16,7 +16,7 @@
    <span tal:condition="duration is None" style="color:#d9534f;" i18n:translate="">Period expired</span>
 </div>
 
-<div class="object-well idea-well" i18n:domain="novaideo">  
+<div class="object-well vote-well" i18n:domain="novaideo">  
 <dl >
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
        <dt tal:condition="ballot_report.electors" i18n:translate="">Electors</dt>

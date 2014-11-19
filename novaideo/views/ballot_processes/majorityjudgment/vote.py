@@ -175,12 +175,11 @@ class VoteFormView(FormView):
                 values['text'] = self._get_trimed_proposal_text(subject.text)
                 values['is_proposal'] = True
             else:
-                if not hasattr(subject, 'explanationtext'):
-                    seeamendment_actions = getBusinessAction(
+                seeamendment_actions = getBusinessAction(
                                          subject, self.request,
                                          'amendmentmanagement', 'see')
-                    if seeamendment_actions:
-                        seeamendment_actions[0].execute(
+                if seeamendment_actions:
+                    seeamendment_actions[0].execute(
                               subject, self.request, None)
 
                 values['text'] = self._get_trimed_modification_text(

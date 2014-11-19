@@ -272,8 +272,18 @@ ins {
 }
 
 .idea-well {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(70, 178, 226, 0.16);
+    margin-top: -25px
 }
+
+.idea-well dl{
+    margin-top: 13px
+
+}
+
+.vote-well {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(76, 164, 76, 0.16);
+}
+
 
 .amendment-well {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(207, 35, 0, 0.20);

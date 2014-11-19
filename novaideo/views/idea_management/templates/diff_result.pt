@@ -1,9 +1,8 @@
 <div class="compare-result" i18n:domain="novaideo">
 <div tal:omit-tag="" tal:condition="version">
-<div class="object-well idea-well">
+<div class="content-text ">
+  ${structure:textdiff}
     <dl >
-        <dt i18n:translate="">Abstract</dt>
-	<dd>${structure:descriptiondiff}</dd>
       <dt tal:condition="keywordsdiff" i18n:translate="">Keywords</dt>
       <dd tal:condition="keywordsdiff">
         <tal:loop repeat="k keywordsdiff">
@@ -14,7 +13,7 @@
     </dl>
 </div>
 
-${structure:textdiff}
+
 
   <div id="legend">
     <div><div class="legend-carre-ins"></div> : <span i18n:translate="">Text added in</span> "${idee.title}"</div>

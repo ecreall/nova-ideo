@@ -48,6 +48,23 @@ function scrollto(){
 
 };
 
+function init_explanation_item(){
+      var btn = $(this);
+      var target = $(btn.parents('span').first());
+      var current_del = $(target.find('dl'))
+      if (current_del.length>0){
+          var dl = $(current_del.first());
+          dl.slideToggle("fast");
+          dl.remove();
+          btn.removeClass('explanation-comment-on');
+      }else{
+          var dl = $($(btn.data('target')).find('dl').first()).clone(); 
+          target.append(dl);
+          dl.slideToggle("fast");
+          btn.addClass('explanation-comment-on');
+      }
+      
+}
 
 $(document).ready(function(){
   $('.form-group.explanation-groups label').hide();
@@ -86,5 +103,6 @@ $(document).ready(function(){
        }
    });
 
+  $(document).on('click', '.explanation-item', init_explanation_item);
 
 });

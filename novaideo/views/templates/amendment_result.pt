@@ -7,7 +7,7 @@
     <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
     <dl >
         <div tal:omit-tag="" tal:condition="object.explanation">
-          <dt  i18n:translate="">Justification</dt>
+          <dt  i18n:translate="">Explanation</dt>
 	  <dd>
               ${structure:object.explanation}
           </dd>

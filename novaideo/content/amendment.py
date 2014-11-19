@@ -26,7 +26,10 @@ from novaideo.core import (
     DuplicableEntity,
     can_access)
 from novaideo import _
-from novaideo.views.widget import Select2WidgetSearch, AddIdeaWidget
+from novaideo.views.widget import (
+    Select2WidgetSearch, 
+    AddIdeaWidget, 
+    LimitedTextAreaWidget)
 from novaideo.content.idea import Idea, IdeaSchema
 
 
@@ -288,9 +291,10 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
     description = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=300),
-        widget=deform.widget.TextAreaWidget(rows=5, cols=30),
-        title=_("Abstract"),
-        description=_("(300 caracteres maximum)")
+        widget=LimitedTextAreaWidget(rows=5, 
+                                     cols=30, 
+                                     limit=300),
+        title=_("Abstract")
         )
 
     text = colander.SchemaNode(

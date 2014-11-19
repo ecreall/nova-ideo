@@ -12,7 +12,6 @@ from dace.util import getSite
 from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
-    RichTextWidget,
     Select2Widget,
     SequenceWidget,
     FileWidget)
@@ -22,6 +21,7 @@ from .interface import Iidea
 from novaideo.content.correlation import CorrelationType
 from novaideo.core import Commentable
 from novaideo import _
+from novaideo.views.widget import LimitedTextAreaWidget
 from novaideo.core import (
     VersionableEntity,
     DuplicableEntity,
@@ -51,19 +51,15 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         editing=context_is_a_idea,
         )
 
-    description = colander.SchemaNode(
-        colander.String(),
-        validator=colander.Length(max=300),
-        widget=deform.widget.TextAreaWidget(rows=5, cols=30),
-        title=_("Abstract"),
-        description=_("(300 caracteres maximum)")
-        )
-
     text = colander.SchemaNode(
         colander.String(),
-        widget= RichTextWidget(),
-        title=_('Text'),
-        missing='',
+        #widget=deform.widget.TextAreaWidget(rows=5, cols=30),
+        widget=LimitedTextAreaWidget(rows=5, 
+                                     cols=30, 
+                                     limit=600,
+                                     alert_template='novaideo:views/templates/idea_text_alert.pt',
+                                     alert_values={'limit': 600}),
+        title=_("Text")
         )
 
     intention = colander.SchemaNode(

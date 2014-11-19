@@ -6,8 +6,7 @@
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
     <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
     <dl >
-      <dt i18n:translate="">Abstract</dt>
-      <dd>${object.description}</dd>
+      <dd>${object.text}</dd>
       <dt tal:condition="object.keywords" i18n:translate="">Keywords</dt>
       <dd tal:condition="object.keywords">
         <tal:loop repeat="k object.keywords">

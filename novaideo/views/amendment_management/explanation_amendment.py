@@ -66,7 +66,7 @@ class ExplanationViewStudyReport(BasicView):
 
 
 class ExplanationFormView(FormView):
-    title = _('Justification')
+    title = _('Explanation')
     name = 'formexplanationamendment'
     behaviors = [ExplanationAmendment, Cancel]
     viewid = 'formexplanationamendment'
@@ -79,7 +79,7 @@ class ExplanationFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class ExplanationView(MultipleView):
-    title = _('Justification')
+    title = _('Explanation')
     name = 'explanationamendment'
     behaviors = [ExplanationAmendment]
     viewid = 'explanationamendment'

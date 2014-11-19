@@ -144,7 +144,7 @@ $(document).ready(function(){
                danger_messages_container.text( "The title is required!" ).show().fadeOut( 6000 );
                return
             }
-            var text = newideaform.find('textarea[name="description"]').val();
+            var text = newideaform.find('textarea[name="text"]').val();
             if (text=='')
             {
                danger_messages_container.text( "The abstract is required!" ).show().fadeOut( 6000 );
@@ -159,7 +159,7 @@ $(document).ready(function(){
             }
 
             dict_post = {'title': title,
-                         'description': text,
+                         'text': text,
                          'keywords': keywords,
                          'op': 'creat_idea'};
          }else{
@@ -200,11 +200,10 @@ $(document).ready(function(){
                 }else{
                    related_ideas.append(get_tag(data['oid'], data['title'], data['body'], 'disabled-'));
                }
-               init_seemore();
                init_delitem();
                if (isnewidea){
                   newideaform.find('input[name="title"]').val('');
-                  newideaform.find('textarea[name="description"]').val('');
+                  newideaform.find('textarea[name="text"]').val('');
                   $(newideaform.find('select[name="keywords"]')).select2('val', []);
                }else{
                  $($(form).find('div.search-idea-form select.select2-offscreen')).select2('val', '')

@@ -69,7 +69,7 @@ class AddIdeaSchema(Schema):
                                          mapping_css_class='hide-bloc new-idea-form',
                                         ajax=False)),
                     ['title',
-                     'description',
+                     'text',
                      'keywords'])
 
 
@@ -104,8 +104,6 @@ class AddIdeaFormView(FormView):
         self.schema.widget = formwidget
         self.schema.widget.ajax_button = _('Validate')
         self.schema.get('new_idea').get('keywords').default = []
-        description_node = self.schema.get('new_idea').get('description')
-        description_node.widget = deform.widget.TextAreaWidget(rows=4, cols=60)
 
 
 class RelatedIdeasView(BasicView):

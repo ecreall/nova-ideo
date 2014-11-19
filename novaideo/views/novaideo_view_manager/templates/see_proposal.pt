@@ -9,7 +9,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li tal:condition="voteactions">
-          <a class="btn btn-sm" onclick="javascript: location.reload();">
+          <a class="btn btn-sm" onclick="javascript: history.go(0);">
             <span class="glyphicon glyphicon-stats" ></span> <span tal:omit-tag="" i18n:translate="">Vote</span>
           </a>
         </li>
