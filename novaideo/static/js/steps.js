@@ -34,8 +34,10 @@ function chrono_is_expired(chrono_item){
 function chrono(target){
     var chrono_item = chronos[target]
     chrono_item['secon']--;
-    if (chrono_item['secon']<0 && chrono_item['minu']>0){chrono_item['secon']=59;chrono_item['minu']--};
-    if (chrono_item['minu']<0 && chrono_item['hour']>0){chrono_item['minu']=59;chrono_item['hour']--};
+    var total = chrono_item['minu']+chrono_item['hour']+chrono_item['day'];
+    if (chrono_item['secon']<0 && total>0){chrono_item['secon']=59;chrono_item['minu']--};
+    total = chrono_item['hour']+chrono_item['day'];
+    if (chrono_item['minu']<0 && total>0){chrono_item['minu']=59;chrono_item['hour']--};
     if (chrono_item['hour']<0 && chrono_item['day']>0){chrono_item['hour']=23;chrono_item['day']--};
     var secon = $($(target).find('#secon').first())
     var minu = $($(target).find('#minu').first())
