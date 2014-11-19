@@ -1,10 +1,12 @@
 novaideoI18n = {
 'en': {
-  'Or': 'Or'
+  'Or': 'Or',
+  'Period expired': 'Period expired'
 },
 
 'fr':{
- 'Or': 'Ou'
+ 'Or': 'Ou',
+ 'Period expired': 'Durée expirée'
 }
 }
 

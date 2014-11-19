@@ -629,7 +629,8 @@ class Alert(ElementaryAction):
                                                     'user_title',''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
-                subject_url=url
+                subject_url=url,
+                subject_title=context.title
                  )
             mailer_send(subject=subject, 
                 recipients=[member.email], 
