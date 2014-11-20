@@ -59,7 +59,7 @@ from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
-VOTE_PUBLISHING_MESSAGE = _("Vote for publishing")
+VOTE_PUBLISHING_MESSAGE = _("Vote for submission")
 
 VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
                           " the period for voting. In the case where the"
@@ -152,7 +152,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         subjects = [proposal]
         ballot = Ballot('Referendum' , electors, subjects, VP_DEFAULT_DURATION)
         ballot.report.description = VOTE_PUBLISHING_MESSAGE
-        ballot.title = _("Publish the proposal")
+        ballot.title = _("Submit the proposal")
         processes = ballot.run_ballot()
         wg.addtoproperty('ballots', ballot)
         subprocess.ballots = PersistentList()
@@ -165,7 +165,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             ballot = Ballot('Referendum' , electors,
                             subjects, VP_DEFAULT_DURATION)
             ballot.report.description = VOTE_REOPENING_MESSAGE
-            ballot.title = 'Reopening working group'
+            ballot.title = _('Reopening working group')
             processes.extend(ballot.run_ballot(context=proposal))
             wg.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
@@ -239,7 +239,8 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             ballot = Ballot('MajorityJudgment' , electors, 
                        group, AMENDMENTS_VOTE_DEFAULT_DURATION)
             ballot.report.description = VOTE_AMENDMENTS_MESSAGE
-            ballot.title = _('Group of independent amendments')+ '('+str(i)+')'
+            ballot.title = _('Vote for amendments (group ${nbi})', 
+                              mapping={'nbi': i})
             processes.extend(ballot.run_ballot(context=proposal))
             proposal.working_group.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
@@ -285,8 +286,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Duplicate"),
                                        groups=[]),
                 submit = ActivityDefinition(contexts=[SubmitProposal],
-                                       description=_("Submit the proposal"),
-                                       title=_("Submit"),
+                                       description=_("Publish the proposal"),
+                                       title=_("Publish"),
                                        groups=[]),
                 edit = ActivityDefinition(contexts=[EditProposal],
                                        description=_("Edit the proposal"),
@@ -323,8 +324,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        groups=[]),
                 timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=amendments_cycle_duration)),
                 publish = ActivityDefinition(contexts=[PublishProposal],
-                                       description=_("Publish the proposal"),
-                                       title=_("Publish"),
+                                       description=_("Submit the proposal"),
+                                       title=_("Submit"),
                                        groups=[]),
                 support = ActivityDefinition(contexts=[SupportProposal],
                                        description=_("Support the proposal"),

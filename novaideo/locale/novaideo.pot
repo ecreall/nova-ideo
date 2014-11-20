@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-11-19 17:01+0100\n"
+"POT-Creation-Date: 2014-11-20 15:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,22 +15,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 
-#: ./novaideo/core.py:136
+#: ./novaideo/core.py:137
 #: ./novaideo/views/idea_management/templates/diff_result.pt:8
 #: ./novaideo/views/idea_management/templates/see_idea.pt:67
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:15
 #: ./novaideo/views/templates/idea_result.pt:21
 #: ./novaideo/views/templates/proposal_result.pt:21
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:79
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:98
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:99
 msgid "Keywords"
 msgstr ""
 
-#: ./novaideo/core.py:209
+#: ./novaideo/core.py:210
 #: ./novaideo/views/proposal_management/templates/idea_data.pt:5
 #: ./novaideo/views/correlation_management/templates/see_correlation.pt:10
 #: ./novaideo/content/idea.py:62 ./novaideo/content/correction.py:37
-#: ./novaideo/content/proposal.py:67 ./novaideo/content/amendment.py:303
+#: ./novaideo/content/proposal.py:67 ./novaideo/content/amendment.py:304
 msgid "Text"
 msgstr ""
 
@@ -104,7 +104,7 @@ msgstr ""
 #: ./novaideo/views/idea_management/publish_idea.py:31
 #: ./novaideo/views/idea_management/publish_idea.py:44
 #: ./novaideo/content/processes/idea_management/definition.py:66
-#: ./novaideo/content/processes/proposal_management/definition.py:327
+#: ./novaideo/content/processes/proposal_management/definition.py:290
 msgid "Publish"
 msgstr ""
 
@@ -132,7 +132,7 @@ msgstr ""
 #: ./novaideo/views/idea_management/compare_idea.py:145
 #: ./novaideo/views/proposal_management/compare_proposal.py:43
 #: ./novaideo/content/processes/idea_management/definition.py:93
-#: ./novaideo/content/processes/proposal_management/definition.py:386
+#: ./novaideo/content/processes/proposal_management/definition.py:387
 msgid "Compare versions"
 msgstr ""
 
@@ -177,7 +177,7 @@ msgstr ""
 #: ./novaideo/views/amendment_management/associate.py:34
 #: ./novaideo/content/comment.py:100
 #: ./novaideo/content/processes/idea_management/definition.py:86
-#: ./novaideo/content/processes/proposal_management/definition.py:359
+#: ./novaideo/content/processes/proposal_management/definition.py:360
 #: ./novaideo/content/processes/amendment_management/definition.py:80
 msgid "Associate"
 msgstr ""
@@ -264,7 +264,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/duplicate_proposal.py:48
 #: ./novaideo/views/amendment_management/duplicate_amendment.py:22
 #: ./novaideo/content/processes/idea_management/definition.py:54
-#: ./novaideo/content/processes/proposal_management/definition.py:285
+#: ./novaideo/content/processes/proposal_management/definition.py:286
 #: ./novaideo/content/processes/proposal_management/behaviors.py:296
 #: ./novaideo/content/processes/amendment_management/definition.py:52
 msgid "Duplicate"
@@ -281,29 +281,29 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:24
 #: ./novaideo/views/templates/panels/step3_1.pt:24
-#: ./novaideo/views/templates/panels/step3_3.pt:24
-#: ./novaideo/views/templates/panels/step3_2.pt:24
+#: ./novaideo/views/templates/panels/step3_3.pt:26
+#: ./novaideo/views/templates/panels/step3_2.pt:26
 msgid "day(s)"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:28
 #: ./novaideo/views/templates/panels/step3_1.pt:30
-#: ./novaideo/views/templates/panels/step3_3.pt:30
-#: ./novaideo/views/templates/panels/step3_2.pt:30
+#: ./novaideo/views/templates/panels/step3_3.pt:32
+#: ./novaideo/views/templates/panels/step3_2.pt:32
 msgid "hour(s)"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:32
 #: ./novaideo/views/templates/panels/step3_1.pt:36
-#: ./novaideo/views/templates/panels/step3_3.pt:36
-#: ./novaideo/views/templates/panels/step3_2.pt:36
+#: ./novaideo/views/templates/panels/step3_3.pt:38
+#: ./novaideo/views/templates/panels/step3_2.pt:38
 msgid "minute(s)"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:36
 #: ./novaideo/views/templates/panels/step3_1.pt:42
-#: ./novaideo/views/templates/panels/step3_3.pt:42
-#: ./novaideo/views/templates/panels/step3_2.pt:42
+#: ./novaideo/views/templates/panels/step3_3.pt:44
+#: ./novaideo/views/templates/panels/step3_2.pt:44
 msgid "second(s)"
 msgstr ""
 
@@ -358,7 +358,7 @@ msgid "The idea has been sent:"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:43
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:69
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:70
 msgid "(Submitted by"
 msgstr ""
 
@@ -366,7 +366,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/templates/amendments.pt:23
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:49
 #: ./novaideo/views/amendment_management/templates/description_amendments.pt:12
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:73
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:74
 msgid "the"
 msgstr ""
 
@@ -388,7 +388,7 @@ msgstr ""
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:51
 #: ./novaideo/views/amendment_management/templates/description_amendments.pt:15
 #: ./novaideo/views/amendment_management/templates/description_amendments.pt:37
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:76
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:77
 msgid "at"
 msgstr ""
 
@@ -412,7 +412,7 @@ msgstr ""
 
 #: ./novaideo/views/invitation_management/invite_user.py:25
 #: ./novaideo/views/invitation_management/see_invitations.py:23
-#: ./novaideo/content/novaideo_application.py:94
+#: ./novaideo/content/novaideo_application.py:95
 #: ./novaideo/content/processes/invitation_management/definition.py:50
 msgid "Invitations"
 msgstr ""
@@ -448,7 +448,7 @@ msgstr ""
 #: ./novaideo/content/processes/user_management/definition.py:42
 #: ./novaideo/content/processes/user_management/definition.py:43
 #: ./novaideo/content/processes/user_management/behaviors.py:87
-#: ./novaideo/content/processes/proposal_management/definition.py:293
+#: ./novaideo/content/processes/proposal_management/definition.py:294
 #: ./novaideo/content/processes/amendment_management/definition.py:56
 #: ./novaideo/content/processes/organization_management/definition.py:49
 #: ./novaideo/content/processes/organization_management/definition.py:57
@@ -503,7 +503,7 @@ msgstr ""
 #: ./novaideo/views/ballot_processes/fptp/vote.py:63
 #: ./novaideo/views/ballot_processes/fptp/vote.py:88
 #: ./novaideo/views/ballot_processes/majorityjudgment/vote.py:76
-#: ./novaideo/views/ballot_processes/majorityjudgment/vote.py:202
+#: ./novaideo/views/ballot_processes/majorityjudgment/vote.py:201
 #: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:27
 #: ./novaideo/content/processes/ballot_processes/rangevoting/definition.py:47
 #: ./novaideo/content/processes/ballot_processes/rangevoting/definition.py:48
@@ -674,26 +674,26 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/correct_proposal.py:23
 #: ./novaideo/views/proposal_management/correct_item.py:20
-#: ./novaideo/content/processes/proposal_management/definition.py:367
-#: ./novaideo/content/processes/proposal_management/definition.py:371
+#: ./novaideo/content/processes/proposal_management/definition.py:368
+#: ./novaideo/content/processes/proposal_management/definition.py:372
 msgid "Correct"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/support_proposal.py:19
-#: ./novaideo/content/processes/proposal_management/definition.py:331
+#: ./novaideo/content/processes/proposal_management/definition.py:332
 msgid "Support"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/publish_proposal.py:19
 #: ./novaideo/content/processes/proposal_management/definition.py:155
-#: ./novaideo/content/processes/proposal_management/definition.py:326
-msgid "Publish the proposal"
+#: ./novaideo/content/processes/proposal_management/definition.py:327
+msgid "Submit the proposal"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/present_proposal.py:71
 #: ./novaideo/views/proposal_management/present_proposal.py:94
 #: ./novaideo/views/proposal_management/present_proposal.py:95
-#: ./novaideo/content/processes/proposal_management/definition.py:346
+#: ./novaideo/content/processes/proposal_management/definition.py:347
 msgid "Submit the proposal to others"
 msgstr ""
 
@@ -702,14 +702,14 @@ msgid "Compare proposal form"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/resign.py:18
-#: ./novaideo/content/processes/proposal_management/definition.py:301
 #: ./novaideo/content/processes/proposal_management/definition.py:302
+#: ./novaideo/content/processes/proposal_management/definition.py:303
 msgid "Resign"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/participate.py:19
-#: ./novaideo/content/processes/proposal_management/definition.py:297
 #: ./novaideo/content/processes/proposal_management/definition.py:298
+#: ./novaideo/content/processes/proposal_management/definition.py:299
 msgid "Participate"
 msgstr ""
 
@@ -719,31 +719,31 @@ msgid "See amendments"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/withdraw.py:18
-#: ./novaideo/content/processes/proposal_management/definition.py:306
+#: ./novaideo/content/processes/proposal_management/definition.py:307
 msgid "Withdraw"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/amendable.py:17
 #: ./novaideo/content/processes/__init__.py:25
 #: ./novaideo/content/processes/__init__.py:55
-#: ./novaideo/content/processes/proposal_management/definition.py:322
+#: ./novaideo/content/processes/proposal_management/definition.py:323
 msgid "Amendable"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/proofreading_done.py:19
-#: ./novaideo/content/processes/proposal_management/definition.py:374
 #: ./novaideo/content/processes/proposal_management/definition.py:375
+#: ./novaideo/content/processes/proposal_management/definition.py:376
 msgid "Proofreading done"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/add_paragraph.py:19
-#: ./novaideo/content/processes/proposal_management/definition.py:378
 #: ./novaideo/content/processes/proposal_management/definition.py:379
+#: ./novaideo/content/processes/proposal_management/definition.py:380
 msgid "Add a paragraph"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/associate.py:45
-#: ./novaideo/content/processes/proposal_management/definition.py:358
+#: ./novaideo/content/processes/proposal_management/definition.py:359
 msgid "Associate the proposal"
 msgstr ""
 
@@ -752,7 +752,7 @@ msgid "Associate the proposal to an other content"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/improve_proposal.py:22
-#: ./novaideo/content/processes/proposal_management/definition.py:383
+#: ./novaideo/content/processes/proposal_management/definition.py:384
 msgid "Improve"
 msgstr ""
 
@@ -768,7 +768,7 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/create_proposal.py:72
 #: ./novaideo/views/proposal_management/create_proposal.py:97
-#: ./novaideo/content/processes/proposal_management/definition.py:277
+#: ./novaideo/content/processes/proposal_management/definition.py:278
 msgid "Create a proposal"
 msgstr ""
 
@@ -814,39 +814,41 @@ msgid "Publish as a proposal"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/withdraw_token.py:19
-#: ./novaideo/content/processes/proposal_management/definition.py:339
+#: ./novaideo/content/processes/proposal_management/definition.py:340
 msgid "Withdraw my token"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/submit_proposal.py:17
-#: ./novaideo/views/amendment_management/explanation_amendment.py:55
-msgid "Alert for justification"
+msgid "Alert for submission"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/submit_proposal.py:32
-#: ./novaideo/views/proposal_management/submit_proposal.py:45
 #: ./novaideo/views/amendment_management/submit.py:131
-#: ./novaideo/views/amendment_management/submit.py:157
-#: ./novaideo/content/processes/proposal_management/definition.py:289
+#: ./novaideo/content/processes/proposal_management/definition.py:328
 #: ./novaideo/content/processes/amendment_management/definition.py:68
 msgid "Submit"
 msgstr ""
 
+#: ./novaideo/views/proposal_management/submit_proposal.py:45
+#: ./novaideo/content/processes/proposal_management/definition.py:289
+msgid "Publish the proposal"
+msgstr ""
+
 #: ./novaideo/views/proposal_management/oppose_proposal.py:19
-#: ./novaideo/content/processes/proposal_management/definition.py:335
+#: ./novaideo/content/processes/proposal_management/definition.py:336
 msgid "Oppose"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/comment_proposal.py:23
 #: ./novaideo/views/proposal_management/comment_proposal.py:46
 #: ./novaideo/views/proposal_management/comment_proposal.py:47
-#: ./novaideo/content/processes/proposal_management/definition.py:350
+#: ./novaideo/content/processes/proposal_management/definition.py:351
 msgid "Discuss the proposal"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/amendments_result.py:18
-#: ./novaideo/content/processes/proposal_management/definition.py:342
 #: ./novaideo/content/processes/proposal_management/definition.py:343
+#: ./novaideo/content/processes/proposal_management/definition.py:344
 msgid "Amendments result"
 msgstr ""
 
@@ -856,16 +858,16 @@ msgid "See related ideas"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/alert.py:17
-#: ./novaideo/content/processes/proposal_management/definition.py:317
 #: ./novaideo/content/processes/proposal_management/definition.py:318
+#: ./novaideo/content/processes/proposal_management/definition.py:319
 msgid "Alert"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:9
 #: ./novaideo/views/templates/proposal_result.pt:17
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:73
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:92
-#: ./novaideo/content/proposal.py:61 ./novaideo/content/amendment.py:297
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:93
+#: ./novaideo/content/proposal.py:61 ./novaideo/content/amendment.py:298
 msgid "Abstract"
 msgstr ""
 
@@ -941,11 +943,11 @@ msgstr ""
 
 #: ./novaideo/views/templates/amendment_result.pt:19
 #: ./novaideo/views/amendment_management/explanation_amendment.py:69
-#: ./novaideo/views/amendment_management/explanation_amendment.py:82
 #: ./novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:24
 #: ./novaideo/views/amendment_management/templates/readonly/explanation_inline_item.pt:6
 #: ./novaideo/content/amendment.py:166
 #: ./novaideo/content/processes/__init__.py:13
+#: ./novaideo/content/processes/__init__.py:43
 msgid "Explanation"
 msgstr ""
 
@@ -1021,8 +1023,6 @@ msgid "participants"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/step3_1.pt:44
-#: ./novaideo/views/templates/panels/step3_3.pt:44
-#: ./novaideo/views/templates/panels/step3_2.pt:44
 msgid "remaining"
 msgstr ""
 
@@ -1060,6 +1060,11 @@ msgstr ""
 msgid "Votes for amendments"
 msgstr ""
 
+#: ./novaideo/views/templates/panels/step3_3.pt:20
+#: ./novaideo/views/templates/panels/step3_2.pt:20
+msgid "Fin du vote dans"
+msgstr ""
+
 #: ./novaideo/views/templates/panels/step3_3.pt:61
 #: ./novaideo/views/templates/panels/step3_2.pt:61
 msgid "Electors"
@@ -1092,12 +1097,12 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:27
 #: ./novaideo/views/novaideo_view_manager/search.py:33
-#: ./novaideo/content/novaideo_application.py:127
+#: ./novaideo/content/novaideo_application.py:128
 msgid "Idea"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:32
-#: ./novaideo/content/novaideo_application.py:128
+#: ./novaideo/content/novaideo_application.py:129
 msgid "Ideas"
 msgstr ""
 
@@ -1135,6 +1140,16 @@ msgstr ""
 msgid "Intention"
 msgstr ""
 
+#: ./novaideo/views/amendment_management/explanation_amendment.py:55
+msgid "Alert for justification"
+msgstr ""
+
+#: ./novaideo/views/amendment_management/explanation_amendment.py:82
+#: ./novaideo/content/processes/amendment_management/definition.py:59
+#: ./novaideo/content/processes/amendment_management/definition.py:60
+msgid "Explain your modifications"
+msgstr ""
+
 #: ./novaideo/views/amendment_management/comment_amendment.py:24
 #: ./novaideo/views/amendment_management/comment_amendment.py:47
 #: ./novaideo/views/amendment_management/comment_amendment.py:48
@@ -1163,6 +1178,10 @@ msgstr ""
 msgid "Justification item"
 msgstr ""
 
+#: ./novaideo/views/amendment_management/submit.py:157
+msgid "Amendments organization"
+msgstr ""
+
 #: ./novaideo/views/amendment_management/submit.py:65
 msgid "Explanations"
 msgstr ""
@@ -1177,11 +1196,11 @@ msgstr ""
 
 #: ./novaideo/views/amendment_management/templates/explanations_amendment.pt:1
 msgid ""
-"Pour que les autres participants se prononcent sur vos modifications, vous "
-"devez les justifier en précisant vos intentions. Une intention peut porter "
-"sur plusieurs modifications à la fois. Une fois que vous avez justifié "
-"l'ensemble de vos modifications, vous pouvez les regrouper en amendements et "
-"les soumettre aux autres participants."
+"Pour que les autres participants puissent se prononcer sur vos modifications,"
+" vous devez les expliquer en précisant vos intentions. Une intention peut "
+"porter sur plusieurs modifications à la fois. Une fois que vous avez expliqué"
+" l'ensemble de vos modifications, vous pouvez les répartir en différents "
+"amendements et les soumettre aux autres participants."
 msgstr ""
 
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:53
@@ -1224,7 +1243,7 @@ msgid "proposed the"
 msgstr ""
 
 #: ./novaideo/views/amendment_management/templates/description_amendments.pt:39
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:78
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:79
 msgid ", duplicated from the proposal"
 msgstr ""
 
@@ -1239,11 +1258,12 @@ msgstr ""
 
 #: ./novaideo/views/amendment_management/templates/alert_amendment_submit.pt:18
 msgid ""
-"Le regroupement des amendements permet d'avoir des amendements cohérents et "
-"augmente la chance de voir vos modifications retenues par les autres "
-"participants. Vous pouvez regrouper vos modifications en glissant déposant "
-"les modifications dans les conteneurs correspondants. Vous pouvez aussi "
-"choisir de les soumettre en un seul amendement."
+"La répartition des modifications en différents amendements vous permet "
+"d'avoir plus de chance de faire passer vos modifications auprès des autres "
+"participants. Vous pouvez pour cela glisser déposer vos modifications dans "
+"plusieurs conteneurs différents, chaque conteneur correspondant à un "
+"amendement. Vous pouvez aussi choisir de soumettre l'ensemble de vos "
+"modifications en un seul amendement."
 msgstr ""
 
 #: ./novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:14
@@ -1295,24 +1315,24 @@ msgid ""
 "soumettre votre proposition, veuillez démissionner de l'un de"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:57
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:58
 msgid "vos groupes de travail actuels"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:117
-#: ./novaideo/content/novaideo_application.py:102
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:118
+#: ./novaideo/content/novaideo_application.py:103
 msgid "Working group"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:138
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:139
 msgid "The working group is closed"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:141
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:142
 msgid "Le nombre maximum de participants a été atteint"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:195
+#: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:196
 msgid "Votes"
 msgstr ""
 
@@ -1372,7 +1392,7 @@ msgid "Add organizations"
 msgstr ""
 
 #: ./novaideo/views/organization_management/see_organizations.py:22
-#: ./novaideo/content/novaideo_application.py:111
+#: ./novaideo/content/novaideo_application.py:112
 #: ./novaideo/content/processes/organization_management/definition.py:52
 msgid "Organizations"
 msgstr ""
@@ -1438,101 +1458,101 @@ msgstr ""
 msgid "Targets"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:24
+#: ./novaideo/content/novaideo_application.py:25
 msgid "Mr"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:24
+#: ./novaideo/content/novaideo_application.py:25
 msgid "Madam"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:24
+#: ./novaideo/content/novaideo_application.py:25
 msgid "Miss"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:26
-#: ./novaideo/content/novaideo_application.py:28
-#: ./novaideo/content/novaideo_application.py:30
-#: ./novaideo/content/novaideo_application.py:32
+#: ./novaideo/content/novaideo_application.py:27
+#: ./novaideo/content/novaideo_application.py:29
+#: ./novaideo/content/novaideo_application.py:31
+#: ./novaideo/content/novaideo_application.py:33
 msgid "Irony"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:26
-#: ./novaideo/content/novaideo_application.py:28
-#: ./novaideo/content/novaideo_application.py:30
-#: ./novaideo/content/novaideo_application.py:32
+#: ./novaideo/content/novaideo_application.py:27
+#: ./novaideo/content/novaideo_application.py:29
+#: ./novaideo/content/novaideo_application.py:31
+#: ./novaideo/content/novaideo_application.py:33
 msgid "Humor"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:26
-#: ./novaideo/content/novaideo_application.py:28
+#: ./novaideo/content/novaideo_application.py:27
+#: ./novaideo/content/novaideo_application.py:29
 #: ./novaideo/content/comment.py:85
 msgid "Remark"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:30
-#: ./novaideo/content/novaideo_application.py:32 ./novaideo/content/idea.py:69
+#: ./novaideo/content/novaideo_application.py:31
+#: ./novaideo/content/novaideo_application.py:33 ./novaideo/content/idea.py:69
 msgid "Improvement"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:54
+#: ./novaideo/content/novaideo_application.py:55
 msgid "List of titles"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:65
+#: ./novaideo/content/novaideo_application.py:66
 msgid "Comment intentions"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:76
+#: ./novaideo/content/novaideo_application.py:77
 msgid "Idea intentions"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:87
+#: ./novaideo/content/novaideo_application.py:88
 msgid "Amendment intentions"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:95
+#: ./novaideo/content/novaideo_application.py:96
 msgid "List of invitation"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:103
+#: ./novaideo/content/novaideo_application.py:104
 msgid "Working groups"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:133
+#: ./novaideo/content/novaideo_application.py:134
 msgid "Minimum number of participants for a working group"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:139
+#: ./novaideo/content/novaideo_application.py:140
 msgid "Maximum number of participants for a working group"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:145
+#: ./novaideo/content/novaideo_application.py:146
 msgid "Maximum number of working group by member"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:151
+#: ./novaideo/content/novaideo_application.py:152
 msgid "Minimum number of tokens by member"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:50
+#: ./novaideo/content/novaideo_application.py:51
 #: ./novaideo/content/person.py:174
 msgid "Title"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:61
+#: ./novaideo/content/novaideo_application.py:62
 msgid "Comment intention"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:72
+#: ./novaideo/content/novaideo_application.py:73
 msgid "Idea intention"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:83
+#: ./novaideo/content/novaideo_application.py:84
 msgid "Amendment intention"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:110
+#: ./novaideo/content/novaideo_application.py:111
 #: ./novaideo/content/person.py:196
 msgid "Organization"
 msgstr ""
@@ -1553,9 +1573,37 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
+#: ./novaideo/content/ballot.py:103
+msgid "Excellent"
+msgstr ""
+
+#: ./novaideo/content/ballot.py:104
+msgid "Very good"
+msgstr ""
+
+#: ./novaideo/content/ballot.py:105
+msgid "Good"
+msgstr ""
+
+#: ./novaideo/content/ballot.py:106
+msgid "Fairly well"
+msgstr ""
+
+#: ./novaideo/content/ballot.py:107
+msgid "Passable"
+msgstr ""
+
+#: ./novaideo/content/ballot.py:108
+msgid "Insufficient"
+msgstr ""
+
+#: ./novaideo/content/ballot.py:109
+msgid "Reject"
+msgstr ""
+
 #: ./novaideo/content/proposal.py:73
-#: ./novaideo/content/processes/proposal_management/definition.py:362
 #: ./novaideo/content/processes/proposal_management/definition.py:363
+#: ./novaideo/content/processes/proposal_management/definition.py:364
 msgid "Related ideas"
 msgstr ""
 
@@ -1577,10 +1625,6 @@ msgstr ""
 
 #: ./novaideo/content/amendment.py:155
 msgid "Choose added ideas."
-msgstr ""
-
-#: ./novaideo/content/amendment.py:167
-msgid "The explanation of your intention (300 caracteres maximum)"
 msgstr ""
 
 #: ./novaideo/content/comment.py:55
@@ -1682,10 +1726,6 @@ msgstr ""
 msgid "Closed"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:43
-msgid "Explication"
-msgstr ""
-
 #: ./novaideo/content/processes/idea_management/definition.py:41
 #: ./novaideo/content/processes/idea_management/definition.py:42
 msgid "Ideas management"
@@ -1716,26 +1756,26 @@ msgid "Archive the idea"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:78
-#: ./novaideo/content/processes/proposal_management/definition.py:347
+#: ./novaideo/content/processes/proposal_management/definition.py:348
 #: ./novaideo/content/processes/amendment_management/definition.py:72
 msgid "Submit to others"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:82
-#: ./novaideo/content/processes/proposal_management/definition.py:351
+#: ./novaideo/content/processes/proposal_management/definition.py:352
 #: ./novaideo/content/processes/amendment_management/definition.py:76
 msgid "Discuss"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:94
 #: ./novaideo/content/processes/idea_management/behaviors.py:479
-#: ./novaideo/content/processes/proposal_management/definition.py:387
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1606
+#: ./novaideo/content/processes/proposal_management/definition.py:388
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1610
 msgid "Compare"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:51
-#: ./novaideo/content/processes/proposal_management/definition.py:278
+#: ./novaideo/content/processes/proposal_management/definition.py:279
 #: ./novaideo/content/processes/organization_management/definition.py:41
 #: ./novaideo/content/processes/organization_management/definition.py:45
 #: ./novaideo/content/processes/novaideo_abstract_process/definition.py:48
@@ -1876,7 +1916,7 @@ msgid "Two weeks"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:62
-msgid "Vote for publishing"
+msgid "Vote for submission"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:64
@@ -1893,9 +1933,13 @@ msgid ""
 "proposal, your vote for reopening working group will be useful"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:259
 #: ./novaideo/content/processes/proposal_management/definition.py:260
+#: ./novaideo/content/processes/proposal_management/definition.py:261
 msgid "Proposals management"
+msgstr ""
+
+#: ./novaideo/content/processes/proposal_management/definition.py:168
+msgid "Reopening working group"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:177
@@ -1903,79 +1947,76 @@ msgid "Amendment duration"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:242
-msgid "Group of independent amendments"
+#, python-format
+msgid "Vote for amendments (group ${nbi})"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:276
+#: ./novaideo/content/processes/proposal_management/definition.py:277
 msgid "Create a new proposal"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:280
+#: ./novaideo/content/processes/proposal_management/definition.py:281
 #: ./novaideo/content/processes/proposal_management/behaviors.py:184
 msgid "Transform the idea as a proposal"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:281
+#: ./novaideo/content/processes/proposal_management/definition.py:282
 msgid "Transform as a proposal"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:284
+#: ./novaideo/content/processes/proposal_management/definition.py:285
 msgid "Duplicate this proposal"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:288
-msgid "Submit the proposal"
-msgstr ""
-
-#: ./novaideo/content/processes/proposal_management/definition.py:292
+#: ./novaideo/content/processes/proposal_management/definition.py:293
 #: ./novaideo/content/processes/proposal_management/behaviors.py:355
 msgid "Edit the proposal"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:305
+#: ./novaideo/content/processes/proposal_management/definition.py:306
 msgid "Withdraw from the wating list"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:309
 #: ./novaideo/content/processes/proposal_management/definition.py:310
+#: ./novaideo/content/processes/proposal_management/definition.py:311
 msgid "Start voting for publication"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:313
 #: ./novaideo/content/processes/proposal_management/definition.py:314
+#: ./novaideo/content/processes/proposal_management/definition.py:315
 msgid "Start voting for amendments"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:321
+#: ./novaideo/content/processes/proposal_management/definition.py:322
 msgid "Change the state to amendable"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:330
+#: ./novaideo/content/processes/proposal_management/definition.py:331
 msgid "Support the proposal"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:334
+#: ./novaideo/content/processes/proposal_management/definition.py:335
 msgid "To oppose a proposal"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:338
+#: ./novaideo/content/processes/proposal_management/definition.py:339
 msgid "Withdraw token from proposal"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:354
 #: ./novaideo/content/processes/proposal_management/definition.py:355
+#: ./novaideo/content/processes/proposal_management/definition.py:356
 msgid "Amendments"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:366
+#: ./novaideo/content/processes/proposal_management/definition.py:367
 msgid "Correct the proposal"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:370
+#: ./novaideo/content/processes/proposal_management/definition.py:371
 msgid "Correct item"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/definition.py:382
+#: ./novaideo/content/processes/proposal_management/definition.py:383
 msgid "Improve the proposal"
 msgstr ""
 
@@ -1991,11 +2032,11 @@ msgstr ""
 #: ./novaideo/content/processes/proposal_management/behaviors.py:123
 #: ./novaideo/content/processes/proposal_management/behaviors.py:295
 #: ./novaideo/content/processes/proposal_management/behaviors.py:354
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1530
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1534
 msgid "Add related ideas"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1531
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1535
 msgid "New version"
 msgstr ""
 
@@ -2019,11 +2060,6 @@ msgstr ""
 
 #: ./novaideo/content/processes/amendment_management/definition.py:51
 msgid "Duplicate the amendment"
-msgstr ""
-
-#: ./novaideo/content/processes/amendment_management/definition.py:59
-#: ./novaideo/content/processes/amendment_management/definition.py:60
-msgid "Explain your modifications"
 msgstr ""
 
 #: ./novaideo/content/processes/amendment_management/definition.py:67

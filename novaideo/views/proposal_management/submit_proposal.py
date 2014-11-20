@@ -14,7 +14,7 @@ from novaideo import _
 
 
 class SubmitProposalStudyReport(BasicView):
-    title = _('Alert for justification')
+    title = _('Alert for submission')
     name = 'alertforexplanation'
     template ='novaideo:views/proposal_management/templates/alert_submit_proposal.pt'
 
@@ -42,7 +42,7 @@ class SubmitProposalFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class SubmitProposalView(MultipleView):
-    title = _('Submit')
+    title = _('Publish the proposal')
     name = 'submitproposal'
     viewid = 'submitproposal'
     template = 'pontus.dace_ui_extension:templates/mergedmultipleview.pt'

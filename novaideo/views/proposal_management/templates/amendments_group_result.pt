@@ -3,9 +3,9 @@
   <tal:loop repeat="(oid, result_vote) report.result.items()">
     <div>
       ${get_obj(oid).title}: 
-      <ul>
-        <tal:loop repeat="judgment report.ballottype.judgments.keys()">
-          <li>${judgment}: ${str(result_vote[judgment])}</li>
+      <ul >
+        <tal:loop repeat="judgment sorted_judgments">
+          <li><span tal:omit-tag="" i18n:translate="">${judgment}</span>: ${str(result_vote[judgment])}</li>
         </tal:loop>
       </ul>
     </div>

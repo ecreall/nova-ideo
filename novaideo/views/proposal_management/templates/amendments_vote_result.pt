@@ -1,6 +1,6 @@
 <div>
 <br/>
-<span i18n:translate="">Les résultats du vote sur amendements concernant la proposition</span> <a tal:attributes="href request.resource_url(subject, '@@index')">${subject.title}</a> <span i18n:translate="">sont les suivants</span>:
+<span i18n:translate="">Les résultats du vote sur les amendements liés à la proposition</span> "<a tal:attributes="href request.resource_url(subject, '@@index')">${subject.title}</a>"" <span i18n:translate="">sont les suivants</span>:
   <ul>
     <tal:loop repeat="group amendments_vote_result">
       <li>${structure:group}</li>
@@ -9,7 +9,8 @@
 </div>
 <br/>
 <div>
-<span i18n:translate="">Les amendements élus, après calcule, du vote</span>:
+<span tal:condition="len(electeds)>1" i18n:translate="">Les amendements retenus après calcul sont</span>
+<span tal:condition="len(electeds)==1" i18n:translate="">L'amendement retenu après calcul est</span> :
   <ul>
   <tal:loop repeat="elected electeds">
     <li>  ${elected.title} </li>

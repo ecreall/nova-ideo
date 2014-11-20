@@ -61,7 +61,7 @@ Alors que la durée du cycle d'amélioration a expiré, aucun amendement n'a ét
 
 """ + PORTAL_SIGNATURE
 
-RESULT_VOTE_AMENDMENT_SUBJECT = u"""Les resultat du vote sur amendments : {subject_title}"""
+RESULT_VOTE_AMENDMENT_SUBJECT = u"""Les résultats du vote sur les amendements liés à la proposition \"{subject_title}\" """
 
 RESULT_VOTE_AMENDMENT_MESSAGE = u"""
 <div>

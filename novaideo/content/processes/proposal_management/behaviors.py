@@ -1465,8 +1465,12 @@ class AmendmentsResult(ElementaryAction):
         amendments_vote_result = []
         for ballot in self.process.amendments_ballots: 
             group_nb += 1
+            judgments = ballot.report.ballottype.judgments
+            sorted_judgments = sorted(list(judgments.keys()), 
+                                key=lambda o: judgments[o])
             values = {'group_nb': group_nb,
                       'report': ballot.report,
+                      'sorted_judgments': sorted_judgments,
                       'get_obj': get_obj}
             group_body = renderers.render(
                 self.amendments_group_result_template, values, request)

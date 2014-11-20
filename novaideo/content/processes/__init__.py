@@ -40,7 +40,7 @@ STATES_MEMBER_MAPPING = {
 	    'published': _('Published'),
 	    'archived': _('Archived'),
         #Amendment
-	    'explanation': _('Explication'),
+	    'explanation': _('Explanation'),
 	    #Ideas
 	    'to work': _('To work'),
 	    #Invitation

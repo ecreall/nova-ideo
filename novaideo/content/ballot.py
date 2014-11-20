@@ -16,7 +16,7 @@ from dace.descriptors import (
 from pontus.core import VisualisableElement
 
 from .interface import IVote, IBallotType, IReport, IBallot, IBallotBox
-
+from novaideo import _
 
 @content(
     'referendumvote',
@@ -100,6 +100,13 @@ DEFAULT_JUDGMENTS = {'Excellent': 7,
                      'Insufficient': 2,
                      'Reject': 1}
 
+_JUDGMENTS_TRANSLATION = [_('Excellent'),
+                          _('Very good'),
+                          _('Good'),
+                          _('Fairly well'),
+                          _('Passable'),
+                          _('Insufficient'),
+                          _('Reject')]
 
 @content(
     'majorityjudgmentvote',

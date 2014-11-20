@@ -49,7 +49,7 @@ def judgments_choice(report):
     judgments = sorted(judgments.keys(), 
                        key=lambda o: judgments[o], 
                        reverse=True )
-    values = [(i, i) for i in judgments]
+    values = [(i, _(i)) for i in judgments]
     widget = RadioChoiceWidget(values=values, inline=True)
     return widget
 

@@ -154,7 +154,7 @@ class SubmitAmendmentView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class SubmitAmendmentViewMultipleView(MultipleView):
-    title = _('Submit')
+    title = _('Amendments organization')
     name = 'submitamendment'
     viewid = 'submitamendment'
     template = 'pontus.dace_ui_extension:templates/mergedmultipleview.pt'

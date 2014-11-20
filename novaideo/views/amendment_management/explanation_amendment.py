@@ -79,7 +79,7 @@ class ExplanationFormView(FormView):
     renderer='pontus:templates/view.pt',
     )
 class ExplanationView(MultipleView):
-    title = _('Explanation')
+    title = _('Explain your modifications')
     name = 'explanationamendment'
     behaviors = [ExplanationAmendment]
     viewid = 'explanationamendment'

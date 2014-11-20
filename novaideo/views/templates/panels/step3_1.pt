@@ -6,7 +6,7 @@
    <span  i18n:translate="">participants</span>
     <br>
    <span id="time_duration" tal:condition="duration is not None"  style="color:#d9534f;">
-       <span class="glyphicon glyphicon-time"></span> 
+       <span class="glyphicon glyphicon-time"></span>
        <span tal:omit-tag="" tal:condition="duration[0]>0"> <span id="day">${duration[0]}</span> <span tal:omit-tag="" i18n:translate="">day(s)</span></span>
        <span tal:omit-tag="" tal:condition="duration[1]>0"> <span id="hour">${duration[1]}</span> <span tal:omit-tag="" i18n:translate="">hour(s)</span></span>
        <span tal:omit-tag="" tal:condition="duration[2]>0"> <span id="minu">${duration[2]}</span> <span tal:omit-tag="" i18n:translate="">minute(s)</span></span>
