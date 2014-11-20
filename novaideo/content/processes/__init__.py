@@ -1,13 +1,16 @@
 
 from dace.objectofcollaboration.principal.util import has_role
 
+from novaideo.content.proposal import Proposal
 from novaideo.core import _
 
 
 STATES_PARTICIPANT_MAPPING = {
          #Commun
 	    'draft': _('Draft'),
-	    'published': _('Published'),
+	    #state by context. 'default' key is required!
+	    'published': {Proposal:_('Submited'),
+	                  'default': _('Published')},
 	    'archived': _('Archived'),
         #Amendment
 	    'explanation': _('Explanation'),
@@ -34,10 +37,12 @@ STATES_PARTICIPANT_MAPPING = {
          }
 
 
+#states by memeber
 STATES_MEMBER_MAPPING = {
          #Commun
 	    'draft': _('Draft'),
-	    'published': _('Published'),
+	    'published': {Proposal:_('Submited'),
+	                  'default': _('Published')},
 	    'archived': _('Archived'),
         #Amendment
 	    'explanation': _('Explanation'),
@@ -65,5 +70,9 @@ STATES_MEMBER_MAPPING = {
 
 
 def get_states_mapping(user, context, state):
-    #TODO
-    return STATES_PARTICIPANT_MAPPING.get(state, None)
+    """get the state of the context"""
+    result = STATES_PARTICIPANT_MAPPING.get(state, None)
+    if isinstance(result, dict):
+        return result.get(context.__class__, result['default'])
+
+    return result

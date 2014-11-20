@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-11-20 15:07+0100\n"
+"POT-Creation-Date: 2014-11-20 15:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,7 +92,7 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/see_idea.py:67
 #: ./novaideo/views/amendment_management/see_amendment.py:100
-#: ./novaideo/views/novaideo_view_manager/see_proposal.py:139
+#: ./novaideo/views/novaideo_view_manager/see_proposal.py:143
 msgid "actions"
 msgstr ""
 
@@ -724,8 +724,8 @@ msgid "Withdraw"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/amendable.py:17
-#: ./novaideo/content/processes/__init__.py:25
-#: ./novaideo/content/processes/__init__.py:55
+#: ./novaideo/content/processes/__init__.py:28
+#: ./novaideo/content/processes/__init__.py:60
 #: ./novaideo/content/processes/proposal_management/definition.py:323
 msgid "Amendable"
 msgstr ""
@@ -946,8 +946,8 @@ msgstr ""
 #: ./novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:24
 #: ./novaideo/views/amendment_management/templates/readonly/explanation_inline_item.pt:6
 #: ./novaideo/content/amendment.py:166
-#: ./novaideo/content/processes/__init__.py:13
-#: ./novaideo/content/processes/__init__.py:43
+#: ./novaideo/content/processes/__init__.py:16
+#: ./novaideo/content/processes/__init__.py:48
 msgid "Explanation"
 msgstr ""
 
@@ -1035,8 +1035,8 @@ msgstr ""
 #: ./novaideo/views/templates/panels/step3_1.pt:67
 #: ./novaideo/views/templates/panels/step3_3.pt:111
 #: ./novaideo/views/templates/panels/step3_2.pt:111
-#: ./novaideo/content/processes/__init__.py:22
-#: ./novaideo/content/processes/__init__.py:52
+#: ./novaideo/content/processes/__init__.py:25
+#: ./novaideo/content/processes/__init__.py:57
 msgid "Votes for publishing"
 msgstr ""
 
@@ -1055,8 +1055,8 @@ msgstr ""
 #: ./novaideo/views/templates/panels/step3_1.pt:106
 #: ./novaideo/views/templates/panels/step3_3.pt:150
 #: ./novaideo/views/templates/panels/step3_2.pt:150
-#: ./novaideo/content/processes/__init__.py:23
-#: ./novaideo/content/processes/__init__.py:53
+#: ./novaideo/content/processes/__init__.py:26
+#: ./novaideo/content/processes/__init__.py:58
 msgid "Votes for amendments"
 msgstr ""
 
@@ -1656,74 +1656,79 @@ msgstr ""
 msgid "Locale"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:9
-#: ./novaideo/content/processes/__init__.py:39
+#: ./novaideo/content/processes/__init__.py:10
+#: ./novaideo/content/processes/__init__.py:43
 msgid "Draft"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:10
-#: ./novaideo/content/processes/__init__.py:40
-msgid "Published"
-msgstr ""
-
-#: ./novaideo/content/processes/__init__.py:11
-#: ./novaideo/content/processes/__init__.py:41
+#: ./novaideo/content/processes/__init__.py:14
+#: ./novaideo/content/processes/__init__.py:46
 msgid "Archived"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:15
-#: ./novaideo/content/processes/__init__.py:45
+#: ./novaideo/content/processes/__init__.py:18
+#: ./novaideo/content/processes/__init__.py:50
 msgid "To work"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:17
-#: ./novaideo/content/processes/__init__.py:47
+#: ./novaideo/content/processes/__init__.py:20
+#: ./novaideo/content/processes/__init__.py:52
 msgid "Pending"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:18
-#: ./novaideo/content/processes/__init__.py:48
+#: ./novaideo/content/processes/__init__.py:21
+#: ./novaideo/content/processes/__init__.py:53
 msgid "Accepted"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:19
-#: ./novaideo/content/processes/__init__.py:49
+#: ./novaideo/content/processes/__init__.py:22
+#: ./novaideo/content/processes/__init__.py:54
 msgid "Refused"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:21
-#: ./novaideo/content/processes/__init__.py:51
+#: ./novaideo/content/processes/__init__.py:24
+#: ./novaideo/content/processes/__init__.py:56
 msgid "Open to a working group"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:24
-#: ./novaideo/content/processes/__init__.py:54
+#: ./novaideo/content/processes/__init__.py:27
+#: ./novaideo/content/processes/__init__.py:59
 msgid "Proofreading"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:27
-#: ./novaideo/content/processes/__init__.py:57
+#: ./novaideo/content/processes/__init__.py:30
+#: ./novaideo/content/processes/__init__.py:62
 msgid "In process"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:28
-#: ./novaideo/content/processes/__init__.py:58
+#: ./novaideo/content/processes/__init__.py:31
+#: ./novaideo/content/processes/__init__.py:63
 msgid "Processed"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:30
-#: ./novaideo/content/processes/__init__.py:60
+#: ./novaideo/content/processes/__init__.py:33
+#: ./novaideo/content/processes/__init__.py:65
 msgid "Active"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:31
-#: ./novaideo/content/processes/__init__.py:61
+#: ./novaideo/content/processes/__init__.py:34
+#: ./novaideo/content/processes/__init__.py:66
 msgid "Deactivated"
 msgstr ""
 
-#: ./novaideo/content/processes/__init__.py:33
-#: ./novaideo/content/processes/__init__.py:63
+#: ./novaideo/content/processes/__init__.py:36
+#: ./novaideo/content/processes/__init__.py:68
 msgid "Closed"
+msgstr ""
+
+#: ./novaideo/content/processes/__init__.py:12
+#: ./novaideo/content/processes/__init__.py:44
+msgid "Submited"
+msgstr ""
+
+#: ./novaideo/content/processes/__init__.py:13
+#: ./novaideo/content/processes/__init__.py:45
+msgid "Published"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:41
