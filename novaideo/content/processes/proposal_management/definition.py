@@ -75,7 +75,7 @@ VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
 
 VOTE_AMENDMENTS_MESSAGE = _("Vote for amendments")
 
-VP_DEFAULT_DURATION = datetime.timedelta(minutes=30)
+VP_DEFAULT_DURATION = datetime.timedelta(days=1)
 
 AMENDMENTS_CYCLE_DEFAULT_DURATION = {
               "Three minutes": datetime.timedelta(minutes=3),
@@ -86,7 +86,7 @@ AMENDMENTS_CYCLE_DEFAULT_DURATION = {
               "One week": datetime.timedelta(weeks=1),
               "Two weeks": datetime.timedelta(weeks=2)}
 
-AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(minutes=30)
+AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(days=1)
 
 
 

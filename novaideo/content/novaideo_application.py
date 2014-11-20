@@ -5,12 +5,13 @@ from zope.interface import implementer
 from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
+from substanced.property import PropertySheet
 
 from dace.objectofcollaboration.application import Application
 from dace.descriptors import CompositeMultipleProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import SequenceWidget, LineWidget, TableWidget
-from pontus.schema import omit
+from pontus.schema import omit, select
 
 from .working_group import WorkingGroupSchema, WorkingGroup
 from .organization import OrganizationSchema, Organization
@@ -153,9 +154,19 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         )
 
 
+class NovaIdeoApplicationPropertySheet(PropertySheet):
+    schema = select(NovaIdeoApplicationSchema(), ['participants_mini', 
+                                                  'participants_maxi',
+                                                  'participations_maxi',
+                                                  'tokens_mini'])
+
+
 @content(
     'Root',
     icon='glyphicon glyphicon-home',
+    propertysheets = (
+        ('Basic', NovaIdeoApplicationPropertySheet),
+        ),
     after_create='after_create',
     )
 @implementer(INovaIdeoApplication)

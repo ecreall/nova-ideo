@@ -22,7 +22,7 @@ function init_textarea(textarea_id, textarea_limit){
     });
 };
 
-
+//source: http://patrickroux.fr/sedetendre/textlimit-le-compteur-jquery-qui-a-du-caractere-1866
 (function($){
   $.fn.clearTextLimit=function(){
     return this.each(function(){
