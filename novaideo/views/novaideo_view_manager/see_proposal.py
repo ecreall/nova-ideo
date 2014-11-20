@@ -99,9 +99,13 @@ class DetailProposalView(BasicView):
         text_actions = sorted(text_actions, 
                               key=lambda e: getattr(e.action, 'style_order', 0))
 
-        ct_participate_max = len(wg.members) == root.participants_maxi
-        ct_participate_closed = 'closed' in wg.state
-        ct_participate = 'archived' not in wg.state and \
+        ct_participate_max = False
+        ct_participate_closed = False
+        ct_participate = False
+        if wg:
+            ct_participate_max = len(wg.members) == root.participants_maxi
+            ct_participate_closed = 'closed' in wg.state
+            ct_participate = 'archived' not in wg.state and \
                          not isinstance(user, Anonymous) and \
                          user not in wg.members and \
                          (ct_participate_max or ct_participate_closed)
