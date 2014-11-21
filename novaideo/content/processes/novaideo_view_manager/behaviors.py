@@ -114,8 +114,10 @@ class SeeMySupports(InfiniteCardinality):
 
     def contents_nb(self):
         user = get_current()
-        return len([o for o in getattr(user, 'supports', []) \
-                    if not('archived' in o.state)])
+        root = getSite()
+        len_supports = len([o for o in getattr(user, 'supports', []) \
+                            if not('archived' in o.state)])
+        return str(len_supports)+'/'+str(root.tokens_mini)
 
     def start(self, context, request, appstruct, **kw):
         return True

@@ -633,6 +633,10 @@ ins {
     text-align: center;
 }
 
+.menu-access-action span.badge{
+    margin-left: 5px
+}
+
 .access-menu > li > a {
     display: block;
     padding: 10px 0;

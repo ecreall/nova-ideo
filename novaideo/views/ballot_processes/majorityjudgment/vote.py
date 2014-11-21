@@ -135,7 +135,11 @@ class VoteFormView(FormView):
             strings = tag.strings
             new_p = soup.new_tag('p') 
             for str_item in strings:
-                new_p.append(self._get_tremed_text(str_item) + ' (...)')
+                new_str = self._get_tremed_text(str_item)
+                if new_str == str_item:
+                    new_p.append(str(new_str))
+                else:
+                    new_p.append(str(new_str) + ' (...)')
 
             new_ps.append(new_p)
                 
@@ -149,6 +153,7 @@ class VoteFormView(FormView):
 
     def _get_tremed_text(self, text):
         trimed_texts = []
+        trimed_text = text
         if len(text) > 199:
             texts = text.split('\n')
             length = int(200 / len(texts))

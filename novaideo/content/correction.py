@@ -17,6 +17,7 @@ from pontus.core import VisualisableElementSchema, VisualisableElement
 
 from .interface import ICorrection
 from novaideo import _
+from novaideo.views.widget import LimitedTextAreaWidget
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
@@ -29,6 +30,15 @@ class CorrectionSchema(VisualisableElementSchema):
     """Schema for correction of a proposal"""
     name = NameSchemaNode(
         editing=context_is_a_correction,
+        )
+
+    description = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(max=300),
+        widget=LimitedTextAreaWidget(rows=5, 
+                                     cols=30, 
+                                     limit=300),
+        title=_("Abstract")
         )
 
     text = colander.SchemaNode(
