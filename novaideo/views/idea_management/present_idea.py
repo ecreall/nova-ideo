@@ -99,14 +99,24 @@ def default_message(node, kw):
                  )
 
 
+@colander.deferred
+def emails_validator(node, kw):
+    new_emails = [e for e in kw if isinstance(e, basestring)]
+    validator = colander.Email()
+    for email in new_emails:
+        validator(node, email)
+    
 
 class PresentIdeaSchema(Schema):
 
     members = colander.SchemaNode(
         colander.Set(),
         widget=members_choice,
-        validator = Length(_, min=1,
+        validator = colander.All(
+                      Length(_, min=1,
                            min_message="Vous devez sélectionner au moins {min} membre, ou saisir {min} adresse courrier électronique."),
+                      emails_validator),
+
         title=_('Recipients')
         )
 
