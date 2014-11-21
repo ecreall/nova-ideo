@@ -805,7 +805,9 @@ class ImproveProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         data = {}
-        data['title'] = context.title + '_A ' + \
+        localizer = request.localizer
+        data['title'] = context.title + \
+                       localizer.translate(_('_Amended version ')) + \
                         str(getattr(context, '_amendments_counter', 1))
         data['text'] = appstruct['text']
         data['description'] = appstruct['description']
