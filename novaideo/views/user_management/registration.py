@@ -19,7 +19,7 @@ from novaideo import _
     )
 class RegistrationView(FormView):
 
-    title = _('Registration')
+    title = _('Your registration')
     schema = select(PersonSchema(factory=Person, 
                                  editable=True),
                     ['user_title',

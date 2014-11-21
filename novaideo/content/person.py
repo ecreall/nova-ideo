@@ -201,10 +201,13 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     def person_name_invariant(self, appstruct):
         context = self.bindings['context']
         name = ''
-        if 'first_name' in appstruct:
+        if 'first_name' in appstruct and appstruct['first_name'] is not colander.null:
             name = name + appstruct['first_name']
-            if 'last_name' in appstruct:
+            if 'last_name' in appstruct and appstruct['last_name'] is not colander.null:
                 name = name + ' ' + appstruct['last_name']
+        
+        if not name:
+            return
 
         if context.name == name:
             return 

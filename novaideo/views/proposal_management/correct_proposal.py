@@ -20,7 +20,7 @@ from novaideo import _
     renderer='pontus:templates/view.pt',
     )
 class CorrectProposalView(FormView):
-    title = _('Correct')
+    title = _('Correct the proposal')
     name = 'correctproposal'
     behaviors = [CorrectProposal, Cancel]
     viewid = 'correctproposal'

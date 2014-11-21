@@ -21,9 +21,8 @@ class DuplicateIdeaView(FormView):
     name = 'duplicateidea'
     schema = select(IdeaSchema(), ['intention',
                                   'title',
-                                  'description',
-                                  'keywords',
                                   'text',
+                                  'keywords',
                                   'attached_files'])
     behaviors = [DuplicateIdea, Cancel]
     formid = 'formduplicateidea'

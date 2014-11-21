@@ -1,5 +1,5 @@
 <div tal:condition="ideas" class="alert alert-warning">
-<p i18n:domain="novaideo" i18n:translate="">Les idées suivantes sont utilisées dans votre amendement, mais pas encore publiées. La soumission de l'amendement entraine, automatiquement, la publication des idées utilisées. Souhaitez-vous les finaliser avant la soumission de votre amendement. Une fois, les idées sont publics, vous ne pouvez plus les modifier.</p><br>
+<p i18n:domain="novaideo" i18n:translate="">Les idées suivantes sont utilisées dans votre proposition, mais pas encore publiées. La publication de la proposition implique automatiquement que les idées qu'elle utilise soient également publiées. Souhaitez-vous retravailler vos idées avant la publication de votre proposition ? Si vous publiez la proposition en l'état, vous ne pourrez plus modifier vos idées publiées et vous devrez les dupliquer pour les travailler de nouveau.</p><br>
   <ol class="list-unstyled">
     <tal:loop repeat="i ideas">
       <li><a class="btn btn-warning btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>

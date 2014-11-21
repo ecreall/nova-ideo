@@ -43,7 +43,8 @@ class DetailProposalView(BasicView):
         action_updated, messages, resources, actions = dace_ui_api._actions(
                                         self.request, 
                                         self.context, 
-                                        process_discriminator='Vote process')
+                                        process_discriminator='Vote process',
+                                        ignor_form=True)
         for action in actions:
             action['body'] = dace_ui_api.get_action_body(self.context, 
                                                          self.request, 

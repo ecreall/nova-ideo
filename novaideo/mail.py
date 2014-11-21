@@ -6,6 +6,10 @@ Cordialement,
                                                                                 
 La Plateforme NovaIdeo
 """
+PORTAL_PRESENTATION = u"""
+Nova-Ideo est une application participative permettant à tout membre d'un collectif d'initier des idées, les reprendre dans des propositions, constituer des groupes de travail pour améliorer ces propositions et les finaliser, avoir l'appréciation des membres de la communauté et l'avis de comités d'examen.
+
+"""
 
 INVITATION_MESSAGE = u"""
 Bonjour,
@@ -17,10 +21,10 @@ Bonjour,
 PRESENTATION_IDEA_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-{my_last_name} souhaite vous présenter l'idée figurant sur la plateforme Nova-Ideo.org sous {subject_url}. Nova-Ideo est une application participative permettant à tout membre d'un collectif d'initier des idées, les reprendre dans des propositions, constituer des groupes de travail pour améliorer ces propositions et les finaliser, avoir l'appréciation des membres de la communauté et l'avis de comités d'examen.
-""" + PORTAL_SIGNATURE
+{my_title} {my_last_name} souhaite vous présenter l'idée figurant sur la plateforme Nova-Ideo.org sous {subject_url} .""" + \
+ PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
-PRESENTATION_IDEA_SUBJECT = u"""Présentation : {subject_title}""" 
+PRESENTATION_IDEA_SUBJECT = u"""{subject_title}""" 
 
 
 CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription"""
@@ -35,21 +39,21 @@ Bienvenue sur l'application NovaIdeo. L'accès à l'application se fait sous {lo
 PRESENTATION_PROPOSAL_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-{my_title} {my_last_name} souhaite vous présenter la proposition figurant sur la plateforme Nova-Ideo.org sous {subject_url}. Nova-Ideo est un service en ligne permettant d'initier des propositions, constituer des groupes de travail pour les améliorer et les finaliser, bénéficier de soutiens de membres de la communauté et d'avis de comités d'examen.
-""" + PORTAL_SIGNATURE
+{my_title} {my_last_name} souhaite vous présenter la proposition figurant sur la plateforme Nova-Ideo.org sous {subject_url} .""" + \
+ PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-PRESENTATION_PROPOSAL_SUBJECT = u"""Présentation : {subject_title}""" 
+PRESENTATION_PROPOSAL_SUBJECT = u"""{subject_title}""" 
 
 
 PRESENTATION_AMENDMENT_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-{my_title} {my_last_name} souhaite vous présenter l'amendment figurant sur la plateforme Nova-Ideo.org sous {subject_url}. Nova-Ideo est un service en ligne permettant d'initier des propositions, constituer des groupes de travail pour les améliorer et les finaliser, bénéficier de soutiens de membres de la communauté et d'avis de comités d'examen.
-""" + PORTAL_SIGNATURE
+{my_title} {my_last_name} souhaite vous présenter l'amendement figurant sur la plateforme Nova-Ideo.org sous {subject_url} .""" + \
+ PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-PRESENTATION_AMENDMENT_SUBJECT = u"""Présentation : {subject_title}"""
+PRESENTATION_AMENDMENT_SUBJECT = u"""{subject_title}"""
 
 
 ALERT_SUBJECT = u"""Inactivité : {subject_title}"""
