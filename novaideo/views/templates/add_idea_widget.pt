@@ -8,9 +8,11 @@
          i18n:domain="novaideo" >
  <div class="ajax-form"> 
     <span class="control-form-button new-idea-btn pull-right" ><span class="glyphicon glyphicon-file"></span><span i18n:translate=""> Create an idea</span></span>
+    <div class="message-alert">
      <span id="messageinfo" class="label label-info"></span>
      <span id="messagesuccess" class="label label-success"></span>
      <span id="messagedanger" class="label  label-danger"></span>
+    </div>
     <div id="${id}_newideaform" class="${field.widget.item_css_class or ''}">
       <div tal:condition="errormsg" 
            class="clearfix alert alert-message error">

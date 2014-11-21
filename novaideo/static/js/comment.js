@@ -66,7 +66,7 @@ $(document).ready(function(){
         if (comment !='' && intention!=''){
           progress.show();// TODO
           $(button).addClass('disabled');
-          $( commentmessageinfo).text( "Comment sent" ).show().fadeOut( 1000 );
+          $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
                  var content = $(data).find('.scroll-able.comments-scroll');
@@ -74,7 +74,7 @@ $(document).ready(function(){
                    var label = $($(content).parents(".panel").first()).find('.panel-heading span.label').text();
                    $($(target).parents(".panel").first()).find('.panel-heading span.label').text(label);
                    $(target).html($(content).html());
-                   $( commentmessagesuccess).text( "Your comment is integrated" ).show().fadeOut( 3000 );
+                   $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
                    textarea.val('');
                    select_related_contents.parents('.controled-form').first().addClass('hide-bloc');
                    $($(select_related_contents.parents('.controled-form').first()).find("input[name='associate']").first()).prop('checked', false);
@@ -136,10 +136,10 @@ $(document).ready(function(){
         if (comment !='' && intention!=''){
           progress.show();// TODO
           $(modal).modal('hide');
-          $( commentmessageinfo).text( "Comment sent" ).show().fadeOut( 1000 );
+          $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
-                 $( commentmessagesuccess).text( "Your comment is integrated" ).show().fadeOut( 3000 );
+                 $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
                  $.post(urlparent, {}, function(data) {
                       var content = $(data).find('.scroll-able.comments-scroll');
                       if (content){

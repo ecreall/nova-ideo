@@ -6,7 +6,7 @@
       </div>
       <div class="modal-body">
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" class="message-alert">
      <span id="messageinfo" class="label label-info"></span>
      <span id="messagesuccess" class="label label-success"></span>
      <span id="messagedanger" class="label  label-danger"></span>

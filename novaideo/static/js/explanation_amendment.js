@@ -103,7 +103,7 @@ function submit_explanation(){
                    'item':item
                   };
         if(relatedexplanation == "" && !validate_intention(datas)){
-              $( commentmessagedanger).text( "There was a problem with your submission." ).show().fadeOut( 4000 );
+              $( commentmessagedanger).text( novaideo_translate("There was a problem with your submission.") ).show().fadeOut( 4000 );
               return false
         };
        $.getJSON(url,datas, function(data) {

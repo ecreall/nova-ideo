@@ -23,20 +23,20 @@ $(document).ready(function(){
         var title = form.find('input[name="title"]').val();
             if (title=='')
             {
-               danger_messages_container.text( "The title is required!" ).show().fadeOut( 6000 );
+               danger_messages_container.text( novaideo_translate("The title is required!") ).show().fadeOut( 6000 );
                return
             }
             var text = form.find('textarea[name="description"]').val();
             if (text=='')
             {
-               danger_messages_container.text( "The abstract is required!" ).show().fadeOut( 6000 );
+               danger_messages_container.text( novaideo_translate("The abstract is required!") ).show().fadeOut( 6000 );
                return
             }
 
             var keywords = $(form.find('select[name="keywords"]')).select2('val');
             if (keywords.length == 0)
             {
-               danger_messages_container.text( "Keywords are required!" ).show().fadeOut( 6000 );
+               danger_messages_container.text( novaideo_translate("Keywords are required!") ).show().fadeOut( 6000 );
                return
             }
 
@@ -56,7 +56,7 @@ $(document).ready(function(){
                success_messages_container.text( "The idea \""+dict_post['title']+"\" is added" ).show().fadeOut( 6000 );
                form.addClass('hide-bloc');
              }else{
-                danger_messages_container.text( "The idea is not added!" ).show().fadeOut( 6000 );
+                danger_messages_container.text( novaideo_translate("The idea is not added!") ).show().fadeOut( 6000 );
              }
         });
    });

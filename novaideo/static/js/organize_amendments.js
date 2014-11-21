@@ -82,7 +82,9 @@ $(document).ready(function(){
   $('.select-item').on('click', scrollto);
 
   $(document).on('submit','form', function( event ) {
-        var button = $(this).find('button');
+      var button = $(event['originalEvent']['explicitOriginalTarget'])
+      var btn_name = button.attr('name');
+      if (btn_name != 'Cancel'){
         if (!$('.single-amendment-control')[0].checked){
           if (button.attr('name') != 'Cancel'){
              var parent = $($(this).parents('.panel-body').first());
@@ -95,12 +97,13 @@ $(document).ready(function(){
                  if (values.length==0){
                      item.addClass('sequence-item-error');
                      $(commentmessagedanger).removeClass('hide-bloc');
-                     $( commentmessagedanger.find('.errorMsgLbl')).text( "There was a problem with your submission." ).show();
+                     $( commentmessagedanger.find('.errorMsgLbl')).text(novaideo_translate("There was a problem with your submission.")).show();
                      event.preventDefault();
                  }else{ item.removeClass('sequence-item-error')};
              }       
          }
        }
+     }
    });
 
   $(document).on('click', '.explanation-item', init_explanation_item);

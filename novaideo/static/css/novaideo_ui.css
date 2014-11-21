@@ -883,3 +883,7 @@ ins {
 .alert-wg-closed{
    padding: 4px 14px
 }
+
+.message-alert{
+    margin-bottom: 10px
+}

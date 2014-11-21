@@ -17,7 +17,7 @@
    </div>
 
  </div>
-   <div id="controllable-items-messages">
+   <div id="controllable-items-messages" class="message-alert">
        <span id="messageinfo" class="label label-info"></span>
        <span id="messagesuccess" class="label label-success"></span>
        <span id="messagedanger" class="label  label-danger"></span>
