@@ -125,7 +125,7 @@ class CommentIdeaFormView(FormView):
 
 COMMENT_MESSAGE = {'0': _(u"""Pas de fils de discussion"""),
                       '1': _(u"""Un fil de discussion"""),
-                      '*': _(u"""${lencomments} fils de discussion""")} 
+                      '*': _(u"""fils de discussion""")} 
 
 @view_config(
     name='commentidea',
@@ -146,8 +146,9 @@ class CommentIdeaView(MultipleView):
         if lencomments > 1:
             index = '*'
 
-        message = _(COMMENT_MESSAGE[index], 
-                    mapping={'lencomments':lencomments})
+        message = (_(COMMENT_MESSAGE[index]),
+                   lencomments,
+                   index)
         return message
 
 

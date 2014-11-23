@@ -28,7 +28,7 @@ except NameError:
 
 PRESENT_MESSAGE = {'0': _(u"""Pas de personnes contactées"""),
                        '1': _(u"""Une personne contactée"""),
-                       '*': _(u"""${len_persons_contacted} personnes contactées""")}
+                       '*': _(u"""personnes contactées""")}
 
 
 class SentToView(BasicView):
@@ -47,8 +47,9 @@ class SentToView(BasicView):
         if len_members > 1:
             index = '*'
 
-        message = _(PRESENT_MESSAGE[index], 
-                    mapping={'len_persons_contacted': len_members})
+        message = (_(PRESENT_MESSAGE[index]),
+                   len_members,
+                   index)
         result = {}
         values = {
                 'message': message,

@@ -71,8 +71,8 @@ $(document).ready(function(){
           $.post(url, values, function(data) {
                  var content = $(data).find('.scroll-able.comments-scroll');
                  if (content){
-                   var label = $($(content).parents(".panel").first()).find('.panel-heading span.label').text();
-                   $($(target).parents(".panel").first()).find('.panel-heading span.label').text(label);
+                   var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
+                   $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
                    $(target).html($(content).html());
                    $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
                    textarea.val('');

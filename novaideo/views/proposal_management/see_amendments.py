@@ -16,9 +16,9 @@ from novaideo.core import can_access
 
 
 
-AMENDMENTS_MESSAGES = {'0': u"""Pas d'amendements""",
-                      '1': u"""Un amendement proposé""",
-                      '*': u"""{lenamendments} amendements proposés"""}
+AMENDMENTS_MESSAGES = {'0': _(u"""Pas d'amendements"""),
+                      '1': _(u"""Un amendement proposé"""),
+                      '*': _(u"""amendements proposés""")}
 
 
 @view_config(
@@ -50,8 +50,9 @@ class SeeAmendmentsView(BasicView):
         if lenamendments > 1:
             index = '*'
 
-        message = (AMENDMENTS_MESSAGES[index]).format(
-                                    lenamendments=lenamendments)
+        message = (_(AMENDMENTS_MESSAGES[index]),
+                   lenamendments,
+                   index)
 
         result = {}
         values = {'amendments': objects,

@@ -1,5 +1,8 @@
 <div tal:omit-tag="" >
-  <h4>${message}</h4>
+  <h4 tal:condition="message">
+       <strong tal:condition="message[2]=='*'">${message[1]}</strong>
+       ${message[0]}
+  </h4>
   <div tal:condition="members" i18n:domain="novaideo">
     <span  i18n:translate="">L'amendement a été envoyé à: </span><tal:loop repeat="m members">
                             <a tal:condition="not isinstance(m, basestring)" tal:attributes="href request.resource_url(m, '@@index')">${m.name}</a>

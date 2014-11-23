@@ -13,9 +13,9 @@ from novaideo.content.proposal import Proposal
 from novaideo import _
 
 
-ADDIDEAS_MESSAGES = {'0': u"""Pas d'idées utilisées""",
-                   '1': u"""Une idée utilisée""",
-                   '*': u"""{len_ideas} idées utilisées"""}
+ADDIDEAS_MESSAGES = {'0': _(u"""Pas d'idées utilisées"""),
+                   '1': _(u"""Une idée utilisée"""),
+                   '*': _(u"""idées utilisées""")}
 
 @view_config(
     name='addideas',
@@ -46,7 +46,9 @@ class SeeRelatedIdeasView(BasicView):
         if len_ideas > 1:
             index = '*'
 
-        message = ADDIDEAS_MESSAGES[index].format(len_ideas=len_ideas)
+        message = (_(ADDIDEAS_MESSAGES[index]),
+                   len_ideas,
+                   index)
         result = {}
         values = {
                 'relatedcontents': relatedideas,

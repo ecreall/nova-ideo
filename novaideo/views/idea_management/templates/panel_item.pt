@@ -4,7 +4,10 @@
     <a href="#${subitem['view'].viewid}" data-parent="#panel-actions-content" data-toggle="collapse" class="panel-title ${(not error and 'collapsed')}">
         <small><span class="glyphicon glyphicon-plus"></span> ${subitem['view'].title}</small>
     </a>
-  <big><span class="label label-basic pull-right">${subitem['view'].get_message()}</span></big>
+    <span class="action-message pull-right" tal:define="messagea subitem['view'].get_message()">
+       <strong tal:condition="messagea[2]=='*'">${messagea[1]}</strong>
+       ${messagea[0]}
+    </span>
   </div>
   <div class="panel-collapse ${(error and 'in') or 'collapse'}" id="${subitem['view'].viewid}" style="height: auto;">
     <div  class="panel-body">

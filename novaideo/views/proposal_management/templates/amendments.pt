@@ -1,4 +1,7 @@
-<h4 tal:condition="message">${message}</h4>
+<h4 tal:condition="message">
+       <strong tal:condition="message[2]=='*'">${message[1]}</strong>
+       ${message[0]}
+</h4>
 
 <ul  i18n:domain="novaideo">
   <tal:loop repeat="amendment amendments">

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2014-11-21 15:57+0100\n"
+"POT-Creation-Date: 2014-11-23 13:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -110,12 +110,11 @@ msgid "Pas de versions"
 msgstr ""
 
 #: novaideo/views/idea_management/compare_idea.py:23
-msgid "Voir la version"
+msgid "Une version disponible"
 msgstr ""
 
 #: novaideo/views/idea_management/compare_idea.py:24
-#, python-format
-msgid "Voir les ${len_history} versions"
+msgid "versions disponibles"
 msgstr ""
 
 #: novaideo/views/idea_management/compare_idea.py:29
@@ -155,19 +154,18 @@ msgid "Un contenu asocié"
 msgstr ""
 
 #: novaideo/views/idea_management/associate.py:23
-#, python-format
-msgid "${lenassociated} contenus asociés"
+msgid "contenus asociés"
 msgstr ""
 
 #: novaideo/views/idea_management/associate.py:27
-#: novaideo/views/idea_management/associate.py:129
+#: novaideo/views/idea_management/associate.py:130
 #: novaideo/views/proposal_management/associate.py:29
 #: novaideo/views/amendment_management/associate.py:29
 msgid "Related contents"
 msgstr "Contenus utilisés"
 
-#: novaideo/views/idea_management/associate.py:118
-#: novaideo/views/idea_management/associate.py:134
+#: novaideo/views/idea_management/associate.py:119
+#: novaideo/views/idea_management/associate.py:135
 #: novaideo/views/proposal_management/associate.py:19
 #: novaideo/views/proposal_management/associate.py:34
 #: novaideo/views/amendment_management/associate.py:20
@@ -179,12 +177,12 @@ msgstr "Contenus utilisés"
 msgid "Associate"
 msgstr "Associer"
 
-#: novaideo/views/idea_management/associate.py:145
+#: novaideo/views/idea_management/associate.py:146
 #: novaideo/content/processes/idea_management/definition.py:85
 msgid "Associate the idea"
 msgstr "Associer l'idée"
 
-#: novaideo/views/idea_management/associate.py:150
+#: novaideo/views/idea_management/associate.py:151
 msgid "Associate the idea to an other content"
 msgstr "Associer l'idée à un autre contenu"
 
@@ -197,36 +195,35 @@ msgid "Une personne contactée"
 msgstr ""
 
 #: novaideo/views/idea_management/present_idea.py:31
-#, python-format
-msgid "${len_persons_contacted} personnes contactées"
+msgid "personnes contactées"
 msgstr ""
 
 #: novaideo/views/idea_management/present_idea.py:35
 msgid "Sent to"
 msgstr "Envoyer à"
 
-#: novaideo/views/idea_management/present_idea.py:147
-#: novaideo/views/idea_management/present_idea.py:170
+#: novaideo/views/idea_management/present_idea.py:148
 #: novaideo/views/idea_management/present_idea.py:171
+#: novaideo/views/idea_management/present_idea.py:172
 #: novaideo/content/processes/idea_management/definition.py:77
 msgid "Submit the idea to others"
 msgstr "Communiquer l'idée à des tiers"
 
-#: novaideo/views/idea_management/present_idea.py:120
+#: novaideo/views/idea_management/present_idea.py:121
 msgid "Recipients"
 msgstr "À"
 
-#: novaideo/views/idea_management/present_idea.py:126
+#: novaideo/views/idea_management/present_idea.py:127
 #: novaideo/views/proposal_management/present_proposal.py:58
 #: novaideo/views/amendment_management/present_amendment.py:58
 msgid "Subject"
 msgstr "Sujet"
 
-#: novaideo/views/idea_management/present_idea.py:139
+#: novaideo/views/idea_management/present_idea.py:140
 msgid "Send to me"
 msgstr "Me mettre en copie"
 
-#: novaideo/views/idea_management/present_idea.py:159
+#: novaideo/views/idea_management/present_idea.py:160
 #: novaideo/views/proposal_management/present_proposal.py:83
 #: novaideo/views/amendment_management/present_amendment.py:83
 msgid "Present"
@@ -252,8 +249,7 @@ msgid "Un fil de discussion"
 msgstr ""
 
 #: novaideo/views/idea_management/comment_idea.py:128
-#, python-format
-msgid "${lencomments} fils de discussion"
+msgid "fils de discussion"
 msgstr ""
 
 #: novaideo/views/idea_management/duplicate_idea.py:20
@@ -324,11 +320,11 @@ msgstr "Contenu associé :"
 msgid "Replay(s)"
 msgstr "Réponse(s)"
 
-#: novaideo/views/idea_management/templates/related_contents.pt:17
+#: novaideo/views/idea_management/templates/related_contents.pt:21
 msgid "(By"
 msgstr "(Par"
 
-#: novaideo/views/idea_management/templates/related_contents.pt:20
+#: novaideo/views/idea_management/templates/related_contents.pt:24
 msgid ", the"
 msgstr ", le"
 
@@ -346,7 +342,7 @@ msgstr "Texte supprimé dans"
 msgid "En cliquant sur Continuer, votre idée sera soumise à l'ensemble des utilisateurs et ne pourra plus être modifiée. Elle pourra être reprise par n'importe qui dans une proposition et discutée. Pour la faire évoluer, il faudra préalablement la dupliquer."
 msgstr ""
 
-#: novaideo/views/idea_management/templates/sent_to.pt:8
+#: novaideo/views/idea_management/templates/sent_to.pt:13
 msgid "The idea has been sent:"
 msgstr "L'idée a été envoyée à :"
 
@@ -356,7 +352,7 @@ msgid "(Submitted by"
 msgstr "(Proposée par"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:47
-#: novaideo/views/proposal_management/templates/amendments.pt:23
+#: novaideo/views/proposal_management/templates/amendments.pt:27
 #: novaideo/views/amendment_management/templates/see_amendment.pt:49
 #: novaideo/views/amendment_management/templates/description_amendments.pt:12
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:74
@@ -372,7 +368,7 @@ msgstr "le"
 #: novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:57
 #: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:53
 #: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:58
-#: novaideo/views/proposal_management/templates/amendments.pt:26
+#: novaideo/views/proposal_management/templates/amendments.pt:30
 #: novaideo/views/templates/idea_list_element.pt:8
 #: novaideo/views/templates/proposal_list_element.pt:8
 #: novaideo/views/templates/idea_result.pt:43
@@ -469,13 +465,13 @@ msgid "Your registration"
 msgstr "Votre inscription"
 
 #: novaideo/views/user_management/templates/see_person.pt:37
-#: novaideo/views/templates/person_result.pt:18
+#: novaideo/views/templates/person_result.pt:20
 #: novaideo/content/person.py:140
 msgid "Preferences"
 msgstr "Centres d'intérêt"
 
 #: novaideo/views/user_management/templates/see_person.pt:58
-#: novaideo/views/templates/person_result.pt:39
+#: novaideo/views/templates/person_result.pt:41
 msgid "Member since"
 msgstr "Membre depuis le"
 
@@ -701,6 +697,18 @@ msgstr "Quitter"
 msgid "Participate"
 msgstr "Participer"
 
+#: novaideo/views/proposal_management/see_amendments.py:19
+msgid "Pas d'amendements"
+msgstr ""
+
+#: novaideo/views/proposal_management/see_amendments.py:20
+msgid "Un amendement proposé"
+msgstr ""
+
+#: novaideo/views/proposal_management/see_amendments.py:21
+msgid "amendements proposés"
+msgstr ""
+
 #: novaideo/views/proposal_management/see_amendments.py:30
 #: novaideo/views/proposal_management/see_amendments.py:32
 msgid "See amendments"
@@ -770,7 +778,7 @@ msgstr "Vote sur les amendements"
 
 #: novaideo/views/proposal_management/edit_proposal.py:79
 #: novaideo/views/proposal_management/edit_proposal.py:105
-#: novaideo/views/templates/add_idea_widget.pt:43
+#: novaideo/views/templates/add_idea_widget.pt:47
 msgid "Validate"
 msgstr "Valider"
 
@@ -842,6 +850,18 @@ msgstr "Discuter la proposition"
 msgid "Amendments result"
 msgstr "Résultats sur les amednements"
 
+#: novaideo/views/proposal_management/see_related_ideas.py:16
+msgid "Pas d'idées utilisées"
+msgstr ""
+
+#: novaideo/views/proposal_management/see_related_ideas.py:17
+msgid "Une idée utilisée"
+msgstr ""
+
+#: novaideo/views/proposal_management/see_related_ideas.py:18
+msgid "idées utilisées"
+msgstr ""
+
 #: novaideo/views/proposal_management/see_related_ideas.py:26
 #: novaideo/views/proposal_management/see_related_ideas.py:27
 msgid "See related ideas"
@@ -873,17 +893,17 @@ msgstr "Résumé"
 msgid "Group"
 msgstr "Groupe"
 
-#: novaideo/views/proposal_management/templates/amendments.pt:19
+#: novaideo/views/proposal_management/templates/amendments.pt:23
 #: novaideo/views/amendment_management/templates/see_amendment.pt:45
 #: novaideo/views/amendment_management/templates/description_amendments.pt:8
 msgid "(Amended version by"
 msgstr "(Version amendée par"
 
-#: novaideo/views/proposal_management/templates/amendments.pt:29
+#: novaideo/views/proposal_management/templates/amendments.pt:33
 msgid "duplicated from the amended version"
 msgstr "dupliquée à partir de la version amendée"
 
-#: novaideo/views/proposal_management/templates/sent_to.pt:8
+#: novaideo/views/proposal_management/templates/sent_to.pt:13
 msgid "The proposal has been sent"
 msgstr "La proposition a été envoyée à"
 
@@ -896,7 +916,7 @@ msgstr ""
 msgid "As soon as the proposal has been published, it will be opened to a working group. The working group is active as soon as it reaches three persons. Once active, the working group can submit the proposal to the appreciation of the collective or decide to work together for improving it."
 msgstr "Dès que vous avez publié votre proposition, celle-ci sera ouverte à un groupe de travail. Ce dernier devient actif dès qu'il a atteint trois personnes. Une fois actif, le groupe de travail peut soit soumettre à l'appréciation du collectif la proposition en l'état, soit décider de travailler à plusieurs pour l'améliorer."
 
-#: novaideo/views/templates/add_idea_widget.pt:18
+#: novaideo/views/templates/add_idea_widget.pt:22
 #: novaideo/views/templates/confirmation_form.pt:26
 #: novaideo/views/templates/mapping_simple.pt:12
 #: novaideo/views/templates/object_mapping.pt:10
@@ -1205,7 +1225,7 @@ msgstr ", dupliquée à partir de la version amendée"
 msgid "Pas d'amendements accessibles. Des amendements sont en cours de rédaction."
 msgstr ""
 
-#: novaideo/views/amendment_management/templates/sent_to.pt:8
+#: novaideo/views/amendment_management/templates/sent_to.pt:13
 msgid "L'amendement a été envoyé à:"
 msgstr ""
 

@@ -20,7 +20,7 @@ from novaideo.core import can_access
 
 ASSOCIATION_MESSAGES = {'0': _(u"""Pas de contenus asociés"""),
                       '1': _(u"""Un contenu asocié"""),
-                      '*': _(u"""${lenassociated} contenus asociés""")}
+                      '*': _(u"""contenus asociés""")}
 
 
 class RelatedContentsView(BasicView):
@@ -94,8 +94,9 @@ class RelatedContentsView(BasicView):
         if len_contents > 1:
             index = '*'
 
-        message = _(ASSOCIATION_MESSAGES[index], 
-                    mapping={'lenassociated':len_contents})
+        message = (_(ASSOCIATION_MESSAGES[index]),
+                  len_contents,
+                  index)
         self.message = message
         result = {}
         values = {

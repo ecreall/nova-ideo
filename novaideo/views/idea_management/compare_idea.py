@@ -20,8 +20,8 @@ from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 COMPARE_MESSAGE = {'0': _(u"""Pas de versions"""),
-                   '1': _(u"""Voir la version"""),
-                   '*': _(u"""Voir les ${len_history} versions""")}
+                   '1': _(u"""Une version disponible"""),
+                   '*': _(u"""versions disponibles""")}
 
 
 class DiffView(BasicView):
@@ -154,7 +154,9 @@ class CompareIdeaView(MultipleView):
         if len_history > 1:
             index = '*'
 
-        message = _(COMPARE_MESSAGE[index], mapping={'len_history':len_history})
+        message = (_(COMPARE_MESSAGE[index]),
+                   len_history,
+                   index)
         return message
 
 
