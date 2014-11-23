@@ -103,7 +103,7 @@ function resize_search_result(){
      for (d=0; d< results.length; d++){
         var element = $(results[d]);
         var item = element.children().filter('.content-image')
-        item.height(element.height()+9)
+        item.height(element.height()+8)
      }
 };
 
