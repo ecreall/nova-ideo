@@ -1,6 +1,7 @@
 <div class="thumbnail right-caption span4 search-item" i18n:domain="novaideo">
   <img tal:condition="object.picture is not None" tal:attributes="src object.picture.url(request)"  width="100"/>
   <div tal:condition="object.picture is None" id="person-image" class="content-image">
+    <img src="${request.static_url('novaideo:static/images/user.png')}" width="95">
   </div>
   <div class="media-body" style="width:auto;">
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
