@@ -57,7 +57,7 @@ class AcceptInvitation(ElementaryAction):
         grant_roles(person, (('Owner', person),))
         context.state.remove('pending')
         context.state.append('accepted')
-        root.delproperty('invitations', context)
+        root.delfromproperty('invitations', context)
         return True
 
     def redirect(self, context, request, **kw):
@@ -112,7 +112,7 @@ class RemoveInvitation(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        root.delproperty('invitations', context)
+        root.delfromproperty('invitations', context)
         return True
 
     def redirect(self, context, request, **kw):

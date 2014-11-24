@@ -18,7 +18,7 @@ from novaideo.core import can_access
 
 AMENDMENTS_MESSAGES = {'0': _(u"""Pas d'amendements"""),
                       '1': _(u"""Un amendement proposé"""),
-                      '*': _(u"""amendements proposés""")}
+                      '*': _(u"""Amendements proposés""")}
 
 
 @view_config(

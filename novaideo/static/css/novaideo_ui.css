@@ -831,9 +831,9 @@ ins {
     height: 42.5px;
     margin-right: -15px;
     margin-top: -10px;
-    min-width: 260px;
+    min-width: 235px;
     padding: 10px;
-    text-align: center;
+    text-align: right;
 }
 
 

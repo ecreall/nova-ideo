@@ -28,7 +28,7 @@ except NameError:
 
 PRESENT_MESSAGE = {'0': _(u"""Pas de personnes contactées"""),
                        '1': _(u"""Une personne contactée"""),
-                       '*': _(u"""personnes contactées""")}
+                       '*': _(u"""Personnes contactées""")}
 
 
 class SentToView(BasicView):

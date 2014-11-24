@@ -6,7 +6,7 @@ from substanced.content import content
 from substanced.util import renamer
 
 from dace.objectofcollaboration.entity import Entity
-from dace.objectofcollaboration.principal.role import roles_id
+from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.descriptors import SharedUniqueProperty
 from pontus.widget import Select2Widget
 from pontus.core import VisualisableElement
@@ -18,8 +18,8 @@ from novaideo import _
 
 @colander.deferred
 def roles_choice(node, kw):
-    roles = sorted(roles_id.keys())
-    values = [(i, i) for i in roles if not roles_id[i].islocal]
+    roles = sorted(DACE_ROLES.keys())
+    values = [(i, i) for i in roles if not DACE_ROLES[i].islocal]
     return Select2Widget(values=values, multiple=True)
 
 

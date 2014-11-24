@@ -15,7 +15,7 @@ from novaideo import _
 
 ADDIDEAS_MESSAGES = {'0': _(u"""Pas d'idées utilisées"""),
                    '1': _(u"""Une idée utilisée"""),
-                   '*': _(u"""idées utilisées""")}
+                   '*': _(u"""Idées utilisées""")}
 
 @view_config(
     name='addideas',

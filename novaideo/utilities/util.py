@@ -61,7 +61,7 @@ def disconnect(source,
         for correlation in correlations:
             if content in correlation.targets:
                 if len(correlation.targets) == 1:
-                    root.delproperty('correlations', correlation)
-                    correlation.delproperty('source', source)
+                    root.delfromproperty('correlations', correlation)
+                    correlation.delfromproperty('source', source)
 
-                correlation.delproperty('targets', content)
+                correlation.delfromproperty('targets', content)

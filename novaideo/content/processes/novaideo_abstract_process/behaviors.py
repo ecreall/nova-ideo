@@ -76,7 +76,7 @@ class DeselectEntity(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user =  get_current()
-        user.delproperty('selections', context)
+        user.delfromproperty('selections', context)
         return True
 
     def redirect(self, context, request, **kw):

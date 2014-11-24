@@ -65,20 +65,21 @@ class CommentsView(BasicView):
             if action_updated and not isactive:
                 isactive = True
 
+            if actions: 
+                comment_data['commentaction'] = actions[0]
+
+            all_comments.append(comment_data)
             all_messages.update(messages)
-            if resources is not None:
+
+
+            if not all_resources and resources:
                 if 'js_links' in resources:
                     all_resources['js_links'].extend(resources['js_links'])
                     all_resources['js_links'] = list(set(all_resources['js_links']))
 
                 if 'css_links' in resources:
                     all_resources['css_links'].extend(resources['css_links'])
-                    all_resources['css_links'] =list(set(all_resources['css_links']))
-
-            if actions: 
-                comment_data['commentaction'] = actions[0]
-
-            all_comments.append(comment_data) 
+                    all_resources['css_links'] = list(set(all_resources['css_links'])) 
 
         values = {
                 'comments': all_comments,
@@ -90,7 +91,8 @@ class CommentsView(BasicView):
 
     def update(self):
         result = {}
-        body, resources, messages, isactive =  self._rendre_comments(self.context.comments, True)
+        body, resources, messages, isactive =  self._rendre_comments(
+                                          self.context.comments, True)
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive
@@ -125,7 +127,7 @@ class CommentIdeaFormView(FormView):
 
 COMMENT_MESSAGE = {'0': _(u"""Pas de fils de discussion"""),
                       '1': _(u"""Un fil de discussion"""),
-                      '*': _(u"""fils de discussion""")} 
+                      '*': _(u"""Fils de discussion""")} 
 
 @view_config(
     name='commentidea',

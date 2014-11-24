@@ -584,7 +584,7 @@ class WithdrawToken(InfiniteCardinality):
         user_tokens = [t for t in context.tokens \
                        if (t.owner is user) and t.proposal is None]
         token = user_tokens[-1]
-        context.delproperty(token.__property__, token)
+        context.delfromproperty(token.__property__, token)
         user.addtoproperty('tokens', token)
         context._support_history.append((get_oid(user), datetime.datetime.today(), -1))
         return True
@@ -1163,7 +1163,7 @@ class Withdraw(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         wg = context.working_group
-        wg.delproperty('wating_list', user)
+        wg.delfromproperty('wating_list', user)
         localizer = request.localizer
         subject = WITHDRAW_SUBJECT.format(subject_title=context.title)
         message = WITHDRAW_MESSAGE.format(
@@ -1224,14 +1224,14 @@ class Resign(InfiniteCardinality):
         root = getSite()
         user = get_current()
         wg = context.working_group
-        wg.delproperty('members', user)
+        wg.delfromproperty('members', user)
         revoke_roles(user, (('Participant', context),))
         url = request.resource_url(context, "@@index")
         localizer = request.localizer
         if wg.wating_list:
             next_user = self._get_next_user(wg.wating_list, root)
             if next_user is not None:
-                wg.delproperty('wating_list', next_user)
+                wg.delfromproperty('wating_list', next_user)
                 wg.addtoproperty('members', next_user)
                 grant_roles(next_user, (('Participant', context),))
                 subject = PARTICIPATE_SUBJECT.format(subject_title=context.title)

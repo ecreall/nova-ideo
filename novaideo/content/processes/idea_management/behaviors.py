@@ -136,7 +136,7 @@ class DelIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root  = getSite()
-        root.delproperty('ideas', context)
+        root.delfromproperty('ideas', context)
         return True
 
     def redirect(self, context, request, **kw):

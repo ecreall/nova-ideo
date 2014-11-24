@@ -124,7 +124,7 @@ class DelAmendment(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         proposal = context.proposal
-        proposal.delproperty('amendments', context)
+        proposal.delfromproperty('amendments', context)
         self.newcontext = proposal
         return True
 
