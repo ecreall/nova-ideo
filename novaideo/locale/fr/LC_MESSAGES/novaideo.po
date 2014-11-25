@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2014-11-23 13:56+0100\n"
+"POT-Creation-Date: 2014-11-25 14:12+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -89,7 +89,7 @@ msgstr "Détails"
 
 #: novaideo/views/idea_management/see_idea.py:67
 #: novaideo/views/amendment_management/see_amendment.py:100
-#: novaideo/views/novaideo_view_manager/see_proposal.py:144
+#: novaideo/views/novaideo_view_manager/see_proposal.py:151
 msgid "actions"
 msgstr "actions"
 
@@ -114,7 +114,7 @@ msgid "Une version disponible"
 msgstr ""
 
 #: novaideo/views/idea_management/compare_idea.py:24
-msgid "versions disponibles"
+msgid "Versions disponibles"
 msgstr ""
 
 #: novaideo/views/idea_management/compare_idea.py:29
@@ -154,18 +154,18 @@ msgid "Un contenu asocié"
 msgstr ""
 
 #: novaideo/views/idea_management/associate.py:23
-msgid "contenus asociés"
+msgid "Contenus asociés"
 msgstr ""
 
 #: novaideo/views/idea_management/associate.py:27
-#: novaideo/views/idea_management/associate.py:130
+#: novaideo/views/idea_management/associate.py:132
 #: novaideo/views/proposal_management/associate.py:29
 #: novaideo/views/amendment_management/associate.py:29
 msgid "Related contents"
 msgstr "Contenus utilisés"
 
-#: novaideo/views/idea_management/associate.py:119
-#: novaideo/views/idea_management/associate.py:135
+#: novaideo/views/idea_management/associate.py:121
+#: novaideo/views/idea_management/associate.py:137
 #: novaideo/views/proposal_management/associate.py:19
 #: novaideo/views/proposal_management/associate.py:34
 #: novaideo/views/amendment_management/associate.py:20
@@ -177,12 +177,12 @@ msgstr "Contenus utilisés"
 msgid "Associate"
 msgstr "Associer"
 
-#: novaideo/views/idea_management/associate.py:146
+#: novaideo/views/idea_management/associate.py:148
 #: novaideo/content/processes/idea_management/definition.py:85
 msgid "Associate the idea"
 msgstr "Associer l'idée"
 
-#: novaideo/views/idea_management/associate.py:151
+#: novaideo/views/idea_management/associate.py:153
 msgid "Associate the idea to an other content"
 msgstr "Associer l'idée à un autre contenu"
 
@@ -195,7 +195,7 @@ msgid "Une personne contactée"
 msgstr ""
 
 #: novaideo/views/idea_management/present_idea.py:31
-msgid "personnes contactées"
+msgid "Personnes contactées"
 msgstr ""
 
 #: novaideo/views/idea_management/present_idea.py:35
@@ -233,23 +233,23 @@ msgstr "Communiquer"
 msgid "Messages"
 msgstr "Messages"
 
-#: novaideo/views/idea_management/comment_idea.py:105
-#: novaideo/views/idea_management/comment_idea.py:136
-#: novaideo/views/idea_management/comment_idea.py:137
+#: novaideo/views/idea_management/comment_idea.py:84
+#: novaideo/views/idea_management/comment_idea.py:115
+#: novaideo/views/idea_management/comment_idea.py:116
 #: novaideo/content/processes/idea_management/definition.py:81
 msgid "Discuss the idea"
 msgstr "Discuter l'idée"
 
-#: novaideo/views/idea_management/comment_idea.py:126
+#: novaideo/views/idea_management/comment_idea.py:105
 msgid "Pas de fils de discussion"
 msgstr ""
 
-#: novaideo/views/idea_management/comment_idea.py:127
+#: novaideo/views/idea_management/comment_idea.py:106
 msgid "Un fil de discussion"
 msgstr ""
 
-#: novaideo/views/idea_management/comment_idea.py:128
-msgid "fils de discussion"
+#: novaideo/views/idea_management/comment_idea.py:107
+msgid "Fils de discussion"
 msgstr ""
 
 #: novaideo/views/idea_management/duplicate_idea.py:20
@@ -426,6 +426,14 @@ msgstr "Modifier des invitations"
 #: novaideo/views/invitation_management/see_invitation.py:38
 msgid "Invitation is not valid"
 msgstr "L'invitation n'est pas valide"
+
+#: novaideo/views/user_management/deactivate.py:19
+msgid "Deactivate the member"
+msgstr "Désactivier le membre"
+
+#: novaideo/views/user_management/activate.py:18
+msgid "Activate the member"
+msgstr "Activer le membre"
 
 #: novaideo/views/user_management/edit.py:74
 #: novaideo/views/proposal_management/edit_proposal.py:165
@@ -706,7 +714,7 @@ msgid "Un amendement proposé"
 msgstr ""
 
 #: novaideo/views/proposal_management/see_amendments.py:21
-msgid "amendements proposés"
+msgid "Amendements proposés"
 msgstr ""
 
 #: novaideo/views/proposal_management/see_amendments.py:30
@@ -859,7 +867,7 @@ msgid "Une idée utilisée"
 msgstr ""
 
 #: novaideo/views/proposal_management/see_related_ideas.py:18
-msgid "idées utilisées"
+msgid "Idées utilisées"
 msgstr ""
 
 #: novaideo/views/proposal_management/see_related_ideas.py:26

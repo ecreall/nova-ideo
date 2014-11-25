@@ -47,47 +47,24 @@ class CommentsView(BasicView):
         return result
 
     def _rendre_comments(self, comments, origin=False):
-        all_messages = {}
-        isactive = False
-        all_resources = {}
-        all_resources['js_links'] = []
-        all_resources['css_links'] = []
         all_comments = []
         dace_ui_api = get_current_registry().getUtility(
                                                IDaceUIAPI,'dace_ui_api')
-        for comment in comments:
-            comment_data = {'comment':comment}
-            action_updated, messages, resources, actions = dace_ui_api._actions(
-                                                           self.request,
-                                                           comment, 
-                                                           'commentmanagement', 
-                                                           'respond')
-            if action_updated and not isactive:
-                isactive = True
-
-            if actions: 
-                comment_data['commentaction'] = actions[0]
-
-            all_comments.append(comment_data)
-            all_messages.update(messages)
-
-
-            if not all_resources and resources:
-                if 'js_links' in resources:
-                    all_resources['js_links'].extend(resources['js_links'])
-                    all_resources['js_links'] = list(set(all_resources['js_links']))
-
-                if 'css_links' in resources:
-                    all_resources['css_links'].extend(resources['css_links'])
-                    all_resources['css_links'] = list(set(all_resources['css_links'])) 
-
+        comments_actions = dace_ui_api.get_actions(comments, self.request,
+                                                'commentmanagement', 'respond')
+        action_updated, messages, \
+        resources, actions = dace_ui_api.update_actions(self.request,
+                                                        comments_actions)
+        actions = dict([(a['context'], a) for a in actions])
+        all_comments = sorted(list(actions.values()), 
+                              key=lambda e: e['context'].created_at)
         values = {
                 'comments': all_comments,
                 'view': self,
                 'origin':origin
                }
         body = self.content(result=values, template=self.template)['body']
-        return body, all_resources, all_messages, isactive
+        return body, resources, messages, action_updated
 
     def update(self):
         result = {}

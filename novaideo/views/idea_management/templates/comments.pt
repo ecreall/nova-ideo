@@ -1,6 +1,6 @@
 <ul class="${(origin and 'commentulorigin') or 'commentul hide-bloc'}" i18n:domain="novaideo">
   <tal:loop repeat="item comments">
-    <li class="commentli" data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" tal:define="diff view._datetimedelta(item['comment'].created_at); comment item['comment']">
+    <li class="commentli" data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context']">
        <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
           <img tal:condition="getattr(comment.author, 'picture', None) is not None" tal:attributes="src comment.author.picture.url(request)"  class="img-circle" width="60"/>
           <div class="media-body" style="width:auto;">
@@ -33,39 +33,39 @@
                    </blockquote>
                </small>
             </div>
-            <div tal:condition="'commentaction' in item"  id="commentaction" class="pull-right">
+            <div tal:condition="'action' in item"  id="commentaction" class="pull-right">
                 <span tal:condition="comment.comments" 
                       class="comment-replay-nb"
                       onclick="javascript:replays_show(this);">
                   <small><span class="glyphicon glyphicon-chevron-down"></span> ${len(comment.comments)} <span i18n:translate="">Replay(s)</span></small>
                 </span>
-                <div tal:omit-tag="" tal:define="commentaction item['commentaction']">
-                 <a id="${commentaction['action_id']}-btn" 
+                <div tal:omit-tag="">
+                 <a id="${item['action_id']}-btn" 
                       class="btn btn-default btn-xs dace-action"
                       style="max-width: 300px;"
-                      href="${commentaction['actionurl']}"   
+                      href="${item['action'].url(item['context'])}"   
                       data-toggle="modal"
-                      data-actionid ="${commentaction['action_id']}" 
-                      data-target="#${commentaction['action_id']}"
-                      data-updateurl="${commentaction['actionurl_update']}"
-                      data-toreplay="${'toreplay' in commentaction}">
-                     <span class="glyphicon glyphicon-comment"></span> ${commentaction['action'].title}
+                      data-actionid ="${item['action_id']}" 
+                      data-target="#${item['action_id']}"
+                      data-updateurl="${item['actionurl_update']}"
+                      data-toreplay="${'toreplay' in item}">
+                     <span class="glyphicon glyphicon-comment"></span> ${item['action'].title}
                    </a>
-                   <script tal:condition="'toreplay' in commentaction">       
+                   <script tal:condition="'toreplay' in item">       
                         $(document).ready(function(){
-                             $(${'\'#'+commentaction['action_id']+'-btn\''}).click();
+                             $(${'\'#'+item['action_id']+'-btn\''}).click();
                         });
                    </script>  
                    <script>
                         $(document).ready(function(){
-                            $(${'\'#'+commentaction['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
-                               after_execution(${'\"'+commentaction['actionurl_after']+'\"'})
+                            $(${'\'#'+item['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
+                               after_execution(${'\"'+item['actionurl_after']+'\"'})
                               })
                         });
                    </script>
                 <!-- Modal -->
                    <div class="modal fade" 
-                       id="${commentaction['action_id']}-modal" 
+                       id="${item['action_id']}-modal" 
                        role="dialog" 
                        aria-labelledby="myModalLabel" 
                        aria-hidden="true">
@@ -73,10 +73,10 @@
                         <div class="modal-content">
                            <div class="modal-header">
                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                               <h4 class="modal-title" id="myModalLabel"> ${commentaction['action'].title}</h4>
+                               <h4 class="modal-title" id="myModalLabel"> ${item['action'].title}</h4>
                            </div>
                            <div class="modal-body">
-                              ${structure:commentaction['body']}
+                              ${structure:item['body']}
                            </div>
                          </div>
                       </div>

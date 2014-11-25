@@ -31,35 +31,23 @@ class SeeInvitationsView(BasicView):
         self.execute(None)
         user = get_current()
         result = {}
-        all_messages = {}
-        isactive = False
-        all_resources = {}
-        all_resources['js_links'] = []
-        all_resources['css_links'] = []
         all_invitation_data = {'invitations':[]}
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
                                                         'dace_ui_api')
+        invitations_actions = dace_ui_api.get_actions(
+                            self.context.invitations, self.request)
+        action_updated, messages, \
+        resources, actions = dace_ui_api.update_actions(self.request,
+                                                            invitations_actions)
         for invitation in self.context.invitations:
-            action_updated, messages, resources, actions = dace_ui_api._actions(self.request, invitation)
-            if action_updated and not isactive:
-                isactive = True
-
-            all_messages.update(messages)
-            if resources is not None:
-                if 'js_links' in resources:
-                    all_resources['js_links'].extend(resources['js_links'])
-                    all_resources['js_links'] = list(set(all_resources['js_links']))
-
-                if 'css_links' in resources:
-                    all_resources['css_links'].extend(resources['css_links'])
-                    all_resources['css_links'] =list(set(all_resources['css_links']))
-
+            invitation_actions = [a for a in actions \
+                                  if a['context'] is invitation]
             state = None
             if invitation.state:
                 state = invitation.state[0]
 
             invitation_dic = { 
-                'actions': actions,
+                'actions': invitation_actions,
                 'url':self.request.resource_url(invitation, '@@index'), 
                 'first_name': getattr(invitation, 'first_name',''),
                 'last_name': getattr(invitation, 'last_name', ''),
@@ -69,13 +57,15 @@ class SeeInvitationsView(BasicView):
                 'state': get_states_mapping(user, invitation, state)}
             all_invitation_data['invitations'].append(invitation_dic)
          
-        all_invitation_data['tabid'] = self.__class__.__name__ + 'InvitationActions'
-        body = self.content(result=all_invitation_data, template=self.template)['body']
+        all_invitation_data['tabid'] = self.__class__.__name__ + \
+                                       'InvitationActions'
+        body = self.content(result=all_invitation_data, 
+                            template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        item['messages'] = all_messages
-        item['isactive'] = isactive
+        item['messages'] = messages
+        item['isactive'] = action_updated
         result['coordinates'] = {self.coordinates:[item]}
-        result.update(all_resources)
+        result.update(resources)
         result  = merge_dicts(self.requirements_copy, result)
         return result
 

@@ -40,16 +40,23 @@ class DetailProposalView(BasicView):
     def _vote_actions(self):
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
                                                        'dace_ui_api')
-        action_updated, messages, resources, actions = dace_ui_api._actions(
+        vote_actions = dace_ui_api.get_actions([self.context],
+                                           self.request,
+                                           process_discriminator='Vote process',
+                                            )
+        action_updated, messages, \
+        resources, actions = dace_ui_api.update_actions(
                                         self.request, 
-                                        self.context, 
-                                        process_discriminator='Vote process',
-                                        ignor_form=True)
-        for action in actions:
+                                        vote_actions,
+                                        True,
+                                        )
+        for action in list(actions):
             action['body'] = dace_ui_api.get_action_body(self.context, 
                                                          self.request, 
                                                          action['action'], 
                                                          True)
+            if not action['body']:
+                actions.remove(action)
 
         return actions, resources, messages, action_updated
 

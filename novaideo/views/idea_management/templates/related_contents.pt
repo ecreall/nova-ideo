@@ -16,7 +16,7 @@
                  <a id="${correlationaction['action_id']}-btn" 
                       class="btn btn-default btn-xs dace-action"
                       style="max-width: 300px;"
-                      href="${correlationaction['actionurl']}"   
+                      href="${correlationaction['action'].url(correlationaction['context'])}"   
                       data-toggle="modal"
                       data-actionid ="${correlationaction['action_id']}" 
                       data-target="#${correlationaction['action_id']}"

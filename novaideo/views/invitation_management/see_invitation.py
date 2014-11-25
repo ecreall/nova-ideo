@@ -42,7 +42,10 @@ class SeeInvitationView(BasicView):
         dace_ui_api = get_current_registry().getUtility(
                                                 IDaceUIAPI,
                                                 'dace_ui_api')     
-        action_updated, messages, resources, actions = dace_ui_api._actions(self.request, invitation)
+        invitation_actions = dace_ui_api.get_actions([invitation], self.request)
+        action_updated, messages, \
+        resources, actions = dace_ui_api.update_actions(
+                                          self.request, invitation_actions)
         result = {}
         state = None
         if invitation.state:

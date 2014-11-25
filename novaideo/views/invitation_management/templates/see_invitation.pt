@@ -20,7 +20,7 @@
                    <a id="${a['action_id']}-btn" 
                       class="btn btn-primary btn-sm dace-action" 
                       style="max-width: 300px;"
-                      href="${a['actionurl']}"   
+                      href="${a['action'].url(a['context'])}"   
                       data-toggle="modal"
                       data-actionid ="${a['action_id']}" 
                       data-target="#${a['action_id']}"

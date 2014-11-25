@@ -33,12 +33,14 @@ class RelatedContentsView(BasicView):
     def _correlation_action(self, correlation):
         dace_ui_api = get_current_registry().getUtility(
                                                IDaceUIAPI,'dace_ui_api')
+        correlation_actions = dace_ui_api.get_actions([correlation], 
+                                                      self.request, 
+                                                      'correlationmanagement', 
+                                                      'comment')
         correlation_action = {}
-        action_updated, messages, resources, actions = dace_ui_api._actions(
-                                                         self.request, 
-                                                         correlation, 
-                                                         'correlationmanagement', 
-                                                         'comment')
+        action_updated, messages, \
+        resources, actions = dace_ui_api.update_actions(
+                                        self.request, correlation_actions)
         if actions: 
             correlation_action['correlationaction'] = actions[0]
 

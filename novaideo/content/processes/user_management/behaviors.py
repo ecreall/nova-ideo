@@ -174,7 +174,7 @@ class Activate(InfiniteCardinality):
 
 
 def seeperson_processsecurity_validation(process, context):
-    return 'active' in context.state
+    return True#'active' in context.state
 
 
 @acces_action()
