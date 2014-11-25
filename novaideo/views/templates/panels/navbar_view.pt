@@ -18,7 +18,7 @@
           <!--span class="glyphicon glyphicon-chevron-up"></span-->
       <!--/a-->
         <div class="row">
-            <div class="col-sm-6 col-md-4" style="border-right: 1px inset windowtext;">
+            <div class="col-sm-6 col-md-4" style="border-right: 1px solid #dddddd;">
                 ${structure:search_body}
             </div>
             <div class="col-sm-6 col-md-6">

@@ -815,24 +815,23 @@ ins {
 }
 
 .action-message {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
+    border-bottom-color: none;
+    border-left-color: #dddddd;
+    border-right-color: none;
+    border-top-color: none;
     background-color: white;
     border-bottom-left-radius: 0;
-    border-color: -moz-use-text-color -moz-use-text-color -moz-use-text-color #dddddd;
     border-image: none;
     border-style: none none none solid;
     border-top-left-radius: 0;
     border-width: 0 0 0 1px;
     color: #808080;
-    font-size: 16px;
-    height: 42.5px;
+    font-size: 14px;
+    height: 42.1px;
     margin-right: -15px;
     margin-top: -10px;
-    min-width: 235px;
-    padding: 10px;
+    min-width: 205px;
+    padding: 5px;
     text-align: right;
 }
 
