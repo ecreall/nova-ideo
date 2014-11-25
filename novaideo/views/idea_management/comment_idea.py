@@ -8,7 +8,8 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.schema import select
 from pontus.view_operation import MultipleView
-from pontus.view import BasicView, merge_dicts
+from pontus.view import BasicView
+from pontus.util import merge_dicts
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
 
 from novaideo.content.processes.idea_management.behaviors import  CommentIdea

@@ -4,7 +4,8 @@ from pyramid.threadlocal import get_current_registry
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current, has_role
-from pontus.view import BasicView, merge_dicts
+from pontus.view import BasicView
+from pontus.util import merge_dicts
 from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.amendment_management.behaviors import (

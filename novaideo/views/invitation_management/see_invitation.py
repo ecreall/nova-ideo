@@ -6,7 +6,8 @@ from dace.util import get_obj
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.dace_ui_extension.interfaces import IDaceUIAPI
-from pontus.view import BasicView, merge_dicts, ViewError
+from pontus.view import BasicView, ViewError
+from pontus.util import merge_dicts
 
 from novaideo.content.processes.invitation_management.behaviors import (
     SeeInvitation)

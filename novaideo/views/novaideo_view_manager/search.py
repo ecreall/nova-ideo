@@ -11,7 +11,8 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
-from pontus.view import BasicView, merge_dicts
+from pontus.view import BasicView
+from pontus.util import merge_dicts
 from pontus.widget import CheckboxChoiceWidget
 from pontus.schema import Schema
 from pontus.form import FormView
