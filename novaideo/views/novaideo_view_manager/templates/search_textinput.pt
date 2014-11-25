@@ -9,7 +9,7 @@
                   url url|getattr(field.widget, 'url', '');
 "
       tal:omit-tag="">
-      <div class="input-group input-group-sm">
+      <div id="searchsection" class="input-group input-group-sm">
        <input type="text" name="${name}" value="${cstruct}" 
            tal:attributes="class string: form-control ${css_class};
                            style style"
