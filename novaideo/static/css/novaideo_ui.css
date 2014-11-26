@@ -948,6 +948,7 @@ ins {
 
 /*novaideo responsive design*/
 
+
 @media (max-width: 1199px) {
    .global-actions-menu a {
     width: 223px;
@@ -955,6 +956,10 @@ ins {
    .global-actions-menu .action-1 {
     margin-left: 327px;
   }
+  .modal-amendments-vote {
+    margin-left: 0%;
+    width: 100%;
+}
 }
 
 @media (max-width: 991px) {
@@ -978,7 +983,17 @@ ins {
   .switchchoice{
     padding-left: 0px
   }
+  .global-pilot>img{
+    width: 100px
+  }
 }
+
+@media (max-width: 320px) {
+  .global-pilot>img{
+    width: 80px
+  }
+}
+
 
 @media (max-width: 767px) {
   .global-actions-menu .action-1 {
@@ -1003,7 +1018,7 @@ ins {
 @media (max-width: 675px) {
   #footer #portal-colophon .colophonWrapper{
         float: none;
-        width: 25%;
+        width: 28%;
   }
 
   #custom-footer {

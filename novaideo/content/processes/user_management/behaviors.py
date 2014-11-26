@@ -3,7 +3,7 @@ import datetime
 from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service
 
-from dace.util import getSite
+from dace.util import getSite, name_chooser
 from dace.objectofcollaboration.principal.util import (
     grant_roles, has_role, get_current)
 from dace.processinstance.activity import (
@@ -40,6 +40,7 @@ class Registration(InfiniteCardinality):
         root = getSite(context)
         principals = find_service(root, 'principals')
         name = person.first_name + ' ' +person.last_name
+        name = name_chooser(name=name)
         principals['users'][name] = person
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
@@ -108,6 +109,7 @@ class Edit(InfiniteCardinality):
         result.extend(newkeywords)
         context.setproperty('keywords_ref', result)
         context.set_title()
+        context.name = name_chooser(name=context.title)
         context.modified_at = datetime.datetime.today()
         return True
 
