@@ -22,6 +22,25 @@ body{
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.28) inset; 
 }
 
+
+.global-actions-menu{
+    margin-bottom: 5px;
+    margin-top: 10px; 
+}
+
+.global-actions-menu .action-1 {
+    margin-left: 394px;
+}
+
+.global-actions-menu .action-2 {
+    margin-left: -16px;
+} 
+
+.global-actions-menu a {
+    width: 271px;
+}
+
+
 #footer {
     background: none repeat scroll 0 0 #e7e7e7;
     color: #7d7d7d;
@@ -310,6 +329,10 @@ ins {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(76, 164, 76, 0.16);
 }
 
+.search-item .content-image{
+    width: 100px
+}
+
 .thumbnail.right-caption > #idea-image {
     /**background-image: linear-gradient(to left, #effdea -100%, #93d91a 123%);**/
     background-image: linear-gradient(to left, #adcce7 -100%, #adcce7 123%);
@@ -320,7 +343,6 @@ ins {
     margin-left: -4px;
     margin-right: 9px;
     margin-top: -4px;
-    width: 100px;
 }
 
 .thumbnail.right-caption > #person-image {
@@ -332,7 +354,6 @@ ins {
     margin-left: -4px;
     margin-right: 9px;
     margin-top: -4px;
-    width: 100px;
 }
 
 .thumbnail.right-caption > #proposal-image {
@@ -344,7 +365,6 @@ ins {
     margin-left: -4px;
     margin-right: 9px;
     margin-top: -4px;
-    width: 100px;
 }
 
 .thumbnail.right-caption > #amendment-image {
@@ -356,7 +376,6 @@ ins {
     margin-left: -4px;
     margin-right: 9px;
     margin-top: -4px;
-    width: 100px;
 }
 
 .edit-amendment-action {
@@ -417,9 +436,9 @@ ins {
    margin-top: -57px;
 }
 
-.navbar-entity .navbar-collapse{
-    margin-left: -47px; 
-    margin-right: -32.5px;
+.navbar-entity .navbar-entity-content{
+    margin-left: -33px;
+    margin-right: -17.5px;
 }
 
 .navbar-entity .nav > li > a {
@@ -537,22 +556,7 @@ ins {
     display: none;
 }
 
-.global-actions-menu{
-    margin-bottom: 5px;
-    margin-top: 10px; 
-}
 
-.global-actions-menu .action-1 {
-    margin-left: 394px;
-}
-
-.global-actions-menu .action-2 {
-    margin-left: -16px;
-} 
-
-.global-actions-menu a {
-    width: 271px;
-}
 
 .item-closed {
 	background: transparent url(../images/open_button.png) center right no-repeat;
@@ -940,4 +944,79 @@ ins {
 
 .message-alert{
     margin-bottom: 10px
+}
+
+/*novaideo responsive design*/
+
+@media (max-width: 1199px) {
+   .global-actions-menu a {
+    width: 223px;
+   }
+   .global-actions-menu .action-1 {
+    margin-left: 327px;
+  }
+}
+
+@media (max-width: 991px) {
+   .user-actions-menu .user-actions-menu-item{
+        padding: 0px
+   }
+  .global-actions-menu a {
+    width: 290px;
+   }
+   .global-actions-menu .action-1 {
+    margin-left: 365px;
+  }
+  .global-actions-menu .action-2 {
+    margin-left: 365px;
+  }
+
+  .novaideo-right{
+    margin-left: 0px
+  }
+
+  .switchchoice{
+    padding-left: 0px
+  }
+}
+
+@media (max-width: 767px) {
+  .global-actions-menu .action-1 {
+    margin-left: -10px;
+  }
+  .global-actions-menu .action-2 {
+    margin-left: -10px;
+  }
+  .search-item .content-image{
+    width: 50px
+  }
+  .search-item .content-image>img{
+    width: 50px
+  }
+  #footer #portal-colophon .colophonWrapper{
+        float: none;
+        width: 65%; 
+  }
+
+}
+
+@media (max-width: 675px) {
+  #footer #portal-colophon .colophonWrapper{
+        float: none;
+        width: 25%;
+  }
+
+  #custom-footer {
+    margin: -15px auto;
+  }
+}
+
+@media (max-width: 520px) {
+
+    .action-message{
+        background-color: transparent;
+    }
+    .action-message.pull-right{
+        float: inherit !important;
+    }
 }

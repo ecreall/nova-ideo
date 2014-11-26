@@ -21,9 +21,9 @@
             <div class="col-sm-6 col-md-4" style="border-right: 1px solid #dddddd;">
                 ${structure:search_body}
             </div>
-            <div class="col-sm-6 col-md-6">
+            <div class="col-sm-6 col-md-6 user-actions-menu">
                     <div class="row">
-                        <div class="col-md-6" style="padding-right: 0px">
+                        <div class="col-md-6 user-actions-menu-item" style="padding-right: 0px">
                           <ul tal:condition="actions['menu1']"  class="nav access-menu">
                              <li tal:repeat="(k, a) actions['menu1'].items()">
                                 <a class="menu-access-action ${(request.view_name == actions['menu1'][k]['view_name']) and 'active'} ${((actions['menu1'][k]['url']  is None) and 'disabled') or ''}" href="${actions['menu1'][k]['url']}" tal:define="action actions['menu1'][k]['action']">
@@ -32,7 +32,7 @@
                              </li>
                           </ul>
                         </div>
-                        <div class="col-md-6" style="padding-left: 0px">
+                        <div class="col-md-6 user-actions-menu-item" style="padding-left: 0px">
                           <ul tal:condition="actions['menu2']"  class="nav access-menu">
                              <li tal:repeat="(k, a) actions['menu2'].items()">
                                 <a class="menu-access-action ${(request.view_name == actions['menu2'][k]['view_name']) and 'active'} ${((actions['menu2'][k]['url'] is None) and 'disabled') or ''}"  href="${actions['menu2'][k]['url'] }" tal:define="action actions['menu2'][k]['action']">

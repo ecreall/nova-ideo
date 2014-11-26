@@ -324,3 +324,23 @@ ul, ol {
     height: 18px;
     width: 25px;
 }
+
+/*steps responsive design*/
+
+@media (max-width: 991px) {
+
+  .nav-steps li{
+    width: 25%
+  }
+
+}
+
+@media (max-width: 501px) {
+  .nav-steps .step-content{
+    margin-top: 5px;
+  }
+
+  .nav-steps li{
+    width: 50%
+  }
+}

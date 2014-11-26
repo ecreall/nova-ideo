@@ -1,7 +1,7 @@
 <nav class="navbar navbar-entity" role="navigation">
   <div class="container-fluid">
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" >
+    <div class="navbar-entity-content" >
       <ul class="nav navbar-nav navbar-right">
         <tal:loop repeat="a actions">
           <li><a tal:attributes="href a.url" class="btn btn-sm"><span class="${getattr(a.action,'style_picto','')}" ></span> ${a.title}</a></li>
