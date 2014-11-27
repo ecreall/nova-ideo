@@ -28,7 +28,7 @@ class LogIn(InfiniteCardinality):
 
 
 def logout_roles_validation(process, context):
-    return True#has_role(role=('Collaborator',))
+    return has_role(role=('Collaborator',))
 
 
 class LogOut(InfiniteCardinality):
