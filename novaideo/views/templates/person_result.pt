@@ -16,7 +16,7 @@
         </dd>
       </dl>
       <span class="date">
-        <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/>
+        <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.created_at, date_only=True)"/>
       </span>
   </div>
 </div>
