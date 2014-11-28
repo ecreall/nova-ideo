@@ -1,3 +1,8 @@
+# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# avalaible on http://www.gnu.org/licenses/agpl.html 
+
+# licence: AGPL
+# author: Amen Souissi
 """
 This module represent the Majority Judgment election process definition 
 powered by the dace engine. This process is vlolatile, which means 

@@ -1,3 +1,8 @@
+# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# avalaible on http://www.gnu.org/licenses/agpl.html 
+
+# licence: AGPL
+# author: Amen Souissi
 # TODO: finish to clean, use our own templates, ... ?
 
 from pyramid.view import view_config
