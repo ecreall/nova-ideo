@@ -4,7 +4,6 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-
 from novaideo.content.processes.user_management.behaviors import  Deactivate
 from novaideo.content.person import Person
 from novaideo import _
