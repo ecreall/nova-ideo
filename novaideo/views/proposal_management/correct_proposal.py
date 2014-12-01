@@ -22,7 +22,7 @@ from novaideo import _
 @view_config(
     name='correctproposal',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class CorrectProposalView(FormView):
     title = _('Correct the proposal')

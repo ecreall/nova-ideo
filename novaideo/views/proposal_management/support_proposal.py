@@ -18,7 +18,7 @@ from novaideo import _
 @view_config(
     name='supportproposal',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SupportProposalView(BasicView):
     title = _('Support')

@@ -18,7 +18,7 @@ from novaideo import _
 @view_config(
     name='deselectentity',
     context=Entity,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class DeselectEntityView(BasicView):
     title = _('Remove from my selections')

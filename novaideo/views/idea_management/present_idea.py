@@ -41,7 +41,7 @@ class SentToView(BasicView):
     name = 'sentto'
     validators = [PresentIdea.get_validator()]
     template = 'novaideo:views/idea_management/templates/sent_to.pt'
-    item_template = 'pontus:templates/subview_sample.pt'
+    wrapper_template = 'pontus:dace_ui_extension/templates/simple_view_wrapper.pt'
     viewid = 'sentto'
 
 
@@ -170,14 +170,14 @@ class PresentIdeaFormView(FormView):
 @view_config(
     name='presentidea',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class PresentIdeaView(MultipleView):
     title = _('Submit the idea to others')
     description = _('Submit the idea to others')
     name = 'presentidea'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (SentToView, PresentIdeaFormView)
 
     def get_message(self):

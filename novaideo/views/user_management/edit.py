@@ -72,7 +72,7 @@ class EditPersonSchema(PersonSchema):
 @view_config(
     name='edit',
     context=Person,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class EditView(FormView):
 

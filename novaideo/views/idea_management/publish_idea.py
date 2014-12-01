@@ -43,7 +43,7 @@ class PublishIdeaView(FormView):
 @view_config(
     name='publishidea',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishIdeaViewMultipleView(MultipleView):
     title = _('Publish')

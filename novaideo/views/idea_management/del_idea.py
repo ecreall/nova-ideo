@@ -17,7 +17,7 @@ from novaideo import _
 @view_config(
     name='delidea',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class DelIdeaView(BasicView):
     title = _('Delete')

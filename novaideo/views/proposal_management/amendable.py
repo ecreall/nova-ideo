@@ -16,7 +16,7 @@ from novaideo import _
 @view_config(
     name='amendable',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class AmendableView(BasicView):
     title = _('Amendable')

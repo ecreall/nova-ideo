@@ -18,7 +18,7 @@ from novaideo import _
 @view_config(
     name='reinvite_user',
     context=Invitation,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class ReinviteUserView(BasicView):
 

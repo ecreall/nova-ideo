@@ -29,7 +29,7 @@ class CommentsView(BasicView):
     name = 'comments'
     validators = [CommentIdea.get_validator()]
     template = 'novaideo:views/idea_management/templates/comments.pt'
-    item_template = 'novaideo:views/idea_management/templates/comments_scroll.pt'
+    wrapper_template = 'novaideo:views/idea_management/templates/comments_scroll.pt'
     viewid = 'comments'
 
     def _datetimedelta(self, date):
@@ -115,14 +115,14 @@ COMMENT_MESSAGE = {'0': _(u"""Pas de fils de discussion"""),
 @view_config(
     name='commentidea',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class CommentIdeaView(MultipleView):
     title = _('Discuss the idea')
     description = _('Discuss the idea')
     name = 'commentidea'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CommentIdeaFormView, CommentsView)
 
     def get_message(self):

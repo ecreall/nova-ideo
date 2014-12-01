@@ -46,7 +46,7 @@ class CommentAmendmentFormView(CommentIdeaFormView):
 @view_config(
     name='commentamendment',
     context=Amendment,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class CommentAmendmentView(CommentIdeaView):
     title = _('Discuss the amendment')

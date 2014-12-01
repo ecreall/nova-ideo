@@ -21,7 +21,7 @@ from novaideo import _
 @view_config(
     name='editinvitations',
     context=NovaIdeoApplication,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class EditInvitationsView(FormView):
 

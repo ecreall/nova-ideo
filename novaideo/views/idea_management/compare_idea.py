@@ -144,13 +144,13 @@ class CompareIdeaFormView(FormView):
 @view_config(
     name='compareidea',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class CompareIdeaView(MultipleView):
     title = _('Compare versions')
     name = 'compareidea'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CompareIdeaFormView, DiffView)
 
     def get_message(self):

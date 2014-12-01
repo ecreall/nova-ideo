@@ -18,7 +18,7 @@ from novaideo import _
 @view_config(
     name='seeorganization',
     context=Organization,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeOrganizationView(BasicView):
     title = _('Details')

@@ -31,7 +31,7 @@ class AcceptInvitationSchema(Schema):
 @view_config(
     name='accept_invitation',
     context=Invitation,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class AcceptInvitationView(FormView):
 

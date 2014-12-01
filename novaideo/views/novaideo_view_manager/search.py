@@ -83,7 +83,7 @@ class SearchSchema(Schema):
 
 @view_config(
     name='search',
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SearchView(FormView):
     title = _('Search')
@@ -92,7 +92,7 @@ class SearchView(FormView):
     schema = SearchSchema()
     behaviors = [Search]
     formid = 'formsearch'
-    item_template = 'pontus:templates/subview_sample.pt'
+    wrapper_template = 'pontus:dace_ui_extension/templates/simple_view_wrapper.pt'
 
     def get_appstruct(self):
         post = getattr(self, 'postedform', self.request.POST)
@@ -185,7 +185,7 @@ def search(text, content_types, user):
 @view_config(
     name='',
     context=NovaIdeoApplication,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SearchResultView(BasicView):
     title = _('Nova-Ideo contents')

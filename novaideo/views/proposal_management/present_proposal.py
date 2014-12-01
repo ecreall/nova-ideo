@@ -93,7 +93,7 @@ class PresentProposalFormView(FormView):
 @view_config(
     name='presentproposal',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class PresentProposalView(PresentIdeaView):
     title = _('Submit the proposal to others')

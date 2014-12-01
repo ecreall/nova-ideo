@@ -18,7 +18,7 @@ from novaideo import _
 @view_config(
     name='selectentity',
     context=Entity,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SelectEntityView(BasicView):
     title = _('Add to my selections')

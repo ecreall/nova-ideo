@@ -22,7 +22,7 @@ from novaideo.content.processes import get_states_mapping
 @view_config(
     name='seeperson',
     context=Person,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeePersonView(BasicView):
     title = ''

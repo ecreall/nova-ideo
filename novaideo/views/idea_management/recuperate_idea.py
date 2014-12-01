@@ -17,7 +17,7 @@ from novaideo import _
 @view_config(
     name='recuperateidea',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class RecuperateIdeaView(BasicView):
     title = _('Recuperate')

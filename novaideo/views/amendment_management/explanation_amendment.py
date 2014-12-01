@@ -81,7 +81,7 @@ class ExplanationFormView(FormView):
 @view_config(
     name='explanationamendment',
     context=Amendment,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class ExplanationView(MultipleView):
     title = _('Explain your modifications')

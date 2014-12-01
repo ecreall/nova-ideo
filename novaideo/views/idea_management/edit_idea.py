@@ -28,7 +28,7 @@ class EditIdeaFormView(FormView):
                                   'attached_files'])
     behaviors = [EditIdea, Cancel]
     formid = 'formeditidea'
-    item_template = 'pontus:templates/subview_sample.pt'
+    wrapper_template = 'pontus:dace_ui_extension/templates/simple_view_wrapper.pt'
     name = 'editIdea'
 
     def default_data(self):
@@ -48,13 +48,13 @@ class EditIdeaActionsView(MultipleView):
 @view_config(
     name='editidea',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class EditIdeaView(MultipleView):
     title = _('Edit idea')
     name = 'editidea'
-    item_template = 'novaideo:views/templates/subview.pt'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
+    wrapper_template = 'novaideo:views/templates/view_wrapper.pt'
+    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
     views = (EditIdeaFormView, EditIdeaActionsView)
 
 

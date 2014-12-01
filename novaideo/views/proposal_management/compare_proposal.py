@@ -42,7 +42,7 @@ class CompareProposalFormView(CompareIdeaFormView):
 @view_config(
     name='compareproposal',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class CompareProposalView(CompareIdeaView):
     title = _('Compare versions')

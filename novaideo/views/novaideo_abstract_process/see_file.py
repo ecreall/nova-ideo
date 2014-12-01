@@ -17,7 +17,7 @@ from novaideo.core import  FileEntity
 @view_config(
     name='seefile',
     context=FileEntity,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeFileView(BasicView):
     title = ''

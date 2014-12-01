@@ -3,7 +3,7 @@
 
 <div class="row scroll-able result-scroll" tal:define="batch_value batch|nothing">
   <div tal:condition="bodies" id="${(batch_value and batch_value.target.replace('#', '')) or 'results'}" class="results">
-    <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('pontus:templates/batching.pt', 'batching')"/>
+    <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
     <div class="col-md-12">
       <div tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
     </div>

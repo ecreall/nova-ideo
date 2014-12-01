@@ -18,7 +18,7 @@ from novaideo import _
 @view_config(
     name='publishasproposal',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishAsProposalView(BasicView):
     title = _('Publish as a proposal')

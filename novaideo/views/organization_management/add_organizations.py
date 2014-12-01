@@ -30,7 +30,7 @@ class AddOrganizationsSchema(Schema):
 @view_config(
     name='add_organizations',
     context=NovaIdeoApplication,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class AddOrganizationsView(FormView):
 

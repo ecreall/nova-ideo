@@ -18,7 +18,7 @@ from novaideo import _
 @view_config(
     name='withdrawtoken',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class WithdrawTokenView(BasicView):
     title = _('Withdraw my token')

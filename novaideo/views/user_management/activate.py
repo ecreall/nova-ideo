@@ -17,7 +17,7 @@ from novaideo import _
 @view_config(
     name='activate',
     context=Person,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class ActivateView(BasicView):
     title = _('Activate the member')

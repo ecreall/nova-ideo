@@ -24,7 +24,7 @@ from novaideo.core import BATCH_DEFAULT_SIZE
 @view_config(
     name='seemyparticipations',
     context=NovaIdeoApplication,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeMyParticipationsView(BasicView):
     title = _('My participations')

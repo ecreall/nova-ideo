@@ -17,7 +17,7 @@ from novaideo import _
 @view_config(
     name='deactivate',
     context=Person,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class DeactivateView(BasicView):
     title = _('Deactivate the member')

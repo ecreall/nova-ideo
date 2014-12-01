@@ -18,7 +18,7 @@ from novaideo import _
 @view_config(
     name='opposeproposal',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class OpposeProposalView(BasicView):
     title = _('Oppose')

@@ -29,7 +29,7 @@ class DetailAmendmentView(BasicView):
     name = 'seeAmendment'
     behaviors = [SeeAmendment]
     template = 'novaideo:views/amendment_management/templates/see_amendment.pt'
-    item_template = 'pontus:templates/subview_sample.pt'
+    wrapper_template = 'pontus:dace_ui_extension/templates/simple_view_wrapper.pt'
     viewid = 'seeamendment'
     validate_behaviors = False
 
@@ -115,12 +115,12 @@ class SeeAmendmentActionsView(MultipleView):
 @view_config(
     name='seeamendment',
     context=Amendment,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeAmendmentView(MultipleView):
     title = ''
     name = 'seeamendment'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
+    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
     views = (DetailAmendmentView, SeeAmendmentActionsView)
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/comment.js', 

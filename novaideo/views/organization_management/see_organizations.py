@@ -22,7 +22,7 @@ from novaideo import _
 @view_config(
     name='seeorganizations',
     context=NovaIdeoApplication,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeOrganizationsView(BasicView):
     title = _('Organizations')

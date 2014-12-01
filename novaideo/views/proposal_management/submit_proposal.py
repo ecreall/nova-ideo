@@ -44,7 +44,7 @@ class SubmitProposalFormView(FormView):
 @view_config(
     name='submitproposal',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SubmitProposalView(MultipleView):
     title = _('Publish the proposal')

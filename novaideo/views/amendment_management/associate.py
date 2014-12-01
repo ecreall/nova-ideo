@@ -44,7 +44,7 @@ class AssociateFormView(FormView):
 @view_config(
     name='associateamendment',
     context=Amendment,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class AssociateView(AssociateIdeaView):
     title = _('Associate the amendment')

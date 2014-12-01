@@ -19,7 +19,7 @@ from novaideo import _
 @view_config(
     name='duplicateidea',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class DuplicateIdeaView(FormView):
     title = _('Duplicate')

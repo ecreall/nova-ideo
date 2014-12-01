@@ -30,7 +30,7 @@ class UploadUsersSchema(Schema):
 @view_config(
     name='upload_users',
     context=NovaIdeoApplication,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class UploadUsersView(FormView):
 

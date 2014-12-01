@@ -54,7 +54,7 @@
             type="text/javascript"></script>
     <script src="${su('substanced.sdi:static/js/sdi.js')}"
             type="text/javascript"></script>
-    <script src="${su('pontus.dace_ui_extension:static/daceui/api.js')}"
+    <script src="${su('pontus.dace_ui_extension:static/js/dace_ui.js')}"
             type="text/javascript"></script>
     <script src="${su('pontus.dace_ui_extension:static/jquery.infinitescroll.js')}"
             type="text/javascript"></script>

@@ -21,7 +21,7 @@ from novaideo import _
 @view_config(
     name='createfile',
     context=NovaIdeoApplication,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class CreateFileView(FormView):
 

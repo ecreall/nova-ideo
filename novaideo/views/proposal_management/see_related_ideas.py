@@ -25,7 +25,7 @@ ADDIDEAS_MESSAGES = {'0': _(u"""Pas d'idées utilisées"""),
 @view_config(
     name='addideas',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeRelatedIdeasView(BasicView):
     title = _('See related ideas')
@@ -33,7 +33,7 @@ class SeeRelatedIdeasView(BasicView):
     name = 'relatedideas'
     behaviors = [SeeRelatedIdeas]
     template = 'novaideo:views/idea_management/templates/related_contents.pt'
-    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     viewid = 'relatedideas'
 
 

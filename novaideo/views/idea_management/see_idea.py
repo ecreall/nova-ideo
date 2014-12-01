@@ -26,7 +26,7 @@ class DetailIdeaView(BasicView):
     name = 'seeIdea'
     behaviors = [SeeIdea]
     template = 'novaideo:views/idea_management/templates/see_idea.pt'
-    item_template = 'pontus:templates/subview_sample.pt'
+    wrapper_template = 'pontus:dace_ui_extension/templates/simple_view_wrapper.pt'
     viewid = 'seeidea'
     validate_behaviors = False
 
@@ -81,12 +81,12 @@ class SeeIdeaActionsView(MultipleView):
 @view_config(
     name='seeidea',
     context=Idea,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeIdeaView(MultipleView):
     title = ''
     name = 'seeidea'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
+    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
     views = (DetailIdeaView, SeeIdeaActionsView)
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/compare_idea.js',

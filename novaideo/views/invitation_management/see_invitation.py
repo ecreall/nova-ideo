@@ -24,7 +24,7 @@ from novaideo import _
 @view_config(
     name='seeinvitation',
     context=NovaIdeoApplication,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeInvitationView(BasicView):
     title = _('Details')

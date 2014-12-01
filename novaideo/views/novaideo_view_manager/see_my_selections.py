@@ -24,7 +24,7 @@ from novaideo.core import BATCH_DEFAULT_SIZE
 @view_config(
     name='seemyselections',
     context=NovaIdeoApplication,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeMySelectionsView(BasicView):
     title = _('My selections')

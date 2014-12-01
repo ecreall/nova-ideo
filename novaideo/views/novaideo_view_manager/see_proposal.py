@@ -37,7 +37,7 @@ class DetailProposalView(BasicView):
     name = 'seeProposal'
     behaviors = [SeeProposal]
     template = 'novaideo:views/novaideo_view_manager/templates/see_proposal.pt'
-    item_template = 'pontus:templates/subview_sample.pt'
+    wrapper_template = 'pontus:dace_ui_extension/templates/simple_view_wrapper.pt'
     viewid = 'seeproposal'
     filigrane_template = 'novaideo:views/novaideo_view_manager/templates/filigrane.pt'
     validate_behaviors = False
@@ -169,12 +169,12 @@ class SeeProposalActionsView(MultipleView):
 @view_config(
     name='seeproposal',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeProposalView(MultipleView):
     title = ''
     name = 'seeproposal'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
+    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/correct_proposal.js',
                                 'novaideo:static/js/comment.js',

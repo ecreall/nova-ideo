@@ -45,7 +45,7 @@ class CommentProposalFormView(CommentIdeaFormView):
 @view_config(
     name='commentproposal',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class CommentProposalView(CommentIdeaView):
     title = _('Discuss the proposal')

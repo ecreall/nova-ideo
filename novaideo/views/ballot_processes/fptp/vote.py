@@ -87,14 +87,14 @@ class VoteFormView(FormView):
 @view_config(
     name='votefptp',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class VoteViewMultipleView(MultipleView):
     title = _('Vote')
     name = 'votefptp'
     viewid = 'votefptp'
-    template = 'pontus.dace_ui_extension:templates/sample_mergedmultipleview.pt'
-    item_template = 'novaideo:views/ballot_processes/templates/panel_item.pt'
+    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    wrapper_template = 'novaideo:views/ballot_processes/templates/panel_item.pt'
     views = (VoteViewStudyReport, VoteFormView)
     validators = [Vote.get_validator()]
 

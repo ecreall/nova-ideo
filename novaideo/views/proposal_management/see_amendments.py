@@ -30,7 +30,7 @@ AMENDMENTS_MESSAGES = {'0': _(u"""Pas d'amendements"""),
 @view_config(
     name='editamendments',
     context=Proposal,
-    renderer='pontus:templates/view.pt',
+    renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeAmendmentsView(BasicView):
     title = _('See amendments')
@@ -38,7 +38,7 @@ class SeeAmendmentsView(BasicView):
     description = _("See amendments")
     behaviors = [SeeAmendments]
     template = 'novaideo:views/proposal_management/templates/amendments.pt'
-    item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     viewid = 'editamendments'
 
 
