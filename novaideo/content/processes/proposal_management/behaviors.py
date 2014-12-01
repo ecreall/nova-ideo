@@ -9,6 +9,7 @@ This module represent all of behaviors used in the
 Proposal management process definition. 
 """
 import datetime
+import transaction
 from bs4 import BeautifulSoup
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
@@ -1333,6 +1334,7 @@ class Participate(InfiniteCardinality):
             workitems = self.process.getWorkItems()
             publication_wi = workitems['proposalmanagement.votingpublication']
             action = publication_wi.actions[0]
+            #action is valide
             action.execute(context, request, {})
         except Exception:
             pass
@@ -1371,7 +1373,6 @@ class Participate(InfiniteCardinality):
             wg.reindex()
             self._send_mail_to_user(WATINGLIST_SUBJECT, WATINGLIST_MESSAGE,
                  user, context, request)
-
 
         return True
 
