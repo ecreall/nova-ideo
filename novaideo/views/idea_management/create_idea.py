@@ -4,12 +4,14 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import datetime
 from pyramid.view import view_config
 from substanced.util import get_oid
 from pyramid import renderers
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import get_obj
+from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
@@ -18,6 +20,7 @@ from pontus.view import BasicView
 from novaideo.content.processes.idea_management.behaviors import  CreateIdea
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.core import to_localized_time
 from novaideo import _
 
 
@@ -38,6 +41,16 @@ class CreateIdeaView(FormView):
     behaviors = [CreateIdea, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'
+
+    def default_data(self):
+      localizer = self.request.localizer
+      user = get_current()
+      time = to_localized_time(datetime.datetime.today())
+      title = localizer.translate(_('Idea by'))+' '+\
+              getattr(user, 'title', user.name)+' '+localizer.translate(_('the'))+' '+\
+              time
+      return {'title': title}
+              
 
 
 @view_config(name='ideasmanagement',
