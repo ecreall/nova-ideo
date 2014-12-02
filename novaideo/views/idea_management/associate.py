@@ -1,9 +1,10 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
 # licence: AGPL
 # author: Amen Souissi
-# -*- coding: utf8 -*-
+
 import deform
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
@@ -25,8 +26,8 @@ from novaideo.core import can_access
 
 
 ASSOCIATION_MESSAGES = {'0': _(u"""Pas de contenus asociés"""),
-                      '1': _(u"""Un contenu asocié"""),
-                      '*': _(u"""Contenus asociés""")}
+                        '1': _(u"""Un contenu asocié"""),
+                        '*': _(u"""Contenus asociés""")}
 
 
 class RelatedContentsView(BasicView):
@@ -78,10 +79,11 @@ class RelatedContentsView(BasicView):
         for correlation in correlations:
             contents = correlation.targets
             for content in contents:
-                correlation_data, resources, messages, action_updated =  self._correlation_action(correlation)
-                correlation_data.update({'content':content, 
-                                        'url':content.url(self.request), 
-                                        'correlation': correlation})
+                correlation_data, resources, \
+                messages, action_updated = self._correlation_action(correlation)
+                correlation_data.update({'content': content, 
+                                         'url': content.url(self.request), 
+                                         'correlation': correlation})
                 relatedcontents.append(correlation_data)
                 isactive = action_updated or isactive
                 self._update_data(messages, resources, 
@@ -89,9 +91,10 @@ class RelatedContentsView(BasicView):
 
         for correlation in target_correlations:
             content = correlation.source
-            correlation_data, resources, messages, action_updated =  self._correlation_action(correlation)
-            correlation_data.update({'content':content, 
-                                     'url':content.url(self.request), 
+            correlation_data, resources, \
+            messages, action_updated = self._correlation_action(correlation)
+            correlation_data.update({'content': content, 
+                                     'url': content.url(self.request), 
                                      'correlation': correlation})
             relatedcontents.append(correlation_data)
             isactive = action_updated or isactive
@@ -160,8 +163,8 @@ class AssociateView(MultipleView):
 
     def get_message(self):
         message = (ASSOCIATION_MESSAGES['0']).format()
-        if self.children:
-            message = getattr(self.children[0], 'message', message)
+        if self.validated_children:
+            message = getattr(self.validated_children[0], 'message', message)
 
         return message
 

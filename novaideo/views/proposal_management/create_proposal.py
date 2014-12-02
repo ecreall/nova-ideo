@@ -39,7 +39,7 @@ class RelatedIdeasView(BasicView):
         result = {}
         target = None
         try:
-            editform = self.parent.parent.children[0]
+            editform = self.parent.parent.validated_children[0]
             target = editform.viewid + '_' + editform.formid 
         except Exception:
             pass

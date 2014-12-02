@@ -1,9 +1,10 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
 # licence: AGPL
 # author: Amen Souissi
-# -*- coding: utf8 -*-
+
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -19,8 +20,8 @@ from novaideo import _
 
 
 ADDIDEAS_MESSAGES = {'0': _(u"""Pas d'idées utilisées"""),
-                   '1': _(u"""Une idée utilisée"""),
-                   '*': _(u"""Idées utilisées""")}
+                     '1': _(u"""Une idée utilisée"""),
+                     '*': _(u"""Idées utilisées""")}
 
 @view_config(
     name='addideas',
@@ -41,10 +42,10 @@ class SeeRelatedIdeasView(BasicView):
         self.execute(None)
         user = get_current()
         relatedideas = [{'content':target, 
-                          'url':target.url(self.request),
-                          'correlation': correlation} \
+                         'url':target.url(self.request),
+                         'correlation': correlation} \
                         for target, correlation in \
-                         self.context.related_ideas.items()]
+                            self.context.related_ideas.items()]
         len_ideas = len(relatedideas)
 
         index = str(len_ideas)

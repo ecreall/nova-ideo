@@ -43,6 +43,13 @@ BATCH_DEFAULT_SIZE = 100
 NOVAIDO_ACCES_ACTIONS = {}
 
 
+def to_localized_time(date, date_only=False):
+    if date_only:
+        return date.strftime('%d/%m/%Y')
+    else:
+        return date.strftime('%d/%m/%Y %H:%M')
+
+
 class acces_action(object):
     """ Decorator for novaideo access actions. 
     An access action allows to view an object"""
@@ -181,7 +188,7 @@ class PresentableEntity(Entity):
             if user is not None:
                 result.append(user)
             else:
-                result.append(email)
+                result.append(email.split('@')[0].split('+')[0])
 
         return set(result)
 

@@ -165,13 +165,13 @@ class PublishAsProposal(ElementaryAction):
         root = getSite()
         user = get_current()
         proposal = Proposal()
+        localizer = request.localizer
+        proposal.title = context.title + \
+                         localizer.translate(_(" (the proposal)"))
         root.addtoproperty('proposals', proposal)
         for k in context.keywords_ref:
             proposal.addtoproperty('keywords_ref', k)
 
-        localizer = request.localizer
-        proposal.title = context.title + \
-                         localizer.translate(_(" (the proposal)"))
         proposal.text = context.text
         proposal.state.append('draft')
         #if ('to work' in context.state):
@@ -747,12 +747,12 @@ def seeideas_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
 
-def seeideas_roles_validation(process, context):
-    return has_role(role=('Member',)) 
+#def seeideas_roles_validation(process, context):
+#    return has_role(role=('Member',)) 
 
 
-def seeideas_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) 
+#def seeideas_processsecurity_validation(process, context):
+#    return global_user_processsecurity(process, context) 
 
 
 def seeideas_state_validation(process, context):
@@ -763,8 +763,8 @@ def seeideas_state_validation(process, context):
 class SeeRelatedIdeas(InfiniteCardinality):
     context = IProposal
     processs_relation_id = 'proposal'
-    processsecurity_validation = seeideas_processsecurity_validation
-    roles_validation = seeideas_roles_validation
+    #processsecurity_validation = seeideas_processsecurity_validation
+    #roles_validation = seeideas_roles_validation
     state_validation = seeideas_state_validation
     relation_validation = seeideas_relation_validation
 

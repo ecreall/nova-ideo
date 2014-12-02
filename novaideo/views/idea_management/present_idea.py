@@ -1,9 +1,10 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
 # licence: AGPL
 # author: Amen Souissi
-# -*- coding: utf8 -*-
+
 import colander
 import deform
 from pyramid.view import view_config
@@ -32,8 +33,8 @@ except NameError:
 
 
 PRESENT_MESSAGE = {'0': _(u"""Pas de personnes contactées"""),
-                       '1': _(u"""Une personne contactée"""),
-                       '*': _(u"""Personnes contactées""")}
+                   '1': _(u"""Une personne contactée"""),
+                   '*': _(u"""Personnes contactées""")}
 
 
 class SentToView(BasicView):
@@ -120,7 +121,9 @@ class PresentIdeaSchema(Schema):
         widget=members_choice,
         validator = colander.All(
                       Length(_, min=1,
-                           min_message="Vous devez sélectionner au moins {min} membre, ou saisir {min} adresse courrier électronique."),
+                             min_message="""Vous devez sélectionner """
+                                """au moins {min} membre, ou saisir {min}"""
+                                """ adresse courrier électronique."""),
                       emails_validator),
 
         title=_('Recipients')
@@ -173,6 +176,7 @@ class PresentIdeaFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PresentIdeaView(MultipleView):
+
     title = _('Submit the idea to others')
     description = _('Submit the idea to others')
     name = 'presentidea'
@@ -182,8 +186,8 @@ class PresentIdeaView(MultipleView):
 
     def get_message(self):
         message = (PRESENT_MESSAGE['0']).format()
-        if self.children:
-            message = getattr(self.children[0], 'message', message)
+        if self.validated_children:
+            message = getattr(self.validated_children[0], 'message', message)
 
         return message
 
