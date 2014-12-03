@@ -61,6 +61,9 @@ function menuSwitchChange(state, is_init) {
     }
 };
 
+function set_visited(){
+    $.cookie('visited', 'true', {path: '/',  expires: 1});
+}
 
 function init_switch() {
     var menustate = $.cookie('menu_switch_state');
@@ -130,6 +133,8 @@ function init_result_scroll(){
 
 $(document).ready(function(){
 
+  set_visited();
+  
   $( window ).resize(function(){
     resize_search_result()
   });

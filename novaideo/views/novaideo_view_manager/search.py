@@ -1,9 +1,10 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
 # licence: AGPL
 # author: Amen Souissi
-# -*- coding: utf8 -*-
+
 import re
 import colander
 import datetime
@@ -14,7 +15,7 @@ from substanced.util import Batch, get_oid
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import get_current
+from dace.objectofcollaboration.principal.util import get_current, Anonymous
 from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView
 from pontus.util import merge_dicts
@@ -192,7 +193,15 @@ class SearchResultView(BasicView):
     name = ''
     validators = [Search.get_validator()]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
+    alert_anonymou_template = 'novaideo:views/novaideo_view_manager/templates/alert_anonymous.pt'
     viewid = 'search_result'
+  
+    def add_first_visit_alert(self, user):
+        if isinstance(user, Anonymous) and \
+           not self.request.cookies.get('visited', False):
+            alert_body = self.content(result={},
+                        template=self.alert_anonymou_template)['body']
+            self.request.session.flash(alert_body, 'warning')
 
     def update(self):
         user = get_current()
@@ -231,6 +240,7 @@ class SearchResultView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         result  = merge_dicts(self.requirements_copy, result)
+        self.add_first_visit_alert(user)
         return result
 
 
