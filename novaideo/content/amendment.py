@@ -241,18 +241,32 @@ class Intention(object):
     @classmethod
     def eq(cls, intention1, intention2):
         """Return True if intention1 has a relation with intention2"""
+        
+        if intention1['comment'] != intention2['comment']:
+            return False
 
-        ideas1 = list(intention1['removed_ideas'])
-        ideas2 = list(intention2['removed_ideas'])
-        ideas1.extend(list(intention1['edited_ideas']))
-        ideas2.extend(list(intention2['edited_ideas']))
+        removed_ideas1 = list(intention1['removed_ideas'])
+        removed_ideas2 = list(intention2['removed_ideas'])
+        removed_eq = (len(removed_ideas1) == len(removed_ideas2)) and \
+                     all((e in removed_ideas2) for e in removed_ideas1)
+        if not removed_eq:
+            return False
+
+        edited_ideas1 = list(intention1['edited_ideas'])
+        edited_ideas2 = list(intention2['edited_ideas'])
+        edited_eq = (len(edited_ideas1) == len(edited_ideas2)) and \
+                    all((e in edited_ideas2) for e in edited_ideas1)
+        if not edited_eq:
+            return False
+
         added_ideas1 = list(intention1['added_ideas'])
         added_ideas2 = list(intention2['added_ideas'])
-        edited_inter =  (not ideas1 and not ideas2) or \
-                         any((e in ideas2) for e in ideas1)
-        added_inter = (not added_ideas1 and not added_ideas2) or \
-                       any((e in added_ideas2) for e in added_ideas1)
-        return edited_inter or added_inter
+        added_eq = (len(added_ideas1) == len(added_ideas2)) and \
+                   all((e in added_ideas2) for e in added_ideas1)
+        if not added_eq:
+            return False
+
+        return True
 
     @classmethod
     def get_intention(cls, view):
