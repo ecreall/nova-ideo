@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2014-12-02 10:15+0100\n"
+"POT-Creation-Date: 2014-12-03 12:55+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -118,38 +118,38 @@ msgstr "Alerte pour publication"
 msgid "Publish"
 msgstr "Publier"
 
-#: novaideo/views/idea_management/compare_idea.py:27
+#: novaideo/views/idea_management/compare_idea.py:28
 msgid "Pas de versions"
 msgstr ""
 
-#: novaideo/views/idea_management/compare_idea.py:28
+#: novaideo/views/idea_management/compare_idea.py:29
 msgid "Une version disponible"
 msgstr ""
 
-#: novaideo/views/idea_management/compare_idea.py:29
+#: novaideo/views/idea_management/compare_idea.py:30
 msgid "Versions disponibles"
 msgstr ""
 
-#: novaideo/views/idea_management/compare_idea.py:34
+#: novaideo/views/idea_management/compare_idea.py:35
 msgid "Diff result"
 msgstr "Différences de version"
 
-#: novaideo/views/idea_management/compare_idea.py:129
+#: novaideo/views/idea_management/compare_idea.py:130
 msgid "Compare idea form"
 msgstr "Formulaire de comparaison de l'idée"
 
-#: novaideo/views/idea_management/compare_idea.py:150
-#: novaideo/views/proposal_management/compare_proposal.py:48
+#: novaideo/views/idea_management/compare_idea.py:151
+#: novaideo/views/proposal_management/compare_proposal.py:49
 #: novaideo/content/processes/idea_management/definition.py:98
 #: novaideo/content/processes/proposal_management/definition.py:392
 msgid "Compare versions"
 msgstr "Comparer des versions"
 
-#: novaideo/views/idea_management/compare_idea.py:117
+#: novaideo/views/idea_management/compare_idea.py:118
 msgid "Current version"
 msgstr "Version en cours"
 
-#: novaideo/views/idea_management/compare_idea.py:123
+#: novaideo/views/idea_management/compare_idea.py:124
 msgid "Last versions"
 msgstr "Versions précédentes"
 
@@ -158,29 +158,29 @@ msgstr "Versions précédentes"
 msgid "Recuperate"
 msgstr "Rétablir"
 
-#: novaideo/views/idea_management/associate.py:27
+#: novaideo/views/idea_management/associate.py:28
 msgid "Pas de contenus asociés"
 msgstr ""
 
-#: novaideo/views/idea_management/associate.py:28
+#: novaideo/views/idea_management/associate.py:29
 msgid "Un contenu asocié"
 msgstr ""
 
-#: novaideo/views/idea_management/associate.py:29
+#: novaideo/views/idea_management/associate.py:30
 msgid "Contenus asociés"
 msgstr ""
 
-#: novaideo/views/idea_management/associate.py:33
-#: novaideo/views/idea_management/associate.py:138
-#: novaideo/views/proposal_management/associate.py:34
+#: novaideo/views/idea_management/associate.py:34
+#: novaideo/views/idea_management/associate.py:141
+#: novaideo/views/proposal_management/associate.py:35
 #: novaideo/views/amendment_management/associate.py:34
 msgid "Related contents"
 msgstr "Contenus utilisés"
 
-#: novaideo/views/idea_management/associate.py:127
-#: novaideo/views/idea_management/associate.py:143
-#: novaideo/views/proposal_management/associate.py:24
-#: novaideo/views/proposal_management/associate.py:39
+#: novaideo/views/idea_management/associate.py:130
+#: novaideo/views/idea_management/associate.py:146
+#: novaideo/views/proposal_management/associate.py:25
+#: novaideo/views/proposal_management/associate.py:40
 #: novaideo/views/amendment_management/associate.py:25
 #: novaideo/views/amendment_management/associate.py:39
 #: novaideo/content/comment.py:105
@@ -190,54 +190,54 @@ msgstr "Contenus utilisés"
 msgid "Associate"
 msgstr "Associer"
 
-#: novaideo/views/idea_management/associate.py:154
+#: novaideo/views/idea_management/associate.py:157
 #: novaideo/content/processes/idea_management/definition.py:90
 msgid "Associate the idea"
 msgstr "Associer l'idée"
 
-#: novaideo/views/idea_management/associate.py:159
+#: novaideo/views/idea_management/associate.py:162
 msgid "Associate the idea to an other content"
 msgstr "Associer l'idée à un autre contenu"
 
-#: novaideo/views/idea_management/present_idea.py:34
+#: novaideo/views/idea_management/present_idea.py:35
 msgid "Pas de personnes contactées"
 msgstr ""
 
-#: novaideo/views/idea_management/present_idea.py:35
+#: novaideo/views/idea_management/present_idea.py:36
 msgid "Une personne contactée"
 msgstr ""
 
-#: novaideo/views/idea_management/present_idea.py:36
+#: novaideo/views/idea_management/present_idea.py:37
 msgid "Personnes contactées"
 msgstr ""
 
-#: novaideo/views/idea_management/present_idea.py:40
+#: novaideo/views/idea_management/present_idea.py:41
 msgid "Sent to"
 msgstr "Envoyer à"
 
-#: novaideo/views/idea_management/present_idea.py:153
-#: novaideo/views/idea_management/present_idea.py:176
-#: novaideo/views/idea_management/present_idea.py:177
+#: novaideo/views/idea_management/present_idea.py:156
+#: novaideo/views/idea_management/present_idea.py:180
+#: novaideo/views/idea_management/present_idea.py:181
 #: novaideo/content/processes/idea_management/definition.py:82
 msgid "Submit the idea to others"
 msgstr "Communiquer l'idée à des tiers"
 
-#: novaideo/views/idea_management/present_idea.py:126
+#: novaideo/views/idea_management/present_idea.py:129
 msgid "Recipients"
 msgstr "À"
 
-#: novaideo/views/idea_management/present_idea.py:132
-#: novaideo/views/proposal_management/present_proposal.py:63
+#: novaideo/views/idea_management/present_idea.py:135
+#: novaideo/views/proposal_management/present_proposal.py:64
 #: novaideo/views/amendment_management/present_amendment.py:63
 msgid "Subject"
 msgstr "Sujet"
 
-#: novaideo/views/idea_management/present_idea.py:145
+#: novaideo/views/idea_management/present_idea.py:148
 msgid "Send to me"
 msgstr "Me mettre en copie"
 
-#: novaideo/views/idea_management/present_idea.py:165
-#: novaideo/views/proposal_management/present_proposal.py:88
+#: novaideo/views/idea_management/present_idea.py:168
+#: novaideo/views/proposal_management/present_proposal.py:89
 #: novaideo/views/amendment_management/present_amendment.py:88
 msgid "Present"
 msgstr "Communiquer"
@@ -440,7 +440,7 @@ msgstr "Désactivier le membre"
 msgid "Activate the member"
 msgstr "Activer le membre"
 
-#: novaideo/views/user_management/edit.py:79
+#: novaideo/views/user_management/edit.py:80
 #: novaideo/views/proposal_management/edit_proposal.py:170
 #: novaideo/views/proposal_management/edit_proposal.py:198
 #: novaideo/views/working_group_management/edit.py:27
@@ -457,19 +457,19 @@ msgstr "Activer le membre"
 msgid "Edit"
 msgstr "Modifier"
 
-#: novaideo/views/user_management/edit.py:41
+#: novaideo/views/user_management/edit.py:42
 msgid "Your Current Password"
 msgstr "Votre mot de passe actuel"
 
-#: novaideo/views/user_management/edit.py:47
+#: novaideo/views/user_management/edit.py:48
 msgid "New Password"
 msgstr "Nouveau mot de passe"
 
-#: novaideo/views/user_management/edit.py:30
+#: novaideo/views/user_management/edit.py:31
 msgid " Invalid current password"
 msgstr "Mot de passe incorrect"
 
-#: novaideo/views/user_management/edit.py:69
+#: novaideo/views/user_management/edit.py:70
 msgid "Change Password"
 msgstr "Changer le mot de passe"
 
@@ -687,14 +687,14 @@ msgstr "Soutenir"
 msgid "Submit the proposal"
 msgstr "Soumettre la proposition au collectif"
 
-#: novaideo/views/proposal_management/present_proposal.py:76
-#: novaideo/views/proposal_management/present_proposal.py:99
+#: novaideo/views/proposal_management/present_proposal.py:77
 #: novaideo/views/proposal_management/present_proposal.py:100
+#: novaideo/views/proposal_management/present_proposal.py:101
 #: novaideo/content/processes/proposal_management/definition.py:352
 msgid "Submit the proposal to others"
 msgstr "Communiquer la proposition à des tiers"
 
-#: novaideo/views/proposal_management/compare_proposal.py:28
+#: novaideo/views/proposal_management/compare_proposal.py:29
 msgid "Compare proposal form"
 msgstr "Formulaire de comparaison de la proposition"
 
@@ -732,7 +732,7 @@ msgstr "Voir les amendements"
 msgid "Withdraw"
 msgstr "Retirer"
 
-#: novaideo/views/proposal_management/amendable.py:22
+#: novaideo/views/proposal_management/amendable.py:23
 #: novaideo/content/processes/__init__.py:33
 #: novaideo/content/processes/__init__.py:65
 #: novaideo/content/processes/proposal_management/definition.py:328
@@ -751,12 +751,12 @@ msgstr "Relecture effectuée"
 msgid "Add a paragraph"
 msgstr "Ajouter un paragraphe"
 
-#: novaideo/views/proposal_management/associate.py:50
+#: novaideo/views/proposal_management/associate.py:51
 #: novaideo/content/processes/proposal_management/definition.py:364
 msgid "Associate the proposal"
 msgstr "Associer la proposition"
 
-#: novaideo/views/proposal_management/associate.py:51
+#: novaideo/views/proposal_management/associate.py:52
 msgid "Associate the proposal to an other content"
 msgstr "Associer la proposition à un autre contenu"
 
@@ -807,7 +807,7 @@ msgstr "Noter une nouvelle idée"
 
 #: novaideo/views/proposal_management/edit_proposal.py:45
 #: novaideo/views/amendment_management/explanation_amendment.py:26
-#: novaideo/views/novaideo_view_manager/search.py:251
+#: novaideo/views/novaideo_view_manager/search.py:261
 #: novaideo/content/correlation.py:54
 #: novaideo/content/idea.py:44
 #: novaideo/content/comment.py:33
@@ -857,26 +857,26 @@ msgstr "S'opposer"
 msgid "Discuss the proposal"
 msgstr "Discuter la proposition"
 
-#: novaideo/views/proposal_management/amendments_result.py:23
+#: novaideo/views/proposal_management/amendments_result.py:24
 #: novaideo/content/processes/proposal_management/definition.py:348
 #: novaideo/content/processes/proposal_management/definition.py:349
 msgid "Amendments result"
 msgstr "Résultats sur les amednements"
 
-#: novaideo/views/proposal_management/see_related_ideas.py:21
+#: novaideo/views/proposal_management/see_related_ideas.py:22
 msgid "Pas d'idées utilisées"
 msgstr ""
 
-#: novaideo/views/proposal_management/see_related_ideas.py:22
+#: novaideo/views/proposal_management/see_related_ideas.py:23
 msgid "Une idée utilisée"
 msgstr ""
 
-#: novaideo/views/proposal_management/see_related_ideas.py:23
+#: novaideo/views/proposal_management/see_related_ideas.py:24
 msgid "Idées utilisées"
 msgstr ""
 
-#: novaideo/views/proposal_management/see_related_ideas.py:31
 #: novaideo/views/proposal_management/see_related_ideas.py:32
+#: novaideo/views/proposal_management/see_related_ideas.py:33
 msgid "See related ideas"
 msgstr "Voir les idées utilisées"
 
@@ -1117,7 +1117,7 @@ msgid "Members"
 msgstr "Membres"
 
 #: novaideo/views/templates/panels/novaideo_contents.pt:27
-#: novaideo/views/novaideo_view_manager/search.py:39
+#: novaideo/views/novaideo_view_manager/search.py:40
 #: novaideo/content/novaideo_application.py:133
 msgid "Idea"
 msgstr "Idée"
@@ -1128,7 +1128,7 @@ msgid "Ideas"
 msgstr "Idées"
 
 #: novaideo/views/templates/panels/novaideo_contents.pt:41
-#: novaideo/views/novaideo_view_manager/search.py:40
+#: novaideo/views/novaideo_view_manager/search.py:41
 msgid "Proposal"
 msgstr "Proposition"
 
@@ -1285,22 +1285,22 @@ msgstr "Mes sélections"
 msgid "My supports"
 msgstr "Mes prises de position"
 
-#: novaideo/views/novaideo_view_manager/search.py:41
+#: novaideo/views/novaideo_view_manager/search.py:42
 msgid "Person"
 msgstr "Membre"
 
-#: novaideo/views/novaideo_view_manager/search.py:89
+#: novaideo/views/novaideo_view_manager/search.py:90
 #: novaideo/views/novaideo_view_manager/templates/search_textinput.pt:9
 #: novaideo/content/processes/novaideo_view_manager/definition.py:44
 #: novaideo/content/processes/novaideo_view_manager/definition.py:45
 msgid "Search"
 msgstr "Rechercher"
 
-#: novaideo/views/novaideo_view_manager/search.py:191
+#: novaideo/views/novaideo_view_manager/search.py:192
 msgid "Nova-Ideo contents"
 msgstr "Contenus de Nova-Ideo"
 
-#: novaideo/views/novaideo_view_manager/search.py:77
+#: novaideo/views/novaideo_view_manager/search.py:78
 msgid "The keyword search is done using commas between keywords."
 msgstr "La recherche par mots clés se fait en utilisant des virgules entre les mots clés."
 
@@ -1338,6 +1338,10 @@ msgstr "Le nombre maximum de participants a été atteint"
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:196
 msgid "Votes"
 msgstr "Votes"
+
+#: novaideo/views/novaideo_view_manager/templates/alert_anonymous.pt:1
+msgid "Pour noter une idée, rédiger une proposition, accéder à ses éléments ou intervenir sur une idée ou une proposition, vous devez préalablement vous inscrire et vous connecter"
+msgstr ""
 
 #: novaideo/views/correlation_management/comment_correlation.py:31
 msgid "Comment form"
