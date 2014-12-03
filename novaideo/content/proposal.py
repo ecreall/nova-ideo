@@ -5,7 +5,6 @@
 # author: Amen Souissi
 
 import colander
-import deform
 from webob.multidict import MultiDict
 from persistent.list import PersistentList
 from zope.interface import implementer

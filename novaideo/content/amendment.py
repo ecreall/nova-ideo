@@ -5,7 +5,6 @@
 # author: Amen Souissi
 
 import colander
-import deform
 from zope.interface import implementer
 from persistent.dict import PersistentDict
 

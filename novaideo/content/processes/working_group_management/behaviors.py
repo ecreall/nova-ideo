@@ -3,15 +3,10 @@
 
 # licence: AGPL
 # author: Amen Souissi
+
 from pyramid.httpexceptions import HTTPFound
 
-from dace.processinstance.activity import (
-    ElementaryAction,
-    LimitedCardinality,
-    InfiniteCardinality,
-    ActionType,
-    StartStep,
-    EndStep)
+from dace.processinstance.activity import InfiniteCardinality
 
 from novaideo.content.interface import IWorkingGroup
 

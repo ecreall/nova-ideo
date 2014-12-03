@@ -1,11 +1,11 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
 # licence: AGPL
 # author: Amen Souissi
-# -*- coding: utf8 -*-
+
 import colander
-import deform.widget
 from webob.multidict import MultiDict
 from zope.interface import implementer
 
@@ -58,7 +58,6 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     text = colander.SchemaNode(
         colander.String(),
-        #widget=deform.widget.TextAreaWidget(rows=5, cols=30),
         widget=LimitedTextAreaWidget(rows=5, 
                                      cols=30, 
                                      limit=600,
