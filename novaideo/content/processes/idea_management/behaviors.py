@@ -187,6 +187,7 @@ class EditIdea(InfiniteCardinality):
         copy_keywords, newkeywords = root.get_keywords(context.keywords)
         copy_of_idea.setproperty('keywords_ref', copy_keywords)
         copy_of_idea.setproperty('version', last_version)
+        copy_of_idea.setproperty('originalentity', context.originalentity)
         if last_version is not None:
             grant_roles(roles=(('Owner', last_version), ))
 

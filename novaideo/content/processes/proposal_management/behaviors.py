@@ -1460,6 +1460,7 @@ class AmendmentsResult(ElementaryAction):
         copy_of_proposal.setproperty('keywords_ref', copy_keywords)
         contextname = context.__name__
         copy_of_proposal.setproperty('version', context)
+        copy_of_proposal.setproperty('originalentity', context.originalentity)
         root.rename(copy_of_proposal.__name__, contextname)
         copy_of_proposal.state = PersistentList(['proofreading'])
         copy_of_proposal.setproperty('author', context.author)
