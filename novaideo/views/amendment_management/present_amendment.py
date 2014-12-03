@@ -50,6 +50,7 @@ def default_message(node, kw):
                 recipient_first_name='',
                 recipient_last_name='',
                 subject_url=url,
+                subject_title=getattr(context, 'title', context.name),
                 my_title=localizer.translate(_(getattr(user, 'user_title',''))),
                 my_first_name=getattr(user, 'first_name', user.name),
                 my_last_name=getattr(user, 'last_name','')

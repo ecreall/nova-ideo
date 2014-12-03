@@ -420,6 +420,7 @@ class PresentIdea(InfiniteCardinality):
                 recipient_first_name=recipient_first_name,
                 recipient_last_name=recipient_last_name,
                 subject_url=url,
+                subject_title=getattr(context, 'title', context.name),
                 my_title=user_title,
                 my_first_name=user_first_name,
                 my_last_name=user_last_name

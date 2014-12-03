@@ -25,7 +25,7 @@ Bonjour {recipient_title} {recipient_last_name},
 
 
 PRESENTATION_IDEA_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour,
 
 {my_first_name} {my_last_name} souhaite vous présenter l'idée {subject_title} figurant sur la plateforme Nova-Ideo.org sous {subject_url} .""" + \
  PORTAL_PRESENTATION + PORTAL_SIGNATURE
@@ -36,14 +36,14 @@ PRESENTATION_IDEA_SUBJECT = u"""{subject_title}"""
 CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription"""
 
 CONFIRMATION_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour,
 
 Bienvenue sur la plateforme Nova-Ideo.org. L'accès à la plateforme se fait sous {login_url}. Pour y ajouter des idées ou des propositions, vous devez préalablement vous identifier avec votre courriel et votre mot de passe.
 """ + PORTAL_SIGNATURE
 
 
 PRESENTATION_PROPOSAL_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour,
 
 {my_first_name} {my_last_name} souhaite vous présenter la proposition {subject_title} figurant sur la plateforme Nova-Ideo.org sous {subject_url} .""" + \
  PORTAL_PRESENTATION + PORTAL_SIGNATURE
