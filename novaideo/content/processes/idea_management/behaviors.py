@@ -76,7 +76,8 @@ class CreateIdea(InfiniteCardinality):
 
 def duplicate_processsecurity_validation(process, context):
     return ((has_role(role=('Owner', context)) and \
-             not ('archived' in context.state)) or \
+             (not ('archived' in context.state)) or \
+              'version' in context.state) or \
            'published' in context.state) and \
            global_user_processsecurity(process, context) 
 
@@ -125,7 +126,8 @@ def del_processsecurity_validation(process, context):
 
 
 def del_state_validation(process, context):
-    return 'archived' in context.state
+    return 'archived' in context.state and \
+            not('version' in context.state)
 
 
 class DelIdea(InfiniteCardinality):
@@ -197,7 +199,7 @@ class EditIdea(InfiniteCardinality):
 
         result.extend(newkeywords)
         appstruct['keywords_ref'] = result
-        copy_of_idea.state = PersistentList(['archived'])
+        copy_of_idea.state = PersistentList(['archived', 'version'])
         
         copy_of_idea.setproperty('author', get_current())
         context.set_data(appstruct)
@@ -298,7 +300,9 @@ def re_processsecurity_validation(process, context):
 
 
 def re_state_validation(process, context):
-    return 'archived' in context.state
+
+    return 'archived' in context.state and \
+            not('version' in context.state)
 
 
 class RecuperateIdea(InfiniteCardinality):

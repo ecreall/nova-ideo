@@ -20,6 +20,8 @@ from .comment_idea import CommentIdeaView
 from .compare_idea import CompareIdeaView
 
 
+_marker = object()
+
 
 class DetailIdeaView(BasicView):
     title = _('Details')
@@ -30,6 +32,14 @@ class DetailIdeaView(BasicView):
     viewid = 'seeidea'
     validate_behaviors = False
 
+    def _cant_publish_alert(self, actions):
+        #duplicated_text = getattr(getattr(self.context, 
+        #                                  'originalentity', _marker),
+        #                         'text', '')
+        if 'to work' in self.context.state:
+            return not any(a.title == 'Publish' for a in actions)
+
+        return False
 
     def update(self):
         self.execute(None) 
@@ -56,10 +66,12 @@ class DetailIdeaView(BasicView):
         result = {}
         values = {
                 'idea': self.context,
-                'state': get_states_mapping(user, self.context, self.context.state[0]),
+                'state': get_states_mapping(user, self.context,
+                                            self.context.state[0]),
                 'current_user': user,
                 'files': files_urls,
                 'global_actions': global_actions,
+                'cant_publish': self._cant_publish_alert(global_actions),
                 'text_actions': text_actions,
                }
         body = self.content(result=values, template=self.template)['body']
