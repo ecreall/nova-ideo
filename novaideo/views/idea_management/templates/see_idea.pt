@@ -25,7 +25,7 @@
 <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
 <h2 class="content-title"><img src="${request.static_url('novaideo:static/images/idea_picto32.png')}"> ${idea.title}</h2>
   <div class="object-description">
-   <small><span i18n:translate="">(Submitted by</span> <a tal:attributes="href request.resource_url(idea.author, '@@index')">${((idea.author is current_user) and 'Vous') or getattr(idea.author, 'title', idea.author.name)}</a> <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(idea.modified_at, date_only=True)"/> <span i18n:translate="">at</span> ${idea.modified_at.hour}:${idea.modified_at.minute}:${idea.modified_at.second} <span tal:omit-tag="" tal:condition="idea.originalentity is not None"><span i18n:translate="">, duplicated from the idea</span> <a tal:attributes="href request.resource_url(idea.originalentity, '@@index')">${idea.originalentity.title}</a></span>)
+   <small><span i18n:translate="">(Submitted by</span> <a tal:attributes="href request.resource_url(idea.author, '@@index')">${((idea.author is current_user) and 'Vous') or getattr(idea.author, 'title', idea.author.name)}</a> <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(idea.modified_at, date_only=True)"/> <span i18n:translate="">at</span> ${idea.modified_at.hour}:${idea.modified_at.minute}:${idea.modified_at.second}<span tal:omit-tag="" tal:condition="idea.originalentity is not None"><span i18n:translate="">, duplicated from the idea</span> <a tal:attributes="href request.resource_url(idea.originalentity, '@@index')">${idea.originalentity.title}</a></span>)
    </small>
   </div>
 </div>
