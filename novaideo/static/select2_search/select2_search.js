@@ -40,7 +40,7 @@ function init_select_search(select){
         var ismultiple = $(target).attr('multiple') == 'multiple';
         var dict_post = {};
         var text = $($(button.parents('.input-group').first()).children().filter('input[type|="text"]')).val();
-        dict_post['text'] = text;
+        dict_post['text_to_search'] = text;
         var url = button.data('url');
         $(button).addClass('disabled');
         $.get(url, dict_post, function(data) {
