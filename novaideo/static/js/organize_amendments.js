@@ -42,10 +42,14 @@ function scrollto(){
  var source = $('#amendment-diff');
  var element = $(source.find('span[data-item=\''+$(this).data('item')+'\']').first());
  var scrollvalue = source.scrollTop() + element.offset().top - source.offset().top - (source.height()/2);
+ var explanation = $($(element.find('#explanation_action').first()).find('dl.explanation-detail').first());
  source.animate({
     scrollTop: scrollvalue
     }, 500);
-
+ if (explanation.length==0){
+    $(element.find('button').first()).click() 
+ }
+ 
 };
 
 function init_explanation_item(){

@@ -1,6 +1,6 @@
 .select-container{
     background-color: white;
-    border: 1px solid #9b8345;
+    border: 1px solid #8d8d8d;
     box-shadow: -1px 0 4px 1px rgba(0, 0, 0, 0.28) inset;
     margin-top: -15px;
     min-height: 50px;
@@ -53,8 +53,8 @@
 }
 
 .sequence-item{
-    background-color: #c3a656;
-    border: 1px solid #9b8345;
+    background-color: #8d8d8d;
+    border: 1px solid #8d8d8d;
     border-radius: 7px;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 3px 2px rgba(0, 0, 0, 0.3);
     margin-left: 10px;
