@@ -177,7 +177,7 @@ class VoteFormView(FormView):
         oid = cstruct[OBJECT_OID]
         current_user = get_current()
         try:
-            subject = get_obj(oid)
+            subject = get_obj(int(oid))
             values = {'amendment': subject, 
                       'is_proposal': False, 
                       'current_user': current_user}
