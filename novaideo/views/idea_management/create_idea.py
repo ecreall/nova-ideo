@@ -65,7 +65,7 @@ class CreateIdeaView_Json(BasicView):
     def creat_idea(self):
         behavior = None
         try:
-            behavior = self.behaviorinstances['Create_an_idea']
+            behavior = self.behaviors_instances['Create_an_idea']
             values = {'title': self.params('title'),
                       'text': self.params('text')}
             idea = Idea()

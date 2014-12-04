@@ -43,7 +43,7 @@ class VoteViewStudyReport(BasicView):
         result = {}
         ballot_report = None
         try:
-            ballot_report = list(self.parent.validated_children[1].behaviorinstances.values())[0].process.ballot.report
+            ballot_report = list(self.parent.validated_children[1].behaviors_instances.values())[0].process.ballot.report
         except Exception:
             pass
 
@@ -71,7 +71,7 @@ class VoteFormView(FormView):
         ballot_report = None
         vote_type = 'string'
         try:
-            ballot_report = list(self.behaviorinstances.values())[0].process.ballot.report
+            ballot_report = list(self.behaviors_instances.values())[0].process.ballot.report
             vote_type = ballot_report.ballottype.subject_type_manager.vote_type
         except Exception:
             pass
@@ -100,7 +100,7 @@ class VoteViewMultipleView(MultipleView):
     def get_message(self):
         ballot_report = None
         try:
-            ballot_report = list(self.validated_children[1].behaviorinstances.values())[0].process.ballot.report
+            ballot_report = list(self.validated_children[1].behaviors_instances.values())[0].process.ballot.report
         except Exception:
             pass
 

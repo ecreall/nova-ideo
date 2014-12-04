@@ -57,7 +57,9 @@ from .behaviors import (
     WithdrawToken,
     SeeRelatedIdeas,
     ProofreadingDone,
-    CompareProposal
+    CompareProposal,
+    AMENDMENTS_CYCLE_DEFAULT_DURATION,
+    calculate_amendments_cycle_duration
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
@@ -66,11 +68,13 @@ from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 VOTE_PUBLISHING_MESSAGE = _("Vote for submission")
 
+
 VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
                           " the period for voting. In the case where the"
                           " majority are for the continuation of improvements"
                           " of the proposal, your vote for the duration of the"
                           " amendment period will be useful")
+
 
 VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
                            " the period for voting. In the case where the"
@@ -78,33 +82,14 @@ VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
                            " of the proposal, your vote for reopening working"
                            " group will be useful")
 
+
 VOTE_AMENDMENTS_MESSAGE = _("Vote for amendments")
+
 
 VP_DEFAULT_DURATION = datetime.timedelta(days=1)
 
-AMENDMENTS_CYCLE_DEFAULT_DURATION = {
-              "Three minutes": datetime.timedelta(minutes=3),
-              "Five minutes": datetime.timedelta(minutes=5),
-              "Ten minutes": datetime.timedelta(minutes=10),
-              "Twenty minutes": datetime.timedelta(minutes=20),
-              "Three days": datetime.timedelta(days=3),
-              "One week": datetime.timedelta(weeks=1),
-              "Two weeks": datetime.timedelta(weeks=2)}
 
 AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(days=1)
-
-
-
-def amendments_cycle_duration(process):
-    duration_ballot = getattr(process, 'duration_configuration_ballot', None)
-    if duration_ballot is not None:
-        electeds = duration_ballot.report.get_electeds()
-        if electeds:
-            return AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]] + \
-                   datetime.datetime.today()
-
-    return AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"] + \
-           datetime.datetime.today()
 
 
 def eg3_publish_condition(process):
@@ -327,7 +312,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Change the state to amendable"),
                                        title=_("Amendable"),
                                        groups=[]),
-                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=amendments_cycle_duration)),
+                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=calculate_amendments_cycle_duration)),
                 publish = ActivityDefinition(contexts=[PublishProposal],
                                        description=_("Submit the proposal"),
                                        title=_("Submit"),
