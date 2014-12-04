@@ -89,7 +89,7 @@ class LoginView(BasicView):
                     return HTTPFound(location = came_from, headers = headers)
                 error = ViewError()
                 error.principalmessage = u"Failed login"
-                message = self._get_message(error)
+                message = error.render_message(request)
                 messages.update({error.type: [message]})
 
         # Pass this through FBO views (e.g., forbidden) which use its macros.
