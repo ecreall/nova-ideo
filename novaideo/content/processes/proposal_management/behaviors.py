@@ -1049,7 +1049,8 @@ class CorrectProposal(InfiniteCardinality):
         correction.text = text_analyzer.soup_to_text(souptextdiff)
         context.originaltext = correction.text
         correction.description = text_analyzer.soup_to_text(soupdescriptiondiff)
-        if souptextdiff.find_all("span", id="correction"):
+        if souptextdiff.find_all("span", id="correction") or \
+           soupdescriptiondiff.find_all("span", id="correction"):
             correction.state.append('in process')
 
         return True
