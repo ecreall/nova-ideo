@@ -56,7 +56,11 @@ from novaideo.mail import (
     RESIGN_SUBJECT,
     RESIGN_MESSAGE,
     WATINGLIST_SUBJECT,
-    WATINGLIST_MESSAGE)
+    WATINGLIST_MESSAGE,
+    AMENDABLE_SUBJECT,
+    AMENDABLE_MESSAGE,
+    PROOFREADING_SUBJECT,
+    PROOFREADING_MESSAGE)
 
 from novaideo import _
 from novaideo.content.proposal import Proposal
@@ -71,12 +75,36 @@ from novaideo.content.processes.idea_management.behaviors import (
     Associate as AssociateIdea)
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 from novaideo.utilities.util import connect, disconnect
+from novaideo.core import to_localized_time
 
 
 try:
     basestring
 except NameError:
     basestring = str
+
+
+AMENDMENTS_CYCLE_DEFAULT_DURATION = {
+              "Three minutes": datetime.timedelta(minutes=3),
+              "Five minutes": datetime.timedelta(minutes=5),
+              "Ten minutes": datetime.timedelta(minutes=10),
+              "Twenty minutes": datetime.timedelta(minutes=20),
+              "Three days": datetime.timedelta(days=3),
+              "One week": datetime.timedelta(weeks=1),
+              "Two weeks": datetime.timedelta(weeks=2)}
+
+
+def calculate_amendments_cycle_duration(process):
+    duration_ballot = getattr(process, 'duration_configuration_ballot', None)
+    if duration_ballot is not None:
+        electeds = duration_ballot.report.get_electeds()
+        if electeds:
+            return AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]] + \
+                   datetime.datetime.today()
+
+    return AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"] + \
+           datetime.datetime.today()
+
 
 DEFAULT_NB_CORRECTORS = 1
 
@@ -1578,15 +1606,36 @@ class Amendable(ElementaryAction):
     roles_validation = va_roles_validation
     state_validation = ta_state_validation
 
+    def _send_mails(self, context, request, subject_template, message_template):
+        working_group = context.working_group
+        duration = to_localized_time(
+                     calculate_amendments_cycle_duration(self.process))
+        isclosed = 'closed' in working_group.state
+        members = working_group.members
+        url = request.resource_url(context, "@@index")
+        subject = subject_template.format(subject_title=context.title)
+        localizer = request.localizer
+        for member in members:
+            message = message_template.format(
+                recipient_title=localizer.translate(_(getattr(member, 
+                                                            'user_title',''))),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name',''),
+                subject_title=context.title,
+                subject_url=url,
+                duration=duration,
+                isclosed=localizer.translate((isclosed and _('closed')) or\
+                                             _('open'))
+                 )
+            mailer_send(subject=subject, 
+                recipients=[member.email], 
+                body=message)
+
     def start(self, context, request, appstruct, **kw):
         context.state.remove('votes for publishing')
         wg = context.working_group
         if self.process.first_decision:
             self.process.first_decision = False
-        if any(not('archived' in a.state) for a in context.amendments):
-            context.state.append('amendable')
-        else:
-            context.state.append('proofreading')
 
         reopening_ballot = getattr(self.process, 
                             'reopening_configuration_ballot', None)
@@ -1601,6 +1650,16 @@ class Amendable(ElementaryAction):
                'closed' in wg.state:
                 wg.state.remove('closed')
                 wg.reindex()
+
+        if any(not('archived' in a.state) for a in context.amendments):
+            context.state.append('amendable')
+            self._send_mails(context, request, 
+                             AMENDABLE_SUBJECT, AMENDABLE_MESSAGE)
+
+        else:
+            context.state.append('proofreading')
+            self._send_mails(context, request,
+                             PROOFREADING_SUBJECT, PROOFREADING_MESSAGE)
 
         context.reindex()
         return True

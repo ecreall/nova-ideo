@@ -62,6 +62,30 @@ Bonjour,
 PRESENTATION_AMENDMENT_SUBJECT = u"""{subject_title}"""
 
 
+AMENDABLE_SUBJECT = u"""{subject_title}"""
+
+
+AMENDABLE_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+La proposition {subject_title} qui se trouve sous {subject_url} est amendable. Le groupe de travail est {isclosed}.
+Le prochain vote sur la publication est prévu pour le {duration}.
+""" + \
+PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
+
+PROOFREADING_SUBJECT = u"""{subject_title}"""
+
+
+PROOFREADING_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+La proposition {subject_title} qui se trouve sous {subject_url} est en relecture. Après la relecture de la proposition, vous pouvez améliorer la proposition.
+Le groupe de travail est {isclosed}. Le prochain vote sur la publication est prévu pour le {duration}.
+""" + \
+PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
+
 ALERT_SUBJECT = u"""Aucun amendement sur la proposition {subject_title}"""
 
 ALERT_MESSAGE = u"""
