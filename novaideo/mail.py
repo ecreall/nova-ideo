@@ -67,7 +67,7 @@ AMENDABLE_SUBJECT = u"""Début du cycle d'amélioration de la proposition {subje
 AMENDABLE_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Le groupe de travail sur la proposition {subject_title} a voté pour commencer un cycle d'amélioration, ce groupe de travail est actuellement {isclosed}. Les étapes de ce cyle d'amélioration sont l'amélioration de la proposition sous forme d'amendements, les votes sur ces amendements et le vote pour soumettre la proposition amendée en l'état ou non. Ce dernier vote est prévu le {duration}.
+Le groupe de travail sur la proposition {subject_title} a voté pour commencer un cycle d'amélioration, ce groupe de travail est actuellement {isclosed}. Les étapes de ce cyle d'amélioration sont l'amélioration de la proposition sous forme d'amendements, les votes sur ces amendements et le vote pour soumettre la proposition amendée en l'état ou non. La fin du cycle d'amélioration est prévue le {duration}.
 
 """ + PORTAL_SIGNATURE
 
@@ -78,7 +78,7 @@ PROOFREADING_SUBJECT = u"""Début du cycle d'amélioration de la proposition {su
 PROOFREADING_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Le groupe de travail sur la proposition {subject_title} a voté pour commencer un cycle d'amélioration, ce groupe de travail est actuellement {isclosed}. Les étapes de ce cyle d'amélioration sont la relecture de la proposition, son amélioration sous forme d'amendements, les votes sur ces amendements et le vote pour soumettre la proposition amendée en l'état ou non. Ce dernier vote est prévu le {duration}.
+Le groupe de travail sur la proposition {subject_title} a voté pour commencer un cycle d'amélioration, ce groupe de travail est actuellement {isclosed}. Les étapes de ce cyle d'amélioration sont la relecture de la proposition, son amélioration sous forme d'amendements, les votes sur ces amendements et le vote pour soumettre la proposition amendée en l'état ou non. La fin du cycle d'amélioration est prévue le {duration}.
 
 """ + PORTAL_SIGNATURE
 
