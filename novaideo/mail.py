@@ -7,15 +7,11 @@
 
 """ The contents of e-mails"""
 
-PORTAL_SIGNATURE = """
-Cordialement,
+PORTAL_SIGNATURE = """Cordialement,
                                                                                 
 La Plateforme Nova-Ideo.org
 """
-PORTAL_PRESENTATION = u"""
-Nova-Ideo est une application participative permettant à tout utilisateur d'initier des idées pouvant être reprises dans des propositions. Pour chaque proposition, un groupe de travail peut être constitué pour l'améliorer, la finaliser et la soumettre à l'appréciation des utilisateurs et à l'avis de comités d'examen.
-
-"""
+PORTAL_PRESENTATION = u"""Nova-Ideo est une application participative permettant à tout utilisateur d'initier des idées pouvant être reprises dans des propositions. Pour chaque proposition, un groupe de travail peut être constitué pour l'améliorer, la finaliser et la soumettre à l'appréciation des utilisateurs et à l'avis de comités d'examen."""
 
 INVITATION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
@@ -39,13 +35,14 @@ CONFIRMATION_MESSAGE = u"""
 Bonjour,
 
 Bienvenue sur la plateforme Nova-Ideo.org. L'accès à la plateforme se fait sous {login_url}. Pour y ajouter des idées ou des propositions, vous devez préalablement vous identifier avec votre courriel et votre mot de passe.
+
 """ + PORTAL_SIGNATURE
 
 
 PRESENTATION_PROPOSAL_MESSAGE = u"""
 Bonjour,
 
-{my_first_name} {my_last_name} souhaite vous présenter la proposition {subject_title} figurant sur la plateforme Nova-Ideo.org sous {subject_url} .""" + \
+{my_first_name} {my_last_name} souhaite vous présenter la proposition {subject_title} figurant sur la plateforme Nova-Ideo.org sous {subject_url}.""" + \
  PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
@@ -55,35 +52,35 @@ PRESENTATION_PROPOSAL_SUBJECT = u"""{subject_title}"""
 PRESENTATION_AMENDMENT_MESSAGE = u"""
 Bonjour,
 
-{my_first_name} {my_last_name} souhaite vous présenter l'amendement {subject_title} figurant sur la plateforme Nova-Ideo.org sous {subject_url} .""" + \
+{my_first_name} {my_last_name} souhaite vous présenter l'amendement {subject_title} figurant sur la plateforme Nova-Ideo.org sous {subject_url}.
+
+""" + \
  PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
 PRESENTATION_AMENDMENT_SUBJECT = u"""{subject_title}"""
 
 
-AMENDABLE_SUBJECT = u"""{subject_title}"""
+AMENDABLE_SUBJECT = u"""Début du cycle d'amélioration de la proposition {subject_title}"""
 
 
 AMENDABLE_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-La proposition {subject_title} qui se trouve sous {subject_url} est amendable. Le groupe de travail est {isclosed}.
-Le prochain vote sur la publication est prévu pour le {duration}.
-""" + \
-PORTAL_PRESENTATION + PORTAL_SIGNATURE
+Le groupe de travail sur la proposition {subject_title} a voté pour commencer un cycle d'amélioration, ce groupe de travail est actuellement {isclosed}. Les étapes de ce cyle d'amélioration sont l'amélioration de la proposition sous forme d'amendements, les votes sur ces amendements et le vote pour soumettre la proposition amendée en l'état ou non. Ce dernier vote est prévu le {duration}.
+
+""" + PORTAL_SIGNATURE
 
 
-PROOFREADING_SUBJECT = u"""{subject_title}"""
+PROOFREADING_SUBJECT = u"""Début du cycle d'amélioration de la proposition {subject_title}"""
 
 
 PROOFREADING_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-La proposition {subject_title} qui se trouve sous {subject_url} est en relecture. Après la relecture de la proposition, vous pouvez améliorer la proposition.
-Le groupe de travail est {isclosed}. Le prochain vote sur la publication est prévu pour le {duration}.
-""" + \
-PORTAL_PRESENTATION + PORTAL_SIGNATURE
+Le groupe de travail sur la proposition {subject_title} a voté pour commencer un cycle d'amélioration, ce groupe de travail est actuellement {isclosed}. Les étapes de ce cyle d'amélioration sont la relecture de la proposition, son amélioration sous forme d'amendements, les votes sur ces amendements et le vote pour soumettre la proposition amendée en l'état ou non. Ce dernier vote est prévu le {duration}.
+
+""" + PORTAL_SIGNATURE
 
 
 ALERT_SUBJECT = u"""Aucun amendement sur la proposition {subject_title}"""
@@ -168,4 +165,5 @@ WATINGLIST_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
 Pour information, vous faites partie de la liste d'attente du groupe de travail sur la proposition {subject_title} qui se trouve sous {subject_url}. Si le groupe de travail atteint moins de 12 personnes et si le ne vous faites pas partie de plus de 5 groupes de travail, vous y serez immédiatement ajouté en tant que participant. 
+
 """ + PORTAL_SIGNATURE
