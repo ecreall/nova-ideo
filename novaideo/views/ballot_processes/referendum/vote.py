@@ -30,7 +30,9 @@ class VoteViewStudyReport(BasicView):
         result = {}
         ballot_report = None
         try:
-            ballot_report = list(self.parent.validated_children[1].behaviors_instances.values())[0].process.ballot.report
+            voteform_view = self.parent.validated_children[1]
+            voteform_actions = list(voteform_view.behaviors_instances.values())
+            ballot_report = voteform_actions[0].process.ballot.report
         except Exception:
             pass
 
@@ -82,7 +84,9 @@ class VoteViewMultipleView(MultipleView):
     def get_message(self):
         ballot_report = None
         try:
-            ballot_report = list(self.validated_children[1].behaviors_instances.values())[0].process.ballot.report
+            voteform_view = self.validated_children[1]
+            voteform_actions = list(voteform_view.behaviors_instances.values())
+            ballot_report = voteform_actions[0].process.ballot.report
         except Exception:
             pass
 

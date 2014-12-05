@@ -672,6 +672,10 @@ class Alert(ElementaryAction):
 
         return True
 
+    def after_execution(self, context, request, **kw):
+        super(Alert, self).after_execution(context, request, **kw)
+        self.process.execute_action(context, request, 'votingpublication', {})
+
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
@@ -1358,16 +1362,6 @@ class Participate(InfiniteCardinality):
                  )
         mailer_send(subject=subject, recipients=[user.email], body=message)
 
-    def _call_votingpublication(self, context, request):
-        try:
-            workitems = self.process.getWorkItems()
-            publication_wi = workitems['proposalmanagement.votingpublication']
-            action = publication_wi.actions[0]
-            #action is valide
-            action.execute(context, request, {})
-        except Exception:
-            pass
-
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
@@ -1394,9 +1388,10 @@ class Participate(InfiniteCardinality):
                 context.reindex()
 
             self._send_mail_to_user(PARTICIPATE_SUBJECT, PARTICIPATE_MESSAGE,
-                 user, context, request)
+                                    user, context, request)
             if first_decision:
-                self._call_votingpublication(context, request)
+                self.process.execute_action(
+                       context, request, 'votingpublication', {})
         else:
             wg.addtoproperty('wating_list', user)
             wg.reindex()
@@ -1455,7 +1450,14 @@ class VotingAmendments(ElementaryAction):
             mailer_send(subject=subject, 
                  recipients=[member.email], 
                  body=message)
+
+        self.current_context = context
         return True
+
+    def after_execution(self, context, request, **kw):
+        super(VotingAmendments, self).after_execution(context, request, **kw)
+        self.process.execute_action(
+                  self.current_context, request, 'amendmentsresult', {})
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1585,6 +1587,10 @@ class AmendmentsResult(ElementaryAction):
 
         context.reindex()
         return True
+
+    def after_execution(self, context, request, **kw):
+        super(AmendmentsResult, self).after_execution(context, request, **kw)
+        self.process.execute_action(context, request, 'votingpublication', {})
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(self.newcontext, "@@index"))
