@@ -34,6 +34,7 @@ class BaseFunctionalTests(object):
                         'pyramid_tm',
                         'dace',
                         'pontus',
+                        'daceui'
         ]}
 
         testing.setUp()
