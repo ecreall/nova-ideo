@@ -483,8 +483,7 @@ class Ballot(VisualisableElement, Entity):
 
     def run_ballot(self, context=None):
         """Run the ballot"""
-
-        processes = self.report.ballottype.run_ballot(context)
         self.run_at = datetime.datetime.today()
         self.finished_at = self.run_at + self.duration
+        processes = self.report.ballottype.run_ballot(context)
         return processes
