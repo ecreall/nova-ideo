@@ -1937,15 +1937,15 @@ msgstr "Vingt minutes"
 
 #: novaideo/content/processes/proposal_management/__init__.py:15
 msgid "One hour"
-msgstr ""
+msgstr "Une heure"
 
 #: novaideo/content/processes/proposal_management/__init__.py:16
 msgid "Four hours"
-msgstr ""
+msgstr "Quatre heures"
 
 #: novaideo/content/processes/proposal_management/__init__.py:17
 msgid "One day"
-msgstr ""
+msgstr "Un jour"
 
 #: novaideo/content/processes/proposal_management/__init__.py:18
 msgid "Three days"
