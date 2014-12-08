@@ -1,0 +1,6 @@
+<div  i18n:domain="novaideo"> 
+  <div class="alert alert-info">
+    <span i18n:translate="">
+      Vous venez de transformer une idée en proposition, vous devez maintenant ajouter un résumé à votre proposition. Pour être plus explicite, nous vous conseillons également de modifier le titre de la proposition généré automatiquement à partir du titre de l'idée.</span>
+  </div>
+</div>

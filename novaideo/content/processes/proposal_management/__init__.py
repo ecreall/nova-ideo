@@ -12,6 +12,9 @@ AMENDMENTS_CYCLE_DEFAULT_DURATION = [
               _("Five minutes"),
               _("Ten minutes"),
               _("Twenty minutes"),
+              _("One hour"),
+              _("Four hours"),
+              _("One day"),
               _("Three days"),
               _("One week"),
               _("Two weeks")]

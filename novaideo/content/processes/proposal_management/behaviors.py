@@ -89,6 +89,9 @@ AMENDMENTS_CYCLE_DEFAULT_DURATION = {
               "Five minutes": datetime.timedelta(minutes=5),
               "Ten minutes": datetime.timedelta(minutes=10),
               "Twenty minutes": datetime.timedelta(minutes=20),
+              "One hour": datetime.timedelta(hours=1),
+              "Four hours": datetime.timedelta(hours=4),
+              "One day": datetime.timedelta(days=1),
               "Three days": datetime.timedelta(days=3),
               "One week": datetime.timedelta(weeks=1),
               "Two weeks": datetime.timedelta(weeks=2)}
@@ -185,6 +188,7 @@ def pap_processsecurity_validation(process, context):
 class PublishAsProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     context = Iidea
+    submission_title = _('Save')
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-file'
     processsecurity_validation = pap_processsecurity_validation
@@ -193,9 +197,8 @@ class PublishAsProposal(ElementaryAction):
         root = getSite()
         user = get_current()
         proposal = Proposal()
-        localizer = request.localizer
-        proposal.title = context.title + \
-                         localizer.translate(_(" (the proposal)"))
+        proposal.title = appstruct['title']
+        proposal.description = appstruct['description']
         root.addtoproperty('proposals', proposal)
         for k in context.keywords_ref:
             proposal.addtoproperty('keywords_ref', k)
