@@ -150,7 +150,7 @@ class CompareIdeaFormView(FormView):
 class CompareIdeaView(MultipleView):
     title = _('Compare versions')
     name = 'compareidea'
-    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CompareIdeaFormView, DiffView)
 

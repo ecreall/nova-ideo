@@ -38,7 +38,7 @@ class LoginView(BasicView):
     name = 'login'
     behaviors = [LogIn]
     template = 'novaideo:views/user_access_manager/templates/login.pt'
-    wrapper_template = 'pontus:dace_ui_extension/templates/simple_view_wrapper.pt'
+    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     viewid = 'login'
 
 

@@ -16,7 +16,7 @@ from pontus.schema import select
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.util import merge_dicts
-from pontus.dace_ui_extension.interfaces import IDaceUIAPI
+from daceui.interfaces import IDaceUIAPI
 
 from novaideo.content.processes.idea_management.behaviors import  Associate
 from novaideo.content.correlation import CorrelationSchema, Correlation
@@ -34,7 +34,7 @@ class RelatedContentsView(BasicView):
     title = _('Related contents')
     name = 'relatedcontents'
     template = 'novaideo:views/idea_management/templates/related_contents.pt'
-    wrapper_template = 'pontus:dace_ui_extension/templates/simple_view_wrapper.pt'
+    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     viewid = 'relatedcontents'
 
     def _correlation_action(self, correlation):
@@ -156,7 +156,7 @@ class AssociateFormView(FormView):
 class AssociateView(MultipleView):
     title = _('Associate the idea')
     name = 'associate'
-    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (RelatedContentsView, AssociateFormView)
     description = _("Associate the idea to an other content")

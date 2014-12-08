@@ -90,19 +90,19 @@ default_resource_registry.set_js_resources('addnewidea', None,
                          'novaideo:static/js/add_new_idea.js'  )
 
 default_resource_registry.set_js_resources('select2search', None, 
-           'pontus.dace_ui_extension:static/select2/select2.js',
+           'daceui:static/select2/select2.js',
            'novaideo:static/select2_search/select2_search.js'  )
 
 default_resource_registry.set_css_resources('select2search', None, 
-              'pontus.dace_ui_extension:static/select2/select2.css',
+              'daceui:static/select2/select2.css',
               'novaideo:static/select2_search/select2_search.css'  )
 
 default_resource_registry.set_js_resources('select2dragdrop', None, 
-                'pontus.dace_ui_extension:static/select2/select2.js',
+                'daceui:static/select2/select2.js',
                 'novaideo:static/js/dragdrop_select.js'  )
 
 default_resource_registry.set_css_resources('select2dragdrop', None, 
-                'pontus.dace_ui_extension:static/select2/select2.css',
+                'daceui:static/select2/select2.css',
                 'novaideo:static/select2_search/select2_search.css'  )
 
 default_resource_registry.set_js_resources('limitedtextarea', None, 

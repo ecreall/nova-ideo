@@ -29,7 +29,7 @@ from dace.objectofcollaboration.principal.util import (
 #from dace.objectofcollaboration import system
 from dace.processinstance.activity import (
     InfiniteCardinality, ElementaryAction, ActionType)
-from pontus.dace_ui_extension.interfaces import IDaceUIAPI
+from daceui.interfaces import IDaceUIAPI
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import (

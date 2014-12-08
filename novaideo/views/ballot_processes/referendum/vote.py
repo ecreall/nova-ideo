@@ -76,7 +76,7 @@ class VoteViewMultipleView(MultipleView):
     title = _('Vote')
     name = 'referendumvote'
     viewid = 'referendumvote'
-    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/ballot_processes/templates/panel_item.pt'
     views = (VoteViewStudyReport, VoteFormView)
     validators = [Vote.get_validator()]

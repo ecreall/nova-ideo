@@ -55,7 +55,7 @@ class CommentCorrelationFormView(FormView):
 class CommentCorrelationView(MultipleView):
     title = _('Comment')
     name = 'commentcorrelation'
-    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (CommentCorrelationFormView, CommentsCorrelationView)
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/comment.js']}

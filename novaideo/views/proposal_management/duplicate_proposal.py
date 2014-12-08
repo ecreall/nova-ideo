@@ -52,7 +52,7 @@ class DuplicateProposalFormView(FormView):
 class DuplicateProposalView(MultipleView):
     title = _('Duplicate')
     name = 'duplicateproposal'
-    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/ideas_management.js']}
     views = (DuplicateProposalFormView, IdeaManagementView)

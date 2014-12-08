@@ -162,7 +162,7 @@ class SubmitAmendmentViewMultipleView(MultipleView):
     title = _('Amendments organization')
     name = 'submitamendment'
     viewid = 'submitamendment'
-    template = 'pontus.dace_ui_extension:templates/mergedmultipleview.pt'
+    template = 'daceui:templates/mergedmultipleview.pt'
     views = (SubmitAmendmentViewStudyReport, SubmitAmendmentView)
     behaviors = [SubmitAmendment]
     validators = [SubmitAmendment.get_validator()]

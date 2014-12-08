@@ -12,7 +12,7 @@ from pyramid import renderers
 from substanced.util import get_oid
 from bs4 import BeautifulSoup
 
-from pontus.dace_ui_extension.interfaces import IDaceUIAPI
+from daceui.interfaces import IDaceUIAPI
 
 from novaideo.content.amendment import Intention
 from novaideo.utilities.text_analyzer import ITextAnalyzer

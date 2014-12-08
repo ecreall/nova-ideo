@@ -11,7 +11,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
 from pontus.util import merge_dicts
-from pontus.dace_ui_extension.interfaces import IDaceUIAPI
+from daceui.interfaces import IDaceUIAPI
 
 from novaideo.content.processes.invitation_management.behaviors import (
     SeeInvitations)

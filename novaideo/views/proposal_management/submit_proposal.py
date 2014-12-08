@@ -50,7 +50,7 @@ class SubmitProposalView(MultipleView):
     title = _('Publish the proposal')
     name = 'submitproposal'
     viewid = 'submitproposal'
-    template = 'pontus.dace_ui_extension:templates/mergedmultipleview.pt'
+    template = 'daceui:templates/mergedmultipleview.pt'
     views = (SubmitProposalStudyReport, SubmitProposalFormView)
     validators = [SubmitProposal.get_validator()]
 

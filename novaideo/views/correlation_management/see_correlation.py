@@ -22,7 +22,7 @@ class DetailCorrelation(BasicView):
     name = 'seeCorrelation'
     behaviors = [SeeCorrelation]
     template = 'novaideo:views/correlation_management/templates/see_correlation.pt'
-    wrapper_template = 'pontus:dace_ui_extension/templates/simple_view_wrapper.pt'
+    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     viewid = 'seecorrelation'
 
     def update(self):
@@ -45,7 +45,7 @@ class DetailCorrelation(BasicView):
 class SeeCorrelationView(MultipleView):
     title = _('Detail')
     name = 'seecorrelation'
-    template = 'pontus.dace_ui_extension:templates/simple_mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (DetailCorrelation, CommentCorrelationView)
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/comment.js']}
