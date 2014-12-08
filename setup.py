@@ -10,6 +10,7 @@ requires = [
     'dogpile.cache',
     'dace',
     'pontus',
+    'daceui',
     'pyramid',
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
