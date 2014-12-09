@@ -1,5 +1,5 @@
 
-intention_schema = ['comment', 'edited_ideas', 'added_ideas', 'removed_ideas']
+intention_schema = ['comment', 'related_ideas']
 
 function validate_intention(datas){
     return (datas['comment'].length>0)
@@ -90,15 +90,11 @@ function submit_explanation(){
        var commentmessagesuccess = target.find('#messagesuccess');
        var commentmessagedanger = target.find('#messagedanger');
        var comment = $(intention_form.find("textarea[name='comment']").first()).val();
-       var added_ideas = $(intention_form.find("select[name='added_ideas']").first()).select2('data');
-       var removed_ideas = $(intention_form.find("select[name='removed_ideas']").first()).select2('data');
-       var edited_ideas = $(intention_form.find("select[name='edited_ideas']").first()).select2('data');
+       var related_ideas = $(intention_form.find("select[name='related_ideas']").first()).select2('data');
        var relatedexplanation = $(form.find("select[name='relatedexplanation']").first()).select2('val');
        if (!(typeof relatedexplanation == "string")){relatedexplanation=""};
        var datas = {'comment': comment,
-                   'added_ideas' : get_data(added_ideas),
-                   'removed_ideas': get_data(removed_ideas),
-                   'edited_ideas': get_data(edited_ideas),
+                   'related_ideas' : get_data(related_ideas),
                    'relatedexplanation': relatedexplanation,
                    'item':item
                   };

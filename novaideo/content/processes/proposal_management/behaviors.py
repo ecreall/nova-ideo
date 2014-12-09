@@ -463,7 +463,7 @@ def pub_relation_validation(process, context):
 
 
 def pub_roles_validation(process, context):
-    return has_role(role=('System',)) #System
+    return has_role(role=('System',))
 
 
 def pub_state_validation(process, context):
@@ -1563,18 +1563,11 @@ class AmendmentsResult(ElementaryAction):
             context.state = PersistentList(['archived'])
             copy_of_proposal.text = merged_text
             #correlation idea of replacement ideas... del replaced_idea
-            added_ideas = [a.added_ideas for a in amendments]
-            added_ideas = [item for sublist in added_ideas for item in sublist]
-            removed_ideas = [a.removed_ideas for a in amendments]
-            removed_ideas = [item for sublist in removed_ideas \
+            related_ideas = [a.related_ideas for a in amendments]
+            related_ideas = [item for sublist in related_ideas \
                              for item in sublist]
-            not_modified_ideas = [i for i in context.related_ideas.keys() \
-                                  if not (i in removed_ideas)]
-            new_ideas = not_modified_ideas
-            new_ideas.extend(added_ideas)
-            new_ideas = list(set(new_ideas))
             connect(copy_of_proposal, 
-                    new_ideas,
+                    related_ideas,
                     {'comment': _('Add related ideas'),
                      'type': _('New version')},
                     user,

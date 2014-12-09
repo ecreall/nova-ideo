@@ -13,7 +13,6 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.util import getSite, get_obj
-from dace.objectofcollaboration.principal.util import get_current
 from dace.descriptors import SharedUniqueProperty
 
 from pontus.widget import RichTextWidget, SimpleMappingWidget
@@ -27,36 +26,13 @@ from novaideo.core import (
     CorrelableEntity,
     Commentable,
     PresentableEntity,
-    DuplicableEntity,
-    can_access)
+    DuplicableEntity)
 from novaideo import _
 from novaideo.views.widget import (
     Select2WidgetSearch, 
     AddIdeaWidget, 
     LimitedTextAreaWidget)
 from novaideo.content.idea import Idea, IdeaSchema
-
-
-@colander.deferred
-def idea_choice(node, kw):
-    context = node.bindings['context']
-    request = node.bindings['request']
-    used_ideas = context.get_used_ideas()
-    root = getSite()
-    user = get_current()
-    ideas = list(getattr(user, 'ideas', []))
-    ideas.extend([ i for i in getattr(user, 'selections', []) \
-                   if isinstance(i, Idea) and can_access(user, i)])
-    ideas.extend(used_ideas)
-    ideas = set(ideas) 
-    values = [(i, i.title) for i in ideas if not('archived' in i.state)]
-    return Select2WidgetSearch(multiple= True, 
-                               values=values,  
-                               item_css_class='search-idea-form',
-                               url=request.resource_url(root, '@@search',
-                                     query={'op':'toselect',
-                                            'content_types':['Idea']}
-                                     ))
 
 
 @colander.deferred
@@ -68,7 +44,7 @@ def add_new_idea_widget(node, kw):
     
 
 @colander.deferred
-def replacedideas_choice(node, kw):
+def relatedideas_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
     used_ideas = context.get_used_ideas()
@@ -83,28 +59,6 @@ def replacedideas_choice(node, kw):
                                url=request.resource_url(root, '@@search', 
                                 query={'op':'toselect',
                                        'content_types':['Idea']}
-                                ))
-
-
-@colander.deferred
-def ideasofreplacement_choice(node, kw):
-    context = node.bindings['context']
-    request = node.bindings['request']
-    used_ideas = context.get_used_ideas()
-    root = getSite()
-    user = get_current()
-    ideas = list(getattr(user, 'ideas', []))
-    ideas.extend([ i for i in getattr(user, 'selections', []) \
-                   if isinstance(i, Idea) and can_access(user, i)])
-    ideas.extend(used_ideas)
-    ideas = set(ideas) 
-    values = [(i, i.title) for i in ideas if not('archived' in i.state)]
-    return Select2WidgetSearch(multiple= True, 
-                               values=values, 
-                               item_css_class='search-idea-form',
-                               url=request.resource_url(root, '@@search', 
-                                    query={'op':'toselect',
-                                           'content_types':['Idea']}
                                 ))
 
 
@@ -131,37 +85,6 @@ class NewIdeaSchema(Schema):
                        'keywords'])
 
 
-class IdeasSchema(Schema):
-    """Schema for related ideas"""
-
-    edited_ideas = colander.SchemaNode(
-        colander.Set(),
-        widget=replacedideas_choice,
-        title=_('Edited ideas'),
-        description=_('Choose edited ideas.'),
-        missing=[],
-        default=[],
-        )
-
-    removed_ideas = colander.SchemaNode(
-        colander.Set(),
-        widget=replacedideas_choice,
-        title=_('Removed ideas'),
-        description=_('Choose removed ideas.'),
-        missing=[],
-        default=[],
-        )
-
-    added_ideas = colander.SchemaNode(
-        colander.Set(),
-        widget=ideasofreplacement_choice,
-        title=_('Added ideas'),
-        description=_('Choose added ideas.'),
-        missing=[],
-        default=[],
-        )
-
-
 class IntentionItemSchema(Schema):
     """Schema for Intention item"""
 
@@ -174,7 +97,14 @@ class IntentionItemSchema(Schema):
                                      limit=300),
         )
 
-    related_ideas = IdeasSchema(widget=SimpleMappingWidget())
+    related_ideas = colander.SchemaNode(
+        colander.Set(),
+        widget=relatedideas_choice,
+        title=_('Related ideas'),
+        description=_('Choose related ideas.'),
+        missing=[],
+        default=[],
+        )
 
     add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
 
@@ -183,7 +113,7 @@ class Intention(object):
     """Intention class"""
 
     schema = IntentionItemSchema
-    parameters = ['comment', 'edited_ideas', 'removed_ideas', 'added_ideas']
+    parameters = ['comment', 'related_ideas']
 
     @classmethod
     def get_explanation_data(cls, args):
@@ -219,50 +149,28 @@ class Intention(object):
     @classmethod
     def get_explanation_ideas(cls, args):
         """Return all related ideas"""
-
         data = cls.get_explanation_data(args)
-        result = data['added_ideas']
-        result.extend(data['removed_ideas'])
-        result.extend(data['edited_ideas'])
+        result = data['related_ideas']
         return result
 
     @classmethod
     def get_explanation_default_data(cls, args):
         """Return related ideas"""
-
         data = cls.get_explanation_data(args)
-        data['related_ideas'] = {'added_ideas': data.pop('added_ideas'),
-                                 'removed_ideas': data.pop('removed_ideas'),
-                                 'edited_ideas': data.pop('edited_ideas'),
-                                }
+        data['related_ideas'] = data.pop('related_ideas')
         return data
 
     @classmethod
     def eq(cls, intention1, intention2):
         """Return True if intention1 has a relation with intention2"""
-        
         if intention1['comment'] != intention2['comment']:
             return False
 
-        removed_ideas1 = list(intention1['removed_ideas'])
-        removed_ideas2 = list(intention2['removed_ideas'])
-        removed_eq = (len(removed_ideas1) == len(removed_ideas2)) and \
-                     all((e in removed_ideas2) for e in removed_ideas1)
-        if not removed_eq:
-            return False
-
-        edited_ideas1 = list(intention1['edited_ideas'])
-        edited_ideas2 = list(intention2['edited_ideas'])
-        edited_eq = (len(edited_ideas1) == len(edited_ideas2)) and \
-                    all((e in edited_ideas2) for e in edited_ideas1)
-        if not edited_eq:
-            return False
-
-        added_ideas1 = list(intention1['added_ideas'])
-        added_ideas2 = list(intention2['added_ideas'])
-        added_eq = (len(added_ideas1) == len(added_ideas2)) and \
-                   all((e in added_ideas2) for e in added_ideas1)
-        if not added_eq:
+        related_ideas1 = list(intention1['related_ideas'])
+        related_ideas2 = list(intention2['related_ideas'])
+        related_ideas_eq = (len(related_ideas1) == len(related_ideas2)) and \
+                     all((e in related_ideas2) for e in related_ideas1)
+        if not related_ideas_eq:
             return False
 
         return True
@@ -366,7 +274,7 @@ class Amendment(Commentable,
         return list(set(result))
 
     @property
-    def added_ideas(self):
+    def related_ideas(self):
         """Return added ideas"""
 
         result = []
@@ -375,45 +283,10 @@ class Amendment(Commentable,
                 try:
                     result.extend(
                         Intention.get_explanation_data(
-                            explanation['intention'])['added_ideas']
+                            explanation['intention'])['related_ideas']
                         )
                 except Exception:
                     pass
-
-        return list(set(result))
-
-    @property
-    def edited_ideas(self):
-        """Return edited ideas"""
-
-        result = []
-        for explanation in self.explanations.values():
-            if explanation['intention'] is not None:
-                try:
-                    result.extend(
-                        Intention.get_explanation_data(
-                            explanation['intention'])['edited_ideas']
-                        )
-                except Exception:
-                    pass
-
-        return list(set(result))
-
-    @property
-    def removed_ideas(self):
-        """Return removed ideas"""
-
-        result = []
-        for explanation in self.explanations.values():
-            if explanation['intention'] is not None:
-                try:
-                    result.extend(
-                        Intention.get_explanation_data(
-                            explanation['intention'])['removed_ideas']
-                        )
-                except Exception:
-                    pass
-
 
         return list(set(result))
 

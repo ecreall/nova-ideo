@@ -12,28 +12,10 @@
               ${structure:object.explanation}
           </dd>
         </div> 
-        <div tal:omit-tag="" tal:condition="object.edited_ideas">
-          <dt  i18n:translate="">Edited ideas</dt>
+        <div tal:omit-tag="" tal:condition="object.related_ideas">
+          <dt  i18n:translate="">Related ideas</dt>
 	  <dd>
-            <tal:loop repeat="idea object.edited_ideas">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
-               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
-            </tal:loop>
-          </dd>
-        </div>
-        <div tal:omit-tag="" tal:condition="object.added_ideas">
-          <dt  i18n:translate="">Added ideas</dt>
-	  <dd>
-            <tal:loop repeat="idea object.added_ideas">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
-               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
-            </tal:loop>
-          </dd>
-        </div>
-        <div tal:omit-tag="" tal:condition="object.removed_ideas">
-          <dt  i18n:translate="">Removed ideas</dt>
-	  <dd>
-            <tal:loop repeat="idea object.removed_ideas">
+            <tal:loop repeat="idea object.related_ideas">
                <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
                <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
             </tal:loop>

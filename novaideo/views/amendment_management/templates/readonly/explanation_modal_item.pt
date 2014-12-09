@@ -9,28 +9,10 @@
       <dl >
         <dt i18n:translate="">Explanation</dt>
 	<dd>${structure:data['comment']}</dd>
-        <div tal:omit-tag="" tal:condition="data['edited_ideas']">
-          <dt i18n:translate="">Edited ideas</dt>
+        <div tal:omit-tag="" tal:condition="data['related_ideas']">
+          <dt i18n:translate="">Related ideas</dt>
 	  <dd>
-            <tal:loop repeat="idea data['edited_ideas']">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
-               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
-            </tal:loop>
-          </dd>
-        </div>
-        <div tal:omit-tag="" tal:condition="data['added_ideas']">
-          <dt i18n:translate="">Added ideas</dt>
-	  <dd>
-            <tal:loop repeat="idea data['added_ideas']">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
-               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
-            </tal:loop>
-          </dd>
-        </div>
-        <div tal:omit-tag="" tal:condition="data['removed_ideas']">
-          <dt i18n:translate="">Removed ideas</dt>
-	  <dd>
-            <tal:loop repeat="idea data['removed_ideas']">
+            <tal:loop repeat="idea data['related_ideas']">
                <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
                <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
             </tal:loop>

@@ -190,14 +190,10 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         groups = []
         for amendment in amendments:
             isadded = False
-            related_ideas_amendment = list(amendment.edited_ideas)
-            related_ideas_amendment.extend(list(amendment.removed_ideas))
-            related_ideas_amendment = list(set(related_ideas_amendment))
+            related_ideas_amendment = list(amendment.related_ideas)
             for group in groups:
                 for amt in group:
-                    related_ideas_a = list(amt.edited_ideas)
-                    related_ideas_a.extend(list(amt.removed_ideas))
-                    related_ideas_a = list(set(related_ideas_a))
+                    related_ideas_a = list(amt.related_ideas)
                     if text_analyzer.has_conflict(amt.text, 
                                                   [amendment.text]) or \
                        (related_ideas_amendment and \
