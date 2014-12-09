@@ -31,6 +31,7 @@ from novaideo.content.idea import Idea
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.core import acces_action
 from novaideo.utilities.util import connect
+from novaideo.event import ObjectPublished
 
 
 try:
@@ -254,6 +255,7 @@ class PublishIdea(InfiniteCardinality):
         context.state.remove('to work')
         context.state.append('published')
         context.reindex()
+        request.registry.notify(ObjectPublished(object=context))
         return True
 
     def redirect(self, context, request, **kw):

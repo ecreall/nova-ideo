@@ -117,6 +117,7 @@ class Edit(InfiniteCardinality):
         context.set_title()
         context.name = name_chooser(name=context.title)
         context.modified_at = datetime.datetime.today()
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
@@ -146,6 +147,7 @@ class Deactivate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('active')
         context.state.append('deactivated')
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):
@@ -175,6 +177,7 @@ class Activate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('deactivated')
         context.state.append('active')
+        context.reindex()
         return True
 
     def redirect(self, context, request, **kw):

@@ -167,3 +167,14 @@ Bonjour {recipient_title} {recipient_last_name},
 Pour information, vous faites partie de la liste d'attente du groupe de travail sur la proposition {subject_title} qui se trouve sous {subject_url}. Si le groupe de travail atteint moins de 12 personnes et si le ne vous faites pas partie de plus de 5 groupes de travail, vous y serez immédiatement ajouté en tant que participant. 
 
 """ + PORTAL_SIGNATURE
+
+
+NEWCONTENT_SUBJECT = u"""Un contenu vient d'être publié"""
+
+
+NEWCONTENT_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+{subject_type} {subject_title} qui contient un des mots clés faisant partie de vos centres d'intérêt vient d'être publiée. Vous pouvez la consulter sous {subject_url}
+
+"""+ PORTAL_SIGNATURE

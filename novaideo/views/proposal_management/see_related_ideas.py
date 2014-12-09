@@ -8,20 +8,18 @@
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
 
 from novaideo.content.processes.proposal_management.behaviors import (
     SeeRelatedIdeas)
-from novaideo.content.correlation import CorrelationType
 from novaideo.content.proposal import Proposal
 from novaideo import _
 
 
-ADDIDEAS_MESSAGES = {'0': _(u"""Pas d'idées utilisées"""),
-                     '1': _(u"""Une idée utilisée"""),
-                     '*': _(u"""Idées utilisées""")}
+ADDIDEAS_MESSAGES = {'0': _(u"""Pas d'idées liées"""),
+                     '1': _(u"""Une idée liée"""),
+                     '*': _(u"""Idées liées""")}
 
 @view_config(
     name='addideas',

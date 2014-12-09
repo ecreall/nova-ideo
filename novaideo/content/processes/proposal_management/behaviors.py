@@ -76,6 +76,7 @@ from novaideo.content.processes.idea_management.behaviors import (
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 from novaideo.utilities.util import connect, disconnect
 from novaideo.core import to_localized_time
+from novaideo.event import ObjectPublished
 
 
 try:
@@ -280,6 +281,7 @@ class SubmitProposal(ElementaryAction):
             idea.reindex()
 
         context.reindex()
+        request.registry.notify(ObjectPublished(object=context))
         return True
 
     def redirect(self, context, request, **kw):

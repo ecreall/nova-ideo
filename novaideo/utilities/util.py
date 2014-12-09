@@ -4,10 +4,18 @@
 # licence: AGPL
 # author: Amen Souissi
 
-from dace.util import getSite
+from pyramid.threadlocal import get_current_registry, get_current_request
+
+from dace.util import getSite, find_catalog
 from dace.objectofcollaboration.principal.util import get_current
 
 from novaideo.content.correlation import Correlation, CorrelationType
+from novaideo.mail import (
+    NEWCONTENT_SUBJECT,
+    NEWCONTENT_MESSAGE)
+from novaideo.content.interface import IPerson
+from novaideo.ips.mailer import mailer_send
+from novaideo.core import _
 
 
 def connect(source, 
@@ -70,3 +78,43 @@ def disconnect(source,
                     correlation.delfromproperty('source', source)
 
                 correlation.delfromproperty('targets', content)
+
+
+def get_users_by_keywords(keywords):
+    novaideo_catalog = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    keywords_index = novaideo_catalog['object_keywords']
+    object_provides_index = dace_catalog['object_provides']
+    states_index = dace_catalog['object_states']
+    #query
+    query = keywords_index.any(keywords) & \
+            object_provides_index.any(IPerson.__identifier__) & \
+            states_index.notany(('deactivated',))
+    return query.execute().all()
+
+
+_CONTENT_TRANSLATION = [_("The proposal"),
+                        _("The idea")]
+
+
+def send_alert_new_content(content):
+    keywords = content.keywords
+    request = get_current_request()
+    users = get_users_by_keywords([k.lower() for k in keywords])
+    url = request.resource_url(content, "@@index")
+    subject = NEWCONTENT_SUBJECT.format(subject_title=content.title)
+    localizer = request.localizer
+    for member in users:
+        message = NEWCONTENT_MESSAGE.format(
+            recipient_title=localizer.translate(_(getattr(member, 
+                                                        'user_title',''))),
+            recipient_first_name=getattr(member, 'first_name', member.name),
+            recipient_last_name=getattr(member, 'last_name',''),
+            subject_title=content.title,
+            subject_url=url,
+            subject_type=localizer.translate(
+                           _("The " + content.__class__.__name__.lower()))
+             )
+        mailer_send(subject=subject, 
+            recipients=[member.email], 
+            body=message)
