@@ -195,12 +195,12 @@ class IntentionSchema(Schema):
 
     relatedexplanation = RelatedExplanationSchema(
                          widget=SimpleMappingWidget(
-                                  item_css_class="explanations-bloc")
+                                  css_class="explanations-bloc")
                          )
 
     intention = IntentionItemSchema(
                 widget=SimpleMappingWidget(
-                       item_css_class="intention-bloc")
+                       css_class="intention-bloc")
                 )
 
 
