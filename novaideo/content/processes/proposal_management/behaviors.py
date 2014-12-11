@@ -1139,7 +1139,7 @@ class VotingPublication(ElementaryAction):
     style_order = 5
     context = IProposal
     processs_relation_id = 'proposal'
-    actionType = ActionType.system
+    #actionType = ActionType.system
     relation_validation = decision_relation_validation
     roles_validation = decision_roles_validation
     state_validation = decision_state_validation
@@ -1481,7 +1481,7 @@ class AmendmentsResult(ElementaryAction):
     amendments_vote_result_template = 'novaideo:views/proposal_management/templates/amendments_vote_result.pt'
     context = IProposal
     processs_relation_id = 'proposal'
-    actionType = ActionType.system
+    #actionType = ActionType.system
     relation_validation = va_relation_validation
     roles_validation = va_roles_validation
     state_validation = ar_state_validation
