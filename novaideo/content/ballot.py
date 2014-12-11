@@ -333,6 +333,7 @@ class DateSubjectMedian(object):
 
 SUBJECT_TYPES_MANAGER = {'datemedian': DateSubjectMedian}
 
+
 @content(
     'rangevote',
     icon='glyphicon glyphicon-align-left',
