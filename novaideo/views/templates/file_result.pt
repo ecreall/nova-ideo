@@ -1,0 +1,5 @@
+<div class="thumbnail right-caption span4 search-item"  i18n:domain="novaideo">
+  <div class="caption">
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${getattr(object, 'title', 'File')} </h3></a>
+  </div>
+</div>

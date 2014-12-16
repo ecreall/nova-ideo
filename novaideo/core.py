@@ -227,7 +227,7 @@ class FileSchema(VisualisableElementSchema, SearchableEntitySchema):
 class FileEntity(SearchableEntity):
     """ A file entity is an entity that can be searched"""
 
-    result_template = 'novaideo:templates/views/default_result.pt'
+    result_template = 'novaideo:views/templates/file_result.pt'
 
     def __init__(self, **kwargs):
         super(FileEntity, self).__init__(**kwargs)

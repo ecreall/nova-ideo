@@ -7,6 +7,7 @@
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.processinstance.activity import ActionType
 from pontus.view import BasicView
 
 from novaideo.content.processes.novaideo_abstract_process.behaviors import (
@@ -30,9 +31,10 @@ class SeeFileView(BasicView):
     def update(self):
         self.execute(None)
         result = {}
-        values = {
-                'file': self.context,
-               }
+        actions = [a for a in self.context.actions \
+                   if a.action.actionType != ActionType.automatic]
+        values = {'object': self.context,
+                  'actions': actions}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
