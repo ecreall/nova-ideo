@@ -5,76 +5,78 @@
 # author: Amen Souissi
 
 from pyramid.httpexceptions import HTTPFound
+from substanced.util import find_service
 
-from substanced.util import get_oid
-from dace.util import find_service, getSite
-from dace.objectofcollaboration.principal.util import has_role
+from dace.util import getSite
+from dace.objectofcollaboration.principal.util import (
+    grant_roles, has_role, get_current, has_any_roles)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
+from pontus.schema import select, omit
+
 from novaideo.ips.xlreader import create_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IInvitation
 from novaideo.content.invitation import Invitation
 from novaideo.ips.mailer import mailer_send
 from novaideo.mail import INVITATION_MESSAGE
 from novaideo import _
-from ..user_management.behaviors import global_user_processsecurity
+from novaideo.content.processes.user_management.behaviors import (
+    global_user_processsecurity)
 from novaideo.core import acces_action
+from novaideo.utilities.util import gen_random_token
+from novaideo.content.person import Person
+from novaideo.content.invitation import InvitationSchema
+from novaideo.role import DEFAULT_ROLES
 
-def uploaduser_relation_validation(process, context):
-    return True
 
 
 def uploaduser_roles_validation(process, context):
-    return has_role(role=('Moderator',))
+    return False#has_role(role=('Moderator',))
 
 
 def uploaduser_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context)
 
 
-def uploaduser_state_validation(process, context):
-    return True
-
-
 class UploadUsers(InfiniteCardinality):
+    style_descriminator = 'admin-action'
     isSequential = False
     context = INovaIdeoApplication
-    relation_validation = uploaduser_relation_validation
     roles_validation = uploaduser_roles_validation
     processsecurity_validation = uploaduser_processsecurity_validation
-    state_validation = uploaduser_state_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         xlfile = appstruct['file']['_object_data']
-        new_invitations = create_object_from_xl(file=xlfile, factory=Invitation, properties={'first_name':('String', False),
-                                                                                  'last_name':('String', False),
-                                                                                  'user_title':('String', False),
-                                                                                  'email':('String', False)})
-        def_container = find_service('process_definition_container')
-        pd = def_container.get_definition('invitationvalidation')
-        runtime = find_service('runtime')
+        new_invitations = create_object_from_xl(
+                                file=xlfile, 
+                                factory=Invitation, 
+                                properties={'first_name':('String', False),
+                                            'last_name':('String', False),
+                                            'user_title':('String', False),
+                                            'email':('String', False)})
+        title_template = u"""{title} {user_title} {first_name} {last_name}"""
         for invitation in new_invitations:
-            invitation.title = u"""{title} {user_title} {first_name} {last_name}""".format(title=invitation.title,
-                                                                                           user_title=getattr(self.context, 'user_title',''),
-                                                                                           first_name=getattr(self.context, 'first_name',''),
-                                                                                           last_name=getattr(self.context, 'last_name',''))
+            invitation.title = title_template.format(title=invitation.title,
+                                    user_title=getattr(self.context, 
+                                                       'user_title',''),
+                                    first_name=getattr(self.context,
+                                                       'first_name',''),
+                                    last_name=getattr(self.context, 
+                                                      'last_name',''))
             invitation.state.append('pending')
+            invitation.__name__ = gen_random_token()
             root.addtoproperty('invitations', invitation)
-            proc = pd()
-            proc.__name__ = proc.id
-            runtime.addtoproperty('processes', proc)
-            proc.defineGraph(pd)
-            proc.execute()
-            proc.execution_context.add_involved_entity('invitation', invitation)
-            url = request.resource_url(root, "@@seeinvitation",query={'invitation_id':str(get_oid(invitation))})
+            url = request.resource_url(invitation, "")
             message = INVITATION_MESSAGE.format(
                 invitation=invitation,
                 user_title=getattr(invitation, 'user_title', ''),
                 invitation_url=url,
                 roles=", ".join(getattr(invitation, 'roles', [])))
-            mailer_send(subject='Invitation', recipients=[invitation.email], body=message )
+            mailer_send(subject='Invitation', 
+                        recipients=[invitation.email], 
+                        body=message )
 
         return True
 
@@ -82,72 +84,68 @@ class UploadUsers(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
-
-def inviteuser_relation_validation(process, context):
-    return True
-
-
 def inviteuser_roles_validation(process, context):
-    return has_role(role=('Moderator',))
+    return has_role(role=('Moderator',)) or has_role(role=('OrganizationResponsible',))
 
 
 def inviteuser_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context)
 
 
-def inviteuser_state_validation(process, context):
-    return True
-
-
 class InviteUsers(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-bullhorn'
+    style_order = 5
+    submission_title = _('Send')
     isSequential = False
     context = INovaIdeoApplication
-    relation_validation = inviteuser_relation_validation
     roles_validation = inviteuser_roles_validation
     processsecurity_validation = inviteuser_processsecurity_validation
-    state_validation = inviteuser_state_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         invitations = appstruct['invitations']
-        def_container = find_service('process_definition_container')
-        pd = def_container.get_definition('invitationvalidation')
-        runtime = find_service('runtime')
+        user = get_current()
+        organization = getattr(user, 'organization', None)
         for invitation_dict in invitations:
             invitation = invitation_dict['_object_data']
             invitation.state.append('pending')
+            invitation.__name__ = gen_random_token()
             root.addtoproperty('invitations', invitation)
-            proc = pd()
-            proc.__name__ = proc.id
-            runtime.addtoproperty('processes', proc)
-            proc.defineGraph(pd)
-            proc.execute()
-            proc.execution_context.add_involved_entity('invitation', invitation)
-            url = request.resource_url(root, "@@seeinvitation",query={'invitation_id':str(get_oid(invitation))})
+            if not getattr(invitation, 'roles', []):
+                invitation.roles = DEFAULT_ROLES
+
+            if not invitation.organization:
+                invitation.setproperty('organization', organization)
+
+            url = request.resource_url(invitation, "")
             message = INVITATION_MESSAGE.format(
                 invitation=invitation,
                 user_title=getattr(invitation, 'user_title', ''),
                 invitation_url=url,
                 roles=", ".join(getattr(invitation, 'roles', [])))
-            mailer_send(subject='Invitation', recipients=[invitation.email], body=message )
+            mailer_send(subject='Invitation', 
+                        recipients=[invitation.email],
+                        body=message )
 
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
-
-
+        return HTTPFound(request.resource_url(context, '@@seeinvitations'))
 
 
 def seeinv_processsecurity_validation(process, context):
-    return has_role(role=('Anonymous',)) and not has_role(role=('Administrator',))
+    return (context.organization and \
+            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_any_roles(roles=('Moderator', 
+                                'Anonymous'))
 
 @acces_action()
 class SeeInvitation(InfiniteCardinality):
     isSequential = False
-    title = _('Details')
+    title = _('Plus')
     actionType = ActionType.automatic
-    context = INovaIdeoApplication
+    context = IInvitation
     processsecurity_validation = seeinv_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
@@ -157,39 +155,28 @@ class SeeInvitation(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
-def seeinvs_relation_validation(process, context):
-    return True
-
-
 def seeinvs_roles_validation(process, context):
-    return has_role(role=('Moderator',))
+    return has_any_roles(roles=('Moderator', 'OrganizationResponsible'))
 
 
 def seeinvs_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and context.invitations
-
-
-def seeinvs_state_validation(process, context):
-    return True
+    return global_user_processsecurity(process, context)
 
 
 class SeeInvitations(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-th-list'
+    style_order = 6
     isSequential = False
     context = INovaIdeoApplication
-    relation_validation = seeinvs_relation_validation
     roles_validation = seeinvs_roles_validation
     processsecurity_validation = seeinvs_processsecurity_validation
-    state_validation = seeinvs_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
-
-
-def edit_relation_validation(process, context):
-    return True
 
 
 def edit_roles_validation(process, context):
@@ -200,51 +187,217 @@ def edit_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) and context.invitations
 
 
-def edit_state_validation(process, context):
-    return True
-
-
 class EditInvitations(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-pencil'
+    style_order = 7
+    submission_title = _('Save')
     isSequential = True
     context = INovaIdeoApplication
-    relation_validation = edit_relation_validation
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation
-    state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
-
-
-def editinv_relation_validation(process, context):
-    return True
+        return HTTPFound(request.resource_url(context, '@@seeinvitations'))
 
 
 def editinv_roles_validation(process, context):
-    return has_role(role=('Moderator',))
+    return (context.organization and \
+            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_role(role=('Moderator',))
 
 
 def editinv_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context)
 
 
-def editinv_state_validation(process, context):
-    return True
-
-
 class EditInvitation(InfiniteCardinality):
+    style_picto = 'glyphicon glyphicon-pencil'
     isSequential = False
-    title = _('Edit invitation')
+    title = _('Edit the invitation')
+    submission_title = _('Save')
     context = IInvitation
-    relation_validation = editinv_relation_validation
     roles_validation = editinv_roles_validation
     processsecurity_validation = editinv_processsecurity_validation
-    state_validation = editinv_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def accept_roles_validation(process, context):
+    return has_role(role=('Anonymous',)) and not has_role(role=('Admin',))
+
+
+def accept_state_validation(process, context):
+    return 'pending' in context.state
+
+
+class AcceptInvitation(InfiniteCardinality):
+    context = IInvitation
+    style_picto = 'glyphicon glyphicon-thumbs-up'
+    submission_title = _('Save')
+    roles_validation = accept_roles_validation
+    state_validation = accept_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        datas = context.get_data(select(omit(InvitationSchema(), 
+                                             ['_csrf_token_']), 
+                                        ['user_title',
+                                        'roles',
+                                        'first_name',
+                                        'last_name',
+                                        'email',
+                                        'organization']))
+        roles = datas.pop('roles')
+        password = appstruct['password']
+        person = Person(password=password, **datas)
+        root = getSite(context)
+        principals = find_service(root, 'principals')
+        name = person.first_name + ' ' + person.last_name
+        principals['users'][name] = person
+        if getattr(context, 'isresponsible', False) and \
+           context.organization:
+            grant_roles(person, (('OrganizationResponsible', 
+                                   context.organization),))
+
+        person.state.append('active')
+        grant_roles(person, roles)
+        grant_roles(person, (('Owner', person),))
+        root.delfromproperty('invitations', context)
+        context.person = person
+        return True
+
+    def redirect(self, context, request, **kw):
+        root = getSite()
+        return HTTPFound(request.resource_url(root))
+
+
+def refuse_roles_validation(process, context):
+    return has_role(role=('Anonymous',)) and not has_role(role=('Admin',))
+
+
+def refuse_state_validation(process, context):
+    return 'pending' in context.state
+
+
+class RefuseInvitation(InfiniteCardinality):
+    style_picto = 'glyphicon glyphicon-thumbs-down'
+    context = IInvitation
+    roles_validation = refuse_roles_validation
+    state_validation = refuse_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state.remove('pending')
+        context.state.append('refused')
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def remove_roles_validation(process, context):
+    return (context.organization and \
+            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_role(role=('Moderator',))
+
+
+def remove_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+class RemoveInvitation(InfiniteCardinality):
+    style_picto = 'glyphicon glyphicon-trash'
+    context = IInvitation
+    roles_validation = remove_roles_validation
+    processsecurity_validation = remove_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        root.delfromproperty('invitations', context)
+        return True
+
+    def redirect(self, context, request, **kw):
+        root = getSite()
+        return HTTPFound(request.resource_url(root, ''))
+
+
+def reinvite_roles_validation(process, context):
+    return (context.organization and \
+            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_role(role=('Moderator',))
+
+
+def reinvite_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def reinvite_state_validation(process, context):
+    return 'refused' in context.state
+
+
+class ReinviteUser(InfiniteCardinality):
+    style_picto = 'glyphicon glyphicon-bullhorn'
+    context = IInvitation
+    roles_validation = reinvite_roles_validation
+    processsecurity_validation = reinvite_processsecurity_validation
+    state_validation = reinvite_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        url = request.resource_url(context, "")
+        message = INVITATION_MESSAGE.format(
+            invitation=context,
+            user_title=getattr(context, 'user_title', ''),
+            invitation_url=url,
+            roles=", ".join(getattr(context, 'roles', [])))
+        mailer_send(subject='Invitation', 
+                    recipients=[context.email], 
+                    body=message )
+        context.state.remove('refused')
+        context.state.append('pending')
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def remind_roles_validation(process, context):
+    return (context.organization and \
+            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_role(role=('Moderator',))
+
+
+def remind_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def remind_state_validation(process, context):
+    return 'pending' in context.state
+
+
+class RemindInvitation(InfiniteCardinality):
+    style_picto = 'glyphicon glyphicon-bullhorn'
+    isSequential = True
+    context = IInvitation
+    roles_validation = remind_roles_validation
+    processsecurity_validation = remind_processsecurity_validation
+    state_validation = remind_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        url = request.resource_url(context, "")
+        message = INVITATION_MESSAGE.format(
+            invitation=context,
+            user_title=getattr(context, 'user_title', ''),
+            invitation_url=url,
+            roles=", ".join(getattr(context, 'roles', [])))
+        mailer_send(subject='Invitation', 
+            recipients=[context.email], 
+            body=message )
         return True
 
     def redirect(self, context, request, **kw):

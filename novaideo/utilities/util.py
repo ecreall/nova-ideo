@@ -4,6 +4,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import random
+import string
 from pyramid.threadlocal import get_current_registry, get_current_request
 
 from dace.util import getSite, find_catalog
@@ -16,6 +18,17 @@ from novaideo.mail import (
 from novaideo.content.interface import IPerson
 from novaideo.ips.mailer import mailer_send
 from novaideo.core import _
+
+try:
+    _LETTERS = string.letters
+except AttributeError: #pragma NO COVER
+    _LETTERS = string.ascii_letters
+
+
+def gen_random_token():
+    length = random.choice(range(10, 16))
+    chars = _LETTERS + string.digits
+    return ''.join(random.choice(chars) for _ in range(length))
 
 
 def connect(source, 
