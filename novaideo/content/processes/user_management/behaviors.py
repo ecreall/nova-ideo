@@ -33,7 +33,7 @@ def global_user_processsecurity(process, context):
 
 
 def reg_roles_validation(process, context):
-    return has_role(role=('Anonymous',))
+    return has_role(role=('Moderator',))
 
 
 class Registration(InfiniteCardinality):
@@ -125,7 +125,10 @@ class Edit(InfiniteCardinality):
 
 
 def deactivate_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return (context.organization and \
+            has_role(role=('OrganizationResponsible', 
+                           context.organization))) or \
+            has_role(role=('Admin',))
 
 
 def deactivate_processsecurity_validation(process, context):
@@ -155,7 +158,10 @@ class Deactivate(InfiniteCardinality):
 
 
 def activate_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return (context.organization and \
+            has_role(role=('OrganizationResponsible', 
+                           context.organization))) or \
+            has_role(role=('Admin',))
 
 
 def activate_processsecurity_validation(process, context):
