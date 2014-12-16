@@ -24,6 +24,11 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import InfiniteCardinality, ActionType
 
 from novaideo.ips.mailer import mailer_send
+from novaideo.mail import (
+    ARCHIVEIDEA_SUBJECT, 
+    ARCHIVEIDEA_MESSAGE,
+    PUBLISHEDIDEA_SUBJECT,
+    PUBLISHEDIDEA_MESSAGE)
 from novaideo.content.interface import INovaIdeoApplication, Iidea
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo import _
@@ -223,11 +228,11 @@ class EditIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-def pub_roles_validation(process, context):
+def submit_roles_validation(process, context):
     return has_role(role=('Owner', context))
 
 
-def pub_processsecurity_validation(process, context):
+def submit_processsecurity_validation(process, context):
     if getattr(context, 'originalentity', None):
         originalentity = getattr(context, 'originalentity')
         if originalentity.text == context.text:
@@ -236,8 +241,77 @@ def pub_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context)
 
 
-def pub_state_validation(process, context):
+def submit_state_validation(process, context):
     return 'to work' in context.state
+
+
+class SubmitIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-share'
+    style_order = 1
+    submission_title = _('Continue')
+    context = Iidea
+    roles_validation = submit_roles_validation
+    processsecurity_validation = submit_processsecurity_validation
+    state_validation = submit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state.remove('to work')
+        context.state.append('submited')
+        context.reindex()
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def decision_roles_validation(process, context):
+    return has_role(role=('Moderator',))
+
+
+def decision_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def decision_state_validation(process, context):
+    return 'submited' in context.state
+
+
+class ArchiveIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-share'
+    style_order = 1
+    submission_title = _('Continue')
+    context = Iidea
+    roles_validation = decision_roles_validation
+    processsecurity_validation = decision_processsecurity_validation
+    state_validation = decision_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        explanation = appstruct['explanation']
+        context.state.remove('submited')
+        context.state.append('archived')
+        context.reindex()
+        user = context.author
+        localizer = request.localizer
+        subject = ARCHIVEIDEA_SUBJECT.format(subject_title=context.title)
+        message = ARCHIVEIDEA_MESSAGE.format(
+                recipient_title=localizer.translate(_(getattr(user, 'user_title',''))),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name',''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index"),
+                explanation=explanation
+                 )
+        mailer_send(subject=subject, 
+            recipients=[user.email], 
+            body=message)
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 class PublishIdea(InfiniteCardinality):
@@ -247,14 +321,27 @@ class PublishIdea(InfiniteCardinality):
     style_order = 1
     submission_title = _('Continue')
     context = Iidea
-    roles_validation = pub_roles_validation
-    processsecurity_validation = pub_processsecurity_validation
-    state_validation = pub_state_validation
+    roles_validation = decision_roles_validation
+    processsecurity_validation = decision_processsecurity_validation
+    state_validation = decision_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('to work')
+        context.state.remove('submited')
         context.state.append('published')
         context.reindex()
+        user = context.author
+        localizer = request.localizer
+        subject = PUBLISHEDIDEA_SUBJECT.format(subject_title=context.title)
+        message = PUBLISHEDIDEA_MESSAGE.format(
+                recipient_title=localizer.translate(_(getattr(user, 'user_title',''))),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name',''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index"),
+                 )
+        mailer_send(subject=subject, 
+            recipients=[user.email], 
+            body=message)
         request.registry.notify(ObjectPublished(object=context))
         return True
 
@@ -463,7 +550,8 @@ class Associate(InfiniteCardinality):
 
 
 def seeidea_processsecurity_validation(process, context):
-    return ('published' in context.state or has_role(role=('Owner', context)))
+    return ('published' in context.state or has_role(role=('Owner', context))) or \
+           ('submited' in context.state or has_role(role=('Moderator',))) 
 
 
 @acces_action()

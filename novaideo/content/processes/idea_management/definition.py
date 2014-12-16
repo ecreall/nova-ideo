@@ -33,7 +33,9 @@ from .behaviors import (
     PresentIdea,
     Associate,
     SeeIdea,
-    CompareIdea)
+    CompareIdea,
+    SubmitIdea,
+    ArchiveIdea)
 from novaideo import _
 
 
@@ -66,9 +68,17 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Edit the idea"),
                                        title=_("Edit"),
                                        groups=[]),
+                submit = ActivityDefinition(contexts=[SubmitIdea],
+                                       description=_("Submit the idea"),
+                                       title=_("Submit"),
+                                       groups=[]),
                 publish = ActivityDefinition(contexts=[PublishIdea],
                                        description=_("Publish the idea"),
                                        title=_("Publish"),
+                                       groups=[]),
+                archive = ActivityDefinition(contexts=[ArchiveIdea],
+                                       description=_("Archive the idea"),
+                                       title=_("Archive"),
                                        groups=[]),
                 recuperate = ActivityDefinition(contexts=[RecuperateIdea],
                                        description=_("Recuperate the idea"),
@@ -107,6 +117,8 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'creat'),
                 TransitionDefinition('pg', 'duplicate'),
                 TransitionDefinition('pg', 'edit'),
+                TransitionDefinition('pg', 'submit'),
+                TransitionDefinition('pg', 'archive'),
                 TransitionDefinition('pg', 'publish'),
                 TransitionDefinition('pg', 'delidea'),
                 TransitionDefinition('pg', 'abandon'),
@@ -120,7 +132,9 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('duplicate', 'eg'),
                 TransitionDefinition('recuperate', 'eg'),
                 TransitionDefinition('abandon', 'eg'),
+                TransitionDefinition('submit', 'eg'),
                 TransitionDefinition('publish', 'eg'),
+                TransitionDefinition('archive', 'eg'),
                 TransitionDefinition('delidea', 'eg'),
                 TransitionDefinition('edit', 'eg'),
                 TransitionDefinition('comment', 'eg'),

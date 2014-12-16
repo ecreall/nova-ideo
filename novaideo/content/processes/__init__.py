@@ -21,6 +21,7 @@ STATES_PARTICIPANT_MAPPING = {
 	    'explanation': _('Explanation'),
 	    #Ideas
 	    'to work': _('To work'),
+	    'submited': _('Submited'),
 	    #Invitation
 	    'pending': _('Pending'),
 	    'accepted': _('Accepted'),
@@ -53,6 +54,7 @@ STATES_MEMBER_MAPPING = {
 	    'explanation': _('Explanation'),
 	    #Ideas
 	    'to work': _('To work'),
+	    'submited': _('Submited'),
 	    #Invitation
 	    'pending': _('Pending'),
 	    'accepted': _('Accepted'),
