@@ -176,16 +176,10 @@ class CreateProposal(ElementaryAction):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(self.newcontext, "@@index"))
-
+        
 
 def pap_processsecurity_validation(process, context):
-    if getattr(context, 'originalentity', None):
-        originalentity = getattr(context, 'originalentity')
-        if originalentity.text == context.text:
-            return False
-
-    return ('to work' in context.state) and has_role(role=('Owner', context))  or \
-           (('published' in context.state) and has_role(role=('Member',)))
+    return (('published' in context.state) and has_role(role=('Member',)))
 
 
 class PublishAsProposal(ElementaryAction):
