@@ -189,7 +189,7 @@ def search(text, content_types, user):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SearchResultView(BasicView):
-    title = _('Nova-Ideo contents')
+    title = _('Ineus contents')
     name = ''
     validators = [Search.get_validator()]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
