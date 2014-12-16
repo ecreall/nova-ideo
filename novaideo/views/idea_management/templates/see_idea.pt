@@ -19,7 +19,7 @@
 <div class="media-body content-title-body"  i18n:domain="novaideo">
   <div tal:condition="cant_publish" role="alert" class="alert alert-warning alert-dismissible">
      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <span  i18n:translate="">Pour que votre idée dupliquée puisse être publiée ou transformée en proposition, vous devez préalablement la modifier, elle ne doit pas être identique à l'idée d'origine.</span> 
+      <span  i18n:translate="">Pour que votre idée dupliquée puisse être soumise à modération, vous devez préalablement la modifier, elle ne doit pas être identique à l'idée d'origine.</span> 
   </div>
 
 <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>

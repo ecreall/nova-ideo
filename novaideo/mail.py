@@ -178,3 +178,29 @@ Bonjour {recipient_title} {recipient_last_name},
 {subject_type} {subject_title} qui contient un des mots clés faisant partie de vos centres d'intérêt vient d'être publiée. Vous pouvez la consulter sous {subject_url}
 
 """+ PORTAL_SIGNATURE
+
+
+ARCHIVEIDEA_SUBJECT = u"""Décision des modérateur sur l'idée {subject_title}"""
+
+
+ARCHIVEIDEA_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+L'idée {subject_title} viens d'être archivée par les modérateurs pour la raison suivante: 
+
+{explanation}
+
+"""+ PORTAL_SIGNATURE
+
+
+PUBLISHEDIDEA_SUBJECT = u"""Décision des modérateur sur l'idée {subject_title}"""
+
+
+PUBLISHEDIDEA_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+L'idée {subject_title} viens d'être publiée par les modérateurs.
+
+"""+ PORTAL_SIGNATURE
+
+    
