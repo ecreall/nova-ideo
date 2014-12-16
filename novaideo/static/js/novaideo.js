@@ -53,6 +53,16 @@ function admin_nav_onclick(event){
 };
 
 
+function activate_explanation(event){
+  if(!$(event.target).hasClass('close')){
+    var explanation = $($(this).find('.proposal-explanation').first());
+    explanation.removeClass('hide-bloc');}
+};
+
+function close_explanation(event){
+    var explanation = $($(this).parents('.proposal-explanation').first());
+    explanation.addClass('hide-bloc');
+};
 
 function switchon(slide_toggle){
     if ($('#navbaruser').hasClass('hide-bloc')){
@@ -205,6 +215,10 @@ $(document).ready(function(){
   init_admin_nav();
 
   $('.admin-call').on('click', admin_nav_onclick);
+
+  $('.proposal-opinion').on('click', activate_explanation);
+
+  $('.proposal-opinion button.close').on('click', close_explanation);
 
   $('.control-form-button').on('click', function(){
         var form = $($(this).parents('div.ajax-form').first()).find('.controled-form').first();

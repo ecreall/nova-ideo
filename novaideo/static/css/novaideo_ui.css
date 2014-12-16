@@ -1048,6 +1048,69 @@ ins {
 }
 
 
+.proposal-opinion{
+    background-color: #e7e7e7;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    box-shadow: -2px 1px 3px rgba(0, 0, 0, 0.514);
+    margin-bottom: 4px;
+    margin-right: 4px;
+    padding: 3px;
+    margin-top: -35px;
+    cursor: pointer;
+}
+
+#messages .proposal-opinion{
+    margin-top: 0px;
+}
+
+.circle{    
+    border-radius: 50%;
+    height: 13px;
+    margin-bottom: 2px;
+    width: 13px;
+}
+
+
+.red.off{
+    background-color: #705656;
+}
+
+.green.off{
+   background-color: #556355;
+}
+
+.orange.off{
+   background-color: #706456;
+}
+
+.red.on{
+   background-color: #f13b2d;
+   box-shadow: 0 0 8px #f13b2d;
+}
+
+.green.on{
+   background-color: #40b322;
+   box-shadow: 0 0 8px #40b322;
+}
+
+.orange.on{
+   background-color: #f1a02d;
+   box-shadow: 0 0 8px #f1a02d;
+}
+
+.proposal-explanation{
+    background-color: window;
+    border: 1px solid gray;
+    border-radius: 9px;
+    box-shadow: 0 7px 11px #888888;
+    margin-top: -215px;
+    max-width: 400px;
+    padding: 9px;
+    position: absolute;
+    right: 53px;
+}
+
 /*novaideo responsive design*/
 
 
