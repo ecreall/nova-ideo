@@ -268,7 +268,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     @property
     def participations(self):
         result = [p for p in list(self.proposals) \
-                  if not any(s in p.state for s in ['draft', 'published'])]
+                  if not any(s in p.state for s in ['draft', 'published', 'examined'])]
         return result
 
     @property

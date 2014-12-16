@@ -58,6 +58,7 @@ from .behaviors import (
     SeeRelatedIdeas,
     ProofreadingDone,
     CompareProposal,
+    MakeOpinion,
     AMENDMENTS_CYCLE_DEFAULT_DURATION,
     calculate_amendments_cycle_duration
     )
@@ -279,7 +280,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Edit the proposal"),
                                        title=_("Edit"),
                                        groups=[]),
-
                 participate = ActivityDefinition(contexts=[Participate],
                                        description=_("Participate"),
                                        title=_("Participate"),
@@ -316,6 +316,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 support = ActivityDefinition(contexts=[SupportProposal],
                                        description=_("Support the proposal"),
                                        title=_("Support"),
+                                       groups=[]),
+                makeitsopinion = ActivityDefinition(contexts=[MakeOpinion],
+                                       description=_("Make its opinion"),
+                                       title=_("Make its opinion"),
                                        groups=[]),
                 oppose = ActivityDefinition(contexts=[OpposeProposal],
                                        description=_("To oppose a proposal"),
@@ -408,6 +412,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('eg3', 'publish', eg3_publish_condition, sync=True),
                 TransitionDefinition('publish', 'pg6'),
                 TransitionDefinition('pg6', 'support'),
+                TransitionDefinition('pg6', 'makeitsopinion'),
                 TransitionDefinition('pg6', 'oppose'),
                 TransitionDefinition('pg6', 'withdraw_token'),
                 TransitionDefinition('amendable', 'timer'),

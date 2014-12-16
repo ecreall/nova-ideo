@@ -60,7 +60,9 @@ from novaideo.mail import (
     AMENDABLE_SUBJECT,
     AMENDABLE_MESSAGE,
     PROOFREADING_SUBJECT,
-    PROOFREADING_MESSAGE)
+    PROOFREADING_MESSAGE,
+    ALERTOPINION_SUBJECT,
+    ALERTOPINION_MESSAGE)
 
 from novaideo import _
 from novaideo.content.proposal import Proposal
@@ -306,7 +308,8 @@ class DuplicateProposal(ElementaryAction):
         root = getSite()
         user = get_current()
         copy_of_proposal = copy(context, (root, 'proposals'), 
-                             omit=('created_at', 'modified_at'))
+                             omit=('created_at', 'modified_at',
+                                   'explanation', 'opinion'))
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nkw in newkeywords:
@@ -593,6 +596,77 @@ class OpposeProposal(InfiniteCardinality):
 
         context.addtoproperty('tokens_opposition', token)
         context._support_history.append((get_oid(user), datetime.datetime.today(), 0))
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def opinion_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'proposal')
+
+
+def opinion_roles_validation(process, context):
+    return has_role(role=('Moderator',))
+
+
+def opinion_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def opinion_state_validation(process, context):
+    return 'published' in context.state or \
+           ('examined' in context.state and \
+             context.opinion == 'Indifferent')
+
+
+class MakeOpinion(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-pencil'
+    style_order = 1
+    submission_title = _('Save')
+    context = IProposal
+    processs_relation_id = 'proposal'
+    relation_validation = opinion_relation_validation
+    roles_validation = opinion_roles_validation
+    processsecurity_validation = opinion_processsecurity_validation
+    state_validation = opinion_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.opinion = appstruct['opinion']
+        context.explanation = appstruct['explanation']
+        if 'published' in context.state:
+            context.state.remove('published')
+            context.state.append('examined')
+
+        context.reindex()
+        tokens = [t for t in context.tokens if not t.proposal]
+        proposal_tokens = [t for t in context.tokens if t.proposal]
+        for token in list(tokens):
+            token.owner.addtoproperty('tokens', token)
+
+        for token in list(proposal_tokens):
+            context.__delitem__(token.__name__)
+
+        members = context.working_group.members
+        url = request.resource_url(context, "@@index")
+        subject = ALERTOPINION_SUBJECT.format(subject_title=context.title)
+        localizer = request.localizer
+        for member in members:
+            message = ALERTOPINION_MESSAGE.format(
+                recipient_title=localizer.translate(_(getattr(member, 
+                                                    'user_title',''))),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name',''),
+                subject_url=url,
+                subject_title=context.title,
+                opinion=localizer.translate(_(context.opinion)),
+                explanation=context.explanation
+                 )
+            mailer_send(subject=subject, 
+                recipients=[member.email], 
+                body=message)
         return True
 
     def redirect(self, context, request, **kw):

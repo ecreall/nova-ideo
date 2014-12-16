@@ -193,6 +193,19 @@ L'idée {subject_title} viens d'être archivée par les modérateurs pour la rai
 """+ PORTAL_SIGNATURE
 
 
+ALERTOPINION_SUBJECT = u"""Avis des modérateur sur la proposition {subject_title}"""
+
+
+ALERTOPINION_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+les modérateurs ont émis un avis {opinion} sur la proposition {subject_title}: 
+
+{explanation}
+
+"""+ PORTAL_SIGNATURE
+
+
 PUBLISHEDIDEA_SUBJECT = u"""Décision des modérateur sur l'idée {subject_title}"""
 
 
