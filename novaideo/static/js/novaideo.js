@@ -1,3 +1,58 @@
+function init_admin_nav(){
+   var adminnav = $('#adminnavbar');
+   var actions = $(adminnav.find('ul').first());
+   if (!actions.hasClass('hide-bloc')){
+     var menueheight = actions.height()+5;
+     adminnav.css({'height': menueheight+'px'});
+   }else{
+     adminnav.css({'height': '180px'});
+   }
+}
+
+
+function admin_nav_on(event, element){
+        var parent = $($(element).parents('#adminnavbar').first());
+        var target = parent.find('.admin-nav');
+        $.cookie('admin_nav', 'on', {path: '/',  expires: 1});
+        $(element).animate({left: '+='+187}, 500);
+        $(element).removeClass('admin-off');
+        $(element).addClass('admin-on');
+        $(element).find('.admin-nav-label').addClass('hide-bloc');
+        $(target).removeClass('hide-bloc');
+        var adminnav = $('#adminnavbar');
+        var menueheight = $(adminnav.find('ul').first()).height()+5;
+        adminnav.css({'height': menueheight+'px'});
+        //$(target).show(300);
+};
+
+function admin_nav_off(event, element){
+        var parent = $($(element).parents('#adminnavbar').first());
+        var target = parent.find('.admin-nav');
+        $.cookie('admin_nav', 'off', {path: '/',  expires: 1});
+        //target.hide(300);
+        $(element).animate({left: '-='+187}, 500);
+        $(element).addClass('admin-off');
+        $(element).removeClass('admin-on');
+        $(element).find('.admin-nav-label').removeClass('hide-bloc');
+        setTimeout(function() {
+           $(target).addClass('hide-bloc');
+           var adminnav = $('#adminnavbar');
+           adminnav.css({'height': '180px'});
+        }, 510);
+        
+};
+
+function admin_nav_onclick(event){
+  if ($(event.target).hasClass('admin-call') || $(event.target).hasClass('admin-nav-title')){
+    if ($(this).hasClass( "admin-on" )){
+      admin_nav_off(event, this)
+    }else{
+      admin_nav_on(event, this)
+    }
+   }
+};
+
+
 
 function switchon(slide_toggle){
     if ($('#navbaruser').hasClass('hide-bloc')){
@@ -147,7 +202,11 @@ $(document).ready(function(){
 
   init_result_scroll();
 
-   $('.control-form-button').on('click', function(){
+  init_admin_nav();
+
+  $('.admin-call').on('click', admin_nav_onclick);
+
+  $('.control-form-button').on('click', function(){
         var form = $($(this).parents('div.ajax-form').first()).find('.controled-form').first();
         if (form.hasClass('hide-bloc')) {
             form.removeClass('hide-bloc')           
