@@ -26,7 +26,7 @@ $(document).ready(function(){
                danger_messages_container.text( novaideo_translate("The title is required!") ).show().fadeOut( 6000 );
                return
             }
-            var text = form.find('textarea[name="description"]').val();
+            var text = form.find('textarea[name="text"]').val();
             if (text=='')
             {
                danger_messages_container.text( novaideo_translate("The abstract is required!") ).show().fadeOut( 6000 );
@@ -41,7 +41,7 @@ $(document).ready(function(){
             }
 
             dict_post = {'title': title,
-                         'description': text,
+                         'text': text,
                          'keywords': keywords,
                          'op': 'creat_idea'};
 
@@ -51,7 +51,7 @@ $(document).ready(function(){
              if(data){
                button.removeClass('disabled'); 
                form.find('input[name="title"]').val('');
-               form.find('textarea[name="description"]').val('');
+               form.find('textarea[name="text"]').val('');
                $(form.find('select[name="keywords"]')).select2('val', []);
                success_messages_container.text( "The idea \""+dict_post['title']+"\" is added" ).show().fadeOut( 6000 );
                form.addClass('hide-bloc');

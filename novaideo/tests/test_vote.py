@@ -222,11 +222,11 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         result = self.vote_type.calculate_votes(votes)
         self.assertEqual(result[self.oid_subject1]['Very good'], 1)
         self.assertEqual(result[self.oid_subject1]['Insufficient'], 1)
-        self.assertEqual(result[self.oid_subject1]['Good'], 2)
+        self.assertEqual(result[self.oid_subject1]['Good'], 2) #Median 16
         self.assertEqual(result[self.oid_subject2]['Very good'], 2)
         self.assertEqual(result[self.oid_subject2]['Insufficient'], 0)
         self.assertEqual(result[self.oid_subject2]['Good'], 0)
-        self.assertEqual(result[self.oid_subject2]['Passable'], 2)
+        self.assertEqual(result[self.oid_subject2]['Passable'], 2)#Median 12
         self.assertEqual(result[self.oid_subject3]['Very good'], 0)
         self.assertEqual(result[self.oid_subject3]['Insufficient'], 0)
         self.assertEqual(result[self.oid_subject3]['Good'], 0)
@@ -234,7 +234,7 @@ class TestVoteIntegration(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(result[self.oid_subject3]['Reject'], 1)
         electeds = self.vote_type.get_electeds(result)
         self.assertEqual(len(electeds), 1)
-        self.assertIn(self.root['subject2'], electeds)
+        self.assertIn(self.root['subject1'], electeds)
 
     def test_MajorityJudgment_unanimity(self):
         report = self.init_majority_judgment_tests()
