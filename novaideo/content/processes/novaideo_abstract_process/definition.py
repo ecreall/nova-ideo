@@ -22,7 +22,10 @@ from .behaviors import (
     DeselectEntity,
     CreateFile,
     SeeFile,
-    EditFile)
+    EditFile,
+    AddDeadLine,
+    EditDeadLine,
+    )
 from novaideo import _
 
 
@@ -59,6 +62,14 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Details"),
                                        title=_("Details"),
                                        groups=[]),
+                adddeadline = ActivityDefinition(contexts=[AddDeadLine],
+                                       description=_("Add the next deadline"),
+                                       title=_("Add the next deadline"),
+                                       groups=[]),
+                editdeadline = ActivityDefinition(contexts=[EditDeadLine],
+                                       description=_("Edit the current deadline"),
+                                       title=_("Edit the current deadline"),
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -74,6 +85,10 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('editfile', 'eg'),
                 TransitionDefinition('pg', 'deselect'),
                 TransitionDefinition('deselect', 'eg'),
+                TransitionDefinition('pg', 'adddeadline'),
+                TransitionDefinition('adddeadline', 'eg'),
+                TransitionDefinition('pg', 'editdeadline'),
+                TransitionDefinition('editdeadline', 'eg'),
                 TransitionDefinition('eg', 'end'),
 
         )

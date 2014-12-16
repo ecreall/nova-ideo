@@ -7,6 +7,7 @@
 
 import datetime
 from pyramid.httpexceptions import HTTPFound
+from persistent.list import PersistentList
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
@@ -153,5 +154,80 @@ class EditFile(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
+def adddeadline_processsecurity_validation(process, context):
+    return datetime.datetime.today() >= context.deadlines[-1].replace(tzinfo=None) and \
+           global_user_processsecurity(process, context)
+
+
+class AddDeadLine(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-time'
+    style_order = 9
+    submission_title = _('Save')
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seefiles_roles_validation
+    processsecurity_validation = adddeadline_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        if hasattr(context, 'deadlines'):
+            context.deadlines.append(appstruct['deadline'])
+        else:
+            context.deadlines = PersistentList([appstruct['deadline']])
+
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
+
+
+def editdeadline_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) and \
+           getattr(context, 'deadlines', [])
+
+
+class EditDeadLine(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-time'
+    style_order = 9
+    submission_title = _('Save')
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seefiles_roles_validation
+    processsecurity_validation = editdeadline_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        current = context.deadlines[-1]
+        context.deadlines.remove(current)
+        context.deadlines.append(appstruct['deadline'])
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
+
+
+def seeproposals_roles_validation(process, context):
+    return has_role(role=('Moderator', ))
+
+
+def seeproposals_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+class SeeOrderedProposal(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-th-list'
+    style_order = -2
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seeproposals_roles_validation
+    processsecurity_validation = seeproposals_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
 
 #TODO behaviors

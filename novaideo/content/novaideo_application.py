@@ -5,7 +5,9 @@
 # author: Amen Souissi
 
 import colander
+import datetime
 from zope.interface import implementer
+from persistent.list import PersistentList
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -163,6 +165,11 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         default=7,
         )
 
+    deadline = colander.SchemaNode(
+                colander.DateTime(),
+                title=_('Deadline')
+                )
+
 
 class NovaIdeoApplicationPropertySheet(PropertySheet):
     schema = select(NovaIdeoApplicationSchema(), ['participants_mini', 
@@ -208,6 +215,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.correlation_intentions = DEFAULT_CORRELATION_INTENTIONS
         self.idea_intentions = DEFAULT_IDEA_INTENTIONS
         self.amendment_intentions = DEFAULT_AMENDMENT_INTENTIONS
+        self.deadlines = PersistentList([datetime.datetime.today()])
 
     @property
     def keywords_ids(self):
