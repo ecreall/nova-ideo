@@ -1,0 +1,9 @@
+  <div class="proposal-opinion pull-right"  title="${context.opinion_value}" >
+      <div class="circle red ${(context.opinion != 'Against') and 'off' or 'on' }"></div>
+      <div class="circle orange ${(context.opinion != 'Indifferent') and 'off' or 'on' }"></div>
+      <div class="circle green ${(context.opinion != 'Favour') and 'off' or 'on'}"></div>
+  </div>
+  
+  <div>
+         ${structure:context.explanation}
+  </div>

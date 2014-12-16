@@ -97,6 +97,7 @@
         <div class="row clearfix novaideo-content">
 
           <div class="col-md-2 column ui-sortable novaideo-left">
+            ${panel('adminnavbar')}
              <div metal:define-slot="left"></div>
           </div>
 

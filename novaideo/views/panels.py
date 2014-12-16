@@ -5,14 +5,18 @@
 # author: Amen Souissi
 # -*- coding: utf8 -*-
 import datetime
+import time
 from collections import OrderedDict
 from pyramid import renderers
 from pyramid_layout.panel import panel_config
+from pyramid.threadlocal import get_current_registry
+
 
 from dace.objectofcollaboration.entity import Entity
 from dace.util import getBusinessAction, getSite, find_catalog
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from daceui.interfaces import IDaceUIAPI
 from pontus.schema import select
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import(
@@ -335,6 +339,47 @@ class NovaideoFooter(object):
         self.request = request
 
     def __call__(self):
+
+
+@panel_config(
+    name='adminnavbar',
+    context = Entity ,
+    renderer='templates/panels/admin_navbar.pt'
+    )
+class Adminnavbar_panel(object):
+
+    processids = ['invitationmanagement', 
+                  'organizationmanagement',
+                  'novaideoabstractprocess']
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def _get_actions(self, context, processid):
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
+                                                        'dace_ui_api')
+        return dace_ui_api.get_actions(
+                            [context], self.request,
+                            process_or_id=processid)
+
+    def __call__(self):
+        root = getSite()
+        if not global_user_processsecurity(None, root):
+            return {'error': True}
+
+        actions = []
+        for processid in self.processids:
+            actions.extend(self._get_actions(root, processid))
+
+        admin_actions = [a for a in  actions \
+                        if getattr(a[1], 'style_descriminator','') == \
+                          'admin-action']
+        admin_actions = sorted(admin_actions, 
+                           key=lambda e: getattr(e[1], 'style_order', 0))
+
+        return {'actions': admin_actions,
+                'error': False}
 
 
 @panel_config(
