@@ -1053,6 +1053,17 @@ ins {
 }
 
 
+.deadline-panel{
+    border-radius: 4px;
+    box-shadow: 0 7px 11px #888888;
+    margin-bottom: 3px;
+    padding: 9px;
+}
+
+.deadline-panel > .progress {
+    margin-bottom: 6px;
+}
+
 .proposal-opinion{
     background-color: #e7e7e7;
     border: 1px solid #dddddd;
