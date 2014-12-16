@@ -32,7 +32,8 @@ class EditOrganizationsView(FormView):
                                         'email',
                                         'phone',
                                         'fax',
-                                        'logo'])])
+                                        'logo',
+                                        'members'])])
     behaviors = [EditOrganizations]
     formid = 'formeditorganizations'
     name = 'editorganizations'

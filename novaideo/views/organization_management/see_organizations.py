@@ -4,18 +4,18 @@
 # licence: AGPL
 # author: Amen Souissi
 
-import re
+import datetime
 from pyramid.view import view_config
-from pyramid.threadlocal import get_current_registry
+
+from substanced.util import Batch
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
-from pontus.util import merge_dicts
-from daceui.interfaces import IDaceUIAPI
 
 from novaideo.content.processes.organization_management.behaviors import (
     SeeOrganizations)
 from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo import _
 
 
@@ -28,56 +28,36 @@ class SeeOrganizationsView(BasicView):
     title = _('Organizations')
     name = 'seeorganizations'
     behaviors = [SeeOrganizations]
-    template = 'novaideo:views/organization_management/templates/see_organizations.pt'
+    template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seeorganizations'
 
 
     def update(self):
-        self.execute(None)
+        self.execute(None) 
+        objects = self.context.organizations
+        objects = sorted(objects, 
+                         key=lambda e: getattr(e, 'modified_at', 
+                                               datetime.datetime.today()), 
+                         reverse=True)
+        batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
+        batch.target = "#results_organizations"
+        len_result = batch.seqlen
+        result_body = []
+        for obj in batch:
+            object_values = {'object': obj}
+            body = self.content(result=object_values, 
+                                template=obj.result_template)['body']
+            result_body.append(body)
+
         result = {}
-
-        all_organization_data = {'organizations':[]}
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
-                                                        'dace_ui_api')
-        organizations_actions = dace_ui_api.get_actions(
-                            self.context.organizations, self.request)
-        action_updated, messages, \
-        resources, actions = dace_ui_api.update_actions(self.request,
-                                                        organizations_actions)
-        for organization in self.context.organizations:
-            organization_actions = [a for a in actions \
-                                  if a['context'] is organization]
-
-            logo = {}
-            if getattr(organization, 'logo', None):
-                logo = {'url':organization.logo.url(self.request), 
-                        'title':organization.logo.title}
-
-            description = organization.description
-            reduced_description = description
-            if len(description) > 249:
-                description = description[:250]
-                reduced_description = re.sub('\s[a-z0-9._-]+$', ' ...',
-                                             description)
-
-            organization_dic = { 
-                'actions': organization_actions,
-                'url':self.request.resource_url(organization, '@@index'), 
-                'title': organization.title,
-                'description': reduced_description,
-                'logo': logo}
-            all_organization_data['organizations'].append(organization_dic)
-         
-        all_organization_data['tabid'] = self.__class__.__name__ + \
-                                         'OrganizationActions'
-        body = self.content(result=all_organization_data, 
-                            template=self.template)['body']
+        values = {
+                'bodies': result_body,
+                'length': len_result,
+                'batch': batch,
+               }
+        body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        item['messages'] = messages
-        item['isactive'] = action_updated
         result['coordinates'] = {self.coordinates:[item]}
-        result.update(resources)
-        result  = merge_dicts(self.requirements_copy, result)
         return result
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeOrganizations:SeeOrganizationsView})

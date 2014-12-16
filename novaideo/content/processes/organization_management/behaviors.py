@@ -20,7 +20,7 @@ from novaideo.core import acces_action
 
 
 def add_roles_validation(process, context):
-    return has_role(role=('Moderator',))
+    return False#has_role(role=('Moderator',))
 
 
 def add_processsecurity_validation(process, context):
@@ -28,6 +28,10 @@ def add_processsecurity_validation(process, context):
 
 
 class AddOrganizations(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-home'
+    style_order = 1
+    submission_title = _('Save')
     isSequential = True
     context = INovaIdeoApplication
     roles_validation = add_roles_validation
@@ -56,6 +60,10 @@ def creatorg_processsecurity_validation(process, context):
 
 
 class CreatOrganizations(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-home'
+    style_order = 2
+    submission_title = _('Save')
     isSequential = True
     context = INovaIdeoApplication
     roles_validation = creatorg_roles_validation
@@ -72,7 +80,7 @@ class CreatOrganizations(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
+        return HTTPFound(request.resource_url(context, '@@seeorganizations'))
 
 
 def edit_roles_validation(process, context):
@@ -85,6 +93,10 @@ def edit_processsecurity_validation(process, context):
 
 
 class EditOrganizations(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-pencil'
+    style_order = 4
+    submission_title = _('Save')
     isSequential = True
     context = INovaIdeoApplication
     roles_validation = edit_roles_validation
@@ -94,8 +106,7 @@ class EditOrganizations(InfiniteCardinality):
         return True
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
-
+        return HTTPFound(request.resource_url(context, '@@seeorganizations'))
 
 
 def seeorgs_roles_validation(process, context):
@@ -108,6 +119,9 @@ def seeorgs_processsecurity_validation(process, context):
 
 
 class SeeOrganizations(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-th-list'
+    style_order = 3
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeorgs_roles_validation
@@ -141,7 +155,8 @@ class SeeOrganization(InfiniteCardinality):
 
 
 def editorg_roles_validation(process, context):
-    return has_role(role=('Moderator',))
+    return has_role(role=('Moderator',)) or \
+           has_role(role=('OrganizationResponsible', context))
 
 
 def editorg_processsecurity_validation(process, context):
@@ -150,7 +165,10 @@ def editorg_processsecurity_validation(process, context):
 
 class EditOrganization(InfiniteCardinality):
     isSequential = False
+    style_picto = 'glyphicon glyphicon-pencil'
+    style_order = 1
     title = _('Edit organization')
+    submission_title = _('Save')
     context = IOrganization
     roles_validation = editorg_roles_validation
     processsecurity_validation = editorg_processsecurity_validation
@@ -160,4 +178,5 @@ class EditOrganization(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
 #TODO behaviors

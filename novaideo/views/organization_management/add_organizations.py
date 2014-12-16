@@ -23,7 +23,8 @@ class AddOrganizationsSchema(Schema):
 
     file = colander.SchemaNode(
             ObjectData(File),
-            widget=FileWidget()
+            widget=FileWidget(),
+            title=_('The xls file')
             )
 
 
@@ -34,7 +35,7 @@ class AddOrganizationsSchema(Schema):
     )
 class AddOrganizationsView(FormView):
 
-    title = _('Add organizations')
+    title = _('Upload organizations')
     schema = AddOrganizationsSchema(editable=True)
     behaviors = [AddOrganizations]
     formid = 'formaddorganization'

@@ -1,22 +1,9 @@
-<nav class="navbar navbar-entity" role="navigation" i18n:domain="novaideo">
-  <div class="container-fluid">
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="navbar-entity-content" >
-      <ul class="nav navbar-nav">
-        <tal:loop repeat="a actions">
-          <li><a tal:attributes="href a.url" class="btn btn-sm"><span class="${getattr(a.action,'style_picto','')}" ></span> ${a.title}</a></li>
-        </tal:loop>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-<hr class="soften">
-<div class="right-caption span4"  i18n:domain="novaideo">
+<div class="thumbnail right-caption span4 search-item"  i18n:domain="novaideo">
   <div >
     <img tal:condition="object.logo" tal:attributes="src object.logo.url(request)"  width="300"/>
   </div>
   <div class="caption">
-    <h3>${object.title} </h3>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
     <p class="text-muted" tal:condition="object.description">
              <small  >${object.description}</small>
     </p>

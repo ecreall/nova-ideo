@@ -22,15 +22,6 @@ from .interface import IOrganization
 from novaideo import _
 
 
-@colander.deferred
-def default_members(node, kw):
-    context = node.bindings['context']
-    values = []
-    if hasattr(context, 'members'):
-        values = context.members
-
-    return values
-
 
 @colander.deferred
 def members_choice(node, kw):
@@ -42,8 +33,7 @@ def members_choice(node, kw):
 
     principals = find_service(root, 'principals')
     prop = list(principals['users'].values())
-    values = [(i, i.name) for i in prop \
-              if getattr(i, 'organization', None) in (None, context)]
+    values = [(i, i.name) for i in prop ]
     return Select2Widget(values=values, multiple=True)
 
 
@@ -87,7 +77,6 @@ class OrganizationSchema(VisualisableElementSchema):
     members = colander.SchemaNode(
         colander.Set(),
         widget=members_choice,
-        default=default_members,
         title=_('Members'),
         )
 
@@ -99,18 +88,12 @@ class OrganizationSchema(VisualisableElementSchema):
 @implementer(IOrganization)
 class Organization(VisualisableElement, Entity):
     """Organization class"""
-    
+
+    result_template = 'novaideo:views/templates/organization_result.pt'
     name = renamer()
     members = SharedMultipleProperty('members', 'organization')
     logo = CompositeUniqueProperty('logo')
 
     def __init__(self, **kwargs):
         super(Organization, self).__init__(**kwargs)
-        if 'phone' in kwargs:
-            self.phone = kwargs.get('phone')
-
-        if 'fax' in kwargs:
-            self.fax = kwargs.get('fax')
-
-        if 'email' in kwargs:
-            self.email = kwargs.get('email')
+        self.set_data(kwargs)

@@ -116,7 +116,9 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         colander.Sequence(),
         omit(OrganizationSchema(factory=Organization,
                 editable=True,
-                name=_('Organization')),['_csrf_token_']),
+                name=_('Organization'),
+                widget=SimpleMappingWidget(css_class='object-well invitation-well')),
+            ['_csrf_token_']),
         title=_('Organizations'),
         )
 
