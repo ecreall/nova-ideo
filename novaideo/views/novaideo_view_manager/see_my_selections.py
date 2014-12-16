@@ -45,12 +45,17 @@ class SeeMySelectionsView(BasicView):
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_selections"
         len_result = batch.seqlen
+
+
         result_body = []
         for obj in batch:
+            state = None
+            if getattr(obj, 'state', []):
+                state = obj.state[0]
+                
             object_values = {'object': obj, 
-                           'current_user': user, 
-                           'state': get_states_mapping(user, obj, 
-                                   getattr(obj, 'state', [None])[0])}
+                             'current_user': user, 
+                             'state': get_states_mapping(user, obj, state)}
             body = self.content(result=object_values, 
                                 template=obj.result_template)['body']
             result_body.append(body)

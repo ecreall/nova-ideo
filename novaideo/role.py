@@ -25,14 +25,14 @@ class Observer(Role):
 
 @role(name='Moderator',
       superiors=[Administrator],
-      lowers=[Collaborator])
+      lowers=[Collaborator, Member])
 class Moderator(Role):
     pass
 
 
 @role(name='Examiner',
       superiors=[Administrator],
-      lowers=[Collaborator])
+      lowers=[Collaborator, Member])
 class Examiner(Role):
     pass
 
@@ -64,3 +64,6 @@ class Elector(Role):
      lowers=[Collaborator])
 class Certifier(Role):
     pass
+
+
+DEFAULT_ROLES = ['Member']

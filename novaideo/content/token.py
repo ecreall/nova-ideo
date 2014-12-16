@@ -7,12 +7,11 @@
 from zope.interface import implementer
 
 from substanced.content import content
-from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedUniqueProperty
-from pontus.core import VisualisableElement, VisualisableElementSchema
+from pontus.core import VisualisableElement
 
 from .interface import IToken
 

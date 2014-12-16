@@ -167,8 +167,7 @@ def edit_processsecurity_validation(process, context):
 
 
 def edit_state_validation(process, context):
-    return not ("published" in context.state) and\
-           not("archived" in context.state)
+    return "to work" in context.state
 
 
 class EditIdea(InfiniteCardinality):

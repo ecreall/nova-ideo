@@ -17,7 +17,6 @@ from novaideo.event import ObjectPublished
 @subscriber(RootAdded)
 def mysubscriber(event):
     """Add the novaideo catalog when the root is added."""
-
     root = event.object
     catalogs = find_service(root, 'catalogs')
     catalogs.add_catalog('novaideo')
@@ -25,6 +24,19 @@ def mysubscriber(event):
     ml_file.__name__ = 'ml_file'
     root.addtoproperty('files', ml_file)
     root.ml_file = ml_file
+    terms_of_use = FileEntity()
+    terms_of_use.__name__ = 'terms_of_use'
+    root.addtoproperty('files', terms_of_use)
+    root.terms_of_use = terms_of_use
+    #registry = get_current_registry()
+    #settings = registry.settings
+    #login = settings.get('ineus.initial_login')
+    #password = settings.get('ineus.initial_password')
+    #admin = Person(password=password, email=login)
+    #admin.__name__ = 'ineus_admin'
+    #principals = find_service(root, 'principals')
+    #principals['users'][admin.__name__] = admin
+    #grant_roles(user=admin, roles=('Admin',))
 
 
 @subscriber(ObjectPublished)

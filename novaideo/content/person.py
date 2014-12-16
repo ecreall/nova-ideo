@@ -254,7 +254,8 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
         self.set_title()
 
     def set_title(self):
-        self.title = self.first_name + ' ' + self.last_name
+        self.title = getattr(self, 'first_name', '') + ' ' + \
+                     getattr(self, 'last_name', '')
 
     @property
     def proposals(self):

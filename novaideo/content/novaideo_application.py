@@ -196,6 +196,9 @@ class NovaIdeoApplication(VisualisableElement, Application):
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
         self.title = 'NovaIdeo'
+        self.initialization()
+
+    def initialization(self):
         self.participants_mini = 3
         self.participants_maxi = 12
         self.participations_maxi = 5
