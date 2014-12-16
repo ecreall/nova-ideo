@@ -26,5 +26,13 @@
         <span class="support-nb">${len(object.tokens_opposition)}</span>
     </span>
   </div>
+  <div tal:condition="'examined' in object.state" class="proposal-opinion pull-right"  title="${object.opinion_value}" >
+      <div class="circle red ${(object.opinion != 'Against') and 'off' or 'on' }"></div>
+      <div class="circle orange ${(object.opinion != 'Indifferent') and 'off' or 'on' }"></div>
+      <div class="circle green ${(object.opinion != 'Favour') and 'off' or 'on'}"></div>
+      <div class="proposal-explanation hide-bloc">
+        <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+         ${structure:object.explanation}</div>
+  </div>
   </div>
 </div>

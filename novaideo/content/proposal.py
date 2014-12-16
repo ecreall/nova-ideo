@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import colander
+from collections import OrderedDict
 from webob.multidict import MultiDict
 from persistent.list import PersistentList
 from zope.interface import implementer
@@ -33,6 +34,13 @@ from novaideo.core import (
     DuplicableEntity,
     VersionableEntity,
     PresentableEntity)
+
+
+OPINIONS = OrderedDict([
+            ('Favour', _('Favour')),
+            ('Indifferent', _('Indifferent')),
+            ('Against', _('Against'))
+           ])
 
 
 @colander.deferred
@@ -124,3 +132,7 @@ class Proposal(Commentable,
         result = list(self.tokens_opposition)
         result.extend(list(self.tokens_support))
         return result
+
+    @property
+    def opinion_value(self):
+        return OPINIONS.get(getattr(self, 'opinion', None), None)

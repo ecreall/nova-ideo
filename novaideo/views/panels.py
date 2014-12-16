@@ -34,6 +34,7 @@ from novaideo.content.amendment import Amendment
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.core import _
 from novaideo.content.processes import get_states_mapping
+from novaideo.content.processes.user_management.behaviors import global_user_processsecurity
 
 
 USER_MENU_ACTIONS = {'menu1': [SeeMyContents, SeeMyParticipations],
@@ -209,7 +210,8 @@ def days_hours_minutes(timed):
     renderer='templates/panels/steps.pt'
     )
 class StepsPanel(object):
-    step4_template = 'novaideo:views/templates/panels/step4.pt'
+    step4_0_template = 'novaideo:views/templates/panels/step4.pt'
+    step4_1_template = 'novaideo:views/templates/panels/step4_1.pt'
     step3_0_template = 'novaideo:views/templates/panels/step3_0.pt'
     step3_1_template = 'novaideo:views/templates/panels/step3_1.pt'
     step3_2_template = 'novaideo:views/templates/panels/step3_2.pt'
@@ -293,16 +295,21 @@ class StepsPanel(object):
 
     def _get_step4_informations(self, context, request):
         user = get_current()
-        support = 0
-        if any(t.owner is user for t in context.tokens_support):
-            support = 1
-        elif any(t.owner is user for t in context.tokens_opposition):
-            support = -1
+        if 'examined' in context.state:
+            return renderers.render(self.step4_1_template,
+                                    {'context':context},
+                                    request)
+        else:
+            support = 0
+            if any(t.owner is user for t in context.tokens_support):
+                support = 1
+            elif any(t.owner is user for t in context.tokens_opposition):
+                support = -1
 
-        return renderers.render(self.step4_template,
-                                {'context':context,
-                                 'support': support},
-                                request)
+            return renderers.render(self.step4_0_template,
+                                    {'context':context,
+                                     'support': support},
+                                    request)
 
     def __call__(self):
         result = {}
@@ -314,7 +321,8 @@ class StepsPanel(object):
         if isinstance(context, Proposal):
             if 'draft' in context.state:
                 result['current_step'] = 2
-            elif 'published' in context.state:
+            elif 'published' in context.state or \
+                 'examined' in context.state:
                 result['current_step'] = 4
                 result['step4_message'] = self._get_step4_informations(context,
                                                                    self.request)
@@ -339,6 +347,7 @@ class NovaideoFooter(object):
         self.request = request
 
     def __call__(self):
+        return {}
 
 
 @panel_config(

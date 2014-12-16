@@ -17,7 +17,7 @@ from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeProposal)
-from novaideo.content.proposal import Proposal
+from novaideo.content.proposal import Proposal, OPINIONS
 from novaideo import _
 from novaideo.content.processes import get_states_mapping
 from novaideo.views.proposal_management.present_proposal import (
@@ -75,7 +75,9 @@ class DetailProposalView(BasicView):
         if corrections and is_participant:
             text = corrections[-1].get_adapted_text(user)
             description = corrections[-1].get_adapted_description(user)
-        elif not is_participant and not ('published' in self.context.state):
+        elif not is_participant and \
+             not any(s in self.context.state \
+                     for s in ['published', 'examined']):
             add_filigrane = True
 
         return description, text, add_filigrane
