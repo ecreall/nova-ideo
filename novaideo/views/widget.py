@@ -9,8 +9,12 @@ from deform.widget import default_resource_registry
 from pyramid.threadlocal import get_current_request
 from pyramid import renderers
 
-from pontus.widget import SequenceWidget, Select2Widget
+from pontus.widget import (
+  SequenceWidget, Select2Widget)
 
+
+class TOUCheckboxWidget(deform.widget.CheckboxWidget):
+    template = 'novaideo:views/templates/terms_of_use_checkbox.pt'
 
 
 class LimitedTextAreaWidget(deform.widget.TextAreaWidget):

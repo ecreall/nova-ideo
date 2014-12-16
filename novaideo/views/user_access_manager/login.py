@@ -20,6 +20,7 @@ from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
 from substanced.event import LoggedIn
 
+from dace.objectofcollaboration.principal.util import has_role
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView, ViewError
 
@@ -81,7 +82,9 @@ class LoginView(BasicView):
                 if adapter is None:
                     adapter = DefaultUserLocator(context, request)
                 user = adapter.get_user_by_email(login)
-                if user is not None and user.check_password(password):
+                if user and user.check_password(password) and \
+                   (has_role(user=user, role=('Admin', )) or \
+                   'active' in getattr(user, 'state', [])):
                     request.session.pop('novaideo.came_from', None)
                     headers = remember(request, get_oid(user))
                     request.registry.notify(LoggedIn(login, user, 

@@ -1,0 +1,30 @@
+<div class="checkbox">
+  <div class="message-alert">
+  <span id="messageinfo" class="label label-info"></span>
+  <span id="messagesuccess" class="label label-success"></span>
+  <span id="messagedanger" class="label  label-danger"></span>
+ </div>
+  <label for="${field.oid}">
+    <input tal:define="name name|field.name;
+                       true_val true_val|field.widget.true_val;
+                       css_class css_class|field.widget.css_class;
+                       style style|field.widget.style;
+                       oid oid|field.oid"
+           type="checkbox"
+           name="${name}" value="${true_val}"
+           id="${oid}"
+           tal:attributes="checked cstruct == true_val;
+                           class css_class;
+                           style style;" />
+
+    <span tal:condition="hasattr(field, 'schema') and hasattr(field.schema, 'label')"
+          tal:replace="field.schema.label" class="checkbox-label" >
+    </span>
+  </label>
+  <div class="terms-of-use-scroll">
+      ${structure:getattr(field.widget.tou_file, 'text', '')}
+  </div>
+  <script type="text/javascript">
+    init_terms_of_use('#'+'${field.oid}')
+  </script>                              
+</div>
