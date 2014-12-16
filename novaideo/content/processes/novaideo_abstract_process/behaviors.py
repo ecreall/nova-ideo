@@ -110,10 +110,13 @@ class SeeFile(InfiniteCardinality):
 
 
 def createfile_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return has_role(role=('Moderator',))
 
 
 class CreateFile(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-file'
+    style_order = 0
     submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = createfile_roles_validation
@@ -134,7 +137,7 @@ class CreateFile(InfiniteCardinality):
 
 
 def edit_roles_validation(process, context):
-    return has_role(role=('Admin', ))
+    return has_role(role=('Moderator', ))
 
 
 class EditFile(InfiniteCardinality):
@@ -153,6 +156,30 @@ class EditFile(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def seefiles_roles_validation(process, context):
+    return has_role(role=('Moderator', ))
+
+
+def seefiles_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+class SeeFiles(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-th-list'
+    style_order = -1
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seefiles_roles_validation
+    processsecurity_validation = seefiles_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
 
 
 def adddeadline_processsecurity_validation(process, context):

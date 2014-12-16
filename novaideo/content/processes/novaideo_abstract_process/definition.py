@@ -25,6 +25,7 @@ from .behaviors import (
     EditFile,
     AddDeadLine,
     EditDeadLine,
+    SeeOrderedProposal
     )
 from novaideo import _
 
@@ -70,6 +71,10 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Edit the current deadline"),
                                        title=_("Edit the current deadline"),
                                        groups=[]),
+                seeorderedproposal = ActivityDefinition(contexts=[SeeOrderedProposal],
+                                       description=_("Proposals to examine"),
+                                       title=_("Proposals to examine"),
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -89,6 +94,8 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('adddeadline', 'eg'),
                 TransitionDefinition('pg', 'editdeadline'),
                 TransitionDefinition('editdeadline', 'eg'),
+                TransitionDefinition('pg', 'seeorderedproposal'),
+                TransitionDefinition('seeorderedproposal', 'eg'),
                 TransitionDefinition('eg', 'end'),
 
         )
