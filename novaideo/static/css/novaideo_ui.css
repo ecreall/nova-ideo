@@ -534,7 +534,7 @@ ins {
 
 .proposal-support {
     margin-bottom: 10px;
-    margin-top: 5px;
+    margin-top: -5px;
 }
 
 .proposal-members-nb {
