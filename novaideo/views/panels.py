@@ -335,4 +335,39 @@ class NovaideoFooter(object):
         self.request = request
 
     def __call__(self):
-        return {}
+
+
+@panel_config(
+    name='deadline',
+    context = NovaIdeoApplication ,
+    renderer='templates/panels/deadline.pt'
+    )
+class Deadline_panel(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        current_deadline = self.context.deadlines[-1].replace(tzinfo=None)
+        previous_deadline = current_deadline
+        try:
+            previous_deadline = self.context.deadlines[-2].replace(tzinfo=None)
+        except Exception:
+            pass
+
+        current_date = datetime.datetime.today()
+        total_sec_current_deadline = (current_deadline - previous_deadline).total_seconds()
+        percent = 100
+        expired = False
+        if total_sec_current_deadline > 0:
+            total_sec_current_date = (current_date - previous_deadline).total_seconds()
+            percent = (total_sec_current_date * 100)/ total_sec_current_deadline 
+        else:
+            expired = True
+
+        return {'percent': int(percent),
+                'expired': expired,
+                'current_deadline': current_deadline,
+                'current_date': current_date,
+                'previous_deadline': previous_deadline}

@@ -91,6 +91,7 @@
     ${panel('usernavbar')}
     ${panel('novaideo_contents')}
     ${panel('steps')}
+    ${panel('deadline')}
       <metal:slot metal:define-slot="outer-content">
         
         <div class="row clearfix novaideo-content">
