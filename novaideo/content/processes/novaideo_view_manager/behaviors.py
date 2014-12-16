@@ -8,7 +8,8 @@
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import has_role, get_current
+from dace.objectofcollaboration.principal.util import (
+    has_role, get_current, has_any_roles)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
@@ -145,5 +146,6 @@ class SeeProposal(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
 
 #TODO behaviors

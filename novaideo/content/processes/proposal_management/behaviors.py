@@ -1555,6 +1555,7 @@ class AmendmentsResult(ElementaryAction):
     state_validation = ar_state_validation
 
     def _get_newversion(self, context, root, wg):
+        contextname = context.__name__
         copy_of_proposal = copy(context, 
                                 (root, 'proposals'), 
                                 new_name=context.__name__,
@@ -1562,7 +1563,6 @@ class AmendmentsResult(ElementaryAction):
                                 roles=True)
         copy_keywords, newkeywords = root.get_keywords(context.keywords)
         copy_of_proposal.setproperty('keywords_ref', copy_keywords)
-        contextname = context.__name__
         copy_of_proposal.setproperty('version', context)
         copy_of_proposal.setproperty('originalentity', context.originalentity)
         root.rename(copy_of_proposal.__name__, contextname)
@@ -1636,6 +1636,8 @@ class AmendmentsResult(ElementaryAction):
             related_ideas = [a.related_ideas for a in amendments]
             related_ideas = [item for sublist in related_ideas \
                              for item in sublist]
+            related_ideas.extend(context.related_ideas)
+            related_ideas = list(set(related_ideas))
             connect(copy_of_proposal, 
                     related_ideas,
                     {'comment': _('Add related ideas'),
@@ -1656,7 +1658,7 @@ class AmendmentsResult(ElementaryAction):
 
     def after_execution(self, context, request, **kw):
         super(AmendmentsResult, self).after_execution(context, request, **kw)
-        self.process.execute_action(context, request, 'votingpublication', {})
+        self.process.execute_action(self.newcontext, request, 'votingpublication', {})
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(self.newcontext, "@@index"))
