@@ -15,7 +15,8 @@ from substanced.property import PropertySheet
 from dace.objectofcollaboration.application import Application
 from dace.descriptors import CompositeMultipleProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import SequenceWidget, LineWidget, TableWidget
+from pontus.widget import (
+    SequenceWidget, LineWidget, TableWidget, SimpleMappingWidget)
 from pontus.schema import omit, select
 
 from .working_group import WorkingGroupSchema, WorkingGroup
@@ -97,7 +98,9 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         colander.Sequence(),
         omit(InvitationSchema(factory=Invitation,
                                editable=True,
-                               name=_('Invitations')),['_csrf_token_']),
+                               name=_('Invitations'),
+                               widget=SimpleMappingWidget(css_class='object-well invitation-well')),
+            ['_csrf_token_']),
         title=_('List of invitation'),
         )
 

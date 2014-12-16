@@ -1,73 +1,25 @@
-<div tal:condition="invitations" tal:repeat="invitation invitations">
-    <div tal:define="afinished [ac for ac in invitation['actions'] if ('finished' in ac)]" tal:condition="afinished" tal:repeat="a afinished">
-          <div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <span class="glyphicon glyphicon-bell btn-lg"></span> Le rapport de l'action 
-            <a id="${a['action_id']}-btn" 
-                      class="alert-link dace-action" 
-                      style="max-width: 300px;"
-                      href="${a['action'].url(a['context'])}"   
-                      data-toggle="modal"
-                      data-actionid ="${a['action_id']}" 
-                      data-target="#${a['action_id']}-result"
-                      data-updateurl="${a['actionurl_update']}"
-                      data-toreplay="${'toreplay' in a}">
-                      ${a['action'].title}
-            </a>!
-            <script tal:condition="'toreplay' in a">       
-                      $(document).ready(function(){
-                             $(${'\'#'+a['action_id']+'-btn\''}).click();
-                        });
-            </script>  
-            <script>
-                        $(document).ready(function(){
-                            $(${'\'#'+a['action_id']+'-result-modal\''}).on('hidden.bs.modal', function (e) {
-                               after_execution(${'\"'+a['actionurl_after']+'\"'})
-                              })
-                        });
-            </script>
-
-          </div>
-                <!-- Modal -->
-                <div class="modal fade" id="${a['action_id']}-result-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                 <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                     <h4 class="modal-title" id="myModalLabel"> ${a['action'].title}</h4>
-                    </div>
-                    <div class="modal-body">
-                      ${structure:a['body']}
-                    </div>
-                  </div>
-                 </div>
-               </div>
-    </div>
-</div>
-
-
-<div class="row">
+<div class="row" i18n:domain="novaideo">
  <div tal:condition="invitations" tal:repeat="invitation invitations">
     <div class="col-md-12">
       <div class="thumbnail">
         <div class="caption">
          <h3 tal:condition="invitation['state']"><span class="label label-basic pull-right" i18n:translate="" tal:content="invitation['state']"/></h3>
          <dl class="dl-horizontal">
-             <dt>Personne invitée</dt><dd>${invitation['user_title']} ${invitation['last_name']} ${invitation['first_name']}</dd>
-             <dt tal:condition="invitation['organization']">Organization</dt><dd tal:condition="invitation['organization']">${invitation['organization'].title}</dd>
+             <dt>Invitation pour</dt><dd>${invitation['user_title']} ${invitation['last_name']} ${invitation['first_name']}</dd>
+             <dt tal:condition="invitation['organization']" i18n:translate="">Organization</dt><dd tal:condition="invitation['organization']">${invitation['organization'].title}</dd>
              <dt tal:condition="invitation['roles']">Invitée en tant que</dt>
              <dd tal:condition="invitation['roles']">
                 <ul class="nav nav-list">
-                   <li tal:repeat="r invitation['roles']">${r}</li>
+                   <li i18n:translate="" tal:repeat="r invitation['roles']">${r}</li>
                 </ul>
              </dd>
          </dl>
          <p tal:condition="'actions' in invitation">
              <div tal:define="anotfinished [ac for ac in invitation['actions'] if not ('finished' in ac)]" tal:condition="anotfinished" id="actions_tabel">
-                 <ul class="nav nav-pills">
+                 <ul class="list-inline pull-right invitation-btn-list">
                  <li tal:repeat="a anotfinished">
                    <a id="${a['action_id']}-btn" 
-                      class="btn btn-primary btn-sm dace-action" 
+                      class="btn btn-primary btn-xs dace-action" 
                       style="max-width: 300px;"
                       href="${a['action'].url(a['context'])}"   
                       data-toggle="modal"
@@ -75,7 +27,7 @@
                       data-target="#${a['action_id']}"
                       data-updateurl="${a['actionurl_update']}"
                       data-toreplay="${'toreplay' in a}">
-                     <span class="glyphicon glyphicon-cog"></span> ${a['action'].title}
+                     <span class="${getattr(a['action'], 'style_picto', '')}"></span> ${a['action'].title}
                    </a>  
                       <script tal:condition="'toreplay' in a">       
                         $(document).ready(function(){

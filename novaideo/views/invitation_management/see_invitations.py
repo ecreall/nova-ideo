@@ -7,6 +7,7 @@
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
+from dace.processinstance.activity import ActionType
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
@@ -18,6 +19,7 @@ from novaideo.content.processes.invitation_management.behaviors import (
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import get_states_mapping
 from novaideo import _
+from novaideo.core import can_access 
 
 
 @view_config(
@@ -37,15 +39,21 @@ class SeeInvitationsView(BasicView):
         self.execute(None)
         user = get_current()
         result = {}
+        invitations = [i for i in self.context.invitations \
+                       if can_access(user, i)]
         all_invitation_data = {'invitations':[]}
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
                                                         'dace_ui_api')
         invitations_actions = dace_ui_api.get_actions(
-                            self.context.invitations, self.request)
+                            invitations, self.request,
+                            process_or_id='invitationmanagement')
+        invitations_actions = [a for a in invitations_actions \
+                              if a[1].actionType != ActionType.automatic]
         action_updated, messages, \
         resources, actions = dace_ui_api.update_actions(self.request,
                                                             invitations_actions)
-        for invitation in self.context.invitations:
+        localizer = self.request.localizer
+        for invitation in invitations:
             invitation_actions = [a for a in actions \
                                   if a['context'] is invitation]
             state = None
@@ -57,7 +65,7 @@ class SeeInvitationsView(BasicView):
                 'url':self.request.resource_url(invitation, '@@index'), 
                 'first_name': getattr(invitation, 'first_name',''),
                 'last_name': getattr(invitation, 'last_name', ''),
-                'user_title': getattr(invitation, 'user_title', ''),
+                'user_title': localizer.translate(_(getattr(invitation, 'user_title', ''))),
                 'roles':getattr(invitation, 'roles', ''),
                 'organization':getattr(invitation, 'organization', None),
                 'state': get_states_mapping(user, invitation, state)}

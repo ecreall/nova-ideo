@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import colander
+import deform
 from zope.interface import implementer
 
 from substanced.content import content
@@ -19,6 +20,7 @@ from pontus.core import VisualisableElement
 from .interface import IInvitation
 from .person import PersonSchema
 from novaideo import _
+from novaideo.role import DEFAULT_ROLES
 
 
 @colander.deferred
@@ -39,9 +41,17 @@ class InvitationSchema(PersonSchema):
         colander.Set(),
         widget=roles_choice,
         title=_('Roles'),
-        missing=['Collaborator'],
-        default=['Collaborator'],
+        missing=DEFAULT_ROLES,
+        default=DEFAULT_ROLES,
         )
+
+    isresponsible = colander.SchemaNode(
+               colander.Boolean(),
+               widget=deform.widget.CheckboxWidget(),
+               label=_('Is the responsible'),
+               title ='',
+               missing=False
+            )
 
 
 @content(
@@ -51,26 +61,13 @@ class InvitationSchema(PersonSchema):
 @implementer(IInvitation)
 class Invitation(VisualisableElement, Entity):
     """Invitation class"""
-
+    result_template = 'novaideo:views/templates/invitation_result.pt'
     name = renamer()
     organization = SharedUniqueProperty('organization')
 
     def __init__(self, **kwargs):
         super(Invitation, self).__init__(**kwargs)
-        self.title = 'Invitation'
-        if 'first_name' in kwargs:
-            self.first_name = kwargs.get('first_name')
-            self.title = self.title + ' '+ self.first_name
-
-        if 'last_name' in kwargs:
-            self.last_name = kwargs.get('last_name')
-            self.title = self.title + ' '+ self.last_name
-
-        if 'email' in kwargs:
-            self.email = kwargs.get('email')
-
-        if 'user_title' in kwargs:
-            self.user_title = kwargs.get('user_title')
-
-        if 'roles' in kwargs:
-            self.roles = kwargs.get('roles')
+        self.set_data(kwargs)
+        self.title = 'Invitation' + \
+                     self.first_name + ' ' + \
+                     self.last_name

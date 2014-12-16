@@ -23,7 +23,8 @@ class UploadUsersSchema(Schema):
 
     file = colander.SchemaNode(
             ObjectData(File),
-            widget=FileWidget()
+            widget=FileWidget(),
+            title=_('The xls file')
             )
 
 

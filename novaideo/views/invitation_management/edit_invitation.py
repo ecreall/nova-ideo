@@ -32,7 +32,7 @@ class EditInvitationView(FormView):
                                                      'last_name',
                                                      'email',
                                                      'organization'])
-    behaviors = [EditInvitation, Cancel]
+    behaviors = [EditInvitation]
     formid = 'formeditinvitation'
     name = 'editinvitation'
 

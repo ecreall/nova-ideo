@@ -1,24 +1,24 @@
-<div class="row">
+<div class="row" i18n:domain="novaideo">
     <div class="col-md-12">
       <div class="thumbnail">
         <div class="caption">
          <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
          <dl class="dl-horizontal">
-             <dt>Vous</dt><dd>${user_title} ${last_name} ${first_name}</dd>
-             <dt tal:condition="organization">Organization</dt><dd tal:condition="organization">${organization.title}</dd>
+             <dt i18n:translate="">Invitation pour</dt><dd>${user_title} ${last_name} ${first_name}</dd>
+             <dt tal:condition="organization" i18n:translate="">Organization</dt><dd tal:condition="organization">${organization.title}</dd>
              <dt tal:condition="roles">Invitée en tant que</dt>
              <dd tal:condition="roles">
                 <ul class="nav nav-list">
-                   <li tal:repeat="r roles">${r}</li>
+                   <li tal:repeat="r roles" i18n:translate="">${r}</li>
                 </ul>
              </dd>
          </dl>
          <p tal:condition="actions">
              <div tal:define="anotfinished [ac for ac in actions if not ('finished' in ac)]" tal:condition="anotfinished" id="actions_tabel">
-                 <ul class="nav nav-pills">
+                 <ul class="list-inline pull-right invitation-btn-list">
                  <li tal:repeat="a anotfinished">
                    <a id="${a['action_id']}-btn" 
-                      class="btn btn-primary btn-sm dace-action" 
+                      class="btn btn-primary btn-xs dace-action" 
                       style="max-width: 300px;"
                       href="${a['action'].url(a['context'])}"   
                       data-toggle="modal"
@@ -26,7 +26,7 @@
                       data-target="#${a['action_id']}"
                       data-updateurl="${a['actionurl_update']}"
                       data-toreplay="${'toreplay' in a}">
-                     <span class="glyphicon glyphicon-cog"></span> ${a['action'].title}
+                     <span class="${getattr(a['action'], 'style_picto', '')}"></span> ${a['action'].title}
                    </a>  
                       <script tal:condition="'toreplay' in a">       
                         $(document).ready(function(){

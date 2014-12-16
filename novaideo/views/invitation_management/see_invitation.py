@@ -5,30 +5,36 @@
 # author: Amen Souissi
 
 from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPFound
 from pyramid.threadlocal import get_current_registry
+from pyramid.security import remember
 
-from dace.util import get_obj
+from substanced.util import get_oid
+from substanced.event import LoggedIn
+
+from dace.util import getSite
+from dace.processinstance.activity import ActionType
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from daceui.interfaces import IDaceUIAPI
-from pontus.view import BasicView, ViewError
+from pontus.view import BasicView
 from pontus.util import merge_dicts
 
 from novaideo.content.processes.invitation_management.behaviors import (
     SeeInvitation)
-from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import get_states_mapping
+from novaideo.content.invitation import Invitation
 from novaideo import _
 
 
 @view_config(
-    name='seeinvitation',
-    context=NovaIdeoApplication,
+    name='',
+    context=Invitation,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeInvitationView(BasicView):
-    title = _('Details')
-    name = 'seeinvitation'
+    title = ''
+    name = ''
     behaviors = [SeeInvitation]
     template = 'novaideo:views/invitation_management/templates/see_invitation.pt'
     viewid = 'seeinvitation'
@@ -36,34 +42,40 @@ class SeeInvitationView(BasicView):
 
     def update(self):
         user = get_current()
-        invitation_id = self.params('invitation_id')
-        try:
-            invitation = get_obj(int(invitation_id)) 
-        except Exception:
-            error = ViewError()
-            error.principalmessage = _("Invitation is not valid")
-            raise error
-
+        invitation = self.context
         self.execute(None)   
         dace_ui_api = get_current_registry().getUtility(
                                                 IDaceUIAPI,
                                                 'dace_ui_api')     
-        invitation_actions = dace_ui_api.get_actions([invitation], self.request)
+        invitation_actions = dace_ui_api.get_actions([invitation], self.request,
+                                           process_or_id='invitationmanagement')
+        invitation_actions = [a for a in invitation_actions \
+                              if a[1].actionType != ActionType.automatic]
         action_updated, messages, \
         resources, actions = dace_ui_api.update_actions(
                                           self.request, invitation_actions)
+        if hasattr(invitation, 'person'):
+            person = invitation.person
+            headers = remember(self.request, get_oid(person))
+            self.request.registry.notify(LoggedIn(person.email, person, 
+                                      invitation, self.request))
+            root = getSite()
+            return HTTPFound(location = self.request.resource_url(root), 
+                             headers = headers)
+
         result = {}
         state = None
         if invitation.state:
             state = invitation.state[0]
 
+        localizer = self.request.localizer
         values = {
                 'actions':actions,
                 'first_name': getattr(invitation, 'first_name',''),
                 'last_name': getattr(invitation, 'last_name',''),
-                'user_title': getattr(invitation, 'user_title', ''),
-                'roles':getattr(invitation, 'roles', ''),
-                'organization':getattr(invitation, 'organization', None),
+                'user_title': localizer.translate(_(getattr(invitation, 'user_title', ''))),
+                'roles': getattr(invitation, 'roles', ''),
+                'organization': getattr(invitation, 'organization', None),
                 'state': get_states_mapping(user, invitation, state)
                }
         body = self.content(result=values, template=self.template)['body']
