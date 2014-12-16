@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2014-12-09 12:34+0100\n"
+"POT-Creation-Date: 2014-12-15 15:28+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -26,22 +26,37 @@ msgstr "Mots clés"
 #: novaideo/views/correlation_management/templates/see_correlation.pt:10
 #: novaideo/content/idea.py:66
 #: novaideo/content/correction.py:52
-#: novaideo/content/proposal.py:71
+#: novaideo/content/proposal.py:79
 #: novaideo/content/amendment.py:230
 msgid "Text"
 msgstr "Texte"
 
-#: novaideo/utilities/util.py:96
+#: novaideo/utilities/util.py:109
 msgid "The proposal"
 msgstr "La proposition"
 
-#: novaideo/utilities/util.py:97
+#: novaideo/utilities/util.py:110
 msgid "The idea"
 msgstr "L'idée"
 
-#: novaideo/views/panels.py:288
+#: novaideo/views/panels.py:294
 msgid "No more Information."
 msgstr "Information indisponible"
+
+#: novaideo/views/idea_management/submit_idea.py:22
+#: novaideo/views/proposal_management/submit_proposal.py:22
+msgid "Alert for submission"
+msgstr "Alerte pour publication"
+
+#: novaideo/views/idea_management/submit_idea.py:36
+#: novaideo/views/idea_management/submit_idea.py:49
+#: novaideo/views/proposal_management/submit_proposal.py:37
+#: novaideo/views/amendment_management/submit.py:136
+#: novaideo/content/processes/idea_management/definition.py:73
+#: novaideo/content/processes/proposal_management/definition.py:315
+#: novaideo/content/processes/amendment_management/definition.py:73
+msgid "Submit"
+msgstr "Soumettre"
 
 #: novaideo/views/idea_management/edit_idea.py:23
 #: novaideo/views/idea_management/edit_idea.py:54
@@ -54,8 +69,8 @@ msgstr "Actions"
 
 #: novaideo/views/idea_management/create_idea.py:34
 #: novaideo/views/templates/add_idea_widget.pt:5
-#: novaideo/content/processes/idea_management/definition.py:54
-#: novaideo/content/processes/idea_management/definition.py:55
+#: novaideo/content/processes/idea_management/definition.py:56
+#: novaideo/content/processes/idea_management/definition.py:57
 msgid "Create an idea"
 msgstr "Noter une idée"
 
@@ -74,43 +89,40 @@ msgstr "Idée par"
 
 #: novaideo/views/idea_management/del_idea.py:23
 #: novaideo/views/amendment_management/del_amendment.py:24
-#: novaideo/content/processes/idea_management/definition.py:63
+#: novaideo/content/processes/idea_management/definition.py:65
 #: novaideo/content/processes/amendment_management/definition.py:53
 msgid "Delete"
 msgstr "Supprimer"
 
 #: novaideo/views/idea_management/see_idea.py:27
-#: novaideo/views/invitation_management/see_invitation.py:30
 #: novaideo/views/amendment_management/see_amendment.py:28
 #: novaideo/views/novaideo_view_manager/see_proposal.py:36
 #: novaideo/views/correlation_management/see_correlation.py:21
-#: novaideo/views/organization_management/see_organization.py:24
-#: novaideo/content/processes/idea_management/definition.py:94
-#: novaideo/content/processes/idea_management/definition.py:95
-#: novaideo/content/processes/idea_management/behaviors.py:472
-#: novaideo/content/processes/invitation_management/definition.py:51
-#: novaideo/content/processes/invitation_management/behaviors.py:148
+#: novaideo/content/processes/idea_management/definition.py:104
+#: novaideo/content/processes/idea_management/definition.py:105
+#: novaideo/content/processes/idea_management/behaviors.py:559
+#: novaideo/content/processes/invitation_management/definition.py:56
 #: novaideo/content/processes/user_management/definition.py:59
 #: novaideo/content/processes/user_management/definition.py:60
-#: novaideo/content/processes/user_management/behaviors.py:193
+#: novaideo/content/processes/user_management/behaviors.py:199
 #: novaideo/content/processes/amendment_management/definition.py:88
 #: novaideo/content/processes/amendment_management/definition.py:89
 #: novaideo/content/processes/amendment_management/behaviors.py:431
 #: novaideo/content/processes/novaideo_view_manager/definition.py:64
 #: novaideo/content/processes/novaideo_view_manager/definition.py:65
-#: novaideo/content/processes/novaideo_view_manager/behaviors.py:138
+#: novaideo/content/processes/novaideo_view_manager/behaviors.py:139
 #: novaideo/content/processes/correlation_management/behaviors.py:70
 #: novaideo/content/processes/organization_management/definition.py:65
-#: novaideo/content/processes/organization_management/behaviors.py:131
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:59
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:60
-#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:99
+#: novaideo/content/processes/organization_management/behaviors.py:145
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:63
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:64
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:100
 msgid "Details"
 msgstr "Détails"
 
 #: novaideo/views/idea_management/see_idea.py:84
 #: novaideo/views/amendment_management/see_amendment.py:106
-#: novaideo/views/novaideo_view_manager/see_proposal.py:156
+#: novaideo/views/novaideo_view_manager/see_proposal.py:158
 msgid "actions"
 msgstr "actions"
 
@@ -121,10 +133,34 @@ msgstr "Alerte pour publication"
 
 #: novaideo/views/idea_management/publish_idea.py:36
 #: novaideo/views/idea_management/publish_idea.py:49
-#: novaideo/content/processes/idea_management/definition.py:71
-#: novaideo/content/processes/proposal_management/definition.py:276
+#: novaideo/content/processes/idea_management/definition.py:77
+#: novaideo/content/processes/proposal_management/definition.py:277
 msgid "Publish"
 msgstr "Publier"
+
+#: novaideo/views/idea_management/archive_idea.py:25
+msgid "Alert for archive"
+msgstr ""
+
+#: novaideo/views/idea_management/archive_idea.py:51
+#: novaideo/views/idea_management/archive_idea.py:65
+#: novaideo/views/idea_management/abandon_idea.py:23
+#: novaideo/content/processes/idea_management/definition.py:81
+#: novaideo/content/processes/idea_management/definition.py:89
+msgid "Archive"
+msgstr "Archiver"
+
+#: novaideo/views/idea_management/archive_idea.py:46
+#: novaideo/views/proposal_management/make_opinion.py:44
+#: novaideo/views/templates/amendment_result.pt:19
+#: novaideo/views/amendment_management/explanation_amendment.py:74
+#: novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:24
+#: novaideo/views/amendment_management/templates/readonly/explanation_inline_item.pt:6
+#: novaideo/content/amendment.py:93
+#: novaideo/content/processes/__init__.py:21
+#: novaideo/content/processes/__init__.py:55
+msgid "Explanation"
+msgstr "Explication"
 
 #: novaideo/views/idea_management/compare_idea.py:28
 msgid "Pas de versions"
@@ -148,8 +184,8 @@ msgstr "Formulaire de comparaison de l'idée"
 
 #: novaideo/views/idea_management/compare_idea.py:151
 #: novaideo/views/proposal_management/compare_proposal.py:49
-#: novaideo/content/processes/idea_management/definition.py:98
-#: novaideo/content/processes/proposal_management/definition.py:373
+#: novaideo/content/processes/idea_management/definition.py:108
+#: novaideo/content/processes/proposal_management/definition.py:378
 msgid "Compare versions"
 msgstr "Comparer des versions"
 
@@ -162,7 +198,7 @@ msgid "Last versions"
 msgstr "Versions précédentes"
 
 #: novaideo/views/idea_management/recuperate_idea.py:23
-#: novaideo/content/processes/idea_management/definition.py:75
+#: novaideo/content/processes/idea_management/definition.py:85
 msgid "Recuperate"
 msgstr "Rétablir"
 
@@ -192,14 +228,14 @@ msgstr "Contenus liés"
 #: novaideo/views/amendment_management/associate.py:27
 #: novaideo/views/amendment_management/associate.py:41
 #: novaideo/content/comment.py:105
-#: novaideo/content/processes/idea_management/definition.py:91
-#: novaideo/content/processes/proposal_management/definition.py:346
+#: novaideo/content/processes/idea_management/definition.py:101
+#: novaideo/content/processes/proposal_management/definition.py:351
 #: novaideo/content/processes/amendment_management/definition.py:85
 msgid "Associate"
 msgstr "Associer"
 
 #: novaideo/views/idea_management/associate.py:157
-#: novaideo/content/processes/idea_management/definition.py:90
+#: novaideo/content/processes/idea_management/definition.py:100
 msgid "Associate the idea"
 msgstr "Associer l'idée"
 
@@ -226,7 +262,7 @@ msgstr "Envoyer à"
 #: novaideo/views/idea_management/present_idea.py:157
 #: novaideo/views/idea_management/present_idea.py:181
 #: novaideo/views/idea_management/present_idea.py:182
-#: novaideo/content/processes/idea_management/definition.py:82
+#: novaideo/content/processes/idea_management/definition.py:92
 msgid "Submit the idea to others"
 msgstr "Communiquer l'idée à des tiers"
 
@@ -257,7 +293,7 @@ msgstr "Messages"
 #: novaideo/views/idea_management/comment_idea.py:90
 #: novaideo/views/idea_management/comment_idea.py:121
 #: novaideo/views/idea_management/comment_idea.py:122
-#: novaideo/content/processes/idea_management/definition.py:86
+#: novaideo/content/processes/idea_management/definition.py:96
 msgid "Discuss the idea"
 msgstr "Discuter l'idée"
 
@@ -277,17 +313,12 @@ msgstr ""
 #: novaideo/views/proposal_management/duplicate_proposal.py:24
 #: novaideo/views/proposal_management/duplicate_proposal.py:53
 #: novaideo/views/amendment_management/duplicate_amendment.py:27
-#: novaideo/content/processes/idea_management/definition.py:59
-#: novaideo/content/processes/proposal_management/definition.py:272
-#: novaideo/content/processes/proposal_management/behaviors.py:335
+#: novaideo/content/processes/idea_management/definition.py:61
+#: novaideo/content/processes/proposal_management/definition.py:273
+#: novaideo/content/processes/proposal_management/behaviors.py:332
 #: novaideo/content/processes/amendment_management/definition.py:57
 msgid "Duplicate"
 msgstr "Dupliquer"
-
-#: novaideo/views/idea_management/abandon_idea.py:23
-#: novaideo/content/processes/idea_management/definition.py:79
-msgid "Archive"
-msgstr "Archiver"
 
 #: novaideo/views/idea_management/templates/comments.pt:20
 msgid "There is a"
@@ -359,8 +390,16 @@ msgstr "Texte ajouté dans"
 msgid "Text removed in"
 msgstr "Texte supprimé dans"
 
+#: novaideo/views/idea_management/templates/alert_idea_archive.pt:1
+msgid "En cliquant sur Continuer, l'idée sera archivée. Un mail sera envoyé à l'auteur de l'idée. Spécifiez les raisons de votre décision."
+msgstr ""
+
 #: novaideo/views/idea_management/templates/alert_idea_publish.pt:1
-msgid "En cliquant sur Continuer, votre idée sera soumise à l'ensemble des utilisateurs et ne pourra plus être modifiée. Elle pourra être reprise par n'importe qui dans une proposition et discutée. Pour la faire évoluer, il faudra préalablement la dupliquer."
+msgid "En cliquant sur Continuer, l'idée sera soumise à l'ensemble des utilisateurs et ne pourra plus être modifiée. Elle pourra être reprise par n'importe qui dans une proposition et discutée."
+msgstr ""
+
+#: novaideo/views/idea_management/templates/alert_idea_submission.pt:1
+msgid "En cliquant sur Continuer, votre idée sera soumise pour modération et ne pourra plus être modifiée. Elle pourra être soit publiée ou archivée par les modérateurs. Une fois votre idée est publiée, elle pourra être reprise par n'importe qui dans une proposition et discutée. Pour la faire évoluer, il faudra préalablement la dupliquer."
 msgstr ""
 
 #: novaideo/views/idea_management/templates/sent_to.pt:13
@@ -368,7 +407,7 @@ msgid "The idea has been sent:"
 msgstr "L'idée a été envoyée à :"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:44
-msgid "Pour que votre idée dupliquée puisse être publiée ou transformée en proposition, vous devez préalablement la modifier, elle ne doit pas être identique à l'idée d'origine."
+msgid "Pour que votre idée dupliquée puisse être soumise à modération, vous devez préalablement la modifier, elle ne doit pas être identique à l'idée d'origine."
 msgstr ""
 
 #: novaideo/views/idea_management/templates/see_idea.pt:55
@@ -410,39 +449,78 @@ msgstr "Pièces jointes :"
 msgid "Attachment:"
 msgstr "Pièce jointe :"
 
-#: novaideo/views/invitation_management/invite_user.py:41
-#: novaideo/content/processes/invitation_management/definition.py:46
-#: novaideo/content/processes/invitation_management/definition.py:47
+#: novaideo/views/invitation_management/invite_user.py:50
+#: novaideo/content/processes/invitation_management/definition.py:51
+#: novaideo/content/processes/invitation_management/definition.py:52
 msgid "Invite users"
 msgstr "Inviter des utilisateurs"
 
-#: novaideo/views/invitation_management/invite_user.py:30
-#: novaideo/views/invitation_management/see_invitations.py:29
-#: novaideo/content/novaideo_application.py:100
-#: novaideo/content/processes/invitation_management/definition.py:55
+#: novaideo/views/invitation_management/invite_user.py:34
+#: novaideo/views/invitation_management/see_invitations.py:31
+#: novaideo/content/novaideo_application.py:103
+#: novaideo/content/processes/invitation_management/definition.py:60
 msgid "Invitations"
 msgstr "Invitations"
 
-#: novaideo/views/invitation_management/upload_users.py:37
+#: novaideo/views/invitation_management/refuse_invitatio.py:25
+msgid "Refuse invitation"
+msgstr "Refuser"
+
+#: novaideo/views/invitation_management/reinvite_user.py:25
+msgid "Reinvite user"
+msgstr ""
+
+#: novaideo/views/invitation_management/upload_users.py:38
 msgid "Upload users"
 msgstr "Importer des utilisateurs"
 
+#: novaideo/views/invitation_management/upload_users.py:27
+#: novaideo/views/organization_management/add_organizations.py:27
+msgid "The xls file"
+msgstr "L'idée"
+
 #: novaideo/views/invitation_management/edit_invitation.py:27
-#: novaideo/content/processes/invitation_management/definition.py:62
-#: novaideo/content/processes/invitation_management/definition.py:63
-#: novaideo/content/processes/invitation_management/behaviors.py:240
 msgid "Edit invitation"
 msgstr "Modifier une invitation"
 
 #: novaideo/views/invitation_management/edit_invitations.py:28
-#: novaideo/content/processes/invitation_management/definition.py:58
-#: novaideo/content/processes/invitation_management/definition.py:59
+#: novaideo/content/processes/invitation_management/definition.py:63
+#: novaideo/content/processes/invitation_management/definition.py:64
 msgid "Edit invitations"
 msgstr "Modifier des invitations"
 
-#: novaideo/views/invitation_management/see_invitation.py:44
-msgid "Invitation is not valid"
-msgstr "L'invitation n'est pas valide"
+#: novaideo/views/invitation_management/remove_invitation.py:25
+msgid "Remove invitation"
+msgstr "Supprimer l'invitation"
+
+#: novaideo/views/invitation_management/accept_invitation.py:52
+msgid "Validate the invitation"
+msgstr "Validation de l'invitation"
+
+#: novaideo/views/invitation_management/accept_invitation.py:35
+#: novaideo/views/user_access_manager/templates/login.pt:17
+#: novaideo/content/person.py:194
+msgid "Password"
+msgstr "Mot de passe"
+
+#: novaideo/views/invitation_management/accept_invitation.py:41
+msgid "I have read and accept the terms and conditions"
+msgstr "J'ai lu et accepte les termes et conditions d'utilisation"
+
+#: novaideo/views/invitation_management/remind_invitation.py:25
+msgid "Remind invitation"
+msgstr "Rappeler"
+
+#: novaideo/views/invitation_management/templates/see_invitation.pt:13
+msgid "Invitation pour"
+msgstr ""
+
+#: novaideo/views/invitation_management/templates/see_invitation.pt:17
+#: novaideo/views/invitation_management/templates/see_invitations.pt:19
+#: novaideo/content/novaideo_application.py:121
+#: novaideo/content/person.py:201
+msgid "Organization"
+msgstr "Organisation"
 
 #: novaideo/views/user_management/deactivate.py:23
 msgid "Deactivate the member"
@@ -456,13 +534,13 @@ msgstr "Activer le membre"
 #: novaideo/views/proposal_management/edit_proposal.py:170
 #: novaideo/views/proposal_management/edit_proposal.py:198
 #: novaideo/views/working_group_management/edit.py:27
-#: novaideo/content/processes/idea_management/definition.py:67
-#: novaideo/content/processes/invitation_management/definition.py:60
-#: novaideo/content/processes/invitation_management/definition.py:64
+#: novaideo/content/processes/idea_management/definition.py:69
+#: novaideo/content/processes/invitation_management/definition.py:65
+#: novaideo/content/processes/invitation_management/definition.py:69
 #: novaideo/content/processes/user_management/definition.py:47
 #: novaideo/content/processes/user_management/definition.py:48
 #: novaideo/content/processes/user_management/behaviors.py:94
-#: novaideo/content/processes/proposal_management/definition.py:280
+#: novaideo/content/processes/proposal_management/definition.py:281
 #: novaideo/content/processes/amendment_management/definition.py:61
 #: novaideo/content/processes/organization_management/definition.py:54
 #: novaideo/content/processes/organization_management/definition.py:62
@@ -587,10 +665,12 @@ msgid "La fin du vote est prévue pour le"
 msgstr ""
 
 #: novaideo/views/ballot_processes/referendum/vote.py:48
+#: novaideo/content/proposal.py:40
 msgid "Favour"
 msgstr "Pour"
 
 #: novaideo/views/ballot_processes/referendum/vote.py:48
+#: novaideo/content/proposal.py:42
 msgid "Against"
 msgstr "Contre"
 
@@ -607,7 +687,7 @@ msgid "Choices"
 msgstr "Choix"
 
 #: novaideo/views/ballot_processes/majorityjudgment/vote.py:33
-#: novaideo/content/processes/proposal_management/definition.py:86
+#: novaideo/content/processes/proposal_management/definition.py:87
 msgid "Vote for amendments"
 msgstr "Vote sur les amendements"
 
@@ -619,20 +699,21 @@ msgstr "Jugement"
 msgid "Candidates"
 msgstr "Candidats"
 
-#: novaideo/views/user_access_manager/login.py:37
+#: novaideo/views/user_access_manager/login.py:38
 #: novaideo/content/processes/user_access_manager/definition.py:41
 #: novaideo/content/processes/user_access_manager/definition.py:42
 #: novaideo/content/processes/user_access_manager/behaviors.py:23
 msgid "Log in"
 msgstr "Se connecter"
 
-#: novaideo/views/user_access_manager/login.py:72
+#: novaideo/views/user_access_manager/login.py:73
 msgid "Failed login (CSRF)"
 msgstr "La connexion a échouée"
 
 #: novaideo/views/user_access_manager/reset_password.py:26
 #: novaideo/views/user_access_manager/reset_password.py:89
-#: novaideo/content/processes/idea_management/behaviors.py:386
+#: novaideo/content/processes/idea_management/behaviors.py:472
+#: novaideo/content/processes/invitation_management/behaviors.py:99
 msgid "Send"
 msgstr "Envoyer"
 
@@ -658,14 +739,9 @@ msgid "Log In"
 msgstr "Se connecter"
 
 #: novaideo/views/user_access_manager/templates/login.pt:14
-#: novaideo/content/organization.py:74
+#: novaideo/content/organization.py:64
 msgid "Email"
 msgstr "Courriel"
-
-#: novaideo/views/user_access_manager/templates/login.pt:17
-#: novaideo/content/person.py:194
-msgid "Password"
-msgstr "Mot de passe"
 
 #: novaideo/views/user_access_manager/templates/login.pt:25
 msgid "Forgot your password?"
@@ -684,25 +760,25 @@ msgid "Log In as Another User"
 msgstr "Se connecter avec un autre profil"
 
 #: novaideo/views/proposal_management/correct_proposal.py:28
-#: novaideo/content/processes/proposal_management/definition.py:353
+#: novaideo/content/processes/proposal_management/definition.py:358
 msgid "Correct the proposal"
 msgstr "Relecture de la proposition"
 
 #: novaideo/views/proposal_management/support_proposal.py:24
-#: novaideo/content/processes/proposal_management/definition.py:318
+#: novaideo/content/processes/proposal_management/definition.py:319
 msgid "Support"
 msgstr "Soutenir"
 
 #: novaideo/views/proposal_management/publish_proposal.py:24
-#: novaideo/content/processes/proposal_management/definition.py:145
-#: novaideo/content/processes/proposal_management/definition.py:313
+#: novaideo/content/processes/proposal_management/definition.py:146
+#: novaideo/content/processes/proposal_management/definition.py:314
 msgid "Submit the proposal"
 msgstr "Soumettre la proposition au collectif"
 
 #: novaideo/views/proposal_management/present_proposal.py:78
 #: novaideo/views/proposal_management/present_proposal.py:101
 #: novaideo/views/proposal_management/present_proposal.py:102
-#: novaideo/content/processes/proposal_management/definition.py:333
+#: novaideo/content/processes/proposal_management/definition.py:338
 msgid "Submit the proposal to others"
 msgstr "Communiquer la proposition à des tiers"
 
@@ -711,14 +787,14 @@ msgid "Compare proposal form"
 msgstr "Formulaire de comparaison de la proposition"
 
 #: novaideo/views/proposal_management/resign.py:23
-#: novaideo/content/processes/proposal_management/definition.py:288
 #: novaideo/content/processes/proposal_management/definition.py:289
+#: novaideo/content/processes/proposal_management/definition.py:290
 msgid "Resign"
 msgstr "Quitter"
 
 #: novaideo/views/proposal_management/participate.py:24
-#: novaideo/content/processes/proposal_management/definition.py:284
 #: novaideo/content/processes/proposal_management/definition.py:285
+#: novaideo/content/processes/proposal_management/definition.py:286
 msgid "Participate"
 msgstr "Participer"
 
@@ -740,31 +816,31 @@ msgid "See amendments"
 msgstr "Voir les amendements"
 
 #: novaideo/views/proposal_management/withdraw.py:23
-#: novaideo/content/processes/proposal_management/definition.py:293
+#: novaideo/content/processes/proposal_management/definition.py:294
 msgid "Withdraw"
 msgstr "Retirer"
 
 #: novaideo/views/proposal_management/amendable.py:23
-#: novaideo/content/processes/__init__.py:33
-#: novaideo/content/processes/__init__.py:65
-#: novaideo/content/processes/proposal_management/definition.py:309
+#: novaideo/content/processes/__init__.py:34
+#: novaideo/content/processes/__init__.py:68
+#: novaideo/content/processes/proposal_management/definition.py:310
 msgid "Amendable"
 msgstr "Amendable"
 
 #: novaideo/views/proposal_management/proofreading_done.py:24
-#: novaideo/content/processes/proposal_management/definition.py:361
-#: novaideo/content/processes/proposal_management/definition.py:362
+#: novaideo/content/processes/proposal_management/definition.py:366
+#: novaideo/content/processes/proposal_management/definition.py:367
 msgid "Proofreading done"
 msgstr "Relecture effectuée"
 
 #: novaideo/views/proposal_management/add_paragraph.py:24
-#: novaideo/content/processes/proposal_management/definition.py:365
-#: novaideo/content/processes/proposal_management/definition.py:366
+#: novaideo/content/processes/proposal_management/definition.py:370
+#: novaideo/content/processes/proposal_management/definition.py:371
 msgid "Add a paragraph"
 msgstr "Ajouter un paragraphe"
 
 #: novaideo/views/proposal_management/associate.py:51
-#: novaideo/content/processes/proposal_management/definition.py:345
+#: novaideo/content/processes/proposal_management/definition.py:350
 msgid "Associate the proposal"
 msgstr "Associer la proposition"
 
@@ -773,7 +849,7 @@ msgid "Associate the proposal to an other content"
 msgstr "Associer la proposition à un autre contenu"
 
 #: novaideo/views/proposal_management/improve_proposal.py:27
-#: novaideo/content/processes/proposal_management/definition.py:370
+#: novaideo/content/processes/proposal_management/definition.py:375
 msgid "Improve"
 msgstr "Améliorer"
 
@@ -789,7 +865,7 @@ msgstr "Idées utilisées"
 
 #: novaideo/views/proposal_management/create_proposal.py:77
 #: novaideo/views/proposal_management/create_proposal.py:102
-#: novaideo/content/processes/proposal_management/definition.py:264
+#: novaideo/content/processes/proposal_management/definition.py:265
 msgid "Create a proposal"
 msgstr "Rédiger une proposition"
 
@@ -845,42 +921,39 @@ msgstr "Transformer l'idée en proposition"
 msgid " (the proposal)"
 msgstr " (la proposition)"
 
+#: novaideo/views/proposal_management/make_opinion.py:54
+msgid "Make opinion"
+msgstr "Donner un avis"
+
+#: novaideo/views/proposal_management/make_opinion.py:34
+msgid "Opinion"
+msgstr "Avis"
+
 #: novaideo/views/proposal_management/withdraw_token.py:24
-#: novaideo/content/processes/proposal_management/definition.py:326
+#: novaideo/content/processes/proposal_management/definition.py:331
 msgid "Withdraw my token"
 msgstr "Retirer son jeton"
 
-#: novaideo/views/proposal_management/submit_proposal.py:22
-msgid "Alert for submission"
-msgstr "Alerte pour publication"
-
-#: novaideo/views/proposal_management/submit_proposal.py:37
-#: novaideo/views/amendment_management/submit.py:136
-#: novaideo/content/processes/proposal_management/definition.py:314
-#: novaideo/content/processes/amendment_management/definition.py:73
-msgid "Submit"
-msgstr "Soumettre"
-
 #: novaideo/views/proposal_management/submit_proposal.py:50
-#: novaideo/content/processes/proposal_management/definition.py:275
+#: novaideo/content/processes/proposal_management/definition.py:276
 msgid "Publish the proposal"
 msgstr "Publier la proposition"
 
 #: novaideo/views/proposal_management/oppose_proposal.py:24
-#: novaideo/content/processes/proposal_management/definition.py:322
+#: novaideo/content/processes/proposal_management/definition.py:327
 msgid "Oppose"
 msgstr "S'opposer"
 
 #: novaideo/views/proposal_management/comment_proposal.py:28
 #: novaideo/views/proposal_management/comment_proposal.py:51
 #: novaideo/views/proposal_management/comment_proposal.py:52
-#: novaideo/content/processes/proposal_management/definition.py:337
+#: novaideo/content/processes/proposal_management/definition.py:342
 msgid "Discuss the proposal"
 msgstr "Discuter la proposition"
 
 #: novaideo/views/proposal_management/amendments_result.py:24
-#: novaideo/content/processes/proposal_management/definition.py:329
-#: novaideo/content/processes/proposal_management/definition.py:330
+#: novaideo/content/processes/proposal_management/definition.py:334
+#: novaideo/content/processes/proposal_management/definition.py:335
 msgid "Amendments result"
 msgstr "Résultats sur les amednements"
 
@@ -902,14 +975,14 @@ msgid "See related ideas"
 msgstr "Voir les idées liées"
 
 #: novaideo/views/proposal_management/alert.py:23
-#: novaideo/content/processes/proposal_management/definition.py:304
 #: novaideo/content/processes/proposal_management/definition.py:305
+#: novaideo/content/processes/proposal_management/definition.py:306
 msgid "Alert"
 msgstr "Alerte"
 
 #: novaideo/views/proposal_management/correct_item.py:25
-#: novaideo/content/processes/proposal_management/definition.py:354
-#: novaideo/content/processes/proposal_management/definition.py:358
+#: novaideo/content/processes/proposal_management/definition.py:359
+#: novaideo/content/processes/proposal_management/definition.py:363
 msgid "Correct"
 msgstr "Relire"
 
@@ -918,7 +991,7 @@ msgstr "Relire"
 #: novaideo/views/amendment_management/templates/see_amendment.pt:74
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:93
 #: novaideo/content/correction.py:46
-#: novaideo/content/proposal.py:65
+#: novaideo/content/proposal.py:73
 #: novaideo/content/amendment.py:224
 msgid "Abstract"
 msgstr "Résumé"
@@ -967,6 +1040,13 @@ msgstr "Un problème a été rencontré avec cette section. Merci de vérifier l
 msgid "modify the"
 msgstr "modifiée le"
 
+#: novaideo/views/templates/organization_result.pt:41
+#: novaideo/views/templates/panels/novaideo_contents.pt:18
+#: novaideo/views/organization_management/templates/see_organization.pt:65
+#: novaideo/content/organization.py:80
+msgid "Members"
+msgstr "Membres"
+
 #: novaideo/views/templates/idea_text_alert.pt:1
 msgid "Attention les ${limit} caractères maximum sont atteints. Pour continuer à travailler sur votre idée, vous pouvez transformer l'idée en proposition."
 msgstr ""
@@ -987,23 +1067,13 @@ msgstr "par"
 msgid "There was a problem with your submission"
 msgstr "Un problème a été rencontré lors de votre soumission. Merci de vérifier les informations saisies."
 
-#: novaideo/views/templates/amendment_result.pt:19
-#: novaideo/views/amendment_management/explanation_amendment.py:74
-#: novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:24
-#: novaideo/views/amendment_management/templates/readonly/explanation_inline_item.pt:6
-#: novaideo/content/amendment.py:93
-#: novaideo/content/processes/__init__.py:21
-#: novaideo/content/processes/__init__.py:53
-msgid "Explanation"
-msgstr "Explication"
-
 #: novaideo/views/templates/amendment_result.pt:31
 #: novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:32
 #: novaideo/views/amendment_management/templates/readonly/explanation_inline_item.pt:14
-#: novaideo/content/proposal.py:77
+#: novaideo/content/proposal.py:85
 #: novaideo/content/amendment.py:103
-#: novaideo/content/processes/proposal_management/definition.py:349
-#: novaideo/content/processes/proposal_management/definition.py:350
+#: novaideo/content/processes/proposal_management/definition.py:354
+#: novaideo/content/processes/proposal_management/definition.py:355
 msgid "Related ideas"
 msgstr "Idées liées"
 
@@ -1070,8 +1140,8 @@ msgstr "Durée expirée"
 #: novaideo/views/templates/panels/step3_1.pt:67
 #: novaideo/views/templates/panels/step3_3.pt:111
 #: novaideo/views/templates/panels/step3_2.pt:111
-#: novaideo/content/processes/__init__.py:30
-#: novaideo/content/processes/__init__.py:62
+#: novaideo/content/processes/__init__.py:31
+#: novaideo/content/processes/__init__.py:65
 msgid "Votes for publishing"
 msgstr "Vote pour soumettre la proposition au collectif"
 
@@ -1090,8 +1160,8 @@ msgstr "Amélioration de la proposition"
 #: novaideo/views/templates/panels/step3_1.pt:106
 #: novaideo/views/templates/panels/step3_3.pt:150
 #: novaideo/views/templates/panels/step3_2.pt:150
-#: novaideo/content/processes/__init__.py:31
-#: novaideo/content/processes/__init__.py:63
+#: novaideo/content/processes/__init__.py:32
+#: novaideo/content/processes/__init__.py:66
 msgid "Votes for amendments"
 msgstr "Votes sur les amendements"
 
@@ -1104,6 +1174,14 @@ msgstr ""
 #: novaideo/views/templates/panels/step3_2.pt:61
 msgid "Electors"
 msgstr "Participants au vote"
+
+#: novaideo/views/templates/panels/deadline.pt:9
+msgid "Deadline expired:"
+msgstr "Échéance expirée:"
+
+#: novaideo/views/templates/panels/deadline.pt:12
+msgid "Deadline:"
+msgstr "Échéance:"
 
 #: novaideo/views/templates/panels/steps.pt:41
 msgid "Collection of the idea"
@@ -1125,19 +1203,14 @@ msgstr "Appréciation de la proposition"
 msgid "Member"
 msgstr "Membre"
 
-#: novaideo/views/templates/panels/novaideo_contents.pt:18
-#: novaideo/content/organization.py:91
-msgid "Members"
-msgstr "Membres"
-
 #: novaideo/views/templates/panels/novaideo_contents.pt:27
 #: novaideo/views/novaideo_view_manager/search.py:40
-#: novaideo/content/novaideo_application.py:133
+#: novaideo/content/novaideo_application.py:140
 msgid "Idea"
 msgstr "Idée"
 
 #: novaideo/views/templates/panels/novaideo_contents.pt:32
-#: novaideo/content/novaideo_application.py:134
+#: novaideo/content/novaideo_application.py:141
 msgid "Ideas"
 msgstr "Idées"
 
@@ -1157,10 +1230,6 @@ msgstr "${icon} Mon profil"
 #: novaideo/views/templates/panels/usermenu.pt:51
 msgid "${icon} Log Out"
 msgstr "${icon} Se déconnecter"
-
-#: novaideo/views/templates/panels/usermenu.pt:79
-msgid "Registration"
-msgstr "S'inscrire"
 
 #: novaideo/views/comment_management/respond.py:26
 #: novaideo/content/processes/comment_management/definition.py:42
@@ -1311,8 +1380,8 @@ msgid "Search"
 msgstr "Rechercher"
 
 #: novaideo/views/novaideo_view_manager/search.py:192
-msgid "Nova-Ideo contents"
-msgstr "Contenus de Nova-Ideo"
+msgid "Ineus contents"
+msgstr "Contenus de Ineus"
 
 #: novaideo/views/novaideo_view_manager/search.py:78
 msgid "The keyword search is done using commas between keywords."
@@ -1337,7 +1406,7 @@ msgid "vos groupes de travail actuels"
 msgstr ""
 
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:118
-#: novaideo/content/novaideo_application.py:108
+#: novaideo/content/novaideo_application.py:113
 msgid "Working group"
 msgstr "Groupe de travail"
 
@@ -1382,92 +1451,93 @@ msgstr "Contenus associés"
 msgid "Associated by"
 msgstr "Associés par"
 
-#: novaideo/views/invitation_validation/refuse_invitatio.py:25
-msgid "Refuse invitation"
-msgstr "Refuser l'invitation"
-
-#: novaideo/views/invitation_validation/reinvite_user.py:25
-msgid "Reinvite user"
-msgstr ""
-
-#: novaideo/views/invitation_validation/remove_invitation.py:25
-msgid "Remove invitation"
-msgstr "Supprimer l'invitation"
-
-#: novaideo/views/invitation_validation/accept_invitation.py:38
-msgid "Accept invitation users"
-msgstr ""
-
-#: novaideo/views/invitation_validation/remind_invitation.py:25
-msgid "Remind invitation"
-msgstr ""
-
 #: novaideo/views/organization_management/edit_organization.py:26
 #: novaideo/content/processes/organization_management/definition.py:60
-#: novaideo/content/processes/organization_management/behaviors.py:153
+#: novaideo/content/processes/organization_management/behaviors.py:170
 msgid "Edit organization"
-msgstr ""
+msgstr "Modifier l'organisation"
 
-#: novaideo/views/organization_management/add_organizations.py:37
-msgid "Add organizations"
-msgstr ""
+#: novaideo/views/organization_management/add_organizations.py:38
+#: novaideo/content/processes/organization_management/definition.py:45
+msgid "Upload organizations"
+msgstr "Uploder des organisation"
 
 #: novaideo/views/organization_management/see_organizations.py:28
-#: novaideo/content/novaideo_application.py:117
+#: novaideo/content/novaideo_application.py:124
 #: novaideo/content/processes/organization_management/definition.py:57
 msgid "Organizations"
-msgstr ""
+msgstr "Organisations"
 
 #: novaideo/views/organization_management/edit_organizations.py:28
 #: novaideo/content/processes/organization_management/definition.py:52
 #: novaideo/content/processes/organization_management/definition.py:53
 #: novaideo/content/processes/organization_management/definition.py:61
 msgid "Edit organizations"
-msgstr ""
+msgstr "Modifier les organisation"
 
-#: novaideo/views/organization_management/creat_organizations.py:47
+#: novaideo/views/organization_management/creat_organizations.py:48
 #: novaideo/content/processes/organization_management/definition.py:48
 #: novaideo/content/processes/organization_management/definition.py:49
 msgid "Creat organizations"
-msgstr ""
+msgstr "Ajouter des organisations"
 
-#: novaideo/views/organization_management/creat_organizations.py:36
+#: novaideo/views/organization_management/creat_organizations.py:37
 msgid "Organizations to creat"
-msgstr ""
+msgstr "Les organisations à créer"
+
+#: novaideo/views/novaideo_abstract_process/add_deadline.py:28
+msgid "Add the deadline"
+msgstr "Ajouter une échéance"
+
+#: novaideo/views/novaideo_abstract_process/see_files.py:28
+msgid "Files"
+msgstr "Documents"
 
 #: novaideo/views/novaideo_abstract_process/create_file.py:28
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:51
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:52
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:55
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:56
 msgid "Create a file"
 msgstr "Ajouter un document"
 
 #: novaideo/views/novaideo_abstract_process/select.py:24
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:43
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:44
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:47
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:48
 msgid "Add to my selections"
 msgstr "Ajouter à mes sélections"
 
+#: novaideo/views/novaideo_abstract_process/edit_deadline.py:28
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:75
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:76
+msgid "Edit the current deadline"
+msgstr "Modifier l'échance courante"
+
 #: novaideo/views/novaideo_abstract_process/deselect.py:24
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:47
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:48
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:51
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:52
 msgid "Remove from my selections"
 msgstr "Retirer de mes sélections"
 
 #: novaideo/views/novaideo_abstract_process/edit_file.py:27
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:55
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:56
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:59
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:60
 msgid "Edit the file"
 msgstr "Modifier le document"
 
-#: novaideo/content/organization.py:65
+#: novaideo/views/novaideo_abstract_process/see_ordered_proposals.py:37
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:79
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:80
+msgid "Proposals to examine"
+msgstr "Les propositions à examiner"
+
+#: novaideo/content/organization.py:55
 msgid "Logo"
 msgstr "Logo"
 
-#: novaideo/content/organization.py:79
+#: novaideo/content/organization.py:69
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: novaideo/content/organization.py:84
+#: novaideo/content/organization.py:74
 msgid "Fax"
 msgstr ""
 
@@ -1480,104 +1550,103 @@ msgstr "Message"
 msgid "Targets"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:30
+#: novaideo/content/novaideo_application.py:33
 msgid "Mr"
 msgstr "Monsieur"
 
-#: novaideo/content/novaideo_application.py:30
+#: novaideo/content/novaideo_application.py:33
 msgid "Madam"
 msgstr "Madame"
 
-#: novaideo/content/novaideo_application.py:30
+#: novaideo/content/novaideo_application.py:33
 msgid "Miss"
 msgstr "Mademoiselle"
 
-#: novaideo/content/novaideo_application.py:32
-#: novaideo/content/novaideo_application.py:34
-#: novaideo/content/novaideo_application.py:36
-#: novaideo/content/novaideo_application.py:38
+#: novaideo/content/novaideo_application.py:35
+#: novaideo/content/novaideo_application.py:37
+#: novaideo/content/novaideo_application.py:39
+#: novaideo/content/novaideo_application.py:41
 msgid "Irony"
 msgstr "Ironie"
 
-#: novaideo/content/novaideo_application.py:32
-#: novaideo/content/novaideo_application.py:34
-#: novaideo/content/novaideo_application.py:36
-#: novaideo/content/novaideo_application.py:38
+#: novaideo/content/novaideo_application.py:35
+#: novaideo/content/novaideo_application.py:37
+#: novaideo/content/novaideo_application.py:39
+#: novaideo/content/novaideo_application.py:41
 msgid "Humor"
 msgstr "Humour"
 
-#: novaideo/content/novaideo_application.py:32
-#: novaideo/content/novaideo_application.py:34
+#: novaideo/content/novaideo_application.py:35
+#: novaideo/content/novaideo_application.py:37
 #: novaideo/content/comment.py:90
 msgid "Remark"
 msgstr "Remarque"
 
-#: novaideo/content/novaideo_application.py:36
-#: novaideo/content/novaideo_application.py:38
+#: novaideo/content/novaideo_application.py:39
+#: novaideo/content/novaideo_application.py:41
 #: novaideo/content/idea.py:73
 msgid "Improvement"
 msgstr "Amélioration"
 
-#: novaideo/content/novaideo_application.py:60
+#: novaideo/content/novaideo_application.py:63
 msgid "List of titles"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:71
+#: novaideo/content/novaideo_application.py:74
 msgid "Comment intentions"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:82
+#: novaideo/content/novaideo_application.py:85
 msgid "Idea intentions"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:93
+#: novaideo/content/novaideo_application.py:96
 msgid "Amendment intentions"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:101
+#: novaideo/content/novaideo_application.py:106
 msgid "List of invitation"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:109
+#: novaideo/content/novaideo_application.py:114
 msgid "Working groups"
 msgstr "Groupes de travail"
 
-#: novaideo/content/novaideo_application.py:139
+#: novaideo/content/novaideo_application.py:146
 msgid "Minimum number of participants for a working group"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:145
+#: novaideo/content/novaideo_application.py:152
 msgid "Maximum number of participants for a working group"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:151
+#: novaideo/content/novaideo_application.py:158
 msgid "Maximum number of working group by member"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:157
+#: novaideo/content/novaideo_application.py:164
 msgid "Minimum number of tokens by member"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:56
+#: novaideo/content/novaideo_application.py:170
+msgid "Deadline"
+msgstr "Échéance"
+
+#: novaideo/content/novaideo_application.py:59
 #: novaideo/content/person.py:179
 msgid "Title"
 msgstr "Civilité"
 
-#: novaideo/content/novaideo_application.py:67
+#: novaideo/content/novaideo_application.py:70
 msgid "Comment intention"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:78
+#: novaideo/content/novaideo_application.py:81
 msgid "Idea intention"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:89
+#: novaideo/content/novaideo_application.py:92
 msgid "Amendment intention"
-msgstr ""
-
-#: novaideo/content/novaideo_application.py:116
-#: novaideo/content/person.py:201
-msgid "Organization"
 msgstr ""
 
 #: novaideo/content/idea.py:86
@@ -1592,9 +1661,13 @@ msgstr "Fichier"
 msgid "Add file"
 msgstr "Ajouter une pièce jointe"
 
-#: novaideo/content/invitation.py:41
+#: novaideo/content/invitation.py:43
 msgid "Roles"
 msgstr "Rôles"
+
+#: novaideo/content/invitation.py:51
+msgid "Is the responsible"
+msgstr "Est le reponsable"
 
 #: novaideo/content/ballot.py:108
 msgid "Excellent"
@@ -1623,6 +1696,10 @@ msgstr "Insuffisant"
 #: novaideo/content/ballot.py:114
 msgid "Reject"
 msgstr "À rejeter"
+
+#: novaideo/content/proposal.py:41
+msgid "Indifferent"
+msgstr "À étudier"
 
 #: novaideo/content/amendment.py:70
 msgid "Apply the same intention"
@@ -1666,182 +1743,241 @@ msgid "Locale"
 msgstr "Langue"
 
 #: novaideo/content/processes/__init__.py:15
-#: novaideo/content/processes/__init__.py:48
+#: novaideo/content/processes/__init__.py:50
 msgid "Draft"
 msgstr "Privée"
 
 #: novaideo/content/processes/__init__.py:19
-#: novaideo/content/processes/__init__.py:51
+#: novaideo/content/processes/__init__.py:53
 msgid "Archived"
 msgstr "Archivé(e)"
 
 #: novaideo/content/processes/__init__.py:23
-#: novaideo/content/processes/__init__.py:55
+#: novaideo/content/processes/__init__.py:57
 msgid "To work"
 msgstr "À travailler"
 
-#: novaideo/content/processes/__init__.py:25
-#: novaideo/content/processes/__init__.py:57
+#: novaideo/content/processes/__init__.py:24
+#: novaideo/content/processes/__init__.py:58
+#: novaideo/content/processes/__init__.py:17
+#: novaideo/content/processes/__init__.py:51
+msgid "Submited"
+msgstr "Soumise à appréciation"
+
+#: novaideo/content/processes/__init__.py:26
+#: novaideo/content/processes/__init__.py:60
 msgid "Pending"
 msgstr "En attente"
 
-#: novaideo/content/processes/__init__.py:26
-#: novaideo/content/processes/__init__.py:58
+#: novaideo/content/processes/__init__.py:27
+#: novaideo/content/processes/__init__.py:61
 msgid "Accepted"
 msgstr "Acceptée"
 
-#: novaideo/content/processes/__init__.py:27
-#: novaideo/content/processes/__init__.py:59
+#: novaideo/content/processes/__init__.py:28
+#: novaideo/content/processes/__init__.py:62
 msgid "Refused"
 msgstr "Refusée"
 
-#: novaideo/content/processes/__init__.py:29
-#: novaideo/content/processes/__init__.py:61
+#: novaideo/content/processes/__init__.py:30
+#: novaideo/content/processes/__init__.py:64
 msgid "Open to a working group"
 msgstr "Ouverte à un groupe de travail"
 
-#: novaideo/content/processes/__init__.py:32
-#: novaideo/content/processes/__init__.py:64
+#: novaideo/content/processes/__init__.py:33
+#: novaideo/content/processes/__init__.py:67
 msgid "Proofreading"
 msgstr "Relecture"
 
 #: novaideo/content/processes/__init__.py:35
-#: novaideo/content/processes/__init__.py:67
+#: novaideo/content/processes/__init__.py:69
+msgid "Examined"
+msgstr "Examinée"
+
+#: novaideo/content/processes/__init__.py:37
+#: novaideo/content/processes/__init__.py:71
 msgid "In process"
 msgstr "En progression"
 
-#: novaideo/content/processes/__init__.py:36
-#: novaideo/content/processes/__init__.py:68
+#: novaideo/content/processes/__init__.py:38
+#: novaideo/content/processes/__init__.py:72
 msgid "Processed"
 msgstr "Effectuée"
 
-#: novaideo/content/processes/__init__.py:38
-#: novaideo/content/processes/__init__.py:70
+#: novaideo/content/processes/__init__.py:40
+#: novaideo/content/processes/__init__.py:74
 msgid "Active"
 msgstr "Actif"
 
-#: novaideo/content/processes/__init__.py:39
-#: novaideo/content/processes/__init__.py:71
+#: novaideo/content/processes/__init__.py:41
+#: novaideo/content/processes/__init__.py:75
 msgid "Deactivated"
 msgstr "Désactivié"
 
-#: novaideo/content/processes/__init__.py:41
-#: novaideo/content/processes/__init__.py:73
+#: novaideo/content/processes/__init__.py:43
+#: novaideo/content/processes/__init__.py:77
 msgid "Closed"
 msgstr "Fermé"
 
-#: novaideo/content/processes/__init__.py:17
-#: novaideo/content/processes/__init__.py:49
-msgid "Submited"
-msgstr "Soumise à appréciation"
-
 #: novaideo/content/processes/__init__.py:18
-#: novaideo/content/processes/__init__.py:50
+#: novaideo/content/processes/__init__.py:52
 msgid "Published"
 msgstr "Publié(e)"
 
-#: novaideo/content/processes/idea_management/definition.py:46
-#: novaideo/content/processes/idea_management/definition.py:47
+#: novaideo/content/processes/idea_management/definition.py:48
+#: novaideo/content/processes/idea_management/definition.py:49
 msgid "Ideas management"
 msgstr "Gestionnaire d'idées"
 
-#: novaideo/content/processes/idea_management/definition.py:58
+#: novaideo/content/processes/idea_management/definition.py:60
 msgid "Duplicate this idea"
 msgstr "Dupliquer cette idée"
 
-#: novaideo/content/processes/idea_management/definition.py:62
+#: novaideo/content/processes/idea_management/definition.py:64
 msgid "Delete the idea"
 msgstr "Supprimer l'idée"
 
-#: novaideo/content/processes/idea_management/definition.py:66
+#: novaideo/content/processes/idea_management/definition.py:68
 msgid "Edit the idea"
 msgstr "Modifier l'idée"
 
-#: novaideo/content/processes/idea_management/definition.py:70
+#: novaideo/content/processes/idea_management/definition.py:72
+msgid "Submit the idea"
+msgstr "Soumettre l'idée"
+
+#: novaideo/content/processes/idea_management/definition.py:76
 msgid "Publish the idea"
 msgstr "Publier l'idée"
 
-#: novaideo/content/processes/idea_management/definition.py:74
-msgid "Recuperate the idea"
-msgstr "Rétablir l'idée"
-
-#: novaideo/content/processes/idea_management/definition.py:78
+#: novaideo/content/processes/idea_management/definition.py:80
+#: novaideo/content/processes/idea_management/definition.py:88
 msgid "Archive the idea"
 msgstr "Archiver l'idée"
 
-#: novaideo/content/processes/idea_management/definition.py:83
-#: novaideo/content/processes/proposal_management/definition.py:334
+#: novaideo/content/processes/idea_management/definition.py:84
+msgid "Recuperate the idea"
+msgstr "Rétablir l'idée"
+
+#: novaideo/content/processes/idea_management/definition.py:93
+#: novaideo/content/processes/proposal_management/definition.py:339
 #: novaideo/content/processes/amendment_management/definition.py:77
 msgid "Submit to others"
 msgstr "Communiquer"
 
-#: novaideo/content/processes/idea_management/definition.py:87
-#: novaideo/content/processes/proposal_management/definition.py:338
+#: novaideo/content/processes/idea_management/definition.py:97
+#: novaideo/content/processes/proposal_management/definition.py:343
 #: novaideo/content/processes/amendment_management/definition.py:81
 msgid "Discuss"
 msgstr "Discuter"
 
-#: novaideo/content/processes/idea_management/definition.py:99
-#: novaideo/content/processes/idea_management/behaviors.py:493
-#: novaideo/content/processes/proposal_management/definition.py:374
-#: novaideo/content/processes/proposal_management/behaviors.py:1684
+#: novaideo/content/processes/idea_management/definition.py:109
+#: novaideo/content/processes/idea_management/behaviors.py:580
+#: novaideo/content/processes/proposal_management/definition.py:379
+#: novaideo/content/processes/proposal_management/behaviors.py:1754
 msgid "Compare"
 msgstr "Comparer"
 
-#: novaideo/content/processes/idea_management/definition.py:56
-#: novaideo/content/processes/proposal_management/definition.py:265
+#: novaideo/content/processes/idea_management/definition.py:58
+#: novaideo/content/processes/proposal_management/definition.py:266
 #: novaideo/content/processes/organization_management/definition.py:46
 #: novaideo/content/processes/organization_management/definition.py:50
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:53
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:57
 msgid "Add"
 msgstr "Ajouter"
 
-#: novaideo/content/processes/idea_management/behaviors.py:52
-#: novaideo/content/processes/idea_management/behaviors.py:92
-#: novaideo/content/processes/idea_management/behaviors.py:174
+#: novaideo/content/processes/idea_management/behaviors.py:57
+#: novaideo/content/processes/idea_management/behaviors.py:97
+#: novaideo/content/processes/idea_management/behaviors.py:178
+#: novaideo/content/processes/invitation_management/behaviors.py:194
+#: novaideo/content/processes/invitation_management/behaviors.py:221
+#: novaideo/content/processes/invitation_management/behaviors.py:244
 #: novaideo/content/processes/user_management/behaviors.py:40
 #: novaideo/content/processes/user_management/behaviors.py:95
 #: novaideo/content/processes/ballot_processes/rangevoting/behaviors.py:39
 #: novaideo/content/processes/ballot_processes/referendum/behaviors.py:39
 #: novaideo/content/processes/ballot_processes/fptp/behaviors.py:41
 #: novaideo/content/processes/ballot_processes/majorityjudgment/behaviors.py:41
-#: novaideo/content/processes/proposal_management/behaviors.py:129
-#: novaideo/content/processes/proposal_management/behaviors.py:192
-#: novaideo/content/processes/proposal_management/behaviors.py:301
-#: novaideo/content/processes/proposal_management/behaviors.py:371
-#: novaideo/content/processes/proposal_management/behaviors.py:838
-#: novaideo/content/processes/proposal_management/behaviors.py:1008
+#: novaideo/content/processes/proposal_management/behaviors.py:131
+#: novaideo/content/processes/proposal_management/behaviors.py:188
+#: novaideo/content/processes/proposal_management/behaviors.py:297
+#: novaideo/content/processes/proposal_management/behaviors.py:368
+#: novaideo/content/processes/proposal_management/behaviors.py:622
+#: novaideo/content/processes/proposal_management/behaviors.py:906
+#: novaideo/content/processes/proposal_management/behaviors.py:1076
 #: novaideo/content/processes/amendment_management/behaviors.py:67
 #: novaideo/content/processes/amendment_management/behaviors.py:162
 #: novaideo/content/processes/amendment_management/behaviors.py:264
-#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:116
-#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:144
+#: novaideo/content/processes/organization_management/behaviors.py:34
+#: novaideo/content/processes/organization_management/behaviors.py:66
+#: novaideo/content/processes/organization_management/behaviors.py:99
+#: novaideo/content/processes/organization_management/behaviors.py:171
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:120
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:148
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:194
+#: novaideo/content/processes/novaideo_abstract_process/behaviors.py:221
 msgid "Save"
 msgstr "Enregistrer"
 
-#: novaideo/content/processes/idea_management/behaviors.py:140
-#: novaideo/content/processes/idea_management/behaviors.py:248
-#: novaideo/content/processes/proposal_management/behaviors.py:261
+#: novaideo/content/processes/idea_management/behaviors.py:145
+#: novaideo/content/processes/idea_management/behaviors.py:252
+#: novaideo/content/processes/idea_management/behaviors.py:285
+#: novaideo/content/processes/idea_management/behaviors.py:321
+#: novaideo/content/processes/proposal_management/behaviors.py:257
 #: novaideo/content/processes/amendment_management/behaviors.py:202
 msgid "Continue"
 msgstr "Continuer"
 
-#: novaideo/content/processes/invitation_management/definition.py:34
-#: novaideo/content/processes/invitation_management/definition.py:35
+#: novaideo/content/processes/invitation_management/definition.py:39
+#: novaideo/content/processes/invitation_management/definition.py:40
 msgid "Invitations management"
 msgstr ""
 
-#: novaideo/content/processes/invitation_management/definition.py:50
+#: novaideo/content/processes/invitation_management/definition.py:55
 msgid "See the invitation"
-msgstr ""
+msgstr "Voir l'invitation"
 
-#: novaideo/content/processes/invitation_management/definition.py:54
+#: novaideo/content/processes/invitation_management/definition.py:59
 msgid "See the invitations"
-msgstr ""
+msgstr "Voir les invitations"
 
-#: novaideo/content/processes/invitation_management/definition.py:48
+#: novaideo/content/processes/invitation_management/definition.py:67
+#: novaideo/content/processes/invitation_management/definition.py:68
+#: novaideo/content/processes/invitation_management/behaviors.py:220
+msgid "Edit the invitation"
+msgstr "Modifier"
+
+#: novaideo/content/processes/invitation_management/definition.py:71
+#: novaideo/content/processes/invitation_management/definition.py:72
+msgid "Accept the invitation"
+msgstr "Accepter"
+
+#: novaideo/content/processes/invitation_management/definition.py:75
+#: novaideo/content/processes/invitation_management/definition.py:76
+msgid "Refuse the invitation"
+msgstr "Refuser"
+
+#: novaideo/content/processes/invitation_management/definition.py:79
+#: novaideo/content/processes/invitation_management/definition.py:80
+msgid "Remove the invitation"
+msgstr "Supprimer"
+
+#: novaideo/content/processes/invitation_management/definition.py:83
+#: novaideo/content/processes/invitation_management/definition.py:84
+msgid "Re-invite the person"
+msgstr "Re-inviter"
+
+#: novaideo/content/processes/invitation_management/definition.py:87
+#: novaideo/content/processes/invitation_management/definition.py:88
+msgid "Remind the person"
+msgstr "Rappeler"
+
+#: novaideo/content/processes/invitation_management/definition.py:53
 msgid "Invite"
 msgstr "Inviter"
+
+#: novaideo/content/processes/invitation_management/behaviors.py:146
+msgid "Plus"
+msgstr ""
 
 #: novaideo/content/processes/user_management/definition.py:35
 #: novaideo/content/processes/user_management/definition.py:36
@@ -1855,13 +1991,13 @@ msgstr ""
 
 #: novaideo/content/processes/user_management/definition.py:51
 #: novaideo/content/processes/user_management/definition.py:52
-#: novaideo/content/processes/user_management/behaviors.py:141
+#: novaideo/content/processes/user_management/behaviors.py:144
 msgid "Deactivate"
-msgstr "Désactivier"
+msgstr "Désactiver"
 
 #: novaideo/content/processes/user_management/definition.py:55
 #: novaideo/content/processes/user_management/definition.py:56
-#: novaideo/content/processes/user_management/behaviors.py:171
+#: novaideo/content/processes/user_management/behaviors.py:177
 msgid "Activate"
 msgstr "Activer"
 
@@ -1942,127 +2078,132 @@ msgstr "Une semaine"
 msgid "Two weeks"
 msgstr "Deux semaines"
 
-#: novaideo/content/processes/proposal_management/definition.py:69
+#: novaideo/content/processes/proposal_management/definition.py:70
 msgid "Vote for submission"
 msgstr "Vote pour soumettre la proposition au collectif"
 
-#: novaideo/content/processes/proposal_management/definition.py:72
+#: novaideo/content/processes/proposal_management/definition.py:73
 msgid "Voting results may not be known until the end of the period for voting. In the case where the majority are for the continuation of improvements of the proposal, your vote for the duration of the amendment period will be useful"
 msgstr "Quelque soit votre décision de soumettre la proposition en l'état ou non, il se peut que la majorité décide d'améliorer la proposition avant de la soumettre au collectif et dans quel cas, il est nécessaire que vous ayez préalablement voté sur la durée du cycle d'amélioration"
 
-#: novaideo/content/processes/proposal_management/definition.py:79
+#: novaideo/content/processes/proposal_management/definition.py:80
 msgid "Voting results may not be known until the end of the period for voting. In the case where the majority are for the continuation of improvements of the proposal, your vote for reopening working group will be useful"
 msgstr "Quelque soit votre décision de soumettre la proposition en l'état ou non, il se peut que la majorité décide d'améliorer la proposition avant de la soumettre au collectif et dans quel cas, il est nécessaire que vous ayez préalablement voté sur la réouverture du groupe de travail"
 
-#: novaideo/content/processes/proposal_management/definition.py:246
 #: novaideo/content/processes/proposal_management/definition.py:247
+#: novaideo/content/processes/proposal_management/definition.py:248
 msgid "Proposals management"
 msgstr ""
 
-#: novaideo/content/processes/proposal_management/definition.py:158
+#: novaideo/content/processes/proposal_management/definition.py:159
 msgid "Reopening working group"
 msgstr "Réouvrir le groupe de travail"
 
-#: novaideo/content/processes/proposal_management/definition.py:167
+#: novaideo/content/processes/proposal_management/definition.py:168
 msgid "Amendment duration"
 msgstr "Durée du cycle d'amélioration"
 
-#: novaideo/content/processes/proposal_management/definition.py:228
+#: novaideo/content/processes/proposal_management/definition.py:229
 #, python-format
 msgid "Vote for amendments (group ${nbi})"
 msgstr "Vote sur les amendements (groupe ${nbi})"
 
-#: novaideo/content/processes/proposal_management/definition.py:263
+#: novaideo/content/processes/proposal_management/definition.py:264
 msgid "Create a new proposal"
 msgstr ""
 
-#: novaideo/content/processes/proposal_management/definition.py:267
-#: novaideo/content/processes/proposal_management/behaviors.py:222
+#: novaideo/content/processes/proposal_management/definition.py:268
+#: novaideo/content/processes/proposal_management/behaviors.py:218
 msgid "Transform the idea as a proposal"
 msgstr "Transformer l'idée en proposition"
 
-#: novaideo/content/processes/proposal_management/definition.py:268
+#: novaideo/content/processes/proposal_management/definition.py:269
 msgid "Transform as a proposal"
 msgstr "Transformer en proposition"
 
-#: novaideo/content/processes/proposal_management/definition.py:271
+#: novaideo/content/processes/proposal_management/definition.py:272
 msgid "Duplicate this proposal"
 msgstr "Dupliquer la proposition"
 
-#: novaideo/content/processes/proposal_management/definition.py:279
-#: novaideo/content/processes/proposal_management/behaviors.py:394
+#: novaideo/content/processes/proposal_management/definition.py:280
+#: novaideo/content/processes/proposal_management/behaviors.py:391
 msgid "Edit the proposal"
 msgstr "Modifier la proposition"
 
-#: novaideo/content/processes/proposal_management/definition.py:292
+#: novaideo/content/processes/proposal_management/definition.py:293
 msgid "Withdraw from the wating list"
 msgstr "Se retirer de la liste d'attente"
 
-#: novaideo/content/processes/proposal_management/definition.py:296
 #: novaideo/content/processes/proposal_management/definition.py:297
+#: novaideo/content/processes/proposal_management/definition.py:298
 msgid "Start voting for publication"
 msgstr "Commencer le vote pour soumission"
 
-#: novaideo/content/processes/proposal_management/definition.py:300
 #: novaideo/content/processes/proposal_management/definition.py:301
+#: novaideo/content/processes/proposal_management/definition.py:302
 msgid "Start voting for amendments"
 msgstr "Commencer le vote sur les amendements"
 
-#: novaideo/content/processes/proposal_management/definition.py:308
+#: novaideo/content/processes/proposal_management/definition.py:309
 msgid "Change the state to amendable"
 msgstr ""
 
-#: novaideo/content/processes/proposal_management/definition.py:317
+#: novaideo/content/processes/proposal_management/definition.py:318
 msgid "Support the proposal"
 msgstr "Soutenir la proposition"
 
-#: novaideo/content/processes/proposal_management/definition.py:321
+#: novaideo/content/processes/proposal_management/definition.py:322
+#: novaideo/content/processes/proposal_management/definition.py:323
+msgid "Make its opinion"
+msgstr "Donner son avis"
+
+#: novaideo/content/processes/proposal_management/definition.py:326
 msgid "To oppose a proposal"
 msgstr ""
 
-#: novaideo/content/processes/proposal_management/definition.py:325
+#: novaideo/content/processes/proposal_management/definition.py:330
 msgid "Withdraw token from proposal"
 msgstr "Retirer son jeton de la proposition"
 
-#: novaideo/content/processes/proposal_management/definition.py:341
-#: novaideo/content/processes/proposal_management/definition.py:342
+#: novaideo/content/processes/proposal_management/definition.py:346
+#: novaideo/content/processes/proposal_management/definition.py:347
 msgid "Amendments"
 msgstr "Les amendments"
 
-#: novaideo/content/processes/proposal_management/definition.py:357
+#: novaideo/content/processes/proposal_management/definition.py:362
 msgid "Correct item"
 msgstr "Corriger un item"
 
-#: novaideo/content/processes/proposal_management/definition.py:369
+#: novaideo/content/processes/proposal_management/definition.py:374
 msgid "Improve the proposal"
 msgstr "Améliorer la proposition"
 
-#: novaideo/content/processes/proposal_management/behaviors.py:223
-#: novaideo/content/processes/proposal_management/behaviors.py:162
+#: novaideo/content/processes/proposal_management/behaviors.py:219
+#: novaideo/content/processes/proposal_management/behaviors.py:164
 msgid "Creation"
 msgstr ""
 
-#: novaideo/content/processes/proposal_management/behaviors.py:161
-#: novaideo/content/processes/proposal_management/behaviors.py:334
-#: novaideo/content/processes/proposal_management/behaviors.py:393
-#: novaideo/content/processes/proposal_management/behaviors.py:1573
+#: novaideo/content/processes/proposal_management/behaviors.py:163
+#: novaideo/content/processes/proposal_management/behaviors.py:331
+#: novaideo/content/processes/proposal_management/behaviors.py:390
+#: novaideo/content/processes/proposal_management/behaviors.py:1643
 msgid "Add related ideas"
 msgstr "Ajouter les idées liées"
 
-#: novaideo/content/processes/proposal_management/behaviors.py:853
+#: novaideo/content/processes/proposal_management/behaviors.py:921
 #: novaideo/content/processes/amendment_management/behaviors.py:93
 msgid "_Amended version "
 msgstr "_Version amendée "
 
-#: novaideo/content/processes/proposal_management/behaviors.py:1574
+#: novaideo/content/processes/proposal_management/behaviors.py:1644
 msgid "New version"
 msgstr "Nouvelle version"
 
-#: novaideo/content/processes/proposal_management/behaviors.py:1632
+#: novaideo/content/processes/proposal_management/behaviors.py:1702
 msgid "open"
 msgstr "ouvert"
 
-#: novaideo/content/processes/proposal_management/behaviors.py:1631
+#: novaideo/content/processes/proposal_management/behaviors.py:1701
 msgid "closed"
 msgstr "fermé"
 
@@ -2113,36 +2254,6 @@ msgstr ""
 msgid "correlation management"
 msgstr ""
 
-#: novaideo/content/processes/invitation_validation/definition.py:36
-#: novaideo/content/processes/invitation_validation/definition.py:37
-msgid "Invitation validation"
-msgstr ""
-
-#: novaideo/content/processes/invitation_validation/definition.py:45
-#: novaideo/content/processes/invitation_validation/definition.py:46
-msgid "Accept the invitation"
-msgstr ""
-
-#: novaideo/content/processes/invitation_validation/definition.py:49
-#: novaideo/content/processes/invitation_validation/definition.py:50
-msgid "Refuse the invitation"
-msgstr ""
-
-#: novaideo/content/processes/invitation_validation/definition.py:53
-#: novaideo/content/processes/invitation_validation/definition.py:54
-msgid "Remove the invitation"
-msgstr ""
-
-#: novaideo/content/processes/invitation_validation/definition.py:57
-#: novaideo/content/processes/invitation_validation/definition.py:58
-msgid "Re-invite the person"
-msgstr ""
-
-#: novaideo/content/processes/invitation_validation/definition.py:61
-#: novaideo/content/processes/invitation_validation/definition.py:62
-msgid "Remind the person"
-msgstr ""
-
 #: novaideo/content/processes/organization_management/definition.py:36
 #: novaideo/content/processes/organization_management/definition.py:37
 msgid "Orgaizations management"
@@ -2152,20 +2263,26 @@ msgstr ""
 msgid "Upload organizations from xl file"
 msgstr ""
 
-#: novaideo/content/processes/organization_management/definition.py:45
-msgid "Upload organizations"
-msgstr ""
-
 #: novaideo/content/processes/organization_management/definition.py:56
 msgid "See organizations"
-msgstr ""
+msgstr "Organisations"
 
 #: novaideo/content/processes/organization_management/definition.py:64
 msgid "See organization"
-msgstr ""
+msgstr "Organisation"
 
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:35
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:36
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:39
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:40
 msgid "Abstract process"
 msgstr ""
+
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:67
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:68
+msgid "See files"
+msgstr "Documents"
+
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:71
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:72
+msgid "Add the next deadline"
+msgstr "Ajouter une nouvelle échéance"
 
