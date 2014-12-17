@@ -261,7 +261,7 @@ class AcceptInvitation(InfiniteCardinality):
         principals = find_service(root, 'principals')
         name = person.first_name + ' ' + person.last_name
         principals['users'][name] = person
-        if getattr(context, 'isresponsible', False) and \
+        if getattr(context, 'ismanager', False) and \
            context.organization:
             grant_roles(person, (('OrganizationResponsible', 
                                    context.organization),))

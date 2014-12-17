@@ -28,12 +28,13 @@ class EditOrganizationsView(FormView):
     title = _('Edit organizations')
     schema = select(NovaIdeoApplicationSchema(editable=True), 
                     [(u'organizations', ['title',
-                                         'description',
+                                        'description',
                                         'email',
                                         'phone',
                                         'fax',
                                         'logo',
-                                        'members'])])
+                                        'members',
+                                        'managers'])])
     behaviors = [EditOrganizations]
     formid = 'formeditorganizations'
     name = 'editorganizations'

@@ -11,6 +11,8 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer, find_service
 
+from dace.objectofcollaboration.principal.util import get_users_with_role
+
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import Select2Widget, FileWidget
 from pontus.file import Image, ObjectData
@@ -80,6 +82,12 @@ class OrganizationSchema(VisualisableElementSchema):
         title=_('Members'),
         )
 
+    managers = colander.SchemaNode(
+        colander.Set(),
+        widget=members_choice,
+        title=_('Managers'),
+        )
+
 
 @content(
     'organization',
@@ -97,3 +105,7 @@ class Organization(VisualisableElement, Entity):
     def __init__(self, **kwargs):
         super(Organization, self).__init__(**kwargs)
         self.set_data(kwargs)
+
+    @property
+    def managers(self):
+        return get_users_with_role(role=('OrganizationResponsible', self))

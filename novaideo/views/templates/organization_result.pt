@@ -7,7 +7,7 @@
     <p class="text-muted" tal:condition="object.description">
              <small  >${object.description}</small>
     </p>
-    <dl>
+    <dl tal:define="managers object.managers">
       <dd tal:condition="getattr(object, 'phone', None)">
         <span class="glyphicon glyphicon-phone-alt"></span> ${object.phone}
       </dd>
@@ -24,7 +24,14 @@
             <tal:separator condition="not: repeat['member'].end">, </tal:separator> 
         </tal:loop>
       </dd>
+      <dt tal:condition="managers and len(managers)>1"  i18n:translate="">Managers</dt>
+      <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
+      <dd tal:condition="managers">
+        <tal:loop repeat="member managers">
+          <a tal:attributes="href request.resource_url(member, '@@index')">${member.title}</a>
+            <tal:separator condition="not: repeat['member'].end">, </tal:separator> 
+        </tal:loop>
+      </dd>
     </dl>
-
   </div>
 </div>

@@ -61,9 +61,9 @@ class InviteUserView(FormView):
             roles_node.widget = roles_choice(roles_node, 
                                 ['Moderator', 'Member', 'Examiner'])
             organization_node = schema_instance.get('organization')
-            isresponsible_node = schema_instance.get('isresponsible')
+            ismanager_node = schema_instance.get('ismanager')
             invitations_schema.children.append(organization_node)
-            invitations_schema.children.append(isresponsible_node)
+            invitations_schema.children.append(ismanager_node)
         else:
             invitations_schema.children.remove(roles_node)
             #roles_node.widget = roles_choice(roles_node, ['Member'])

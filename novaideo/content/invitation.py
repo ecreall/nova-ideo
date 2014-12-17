@@ -45,10 +45,10 @@ class InvitationSchema(PersonSchema):
         default=DEFAULT_ROLES,
         )
 
-    isresponsible = colander.SchemaNode(
+    ismanager = colander.SchemaNode(
                colander.Boolean(),
                widget=deform.widget.CheckboxWidget(),
-               label=_('Is the responsible'),
+               label=_('Is the manager'),
                title ='',
                missing=False
             )

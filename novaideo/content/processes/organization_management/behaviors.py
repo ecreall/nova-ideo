@@ -7,7 +7,8 @@
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import has_role
+from dace.objectofcollaboration.principal.util import (
+    has_role, grant_roles, revoke_roles)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
@@ -17,6 +18,28 @@ from novaideo.content.organization import Organization
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.core import acces_action
+
+
+def update_manager(organization, managers):
+    managers_toadd = [u for u in managers \
+                          if not has_role(user=u,
+                                          role=('OrganizationResponsible', 
+                                                 organization))]
+    managers_todel = [u for u in organization.managers \
+                          if u not in managers]
+
+    for manager in managers_todel:
+        revoke_roles(manager, (('OrganizationResponsible', 
+                                     organization),))
+
+    for manager in managers_toadd:
+        grant_roles(user=manager,
+                    roles=(('OrganizationResponsible', 
+                           organization),))
+
+    for manager in managers:
+        if manager not in organization.members:
+            organization.addtoproperty('members', manager)
 
 
 def add_roles_validation(process, context):
@@ -103,6 +126,11 @@ class EditOrganizations(InfiniteCardinality):
     processsecurity_validation = edit_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
+        for org_struct in appstruct['organizations']:
+            organization = org_struct['_object_data']
+            managers = org_struct['managers']
+            update_manager(organization, managers)
+
         return True
 
     def redirect(self, context, request, **kw):
@@ -174,6 +202,9 @@ class EditOrganization(InfiniteCardinality):
     processsecurity_validation = editorg_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
+        organization = appstruct['_object_data']
+        managers = appstruct['managers'] 
+        update_manager(organization, managers)
         return True
 
     def redirect(self, context, request, **kw):

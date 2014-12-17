@@ -119,7 +119,8 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         omit(OrganizationSchema(factory=Organization,
                 editable=True,
                 name=_('Organization'),
-                widget=SimpleMappingWidget(css_class='object-well invitation-well')),
+                widget=SimpleMappingWidget(css_class='object-well invitation-well'),
+                omit=['managers']),
             ['_csrf_token_']),
         title=_('Organizations'),
         )
