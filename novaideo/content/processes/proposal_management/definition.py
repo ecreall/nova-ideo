@@ -142,10 +142,10 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
         subjects = [proposal]
         ballot = Ballot('Referendum' , electors, subjects, VP_DEFAULT_DURATION)
+        wg.addtoproperty('ballots', ballot)
         ballot.report.description = VOTE_PUBLISHING_MESSAGE
         ballot.title = _("Submit the proposal")
         processes = ballot.run_ballot()
-        wg.addtoproperty('ballots', ballot)
         subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
         process.vp_ballot = ballot #vp for voting for publishing
@@ -155,20 +155,20 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             subjects = [wg]
             ballot = Ballot('Referendum' , electors,
                             subjects, VP_DEFAULT_DURATION)
+            wg.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_REOPENING_MESSAGE
             ballot.title = _('Reopening working group')
             processes.extend(ballot.run_ballot(context=proposal))
-            wg.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
             process.reopening_configuration_ballot = ballot
 
         if len(wg.members) <= root.participants_maxi:
             group = list(AMENDMENTS_CYCLE_DEFAULT_DURATION.keys())
             ballot = Ballot('FPTP' , electors, group, VP_DEFAULT_DURATION)
+            wg.addtoproperty('ballots', ballot)
             ballot.title = _('Amendment duration')
             ballot.report.description = VOTE_DURATION_MESSAGE
             processes.extend(ballot.run_ballot(context=proposal))
-            wg.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
             process.duration_configuration_ballot = ballot
 
@@ -225,11 +225,11 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         for group in groups:
             ballot = Ballot('MajorityJudgment' , electors, 
                        group, AMENDMENTS_VOTE_DEFAULT_DURATION)
+            proposal.working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_AMENDMENTS_MESSAGE
             ballot.title = _('Vote for amendments (group ${nbi})', 
                               mapping={'nbi': i})
             processes.extend(ballot.run_ballot(context=proposal))
-            proposal.working_group.addtoproperty('ballots', ballot)
             subprocess.ballots.append(ballot)
             process.amendments_ballots.append(ballot)
             i += 1
