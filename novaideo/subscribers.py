@@ -20,11 +20,11 @@ def mysubscriber(event):
     root = event.object
     catalogs = find_service(root, 'catalogs')
     catalogs.add_catalog('novaideo')
-    ml_file = FileEntity()
+    ml_file = FileEntity(title="Legal notices")
     ml_file.__name__ = 'ml_file'
     root.addtoproperty('files', ml_file)
     root.ml_file = ml_file
-    terms_of_use = FileEntity()
+    terms_of_use = FileEntity(title="Terms of use")
     terms_of_use.__name__ = 'terms_of_use'
     root.addtoproperty('files', terms_of_use)
     root.terms_of_use = terms_of_use
