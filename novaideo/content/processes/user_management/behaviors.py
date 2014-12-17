@@ -33,7 +33,8 @@ def global_user_processsecurity(process, context):
 
 
 def reg_roles_validation(process, context):
-    return has_role(role=('Moderator',))
+    return global_user_processsecurity(process, context) and \
+           has_role(role=('Moderator',))
 
 
 class Registration(InfiniteCardinality):
