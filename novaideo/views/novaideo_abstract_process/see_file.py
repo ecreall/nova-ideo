@@ -33,6 +33,8 @@ class SeeFileView(BasicView):
         result = {}
         actions = [a for a in self.context.actions \
                    if a.action.actionType != ActionType.automatic]
+        actions = sorted(actions, 
+                        key=lambda a: getattr(a.action, 'style_order', 0))
         values = {'object': self.context,
                   'actions': actions}
         body = self.content(result=values, template=self.template)['body']
