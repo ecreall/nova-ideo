@@ -44,7 +44,7 @@ class Registration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         person = appstruct['_object_data']
-        root = getSite(context)
+        root = context
         principals = find_service(root, 'principals')
         name = person.first_name + ' ' +person.last_name
         name = name_chooser(name=name)
@@ -52,7 +52,6 @@ class Registration(InfiniteCardinality):
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
-        root = getSite()
         localizer = request.localizer
         for i in range(root.tokens_mini):
             token = Token(title='Token_'+str(i))
@@ -62,7 +61,8 @@ class Registration(InfiniteCardinality):
 
         message = CONFIRMATION_MESSAGE.format(
                     person=person,
-                    user_title=localizer.translate(_(getattr(person, 'user_title', ''))),
+                    user_title=localizer.translate(
+                                   _(getattr(person, 'user_title', ''))),
                     login_url=request.resource_url(root, '@@login'))
         mailer_send(subject=CONFIRMATION_SUBJECT,
                 recipients=[person.email], body=message)
