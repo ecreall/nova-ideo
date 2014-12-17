@@ -7,6 +7,10 @@
 
 import datetime
 from pyramid.httpexceptions import HTTPFound
+from pyramid.security import remember
+
+from substanced.util import get_oid
+from substanced.event import LoggedIn
 from substanced.util import find_service
 
 from dace.util import getSite, name_chooser
@@ -68,11 +72,17 @@ class Registration(InfiniteCardinality):
                 recipients=[person.email], body=message)
 
         person.reindex()
+        self._person = person
         return True
 
     def redirect(self, context, request, **kw):
-        root = getSite()
-        return HTTPFound(request.resource_url(root))
+        person = self._person
+        headers = remember(request, get_oid(person))
+        request.registry.notify(LoggedIn(person.email, person, 
+                                         context, request))
+        del self._person
+        return HTTPFound(location = request.resource_url(context),
+                         headers = headers)
 
 
 def edit_roles_validation(process, context):
