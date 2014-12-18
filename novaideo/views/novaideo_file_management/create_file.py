@@ -11,29 +11,27 @@ from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
 
-from novaideo.content.processes.novaideo_abstract_process.behaviors import  (
-    EditFile)
+from novaideo.content.processes.novaideo_file_management.behaviors import  (
+    CreateFile)
 from novaideo.core import FileSchema, FileEntity
+from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 
 
 @view_config(
-    name='editfile',
-    context=FileEntity,
+    name='createfile',
+    context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class EditFileView(FormView):
+class CreateFileView(FormView):
 
-    title = _('Edit the file')
+    title = _('Create a file')
     schema = select(FileSchema(factory=FileEntity, editable=True),
                     ['title',
                      'text'])
-    behaviors = [EditFile, Cancel]
-    formid = 'formeditfile'
-    name = 'editfile'
-
-    def default_data(self):
-        return self.context
+    behaviors = [CreateFile, Cancel]
+    formid = 'formcreatefile'
+    name = 'createfile'
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({EditFile: EditFileView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({CreateFile: CreateFileView})

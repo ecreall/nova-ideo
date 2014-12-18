@@ -359,7 +359,9 @@ class Adminnavbar_panel(object):
 
     processids = ['invitationmanagement', 
                   'organizationmanagement',
-                  'novaideoabstractprocess']
+                  'novaideoabstractprocess',
+                  'novaideoviewmanager',
+                  'novaideofilemanagement']
 
     def __init__(self, context, request):
         self.context = context

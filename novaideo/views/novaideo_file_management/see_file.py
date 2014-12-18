@@ -10,7 +10,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.processinstance.activity import ActionType
 from pontus.view import BasicView
 
-from novaideo.content.processes.novaideo_abstract_process.behaviors import (
+from novaideo.content.processes.novaideo_file_management.behaviors import (
     SeeFile)
 from novaideo.core import  FileEntity
 
@@ -24,7 +24,7 @@ class SeeFileView(BasicView):
     title = ''
     name = 'seefile'
     behaviors = [SeeFile]
-    template = 'novaideo:views/novaideo_abstract_process/templates/see_file.pt'
+    template = 'novaideo:views/novaideo_file_management/templates/see_file.pt'
     viewid = 'seefile'
 
 

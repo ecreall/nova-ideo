@@ -12,7 +12,7 @@ from substanced.util import Batch
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.novaideo_abstract_process.behaviors import (
+from novaideo.content.processes.novaideo_file_management.behaviors import (
     SeeFiles)
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.core import BATCH_DEFAULT_SIZE
