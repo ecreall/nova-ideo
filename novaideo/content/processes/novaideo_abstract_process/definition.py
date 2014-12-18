@@ -50,9 +50,11 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
                 adddeadline = ActivityDefinition(contexts=[AddDeadLine],
                                        description=_("Add the next deadline"),
                                        title=_("Add the next deadline"),
+                                       groups=[_('Add')]),
                 editdeadline = ActivityDefinition(contexts=[EditDeadLine],
                                        description=_("Edit the current deadline"),
                                        title=_("Edit the current deadline"),
+                                       groups=[_('Edit')]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
