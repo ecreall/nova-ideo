@@ -177,6 +177,9 @@ class NovaideoContents(object):
         self.request = request
 
     def __call__(self):
+        if self.request.view_name != '':
+            return {'condition': False}
+
         dace_catalog = find_catalog('dace')
         states_index = dace_catalog['object_states']
         object_provides_index = dace_catalog['object_provides']
@@ -193,6 +196,7 @@ class NovaideoContents(object):
         result['nb_person'] = nb_person
         result['nb_idea'] = nb_idea
         result['nb_proposal'] = nb_proposal
+        result['condition'] = True
         return result
 
 
@@ -432,6 +436,9 @@ class Deadline_panel(object):
         self.request = request
 
     def __call__(self):
+        if self.request.view_name != '':
+            return {'condition': False}
+
         current_deadline = self.context.deadlines[-1].replace(tzinfo=None)
         previous_deadline = current_deadline
         try:
@@ -445,7 +452,7 @@ class Deadline_panel(object):
         expired = False
         if total_sec_current_deadline > 0:
             total_sec_current_date = (current_date - previous_deadline).total_seconds()
-            percent = (total_sec_current_date * 100)/ total_sec_current_deadline 
+            percent = (total_sec_current_date * 100) / total_sec_current_deadline 
         else:
             expired = True
 
@@ -453,4 +460,5 @@ class Deadline_panel(object):
                 'expired': expired,
                 'current_deadline': current_deadline,
                 'current_date': current_date,
-                'previous_deadline': previous_deadline}
+                'previous_deadline': previous_deadline,
+                'condition': True}
