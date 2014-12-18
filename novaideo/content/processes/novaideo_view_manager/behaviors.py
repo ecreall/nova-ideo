@@ -9,7 +9,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
-    has_role, get_current, has_any_roles)
+    has_role, get_current)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
