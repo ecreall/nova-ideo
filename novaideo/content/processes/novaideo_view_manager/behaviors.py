@@ -148,6 +148,29 @@ class SeeProposal(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def seeproposals_roles_validation(process, context):
+    return has_role(role=('Moderator', ))
+
+
+def seeproposals_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+class SeeOrderedProposal(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-th-list'
+    style_order = -2
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seeproposals_roles_validation
+    processsecurity_validation = seeproposals_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return True
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
+
 
 class SeeIdeaToModerate(InfiniteCardinality):
     style_descriminator = 'admin-action'

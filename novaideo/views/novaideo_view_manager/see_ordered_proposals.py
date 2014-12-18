@@ -13,7 +13,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from dace.util import find_entities
 from pontus.view import BasicView
 
-from novaideo.content.processes.novaideo_abstract_process.behaviors import (
+from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeOrderedProposal)
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.interface import IProposal
