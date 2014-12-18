@@ -4,7 +4,6 @@
 # licence: AGPL
 # author: Amen Souissi
 
-from zope.processlifetime import IDatabaseOpenedWithRoot
 from pyramid.events import subscriber
 from pyramid.threadlocal import get_current_registry
 
