@@ -23,7 +23,8 @@ from .behaviors import (
     SeeMySelections,
     SeeMyParticipations,
     SeeMySupports,
-    SeeProposal)
+    SeeIdeaToModerate
+    )
 from novaideo import _
 
 
@@ -64,6 +65,10 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                                        description=_("Details"),
                                        title=_("Details"),
                                        groups=[]),
+                seeideatomoderate = ActivityDefinition(contexts=[SeeIdeaToModerate],
+                                       description=_("Ideas to moderate"),
+                                       title=_("Ideas to moderate"),
+                                       groups=[_('See')]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -81,5 +86,7 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('myparticipations', 'eg'),
                 TransitionDefinition('pg', 'mysupports'),
                 TransitionDefinition('mysupports', 'eg'),
+                TransitionDefinition('pg', 'seeideatomoderate'),
+                TransitionDefinition('seeideatomoderate', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
