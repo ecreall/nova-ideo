@@ -73,7 +73,8 @@ class UploadUsers(InfiniteCardinality):
                 invitation=invitation,
                 user_title=getattr(invitation, 'user_title', ''),
                 invitation_url=url,
-                roles=", ".join(getattr(invitation, 'roles', [])))
+                roles=", ".join(getattr(invitation, 'roles', [])),
+                novaideo_title=request.root.title)
             mailer_send(subject='Invitation', 
                         recipients=[invitation.email], 
                         body=message )
@@ -123,7 +124,8 @@ class InviteUsers(InfiniteCardinality):
                 invitation=invitation,
                 user_title=getattr(invitation, 'user_title', ''),
                 invitation_url=url,
-                roles=", ".join(getattr(invitation, 'roles', [])))
+                roles=", ".join(getattr(invitation, 'roles', [])),
+                novaideo_title=request.root.title)
             mailer_send(subject='Invitation', 
                         recipients=[invitation.email],
                         body=message )
@@ -354,7 +356,8 @@ class ReinviteUser(InfiniteCardinality):
             invitation=context,
             user_title=getattr(context, 'user_title', ''),
             invitation_url=url,
-            roles=", ".join(getattr(context, 'roles', [])))
+            roles=", ".join(getattr(context, 'roles', [])),
+                novaideo_title=request.root.title)
         mailer_send(subject='Invitation', 
                     recipients=[context.email], 
                     body=message )
@@ -394,7 +397,8 @@ class RemindInvitation(InfiniteCardinality):
             invitation=context,
             user_title=getattr(context, 'user_title', ''),
             invitation_url=url,
-            roles=", ".join(getattr(context, 'roles', [])))
+            roles=", ".join(getattr(context, 'roles', [])),
+            novaideo_title=request.root.title)
         mailer_send(subject='Invitation', 
             recipients=[context.email], 
             body=message )

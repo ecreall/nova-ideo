@@ -67,7 +67,8 @@ class Registration(InfiniteCardinality):
                     person=person,
                     user_title=localizer.translate(
                                    _(getattr(person, 'user_title', ''))),
-                    login_url=request.resource_url(root, '@@login'))
+                    login_url=request.resource_url(root, '@@login'),
+                    novaideo_title=request.root.title)
         mailer_send(subject=CONFIRMATION_SUBJECT,
                 recipients=[person.email], body=message)
 

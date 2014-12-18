@@ -35,6 +35,7 @@ from .widget import SearchTextInputWidget, SearchFormWidget
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.core import can_access
 from novaideo.content.processes import get_states_mapping
+from novaideo import get_novaideo_title
 
 
 DEFAULT_SEARCHABLE_CONTENT = {_('Idea'): Iidea,
@@ -242,6 +243,11 @@ class SearchResultView(BasicView):
         result  = merge_dicts(self.requirements_copy, result)
         self.add_first_visit_alert(user)
         return result
+
+    def before_update(self):
+        super(SearchResultView, self).before_update()
+        self.title = _('${novaideo_title} contents', 
+              mapping={'novaideo_title': self.request.root.title})
 
 
 @view_config(name='search',

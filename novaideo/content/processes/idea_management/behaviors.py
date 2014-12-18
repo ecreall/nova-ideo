@@ -302,7 +302,8 @@ class ArchiveIdea(InfiniteCardinality):
                 recipient_last_name=getattr(user, 'last_name',''),
                 subject_title=context.title,
                 subject_url=request.resource_url(context, "@@index"),
-                explanation=explanation
+                explanation=explanation,
+                novaideo_title=request.root.title
                  )
         mailer_send(subject=subject, 
             recipients=[user.email], 
@@ -337,6 +338,7 @@ class PublishIdea(InfiniteCardinality):
                 recipient_last_name=getattr(user, 'last_name',''),
                 subject_title=context.title,
                 subject_url=request.resource_url(context, "@@index"),
+                novaideo_title=request.root.title
                  )
         mailer_send(subject=subject, 
             recipients=[user.email], 
@@ -511,7 +513,8 @@ class PresentIdea(InfiniteCardinality):
                 subject_title=getattr(context, 'title', context.name),
                 my_title=user_title,
                 my_first_name=user_first_name,
-                my_last_name=user_last_name
+                my_last_name=user_last_name,
+                novaideo_title=request.root.title
                  )
             mailer_send(subject=subject,
                   recipients=[member_email],

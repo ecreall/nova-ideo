@@ -11,10 +11,17 @@ from pyramid.session import UnencryptedCookieSessionFactoryConfig
 
 from substanced.db import root_factory
 
+from dace.util import getSite
+
 
 _ = TranslationStringFactory('novaideo')
 
+
 DEFAULT_SESSION_TIMEOUT = 25200
+
+
+def get_novaideo_title():
+    return getSite().title
 
 
 def my_locale_negotiator(request):

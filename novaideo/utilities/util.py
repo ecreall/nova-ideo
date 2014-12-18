@@ -6,7 +6,7 @@
 
 import random
 import string
-from pyramid.threadlocal import get_current_registry, get_current_request
+from pyramid.threadlocal import get_current_request
 
 from dace.util import getSite, find_catalog
 from dace.objectofcollaboration.principal.util import get_current
@@ -126,7 +126,8 @@ def send_alert_new_content(content):
             subject_title=content.title,
             subject_url=url,
             subject_type=localizer.translate(
-                           _("The " + content.__class__.__name__.lower()))
+                           _("The " + content.__class__.__name__.lower())),
+            novaideo_title=request.root.title
              )
         mailer_send(subject=subject, 
             recipients=[member.email], 

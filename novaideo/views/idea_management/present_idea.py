@@ -103,7 +103,8 @@ def default_message(node, kw):
                 subject_title=getattr(context, 'title', context.name),
                 my_title=localizer.translate(_(getattr(user, 'user_title',''))),
                 my_first_name=getattr(user, 'first_name', user.name),
-                my_last_name=getattr(user, 'last_name','')
+                my_last_name=getattr(user, 'last_name',''),
+                novaideo_title=request.root.title
                  )
 
 

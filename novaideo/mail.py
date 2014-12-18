@@ -9,21 +9,23 @@
 
 PORTAL_SIGNATURE = """Cordialement,
                                                                                 
-La Plateforme INEUS
+La Plateforme {novaideo_title}
 """
-PORTAL_PRESENTATION = u"""INEUS est une application participative permettant à tout utilisateur d'initier des idées pouvant être reprises dans des propositions. Pour chaque proposition, un groupe de travail peut être constitué pour l'améliorer, la finaliser et la soumettre à l'appréciation des utilisateurs et à l'avis de comités d'examen."""
+PORTAL_PRESENTATION = u"""{novaideo_title} est une application participative permettant à tout utilisateur d'initier des idées pouvant être reprises dans des propositions. Pour chaque proposition, un groupe de travail peut être constitué pour l'améliorer, la finaliser et la soumettre à l'appréciation des utilisateurs et à l'avis de comités d'examen.
+
+"""
 
 INVITATION_MESSAGE = u"""
 Bonjour ,
 
-{user_title} {invitation.last_name} vous êtes invité à rejoindre l\'application collaborative INEUS en tant que {roles}. Veuilliez visiter ce lien {invitation_url} afin de valider votre invitation.
+{user_title} {invitation.last_name} vous êtes invité à rejoindre l\'application collaborative {novaideo_title} en tant que {roles}. Veuilliez visiter ce lien {invitation_url} afin de valider votre invitation.
 """ + PORTAL_SIGNATURE
 
 
 PRESENTATION_IDEA_MESSAGE = u"""
 Bonjour,
 
-{my_first_name} {my_last_name} souhaite vous présenter l'idée {subject_title} figurant sur la plateforme INEUS sous {subject_url} .""" + \
+{my_first_name} {my_last_name} souhaite vous présenter l'idée {subject_title} figurant sur la plateforme {novaideo_title} sous {subject_url} .""" + \
  PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 PRESENTATION_IDEA_SUBJECT = u"""{subject_title}""" 
@@ -34,7 +36,7 @@ CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription"""
 CONFIRMATION_MESSAGE = u"""
 Bonjour,
 
-Bienvenue sur la plateforme INEUS. L'accès à la plateforme se fait sous {login_url}. Pour y ajouter des idées ou des propositions, vous devez préalablement vous identifier avec votre courriel et votre mot de passe.
+Bienvenue sur la plateforme {novaideo_title}. L'accès à la plateforme se fait sous {login_url}. Pour y ajouter des idées ou des propositions, vous devez préalablement vous identifier avec votre courriel et votre mot de passe.
 
 """ + PORTAL_SIGNATURE
 
@@ -42,7 +44,7 @@ Bienvenue sur la plateforme INEUS. L'accès à la plateforme se fait sous {login
 PRESENTATION_PROPOSAL_MESSAGE = u"""
 Bonjour,
 
-{my_first_name} {my_last_name} souhaite vous présenter la proposition {subject_title} figurant sur la plateforme INEUS sous {subject_url}.""" + \
+{my_first_name} {my_last_name} souhaite vous présenter la proposition {subject_title} figurant sur la plateforme {novaideo_title} sous {subject_url}.""" + \
  PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
@@ -52,7 +54,7 @@ PRESENTATION_PROPOSAL_SUBJECT = u"""{subject_title}"""
 PRESENTATION_AMENDMENT_MESSAGE = u"""
 Bonjour,
 
-{my_first_name} {my_last_name} souhaite vous présenter l'amendement {subject_title} figurant sur la plateforme INEUS sous {subject_url}.
+{my_first_name} {my_last_name} souhaite vous présenter l'amendement {subject_title} figurant sur la plateforme {novaideo_title} sous {subject_url}.
 
 """ + \
  PORTAL_PRESENTATION + PORTAL_SIGNATURE

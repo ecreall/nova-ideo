@@ -4,7 +4,9 @@
 # licence: AGPL
 # author: Amen Souissi
 
+from zope.processlifetime import IDatabaseOpenedWithRoot
 from pyramid.events import subscriber
+from pyramid.threadlocal import get_current_registry
 
 from substanced.event import RootAdded
 from substanced.util import find_service
@@ -18,6 +20,10 @@ from novaideo.event import ObjectPublished
 def mysubscriber(event):
     """Add the novaideo catalog when the root is added."""
     root = event.object
+    registry = get_current_registry()
+    settings = registry.settings
+    novaideo_title = settings.get('novaideo.title')
+    root.title = novaideo_title
     catalogs = find_service(root, 'catalogs')
     catalogs.add_catalog('novaideo')
     ml_file = FileEntity(title="Legal notices")
@@ -28,9 +34,6 @@ def mysubscriber(event):
     terms_of_use.__name__ = 'terms_of_use'
     root.addtoproperty('files', terms_of_use)
     root.terms_of_use = terms_of_use
-    #registry = get_current_registry()
-    #settings = registry.settings
-    #login = settings.get('ineus.initial_login')
     #password = settings.get('ineus.initial_password')
     #admin = Person(password=password, email=login)
     #admin.__name__ = 'ineus_admin'
@@ -43,3 +46,4 @@ def mysubscriber(event):
 def mysubscriber_object_published(event):
     published_object = event.object
     send_alert_new_content(published_object)
+

@@ -8,6 +8,7 @@ import colander
 import datetime
 from zope.interface import implementer
 from persistent.list import PersistentList
+from pyramid.threadlocal import get_current_registry
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -28,6 +29,7 @@ from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
 from .keyword import KeywordSchema, Keyword
 from novaideo import _
+import novaideo
 
 
 DEFAULT_TITLES = [_('Mr'), _('Madam'), _('Miss')]
@@ -173,7 +175,8 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
 
 
 class NovaIdeoApplicationPropertySheet(PropertySheet):
-    schema = select(NovaIdeoApplicationSchema(), ['participants_mini', 
+    schema = select(NovaIdeoApplicationSchema(), ['title',
+                                                  'participants_mini', 
                                                   'participants_maxi',
                                                   'participations_maxi',
                                                   'tokens_mini'])
@@ -203,7 +206,6 @@ class NovaIdeoApplication(VisualisableElement, Application):
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
-        self.title = 'NovaIdeo'
         self.initialization()
 
     def initialization(self):
