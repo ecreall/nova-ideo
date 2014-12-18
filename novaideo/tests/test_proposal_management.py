@@ -7,11 +7,9 @@
 
 """Tests for proposal management
 """
-from pyramid.threadlocal import get_current_registry #pylint: disable=F0401
 
 from novaideo.testing import FunctionalTests
-from novaideo.utilities.text_analyzer import ITextAnalyzer
-from novaideo.views.novaideo_abstract_process.see_ordered_proposals import (
+from novaideo.views.novaideo_view_manager.see_ordered_proposals import (
     sort_proposals)
 
 

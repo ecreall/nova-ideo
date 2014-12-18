@@ -167,7 +167,7 @@ def seeinvs_processsecurity_validation(process, context):
 
 class SeeInvitations(InfiniteCardinality):
     style_descriminator = 'admin-action'
-    style_picto = 'glyphicon glyphicon-th-list'
+    style_picto = 'glyphicon glyphicon-bullhorn'
     style_order = 6
     isSequential = False
     context = INovaIdeoApplication

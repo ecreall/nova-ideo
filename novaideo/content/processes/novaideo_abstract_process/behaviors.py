@@ -9,19 +9,15 @@ import datetime
 from pyramid.httpexceptions import HTTPFound
 from persistent.list import PersistentList
 
-from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
-    has_role, 
-    grant_roles, 
+    has_role,  
     get_current)
 from dace.interfaces import IEntity
-from dace.processinstance.activity import (
-    InfiniteCardinality,
-    ActionType)
+from dace.processinstance.activity import InfiniteCardinality
 
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.content.interface import INovaIdeoApplication, IFile
-from novaideo.core import acces_action, can_access
+from novaideo.content.interface import INovaIdeoApplication
+from novaideo.core import can_access
 from novaideo import _
 
 
@@ -106,7 +102,7 @@ class AddDeadLine(InfiniteCardinality):
     submission_title = _('Save')
     isSequential = False
     context = INovaIdeoApplication
-    roles_validation = seefiles_roles_validation
+    roles_validation = deadline_roles_validation
     processsecurity_validation = adddeadline_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
@@ -133,7 +129,7 @@ class EditDeadLine(InfiniteCardinality):
     submission_title = _('Save')
     isSequential = False
     context = INovaIdeoApplication
-    roles_validation = seefiles_roles_validation
+    roles_validation = deadline_roles_validation
     processsecurity_validation = editdeadline_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):

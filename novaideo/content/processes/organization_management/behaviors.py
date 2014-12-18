@@ -117,7 +117,7 @@ def edit_processsecurity_validation(process, context):
 
 class EditOrganizations(InfiniteCardinality):
     style_descriminator = 'admin-action'
-    style_picto = 'glyphicon glyphicon-pencil'
+    style_picto = 'glyphicon glyphicon-home'
     style_order = 4
     submission_title = _('Save')
     isSequential = True
@@ -148,7 +148,7 @@ def seeorgs_processsecurity_validation(process, context):
 
 class SeeOrganizations(InfiniteCardinality):
     style_descriminator = 'admin-action'
-    style_picto = 'glyphicon glyphicon-th-list'
+    style_picto = 'glyphicon glyphicon-home'
     style_order = 3
     isSequential = False
     context = INovaIdeoApplication

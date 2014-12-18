@@ -1,4 +1,4 @@
-<div tal:condition="request.view_name == ''" class="row"  i18n:domain="novaideo">
+<div tal:condition="condition" class="row"  i18n:domain="novaideo">
     <div class="col-md-2"></div>
 	<div class="col-md-7">
 		<div class="deadline-panel ${expired and 'alert-danger' or 'alert-warning'}">

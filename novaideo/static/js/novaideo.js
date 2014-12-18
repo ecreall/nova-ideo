@@ -216,6 +216,14 @@ $(document).ready(function(){
 
   $('.admin-call').on('click', admin_nav_onclick);
 
+  $('.admin-nav .group').hover(function(){
+      var actions = $($(this).find('ul.actions').first());
+      actions.show();
+  }, function(){
+      var actions = $($(this).find('ul.actions').first());
+      actions.hide();
+  });
+
   $('.proposal-opinion').on('click', activate_explanation);
 
   $('.proposal-opinion button.close').on('click', close_explanation);

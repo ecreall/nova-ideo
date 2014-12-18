@@ -1000,7 +1000,8 @@ ins {
 }
 
 .admin-nav.list-group .list-group-item{
-    background-color: #333333
+    background-color: #333333;
+    cursor: pointer;
 }
 
 .admin-nav.list-group .list-group-item > a{
@@ -1018,9 +1019,22 @@ ins {
 }
 
 .admin-nav.list-group .list-group-item:hover, .admin-nav.list-group .list-group-item:focus {
-    background-color: #8d8d8d;
+    background-color: #5cb85c;
     text-decoration: none;
 }
+
+.admin-nav ul.list-group{
+    right: -107px;
+    position: absolute;
+    z-index: 1029;
+    margin-top: -41px;
+    cursor: pointer;
+}
+
+.group-title{
+    color: white;
+}
+
 
 .admin-nav-title{
      position:absolute;

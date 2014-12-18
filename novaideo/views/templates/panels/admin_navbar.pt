@@ -1,10 +1,19 @@
-<div tal:condition="not error and actions" tal:define="state (request.cookies.get('admin_nav', 'off')=='off' and 'admin-off') or 'admin-on'" id="adminnavbar">
+<div tal:condition="not error and groups" tal:define="state (request.cookies.get('admin_nav', 'off')=='off' and 'admin-off') or 'admin-on'" id="adminnavbar">
 <div  class="admin-call ${state}">
  <span class="glyphicon glyphicon-briefcase admin-nav-title"></span>
  <span class="admin-nav-label ${(request.cookies.get('admin_nav', 'off')=='on' and 'hide-bloc') or ''}">Tableau de bord</span>
   <ul class="list-group admin-nav ${(request.cookies.get('admin_nav', 'off')=='off' and 'hide-bloc') or ''}">
-        <tal:loop repeat="(context, a) actions">
-          <li class="list-group-item ${(request.view_name == a.action_view.name) and 'active-item'}"><a tal:attributes="href a.url(context)" class="btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span>  ${a.title}</a></li>
+        <tal:loop repeat="(greouid, actions) groups">
+          <li tal:define="viewsnames [a[1].action_view.name for a in actions]" class="list-group-item group ${(request.view_name in viewsnames) and 'active-item'}">
+          	<span class="btn btn-sm group-title"><span class="${pictos.get(greouid, '')}"></span> <span>${greouid}</span></span>
+            <ul class="list-group actions hide-bloc">
+              <tal:loop repeat="(context, a) actions">
+            	<li class="list-group-item ${(request.view_name == a.action_view.name) and 'active-item'}">
+            		<a tal:attributes="href a.url(context)" class="btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span>  ${a.title}</a>
+            	</li>
+              </tal:loop>
+             </ul>
+          </li>
         </tal:loop>
   </ul>
 </div>

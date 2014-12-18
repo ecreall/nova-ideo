@@ -55,7 +55,7 @@ class OrganizationManagement(ProcessDefinition, VisualisableElement):
                 sees = ActivityDefinition(contexts=[SeeOrganizations],
                                        description=_("See organizations"),
                                        title=_("Organizations"),
-                                       groups=[]),
+                                       groups=[_('See')]),
                 edit = ActivityDefinition(contexts=[EditOrganization],
                                        description=_("Edit organization"),
                                        title=_("Edit organizations"),
