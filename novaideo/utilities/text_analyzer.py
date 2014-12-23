@@ -8,14 +8,117 @@
 """Text analyzer utility
 """
 import re
-
-from dace.util import utility
+from html.parser import HTMLParser
 from diff_match_patch import diff_match_patch
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 from zope.interface import Interface, implementer
 
+from dace.util import utility
+
 from novaideo.ips.htmldiff import htmldiff
+
+
+START = 0
+END = 1
+INS = 2
+
+TAG_ENDS = {
+            START: '<del>',
+            END: '</del>',
+            INS: '<ins></ins>' 
+}
+
+
+def normalize_text(text):
+    parser = HTMLParser()
+    text = parser.unescape(text)
+    soup = BeautifulSoup(text)
+    return ''.join([str(t) for t in soup.body.contents])
+
+
+def index(list_values, index, default=None):
+    try:
+        return list_values[index]
+    except IndexError:
+        return default
+
+
+def get_del_tags_positions(text):
+    start_tag = TAG_ENDS[START]
+    end_tag = TAG_ENDS[END]
+    starts = [a.start() for a in re.finditer(start_tag, text)]
+    ends = [a.start() for a in re.finditer(end_tag, text)]
+    positions = list(zip(starts, ends))
+    for i, position in enumerate(positions):
+        reduce_to = i * (len(start_tag) + len(end_tag))
+        positions[i] = (position[0]-reduce_to, 
+                      position[1]-reduce_to-len(start_tag))
+
+    return positions
+
+
+def get_firsts_positions(all_positions):
+    firsts = [index(positions, 0) for positions in all_positions \
+              if index(positions, 0)]
+    firsts = sorted(firsts, key=lambda e: e[0])
+    return firsts
+
+
+def get_global_interval(start_position, all_positions):
+    end_interval = start_position[1]
+    all_diffs = [item for sublist in all_positions for item in sublist]
+    ends = [a for a in all_diffs \
+            if a[1] >= end_interval and a[0] <= end_interval]
+    ends = sorted(ends, key=lambda e: e[1], reverse=True)
+    return (start_position[0], ends[0][1])
+
+
+def remove_positions_in_interval(interval, positions):
+    def is_in_interval(position):
+        if position[0] >= interval[0] and \
+           position[1] <= interval[1]:
+            return True
+
+        return False
+    return [position for position in positions if not is_in_interval(position)]
+
+
+def get_ins_tags_positions(diff):
+    ins_tag = TAG_ENDS[INS]
+    positions = [a.start() for a in re.finditer(ins_tag, diff)]
+    for i, position in enumerate(positions):
+        reduce_to = i * len(ins_tag)
+        positions[i] = position-reduce_to
+
+    return positions
+
+
+def _convert_position(position, intervals):
+    start_tag = TAG_ENDS[START]
+    end_tag = TAG_ENDS[END]
+    result = 0
+    for interval in intervals:
+        if position > interval[0]:
+            result += len(start_tag)
+
+        if position >= interval[1]:
+            result += len(end_tag)
+
+    return result
+
+
+def add_ins_tags(origin_text, texts, intervals):
+    ins_tag = TAG_ENDS[INS]
+    positions = [get_ins_tags_positions(text) for text in texts]
+    positions = sorted(list(set([item for sublist in positions \
+                                 for item in sublist])))
+    for i, position in enumerate(positions):
+        convert_to = i * len(ins_tag) + _convert_position(position, intervals)
+        origin_text = origin_text[:position+convert_to] + ins_tag + \
+                      origin_text[position+convert_to:]
+
+    return origin_text
 
 
 class ITextAnalyzer(Interface):
@@ -72,17 +175,18 @@ class TextAnalyzer(object):
         return text_result
 
     def render_html_diff(self, text1, text2, diff_id="diff_id"):
-        """Render html diff between text1 and text2"""
-        text1 = text1.replace('&nbsp;', '')
-        text2 = text2.replace('&nbsp;', '')
+        """Render html diff between text1 and text2
+           text1 and text2 will be normalized"""
         result = htmldiff.render_html_diff(text1, text2)
+        parser = HTMLParser()
+        result = parser.unescape(result)
         soup = self.wrap_diff(result.replace('\xa0', ' '), diff_id)
         return soup, u''.join([str(t) for t in soup.body.contents])
 
     def _del_added_space(self, soup, tag):
         """Remove added space from tag"""
         next_sibling = tag.next_sibling
-        if next_sibling is not None and \
+        if next_sibling and \
            isinstance(next_sibling, NavigableString):
             if next_sibling.startswith(' '):
                 new_string = soup.new_string(next_sibling[1:])
@@ -90,7 +194,7 @@ class TextAnalyzer(object):
 
         elif next_sibling is None:
             previous_sibling = tag.previous_sibling
-            if previous_sibling is not None and \
+            if previous_sibling and \
                isinstance(previous_sibling, NavigableString):
                 if previous_sibling.endswith(' '):
                     new_string = soup.new_string(previous_sibling[:-1])
@@ -106,7 +210,7 @@ class TextAnalyzer(object):
             new_tag = soup.new_tag("span", id=diff_id)
             previous_del_tag = ins_tag.find_previous_sibling('del')
             ins_string = ins_tag.string
-            if previous_del_tag is not None:
+            if previous_del_tag:
                 previous_del_tag_string = previous_del_tag.string
                 to_find = "{} *{}".format(previous_del_tag, ins_tag)
                 modified = len(re.findall(to_find, diff)) > 0
@@ -127,7 +231,7 @@ class TextAnalyzer(object):
 
         for del_tag in del_tags:
             if del_tag not in del_included:
-                if del_tag.string is not None:
+                if del_tag.string:
                     new_tag = soup.new_tag("span", id=diff_id)
                     del_tag.wrap(new_tag)
                 else:
@@ -153,7 +257,7 @@ class TextAnalyzer(object):
                 for ins_tag in ins_tags:
                     ins_tag.unwrap()
 
-            if blocks_to_del is not None:
+            if blocks_to_del:
                 blocs = tag.find_all(blocks_to_del[0], blocks_to_del[1])
                 for bloc in blocs:
                     bloc.extract()
@@ -188,6 +292,90 @@ class TextAnalyzer(object):
 
         return ''.join([str(t) for t in soup.body.contents])
 
+    def _get_removed_diffs(self, text1, text2):
+        soup, diff = self.render_html_diff(text1, text2, 'amendment-modif')
+        modifs = soup.find_all('span', {'id':'amendment-modif'})
+        ins_tags = soup.find_all('ins')
+        #ignore the inserted text
+        for ins_tag in ins_tags:
+            ins_tag.extract()
+
+        for modif in modifs:
+            modif.unwrap()
+
+        return self.soup_to_text(soup)
+
+    def _get_add_diffs(self, text1, text2):
+        soup, diff = self.render_html_diff(text1, text2, 'amendment-modif')
+        modifs = soup.find_all('span', {'id':'amendment-modif'})
+        del_tags = soup.find_all('del')
+        for del_tag in del_tags:
+            del_tag.unwrap()
+
+        ins_tags = soup.find_all('ins')
+        #ignore the inserted text
+        for ins_tag in ins_tags:
+            ins_tag.clear()
+
+        for modif in modifs:
+            modif.unwrap()
+
+        return self.soup_to_text(soup)
+
+    def get_merged_diffs(self, 
+                         text, 
+                         texts, 
+                         tag_removed_attrs, 
+                         tag_added_attrs):
+        start_tag = TAG_ENDS[START]
+        end_tag = TAG_ENDS[END]
+        intervals = []
+        all_del_positions = [get_del_tags_positions(
+                                  self._get_removed_diffs(text, t)) \
+                             for t in texts]
+        firsts = get_firsts_positions(all_del_positions)
+        if firsts:
+            interval = get_global_interval(firsts[0], all_del_positions)
+            intervals.append(interval)
+            all_del_positions = [remove_positions_in_interval(interval, 
+                                                              del_positions) \
+                                 for del_positions in all_del_positions]
+            all_del_positions = [l for l in all_del_positions if l]
+            while all_del_positions:
+                firsts = get_firsts_positions(all_del_positions)
+                interval = get_global_interval(firsts[0], all_del_positions)
+                intervals.append(interval)
+                all_del_positions = [remove_positions_in_interval(interval, 
+                                                                del_positions) \
+                                     for del_positions in all_del_positions]
+                all_del_positions = [l for l in all_del_positions if l]
+
+        merged_diff = text
+        for i, interval in enumerate(intervals):
+            convert_to = i * (len(start_tag) + len(end_tag))
+            merged_diff = merged_diff[:interval[0]+convert_to] + \
+                start_tag + \
+                merged_diff[interval[0]+convert_to:interval[1]+convert_to] + \
+                end_tag + \
+                merged_diff[interval[1]+convert_to:]
+
+        added_diffs = [self._get_add_diffs(text, t) for t in texts]
+        merged_diff = add_ins_tags(merged_diff, added_diffs, intervals)
+        soup = BeautifulSoup(merged_diff)
+        ins_tags = soup.find_all('ins')
+        for ins_tag in ins_tags:
+            ins_span = soup.new_tag("span", **tag_added_attrs)
+            ins_tag.replace_with(ins_span)
+
+        del_tags = soup.find_all('del')
+        for del_tag in del_tags:
+            del_span = soup.new_tag("span", **tag_removed_attrs)
+            del_tag.wrap(del_span)
+            del_tag.unwrap()
+
+        merged_diff = self.soup_to_text(soup)
+        return merged_diff   
+
     #experimental, don't test it.
     def render_html_diff_del(self, text1, text2):
         soup, diff = self.render_html_diff(text1, text2, "modif")
@@ -202,11 +390,12 @@ class TextAnalyzer(object):
             modifs_data.append(modif_data)
 
         self.unwrap_diff(modifs_data, soup, False)
-        diff_divs = soup.find_all('div', {'class':'diff'})
+        diff_divs = soup.find_all('span', {'class':'modif'})
         for div in diff_divs:
             div.unwrap()
 
         return u''.join([str(t) for t in soup.body.contents])
+
 
     #experimental, don't test it.
     def update_text(self, new_text, old_text, text):

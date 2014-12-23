@@ -449,3 +449,22 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
         self.text_analyzer.unwrap_diff(spanids_data, soup)
         soup_to_text = self.text_analyzer.soup_to_text(soup)
         self.assertEqual(soup_to_text, "Fete de la science. Organiser des animations lors de la Fete de la science qui se deroule au mois d'octobre. Programme: - conferences - expositions - autres")
+
+
+    def test_get_merged_diffs(self):
+        text_origin = "Organiser des animation lors de la Fete de la science."
+        text1 = "Organiser des animation lors d'une Fete de la science."
+        text2 = "Organiser des animations lors de la Fete de la science et de l'innovation."
+        merged_diff = self.text_analyzer.get_merged_diffs(text_origin, 
+                                                          [text1, text2],
+                                                          {'id': 'del'},
+                                                          {'id': 'ins'})
+        self.assertEqual(merged_diff, '<p>Organiser des <span id="del">animation</span><span id="ins"></span> lors <span id="del">de la</span><span id="ins"></span> Fete de la <span id="del">science.</span><span id="ins"></span></p>')
+
+        text1 = "Organiser des animations modif d'une Fete de la science."
+        text2 = "Organiser de modif lors d'une Fete de la science."
+        merged_diff = self.text_analyzer.get_merged_diffs(text_origin, 
+                                                          [text1, text2],
+                                                          {'id': 'del'},
+                                                          {'id': 'ins'})
+        self.assertEqual(merged_diff, '<p>Organiser <span id="del">des animation<span id="ins"></span> lors de la</span><span id="ins"></span> Fete de la science.</p>')
