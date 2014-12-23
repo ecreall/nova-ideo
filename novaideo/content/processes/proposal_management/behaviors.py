@@ -1196,7 +1196,7 @@ def decision_relation_validation(process, context):
 
 
 def decision_roles_validation(process, context):
-    return has_role(role=('System',))
+    return has_role(role=('Admin',))
 
 
 def decision_state_validation(process, context):
@@ -1560,7 +1560,7 @@ class AmendmentsResult(ElementaryAction):
     processs_relation_id = 'proposal'
     #actionType = ActionType.system
     relation_validation = va_relation_validation
-    roles_validation = va_roles_validation
+    roles_validation = decision_roles_validation
     state_validation = ar_state_validation
 
     def _get_newversion(self, context, root, wg):
