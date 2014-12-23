@@ -1382,9 +1382,8 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #: novaideo/views/amendment_management/templates/description_amendments.pt:6
-#, fuzzy
 msgid "(original version)"
-msgstr "(Version d'origine par"
+msgstr "(Version d'origine)"
 
 #: novaideo/views/amendment_management/templates/description_amendments.pt:36
 msgid "(Original version by"
