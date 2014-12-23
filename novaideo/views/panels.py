@@ -450,7 +450,8 @@ class Deadline_panel(object):
         total_sec_current_deadline = (current_deadline - previous_deadline).total_seconds()
         percent = 100
         expired = False
-        if total_sec_current_deadline > 0:
+        if total_sec_current_deadline > 0 and \
+           not current_date > current_deadline:
             total_sec_current_date = (current_date - previous_deadline).total_seconds()
             percent = (total_sec_current_date * 100) / total_sec_current_deadline 
         else:
