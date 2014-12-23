@@ -25,3 +25,16 @@
  </dl>
 </div>
 
+<div id="amendments-legend" i18n:domain="novaideo">
+  <blockquote class="attached_contents" >
+    <dl class="dl-horizontal voting-amendments-legend">
+        <dt><div class="legend-carre-ins"></div></dt>
+        <dd><span i18n:translate="">Text added by the amendment</span></dd>
+        <dt><span class="glyphicon glyphicon-plus text-added"></span></dt>
+        <dd><span i18n:translate="">Text added to the original version</span></dd>
+        <dt><div class="legend-carre-del"></div></dt>
+        <dd><span i18n:translate="">Text removed</span></dd>
+    </dl>
+  </blockquote>
+</div>
+  

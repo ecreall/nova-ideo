@@ -29,6 +29,90 @@ from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 SOURCE_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'table']
 
+
+OMITED_TEXT_TAG = '[...]'
+
+
+def _prune_text(text, tag_descriminator, attributes_descriminator):
+    soup = BeautifulSoup(text)
+    descriminators_tags = soup.find_all(tag_descriminator, 
+                                        attributes_descriminator)
+    conserved_tags = []
+    for tag in descriminators_tags:
+        parents = []
+        for source_tag in SOURCE_TAGS:
+            parents = tag.find_parents(source_tag)
+            if parents and parents[0] not in conserved_tags:
+                parent = parents[0]
+                previous_string = None
+                try:
+                    previous_string = list(conserved_tags[-1].strings)[0]
+                except Exception:
+                    pass
+
+                if parent.previous_sibling and \
+                   parent.previous_sibling not in conserved_tags and \
+                   (not previous_string or \
+                    previous_string and previous_string != OMITED_TEXT_TAG):
+                    new_p = soup.new_tag('p')
+                    new_p.string = OMITED_TEXT_TAG
+                    conserved_tags.append(new_p)
+
+                conserved_tags.append(parent)
+                break
+            elif parents and parents[0] in conserved_tags:
+                break
+
+        if not parents:
+            conserved_tags.append(tag)
+
+    if conserved_tags:
+        las_tag = conserved_tags[-1]
+        next_sibling = las_tag.next_sibling
+        if next_sibling and \
+           (not hasattr(next_sibling, 'get') or \
+           hasattr(next_sibling, 'get') and \
+           'explanation-inline' not in las_tag.next_sibling.get('class', [])):
+            new_p = soup.new_tag('p')
+            new_p.string = OMITED_TEXT_TAG
+            conserved_tags.append(new_p)
+
+    return soup, conserved_tags
+
+
+def get_trimed_amendment_text(text):
+    soup, source_tags = _prune_text(text, 'span', {'id':'explanation'})
+    explanations_inline_tags = soup.find_all('span', 
+                                             {'class':'explanation-inline'})
+    source_tags.extend(explanations_inline_tags)
+    soup.body.clear()
+    for tag in source_tags:
+        soup.body.append(tag)
+
+    text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
+                                                      'text_analyzer')
+    return text_analyzer.soup_to_text(soup)
+
+
+def get_trimed_proposal_text(text, amendments):
+    text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
+                                                      'text_analyzer')
+    merged_text = text_analyzer.get_merged_diffs(
+                    text,
+                    amendments,
+                    {'id': 'modification', 
+                     'class': 'text-removed'},
+                    {'id': 'modification', 
+                     'class': 'glyphicon glyphicon-plus text-added'})
+    soup, source_tags = _prune_text(merged_text, 
+                                 'span', {'id':'modification'})
+    soup.body.clear()
+    for tag in source_tags:
+        soup.body.append(tag)
+
+    return text_analyzer.soup_to_text(soup)
+
+
 class VoteViewStudyReport(BasicView):
     title = _('Vote for amendments')
     name = 'voteforamendments'
@@ -90,8 +174,8 @@ class VoteFormView(FormView):
     def before_update(self):
         ballot_report = None
         try:
-            vote_actions = list(self.behaviors_instances.values())
-            ballot_report = vote_actions[0].process.ballot.report
+            vote_action = list(self.behaviors_instances.values())[0]
+            ballot_report = vote_action.process.ballot.report
         except Exception:
             return
 
@@ -104,76 +188,13 @@ class VoteFormView(FormView):
     def default_data(self):
         ballot_report = None
         try:
-            ballot_report = list(self.behaviors_instances.values())[0].process.ballot.report
+            vote_action = list(self.behaviors_instances.values())[0]
+            ballot_report = vote_action.process.ballot.report
         except Exception:
             return
-        
+
+        self.subjects = ballot_report.subjects
         return {'candidates': ballot_report.subjects}
-
-    def _get_trimed_modification_text(self, text):
-        soup = BeautifulSoup(text)
-        explanations_tags = soup.find_all('span', {'id':'explanation'})
-        source_tags = []
-        for tag in explanations_tags:
-            parents = []
-            for source_tag in SOURCE_TAGS:
-                parents = tag.find_parents(source_tag)
-                if parents:
-                    source_tags.append(parents[0])
-                    break
-
-            if not parents:
-                source_tags.append(tag)
-
-        explanations_inline_tags = soup.find_all('span', {'class':'explanation-inline'})
-        source_tags.extend(explanations_inline_tags)
-        soup.body.clear()
-        for tag in source_tags:
-            soup.body.append(tag)
-
-        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
-                                                          'text_analyzer')
-        return text_analyzer.soup_to_text(soup)
-
-    def _get_trimed_proposal_text(self, text):
-        soup = BeautifulSoup(text)
-        p_tags = soup.find_all('p')
-        new_ps = []
-        for tag in p_tags:
-            strings = tag.strings
-            new_p = soup.new_tag('p') 
-            for str_item in strings:
-                new_str = self._get_tremed_text(str_item)
-                if new_str == str_item:
-                    new_p.append(str(new_str))
-                else:
-                    new_p.append(str(new_str) + ' (...)')
-
-            new_ps.append(new_p)
-                
-        soup.body.clear()
-        for tag in new_ps:
-            soup.body.append(tag)
-
-        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
-                                                          'text_analyzer')
-        return text_analyzer.soup_to_text(soup)
-
-    def _get_tremed_text(self, text):
-        trimed_texts = []
-        trimed_text = text
-        if len(text) > 199:
-            texts = text.split('\n')
-            length = int(200 / len(texts))
-            for t in texts:
-                if len(t) > length-1:
-                    t = t[:length]
-
-                trimed_texts.append(t)
-
-            trimed_text = "\n".join(trimed_texts)
-
-        return trimed_text
 
     def get_description(self, field, cstruct): 
         description_template = 'novaideo:views/amendment_management/templates/description_amendments.pt'
@@ -185,7 +206,10 @@ class VoteFormView(FormView):
                       'is_proposal': False, 
                       'current_user': current_user}
             if isinstance(subject, Proposal):
-                values['text'] = self._get_trimed_proposal_text(subject.text)
+                amendments = [a.text for a in self.subjects \
+                              if not isinstance(a, Proposal)]
+                values['text'] = get_trimed_proposal_text(subject.text,
+                                                           amendments)
                 values['is_proposal'] = True
             else:
                 seeamendment_actions = getBusinessAction(
@@ -195,7 +219,7 @@ class VoteFormView(FormView):
                     seeamendment_actions[0].execute(
                               subject, self.request, None)
 
-                values['text'] = self._get_trimed_modification_text(
+                values['text'] = get_trimed_amendment_text(
                                 getattr(subject, 'explanationtext', ''))
 
             body = self.content(result=values, 
