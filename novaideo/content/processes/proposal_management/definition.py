@@ -163,7 +163,10 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             process.reopening_configuration_ballot = ballot
 
         if len(wg.members) <= root.participants_maxi:
-            group = list(AMENDMENTS_CYCLE_DEFAULT_DURATION.keys())
+            durations = list(AMENDMENTS_CYCLE_DEFAULT_DURATION.keys())
+            group = sorted(durations, 
+                           key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e],
+                           reverse=True)
             ballot = Ballot('FPTP' , electors, group, VP_DEFAULT_DURATION)
             wg.addtoproperty('ballots', ballot)
             ballot.title = _('Amendment duration')
