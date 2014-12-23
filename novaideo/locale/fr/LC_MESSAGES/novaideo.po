@@ -1434,7 +1434,7 @@ msgstr "Contenus de Nova-Ideo"
 #: novaideo/views/novaideo_view_manager/search.py:249
 #, python-format
 msgid "${novaideo_title} contents"
-msgstr ""
+msgstr "Contenus de ${novaideo_title}"
 
 #: novaideo/views/novaideo_view_manager/search.py:79
 msgid "The keyword search is done using commas between keywords."
