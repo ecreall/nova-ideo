@@ -75,7 +75,7 @@ from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea, 
     CommentIdea,
     Associate as AssociateIdea)
-from novaideo.utilities.text_analyzer import ITextAnalyzer
+from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.util import connect, disconnect
 from novaideo.core import to_localized_time
 from novaideo.event import ObjectPublished
@@ -145,6 +145,7 @@ class CreateProposal(ElementaryAction):
 
         result.extend(newkeywords)
         proposal = appstruct['_object_data']
+        proposal.text = normalize_text(proposal.text)
         root.addtoproperty('proposals', proposal)
         proposal.setproperty('keywords_ref', result)
         proposal.state.append('draft')
@@ -165,9 +166,6 @@ class CreateProposal(ElementaryAction):
                     user,
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
-            #proposal.text = getattr(proposal, 'text', '') +\
-            #                ''.join(['<div>' + idea.text + '</div>' \
-            #                        for idea in related_ideas])
 
         proposal.reindex()
         wg.reindex()
@@ -200,10 +198,8 @@ class PublishAsProposal(ElementaryAction):
         for k in context.keywords_ref:
             proposal.addtoproperty('keywords_ref', k)
 
-        proposal.text = context.text
+        proposal.text = normalize_text(context.text)
         proposal.state.append('draft')
-        #if ('to work' in context.state):
-            #context.state = PersistentList(['published'])
         grant_roles(roles=(('Owner', proposal), ))
         grant_roles(roles=(('Participant', proposal), ))
         proposal.setproperty('author', user)
@@ -313,6 +309,7 @@ class DuplicateProposal(ElementaryAction):
         related_ideas = appstruct.pop('related_ideas')
         appstruct['keywords_ref'] = result
         copy_of_proposal.set_data(appstruct)
+        copy_of_proposal.text = normalize_text(copy_of_proposal.text)
         copy_of_proposal.setproperty('originalentity', context)
         copy_of_proposal.state = PersistentList(['draft'])
         grant_roles(roles=(('Owner', copy_of_proposal), ))
@@ -398,6 +395,7 @@ class EditProposal(InfiniteCardinality):
                        'related_ideas',
                        CorrelationType.solid)
 
+        context.text = normalize_text(context.text)
         context.modified_at = datetime.datetime.today()
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
@@ -923,7 +921,7 @@ class ImproveProposal(InfiniteCardinality):
         data['title'] = context.title + \
                        localizer.translate(_('_Amended version ')) + \
                         str(getattr(context, '_amendments_counter', 1))
-        data['text'] = appstruct['text']
+        data['text'] = normalize_text(appstruct['text'])
         data['description'] = appstruct['description']
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
@@ -1636,6 +1634,7 @@ class AmendmentsResult(ElementaryAction):
                                             ITextAnalyzer,'text_analyzer')
             merged_text = text_analyzer.merge(context.text, 
                                  [a.text for a in amendments])
+            merged_text = normalize_text(merged_text)
             #TODO merged_keywords + merged_description
             copy_of_proposal = self._get_newversion(context, root, wg)
             self._send_ballot_result(copy_of_proposal, request, 
