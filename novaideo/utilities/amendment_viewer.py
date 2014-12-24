@@ -106,16 +106,21 @@ class AmendmentViewer(object):
     def _identify_explanations(self, context, request, soup, descriminator):
         explanation_tags = soup.find_all('span', {'id': "explanation"})
         context_oid = str(get_oid(context))
-        explanations = dict(context.explanations)
+        old_explanations = dict(context.explanations)
+        explanations = {}
         for explanation_tag in explanation_tags:
             explanation_tag['data-context'] = context_oid
             explanation_tag['data-item'] = str(descriminator)
             init_vote = {'oid':descriminator, 'intention':None}
-            if not(str(descriminator) in explanations): 
-                explanations[str(descriminator)] = PersistentDict(init_vote)
+            descriminator_str = str(descriminator)
+            if not(descriminator_str in old_explanations): 
+                explanations[descriminator_str] = PersistentDict(init_vote)
+            else :
+                explanations[descriminator_str] = old_explanations[descriminator_str]
 
             descriminator += 1
-
+        
+        context.explanations = explanations
         return explanations
 
     def get_explanation_diff(self, context, request):
