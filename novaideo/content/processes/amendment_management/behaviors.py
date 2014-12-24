@@ -103,7 +103,7 @@ class DuplicateAmendment(InfiniteCardinality):
         return {'newcontext': copy_of_amendment}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(copy_of_amendment, "@@index"))
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
 
 
 def del_roles_validation(process, context):
@@ -135,7 +135,7 @@ class DelAmendment(InfiniteCardinality):
         return {'newcontext': proposal}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(newcontext, '@@index'))
+        return HTTPFound(request.resource_url(kw['newcontext'], '@@index'))
 
 
 def edit_roles_validation(process, context):
