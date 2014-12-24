@@ -24,10 +24,7 @@ from novaideo.content.processes.ballot_processes.majorityjudgment.behaviors impo
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.views.widget import InLineWidget, ObjectWidget
-from novaideo.utilities.text_analyzer import ITextAnalyzer
-
-
-SOURCE_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'table']
+from novaideo.utilities.text_analyzer import ITextAnalyzer, HTML_BLOCK_ELEMENTS
 
 
 OMITED_TEXT_TAG = '[...]'
@@ -40,7 +37,7 @@ def _prune_text(text, tag_descriminator, attributes_descriminator):
     conserved_tags = []
     for tag in descriminators_tags:
         parents = []
-        for source_tag in SOURCE_TAGS:
+        for source_tag in HTML_BLOCK_ELEMENTS:
             parents = tag.find_parents(source_tag)
             if parents and parents[0] not in conserved_tags:
                 parent = parents[0]
