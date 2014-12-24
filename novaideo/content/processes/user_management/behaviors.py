@@ -73,15 +73,13 @@ class Registration(InfiniteCardinality):
                 recipients=[person.email], body=message)
 
         person.reindex()
-        self._person = person
-        return True
+        return {'person': person}
 
     def redirect(self, context, request, **kw):
-        person = self._person
+        person = kw['person']
         headers = remember(request, get_oid(person))
         request.registry.notify(LoggedIn(person.email, person, 
                                          context, request))
-        del self._person
         return HTTPFound(location = request.resource_url(context),
                          headers = headers)
 
@@ -130,7 +128,7 @@ class Edit(InfiniteCardinality):
         context.name = name_chooser(name=context.title)
         context.modified_at = datetime.datetime.today()
         context.reindex()
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -165,7 +163,7 @@ class Deactivate(InfiniteCardinality):
         context.state.remove('active')
         context.state.append('deactivated')
         context.reindex()
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -200,7 +198,7 @@ class Activate(InfiniteCardinality):
         context.state.remove('deactivated')
         context.state.append('active')
         context.reindex()
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -218,7 +216,7 @@ class SeePerson(InfiniteCardinality):
     processsecurity_validation = seeperson_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))

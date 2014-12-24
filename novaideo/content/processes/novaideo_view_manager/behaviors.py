@@ -27,16 +27,17 @@ class Search(InfiniteCardinality):
     actionType = ActionType.automatic
 
     def start(self, context, request, appstruct, **kw):
-        self.content_types = appstruct['content_types']
-        self.text = appstruct['text_to_search']
-        return True
+        content_types = appstruct['content_types']
+        text = appstruct['text_to_search']
+        return {'content_types': content_types,
+                'text': text}
 
     def redirect(self, context, request, **kw):
         root = getSite()
         return HTTPFound(
                   request.resource_url(root, 
-                        query={'text_to_search': self.text,
-                               'content_types': ",".join(self.content_types)}))
+                        query={'text_to_search': kw['text'],
+                               'content_types': ",".join(kw['content_types'])}))
 
 
 def seemy_roles_validation(process, context):
@@ -61,7 +62,7 @@ class SeeMyContents(InfiniteCardinality):
                     if not('archived' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
 def seemys_processsecurity_validation(process, context):
     user = get_current()
@@ -82,7 +83,7 @@ class SeeMySelections(InfiniteCardinality):
                     if not('archived' in o.state)])
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
 
 def seemypa_processsecurity_validation(process, context):
@@ -103,7 +104,7 @@ class SeeMyParticipations(InfiniteCardinality):
         return len(getattr(user, 'participations', []))
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
 
 def seemysu_processsecurity_validation(process, context):
@@ -126,7 +127,7 @@ class SeeMySupports(InfiniteCardinality):
         return str(len_supports)+'/'+str(len(getattr(user, 'tokens_ref', [])))
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
 
 def seeproposal_processsecurity_validation(process, context):
@@ -142,7 +143,7 @@ class SeeProposal(InfiniteCardinality):
     processsecurity_validation = seeproposal_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -166,7 +167,7 @@ class SeeOrderedProposal(InfiniteCardinality):
     processsecurity_validation = seeproposals_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
@@ -182,7 +183,7 @@ class SeeIdeaToModerate(InfiniteCardinality):
     processsecurity_validation = seeproposals_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))

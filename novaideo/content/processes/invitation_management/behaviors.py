@@ -79,7 +79,7 @@ class UploadUsers(InfiniteCardinality):
                         recipients=[invitation.email], 
                         body=message )
 
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
@@ -130,7 +130,7 @@ class InviteUsers(InfiniteCardinality):
                         recipients=[invitation.email],
                         body=message )
 
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@seeinvitations'))
@@ -151,7 +151,7 @@ class SeeInvitation(InfiniteCardinality):
     processsecurity_validation = seeinv_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
@@ -175,7 +175,7 @@ class SeeInvitations(InfiniteCardinality):
     processsecurity_validation = seeinvs_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
@@ -200,7 +200,7 @@ class EditInvitations(InfiniteCardinality):
     processsecurity_validation = edit_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@seeinvitations'))
@@ -226,7 +226,7 @@ class EditInvitation(InfiniteCardinality):
     processsecurity_validation = editinv_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -273,7 +273,7 @@ class AcceptInvitation(InfiniteCardinality):
         grant_roles(person, (('Owner', person),))
         root.delfromproperty('invitations', context)
         context.person = person
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         root = getSite()
@@ -297,7 +297,7 @@ class RefuseInvitation(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('pending')
         context.state.append('refused')
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -322,7 +322,7 @@ class RemoveInvitation(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         root.delfromproperty('invitations', context)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         root = getSite()
@@ -363,7 +363,7 @@ class ReinviteUser(InfiniteCardinality):
                     body=message )
         context.state.remove('refused')
         context.state.append('pending')
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -402,7 +402,7 @@ class RemindInvitation(InfiniteCardinality):
         mailer_send(subject='Invitation', 
             recipients=[context.email], 
             body=message )
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))

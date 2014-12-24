@@ -68,7 +68,7 @@ class AddOrganizations(InfiniteCardinality):
                             properties={'title':('String', False),
                                         'description':('String', False)})
         root.setproperty('organizations', organizations)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
@@ -100,7 +100,7 @@ class CreatOrganizations(InfiniteCardinality):
             root.addtoproperty('organizations', organization)
             #send mail
 
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@seeorganizations'))
@@ -131,7 +131,7 @@ class EditOrganizations(InfiniteCardinality):
             managers = org_struct['managers']
             update_manager(organization, managers)
 
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@seeorganizations'))
@@ -156,7 +156,7 @@ class SeeOrganizations(InfiniteCardinality):
     processsecurity_validation = seeorgs_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
@@ -176,7 +176,7 @@ class SeeOrganization(InfiniteCardinality):
     processsecurity_validation = see_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -205,7 +205,7 @@ class EditOrganization(InfiniteCardinality):
         organization = appstruct['_object_data']
         managers = appstruct['managers'] 
         update_manager(organization, managers)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))

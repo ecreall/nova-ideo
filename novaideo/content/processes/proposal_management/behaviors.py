@@ -169,11 +169,10 @@ class CreateProposal(ElementaryAction):
 
         proposal.reindex()
         wg.reindex()
-        self.newcontext = proposal
-        return True
+        return {'newcontext': proposal}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
         
 
 def pap_processsecurity_validation(process, context):
@@ -219,11 +218,10 @@ class PublishAsProposal(ElementaryAction):
         proposal.reindex()
         wg.reindex()
         context.reindex()
-        self.newcontext = proposal
-        return True
+        return {'newcontext': proposal}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
 
 
 def submit_relation_validation(process, context):
@@ -274,7 +272,7 @@ class SubmitProposal(ElementaryAction):
 
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -334,11 +332,10 @@ class DuplicateProposal(ElementaryAction):
         wg.reindex()
         copy_of_proposal.reindex()
         context.reindex()
-        self.newcontext = copy_of_proposal
-        return True
+        return {'newcontext': copy_of_proposal}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
 
 
 def edit_relation_validation(process, context):
@@ -406,7 +403,7 @@ class EditProposal(InfiniteCardinality):
         datas = {'keywords_ref': result}
         context.set_data(datas)
         context.reindex()
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -449,7 +446,7 @@ class ProofreadingDone(InfiniteCardinality):
         context.state.remove('proofreading')
         context.state.append('amendable')
         context.reindex()
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -510,7 +507,7 @@ class PublishProposal(ElementaryAction):
         wg.reindex()
         context.reindex()
         #TODO wg desactive, members vide...
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -559,7 +556,7 @@ class SupportProposal(InfiniteCardinality):
 
         context.addtoproperty('tokens_support', token)
         context._support_history.append((get_oid(user), datetime.datetime.today(), 1))
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -589,7 +586,7 @@ class OpposeProposal(InfiniteCardinality):
 
         context.addtoproperty('tokens_opposition', token)
         context._support_history.append((get_oid(user), datetime.datetime.today(), 0))
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -661,7 +658,7 @@ class MakeOpinion(InfiniteCardinality):
             mailer_send(subject=subject, 
                 recipients=[member.email], 
                 body=message)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -694,7 +691,7 @@ class WithdrawToken(InfiniteCardinality):
         context.delfromproperty(token.__property__, token)
         user.addtoproperty('tokens', token)
         context._support_history.append((get_oid(user), datetime.datetime.today(), -1))
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -744,7 +741,7 @@ class Alert(ElementaryAction):
                 recipients=[member.email], 
                 body=message)
 
-        return True
+        return {}
 
     def after_execution(self, context, request, **kw):
         super(Alert, self).after_execution(context, request, **kw)
@@ -801,7 +798,7 @@ class SeeAmendments(InfiniteCardinality):
     processsecurity_validation = seea_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -853,14 +850,6 @@ def seeideas_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
 
-#def seeideas_roles_validation(process, context):
-#    return has_role(role=('Member',)) 
-
-
-#def seeideas_processsecurity_validation(process, context):
-#    return global_user_processsecurity(process, context) 
-
-
 def seeideas_state_validation(process, context):
     return not ('draft' in context.state) or \
            ('draft' in context.state and has_role(role=('Owner', context))) 
@@ -875,7 +864,7 @@ class SeeRelatedIdeas(InfiniteCardinality):
     relation_validation = seeideas_relation_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -936,13 +925,12 @@ class ImproveProposal(InfiniteCardinality):
         amendment.state.append('draft')
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
-        self.newcontext = amendment
         amendment.reindex()
         context._amendments_counter = getattr(context, '_amendments_counter', 1) + 1
-        return True
+        return {'newcontext': amendment}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
 
 
 def correctitem_relation_validation(process, context):
@@ -1042,7 +1030,7 @@ class CorrectItem(InfiniteCardinality):
                                    item, content,
                                    'against', user_oid)
             
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1159,7 +1147,7 @@ class CorrectProposal(InfiniteCardinality):
            soupdescriptiondiff.find_all("span", id="correction"):
             correction.state.append('in process')
 
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1236,7 +1224,7 @@ class VotingPublication(ElementaryAction):
                 body=message)
 
         self.process.iteration = getattr(self.process, 'iteration', 0) + 1
-        return True
+        return {}
 
 
     def redirect(self, context, request, **kw):
@@ -1291,7 +1279,7 @@ class Withdraw(InfiniteCardinality):
         mailer_send(subject=subject, 
             recipients=[user.email], 
             body=message)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1385,7 +1373,7 @@ class Resign(InfiniteCardinality):
              recipients=[user.email], 
              body=message)
 
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1477,7 +1465,7 @@ class Participate(InfiniteCardinality):
             self._send_mail_to_user(WATINGLIST_SUBJECT, WATINGLIST_MESSAGE,
                  user, context, request)
 
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1531,13 +1519,13 @@ class VotingAmendments(ElementaryAction):
                  recipients=[member.email], 
                  body=message)
 
-        self.current_context = context
-        return True
+        return {}
 
     def after_execution(self, context, request, **kw):
-        super(VotingAmendments, self).after_execution(context, request, **kw)
+        proposal = self.process.execution_context.involved_entity('proposal')
+        super(VotingAmendments, self).after_execution(proposal, request, **kw)
         self.process.execute_action(
-                  self.current_context, request, 'amendmentsresult', {})
+                  proposal, request, 'amendmentsresult', {})
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1556,7 +1544,6 @@ class AmendmentsResult(ElementaryAction):
     amendments_vote_result_template = 'novaideo:views/proposal_management/templates/amendments_vote_result.pt'
     context = IProposal
     processs_relation_id = 'proposal'
-    #actionType = ActionType.system
     relation_validation = va_relation_validation
     roles_validation = decision_roles_validation
     state_validation = ar_state_validation
@@ -1628,7 +1615,7 @@ class AmendmentsResult(ElementaryAction):
         wg = context.working_group
         root = getSite()
         user = get_current()
-        self.newcontext = context 
+        newcontext = context 
         if amendments:
             text_analyzer = get_current_registry().getUtility(
                                             ITextAnalyzer,'text_analyzer')
@@ -1654,7 +1641,7 @@ class AmendmentsResult(ElementaryAction):
                     user,
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
-            self.newcontext = copy_of_proposal
+            newcontext = copy_of_proposal
             copy_of_proposal.reindex()
         else:
             context.state = PersistentList(['proofreading'])
@@ -1663,14 +1650,14 @@ class AmendmentsResult(ElementaryAction):
                 amendment.reindex()
 
         context.reindex()
-        return True
+        return {'newcontext': newcontext}
 
     def after_execution(self, context, request, **kw):
         super(AmendmentsResult, self).after_execution(context, request, **kw)
-        self.process.execute_action(self.newcontext, request, 'votingpublication', {})
+        self.process.execute_action(kw['newcontext'], request, 'votingpublication', {})
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
 
 
 def ta_state_validation(process, context):
@@ -1746,7 +1733,7 @@ class Amendable(ElementaryAction):
                              PROOFREADING_SUBJECT, PROOFREADING_MESSAGE)
 
         context.reindex()
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1767,7 +1754,7 @@ class CompareProposal(InfiniteCardinality):
     processsecurity_validation = compare_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))

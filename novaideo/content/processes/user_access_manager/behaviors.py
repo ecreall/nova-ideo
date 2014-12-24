@@ -26,7 +26,7 @@ class LogIn(InfiniteCardinality):
     roles_validation = login_roles_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         root = getSite()
@@ -44,7 +44,7 @@ class LogOut(InfiniteCardinality):
     roles_validation = logout_roles_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         root = getSite()

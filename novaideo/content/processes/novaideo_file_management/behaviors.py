@@ -36,7 +36,7 @@ class SeeFile(InfiniteCardinality):
     processsecurity_validation = seefile_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -63,10 +63,10 @@ class CreateFile(InfiniteCardinality):
         newfile.setproperty('author', get_current())
         newfile.reindex()
         self.newcontext = newfile
-        return True
+        return {'newcontext': newfile}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
 
 
 def edit_roles_validation(process, context):
@@ -85,7 +85,7 @@ class EditFile(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.modified_at = datetime.datetime.today()
         context.reindex()
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -109,7 +109,7 @@ class SeeFiles(InfiniteCardinality):
     processsecurity_validation = seefiles_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))

@@ -75,11 +75,10 @@ class Respond(InfiniteCardinality):
         context.addtoproperty('comments', comment)
         user = get_current()
         comment.setproperty('author', user)
-        self.newcontext = comment.subject
-        return True
+        return {'newcontext': comment.subject}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, '@@index'))
+        return HTTPFound(request.resource_url(kw['newcontext'], '@@index'))
 
 
 #TODO behaviors

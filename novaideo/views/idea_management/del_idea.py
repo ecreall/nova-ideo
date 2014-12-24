@@ -26,8 +26,7 @@ class DelIdeaView(BasicView):
     viewid = 'delidea'
 
     def update(self):
-        self.execute(None)        
-        return list(self.behaviors_instances.values())[0].redirect(self.context,
-                                                                 self.request)
+        results = self.execute(None)
+        return results[0]
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({DelIdea:DelIdeaView})

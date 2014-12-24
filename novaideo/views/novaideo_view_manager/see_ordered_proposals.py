@@ -61,7 +61,9 @@ class SeeOrderedProposalView(BasicView):
     def update(self):
         self.execute(None) 
         user = get_current()
-        objects = find_entities([IProposal], ['published'])
+        objects = find_entities([IProposal], ['published', 'examined'])
+        objects = [o for o in objects \
+                   if getattr(o, 'opinion', 'Indifferent') == 'Indifferent']
         objects = sort_proposals(objects)
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_participations"

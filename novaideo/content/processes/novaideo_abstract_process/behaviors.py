@@ -46,7 +46,7 @@ class SelectEntity(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user =  get_current()
         user.addtoproperty('selections', context)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@index'))
@@ -80,7 +80,7 @@ class DeselectEntity(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user =  get_current()
         user.delfromproperty('selections', context)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@index'))
@@ -111,7 +111,7 @@ class AddDeadLine(InfiniteCardinality):
         else:
             context.deadlines = PersistentList([appstruct['deadline']])
 
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
@@ -136,7 +136,7 @@ class EditDeadLine(InfiniteCardinality):
         current = context.deadlines[-1]
         context.deadlines.remove(current)
         context.deadlines.append(appstruct['deadline'])
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))

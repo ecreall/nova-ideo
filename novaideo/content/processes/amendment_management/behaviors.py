@@ -100,11 +100,10 @@ class DuplicateAmendment(InfiniteCardinality):
         context.proposal._amendments_counter = getattr(context.proposal, 
                                                  '_amendments_counter', 1) + 1
         context.reindex()
-        self.newcontext = copy_of_amendment
-        return True
+        return {'newcontext': copy_of_amendment}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, "@@index"))
+        return HTTPFound(request.resource_url(copy_of_amendment, "@@index"))
 
 
 def del_roles_validation(process, context):
@@ -133,11 +132,10 @@ class DelAmendment(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         proposal = context.proposal
         proposal.delfromproperty('amendments', context)
-        self.newcontext = proposal
-        return True
+        return {'newcontext': proposal}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(self.newcontext, '@@index'))
+        return HTTPFound(request.resource_url(newcontext, '@@index'))
 
 
 def edit_roles_validation(process, context):
@@ -178,7 +176,7 @@ class EditAmendment(InfiniteCardinality):
         appstruct['keywords_ref'] = result
         context.set_data(appstruct)
         context.text = normalize_text(context.text)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -210,7 +208,7 @@ class ExplanationAmendment(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.state.append('explanation')
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index")) 
@@ -236,7 +234,7 @@ class ExplanationItem(InfiniteCardinality):
 
         #context.get_used_ideas.invalidate()
         context.reindex()
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -365,7 +363,7 @@ class SubmitAmendment(InfiniteCardinality):
             context.state.append('archived')
 
         context.reindex()         
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context.proposal, "@@index"))
@@ -453,7 +451,7 @@ class SeeAmendment(InfiniteCardinality):
                 amendment_viewer.add_details(context, request, souptextdiff)
  
             context.explanationtext = text_analyzer.soup_to_text(souptextdiff)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))

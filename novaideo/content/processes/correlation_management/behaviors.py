@@ -50,7 +50,7 @@ class CommentCorrelation(InfiniteCardinality):
         context.addtoproperty('comments', comment)
         user = get_current()
         comment.setproperty('author', user)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -73,7 +73,7 @@ class SeeCorrelation(InfiniteCardinality):
     processsecurity_validation = see_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))

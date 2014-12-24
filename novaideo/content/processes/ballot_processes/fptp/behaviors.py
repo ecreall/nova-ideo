@@ -59,7 +59,7 @@ class Vote(ElementaryAction):
         votefactory = report.ballottype.vote_factory
         ballot.ballot_box.addtoproperty('votes', votefactory(subject_id))
         report.addtoproperty('voters', user)
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@index'))
