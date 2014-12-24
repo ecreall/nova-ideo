@@ -19,6 +19,23 @@ from dace.util import utility
 from novaideo.ips.htmldiff import htmldiff
 
 
+HTML_INLINE_ELEMENTS = [
+           'b', 'big', 'i', 'small', 'tt',
+           'abbr', 'acronym', 'cite', 'code',
+           'dfn', 'em', 'kbd', 'strong', 'samp', 
+           'var', 'a', 'bdo', 'br', 'img', 'map',
+           'object', 'q', 'script', 'span', 'sub', 
+           'sup', 'button', 'input', 'label', 'select',
+           'textarea']
+
+
+HTML_BLOCK_ELEMENTS = [
+           'p', 'h1', 'h2', 'h3', 'h4', 
+           'h5', 'h6', 'ol', 'ul', 'pre', 
+           'address', 'blockquote', 'dl', 
+           'div', 'fieldset', 'form', 'hr', 
+           'noscript', 'table']
+
 START = 0
 END = 1
 INS = 2
@@ -121,6 +138,105 @@ def add_ins_tags(origin_text, texts, intervals):
     return origin_text
 
 
+def get_inline_root(tag):
+    parent = tag.parent
+    if parent and \
+       len(parent.contents) == 1 and \
+       parent.name in HTML_INLINE_ELEMENTS:
+        return get_inline_root(parent)
+
+    return tag
+
+
+def get_next_tag(tag, name):
+    valid = re.compile(r"^\s*$")
+    next_tags = tag.next_siblings
+    for next_tag in list(next_tags):
+        if isinstance(next_tag, NavigableString) and \
+           valid.match(next_tag):
+            continue
+
+        if not next_tag or \
+           (next_tag and \
+           next_tag.name != name):
+            return None
+
+        return next_tag
+
+    return None
+
+
+def get_previous_tag(tag, name):
+    valid = re.compile(r"^\s*$")
+    previous_tags = tag.previous_siblings
+    for previous_tag in list(previous_tags):
+        if isinstance(previous_tag, NavigableString) and \
+           valid.match(previous_tag):
+            continue
+
+        if not previous_tag or \
+           (previous_tag and \
+           previous_tag.name != name):
+            return None
+
+        return previous_tag
+
+    return None
+
+
+def merge_with_next_tags(tag, name):
+    valid = re.compile(r"^\s*$")
+    next_tags = tag.next_siblings
+    to_wrap = []
+    for next_tag in list(next_tags):
+        if isinstance(next_tag, NavigableString) and \
+           valid.match(next_tag):
+            to_wrap.append(next_tag)
+            continue
+
+        if not next_tag or \
+           (next_tag and \
+           next_tag.name != name):
+            return tag
+
+        to_wrap.append(next_tag)
+        for tag_to_wrap in to_wrap:
+            tag.append(tag_to_wrap)  
+
+        next_tag.unwrap()
+        to_wrap = []
+
+    return tag
+
+
+def normalize_diff(diff):
+    soup = BeautifulSoup(diff)
+    tags = soup.find_all(['del', 'ins'])
+    for tag in tags:
+        inline_parent = get_inline_root(tag)
+        if inline_parent is not tag:
+            tag.unwrap()
+            inline_parent.wrap(tag)
+
+    tags = soup.find_all(['del', 'ins'])
+    for tag in list(tags):
+        if tag.parent:
+            merge_with_next_tags(tag, tag.name)
+
+    return u''.join([str(t) for t in soup.body.contents])
+
+
+def list_eq(list1, list2):
+    if len(list1) != len(list2):
+        return False
+    
+    ziped_list = list(zip(list1, list2))
+    for value1, value2 in ziped_list:
+        if value1 != value2:
+            return False
+
+    return True
+
 class ITextAnalyzer(Interface):
     """Interface for TextAnalyzer
     """
@@ -177,8 +293,9 @@ class TextAnalyzer(object):
     def render_html_diff(self, text1, text2, diff_id="diff_id"):
         """Render html diff between text1 and text2
            text1 and text2 will be normalized"""
-        result = htmldiff.render_html_diff(text1, text2)
         parser = HTMLParser()
+        result = htmldiff.render_html_diff(text1, text2)
+        result = normalize_diff(result)
         result = parser.unescape(result)
         soup = self.wrap_diff(result.replace('\xa0', ' '), diff_id)
         return soup, u''.join([str(t) for t in soup.body.contents])
@@ -208,19 +325,17 @@ class TextAnalyzer(object):
         del_included = []
         for ins_tag in ins_tags:
             new_tag = soup.new_tag("span", id=diff_id)
-            previous_del_tag = ins_tag.find_previous_sibling('del')
-            ins_string = ins_tag.string
+            previous_del_tag = get_previous_tag(ins_tag, 'del')
+            ins_strings = list(ins_tag.strings)
             if previous_del_tag:
-                previous_del_tag_string = previous_del_tag.string
-                to_find = "{} *{}".format(previous_del_tag, ins_tag)
-                modified = len(re.findall(to_find, diff)) > 0
-                if previous_del_tag_string != ins_string and modified:
+                previous_del_tag_strings = list(previous_del_tag.strings)
+                if not list_eq(previous_del_tag_strings, ins_strings):
                     self._del_added_space(soup, previous_del_tag)
                     previous_del_tag.wrap(new_tag)
                     new_tag.append(ins_tag)
                     del_included.append(previous_del_tag)
                     continue
-                elif modified:
+                else:
                     del_included.append(previous_del_tag)
                     self._del_added_space(soup, previous_del_tag)
                     ins_tag.unwrap()
@@ -231,7 +346,7 @@ class TextAnalyzer(object):
 
         for del_tag in del_tags:
             if del_tag not in del_included:
-                if del_tag.string:
+                if del_tag.contents:
                     new_tag = soup.new_tag("span", id=diff_id)
                     del_tag.wrap(new_tag)
                 else:
