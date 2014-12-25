@@ -29,4 +29,5 @@ class AbandonIdeaView(BasicView):
         results = self.execute(None)
         return results[0]
 
+
 DEFAULTMAPPING_ACTIONS_VIEWS.update({AbandonIdea:AbandonIdeaView})
