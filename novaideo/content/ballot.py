@@ -60,18 +60,14 @@ class Referendum(object):
         if context is None:
             context = self.subject
 
-        for elector in self.report.electors:
-            proc = pd()
-            proc.__name__ = proc.id
-            runtime.addtoproperty('processes', proc)
-            proc.defineGraph(pd)
-            proc.execution_context.add_involved_entity('elector', elector)
-            proc.execution_context.add_involved_entity('subject', context)
-            grant_roles(elector, (('Elector', proc),))
-            proc.ballot = self.report.ballot
-            proc.execute()
-            processes.append(proc)
-
+        proc = pd()
+        proc.__name__ = proc.id
+        runtime.addtoproperty('processes', proc)
+        proc.defineGraph(pd)
+        proc.execution_context.add_involved_entity('subject', context)
+        proc.ballot = self.report.ballot
+        proc.execute()
+        processes.append(proc)
         return processes
 
     def calculate_votes(self, votes):
@@ -148,18 +144,14 @@ class MajorityJudgment(object):
         if context is None:
             context = self.report.subjects[0].__parent__
 
-        for elector in self.report.electors:
-            proc = pd()
-            proc.__name__ = proc.id
-            runtime.addtoproperty('processes', proc)
-            proc.defineGraph(pd)
-            proc.execution_context.add_involved_entity('elector', elector)
-            proc.execution_context.add_involved_entity('subject', context)
-            grant_roles(elector, (('Elector', proc),))
-            proc.ballot = self.report.ballot
-            proc.execute()
-            processes.append(proc)
-
+        proc = pd()
+        proc.__name__ = proc.id
+        runtime.addtoproperty('processes', proc)
+        proc.defineGraph(pd)
+        proc.execution_context.add_involved_entity('subject', context)
+        proc.ballot = self.report.ballot
+        proc.execute()
+        processes.append(proc)
         return processes
 
     def calculate_votes(self, votes):
@@ -246,17 +238,14 @@ class FPTP(object):
         if context is None:
             context = self.report.subjects[0].__parent__
 
-        for elector in self.report.electors:
-            proc = pd()
-            proc.__name__ = proc.id
-            runtime.addtoproperty('processes', proc)
-            proc.defineGraph(pd)
-            proc.execution_context.add_involved_entity('elector', elector)
-            proc.execution_context.add_involved_entity('subject', context)
-            grant_roles(elector, (('Elector', proc),))
-            proc.ballot = self.report.ballot
-            proc.execute()
-            processes.append(proc)
+        proc = pd()
+        proc.__name__ = proc.id
+        runtime.addtoproperty('processes', proc)
+        proc.defineGraph(pd)
+        proc.execution_context.add_involved_entity('subject', context)
+        proc.ballot = self.report.ballot
+        proc.execute()
+        processes.append(proc)
 
         return processes
 
@@ -369,18 +358,14 @@ class RangeVoting(object):
         if context is None:
             context = self.report.subjects[0].__parent__
 
-        for elector in self.report.electors:
-            proc = pd()
-            proc.__name__ = proc.id
-            runtime.addtoproperty('processes', proc)
-            proc.defineGraph(pd)
-            proc.execution_context.add_involved_entity('elector', elector)
-            proc.execution_context.add_involved_entity('subject', context)
-            grant_roles(elector, (('Elector', proc),))
-            proc.ballot = self.report.ballot
-            proc.execute()
-            processes.append(proc)
-
+        proc = pd()
+        proc.__name__ = proc.id
+        runtime.addtoproperty('processes', proc)
+        proc.defineGraph(pd)
+        proc.execution_context.add_involved_entity('subject', context)
+        proc.ballot = self.report.ballot
+        proc.execute()
+        processes.append(proc)
         return processes
 
     def calculate_votes(self, votes):

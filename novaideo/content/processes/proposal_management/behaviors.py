@@ -1226,6 +1226,20 @@ class VotingPublication(ElementaryAction):
         self.process.iteration = getattr(self.process, 'iteration', 0) + 1
         return {}
 
+    def after_execution(self, context, request, **kw):
+        execution_ctx = self.sub_process.execution_context
+        vote_processes = execution_ctx.get_involved_collection('vote_processes')
+        vote_processes = [process for process in vote_processes \
+                          if not process._finished]
+        if vote_processes:
+            vote_actions = [process.get_actions('vote') \
+                            for process in vote_processes]
+            vote_actions = [action for actions in vote_actions \
+                            for action in actions]
+            for action in vote_actions:
+                action.close_vote(context, request)
+
+        super(VotingPublication, self).after_execution(context, request, **kw)
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1523,6 +1537,18 @@ class VotingAmendments(ElementaryAction):
 
     def after_execution(self, context, request, **kw):
         proposal = self.process.execution_context.involved_entity('proposal')
+        execution_ctx = self.sub_process.execution_context
+        vote_processes = execution_ctx.get_involved_collection('vote_processes')
+        vote_processes = [process for process in vote_processes \
+                          if not process._finished]
+        if vote_processes:
+            vote_actions = [process.get_actions('vote') \
+                            for process in vote_processes]
+            vote_actions = [action for actions in vote_actions \
+                            for action in actions]
+            for action in vote_actions:
+                action.close_vote(proposal, request)
+
         super(VotingAmendments, self).after_execution(proposal, request, **kw)
         self.process.execute_action(
                   proposal, request, 'amendmentsresult', {})
