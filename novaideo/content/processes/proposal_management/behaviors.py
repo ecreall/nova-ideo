@@ -62,7 +62,9 @@ from novaideo.mail import (
     PROOFREADING_SUBJECT,
     PROOFREADING_MESSAGE,
     ALERTOPINION_SUBJECT,
-    ALERTOPINION_MESSAGE)
+    ALERTOPINION_MESSAGE,
+    PROPOSALREMOVED_SUBJECT,
+    PROPOSALREMOVED_MESSAGE)
 
 from novaideo import _
 from novaideo.content.proposal import Proposal
@@ -78,13 +80,22 @@ from novaideo.content.processes.idea_management.behaviors import (
 from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.util import connect, disconnect
 from novaideo.core import to_localized_time
-from novaideo.event import ObjectPublished
+from novaideo.event import ObjectPublished, CorrelableRemoved
 
 
 try:
     basestring
 except NameError:
     basestring = str
+
+
+def close_votes(context, request, vote_processes):
+    vote_actions = [process.get_actions('vote') \
+                    for process in vote_processes]
+    vote_actions = [action for actions in vote_actions \
+                   for action in actions]
+    for action in vote_actions:
+        action.close_vote(context, request)
 
 
 AMENDMENTS_CYCLE_DEFAULT_DURATION = {
@@ -223,6 +234,63 @@ class PublishAsProposal(ElementaryAction):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
 
+
+def del_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'proposal')
+
+
+def del_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context) and \
+           ((has_role(role=('Owner', context)) and \
+           'draft' in context.state) or \
+           has_role(role=('Moderator', )))
+
+
+class DeleteProposal(ElementaryAction):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-trash'
+    style_order = 0
+    submission_title = _('Continue')
+    context = IProposal
+    processs_relation_id = 'proposal'
+    relation_validation = del_relation_validation
+    processsecurity_validation = del_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        explanation = appstruct['explanation']
+        root = getSite()
+        tokens = [t for t in context.tokens if not t.proposal]
+        for token in list(tokens):
+            token.owner.addtoproperty('tokens', token)
+        wg = context.working_group
+        members = list(wg.members)
+        for member in members:
+            wg.delfromproperty('members', member)
+
+        wg.delfromproperty('proposal', context)
+        root.delfromproperty('working_groups', wg)
+        request.registry.notify(CorrelableRemoved(object=context))
+        root.delfromproperty('proposals', context)
+        subject = PROPOSALREMOVED_SUBJECT.format(subject_title=context.title)
+        localizer = request.localizer
+        for member in members:
+            message = PROPOSALREMOVED_MESSAGE.format(
+                recipient_title=localizer.translate(_(getattr(member, 
+                                                    'user_title',''))),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name',''),
+                subject_title=context.title,
+                explanation=explanation,
+                novaideo_title=request.root.title
+                 )
+            mailer_send(subject=subject, 
+                recipients=[member.email], 
+                body=message)
+        return {'newcontext': root}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(kw['newcontext'], ""))
 
 def submit_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
@@ -1227,17 +1295,12 @@ class VotingPublication(ElementaryAction):
         return {}
 
     def after_execution(self, context, request, **kw):
-        execution_ctx = self.sub_process.execution_context
-        vote_processes = execution_ctx.get_involved_collection('vote_processes')
+        exec_ctx = self.sub_process.execution_context
+        vote_processes = exec_ctx.get_involved_collection('vote_processes')
         vote_processes = [process for process in vote_processes \
                           if not process._finished]
         if vote_processes:
-            vote_actions = [process.get_actions('vote') \
-                            for process in vote_processes]
-            vote_actions = [action for actions in vote_actions \
-                            for action in actions]
-            for action in vote_actions:
-                action.close_vote(context, request)
+            close_votes(context, request, vote_processes)
 
         super(VotingPublication, self).after_execution(context, request, **kw)
 
@@ -1537,17 +1600,12 @@ class VotingAmendments(ElementaryAction):
 
     def after_execution(self, context, request, **kw):
         proposal = self.process.execution_context.involved_entity('proposal')
-        execution_ctx = self.sub_process.execution_context
-        vote_processes = execution_ctx.get_involved_collection('vote_processes')
+        exec_ctx = self.sub_process.execution_context
+        vote_processes = exec_ctx.get_involved_collection('vote_processes')
         vote_processes = [process for process in vote_processes \
                           if not process._finished]
         if vote_processes:
-            vote_actions = [process.get_actions('vote') \
-                            for process in vote_processes]
-            vote_actions = [action for actions in vote_actions \
-                            for action in actions]
-            for action in vote_actions:
-                action.close_vote(proposal, request)
+            close_votes(context, request, vote_processes)
 
         super(VotingAmendments, self).after_execution(proposal, request, **kw)
         self.process.execute_action(

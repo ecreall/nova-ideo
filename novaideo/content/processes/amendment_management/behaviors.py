@@ -37,6 +37,7 @@ from novaideo.content.processes.idea_management.behaviors import (
     Associate as AssociateIdea)
 from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
+from novaideo.event import CorrelableRemoved
 
 try:
     basestring
@@ -131,6 +132,7 @@ class DelAmendment(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         proposal = context.proposal
+        request.registry.notify(CorrelableRemoved(object=context))
         proposal.delfromproperty('amendments', context)
         return {'newcontext': proposal}
 

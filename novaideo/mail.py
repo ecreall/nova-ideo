@@ -218,4 +218,14 @@ L'idée {subject_title} viens d'être publiée par les modérateurs.
 
 """+ PORTAL_SIGNATURE
 
-    
+
+PROPOSALREMOVED_SUBJECT = u"""Suppression de la proposition {subject_title}"""
+
+
+PROPOSALREMOVED_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+La proposition {subject_title} viens d'être supprimée par les modérateurs pour le motif suivant.
+{explanation}
+
+"""+ PORTAL_SIGNATURE 

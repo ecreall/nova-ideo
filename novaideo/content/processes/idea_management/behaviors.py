@@ -36,7 +36,7 @@ from novaideo.content.idea import Idea
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.core import acces_action
 from novaideo.utilities.util import connect
-from novaideo.event import ObjectPublished
+from novaideo.event import ObjectPublished, CorrelableRemoved
 
 
 try:
@@ -148,6 +148,7 @@ class DelIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root  = getSite()
+        request.registry.notify(CorrelableRemoved(object=context))
         root.delfromproperty('ideas', context)
         return {}
 

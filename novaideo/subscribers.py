@@ -10,9 +10,11 @@ from pyramid.threadlocal import get_current_registry
 from substanced.event import RootAdded
 from substanced.util import find_service
 
+from dace.util import getSite
+
 from novaideo.core import FileEntity
 from novaideo.utilities.util import send_alert_new_content
-from novaideo.event import ObjectPublished
+from novaideo.event import ObjectPublished, CorrelableRemoved
 
 
 @subscriber(RootAdded)
@@ -45,4 +47,16 @@ def mysubscriber(event):
 def mysubscriber_object_published(event):
     published_object = event.object
     send_alert_new_content(published_object)
+
+
+@subscriber(CorrelableRemoved)
+def mysubscriber_correlable_removed(event):
+    root = getSite()
+    removed_object = event.object
+    source_correlations = removed_object.source_correlations
+    for correlation in source_correlations:
+        for target in list(correlation.targets):
+            correlation.delfromproperty('targets', target)
+
+        root.delfromproperty('correlations', correlation)
 

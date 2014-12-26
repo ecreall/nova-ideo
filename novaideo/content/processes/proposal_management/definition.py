@@ -9,10 +9,12 @@ powered by the dace engine.
 """
 import datetime
 from persistent.list import PersistentList
-from pyramid.threadlocal import get_current_registry
+from pyramid.threadlocal import get_current_registry, get_current_request
 
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.util import getSite
+from dace.processinstance.activity import (
+  SubProcess as OriginSubProcess)
 from dace.processdefinition.activitydef import (
   ActivityDefinition, 
   SubProcessDefinition as OriginSubProcessDefinition)
@@ -59,6 +61,8 @@ from .behaviors import (
     ProofreadingDone,
     CompareProposal,
     MakeOpinion,
+    DeleteProposal,
+    close_votes,
     AMENDMENTS_CYCLE_DEFAULT_DURATION,
     calculate_amendments_cycle_duration
     )
@@ -128,9 +132,29 @@ def eg4_alert_condition(process):
     return not eg4_votingamendments_condition(process)
 
 
+class SubProcess(OriginSubProcess):
+
+    def __init__(self, definition):
+        super(SubProcess, self).__init__(definition)
+
+    def stop(self):
+        request = get_current_request()
+        for process in self.sub_processes:
+            exec_ctx = process.execution_context
+            vote_processes = exec_ctx.get_involved_collection('vote_processes')
+            vote_processes = [process for process in vote_processes \
+                              if not process._finished]
+            if vote_processes:
+                close_votes(None, request, vote_processes)
+            
+        super(SubProcess, self).stop()
+
+
 class SubProcessDefinition(OriginSubProcessDefinition):
     """Run the voting process for proposal publishing 
        and working group configuration"""
+
+    factory = SubProcess
 
     def _init_subprocess(self, process, subprocess):
         root = getSite()
@@ -182,6 +206,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
 class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
     """Run the voting process for amendments"""
+
+    factory = SubProcess
 
     def _init_subprocess(self, process, subprocess):
         proposal = process.execution_context.created_entity('proposal')
@@ -267,6 +293,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Create a new proposal"),
                                        title=_("Create a proposal"),
                                        groups=[_('Add')]),
+                delete = ActivityDefinition(contexts=[DeleteProposal],
+                                       description=_("Delete the proposal"),
+                                       title=_("Delete"),
+                                       groups=[]),
                 publishasproposal = ActivityDefinition(contexts=[PublishAsProposal],
                                        description=_("Transform the idea as a proposal"),
                                        title=_("Transform as a proposal"),
@@ -393,6 +423,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('eg1', 'pg2'),
                 TransitionDefinition('pg2', 'submit'),
                 TransitionDefinition('pg2', 'edit'),
+                TransitionDefinition('pg2', 'delete'),
+                TransitionDefinition('delete', 'end'),
                 TransitionDefinition('pg2', 'seerelatedideas'),
                 TransitionDefinition('submit', 'pg3'),
                 TransitionDefinition('pg3', 'comment'),

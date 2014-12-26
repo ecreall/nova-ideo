@@ -204,7 +204,7 @@ class CorrelableEntity(Entity):
     source_correlations = SharedMultipleProperty('source_correlations',
                                                  'source')
     target_correlations = SharedMultipleProperty('target_correlations',
-                                                 'target')
+                                                 'targets')
 
     @property
     def correlations(self):
