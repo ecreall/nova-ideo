@@ -258,8 +258,9 @@ class DeleteProposal(ElementaryAction):
     processsecurity_validation = del_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        explanation = appstruct['explanation']
         root = getSite()
+        not_draft_owner = 'draft' not in context.state or \
+                          not has_role(role=('Owner', context))
         tokens = [t for t in context.tokens if not t.proposal]
         for token in list(tokens):
             token.owner.addtoproperty('tokens', token)
@@ -272,21 +273,26 @@ class DeleteProposal(ElementaryAction):
         root.delfromproperty('working_groups', wg)
         request.registry.notify(CorrelableRemoved(object=context))
         root.delfromproperty('proposals', context)
-        subject = PROPOSALREMOVED_SUBJECT.format(subject_title=context.title)
-        localizer = request.localizer
-        for member in members:
-            message = PROPOSALREMOVED_MESSAGE.format(
-                recipient_title=localizer.translate(_(getattr(member, 
+        if not_draft_owner:
+            explanation = appstruct['explanation']
+            subject = PROPOSALREMOVED_SUBJECT.format(
+                                                 subject_title=context.title)
+            localizer = request.localizer
+            for member in members:
+                message = PROPOSALREMOVED_MESSAGE.format(
+                    recipient_title=localizer.translate(_(getattr(member, 
                                                     'user_title',''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name',''),
-                subject_title=context.title,
-                explanation=explanation,
-                novaideo_title=request.root.title
-                 )
-            mailer_send(subject=subject, 
-                recipients=[member.email], 
-                body=message)
+                    recipient_first_name=getattr(
+                                          member, 'first_name', member.name),
+                    recipient_last_name=getattr(member, 'last_name',''),
+                    subject_title=context.title,
+                    explanation=explanation,
+                    novaideo_title=request.root.title
+                     )
+                mailer_send(subject=subject, 
+                    recipients=[member.email], 
+                    body=message)
+
         return {'newcontext': root}
 
     def redirect(self, context, request, **kw):

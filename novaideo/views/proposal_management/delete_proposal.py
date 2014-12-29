@@ -7,10 +7,13 @@
 import colander
 from pyramid.view import view_config
 
+from dace.objectofcollaboration.principal.util import has_role
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import Schema
+from pontus.schema import Schema, omit
+from pontus.view import BasicView
+from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.proposal_management.behaviors import (
     DeleteProposal)
@@ -18,6 +21,20 @@ from novaideo.content.proposal import Proposal
 from novaideo.views.widget import LimitedTextAreaWidget
 from novaideo import _
 
+
+class DeleteProposalViewStudyReport(BasicView):
+    title = _('Alert for deletion')
+    name = 'alertfordeletion'
+    template = 'novaideo:views/proposal_management/templates/alert_proposal_deletion.pt'
+
+    def update(self):
+        result = {}
+        values = {'context': self.context,
+                  'draft_owner': getattr(self.parent, 'is_draft_owner', False)}
+        body = self.content(result=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates:[item]}
+        return result
 
 
 class ExplanationSchema(Schema):
@@ -32,20 +49,41 @@ class ExplanationSchema(Schema):
         )
 
 
-@view_config(
-    name='deleteproposal',
-    context=Proposal,
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
 class DeleteProposalFormView(FormView):
     title = _('Proposal deletion')
     schema = ExplanationSchema()
     behaviors = [DeleteProposal, Cancel]
     formid = 'formdeleteproposal'
-    name = 'deleteproposal'
+    name = 'deleteproposalform'
 
     def default_data(self):
         return self.context
 
+    def before_update(self):
+        if getattr(self.parent, 'is_draft_owner', False):
+            self.schema = omit(self.schema, ['explanation'])
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({DeleteProposal: DeleteProposalFormView})
+
+@view_config(
+    name='deleteproposal',
+    context=Proposal,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class DeleteProposalView(MultipleView):
+    title = _('Proposal deletion')
+    name = 'deleteproposal'
+    behaviors = [DeleteProposal]
+    viewid = 'deleteproposal'
+    template = 'daceui:templates/mergedmultipleview.pt'
+    views = (DeleteProposalViewStudyReport, DeleteProposalFormView)
+    validators = [DeleteProposal.get_validator()]
+
+    def before_update(self):
+        self.is_draft_owner = False
+        if 'draft' in self.context.state and \
+            has_role(role=('Owner', self.context)):
+            self.is_draft_owner = True
+
+        super(DeleteProposalView, self).before_update()
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update({DeleteProposal: DeleteProposalView})
