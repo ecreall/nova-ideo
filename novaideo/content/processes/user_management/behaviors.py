@@ -15,7 +15,7 @@ from substanced.util import find_service
 
 from dace.util import getSite, name_chooser
 from dace.objectofcollaboration.principal.util import (
-    grant_roles, has_role, get_current)
+    grant_roles, has_role, get_current, has_any_roles)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
@@ -83,6 +83,41 @@ class Registration(InfiniteCardinality):
         return HTTPFound(location = request.resource_url(context),
                          headers = headers)
 
+
+def login_roles_validation(process, context):
+    return has_any_roles(roles=('Anonymous', 'Collaborator'))
+
+
+class LogIn(InfiniteCardinality):
+    title = _('Log in')
+    access_controled = True
+    context = INovaIdeoApplication
+    roles_validation = login_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        root = getSite()
+        return HTTPFound(request.resource_url(root))
+
+
+def logout_roles_validation(process, context):
+    return has_role(role=('Collaborator',))
+
+
+class LogOut(InfiniteCardinality):
+    title = _('Log out')
+    access_controled = True
+    context = INovaIdeoApplication
+    roles_validation = logout_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        root = getSite()
+        return HTTPFound(request.resource_url(root))
 
 def edit_roles_validation(process, context):
     return has_role(role=('Owner', context))

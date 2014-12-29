@@ -25,7 +25,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView, ViewError
 
 from novaideo import _
-from novaideo.content.processes.user_access_manager.behaviors import  LogIn
+from novaideo.content.processes.user_management.behaviors import  LogIn
 from novaideo.content.novaideo_application import NovaIdeoApplication
 
 
@@ -38,7 +38,7 @@ class LoginView(BasicView):
     title = _('Log in')
     name = 'login'
     behaviors = [LogIn]
-    template = 'novaideo:views/user_access_manager/templates/login.pt'
+    template = 'novaideo:views/user_management/templates/login.pt'
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     viewid = 'login'
 
@@ -96,7 +96,7 @@ class LoginView(BasicView):
                 messages.update({error.type: [message]})
 
         # Pass this through FBO views (e.g., forbidden) which use its macros.
-        template = get_renderer('novaideo:views/user_access_manager/templates/login.pt').implementation()
+        template = get_renderer('novaideo:views/user_management/templates/login.pt').implementation()
         values = dict(
             url = request.resource_url(request.virtual_root, 'login'),
             came_from = came_from,

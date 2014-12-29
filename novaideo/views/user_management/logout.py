@@ -11,7 +11,7 @@ from pyramid.security import forget
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.user_access_manager.behaviors import  LogOut
+from novaideo.content.processes.user_management.behaviors import  LogOut
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 
