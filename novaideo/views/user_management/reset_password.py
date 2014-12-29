@@ -39,7 +39,7 @@ class Send(Behavior):
         if user is not None:
             user.email_password_reset(request)
 
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, ""))
@@ -91,7 +91,7 @@ class Reset(Behavior):
 
     def start(self, context, request, appstruct, **kw):
         context.reset_password(appstruct['new_password'])
-        return True
+        return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(request.virtual_root, "@@login"))
