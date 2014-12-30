@@ -55,7 +55,7 @@ class DetailAmendmentView(BasicView):
             return textdiff
 
     def update(self):
-        self.execute(None)  
+        self.execute(None)
         user = get_current()
         text_analyzer = get_current_registry().getUtility(
                                                ITextAnalyzer,
