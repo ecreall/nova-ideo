@@ -331,13 +331,12 @@ def normalize_diff(diff):
 
     return soup, u''.join([str(t) for t in soup.body.contents])
 
+
 def merge_tags(tag1, tag2, separators, soup):
     if tag1 and tag2:
         tag1 = tag1[0]
         tag2 = tag2[0]
-        newcontents = []
-        if separators:
-            newcontents = [soup.new_string(' ') for s in separators]
+        newcontents = [soup.new_string(s) for s in separators]
         newcontents.extend(tag2.contents)
         for content in newcontents:
             tag1.append(content)
@@ -386,6 +385,7 @@ def merge_modifs(soup, diff_id):
             merge_with_next_modif(tag, diff_id, soup)
 
     return soup
+
 
 def list_eq(list1, list2):
     if len(list1) != len(list2):
