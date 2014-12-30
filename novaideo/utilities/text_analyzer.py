@@ -36,15 +36,48 @@ HTML_BLOCK_ELEMENTS = [
            'div', 'fieldset', 'form', 'hr', 
            'noscript', 'table']
 
-START = 0
-END = 1
-INS = 2
 
-TAG_ENDS = {
-            START: '<del>',
-            END: '</del>',
-            INS: '<ins></ins>' 
+class EndKind:
+    START = 0
+    END = 1
+    BOTH = 2
+
+
+DEL_TAG_ENDS = {
+            EndKind.START: '<del>',
+            EndKind.END: '</del>',
+            EndKind.BOTH: '<del></del>' 
 }
+
+
+INS_TAG_ENDS = {
+            EndKind.START: '<ins>',
+            EndKind.END: '</ins>',
+            EndKind.BOTH: '<ins></ins>' 
+}
+
+
+SPACE_TAG = '[#]'
+
+
+def prepare_text_spaces(text):
+    return text.replace('\xa0', ' ').replace(' ', ' '+SPACE_TAG+' ')
+
+
+def format_spaces(text):
+    soup = BeautifulSoup(text)
+    for tagstring in list(soup.strings):
+        value = tagstring.replace(' ', '').replace(SPACE_TAG, ' ')
+        new_tag = soup.new_string(value)
+        tagstring.replace_with(new_tag)
+        if new_tag == '':
+            new_tag.extract()
+
+    return soup, u''.join([str(t) for t in soup.body.contents])
+
+
+def tag_to_text(tag):
+    return ''.join([str(t) for t in tag.contents])
 
 
 def normalize_text(text):
@@ -62,8 +95,8 @@ def index(list_values, index, default=None):
 
 
 def get_del_tags_positions(text):
-    start_tag = TAG_ENDS[START]
-    end_tag = TAG_ENDS[END]
+    start_tag = DEL_TAG_ENDS[EndKind.START]
+    end_tag = DEL_TAG_ENDS[EndKind.END]
     starts = [a.start() for a in re.finditer(start_tag, text)]
     ends = [a.start() for a in re.finditer(end_tag, text)]
     positions = list(zip(starts, ends))
@@ -102,7 +135,7 @@ def remove_positions_in_interval(interval, positions):
 
 
 def get_ins_tags_positions(diff):
-    ins_tag = TAG_ENDS[INS]
+    ins_tag = INS_TAG_ENDS[EndKind.BOTH]
     positions = [a.start() for a in re.finditer(ins_tag, diff)]
     for i, position in enumerate(positions):
         reduce_to = i * len(ins_tag)
@@ -112,8 +145,8 @@ def get_ins_tags_positions(diff):
 
 
 def _convert_position(position, intervals):
-    start_tag = TAG_ENDS[START]
-    end_tag = TAG_ENDS[END]
+    start_tag = DEL_TAG_ENDS[EndKind.START]
+    end_tag = DEL_TAG_ENDS[EndKind.END]
     result = 0
     for interval in intervals:
         if position > interval[0]:
@@ -126,7 +159,7 @@ def _convert_position(position, intervals):
 
 
 def add_ins_tags(origin_text, texts, intervals):
-    ins_tag = TAG_ENDS[INS]
+    ins_tag = INS_TAG_ENDS[EndKind.BOTH]
     positions = [get_ins_tags_positions(text) for text in texts]
     positions = sorted(list(set([item for sublist in positions \
                                  for item in sublist])))
@@ -209,22 +242,150 @@ def merge_with_next_tags(tag, name):
     return tag
 
 
+def _find_optimum_text(source, tofind):
+    notvalid = re.compile(r"^\s*$")
+    if notvalid.match(tofind) or len(tofind) < 2:
+        return None
+
+    soup = BeautifulSoup(source)
+    strings = list(soup.body.strings)
+    for source_string in strings:
+        if source_string.find(tofind) >= 0:
+            return soup, source_string, tofind
+
+    return None
+
+def correct_insertion(soup, tag):
+    start_tag = DEL_TAG_ENDS[EndKind.START]
+    end_tag = DEL_TAG_ENDS[EndKind.END]
+    tagname = 'del'
+    if tag.name == 'del':
+        start_tag = INS_TAG_ENDS[EndKind.START]
+        end_tag = INS_TAG_ENDS[EndKind.END]
+        tagname = 'ins'
+
+    text_ins = tag_to_text(tag)
+    next_tag = get_next_tag(tag, tagname)
+    if next_tag:
+        text_del = start_tag+tag_to_text(next_tag)+end_tag
+        result = _find_optimum_text(text_del, text_ins)
+        if result:
+            text_del_soup = result[0]
+            string_to_replace = result[1]
+            text_of_replacement = result[2]
+            newstr = str(string_to_replace.replace(text_of_replacement,
+                         end_tag+text_of_replacement+start_tag, 1))
+            newstr = text_del_soup.new_string(newstr)
+            string_to_replace.replace_with(newstr)
+            new_tag = u''.join([str(t) for t in text_del_soup.body.contents])
+            new_tag = new_tag.replace('&gt;', '>').replace('&lt;', '<')
+            new_tag = prepare_text_spaces(new_tag)
+            text_del_soup, new_tag = format_spaces(new_tag)
+            new_sub_tags = list(text_del_soup.body.contents)
+            new_sub_tags.reverse()
+            for sub_tag in new_sub_tags:
+                next_tag.insert_after(sub_tag)
+
+            next_tag.extract()
+            tag.extract()
+
+
 def normalize_diff(diff):
-    soup = BeautifulSoup(diff)
+    soup = None
+    if isinstance(diff, BeautifulSoup):
+        soup = diff
+    else:
+        soup = BeautifulSoup(diff)
+
+    #wrap inline parent
     tags = soup.find_all(['del', 'ins'])
-    for tag in tags:
+    for tag in list(tags):
         inline_parent = get_inline_root(tag)
         if inline_parent is not tag:
             tag.unwrap()
             inline_parent.wrap(tag)
 
+    #merge tags with same name
     tags = soup.find_all(['del', 'ins'])
     for tag in list(tags):
         if tag.parent:
             merge_with_next_tags(tag, tag.name)
 
-    return u''.join([str(t) for t in soup.body.contents])
+    #remove empty tags
+    tags = soup.find_all(['del', 'ins'])
+    for tag in list(tags):
+        if not tag.contents:
+            tag.extract()
 
+    #correct insertions 
+    tags = soup.find_all(['del', 'ins'])
+    for tag in list(tags):
+        if tag.parent:
+            correct_insertion(soup, tag)
+
+    #remove empty tags
+    tags = soup.find_all(['del', 'ins'])
+    for tag in list(tags):
+        if not tag.contents:
+            tag.extract()
+
+    return soup, u''.join([str(t) for t in soup.body.contents])
+
+def merge_tags(tag1, tag2, separators, soup):
+    if tag1 and tag2:
+        tag1 = tag1[0]
+        tag2 = tag2[0]
+        newcontents = []
+        if separators:
+            newcontents = [soup.new_string(' ') for s in separators]
+        newcontents.extend(tag2.contents)
+        for content in newcontents:
+            tag1.append(content)
+
+        return True
+
+    return False
+
+
+def merge_with_next_modif(tag, diff_id, soup):
+    valid = re.compile(r"^\s*$")
+    next_tags = tag.next_siblings
+    strings = []
+    for next_tag in list(next_tags):
+        if isinstance(next_tag, NavigableString) and \
+           valid.match(next_tag):
+            strings.append(next_tag)
+            continue
+
+        if not next_tag or \
+           (next_tag and \
+            (next_tag.name != "span" or \
+             next_tag['id'] != diff_id)):
+            return tag
+
+        next_ins = next_tag.find_all('ins')
+        next_del = next_tag.find_all('del')
+        tag_ins = tag.find_all('ins')
+        tag_del = tag.find_all('del')
+        ins_merged = merge_tags(tag_ins, next_ins, strings, soup)
+        del_merged = merge_tags(tag_del, next_del, strings, soup)
+        if del_merged or ins_merged:
+            for str_tag in strings:
+                str_tag.extract()
+
+        strings = []
+        next_tag.extract()
+
+    return tag
+
+
+def merge_modifs(soup, diff_id):
+    tags = soup.find_all("span", id=diff_id)
+    for tag in list(tags):
+        if tag.parent:
+            merge_with_next_modif(tag, diff_id, soup)
+
+    return soup
 
 def list_eq(list1, list2):
     if len(list1) != len(list2):
@@ -236,6 +397,7 @@ def list_eq(list1, list2):
             return False
 
     return True
+
 
 class ITextAnalyzer(Interface):
     """Interface for TextAnalyzer
@@ -294,32 +456,25 @@ class TextAnalyzer(object):
         """Render html diff between text1 and text2
            text1 and text2 will be normalized"""
         parser = HTMLParser()
-        result = htmldiff.render_html_diff(text1, text2)
-        result = normalize_diff(result)
+        normalized_space_t1 = prepare_text_spaces(text1)
+        normalized_space_t2 = prepare_text_spaces(text2)
+        result = htmldiff.render_html_diff(normalized_space_t1, 
+                                           normalized_space_t2)
+        soup, result = format_spaces(result)
+        soup, result = normalize_diff(soup)
+        soup = self.wrap_diff(soup, diff_id)
+        result = u''.join([str(t) for t in soup.body.contents])
         result = parser.unescape(result)
-        soup = self.wrap_diff(result.replace('\xa0', ' '), diff_id)
-        return soup, u''.join([str(t) for t in soup.body.contents])
-
-    def _del_added_space(self, soup, tag):
-        """Remove added space from tag"""
-        next_sibling = tag.next_sibling
-        if next_sibling and \
-           isinstance(next_sibling, NavigableString):
-            if next_sibling.startswith(' '):
-                new_string = soup.new_string(next_sibling[1:])
-                tag.next_sibling.replace_with(new_string)
-
-        elif next_sibling is None:
-            previous_sibling = tag.previous_sibling
-            if previous_sibling and \
-               isinstance(previous_sibling, NavigableString):
-                if previous_sibling.endswith(' '):
-                    new_string = soup.new_string(previous_sibling[:-1])
-                    tag.previous_sibling.replace_with(new_string)
+        return soup, result
 
     def wrap_diff(self, diff, diff_id):
         """Wrap diff with span tags"""
-        soup = BeautifulSoup(diff)
+        soup = None
+        if isinstance(diff, BeautifulSoup):
+            soup = diff
+        else:
+            soup = BeautifulSoup(diff)
+
         ins_tags = soup.find_all('ins')
         del_tags = soup.find_all('del')
         del_included = []
@@ -330,14 +485,12 @@ class TextAnalyzer(object):
             if previous_del_tag:
                 previous_del_tag_strings = list(previous_del_tag.strings)
                 if not list_eq(previous_del_tag_strings, ins_strings):
-                    self._del_added_space(soup, previous_del_tag)
                     previous_del_tag.wrap(new_tag)
                     new_tag.append(ins_tag)
                     del_included.append(previous_del_tag)
                     continue
                 else:
                     del_included.append(previous_del_tag)
-                    self._del_added_space(soup, previous_del_tag)
                     ins_tag.unwrap()
                     previous_del_tag.extract()
 
@@ -350,9 +503,9 @@ class TextAnalyzer(object):
                     new_tag = soup.new_tag("span", id=diff_id)
                     del_tag.wrap(new_tag)
                 else:
-                    self._del_added_space(soup, del_tag)
                     del_tag.extract()
 
+        soup = merge_modifs(soup, diff_id)
         return soup
 
     def unwrap_diff(self, tags_data, soup, unwrap_ins=True):
@@ -379,9 +532,6 @@ class TextAnalyzer(object):
 
             if tag.contents and tag.contents[-1] == '\n':
                 tag.contents.pop()
-
-            if del_tags and not ins_tags:
-                self._del_added_space(soup, tag)
 
             tag.unwrap()
 
@@ -442,8 +592,8 @@ class TextAnalyzer(object):
                          texts, 
                          tag_removed_attrs, 
                          tag_added_attrs):
-        start_tag = TAG_ENDS[START]
-        end_tag = TAG_ENDS[END]
+        start_tag = DEL_TAG_ENDS[EndKind.START]
+        end_tag = DEL_TAG_ENDS[EndKind.END]
         intervals = []
         all_del_positions = [get_del_tags_positions(
                                   self._get_removed_diffs(text, t)) \
@@ -476,7 +626,8 @@ class TextAnalyzer(object):
 
         added_diffs = [self._get_add_diffs(text, t) for t in texts]
         merged_diff = add_ins_tags(merged_diff, added_diffs, intervals)
-        soup = BeautifulSoup(merged_diff)
+        merged_diff = prepare_text_spaces(merged_diff)
+        soup, merged_diff = format_spaces(merged_diff)
         ins_tags = soup.find_all('ins')
         for ins_tag in ins_tags:
             ins_span = soup.new_tag("span", **tag_added_attrs)
