@@ -60,6 +60,10 @@ INS_TAG_ENDS = {
 SPACE_TAG = '[#]'
 
 
+def tag_to_text(tag):
+    return ''.join([str(t) for t in tag.contents])
+
+
 def prepare_text_spaces(text):
     return text.replace('\xa0', ' ').replace(' ', ' '+SPACE_TAG+' ')
 
@@ -73,18 +77,14 @@ def format_spaces(text):
         if new_tag == '':
             new_tag.extract()
 
-    return soup, u''.join([str(t) for t in soup.body.contents])
-
-
-def tag_to_text(tag):
-    return ''.join([str(t) for t in tag.contents])
+    return soup, tag_to_text(soup.body)
 
 
 def normalize_text(text):
     parser = HTMLParser()
     text = parser.unescape(text)
     soup = BeautifulSoup(text)
-    return ''.join([str(t) for t in soup.body.contents])
+    return tag_to_text(soup.body)
 
 
 def index(list_values, index, default=None):
@@ -251,9 +251,10 @@ def _find_optimum_text(source, tofind):
     strings = list(soup.body.strings)
     for source_string in strings:
         if source_string.find(tofind) >= 0:
-            return soup, source_string, tofind
+            return soup, source_string
 
     return None
+
 
 def correct_insertion(soup, tag):
     start_tag = DEL_TAG_ENDS[EndKind.START]
@@ -264,24 +265,24 @@ def correct_insertion(soup, tag):
         end_tag = INS_TAG_ENDS[EndKind.END]
         tagname = 'ins'
 
-    text_ins = tag_to_text(tag)
     next_tag = get_next_tag(tag, tagname)
     if next_tag:
-        text_del = start_tag+tag_to_text(next_tag)+end_tag
-        result = _find_optimum_text(text_del, text_ins)
+        text_tag = tag_to_text(tag)
+        text_next_tag = start_tag+tag_to_text(next_tag)+end_tag
+        result = _find_optimum_text(text_next_tag, text_tag)
         if result:
-            text_del_soup = result[0]
+            text_next_tag_soup = result[0]
             string_to_replace = result[1]
-            text_of_replacement = result[2]
-            newstr = str(string_to_replace.replace(text_of_replacement,
-                         end_tag+text_of_replacement+start_tag, 1))
-            newstr = text_del_soup.new_string(newstr)
+            wraped_text_tag = end_tag+text_tag+start_tag
+            newstr = string_to_replace.replace(
+                           text_tag, wraped_text_tag, 1)
+            newstr = text_next_tag_soup.new_string(str(newstr))
             string_to_replace.replace_with(newstr)
-            new_tag = u''.join([str(t) for t in text_del_soup.body.contents])
+            new_tag = tag_to_text(text_next_tag_soup.body)
             new_tag = new_tag.replace('&gt;', '>').replace('&lt;', '<')
             new_tag = prepare_text_spaces(new_tag)
-            text_del_soup, new_tag = format_spaces(new_tag)
-            new_sub_tags = list(text_del_soup.body.contents)
+            text_next_tag_soup, new_tag = format_spaces(new_tag)
+            new_sub_tags = list(text_next_tag_soup.body.contents)
             new_sub_tags.reverse()
             for sub_tag in new_sub_tags:
                 next_tag.insert_after(sub_tag)
@@ -329,7 +330,7 @@ def normalize_diff(diff):
         if not tag.contents:
             tag.extract()
 
-    return soup, u''.join([str(t) for t in soup.body.contents])
+    return soup, tag_to_text(soup.body)
 
 
 def merge_tags(tag1, tag2, separators, soup):
@@ -424,13 +425,13 @@ class TextAnalyzer(object):
 
     def has_conflict(self, origin_text, texts):
         """True if origin_text has conflicts with one of texts"""
-        d = diff_match_patch()
-        d.Match_Threshold = 0.1
+        dmp = diff_match_patch()
+        dmp.Match_Threshold = 0.1
         result = origin_text
         has_conflict = False
         for alternative in texts:
-            patch = d.patch_make(origin_text, alternative)
-            result, results = d.patch_apply(patch, result)
+            patch = dmp.patch_make(origin_text, alternative)
+            result, results = dmp.patch_apply(patch, result)
             if False in results:
                 has_conflict = True
                 break
@@ -439,13 +440,13 @@ class TextAnalyzer(object):
 
     def merge(self, origin_text, texts):
         """Merge origin_text with texts"""
-        d = diff_match_patch()
-        d.Match_Threshold = 0.1
+        dmp = diff_match_patch()
+        dmp.Match_Threshold = 0.1
         text_result = origin_text
         # conflict = False
         for alternative in texts:
-            patch = d.patch_make(origin_text, alternative)
-            text_result, results = d.patch_apply(patch, text_result)
+            patch = dmp.patch_make(origin_text, alternative)
+            text_result, results = dmp.patch_apply(patch, text_result)
             if False in results:
                 # conflict = True
                 break
@@ -463,7 +464,7 @@ class TextAnalyzer(object):
         soup, result = format_spaces(result)
         soup, result = normalize_diff(soup)
         soup = self.wrap_diff(soup, diff_id)
-        result = u''.join([str(t) for t in soup.body.contents])
+        result = tag_to_text(soup.body)
         result = parser.unescape(result)
         return soup, result
 
@@ -555,7 +556,7 @@ class TextAnalyzer(object):
         for div_diff in divs_diff:
             div_diff.unwrap()
 
-        return ''.join([str(t) for t in soup.body.contents])
+        return tag_to_text(soup.body)
 
     def _get_removed_diffs(self, text1, text2):
         soup, diff = self.render_html_diff(text1, text2, 'amendment-modif')
@@ -640,96 +641,4 @@ class TextAnalyzer(object):
             del_tag.unwrap()
 
         merged_diff = self.soup_to_text(soup)
-        return merged_diff   
-
-    #experimental, don't test it.
-    def render_html_diff_del(self, text1, text2):
-        soup, diff = self.render_html_diff(text1, text2, "modif")
-        modifs_data = []
-        modifs = soup.find_all('span', {'id':'modif'})
-        for modif in modifs:
-            modif_data = {'tag': modif,
-                          'todel': "ins",
-                          'toins': "del",
-                          'blocstodel': None
-                         }
-            modifs_data.append(modif_data)
-
-        self.unwrap_diff(modifs_data, soup, False)
-        diff_divs = soup.find_all('span', {'class':'modif'})
-        for div in diff_divs:
-            div.unwrap()
-
-        return u''.join([str(t) for t in soup.body.contents])
-
-
-    #experimental, don't test it.
-    def update_text(self, new_text, old_text, text):
-        soup, deleted_text = self.render_html_diff_del(old_text, text, "modif")
-        soupdiff, diff = self.render_html_diff(new_text, deleted_text, "modif")
-        ins_tags = soupdiff.find_all('ins')
-        del_tags = soupdiff.find_all('del')
-        valid_del_tags = []
-        valid_ins_tags = []
-        for del_tag in del_tags:
-            del_parents = del_tag.find_parents('del')
-            if del_parents:
-                continue
-
-            valid_del_tags.append(del_tag)
-
-        for ins_tag in ins_tags:
-            ins_parents = ins_tag.find_parents('del')
-            if ins_parents:
-                continue
-
-            valid_ins_tags.append(ins_tag)
-
-        for tag in valid_del_tags:
-            new_tag = soupdiff.new_tag('span', type='del')
-            tag.wrap(new_tag)
-            tag.unwrap()
-
-        for tag in valid_ins_tags:
-            new_tag = soupdiff.new_tag('span', type='ins')
-            tag.wrap(new_tag)
-            tag.unwrap()
-
-        diff = u''.join([str(t) for t in soupdiff.body.contents])
-        modifs_data = []
-        modifs = soupdiff.find_all('span', {'id':'modif'})
-        for modif in modifs:
-            modif_data = {'tag': modif,
-                          'todel': "ins",
-                          'toins': "del",
-                          'blocstodel': None
-                         }
-            modifs_data.append(modif_data)
-
-        self.unwrap_diff(modifs_data, soupdiff)
-        del_tags = soupdiff.find_all('span', {'type':'del'})
-        ins_tags = soupdiff.find_all('span', {'type':'ins'})
-        for tag in ins_tags:
-            new_tag = soupdiff.new_tag('ins')
-            tag.wrap(new_tag)
-            tag.unwrap()
-
-        for tag in del_tags:
-            new_tag = soupdiff.new_tag('del')
-            tag.wrap(new_tag)
-            tag.unwrap()
-
-        soupdiff = self.wrap_diff(diff, "modif")
-        modifs_data = []
-        modifs = soupdiff.find_all('span', {'id':'modif'})
-        for modif in modifs:
-            modif_data = {'tag': modif,
-                          'todel': "del",
-                          'toins': "ins",
-                          'blocstodel': None
-                         }
-            modifs_data.append(modif_data)
-
-        self.unwrap_diff(modifs_data, soupdiff)
-        new_diff = u''.join([str(t) for t in soupdiff.body.contents])
-        return self.merge(new_text, [text, new_diff])
+        return merged_diff
