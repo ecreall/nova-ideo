@@ -11,19 +11,19 @@
    line-height: 25px
 }
 
-.steps .popover.bottom{
+#steps-messages .popover.bottom{
     top: 53px; 
     display: block; 
     min-width:325px;
     z-index: -1010;
 }
 
-.steps .popover.bottom .arrow{
+#steps-messages .popover.bottom .arrow{
     top: -11px;
     left: 162px
 }
 
-.steps #message-step-3.popover.bottom{
+#steps-messages #message-step-3.popover.bottom{
     left: 226pt;
     text-align: center;
 }

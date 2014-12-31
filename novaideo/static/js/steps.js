@@ -58,9 +58,10 @@ var inprogress = false;
 
 $(document).ready(function(){
     $('.step-content').on('click', function(){
-        var message = $($($(this).parents('.steps').first()).find('#'+$(this).data('step')).first());
+        var message = $($('#steps-messages').find('#'+$(this).data('step')).first());
         if (message.hasClass('in')){
             message.removeClass('in');
+            message.hide();
             $(this).removeClass('message-in');
             $(message).css('z-index', '-1010');
             inprogress = false
@@ -74,12 +75,13 @@ $(document).ready(function(){
             if (window.matchMedia('(max-width: 991px)').matches) {
                element_by_media = $('body');
             };
-            var position = element_by_media.position();
+            var offset = element_by_media.offset();
             var element_by_media_width = element_by_media.width();
             var message_wdth = message.width();
             var width = element_by_media_width/2 - message_wdth/2;
-            message.css('left', String(position.left + (width))+'px');
-            message.css('top', String(step.position().top+height)+'px');
+            message.css('left', String(offset.left + (width))+'px');
+            message.css('top', String(step.offset().top+height)+'px');
+            message.show();
             $(this).addClass('message-in');
             inprogress = true
 
