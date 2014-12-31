@@ -67,6 +67,46 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
                                                         text)
         self.assertEqual(diff, '<div class="diff">Organiser des <span id="diff_id"><del><strong>animation</strong> </del></span>lors de <strong><strong>la Fete</strong> de la science.</strong></div>')
 
+
+    def test_partial_accept(self):
+        text1 = "Organisation de conferences lors de la Fete de la science"
+        text2 = "Organisation mon texte de la Fete de la autre texte science"
+        soup_wrapped, textdiff = self.text_analyzer.render_html_diff(text1, text2, 'modif')
+        correction_tags = soup_wrapped.find_all('span', {'id': "modif"})
+        descriminator = 0
+        for correction_tag in correction_tags:
+            correction_tag['data-item'] = str(descriminator)
+            descriminator += 1
+        result = self.text_analyzer.soup_to_text(soup_wrapped)
+        #2 modifs
+        self.assertEqual(result,
+             'Organisation <span data-item="0" id="modif"><del>de conferences lors</del><ins>mon texte</ins></span> de la Fete de la <span data-item="1" id="modif"><ins>autre texte </ins></span>science')
+        items = ['0']
+        corrections = []
+        for item in items:
+            corrections.extend(soup_wrapped.find_all('span', {'id':'modif', 
+                                                      'data-item': item}))
+        #resfuse the first modif
+        soup = self.text_analyzer.include_diffs(soup_wrapped, corrections,
+                        "ins", "del", None)
+        result = self.text_analyzer.soup_to_text(soup)
+        self.assertEqual(result, 'Organisation de conferences lors de la Fete de la <span data-item="1" id="modif"><ins>autre texte </ins></span>science')
+        items = ['1']
+        corrections = []
+        for item in items:
+            corrections.extend(soup_wrapped.find_all('span', {'id':'modif', 
+                                                      'data-item': item}))
+        #accept the last modif
+        soup = self.text_analyzer.include_diffs(soup_wrapped, corrections,
+                        "del", "ins", None)
+        result = self.text_analyzer.soup_to_text(soup)
+        #the text with only the last modif
+        self.assertEqual(result, 'Organisation de conferences lors de la Fete de la autre texte science')
+        soup_wrapped, textdiff = self.text_analyzer.render_html_diff(text1, result, 'modif')
+        result = self.text_analyzer.soup_to_text(soup_wrapped)
+        #1 modif (accepted modif)
+        self.assertEqual(result, 'Organisation de conferences lors de la Fete de la <span id="modif"><ins>autre texte </ins></span>science')
+
 # - - - - - - - - - - - - - - - - - - - - - Beginning deletion
 
     def test_beginning_deletion_word(self):
