@@ -22,7 +22,7 @@ class IAmendmentViewer(Interface):
     """Interface for AmendmentViewer
     """
 
-    def get_explanation_diff(old_explanations, context, request):
+    def get_explanation_diff(context, request):
         pass
 
     def add_actions(explanations, process, context, request, soup):
