@@ -683,7 +683,7 @@ def opinion_processsecurity_validation(process, context):
 def opinion_state_validation(process, context):
     return 'published' in context.state or \
            ('examined' in context.state and \
-             context.opinion == 'Indifferent')
+             context.opinion == 'to_study')
 
 
 class MakeOpinion(InfiniteCardinality):

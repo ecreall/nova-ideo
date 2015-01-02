@@ -32,7 +32,7 @@ class OpinionSchema(Schema):
         colander.String(),
         widget=opinion_choice,
         title=_('Opinion'),
-        default='Indifferent'
+        default='to_study'
         )
 
     explanation = colander.SchemaNode(
