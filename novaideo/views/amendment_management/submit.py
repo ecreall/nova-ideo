@@ -115,16 +115,16 @@ class SubmitAmendmentViewStudyReport(BasicView):
                                                    'amendment_viewer')
         souptextdiff, explanations = amendment_viewer.get_explanation_diff(
                                                     self.context, self.request)
-        self.context.explanations = PersistentDict(explanations)
-        amendment_viewer.add_details(self.context,
+        amendment_viewer.add_details(explanations,
+                                     self.context,
                                      self.request,
                                      souptextdiff,
                                      self.readonly_explanation_template)
-        explanationtext = text_analyzer.soup_to_text(souptextdiff)
+        text_diff = text_analyzer.soup_to_text(souptextdiff)
         not_published_ideas = [i for i in self.context.get_used_ideas() \
                                if not('published' in i.state)]
         values = {'context': self.context,
-                  'explanationtext': explanationtext,
+                  'explanationtext': text_diff,
                   'ideas': not_published_ideas}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

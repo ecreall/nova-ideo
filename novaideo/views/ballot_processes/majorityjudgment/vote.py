@@ -209,15 +209,8 @@ class VoteFormView(FormView):
                                                            amendments)
                 values['is_proposal'] = True
             else:
-                seeamendment_actions = getBusinessAction(
-                                         subject, self.request,
-                                         'amendmentmanagement', 'see')
-                if seeamendment_actions:
-                    seeamendment_actions[0].execute(
-                              subject, self.request, None)
-
                 values['text'] = get_trimed_amendment_text(
-                                getattr(subject, 'explanationtext', ''))
+                                getattr(subject, 'text_diff', ''))
 
             body = self.content(result=values, 
                                 template=description_template)['body']

@@ -33,7 +33,7 @@ class DetailAmendmentView(BasicView):
     viewid = 'seeamendment'
     validate_behaviors = False
 
-    def _get_adapted_text(self, user):
+    def _add_requirements(self, user):
         is_owner = has_role(user=user, role=('Owner', self.context))
         if is_owner and ('explanation' in self.context.state):
             self.requirements = {'js_links': [], 'css_links': [],}
@@ -42,38 +42,32 @@ class DetailAmendmentView(BasicView):
             self.requirements['js_links'] = intentionformresult['js_links']
             self.requirements['css_links'] = intentionformresult['css_links']
             self.requirements['js_links'].append('novaideo:static/js/explanation_amendment.js')
-            return self.context.explanationtext
-
-        elif 'published' in self.context.state:
-            return self.context.explanationtext 
-        else:
-            text_analyzer = get_current_registry().getUtility(
-                                         ITextAnalyzer,'text_analyzer')
-            soup, textdiff =  text_analyzer.render_html_diff(
-                                    getattr(self.context.proposal, 'text', ''), 
-                                    getattr(self.context, 'text', ''))
-            return textdiff
 
     def update(self):
         self.execute(None)
         user = get_current()
+        self._add_requirements(user)
         text_analyzer = get_current_registry().getUtility(
                                                ITextAnalyzer,
                                                'text_analyzer')
         actions = [a for a in self.context.actions \
                    if getattr(a.action, 'style', '') == 'button']
         global_actions = [a for a in actions \
-                          if getattr(a.action, 'style_descriminator','') == 'global-action']
+                          if getattr(a.action, 
+                               'style_descriminator', '') == 'global-action']
         text_actions = [a for a in  actions \
-                        if getattr(a.action, 'style_descriminator','') == 'text-action']
-        global_actions = sorted(global_actions, key=lambda e: getattr(e.action, 'style_order', 0))
-        text_actions = sorted(text_actions, key=lambda e: getattr(e.action, 'style_order', 0))
+                        if getattr(a.action, 
+                            'style_descriminator', '') == 'text-action']
+        global_actions = sorted(global_actions, 
+                            key=lambda e: getattr(e.action, 'style_order', 0))
+        text_actions = sorted(text_actions, 
+                            key=lambda e: getattr(e.action, 'style_order', 0))
         result = {}
         textdiff = ''
         descriptiondiff = ''
         keywordsdiff = []
         proposal = self.context.proposal
-        textdiff = self._get_adapted_text(user)
+        textdiff = self.context.text_diff
         soup, descriptiondiff = text_analyzer.render_html_diff(
                    '<div>'+getattr(proposal, 'description', '')+'</div>',
                    '<div>'+getattr(self.context, 'description', '')+'</div>')
@@ -87,7 +81,8 @@ class DetailAmendmentView(BasicView):
          for k in self.context.keywords if k not in proposal.keywords]
         values = {
                 'amendment': self.context,
-                'state': get_states_mapping(user, self.context, self.context.state[0]),
+                'state': get_states_mapping(
+                              user, self.context, self.context.state[0]),
                 'textdiff': textdiff,
                 'descriptiondiff':descriptiondiff,
                 'keywordsdiff':keywordsdiff,

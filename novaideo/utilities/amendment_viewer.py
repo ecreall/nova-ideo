@@ -22,13 +22,14 @@ class IAmendmentViewer(Interface):
     """Interface for AmendmentViewer
     """
 
-    def get_explanation_diff(context, request):
+    def get_explanation_diff(old_explanations, context, request):
         pass
 
-    def add_actions(action, context, request, soup):
+    def add_actions(explanations, process, context, request, soup):
         pass
 
-    def add_details(context, request, soup):
+    def add_details(explanations, context, request, 
+                    soup, explanation_template=None):
         pass
 
 
@@ -44,32 +45,29 @@ class AmendmentViewer(object):
     #readonly_modal_template = 'novaideo:views/amendment_management/templates/readonly/explanation_modal_item.pt'
     readonly_inline_template = 'novaideo:views/amendment_management/templates/readonly/explanation_inline_item.pt'
 
-    def _add_modal(self, action, soup, tag, context, request):
+    def _add_modal(self, explanations, process, soup, tag, context, request):
         context_oid = get_oid(context)
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
         	                                            'dace_ui_api')
-        if not hasattr(action, 'explanationitemaction'):
-            explanationitemnode = action.process['explanationitem']
-            explanationitem_wis = [wi for wi in explanationitemnode.workitems \
-                                   if wi.node is explanationitemnode]
-            if explanationitem_wis:
-                action.explanationitemaction = explanationitem_wis[0].actions[0]
+        explanationitemaction = None
+        explanationitem_actions = process.get_actions('explanationitem')
+        if explanationitem_actions:
+            explanationitemaction = explanationitem_actions[0]
 
-        if hasattr(action, 'explanationitemaction'):
+        if explanationitemaction:
             values = {'url':request.resource_url(context, '@@explanationjson', 
                                              query={'op':'getform',
                                                     'itemid':tag['data-item']}),
-                     'item': context.explanations[tag['data-item']],
+                     'item': explanations[tag['data-item']],
                      }
             body = renderers.render(self.explanation_template, values, request)
             explanation_item_soup = BeautifulSoup(body)
 
             actionurl_update = dace_ui_api.updateaction_viewurl(request=request,
-                                action_uid=str(get_oid(
-                                	            action.explanationitemaction)),
+                                action_uid=str(get_oid(explanationitemaction)),
                                 context_uid=str(context_oid))
             values = {'url': actionurl_update,
-                     'item': context.explanations[tag['data-item']],
+                     'item': explanations[tag['data-item']],
                     }
             modal_body = renderers.render(self.modal_template, values, request)
             explanation_item_modal_soup = BeautifulSoup(modal_body)
@@ -77,15 +75,15 @@ class AmendmentViewer(object):
             tag.append(explanation_item_soup.body)
             tag.body.unwrap()
 
-    def _add_modal_details(self, soup, tag, context, request, explanation_template=None):
+    def _add_modal_details(self, explanations, soup, tag, request, explanation_template=None):
         data = {}
         try:
             data = Intention.get_explanation_data(
-            	     context.explanations[tag['data-item']]['intention'])
+            	     explanations[tag['data-item']]['intention'])
         except Exception:
             pass
 
-        values = {'item': context.explanations[tag['data-item']],
+        values = {'item': explanations[tag['data-item']],
                  'data': data}
         if explanation_template is None:
             explanation_template = self.readonly_explanation_template
@@ -120,7 +118,6 @@ class AmendmentViewer(object):
 
             descriminator += 1
         
-        context.explanations = explanations
         return explanations
 
     def get_explanation_diff(self, context, request):
@@ -132,17 +129,17 @@ class AmendmentViewer(object):
                                     getattr(context, 'text', ''),
                                     "explanation")
         descriminator = 1
-        explanations = self._identify_explanations(context, request,
-                                    souptextdiff, descriminator)
+        explanations = self._identify_explanations(context, request, 
+                                                   souptextdiff, descriminator)
         return souptextdiff, explanations
 
-    def add_actions(self, action, context, request, soup):
+    def add_actions(self, explanations, process, context, request, soup):
         explanations_tags = soup.find_all('span', {'id':'explanation'})
         for explanation_tag in explanations_tags:
-            self._add_modal(action, soup, explanation_tag, context, request)
+            self._add_modal(explanations, process, soup, explanation_tag, context, request)
 
-    def add_details(self, context, request, soup, explanation_template=None):
+    def add_details(self, explanations, context, request, soup, explanation_template=None):
         explanations_tags = soup.find_all('span', {'id':'explanation'})
         for explanation_tag in explanations_tags:
-            self._add_modal_details(soup, explanation_tag, context,
+            self._add_modal_details(explanations, soup, explanation_tag,
                                     request, explanation_template)

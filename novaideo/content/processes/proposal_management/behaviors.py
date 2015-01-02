@@ -77,6 +77,8 @@ from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea, 
     CommentIdea,
     Associate as AssociateIdea)
+from novaideo.content.processes.amendment_management.behaviors import (
+    get_text_amendment_diff)
 from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.util import connect, disconnect
 from novaideo.core import to_localized_time
@@ -999,6 +1001,8 @@ class ImproveProposal(InfiniteCardinality):
         amendment.state.append('draft')
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
+        amendment.text_diff = get_text_amendment_diff(
+                                context, amendment)
         amendment.reindex()
         context._amendments_counter = getattr(context, '_amendments_counter', 1) + 1
         return {'newcontext': amendment}
