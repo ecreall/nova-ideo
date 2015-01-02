@@ -345,8 +345,6 @@ class SubmitAmendment(InfiniteCardinality):
     def _get_amendment_text(self, context, group):
         text_analyzer = get_current_registry().getUtility(
                                  ITextAnalyzer, 'text_analyzer')
-        amendment_viewer = get_current_registry().getUtility(
-                                 IAmendmentViewer, 'amendment_viewer')
         items = [str(e['oid']) for e in group]
         soup = BeautifulSoup(context.text_diff)
         allexplanations = soup.find_all('span', {'id':'explanation'})
