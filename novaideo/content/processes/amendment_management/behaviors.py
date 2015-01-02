@@ -212,6 +212,7 @@ class EditAmendment(InfiniteCardinality):
         context.text = normalize_text(context.text)
         context.text_diff = get_text_amendment_diff(
                                    context.proposal, context)
+        context.reindex()
         return {}
 
     def redirect(self, context, request, **kw):
