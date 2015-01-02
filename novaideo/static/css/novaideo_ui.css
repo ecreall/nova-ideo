@@ -981,7 +981,7 @@ ins {
 
 #adminnavbar{
     z-index: 10300;
-    max-width: 220px
+    max-width: 195px;
 
 }
 
@@ -1079,7 +1079,7 @@ ins {
     color: gray;
     font-size: 16px;
     height: 59px;
-    left: 81%;
+    left: 79%;
     margin-left: -52px;
     padding: 3px;
     position: absolute;

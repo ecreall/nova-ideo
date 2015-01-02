@@ -33,11 +33,12 @@ function admin_nav_off(event, element){
         $(element).animate({left: '-='+187}, 500);
         $(element).addClass('admin-off');
         $(element).removeClass('admin-on');
-        $(element).find('.admin-nav-label').removeClass('hide-bloc');
+        
         setTimeout(function() {
            $(target).addClass('hide-bloc');
            var adminnav = $('#adminnavbar');
            adminnav.css({'height': '180px'});
+           $(element).find('.admin-nav-label').removeClass('hide-bloc');
         }, 510);
         
 };
