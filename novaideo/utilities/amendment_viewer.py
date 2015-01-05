@@ -42,7 +42,6 @@ class AmendmentViewer(object):
     explanation_template = 'novaideo:views/amendment_management/templates/explanation_item.pt'
     modal_template = 'novaideo:views/amendment_management/templates/explanation_modal_item.pt'
     readonly_explanation_template = 'novaideo:views/amendment_management/templates/readonly/explanation_item.pt'
-    #readonly_modal_template = 'novaideo:views/amendment_management/templates/readonly/explanation_modal_item.pt'
     readonly_inline_template = 'novaideo:views/amendment_management/templates/readonly/explanation_inline_item.pt'
 
     def _add_modal(self, explanations, process, soup, tag, context, request):
@@ -55,15 +54,15 @@ class AmendmentViewer(object):
             explanationitemaction = explanationitem_actions[0]
 
         if explanationitemaction:
-            values = {'url':request.resource_url(context, '@@explanationjson', 
-                                             query={'op':'getform',
-                                                    'itemid':tag['data-item']}),
+            values = {'url': request.resource_url(context, '@@explanationjson', 
+                                            query={'op': 'getform',
+                                                   'itemid': tag['data-item']}),
                      'item': explanations[tag['data-item']],
                      }
             body = renderers.render(self.explanation_template, values, request)
             explanation_item_soup = BeautifulSoup(body)
-
-            actionurl_update = dace_ui_api.updateaction_viewurl(request=request,
+            actionurl_update = dace_ui_api.updateaction_viewurl(
+                                request=request,
                                 action_uid=str(get_oid(explanationitemaction)),
                                 context_uid=str(context_oid))
             values = {'url': actionurl_update,
@@ -84,7 +83,7 @@ class AmendmentViewer(object):
             pass
 
         values = {'item': explanations[tag['data-item']],
-                 'data': data}
+                  'data': data}
         if explanation_template is None:
             explanation_template = self.readonly_explanation_template
 
@@ -92,7 +91,6 @@ class AmendmentViewer(object):
                                 values,
                                 request)
         explanation_item_soup = BeautifulSoup(body)
-        #readonly_modal_template,
         modal_body = renderers.render(self.readonly_inline_template,
                                       values, 
                                       request)
@@ -109,7 +107,7 @@ class AmendmentViewer(object):
         for explanation_tag in explanation_tags:
             explanation_tag['data-context'] = context_oid
             explanation_tag['data-item'] = str(descriminator)
-            init_vote = {'oid':descriminator, 'intention':None}
+            init_vote = {'oid': descriminator, 'intention': None}
             descriminator_str = str(descriminator)
             if not(descriminator_str in old_explanations): 
                 explanations[descriminator_str] = PersistentDict(init_vote)
@@ -136,10 +134,11 @@ class AmendmentViewer(object):
     def add_actions(self, explanations, process, context, request, soup):
         explanations_tags = soup.find_all('span', {'id':'explanation'})
         for explanation_tag in explanations_tags:
-            self._add_modal(explanations, process, soup, explanation_tag, context, request)
+            self._add_modal(explanations, process, soup, 
+                            explanation_tag, context, request)
 
     def add_details(self, explanations, context, request, soup, explanation_template=None):
-        explanations_tags = soup.find_all('span', {'id':'explanation'})
+        explanations_tags = soup.find_all('span', {'id': 'explanation'})
         for explanation_tag in explanations_tags:
             self._add_modal_details(explanations, soup, explanation_tag,
                                     request, explanation_template)

@@ -573,7 +573,7 @@ class TextAnalyzer(object):
 
     def _get_add_diffs(self, text1, text2):
         soup, diff = self.render_html_diff(text1, text2, 'amendment-modif')
-        modifs = soup.find_all('span', {'id':'amendment-modif'})
+        modifs = soup.find_all('span', {'id': 'amendment-modif'})
         del_tags = soup.find_all('del')
         for del_tag in del_tags:
             del_tag.unwrap()
