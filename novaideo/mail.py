@@ -229,3 +229,22 @@ La proposition {subject_title} viens d'être supprimée par les modérateurs pou
 {explanation}
 
 """+ PORTAL_SIGNATURE 
+
+
+REFUSE_INVITATION_SUBJECT = u"""Refus de {user_first_name} {user_last_name} de rejoindre la plateforme {novaideo_title}"""
+
+
+REFUSE_INVITATION_MESSAGE = u"""
+{user_title} {user_first_name} {user_last_name} a refusé votre invitation de rejoindre la plateforme {novaideo_title}.
+
+"""+ PORTAL_SIGNATURE 
+
+
+ACCEPT_INVITATION_SUBJECT = u"""Acceptation de {user_first_name} {user_last_name} de rejoindre la plateforme {novaideo_title}"""
+
+
+ACCEPT_INVITATION_MESSAGE = u"""
+{user_title} {user_first_name} {user_last_name} a accepté votre invitation de rejoindre la plateforme {novaideo_title}.
+
+"""+ PORTAL_SIGNATURE
+    

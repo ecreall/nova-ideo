@@ -19,7 +19,12 @@ from novaideo.ips.xlreader import create_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IInvitation
 from novaideo.content.invitation import Invitation
 from novaideo.ips.mailer import mailer_send
-from novaideo.mail import INVITATION_MESSAGE
+from novaideo.mail import (
+    INVITATION_MESSAGE,
+    REFUSE_INVITATION_SUBJECT,
+    REFUSE_INVITATION_MESSAGE,
+    ACCEPT_INVITATION_SUBJECT,
+    ACCEPT_INVITATION_MESSAGE)
 from novaideo import _
 from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity)
@@ -48,6 +53,7 @@ class UploadUsers(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        user = get_current()
         xlfile = appstruct['file']['_object_data']
         new_invitations = create_object_from_xl(
                                 file=xlfile, 
@@ -66,12 +72,15 @@ class UploadUsers(InfiniteCardinality):
                                     last_name=getattr(self.context, 
                                                       'last_name',''))
             invitation.state.append('pending')
+            invitation.setproperty('manager', user)
             invitation.__name__ = gen_random_token()
             root.addtoproperty('invitations', invitation)
             url = request.resource_url(invitation, "")
+            localizer = request.localizer
             message = INVITATION_MESSAGE.format(
                 invitation=invitation,
-                user_title=getattr(invitation, 'user_title', ''),
+                user_title=localizer.translate(_(getattr(
+                            invitation, 'user_title', ''))),
                 invitation_url=url,
                 roles=", ".join(getattr(invitation, 'roles', [])),
                 novaideo_title=request.root.title)
@@ -86,7 +95,8 @@ class UploadUsers(InfiniteCardinality):
 
 
 def inviteuser_roles_validation(process, context):
-    return has_role(role=('Moderator',)) or has_role(role=('OrganizationResponsible',))
+    return has_role(role=('Moderator',)) or \
+           has_role(role=('OrganizationResponsible',))
 
 
 def inviteuser_processsecurity_validation(process, context):
@@ -111,6 +121,7 @@ class InviteUsers(InfiniteCardinality):
         for invitation_dict in invitations:
             invitation = invitation_dict['_object_data']
             invitation.state.append('pending')
+            invitation.setproperty('manager', user)
             invitation.__name__ = gen_random_token()
             root.addtoproperty('invitations', invitation)
             if not getattr(invitation, 'roles', []):
@@ -120,9 +131,11 @@ class InviteUsers(InfiniteCardinality):
                 invitation.setproperty('organization', organization)
 
             url = request.resource_url(invitation, "")
+            localizer = request.localizer
             message = INVITATION_MESSAGE.format(
                 invitation=invitation,
-                user_title=getattr(invitation, 'user_title', ''),
+                user_title=localizer.translate(_(getattr(
+                              invitation, 'user_title', ''))),
                 invitation_url=url,
                 roles=", ".join(getattr(invitation, 'roles', [])),
                 novaideo_title=request.root.title)
@@ -138,9 +151,11 @@ class InviteUsers(InfiniteCardinality):
 
 def seeinv_processsecurity_validation(process, context):
     return (context.organization and \
-            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_role(role=('OrganizationResponsible',
+                           context.organization))) or \
             has_any_roles(roles=('Moderator', 
                                 'Anonymous'))
+
 
 @acces_action()
 class SeeInvitation(InfiniteCardinality):
@@ -186,7 +201,8 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and context.invitations
+    return global_user_processsecurity(process, context) and \
+           context.invitations
 
 
 class EditInvitations(InfiniteCardinality):
@@ -208,7 +224,8 @@ class EditInvitations(InfiniteCardinality):
 
 def editinv_roles_validation(process, context):
     return (context.organization and \
-            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_role(role=('OrganizationResponsible', 
+                           context.organization))) or \
             has_role(role=('Moderator',))
 
 
@@ -233,7 +250,8 @@ class EditInvitation(InfiniteCardinality):
 
 
 def accept_roles_validation(process, context):
-    return has_role(role=('Anonymous',)) and not has_role(role=('Admin',))
+    return has_role(role=('Anonymous',)) and \
+           not has_role(role=('Admin',))
 
 
 def accept_state_validation(process, context):
@@ -271,8 +289,33 @@ class AcceptInvitation(InfiniteCardinality):
         person.state.append('active')
         grant_roles(person, roles)
         grant_roles(person, (('Owner', person),))
+        manager = context.manager
         root.delfromproperty('invitations', context)
         context.person = person
+        if manager:
+            localizer = request.localizer
+            user_title = localizer.translate(_(getattr(person, 'user_title', '')))
+            user_first_name = getattr(person, 'first_name', '')
+            user_last_name = getattr(person, 'last_name', '')
+            novaideo_title = request.root.title
+            url = request.resource_url(person, "@@index")
+            subject = ACCEPT_INVITATION_SUBJECT.format(
+                    user_title=user_title,
+                    user_first_name=user_first_name,
+                    user_last_name=user_last_name,
+                    novaideo_title=novaideo_title
+                       )
+            message = ACCEPT_INVITATION_MESSAGE.format(
+                    user_title=user_title,
+                    user_first_name=user_first_name,
+                    user_last_name=user_last_name,
+                    user_url=url,
+                    roles=", ".join(roles),
+                    novaideo_title=novaideo_title)
+            mailer_send(subject= subject, 
+                        recipients=[manager.email], 
+                        body=message )
+
         return {}
 
     def redirect(self, context, request, **kw):
@@ -281,7 +324,8 @@ class AcceptInvitation(InfiniteCardinality):
 
 
 def refuse_roles_validation(process, context):
-    return has_role(role=('Anonymous',)) and not has_role(role=('Admin',))
+    return has_role(role=('Anonymous',)) and \
+           not has_role(role=('Admin',))
 
 
 def refuse_state_validation(process, context):
@@ -296,7 +340,31 @@ class RefuseInvitation(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('pending')
-        context.state.append('refused')
+        context.state.append('refused')        
+        if context.manager:
+            localizer = request.localizer
+            user_title = localizer.translate(
+                           _(getattr(context, 'user_title', '')))
+            user_first_name = getattr(context, 'first_name', '')
+            user_last_name = getattr(context, 'last_name', '')
+            novaideo_title = request.root.title
+            url = request.resource_url(context, "@@index")
+            subject = REFUSE_INVITATION_SUBJECT.format(
+                    user_title=user_title,
+                    user_first_name=user_first_name,
+                    user_last_name=user_last_name,
+                    novaideo_title=novaideo_title
+                       )
+            message = REFUSE_INVITATION_MESSAGE.format(
+                    user_title=user_title,
+                    user_first_name=user_first_name,
+                    user_last_name=user_last_name,
+                    invitation_url=url,
+                    roles=", ".join(context.roles),
+                    novaideo_title=novaideo_title)
+            mailer_send(subject= subject, 
+                        recipients=[context.manager.email], 
+                        body=message )
         return {}
 
     def redirect(self, context, request, **kw):
@@ -305,7 +373,8 @@ class RefuseInvitation(InfiniteCardinality):
 
 def remove_roles_validation(process, context):
     return (context.organization and \
-            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_role(role=('OrganizationResponsible', 
+                           context.organization))) or \
             has_role(role=('Moderator',))
 
 
@@ -331,7 +400,8 @@ class RemoveInvitation(InfiniteCardinality):
 
 def reinvite_roles_validation(process, context):
     return (context.organization and \
-            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_role(role=('OrganizationResponsible', 
+                           context.organization))) or \
             has_role(role=('Moderator',))
 
 
@@ -371,7 +441,8 @@ class ReinviteUser(InfiniteCardinality):
 
 def remind_roles_validation(process, context):
     return (context.organization and \
-            has_role(role=('OrganizationResponsible', context.organization))) or \
+            has_role(role=('OrganizationResponsible', 
+                           context.organization))) or \
             has_role(role=('Moderator',))
 
 

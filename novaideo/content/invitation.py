@@ -64,6 +64,7 @@ class Invitation(VisualisableElement, Entity):
     result_template = 'novaideo:views/templates/invitation_result.pt'
     name = renamer()
     organization = SharedUniqueProperty('organization')
+    manager = SharedUniqueProperty('manager')
 
     def __init__(self, **kwargs):
         super(Invitation, self).__init__(**kwargs)
