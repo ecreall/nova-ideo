@@ -30,11 +30,13 @@ HTML_INLINE_ELEMENTS = [
 
 
 HTML_BLOCK_ELEMENTS = [
-           'p', 'h1', 'h2', 'h3', 'h4', 
-           'h5', 'h6', 'ol', 'ul', 'pre', 
-           'address', 'blockquote', 'dl', 
-           'div', 'fieldset', 'form', 'hr', 
-           'noscript', 'table']
+           'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div',
+           'section', 'table', 'tfoot', 'ul', 'tfoot',
+           'tr', 'th', 'td', 'address', 'article', 'aside',
+           'audio', 'blockquote', 'canvas', 'dd', 'dl',
+           'fieldset', 'figcaption', 'figure', 'footer',
+           'header', 'hgroup', 'hr', 'noscript',
+           'ol', 'output', 'pre', 'video', 'form']
 
 
 class EndKind:
