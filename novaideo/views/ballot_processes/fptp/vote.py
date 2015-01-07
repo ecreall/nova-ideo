@@ -52,7 +52,6 @@ def subjects_choice(ballot_report):
             return _(ob)
 
     values = [(i, get_title(i)) for i in subjects]
-    values = sorted(values, key=lambda e: e[1])
     return Select2Widget(values=values)
 
 
