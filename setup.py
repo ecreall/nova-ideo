@@ -19,6 +19,7 @@ requires = [
     'pyramid_tm',
     'substanced',
     'waitress',
+    'gunicorn',
     'xlrd',
     'diff-match-patch',
     'Genshi',

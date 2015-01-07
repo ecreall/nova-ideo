@@ -1,1 +1,1 @@
-web: bin/pserve production.ini
+web: bin/gunicorn --paste production.ini
