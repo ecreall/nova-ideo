@@ -1,3 +1,3 @@
 #!/bin/bash
 sed -i 's@/tmp/build@/app@' develop-eggs/* bin/*
-exec bin/gunicorn --paste production.ini
+exec bin/gunicorn --forwarded-allow-ips="172.17.42.1" --paste production.ini
