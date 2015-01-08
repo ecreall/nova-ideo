@@ -579,8 +579,34 @@ ins {
     font-size: 16px
 }
 
-.proposal-support .label-danger {
-    margin-left: 5px
+.token{
+    border: 1px solid;
+    border-radius: 50%;
+    box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.314);
+    display: inline-block;
+    padding: 4px;
+    position: relative;
+    top: 1px;
+}
+
+.token-success{
+    background-image: linear-gradient(50deg, #89e189 28%, #4eaf4e 99%);
+}
+
+.token-danger{
+    background-image: linear-gradient(50deg, #ef827d 28%, #ef3128 99%);
+}
+
+.proposal-support .danger {
+    margin-left: -5px
+}
+
+.proposal-support .danger .support-nb{
+    color: #ef3128
+}
+
+.proposal-support .success .support-nb{
+    color: #4eaf4e
 }
 
 .form-proposal-confirmation{

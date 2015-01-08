@@ -17,12 +17,12 @@
     </dl>
     <span><span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a></span>
   <div tal:condition="'published' in object.state" class="proposal-support pull-right">
-    <span class="label label-success">
-        <span class="glyphicon glyphicon-thumbs-up"></span>
+    <span class="label success">
+        <span class="token token-success glyphicon glyphicon-thumbs-up"></span>
         <span class="support-nb">${len(object.tokens_support)}</span>
     </span>
-    <span class="label label-danger">
-        <span class="glyphicon glyphicon-thumbs-down"></span>
+    <span class="label danger">
+        <span class="token token-danger glyphicon glyphicon-thumbs-down"></span>
         <span class="support-nb">${len(object.tokens_opposition)}</span>
     </span>
   </div>
