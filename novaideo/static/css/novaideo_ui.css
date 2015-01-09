@@ -1217,6 +1217,10 @@ ins {
     right: 53px;
 }
 
+.proposal-explanation button.close{
+    margin-left: 15px;
+    margin-top: -14px;
+}
 
 .proposal-explanation-step{
     padding-right: 30px
