@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-01-09 16:57+0100\n"
+"POT-Creation-Date: 2015-01-09 17:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1188,6 +1188,10 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/step4.pt:33
 msgid "Total appreciations"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/admin_navbar.pt:6
+msgid "Dashboard"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/step3_0.pt:4
