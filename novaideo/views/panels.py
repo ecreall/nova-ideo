@@ -187,10 +187,10 @@ class NovaideoContents(object):
                 states_index.notany(['deactivated']) 
         nb_person = query.execute().__len__()
         query = object_provides_index.any((Iidea.__identifier__ ,)) & \
-                states_index.notany(['archived']) 
+                states_index.any(['published']) 
         nb_idea = query.execute().__len__()
         query = object_provides_index.any((IProposal.__identifier__ ,)) & \
-                states_index.notany(['archived']) 
+                states_index.notany(['archived', 'draft']) 
         nb_proposal = query.execute().__len__()
         result = {}
         result['nb_person'] = nb_person

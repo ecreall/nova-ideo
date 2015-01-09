@@ -7,12 +7,12 @@
                            <li tal:condition="nb_person > 1"><strong>${nb_person}</strong> <span i18n:translate="">Members</span></li>
                         </div>    
                         <div tal:omit-tag="" tal:condition="nb_idea > 0">
-                           <li tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Idea</span></li>
-                           <li tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Ideas</span></li>
+                           <li tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published idea</span></li>
+                           <li tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published ideas</span></li>
                         </div> 
                         <div tal:omit-tag="" tal:condition="nb_proposal > 0">
-                           <li tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Proposal</span></li>
-                           <li tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Proposals</span></li>
+                           <li tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposal</span></li>
+                           <li tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposals</span></li>
                         </div>                    
                     </ul>
             </div>
