@@ -27,7 +27,8 @@ from novaideo.mail import (
     ACCEPT_INVITATION_MESSAGE)
 from novaideo import _
 from novaideo.content.processes.user_management.behaviors import (
-    global_user_processsecurity)
+    global_user_processsecurity,
+    initialize_tokens)
 from novaideo.core import acces_action
 from novaideo.utilities.util import gen_random_token
 from novaideo.content.person import Person
@@ -289,6 +290,7 @@ class AcceptInvitation(InfiniteCardinality):
         person.state.append('active')
         grant_roles(person, roles)
         grant_roles(person, (('Owner', person),))
+        initialize_tokens(person, root.tokens_mini)
         manager = context.manager
         root.delfromproperty('invitations', context)
         context.person = person

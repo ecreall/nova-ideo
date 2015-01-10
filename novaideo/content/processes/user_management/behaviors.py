@@ -28,6 +28,15 @@ from novaideo import _
 from novaideo.core import acces_action
 
 
+
+def initialize_tokens(person, tokens_nb):
+    for i in range(tokens_nb):
+        token = Token(title='Token_'+str(i))
+        person.addtoproperty('tokens_ref', token)
+        person.addtoproperty('tokens', token)
+        token.setproperty('owner', person)
+
+
 def global_user_processsecurity(process, context):
     if has_role(role=('Admin',)):
         return True
@@ -56,13 +65,8 @@ class Registration(InfiniteCardinality):
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
+        initialize_tokens(person, root.tokens_mini)
         localizer = request.localizer
-        for i in range(root.tokens_mini):
-            token = Token(title='Token_'+str(i))
-            person.addtoproperty('tokens_ref', token)
-            person.addtoproperty('tokens', token)
-            token.setproperty('owner', person)
-
         message = CONFIRMATION_MESSAGE.format(
                     person=person,
                     user_title=localizer.translate(
