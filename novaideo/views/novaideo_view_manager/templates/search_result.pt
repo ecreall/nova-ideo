@@ -1,5 +1,5 @@
 
-<span  i18n:domain="novaideo">${length} <span  i18n:translate="">elements trouvés</span>
+<span  i18n:domain="novaideo">${length} <span  i18n:translate="">elements found</span></span>
 
 <div class="row scroll-able result-scroll" tal:define="batch_value batch|nothing">
   <div tal:condition="bodies" id="${(batch_value and batch_value.target.replace('#', '')) or 'results'}" class="results">

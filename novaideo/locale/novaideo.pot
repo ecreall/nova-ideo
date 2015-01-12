@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-01-09 17:21+0100\n"
+"POT-Creation-Date: 2015-01-12 09:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -131,7 +131,7 @@ msgstr ""
 #: ./novaideo/content/processes/invitation_management/definition.py:56
 #: ./novaideo/content/processes/user_management/definition.py:69
 #: ./novaideo/content/processes/user_management/definition.py:70
-#: ./novaideo/content/processes/user_management/behaviors.py:248
+#: ./novaideo/content/processes/user_management/behaviors.py:252
 #: ./novaideo/content/processes/amendment_management/definition.py:88
 #: ./novaideo/content/processes/amendment_management/definition.py:89
 #: ./novaideo/content/processes/amendment_management/behaviors.py:510
@@ -567,7 +567,7 @@ msgstr ""
 #: ./novaideo/views/user_management/login.py:38
 #: ./novaideo/content/processes/user_management/definition.py:49
 #: ./novaideo/content/processes/user_management/definition.py:50
-#: ./novaideo/content/processes/user_management/behaviors.py:92
+#: ./novaideo/content/processes/user_management/behaviors.py:96
 msgid "Log in"
 msgstr ""
 
@@ -582,7 +582,7 @@ msgstr ""
 #: ./novaideo/views/user_management/reset_password.py:26
 #: ./novaideo/views/user_management/reset_password.py:89
 #: ./novaideo/content/processes/idea_management/behaviors.py:473
-#: ./novaideo/content/processes/invitation_management/behaviors.py:110
+#: ./novaideo/content/processes/invitation_management/behaviors.py:111
 msgid "Send"
 msgstr ""
 
@@ -603,7 +603,7 @@ msgstr ""
 #: ./novaideo/content/processes/invitation_management/definition.py:69
 #: ./novaideo/content/processes/user_management/definition.py:57
 #: ./novaideo/content/processes/user_management/definition.py:58
-#: ./novaideo/content/processes/user_management/behaviors.py:139
+#: ./novaideo/content/processes/user_management/behaviors.py:143
 #: ./novaideo/content/processes/proposal_management/definition.py:313
 #: ./novaideo/content/processes/amendment_management/definition.py:61
 #: ./novaideo/content/processes/organization_management/definition.py:54
@@ -635,7 +635,7 @@ msgstr ""
 #: ./novaideo/views/user_management/logout.py:24
 #: ./novaideo/content/processes/user_management/definition.py:53
 #: ./novaideo/content/processes/user_management/definition.py:54
-#: ./novaideo/content/processes/user_management/behaviors.py:110
+#: ./novaideo/content/processes/user_management/behaviors.py:114
 msgid "Log out"
 msgstr ""
 
@@ -1531,6 +1531,10 @@ msgstr ""
 msgid "Proposals to examine"
 msgstr ""
 
+#: ./novaideo/views/novaideo_view_manager/templates/search_result.pt:3
+msgid "elements found"
+msgstr ""
+
 #: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:56
 msgid ""
 "Vous avez atteint la limite de participations autorisées. Afin de pouvoir "
@@ -1984,11 +1988,11 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/behaviors.py:57
 #: ./novaideo/content/processes/idea_management/behaviors.py:96
 #: ./novaideo/content/processes/idea_management/behaviors.py:177
-#: ./novaideo/content/processes/invitation_management/behaviors.py:212
-#: ./novaideo/content/processes/invitation_management/behaviors.py:240
-#: ./novaideo/content/processes/invitation_management/behaviors.py:264
-#: ./novaideo/content/processes/user_management/behaviors.py:45
-#: ./novaideo/content/processes/user_management/behaviors.py:140
+#: ./novaideo/content/processes/invitation_management/behaviors.py:213
+#: ./novaideo/content/processes/invitation_management/behaviors.py:241
+#: ./novaideo/content/processes/invitation_management/behaviors.py:265
+#: ./novaideo/content/processes/user_management/behaviors.py:54
+#: ./novaideo/content/processes/user_management/behaviors.py:144
 #: ./novaideo/content/processes/ballot_processes/__init__.py:32
 #: ./novaideo/content/processes/proposal_management/behaviors.py:144
 #: ./novaideo/content/processes/proposal_management/behaviors.py:198
@@ -2087,7 +2091,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/invitation_management/definition.py:67
 #: ./novaideo/content/processes/invitation_management/definition.py:68
-#: ./novaideo/content/processes/invitation_management/behaviors.py:239
+#: ./novaideo/content/processes/invitation_management/behaviors.py:240
 msgid "Edit the invitation"
 msgstr ""
 
@@ -2116,7 +2120,7 @@ msgstr ""
 msgid "Remind the person"
 msgstr ""
 
-#: ./novaideo/content/processes/invitation_management/behaviors.py:163
+#: ./novaideo/content/processes/invitation_management/behaviors.py:164
 msgid "Plus"
 msgstr ""
 
@@ -2132,13 +2136,13 @@ msgstr ""
 
 #: ./novaideo/content/processes/user_management/definition.py:61
 #: ./novaideo/content/processes/user_management/definition.py:62
-#: ./novaideo/content/processes/user_management/behaviors.py:191
+#: ./novaideo/content/processes/user_management/behaviors.py:195
 msgid "Deactivate the profile"
 msgstr ""
 
 #: ./novaideo/content/processes/user_management/definition.py:65
 #: ./novaideo/content/processes/user_management/definition.py:66
-#: ./novaideo/content/processes/user_management/behaviors.py:226
+#: ./novaideo/content/processes/user_management/behaviors.py:230
 msgid "Activate the profile"
 msgstr ""
 
