@@ -14,7 +14,7 @@ from dace.util import find_entities
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.form import FormView
 from pontus.schema import select, Schema
-from pontus.widget import Select2WidgetCreateSearchChoice, Length
+from pontus.widget import Select2Widget, Length
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 
@@ -79,7 +79,7 @@ def members_choice(node, kw):
         prop.remove(user)
         
     values = [(i, i.name) for i in prop]
-    return Select2WidgetCreateSearchChoice(values=values, multiple=True)
+    return Select2Widget(values=values, create=True, multiple=True)
 
 
 @colander.deferred

@@ -23,7 +23,7 @@ from dace.descriptors import (
 from dace.util import getSite
 from pontus.schema import Schema
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import RichTextWidget, Select2WidgetCreateSearchChoice
+from pontus.widget import RichTextWidget, Select2Widget
 
 from novaideo import _
 from novaideo.content.interface import (
@@ -124,9 +124,10 @@ def keywords_choice(node, kw):
     root = getSite()
     prop = sorted(root.keywords, key=lambda p: p.title)
     values = [(i.title, i.title) for i in prop]
-    return Select2WidgetCreateSearchChoice(max_len=5,
-                                           values=values,
-                                           multiple=True)
+    return Select2Widget(max_len=5,
+                         values=values,
+                         create=True, 
+                         multiple=True)
 
 
 @colander.deferred
