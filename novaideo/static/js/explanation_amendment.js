@@ -62,14 +62,6 @@ function get_explanation_form(){
               return false;
 };
 
-function get_data3(selecteds){
-    var selecteds = jQuery.makeArray(selecteds);
-    var result= [];
-    for(i=0;i<selecteds.length; i++){
-       result[i] = selecteds[i].id
-    };
-    return result
-};
 
 function close_explanation(){
        var button = $(this);
