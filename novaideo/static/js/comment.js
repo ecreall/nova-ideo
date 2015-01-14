@@ -53,7 +53,7 @@ $(document).ready(function(){
         var button = $(this).find('button').last();
         var intention = $(this).find("select[name=\'intention\']").select2('val');
         var select_related_contents = $($(this).find("select[name='related_contents']").first());
-        var related_contents = get_data(select_related_contents.select2('data'));
+        var related_contents = get_data(select_related_contents.select2('val'));
         var textarea = $(this).find('textarea');
         var comment = textarea.val();
         var parent = $($(this).parents('.panel-body').first());
@@ -78,7 +78,7 @@ $(document).ready(function(){
                    textarea.val('');
                    select_related_contents.parents('.controled-form').first().addClass('hide-bloc');
                    $($(select_related_contents.parents('.controled-form').first()).find("input[name='associate']").first()).prop('checked', false);
-                   select_related_contents.select2('data', []);
+                   select_related_contents.select2('val', []);
                    init_select_association();
                    init_comment_scroll();
                   }else{

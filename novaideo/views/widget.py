@@ -64,7 +64,7 @@ class SimpleMappingtWidget(deform.widget.MappingWidget):
 
 
 class Select2WidgetSearch(Select2Widget):
-    template = 'novaideo:views/templates/select2.pt'
+    template = 'novaideo:views/templates/select2_search.pt'
     requirements = (('deform', None), ('select2search', None))
 
 
@@ -94,19 +94,19 @@ default_resource_registry.set_js_resources('addnewidea', None,
                          'novaideo:static/js/add_new_idea.js'  )
 
 default_resource_registry.set_js_resources('select2search', None, 
-           'pontus:static/select2/select2.js',
+           'pontus:static/select2/dist/js/select2.min.js',
            'novaideo:static/select2_search/select2_search.js'  )
 
 default_resource_registry.set_css_resources('select2search', None, 
-              'pontus:static/select2/select2.css',
+              'pontus:static/select2/dist/css/select2.min.css',
               'novaideo:static/select2_search/select2_search.css'  )
 
 default_resource_registry.set_js_resources('select2dragdrop', None, 
-                'pontus:static/select2/select2.js',
+                'pontus:static/select2/dist/js/select2.min.js',
                 'novaideo:static/js/dragdrop_select.js'  )
 
 default_resource_registry.set_css_resources('select2dragdrop', None, 
-                'pontus:static/select2/select2.css',
+                'pontus:static/select2/dist/css/select2.min.css',
                 'novaideo:static/select2_search/select2_search.css'  )
 
 default_resource_registry.set_js_resources('limitedtextarea', None, 
