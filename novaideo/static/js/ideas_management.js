@@ -1,3 +1,16 @@
+function get_data(select){
+    var i=0;
+    var data = []
+    $(select).find("option").each(function()
+    {
+        // log the value and text of each option
+        data.push({'id': $(this).val(), 'text': $(this).text()});
+    });
+
+    return data
+}
+
+
 /* init items: start*/
 function get_values(items){
     var values = {}
@@ -15,7 +28,7 @@ function get_values(items){
 function get_selecteds(select){
     var values = {}
     var selected_values = select.select2('val')
-    var datas = select.select2('data')
+    var datas = get_data(select)
     for(i in selected_values){
        values[i] = datas[i]             
     };
@@ -76,33 +89,37 @@ $(document).ready(function(){
   init_delitem();
   $('.controlled-items').on('delItem', function(event){
         var todel = -1;
-        var tab = $(this).select2('data');
-        for( o in tab)
+        var selected_values = $(this).select2('val');
+        for( o in selected_values)
         {
-          if(tab[o].id == event.itemid){todel=tab[o]}
+          if(selected_values[o] == event.itemid){todel=selected_values[o]}
          };
         if (todel != -1){
-          tab = jQuery.grep(tab, function(value) {
+          new_selected_values = jQuery.grep(selected_values, function(value) {
              return value != todel;
           });
-          $(this).select2('data', tab);
+          $(this).select2('val', new_selected_values);
         }
   });
 
   $('.controlled-items').on('AddItem', function(event){
-        var todel = -1;
-        var tab = $(this).select2('data');
-        for( o in tab)
+        var exists = false;
+        var selected_values = $(this).select2('val');
+        for( o in selected_values)
         {
-          if(tab[o].id == event.itemid){todel=tab[o]}
+          if(selected_values[o] == event.itemid){exists = true}
          };
-        if (todel == -1){
-
-            $(this).append($('<option>', {value: String(event.itemid), text: event.itemtitle}));
-            var selectedItems = $(this).select2("val");
-            selectedItems.push(String(event.itemid)); 
-            $(this).select2("val", selectedItems);
-         }
+        if (!exists){
+            $(this).append($('<option>', {value: String(event.itemid), 
+                                          text: event.itemtitle}));
+        };
+        var new_selected_values = selected_values;
+        if (new_selected_values == null){
+               new_selected_values = []
+        };
+        new_selected_values.push(String(event.itemid)); 
+        $(this).select2("val", new_selected_values);
+         
   });
 
 
@@ -111,13 +128,13 @@ $(document).ready(function(){
         if (this.checked) {
             form.find('.new-idea-form').removeClass('hide-bloc');
             var search_form = $(form.find('.search-idea-form'))
-            search_form.find('.select2-offscreen').select2("enable", false);
+            search_form.find('select').prop("disabled", true);
             $(search_form.find('.select-search input')).attr('disabled', true)
             $(search_form.find('.select-search button')).addClass('disabled')            
         }else{
             form.find('.new-idea-form').addClass('hide-bloc');           
             var search_form = $(form.find('.search-idea-form'))
-            search_form.find('.select2-offscreen').select2("enable", true);
+            search_form.find('select').prop("disabled", false);
             $(search_form.find('.select-search input')).attr('disabled', false)
             $(search_form.find('.select-search button')).removeClass('disabled')
         }
@@ -163,7 +180,7 @@ $(document).ready(function(){
                          'keywords': keywords,
                          'op': 'creat_idea'};
          }else{
-            oid = $($(form).find('div.search-idea-form select.select2-offscreen')).select2('val');
+            oid = $($(form).find('div.search-idea-form select')).select2('val');
             var new_items = related_ideas.find('span[data-id=\"'+oid+'\"]');
             if (new_items.length>0)
             {
@@ -206,7 +223,7 @@ $(document).ready(function(){
                   newideaform.find('textarea[name="text"]').val('');
                   $(newideaform.find('select[name="keywords"]')).select2('val', []);
                }else{
-                 $($(form).find('div.search-idea-form select.select2-offscreen')).select2('val', '')
+                 $($(form).find('div.search-idea-form select')).select2('val', '')
                }
              }else{
                 danger_messages_container.text( novaideo_translate("The idea is not added!") ).show().fadeOut( 6000 );

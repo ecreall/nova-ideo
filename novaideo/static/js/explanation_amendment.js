@@ -62,7 +62,7 @@ function get_explanation_form(){
               return false;
 };
 
-function get_data(selecteds){
+function get_data3(selecteds){
     var selecteds = jQuery.makeArray(selecteds);
     var result= [];
     for(i=0;i<selecteds.length; i++){
@@ -90,11 +90,11 @@ function submit_explanation(){
        var commentmessagesuccess = target.find('#messagesuccess');
        var commentmessagedanger = target.find('#messagedanger');
        var comment = $(intention_form.find("textarea[name='comment']").first()).val();
-       var related_ideas = $(intention_form.find("select[name='related_ideas']").first()).select2('data');
+       var related_ideas = $(intention_form.find("select[name='related_ideas']").first()).select2('val');
        var relatedexplanation = $(form.find("select[name='relatedexplanation']").first()).select2('val');
        if (!(typeof relatedexplanation == "string")){relatedexplanation=""};
        var datas = {'comment': comment,
-                   'related_ideas' : get_data(related_ideas),
+                   'related_ideas' : related_ideas,
                    'relatedexplanation': relatedexplanation,
                    'item':item
                   };
