@@ -19,9 +19,28 @@
         border-radius: 0 2px 2px 0;   
     }
 
-    .form-control.select2-container {
+    select.form-control {
         height: auto !important;
         padding: 0px;
+        display: inline;
+    }
+
+    .form-group .select2-container--default .select2-selection--single .select2-selection__arrow {
+        background: -moz-linear-gradient(center bottom , #ccc 0%, #eee 60%) repeat scroll 0 0 #ccc;
+        border-left: 1px solid #aaa;
+        border-radius: 0 2px 2px 0;
+        float: right !important;
+        height: 100%;
+        left: 0;
+        position: relative;
+        top: -28px;
+        width: 20px;
+    }
+
+    .form-group .select2-container {
+        height: auto !important;
+        padding: 0px;
+        display: inline;
     }
 
     .form-control.select2-container.select2-dropdown-open {
@@ -85,12 +104,7 @@
        <div tal:omit-tag="" tal:condition="field.widget.create" >
        var init_ops = {tokenSeparators: [","], 
                        containerCssClass: 'form-control',
-                       createSearchChoice:function(term, data) {
-                                 if ($(data).filter(function() {
-                                       return this.text.localeCompare(term)===0; 
-                                       }).length===0) { return {id:term, text:term};} }};
-       $('#' + oid).on('selected',function(data){select_option(oid, data)});
-       $('#' + oid).on('removed',function(data){unselect_option(oid, data)});
+                       tags: true};
        $('#' + oid).select2(init_ops);
        </div>
        <div tal:omit-tag="" tal:condition="not field.widget.create" >
