@@ -26,15 +26,15 @@
     }
 
     .form-group .select2-container--default .select2-selection--single .select2-selection__arrow {
-        background: -moz-linear-gradient(center bottom , #ccc 0%, #eee 60%) repeat scroll 0 0 #ccc;
         border-left: 1px solid #aaa;
         border-radius: 0 2px 2px 0;
+        display: block;
         float: right !important;
-        height: 100%;
         left: 0;
         position: relative;
-        top: -28px;
+        top: -15px;
         width: 20px;
+        height: 0;
     }
 
     .form-group .select2-container {
