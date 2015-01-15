@@ -115,7 +115,7 @@ AMENDMENTS_CYCLE_DEFAULT_DURATION = {
 
 def calculate_amendments_cycle_duration(process):
     duration_ballot = getattr(process, 'duration_configuration_ballot', None)
-    if duration_ballot is not None:
+    if duration_ballot is not None and duration_ballot.report.voters:
         electeds = duration_ballot.report.get_electeds()
         if electeds:
             return AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]] + \
