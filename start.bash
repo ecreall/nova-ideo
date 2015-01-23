@@ -1,11 +1,15 @@
 #!/bin/bash
 sed -i 's@/tmp/build@/app@' develop-eggs/* bin/*
+MAIL_HOST="${MAIL_HOST:-localhost}"
+MAIL_PORT="${MAIL_PORT:-25}"
+MAIL_DEFAULT_SENDER="${MAIL_DEFAULT_SENDER:-site@example.com}"
 SECRET="${SECRET:-dreevTatUk9}"
-SENDER="${SENDER:-site@example.com}"
 APPLICATION_URL="${APPLICATION_URL:-novaideo-applicationurl}"
 sed -i \
+    -e "s|MAIL_HOST|$MAIL_HOST|" \
+    -e "s|MAIL_PORT|$MAIL_PORT|" \
+    -e "s|MAIL_DEFAULT_SENDER|$MAIL_DEFAULT_SENDER|" \
     -e "s|SECRET|$SECRET|" \
-    -e "s|SENDER|$SENDER|" \
     -e "s|APPLICATION_URL|$APPLICATION_URL|" \
     production-heroku.ini
 exec bin/gunicorn --forwarded-allow-ips="172.17.42.1" --paste production-heroku.ini
