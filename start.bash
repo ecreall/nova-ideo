@@ -1,7 +1,7 @@
 #!/bin/bash
 sed -i 's@/tmp/build@/app@' develop-eggs/* bin/*
-MAIL_HOST="${MAIL_HOST:-localhost}"
-MAIL_PORT="${MAIL_PORT:-25}"
+MAIL_HOST="${MAIL_PORT_25_TCP_ADDR:-localhost}"
+MAIL_PORT="${MAIL_PORT_25_TCP_PORT:-25}"
 MAIL_DEFAULT_SENDER="${MAIL_DEFAULT_SENDER:-site@example.com}"
 SECRET="${SECRET:-dreevTatUk9}"
 APPLICATION_URL="${APPLICATION_URL:-novaideo-applicationurl}"
