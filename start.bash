@@ -12,4 +12,5 @@ sed -i \
     -e "s|SECRET|$SECRET|" \
     -e "s|APPLICATION_URL|$APPLICATION_URL|" \
     production-heroku.ini
+mkdir -p var/filestorage var/blobstorage
 exec bin/gunicorn --forwarded-allow-ips="172.17.42.1" --paste production-heroku.ini
