@@ -1,0 +1,26 @@
+postfix:
+  image: catatnight/postfix
+  environment:
+    - maildomain=local.ecreall.com
+  ports:
+    - "25:25"
+novaideo:
+  build: .
+  environment:
+    - SECRET=mybigsecret
+    - APPLICATION_URL=http://local.ecreall.com:8080
+    - MAIL_DEFAULT_SENDER=contact@example.com
+#  ports:
+#   - "5000:5000"
+  volumes:
+    - var:/app/var
+  links:
+   - postfix:mail
+nginx:
+  image: nginx
+  volumes:
+    - nginx.conf:/etc/nginx/conf.d/microblogging.conf:ro
+  ports:
+    - "8080:80"
+  links:
+    - novaideo:app
