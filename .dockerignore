@@ -1,8 +1,8 @@
 *.swp
-.gitignore
 .installed.cfg
 .mr.developer.cfg
 bin
+cache
 develop-eggs
 novaideo.egg-info
 parts

@@ -2,6 +2,7 @@
 *.pyc
 *~
 .directory
-src/
-__pycache__
 .env
+__pycache__
+cache
+src/
