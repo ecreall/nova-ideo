@@ -18,6 +18,7 @@ With Docker and Docker Compose (for local tests only)::
 
   mkvirtualenv compose
   pip install --pre docker-compose
+  make
   docker-compose up
 
 The app is deployed on http://local.ecreall.com:8080
@@ -45,8 +46,8 @@ Requirements:
   ssh dokku@dokku.me config:set $APP MAIL_DEFAULT_SENDER=contact@example.com
   ssh dokku@dokku.me link:create $APP postfix mail
   ssh to the server and execute:
-      sudo -u dokku mkdir -p /home/dokku/$APP/.volumes/var/{filestorage,blobstorage}
-      sudo -u dokku chmod 700 /home/dokku/$APP/.volumes/var/blobstorage
+      APP=novaideo
+      sudo -u dokku mkdir -p /home/dokku/$APP/.volumes/var
   ssh dokku@dokku.me docker-options:add $APP "-v /home/dokku/$APP/.volumes/var:/app/var"
   git remote add deploy dokku@dokku.me:$APP
   git push deploy master
