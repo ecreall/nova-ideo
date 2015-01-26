@@ -7,7 +7,7 @@ CACHE_DIR="$PWD/cache"
 [[ -d $CACHE_DIR ]] || mkdir $CACHE_DIR
 
 # Place the app inside the container. If you already have app inside your tar, use /bin/bash -c "tar -x"
-ID=$(cat | docker run -i -a stdin progrium/buildstep /bin/bash -c "mkdir -p /app && tar -xC /app")
+ID=$(cat | docker run -i -a stdin progrium/buildstep /bin/bash -c "mkdir -p /app && tar -xC /app && mkdir -p /tmp/env && echo heroku.cfg >/tmp/env/BUILDOUT_CFG")
 test $(docker wait $ID) -eq 0
 docker commit $ID $NAME $TAG > /dev/null
 
