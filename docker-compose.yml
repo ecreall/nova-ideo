@@ -5,7 +5,8 @@ postfix:
   ports:
     - "25:25"
 novaideo:
-  build: .
+#  build: .
+  image: ecreall/novaideo
   environment:
     - SECRET=mybigsecret
     - APPLICATION_URL=http://local.ecreall.com:8080
