@@ -1,7 +1,7 @@
 postfix:
-  image: catatnight/postfix
+  image: ecreall/postfix
   environment:
-    - maildomain=local.ecreall.com
+    - DOMAINNAME=nova-ideo.com
   ports:
     - "25:25"
 novaideo:
