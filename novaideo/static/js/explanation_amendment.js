@@ -83,8 +83,11 @@ function submit_explanation(){
        var commentmessagedanger = target.find('#messagedanger');
        var comment = $(intention_form.find("textarea[name='comment']").first()).val();
        var related_ideas = $(intention_form.find("select[name='related_ideas']").first()).select2('val');
-       var relatedexplanation = $(form.find("select[name='relatedexplanation']").first()).select2('val');
-       if (!(typeof relatedexplanation == "string")){relatedexplanation=""};
+       var relatedexplanation = "";
+       var relatedexplanation_tag = $(form.find("select[name='relatedexplanation']").first());
+       if(relatedexplanation_tag.length > 0){
+        relatedexplanation = relatedexplanation_tag.select2('val');
+       };
        var datas = {'comment': comment,
                    'related_ideas' : related_ideas,
                    'relatedexplanation': relatedexplanation,
