@@ -42,12 +42,9 @@ Requirements:
   ssh dokku@dokku.me apps:create $APP
   ssh dokku@dokku.me config:set $APP BUILDOUT_CFG=heroku.cfg
   ssh dokku@dokku.me config:set $APP SECRET=mybigsecret
-  ssh dokku@dokku.me config:set $APP APPLICATION_URL=https://novaideo.dokku.me
+  ssh dokku@dokku.me config:set $APP APPLICATION_URL=https://$APP.dokku.me
   ssh dokku@dokku.me config:set $APP MAIL_DEFAULT_SENDER=contact@example.com
   ssh dokku@dokku.me link:create $APP postfix mail
-  ssh to the server and execute:
-      APP=novaideo
-      sudo -u dokku mkdir -p /home/dokku/$APP/.volumes/var
   ssh dokku@dokku.me docker-options:add $APP "-v /home/dokku/$APP/.volumes/var:/app/var"
   git remote add deploy dokku@dokku.me:$APP
   git push deploy master
