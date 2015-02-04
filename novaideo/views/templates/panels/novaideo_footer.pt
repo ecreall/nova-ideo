@@ -13,7 +13,4 @@
            </div>
           </div>
         </div>
-        <span class="global-pilot">
-          <img src="${request.static_url('novaideo:static/images/pilote.png')}">
-        </span>
     </div>
