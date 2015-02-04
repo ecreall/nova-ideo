@@ -194,15 +194,7 @@ class SearchResultView(BasicView):
     name = ''
     validators = [Search.get_validator()]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
-    alert_anonymou_template = 'novaideo:views/novaideo_view_manager/templates/alert_anonymous.pt'
     viewid = 'search_result'
-  
-    def add_first_visit_alert(self, user):
-        if isinstance(user, Anonymous) and \
-           not self.request.cookies.get('visited', False):
-            alert_body = self.content(result={},
-                        template=self.alert_anonymou_template)['body']
-            self.request.session.flash(alert_body, 'warning')
 
     def update(self):
         user = get_current()
@@ -241,7 +233,6 @@ class SearchResultView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         result  = merge_dicts(self.requirements_copy, result)
-        self.add_first_visit_alert(user)
         return result
 
     def before_update(self):
