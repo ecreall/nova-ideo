@@ -1,0 +1,16 @@
+<div>
+	<p tal:condition="request.view_name == 'seemycontents'">
+    Vous retrouvez dans « Mes contenus », les idées et les propositions dont vous avez été l'auteur ou les propositions qui ont été soumises à appréciation par un groupe de travail dont vous avez été l'un des participants.
+    </p>
+    <p tal:condition="request.view_name == 'seemyparticipations'">
+	Vous retrouvez dans « Mes groupes de travail », les propositions pour lesquelles vous intervenez actuellement en tant que participant.
+    </p>
+    <p tal:condition="request.view_name == 'seemyselections'">
+    Vous retrouvez dans « Mes favoris », toutes les idées, les propositions, les membres que vous avez préalablement mis en favori.
+    </p>
+    <p tal:condition="request.view_name == 'seemysupports'">
+    Vous retrouvez dans « Mes appréciations », les propositions soumises à appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées. Vous disposez en tout de sept jetons d'appréciations, soutiens ou oppositions, que vous êtes libre à tout moment d'allouer ou de retirer. 
+
+	Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions dont vous avez l'un des participants sans que cette appréciation soit décomptée de vos sept jetons d'appréciation initiaux. Une fois allouée, cette appréciation ne peut plus en revanche être retirée.
+    </p>
+</div>

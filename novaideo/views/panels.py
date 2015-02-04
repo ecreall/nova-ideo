@@ -463,3 +463,39 @@ class Deadline_panel(object):
                 'current_date': current_date,
                 'previous_deadline': previous_deadline,
                 'condition': True}
+
+from novaideo.contextual_help_messages import CONTEXTUAL_HELP_MESSAGES
+
+@panel_config(
+    name='contextual_help',
+    context = Entity ,
+    renderer='templates/panels/contextual_help.pt'
+    )
+class ContextualHelp(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        if not self.request.cookies.get('contextual_help', True):
+            return {'condition': False}
+
+        user = get_current()
+        messages = [CONTEXTUAL_HELP_MESSAGES.get((self.context.__class__, 
+                                                  s, self.request.view_name), 
+                                                 None) \
+                    for s in self.context.state]
+        messages.append(CONTEXTUAL_HELP_MESSAGES.get(
+                        (self.context.__class__, 'any', self.request.view_name),
+                        None))
+        messages = [m for m in messages if m is not None]
+        messages = [item for sublist in messages for item in sublist]
+        messages = sorted(messages, key=lambda m: m[2])
+        messages = [ renderers.render(m[1],
+                      {'context':self.context,
+                       'user': user},
+                      self.request) for m in messages \
+                    if m[0] is None or m[0](self.context, user)]
+        return {'messages': messages,
+                'condition': True}

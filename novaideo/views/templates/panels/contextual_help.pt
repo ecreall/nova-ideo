@@ -1,0 +1,7 @@
+
+<div tal:condition="condition and messages" class="contextual-help alert alert-warning">
+	<span class="glyphicon glyphicon-info-sign pull-right"></span>
+  <ul class="list-unstyled">
+  	<li tal:repeat="message messages"> ${structure:message}</li>
+  </ul>    
+</div>
