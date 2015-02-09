@@ -8,11 +8,11 @@
       <div class="modal-body">
       <dl >
         <dt i18n:translate="">Explanation</dt>
-	<dd>${structure:data['comment']}</dd>
-        <div tal:omit-tag="" tal:condition="data['related_ideas']">
+	<dd>${structure:data.get('comment', '')}</dd>
+        <div tal:omit-tag="" tal:condition="data.get('related_ideas', [])">
           <dt i18n:translate="">Related ideas</dt>
 	  <dd>
-            <tal:loop repeat="idea data['related_ideas']">
+            <tal:loop repeat="idea data.get('related_ideas', [])">
                <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
                <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
             </tal:loop>
