@@ -552,7 +552,7 @@ class Associate(InfiniteCardinality):
 
 def seeidea_processsecurity_validation(process, context):
     return ('published' in context.state or has_role(role=('Owner', context))) or \
-           ('submited' in context.state or has_role(role=('Moderator',))) 
+           ('submited' in context.state and has_role(role=('Moderator',))) 
 
 
 @acces_action()
