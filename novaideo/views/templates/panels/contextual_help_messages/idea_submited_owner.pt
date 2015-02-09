@@ -1,5 +1,14 @@
 <div>
-<p>
-Votre idée est dorénavant soumise à modération. Le modérateur pourra soit la publier, soit l'archiver. Dans ce second cas, vous devrez préalablement la retravailler avant de la soumettre de nouveau pour publication. Si elle est archivée, une explication vous est donnée par le modérateur.
-</p>
+    <p>
+        Votre idée est soumise à modération.
+    </p>
+    <p>
+        Pour pouvoir être publiées, les idées sont soumises à modération. Les modérateurs peuvent décider soit de les publier, soit de les archiver.
+    </p>
+    <p>
+        Quelque soit les décisions, des notifications par courriel sont envoyées aux auteurs des idées.
+    </p>
+    <p>
+        Si votre idée est archivée, une explication vous est apportée et vous devrez préalablement la retravailler avant de la soumettre de nouveau pour publication.
+    </p>
 </div>
