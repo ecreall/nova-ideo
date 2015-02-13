@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-13 15:58+0100\n"
+"POT-Creation-Date: 2015-02-13 16:49+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1457,12 +1457,40 @@ msgstr ""
 msgid "The intention of changes"
 msgstr "L'intention des modifications"
 
-#: novaideo/views/novaideo_view_manager/see_my_selections.py:30
+#: novaideo/views/novaideo_view_manager/see_my_selections.py:24
+msgid "Aucune éléments en favori"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_selections.py:25
+msgid "Un élément en favori"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_selections.py:26
+#, python-format
+msgid "${nember} éléments en favori"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_selections.py:35
 #: novaideo/content/processes/novaideo_view_manager/definition.py:56
 msgid "My favorites"
 msgstr "Mes favoris"
 
+#: novaideo/views/novaideo_view_manager/see_my_supports.py:26
+#, python-format
+msgid "Aucune propositions appréciées et ${tokens} jeton(s) d'appréciation restant(s)"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_supports.py:28
+#, python-format
+msgid "Une proposition appréciée et ${tokens} jeton(s) d'appréciation restant(s)"
+msgstr ""
+
 #: novaideo/views/novaideo_view_manager/see_my_supports.py:30
+#, python-format
+msgid "${nember} propositions appréciées et ${tokens} jeton(s) d'appréciation restant(s)"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_supports.py:41
 #: novaideo/content/processes/novaideo_view_manager/definition.py:64
 msgid "My supports"
 msgstr "Mes appréciations"
@@ -1500,12 +1528,38 @@ msgstr "Contenus de ${novaideo_title}"
 msgid "The keyword search is done using commas between keywords."
 msgstr "Pour les recherches sur plusieurs mots, il faut mettre des virgules entre les mots."
 
-#: novaideo/views/novaideo_view_manager/see_my_contents.py:30
+#: novaideo/views/novaideo_view_manager/see_my_contents.py:27
+msgid "Aucun contenus auxquels j'ai contribué"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_contents.py:28
+msgid "Un contenu auquel j'ai contribué"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_contents.py:29
+#, python-format
+msgid "${nember} contenus auxquels j'ai contribué"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_contents.py:39
 #: novaideo/content/processes/novaideo_view_manager/definition.py:52
 msgid "My contents"
 msgstr "Mes contenus"
 
-#: novaideo/views/novaideo_view_manager/see_my_participations.py:30
+#: novaideo/views/novaideo_view_manager/see_my_participations.py:25
+msgid "Aucune participations"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_participations.py:26
+msgid "Un groupe de travail auquel j'ai participé"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_participations.py:27
+#, python-format
+msgid "${nember} groupes de travail auxquels j'ai participé"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/see_my_participations.py:37
 #: novaideo/content/processes/novaideo_view_manager/definition.py:60
 msgid "My participations"
 msgstr "Mes groupes de travail"
@@ -1523,8 +1577,8 @@ msgid "Proposals to examine"
 msgstr "Les propositions à examiner"
 
 #: novaideo/views/novaideo_view_manager/templates/search_result.pt:3
-msgid "elements found"
-msgstr "elements trouvés"
+msgid "element(s) found"
+msgstr "element(s) trouvé(s)"
 
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:56
 msgid "Vous avez atteint la limite de participations autorisées. Afin de pouvoir soumettre votre proposition, veuillez démissionner de l'un de"
