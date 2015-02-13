@@ -279,6 +279,23 @@ $(document).ready(function(){
     });
   
   initscroll();
+
+
+  $('.working-group-toggle').on('click', function(){
+      var wg_section_title = $($($(this).parents('.media-body').first()).find('.working-group-section-title').first());
+      var wg_section_body = $($($(this).parents('.media-body').first()).find('.working-group-section-body').first());
+      if(wg_section_title.hasClass('hide-bloc')){
+        wg_section_title.removeClass('hide-bloc');
+        wg_section_body.removeClass('hide-bloc');
+      }else{
+        wg_section_title.addClass('hide-bloc');
+        wg_section_body.addClass('hide-bloc');
+      };
+      
+      resize_search_result();
+      init_result_scroll();
+        
+  });
 });
 
 
