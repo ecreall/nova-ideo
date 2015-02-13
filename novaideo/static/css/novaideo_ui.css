@@ -712,8 +712,8 @@ ins {
 }
 
 .label-basic {
-    border: 1px solid steelblue;
-    color: steelblue;
+    border: 1px solid #cfcfcf;
+    color: #979797;
     background-color: white;
     font-size: 65%;
 
