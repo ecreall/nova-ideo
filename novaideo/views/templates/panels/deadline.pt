@@ -2,9 +2,12 @@
     <div class="col-md-2"></div>
 	<div class="col-md-7">
 		<div class="deadline-panel ${expired and 'alert-danger' or 'alert-warning'}">
-		   <strong tal:condition="expired" i18n:translate="">Deadline expired:</strong>
-       <strong tal:condition="not expired" i18n:translate="">Deadline:</strong>
-		   <span class="pull-right">Du <strong tal:content="layout.to_localized_time(previous_deadline, date_only=True)"/> au <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/></span>
+		   <strong tal:condition="expired">
+        <span i18n:translate="">The review committee held recently the</span> <strong tal:content="layout.to_localized_time(previous_deadline, date_only=True)"/>, <span i18n:translate="">no new fixed examination date.</span>
+      </strong>
+       <strong tal:condition="not expired">
+        <span i18n:translate="">The review committee is scheduled to meet the</span> : <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>
+       </strong>
            <div class="progress progress-striped">
              <div class="progress-bar ${expired and 'progress-bar-danger' or 'progress-bar-warning'} " role="progressbar" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100" style="width: ${percent}%;">
                 <span class="sr-only">${percent}% Complete</span>

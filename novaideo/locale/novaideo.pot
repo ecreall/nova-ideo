@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-02-13 11:02+0100\n"
+"POT-Creation-Date: 2015-02-13 11:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1288,12 +1288,16 @@ msgstr ""
 msgid "Electors"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/deadline.pt:9
-msgid "Deadline expired:"
+#: ./novaideo/views/templates/panels/deadline.pt:11
+msgid "The review committee held recently the"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/deadline.pt:12
-msgid "Deadline:"
+#: ./novaideo/views/templates/panels/deadline.pt:14
+msgid "no new fixed examination date."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/deadline.pt:21
+msgid "The review committee is scheduled to meet the"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/steps.pt:47

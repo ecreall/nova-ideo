@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-13 11:02+0100\n"
+"POT-Creation-Date: 2015-02-13 11:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1253,13 +1253,17 @@ msgstr ""
 msgid "Electors"
 msgstr "Participants au vote"
 
-#: novaideo/views/templates/panels/deadline.pt:9
-msgid "Deadline expired:"
-msgstr "Échéance expirée:"
+#: novaideo/views/templates/panels/deadline.pt:11
+msgid "The review committee held recently the"
+msgstr "Le comité d'examen s'est tenu en dernier lieu le"
 
-#: novaideo/views/templates/panels/deadline.pt:12
-msgid "Deadline:"
-msgstr "Échéance:"
+#: novaideo/views/templates/panels/deadline.pt:14
+msgid "no new fixed examination date."
+msgstr "il n'y a pas de nouvelle date d'examen fixée."
+
+#: novaideo/views/templates/panels/deadline.pt:21
+msgid "The review committee is scheduled to meet the"
+msgstr "Le comité d'examen a prévu de se réunir le"
 
 #: novaideo/views/templates/panels/steps.pt:47
 msgid "Collection of the idea"
@@ -2391,3 +2395,8 @@ msgstr ""
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
 
+#~ msgid "Deadline expired:"
+#~ msgstr "Échéance expirée:"
+
+#~ msgid "Deadline:"
+#~ msgstr "Échéance:"
