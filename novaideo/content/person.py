@@ -115,9 +115,13 @@ def get_locales():
 _LOCALES = get_locales()
 
 
+_LOCALES_TITLES = {'en': 'English',
+                   'fr': 'Français'}
+
+
 @colander.deferred
 def locale_widget(node, kw):
-    locales = zip(_LOCALES, _LOCALES)
+    locales = [(l, _LOCALES_TITLES.get(l, l)) for l in _LOCALES]
     sorted_locales = sorted(locales)
     return Select2Widget(values=sorted_locales)
 
