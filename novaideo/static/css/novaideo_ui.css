@@ -54,8 +54,8 @@ body{
 
 .global-actions-menu a {
     width: 271px;
+    font-weight: bold;
 }
-
 
 #footer {
     background: none repeat scroll 0 0 #e7e7e7;
@@ -494,7 +494,7 @@ ins {
 }
 
 .navbar-entity .nav > li > a {
-    background-image: linear-gradient(to bottom, #d9eaf9 -100%, #9bbcd8 88%);
+    background-image: linear-gradient(to bottom, #d9eaf9 -100%, #428bca 88%);
     background-repeat: repeat-x;
     border-color: #ddd;
     border-radius: 0;
