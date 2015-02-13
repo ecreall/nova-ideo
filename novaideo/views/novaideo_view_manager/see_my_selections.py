@@ -21,6 +21,11 @@ from novaideo.content.processes import get_states_mapping
 from novaideo.core import BATCH_DEFAULT_SIZE
 
 
+MY_CONTENTS_MESSAGES = {'0': _(u"""Aucune éléments en favori"""),
+                        '1': _(u"""Un élément en favori"""),
+                        '*': _(u"""${nember} éléments en favori""")}
+
+
 @view_config(
     name='seemyselections',
     context=NovaIdeoApplication,
@@ -36,17 +41,10 @@ class SeeMySelectionsView(BasicView):
     def update(self):
         self.execute(None) 
         user = get_current()
-        objects = [o for o in getattr(user, 'selections', []) \
-                   if not('archived' in o.state)]
-        objects = sorted(objects, 
-                         key=lambda e: getattr(e, 'modified_at', 
-                                               datetime.datetime.today()),
-                         reverse=True)
+        objects = self.objects
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_selections"
         len_result = batch.seqlen
-
-
         result_body = []
         for obj in batch:
             state = None
@@ -70,6 +68,23 @@ class SeeMySelectionsView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
+
+    def before_update(self):
+        user = get_current()
+        objects = [o for o in getattr(user, 'selections', []) \
+                   if not('archived' in o.state)]
+        objects = sorted(objects, 
+                         key=lambda e: getattr(e, 'modified_at', 
+                                               datetime.datetime.today()),
+                         reverse=True)
+        self.objects = objects
+        len_contents = len(objects)
+        index = str(len_contents)
+        if len_contents > 1:
+            index = '*'
+
+        self.title = _(MY_CONTENTS_MESSAGES[index], 
+                       mapping={'nember': len_contents})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeMySelections:SeeMySelectionsView})

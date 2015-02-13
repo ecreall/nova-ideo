@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
@@ -21,6 +22,14 @@ from novaideo.content.processes import get_states_mapping
 from novaideo.core import BATCH_DEFAULT_SIZE
 
 
+
+MY_CONTENTS_MESSAGES = {
+        '0': _(u"""Aucun contenus auxquels j'ai contribué"""),
+        '1': _(u"""Un contenu auquel j'ai contribué"""),
+        '*': _(u"""${nember} contenus auxquels j'ai contribué""")
+                        }
+
+
 @view_config(
     name='seemycontents',
     context=NovaIdeoApplication,
@@ -36,11 +45,7 @@ class SeeMyContentsView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        objects = [o for o in getattr(user, 'contents', [])]
-        objects = sorted(objects, 
-                         key=lambda e: getattr(e, 'modified_at', 
-                                               datetime.datetime.today()),
-                         reverse=True)
+        objects = self.objects
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_contents"
         len_result = batch.seqlen
@@ -59,11 +64,28 @@ class SeeMyContentsView(BasicView):
                 'bodies': result_body,
                 'length': len_result,
                 'batch': batch,
+                'add_message': False
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
+
+    def before_update(self):
+        user = get_current()
+        objects = [o for o in getattr(user, 'contents', [])]
+        objects = sorted(objects, 
+                         key=lambda e: getattr(e, 'modified_at', 
+                                               datetime.datetime.today()),
+                         reverse=True)
+        self.objects = objects
+        len_contents = len(objects)
+        index = str(len_contents)
+        if len_contents > 1:
+            index = '*'
+
+        self.title = _(MY_CONTENTS_MESSAGES[index], 
+                       mapping={'nember': len_contents})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeMyContents:SeeMyContentsView})

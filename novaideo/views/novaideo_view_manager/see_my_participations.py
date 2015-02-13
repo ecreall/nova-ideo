@@ -21,6 +21,13 @@ from novaideo.content.processes import get_states_mapping
 from novaideo.core import BATCH_DEFAULT_SIZE
 
 
+MY_CONTENTS_MESSAGES = {
+        '0': _(u"""Aucune participations"""),
+        '1': _(u"""Un groupe de travail auquel j'ai participé"""),
+        '*': _(u"""${nember} groupes de travail auxquels j'ai participé""")
+                        }
+
+
 @view_config(
     name='seemyparticipations',
     context=NovaIdeoApplication,
@@ -36,12 +43,7 @@ class SeeMyParticipationsView(BasicView):
     def update(self):
         self.execute(None) 
         user = get_current()
-        objects = [o for o in getattr(user, 'participations', []) \
-                   if not('archived' in o.state)]
-        objects = sorted(objects, 
-                         key=lambda e: getattr(e, 'modified_at', 
-                                               datetime.datetime.today()), 
-                         reverse=True)
+        objects = self.objects
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_participations"
         len_result = batch.seqlen
@@ -65,6 +67,23 @@ class SeeMyParticipationsView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
+
+    def before_update(self):
+        user = get_current()
+        objects = [o for o in getattr(user, 'participations', []) \
+                   if not('archived' in o.state)]
+        objects = sorted(objects, 
+                         key=lambda e: getattr(e, 'modified_at', 
+                                               datetime.datetime.today()), 
+                         reverse=True)
+        self.objects = objects
+        len_contents = len(objects)
+        index = str(len_contents)
+        if len_contents > 1:
+            index = '*'
+
+        self.title = _(MY_CONTENTS_MESSAGES[index], 
+                       mapping={'nember': len_contents})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeMyParticipations:SeeMyParticipationsView})

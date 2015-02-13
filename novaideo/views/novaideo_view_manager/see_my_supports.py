@@ -21,6 +21,17 @@ from novaideo.content.processes import get_states_mapping
 from novaideo.core import BATCH_DEFAULT_SIZE
 
 
+
+MY_CONTENTS_MESSAGES = {
+    '0': _(u"""Aucune propositions appréciées """
+          u"""et ${tokens} jeton(s) d'appréciation restant(s)"""),
+    '1': _(u"""Une proposition appréciée """
+            u"""et ${tokens} jeton(s) d'appréciation restant(s)"""),
+    '*': _(u"""${nember} propositions appréciées """
+            u"""et ${tokens} jeton(s) d'appréciation restant(s)""")
+                        }
+
+
 @view_config(
     name='seemysupports',
     context=NovaIdeoApplication,
@@ -36,12 +47,7 @@ class SeeMySupportsView(BasicView):
     def update(self):
         self.execute(None) 
         user = get_current()
-        objects = [o for o in getattr(user, 'supports', []) \
-                   if not('archived' in o.state)]
-        objects = sorted(objects, 
-                         key=lambda e: getattr(e, 'modified_at', 
-                                               datetime.datetime.today()), 
-                         reverse=True)
+        objects = self.objects
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_supports"
         len_result = batch.seqlen
@@ -65,6 +71,26 @@ class SeeMySupportsView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
+
+    def before_update(self):
+        user = get_current()
+        objects = [o for o in getattr(user, 'supports', []) \
+                   if not('archived' in o.state)]
+        objects = sorted(objects, 
+                         key=lambda e: getattr(e, 'modified_at', 
+                                               datetime.datetime.today()), 
+                         reverse=True)
+        self.objects = objects
+        len_contents = len(objects)
+        index = str(len_contents)
+        if len_contents > 1:
+            index = '*'
+
+        self.title = _(MY_CONTENTS_MESSAGES[index] , 
+                       mapping={
+                          'nember': len_contents,
+                          'tokens': len(getattr(user, 'tokens', []))
+                           })
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeMySupports:SeeMySupportsView})
