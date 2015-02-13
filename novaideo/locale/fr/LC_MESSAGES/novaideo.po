@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-13 16:49+0100\n"
+"POT-Creation-Date: 2015-02-13 17:06+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -943,7 +943,7 @@ msgstr "Noter une nouvelle idée"
 
 #: novaideo/views/proposal_management/edit_proposal.py:45
 #: novaideo/views/amendment_management/explanation_amendment.py:26
-#: novaideo/views/novaideo_view_manager/search.py:269
+#: novaideo/views/novaideo_view_manager/search.py:277
 #: novaideo/content/correlation.py:54
 #: novaideo/content/idea.py:44
 #: novaideo/content/comment.py:33
@@ -1515,14 +1515,23 @@ msgstr "Membres"
 msgid "Search"
 msgstr "Rechercher"
 
-#: novaideo/views/novaideo_view_manager/search.py:204
+#: novaideo/views/novaideo_view_manager/search.py:199
+msgid "No element found"
+msgstr "Pas d'éléments trouvés"
+
+#: novaideo/views/novaideo_view_manager/search.py:200
+msgid "One element found"
+msgstr "Un élément trouvé"
+
+# python-format
+#: novaideo/views/novaideo_view_manager/search.py:201
+#, python-format
+msgid "${nember} elements found"
+msgstr "${nember} éléments trouvés"
+
+#: novaideo/views/novaideo_view_manager/search.py:211
 msgid "Nova-Ideo contents"
 msgstr "Contenus de Nova-Ideo"
-
-#: novaideo/views/novaideo_view_manager/search.py:251
-#, python-format
-msgid "${novaideo_title} contents"
-msgstr "Contenus de ${novaideo_title}"
 
 #: novaideo/views/novaideo_view_manager/search.py:90
 msgid "The keyword search is done using commas between keywords."
@@ -1575,10 +1584,6 @@ msgstr "Les idées à modérer"
 #: novaideo/content/processes/novaideo_view_manager/definition.py:72
 msgid "Proposals to examine"
 msgstr "Les propositions à examiner"
-
-#: novaideo/views/novaideo_view_manager/templates/search_result.pt:3
-msgid "element(s) found"
-msgstr "element(s) trouvé(s)"
 
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:56
 msgid "Vous avez atteint la limite de participations autorisées. Afin de pouvoir soumettre votre proposition, veuillez démissionner de l'un de"
@@ -2465,11 +2470,3 @@ msgstr ""
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
 
-#~ msgid "Contents"
-#~ msgstr "Contenus"
-
-#~ msgid "Deadline expired:"
-#~ msgstr "Échéance expirée:"
-
-#~ msgid "Deadline:"
-#~ msgstr "Échéance:"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-02-13 16:49+0100\n"
+"POT-Creation-Date: 2015-02-13 17:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -963,7 +963,7 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/edit_proposal.py:45
 #: ./novaideo/views/amendment_management/explanation_amendment.py:26
-#: ./novaideo/views/novaideo_view_manager/search.py:269
+#: ./novaideo/views/novaideo_view_manager/search.py:277
 #: ./novaideo/content/correlation.py:54 ./novaideo/content/idea.py:44
 #: ./novaideo/content/comment.py:33 ./novaideo/content/person.py:53
 #: ./novaideo/content/person.py:61
@@ -1568,13 +1568,21 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/search.py:204
-msgid "Nova-Ideo contents"
+#: ./novaideo/views/novaideo_view_manager/search.py:199
+msgid "No element found"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/search.py:251
+#: ./novaideo/views/novaideo_view_manager/search.py:200
+msgid "One element found"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/search.py:201
 #, python-format
-msgid "${novaideo_title} contents"
+msgid "${nember} elements found"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/search.py:211
+msgid "Nova-Ideo contents"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/search.py:90
@@ -1627,10 +1635,6 @@ msgstr ""
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:71
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:72
 msgid "Proposals to examine"
-msgstr ""
-
-#: ./novaideo/views/novaideo_view_manager/templates/search_result.pt:3
-msgid "element(s) found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/templates/see_proposal.pt:56
