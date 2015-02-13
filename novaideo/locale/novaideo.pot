@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-02-13 15:37+0100\n"
+"POT-Creation-Date: 2015-02-13 15:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -682,13 +682,18 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: ./novaideo/views/user_management/templates/see_person.pt:58
-#: ./novaideo/views/templates/person_result.pt:41
+#: ./novaideo/views/user_management/templates/see_person.pt:54
+#: ./novaideo/views/templates/person_result.pt:37
+msgid "No preferences"
+msgstr ""
+
+#: ./novaideo/views/user_management/templates/see_person.pt:61
+#: ./novaideo/views/templates/person_result.pt:44
 msgid "Member since"
 msgstr ""
 
-#: ./novaideo/views/user_management/templates/see_person.pt:72
-msgid "Contents"
+#: ./novaideo/views/user_management/templates/see_person.pt:75
+msgid "Member contributions"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_reset.pt:1

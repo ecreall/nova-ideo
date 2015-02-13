@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-13 15:37+0100\n"
+"POT-Creation-Date: 2015-02-13 15:58+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -573,7 +573,6 @@ msgid "Send"
 msgstr "Envoyer"
 
 #: novaideo/views/user_management/reset_password.py:80
-#, fuzzy
 msgid "Alert for reset"
 msgstr "Alerte pour supression"
 
@@ -666,14 +665,19 @@ msgstr "Se connecter avec un autre profil"
 msgid "Preferences"
 msgstr "Centres d'intérêt"
 
-#: novaideo/views/user_management/templates/see_person.pt:58
-#: novaideo/views/templates/person_result.pt:41
+#: novaideo/views/user_management/templates/see_person.pt:54
+#: novaideo/views/templates/person_result.pt:37
+msgid "No preferences"
+msgstr "Aucun centre d'intérêt"
+
+#: novaideo/views/user_management/templates/see_person.pt:61
+#: novaideo/views/templates/person_result.pt:44
 msgid "Member since"
 msgstr "Membre depuis le"
 
-#: novaideo/views/user_management/templates/see_person.pt:72
-msgid "Contents"
-msgstr "Contenus"
+#: novaideo/views/user_management/templates/see_person.pt:75
+msgid "Member contributions"
+msgstr "Contenus auxquels le membre à contribuer"
 
 #: novaideo/views/user_management/templates/alert_reset.pt:1
 msgid "Dès que vous aurez indiqué et envoyé votre courriel servant d'identifiant, vous recevrez par courriel un lien pour accéder à la page vous permettant de saisir votre nouveau mot de passe."
@@ -2364,7 +2368,6 @@ msgid "See my contents"
 msgstr ""
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:55
-#, fuzzy
 msgid "See my favorites"
 msgstr "Mes favoris"
 
@@ -2407,6 +2410,9 @@ msgstr ""
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:52
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
+
+#~ msgid "Contents"
+#~ msgstr "Contenus"
 
 #~ msgid "Deadline expired:"
 #~ msgstr "Échéance expirée:"
