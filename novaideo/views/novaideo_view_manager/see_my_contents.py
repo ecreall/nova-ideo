@@ -36,8 +36,7 @@ class SeeMyContentsView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        objects = [o for o in getattr(user, 'contents', []) \
-                   if not('archived' in o.state)]
+        objects = [o for o in getattr(user, 'contents', [])]
         objects = sorted(objects, 
                          key=lambda e: getattr(e, 'modified_at', 
                                                datetime.datetime.today()),

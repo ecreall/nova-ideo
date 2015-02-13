@@ -58,8 +58,7 @@ class SeeMyContents(InfiniteCardinality):
 
     def contents_nb(self):
         user = get_current()
-        return len([o for o in getattr(user, 'contents', []) \
-                    if not('archived' in o.state)])
+        return len([o for o in getattr(user, 'contents', [])])
 
     def start(self, context, request, appstruct, **kw):
         return {}
