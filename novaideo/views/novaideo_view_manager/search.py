@@ -195,6 +195,13 @@ def search(text, content_types, user):
     return objects
 
 
+CONTENTS_MESSAGES = {
+        '0': _(u"""No element found"""),
+        '1': _(u"""One element found"""),
+        '*': _(u"""${nember} elements found""")
+                        }
+
+
 @view_config(
     name='',
     context=NovaIdeoApplication,
@@ -224,6 +231,12 @@ class SearchResultView(BasicView):
                       default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results"
         len_result = batch.seqlen
+        index = str(len_result)
+        if len_result > 1:
+            index = '*'
+
+        self.title = _(CONTENTS_MESSAGES[index] , 
+                       mapping={'nember': len_result})
         result_body = []
         for obj in batch:
             object_values = {'object':obj, 
@@ -238,18 +251,13 @@ class SearchResultView(BasicView):
         values = {
                 'bodies': result_body,
                 'length': len_result,
-                'batch': batch,
+                'batch': batch
                  }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         result  = merge_dicts(self.requirements_copy, result)
         return result
-
-    def before_update(self):
-        super(SearchResultView, self).before_update()
-        self.title = _('${novaideo_title} contents', 
-              mapping={'novaideo_title': self.request.root.title})
 
 
 @view_config(name='search',

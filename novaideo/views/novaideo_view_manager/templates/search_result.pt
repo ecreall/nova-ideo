@@ -1,6 +1,4 @@
 
-<span  tal:condition="add_message|True" i18n:domain="novaideo">${length} <span  i18n:translate="">element(s) found</span></span>
-
 <div class="row scroll-able result-scroll" tal:define="batch_value batch|nothing">
   <div tal:condition="bodies" id="${(batch_value and batch_value.target.replace('#', '')) or 'results'}" class="results">
     <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>

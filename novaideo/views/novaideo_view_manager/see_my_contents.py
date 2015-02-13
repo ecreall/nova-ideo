@@ -63,8 +63,7 @@ class SeeMyContentsView(BasicView):
         values = {
                 'bodies': result_body,
                 'length': len_result,
-                'batch': batch,
-                'add_message': False
+                'batch': batch
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
