@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-02-13 17:43+0100\n"
+"POT-Creation-Date: 2015-02-13 18:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,13 +73,8 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/submit_idea.py:36
 #: ./novaideo/views/idea_management/submit_idea.py:49
-#: ./novaideo/views/user_management/reset_password.py:105
-#: ./novaideo/views/proposal_management/submit_proposal.py:37
-#: ./novaideo/views/amendment_management/submit.py:136
 #: ./novaideo/content/processes/idea_management/definition.py:73
-#: ./novaideo/content/processes/proposal_management/definition.py:346
-#: ./novaideo/content/processes/amendment_management/definition.py:73
-msgid "Submit"
+msgid "Submit for publishing"
 msgstr ""
 
 #: ./novaideo/views/idea_management/edit_idea.py:23
@@ -594,6 +589,14 @@ msgstr ""
 
 #: ./novaideo/views/user_management/reset_password.py:94
 msgid "Request Password Reset"
+msgstr ""
+
+#: ./novaideo/views/user_management/reset_password.py:105
+#: ./novaideo/views/proposal_management/submit_proposal.py:37
+#: ./novaideo/views/amendment_management/submit.py:136
+#: ./novaideo/content/processes/proposal_management/definition.py:346
+#: ./novaideo/content/processes/amendment_management/definition.py:73
+msgid "Submit"
 msgstr ""
 
 #: ./novaideo/views/user_management/reset_password.py:142

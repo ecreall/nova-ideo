@@ -70,7 +70,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        groups=[]),
                 submit = ActivityDefinition(contexts=[SubmitIdea],
                                        description=_("Submit the idea"),
-                                       title=_("Submit"),
+                                       title=_("Submit for publishing"),
                                        groups=[]),
                 publish = ActivityDefinition(contexts=[PublishIdea],
                                        description=_("Publish the idea"),
