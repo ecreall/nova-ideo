@@ -14,7 +14,10 @@ from substanced.principal import DefaultUserLocator
 
 from dace.processinstance.core import  Behavior
 from pontus.form import FormView
+from pontus.view_operation import MultipleView
+from pontus.view import BasicView
 from pontus.schema import Schema
+from pontus.default_behavior import Cancel
 
 from novaideo import _
 from novaideo.content.novaideo_application import NovaIdeoApplication
@@ -73,16 +76,38 @@ class ResetRequestSchema(Schema):
         )
 
 
+class ResetRequestViewStudyReport(BasicView):
+    title = _('Alert for reset')
+    name = 'alertforreset'
+    template = 'novaideo:views/user_management/templates/alert_reset.pt'
+
+    def update(self):
+        result = {}
+        values = {'context': self.context}
+        body = self.content(result=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates:[item]}
+        return result
+
+
+class ResetRequestView(FormView):
+    title = _('Request Password Reset')
+    schema = ResetRequestSchema()
+    behaviors = [Send, Cancel]
+
+
 @view_config(
     name='resetpassword',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class ResetRequestView(FormView):
-    title = _('Request Password Reset')
-    schema = ResetRequestSchema()
-    behaviors = [Send]
-
+class PublishIdeaViewMultipleView(MultipleView):
+    title = _('Submit')
+    name = 'submitidea'
+    viewid = 'submitidea'
+    template = 'daceui:templates/mergedmultipleview.pt'
+    views = (ResetRequestViewStudyReport, ResetRequestView)
+    validators = [Send.get_validator()]
 
 
 class Reset(Behavior):
@@ -104,6 +129,7 @@ class ResetSchema(Schema):
         colander.String(),
         validator = colander.Length(min=3, max=100),
         widget = deform.widget.CheckedPasswordWidget(),
+        title=_("New Password")
         )
 
 
@@ -115,6 +141,4 @@ class ResetSchema(Schema):
 class ResetView(FormView):
     title = _('Reset Password')
     schema = ResetSchema()
-    behaviors = [Reset]
-
-
+    behaviors = [Reset, Cancel]
