@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-13 11:26+0100\n"
+"POT-Creation-Date: 2015-02-13 11:36+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -522,7 +522,7 @@ msgstr "Validation de l'invitation"
 
 #: novaideo/views/invitation_management/accept_invitation.py:35
 #: novaideo/views/user_management/templates/login.pt:17
-#: novaideo/content/person.py:194
+#: novaideo/content/person.py:195
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -541,7 +541,7 @@ msgstr ""
 #: novaideo/views/invitation_management/templates/see_invitation.pt:17
 #: novaideo/views/invitation_management/templates/see_invitations.pt:19
 #: novaideo/content/novaideo_application.py:123
-#: novaideo/content/person.py:201
+#: novaideo/content/person.py:202
 msgid "Organization"
 msgstr "Organisation"
 
@@ -565,19 +565,26 @@ msgid "Activate the member"
 msgstr "Activer le membre"
 
 #: novaideo/views/user_management/reset_password.py:26
-#: novaideo/views/user_management/reset_password.py:89
+#: novaideo/views/user_management/reset_password.py:90
 #: novaideo/content/processes/idea_management/behaviors.py:473
 #: novaideo/content/processes/invitation_management/behaviors.py:111
 msgid "Send"
 msgstr "Envoyer"
 
-#: novaideo/views/user_management/reset_password.py:81
+#: novaideo/views/user_management/reset_password.py:82
 msgid "Request Password Reset"
 msgstr "Réinitialisation du mot de passe"
 
-#: novaideo/views/user_management/reset_password.py:115
+#: novaideo/views/user_management/reset_password.py:116
 msgid "Reset Password"
 msgstr "Réinitialiser le mot de passe"
+
+#: novaideo/views/user_management/reset_password.py:72
+#: novaideo/views/user_management/templates/login.pt:14
+#: novaideo/content/organization.py:66
+#: novaideo/content/person.py:156
+msgid "Email"
+msgstr "Identifiant (courriel)"
 
 #: novaideo/views/user_management/edit.py:80
 #: novaideo/views/proposal_management/edit_proposal.py:170
@@ -629,11 +636,6 @@ msgstr "Se déconnecter"
 #: novaideo/views/templates/panels/usermenu.pt:70
 msgid "Log In"
 msgstr "Se connecter"
-
-#: novaideo/views/user_management/templates/login.pt:14
-#: novaideo/content/organization.py:66
-msgid "Email"
-msgstr "Courriel"
 
 #: novaideo/views/user_management/templates/login.pt:25
 msgid "Forgot your password?"
@@ -1722,7 +1724,7 @@ msgid "Deadline"
 msgstr "Échéance"
 
 #: novaideo/content/novaideo_application.py:61
-#: novaideo/content/person.py:179
+#: novaideo/content/person.py:180
 msgid "Title"
 msgstr "Civilité"
 
@@ -1823,19 +1825,19 @@ msgstr ""
 msgid "${email} email address already in use"
 msgstr "Adresse courriel ${email} déjà utilisée"
 
-#: novaideo/content/person.py:161
+#: novaideo/content/person.py:162
 msgid "Picture"
 msgstr "Portrait"
 
-#: novaideo/content/person.py:168
+#: novaideo/content/person.py:169
 msgid "First name"
 msgstr "Prénom"
 
-#: novaideo/content/person.py:173
+#: novaideo/content/person.py:174
 msgid "Last name"
 msgstr "Nom"
 
-#: novaideo/content/person.py:184
+#: novaideo/content/person.py:185
 msgid "Locale"
 msgstr "Langue"
 
