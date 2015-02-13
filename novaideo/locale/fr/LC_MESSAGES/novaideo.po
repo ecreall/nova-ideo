@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-13 12:29+0100\n"
+"POT-Creation-Date: 2015-02-13 15:37+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -135,7 +135,7 @@ msgstr "Supprimer"
 #: novaideo/content/processes/amendment_management/behaviors.py:510
 #: novaideo/content/processes/novaideo_view_manager/definition.py:67
 #: novaideo/content/processes/novaideo_view_manager/definition.py:68
-#: novaideo/content/processes/novaideo_view_manager/behaviors.py:140
+#: novaideo/content/processes/novaideo_view_manager/behaviors.py:139
 #: novaideo/content/processes/correlation_management/behaviors.py:70
 #: novaideo/content/processes/organization_management/definition.py:65
 #: novaideo/content/processes/organization_management/behaviors.py:173
@@ -523,7 +523,7 @@ msgstr "Validation de l'invitation"
 
 #: novaideo/views/invitation_management/accept_invitation.py:35
 #: novaideo/views/user_management/templates/login.pt:17
-#: novaideo/content/person.py:195
+#: novaideo/content/person.py:199
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -542,7 +542,7 @@ msgstr ""
 #: novaideo/views/invitation_management/templates/see_invitation.pt:17
 #: novaideo/views/invitation_management/templates/see_invitations.pt:19
 #: novaideo/content/novaideo_application.py:123
-#: novaideo/content/person.py:202
+#: novaideo/content/person.py:206
 msgid "Organization"
 msgstr "Organisation"
 
@@ -588,7 +588,7 @@ msgstr "Réinitialiser le mot de passe"
 #: novaideo/views/user_management/reset_password.py:75
 #: novaideo/views/user_management/templates/login.pt:14
 #: novaideo/content/organization.py:66
-#: novaideo/content/person.py:156
+#: novaideo/content/person.py:160
 msgid "Email"
 msgstr "Identifiant (courriel)"
 
@@ -662,7 +662,7 @@ msgstr "Se connecter avec un autre profil"
 
 #: novaideo/views/user_management/templates/see_person.pt:37
 #: novaideo/views/templates/person_result.pt:20
-#: novaideo/content/person.py:145
+#: novaideo/content/person.py:149
 msgid "Preferences"
 msgstr "Centres d'intérêt"
 
@@ -939,7 +939,7 @@ msgstr "Noter une nouvelle idée"
 
 #: novaideo/views/proposal_management/edit_proposal.py:45
 #: novaideo/views/amendment_management/explanation_amendment.py:26
-#: novaideo/views/novaideo_view_manager/search.py:258
+#: novaideo/views/novaideo_view_manager/search.py:269
 #: novaideo/content/correlation.py:54
 #: novaideo/content/idea.py:44
 #: novaideo/content/comment.py:33
@@ -1463,38 +1463,38 @@ msgstr "Mes favoris"
 msgid "My supports"
 msgstr "Mes appréciations"
 
-#: novaideo/views/novaideo_view_manager/search.py:41
-#: novaideo/content/novaideo_application.py:143
-msgid "Idea"
-msgstr "Idée"
+#: novaideo/views/novaideo_view_manager/search.py:45
+#: novaideo/content/novaideo_application.py:144
+msgid "Ideas"
+msgstr "Idées"
 
-#: novaideo/views/novaideo_view_manager/search.py:42
-msgid "Proposal"
-msgstr "Proposition"
+#: novaideo/views/novaideo_view_manager/search.py:46
+msgid "Proposals"
+msgstr "Propositions"
 
-#: novaideo/views/novaideo_view_manager/search.py:43
-msgid "Person"
-msgstr "Membre"
+#: novaideo/views/novaideo_view_manager/search.py:47
+msgid "Persons"
+msgstr "Membres"
 
-#: novaideo/views/novaideo_view_manager/search.py:91
+#: novaideo/views/novaideo_view_manager/search.py:102
 #: novaideo/views/novaideo_view_manager/templates/search_textinput.pt:9
 #: novaideo/content/processes/novaideo_view_manager/definition.py:47
 #: novaideo/content/processes/novaideo_view_manager/definition.py:48
 msgid "Search"
 msgstr "Rechercher"
 
-#: novaideo/views/novaideo_view_manager/search.py:193
+#: novaideo/views/novaideo_view_manager/search.py:204
 msgid "Nova-Ideo contents"
 msgstr "Contenus de Nova-Ideo"
 
-#: novaideo/views/novaideo_view_manager/search.py:240
+#: novaideo/views/novaideo_view_manager/search.py:251
 #, python-format
 msgid "${novaideo_title} contents"
 msgstr "Contenus de ${novaideo_title}"
 
-#: novaideo/views/novaideo_view_manager/search.py:79
+#: novaideo/views/novaideo_view_manager/search.py:90
 msgid "The keyword search is done using commas between keywords."
-msgstr "La recherche par mots clés se fait en utilisant des virgules entre les mots clés."
+msgstr "Pour les recherches sur plusieurs mots, il faut mettre des virgules entre les mots."
 
 #: novaideo/views/novaideo_view_manager/see_my_contents.py:30
 #: novaideo/content/processes/novaideo_view_manager/definition.py:52
@@ -1710,10 +1710,6 @@ msgstr ""
 msgid "Working groups"
 msgstr "Groupes de travail"
 
-#: novaideo/content/novaideo_application.py:144
-msgid "Ideas"
-msgstr "Idées"
-
 #: novaideo/content/novaideo_application.py:149
 msgid "Minimum number of participants for a working group"
 msgstr ""
@@ -1735,7 +1731,7 @@ msgid "Deadline"
 msgstr "Échéance"
 
 #: novaideo/content/novaideo_application.py:61
-#: novaideo/content/person.py:180
+#: novaideo/content/person.py:184
 msgid "Title"
 msgstr "Civilité"
 
@@ -1750,6 +1746,10 @@ msgstr ""
 #: novaideo/content/novaideo_application.py:94
 msgid "Amendment intention"
 msgstr ""
+
+#: novaideo/content/novaideo_application.py:143
+msgid "Idea"
+msgstr "Idée"
 
 #: novaideo/content/idea.py:86
 msgid "Attached files"
@@ -1836,19 +1836,19 @@ msgstr ""
 msgid "${email} email address already in use"
 msgstr "Adresse courriel ${email} déjà utilisée"
 
-#: novaideo/content/person.py:162
+#: novaideo/content/person.py:166
 msgid "Picture"
 msgstr "Portrait"
 
-#: novaideo/content/person.py:169
+#: novaideo/content/person.py:173
 msgid "First name"
 msgstr "Prénom"
 
-#: novaideo/content/person.py:174
+#: novaideo/content/person.py:178
 msgid "Last name"
 msgstr "Nom"
 
-#: novaideo/content/person.py:185
+#: novaideo/content/person.py:189
 msgid "Locale"
 msgstr "Langue"
 
