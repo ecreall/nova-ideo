@@ -68,7 +68,8 @@ class ResetRequestSchema(Schema):
     """ The schema for validating password reset requests."""
     email = colander.SchemaNode(
         colander.String(),
-        validator = login_validator,
+        validator=login_validator,
+        title=_('Email')
         )
 
 
