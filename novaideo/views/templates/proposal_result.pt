@@ -16,8 +16,23 @@
             <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
         </tal:loop>
       </dd>
+        <div tal:omit-tag="" tal:condition="object.version and object.working_group">
+          <dt class="working-group-section-title hide-bloc" i18n:translate="">Working group</dt>
+          <dd class="working-group-section-body hide-bloc">
+            <tal:loop repeat="m object.working_group.members">
+              <a tal:attributes="href request.resource_url(m, '@@index')">${getattr(m, 'title', m.name)}</a>
+                <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
+           </tal:loop>
+          </dd>
+        </div>
     </dl>
-    <span><span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a></span>
+    <span tal:condition="object.version is None or not object.working_group">
+      <span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
+    </span>
+
+    <span tal:condition="object.version and object.working_group">
+      <span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by its</span> <span class="working-group-toggle" i18n:translate="">working group</span>
+    </span>
   <div tal:condition="'published' in object.state" class="proposal-support pull-right">
     <span class="label success">
         <span class="token token-success glyphicon glyphicon-thumbs-up"></span>
