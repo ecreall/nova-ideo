@@ -8,6 +8,7 @@
 import re
 import colander
 import datetime
+from collections import OrderedDict
 from pyramid.view import view_config
 
 from substanced.util import Batch, get_oid
@@ -15,7 +16,7 @@ from substanced.util import Batch, get_oid
 from dace.util import find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import get_current, Anonymous
+from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView
 from pontus.util import merge_dicts
@@ -35,24 +36,34 @@ from .widget import SearchTextInputWidget, SearchFormWidget
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.core import can_access
 from novaideo.content.processes import get_states_mapping
-from novaideo import get_novaideo_title
 
 
-DEFAULT_SEARCHABLE_CONTENT = {_('Idea'): Iidea,
-                             _('Proposal'): IProposal,
-                             _('Person'): IPerson
+_SEARCHABLE_CONTENT_ORDER = {'Idea': 1, 
+                             'Proposal': 2, 
+                             'Person': 3}
+
+SEARCHABLE_CONTENT_TITLE = {'Idea': _('Ideas'),
+                            'Proposal': _('Proposals'),
+                            'Person': _('Persons')
+                           }
+
+DEFAULT_SEARCHABLE_CONTENT = {'Idea': Iidea,
+                              'Proposal': IProposal,
+                              'Person': IPerson
                             }
 
 SEARCHABLE_CONTENT = {'Idea': Iidea,
-                     'Proposal': IProposal,
-                     'Person': IPerson,
-                     'CorrelableEntity': ICorrelableEntity,
+                      'Proposal': IProposal,
+                      'Person': IPerson,
+                      'CorrelableEntity': ICorrelableEntity,
                     } 
-
 
 @colander.deferred
 def content_types_choices(node, kw):
-    values = [(str(k), k) for k in sorted(DEFAULT_SEARCHABLE_CONTENT.keys())]
+    values = [(k, SEARCHABLE_CONTENT_TITLE.get(k, k)) for k \
+              in DEFAULT_SEARCHABLE_CONTENT]
+    values = sorted(values, \
+                key=lambda v: _SEARCHABLE_CONTENT_ORDER.get(v[0], 100))
     return CheckboxChoiceWidget(values=values, inline=True)
 
 
