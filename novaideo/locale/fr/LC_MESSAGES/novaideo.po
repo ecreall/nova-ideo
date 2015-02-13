@@ -436,7 +436,7 @@ msgstr ""
 #: novaideo/views/idea_management/templates/see_idea.pt:55
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:70
 msgid "(Submitted by"
-msgstr "(Proposée par"
+msgstr "(Initiée par"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:62
 #: novaideo/views/ballot_processes/rangevoting/templates/rangevoting_vote.pt:53
