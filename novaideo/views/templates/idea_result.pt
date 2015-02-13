@@ -1,10 +1,12 @@
-<div class="thumbnail right-caption span4 search-item" i18n:domain="novaideo">
+<div class="thumbnail right-caption span4 search-item" 
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(object, '@@index')">
   <div id="idea-image" class="content-image">
-  <img src="${request.static_url('novaideo:static/images/idea.png')}" width="100">
+  <a href="${url}"><img src="${request.static_url('novaideo:static/images/idea.png')}" width="100"></a>
   </div>
   <div class="media-body">
-    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-    <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
+    <a href="${url}"><h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4></a>
+    <a tal:attributes="href url"><h3>${object.title} </h3></a>
     <dl >
       <dd>${object.text}</dd>
       <dt tal:condition="object.keywords" i18n:translate="">Keywords</dt>

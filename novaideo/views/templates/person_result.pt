@@ -1,11 +1,13 @@
-<div class="thumbnail right-caption span4 search-item" i18n:domain="novaideo">
-  <img tal:condition="object.picture is not None" tal:attributes="src object.picture.url(request)"  width="100"/>
+<div class="thumbnail right-caption span4 search-item" 
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(object, '@@index')">
+  <a href="${url}"><img tal:condition="object.picture is not None" tal:attributes="src object.picture.url(request)"  width="100"/></a>
   <div tal:condition="object.picture is None" id="person-image" class="content-image">
-    <img src="${request.static_url('novaideo:static/images/user.png')}" width="95">
+    <a href="${url}"><img src="${request.static_url('novaideo:static/images/user.png')}" width="95"></a>
   </div>
   <div class="media-body" style="width:auto;">
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-      <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)} </h3></a>
+      <a tal:attributes="href url"><h3>${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)} </h3></a>
       <dl>
         <dt tal:condition="getattr(object, 'keywords', [])" i18n:translate="">Preferences</dt>
         <dd tal:condition="getattr(object, 'keywords', [])">

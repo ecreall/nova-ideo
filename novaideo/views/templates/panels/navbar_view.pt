@@ -3,12 +3,7 @@
    <nav id="navbaruser" class="navbar navbar-default navbar" role="navigation">
      <div class="container">
         <div class="row global-actions-menu" tal:define="keys list(actions['menu3'].keys())">
-            <div class="col-md-3 action-1"  tal:condition="actions['menu3']" tal:define="k keys[0]; a actions['menu3'][k]['url'] ">
-                <a class="btn btn-default ${((a is None) and 'disabled') or ''} btn-sm"  href="${a}" >
-                   ${k}
-                </a>
-            </div>
-            <div class="col-md-3 action-2"  tal:condition="actions['menu3']" tal:define="k keys[1]; a actions['menu3'][k]['url'] ">
+            <div class="col-md-6 action-1"  tal:condition="actions['menu3']" tal:define="k keys[0]; a actions['menu3'][k]['url'] ">
                 <a class="btn btn-default ${((a is None) and 'disabled') or ''} btn-sm"  href="${a}" >
                    ${k}
                 </a>

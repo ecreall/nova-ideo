@@ -177,7 +177,7 @@ def deactivate_roles_validation(process, context):
     return (context.organization and \
             has_role(role=('OrganizationResponsible', 
                            context.organization))) or \
-            has_role(role=('Admin',))
+            has_role(role=('Moderator',))
 
 
 def deactivate_processsecurity_validation(process, context):

@@ -39,7 +39,7 @@ from novaideo.content.processes.user_management.behaviors import global_user_pro
 
 USER_MENU_ACTIONS = {'menu1': [SeeMyContents, SeeMyParticipations],
                      'menu2': [SeeMySelections, SeeMySupports],
-                     'menu3': [CreateIdea, CreateProposal]}
+                     'menu3': [CreateIdea]}#, CreateProposal]}
 
 
 def _getaction(view, process_id, action_id):

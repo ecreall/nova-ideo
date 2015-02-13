@@ -128,7 +128,7 @@ def calculate_amendments_cycle_duration(process):
 DEFAULT_NB_CORRECTORS = 1
 
 def createproposal_roles_validation(process, context):
-    return has_role(role=('Member',))
+    return has_role(role=('Admin',))
 
 
 def createproposal_processsecurity_validation(process, context):
