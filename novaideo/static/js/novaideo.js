@@ -282,13 +282,14 @@ $(document).ready(function(){
 
 
   $('.working-group-toggle').on('click', function(){
-      var wg_section_title = $($($(this).parents('.media-body').first()).find('.working-group-section-title').first());
-      var wg_section_body = $($($(this).parents('.media-body').first()).find('.working-group-section-body').first());
-      if(wg_section_title.hasClass('hide-bloc')){
-        wg_section_title.removeClass('hide-bloc');
+      var wg_section_body = $($($(this).parents('.media-body').first()).find('.working-group-section').first());
+      if(wg_section_body.hasClass('hide-bloc')){
+        $(this).addClass('glyphicon-chevron-up');
+        $(this).removeClass('glyphicon-chevron-down');
         wg_section_body.removeClass('hide-bloc');
       }else{
-        wg_section_title.addClass('hide-bloc');
+        $(this).removeClass('glyphicon-chevron-up');
+        $(this).addClass('glyphicon-chevron-down');
         wg_section_body.addClass('hide-bloc');
       };
       

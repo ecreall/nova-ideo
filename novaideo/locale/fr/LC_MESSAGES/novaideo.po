@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-13 17:06+0100\n"
+"POT-Creation-Date: 2015-02-13 17:43+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -451,8 +451,8 @@ msgstr "(Proposée par"
 #: novaideo/views/templates/idea_list_element.pt:8
 #: novaideo/views/templates/proposal_list_element.pt:8
 #: novaideo/views/templates/idea_result.pt:43
-#: novaideo/views/templates/proposal_result.pt:67
-#: novaideo/views/templates/proposal_result.pt:82
+#: novaideo/views/templates/proposal_result.pt:64
+#: novaideo/views/templates/proposal_result.pt:79
 #: novaideo/views/templates/amendment_result.pt:56
 #: novaideo/views/amendment_management/templates/see_amendment.pt:52
 #: novaideo/views/amendment_management/templates/description_amendments.pt:20
@@ -1128,13 +1128,13 @@ msgid "Attention les ${limit} caractères maximum sont atteints. Pour continuer 
 msgstr ""
 
 #: novaideo/views/templates/idea_result.pt:40
-#: novaideo/views/templates/proposal_result.pt:64
-#: novaideo/views/templates/proposal_result.pt:79
+#: novaideo/views/templates/proposal_result.pt:61
+#: novaideo/views/templates/proposal_result.pt:76
 msgid "Modify the"
 msgstr "Modifiée le"
 
 #: novaideo/views/templates/idea_result.pt:45
-#: novaideo/views/templates/proposal_result.pt:69
+#: novaideo/views/templates/proposal_result.pt:66
 #: novaideo/views/templates/amendment_result.pt:58
 msgid "by"
 msgstr "par"
@@ -1144,19 +1144,15 @@ msgstr "par"
 msgid "There was a problem with your submission"
 msgstr "Un problème a été rencontré lors de votre soumission. Merci de vérifier les informations saisies."
 
-#: novaideo/views/templates/proposal_result.pt:41
+#: novaideo/views/templates/proposal_result.pt:39
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:118
 #: novaideo/content/novaideo_application.py:115
 msgid "Working group"
 msgstr "Groupe de travail"
 
-#: novaideo/views/templates/proposal_result.pt:84
-msgid "by its"
-msgstr "par son"
-
-#: novaideo/views/templates/proposal_result.pt:86
-msgid "working group"
-msgstr "groupe de travail"
+#: novaideo/views/templates/proposal_result.pt:81
+msgid "by its working group"
+msgstr "par son groupe de travail"
 
 #: novaideo/views/templates/amendment_result.pt:31
 #: novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:32
