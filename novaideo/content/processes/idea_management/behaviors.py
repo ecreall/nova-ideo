@@ -207,11 +207,10 @@ class EditIdea(InfiniteCardinality):
         appstruct['keywords_ref'] = result
         copy_of_idea.state = PersistentList(['archived', 'version'])
         copy_of_idea.setproperty('author', get_current())
+        note = appstruct.pop('note', '')
+        copy_of_idea.note = note
         context.set_data(appstruct)
         context.modified_at = datetime.datetime.today()
-        if hasattr(context, 'note'):
-            del context.note
-            
         copy_of_idea.reindex()
         context.reindex()
         if 'archived' in context.state:
