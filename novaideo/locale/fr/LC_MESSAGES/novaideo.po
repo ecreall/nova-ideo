@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-16 13:20+0100\n"
+"POT-Creation-Date: 2015-02-16 15:23+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: novaideo/core.py:150
+#: novaideo/core.py:151
 #: novaideo/views/idea_management/templates/diff_result.pt:8
 #: novaideo/views/idea_management/templates/see_idea.pt:79
 #: novaideo/views/proposal_management/templates/diff_result.pt:15
@@ -21,11 +21,11 @@ msgstr ""
 msgid "Keywords"
 msgstr "Mots clés"
 
-#: novaideo/core.py:151
+#: novaideo/core.py:152
 msgid "To add keywords, you need to tap the « Enter » key after each keyword or separate them with commas."
 msgstr "Pour ajouter des mots clés, vous devez taper sur la touche « Entrée » après chaque mot clé ou les séparer par des virgules."
 
-#: novaideo/core.py:225
+#: novaideo/core.py:226
 #: novaideo/views/proposal_management/templates/idea_data.pt:5
 #: novaideo/views/correlation_management/templates/see_correlation.pt:10
 #: novaideo/content/idea.py:66
@@ -43,11 +43,11 @@ msgstr "La proposition"
 msgid "The idea"
 msgstr "L'idée"
 
-#: novaideo/views/panels.py:298
+#: novaideo/views/panels.py:299
 msgid "No more Information."
 msgstr "Information indisponible"
 
-#: novaideo/views/panels.py:367
+#: novaideo/views/panels.py:382
 msgid "More"
 msgstr "Plus"
 
@@ -94,7 +94,7 @@ msgstr "Actions"
 msgid "Create an idea"
 msgstr "Noter une idée"
 
-#: novaideo/views/idea_management/create_idea.py:50
+#: novaideo/views/idea_management/create_idea.py:51
 #: novaideo/views/idea_management/templates/see_idea.pt:59
 #: novaideo/views/proposal_management/templates/amendments.pt:27
 #: novaideo/views/amendment_management/templates/see_amendment.pt:49
@@ -1242,6 +1242,14 @@ msgstr "membre(s)"
 msgid "minimum)"
 msgstr "minimum)"
 
+#: novaideo/views/templates/panels/step1_0.pt:3
+msgid "Proposals using this idea:"
+msgstr "Propositions utilisant cette idée:"
+
+#: novaideo/views/templates/panels/step1_0.pt:7
+msgid "Duplicated ideas from this idea:"
+msgstr "Idées dupliquées de cette idée:"
+
 #: novaideo/views/templates/panels/step3_1.pt:5
 #: novaideo/views/templates/panels/step3_3.pt:5
 #: novaideo/views/templates/panels/step3_2.pt:5
@@ -1320,19 +1328,19 @@ msgstr "il n'y a pas de nouvelle date d'examen fixée."
 msgid "The review committee is scheduled to meet the"
 msgstr "Le comité d'examen a prévu de se réunir le"
 
-#: novaideo/views/templates/panels/steps.pt:47
+#: novaideo/views/templates/panels/steps.pt:58
 msgid "Collection of the idea"
 msgstr "Recueil de l'idée"
 
-#: novaideo/views/templates/panels/steps.pt:62
+#: novaideo/views/templates/panels/steps.pt:73
 msgid "Writing of the proposal"
 msgstr "Rédaction de la proposition"
 
-#: novaideo/views/templates/panels/steps.pt:77
+#: novaideo/views/templates/panels/steps.pt:88
 msgid "Improvement of the proposal"
 msgstr "Amélioration de la proposition"
 
-#: novaideo/views/templates/panels/steps.pt:94
+#: novaideo/views/templates/panels/steps.pt:105
 msgid "Support of the proposal"
 msgstr "Appréciation de la proposition"
 

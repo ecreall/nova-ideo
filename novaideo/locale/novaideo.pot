@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-02-16 13:20+0100\n"
+"POT-Creation-Date: 2015-02-16 15:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 
-#: ./novaideo/core.py:150
+#: ./novaideo/core.py:151
 #: ./novaideo/views/idea_management/templates/diff_result.pt:8
 #: ./novaideo/views/idea_management/templates/see_idea.pt:79
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:15
@@ -26,13 +26,13 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
-#: ./novaideo/core.py:151
+#: ./novaideo/core.py:152
 msgid ""
 "To add keywords, you need to tap the « Enter » key after each keyword or "
 "separate them with commas."
 msgstr ""
 
-#: ./novaideo/core.py:225
+#: ./novaideo/core.py:226
 #: ./novaideo/views/proposal_management/templates/idea_data.pt:5
 #: ./novaideo/views/correlation_management/templates/see_correlation.pt:10
 #: ./novaideo/content/idea.py:66 ./novaideo/content/correction.py:52
@@ -48,11 +48,11 @@ msgstr ""
 msgid "The idea"
 msgstr ""
 
-#: ./novaideo/views/panels.py:298
+#: ./novaideo/views/panels.py:299
 msgid "No more Information."
 msgstr ""
 
-#: ./novaideo/views/panels.py:367
+#: ./novaideo/views/panels.py:382
 msgid "More"
 msgstr ""
 
@@ -99,7 +99,7 @@ msgstr ""
 msgid "Create an idea"
 msgstr ""
 
-#: ./novaideo/views/idea_management/create_idea.py:50
+#: ./novaideo/views/idea_management/create_idea.py:51
 #: ./novaideo/views/idea_management/templates/see_idea.pt:59
 #: ./novaideo/views/proposal_management/templates/amendments.pt:27
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:49
@@ -1282,6 +1282,14 @@ msgstr ""
 msgid "minimum)"
 msgstr ""
 
+#: ./novaideo/views/templates/panels/step1_0.pt:3
+msgid "Proposals using this idea:"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/step1_0.pt:7
+msgid "Duplicated ideas from this idea:"
+msgstr ""
+
 #: ./novaideo/views/templates/panels/step3_1.pt:5
 #: ./novaideo/views/templates/panels/step3_3.pt:5
 #: ./novaideo/views/templates/panels/step3_2.pt:5
@@ -1360,19 +1368,19 @@ msgstr ""
 msgid "The review committee is scheduled to meet the"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:47
+#: ./novaideo/views/templates/panels/steps.pt:58
 msgid "Collection of the idea"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:62
+#: ./novaideo/views/templates/panels/steps.pt:73
 msgid "Writing of the proposal"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:77
+#: ./novaideo/views/templates/panels/steps.pt:88
 msgid "Improvement of the proposal"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:94
+#: ./novaideo/views/templates/panels/steps.pt:105
 msgid "Support of the proposal"
 msgstr ""
 
