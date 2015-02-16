@@ -32,7 +32,7 @@ except NameError:
 
 
 
-PRESENT_MESSAGE = {'0': _(u"""Pas de personnes contactées"""),
+PRESENT_MESSAGE = {'0': _(u"""Aucune personne contactée"""),
                    '1': _(u"""Une personne contactée"""),
                    '*': _(u"""Personnes contactées""")}
 

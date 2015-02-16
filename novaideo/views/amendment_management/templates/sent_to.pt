@@ -3,11 +3,24 @@
        <strong tal:condition="message[2]=='*'">${message[1]}</strong>
        ${message[0]}
   </h4>
-  <div tal:condition="members" i18n:domain="novaideo">
-    <span  i18n:translate="">L'amendement a été envoyé à: </span><tal:loop repeat="m members">
-                            <a tal:condition="not isinstance(m, basestring)" tal:attributes="href request.resource_url(m, '@@index')">${m.name}</a>
-                            <span tal:condition="isinstance(m, basestring)">${m}</span>
-                            <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
-                          </tal:loop>
+  <div tal:condition="members"
+       tal:define="platform_members [m for m in members if not isinstance(m, basestring)];
+                   external_members [m for m in members if isinstance(m, basestring)];
+                   external_len len(external_members)" 
+       i18n:domain="novaideo">
+    <div tal:condition="platform_members">
+        <span i18n:translate="">The amendement has been sent:</span> <tal:loop repeat="m platform_members">
+                                <a tal:attributes="href request.resource_url(m, '@@index')">${m.name}</a>
+                                <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
+                              </tal:loop>
+    </div>
+    <div tal:condition="external_members and platform_members">
+        <span tal:condition="external_len <= 1" i18n:translate="">And <span i18n:name="external_len">${external_len}</span> external person contacted.</span>
+        <span tal:condition="external_len > 1" i18n:translate="">And <span i18n:name="external_len">${external_len}</span> external persons contacted.</span>
+    </div>
+    <div tal:condition="external_members and not platform_members">
+        <span tal:condition="external_len <= 1" i18n:translate="">The amendement has been sent to <span i18n:name="external_len">${external_len}</span> external person.</span>
+        <span tal:condition="external_len > 1" i18n:translate="">The amendement has been sent to <span i18n:name="external_len">${external_len}</span> external persons.</span>
+    </div>
   </div>
 </div>
