@@ -43,13 +43,14 @@ class CreateIdeaView(FormView):
     name = 'createidea'
 
     def default_data(self):
-      localizer = self.request.localizer
-      user = get_current()
-      time = to_localized_time(datetime.datetime.today())
-      title = localizer.translate(_('Idea by'))+' '+\
-              getattr(user, 'title', user.name)+' '+localizer.translate(_('the'))+' '+\
-              time
-      return {'title': title}
+        localizer = self.request.localizer
+        user = get_current()
+        time = to_localized_time(datetime.datetime.today())
+        title = localizer.translate(_('Idea by'))+' '+\
+                getattr(user, 'title', user.name)+' '+\
+                localizer.translate(_('the'))+' '+\
+                time+' (UTC)'
+        return {'title': title}
               
 
 

@@ -148,6 +148,8 @@ class SearchableEntitySchema(Schema):
         default=default_keywords_choice,
         widget=keywords_choice,
         title=_('Keywords'),
+        description=_("To add keywords, you need to tap the « Enter »"
+                      " key after each keyword or separate them with commas.")
         )
 
 
