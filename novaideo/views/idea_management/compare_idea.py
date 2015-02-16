@@ -26,7 +26,7 @@ from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 COMPARE_MESSAGE = {'0': _(u"""Pas de versions"""),
-                   '1': _(u"""Une version disponible"""),
+                   '1': _(u"""Version disponible"""),
                    '*': _(u"""Versions disponibles""")}
 
 

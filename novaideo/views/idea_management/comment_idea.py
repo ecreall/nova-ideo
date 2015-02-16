@@ -109,7 +109,7 @@ class CommentIdeaFormView(FormView):
 
 
 COMMENT_MESSAGE = {'0': _(u"""Pas de fils de discussion"""),
-                      '1': _(u"""Un fil de discussion"""),
+                      '1': _(u"""Fil de discussion"""),
                       '*': _(u"""Fils de discussion""")} 
 
 @view_config(

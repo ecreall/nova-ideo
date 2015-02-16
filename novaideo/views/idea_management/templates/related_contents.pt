@@ -1,5 +1,5 @@
 <h4 tal:condition="message">
-       <strong tal:condition="message[2]=='*'">${message[1]}</strong>
+       <strong tal:condition="message[2]=='*' or message[2]=='1'">${message[1]}</strong>
        ${message[0]}
 </h4>
 

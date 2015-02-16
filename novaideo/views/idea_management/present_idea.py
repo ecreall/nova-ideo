@@ -33,7 +33,7 @@ except NameError:
 
 
 PRESENT_MESSAGE = {'0': _(u"""Aucune personne contactée"""),
-                   '1': _(u"""Une personne contactée"""),
+                   '1': _(u"""Personne contactée"""),
                    '*': _(u"""Personnes contactées""")}
 
 
