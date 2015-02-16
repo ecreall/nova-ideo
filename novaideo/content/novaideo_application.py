@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
@@ -8,7 +9,6 @@ import colander
 import datetime
 from zope.interface import implementer
 from persistent.list import PersistentList
-from pyramid.threadlocal import get_current_registry
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -29,7 +29,6 @@ from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
 from .keyword import KeywordSchema, Keyword
 from novaideo import _
-import novaideo
 
 
 DEFAULT_TITLES = [_('Mr'), _('Madam'), _('Miss')]
@@ -40,7 +39,17 @@ DEFAULT_CORRELATION_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
 
 DEFAULT_IDEA_INTENTIONS = [_('Improvement'), _('Humor'), _('Irony')]
 
-DEFAULT_AMENDMENT_INTENTIONS = [_('Improvement'), _('Humor'), _('Irony')]
+DEFAULT_AMENDMENT_INTENTIONS = [
+            _('Changer une idée'),
+            _('Proposer des améliorations'),
+            _('Reformuler'),
+            _('Généraliser'),
+            _('Détailler'),
+            _('Poser une question'),
+            _('Donner un avis'),
+            _('Ironiser'),
+            _('Faire de l\'humour')
+]
 
 
 def context_is_a_root(context, request):
