@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-16 09:40+0100\n"
+"POT-Creation-Date: 2015-02-16 09:46+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -196,11 +196,11 @@ msgstr ""
 msgid "Diff result"
 msgstr "Différences de version"
 
-#: novaideo/views/idea_management/compare_idea.py:130
+#: novaideo/views/idea_management/compare_idea.py:131
 msgid "Compare idea form"
 msgstr "Formulaire de comparaison de l'idée"
 
-#: novaideo/views/idea_management/compare_idea.py:151
+#: novaideo/views/idea_management/compare_idea.py:152
 #: novaideo/views/proposal_management/compare_proposal.py:49
 #: novaideo/content/processes/idea_management/definition.py:108
 #: novaideo/content/processes/proposal_management/definition.py:409
@@ -214,6 +214,10 @@ msgstr "Version en cours"
 #: novaideo/views/idea_management/compare_idea.py:124
 msgid "Last versions"
 msgstr "Versions précédentes"
+
+#: novaideo/views/idea_management/compare_idea.py:125
+msgid "Select the previous version to compare"
+msgstr "Sélectionner la version précédente à comparer"
 
 #: novaideo/views/idea_management/recuperate_idea.py:23
 #: novaideo/content/processes/idea_management/definition.py:85
