@@ -40,16 +40,17 @@ DEFAULT_CORRELATION_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
 DEFAULT_IDEA_INTENTIONS = [_('Improvement'), _('Humor'), _('Irony')]
 
 DEFAULT_AMENDMENT_INTENTIONS = [
-            _('Changer une idée'),
-            _('Proposer des améliorations'),
-            _('Reformuler'),
-            _('Généraliser'),
-            _('Détailler'),
-            _('Poser une question'),
-            _('Donner un avis'),
-            _('Ironiser'),
-            _('Faire de l\'humour')
-]
+            _('Changing an idea'),
+            _('Propose improvements'),
+            _('Reformulate'),
+            _('Generalize'),
+            _('Expand'),
+            _('Ask a question'),
+            _('Review'),
+            _('Irony'),
+            _('Use humor')
+        ]
+
 
 
 def context_is_a_root(context, request):
