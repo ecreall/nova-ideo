@@ -1,4 +1,4 @@
-<div class="alert alert-info" i18n:domain="novaideo" i18n:translate="">
- En cliquant sur Continuer, l'idée sera soumise à l'ensemble des utilisateurs et ne pourra plus être modifiée. Elle pourra être reprise par n'importe qui dans une proposition et discutée.
+<div class="alert alert-warning" i18n:domain="novaideo" i18n:translate="">
+En cliquant sur « Continuer », l'idée sera publiée et ne pourra plus être modifiée. Elle pourra être utilisée par n'importe quel membre de la plateforme pour une proposition. L'auteur de l'idée sera notifiée par courriel de votre décision.
 </div>
 
