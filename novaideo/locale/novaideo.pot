@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-02-16 12:25+0100\n"
+"POT-Creation-Date: 2015-02-16 12:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -335,14 +335,7 @@ msgid "Fils de discussion"
 msgstr ""
 
 #: ./novaideo/views/idea_management/duplicate_idea.py:25
-#: ./novaideo/views/proposal_management/duplicate_proposal.py:24
-#: ./novaideo/views/proposal_management/duplicate_proposal.py:53
-#: ./novaideo/views/amendment_management/duplicate_amendment.py:27
-#: ./novaideo/content/processes/idea_management/definition.py:61
-#: ./novaideo/content/processes/proposal_management/definition.py:305
-#: ./novaideo/content/processes/proposal_management/behaviors.py:403
-#: ./novaideo/content/processes/amendment_management/definition.py:57
-msgid "Duplicate"
+msgid "Duplicate the idea"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:20
@@ -1038,6 +1031,16 @@ msgstr ""
 msgid "Withdraw my token"
 msgstr ""
 
+#: ./novaideo/views/proposal_management/duplicate_proposal.py:24
+#: ./novaideo/views/proposal_management/duplicate_proposal.py:53
+#: ./novaideo/views/amendment_management/duplicate_amendment.py:27
+#: ./novaideo/content/processes/idea_management/definition.py:61
+#: ./novaideo/content/processes/proposal_management/definition.py:305
+#: ./novaideo/content/processes/proposal_management/behaviors.py:403
+#: ./novaideo/content/processes/amendment_management/definition.py:57
+msgid "Duplicate"
+msgstr ""
+
 #: ./novaideo/views/proposal_management/submit_proposal.py:50
 #: ./novaideo/content/processes/proposal_management/definition.py:308
 msgid "Publish the proposal"
@@ -1408,7 +1411,8 @@ msgid "Edit the amendment"
 msgstr ""
 
 #: ./novaideo/views/amendment_management/explanation_amendment.py:31
-#: ./novaideo/content/correlation.py:72 ./novaideo/content/comment.py:89
+#: ./novaideo/content/correlation.py:72 ./novaideo/content/idea.py:72
+#: ./novaideo/content/comment.py:89
 msgid "Intention"
 msgstr ""
 
@@ -1838,7 +1842,7 @@ msgstr ""
 msgid "Remark"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:40
+#: ./novaideo/content/novaideo_application.py:40 ./novaideo/content/idea.py:73
 msgid "Improvement"
 msgstr ""
 
@@ -1939,19 +1943,19 @@ msgstr ""
 msgid "Idea"
 msgstr ""
 
-#: ./novaideo/content/idea.py:75
+#: ./novaideo/content/idea.py:83
 msgid "Note"
 msgstr ""
 
-#: ./novaideo/content/idea.py:87
+#: ./novaideo/content/idea.py:95
 msgid "Attached files"
 msgstr ""
 
-#: ./novaideo/content/idea.py:82
+#: ./novaideo/content/idea.py:90
 msgid "File"
 msgstr ""
 
-#: ./novaideo/content/idea.py:85
+#: ./novaideo/content/idea.py:93
 msgid "Add file"
 msgstr ""
 
