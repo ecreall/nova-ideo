@@ -21,11 +21,11 @@ from .compare_idea import CompareIdeaView
 class EditIdeaFormView(FormView):
 
     title = _('Edit idea')
-    schema = select(IdeaSchema(), ['intention',
-                                  'title',
+    schema = select(IdeaSchema(), ['title',
                                   'text',
                                   'keywords',
-                                  'attached_files'])
+                                  'attached_files',
+                                  'note'])
     behaviors = [EditIdea, Cancel]
     formid = 'formeditidea'
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'

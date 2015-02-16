@@ -66,12 +66,13 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         title=_("Text")
         )
 
-    intention = colander.SchemaNode(
+    note = colander.SchemaNode(
         colander.String(),
-        widget=intention_choice,
-        title=_('Intention'),
-        default=_('Improvement'),
-        missing='Improvement'
+        widget=LimitedTextAreaWidget(rows=5, 
+                                     cols=30, 
+                                     limit=300,
+                                     alert_values={'limit': 300}),
+        title=_("Note")
         )
 
     attached_files = colander.SchemaNode(
