@@ -22,7 +22,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class DuplicateIdeaView(FormView):
-    title = _('Duplicate')
+    title = _('Duplicate the idea')
     name = 'duplicateidea'
     schema = select(IdeaSchema(), ['intention',
                                   'title',

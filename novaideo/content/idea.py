@@ -66,6 +66,14 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         title=_("Text")
         )
 
+    intention = colander.SchemaNode(
+        colander.String(),
+        widget=intention_choice,
+        title=_('Intention'),
+        default=_('Improvement'),
+        missing='Improvement'
+        )
+
     note = colander.SchemaNode(
         colander.String(),
         widget=LimitedTextAreaWidget(rows=5, 
