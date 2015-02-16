@@ -107,7 +107,7 @@
 
 .nav-steps li {
     float: left;
-    width: 17.58%;
+    width: 14.09%;
 }
 
 li {
@@ -162,7 +162,7 @@ ul, ol {
     line-height: unset;
     text-align: center;
     vertical-align: sub;
-    width: 99%;
+    width: 97%;
 }
 
 
@@ -171,7 +171,7 @@ ul, ol {
 .sub-steps li.step, .sub-steps li.step .step-content {
 	position: relative;
 	z-index: 4;
-        height: 6.5em;
+    height: 6.5em;
         
 }
 
@@ -330,16 +330,22 @@ ul, ol {
 @media (max-width: 991px) {
 
   .nav-steps li{
-    width: 25%
+    width: 20%
   }
 
 }
 
-@media (max-width: 501px) {
+@media (max-width: 630px) {
   .nav-steps .step-content{
     margin-top: 5px;
   }
 
+  .nav-steps li{
+    width: 33%
+  }
+}
+
+@media (max-width: 391px){
   .nav-steps li{
     width: 50%
   }

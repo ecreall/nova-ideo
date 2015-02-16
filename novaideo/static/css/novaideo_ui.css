@@ -622,6 +622,19 @@ ins {
     background-image: linear-gradient(50deg, #ef827d 28%, #ef3128 99%);
 }
 
+.my-token-success{
+    margin-right: -25px; 
+    margin-top: -45px; 
+    color: #4eaf4e;
+}
+
+.my-token-danger{
+    margin-right: -25px; 
+    margin-top: -45px; 
+    color: #ef3128;
+}
+
+
 .proposal-support .danger {
     margin-left: -5px
 }
