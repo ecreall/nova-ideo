@@ -11,7 +11,7 @@ PORTAL_SIGNATURE = """Cordialement,
                                                                                 
 La Plateforme {novaideo_title}
 """
-PORTAL_PRESENTATION = u"""{novaideo_title} est une application participative permettant à tout utilisateur d'initier des idées pouvant être reprises dans des propositions. Pour chaque proposition, un groupe de travail peut être constitué pour l'améliorer, la finaliser et la soumettre à l'appréciation des utilisateurs et à l'avis de comités d'examen.
+PORTAL_PRESENTATION = u"""{novaideo_title} Nova-Ideo est une plateforme participative qui permet à tout membre d'initier des idées pouvant être utilisées dans des propositions travaillées collectivement. Une fois finalisées, ces propositions peuvent être soumises à l'appréciation des membres et faire l'objet d'une décision d'un comité d'examen.
 
 """
 
@@ -25,7 +25,7 @@ Bonjour ,
 PRESENTATION_IDEA_MESSAGE = u"""
 Bonjour,
 
-{my_first_name} {my_last_name} souhaite vous présenter l'idée {subject_title} figurant sur la plateforme {novaideo_title} sous {subject_url} .""" + \
+{my_first_name} {my_last_name} souhaite vous présenter l'idée « {subject_title} » igurant sur la plateforme {novaideo_title} sous {subject_url}.""" + \
  PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 PRESENTATION_IDEA_SUBJECT = u"""{subject_title}""" 

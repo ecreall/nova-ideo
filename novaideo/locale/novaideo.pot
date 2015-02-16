@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-02-16 11:05+0100\n"
+"POT-Creation-Date: 2015-02-16 11:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -269,7 +269,7 @@ msgid "Associate the idea to an other content"
 msgstr ""
 
 #: ./novaideo/views/idea_management/present_idea.py:35
-msgid "Pas de personnes contactées"
+msgid "Aucune personne contactée"
 msgstr ""
 
 #: ./novaideo/views/idea_management/present_idea.py:36
@@ -417,15 +417,17 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/alert_idea_archive.pt:1
 msgid ""
-"En cliquant sur Continuer, l'idée sera archivée. Un mail sera envoyé à "
-"l'auteur de l'idée. Spécifiez les raisons de votre décision."
+"En cliquant sur « Continuer », l'idée sera archivée. Vous devez expliquer "
+"cette décision, afin que l'auteur de l'idée comprenne pourquoi son idée n'est"
+" pas publiée. Un courriel lui sera envoyé avec votre explication."
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/alert_idea_publish.pt:1
 msgid ""
-"En cliquant sur Continuer, l'idée sera soumise à l'ensemble des utilisateurs "
-"et ne pourra plus être modifiée. Elle pourra être reprise par n'importe qui "
-"dans une proposition et discutée."
+"En cliquant sur « Continuer », l'idée sera publiée et ne pourra plus être "
+"modifiée. Elle pourra être utilisée par n'importe quel membre de la "
+"plateforme pour une proposition. L'auteur de l'idée sera notifiée par "
+"courriel de votre décision."
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/alert_idea_submission.pt:1
@@ -437,8 +439,28 @@ msgid ""
 "dupliquer."
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/sent_to.pt:13
+#: ./novaideo/views/idea_management/templates/sent_to.pt:15
 msgid "The idea has been sent:"
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/sent_to.pt:31
+#: ./novaideo/views/proposal_management/templates/sent_to.pt:31
+#: ./novaideo/views/amendment_management/templates/sent_to.pt:31
+msgid "And ${external_len} external person contacted."
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/sent_to.pt:36
+#: ./novaideo/views/proposal_management/templates/sent_to.pt:36
+#: ./novaideo/views/amendment_management/templates/sent_to.pt:36
+msgid "And ${external_len} external persons contacted."
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/sent_to.pt:45
+msgid "The idea has been sent to ${external_len} external person."
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/sent_to.pt:50
+msgid "The idea has been sent to ${external_len} external persons."
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:44
@@ -1112,8 +1134,16 @@ msgstr ""
 msgid "duplicated from the amended version"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/sent_to.pt:13
-msgid "The proposal has been sent"
+#: ./novaideo/views/proposal_management/templates/sent_to.pt:15
+msgid "The proposal has been sent:"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/sent_to.pt:45
+msgid "The proposal has been sent to ${external_len} external person."
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/sent_to.pt:50
+msgid "The proposal has been sent to ${external_len} external persons."
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/alert_submit_proposal.pt:4
@@ -1460,8 +1490,16 @@ msgid ""
 "Pas d'amendements accessibles. Des amendements sont en cours de rédaction."
 msgstr ""
 
-#: ./novaideo/views/amendment_management/templates/sent_to.pt:13
-msgid "L'amendement a été envoyé à:"
+#: ./novaideo/views/amendment_management/templates/sent_to.pt:15
+msgid "The amendement has been sent:"
+msgstr ""
+
+#: ./novaideo/views/amendment_management/templates/sent_to.pt:45
+msgid "The amendement has been sent to ${external_len} external person."
+msgstr ""
+
+#: ./novaideo/views/amendment_management/templates/sent_to.pt:50
+msgid "The amendement has been sent to ${external_len} external persons."
 msgstr ""
 
 #: ./novaideo/views/amendment_management/templates/explanation_modal_item.pt:11
