@@ -115,7 +115,8 @@ class VersionableEntity(Entity):
 class DuplicableEntity(Entity):
     """ A Duplicable entity is an entity that can be duplicated"""
 
-    originalentity = SharedUniqueProperty('originalentity')
+    originalentity = SharedUniqueProperty('originalentity', 'duplicates')
+    duplicates = SharedMultipleProperty('duplicates', 'originalentity')
 
 
 @colander.deferred

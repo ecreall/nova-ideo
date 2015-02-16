@@ -1,6 +1,12 @@
 <div tal:omit-tag="" tal:condition="condition" i18n:domain="novaideo">
   <div  id="steps-messages">
       <div id="messages">
+          <div tal:condition="step1_message != ''" id="message-step-1" role="tooltip" class="popover fade bottom">
+              <div class="arrow"></div>
+              <div class="popover-content">
+                  ${structure:step1_message}
+              </div>
+          </div>
           <div tal:condition="step3_message != ''" id="message-step-3" role="tooltip" class="popover fade bottom">
               <div class="arrow"></div>
               <div class="popover-content">
@@ -20,7 +26,7 @@
 	  <div class="steps col-md-10">
       <ul class="nav nav-steps">
          <li class="0 first ${(current_step == 1)  and 'active'}">
-            <span class="${(current_step == 1)  and 'active'} step-content">
+            <span class="${(current_step == 1)  and 'active'} step-content" data-step="message-step-1">
               <div class="step-text">
                 <span i18n:translate="" >Collection of the idea</span>
               </div>

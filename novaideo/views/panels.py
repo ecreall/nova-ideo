@@ -214,6 +214,7 @@ def days_hours_minutes(timed):
     renderer='templates/panels/steps.pt'
     )
 class StepsPanel(object):
+    step1_0_template = 'novaideo:views/templates/panels/step1_0.pt'
     step4_0_template = 'novaideo:views/templates/panels/step4.pt'
     step4_1_template = 'novaideo:views/templates/panels/step4_1.pt'
     step3_0_template = 'novaideo:views/templates/panels/step3_0.pt'
@@ -315,13 +316,23 @@ class StepsPanel(object):
                                      'support': support},
                                     request)
 
+    def _get_step1_informations(self, context, request):
+        proposal_nember = len(list(dict(context.related_proposals).keys()))
+        duplicates_len = len(context.duplicates)
+        return renderers.render(self.step1_0_template,
+                                {'context':context,
+                                 'proposal_nember': proposal_nember,
+                                 'duplicates_len': duplicates_len},
+                                request)
+
     def __call__(self):
         result = {}
         context = self._get_process_context()
         result['condition'] = isinstance(context, (Proposal, Idea))
         result['current_step'] = 1
-        result['step4_message'] = ""
+        result['step1_message'] = ""
         result['step3_message'] = ""
+        result['step4_message'] = ""
         if isinstance(context, Proposal):
             if 'draft' in context.state:
                 result['current_step'] = 2
@@ -336,6 +347,10 @@ class StepsPanel(object):
                                                                    self.request)
             elif 'archived' in context.state:
                 result['current_step'] = 0
+
+        if isinstance(context, Idea):
+            result['step1_message'] = self._get_step1_informations(context,
+                                                                   self.request)
 
         return result
 

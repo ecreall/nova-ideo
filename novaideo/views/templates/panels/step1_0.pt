@@ -1,0 +1,4 @@
+<div i18n:domain="novaideo">
+      <div><strong i18n:translate="">Proposals using this idea:</strong> ${proposal_nember}</div>
+      <div><strong i18n:translate="">Duplicated ideas from this idea:</strong> ${duplicates_len}</div>
+</div>

@@ -118,6 +118,6 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     @property
     def related_proposals(self):
         """Return all proposals that uses this idea"""
-        return MultiDict([(c.source, c) for c in self.source_correlations\
+        return MultiDict([(c.source, c) for c in self.target_correlations\
                 if ((c.type==CorrelationType.solid) and \
                     ('related_proposals' in c.tags))])
