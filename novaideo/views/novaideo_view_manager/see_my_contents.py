@@ -45,10 +45,20 @@ class SeeMyContentsView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        objects = self.objects
+        objects = [o for o in getattr(user, 'contents', [])]
+        objects = sorted(objects, 
+                         key=lambda e: getattr(e, 'modified_at', 
+                                               datetime.datetime.today()),
+                         reverse=True)
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_contents"
         len_result = batch.seqlen
+        index = str(len_result)
+        if len_result > 1:
+            index = '*'
+
+        self.title = _(MY_CONTENTS_MESSAGES[index], 
+                       mapping={'nember': len_result})
         result_body = []
         for obj in batch:
             render_dict = {'object': obj, 
@@ -69,22 +79,6 @@ class SeeMyContentsView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
-
-    def before_update(self):
-        user = get_current()
-        objects = [o for o in getattr(user, 'contents', [])]
-        objects = sorted(objects, 
-                         key=lambda e: getattr(e, 'modified_at', 
-                                               datetime.datetime.today()),
-                         reverse=True)
-        self.objects = objects
-        len_contents = len(objects)
-        index = str(len_contents)
-        if len_contents > 1:
-            index = '*'
-
-        self.title = _(MY_CONTENTS_MESSAGES[index], 
-                       mapping={'nember': len_contents})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeMyContents:SeeMyContentsView})
