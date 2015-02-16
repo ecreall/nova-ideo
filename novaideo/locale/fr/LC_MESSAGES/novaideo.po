@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-16 12:35+0100\n"
+"POT-Creation-Date: 2015-02-16 13:20+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -21,7 +21,11 @@ msgstr ""
 msgid "Keywords"
 msgstr "Mots clés"
 
-#: novaideo/core.py:223
+#: novaideo/core.py:151
+msgid "To add keywords, you need to tap the « Enter » key after each keyword or separate them with commas."
+msgstr "Pour ajouter des mots clés, vous devez taper sur la touche « Entrée » après chaque mot clé ou les séparer par des virgules."
+
+#: novaideo/core.py:225
 #: novaideo/views/proposal_management/templates/idea_data.pt:5
 #: novaideo/views/correlation_management/templates/see_correlation.pt:10
 #: novaideo/content/idea.py:66
@@ -442,7 +446,7 @@ msgid "The idea has been sent to ${external_len} external persons."
 msgstr "L'idée a été envoyée à ${external_len} personnes externes"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:44
-msgid "Pour que votre idée dupliquée puisse être soumise à modération, vous devez préalablement la modifier, elle ne doit pas être identique à l'idée d'origine."
+msgid "Pour que votre idée dupliquée puisse être soumise pour publication, vous devez la modifier pour qu'elle ne soit pas identique à l'idée d'origine."
 msgstr ""
 
 #: novaideo/views/idea_management/templates/see_idea.pt:55

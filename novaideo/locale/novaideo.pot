@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-02-16 12:35+0100\n"
+"POT-Creation-Date: 2015-02-16 13:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,13 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
-#: ./novaideo/core.py:223
+#: ./novaideo/core.py:151
+msgid ""
+"To add keywords, you need to tap the « Enter » key after each keyword or "
+"separate them with commas."
+msgstr ""
+
+#: ./novaideo/core.py:225
 #: ./novaideo/views/proposal_management/templates/idea_data.pt:5
 #: ./novaideo/views/correlation_management/templates/see_correlation.pt:10
 #: ./novaideo/content/idea.py:66 ./novaideo/content/correction.py:52
@@ -458,9 +464,8 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:44
 msgid ""
-"Pour que votre idée dupliquée puisse être soumise à modération, vous devez "
-"préalablement la modifier, elle ne doit pas être identique à l'idée "
-"d'origine."
+"Pour que votre idée dupliquée puisse être soumise pour publication, vous "
+"devez la modifier pour qu'elle ne soit pas identique à l'idée d'origine."
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:55
