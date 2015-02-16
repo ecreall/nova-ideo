@@ -196,6 +196,7 @@ class PublishAsProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     context = Iidea
     submission_title = _('Save')
+    style_order = 0
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-file'
     processsecurity_validation = pap_processsecurity_validation
@@ -252,7 +253,7 @@ class DeleteProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-trash'
-    style_order = 0
+    style_order = 12
     submission_title = _('Continue')
     context = IProposal
     processs_relation_id = 'proposal'
@@ -323,7 +324,7 @@ class SubmitProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-share'
-    style_order = 1
+    style_order = 13
     submission_title = _('Continue')
     context = IProposal
     processs_relation_id = 'proposal'
@@ -361,9 +362,9 @@ def duplicate_processsecurity_validation(process, context):
 
 class DuplicateProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-resize-full'
-    style_order = 3
+    style_order = 7
     submission_title = _('Save')
     context = IProposal
     processsecurity_validation = duplicate_processsecurity_validation
@@ -509,8 +510,8 @@ def proofreading_state_validation(process, context):
 class ProofreadingDone(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_picto = 'glyphicon glyphicon-ok'
-    style_descriminator = 'text-action'
-    style_order = 2
+    style_descriminator = 'global-action'
+    style_order = 11
     context = IProposal
     processs_relation_id = 'proposal'
     roles_validation = proofreading_roles_validation
@@ -610,9 +611,9 @@ def support_state_validation(process, context):
 
 class SupportProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-thumbs-up'
-    style_order = 2
+    style_order = 4
     context = IProposal
     processs_relation_id = 'proposal'
     roles_validation = support_roles_validation
@@ -640,9 +641,9 @@ class SupportProposal(InfiniteCardinality):
 
 class OpposeProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-thumbs-down'
-    style_order = 3
+    style_order = 5
     context = IProposal
     processs_relation_id = 'proposal'
     roles_validation = support_roles_validation
@@ -688,9 +689,9 @@ def opinion_state_validation(process, context):
 
 class MakeOpinion(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
+    style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-pencil'
-    style_order = 1
+    style_order = 10
     submission_title = _('Save')
     context = IProposal
     processs_relation_id = 'proposal'
@@ -749,9 +750,9 @@ def withdrawt_processsecurity_validation(process, context):
 
 class WithdrawToken(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-share-alt'
-    style_order = 2
+    style_order = 6
     context = IProposal
     processs_relation_id = 'proposal'
     roles_validation = support_roles_validation
@@ -968,7 +969,7 @@ class ImproveProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-edit'
-    style_order = 4
+    style_order = 3
     submission_title = _('Save')
     isSequential = False
     context = IProposal
