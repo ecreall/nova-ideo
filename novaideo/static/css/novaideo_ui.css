@@ -215,11 +215,11 @@ a:hover, a:focus {
 }
 
 .comments-scroll {
-    background-color: #dee9f4;
+   /* background-color: #dee9f4;
     border: 1px solid threedlightshadow;
     box-shadow: -1px 0 4px 1px rgba(0, 0, 0, 0.28) inset;
     border-radius: 13px;
-    height: 700px;
+    height: 700px;*/
     padding: 7px;
 }
 
@@ -232,7 +232,11 @@ a:hover, a:focus {
 }
 
 .comment-data, .img-thumbnail {
-    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.075);
+}
+
+.replay-body .comment-data, .replay-body .img-thumbnail {
+   box-shadow: 0 3px 4px #adcce7;
 }
 
 .comment-data, .btn-xs, .btn-group-xs > .btn {
@@ -827,6 +831,10 @@ ins {
     font-size: 15px;
     font-weight: lighter;
     margin-top: -20px
+}
+
+.replay-bloc .media-body{
+    padding: 5px;
 }
 
 
