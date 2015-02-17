@@ -3,7 +3,7 @@
 	<div class="col-md-7">
 		<div class="deadline-panel ${expired and 'alert-danger' or 'alert-warning'}">
 		   <strong tal:condition="expired">
-        <span i18n:translate="">The review committee held recently the</span> <strong tal:content="layout.to_localized_time(previous_deadline, date_only=True)"/>, <span i18n:translate="">no new fixed examination date.</span>
+        <span i18n:translate="">The review committee held recently the</span> <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>, <span i18n:translate="">no new fixed examination date.</span>
       </strong>
        <strong tal:condition="not expired">
         <span i18n:translate="">The review committee is scheduled to meet the</span> : <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>
