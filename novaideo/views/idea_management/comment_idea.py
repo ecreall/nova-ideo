@@ -23,6 +23,8 @@ from novaideo.content.idea import Idea
 from novaideo import _
 
 
+COMMENT_LEVEL = 2
+
 
 class CommentsView(BasicView):
     title = _('Messages')
@@ -67,7 +69,8 @@ class CommentsView(BasicView):
         values = {
                 'comments': all_comments,
                 'view': self,
-                'origin':origin
+                'origin':origin,
+                'level': COMMENT_LEVEL
                }
         body = self.content(result=values, template=self.template)['body']
         return body, resources, messages, action_updated

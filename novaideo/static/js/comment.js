@@ -19,17 +19,28 @@ function init_select_association(){
 };
 
 function replays_show(element){
-    var replays = $($($(element).parents('li').first()).find('ul').first());
-    if(replays.hasClass('hide-bloc')){
+    var replays = $($($($(element).parents('li').first()).children('ul:not(.replay-bloc)')).children('li'));
+
+    if($(element).hasClass('closed')){
        replays.removeClass('hide-bloc');
        $($(element).find('span').first()).attr('class', 'glyphicon glyphicon-chevron-up');
+       $(element).addClass('opened');
+       $(element).removeClass('closed');
+       $($(element).find('.comment-replay-message-closed').first()).removeClass('hide-bloc');
+       $($(element).find('.comment-replay-message-opened').first()).addClass('hide-bloc');
     }else{
        replays.addClass('hide-bloc');
+       $(replays.last()).removeClass('hide-bloc');
        $($(element).find('span').first()).attr('class', 'glyphicon glyphicon-chevron-down');
+       $(element).addClass('closed');
+       $(element).removeClass('opened');
+       $($(element).find('.comment-replay-message-closed').first()).addClass('hide-bloc');
+       $($(element).find('.comment-replay-message-opened').first()).removeClass('hide-bloc');
     }
 
 };
 
+//TODO to remove
 function init_comment_scroll(){
   var last_child = $('.comments-scroll ul.commentulorigin > .commentli:last-child');
   if (last_child.length > 0){
@@ -42,13 +53,45 @@ function init_comment_scroll(){
   }
 };
 
+function get_form_replay_container(){
+  return '<div class=\"replay-form-container\">'+
+            '<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>'+
+          '</div>'
+}
+
+function update_replay(url){
+    var toreplay = $(this).closest('.replay-action').data('toreplay');
+    var target = $(this).closest('.replay-action').data('target')+'-replay';
+    if (Boolean(toreplay)){$(target).parent('ul.replay-bloc').removeClass('hide-bloc'); return false}
+    var url = $(this).closest('.replay-action').data('updateurl');
+    $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
+       var action_body = data['body'];
+       if (action_body){
+           $($(target).find('.media-body').first()).html(get_form_replay_container());
+           var container = $($(target).find('.replay-form-container').first());
+           container.append($(action_body).find('form').first());
+           $(container.find('button.close').first()).on('click', function(){
+            $($(target).parents('ul.replay-bloc').first()).addClass('hide-bloc')
+           });
+           $($(target).parents('ul.replay-bloc').first()).removeClass('hide-bloc')
+           try {
+                deform.processCallbacks();
+            }
+           catch(err) {};
+        }else{
+           location.reload();
+           return false
+        }
+    });
+    return false;
+};
+
 
 $(document).ready(function(){
     init_select_association();
-    
-     $($('.commentform').parents('.panel').first()).on('shown.bs.collapse', function () {
-       init_comment_scroll();
-     });
+
+    $(document).on('click', '.replay-action', update_replay);
+
     $(document).on('submit','.commentform', function( event ) {
         var button = $(this).find('button').last();
         var intention = $(this).find("select[name=\'intention\']").select2('val');
@@ -57,7 +100,7 @@ $(document).ready(function(){
         var textarea = $(this).find('textarea');
         var comment = textarea.val();
         var parent = $($(this).parents('.panel-body').first());
-        var target = parent.find('.scroll-able.comments-scroll');
+        var target = parent.find('.comments-scroll');
         var commentmessageinfo = parent.find('#messageinfo');
         var commentmessagesuccess = parent.find('#messagesuccess');
         var commentmessagedanger = parent.find('#messagedanger');
@@ -69,7 +112,7 @@ $(document).ready(function(){
           $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
-                 var content = $(data).find('.scroll-able.comments-scroll');
+                 var content = $(data).find('.comments-scroll');
                  if (content){
                    var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
                    $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
@@ -80,7 +123,6 @@ $(document).ready(function(){
                    $($(select_related_contents.parents('.controled-form').first()).find("input[name='associate']").first()).prop('checked', false);
                    select_related_contents.select2('val', []);
                    init_select_association();
-                   init_comment_scroll();
                   }else{
                      location.reload();
                      return false
@@ -127,7 +169,7 @@ $(document).ready(function(){
         var parentform = parent.find('.commentform');
         var urlparent = $(parentform).data('url');
 
-        var target = parent.find('.scroll-able.comments-scroll');
+        var target = parent.find('.comments-scroll');
         var commentmessageinfo = parent.find('#messageinfo');
         var commentmessagesuccess = parent.find('#messagesuccess');
         var commentmessagedanger = parent.find('#messagedanger');
@@ -141,11 +183,10 @@ $(document).ready(function(){
           $.post(url, values, function(data) {
                  $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
                  $.post(urlparent, {}, function(data) {
-                      var content = $(data).find('.scroll-able.comments-scroll');
+                      var content = $(data).find('.comments-scroll');
                       if (content){
                          $(target).html($(content).html());
                          init_select_association();
-                         init_comment_scroll()
                       }else{
                          location.reload();
                          return false

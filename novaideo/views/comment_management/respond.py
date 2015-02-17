@@ -25,7 +25,8 @@ class RespondView(FormView):
 
     title = _('Respond')
     schema = select(CommentSchema(factory=Comment, 
-                                  editable=True),['intention', 'comment'])
+                                  editable=True),
+                    ['intention', 'comment'])
     behaviors = [Respond]
     formid = 'formrespond'
     name = 'respond'
@@ -41,4 +42,4 @@ class RespondView(FormView):
                                                         '@@'+view_name)
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({Respond:RespondView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({Respond: RespondView})

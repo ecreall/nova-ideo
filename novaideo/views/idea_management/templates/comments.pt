@@ -1,6 +1,9 @@
-<ul class="${(origin and 'commentulorigin') or 'commentul hide-bloc'}" i18n:domain="novaideo">
-  <tal:loop repeat="item comments">
-    <li class="commentli" data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context']">
+<ul class="${(origin and 'commentulorigin') or 'commentul'}"
+    i18n:domain="novaideo">
+  <tal:loop repeat="(i, item) enumerate(comments)">
+    <li class="commentli ${ i>=level and 'hide-bloc' or ''}" 
+        data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" 
+        tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context']">
        <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
           <img tal:condition="getattr(comment.author, 'picture', None) is not None" tal:attributes="src comment.author.picture.url(request)"  class="img-circle" width="60"/>
           <div class="media-body" style="width:auto;">
@@ -33,58 +36,47 @@
                    </blockquote>
                </small>
             </div>
-            <div tal:condition="'action' in item"  id="commentaction" class="pull-right">
-                <span tal:condition="comment.comments" 
-                      class="comment-replay-nb"
+            <div tal:condition="'action' in item"  id="commentaction" class="pull-right" tal:define="commentlen len(comment.comments)">
+                <span tal:condition="commentlen-(level-1) > 0" 
+                      class="comment-replay-nb closed"
                       onclick="javascript:replays_show(this);">
-                  <small><span class="glyphicon glyphicon-chevron-down"></span> ${len(comment.comments)} <span i18n:translate="">Replay(s)</span></small>
+                  <small><span class="glyphicon glyphicon-chevron-down"></span> 
+                  <span class="comment-replay-message-opened" i18n:translate="">View all <span i18n:name="commentlen">${commentlen}</span> responses</span>
+                  <span class="comment-replay-message-closed hide-bloc" i18n:translate="">Hide responses</span>
+                </small>
                 </span>
                 <div tal:omit-tag="">
                  <a id="${item['action_id']}-btn" 
-                      class="btn btn-default btn-xs dace-action"
-                      style="max-width: 300px;"
-                      href="${item['action'].url(item['context'])}"   
-                      data-toggle="modal"
-                      data-actionid ="${item['action_id']}" 
-                      data-target="#${item['action_id']}"
-                      data-updateurl="${item['actionurl_update']}"
-                      data-toreplay="${'toreplay' in item}">
+                    class="btn btn-default btn-xs replay-action"
+                    style="max-width: 300px;"
+                    href="${item['action'].url(item['context'])}"
+                    data-actionid ="${item['action_id']}" 
+                    data-target="#${item['action_id']}"
+                    data-updateurl="${item['actionurl_update']}"
+                    data-toreplay="${'toreplay' in item}">
                      <span class="glyphicon glyphicon-comment"></span> ${item['action'].title}
                    </a>
-                   <script tal:condition="'toreplay' in item">       
-                        $(document).ready(function(){
-                             $(${'\'#'+item['action_id']+'-btn\''}).click();
-                        });
-                   </script>  
-                   <script>
-                        $(document).ready(function(){
-                            $(${'\'#'+item['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
-                               after_execution(${'\"'+item['actionurl_after']+'\"'})
-                              })
-                        });
-                   </script>
-                <!-- Modal -->
-                   <div class="modal fade" 
-                       id="${item['action_id']}-modal" 
-                       role="dialog" 
-                       aria-labelledby="myModalLabel" 
-                       aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                           <div class="modal-header">
-                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                               <h4 class="modal-title" id="myModalLabel"> ${item['action'].title}</h4>
-                           </div>
-                           <div class="modal-body">
-                              ${structure:item['body']}
-                           </div>
-                         </div>
-                      </div>
-                   </div>
                 </div>
             </div>      
           </div>
        </div>
+       <ul  class="commentul replay-bloc hide-bloc">
+        <li>
+          <div id="${item['action_id']}-replay" class="replay-body">
+            <div class="thumbnail right-caption span4 comment-data ">
+               <div style="width:auto;" class="media-body">
+               </div>
+            </div>  
+            <script>
+                $(document).ready(function(){
+                    $(${'\'#'+item['action_id']+'-replay\''}).on('hidden.replay', function (e) {
+                       after_execution(${'\"'+item['actionurl_after']+'\"'})
+                      })
+                });
+           </script>    
+          </div>
+        </li>
+       </ul>
       <div tal:define="(body, r, m, a) view._rendre_comments(comment.comments)" tal:replace="structure body" />
     </li>
   </tal:loop>
