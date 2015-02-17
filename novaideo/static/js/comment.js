@@ -20,17 +20,16 @@ function init_select_association(){
 
 function replays_show(element){
     var replays = $($($($(element).parents('li').first()).children('ul:not(.replay-bloc)')).children('li'));
-
     if($(element).hasClass('closed')){
-       replays.removeClass('hide-bloc');
+       replays.slideDown( );
        $($(element).find('span').first()).attr('class', 'glyphicon glyphicon-chevron-up');
        $(element).addClass('opened');
        $(element).removeClass('closed');
        $($(element).find('.comment-replay-message-closed').first()).removeClass('hide-bloc');
        $($(element).find('.comment-replay-message-opened').first()).addClass('hide-bloc');
     }else{
-       replays.addClass('hide-bloc');
-       $(replays.last()).removeClass('hide-bloc');
+       replays.splice(-1,1);
+       replays.slideUp();
        $($(element).find('span').first()).attr('class', 'glyphicon glyphicon-chevron-down');
        $(element).addClass('closed');
        $(element).removeClass('opened');
@@ -70,10 +69,11 @@ function update_replay(url){
            $($(target).find('.media-body').first()).html(get_form_replay_container());
            var container = $($(target).find('.replay-form-container').first());
            container.append($(action_body).find('form').first());
+           var replay_bloc = $($(target).parents('ul.replay-bloc').first());
            $(container.find('button.close').first()).on('click', function(){
-            $($(target).parents('ul.replay-bloc').first()).addClass('hide-bloc')
+              replay_bloc.css('display', 'none');
            });
-           $($(target).parents('ul.replay-bloc').first()).removeClass('hide-bloc')
+           replay_bloc.slideDown()
            try {
                 deform.processCallbacks();
             }
