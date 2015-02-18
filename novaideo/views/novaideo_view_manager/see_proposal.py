@@ -14,10 +14,12 @@ from dace.objectofcollaboration.principal.util import (
 from pontus.view import BasicView
 from daceui.interfaces import IDaceUIAPI
 from pontus.view_operation import MultipleView
+from pontus.util import merge_dicts
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeProposal)
-from novaideo.content.proposal import Proposal, OPINIONS
+from novaideo.utilities.util import get_actions_navbar, navbar_body_getter
+from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.content.processes import get_states_mapping
 from novaideo.views.proposal_management.present_proposal import (
@@ -88,31 +90,38 @@ class DetailProposalView(BasicView):
 
         return False
 
+    def get_modal_actions(self, actions):
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
+                                                       'dace_ui_api')
+        actions = [(a.context, a.action) for a in actions]
+        action_updated, messages, \
+        resources, actions = dace_ui_api.update_actions(self.request,
+                                                        actions)
+        return messages, resources, actions
+
     def update(self):
         self.execute(None)
         user = get_current()
         root = getSite()
         wg = self.context.working_group
-        actions = self.context.actions
         vote_actions, resources, messages, isactive = self._vote_actions()
-        actions = [a for a in actions \
+        def actions_getter():
+            return [a for a in self.context.actions \
                    if getattr(a.action, 'style', '') == 'button']
-        global_actions = [a for a in actions \
-                          if getattr(a.action, 'style_descriminator', '') == \
-                             'global-action']
-        wg_actions = [a for a in actions \
-                      if getattr(a.action, 'style_descriminator', '') == \
-                         'wg-action']
-        text_actions = [a for a in  actions \
-                        if getattr(a.action, 'style_descriminator', '') == \
-                           'text-action']
-        global_actions = sorted(global_actions, 
-                                key=lambda e: getattr(e.action, 
-                                                      'style_order', 0))
-        wg_actions = sorted(wg_actions, 
-                            key=lambda e: getattr(e.action, 'style_order', 0))
-        text_actions = sorted(text_actions, 
-                              key=lambda e: getattr(e.action, 'style_order', 0))
+
+        actions_navbar = get_actions_navbar(actions_getter, self.request,
+                                ['global-action', 'text-action', 'wg-action'])
+        global_actions = actions_navbar['global-action']
+        wg_actions = actions_navbar['wg-action']
+        modal_isactive = actions_navbar['modal-action']['isactive']
+        modal_messages = actions_navbar['modal-action']['messages']
+        modal_resources = actions_navbar['modal-action']['resources']
+        resources = merge_dicts(modal_resources, resources, 
+                                ('js_links', 'css_links'))
+        resources['js_links'] = list(set(resources['js_links']))
+        resources['css_links'] = list(set(resources['css_links']))
+        if not messages:
+            messages = modal_messages
 
         ct_participate_max = False
         ct_participate_closed = False
@@ -135,20 +144,19 @@ class DetailProposalView(BasicView):
                 'text': text,
                 'description': description,
                 'current_user': user,
-                'global_actions': global_actions,
                 'wg_actions': wg_actions,
-                'text_actions': text_actions,
                 'voteactions': vote_actions,
                 'filigrane': add_filigrane,
                 'cant_submit': self._cant_submit_alert(global_actions),
                 'ct_participate': ct_participate,
                 'ct_participate_closed': ct_participate_closed,
-                'ct_participate_max': ct_participate_max
+                'ct_participate_max': ct_participate_max,
+                'navbar_body': navbar_body_getter(self, actions_navbar)
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
-        item['isactive'] = isactive
+        item['isactive'] = isactive or modal_isactive
         result.update(resources)
         result['coordinates'] = {self.coordinates:[item]}
         return result

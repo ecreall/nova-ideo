@@ -65,7 +65,7 @@ class ArchiveIdeaViewMultipleView(MultipleView):
     title = _('Archive')
     name = 'archiveidea'
     viewid = 'archiveidea'
-    template = 'daceui:templates/mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (ArchiveIdeaViewStudyReport, ArchiveIdeaView)
     validators = [ArchiveIdea.get_validator()]
 

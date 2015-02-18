@@ -6,8 +6,11 @@
 
 import random
 import string
+from pyramid import renderers
 from pyramid.threadlocal import get_current_request
+from pyramid.threadlocal import get_current_registry
 
+from daceui.interfaces import IDaceUIAPI
 from dace.util import getSite, find_catalog
 from dace.objectofcollaboration.principal.util import get_current
 
@@ -132,3 +135,61 @@ def send_alert_new_content(content):
         mailer_send(subject=subject, 
             recipients=[member.email], 
             body=message)
+
+
+def get_modal_actions(actions, request):
+    dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
+                                                   'dace_ui_api')
+    actions = [(a.context, a.action) for a in actions]
+    action_updated, messages, \
+    resources, actions = dace_ui_api.update_actions(request,
+                                                    actions)
+    return action_updated, messages, resources, actions
+
+
+def get_actions_navbar(actions_getter, request, descriminators):
+    result = {}
+    actions = actions_getter()
+    isactive = True
+    update_nb = 0
+    while isactive and update_nb < 2:
+        actions = actions_getter()
+        modal_actions = [a for a in  actions \
+                        if getattr(a.action, 'style_interaction', '') == \
+                           'modal-action']
+        isactive, messages, \
+        resources, modal_actions = get_modal_actions(modal_actions, request)
+        update_nb += 1
+
+    modal_actions = [(a['action'], a) for a in modal_actions]
+    result['modal-action'] = {'isactive': isactive,
+                              'messages': messages ,
+                              'resources': resources,
+                              'actions': modal_actions
+                              }
+    for descriminator in descriminators:
+        descriminator_actions = [a for a in actions \
+                    if getattr(a.action, 'style_descriminator','') == \
+                       descriminator]
+        descriminator_actions = sorted(descriminator_actions, 
+                       key=lambda e: getattr(e.action, 'style_order', 0))
+        result[descriminator] = descriminator_actions
+
+    return  result
+
+
+def default_navbar_body(view, actions_navbar):
+    global_actions = actions_navbar['global-action']
+    text_actions = actions_navbar['text-action']
+    modal_actions = actions_navbar['modal-action']['actions']
+    template = 'novaideo:views/templates/navbar_actions.pt'
+    result = {
+        'global_actions': global_actions,
+        'modal_actions': dict(modal_actions),
+        'text_actions': text_actions,
+       }
+    body = renderers.render(template, result, view.request)
+    return body
+
+
+navbar_body_getter = default_navbar_body

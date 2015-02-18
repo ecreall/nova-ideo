@@ -17,6 +17,7 @@ from novaideo.content.person import Person
 from novaideo.views.novaideo_view_manager.search import SearchResultView
 from novaideo.core import BATCH_DEFAULT_SIZE, can_access
 from novaideo.content.processes import get_states_mapping
+from novaideo.utilities.util import get_actions_navbar, navbar_body_getter
 
 
 @view_config(
@@ -36,10 +37,15 @@ class SeePersonView(BasicView):
         self.execute(None)
         user = self.context
         current_user = get_current()
-        actions = [a for a in self.context.actions \
+        def actions_getter():
+            return [a for a in self.context.actions \
                    if getattr(a.action, 'style', '') == 'button']
-        actions = sorted(actions, 
-                         key=lambda e: getattr(e.action, 'style_order', 0))
+
+        actions_navbar = get_actions_navbar(actions_getter, self.request,
+                                ['global-action', 'text-action'])
+        isactive = actions_navbar['modal-action']['isactive']
+        messages = actions_navbar['modal-action']['messages']
+        resources = actions_navbar['modal-action']['resources']
         objects = []
         if current_user is  user:
             objects = [o for o in getattr(user, 'contents', []) \
@@ -76,9 +82,12 @@ class SeePersonView(BasicView):
                   'user': self.context,
                   'state': get_states_mapping(current_user, user, 
                                 getattr(user, 'state', [None])[0]), 
-                  'actions': actions}
+                  'navbar_body': navbar_body_getter(self, actions_navbar)}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
+        item['messages'] = messages
+        item['isactive'] = isactive
+        result.update(resources)
         result['coordinates'] = {self.coordinates: [item]}
         return result
 

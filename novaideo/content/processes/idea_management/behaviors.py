@@ -247,6 +247,7 @@ def submit_state_validation(process, context):
 class SubmitIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 6
     submission_title = _('Continue')
@@ -280,6 +281,7 @@ def decision_state_validation(process, context):
 class ArchiveIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-inbox'
     style_order = 4
     submission_title = _('Continue')
@@ -317,6 +319,7 @@ class ArchiveIdea(InfiniteCardinality):
 class PublishIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 5
     submission_title = _('Continue')

@@ -1,20 +1,4 @@
-<nav class="navbar navbar-entity" role="navigation">
-  <div class="container-fluid">
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="navbar-entity-content" >
-      <ul class="nav navbar-nav">
-        <tal:loop repeat="a text_actions">
-          <li><a tal:attributes="href a.url" class="btn btn-sm"><span class="${getattr(a.action,'style_picto','')}" ></span> ${a.title}</a></li>
-        </tal:loop>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <tal:loop repeat="a global_actions">
-          <li><a tal:attributes="href a.url" class="btn btn-sm"><span class="${getattr(a.action,'style_picto','')}" ></span> ${a.title}</a></li>
-        </tal:loop>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+<div tal:replace="structure navbar_body"/>
 <hr class="soften">
 <div class="media-body content-title-body" i18n:domain="novaideo">
   <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>

@@ -17,6 +17,7 @@ from novaideo.content.processes.amendment_management.behaviors import (
     SeeAmendment)
 from novaideo.content.amendment import Amendment
 from novaideo.content.processes import get_states_mapping
+from novaideo.utilities.util import get_actions_navbar, navbar_body_getter
 from novaideo import _
 from .present_amendment import PresentAmendmentView
 from .comment_amendment import CommentAmendmentView
@@ -50,18 +51,15 @@ class DetailAmendmentView(BasicView):
         text_analyzer = get_current_registry().getUtility(
                                                ITextAnalyzer,
                                                'text_analyzer')
-        actions = [a for a in self.context.actions \
+        def actions_getter():
+            return [a for a in self.context.actions \
                    if getattr(a.action, 'style', '') == 'button']
-        global_actions = [a for a in actions \
-                          if getattr(a.action, 
-                               'style_descriminator', '') == 'global-action']
-        text_actions = [a for a in  actions \
-                        if getattr(a.action, 
-                            'style_descriminator', '') == 'text-action']
-        global_actions = sorted(global_actions, 
-                            key=lambda e: getattr(e.action, 'style_order', 0))
-        text_actions = sorted(text_actions, 
-                            key=lambda e: getattr(e.action, 'style_order', 0))
+
+        actions_navbar = get_actions_navbar(actions_getter, self.request,
+                                ['global-action', 'text-action'])
+        isactive = actions_navbar['modal-action']['isactive']
+        messages = actions_navbar['modal-action']['messages']
+        resources = actions_navbar['modal-action']['resources']
         result = {}
         textdiff = ''
         descriptiondiff = ''
@@ -87,11 +85,13 @@ class DetailAmendmentView(BasicView):
                 'descriptiondiff':descriptiondiff,
                 'keywordsdiff':keywordsdiff,
                 'current_user': user,
-                'global_actions': global_actions,
-                'text_actions': text_actions
+                'navbar_body': navbar_body_getter(self, actions_navbar)
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
+        item['messages'] = messages
+        item['isactive'] = isactive
+        result.update(resources)
         result['coordinates'] = {self.coordinates:[item]}
         result = merge_dicts(self.requirements_copy, result)
         return result

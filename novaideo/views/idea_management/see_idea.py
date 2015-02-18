@@ -14,6 +14,7 @@ from pontus.view_operation import MultipleView
 from novaideo.content.processes.idea_management.behaviors import  SeeIdea
 from novaideo.content.idea import Idea
 from novaideo.content.processes import get_states_mapping
+from novaideo.utilities.util import get_actions_navbar, navbar_body_getter
 from novaideo import _
 from .present_idea import PresentIdeaView
 from .comment_idea import CommentIdeaView
@@ -41,6 +42,7 @@ class DetailIdeaView(BasicView):
 
         return False
 
+
     def update(self):
         self.execute(None) 
         user = get_current()
@@ -50,19 +52,16 @@ class DetailIdeaView(BasicView):
             files_urls.append({'title':file.title, 
                                'url':file.url(self.request)})
 
-        actions = [a for a in self.context.actions \
+        def actions_getter():
+            return [a for a in self.context.actions \
                    if getattr(a.action, 'style', '') == 'button']
-        global_actions = [a for a in actions \
-                          if getattr(a.action, 'style_descriminator','') == \
-                             'global-action']
-        text_actions = [a for a in  actions \
-                        if getattr(a.action, 'style_descriminator','') == \
-                          'text-action']
-        global_actions = sorted(global_actions, 
-                           key=lambda e: getattr(e.action, 'style_order', 0))
-        text_actions = sorted(text_actions, 
-                           key=lambda e: getattr(e.action, 'style_order', 0))
 
+        actions_navbar = get_actions_navbar(actions_getter, self.request,
+                                ['global-action', 'text-action'])
+        global_actions = actions_navbar['global-action']
+        isactive = actions_navbar['modal-action']['isactive']
+        messages = actions_navbar['modal-action']['messages']
+        resources = actions_navbar['modal-action']['resources']
         result = {}
         values = {
                 'idea': self.context,
@@ -70,12 +69,14 @@ class DetailIdeaView(BasicView):
                                             self.context.state[0]),
                 'current_user': user,
                 'files': files_urls,
-                'global_actions': global_actions,
                 'cant_publish': self._cant_publish_alert(global_actions),
-                'text_actions': text_actions,
+                'navbar_body': navbar_body_getter(self, actions_navbar)
                }
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
+        item['messages'] = messages
+        item['isactive'] = isactive
+        result.update(resources)
         result['coordinates'] = {self.coordinates:[item]}
         return result
 

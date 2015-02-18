@@ -50,7 +50,7 @@ class PublishIdeaViewMultipleView(MultipleView):
     name = 'publishidea'
     behaviors = [PublishIdea]
     viewid = 'publishidea'
-    template = 'daceui:templates/mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (PublishIdeaViewStudyReport, PublishIdeaView)
     validators = [PublishIdea.get_validator()]
 
