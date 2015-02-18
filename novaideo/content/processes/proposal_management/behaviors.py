@@ -657,6 +657,7 @@ class OpposeProposal(InfiniteCardinality):
         for tok in user.tokens:
             if tok.proposal is context:
                 token = tok
+                break
 
         if token is None:
             token = user.tokens[-1]
@@ -743,8 +744,7 @@ class MakeOpinion(InfiniteCardinality):
 
 def withdrawt_processsecurity_validation(process, context):
     user = get_current()
-    return any((t.owner is user) and \
-                t.proposal is None for t in context.tokens) and \
+    return any((t.owner is user) for t in context.tokens) and \
            global_user_processsecurity(process, context)
 
 
@@ -763,7 +763,7 @@ class WithdrawToken(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         user_tokens = [t for t in context.tokens \
-                       if (t.owner is user) and t.proposal is None]
+                       if (t.owner is user)]
         token = user_tokens[-1]
         context.delfromproperty(token.__property__, token)
         user.addtoproperty('tokens', token)
