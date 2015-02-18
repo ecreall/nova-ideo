@@ -21,7 +21,7 @@ from pontus.schema import select, Schema
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.file import Object as ObjectType
-from pontus.widget import Select2Widget
+from pontus.widget import Select2Widget, AjaxSelect2Widget
 
 from novaideo.content.processes.proposal_management.behaviors import (
     EditProposal)
@@ -29,24 +29,24 @@ from novaideo.content.proposal import ProposalSchema, Proposal
 from novaideo.content.idea import IdeaSchema, Idea, Iidea
 from novaideo import _
 from novaideo.core import can_access
-from novaideo.views.widget import Select2WidgetSearch, SimpleMappingtWidget
+from novaideo.views.widget import SimpleMappingtWidget
+
 
 
 @colander.deferred
 def idea_choice(node, kw):
     request = node.bindings['request']
     root = getSite()
-    user = get_current()
-    ideas = list(user.ideas)
-    ideas.extend([ i for i in user.selections \
-                   if isinstance(i, Idea) and can_access(user, i)])
-    ideas = set(ideas) 
-    values = [(i, i.title) for i in ideas if not('archived' in i.state)]
+    values = []
     values.insert(0, ('', _('- Select -')))
-    return Select2WidgetSearch(values=values, item_css_class='search-idea-form',
-                                url=request.resource_url(root, '@@search', 
-                                            query={'op':'toselect', 
-                                                     'content_types':['Idea']}))
+    ajax_url = request.resource_url(root, '@@search', 
+                                    query={'op':'find_entities', 
+                                           'content_types':['Idea']
+                                           }
+                               )
+    return AjaxSelect2Widget(values=values,
+                        ajax_url=ajax_url,
+                        css_class="search-idea-form")
 
 
 class AddIdeaSchema(Schema):

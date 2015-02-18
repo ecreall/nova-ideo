@@ -1,3 +1,25 @@
+
+function related_item_template(item){
+   var markup = '<div class="clearfix">' +
+                '<div class="col-sm-1">'
+   if(item.img_url){
+      markup += '<img style="max-width: 100%" src=\"'+item.img_url+'\">'
+   };
+   markup += '</div>'+
+             '<div clas="col-sm-10">' +
+               '<div class="clearfix">' +
+                  '<div class="col-sm-3">' + item.text + '</div>';
+   if (item.description) {
+      markup += '<div class="col-sm-8">' + item.description + '</div>';
+    };
+   markup += '</div></div></div>';
+   return markup
+};
+
+
+select2_ajac_templates['related_item_template'] = related_item_template;
+
+
 function get_data(selecteds){
     var selecteds = jQuery.makeArray(selecteds);
     var result= [];

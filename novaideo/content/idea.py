@@ -105,6 +105,7 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity):
     """Idea class""" 
 
+    icon = 'novaideo:static/images/idea_picto32.png'
     result_template = 'novaideo:views/templates/idea_result.pt'
     template = 'novaideo:views/templates/idea_list_element.pt'
     name = renamer()

@@ -14,15 +14,14 @@ from substanced.util import renamer
 
 from dace.descriptors import SharedUniqueProperty
 from dace.util import getSite
-from dace.objectofcollaboration.principal.util import get_current
 from pontus.core import VisualisableElementSchema
-from pontus.widget import Select2Widget
+from pontus.widget import Select2Widget, AjaxSelect2Widget
 from pontus.schema import Schema
 
 from .interface import IComment
 from novaideo.core import Commentable
 from novaideo import _
-from novaideo.views.widget import Select2WidgetSearch, SimpleMappingtWidget
+from novaideo.views.widget import SimpleMappingtWidget
 
 
 @colander.deferred
@@ -38,16 +37,17 @@ def intention_choice(node, kw):
 def relatedcontents_choice(node, kw):
     request = node.bindings['request']
     root = getSite()
-    user = get_current()
-    contents = list(getattr(user, 'contents', []))
-    values = [(i, i.title) for i in contents]
-    return Select2WidgetSearch(multiple= True, 
-                               values=values,
-                               item_css_class='search-idea-form',
-                               url=request.resource_url(root, '@@search', 
-                                    query={'op':'toselect', 
-                                           'content_types':['CorrelableEntity']}
-                               ))
+    values = []
+    ajax_url = request.resource_url(root, '@@search', 
+                                    query={'op':'find_entities', 
+                                           'content_types':['CorrelableEntity']
+                                           }
+                               )
+    return AjaxSelect2Widget(values=values,
+                        ajax_url=ajax_url,
+                        ajax_item_template="related_item_template",
+                        css_class="search-idea-form",
+                        multiple=True)
 
 
 class RelatedContentsSchema(Schema):

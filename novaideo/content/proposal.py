@@ -101,6 +101,7 @@ class Proposal(Commentable,
                PresentableEntity):
     """Proposal class"""
 
+    icon = 'novaideo:static/images/proposal_picto32.png'
     result_template = 'novaideo:views/templates/proposal_result.pt'
     template = 'novaideo:views/templates/proposal_list_element.pt'
     name = renamer()

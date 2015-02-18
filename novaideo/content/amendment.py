@@ -15,7 +15,10 @@ from substanced.util import renamer
 from dace.util import getSite, get_obj
 from dace.descriptors import SharedUniqueProperty
 
-from pontus.widget import RichTextWidget, SimpleMappingWidget
+from pontus.widget import (
+    RichTextWidget, 
+    SimpleMappingWidget,
+    AjaxSelect2Widget)
 from pontus.core import VisualisableElementSchema
 from pontus.schema import Schema, select
 
@@ -28,8 +31,7 @@ from novaideo.core import (
     PresentableEntity,
     DuplicableEntity)
 from novaideo import _
-from novaideo.views.widget import (
-    Select2WidgetSearch, 
+from novaideo.views.widget import ( 
     AddIdeaWidget, 
     LimitedTextAreaWidget)
 from novaideo.content.idea import Idea, IdeaSchema
@@ -41,25 +43,22 @@ def add_new_idea_widget(node, kw):
     root = getSite()
     url = request.resource_url(root, '@@ideasmanagement')
     return AddIdeaWidget(url=url, item_css_class='new-idea-form hide-bloc')
-    
+
 
 @colander.deferred
 def relatedideas_choice(node, kw):
-    context = node.bindings['context']
     request = node.bindings['request']
-    used_ideas = context.get_used_ideas()
     root = getSite()
-    ideas = list(context.proposal.related_ideas.keys())
-    ideas.extend(used_ideas)
-    ideas = set(ideas)
-    values = [(i, i.title) for i in ideas]
-    return Select2WidgetSearch(multiple= True, 
-                               values=values,
-                               item_css_class='search-idea-form',
-                               url=request.resource_url(root, '@@search', 
-                                query={'op':'toselect',
-                                       'content_types':['Idea']}
-                                ))
+    values = []
+    ajax_url = request.resource_url(root, '@@search', 
+                                    query={'op':'find_entities', 
+                                           'content_types':['Idea']
+                                           }
+                               )
+    return AjaxSelect2Widget(values=values,
+                        ajax_url=ajax_url,
+                        css_class="search-idea-form",
+                        multiple=True)
 
 
 class RelatedExplanationSchema(Schema):

@@ -125,18 +125,13 @@ $(document).ready(function(){
 
    $('.new-idea-control').click(function(){
         var form = $($(this).parents('form').first());
+        var select_field = $(form.find('select.search-idea-form').first());
         if (this.checked) {
             form.find('.new-idea-form').removeClass('hide-bloc');
-            var search_form = $(form.find('.search-idea-form'))
-            search_form.find('select').prop("disabled", true);
-            $(search_form.find('.select-search input')).attr('disabled', true)
-            $(search_form.find('.select-search button')).addClass('disabled')            
+            select_field.prop("disabled", true);         
         }else{
-            form.find('.new-idea-form').addClass('hide-bloc');           
-            var search_form = $(form.find('.search-idea-form'))
-            search_form.find('select').prop("disabled", false);
-            $(search_form.find('.select-search input')).attr('disabled', false)
-            $(search_form.find('.select-search button')).removeClass('disabled')
+            form.find('.new-idea-form').addClass('hide-bloc');
+            select_field.prop("disabled", false);
         }
     });
 
@@ -180,7 +175,7 @@ $(document).ready(function(){
                          'keywords': keywords,
                          'op': 'creat_idea'};
          }else{
-            oid = $($(form).find('div.search-idea-form select')).select2('val');
+            oid = $($(form).find('select.search-idea-form')).select2('val');
             var new_items = related_ideas.find('span[data-id=\"'+oid+'\"]');
             if (new_items.length>0)
             {
@@ -223,7 +218,7 @@ $(document).ready(function(){
                   newideaform.find('textarea[name="text"]').val('');
                   $(newideaform.find('select[name="keywords"]')).select2('val', []);
                }else{
-                 $($(form).find('div.search-idea-form select')).select2('val', '')
+                 $($(form).find('select.search-idea-form')).select2('val', '')
                }
              }else{
                 danger_messages_container.text( novaideo_translate("The idea is not added!") ).show().fadeOut( 6000 );

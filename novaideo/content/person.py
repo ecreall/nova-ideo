@@ -239,6 +239,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     """Person class"""
 
+    icon = 'novaideo:static/images/user_picto32.png'
     result_template = 'novaideo:views/templates/person_result.pt'
     name = renamer()
     tokens = CompositeMultipleProperty('tokens')

@@ -278,6 +278,23 @@ class Search_Json(BasicView):
         result.update(dict([(get_oid(obj), obj.title) for obj in objects]))
         return result
 
+
+    def find_entities(self):
+        user = get_current()
+        content_types = self.params('content_types')
+        if not isinstance(content_types, (list, tuple)):
+            content_types = [content_types]
+
+        text = self.params('q')
+        entries = search(text, content_types, user)
+        result = {'items': [], 'total_count': len(entries)}
+        result['items'] = [{'text': obj.title, 
+                            'id': str(get_oid(obj)),
+                            'img_url': self.request.static_url(
+                                      getattr(obj, 'icon', 'novaideo:static/images/default32.png'))} \
+                            for obj in entries]
+        return result
+
     def __call__(self):
         operation_name = self.params('op')
         if operation_name is not None:

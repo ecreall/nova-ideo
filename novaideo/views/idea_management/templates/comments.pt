@@ -1,7 +1,7 @@
 <ul class="${(origin and 'commentulorigin') or 'commentul'}"
     i18n:domain="novaideo">
   <tal:loop repeat="(i, item) enumerate(comments)">
-    <li class="commentli ${ i>=level and 'hide-bloc' or ''}" 
+    <li class="commentli ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
         data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" 
         tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context']">
        <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
