@@ -51,6 +51,7 @@ def add_processsecurity_validation(process, context):
 
 
 class AddOrganizations(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
     style_order = 1
@@ -83,6 +84,7 @@ def creatorg_processsecurity_validation(process, context):
 
 
 class CreatOrganizations(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
     style_order = 2
@@ -116,6 +118,7 @@ def edit_processsecurity_validation(process, context):
 
 
 class EditOrganizations(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
     style_order = 4
@@ -147,6 +150,7 @@ def seeorgs_processsecurity_validation(process, context):
 
 
 class SeeOrganizations(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
     style_order = 3
@@ -192,6 +196,8 @@ def editorg_processsecurity_validation(process, context):
 
 
 class EditOrganization(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
     isSequential = False
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
