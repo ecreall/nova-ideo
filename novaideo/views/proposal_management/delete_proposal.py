@@ -74,7 +74,7 @@ class DeleteProposalView(MultipleView):
     name = 'deleteproposal'
     behaviors = [DeleteProposal]
     viewid = 'deleteproposal'
-    template = 'daceui:templates/mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (DeleteProposalViewStudyReport, DeleteProposalFormView)
     validators = [DeleteProposal.get_validator()]
 

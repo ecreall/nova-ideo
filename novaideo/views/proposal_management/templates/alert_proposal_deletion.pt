@@ -1,10 +1,11 @@
 <div  i18n:domain="novaideo"> 
   <div class="alert alert-info">
     <span tal:condition="draft_owner" i18n:translate="">
-      Attention, vous êtes sur le point de supprimer votre proposition. Veuillez confirmer la suppression en cliquant sur Continuer. 
+      Attention, vous êtes sur le point de supprimer votre proposition. Vous pouvez soit cliquer sur « Continuer » et votre proposition sera supprimée, soit cliquer sur « Annuler » et vous pourrez revenir à votre proposition.
     </span>
     <span tal:condition="not draft_owner" i18n:translate="">
-      Attention, vous êtes sur le point de supprimer la proposition. Veuillez confirmer la suppression en cliquant sur Continuer. Afin d'alerter les personnes concernées veuillez donner le motif de la suppression.
+      Attention, vous êtes sur le point de supprimer la proposition. Vous pouvez soit cliquer sur « Continuer » et la proposition sera supprimée, soit cliquer sur « Annuler » et vous pourrez revenir à la proposition.
     </span>
   </div>
 </div>
+
