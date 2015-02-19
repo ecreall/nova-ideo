@@ -214,7 +214,7 @@ $(document).ready(function(){
                }
                init_delitem();
                if (isnewidea){
-                  newideaform.find('input[name="title"]').val('');
+                  newideaform.find('input[name="title"]').val(data['new_title']);
                   newideaform.find('textarea[name="text"]').val('');
                   $(newideaform.find('select[name="keywords"]')).select2('val', []);
                }else{

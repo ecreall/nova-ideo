@@ -6,6 +6,7 @@
 
 import colander
 import deform
+import datetime
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from pyramid import renderers
@@ -28,7 +29,7 @@ from novaideo.content.processes.proposal_management.behaviors import (
 from novaideo.content.proposal import ProposalSchema, Proposal
 from novaideo.content.idea import IdeaSchema, Idea, Iidea
 from novaideo import _
-from novaideo.core import can_access
+from novaideo.core import can_access, to_localized_time
 from novaideo.views.widget import SimpleMappingtWidget
 
 
@@ -109,6 +110,16 @@ class AddIdeaFormView(FormView):
         self.schema.widget = formwidget
         self.schema.widget.ajax_button = _('Validate')
         self.schema.get('new_idea').get('keywords').default = []
+
+    def default_data(self):
+        localizer = self.request.localizer
+        user = get_current()
+        time = to_localized_time(datetime.datetime.today())
+        title = localizer.translate(_('Idea by'))+' '+\
+                getattr(user, 'title', user.name)+' '+\
+                localizer.translate(_('the'))+' '+\
+                time+' (UTC)'
+        return {'new_idea': {'title': title}}
 
 
 class RelatedIdeasView(BasicView):

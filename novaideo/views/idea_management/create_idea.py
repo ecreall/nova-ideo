@@ -75,11 +75,19 @@ class CreateIdeaView_Json(BasicView):
                          'keywords': self.params('keywords')}
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
+            localizer = self.request.localizer
+            user = get_current()
+            time = to_localized_time(datetime.datetime.today())
+            new_title = localizer.translate(_('Idea by'))+' '+\
+                    getattr(user, 'title', user.name)+' '+\
+                    localizer.translate(_('the'))+' '+\
+                    time+' (UTC)'
             data = {'title': idea.title,
                     'oid': str(oid),
                     'body': renderers.render(self.idea_template,
                                              {'idea':idea},
-                                             self.request)
+                                             self.request),
+                    'new_title': new_title
                     }
             result = data
             return result
