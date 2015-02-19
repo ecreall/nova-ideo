@@ -252,6 +252,7 @@ def del_processsecurity_validation(process, context):
 class DeleteProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-trash'
     style_order = 12
     submission_title = _('Continue')
