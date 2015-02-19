@@ -1,13 +1,4 @@
 <div  i18n:domain="novaideo">
- <div tal:condition="ideas" class="alert alert-warning">
-<span i18n:translate="">Pour qu'une proposition soit publiée, l'ensemble de ses idées liées doivent être préalablement publiées. Vous pouvez soit les publier en l'état en cliquant sur « Continuer », soit les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
-  <ol class="list-unstyled">
-    <tal:loop repeat="i ideas">
-      <li><a class="btn btn-warning btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
-    </tal:loop>
-  <ol>
- </div>
-
  <div class="alert alert-info">
 <span i18n:translate="">As soon as the proposal has been published, it will be opened to a working group. The working group is active as soon as it reaches three persons. Once active, the working group can submit the proposal to the appreciation of the collective or decide to work together for improving it.</span>
  </div>

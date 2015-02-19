@@ -301,6 +301,7 @@ class DeleteProposal(ElementaryAction):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], ""))
 
+
 def submit_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'proposal')
 
@@ -312,7 +313,10 @@ def submit_roles_validation(process, context):
 def submit_processsecurity_validation(process, context):
     user = get_current()
     root = getSite()
-    return len(user.active_working_groups) < root.participations_maxi and \
+    not_published_ideas = any(not('published' in i.state) \
+                              for i in context.related_ideas.keys())
+    return not not_published_ideas and \
+           len(user.active_working_groups) < root.participations_maxi and \
            global_user_processsecurity(process, context)
           
 
@@ -342,11 +346,6 @@ class SubmitProposal(ElementaryAction):
             context.state.append('open to a working group')
         else:
             context.state.append('votes for publishing')
-
-        for idea in [i for i in context.related_ideas.keys() \
-                     if not('published' in i.state)]:
-            idea.state = PersistentList(['published'])
-            idea.reindex()
 
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))

@@ -86,9 +86,12 @@ class DetailProposalView(BasicView):
 
     def _cant_submit_alert(self, actions):
         if 'draft' in self.context.state:
-            return not any(a.title == 'Publish' for a in actions)
+            not_published_ideas = [i for i in self.context.related_ideas.keys()\
+                              if not('published' in i.state)]
+            return (not any(a.title == 'Publish' for a in actions), 
+                   not_published_ideas)
 
-        return False
+        return False, []
 
     def get_modal_actions(self, actions):
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
@@ -133,7 +136,6 @@ class DetailProposalView(BasicView):
                          not isinstance(user, Anonymous) and \
                          user not in wg.members and \
                          (ct_participate_max or ct_participate_closed)
-        
         
         description, text, add_filigrane = self._get_adapted_text(user)
         result = {}
