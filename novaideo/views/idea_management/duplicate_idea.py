@@ -24,11 +24,11 @@ from novaideo import _
 class DuplicateIdeaView(FormView):
     title = _('Duplicate the idea')
     name = 'duplicateidea'
-    schema = select(IdeaSchema(), ['intention',
-                                  'title',
+    schema = select(IdeaSchema(), ['title',
                                   'text',
                                   'keywords',
-                                  'attached_files'])
+                                  'attached_files',
+                                  'note'])
     behaviors = [DuplicateIdea, Cancel]
     formid = 'formduplicateidea'
 

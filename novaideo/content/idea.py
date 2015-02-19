@@ -13,11 +13,9 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
-from dace.util import getSite
 from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
-    Select2Widget,
     SequenceWidget,
     FileWidget)
 from pontus.file import ObjectData, File
@@ -35,14 +33,6 @@ from novaideo.core import (
     CorrelableEntity,
     PresentableEntity)
 
-
-@colander.deferred
-def intention_choice(node, kw):
-    root = getSite()
-    intentions = sorted(root.idea_intentions)
-    values = [(str(i), i) for i in intentions ]
-    values.insert(0, ('', _('- Select -')))
-    return Select2Widget(values=values)
 
 
 def context_is_a_idea(context, request):
@@ -66,21 +56,14 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         title=_("Text")
         )
 
-    intention = colander.SchemaNode(
-        colander.String(),
-        widget=intention_choice,
-        title=_('Intention'),
-        default=_('Improvement'),
-        missing='Improvement'
-        )
-
     note = colander.SchemaNode(
         colander.String(),
         widget=LimitedTextAreaWidget(rows=5, 
                                      cols=30, 
                                      limit=300,
                                      alert_values={'limit': 300}),
-        title=_("Note")
+        title=_("Note"),
+        #missing=""
         )
 
     attached_files = colander.SchemaNode(
