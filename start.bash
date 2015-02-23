@@ -14,4 +14,4 @@ sed -i \
     production-heroku.ini
 mkdir -p var/filestorage var/blobstorage
 chmod 700 var/filestorage var/blobstorage
-exec bin/gunicorn --forwarded-allow-ips="172.17.42.1" --access-logfile var/access.log --paste production-heroku.ini
+exec bin/gunicorn --forwarded-allow-ips="172.17.42.1" --access-logfile - --paste production-heroku.ini
