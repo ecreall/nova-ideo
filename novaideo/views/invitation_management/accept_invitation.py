@@ -54,7 +54,7 @@ class AcceptInvitationView(FormView):
     behaviors = [AcceptInvitation]
     formid = 'formacceptinvitation'
     name = 'accept_invitation'
-    #wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/user_registration.js']}
 
