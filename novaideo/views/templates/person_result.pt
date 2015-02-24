@@ -1,7 +1,7 @@
 <div class="thumbnail right-caption span4 search-item" 
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index')">
-  <a href="${url}"><img tal:condition="object.picture is not None" tal:attributes="src object.picture.url(request)"  width="100"/></a>
+  <a tal:condition="object.picture is not None" href="${url}"><img tal:attributes="src object.picture.url(request)"  width="100"/></a>
   <div tal:condition="object.picture is None" id="person-image" class="content-image">
     <a href="${url}"><img src="${request.static_url('novaideo:static/images/user.png')}" width="95"></a>
   </div>
