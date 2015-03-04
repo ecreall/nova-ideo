@@ -91,7 +91,7 @@ class ResetRequestViewStudyReport(BasicView):
 
 
 class ResetRequestView(FormView):
-    title = _('Request Password Reset')
+    title = _('Request password reset')
     schema = ResetRequestSchema()
     behaviors = [Send, Cancel]
 
@@ -101,8 +101,8 @@ class ResetRequestView(FormView):
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class PublishIdeaViewMultipleView(MultipleView):
-    title = _('Submit')
+class ResetRequestViewMultipleView(MultipleView):
+    title = _('Request password reset')
     name = 'submitidea'
     viewid = 'submitidea'
     template = 'daceui:templates/mergedmultipleview.pt'
