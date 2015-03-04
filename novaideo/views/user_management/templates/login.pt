@@ -9,7 +9,7 @@
                 value="${request.session.get_csrf_token()}" />
 
          <input type="text" name="email" class="form-control"
-                autofocus="autofocus" placeholder="Email" i18n:attributes="placeholder"
+                autofocus="autofocus" placeholder="Login (email)" i18n:attributes="placeholder"
                 value="${login}" />
 
          <input type="password" name="password" class="form-control"

@@ -72,7 +72,7 @@ class ResetRequestSchema(Schema):
     email = colander.SchemaNode(
         colander.String(),
         validator=login_validator,
-        title=_('Email')
+        title=_('Login (email)')
         )
 
 
