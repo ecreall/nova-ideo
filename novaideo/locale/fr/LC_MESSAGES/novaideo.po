@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-02-19 15:35+0100\n"
+"POT-Creation-Date: 2015-02-28 13:05+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -601,16 +601,9 @@ msgid "Alert for reset"
 msgstr "Alerte pour supression"
 
 #: novaideo/views/user_management/reset_password.py:94
-msgid "Request Password Reset"
-msgstr "Réinitialisation du mot de passe"
-
 #: novaideo/views/user_management/reset_password.py:105
-#: novaideo/views/proposal_management/submit_proposal.py:37
-#: novaideo/views/amendment_management/submit.py:136
-#: novaideo/content/processes/proposal_management/definition.py:346
-#: novaideo/content/processes/amendment_management/definition.py:73
-msgid "Submit"
-msgstr "Soumettre"
+msgid "Request password reset"
+msgstr "Réinitialisation du mot de passe"
 
 #: novaideo/views/user_management/reset_password.py:142
 msgid "Reset Password"
@@ -1030,6 +1023,13 @@ msgstr "Retirer son jeton"
 #: novaideo/content/processes/amendment_management/definition.py:57
 msgid "Duplicate"
 msgstr "Dupliquer"
+
+#: novaideo/views/proposal_management/submit_proposal.py:37
+#: novaideo/views/amendment_management/submit.py:136
+#: novaideo/content/processes/proposal_management/definition.py:346
+#: novaideo/content/processes/amendment_management/definition.py:73
+msgid "Submit"
+msgstr "Soumettre"
 
 #: novaideo/views/proposal_management/submit_proposal.py:50
 #: novaideo/content/processes/proposal_management/definition.py:308
