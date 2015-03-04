@@ -247,4 +247,3 @@ ACCEPT_INVITATION_MESSAGE = u"""
 {user_title} {user_first_name} {user_last_name} a accepté votre invitation de rejoindre la plateforme {novaideo_title}.
 
 """+ PORTAL_SIGNATURE
-    
