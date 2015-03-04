@@ -1120,7 +1120,7 @@ ins {
 }
 
 .admin-nav ul.list-group{
-    right: -145px;
+    left: 155px;
     position: absolute;
     z-index: 1029;
     margin-top: -41px;
