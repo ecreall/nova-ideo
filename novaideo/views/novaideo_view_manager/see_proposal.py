@@ -6,6 +6,7 @@
 
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
+from pyramid.httpexceptions import HTTPFound
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite
@@ -114,6 +115,9 @@ class DetailProposalView(BasicView):
 
         actions_navbar = get_actions_navbar(actions_getter, self.request,
                                 ['global-action', 'text-action', 'wg-action'])
+        if getattr(self.context, '__parent__', None) is None:
+            return HTTPFound(self.request.resource_url(root, ''))
+
         global_actions = actions_navbar['global-action']
         wg_actions = actions_navbar['wg-action']
         modal_isactive = actions_navbar['modal-action']['isactive']

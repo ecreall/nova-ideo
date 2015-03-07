@@ -114,7 +114,7 @@ class Comment(Commentable):
     """Comment class"""
     name = renamer()
     author = SharedUniqueProperty('author')
-    related_correlation = SharedUniqueProperty('related_correlation')
+    related_correlation = SharedUniqueProperty('related_correlation', 'targets')
 
     def __init__(self, **kwargs):
         super(Comment, self).__init__(**kwargs)
