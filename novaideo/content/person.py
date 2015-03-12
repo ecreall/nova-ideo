@@ -279,7 +279,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
 
     @property
     def contents(self):
-        result = list(self.ideas)
+        result = [i for i in list(self.ideas) if i is i.current_version]
         result.extend(self.proposals)
         return result
 

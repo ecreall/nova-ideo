@@ -53,7 +53,20 @@ def mysubscriber_object_published(event):
 def mysubscriber_correlable_removed(event):
     root = getSite()
     removed_object = event.object
+    #get all versions. Versions will be removed
+    all_versions = getattr(removed_object, 'history', [])
+    if removed_object in all_versions:
+        all_versions.remove(removed_object)
+
+    #recuperate all correlations
     source_correlations = removed_object.source_correlations
+    [source_correlations.extend(getattr(version,'source_correlations', [])) \
+     for version in all_versions]
+    #destroy all versions
+    if hasattr(removed_object, 'destroy'):
+        removed_object.destroy()
+    
+    #update correlations
     for correlation in source_correlations:
         for target in list(correlation.targets):
             correlation.delfromproperty('targets', target)

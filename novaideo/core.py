@@ -110,6 +110,15 @@ class VersionableEntity(Entity):
 
         return result
 
+    def destroy(self):
+        """Remove branch"""
+        
+        if self.version:
+            self.version.destroy()
+
+        if self.nextversion:
+            self.nextversion.delfromproperty('version', self)
+
 
 @implementer(IDuplicableEntity)
 class DuplicableEntity(Entity):
