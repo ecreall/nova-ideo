@@ -62,7 +62,8 @@ class DetailProposalView(BasicView):
             action['body'] = dace_ui_api.get_action_body(self.context, 
                                                          self.request, 
                                                          action['action'], 
-                                                         True)
+                                                         True,
+                                                         False)
             if not action['body']:
                 actions.remove(action)
 
