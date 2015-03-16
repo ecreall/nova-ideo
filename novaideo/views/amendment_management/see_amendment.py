@@ -47,7 +47,6 @@ class DetailAmendmentView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        self._add_requirements(user)
         text_analyzer = get_current_registry().getUtility(
                                                ITextAnalyzer,
                                                'text_analyzer')
@@ -87,6 +86,7 @@ class DetailAmendmentView(BasicView):
                 'current_user': user,
                 'navbar_body': navbar_body_getter(self, actions_navbar)
                }
+        self._add_requirements(user)
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages

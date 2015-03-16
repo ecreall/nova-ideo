@@ -17,8 +17,12 @@ function related_item_template(item){
 };
 
 
-select2_ajac_templates['related_item_template'] = related_item_template;
 
+try {
+    select2_ajac_templates['related_item_template'] = related_item_template;
+}
+catch(err) {
+}
 
 function get_data(selecteds){
     var selecteds = jQuery.makeArray(selecteds);

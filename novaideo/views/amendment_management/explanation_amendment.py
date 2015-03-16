@@ -88,7 +88,7 @@ class ExplanationView(MultipleView):
     name = 'explanationamendment'
     behaviors = [ExplanationAmendment]
     viewid = 'explanationamendment'
-    template = 'daceui:templates/mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (ExplanationViewStudyReport, ExplanationFormView)
     validators = [ExplanationAmendment.get_validator()]
 
