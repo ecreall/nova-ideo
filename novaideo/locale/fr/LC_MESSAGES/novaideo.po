@@ -834,7 +834,7 @@ msgstr "Texte supprimé"
 #: novaideo/views/proposal_management/correct_proposal.py:28
 #: novaideo/content/processes/proposal_management/definition.py:389
 msgid "Correct the proposal"
-msgstr "Relecture de la proposition"
+msgstr "Corriger la proposition"
 
 #: novaideo/views/proposal_management/support_proposal.py:24
 #: novaideo/content/processes/proposal_management/definition.py:350
