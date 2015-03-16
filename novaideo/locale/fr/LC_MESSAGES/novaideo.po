@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-03-04 12:33+0100\n"
+"POT-Creation-Date: 2015-03-16 09:57+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: novaideo/core.py:151
+#: novaideo/core.py:160
 #: novaideo/views/idea_management/templates/diff_result.pt:8
 #: novaideo/views/idea_management/templates/see_idea.pt:46
 #: novaideo/views/proposal_management/templates/diff_result.pt:15
@@ -21,11 +21,11 @@ msgstr ""
 msgid "Keywords"
 msgstr "Mots clés"
 
-#: novaideo/core.py:152
+#: novaideo/core.py:161
 msgid "To add keywords, you need to tap the « Enter » key after each keyword or separate them with commas."
 msgstr "Pour ajouter des mots clés, vous devez taper sur la touche « Entrée » après chaque mot clé ou les séparer par des virgules."
 
-#: novaideo/core.py:226
+#: novaideo/core.py:235
 #: novaideo/views/proposal_management/templates/idea_data.pt:5
 #: novaideo/views/correlation_management/templates/see_correlation.pt:10
 #: novaideo/content/idea.py:56
@@ -121,7 +121,7 @@ msgstr "Supprimer"
 
 #: novaideo/views/idea_management/see_idea.py:28
 #: novaideo/views/amendment_management/see_amendment.py:29
-#: novaideo/views/novaideo_view_manager/see_proposal.py:38
+#: novaideo/views/novaideo_view_manager/see_proposal.py:39
 #: novaideo/views/correlation_management/see_correlation.py:21
 #: novaideo/content/processes/novaideo_file_management/definition.py:51
 #: novaideo/content/processes/novaideo_file_management/definition.py:52
@@ -147,7 +147,7 @@ msgstr "Détails"
 
 #: novaideo/views/idea_management/see_idea.py:85
 #: novaideo/views/amendment_management/see_amendment.py:101
-#: novaideo/views/novaideo_view_manager/see_proposal.py:168
+#: novaideo/views/novaideo_view_manager/see_proposal.py:172
 msgid "actions"
 msgstr "actions"
 
@@ -233,15 +233,16 @@ msgid "Recuperate"
 msgstr "Rétablir"
 
 #: novaideo/views/idea_management/associate.py:28
-msgid "Pas de contenus asociés"
-msgstr ""
+#, fuzzy
+msgid "Pas de contenus associés"
+msgstr "Choisissez le contenu à associer"
 
 #: novaideo/views/idea_management/associate.py:29
-msgid "Contenu asocié"
+msgid "Contenu associé"
 msgstr ""
 
 #: novaideo/views/idea_management/associate.py:30
-msgid "Contenus asociés"
+msgid "Contenus associés"
 msgstr ""
 
 #: novaideo/views/idea_management/associate.py:34
