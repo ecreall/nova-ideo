@@ -36,6 +36,7 @@ class CorrectItemView(BasicView):
         result = {}
         user = get_current()
         values = {
+                'title': self.context.get_adapted_title(get_current()), 
                 'text': self.context.get_adapted_text(get_current()),
                 'description': self.context.get_adapted_description(user),
                }

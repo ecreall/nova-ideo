@@ -1043,7 +1043,7 @@ class CorrectItem(InfiniteCardinality):
         corrections = [item for item in context.corrections.keys() \
                        if not('included' in context.corrections[item])]
         text = self._include_items(text_to_correct, request, corrections)
-        if content == 'description':
+        if content == 'description' or content == 'title':
             text = text.replace('<p>', '').replace('</p>', '')
 
         setattr(context.proposal, content, text)
@@ -1211,7 +1211,16 @@ class CorrectProposal(InfiniteCardinality):
                                         getattr(context, 'description', ''), 
                                         getattr(correction, 'description', ''), 
                                         "correction")
+        souptitlediff, titlediff = text_analyzer.render_html_diff(
+                                        getattr(context, 'title', ''), 
+                                        getattr(correction, 'title', ''), 
+                                        "correction")
         descriminator = 0
+        descriminator = self._identify_corrections(souptitlediff, 
+                                                   correction, 
+                                                   descriminator, 
+                                                   'title')
+        self._add_actions(correction, request, souptitlediff)
         descriminator = self._identify_corrections(soupdescriptiondiff, 
                                                    correction, 
                                                    descriminator, 
@@ -1223,6 +1232,7 @@ class CorrectProposal(InfiniteCardinality):
         correction.text = text_analyzer.soup_to_text(souptextdiff)
         context.originaltext = correction.text
         correction.description = text_analyzer.soup_to_text(soupdescriptiondiff)
+        correction.title = text_analyzer.soup_to_text(souptitlediff)
         if souptextdiff.find_all("span", id="correction") or \
            soupdescriptiondiff.find_all("span", id="correction"):
             correction.state.append('in process')

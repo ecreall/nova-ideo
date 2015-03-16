@@ -1,7 +1,7 @@
 function correct_handler(event){
     var correction = $($(this).parents('#correction').first());
     var correction_attr = correction.data('content');
-    var target = $($(this).parents('.content-'+correction_attr).first());
+    var target = $($(this).parents('.correction-container-'+correction_attr).first());
     var url = $(this).data('url');
     dict_post = {};
     dict_post['vote'] = Boolean($(this).data('favour'));;

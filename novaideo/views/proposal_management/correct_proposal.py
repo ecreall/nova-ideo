@@ -34,13 +34,14 @@ class CorrectProposalView(FormView):
                                      editable=True,
                                      widget=deform.widget.FormWidget(
                                                 css_class='amendmentform')),
-                    ['description', 'text'])
+                    ['title', 'description', 'text'])
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/action_confirmation.js']}
 
     def default_data(self):
-        return {'text':self.context.text, 
-                'description':self.context.description}
+        return {'title': self.context.title, 
+                'text': self.context.text, 
+                'description': self.context.description}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CorrectProposal:CorrectProposalView})

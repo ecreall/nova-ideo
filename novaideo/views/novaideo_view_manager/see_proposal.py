@@ -73,18 +73,20 @@ class DetailProposalView(BasicView):
         is_participant = has_role(user=user, role=('Participant', self.context))
         text = getattr(self.context, 'text', '')
         description = getattr(self.context, 'description', '')
+        title = getattr(self.context, 'title', '')
         add_filigrane = False
         corrections = [c for c in self.context.corrections \
                        if 'in process' in c.state]
         if corrections and is_participant:
             text = corrections[-1].get_adapted_text(user)
             description = corrections[-1].get_adapted_description(user)
+            title = corrections[-1].get_adapted_title(user)
         elif not is_participant and \
              not any(s in self.context.state \
                      for s in ['published', 'examined']):
             add_filigrane = True
 
-        return description, text, add_filigrane
+        return title, description, text, add_filigrane
 
     def _cant_submit_alert(self, actions):
         if 'draft' in self.context.state:
@@ -142,14 +144,15 @@ class DetailProposalView(BasicView):
                          user not in wg.members and \
                          (ct_participate_max or ct_participate_closed)
         
-        description, text, add_filigrane = self._get_adapted_text(user)
+        title, description, text, add_filigrane = self._get_adapted_text(user)
         result = {}
         values = {
                 'proposal': self.context,
                 'state': get_states_mapping(user, self.context, 
                                             self.context.state[0]),
-                'text': text,
+                'title': title,
                 'description': description,
+                'text': text,
                 'current_user': user,
                 'wg_actions': wg_actions,
                 'voteactions': vote_actions,

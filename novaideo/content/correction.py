@@ -117,3 +117,8 @@ class Correction(VisualisableElement, Entity):
         """Return the appropriate text to the user"""
 
         return self._get_adapted_content(user, self.text)
+
+    def get_adapted_title(self, user):
+        """Return the appropriate text to the user"""
+
+        return self._get_adapted_content(user, self.title).replace('<p>', '').replace('</p>', '')
