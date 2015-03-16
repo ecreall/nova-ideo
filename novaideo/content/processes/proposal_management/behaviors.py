@@ -171,6 +171,7 @@ class CreateProposal(ElementaryAction):
         wg.setproperty('proposal', proposal)
         wg.addtoproperty('members', get_current())
         wg.state.append('deactivated')
+        import pdb; pdb.set_trace()
         if related_ideas:
             connect(proposal, 
                     related_ideas,
@@ -186,13 +187,13 @@ class CreateProposal(ElementaryAction):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
-        
+
 
 def pap_processsecurity_validation(process, context):
     return (('published' in context.state) and has_role(role=('Member',)))
 
 
-class PublishAsProposal(ElementaryAction):
+class PublishAsProposal(CreateProposal):
     style = 'button' #TODO add style abstract class
     context = Iidea
     submission_title = _('Save')
@@ -200,42 +201,7 @@ class PublishAsProposal(ElementaryAction):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-file'
     processsecurity_validation = pap_processsecurity_validation
-
-    def start(self, context, request, appstruct, **kw):
-        root = getSite()
-        user = get_current()
-        proposal = Proposal()
-        proposal.title = appstruct['title']
-        proposal.description = appstruct['description']
-        root.addtoproperty('proposals', proposal)
-        for k in context.keywords_ref:
-            proposal.addtoproperty('keywords_ref', k)
-
-        proposal.text = normalize_text(context.text)
-        proposal.state.append('draft')
-        grant_roles(roles=(('Owner', proposal), ))
-        grant_roles(roles=(('Participant', proposal), ))
-        proposal.setproperty('author', user)
-        self.process.execution_context.add_created_entity('proposal', proposal)
-        wg = WorkingGroup()
-        root.addtoproperty('working_groups', wg)
-        wg.setproperty('proposal', proposal)
-        wg.addtoproperty('members', user)
-        wg.state.append('deactivated')
-        connect(proposal,
-                [context],
-                {'comment': _('Transform the idea as a proposal'),
-                 'type': _('Creation')},
-                user,
-                ['related_proposals', 'related_ideas'],
-                CorrelationType.solid)
-        proposal.reindex()
-        wg.reindex()
-        context.reindex()
-        return {'newcontext': proposal}
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
+    roles_validation = NotImplemented
 
 
 def del_relation_validation(process, context):
