@@ -31,6 +31,15 @@ class EditDeadLineView(FormView):
     formid = 'formeditdeadline'
     name = 'editdeadline'
 
+    @property
+    def requirements(self):
+        if self.request.locale_name == 'fr':
+            return {'css_links':[],
+                    'js_links':['deform:static/pickadate/translations/fr_FR.js']}
+
+        return {'css_links':[],
+                 'js_links':[]}
+                 
     def default_data(self):
         return {'deadline': self.context.deadlines[-1]}
 

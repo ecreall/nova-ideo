@@ -31,5 +31,14 @@ class AddDeadLineView(FormView):
     formid = 'formadddeadline'
     name = 'adddeadline'
 
+    @property
+    def requirements(self):
+        if self.request.locale_name == 'fr':
+            return {'css_links':[],
+                    'js_links':['deform:static/pickadate/translations/fr_FR.js']}
+
+        return {'css_links':[],
+                 'js_links':[]}
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({AddDeadLine: AddDeadLineView})
