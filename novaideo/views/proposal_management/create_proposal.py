@@ -6,7 +6,7 @@
 
 from pyramid.view import view_config
 
-from dace.util import getSite, find_entities
+from dace.util import find_entities
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.default_behavior import Cancel
