@@ -62,7 +62,7 @@ class ArchiveIdeaView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class ArchiveIdeaViewMultipleView(MultipleView):
-    title = _('Archive')
+    title = _('Archive the idea')
     name = 'archiveidea'
     viewid = 'archiveidea'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-03-17 15:03+0100\n"
+"POT-Creation-Date: 2015-03-17 15:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -162,10 +162,14 @@ msgid "Alert for publication"
 msgstr ""
 
 #: ./novaideo/views/idea_management/publish_idea.py:36
-#: ./novaideo/views/idea_management/publish_idea.py:49
 #: ./novaideo/content/processes/idea_management/definition.py:77
 #: ./novaideo/content/processes/proposal_management/definition.py:309
 msgid "Publish"
+msgstr ""
+
+#: ./novaideo/views/idea_management/publish_idea.py:49
+#: ./novaideo/content/processes/idea_management/definition.py:76
+msgid "Publish the idea"
 msgstr ""
 
 #: ./novaideo/views/idea_management/archive_idea.py:25
@@ -173,11 +177,16 @@ msgid "Alert for archive"
 msgstr ""
 
 #: ./novaideo/views/idea_management/archive_idea.py:51
-#: ./novaideo/views/idea_management/archive_idea.py:65
 #: ./novaideo/views/idea_management/abandon_idea.py:23
 #: ./novaideo/content/processes/idea_management/definition.py:81
 #: ./novaideo/content/processes/idea_management/definition.py:89
 msgid "Archive"
+msgstr ""
+
+#: ./novaideo/views/idea_management/archive_idea.py:65
+#: ./novaideo/content/processes/idea_management/definition.py:80
+#: ./novaideo/content/processes/idea_management/definition.py:88
+msgid "Archive the idea"
 msgstr ""
 
 #: ./novaideo/views/idea_management/archive_idea.py:46
@@ -2245,15 +2254,6 @@ msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:72
 msgid "Submit the idea"
-msgstr ""
-
-#: ./novaideo/content/processes/idea_management/definition.py:76
-msgid "Publish the idea"
-msgstr ""
-
-#: ./novaideo/content/processes/idea_management/definition.py:80
-#: ./novaideo/content/processes/idea_management/definition.py:88
-msgid "Archive the idea"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:84

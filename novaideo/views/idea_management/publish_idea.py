@@ -46,7 +46,7 @@ class PublishIdeaView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishIdeaViewMultipleView(MultipleView):
-    title = _('Publish')
+    title = _('Publish the idea')
     name = 'publishidea'
     behaviors = [PublishIdea]
     viewid = 'publishidea'
