@@ -171,7 +171,6 @@ class CreateProposal(ElementaryAction):
         wg.setproperty('proposal', proposal)
         wg.addtoproperty('members', get_current())
         wg.state.append('deactivated')
-        import pdb; pdb.set_trace()
         if related_ideas:
             connect(proposal, 
                     related_ideas,

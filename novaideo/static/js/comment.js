@@ -94,7 +94,7 @@ function update_replay(url){
        if (action_body){
            $($(target).find('.media-body').first()).html(get_form_replay_container());
            var container = $($(target).find('.replay-form-container').first());
-           container.append($(action_body).find('form').first());
+           container.append($(action_body));
            var replay_bloc = $($(target).parents('ul.replay-bloc').first());
            $(container.find('button.close').first()).on('click', function(){
               replay_bloc.css('display', 'none');

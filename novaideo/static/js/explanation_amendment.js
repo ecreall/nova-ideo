@@ -99,8 +99,9 @@ function submit_explanation(){
         };
        $.getJSON(url,datas, function(data) {
              $(target).modal('hide');
-             location.reload();
+             location.replace(location.href);
        });
+       
        return false;
 };
 

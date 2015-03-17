@@ -97,15 +97,6 @@ class DetailProposalView(BasicView):
 
         return False, []
 
-    def get_modal_actions(self, actions):
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
-                                                       'dace_ui_api')
-        actions = [(a.context, a.action) for a in actions]
-        action_updated, messages, \
-        resources, actions = dace_ui_api.update_actions(self.request,
-                                                        actions)
-        return messages, resources, actions
-
     def update(self):
         self.execute(None)
         user = get_current()

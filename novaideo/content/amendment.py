@@ -47,9 +47,14 @@ def add_new_idea_widget(node, kw):
 
 @colander.deferred
 def relatedideas_choice(node, kw):
+    context = node.bindings['context']
     request = node.bindings['request']
+    used_ideas = context.get_used_ideas()
     root = getSite()
-    values = []
+    ideas = list(context.proposal.related_ideas.keys())
+    ideas.extend(used_ideas)
+    ideas = set(ideas)
+    values = [(i, i.title) for i in ideas]
     ajax_url = request.resource_url(root, '@@search', 
                                     query={'op':'find_entities', 
                                            'content_types':['Idea']
