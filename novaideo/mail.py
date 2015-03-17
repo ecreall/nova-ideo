@@ -247,3 +247,14 @@ ACCEPT_INVITATION_MESSAGE = u"""
 {user_title} {user_first_name} {user_last_name} a accepté votre invitation de rejoindre la plateforme {novaideo_title}.
 
 """+ PORTAL_SIGNATURE
+
+
+RESETPW_SUBJECT = u"""Votre nouveau mot de passe sur la plateforme {novaideo_title}"""
+
+
+RESETPW_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+Vous avez oublié votre mot de passe sur la plateforme {novaideo_title} et vous souhaitez en utiliser un nouveau, merci de cliquer sur {reseturl} et de saisir votre nouveau mot de passe.
+
+"""+ PORTAL_SIGNATURE

@@ -11,6 +11,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from substanced.interfaces import IUserLocator, IPasswordReset
 from substanced.principal import DefaultUserLocator
+from substanced.util import find_service
 
 from dace.processinstance.core import  Behavior
 from pontus.form import FormView
@@ -20,7 +21,11 @@ from pontus.schema import Schema
 from pontus.default_behavior import Cancel
 
 from novaideo import _
+from novaideo.ips.mailer import mailer_send
 from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.mail import (
+    RESETPW_SUBJECT,
+    RESETPW_MESSAGE)
 
 
 class Send(Behavior):
@@ -40,7 +45,24 @@ class Send(Behavior):
 
         user = adapter.get_user_by_email(login)
         if user is not None:
-            user.email_password_reset(request)
+            principals = find_service(user, 'principals')
+            reset = principals.add_reset(user)
+            reseturl = request.resource_url(reset)
+            if not user.email:
+                raise ValueError('User does not possess a valid email address.')
+
+            subject = RESETPW_SUBJECT.format(novaideo_title=request.root.title)
+            localizer = request.localizer
+            message = RESETPW_MESSAGE.format(
+                recipient_title=localizer.translate(_(getattr(user, 'user_title',''))),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name',''),
+                reseturl=reseturl,
+                novaideo_title=request.root.title
+                 )
+            mailer_send(subject=subject, 
+                recipients=[user.email], 
+                body=message)
 
         return {}
 
@@ -52,6 +74,7 @@ class Send(Behavior):
 def login_validator(node, kw):
     context = kw['context']
     request = kw['request']
+
     def _login_validator(node, value):
         adapter = request.registry.queryMultiAdapter(
                     (context, request),
