@@ -416,7 +416,7 @@ msgstr "Texte ajouté dans la version en cours"
 #: novaideo/views/idea_management/templates/diff_result.pt:40
 #: novaideo/views/proposal_management/templates/diff_result.pt:55
 msgid "Text removed from the current version"
-msgstr "Texte supprimé de la version en cours"
+msgstr "Texte supprimé dans la version en cours"
 
 #: novaideo/views/idea_management/templates/alert_idea_archive.pt:1
 msgid "En cliquant sur « Continuer », l'idée sera archivée. Vous devez expliquer cette décision, afin que l'auteur de l'idée comprenne pourquoi son idée n'est pas publiée. Un courriel lui sera envoyé avec votre explication."
