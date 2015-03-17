@@ -604,7 +604,7 @@ msgstr "Alerte pour supression"
 #: novaideo/views/user_management/reset_password.py:94
 #: novaideo/views/user_management/reset_password.py:105
 msgid "Request password reset"
-msgstr "Réinitialisation du mot de passe"
+msgstr "Lancer la procédure de changement de mot de passe"
 
 #: novaideo/views/user_management/reset_password.py:142
 msgid "Reset Password"
