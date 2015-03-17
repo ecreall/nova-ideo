@@ -208,7 +208,7 @@ class EditIdea(InfiniteCardinality):
         copy_of_idea.state = PersistentList(['archived', 'version'])
         copy_of_idea.setproperty('author', get_current())
         note = appstruct.pop('note', '')
-        copy_of_idea.note = note
+        context.note = note
         context.set_data(appstruct)
         context.modified_at = datetime.datetime.today()
         copy_of_idea.reindex()

@@ -63,7 +63,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
                                      limit=300,
                                      alert_values={'limit': 300}),
         title=_("Note"),
-        #missing=""
+        missing=""
         )
 
     attached_files = colander.SchemaNode(
