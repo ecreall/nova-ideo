@@ -1247,11 +1247,11 @@ msgstr "minimum)"
 
 #: novaideo/views/templates/panels/step1_0.pt:3
 msgid "Proposals using this idea:"
-msgstr "Propositions utilisant cette idée:"
+msgstr "Propositions liées à cette idée:"
 
 #: novaideo/views/templates/panels/step1_0.pt:7
 msgid "Duplicated ideas from this idea:"
-msgstr "Idées dupliquées de cette idée:"
+msgstr "Idées dupliquées à partir de cette idée:"
 
 #: novaideo/views/templates/panels/step3_1.pt:5
 #: novaideo/views/templates/panels/step3_3.pt:5
