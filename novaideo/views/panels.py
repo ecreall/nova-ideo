@@ -412,7 +412,8 @@ class Adminnavbar_panel(object):
                   'organizationmanagement',
                   'novaideoabstractprocess',
                   'novaideoviewmanager',
-                  'novaideofilemanagement']
+                  'novaideofilemanagement',
+                  'novaideoprocessmanagement']
 
     def __init__(self, context, request):
         self.context = context
