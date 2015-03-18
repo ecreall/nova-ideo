@@ -10,7 +10,7 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.schema import Schema, omit, select
-from pontus.widget import SimpleMappingWidget
+from pontus.widget import SimpleMappingWidget, SequenceWidget
 
 from novaideo.content.processes.organization_management.behaviors import (
     CreatOrganizations)
@@ -34,6 +34,7 @@ class CreatOrganizationsSchema(Schema):
                         'phone',
                         'fax',
                         'logo']),
+                widget=SequenceWidget(),
                 title=_('Organizations to creat')
                 )
 

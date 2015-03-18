@@ -115,6 +115,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                name=_('Invitations'),
                                widget=SimpleMappingWidget(css_class='object-well invitation-well')),
             ['_csrf_token_']),
+        widget=SequenceWidget(),
         title=_('List of invitation'),
         )
 
@@ -134,6 +135,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                 widget=SimpleMappingWidget(css_class='object-well invitation-well'),
                 omit=['managers']),
             ['_csrf_token_']),
+        widget=SequenceWidget(),
         title=_('Organizations'),
         )
 
