@@ -2088,7 +2088,7 @@ msgstr "Ouverte à un groupe de travail"
 #: novaideo/content/processes/__init__.py:33
 #: novaideo/content/processes/__init__.py:67
 msgid "Proofreading"
-msgstr "Relecture"
+msgstr "En relecture"
 
 #: novaideo/content/processes/__init__.py:35
 #: novaideo/content/processes/__init__.py:69
