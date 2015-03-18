@@ -70,7 +70,7 @@ def subjects_choice(ballot_report):
 
 @colander.deferred
 def vote_choice(node, kw):
-    values = [(True, _('Favour')), (False, _('Against'))]
+    values = [(True, _('Against')), (False, _('Favour'))]
     return RadioChoiceWidget(values=values)
 
 

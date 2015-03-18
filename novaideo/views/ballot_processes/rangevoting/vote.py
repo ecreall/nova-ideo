@@ -14,6 +14,7 @@ from pontus.form import FormView
 from pontus.view_operation import MultipleView
 from pontus.schema import Schema
 from pontus.view import BasicView
+from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.ballot_processes.rangevoting.behaviors import (
     Vote)
@@ -65,7 +66,7 @@ class VoteFormView(FormView):
     title =  _('Vote')
     name = 'voteform'
     formid = 'formvote'
-    behaviors = [Vote]
+    behaviors = [Vote, Cancel]
     schema = VoteSchema()
     validate_behaviors = False
 
@@ -82,9 +83,10 @@ class VoteFormView(FormView):
         define_node_op = NODE_DEFINITION.get(vote_type, None)
         if define_node_op:
             define_node_op(self.schema)
+
+        formwidget = deform.widget.FormWidget(css_class='vote-form')
+        self.schema.widget = formwidget
             
-
-
 
 @view_config(
     name='rangevotingvote',

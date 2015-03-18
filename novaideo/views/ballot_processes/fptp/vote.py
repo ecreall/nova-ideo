@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import colander
+import deform
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -14,6 +15,7 @@ from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.schema import Schema
 from pontus.widget import Select2Widget
+from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.ballot_processes.fptp.behaviors import  Vote
 from novaideo.content.proposal import Proposal
@@ -69,7 +71,7 @@ class VoteFormView(FormView):
     title =  _('Vote')
     name = 'voteform'
     formid = 'formvote'
-    behaviors = [Vote]
+    behaviors = [Vote, Cancel]
     validate_behaviors = False
     schema = CandidatesSchema()
 
@@ -84,6 +86,8 @@ class VoteFormView(FormView):
         subjects_widget = subjects_choice(ballot_report)
         self.schema.get('elected').widget = subjects_widget
         self.schema.view = self
+        formwidget = deform.widget.FormWidget(css_class='vote-form')
+        self.schema.widget = formwidget
 
 
 @view_config(

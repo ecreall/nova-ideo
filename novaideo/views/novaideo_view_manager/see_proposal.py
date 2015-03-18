@@ -45,6 +45,7 @@ class DetailProposalView(BasicView):
     filigrane_template = 'novaideo:views/novaideo_view_manager/templates/filigrane.pt'
     validate_behaviors = False
 
+
     def _vote_actions(self):
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
                                                        'dace_ui_api')
@@ -111,6 +112,12 @@ class DetailProposalView(BasicView):
                                 ['global-action', 'text-action', 'wg-action'])
         if getattr(self.context, '__parent__', None) is None:
             return HTTPFound(self.request.resource_url(root, ''))
+
+        if vote_actions:
+            actions_navbar['text-action'].append({
+                                 'title': _('Vote'),
+                                 'class_css': 'vote-action',
+                                 'style_picto': 'glyphicon glyphicon-stats'})
 
         global_actions = actions_navbar['global-action']
         wg_actions = actions_navbar['wg-action']
@@ -189,7 +196,8 @@ class SeeProposalView(MultipleView):
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/correct_proposal.js',
                                 'novaideo:static/js/comment.js',
-                                'novaideo:static/js/compare_idea.js']}
+                                'novaideo:static/js/compare_idea.js',
+                                'novaideo:static/js/ballot_management.js']}
     views = (DetailProposalView, SeeProposalActionsView)
     validators = [SeeProposal.get_validator()]
 

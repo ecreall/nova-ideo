@@ -95,6 +95,7 @@ except NameError:
 
 VOTE_PUBLISHING_MESSAGE = _("Vote for submission")
 
+
 FIRST_VOTE_PUBLISHING_MESSAGE = _("Vote for submission")
 
 
@@ -104,11 +105,17 @@ VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
                           " of the proposal, your vote for the duration of the"
                           " amendment period will be useful")
 
-FIRST_VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
-                          " the period for voting. In the case where the"
-                          " majority are for the continuation of improvements"
-                          " of the proposal, your vote for the duration of the"
-                          " amendment period will be useful")
+
+FIRST_VOTE_DURATION_MESSAGE = _(
+                    "Vous avez décidé de rejoindre le groupe de travail,"
+                    " votre première action est de voter pour ou contre"
+                    " l'amélioration de la proposition. Le scrutin de vote"
+                    " est clos, dès que le groupe de travail comprend trois"
+                    " participants. Si le « Pour » est majoritaire, un cycle "
+                    "d'amélioration commence, sinon la proposition n'est plus "
+                    "améliorée, elle est directement soumise à l'appréciation "
+                    "des autres membres de la plateforme.")
+
 
 VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
                            " the period for voting. In the case where the"

@@ -1,4 +1,4 @@
-<div class="object-well entity-well" i18n:domain="novaideo"> 
+<div i18n:domain="novaideo"> 
   <dl >
      <dt  i18n:translate="">Subject of the vote</dt>
      <dd><div class="alert alert-warning">${ballot_report.description}</div></dd>

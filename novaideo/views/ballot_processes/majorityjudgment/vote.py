@@ -5,11 +5,12 @@
 # author: Amen Souissi
 
 import colander
+import deform
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 from bs4 import BeautifulSoup
 
-from dace.util import get_obj, getBusinessAction
+from dace.util import get_obj
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
@@ -18,6 +19,7 @@ from pontus.view import BasicView
 from pontus.schema import omit, Schema
 from pontus.widget import RadioChoiceWidget
 from pontus.file import OBJECT_OID
+from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.ballot_processes.majorityjudgment.behaviors import (
     Vote)
@@ -164,7 +166,7 @@ class VoteFormView(FormView):
     title =  _('Vote')
     name = 'voteform'
     formid = 'formvote'
-    behaviors = [Vote]
+    behaviors = [Vote, Cancel]
     validate_behaviors = False
     schema = CandidatesSchema()
 
@@ -181,6 +183,8 @@ class VoteFormView(FormView):
         judgment_nd.widget = judgments_widget
         self.schema.get('candidates').children[0].editable = False
         self.schema.view = self
+        formwidget = deform.widget.FormWidget(css_class='vote-form')
+        self.schema.widget = formwidget
 
     def default_data(self):
         ballot_report = None
