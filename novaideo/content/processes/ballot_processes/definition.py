@@ -31,12 +31,19 @@ from novaideo import _
 
 
 def time_duration(process):
-    return process.duration + datetime.today()
+    duration = datetime.today()
+    if hasattr(process, 'duration'):
+        duration = duration + getattr(process, 'duration')
+        
+    return duration
 
 
 def event_condition(process):
     execution_context = process.execution_context
     processes = execution_context.get_involved_collection('vote_processes')
+    if not processes:
+        return True
+
     for ballot_process in processes:
         if not ballot_process._finished:
             return False

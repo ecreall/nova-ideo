@@ -30,6 +30,7 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import (
     InfiniteCardinality, ElementaryAction, ActionType)
 from daceui.interfaces import IDaceUIAPI
+from pontus.file import OBJECT_DATA
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import (
@@ -83,6 +84,7 @@ from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.util import connect, disconnect
 from novaideo.core import to_localized_time
 from novaideo.event import ObjectPublished, CorrelableRemoved
+from novaideo.content.ballot import Ballot
 
 
 try:
@@ -91,13 +93,37 @@ except NameError:
     basestring = str
 
 
-def close_votes(context, request, vote_processes):
-    vote_actions = [process.get_actions('vote') \
-                    for process in vote_processes]
-    vote_actions = [action for actions in vote_actions \
-                   for action in actions]
-    for action in vote_actions:
-        action.close_vote(context, request)
+VOTE_PUBLISHING_MESSAGE = _("Vote for submission")
+
+FIRST_VOTE_PUBLISHING_MESSAGE = _("Vote for submission")
+
+
+VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
+                          " the period for voting. In the case where the"
+                          " majority are for the continuation of improvements"
+                          " of the proposal, your vote for the duration of the"
+                          " amendment period will be useful")
+
+FIRST_VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
+                          " the period for voting. In the case where the"
+                          " majority are for the continuation of improvements"
+                          " of the proposal, your vote for the duration of the"
+                          " amendment period will be useful")
+
+VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
+                           " the period for voting. In the case where the"
+                           " majority are for the continuation of improvements"
+                           " of the proposal, your vote for reopening working"
+                           " group will be useful")
+
+
+VOTE_AMENDMENTS_MESSAGE = _("Vote for amendments")
+
+
+VP_DEFAULT_DURATION = datetime.timedelta(days=1)
+
+
+AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(days=1)
 
 
 AMENDMENTS_CYCLE_DEFAULT_DURATION = {
@@ -113,6 +139,83 @@ AMENDMENTS_CYCLE_DEFAULT_DURATION = {
               "Two weeks": datetime.timedelta(weeks=2)}
 
 
+DEFAULT_NB_CORRECTORS = 1
+
+
+def close_votes(context, request, vote_processes):
+    vote_actions = [process.get_actions('vote') \
+                    for process in vote_processes]
+    vote_actions = [action for actions in vote_actions \
+                   for action in actions]
+    for action in vote_actions:
+        action.close_vote(context, request)
+
+
+def init_proposal_ballots(proposal, process):
+    wg = proposal.working_group
+    electors = []
+    subjects = [proposal]
+    ballot = Ballot('Referendum' , electors, subjects, VP_DEFAULT_DURATION)
+    wg.addtoproperty('ballots', ballot)
+    ballot.report.description = FIRST_VOTE_PUBLISHING_MESSAGE
+    ballot.title = _("Submit the proposal")
+    process.vp_ballot = ballot #vp for voting for publishing
+    durations = list(AMENDMENTS_CYCLE_DEFAULT_DURATION.keys())
+    group = sorted(durations, 
+                   key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
+    ballot = Ballot('FPTP' , electors, group, VP_DEFAULT_DURATION)
+    wg.addtoproperty('ballots', ballot)
+    ballot.title = _('Amendment duration')
+    ballot.report.description = FIRST_VOTE_DURATION_MESSAGE
+    process.duration_configuration_ballot = ballot
+
+
+def first_vote_registration(user, process, appstruct):
+    #duration vote
+    ballot = process.duration_configuration_ballot
+    report = ballot.report
+    if user not in report.voters:
+        elected_id = appstruct['elected']
+        try:
+            subject_id = get_oid(elected_id[OBJECT_DATA])
+        except Exception:
+            subject_id = elected_id
+        votefactory = report.ballottype.vote_factory
+        vote = votefactory(subject_id)
+        vote.user_id = get_oid(user)
+        ballot.ballot_box.addtoproperty('votes', vote)
+        report.addtoproperty('voters', user)
+    #publication vote
+    ballot = process.vp_ballot
+    report = ballot.report
+    if user not in report.voters:
+        vote = appstruct['vote']
+        votefactory = report.ballottype.vote_factory
+        vote = votefactory(vote)
+        vote.user_id = get_oid(user)
+        ballot.ballot_box.addtoproperty('votes', vote)
+        report.addtoproperty('voters', user)
+
+
+def first_vote_remove(user, process):
+    user_oid = get_oid(user)
+    #duration vote
+    ballot = process.duration_configuration_ballot
+    votes = [v for v in ballot.ballot_box.votes \
+             if getattr(v, 'user_id', 0) == user_oid]
+    if votes:
+        ballot.ballot_box.delfromproperty('votes', votes[0])
+        ballot.report.delfromproperty('voters', user)
+
+    #publication vote
+    ballot = process.vp_ballot
+    votes = [v for v in ballot.ballot_box.votes \
+             if getattr(v, 'user_id', 0) == user_oid]
+    if votes:
+        ballot.ballot_box.delfromproperty('votes', votes[0])
+        ballot.report.delfromproperty('voters', user)
+
+
 def calculate_amendments_cycle_duration(process):
     duration_ballot = getattr(process, 'duration_configuration_ballot', None)
     if duration_ballot is not None and duration_ballot.report.voters:
@@ -124,8 +227,6 @@ def calculate_amendments_cycle_duration(process):
     return AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"] + \
            datetime.datetime.today()
 
-
-DEFAULT_NB_CORRECTORS = 1
 
 def createproposal_roles_validation(process, context):
     return has_role(role=('Admin',))
@@ -181,6 +282,7 @@ class CreateProposal(ElementaryAction):
                     CorrelationType.solid)
 
         proposal.reindex()
+        init_proposal_ballots(proposal, self.process)
         wg.reindex()
         return {'newcontext': proposal}
 
@@ -293,7 +395,6 @@ def submit_state_validation(process, context):
 class SubmitProposal(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 13
     submission_title = _('Continue')
@@ -313,6 +414,8 @@ class SubmitProposal(ElementaryAction):
         else:
             context.state.append('votes for publishing')
 
+        user = get_current()
+        first_vote_registration(user, self.process, appstruct)
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         return {}
@@ -374,6 +477,7 @@ class DuplicateProposal(ElementaryAction):
 
         wg.reindex()
         copy_of_proposal.reindex()
+        init_proposal_ballots(copy_of_proposal, self.process)
         context.reindex()
         return {'newcontext': copy_of_proposal}
 
@@ -1261,22 +1365,23 @@ class VotingPublication(ElementaryAction):
         context.state.remove(state)
         context.state.append('votes for publishing')
         context.reindex()
-        members = context.working_group.members
-        url = request.resource_url(context, "@@index")
-        subject = VOTINGPUBLICATION_SUBJECT.format(subject_title=context.title)
-        localizer = request.localizer
-        for member in members:
-            message = VOTINGPUBLICATION_MESSAGE.format(
-                recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name',''),
-                subject_title=context.title,
-                subject_url=url,
-                novaideo_title=request.root.title
-                 )
-            mailer_send(subject=subject, 
-                recipients=[member.email], 
-                body=message)
+        if not getattr(self.process, 'first_vote', True):
+            members = context.working_group.members
+            url = request.resource_url(context, "@@index")
+            subject = VOTINGPUBLICATION_SUBJECT.format(subject_title=context.title)
+            localizer = request.localizer
+            for member in members:
+                message = VOTINGPUBLICATION_MESSAGE.format(
+                    recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
+                    recipient_first_name=getattr(member, 'first_name', member.name),
+                    recipient_last_name=getattr(member, 'last_name',''),
+                    subject_title=context.title,
+                    subject_url=url,
+                    novaideo_title=request.root.title
+                     )
+                mailer_send(subject=subject, 
+                    recipients=[member.email], 
+                    body=message)
 
         self.process.iteration = getattr(self.process, 'iteration', 0) + 1
         return {}
@@ -1392,6 +1497,10 @@ class Resign(InfiniteCardinality):
         user = get_current()
         wg = context.working_group
         wg.delfromproperty('members', user)
+        if getattr(self.process, 'first_vote', True):
+            #remove user vote if first_vote
+            first_vote_remove(user, self.process)
+
         revoke_roles(user, (('Participant', context),))
         url = request.resource_url(context, "@@index")
         localizer = request.localizer
@@ -1452,6 +1561,9 @@ def participate_roles_validation(process, context):
 
 
 def participate_processsecurity_validation(process, context):
+    if getattr(process, 'first_decision', True):
+        return False
+
     user = get_current()
     root = getSite()
     wgs = user.active_working_groups
@@ -1472,6 +1584,7 @@ class Participate(InfiniteCardinality):
     style_descriminator = 'wg-action'
     style_order = 1
     style_css_class = 'btn-success'
+    submission_title = _('Save')
     isSequential = False
     context = IProposal
     processs_relation_id = 'proposal'
@@ -1529,6 +1642,31 @@ class Participate(InfiniteCardinality):
             self._send_mail_to_user(WATINGLIST_SUBJECT, WATINGLIST_MESSAGE,
                  user, context, request)
 
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def firstparticipate_processsecurity_validation(process, context):
+    if not getattr(process, 'first_decision', True):
+        return False
+
+    user = get_current()
+    root = getSite()
+    wgs = user.active_working_groups
+    return not(user in context.working_group.wating_list) and \
+           len(wgs) < root.participations_maxi and \
+           global_user_processsecurity(process, context)
+
+
+class FirstParticipate(Participate):
+    processsecurity_validation = firstparticipate_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        super(FirstParticipate, self).start(context, request, appstruct, **kw)
+        user = get_current()
+        first_vote_registration(user, self.process, appstruct)
         return {}
 
     def redirect(self, context, request, **kw):

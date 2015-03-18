@@ -7,7 +7,7 @@
 This module represent the Proposal management process definition 
 powered by the dace engine.
 """
-import datetime
+
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry, get_current_request
 
@@ -45,6 +45,7 @@ from .behaviors import (
     Withdraw,
     Resign,
     Participate,
+    FirstParticipate,
     SubmitProposal,
     VotingAmendments,
     AmendmentsResult,
@@ -64,50 +65,27 @@ from .behaviors import (
     DeleteProposal,
     close_votes,
     AMENDMENTS_CYCLE_DEFAULT_DURATION,
-    calculate_amendments_cycle_duration
+    calculate_amendments_cycle_duration,
+    VOTE_PUBLISHING_MESSAGE,
+    VOTE_DURATION_MESSAGE,
+    VOTE_REOPENING_MESSAGE, 
+    VOTE_AMENDMENTS_MESSAGE, 
+    VP_DEFAULT_DURATION, 
+    AMENDMENTS_VOTE_DEFAULT_DURATION,
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
-VOTE_PUBLISHING_MESSAGE = _("Vote for submission")
-
-
-VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
-                          " the period for voting. In the case where the"
-                          " majority are for the continuation of improvements"
-                          " of the proposal, your vote for the duration of the"
-                          " amendment period will be useful")
-
-
-VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
-                           " the period for voting. In the case where the"
-                           " majority are for the continuation of improvements"
-                           " of the proposal, your vote for reopening working"
-                           " group will be useful")
-
-
-VOTE_AMENDMENTS_MESSAGE = _("Vote for amendments")
-
-
-VP_DEFAULT_DURATION = datetime.timedelta(days=1)
-
-
-AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(days=1)
-
-
 def eg3_publish_condition(process):
     report = process.vp_ballot.report
-    if not getattr(process, 'first_decision', True):
+    if not getattr(process, 'first_vote', True):
         electeds = report.get_electeds()
         if electeds:
             return True
         else:
             return False
-
-    if len(report.voters) != len(report.electors):
-        return False
 
     report.calculate_votes()
     if report.result['False'] == 0:
@@ -157,6 +135,13 @@ class SubProcessDefinition(OriginSubProcessDefinition):
     factory = SubProcess
 
     def _init_subprocess(self, process, subprocess):
+        if not hasattr(process, 'first_vote'):
+            process.first_vote = True
+            #dt run vote processes
+            return
+        else:
+            process.first_vote = False
+
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
         wg = proposal.working_group
@@ -316,6 +301,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Participate"),
                                        title=_("Participate"),
                                        groups=[]),
+                firstparticipate = ActivityDefinition(contexts=[FirstParticipate],
+                                       description=_("Participate"),
+                                       title=_("Participate"),
+                                       groups=[]),
                 resign = ActivityDefinition(contexts=[Resign],
                                        description=_("Resign"),
                                        title=_("Resign"),
@@ -433,6 +422,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg3', 'present'),
                 TransitionDefinition('pg3', 'resign'),
                 TransitionDefinition('pg3', 'participate'),
+                TransitionDefinition('pg3', 'firstparticipate'),
                 TransitionDefinition('pg3', 'withdraw'),
                 TransitionDefinition('pg3', 'correct'),
                 TransitionDefinition('pg3', 'proofreading'),

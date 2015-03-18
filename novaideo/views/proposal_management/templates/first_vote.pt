@@ -1,0 +1,6 @@
+<div class="alert alert-info">
+  <div>${vp_ballot_report.description}</div>
+  <div>${duration_ballot_report.description}</div>
+</div>
+
+
