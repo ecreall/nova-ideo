@@ -32,7 +32,7 @@ from novaideo.content.idea import Idea
 from novaideo.content.interface import IPerson, Iidea, IProposal
 from novaideo.content.amendment import Amendment
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.core import _, SearchableEntitySchema
+from novaideo.core import _, SearchableEntity
 from novaideo.content.processes import get_states_mapping
 from novaideo.content.processes.user_management.behaviors import global_user_processsecurity
 
@@ -533,10 +533,10 @@ class SocialShare(object):
         self.request = request
 
     def __call__(self):
-        if self.request.view_name != '@@index' or \
-           not isinstance(self.context, SearchableEntitySchema) or \
+        if self.request.view_name != 'index' or \
+           not isinstance(self.context, SearchableEntity) or \
            not self.context.is_published:
             return {'condition': False}
 
         return {'request': self.request,
-                'true': False}
+                'condition': True}
