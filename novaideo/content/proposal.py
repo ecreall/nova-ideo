@@ -137,3 +137,7 @@ class Proposal(Commentable,
     @property
     def opinion_value(self):
         return OPINIONS.get(getattr(self, 'opinion', None), None)
+
+    @property
+    def is_published(self):
+        return 'draft' not in self.state

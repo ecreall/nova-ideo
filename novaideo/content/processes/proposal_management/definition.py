@@ -137,6 +137,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
     def _init_subprocess(self, process, subprocess):
         if not hasattr(process, 'first_vote'):
             process.first_vote = True
+            #TODO Terminer le process stoper le timer??
             #dt run vote processes
             return
         else:

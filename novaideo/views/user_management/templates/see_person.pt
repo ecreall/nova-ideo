@@ -20,6 +20,17 @@
       </span>
   </div>
 </div>
+<div tal:condition="user.is_published" class="social-share-contaier">
+    <div class="row clearfix">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-9">
+        <div class="social-share" data-social-share-privacy="true"></div>
+      </div>
+      <div class="col-md-1">
+      </div>
+   </div>
+</div>
 <div id="panel-contributions" class="panel-group" i18n:domain="novaideo">
   <div tal:condition="contents" class="panel panel-default">
     <div class="panel-heading">

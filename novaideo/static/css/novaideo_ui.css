@@ -1359,3 +1359,12 @@ ins {
         float: inherit !important;
     }
 }
+
+
+.social-share-contaier .row.clearfix{
+    margin-bottom: -19px
+}
+
+.social-share-contaier .social-share{
+    margin-bottom: -10px
+}

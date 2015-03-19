@@ -24,15 +24,15 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMySelections,
     SeeMyParticipations,
     SeeMySupports)
-from novaideo.content.processes.proposal_management.behaviors import (
-    CreateProposal)
+# from novaideo.content.processes.proposal_management.behaviors import (
+#     CreateProposal)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.proposal import Proposal
 from novaideo.content.idea import Idea
 from novaideo.content.interface import IPerson, Iidea, IProposal
 from novaideo.content.amendment import Amendment
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.core import _
+from novaideo.core import _, SearchableEntitySchema
 from novaideo.content.processes import get_states_mapping
 from novaideo.content.processes.user_management.behaviors import global_user_processsecurity
 
@@ -519,3 +519,24 @@ class ContextualHelp(object):
                     if m[0] is None or m[0](self.context, user)]
         return {'messages': messages,
                 'condition': True}
+
+
+@panel_config(
+    name='social_share',
+    context = Entity ,
+    renderer='templates/panels/social_share.pt'
+    )
+class SocialShare(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        if self.request.view_name != '@@index' or \
+           not isinstance(self.context, SearchableEntitySchema) or \
+           not self.context.is_published:
+            return {'condition': False}
+
+        return {'request': self.request,
+                'true': False}

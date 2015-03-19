@@ -174,6 +174,10 @@ class SearchableEntity(Entity):
     def keywords(self):
         return [k.title for k in self.keywords_ref]
 
+    @property
+    def is_published(self):
+        return 'published' in self.state
+
 
 @implementer(IPresentableEntity)
 class PresentableEntity(Entity):

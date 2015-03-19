@@ -291,4 +291,8 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
 
     @property
     def active_working_groups(self):
-        return [p.working_group for p in self.participations]   
+        return [p.working_group for p in self.participations]
+
+    @property
+    def is_published(self):
+        return 'active' in self.state

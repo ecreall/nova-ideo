@@ -1,0 +1,46 @@
+ <tal:block tal:define="su request.static_url;">
+
+    <script type="text/javascript">
+        function update_socialSharePrivacy_settings(){
+            jQuery.extend(!0, socialSharePrivacy_settings, {
+                                  "path_prefix":"${su('novaideo:static/panzi-SocialSharePrivacy/')}",
+                                  "layout":"line",
+                                  "services":{"buffer":{"status":false},
+                                              "delicious":{"status":false},
+                                              "disqus":{"status":false},
+                                              "flattr":{"status":false},
+                                              "hackernews":{"status":false},
+                                              "mail":{"status":false},
+                                              "pinterest":{"status":false},
+                                              "reddit":{"status":false},
+                                              "stumbleupon":{"status":false},
+                                              "tumblr":{"status":false},
+                                              "xing":{"status":false}
+                                              },
+            });
+            return socialSharePrivacy_settings
+        }
+    </script>
+    <script type="application/x-social-share-privacy-settings">
+        update_socialSharePrivacy_settings()
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+          (function () {
+              var scripts = [
+                   '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.'+request.locale_name+'.js')}',
+                  '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.js')}',
+                   '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.autoload.js')}'
+                     ];
+              for(var i = 0; i< scripts.length; i++){ 
+                var s = document.createElement('script');
+                var t = document.getElementsByTagName('script')[3];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = scripts[i];
+                t.parentNode.insertBefore(s, t);
+              };
+          })();
+        });
+    </script>
+</tal:block>
