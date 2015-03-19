@@ -1361,10 +1361,13 @@ ins {
 }
 
 
-.social-share-contaier .row.clearfix{
-    margin-bottom: -19px
+.social-share-contaier{
+    margin-bottom: -17px;
+    text-align: center;
 }
 
 .social-share-contaier .social-share{
-    margin-bottom: -10px
+   display: inline-block;
+   margin-bottom: -12px
+
 }
