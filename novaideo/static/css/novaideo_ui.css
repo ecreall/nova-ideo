@@ -482,6 +482,11 @@ ins {
    margin: -1px 4px 3px;
 }
 
+.amendment-vote-justification{
+   margin-top: 10px; 
+   color: #333333
+}
+
 .correction-favour-vote {
     border: 3px solid #44f144;
     border-radius: 4px;
