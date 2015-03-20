@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-03-20 16:03+0100\n"
+"POT-Creation-Date: 2015-03-20 17:44+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -80,13 +80,17 @@ msgid "Submit for publishing"
 msgstr "Soumettre pour publication"
 
 #: novaideo/views/idea_management/edit_idea.py:23
-#: novaideo/views/idea_management/edit_idea.py:54
 msgid "Edit idea"
 msgstr "Modifier l'idée"
 
 #: novaideo/views/idea_management/edit_idea.py:39
 msgid "Actions"
 msgstr "Actions"
+
+#: novaideo/views/idea_management/edit_idea.py:54
+#: novaideo/content/processes/idea_management/definition.py:68
+msgid "Edit the idea"
+msgstr "Modifier l'idée"
 
 #: novaideo/views/idea_management/create_idea.py:34
 #: novaideo/views/templates/add_idea_widget.pt:5
@@ -631,22 +635,8 @@ msgid "New Password"
 msgstr "Nouveau mot de passe"
 
 #: novaideo/views/user_management/edit.py:80
-#: novaideo/views/proposal_management/edit_proposal.py:181
-#: novaideo/views/proposal_management/edit_proposal.py:209
-#: novaideo/views/working_group_management/edit.py:27
-#: novaideo/content/processes/idea_management/definition.py:69
-#: novaideo/content/processes/invitation_management/definition.py:65
-#: novaideo/content/processes/invitation_management/definition.py:69
-#: novaideo/content/processes/user_management/definition.py:57
-#: novaideo/content/processes/user_management/definition.py:58
-#: novaideo/content/processes/user_management/behaviors.py:143
-#: novaideo/content/processes/proposal_management/definition.py:299
-#: novaideo/content/processes/amendment_management/definition.py:61
-#: novaideo/content/processes/organization_management/definition.py:54
-#: novaideo/content/processes/organization_management/definition.py:62
-#: novaideo/content/processes/novaideo_abstract_process/definition.py:57
-msgid "Edit"
-msgstr "Modifier"
+msgid "Edit the profile"
+msgstr "Modifier le profil"
 
 #: novaideo/views/user_management/edit.py:42
 msgid "Your Current Password"
@@ -941,9 +931,9 @@ msgid "Associate the proposal to an other content"
 msgstr "Associer la proposition à un autre contenu"
 
 #: novaideo/views/proposal_management/improve_proposal.py:27
-#: novaideo/content/processes/proposal_management/definition.py:396
-msgid "Improve"
-msgstr "Améliorer"
+#: novaideo/content/processes/proposal_management/definition.py:395
+msgid "Improve the proposal"
+msgstr "Améliorer la proposition"
 
 #: novaideo/views/proposal_management/create_proposal.py:31
 #: novaideo/views/proposal_management/edit_proposal.py:126
@@ -986,6 +976,13 @@ msgstr "Reprendre des idées"
 msgid "Add a new idea"
 msgstr "Noter une nouvelle idée"
 
+#: novaideo/views/proposal_management/edit_proposal.py:181
+#: novaideo/views/proposal_management/edit_proposal.py:209
+#: novaideo/content/processes/proposal_management/definition.py:298
+#: novaideo/content/processes/proposal_management/behaviors.py:539
+msgid "Edit the proposal"
+msgstr "Modifier la proposition"
+
 #: novaideo/views/proposal_management/edit_proposal.py:42
 #: novaideo/views/amendment_management/explanation_amendment.py:26
 #: novaideo/views/novaideo_view_manager/search.py:277
@@ -995,10 +992,6 @@ msgstr "Noter une nouvelle idée"
 #: novaideo/content/person.py:61
 msgid "- Select -"
 msgstr "- Sélectionner -"
-
-#: novaideo/views/proposal_management/edit_proposal.py:60
-msgid "Choose an idea"
-msgstr "Sélectionner une idée"
 
 #: novaideo/views/proposal_management/delete_proposal.py:26
 msgid "Alert for deletion"
@@ -1037,14 +1030,16 @@ msgid "Withdraw my token"
 msgstr "Retirer son jeton"
 
 #: novaideo/views/proposal_management/duplicate_proposal.py:24
-#: novaideo/views/proposal_management/duplicate_proposal.py:53
-#: novaideo/views/amendment_management/duplicate_amendment.py:27
 #: novaideo/content/processes/idea_management/definition.py:61
 #: novaideo/content/processes/proposal_management/definition.py:291
 #: novaideo/content/processes/proposal_management/behaviors.py:480
 #: novaideo/content/processes/amendment_management/definition.py:57
 msgid "Duplicate"
 msgstr "Dupliquer"
+
+#: novaideo/views/proposal_management/duplicate_proposal.py:53
+msgid "Duplicate the proposal"
+msgstr "Dupliquer la proposition"
 
 #: novaideo/views/proposal_management/submit_proposal.py:93
 #: novaideo/views/amendment_management/submit.py:160
@@ -1431,6 +1426,11 @@ msgstr "Alerte pour justification"
 msgid "Explain your modifications"
 msgstr "Expliquer vos modifications"
 
+#: novaideo/views/amendment_management/duplicate_amendment.py:27
+#: novaideo/content/processes/amendment_management/definition.py:56
+msgid "Duplicate the amendment"
+msgstr "Dupliquer l'amendement"
+
 #: novaideo/views/amendment_management/comment_amendment.py:29
 #: novaideo/views/amendment_management/comment_amendment.py:52
 #: novaideo/views/amendment_management/comment_amendment.py:53
@@ -1769,6 +1769,21 @@ msgstr "Ajouter des organisations"
 #: novaideo/views/organization_management/creat_organizations.py:38
 msgid "Organizations to creat"
 msgstr "Les organisations à créer"
+
+#: novaideo/views/working_group_management/edit.py:27
+#: novaideo/content/processes/idea_management/definition.py:69
+#: novaideo/content/processes/invitation_management/definition.py:65
+#: novaideo/content/processes/invitation_management/definition.py:69
+#: novaideo/content/processes/user_management/definition.py:57
+#: novaideo/content/processes/user_management/definition.py:58
+#: novaideo/content/processes/user_management/behaviors.py:143
+#: novaideo/content/processes/proposal_management/definition.py:299
+#: novaideo/content/processes/amendment_management/definition.py:61
+#: novaideo/content/processes/organization_management/definition.py:54
+#: novaideo/content/processes/organization_management/definition.py:62
+#: novaideo/content/processes/novaideo_abstract_process/definition.py:57
+msgid "Edit"
+msgstr "Modifier"
 
 #: novaideo/views/novaideo_abstract_process/add_deadline.py:28
 msgid "Add the deadline"
@@ -2211,10 +2226,6 @@ msgstr "Dupliquer cette idée"
 msgid "Delete the idea"
 msgstr "Supprimer l'idée"
 
-#: novaideo/content/processes/idea_management/definition.py:68
-msgid "Edit the idea"
-msgstr "Modifier l'idée"
-
 #: novaideo/content/processes/idea_management/definition.py:72
 msgid "Submit the idea"
 msgstr "Soumettre l'idée"
@@ -2269,7 +2280,7 @@ msgstr "Voir les invitations"
 #: novaideo/content/processes/invitation_management/definition.py:68
 #: novaideo/content/processes/invitation_management/behaviors.py:240
 msgid "Edit the invitation"
-msgstr "Modifier"
+msgstr "Modifier l'invitation"
 
 #: novaideo/content/processes/invitation_management/definition.py:71
 #: novaideo/content/processes/invitation_management/definition.py:72
@@ -2431,11 +2442,6 @@ msgstr "Transformer en proposition"
 msgid "Duplicate this proposal"
 msgstr "Dupliquer la proposition"
 
-#: novaideo/content/processes/proposal_management/definition.py:298
-#: novaideo/content/processes/proposal_management/behaviors.py:539
-msgid "Edit the proposal"
-msgstr "Modifier la proposition"
-
 #: novaideo/content/processes/proposal_management/definition.py:314
 msgid "Withdraw from the wating list"
 msgstr "Se retirer de la liste d'attente"
@@ -2480,9 +2486,9 @@ msgstr "Les amendments"
 msgid "Correct item"
 msgstr "Corriger un item"
 
-#: novaideo/content/processes/proposal_management/definition.py:395
-msgid "Improve the proposal"
-msgstr "Améliorer la proposition"
+#: novaideo/content/processes/proposal_management/definition.py:396
+msgid "Improve"
+msgstr "Améliorer"
 
 #: novaideo/content/processes/proposal_management/behaviors.py:96
 #: novaideo/content/processes/proposal_management/behaviors.py:99
@@ -2560,10 +2566,6 @@ msgstr ""
 msgid "Delete the amendment"
 msgstr "Supprimer l'amendement"
 
-#: novaideo/content/processes/amendment_management/definition.py:56
-msgid "Duplicate the amendment"
-msgstr "Dupliquer l'amendement"
-
 #: novaideo/content/processes/amendment_management/definition.py:72
 msgid "Submit the amendment"
 msgstr "Soumettre l'amendment"
@@ -2621,3 +2623,5 @@ msgstr ""
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
 
+#~ msgid "Choose an idea"
+#~ msgstr "Sélectionner une idée"
