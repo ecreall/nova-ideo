@@ -35,6 +35,13 @@ function init_select(){
   $($(element.parents('.sequence-item').first()).find('.title-select-item').first()).val(template+id);
   init_dragdropselect(this); 
   init_remove_button();
+  var justification = $(($(this).parents('.panel').first()).find('.justification-select-item').last());
+  justification.elastic();
+  try{
+      init_textarea("#"+justification.attr('id'), parseInt(justification.data('limit')));
+  }catch(err){
+
+  }
 };
 
 
@@ -76,8 +83,11 @@ $(document).ready(function(){
         var form = $($(this).parents('form').first());
         if (this.checked) {
             form.find('.form-group.explanation-groups').addClass('hide-bloc');
+            form.find('.form-group.justification-amendment label').addClass('required');
+            form.find('.form-group.justification-amendment').removeClass('hide-bloc');
         }else{
             form.find('.form-group.explanation-groups').removeClass('hide-bloc');
+            form.find('.form-group.justification-amendment').addClass('hide-bloc');
         }
     });
   init_remove_button();
@@ -89,27 +99,45 @@ $(document).ready(function(){
       var button = $(event['originalEvent']['explicitOriginalTarget'])
       var btn_name = button.attr('name');
       if (btn_name != 'Cancel'){
+        var parent = $($(this).parents('.panel-body').first());
+        var commentmessagedanger = $(parent.find('#messagedanger'));
         if (!$('.single-amendment-control')[0].checked){
-          if (button.attr('name') != 'Cancel'){
-             var parent = $($(this).parents('.panel-body').first());
-             var commentmessagedanger = $(parent.find('#messagedanger'));  
+          if (button.attr('name') != 'Cancel'){  
              var items = $('.sequence-item');
              for (i=0; i<items.length; i++){
                  var item = $(items[i]);
                  var selected = $(item.find('select[name="explanations"]'));
                  var values = $($(selected).find("option:selected")).map(function(){ return this.value }).get().join(", ");
-                 if (values.length==0){
+                 var justification = $(item.find('textarea.justification-select-item').first());
+                 var justification_val = justification.val();
+                 if (values.length==0 || justification_val == "" ){
                      item.addClass('sequence-item-error');
+                     item.addClass('has-error');
                      $(commentmessagedanger).removeClass('hide-bloc');
                      $( commentmessagedanger.find('.errorMsgLbl')).text(novaideo_translate("There was a problem with your submission.")).show();
                      event.preventDefault();
-                 }else{ item.removeClass('sequence-item-error')};
+                 }else{ 
+                      item.removeClass('sequence-item-error');
+                      item.removeClass('has-error');
+                       };
              }       
+         }
+       }else{
+         var justification = $(parent.find('.form-group.justification-amendment').first());
+         var justification_val = $(justification.find('textarea').first()).val();
+         if (justification_val == ""){
+            justification.addClass('has-error');
+            $(commentmessagedanger).removeClass('hide-bloc');
+            $( commentmessagedanger.find('.errorMsgLbl')).text(novaideo_translate("There was a problem with your submission.")).show();
+            event.preventDefault();
+         }else{
+           justification.removeClass('has-error');
          }
        }
      }
    });
 
   $(document).on('click', '.explanation-item', init_explanation_item);
+  $('.justification-select-item').elastic();
 
 });

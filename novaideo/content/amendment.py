@@ -294,25 +294,25 @@ class Amendment(Commentable,
 
         return list(set(result))
 
-    @property
-    def explanation(self):
-        """Return all comments"""
+    # @property
+    # def explanation(self):
+    #     """Return all comments"""
 
-        result = []
-        values = sorted(list(self.explanations.values()),
-                        key=lambda e: e['oid'])
-        for explanation in values:
-            if explanation['intention'] is not None:
-                try:
-                    result.append(
-                        '<p>'+(Intention.get_explanation_data(
-                            explanation['intention'])['comment'])+'</p>'
-                        )
-                except Exception:
-                    pass
+    #     result = []
+    #     values = sorted(list(self.explanations.values()),
+    #                     key=lambda e: e['oid'])
+    #     for explanation in values:
+    #         if explanation['intention'] is not None:
+    #             try:
+    #                 result.append(
+    #                     '<p>'+(Intention.get_explanation_data(
+    #                         explanation['intention'])['comment'])+'</p>'
+    #                     )
+    #             except Exception:
+    #                 pass
 
-        if result:
-            return '<div>'+"\n".join(list(set(result)))+'</div>'
+    #     if result:
+    #         return '<div>'+"\n".join(list(set(result)))+'</div>'
     
-        return ''
+    #     return ''
 

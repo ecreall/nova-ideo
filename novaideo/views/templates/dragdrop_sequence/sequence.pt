@@ -32,16 +32,24 @@
          class="deformProto"
          tal:attributes="prototype prototype"/>
 
-  <div class="panel panel-default">
+  <div class="panel panel-default drag-drop-panel">
     <div class="panel-heading">${title}</div>
-    <div class="panel-body row">
+    <div class="panel-body" style="padding-bottom: 30px">
 
-      <div class="deformSeqContainer"
-           id="${oid}-orderable">
-        
-          <div tal:define="subfields [ x[1] for x in subfields ]"
-             tal:repeat="subfield subfields"
-             tal:replace="structure subfield.render_template(item_tmpl, 
+      <div class="deformSeqContainer drag-drop-container"
+           id="${oid}-orderable"
+           tal:define="subfields [ x[1] for x in subfields ];">
+          <div tal:condition="subfields"
+               tal:define="titles [f.title for f in subfields[0].children]"
+               class="form-group header sequence-item col-md-12 ">
+            <div class="row">
+                <div tal:repeat="head_title titles" class="col-md-4"  >
+                  <h4 class="title">${head_title}</h4>
+               </div>
+            </div>
+          </div>
+          <div tal:repeat="subfield subfields"
+               tal:replace="structure subfield.render_template(item_tmpl, 
                                                           parent=field)" />
         <span class="deformInsertBefore"
               tal:attributes="

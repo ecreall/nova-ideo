@@ -24,7 +24,8 @@ from novaideo.content.amendment import Amendment, Intention
 from novaideo.views.widget import (
     DragDropSelect2Widget, 
     DragDropSequenceWidget, 
-    DragDropMappingWidget)
+    DragDropMappingWidget,
+    LimitedTextAreaWidget)
 from novaideo import _
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
@@ -51,7 +52,9 @@ def get_default_explanations_groups(context):
 def explanations_choice(node, kw):
     context = node.bindings['context']
     values = [(i['oid'], i['oid']) for i in context.explanations.values()]
-    return DragDropSelect2Widget(values=values, multiple=True)
+    return DragDropSelect2Widget(values=values, 
+                                 item_css_class="col-md-4",
+                                 multiple=True)
 
 
 class ExplanationGroupSchema(Schema):
@@ -59,7 +62,9 @@ class ExplanationGroupSchema(Schema):
     title = colander.SchemaNode(
         colander.String(),
         missing="",
-        widget=TextInputWidget(css_class="title-select-item", readonly=True)
+        widget=TextInputWidget(css_class="title-select-item",
+                               item_css_class="col-md-4",
+                               readonly=True)
         )
 
     explanations =  colander.SchemaNode(
@@ -68,7 +73,17 @@ class ExplanationGroupSchema(Schema):
         missing=[],
         default=[],
         title=_('Explanations'),
-        )    
+        )
+    
+    justification = colander.SchemaNode(
+        colander.String(),
+        widget=LimitedTextAreaWidget(limit=350,
+                                     css_class="justification-select-item",
+                                     item_css_class="col-md-4",
+                                     placeholder=_("Justification")),
+        missing="",
+        title=_("Justification")
+        )  
 
 
 @colander.deferred
@@ -97,6 +112,15 @@ class ExplanationGroupsSchema(Schema):
         title ='',
         missing=False
         )
+
+    justification = colander.SchemaNode(
+        colander.String(),
+        widget=LimitedTextAreaWidget(limit=350,
+                                     item_css_class="justification-amendment hide-bloc",
+                                     placeholder=_("Justification")),
+        missing="",
+        title=_("Justification")
+        )  
 
 
 class SubmitAmendmentViewStudyReport(BasicView):
@@ -167,7 +191,8 @@ class SubmitAmendmentViewMultipleView(MultipleView):
     behaviors = [SubmitAmendment]
     validators = [SubmitAmendment.get_validator()]
     requirements = {'css_links':['novaideo:static/css/organize_amendments.css'],
-                    'js_links':['novaideo:static/js/organize_amendments.js']}
+                    'js_links':['novaideo:static/js/organize_amendments.js',
+                                'novaideo:static/js/jquery.elastic.source.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SubmitAmendment:SubmitAmendmentViewMultipleView})

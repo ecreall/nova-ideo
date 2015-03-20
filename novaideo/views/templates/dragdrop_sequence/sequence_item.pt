@@ -5,9 +5,9 @@
                  title title|field.title;
                  oid oid|field.oid"
      title="${description}"
-     class="form-group deformSeqItem sequence-item col-md-3 ${field.widget.item_css_class or ''}"
+     class="form-group deformSeqItem sequence-item col-md-12 ${field.widget.item_css_class or ''}"
      i18n:domain="novaideo">
-  <div >
+  <div class="row">
 
     <span tal:replace="structure field.serialize(cstruct)"/>
 

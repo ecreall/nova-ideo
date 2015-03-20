@@ -370,7 +370,8 @@ class SubmitAmendment(InfiniteCardinality):
         data = {
             'title': group['title'] ,
             'text': self._get_amendment_text(context, group['explanations']),
-            'description': context.description 
+            'description': context.description,
+            'justification': group.get('justification', '')
         }
         return data
 
@@ -412,7 +413,8 @@ class SubmitAmendment(InfiniteCardinality):
         groups = []
         if single_amendment:
             group = {'title': context.title, 
-                    'explanations': list(context.explanations.values())}
+                    'explanations': list(context.explanations.values()),
+                    'justification': appstruct.get('justification', '')}
             groups = [group]             
         else:
             groups = appstruct['groups']
@@ -425,7 +427,6 @@ class SubmitAmendment(InfiniteCardinality):
         if len(groups) == 1:
             group = groups[0]
             data = self._get_explanation_data(context, group)
-            data['title'] = group['title']
             data.pop('description')
             data.pop('text')
             context.set_data(data)
