@@ -124,8 +124,11 @@ class DuplicateAmendment(InfiniteCardinality):
         copy_of_amendment.state = PersistentList(['draft'])
         copy_of_amendment.setproperty('author', get_current())
         localizer = request.localizer
-        copy_of_amendment.title = context.proposal.title + \
-                                localizer.translate(_('_Amended version ')) + \
+        # copy_of_amendment.title = context.proposal.title + \
+        #                         localizer.translate(_('_Amended version ')) + \
+        #                         str(getattr(context.proposal,
+        #                                    '_amendments_counter', 1)) 
+        copy_of_amendment.title = localizer.translate(_('Amended version ')) + \
                                 str(getattr(context.proposal,
                                            '_amendments_counter', 1)) 
         grant_roles(roles=(('Owner', copy_of_amendment), ))

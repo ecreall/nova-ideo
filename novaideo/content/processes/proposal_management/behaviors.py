@@ -1061,8 +1061,10 @@ class ImproveProposal(InfiniteCardinality):
         root = getSite()
         data = {}
         localizer = request.localizer
-        data['title'] = context.title + \
-                       localizer.translate(_('_Amended version ')) + \
+        # data['title'] = context.title + \
+        #                localizer.translate(_('_Amended version ')) + \
+        #                 str(getattr(context, '_amendments_counter', 1))
+        data['title'] = localizer.translate(_('Amended version ')) + \
                         str(getattr(context, '_amendments_counter', 1))
         data['text'] = normalize_text(appstruct['text'])
         data['description'] = appstruct['description']
