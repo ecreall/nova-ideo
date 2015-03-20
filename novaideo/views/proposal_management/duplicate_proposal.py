@@ -50,7 +50,7 @@ class DuplicateProposalFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class DuplicateProposalView(MultipleView):
-    title = _('Duplicate')
+    title = _('Duplicate the proposal')
     name = 'duplicateproposal'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     requirements = {'css_links':[],

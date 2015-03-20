@@ -51,7 +51,7 @@ class EditIdeaActionsView(MultipleView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class EditIdeaView(MultipleView):
-    title = _('Edit idea')
+    title = _('Edit the idea')
     name = 'editidea'
     wrapper_template = 'novaideo:views/templates/view_wrapper.pt'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

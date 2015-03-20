@@ -57,7 +57,7 @@ class AddIdeaSchema(Schema):
         widget=idea_choice,
         title=_('Use an idea'),
         missing=None,
-        description=_('Choose an idea')
+        #description=_('Choose an idea')
         )
 
     new_idea_choice = colander.SchemaNode(
@@ -178,7 +178,7 @@ def ideas_choice():
 
 
 class EditProposalFormView(FormView):
-    title = _('Edit')
+    title = _('Edit the proposal')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
                                omit=['keywords', 'related_ideas']),
                     ['title',
@@ -206,7 +206,7 @@ class EditProposalFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class EditProposalView(MultipleView):
-    title = _('Edit')
+    title = _('Edit the proposal')
     name = 'editproposal'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     requirements = {'css_links':[],

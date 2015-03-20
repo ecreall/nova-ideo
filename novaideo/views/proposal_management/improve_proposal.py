@@ -24,7 +24,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class ImproveProposalView(FormView):
-    title = _('Improve')
+    title = _('Improve the proposal')
     name = 'improveproposal'
     viewid = 'improveproposal'
     formid = 'formimproveproposal'

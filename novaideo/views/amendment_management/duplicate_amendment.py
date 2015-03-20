@@ -24,7 +24,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class DuplicateAmendmentView(FormView):
-    title = _('Duplicate')
+    title = _('Duplicate the amendment')
     name = 'duplicateamendment'
     schema = select(AmendmentSchema(), 
                     ['description',

@@ -77,7 +77,7 @@ class EditPersonSchema(PersonSchema):
     )
 class EditView(FormView):
 
-    title = _('Edit')
+    title = _('Edit the profile')
     schema = select(EditPersonSchema(factory=Person,
                                      editable=True,
                                      omit=('keywords','change_password')),
