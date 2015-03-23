@@ -5,6 +5,8 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.proposal import Proposal
 from novaideo.content.person import Person
 from novaideo.content.idea import Idea
+from novaideo.content.amendment import Amendment
+
 
 
 def homepage_condition(context, user):
@@ -109,6 +111,10 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   	      'contextual_help_messages/proposal_proofreading_started_owner.pt', 1),
 	   (proposal_proofreading_started, 'novaideo:views/templates/panels/'
 	   	      'contextual_help_messages/proposal_proofreading_started.pt', 1)],
+
+	(Amendment, 'draft', 'index'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/amendment_draft.pt', 1)],
 
 	(Person, 'any', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'

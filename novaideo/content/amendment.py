@@ -71,8 +71,8 @@ class RelatedExplanationSchema(Schema):
 
     relatedexplanation = colander.SchemaNode(
         colander.Integer(),
-        title=_('Apply the same intention'),
-        description=_('Choose the intention to apply'),
+        title=_('Apply the same explanation'),
+        description=_('Choose the imrovement to apply'),
         missing=None
         )
 
