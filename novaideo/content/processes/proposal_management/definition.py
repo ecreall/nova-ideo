@@ -72,26 +72,11 @@ from .behaviors import (
     VOTE_AMENDMENTS_MESSAGE, 
     VP_DEFAULT_DURATION, 
     AMENDMENTS_VOTE_DEFAULT_DURATION,
+    eg3_publish_condition
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
 from novaideo.utilities.text_analyzer import ITextAnalyzer
-
-
-def eg3_publish_condition(process):
-    report = process.vp_ballot.report
-    if not getattr(process, 'first_vote', True):
-        electeds = report.get_electeds()
-        if electeds:
-            return True
-        else:
-            return False
-
-    report.calculate_votes()
-    if report.result['False'] == 0:
-        return True
-
-    return False
 
 
 def eg3_amendable_condition(process):
@@ -128,21 +113,28 @@ class SubProcess(OriginSubProcess):
         super(SubProcess, self).stop()
 
 
+class SubProcessFirstVote(SubProcess):
+
+    def __init__(self, definition):
+        super(SubProcessFirstVote, self).__init__(definition)
+
+    def _start_subprocess(self):
+        if not hasattr(self.process, 'first_vote'):
+            self.process.first_vote = True
+            # next
+            return None
+        else:
+            self.process.first_vote = False
+            return super(SubProcessFirstVote, self)._start_subprocess()
+
+
 class SubProcessDefinition(OriginSubProcessDefinition):
     """Run the voting process for proposal publishing 
        and working group configuration"""
 
-    factory = SubProcess
+    factory = SubProcessFirstVote
 
     def _init_subprocess(self, process, subprocess):
-        if not hasattr(process, 'first_vote'):
-            process.first_vote = True
-            #TODO Terminer le process stoper le timer??
-            #dt run vote processes
-            return
-        else:
-            process.first_vote = False
-
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
         wg = proposal.working_group
