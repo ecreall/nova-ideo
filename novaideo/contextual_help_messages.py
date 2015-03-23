@@ -49,6 +49,16 @@ def proposal_proofreading_not_started(context, user):
     return not corrections_in_process
 
 
+def amendment_draft_explanation(context, user):
+    return 'draft' in context.state and \
+           'explanation' in context.state 
+
+
+def amendment_draft(context, user):
+    return 'draft' in context.state and \
+           'explanation' not in context.state 
+
+
 CONTEXTUAL_HELP_MESSAGES = {
 	(NovaIdeoApplication, 'any', ''): [
 	   (homepage_condition, 'novaideo:views/templates/panels/'
@@ -113,8 +123,10 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   	      'contextual_help_messages/proposal_proofreading_started.pt', 1)],
 
 	(Amendment, 'draft', 'index'): [
-	   (None, 'novaideo:views/templates/panels/'
-	   	                    'contextual_help_messages/amendment_draft.pt', 1)],
+	   (amendment_draft, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/amendment_draft.pt', 1),
+	   (amendment_draft_explanation, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/amendment_draft_explanation.pt', 1)],
 
 	(Person, 'any', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
