@@ -27,6 +27,26 @@ def proposal_first_vote(context, user):
     return context.creator and getattr(context.creator, 'iteration', 1) == 1
 
 
+def proposal_proofreading_started(context, user):
+    corrections_in_process = [c for c in context.corrections \
+                              if 'in process' in c.state]
+    return corrections_in_process and \
+           not(corrections_in_process[0].author is user)
+
+
+def proposal_proofreading_started_owner(context, user):
+    corrections_in_process = [c for c in context.corrections \
+                              if 'in process' in c.state]
+    return corrections_in_process and \
+           corrections_in_process[0].author is user
+
+
+def proposal_proofreading_not_started(context, user):
+    corrections_in_process = [c for c in context.corrections \
+                              if 'in process' in c.state]
+    return not corrections_in_process
+
+
 CONTEXTUAL_HELP_MESSAGES = {
 	(NovaIdeoApplication, 'any', ''): [
 	   (homepage_condition, 'novaideo:views/templates/panels/'
@@ -75,8 +95,12 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   	      'contextual_help_messages/proposal_first_vote.pt', 1)],
 
 	(Proposal, 'proofreading', 'index'): [
-	   (None, 'novaideo:views/templates/panels/'
-	   	      'contextual_help_messages/proposal_proofreading.pt', 1)],
+	   (proposal_proofreading_not_started, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/proposal_proofreading_not_started.pt', 1),
+	   (proposal_proofreading_started_owner, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/proposal_proofreading_started_owner.pt', 1),
+	   (proposal_proofreading_started, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/proposal_proofreading_started.pt', 1)],
 
 	(Person, 'any', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
