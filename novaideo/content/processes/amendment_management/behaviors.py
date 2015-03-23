@@ -339,7 +339,8 @@ class SubmitAmendment(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 6
-    submission_title = _('Save')
+    title = _('Prepare amendments')
+    submission_title = _('Submit')
     context = IAmendment
     roles_validation = pub_roles_validation
     processsecurity_validation = pub_processsecurity_validation
