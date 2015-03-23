@@ -34,6 +34,7 @@ class SeeRelatedIdeasView(BasicView):
     template = 'novaideo:views/idea_management/templates/related_contents.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     viewid = 'relatedideas'
+    contextual_help = 'related-ideas-help'
 
 
     def update(self):

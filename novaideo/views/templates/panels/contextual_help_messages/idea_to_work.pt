@@ -1,4 +1,5 @@
-<div>
+
+<div class="contextual-help-item principal-help">
     <p>
         Vous êtes le seul à pouvoir voir votre idée à travailler.
     </p>
@@ -12,3 +13,4 @@
         Si vous souhaitez la modifier tout en conservant l'original, vous pouvez la dupliquer.
     </p>
 </div>
+

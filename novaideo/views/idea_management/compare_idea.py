@@ -154,6 +154,7 @@ class CompareIdeaView(MultipleView):
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CompareIdeaFormView, DiffView)
+    contextual_help = 'compare-help'
 
     def get_message(self):
         len_history = len(self.context.history)

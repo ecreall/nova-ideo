@@ -40,7 +40,7 @@ class SeeAmendmentsView(BasicView):
     template = 'novaideo:views/proposal_management/templates/amendments.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     viewid = 'editamendments'
-
+    contextual_help = 'amendments-help'
 
     def update(self):
         self.execute(None)

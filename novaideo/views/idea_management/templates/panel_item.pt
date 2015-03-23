@@ -1,7 +1,11 @@
 <div tal:define="error subitem['isactive'] and not getattr(subitem['view'], 'finished_successfully', True) and getattr(subitem['view'], 'isexecutable', False)"
      title="${subitem['view'].description}" class="panel panel-${(error and 'danger') or 'default'}">
   <div class="panel-heading">
-    <a href="#${subitem['view'].viewid}" data-parent="#panel-actions-content" data-toggle="collapse" class="panel-title ${(not error and 'collapsed')}">
+    <a href="#${subitem['view'].viewid}" 
+      data-parent="#panel-actions-content"
+      data-toggle="collapse"
+      data-help="${getattr(subitem['view'], 'contextual_help', '')}" 
+      class="panel-title ${(not error and 'collapsed')}">
         <small><span class="glyphicon glyphicon-plus"></span> ${subitem['view'].title}</small>
     </a>
     <span class="action-message pull-right" tal:define="messagea subitem['view'].get_message()">

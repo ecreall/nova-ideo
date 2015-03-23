@@ -71,6 +71,9 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/steps.js')}"
           type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/contextual_help.js')}"
+          type="text/javascript"></script>
+
 
     <more tal:omit-tag="" metal:define-slot="head-more"></more>
     

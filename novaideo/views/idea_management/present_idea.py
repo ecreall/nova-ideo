@@ -185,6 +185,7 @@ class PresentIdeaView(MultipleView):
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (SentToView, PresentIdeaFormView)
+    contextual_help = 'present-help'
 
     def get_message(self):
         message = (PRESENT_MESSAGE['0']).format()
