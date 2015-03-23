@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-03-23 16:42+0100\n"
+"POT-Creation-Date: 2015-03-23 18:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1451,7 +1451,7 @@ msgstr ""
 #: ./novaideo/views/amendment_management/explanation_amendment.py:87
 #: ./novaideo/content/processes/amendment_management/definition.py:64
 #: ./novaideo/content/processes/amendment_management/definition.py:65
-msgid "Explain your modifications"
+msgid "Explain my improvement"
 msgstr ""
 
 #: ./novaideo/views/amendment_management/duplicate_amendment.py:27

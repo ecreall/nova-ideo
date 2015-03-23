@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-03-23 16:42+0100\n"
+"POT-Creation-Date: 2015-03-23 18:10+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1416,8 +1416,8 @@ msgstr "Alerte pour justification"
 #: novaideo/views/amendment_management/explanation_amendment.py:87
 #: novaideo/content/processes/amendment_management/definition.py:64
 #: novaideo/content/processes/amendment_management/definition.py:65
-msgid "Explain your modifications"
-msgstr "Expliquer vos modifications"
+msgid "Explain my improvement"
+msgstr "Expliquer mes améliorations"
 
 #: novaideo/views/amendment_management/duplicate_amendment.py:27
 #: novaideo/content/processes/amendment_management/definition.py:56
@@ -2626,5 +2626,3 @@ msgstr ""
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
 
-#~ msgid "Choose an idea"
-#~ msgstr "Sélectionner une idée"
