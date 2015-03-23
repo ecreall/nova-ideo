@@ -1,12 +1,10 @@
 
 <div class="contextual-help-item principal-help">
-	<p>
-	La proposition publiée est ouverte à un groupe de travail. Pour que le groupe de travail puisse commencer à intervenir, il faut qu'il y ait au moins deux autres participants qui rejoignent l'auteur initial de la proposition.
-	</p>
-	<p>
-	Dès que le groupe de travail a atteint trois participants, ces derniers peuvent soit voter pour soumettre à appréciation la proposition en l'état, soit voter pour travailler à plusieurs pour l'améliorer.
-	</p>
-	<p>
-	Un groupe de travail peut avoir au maximum douze participants. Tout participant peut à tout moment décider de quitter un groupe de travail, il ne peut pas être présent dans plus de cinq groupes de travail en même temps.
-	</p>
+	<p>Cette proposition est publiée et ouverte à un groupe de travail, elle est visible par l'ensemble des utilisateurs.</p>
+
+	<p>Pour l'améliorer ou la soumettre à l'appréciation des membres de la plateforme, il faut que le groupe de travail atteigne au moins trois participants.</p>
+
+	<p>Tout membre peut se porter candidat au groupe de travail, à condition qu'il ne soit pas déjà candidat ou participant à cinq autres groupes de travail. Si vous êtes candidat, votre première action sera de voter pour ou contre l'amélioration de la proposition. Le scrutin de vote est clos dès que le groupe de travail a atteint trois participants.</p>
+
+	<p>Un groupe de travail peut comprendre au maximum douze participants, les autres candidats sont mis sur liste d'attente. Si un participant quitte le groupe de travail et que des candidats sont sur liste d'attente, le premier inscrit rejoint automatiquement le groupe de travail.</p>
 </div>
