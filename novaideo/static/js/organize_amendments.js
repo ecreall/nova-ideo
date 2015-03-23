@@ -103,7 +103,7 @@ $(document).ready(function(){
         var commentmessagedanger = $(parent.find('#messagedanger'));
         if (!$('.single-amendment-control')[0].checked){
           if (button.attr('name') != 'Cancel'){  
-             var items = $('.sequence-item');
+             var items = $('.sequence-item:not(.header)');
              for (i=0; i<items.length; i++){
                  var item = $(items[i]);
                  var selected = $(item.find('select[name="explanations"]'));
