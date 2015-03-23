@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-03-23 16:35+0100\n"
+"POT-Creation-Date: 2015-03-23 16:42+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -362,30 +362,30 @@ msgid "There is a"
 msgstr "Il y a"
 
 #: novaideo/views/idea_management/templates/comments.pt:24
-#: novaideo/views/templates/panels/step3_1.pt:24
-#: novaideo/views/templates/panels/step3_3.pt:26
-#: novaideo/views/templates/panels/step3_2.pt:26
+#: novaideo/views/templates/panels/step3_1.pt:25
+#: novaideo/views/templates/panels/step3_3.pt:27
+#: novaideo/views/templates/panels/step3_2.pt:27
 msgid "day(s)"
 msgstr "j"
 
 #: novaideo/views/idea_management/templates/comments.pt:28
-#: novaideo/views/templates/panels/step3_1.pt:30
-#: novaideo/views/templates/panels/step3_3.pt:32
-#: novaideo/views/templates/panels/step3_2.pt:32
+#: novaideo/views/templates/panels/step3_1.pt:31
+#: novaideo/views/templates/panels/step3_3.pt:33
+#: novaideo/views/templates/panels/step3_2.pt:33
 msgid "hour(s)"
 msgstr "h"
 
 #: novaideo/views/idea_management/templates/comments.pt:32
-#: novaideo/views/templates/panels/step3_1.pt:36
-#: novaideo/views/templates/panels/step3_3.pt:38
-#: novaideo/views/templates/panels/step3_2.pt:38
+#: novaideo/views/templates/panels/step3_1.pt:37
+#: novaideo/views/templates/panels/step3_3.pt:39
+#: novaideo/views/templates/panels/step3_2.pt:39
 msgid "minute(s)"
 msgstr "'"
 
 #: novaideo/views/idea_management/templates/comments.pt:36
-#: novaideo/views/templates/panels/step3_1.pt:42
-#: novaideo/views/templates/panels/step3_3.pt:44
-#: novaideo/views/templates/panels/step3_2.pt:44
+#: novaideo/views/templates/panels/step3_1.pt:43
+#: novaideo/views/templates/panels/step3_3.pt:45
+#: novaideo/views/templates/panels/step3_2.pt:45
 msgid "second(s)"
 msgstr "''"
 
@@ -761,8 +761,8 @@ msgstr "Participants au vote"
 #: novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:30
 #: novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:29
 #: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:30
-#: novaideo/views/templates/panels/step3_3.pt:78
-#: novaideo/views/templates/panels/step3_2.pt:78
+#: novaideo/views/templates/panels/step3_3.pt:79
+#: novaideo/views/templates/panels/step3_2.pt:79
 msgid "Voters"
 msgstr "Participants ayant voté"
 
@@ -812,9 +812,9 @@ msgid "Choices"
 msgstr "Choix"
 
 #: novaideo/views/ballot_processes/majorityjudgment/vote.py:116
-#: novaideo/views/templates/panels/step3_1.pt:106
-#: novaideo/views/templates/panels/step3_3.pt:150
-#: novaideo/views/templates/panels/step3_2.pt:150
+#: novaideo/views/templates/panels/step3_1.pt:107
+#: novaideo/views/templates/panels/step3_3.pt:151
+#: novaideo/views/templates/panels/step3_2.pt:151
 #: novaideo/content/processes/proposal_management/behaviors.py:127
 msgid "Vote for amendments"
 msgstr "Vote sur les amendements"
@@ -1274,56 +1274,56 @@ msgstr "Idées dupliquées à partir de cette idée:"
 #: novaideo/views/templates/panels/step3_1.pt:5
 #: novaideo/views/templates/panels/step3_3.pt:5
 #: novaideo/views/templates/panels/step3_2.pt:5
-msgid "Restricted working group with"
-msgstr "Groupe de travail restreint avec"
+msgid "Restricted working group"
+msgstr "Groupe de travail restreint"
 
 #: novaideo/views/templates/panels/step3_1.pt:8
 #: novaideo/views/templates/panels/step3_3.pt:8
 #: novaideo/views/templates/panels/step3_2.pt:8
-msgid "Open working group with"
-msgstr "Groupe de travail ouvert avec"
+msgid "Open working group"
+msgstr "Groupe de travail ouvert"
 
-#: novaideo/views/templates/panels/step3_1.pt:12
-#: novaideo/views/templates/panels/step3_3.pt:12
-#: novaideo/views/templates/panels/step3_2.pt:12
+#: novaideo/views/templates/panels/step3_1.pt:13
+#: novaideo/views/templates/panels/step3_3.pt:13
+#: novaideo/views/templates/panels/step3_2.pt:13
 msgid "participants"
 msgstr "participants"
 
-#: novaideo/views/templates/panels/step3_1.pt:44
+#: novaideo/views/templates/panels/step3_1.pt:45
 msgid "remaining"
 msgstr "restant"
 
-#: novaideo/views/templates/panels/step3_1.pt:52
-#: novaideo/views/templates/panels/step3_3.pt:52
-#: novaideo/views/templates/panels/step3_2.pt:52
+#: novaideo/views/templates/panels/step3_1.pt:53
+#: novaideo/views/templates/panels/step3_3.pt:53
+#: novaideo/views/templates/panels/step3_2.pt:53
 msgid "Period expired"
 msgstr "Durée expirée"
 
-#: novaideo/views/templates/panels/step3_1.pt:67
-#: novaideo/views/templates/panels/step3_3.pt:111
-#: novaideo/views/templates/panels/step3_2.pt:111
+#: novaideo/views/templates/panels/step3_1.pt:68
+#: novaideo/views/templates/panels/step3_3.pt:112
+#: novaideo/views/templates/panels/step3_2.pt:112
 msgid "Vote for improving or not the proposal"
 msgstr "Vote pour améliorer ou non la proposition"
 
-#: novaideo/views/templates/panels/step3_1.pt:80
-#: novaideo/views/templates/panels/step3_3.pt:124
-#: novaideo/views/templates/panels/step3_2.pt:124
+#: novaideo/views/templates/panels/step3_1.pt:81
+#: novaideo/views/templates/panels/step3_3.pt:125
+#: novaideo/views/templates/panels/step3_2.pt:125
 msgid "Correction of the proposal"
 msgstr "Correction de la proposition "
 
-#: novaideo/views/templates/panels/step3_1.pt:93
-#: novaideo/views/templates/panels/step3_3.pt:137
-#: novaideo/views/templates/panels/step3_2.pt:137
+#: novaideo/views/templates/panels/step3_1.pt:94
+#: novaideo/views/templates/panels/step3_3.pt:138
+#: novaideo/views/templates/panels/step3_2.pt:138
 msgid "Proposal improvement"
 msgstr "Amélioration de la proposition"
 
-#: novaideo/views/templates/panels/step3_3.pt:20
-#: novaideo/views/templates/panels/step3_2.pt:20
+#: novaideo/views/templates/panels/step3_3.pt:21
+#: novaideo/views/templates/panels/step3_2.pt:21
 msgid "Fin du vote dans"
 msgstr ""
 
-#: novaideo/views/templates/panels/step3_3.pt:61
-#: novaideo/views/templates/panels/step3_2.pt:61
+#: novaideo/views/templates/panels/step3_3.pt:62
+#: novaideo/views/templates/panels/step3_2.pt:62
 msgid "Electors"
 msgstr "Participants au vote"
 
@@ -2105,7 +2105,7 @@ msgstr "Ouverte à un groupe de travail"
 #: novaideo/content/processes/__init__.py:31
 #: novaideo/content/processes/__init__.py:65
 msgid "Votes for publishing"
-msgstr "Vote pour soumettre la proposition au collectif"
+msgstr "Vote pour améliorer ou non la proposition"
 
 #: novaideo/content/processes/__init__.py:32
 #: novaideo/content/processes/__init__.py:66
