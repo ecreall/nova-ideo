@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-03-23 18:49+0100\n"
+"POT-Creation-Date: 2015-03-23 19:12+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -16,7 +16,7 @@ msgstr ""
 #: novaideo/views/proposal_management/templates/diff_result.pt:15
 #: novaideo/views/templates/idea_result.pt:21
 #: novaideo/views/templates/proposal_result.pt:22
-#: novaideo/views/amendment_management/templates/see_amendment.pt:53
+#: novaideo/views/amendment_management/templates/see_amendment.pt:66
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:77
 msgid "Keywords"
 msgstr "Mots clés"
@@ -104,7 +104,7 @@ msgstr "Noter une idée"
 #: novaideo/views/idea_management/templates/see_idea.pt:26
 #: novaideo/views/proposal_management/edit_proposal.py:120
 #: novaideo/views/proposal_management/templates/amendments.pt:27
-#: novaideo/views/amendment_management/templates/see_amendment.pt:16
+#: novaideo/views/amendment_management/templates/see_amendment.pt:29
 #: novaideo/views/amendment_management/templates/description_amendments.pt:17
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:52
 msgid "the"
@@ -151,7 +151,7 @@ msgid "Details"
 msgstr "Détails"
 
 #: novaideo/views/idea_management/see_idea.py:85
-#: novaideo/views/amendment_management/see_amendment.py:101
+#: novaideo/views/amendment_management/see_amendment.py:109
 #: novaideo/views/novaideo_view_manager/see_proposal.py:174
 msgid "actions"
 msgstr "actions"
@@ -492,7 +492,7 @@ msgstr "(Initiée par"
 #: novaideo/views/templates/proposal_result.pt:64
 #: novaideo/views/templates/proposal_result.pt:79
 #: novaideo/views/templates/amendment_result.pt:56
-#: novaideo/views/amendment_management/templates/see_amendment.pt:19
+#: novaideo/views/amendment_management/templates/see_amendment.pt:32
 #: novaideo/views/amendment_management/templates/description_amendments.pt:20
 #: novaideo/views/amendment_management/templates/description_amendments.pt:56
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:55
@@ -1106,7 +1106,7 @@ msgstr "Corriger"
 
 #: novaideo/views/proposal_management/templates/diff_result.pt:9
 #: novaideo/views/templates/proposal_result.pt:18
-#: novaideo/views/amendment_management/templates/see_amendment.pt:47
+#: novaideo/views/amendment_management/templates/see_amendment.pt:60
 #: novaideo/views/novaideo_view_manager/templates/see_proposal.pt:71
 #: novaideo/content/correction.py:46
 #: novaideo/content/proposal.py:73
@@ -1131,7 +1131,7 @@ msgid "Vous venez de transformer une idée en proposition, vous devez maintenant
 msgstr ""
 
 #: novaideo/views/proposal_management/templates/amendments.pt:23
-#: novaideo/views/amendment_management/templates/see_amendment.pt:12
+#: novaideo/views/amendment_management/templates/see_amendment.pt:25
 #: novaideo/views/amendment_management/templates/description_amendments.pt:13
 msgid "(Amended version by"
 msgstr "(Version amendée par"
@@ -1465,7 +1465,7 @@ msgstr "Explications"
 #: novaideo/views/amendment_management/submit.py:122
 #: novaideo/views/amendment_management/submit.py:83
 #: novaideo/views/amendment_management/submit.py:120
-#: novaideo/views/amendment_management/templates/see_amendment.pt:41
+#: novaideo/views/amendment_management/templates/see_amendment.pt:54
 #: novaideo/views/amendment_management/templates/description_amendments.pt:36
 msgid "Justification"
 msgstr "Justification"
@@ -1482,12 +1482,16 @@ msgstr "Regrouper les modifications en un seul amendement"
 msgid "Pour que les autres participants puissent se prononcer sur vos améliorations, vous devez les expliquer. Vous pouvez donner la même explication à plusieurs améliorations en même temps. Une fois que vous avez expliqué l'ensemble de vos améliorations, vous pourrez préparer vos amendements et les soumettre aux autres participants."
 msgstr ""
 
-#: novaideo/views/amendment_management/templates/see_amendment.pt:21
+#: novaideo/views/amendment_management/templates/see_amendment.pt:12
+msgid "Vous avez donné des explications à l'ensemble de vos améliorations. Vous pouvez maintenant préparer des amendements que vous pourrez soumettre aux autres participants."
+msgstr ""
+
+#: novaideo/views/amendment_management/templates/see_amendment.pt:34
 #: novaideo/views/amendment_management/templates/description_amendments.pt:22
 msgid "of the proposal"
 msgstr "de la proposition"
 
-#: novaideo/views/amendment_management/templates/see_amendment.pt:24
+#: novaideo/views/amendment_management/templates/see_amendment.pt:37
 #: novaideo/views/amendment_management/templates/description_amendments.pt:25
 msgid ", duplicated from the amended version"
 msgstr ", dupliquée à partir de la version amendée"
