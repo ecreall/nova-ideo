@@ -1,16 +1,13 @@
 
 <div class="contextual-help-item principal-help">
-    <p>
-        Vous êtes le seul à pouvoir voir votre idée à travailler.
-    </p>
-    <p>
-        Si vous souhaitez la rendre publique, vous devez la soumettre à publication, un modérateur peut alors soit la publier, soit l'archiver s'il considère qu'elle ne doit pas être rendue publique.
-    </p>
-    <p>
-        Vous pouvez également modifier votre idée, l'archiver ou l'ajouter à vos favoris.
-    </p>
-    <p>
-        Si vous souhaitez la modifier tout en conservant l'original, vous pouvez la dupliquer.
-    </p>
+    <p tal:condition="context.originalentity">L'idée d'origine a été dupliquée, elle est maintenant à travailler.</p>
+    
+    <p>Vous êtes le seul à pouvoir voir votre idée à travailler.</p>
+
+    <p>Si vous souhaitez la rendre publique, vous devez la soumettre à publication, un modérateur peut alors soit la publier, soit l'archiver s'il considère qu'elle ne doit pas être rendue publique.</p>
+
+    <p>Vous pouvez également modifier votre idée, l'archiver ou l'ajouter à vos favoris.</p>
+
+    <p>Si vous souhaitez la modifier tout en gardant cette version, vous pouvez la dupliquer à nouveau.</p>
 </div>
 
