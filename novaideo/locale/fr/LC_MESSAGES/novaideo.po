@@ -1098,7 +1098,7 @@ msgstr "Alerte"
 #: novaideo/content/processes/proposal_management/definition.py:380
 #: novaideo/content/processes/proposal_management/definition.py:384
 msgid "Correct"
-msgstr "Relire"
+msgstr "Corriger"
 
 #: novaideo/views/proposal_management/templates/diff_result.pt:9
 #: novaideo/views/templates/proposal_result.pt:18
