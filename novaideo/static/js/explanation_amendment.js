@@ -32,7 +32,7 @@ function init_explanation_select(){
 function get_explanation_form(){
               var btn = $(this);
               var modal = $(this).data('target')+'explanation_modal';
-              var target = $($('.novaideo-right').find('div').first());
+              var target = $($('.novaideo-right').find('div.pontus-right').first());
               var url = $(this).data('url');
               
               $.getJSON(url,{}, function(data) {

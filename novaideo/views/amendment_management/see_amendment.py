@@ -44,6 +44,12 @@ class DetailAmendmentView(BasicView):
             self.requirements['css_links'] = intentionformresult['css_links']
             self.requirements['js_links'].append('novaideo:static/js/explanation_amendment.js')
 
+    def _end_explanation(self, actions):
+        if 'explanation' in self.context.state:
+            return any(a.action.behavior_id == 'submit' for a in actions)
+
+        return False
+
     def update(self):
         self.execute(None)
         user = get_current()
@@ -56,6 +62,7 @@ class DetailAmendmentView(BasicView):
 
         actions_navbar = get_actions_navbar(actions_getter, self.request,
                                 ['global-action', 'text-action'])
+        global_actions = actions_navbar['global-action']
         isactive = actions_navbar['modal-action']['isactive']
         messages = actions_navbar['modal-action']['messages']
         resources = actions_navbar['modal-action']['resources']
@@ -84,7 +91,8 @@ class DetailAmendmentView(BasicView):
                 'descriptiondiff':descriptiondiff,
                 'keywordsdiff':keywordsdiff,
                 'current_user': user,
-                'navbar_body': navbar_body_getter(self, actions_navbar)
+                'navbar_body': navbar_body_getter(self, actions_navbar),
+                'end_explanation':self._end_explanation(global_actions)
                }
         self._add_requirements(user)
         body = self.content(result=values, template=self.template)['body']
