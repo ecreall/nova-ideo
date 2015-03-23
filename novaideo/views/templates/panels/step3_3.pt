@@ -1,7 +1,7 @@
 <div class="proposal-members-nb" i18n:domain="novaideo">
    <span class="glyphicon glyphicons-group"></span>
-   <span tal:condition="is_closed" i18n:translate="">Restricted working group with</span> 
-   <span tal:condition="not is_closed" i18n:translate="">Open working group with</span> 
+   <span tal:condition="is_closed" i18n:translate="">Restricted working group</span> 
+   <span tal:condition="not is_closed" i18n:translate="">Open working group</span> <br/>
    ${len(context.working_group.members)} 
    <span  i18n:translate="">participants</span>
     <br>
