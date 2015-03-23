@@ -8,7 +8,7 @@
 </div>
 
 <div class="alert alert-info">
-<p i18n:domain="novaideo" i18n:translate="">La répartition des modifications en différents amendements vous permet d'avoir plus de chance de faire passer vos modifications auprès des autres participants. Vous pouvez pour cela glisser déposer vos modifications dans plusieurs conteneurs différents, chaque conteneur correspondant à un amendement. Vous pouvez aussi choisir de soumettre l'ensemble de vos modifications en un seul amendement.</p>
+<p i18n:domain="novaideo" i18n:translate="">Par défaut, les améliorations partageant la même explication sont regroupées dans le même amendement. Il est préférable de soumettre plusieurs amendements aux autres participants pour avoir plus de chance qu'ils en retiennent certains. Néanmoins, vous devez faire attention que chaque amendement peut être retenu séparément, indépendamment des autres.</p>
 </div>
 
 <div id="amendment-diff" class="amendment-diff-scroll scroll-able">

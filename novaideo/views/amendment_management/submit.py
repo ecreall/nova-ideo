@@ -102,7 +102,7 @@ class ExplanationGroupsSchema(Schema):
                                     widget=DragDropMappingWidget()),
              ['_csrf_token_']),
         widget=groups_widget,
-        title=_('Group your improvements into amendments')
+        title=_('Group your improvements in amendments')
         )
 
     single_amendment = colander.SchemaNode(
