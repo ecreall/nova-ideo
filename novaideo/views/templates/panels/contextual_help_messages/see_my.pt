@@ -1,6 +1,8 @@
 <div>
 	<p tal:condition="request.view_name == 'seemycontents'">
-    Vous retrouvez dans « Mes contenus », les idées et les propositions dont vous avez été l'auteur ou les propositions qui ont été soumises à appréciation par un groupe de travail dont vous avez été l'un des participants.
+        Vous retrouvez dans « Mes contenus », les idées et les propositions dont vous avez été l'auteur ou les propositions dont vous avez été l'un des participants.
+
+        Sont notamment présentes dans « Mes contenus », l'ensemble de vos idées archivées.
     </p>
     <p tal:condition="request.view_name == 'seemyparticipations'">
 	Vous retrouvez dans « Mes groupes de travail », les propositions pour lesquelles vous intervenez actuellement en tant que participant.
