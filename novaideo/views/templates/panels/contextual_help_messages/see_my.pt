@@ -1,4 +1,4 @@
-<div>
+<div  class="contextual-help-item principal-help">
 	<p tal:condition="request.view_name == 'seemycontents'">
         Vous retrouvez dans « Mes contenus », les idées et les propositions dont vous avez été l'auteur ou les propositions dont vous avez été l'un des participants.
 

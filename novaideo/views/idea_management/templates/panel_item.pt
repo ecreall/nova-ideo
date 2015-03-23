@@ -4,7 +4,6 @@
     <a href="#${subitem['view'].viewid}" 
       data-parent="#panel-actions-content"
       data-toggle="collapse"
-      data-help="${getattr(subitem['view'], 'contextual_help', '')}" 
       class="panel-title ${(not error and 'collapsed')}">
         <small><span class="glyphicon glyphicon-plus"></span> ${subitem['view'].title}</small>
     </a>
@@ -13,7 +12,10 @@
        ${messagea[0]}
     </span>
   </div>
-  <div class="panel-collapse ${(error and 'in') or 'collapse'}" id="${subitem['view'].viewid}" style="height: auto;">
+  <div class="panel-collapse ${(error and 'in') or 'collapse'}" 
+       id="${subitem['view'].viewid}" 
+       style="height: auto;"
+       data-help="${getattr(subitem['view'], 'contextual_help', '')}" >
     <div  class="panel-body">
       <div tal:replace="structure subitem['body']" />
     </div>
