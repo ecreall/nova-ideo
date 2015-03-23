@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-03-23 18:28+0100\n"
+"POT-Creation-Date: 2015-03-23 18:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,7 +145,7 @@ msgstr ""
 #: ./novaideo/content/processes/user_management/behaviors.py:254
 #: ./novaideo/content/processes/amendment_management/definition.py:88
 #: ./novaideo/content/processes/amendment_management/definition.py:89
-#: ./novaideo/content/processes/amendment_management/behaviors.py:515
+#: ./novaideo/content/processes/amendment_management/behaviors.py:516
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:67
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:68
 #: ./novaideo/content/processes/novaideo_view_manager/behaviors.py:139
@@ -1070,6 +1070,7 @@ msgstr ""
 #: ./novaideo/views/amendment_management/submit.py:160
 #: ./novaideo/content/processes/proposal_management/definition.py:328
 #: ./novaideo/content/processes/amendment_management/definition.py:73
+#: ./novaideo/content/processes/amendment_management/behaviors.py:343
 msgid "Submit"
 msgstr ""
 
@@ -2270,7 +2271,6 @@ msgstr ""
 #: ./novaideo/content/processes/proposal_management/behaviors.py:1619
 #: ./novaideo/content/processes/amendment_management/behaviors.py:101
 #: ./novaideo/content/processes/amendment_management/behaviors.py:199
-#: ./novaideo/content/processes/amendment_management/behaviors.py:342
 #: ./novaideo/content/processes/organization_management/behaviors.py:58
 #: ./novaideo/content/processes/organization_management/behaviors.py:91
 #: ./novaideo/content/processes/organization_management/behaviors.py:125
@@ -2647,6 +2647,10 @@ msgstr ""
 
 #: ./novaideo/content/processes/amendment_management/definition.py:72
 msgid "Submit the amendment"
+msgstr ""
+
+#: ./novaideo/content/processes/amendment_management/behaviors.py:342
+msgid "Prepare amendments"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:39
