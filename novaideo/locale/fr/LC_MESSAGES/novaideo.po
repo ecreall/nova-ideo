@@ -910,7 +910,7 @@ msgstr "Retirer"
 #: novaideo/content/processes/__init__.py:68
 #: novaideo/content/processes/proposal_management/definition.py:323
 msgid "Amendable"
-msgstr "Amendable"
+msgstr "En cours d'amendement"
 
 #: novaideo/views/proposal_management/proofreading_done.py:24
 #: novaideo/content/processes/proposal_management/definition.py:379
