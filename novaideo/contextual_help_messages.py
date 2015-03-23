@@ -74,6 +74,10 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   (proposal_first_vote, 'novaideo:views/templates/panels/'
 	   	      'contextual_help_messages/proposal_first_vote.pt', 1)],
 
+	(Proposal, 'proofreading', 'index'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/proposal_proofreading.pt', 1)],
+
 	(Person, 'any', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/person_index.pt', 1)],
