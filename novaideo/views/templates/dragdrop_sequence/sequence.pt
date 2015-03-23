@@ -32,8 +32,8 @@
          class="deformProto"
          tal:attributes="prototype prototype"/>
 
-  <div class="panel panel-default drag-drop-panel">
-    <div class="panel-heading">${title}</div>
+  <div class="panel-default drag-drop-panel">
+    <h3>${title}</h3>
     <div class="panel-body" style="padding-bottom: 30px">
 
       <div class="deformSeqContainer drag-drop-container"

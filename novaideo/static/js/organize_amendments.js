@@ -25,7 +25,7 @@ function init_remove_button(){
 
 
 function init_select(){
-  var element = ($(this).parents('.panel').first()).find('.select-container').last();
+  var element = ($(this).parents('.drag-drop-panel').first()).find('.select-container').last();
   var containers = $(element.parents('.deformSeqContainer').first()).find('.select-container');
   var last_element = $(containers[containers.length-2]);
   var las_title = $($(last_element.parents('.sequence-item').first()).find('.title-select-item').first()).val();
@@ -35,7 +35,7 @@ function init_select(){
   $($(element.parents('.sequence-item').first()).find('.title-select-item').first()).val(template+id);
   init_dragdropselect(this); 
   init_remove_button();
-  var justification = $(($(this).parents('.panel').first()).find('.justification-select-item').last());
+  var justification = $(($(this).parents('.drag-drop-panel').first()).find('.justification-select-item').last());
   justification.elastic();
   try{
       init_textarea("#"+justification.attr('id'), parseInt(justification.data('limit')));
