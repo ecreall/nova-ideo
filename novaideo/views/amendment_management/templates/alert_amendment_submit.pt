@@ -1,5 +1,5 @@
 <div tal:condition="ideas" class="alert alert-warning">
-<p i18n:domain="novaideo" i18n:translate="">Les idées suivantes sont utilisées dans votre proposition, mais pas encore publiées. La publication de la proposition implique automatiquement que les idées qu'elle utilise soient également publiées. Souhaitez-vous retravailler vos idées avant la publication de votre proposition ? Si vous publiez la proposition en l'état, vous ne pourrez plus modifier vos idées publiées et vous devrez les dupliquer pour les travailler de nouveau.</p><br>
+<p i18n:domain="novaideo" i18n:translate="">Pour que vos amendements puissent être soumis aux autres participants, l'ensemble de leurs idées liées doivent être préalablement publiées. Vous pouvez soit les publier en l'état en cliquant sur « Continuer », soit les modifier en cliquant sur celles qui sont à retravailler.</p><br>
   <ol class="list-unstyled">
     <tal:loop repeat="i ideas">
       <li><a class="btn btn-warning btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
