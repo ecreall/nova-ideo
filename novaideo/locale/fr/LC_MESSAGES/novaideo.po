@@ -1471,8 +1471,7 @@ msgid "Justification"
 msgstr "Justification"
 
 #: novaideo/views/amendment_management/submit.py:105
-#, fuzzy
-msgid "Group your improvements into amendments"
+msgid "Group your improvements in amendments"
 msgstr "Regrouper vos améliorations en amendements"
 
 #: novaideo/views/amendment_management/submit.py:111
@@ -2580,7 +2579,7 @@ msgstr "Soumettre l'amendment"
 
 #: novaideo/content/processes/amendment_management/behaviors.py:343
 msgid "Submit my amendments"
-msgstr "Soumettre Soumettre mes amendements"
+msgstr "Soumettre mes amendements"
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:39
 #: novaideo/content/processes/novaideo_view_manager/definition.py:40
