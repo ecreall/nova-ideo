@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-03-23 19:12+0100\n"
+"POT-Creation-Date: 2015-03-23 19:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1070,7 +1070,6 @@ msgstr ""
 #: ./novaideo/views/amendment_management/submit.py:160
 #: ./novaideo/content/processes/proposal_management/definition.py:328
 #: ./novaideo/content/processes/amendment_management/definition.py:73
-#: ./novaideo/content/processes/amendment_management/behaviors.py:343
 msgid "Submit"
 msgstr ""
 
@@ -1489,7 +1488,8 @@ msgid "Justification item"
 msgstr ""
 
 #: ./novaideo/views/amendment_management/submit.py:186
-msgid "Amendments organization"
+#: ./novaideo/content/processes/amendment_management/behaviors.py:342
+msgid "Prepare amendments"
 msgstr ""
 
 #: ./novaideo/views/amendment_management/submit.py:75
@@ -1506,11 +1506,11 @@ msgid "Justification"
 msgstr ""
 
 #: ./novaideo/views/amendment_management/submit.py:105
-msgid "Organize your changes in amendments"
+msgid "Group your improvements into amendments"
 msgstr ""
 
 #: ./novaideo/views/amendment_management/submit.py:111
-msgid "Gather changes in a single amendment"
+msgid "Gather improvements in a single amendment"
 msgstr ""
 
 #: ./novaideo/views/amendment_management/templates/explanations_amendment.pt:1
@@ -2656,8 +2656,8 @@ msgstr ""
 msgid "Submit the amendment"
 msgstr ""
 
-#: ./novaideo/content/processes/amendment_management/behaviors.py:342
-msgid "Prepare amendments"
+#: ./novaideo/content/processes/amendment_management/behaviors.py:343
+msgid "Submit my amendments"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:39
