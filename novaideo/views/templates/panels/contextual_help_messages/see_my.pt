@@ -10,9 +10,15 @@
     <p tal:condition="request.view_name == 'seemyselections'">
     Vous retrouvez dans « Mes favoris », toutes les idées, les propositions, les membres que vous avez préalablement mis en favori.
     </p>
-    <p tal:condition="request.view_name == 'seemysupports'">
-    Vous retrouvez dans « Mes appréciations », les propositions soumises à appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées. Vous disposez en tout de sept jetons d'appréciations, soutiens ou oppositions, que vous êtes libre à tout moment d'allouer ou de retirer. 
-
-	Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions dont vous avez l'un des participants sans que cette appréciation soit décomptée de vos sept jetons d'appréciation initiaux. Une fois allouée, cette appréciation ne peut plus en revanche être retirée.
-    </p>
+    <tal:block tal:condition="request.view_name == 'seemysupports'">
+        <p>
+          Vous trouvez dans « Mes appréciations », les propositions soumises à appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées.
+        </p>
+        <p>
+          Vous disposez en tout de sept jetons d'appréciations, soutiens ou oppositions, que vous êtes libre à tout moment d'allouer ou de retirer à n'importe quelles propositions soumises à appréciation. Pour mettre une nouvelle appréciation ou revenir sur une appréciation passée, il vous suffit de cliquer sur la proposition concernée.
+        </p>
+        <p>
+          Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions soumises à appréciation dont vous avez l'un des participants sans que ces appréciations soient décomptées de vos sept jetons d'appréciation initiaux. Une fois allouée, ces appréciations ne peuvent plus en revanche être réutilisées pour d'autres propositions.
+        </p>
+    </tal:block>
 </div>
