@@ -102,13 +102,13 @@ class ExplanationGroupsSchema(Schema):
                                     widget=DragDropMappingWidget()),
              ['_csrf_token_']),
         widget=groups_widget,
-        title=_('Organize your changes in amendments')
+        title=_('Group your improvements into amendments')
         )
 
     single_amendment = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="single-amendment-control"),
-        label=_('Gather changes in a single amendment'),
+        label=_('Gather improvements in a single amendment'),
         title ='',
         missing=False
         )
@@ -183,7 +183,7 @@ class SubmitAmendmentView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SubmitAmendmentViewMultipleView(MultipleView):
-    title = _('Amendments organization')
+    title = _('Prepare amendments')
     name = 'submitamendment'
     viewid = 'submitamendment'
     template = 'daceui:templates/mergedmultipleview.pt'

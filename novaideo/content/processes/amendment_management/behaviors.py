@@ -340,7 +340,7 @@ class SubmitAmendment(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-share'
     style_order = 6
     title = _('Prepare amendments')
-    submission_title = _('Submit')
+    submission_title = _('Submit my amendments')
     context = IAmendment
     roles_validation = pub_roles_validation
     processsecurity_validation = pub_processsecurity_validation
