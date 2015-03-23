@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-03-23 18:10+0100\n"
+"POT-Creation-Date: 2015-03-23 18:28+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1478,7 +1478,7 @@ msgid "Gather changes in a single amendment"
 msgstr "Regrouper les modifications en un seul amendement"
 
 #: novaideo/views/amendment_management/templates/explanations_amendment.pt:1
-msgid "Pour que les autres participants puissent se prononcer sur vos modifications, vous devez les expliquer en précisant vos intentions. Une intention peut porter sur plusieurs modifications à la fois. Une fois que vous avez expliqué l'ensemble de vos modifications, vous pouvez les répartir en différents amendements et les soumettre aux autres participants."
+msgid "Pour que les autres participants puissent se prononcer sur vos améliorations, vous devez les expliquer. Vous pouvez donner la même explication à plusieurs améliorations en même temps. Une fois que vous avez expliqué l'ensemble de vos améliorations, vous pourrez préparer vos amendements et les soumettre aux autres participants."
 msgstr ""
 
 #: novaideo/views/amendment_management/templates/see_amendment.pt:21
@@ -1508,12 +1508,12 @@ msgid "The amendement has been sent to ${external_len} external persons."
 msgstr "L'amendement a été envoyé à ${external_len} personnes externes"
 
 #: novaideo/views/amendment_management/templates/explanation_modal_item.pt:11
-msgid "Explain the intention of your changes"
-msgstr "Expliquer l'intention de vos modifications"
+msgid "Explain your improvement"
+msgstr "Expliquer votre amélioration"
 
 #: novaideo/views/amendment_management/templates/explanation_modal_item.pt:28
-msgid "Save intention"
-msgstr "Enregistrer l'intention"
+msgid "Save the explanation"
+msgstr "Enregistrer l'explication"
 
 #: novaideo/views/amendment_management/templates/explanation_modal_item.pt:31
 msgid "Cancel"
@@ -2022,12 +2022,12 @@ msgid "Unfavorable"
 msgstr "Défavorable"
 
 #: novaideo/content/amendment.py:74
-msgid "Apply the same intention"
-msgstr "Appliquer la même intention"
+msgid "Apply the same explanation"
+msgstr "Reprendre une explication existante"
 
 #: novaideo/content/amendment.py:75
-msgid "Choose the intention to apply"
-msgstr "Choisissez l'intention à appliquer"
+msgid "Choose the imrovement to apply"
+msgstr "Indiquer l'amélioration correspondante"
 
 #: novaideo/content/amendment.py:108
 msgid "Choose related ideas."
