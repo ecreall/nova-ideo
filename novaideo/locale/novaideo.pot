@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-03-23 19:41+0100\n"
+"POT-Creation-Date: 2015-03-24 09:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1421,6 +1421,575 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/usermenu.pt:51
 msgid "${icon} Log Out"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:5
+msgid ""
+"Tout membre peut communiquer une idée publiée à tout autre membre de la "
+"plateforme, ainsi qu'à toute personne externe en saisissant directement son "
+"courriel. Ce dernier aura un accès à la plateforme, mais ne pourra pas s'y "
+"connecter tant qu'il n'est pas membre."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:12
+msgid ""
+"Vous pouvez comparer la version en cours de l'idée avec ses versions "
+"précédentes."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:15
+msgid ""
+"Les textes respectivement en vert et en rouge sont les textes ajoutés et "
+"supprimés dans la version actuelle de l'idée."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:22
+msgid "Toute idée publiée peut être discutée entre membres de la plateforme."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:25
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:39
+msgid ""
+"Pour commencer un fil de discussion, il vous suffit de préciser votre "
+"intention et le message que vous souhaitez communiquer aux autres."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:28
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:42
+msgid ""
+"Tout membre peut vous répondre, comme vous pouvez répondre à tout message "
+"d'un fil de discussion."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:31
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:45
+msgid ""
+"Vous pouvez également associer à vos messages tout type d'éléments figurant "
+"dans la plateforme. En cliquant sur « Associations », vous retrouvez les fils"
+" de discussion ayant des éléments associés."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/create_idea.pt:3
+msgid ""
+"Pour noter une idée, vous avez juste à saisir un texte et au moins un mot "
+"clé."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/create_idea.pt:8
+msgid ""
+"Un titre avec votre prénom, votre nom et la date de saisie de l'idée vous est"
+" proposé par défaut, vous pouvez le changer, comme vous pouvez également "
+"ajouter une ou des pièce(s) jointe(s)."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_first_vote.pt:4
+msgid ""
+"Le groupe de travail a atteint trois participants, il peut dorénavant "
+"intervenir sur la proposition. Sa première décision est de voter pour ou "
+"contre le fait d'améliorer la proposition."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_first_vote.pt:9
+msgid ""
+"Si le vote est « Pour », la proposition fera l'objet d'un cycle "
+"d'amélioration."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_first_vote.pt:14
+msgid ""
+"Si le vote est « Contre », la proposition ne sera plus modifiée et elle sera "
+"soumise à appréciation en l'état."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_submited_owner.pt:4
+msgid "Votre idée est soumise à modération."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_submited_owner.pt:9
+msgid ""
+"Pour pouvoir être publiées, les idées sont soumises à modération. Les "
+"modérateurs peuvent décider soit de les publier, soit de les archiver."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_submited_owner.pt:14
+msgid ""
+"Quelque soit les décisions, des notifications par courriel sont envoyées aux "
+"auteurs des idées."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_submited_owner.pt:19
+msgid ""
+"Si votre idée est archivée, une explication vous est apportée et vous devrez "
+"préalablement la retravailler avant de la soumettre de nouveau pour "
+"publication."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:5
+msgid "@TODO amendment"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:12
+msgid "@TODO related ideas"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:19
+msgid ""
+"Tout membre peut communiquer une proposition publiée à tout autre membre de "
+"la plateforme, ainsi qu'à toute personne externe en saisissant directement "
+"son courriel. Ce dernier aura un accès à la plateforme, mais ne pourra pas "
+"s'y connecter tant qu'il n'est pas membre."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:26
+msgid ""
+"Vous pouvez comparer la version en cours de la proposition avec ses versions "
+"précédentes."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:29
+msgid ""
+"Les textes respectivement en vert et en rouge sont les textes ajoutés et "
+"supprimés dans la version actuelle de la proposition."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:36
+msgid ""
+"Toute proposition publiée peut être discutée entre membres de la plateforme."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_proofreading_started.pt:3
+msgid "Un premier participant du groupe de travail a corrigé la proposition."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_proofreading_started.pt:7
+msgid ""
+"Vous pouvez soit accepter ses corrections et elles seront intégrées à la "
+"proposition, soit les refuser et elles ne seront pas prises en compte."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_proofreading_started.pt:11
+msgid ""
+"L'intérêt qu'un second participant du groupe de travail valide ou rejette les"
+" corrections effectuées par un premier participant est d'éviter si possible "
+"des corrections qui ne seraient pas justifiées."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_improve.pt:3
+msgid "Vous avez décidé d'améliorer la proposition."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_improve.pt:7
+msgid ""
+"Vos améliorations sont à effectuer directement dans le titre, le résumé, les "
+"mots clés et le texte de la proposition."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_draft_explanation.pt:3
+msgid ""
+"Pour expliquer vos améliorations, vous devez cliquer sur chacun de leur "
+"numéro correspondant."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_draft_explanation.pt:7
+msgid ""
+"Vous pouvez soit reprendre une explication existante d'une amélioration "
+"précédente, soit en donner une spécifique. Si vous modifiez une explication "
+"existante, celle-ci se répercute sur l'ensemble des améliorations qui "
+"partagent cette même explication. Si vous souhaitez en modifier une seule, "
+"vous devez en donner une explication spécifique."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_draft_explanation.pt:11
+msgid ""
+"Vous pouvez également lier une idée à une explication ou noter une nouvelle "
+"idée."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_draft_explanation.pt:15
+msgid ""
+"Si vous souhaitez scinder une amélioration en plusieurs, vous pouvez intégrer"
+" des améliorations supplémentaires au texte."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/transform_idea.pt:3
+msgid "Vous avez décidé de transformer une idée en proposition."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/transform_idea.pt:7
+msgid ""
+"Pour que les autres utilisateurs aient un aperçu rapide de votre proposition,"
+" vous devez en saisir un résumé."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/transform_idea.pt:11
+msgid ""
+"Pour compléter votre proposition, vous disposez d'un éditeur de texte riche "
+"qui permet d'intégrer tout type de contenu (image, vidéo, tableau, lien)."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/transform_idea.pt:15
+msgid ""
+"Vous pouvez également reprendre d'autres idées existantes de la plateforme, y"
+" sélectionner des éléments de texte et les glisser-déposer dans votre "
+"proposition ou noter vos nouvelles idées, que vous pourrez retravailler par "
+"la suite."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_draft.pt:3
+msgid ""
+"Vous avez effectué une version améliorée de la proposition, celle-ci est dans"
+" un statut privé et vous êtes le seul à pouvoir la voir."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_draft.pt:7
+msgid ""
+"Les éléments de texte que vous avez ajoutés apparaissent en vert et ceux "
+"supprimés en rouge. Pour que vos améliorations soient soumises sous forme "
+"d'amendements aux autres participants, vous devez préalablement les avoir "
+"expliqués et les avoir regroupés en amendements."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_draft.pt:11
+msgid ""
+"Si vous n'êtes pas satisfait de votre version améliorée, vous pouvez la "
+"supprimer, la modifier ou la dupliquer, dans quel cas vous accédez à une "
+"copie de la version améliorée tout en conservant celle-ci en l'état."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_draft.pt:4
+msgid ""
+"Votre proposition est dans un statut privé, vous êtes le seul à la voir."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_draft.pt:8
+msgid ""
+"Si vous souhaitez la rendre publique, vous devez la publier. Pour que ses "
+"idées liées deviennent également visibles aux autres utilisateurs, vous "
+"devrez préalablement les publier."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_draft.pt:12
+msgid ""
+"Si vous n'êtes pas satisfait de votre proposition, vous pouvez la supprimer "
+"ou la modifier."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_amendable.pt:3
+msgid ""
+"La relecture de la proposition a été effectuée, la proposition est en cours "
+"d'amendement."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_amendable.pt:7
+msgid ""
+"Vous pouvez améliorer la proposition et soumettre aux autres participants vos"
+" améliorations sous forme d'amendements."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_amendable.pt:11
+msgid ""
+"Vous pouvez également dupliquer la proposition et dans quel cas vous pourrez "
+"en modifier une copie que vous pourrez publier par la suite."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/duplicate_idea.pt:3
+msgid "Vous avez décidé de dupliquer l'idée."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/duplicate_idea.pt:8
+msgid "Dès lors qu'une idée est dupliquée, elle peut être modifiée."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/duplicate_idea.pt:13
+msgid ""
+"Pour qu'elle soit publiée, une idée dupliquée ne doit pas être identique à "
+"l'idée d'origine."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:3
+msgid ""
+"Vous retrouvez dans « Mes contenus », les idées et les propositions dont vous"
+" avez été l'auteur ou les propositions dont vous avez été l'un des "
+"participants. Sont notamment présentes dans « Mes contenus », l'ensemble de "
+"vos idées archivées."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:10
+msgid ""
+"Vous retrouvez dans « Mes groupes de travail », les propositions pour "
+"lesquelles vous intervenez actuellement en tant que participant."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:15
+msgid ""
+"Vous retrouvez dans « Mes favoris », toutes les idées, les propositions, les "
+"membres que vous avez préalablement mis en favori."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:22
+msgid ""
+"Vous trouvez dans « Mes appréciations », les propositions soumises à "
+"appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:27
+msgid ""
+"Vous disposez en tout de sept jetons d'appréciations, soutiens ou "
+"oppositions, que vous êtes libre à tout moment d'allouer ou de retirer à "
+"n'importe quelles propositions soumises à appréciation. Pour mettre une "
+"nouvelle appréciation ou revenir sur une appréciation passée, il vous suffit "
+"de cliquer sur la proposition concernée."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:32
+msgid ""
+"Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions"
+" soumises à appréciation dont vous avez l'un des participants sans que ces "
+"appréciations soient décomptées de vos sept jetons d'appréciation initiaux. "
+"Une fois allouée, ces appréciations ne peuvent plus en revanche être "
+"réutilisées pour d'autres propositions."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_submited_moderator.pt:4
+msgid "Pour pouvoir être publiées, les idées sont soumises à modération."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_submited_moderator.pt:9
+msgid ""
+"En tant que modérateur, vous pouvez soit les publier, soit les archiver."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_submited_moderator.pt:14
+msgid ""
+"Si une idée est publiée, elle sera rendu publique et ne pourra plus être "
+"modifiée."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_submited_moderator.pt:19
+msgid ""
+"Si elle est archivée, l'auteur de l'idée devra la retravailler avant de la "
+"soumettre de nouveau pour publication. Dans ce second cas, vous devez "
+"expliquer votre décision."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:3
+msgid ""
+"En tant que membre connecté à la plateforme, vous pouvez accéder à vos "
+"contenus, vos groupes de travail, vos favoris et vos appréciations, noter une"
+" idée, faire des recherches, voir les membres inscrits ou intervenir sur des "
+"idées ou des propositions."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:8
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:13
+msgid ""
+"Une idée est une note personnelle, courte, émise spontanément, alors qu'une "
+"proposition est un document rédigé à plusieurs, finalisé, avec un travail de "
+"fond."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:13
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:18
+msgid ""
+"Une idée peut être soit archivée, soit à travailler, soit soumise à "
+"modération, soit publiée et une proposition peut être soit privée, soit "
+"ouverte à un groupe de travail, soit en relecture, soit en cours "
+"d'amendement, soit soumise à appréciation, soit examinée."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_archived.pt:4
+msgid ""
+"Vos idées archivées sont uniquement visibles par vous et sont accessibles à "
+"partir de « Mes contenus »."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_archived.pt:9
+msgid ""
+"Vous pouvez décider de supprimer définitivement une idée archivée ou de la "
+"rétablir pour la travailler de nouveau."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_to_work.pt:4
+msgid "L'idée d'origine a été dupliquée, elle est maintenant à travailler."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_to_work.pt:8
+msgid "Vous êtes le seul à pouvoir voir votre idée à travailler."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_to_work.pt:12
+msgid ""
+"Si vous souhaitez la rendre publique, vous devez la soumettre à publication, "
+"un modérateur peut alors soit la publier, soit l'archiver s'il considère "
+"qu'elle ne doit pas être rendue publique."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_to_work.pt:16
+msgid ""
+"Vous pouvez également modifier votre idée, l'archiver ou l'ajouter à vos "
+"favoris."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_to_work.pt:20
+msgid ""
+"Si vous souhaitez la modifier tout en gardant cette version, vous pouvez la "
+"dupliquer à nouveau."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_proofreading_started_owner.pt:3
+msgid ""
+"Les éléments de texte en vert sont ceux que vous avez ajoutés lors de vos "
+"corrections et en rouge ceux que vous avez supprimés."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_proofreading_started_owner.pt:7
+msgid ""
+"Pour que les corrections soit acceptées, il faut qu'un autre participant les "
+"valide. S'il considère qu'elles ne sont pas justifiées, il peut les rejeter "
+"et elles ne seront pas retenues dans la proposition."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/person_index.pt:3
+msgid ""
+"Dans la fiche d'un membre, vous trouvez la date à laquelle il s'est inscrit à"
+" la plateforme Nova-Ideo, ses centres d'intérêt et l'ensemble des contenus "
+"auxquels il a contribué."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_open_to_a_working_group.pt:4
+msgid ""
+"Cette proposition est publiée et ouverte à un groupe de travail, elle est "
+"visible par l'ensemble des utilisateurs."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_open_to_a_working_group.pt:8
+msgid ""
+"Pour l'améliorer ou la soumettre à l'appréciation des membres de la "
+"plateforme, il faut que le groupe de travail atteigne au moins trois "
+"participants."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_open_to_a_working_group.pt:12
+msgid ""
+"Tout membre peut se porter candidat au groupe de travail, à condition qu'il "
+"ne soit pas déjà candidat ou participant à cinq autres groupes de travail. Si"
+" vous êtes candidat, votre première action sera de voter pour ou contre "
+"l'amélioration de la proposition. Le scrutin de vote est clos dès que le "
+"groupe de travail a atteint trois participants."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_open_to_a_working_group.pt:16
+msgid ""
+"Un groupe de travail peut comprendre au maximum douze participants, les "
+"autres candidats sont mis sur liste d'attente. Si un participant quitte le "
+"groupe de travail et que des candidats sont sur liste d'attente, le premier "
+"inscrit rejoint automatiquement le groupe de travail."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_published.pt:4
+msgid "Les idées publiées sont visibles par l'ensemble des utilisateurs."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_published.pt:9
+msgid ""
+"Elles peuvent être transformées en proposition ou utilisées dans des "
+"propositions existantes par n'importe quel membre de la plateforme."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_published.pt:14
+msgid ""
+"Elles peuvent également être dupliquées pour qu'une copie soit travaillée "
+"différemment ou vous pouvez les ajouter à vos favoris."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/idea_published.pt:19
+msgid ""
+"Elles peuvent enfin être communiquées à des tiers ou discutées entre membres."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_proofreading_not_started.pt:3
+msgid ""
+"La proposition est en relecture, elle peut être corrigée par les participants"
+" au groupe de travail."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_proofreading_not_started.pt:7
+msgid ""
+"Vous pouvez décider soit de la corriger, soit considérer qu'il n'y a pas de "
+"correction à apporter et que la relecture est effectuée."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/proposal_proofreading_not_started.pt:11
+msgid ""
+"Si vous n'en êtes pas satisfait, vous pouvez la supprimer ou la dupliquer, "
+"dans ce second cas vous accédez à une copie de la proposition dans un statut "
+"privé."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/edit_proposal.pt:3
+msgid ""
+"Pour modifier votre proposition, vous disposez d'un éditeur de texte riche "
+"qui vous permet d'intégrer tout type de contenu (image, vidéo, tableau, "
+"lien)."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/edit_proposal.pt:8
+msgid ""
+"Vous pouvez rechercher des idées existantes sur la plateforme et y reprendre "
+"des éléments de texte par un simple glisser-déposer."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/edit_proposal.pt:13
+msgid ""
+"Vous pouvez également noter vos nouvelles idées qui seront reprises "
+"automatiquement dans la plateforme sous forme d'idées à travailler."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_prepare.pt:3
+msgid ""
+"Vous pouvez librement regrouper vos améliorations en un ou plusieurs "
+"amendements."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_prepare.pt:7
+msgid ""
+"Pour cela, vous pouvez glisser déposer vos améliorations d'un amendement à un"
+" autre, ajouter des amendements supplémentaires ou supprimer ceux qui sont "
+"vides."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_prepare.pt:11
+msgid ""
+"Par défaut, l'explication partagée par les améliorations d'un amendement est "
+"reprise comme justification de l'amendement. Si les justifications des "
+"amendements sont modifiées, les explications des améliorations "
+"correspondantes ne sont en revanche pas changées."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_prepare.pt:15
+msgid ""
+"Vous pouvez aussi décider de regrouper l'ensemble de vos améliorations en un "
+"seul amendement, dans quel cas vous devez apporter la justification de cet "
+"amendement unique."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/amendment_prepare.pt:19
+msgid ""
+"Lorsque vous êtes satisfait de vos amendements, vous pouvez les soumettre aux"
+" autres participants. Vous pouvez aussi annuler la préparation des "
+"amendements et revenir aux explications des améliorations."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:3
+msgid ""
+"Pour noter une idée, accéder à vos éléments ou intervenir sur une idée ou une"
+" proposition, vous devez préalablement être inscrit et vous connecter."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:8
+msgid ""
+"Si vous n'êtes pas connecté, vous pourrez uniquement faire des recherches, "
+"consulter les contenus (idées et propositions) et voir les membres inscrits."
 msgstr ""
 
 #: ./novaideo/views/comment_management/respond.py:26
