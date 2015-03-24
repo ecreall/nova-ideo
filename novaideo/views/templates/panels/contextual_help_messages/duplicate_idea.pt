@@ -1,11 +1,11 @@
-<div  class="contextual-help-item principal-help">
-    <p>
+<div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
+    <p i18n:translate="">
 		Vous avez décidé de dupliquer l'idée.
     </p>
-	<p>
+	<p i18n:translate="">
 		Dès lors qu'une idée est dupliquée, elle peut être modifiée.
     </p>
-	<p>
+	<p i18n:translate="">
 		Pour qu'elle soit publiée, une idée dupliquée ne doit pas être identique à l'idée d'origine.
     </p>
 </div>

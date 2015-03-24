@@ -1,8 +1,8 @@
 
-<div class="contextual-help-item principal-help">
-	<p>Votre proposition est dans un statut privé, vous êtes le seul à la voir.</p>
+<div class="contextual-help-item principal-help"  i18n:domain="novaideo">
+	<p i18n:translate="">Votre proposition est dans un statut privé, vous êtes le seul à la voir.</p>
 
-	<p>Si vous souhaitez la rendre publique, vous devez la publier. Pour que ses idées liées deviennent également visibles aux autres utilisateurs, vous devrez préalablement les publier.</p>
+	<p i18n:translate="">Si vous souhaitez la rendre publique, vous devez la publier. Pour que ses idées liées deviennent également visibles aux autres utilisateurs, vous devrez préalablement les publier.</p>
 
-	<p>Si vous n'êtes pas satisfait de votre proposition, vous pouvez la supprimer ou la modifier.</p>
+	<p i18n:translate="">Si vous n'êtes pas satisfait de votre proposition, vous pouvez la supprimer ou la modifier.</p>
 </div>

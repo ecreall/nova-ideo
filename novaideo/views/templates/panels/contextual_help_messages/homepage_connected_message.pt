@@ -1,11 +1,11 @@
-<div  class="contextual-help-item principal-help">
-    <p>
+<div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
+    <p i18n:translate="">
         En tant que membre connecté à la plateforme, vous pouvez accéder à vos contenus, vos groupes de travail, vos favoris et vos appréciations, noter une idée, faire des recherches, voir les membres inscrits ou intervenir sur des idées ou des propositions.
     </p>
-    <p>
+    <p i18n:translate="">
         Une idée est une note personnelle, courte, émise spontanément, alors qu'une proposition est un document rédigé à plusieurs, finalisé, avec un travail de fond.
     </p>
-    <p>
+    <p i18n:translate="">
         Une idée peut être soit archivée, soit à travailler, soit soumise à modération, soit publiée et une proposition peut être soit privée, soit ouverte à un groupe de travail, soit en relecture, soit en cours d'amendement, soit soumise à appréciation, soit examinée.
     </p>
 </div>

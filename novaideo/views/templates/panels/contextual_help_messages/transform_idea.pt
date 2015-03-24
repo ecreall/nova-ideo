@@ -1,9 +1,9 @@
-<div  class="contextual-help-item principal-help">
-	<p>Vous avez décidé de transformer une idée en proposition.</p>
+<div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
+	<p i18n:translate="">Vous avez décidé de transformer une idée en proposition.</p>
 
-	<p>Pour que les autres utilisateurs aient un aperçu rapide de votre proposition, vous devez en saisir un résumé.</p>
+	<p i18n:translate="">Pour que les autres utilisateurs aient un aperçu rapide de votre proposition, vous devez en saisir un résumé.</p>
 
-	<p>Pour compléter votre proposition, vous disposez d'un éditeur de texte riche qui permet d'intégrer tout type de contenu (image, vidéo, tableau, lien).</p>
+	<p i18n:translate="">Pour compléter votre proposition, vous disposez d'un éditeur de texte riche qui permet d'intégrer tout type de contenu (image, vidéo, tableau, lien).</p>
 
-	<p>Vous pouvez également reprendre d'autres idées existantes de la plateforme, y sélectionner des éléments de texte et les glisser-déposer dans votre proposition ou noter vos nouvelles idées, que vous pourrez retravailler par la suite.</p>
+	<p i18n:translate="">Vous pouvez également reprendre d'autres idées existantes de la plateforme, y sélectionner des éléments de texte et les glisser-déposer dans votre proposition ou noter vos nouvelles idées, que vous pourrez retravailler par la suite.</p>
 </div>

@@ -1,8 +1,8 @@
-<div  class="contextual-help-item principal-help">
-	<p>
+<div  class="contextual-help-item principal-help" i18n:domain="novaideo">
+	<p i18n:translate="">
 	Pour noter une idée, vous avez juste à saisir un texte et au moins un mot clé.
    </p>
-   <p>
+   <p i18n:translate="">
 	Un titre avec votre prénom, votre nom et la date de saisie de l'idée vous est proposé par défaut, vous pouvez le changer, comme vous pouvez également ajouter une ou des pièce(s) jointe(s).
    </p>
 </div>

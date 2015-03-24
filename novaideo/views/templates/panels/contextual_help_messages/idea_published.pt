@@ -1,15 +1,15 @@
 
-<div class="contextual-help-item principal-help">
-    <p>
+<div class="contextual-help-item principal-help"  i18n:domain="novaideo">
+    <p i18n:translate="">
         Les idées publiées sont visibles par l'ensemble des utilisateurs.
     </p>
-    <p>
+    <p i18n:translate="">
         Elles peuvent être transformées en proposition ou utilisées dans des propositions existantes par n'importe quel membre de la plateforme.
     </p>
-    <p>
+    <p i18n:translate="">
         Elles peuvent également être dupliquées pour qu'une copie soit travaillée différemment ou vous pouvez les ajouter à vos favoris.
     </p>
-    <p>
+    <p i18n:translate="">
         Elles peuvent enfin être communiquées à des tiers ou discutées entre membres.
     </p>
 </div>

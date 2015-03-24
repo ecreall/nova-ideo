@@ -1,7 +1,7 @@
-<div class="contextual-help-item principal-help">
-	<p>La proposition est en relecture, elle peut être corrigée par les participants au groupe de travail.</p>
+<div class="contextual-help-item principal-help"  i18n:domain="novaideo">
+	<p i18n:translate="">La proposition est en relecture, elle peut être corrigée par les participants au groupe de travail.</p>
 
-	<p>Vous pouvez décider soit de la corriger, soit considérer qu'il n'y a pas de correction à apporter et que la relecture est effectuée.</p>
+	<p i18n:translate="">Vous pouvez décider soit de la corriger, soit considérer qu'il n'y a pas de correction à apporter et que la relecture est effectuée.</p>
 
-	<p>Si vous n'en êtes pas satisfait, vous pouvez la supprimer ou la dupliquer, dans ce second cas vous accédez à une copie de la proposition dans un statut privé.</p>
+	<p i18n:translate="">Si vous n'en êtes pas satisfait, vous pouvez la supprimer ou la dupliquer, dans ce second cas vous accédez à une copie de la proposition dans un statut privé.</p>
 </div>

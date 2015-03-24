@@ -1,5 +1,5 @@
-<div  class="contextual-help-item principal-help">
-	<p>Vous avez décidé d'améliorer la proposition.</p>
+<div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
+	<p i18n:translate="">Vous avez décidé d'améliorer la proposition.</p>
 
-	<p>Vos améliorations sont à effectuer directement dans le titre, le résumé, les mots clés et le texte de la proposition.</p>
+	<p i18n:translate="">Vos améliorations sont à effectuer directement dans le titre, le résumé, les mots clés et le texte de la proposition.</p>
 </div>

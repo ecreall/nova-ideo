@@ -1,15 +1,15 @@
 
-<div class="contextual-help-item principal-help">
-    <p>
+<div class="contextual-help-item principal-help"  i18n:domain="novaideo">
+    <p i18n:translate="">
         Pour pouvoir être publiées, les idées sont soumises à modération.
     </p>
-    <p>
+    <p i18n:translate="">
         En tant que modérateur, vous pouvez soit les publier, soit les archiver.
     </p>
-    <p>
+    <p i18n:translate="">
         Si une idée est publiée, elle sera rendu publique et ne pourra plus être modifiée.
     </p>
-    <p>
+    <p i18n:translate="">
         Si elle est archivée, l'auteur de l'idée devra la retravailler avant de la soumettre de nouveau pour publication. Dans ce second cas, vous devez expliquer votre décision.
     </p>
 </div>

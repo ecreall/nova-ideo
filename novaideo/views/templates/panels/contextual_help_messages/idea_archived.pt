@@ -1,9 +1,9 @@
 
-<div class="contextual-help-item principal-help">
-    <p>
+<div class="contextual-help-item principal-help"  i18n:domain="novaideo">
+    <p i18n:translate="">
       Vos idées archivées sont uniquement visibles par vous et sont accessibles à partir de « Mes contenus ».
     </p>
-	<p>
+	<p i18n:translate="">
       Vous pouvez décider de supprimer définitivement une idée archivée ou de la rétablir pour la travailler de nouveau.
     </p>
 </div>
