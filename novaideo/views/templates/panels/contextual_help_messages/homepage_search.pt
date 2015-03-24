@@ -1,0 +1,6 @@
+
+<div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
+    <p i18n:translate="">Lorsque vous recherchez des mots, vous obtenez en résultat toutes les idées dont le titre ou les mots clés contiennent un de ces mots, toutes les propositions dont le titre, le résumé ou les mots clés contiennent un de ces mots et tous les membres dont le prénom, le nom ou les centres d'intérêt contiennent un de ces mots.</p>
+
+    <p i18n:translate="">Il est également possible de faire une recherche uniquement sur les idées, les propositions ou les membres ou sur une combinaison de ces trois éléments. </p>
+</div>
