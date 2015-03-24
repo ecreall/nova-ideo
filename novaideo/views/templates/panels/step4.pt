@@ -7,7 +7,7 @@
            </span>
        </dd>
         <dd tal:condition="support == -1">
-            <span class="label token-danger">
+            <span class="label danger">
                 <span class="token token-danger glyphicon glyphicon-thumbs-down"></span>
            </span>
        </dd>
