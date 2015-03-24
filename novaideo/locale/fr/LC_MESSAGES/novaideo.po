@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-03-24 09:47+0100\n"
+"POT-Creation-Date: 2015-03-24 10:12+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1554,6 +1554,18 @@ msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/proposal_draft.pt:12
 msgid "Si vous n'êtes pas satisfait de votre proposition, vous pouvez la supprimer ou la modifier."
+msgstr ""
+
+#: novaideo/views/templates/panels/contextual_help_messages/idea_to_work_edit.pt:3
+msgid "Vous souhaitez modifier votre idée."
+msgstr ""
+
+#: novaideo/views/templates/panels/contextual_help_messages/idea_to_work_edit.pt:8
+msgid "Pour vous souvenir des modifications effectuées, vous pouvez saisir une note de modification."
+msgstr ""
+
+#: novaideo/views/templates/panels/contextual_help_messages/idea_to_work_edit.pt:13
+msgid "Vous pourrez retrouver vos différentes versions et les comparer dans l'onglet « Comparer des versions »."
 msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/proposal_amendable.pt:3

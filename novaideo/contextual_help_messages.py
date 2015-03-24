@@ -144,6 +144,10 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/idea_sub_helps.pt', 2)],
 
+    (Idea, 'to work', 'editidea'): [
+       (None, 'novaideo:views/templates/panels/'
+                            'contextual_help_messages/idea_to_work_edit.pt', 1)],
+
 	(Idea, 'archived', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/idea_archived.pt', 1)],
