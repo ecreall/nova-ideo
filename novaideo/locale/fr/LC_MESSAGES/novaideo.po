@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-03-24 11:54+0100\n"
+"POT-Creation-Date: 2015-03-24 12:20+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -43,11 +43,11 @@ msgstr "La proposition"
 msgid "The idea"
 msgstr "L'idée"
 
-#: novaideo/views/panels.py:308
+#: novaideo/views/panels.py:326
 msgid "No more Information."
 msgstr "Information indisponible"
 
-#: novaideo/views/panels.py:386
+#: novaideo/views/panels.py:407
 #: novaideo/content/processes/novaideo_process_management/definition.py:42
 msgid "More"
 msgstr "Plus"
@@ -1327,6 +1327,10 @@ msgstr ""
 msgid "Electors"
 msgstr "Participants au vote"
 
+#: novaideo/views/templates/panels/step2_0.pt:4
+msgid "other proposal(s) refer to related idea(s)"
+msgstr " autre(s) proposition(s) se réfèrent aux idées liées"
+
 #: novaideo/views/templates/panels/deadline.pt:11
 msgid "The review committee held recently the"
 msgstr "Le comité d'examen s'est tenu en dernier lieu le"
@@ -1339,23 +1343,23 @@ msgstr "il n'y a pas de nouvelle date d'examen fixée."
 msgid "The review committee is scheduled to meet the"
 msgstr "Le comité d'examen a prévu de se réunir le"
 
-#: novaideo/views/templates/panels/steps.pt:69
+#: novaideo/views/templates/panels/steps.pt:80
 msgid "Collection of the idea"
 msgstr "Recueil de l'idée"
 
-#: novaideo/views/templates/panels/steps.pt:84
+#: novaideo/views/templates/panels/steps.pt:95
 msgid "Writing of the proposal"
 msgstr "Rédaction de la proposition"
 
-#: novaideo/views/templates/panels/steps.pt:99
+#: novaideo/views/templates/panels/steps.pt:110
 msgid "Improvement of the proposal"
 msgstr "Amélioration de la proposition"
 
-#: novaideo/views/templates/panels/steps.pt:116
+#: novaideo/views/templates/panels/steps.pt:127
 msgid "Support of the proposal"
 msgstr "Appréciation de la proposition"
 
-#: novaideo/views/templates/panels/steps.pt:133
+#: novaideo/views/templates/panels/steps.pt:144
 msgid "Examination of the proposal"
 msgstr "Examen de la proposition"
 
@@ -1455,14 +1459,12 @@ msgid "Si votre idée est archivée, une explication vous est apportée et vous 
 msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:5
-#, fuzzy
 msgid "@TODO amendment"
-msgstr "Voir les amendements"
+msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:12
-#, fuzzy
 msgid "@TODO related ideas"
-msgstr "Voir les idées liées"
+msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:19
 msgid "Tout membre peut communiquer une proposition publiée à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel. Ce dernier aura un accès à la plateforme, mais ne pourra pas s'y connecter tant qu'il n'est pas membre."

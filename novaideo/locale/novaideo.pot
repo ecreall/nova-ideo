@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-03-24 11:54+0100\n"
+"POT-Creation-Date: 2015-03-24 12:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,11 +48,11 @@ msgstr ""
 msgid "The idea"
 msgstr ""
 
-#: ./novaideo/views/panels.py:308
+#: ./novaideo/views/panels.py:326
 msgid "No more Information."
 msgstr ""
 
-#: ./novaideo/views/panels.py:386
+#: ./novaideo/views/panels.py:407
 #: ./novaideo/content/processes/novaideo_process_management/definition.py:42
 msgid "More"
 msgstr ""
@@ -1363,6 +1363,10 @@ msgstr ""
 msgid "Electors"
 msgstr ""
 
+#: ./novaideo/views/templates/panels/step2_0.pt:4
+msgid "other proposal(s) refer to related idea(s)"
+msgstr ""
+
 #: ./novaideo/views/templates/panels/deadline.pt:11
 msgid "The review committee held recently the"
 msgstr ""
@@ -1375,23 +1379,23 @@ msgstr ""
 msgid "The review committee is scheduled to meet the"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:69
+#: ./novaideo/views/templates/panels/steps.pt:80
 msgid "Collection of the idea"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:84
+#: ./novaideo/views/templates/panels/steps.pt:95
 msgid "Writing of the proposal"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:99
+#: ./novaideo/views/templates/panels/steps.pt:110
 msgid "Improvement of the proposal"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:116
+#: ./novaideo/views/templates/panels/steps.pt:127
 msgid "Support of the proposal"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/steps.pt:133
+#: ./novaideo/views/templates/panels/steps.pt:144
 msgid "Examination of the proposal"
 msgstr ""
 
