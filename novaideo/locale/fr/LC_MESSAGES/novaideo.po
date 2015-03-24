@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-03-24 12:20+0100\n"
+"POT-Creation-Date: 2015-03-24 13:01+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1409,6 +1409,7 @@ msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:25
 #: novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:39
+#: novaideo/views/templates/panels/contextual_help_messages/amendment_sub_helps.pt:15
 msgid "Pour commencer un fil de discussion, il vous suffit de préciser votre intention et le message que vous souhaitez communiquer aux autres."
 msgstr ""
 
@@ -1419,6 +1420,7 @@ msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:31
 #: novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:45
+#: novaideo/views/templates/panels/contextual_help_messages/amendment_sub_helps.pt:21
 msgid "Vous pouvez également associer à vos messages tout type d'éléments figurant dans la plateforme. En cliquant sur « Associations », vous retrouvez les fils de discussion ayant des éléments associés."
 msgstr ""
 
@@ -1544,6 +1546,18 @@ msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/amendment_draft.pt:11
 msgid "Si vous n'êtes pas satisfait de votre version améliorée, vous pouvez la supprimer, la modifier ou la dupliquer, dans quel cas vous accédez à une copie de la version améliorée tout en conservant celle-ci en l'état."
+msgstr ""
+
+#: novaideo/views/templates/panels/contextual_help_messages/amendment_sub_helps.pt:5
+msgid "Tout membre peut communiquer un amendment publiée à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel. Ce dernier aura un accès à la plateforme, mais ne pourra pas s'y connecter tant qu'il n'est pas membre."
+msgstr ""
+
+#: novaideo/views/templates/panels/contextual_help_messages/amendment_sub_helps.pt:12
+msgid "Toute amendement publiée peut être discutée entre les participants du groupe de travail."
+msgstr ""
+
+#: novaideo/views/templates/panels/contextual_help_messages/amendment_sub_helps.pt:18
+msgid "Tout participant au groupe de travail peut vous répondre, comme vous pouvez répondre à tout message d'un fil de discussion."
 msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/proposal_draft.pt:4
