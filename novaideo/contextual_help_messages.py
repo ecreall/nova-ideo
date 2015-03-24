@@ -145,6 +145,10 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/amendment_prepare.pt', 1)],
 
+	(Amendment, 'any', 'index'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/amendment_sub_helps.pt', 2)],
+
 	(Person, 'any', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/person_index.pt', 1)],
