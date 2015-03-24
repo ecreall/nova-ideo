@@ -182,15 +182,17 @@ Bonjour {recipient_title} {recipient_last_name},
 """+ PORTAL_SIGNATURE
 
 
-ARCHIVEIDEA_SUBJECT = u"""Décision des modérateur sur l'idée {subject_title}"""
+ARCHIVEIDEA_SUBJECT = u"""Décision des modérateurs d'archiver l'idée « {subject_title} »"""
 
 
 ARCHIVEIDEA_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-L'idée {subject_title} viens d'être archivée par les modérateurs pour la raison suivante: 
+L'idée « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
 
 {explanation}
+
+Vous pouvez retrouver votre idée sous {subject_url}.
 
 """+ PORTAL_SIGNATURE
 
@@ -208,13 +210,13 @@ les modérateurs ont émis un avis {opinion} sur la proposition {subject_title}:
 """+ PORTAL_SIGNATURE
 
 
-PUBLISHEDIDEA_SUBJECT = u"""Décision des modérateur sur l'idée {subject_title}"""
+PUBLISHEDIDEA_SUBJECT = u"""Décision des modérateurs de publier l'idée « {subject_title} »"""
 
 
 PUBLISHEDIDEA_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-L'idée {subject_title} viens d'être publiée par les modérateurs.
+L'idée « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}. Cette idée peut maintenant être utilisée par n'importe quel membre de la plateforme pour une proposition.
 
 """+ PORTAL_SIGNATURE
 
