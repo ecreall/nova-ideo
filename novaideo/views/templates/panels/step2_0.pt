@@ -1,0 +1,3 @@
+<div i18n:domain="novaideo">
+      <div>${proposal_nember} <strong i18n:translate="">other proposal(s) refer to related idea(s)</strong></div>
+</div>

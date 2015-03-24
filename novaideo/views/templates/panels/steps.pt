@@ -7,6 +7,12 @@
                   ${structure:step1_message}
               </div>
           </div>
+          <div tal:condition="step2_message != ''" id="message-step-2" role="tooltip" class="popover fade bottom">
+              <div class="arrow"></div>
+              <div class="popover-content">
+                  ${structure:step2_message}
+              </div>
+          </div>
           <div tal:condition="step3_message != ''" id="message-step-3" role="tooltip" class="popover fade bottom">
               <div class="arrow"></div>
               <div class="popover-content">
@@ -39,7 +45,7 @@
             </span>
          </li>
          <li class="1 ${(current_step == 2)  and 'active'}">
-            <span class="${(current_step == 2)  and 'active'} step-content">
+            <span class="${(current_step == 2)  and 'active'} step-content" data-step="message-step-2">
               <div class="step-text">
                 <span i18n:translate="" >Writing of the proposal</span>
               </div>
