@@ -162,7 +162,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     picture = colander.SchemaNode(
         ObjectData(Image),
-        widget=FileWidget(),
+        widget=FileWidget(file_type=['image']),
         title=_('Picture'),
         required=False,
         missing=None,
