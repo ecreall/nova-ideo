@@ -1,0 +1,20 @@
+<div tal:omit-tag="" tal:define=" item subitem|nothing; hasparent (subitem['view'].parent is not None)">
+    <div tal:omit-tag="" tal:condition="item">
+            <div tal:omit-tag="" tal:define=" items subitem['items'];
+                                  itemslen len(items)|0">
+               <div tal:omit-tag="" tal:condition="items and itemslen == 1">
+                   <div tal:define="item items[0]" tal:replace="item['view'].render_item(item, coordinates, None)" />
+               </div>
+               <div tal:omit-tag="" tal:condition="items and itemslen > 1">
+                   <div tal:repeat="item items" >
+                      <div tal:replace="item['view'].render_item(item, coordinates, subitem['view'])" />
+                   </div>
+               </div>
+            </div>
+
+            <div tal:condition="getattr(subitem['view'].context, 'is_published', False)" class="social-share-contaier">
+              <div class="social-share" data-social-share-privacy="true"></div>
+            </div>
+    </div>
+</div>
+

@@ -123,7 +123,7 @@ class SeeAmendmentActionsView(MultipleView):
 class SeeAmendmentView(MultipleView):
     title = ''
     name = 'seeamendment'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
     views = (DetailAmendmentView, SeeAmendmentActionsView)
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/comment.js', 

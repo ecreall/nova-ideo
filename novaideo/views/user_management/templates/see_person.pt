@@ -20,9 +20,6 @@
       </span>
   </div>
 </div>
-<div tal:condition="user.is_published" class="social-share-contaier">
-   <div class="social-share" data-social-share-privacy="true"></div>
-</div>
 <div id="panel-contributions" class="panel-group" i18n:domain="novaideo">
   <div tal:condition="contents" class="panel panel-default">
     <div class="panel-heading">
@@ -36,4 +33,7 @@
 	</div>
     </div>
   </div>
+</div>
+<div tal:condition="user.is_published" class="social-share-contaier">
+   <div class="social-share" data-social-share-privacy="true"></div>
 </div>

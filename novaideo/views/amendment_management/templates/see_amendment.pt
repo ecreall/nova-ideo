@@ -36,6 +36,3 @@
   </div>
  </div>
 </div>
-<div tal:condition="amendment.is_published" class="social-share-contaier">
-   <div class="social-share" data-social-share-privacy="true"></div>
-</div>

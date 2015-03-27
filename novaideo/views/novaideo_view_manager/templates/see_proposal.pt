@@ -67,10 +67,6 @@
   ${structure:text}
 </div>
 
-<div tal:condition="proposal.is_published" class="social-share-contaier">
-   <div class="social-share" data-social-share-privacy="true"></div>
-</div>
-
 <div tal:condition="voteactions"  id="voteactions"  i18n:domain="novaideo">
     <script >       
         $(document).ready(function(){

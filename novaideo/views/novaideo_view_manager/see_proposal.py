@@ -192,7 +192,7 @@ class SeeProposalActionsView(MultipleView):
 class SeeProposalView(MultipleView):
     title = ''
     name = 'seeproposal'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/correct_proposal.js',
                                 'novaideo:static/js/comment.js',

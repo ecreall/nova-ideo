@@ -99,7 +99,7 @@ class SeeIdeaActionsView(MultipleView):
 class SeeIdeaView(MultipleView):
     title = ''
     name = 'seeidea'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
     views = (DetailIdeaView, SeeIdeaActionsView)
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/compare_idea.js',
