@@ -17,6 +17,7 @@ requires = [
     'pyramid_layout',
     'pyramid_mailer',
     'pyramid_tm',
+    'deform',
     'substanced',
     'waitress',
     'gunicorn',
