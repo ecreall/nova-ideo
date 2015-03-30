@@ -26,12 +26,12 @@ function init_remove_button(){
 
 function init_select(){
   var element = ($(this).parents('.drag-drop-panel').first()).find('.select-container').last();
-  var containers = $(element.parents('.deformSeqContainer').first()).find('.select-container');
+  var containers = $(element.parents('.deform-seq-container').first()).find('.select-container');
   var last_element = $(containers[containers.length-2]);
   var las_title = $($(last_element.parents('.sequence-item').first()).find('.title-select-item').first()).val();
   var list_split = las_title.split('-');
   var id = parseInt(list_split[list_split.length - 1]) + 1;
-  var template = $($(element.parents('.deformSeqContainer').first()).find('.deformInsertBefore').first()).attr('item_title');
+  var template = $($(element.parents('.deform-seq-container').first()).find('.deform-insert-before').first()).attr('item_title');
   $($(element.parents('.sequence-item').first()).find('.title-select-item').first()).val(template+id);
   init_dragdropselect(this); 
   init_remove_button();
@@ -92,7 +92,7 @@ $(document).ready(function(){
     });
   init_remove_button();
   $('.select-item').on('droped', init_remove_button);
-  $('.btn.deformSeqAdd').on('itemadded', init_select); 
+  $('.btn.deform-seq-add').on('itemadded', init_select); 
   $('.select-item').on('click', scrollto);
 
   $(document).on('submit','form', function( event ) {

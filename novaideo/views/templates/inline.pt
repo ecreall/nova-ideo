@@ -10,7 +10,7 @@
                  orderable orderable and 1 or 0;
                  prototype field.widget.prototype(field);
                  title title|field.title;"
-     class="deformSeq"
+     class="deform-seq"
      id="${oid}">
 
   <style>
@@ -28,7 +28,7 @@
   <!-- sequence -->
   <input type="hidden" name="__start__"
          value="${field.name}:sequence"
-         class="deformProto"
+         class="deform-proto"
          tal:attributes="prototype prototype"/>
 
 
