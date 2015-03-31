@@ -35,12 +35,6 @@ def mysubscriber(event):
     terms_of_use.__name__ = 'terms_of_use'
     root.addtoproperty('files', terms_of_use)
     root.terms_of_use = terms_of_use
-    #password = settings.get('ineus.initial_password')
-    #admin = Person(password=password, email=login)
-    #admin.__name__ = 'ineus_admin'
-    #principals = find_service(root, 'principals')
-    #principals['users'][admin.__name__] = admin
-    #grant_roles(user=admin, roles=('Admin',))
 
 
 @subscriber(ObjectPublished)
