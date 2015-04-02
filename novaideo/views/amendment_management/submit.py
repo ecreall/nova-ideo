@@ -169,8 +169,10 @@ class SubmitAmendmentView(FormView):
         data = {'groups': []}
         i = 1
         for group in groups:
+            justification = ''.join(list(set([e['intention']['comment'] for e in group])))
             group_data = {'title':self.context.title +'-'+str(i),
-                          'explanations': [str(e['oid']) for e in group]}
+                          'explanations': [str(e['oid']) for e in group],
+                          'justification': justification}
             data['groups'].append(group_data)
             i += 1
 

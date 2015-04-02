@@ -11,7 +11,7 @@
                  prototype field.widget.prototype(field);
                  title title|field.title;
                  item_title item_title|field.widget.item_title_template;"
-     class="deformSeq"
+     class="deform-seq"
      id="${oid}">
 
   <style>
@@ -29,14 +29,14 @@
   <!-- sequence -->
   <input type="hidden" name="__start__"
          value="${field.name}:sequence"
-         class="deformProto"
+         class="deform-proto"
          tal:attributes="prototype prototype"/>
 
   <div class="panel-default drag-drop-panel">
     <h3>${title}</h3>
     <div class="panel-body" style="padding-bottom: 30px">
 
-      <div class="deformSeqContainer drag-drop-container"
+      <div class="deform-seq-container drag-drop-container"
            id="${oid}-orderable"
            tal:define="subfields [ x[1] for x in subfields ];">
           <div tal:condition="subfields"
@@ -51,7 +51,7 @@
           <div tal:repeat="subfield subfields"
                tal:replace="structure subfield.render_template(item_tmpl, 
                                                           parent=field)" />
-        <span class="deformInsertBefore"
+        <span class="deform-insert-before"
               tal:attributes="
                  min_len min_len;
                  max_len max_len;
@@ -64,7 +64,7 @@
 
     <div >
       <a href="#"
-         class="btn deformSeqAdd sequence-add-item"
+         class="btn deform-seq-add sequence-add-item"
          id="${field.oid}-seqAdd"
          onclick="javascript: deform.appendSequenceItem(this); $(this).trigger( jQuery.Event( 'itemadded' ) ); return false;">
       </a>
