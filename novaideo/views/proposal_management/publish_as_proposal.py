@@ -92,7 +92,7 @@ class PublishFormView(CreateProposalFormView):
         title = self.context.title + \
                     localizer.translate(_(" (the proposal)"))
         return {'title': title,
-                'description': self.context.text,
+                'text': self.context.text,
                 'keywords': self.context.keywords,
                 'related_ideas': [self.context]}
 
