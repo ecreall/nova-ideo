@@ -26,7 +26,7 @@ class CommentsView(CommentsIdeaView):
 
 class CommentAmendmentFormView(CommentIdeaFormView):
 
-    title = _('Discuss the amendment')
+    title = _('Discuss the amended version')
     behaviors = [CommentAmendment]
     formid = 'formcommentamendment'
     name = 'commentamendmentform'
@@ -49,8 +49,8 @@ class CommentAmendmentFormView(CommentIdeaFormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CommentAmendmentView(CommentIdeaView):
-    title = _('Discuss the amendment')
-    description = _('Discuss the amendment')
+    title = _('Discuss the amended version')
+    description = _('Discuss the amended version')
     name = 'commentidea'
     views = (CommentAmendmentFormView, CommentsView)
 

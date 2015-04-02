@@ -22,9 +22,9 @@ from novaideo.core import can_access
 
 
 
-AMENDMENTS_MESSAGES = {'0': _(u"""Pas d'amendements"""),
-                      '1': _(u"""Un amendement proposé"""),
-                      '*': _(u"""Amendements proposés""")}
+AMENDMENTS_MESSAGES = {'0': _(u"""No amended version"""),
+                      '1': _(u"""Amended version"""),
+                      '*': _(u"""Amended versions""")}
 
 
 @view_config(
@@ -33,9 +33,9 @@ AMENDMENTS_MESSAGES = {'0': _(u"""Pas d'amendements"""),
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeAmendmentsView(BasicView):
-    title = _('See amendments')
+    title = _('See amended versions')
     name = 'editamendments'
-    description = _("See amendments")
+    description = _("See amended versions")
     behaviors = [SeeAmendments]
     template = 'novaideo:views/proposal_management/templates/amendments.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'

@@ -1,21 +1,31 @@
 <tal:block  i18n:domain="novaideo">
 	<div class="contextual-help-item amendments-help hide-bloc">
-	  <p i18n:translate="">@TODO amendment</p>
+	  <p i18n:translate="">Vous trouvez dans "Voir les versions amendées", l'ensemble des versions amendées que vous êtes en train de préparer ou que vous avez soumis aux autres participants.</p>
+
+	  <p i18n:translate="">Pour accéder à l'une des versions amendées, il vous suffit de cliquer dessus.</p>
 	</div>
 	<div class="contextual-help-item related-ideas-help hide-bloc">
-	  <p i18n:translate="">@TODO related ideas</p>
+	  <p i18n:translate="">Vous trouvez dans "Voir les idées liées", l'ensemble des idées que vous avez pu un moment utiliser pour la proposition.</p>
+
+	  <p i18n:translate="">Pour accéder à l'une des idées, il vous suffit de cliquer dessus.</p>
 	</div>
 	<div class="contextual-help-item present-help hide-bloc">
-	  <p i18n:translate="">Tout membre peut communiquer une proposition publiée à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel. Ce dernier aura un accès à la plateforme, mais ne pourra pas s'y connecter tant qu'il n'est pas membre.</p>
+	  <p i18n:translate="">Tout membre peut communiquer une proposition rendue publique à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel. Ce dernier aura un accès à la plateforme, mais ne pourra pas s'y connecter tant qu'il n'est pas membre.</p>
 	</div>
 	<div class="contextual-help-item compare-help hide-bloc">
 	  <p i18n:translate="">Vous pouvez comparer la version en cours de la proposition avec ses versions précédentes.</p>
 	  <p i18n:translate="">Les textes respectivement en vert et en rouge sont les textes ajoutés et supprimés dans la version actuelle de la proposition.</p>
 	</div>
 	<div class="contextual-help-item  comment-help hide-bloc">
-	    <p i18n:translate="">Toute proposition publiée peut être discutée entre membres de la plateforme.</p>
+	    <p i18n:translate="">Toute proposition rendue publique peut être discutée entre membres de la plateforme.</p>
 		<p i18n:translate="">Pour commencer un fil de discussion, il vous suffit de préciser votre intention et le message que vous souhaitez communiquer aux autres.</p>
 		<p i18n:translate="">Tout membre peut vous répondre, comme vous pouvez répondre à tout message d'un fil de discussion.</p>
 		<p i18n:translate="">Vous pouvez également associer à vos messages tout type d'éléments figurant dans la plateforme. En cliquant sur « Associations », vous retrouvez les fils de discussion ayant des éléments associés.</p>
 	</div>
 </tal:block>
+
+
+
+
+
+

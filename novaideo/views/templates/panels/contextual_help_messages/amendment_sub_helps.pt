@@ -1,11 +1,18 @@
 <tal:block  i18n:domain="novaideo" >
 	<div class="contextual-help-item present-help hide-bloc">
-	  <p i18n:translate="">Tout membre peut communiquer un amendment publiée à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel. Ce dernier aura un accès à la plateforme, mais ne pourra pas s'y connecter tant qu'il n'est pas membre.</p>
+	  <p i18n:translate="">Tout membre peut communiquer à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel, une version amendée qui a été soumise. Les personnes externes ont un accès à la plateforme, mais ne peuvent s'y connecter que s'ils deviennent membres.</p>
 	</div>
 	<div class="contextual-help-item  comment-help hide-bloc">
-	    <p i18n:translate="">Toute amendement publiée peut être discutée entre les participants du groupe de travail.</p>
+	    <p i18n:translate="">Toute version amendée qui a été soumise peut être discutée entre les participants du groupe de travail.</p>
 		<p i18n:translate="">Pour commencer un fil de discussion, il vous suffit de préciser votre intention et le message que vous souhaitez communiquer aux autres.</p>
 		<p i18n:translate="">Tout participant au groupe de travail peut vous répondre, comme vous pouvez répondre à tout message d'un fil de discussion.</p>
 		<p i18n:translate="">Vous pouvez également associer à vos messages tout type d'éléments figurant dans la plateforme. En cliquant sur « Associations », vous retrouvez les fils de discussion ayant des éléments associés.</p>
 	</div>
 </tal:block>
+
+
+
+
+
+
+

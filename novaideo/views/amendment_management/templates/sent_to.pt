@@ -9,7 +9,7 @@
                    external_len len(external_members)" 
        i18n:domain="novaideo">
     <div tal:condition="platform_members">
-        <span i18n:translate="">The amendement has been sent:</span> <tal:loop repeat="m platform_members">
+        <span i18n:translate="">The amended version has been sent:</span> <tal:loop repeat="m platform_members">
                                 <a tal:attributes="href request.resource_url(m, '@@index')">${m.name}</a>
                                 <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
                               </tal:loop>
