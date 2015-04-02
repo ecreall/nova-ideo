@@ -1,3 +1,4 @@
-<div class="alert alert-info" i18n:domain="novaideo" i18n:translate="">
-Dès que vous aurez indiqué et envoyé votre courriel servant d'identifiant, vous recevrez par courriel un lien pour accéder à la page vous permettant de saisir votre nouveau mot de passe.
+<div class="alert alert-info" i18n:domain="novaideo" >
+	<span class="glyphicon glyphicon-info-sign pull-right"></span>
+	<p i18n:translate="">Dès que vous aurez indiqué et envoyé votre courriel servant d'identifiant, vous recevrez par courriel un lien pour accéder à la page vous permettant de saisir votre nouveau mot de passe.</p>
 </div>

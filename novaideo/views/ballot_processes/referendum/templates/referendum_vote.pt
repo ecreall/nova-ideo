@@ -1,7 +1,12 @@
 <div i18n:domain="novaideo"> 
   <dl >
      <dt  i18n:translate="">Subject of the vote</dt>
-     <dd><div class="alert alert-warning">${ballot_report.description}</div></dd>
+     <dd>
+      <div class="alert alert-info">
+        <span class="glyphicon glyphicon-info-sign pull-right"></span>
+        ${ballot_report.description}
+      </div>
+     </dd>
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
        <dt tal:condition="ballot_report.electors"  i18n:translate="">Participant voting</dt>
        <dd tal:condition="ballot_report.electors">

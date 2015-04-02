@@ -1376,3 +1376,8 @@ ins {
    margin-bottom: -12px
 
 }
+
+.alert .glyphicon.pull-right{
+    font-size: 30px;
+    margin-left: 25px;
+}

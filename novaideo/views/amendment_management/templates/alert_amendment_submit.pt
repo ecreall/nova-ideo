@@ -1,14 +1,16 @@
-<div tal:condition="ideas" class="alert alert-warning">
-<p i18n:domain="novaideo" i18n:translate="">Pour que vos amendements puissent être soumis aux autres participants, l'ensemble de leurs idées liées doivent être préalablement publiées. Vous pouvez soit les publier en l'état en cliquant sur « Continuer », soit les modifier en cliquant sur celles qui sont à retravailler.</p><br>
-  <ol class="list-unstyled">
-    <tal:loop repeat="i ideas">
-      <li><a class="btn btn-warning btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
-    </tal:loop>
-  <ol>
+<div tal:condition="ideas" class="alert alert-info">
+    <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+    <p i18n:domain="novaideo" i18n:translate="">Pour que vos amendements puissent être soumis aux autres participants, l'ensemble de leurs idées liées doivent être préalablement publiées. Vous pouvez soit les publier en l'état en cliquant sur « Continuer », soit les modifier en cliquant sur celles qui sont à retravailler.</p><br>
+      <ol class="list-unstyled">
+        <tal:loop repeat="i ideas">
+          <li><a class="btn btn-info btn-sm" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+        </tal:loop>
+      <ol>
 </div>
 
 <div class="alert alert-info">
-<p i18n:domain="novaideo" i18n:translate="">Par défaut, les améliorations partageant la même explication sont regroupées dans le même amendement. Il est préférable de soumettre plusieurs amendements aux autres participants pour avoir plus de chance qu'ils en retiennent certains. Néanmoins, vous devez faire attention que chaque amendement peut être retenu séparément, indépendamment des autres.</p>
+  <span class="glyphicon glyphicon-info-sign pull-right"></span>
+  <p i18n:domain="novaideo" i18n:translate="">Par défaut, les améliorations partageant la même explication sont regroupées dans le même amendement. Il est préférable de soumettre plusieurs amendements aux autres participants pour avoir plus de chance qu'ils en retiennent certains. Néanmoins, vous devez faire attention que chaque amendement peut être retenu séparément, indépendamment des autres.</p>
 </div>
 
 <div id="amendment-diff" class="amendment-diff-scroll scroll-able">

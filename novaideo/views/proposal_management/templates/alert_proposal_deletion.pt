@@ -1,5 +1,6 @@
 <div  i18n:domain="novaideo"> 
   <div class="alert alert-info">
+  	<span class="glyphicon glyphicon-warning-sign pull-right"></span>
     <span tal:condition="draft_owner" i18n:translate="">
       Attention, vous êtes sur le point de supprimer votre proposition. Vous pouvez soit cliquer sur « Continuer » et votre proposition sera supprimée, soit cliquer sur « Annuler » et vous pourrez revenir à votre proposition.
     </span>

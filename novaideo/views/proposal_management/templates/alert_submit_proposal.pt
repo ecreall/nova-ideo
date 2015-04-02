@@ -1,5 +1,6 @@
 <div  i18n:domain="novaideo">
  <div class="alert alert-info">
+ 	<span class="glyphicon glyphicon-info-sign pull-right"></span>
    <div i18n:translate="">As soon as the proposal has been published, it will be opened to a working group. The working group is active as soon as it reaches three persons. Once active, the working group can submit the proposal to the appreciation of the collective or decide to work together for improving it.</div>
   <div>${vp_ballot_report.description}</div>
   <div>${duration_ballot_report.description}</div>

@@ -1,4 +1,5 @@
 <div class="alert alert-info">
+  <span class="glyphicon glyphicon-info-sign pull-right"></span>
   <div>${vp_ballot_report.description}</div>
   <div>${duration_ballot_report.description}</div>
 </div>
