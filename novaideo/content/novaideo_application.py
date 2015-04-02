@@ -221,6 +221,10 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.initialization()
 
     def initialization(self):
+        self.reset_default_values()
+        self.deadlines = PersistentList([datetime.datetime.today()])
+
+    def reset_default_values(self):
         self.participants_mini = 3
         self.participants_maxi = 12
         self.participations_maxi = 5
@@ -230,7 +234,6 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.correlation_intentions = DEFAULT_CORRELATION_INTENTIONS
         self.idea_intentions = DEFAULT_IDEA_INTENTIONS
         self.amendment_intentions = DEFAULT_AMENDMENT_INTENTIONS
-        self.deadlines = PersistentList([datetime.datetime.today()])
 
     @property
     def keywords_ids(self):

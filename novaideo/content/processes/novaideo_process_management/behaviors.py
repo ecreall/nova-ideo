@@ -39,6 +39,7 @@ class Update(InfiniteCardinality):
         [runtime.delfromproperty('processes', p) for p in processes if \
          getattr(p.definition, 'isUnique', False)]
 
+        root.reset_default_values()
         return {}
 
     def redirect(self, context, request, **kw):
