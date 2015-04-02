@@ -20,11 +20,16 @@ from ..user_management.behaviors import global_user_processsecurity
 from novaideo.core import acces_action
 
 
+def search_processsecurity_validation(process, context):
+    return True
+
+
 @acces_action()
 class Search(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
     actionType = ActionType.automatic
+    processsecurity_validation = search_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         content_types = appstruct['content_types']

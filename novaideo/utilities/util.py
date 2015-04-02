@@ -149,7 +149,7 @@ def get_modal_actions(actions, request):
 
 def get_actions_navbar(actions_getter, request, descriminators):
     result = {}
-    actions = actions_getter()
+    actions = []
     isactive = True
     update_nb = 0
     while isactive and update_nb < 2:
