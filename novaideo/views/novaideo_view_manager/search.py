@@ -266,28 +266,56 @@ class SearchResultView(BasicView):
              renderer='json')
 class Search_Json(BasicView):
 
+    def _get_pagin_data(self):
+        page_limit = self.params('pageLimit')
+        if page_limit is None:
+            page_limit = 10
+        else:
+            page_limit = int(page_limit)
+
+        current_page = self.params('page')
+        if current_page is None:
+            current_page = 1
+        else:
+            current_page = int(current_page)
+
+        start = page_limit * (current_page - 1)
+        end = start + page_limit
+        return start, end
+
+
     def toselect(self):
         user = get_current()
+        find_all_compiler = re.compile(r"^\s*$")
         content_types = self.params('content_types')
         if not isinstance(content_types, (list, tuple)):
             content_types = [content_types]
 
         text = self.params('text_to_search')
+        if find_all_compiler.match(text):
+            text = ''
+
         objects = search(text, content_types, user)
         result = {'': _('- Select -')}
         result.update(dict([(get_oid(obj), obj.title) for obj in objects]))
         return result
 
-
     def find_entities(self):
         user = get_current()
+        find_all_compiler = re.compile(r"^\s*$")
         content_types = self.params('content_types')
         if not isinstance(content_types, (list, tuple)):
             content_types = [content_types]
 
         text = self.params('q')
+        if find_all_compiler.match(text):
+            text = ''
+
         entries = search(text, content_types, user)
-        result = {'items': [], 'total_count': len(entries)}
+        total = len(entries)
+        start, end = self._get_pagin_data()
+        entries = entries[start:end]
+        result = {'items': [], 'total_count': total}
         result['items'] = [{'text': obj.title, 
                             'id': str(get_oid(obj)),
                             'icon': getattr(obj, 'icon', 

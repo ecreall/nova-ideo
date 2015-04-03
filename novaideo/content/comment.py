@@ -47,7 +47,8 @@ def relatedcontents_choice(node, kw):
                         ajax_url=ajax_url,
                         ajax_item_template="related_item_template",
                         css_class="search-idea-form",
-                        multiple=True)
+                        multiple=True,
+                        page_limit=50)
 
 
 class RelatedContentsSchema(Schema):
