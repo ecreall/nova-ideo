@@ -237,7 +237,7 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
 
 @content(
     'amendment',
-    icon='glyphicon glyphicon-align-left',
+    icon='icon novaideo-icon icon-amendment',
     )
 @implementer(IAmendment)
 class Amendment(Commentable,
@@ -247,6 +247,7 @@ class Amendment(Commentable,
                 PresentableEntity):
     """Amendment class"""
 
+    icon = 'icon novaideo-icon icon-amendment'
     name = renamer()
     result_template = 'novaideo:views/templates/amendment_result.pt'
     author = SharedUniqueProperty('author')

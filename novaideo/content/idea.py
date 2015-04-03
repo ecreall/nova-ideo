@@ -81,14 +81,14 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 
 @content(
     'idea',
-    icon='glyphicon glyphicon-align-left',
+    icon='icon novaideo-icon icon-idea',
     )
 @implementer(Iidea)
 class Idea(Commentable, VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity):
     """Idea class""" 
 
-    icon = 'novaideo:static/images/idea_picto32.png'
+    icon = 'icon novaideo-icon icon-idea'
     result_template = 'novaideo:views/templates/idea_result.pt'
     template = 'novaideo:views/templates/idea_list_element.pt'
     name = renamer()

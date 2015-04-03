@@ -372,12 +372,11 @@ ins {
 }
 
 .thumbnail.right-caption > #idea-image {
-    /**background-image: linear-gradient(to left, #effdea -100%, #93d91a 123%);**/
-    background-image: linear-gradient(to left, #adcce7 -100%, #adcce7 123%);
+    background-color: #adcce7;
 }
 
 .thumbnail.right-caption > #person-image {
-    background-image: linear-gradient(to left, #8d8d8d -100%, #8d8d8d 123%);
+    background-color: #8d8d8d;
 }
 
 .thumbnail.right-caption > #proposal-image {
@@ -385,7 +384,7 @@ ins {
 }
 
 .thumbnail.right-caption > #amendment-image {
-    background-image: linear-gradient(to left, #fdb677 -100%, #fdb677 123%);
+    background-color: #8aba4b;
 }
 
 .edit-amendment-action {
@@ -1427,4 +1426,8 @@ ins {
     display: table-cell; 
     max-width: 5%; 
     vertical-align: middle;
+}
+
+.search-icon.icon{
+    font-size: 30px
 }

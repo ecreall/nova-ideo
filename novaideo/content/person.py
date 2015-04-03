@@ -233,13 +233,13 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
 @content(
     'person',
-    icon='glyphicon glyphicon-align-left',
+    icon='icon novaideo-icon icon-user',
     )
 @implementer(IPerson)
 class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     """Person class"""
 
-    icon = 'novaideo:static/images/user_picto32.png'
+    icon = 'icon novaideo-icon icon-user'
     result_template = 'novaideo:views/templates/person_result.pt'
     name = renamer()
     tokens = CompositeMultipleProperty('tokens')

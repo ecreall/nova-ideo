@@ -2,8 +2,8 @@
 function related_item_template(item){
    var markup = '<div class="clearfix">' +
                 '<div class="col-sm-1">'
-   if(item.img_url){
-      markup += '<img style="max-width: 100%" src=\"'+item.img_url+'\">'
+   if(item.icon){
+      markup += '<span class=\"search-icon '+item.icon+'\"></span>'
    };
    markup += '</div>'+
              '<div clas="col-sm-10">' +

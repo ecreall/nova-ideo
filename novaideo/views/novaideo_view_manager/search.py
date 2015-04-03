@@ -290,8 +290,8 @@ class Search_Json(BasicView):
         result = {'items': [], 'total_count': len(entries)}
         result['items'] = [{'text': obj.title, 
                             'id': str(get_oid(obj)),
-                            'img_url': self.request.static_url(
-                                      getattr(obj, 'icon', 'novaideo:static/images/default32.png'))} \
+                            'icon': getattr(obj, 'icon', 
+                                     'glyphicon glyphicon-question-sign')} \
                             for obj in entries]
         return result
 

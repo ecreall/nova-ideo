@@ -90,7 +90,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
 
 @content(
     'proposal',
-    icon='glyphicon glyphicon-align-left',
+    icon='icon novaideo-icon icon-proposal',
     )
 @implementer(IProposal)
 class Proposal(Commentable,
@@ -101,7 +101,7 @@ class Proposal(Commentable,
                PresentableEntity):
     """Proposal class"""
 
-    icon = 'novaideo:static/images/proposal_picto32.png'
+    icon = 'icon novaideo-icon icon-proposal'
     result_template = 'novaideo:views/templates/proposal_result.pt'
     template = 'novaideo:views/templates/proposal_list_element.pt'
     name = renamer()
