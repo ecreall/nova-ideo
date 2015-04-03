@@ -2,7 +2,7 @@
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index')">
   <div id="idea-image" class="content-image">
-  <a href="${url}"><img src="${request.static_url('novaideo:static/images/idea.png')}" width="100"></a>
+  <a href="${url}"><span class="icon novaideo-icon icon-idea"></span></a>
   </div>
   <div class="media-body">
     <a href="${url}"><h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4></a>

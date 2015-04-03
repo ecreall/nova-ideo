@@ -167,7 +167,7 @@ a:hover, a:focus {
 }
 
 
-.thumbnail.right-caption > img, .thumbnail.right-caption > a{float: left;margin-right: 9px;}
+.thumbnail.right-caption > img, .thumbnail.right-caption > a:not(.content-user-img){float: left;margin-right: 9px;}
 .thumbnail.right-caption{float: unset;}
 .thumbnail.right-caption>.caption{padding: 4px;}
 
@@ -374,46 +374,18 @@ ins {
 .thumbnail.right-caption > #idea-image {
     /**background-image: linear-gradient(to left, #effdea -100%, #93d91a 123%);**/
     background-image: linear-gradient(to left, #adcce7 -100%, #adcce7 123%);
-    border-top-left-radius:4px; 
-    border-bottom-left-radius:4px;
-    float: left;
-    height: 184px;
-    margin-left: -4px;
-    margin-right: 9px;
-    margin-top: -4px;
 }
 
 .thumbnail.right-caption > #person-image {
     background-image: linear-gradient(to left, #8d8d8d -100%, #8d8d8d 123%);
-    border-top-left-radius:4px; 
-    border-bottom-left-radius:4px;
-    float: left;
-    height: 144px;
-    margin-left: -4px;
-    margin-right: 9px;
-    margin-top: -4px;
 }
 
 .thumbnail.right-caption > #proposal-image {
-    background-image: linear-gradient(to left, #f0f0f0 -100%, #f0f0f0 123%);
-    border-top-left-radius:4px; 
-    border-bottom-left-radius:4px;
-    float: left;
-    height: 144px;
-    margin-left: -4px;
-    margin-right: 9px;
-    margin-top: -4px;
+    background-color: #d4d4d4;
 }
 
 .thumbnail.right-caption > #amendment-image {
     background-image: linear-gradient(to left, #fdb677 -100%, #fdb677 123%);
-    border-top-left-radius:4px; 
-    border-bottom-left-radius:4px;
-    float: left;
-    height: 205px;
-    margin-left: -4px;
-    margin-right: 9px;
-    margin-top: -4px;
 }
 
 .edit-amendment-action {
@@ -1380,4 +1352,79 @@ ins {
 .alert .glyphicon.pull-right{
     font-size: 30px;
     margin-left: 25px;
+}
+
+
+.search-item .content-image{
+    min-width: 5%;
+    display: table-cell;
+}
+
+.search-item{
+    display: table;
+    margin-bottom: 15px;
+    padding: 0;
+    width: 100%;
+}
+
+.search-item .media-body{
+    display: table-cell;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 6px;
+    width: 100%;
+}
+
+.thumbnail.right-caption > .content-image .icon {
+    color: white;
+    font-size: 40px;
+    padding-left: 7px;
+}
+
+@font-face {
+    font-family: 'icomoon';
+    src:url('fonts/icomoon.eot?6g0byt');
+    src:url('fonts/icomoon.eot?#iefix6g0byt') format('embedded-opentype'),
+        url('fonts/icomoon.woff?6g0byt') format('woff'),
+        url('fonts/icomoon.ttf?6g0byt') format('truetype'),
+        url('fonts/icomoon.svg?6g0byt#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.novaideo-icon {
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-amendment:before {
+    content: "\e600";
+}
+
+.icon-proposal:before {
+    content: "\e601";
+}
+
+.icon-idea:before {
+    content: "\e602";
+}
+
+.icon-user:before {
+    content: "\e61f";
+}
+
+
+.content-user-img{
+    display: table-cell; 
+    max-width: 5%; 
+    vertical-align: middle;
 }

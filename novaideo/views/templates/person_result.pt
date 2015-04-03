@@ -1,11 +1,12 @@
 <div class="thumbnail right-caption span4 search-item" 
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index')">
-  <a tal:condition="object.picture is not None" href="${url}"><img tal:attributes="src object.picture.url(request)"  width="100"/></a>
+  <a class="content-user-img" tal:condition="object.picture is not None" href="${url}">
+    <img class="img-circle" tal:attributes="src object.picture.url(request)"  width="100"/></a>
   <div tal:condition="object.picture is None" id="person-image" class="content-image">
-    <a href="${url}"><img src="${request.static_url('novaideo:static/images/user.png')}" width="95"></a>
+    <a href="${url}"><span class="icon novaideo-icon icon-user"></span></a>
   </div>
-  <div class="media-body" style="width:auto;">
+  <div class="media-body">
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
       <a tal:attributes="href url"><h3>${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)} </h3></a>
       <dl>
