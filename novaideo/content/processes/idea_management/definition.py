@@ -68,6 +68,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Edit the idea"),
                                        title=_("Edit"),
                                        groups=[]),
+                #TODO remove
                 submit = ActivityDefinition(contexts=[SubmitIdea],
                                        description=_("Submit the idea"),
                                        title=_("Submit for publishing"),
