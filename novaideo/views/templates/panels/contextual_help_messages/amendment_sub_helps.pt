@@ -1,6 +1,7 @@
 <tal:block  i18n:domain="novaideo" >
 	<div class="contextual-help-item present-help hide-bloc">
-	  <p i18n:translate="">Tout membre peut communiquer à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel, une version amendée qui a été soumise. Les personnes externes ont un accès à la plateforme, mais ne peuvent s'y connecter que s'ils deviennent membres.</p>
+	  <p i18n:translate="">Tout membre peut communiquer à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel, une version amendée qui a été soumise.</p>
+	  <p i18n:translate="">Les personnes externes ont un accès à la plateforme, mais ne peuvent s'y connecter que s'ils deviennent membres.</p>
 	</div>
 	<div class="contextual-help-item  comment-help hide-bloc">
 	    <p i18n:translate="">Toute version amendée qui a été soumise peut être discutée entre les participants du groupe de travail.</p>
