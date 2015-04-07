@@ -177,20 +177,4 @@ class SeeOrderedProposal(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
-class SeeIdeaToModerate(InfiniteCardinality):
-    style_descriminator = 'admin-action'
-    style_picto = 'glyphicon glyphicon-th-list'
-    style_order = -3
-    isSequential = False
-    context = INovaIdeoApplication
-    roles_validation = seeproposals_roles_validation
-    processsecurity_validation = seeproposals_processsecurity_validation
-
-    def start(self, context, request, appstruct, **kw):
-        return {}
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context))
-
-
 #TODO behaviors
