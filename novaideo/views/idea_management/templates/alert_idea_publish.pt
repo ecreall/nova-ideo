@@ -1,5 +1,5 @@
 <div class="alert alert-info" i18n:domain="novaideo" >
 	 <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-	<p i18n:translate="">En cliquant sur « Continuer », l'idée sera publiée et ne pourra plus être modifiée. Elle pourra être utilisée par n'importe quel membre de la plateforme pour une proposition. L'auteur de l'idée sera notifiée par courriel de votre décision.</p>
+	<p i18n:translate=""> En cliquant sur « Continuer », l'idée sera publiée et ne pourra plus être modifiée. Elle pourra être utilisée par n'importe quel membre de la plateforme pour une proposition.</p>
 </div>
 
