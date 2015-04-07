@@ -64,12 +64,31 @@ def content_types_choices(node, kw):
               in DEFAULT_SEARCHABLE_CONTENT]
     values = sorted(values, \
                 key=lambda v: _SEARCHABLE_CONTENT_ORDER.get(v[0], 100))
-    return CheckboxChoiceWidget(values=values, inline=True)
+    return CheckboxChoiceWidget(values=values, 
+                                inline=True,
+                                css_class='search-choice',
+                                item_css_class="search-choices")
 
 
 @colander.deferred
 def default_content_types_choices(node, kw):
     return sorted(DEFAULT_SEARCHABLE_CONTENT.keys())
+
+
+@colander.deferred
+def text_to_search_widget(node, kw):
+    choices = [{'id': 'search-choice-'+k,
+               'title': SEARCHABLE_CONTENT_TITLE.get(k, k),
+               'order': _SEARCHABLE_CONTENT_ORDER.get(k, 100) } for k \
+              in DEFAULT_SEARCHABLE_CONTENT]
+    choices = sorted(choices, \
+                key=lambda v: v['order'])
+    return SearchTextInputWidget(
+            button_type='submit',
+            description=_("The keyword search is done using"
+                          " commas between keywords."),
+            placeholder=_("Search"),
+            choices=choices)
 
 
 class SearchSchema(Schema):
@@ -85,10 +104,7 @@ class SearchSchema(Schema):
 
     text_to_search = colander.SchemaNode(
         colander.String(),
-        widget=SearchTextInputWidget(
-            button_type='submit',
-            description=_("The keyword search is done using"
-                          " commas between keywords.")),
+        widget=text_to_search_widget,
         title='',
         missing='',
         )
@@ -149,6 +165,7 @@ class SearchView(FormView):
     def default_data(self):
         appstruct = self.get_appstruct()
         return appstruct
+
 
 def search(text, content_types, user):
     if text:

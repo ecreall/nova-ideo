@@ -5,7 +5,7 @@
       tal:define="mp request.sdiapi.mgmt_path;"
       tal:omit-tag="">
   <div class="navbar-header">
-       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse:not(.navbar-bottom .navbar-collapse)">
          <span class="sr-only">Toggle navigation</span>
          <span class="icon-bar"></span>
          <span class="icon-bar"></span>
@@ -15,6 +15,13 @@
   </div>
 
   <div class="collapse navbar-collapse">
+  <div class="search-form-container">
+    <div class="search-form navbar-form" role="search">
+            ${structure:search_body}
+    </div>
+  </div>
+
+
     <ul class="nav navbar-nav navbar-right" tal:condition="request.user">
       <li>
         <a href="#" class="dropdown-toggle"
@@ -38,12 +45,6 @@
        <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary " id="log-in">
           <i class="glyphicon glyphicon-log-in"> </i> <span i18n:translate="">Log In</span>
        </a>
-    </div>
-    <div id="searchform" class="navbar-form navbar-right">
-     ${structure:search_body}
-    </div>
-    <div class="navbar-left navbar-text switchchoice">
-      <input name="globalmenuswitch" type="checkbox" checked  data-label-text="Menu"  data-on-color="success" data-off-color="danger" data-size="small">
     </div>
   </div>
 </html>

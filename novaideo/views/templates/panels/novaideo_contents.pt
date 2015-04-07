@@ -1,4 +1,4 @@
-<nav tal:condition="condition" class="navbar novaideo-contents" i18n:domain="novaideo">
+<nav tal:condition="condition" class="novaideo-contents" i18n:domain="novaideo">
         <div class="container">
             <div class="novaideo-contents-list">
                     <ul>

@@ -1,45 +1,33 @@
-<html xmlns:tal="http://xml.zope.org/namespaces/tal"
-  tal:omit-tag="">
-   <nav id="navbaruser" class="navbar navbar-default navbar" role="navigation">
-     <div class="container">
-        <div class="row global-actions-menu" tal:define="keys list(actions['menu3'].keys())">
-            <div class="col-md-6 action-1"  tal:condition="actions['menu3']" tal:define="k keys[0]; a actions['menu3'][k]['url'] ">
-                <a class="btn btn-success ${((a is None) and 'disabled') or ''} btn-sm"  href="${a}" >
-                   ${k}
+
+
+
+<nav class="navbar navbar-inverse navbar-bottom">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="access-menu col-md-7">
+      <div class="container-fluid">
+        <div class="navbar-collapse">
+          <ul tal:condition="actions['menu2']"  class="nav navbar-nav">
+             <li tal:repeat="(k, a) actions['menu1'].items()" class="menu-item">
+                <a class="${(request.view_name == actions['menu1'][k]['view_name']) and 'active'} ${((actions['menu1'][k]['url']  is None) and 'disabled') or ''}" href="${actions['menu1'][k]['url']}" tal:define="action actions['menu1'][k]['action']">
+                   ${k}  <span tal:condition="action is not None" class="badge">${action.contents_nb()}</span>  
+                </a>
+             </li>
+             <li tal:repeat="(k, a) actions['menu2'].items()" class="menu-item">
+                <a class="${(request.view_name == actions['menu2'][k]['view_name']) and 'active'} ${((actions['menu2'][k]['url'] is None) and 'disabled') or ''}"  href="${actions['menu2'][k]['url'] }" tal:define="action actions['menu2'][k]['action']">
+                   ${k}  <span tal:condition="action is not None" class="badge">${action.contents_nb()}</span>
+                </a>
+             </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+            <div tal:omit-tag="" tal:define="k list(actions['menu3'].keys())[0]; a actions['menu3'][k]['url'] ">
+                <a class="add-idea-btn btn btn-success ${((a is None) and 'disabled') or ''}"  href="${a}" >
+                   <span class="novaideo-icon icon-idea"></span> ${k}
                 </a>
             </div>
-       </div>
-      <!--a class="btn btn-navbar btn-primary nav-control" data-toggle="collapse" data-target=".nav-collapse"-->
-          <!--span class="glyphicon glyphicon-chevron-up"></span-->
-      <!--/a-->
-        <div class="row">
-            <div class="col-sm-6 col-md-4" style="border-right: 1px solid #dddddd;">
-                ${structure:search_body}
-            </div>
-            <div class="col-sm-6 col-md-6 user-actions-menu">
-                    <div class="row">
-                        <div class="col-md-6 user-actions-menu-item" style="padding-right: 0px">
-                          <ul tal:condition="actions['menu1']"  class="nav access-menu">
-                             <li tal:repeat="(k, a) actions['menu1'].items()">
-                                <a class="menu-access-action ${(request.view_name == actions['menu1'][k]['view_name']) and 'active'} ${((actions['menu1'][k]['url']  is None) and 'disabled') or ''}" href="${actions['menu1'][k]['url']}" tal:define="action actions['menu1'][k]['action']">
-                                   ${k}  <span tal:condition="action is not None" class="badge">${action.contents_nb()}</span>  
-                                </a>
-                             </li>
-                          </ul>
-                        </div>
-                        <div class="col-md-6 user-actions-menu-item" style="padding-left: 0px">
-                          <ul tal:condition="actions['menu2']"  class="nav access-menu">
-                             <li tal:repeat="(k, a) actions['menu2'].items()">
-                                <a class="menu-access-action ${(request.view_name == actions['menu2'][k]['view_name']) and 'active'} ${((actions['menu2'][k]['url'] is None) and 'disabled') or ''}"  href="${actions['menu2'][k]['url'] }" tal:define="action actions['menu2'][k]['action']">
-                                   ${k}  <span tal:condition="action is not None" class="badge">${action.contents_nb()}</span>
-                                </a>
-                             </li>
-                          </ul>
-                      </div>
-                 </div>
-            </div>
-         </div>
-      </div>
-   </nav>
-</html>
-<!-- bar -->
+    </div>
+  </div>
+</nav>

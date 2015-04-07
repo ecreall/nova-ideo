@@ -7,20 +7,24 @@
                   mask_placeholder mask_placeholder|field.widget.mask_placeholder;
                   style style|field.widget.style;
                   url url|getattr(field.widget, 'url', '');
-"
+                  placeholder placeholder|getattr(field.widget, 'placeholder', '');
+                  choices choices|getattr(field.widget, 'choices', [])"
       tal:omit-tag="">
       <div id="searchsection" class="input-group input-group-sm">
        <input type="text" name="${name}" value="${cstruct}" 
            tal:attributes="class string: form-control ${css_class};
                            style style"
-           id="${oid}" placeholder="">
+           id="${oid}" placeholder="${placeholder}"
+           title="${description}">
         <span class="input-group-btn">
-           <button class="btn btn-default" type="${button_type}" data-url="${url}" i18n:domain="novaideo" i18n:translate="">Search</button>
+           <button tal:condition="choices" tal:repeat="choice choices"
+                   id="${choice['id']}" 
+                   type="button" 
+                   class="content-select btn" 
+                   data-color="default">${choice['title']}</button>
+           <button class="btn btn-success" type="${button_type}" data-url="${url}" i18n:domain="novaideo" i18n:translate=""><span class="glyphicon glyphicon-search"></span></button>
         </span>
       </div>
-   <p class="help-block" >
-    <small tal:condition='description'>${description}</small>
-   </p>
     <script type="text/javascript">
        $("#req-${oid}").hide()
     </script>

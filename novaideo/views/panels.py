@@ -74,7 +74,6 @@ class Usermenu_panel(object):
                                                 'search')
         search_view_instance = search_view(root, self.request,
                                            behaviors=[search_action])
-        search_view_instance.viewid = 'usermenu' + search_view_instance.viewid 
         posted_formid = None
         if self.request.POST :
             if '__formid__' in self.request.POST:
@@ -85,8 +84,6 @@ class Usermenu_panel(object):
                 search_view_instance.postedform = self.request.POST.copy()
                 self.request.POST.clear()
 
-        search_view_instance.schema = select(search_view_instance.schema,
-                                             ['text_to_search'])
         search_view_result = search_view_instance()
         search_body = ''
         if isinstance(search_view_result, dict) and \
