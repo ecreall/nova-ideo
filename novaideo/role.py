@@ -7,6 +7,8 @@
 from dace.objectofcollaboration.principal.role import (
     Collaborator, Role, Administrator, role)
 
+from novaideo import _
+
 
 @role(name='Member',
       superiors=[Administrator],
@@ -67,3 +69,9 @@ class Certifier(Role):
 
 
 DEFAULT_ROLES = ['Member']
+
+
+APPLICATION_ROLES = {'Member': _('Member'),
+                     'Moderator': _('Moderator'),
+                     'Examiner': _('Examiner'),
+                      }
