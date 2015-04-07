@@ -46,8 +46,7 @@ def global_user_processsecurity(process, context):
 
 
 def reg_roles_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           has_role(role=('Moderator',))
+    return has_role(role=('Anonymous',))
 
 
 class Registration(InfiniteCardinality):

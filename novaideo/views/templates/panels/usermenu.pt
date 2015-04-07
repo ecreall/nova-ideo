@@ -31,8 +31,12 @@
 
         <ul class="dropdown-menu" role="menu">
           <li class="account-link">
+            <a href="${request.resource_url(request.user, '@@index')}" i18n:translate="">
+              <i i18n:name="icon" class="glyphicon glyphicon-eye-open"></i> Account</a>
+          </li>
+          <li class="account-link">
             <a href="${request.resource_url(request.user, '@@edit')}" i18n:translate="">
-              <i i18n:name="icon" class="glyphicon glyphicon-pencil"></i> Account</a>
+              <i i18n:name="icon" class="glyphicon glyphicon-pencil"></i> Edit my account</a>
           </li>
           <li class="logout-link">
             <a href="${request.resource_url(request.root, '@@logout')}" i18n:translate="">
@@ -44,6 +48,9 @@
     <div tal:condition="request.user is None" class="btn-group navbar-right">
        <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary " id="log-in">
           <i class="glyphicon glyphicon-log-in"> </i> <span i18n:translate="">Log In</span>
+       </a>
+       <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary " id="registration" >
+          <i class="glyphicon glyphicon-pencil"> </i> <span  i18n:translate="">Registration</span>
        </a>
     </div>
   </div>
