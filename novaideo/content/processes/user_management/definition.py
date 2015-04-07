@@ -24,7 +24,8 @@ from .behaviors import (
     Edit,
     Activate,
     Deactivate,
-    SeePerson)
+    SeePerson,
+    AssignRoles)
 from novaideo import _
 
 
@@ -65,6 +66,10 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Activate the profile"),
                                        title=_("Activate the profile"),
                                        groups=[]),
+                assign_roles = ActivityDefinition(contexts=[AssignRoles],
+                                       description=_("Assign roles to user"),
+                                       title=_("Assign roles"),
+                                       groups=[]),
                 see = ActivityDefinition(contexts=[SeePerson],
                                        description=_("Details"),
                                        title=_("Details"),
@@ -86,6 +91,8 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('deactivate', 'eg'),
                 TransitionDefinition('pg', 'activate'),
                 TransitionDefinition('activate', 'eg'),
+                TransitionDefinition('pg', 'assign_roles'),
+                TransitionDefinition('assign_roles', 'eg'),
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('see', 'eg'),
                 TransitionDefinition('eg', 'end'),

@@ -38,10 +38,9 @@ class DetailIdeaView(BasicView):
         #                                  'originalentity', _marker),
         #                         'text', '')
         if 'to work' in self.context.state:
-            return not any(a.action.behavior_id == 'submit' for a in actions)
+            return not any(a.action.behavior_id == 'publish' for a in actions)
 
         return False
-
 
     def update(self):
         self.execute(None) 

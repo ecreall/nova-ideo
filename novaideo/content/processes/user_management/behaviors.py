@@ -14,8 +14,14 @@ from substanced.event import LoggedIn
 from substanced.util import find_service
 
 from dace.util import getSite, name_chooser
+from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.objectofcollaboration.principal.util import (
-    grant_roles, has_role, get_current, has_any_roles)
+    grant_roles, 
+    has_role, 
+    get_current, 
+    has_any_roles, 
+    revoke_roles, 
+    get_roles)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
@@ -237,6 +243,48 @@ class Activate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('deactivated')
         context.state.append('active')
+        context.reindex()
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def assignroles_roles_validation(process, context):
+    return has_role(role=('Moderator', ))
+
+
+def assignroles_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def assignroles_state_validation(process, context):
+    return 'active' in context.state
+
+
+class AssignRoles(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-tower'
+    style_order = 2
+    title = _('Assign roles')
+    submission_title = _('Save')
+    context = IPerson
+    roles_validation = assignroles_roles_validation
+    processsecurity_validation = assignroles_processsecurity_validation
+    state_validation = assignroles_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        new_roles = list(appstruct['roles'])
+        current_roles = [ r for r in get_roles(context) if \
+                          not getattr(DACE_ROLES.get(r, None),
+                                     'islocal', False)]
+        roles_to_revoke = [r for r in current_roles \
+                           if r not in new_roles]
+        roles_to_grant = [r for r in new_roles \
+                          if r not in current_roles]
+        revoke_roles(context, roles_to_revoke)
+        grant_roles(context, roles_to_grant)
         context.reindex()
         return {}
 
