@@ -94,7 +94,7 @@ class IntentionItemSchema(Schema):
 
     comment = colander.SchemaNode(
         colander.String(),
-        title= _('Explanation'),
+        title= _('Give a specific explanation'),
         validator=colander.Length(max=300),
         widget=LimitedTextAreaWidget(rows=5, 
                                      cols=30, 

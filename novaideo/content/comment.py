@@ -27,8 +27,7 @@ from novaideo.views.widget import SimpleMappingtWidget
 @colander.deferred
 def intention_choice(node, kw):
     root = getSite()
-    intentions = sorted(root.comment_intentions)
-    values = [(str(i), i) for i in intentions ]
+    values = [(str(i), i) for i in root.comment_intentions]
     values.insert(0, ('', _('- Select -')))
     return Select2Widget(values=values)
 

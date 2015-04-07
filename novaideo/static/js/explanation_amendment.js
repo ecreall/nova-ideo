@@ -16,7 +16,7 @@ function validate_intention(datas){
 function init_explanation_select(){
 
   $('.related-explanation').on('change', function(e){
-       var intention = e.val;
+       var intention = $(this).find('select').val();
        var form = $($(this).parents('form').first());
        if (intention != ''){
            form.find('.intention-bloc').addClass('hide-bloc');
