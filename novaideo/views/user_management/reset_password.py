@@ -18,7 +18,7 @@ from pontus.form import FormView
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.schema import Schema
-from pontus.default_behavior import Cancel
+from pontus.default_behavior import Cancel as DefaultCancel
 
 from novaideo import _
 from novaideo.ips.mailer import mailer_send
@@ -26,6 +26,13 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.mail import (
     RESETPW_SUBJECT,
     RESETPW_MESSAGE)
+
+
+
+class Cancel(DefaultCancel):
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(request.root, ""))
 
 
 class Send(Behavior):
