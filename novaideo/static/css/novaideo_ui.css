@@ -1429,6 +1429,20 @@ ins {
       max-height: 130px;
    }
 
+   .navbar-fixed-top *:not(.dropdown-menu) {
+    max-height: 100%;
+    }
+
+    .search-form-container {
+        display: inline;
+        position: relative;
+        width: 45%;
+    }
+    .navbar.navbar-default.navbar-fixed-top {
+      height: auto;
+      min-height: auto;
+    }
+
 }
 
 @media (max-width: 675px) {
