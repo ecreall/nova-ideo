@@ -501,3 +501,15 @@ class TestTextAnalyzerIntegration(FunctionalTests): #pylint: disable=R0904
                                                           {'id': 'del'},
                                                           {'id': 'ins'})
         self.assertEqual(merged_diff, '<p>Organiser <span id="del">des animation<span id="ins"></span> lors de la</span><span id="ins"></span> Fete de la science.</p>')
+
+
+    def test_get_merged_diffs_html(self):
+        text_origin = """<p><span style="font-family: arial black,avant garde;">Organiser</span> des <strong>animation</strong> lors de la Fete <em>de la</em> science.</p>"""
+        text1 = """<p><span style="font-family: arial black,avant garde;">Organiser</span> des <strong>animation</strong> lors de'une Fete <em>d'e la</em> science.</p>"""
+        text2 = """<p><span style="font-family: arial black,avant garde;">Organiser</span> des <strong>animation</strong> lors de la Fete <em>de la</em> science et de l'innovation.</p>"""
+        merged_diff = self.text_analyzer.get_merged_diffs(text_origin, 
+                                                          [text1, text2],
+                                                          {'id': 'del'},
+                                                          {'id': 'ins'})
+
+        self.assertEqual(merged_diff, '<p><span style="font-family: arial black,avant garde;">Organiser</span> des <strong>animation</strong> lors <span id="del">de la</span><span id="ins"></span> Fete <em><span id="del">de</span><span id="ins"></span> la</em> <span id="del">science.</span><span id="ins"></span></p>')

@@ -63,7 +63,7 @@ SPACE_TAG = '[#]'
 
 
 def tag_to_text(tag):
-    return ''.join([str(t) for t in tag.contents]).replace(SPACE_TAG, ' ')
+    return ''.join([str(t) for t in tag.contents]).replace(' '+SPACE_TAG+' ', ' ')
 
 
 def prepare_text_spaces(text):
@@ -79,7 +79,7 @@ def format_spaces(text):
         if new_tag == '':
             new_tag.extract()
 
-    return soup, tag_to_text(soup.body).replace(SPACE_TAG, ' ')
+    return soup, tag_to_text(soup.body).replace(' '+SPACE_TAG+' ', ' ')
 
 
 def normalize_text(text):
