@@ -108,8 +108,12 @@ class DetailProposalView(BasicView):
             return [a for a in self.context.actions \
                    if getattr(a.action, 'style', '') == 'button']
 
-        actions_navbar = get_actions_navbar(actions_getter, self.request,
+        try:
+            actions_navbar = get_actions_navbar(actions_getter, self.request,
                                 ['global-action', 'text-action', 'wg-action'])
+        except TypeError:
+            pass
+
         if getattr(self.context, '__parent__', None) is None:
             return HTTPFound(self.request.resource_url(root, ''))
 
