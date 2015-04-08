@@ -9,7 +9,6 @@ function init_admin_nav(){
    }
 }
 
-
 function admin_nav_on(event, element){
         var parent = $($(element).parents('#adminnavbar').first());
         var target = parent.find('.admin-nav');
