@@ -2752,7 +2752,7 @@ msgstr ""
 #: novaideo/content/processes/user_management/definition.py:63
 #: novaideo/content/processes/user_management/behaviors.py:201
 msgid "Deactivate the profile"
-msgstr "Désinscrire le profil"
+msgstr "Désinscrire le membre"
 
 #: novaideo/content/processes/user_management/definition.py:66
 #: novaideo/content/processes/user_management/definition.py:67
