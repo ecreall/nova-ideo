@@ -9,7 +9,7 @@ from pyramid.view import view_config
 
 
 from dace.objectofcollaboration.principal.role import DACE_ROLES
-from dace.objectofcollaboration.principal.util import  get_roles
+from dace.objectofcollaboration.principal.util import  get_roles, has_role
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
@@ -25,7 +25,11 @@ from novaideo.role import APPLICATION_ROLES
 
 @colander.deferred
 def roles_choice(node, kw):
-    values = [(key, name) for (key, name) in APPLICATION_ROLES.items() \
+    roles = APPLICATION_ROLES.copy()
+    if not has_role(role=('Admin', )) and 'Admin' in roles:
+        roles.pop('Admin')
+
+    values = [(key, name) for (key, name) in roles.items() \
               if not DACE_ROLES[key].islocal]
     values = sorted(values, key=lambda e: e[0])
     return Select2Widget(values=values, multiple=True)
