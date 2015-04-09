@@ -72,6 +72,7 @@ DEFAULT_ROLES = ['Member']
 
 
 APPLICATION_ROLES = {'Member': _('Member'),
+                     'Admin': _('Administrator'),
                      'Moderator': _('Moderator'),
                      'Examiner': _('Examiner'),
                       }
