@@ -54,6 +54,7 @@ def subjects_choice(ballot_report):
             return _(ob)
 
     values = [(i, get_title(i)) for i in subjects]
+    values.insert(0, ('', _('- Select -')))
     return Select2Widget(values=values)
 
 
@@ -63,7 +64,6 @@ class CandidatesSchema(Schema):
     elected = colander.SchemaNode(
             colander.String(),
             title=_('Choices'),
-            default=[],
         )
     
 

@@ -83,12 +83,16 @@
 }
 
 .content-select.btn-default:focus {
-    background-color: white;
+    box-shadow: none;
 }
 
 
+.content-select.btn-default.active {
+    box-shadow: none;
+}
+
 .navbar.navbar-inverse.navbar-bottom{
-    background-image: linear-gradient(to bottom, #6080b4 0%, #89a1c8 100%);
+    background-image: linear-gradient(to bottom, #6080b4 0%, #7a97c5 100%);
     box-shadow: 0 2px 3px #888888;
     border-radius: 0;
     border: 0px;
@@ -1101,7 +1105,7 @@ ins {
 }
 
 .novaideo-contents .container{
-    width: 72%
+    width: 70%
 }
 
 .novaideo-contents li {
@@ -1114,7 +1118,7 @@ ins {
 }
 
 .novaideo-contents strong {
-    color: black;
+    color: #4d4d4d;
     font-size: 22px;
     margin-right: 5px;
 }
@@ -1525,7 +1529,6 @@ ins {
 .search-item .content-image{
     min-width: 5%;
     display: table-cell;
-    vertical-align: middle;
 }
 
 .search-item{
