@@ -34,7 +34,7 @@ class CreatOrganizationsSchema(Schema):
                         'phone',
                         'fax',
                         'logo']),
-                widget=SequenceWidget(),
+                widget=SequenceWidget(min_len=1),
                 title=_('Organizations to creat')
                 )
 

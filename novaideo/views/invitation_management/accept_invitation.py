@@ -55,9 +55,6 @@ class AcceptInvitationView(FormView):
     behaviors = [AcceptInvitation]
     formid = 'formacceptinvitation'
     name = 'accept_invitation'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/user_registration.js']}
-
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({AcceptInvitation:AcceptInvitationView})

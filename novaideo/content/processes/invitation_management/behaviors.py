@@ -151,9 +151,10 @@ class InviteUsers(InfiniteCardinality):
 
 
 def seeinv_processsecurity_validation(process, context):
-    return (context.organization and \
+    organization = context.organization
+    return (organization and \
             has_role(role=('OrganizationResponsible',
-                           context.organization))) or \
+                           organization))) or \
             has_any_roles(roles=('Moderator', 
                                 'Anonymous'))
 

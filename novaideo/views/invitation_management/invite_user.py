@@ -30,7 +30,7 @@ class InviteUsersSchema(Schema):
                             ['_csrf_token_']), 
                        ['user_title', 'roles', 'first_name', 
                        'last_name','email']),
-                widget=SequenceWidget(),
+                widget=SequenceWidget(min_len=1),
                 title=_('Invitations')
                 )
 

@@ -54,6 +54,7 @@ class OrganizationSchema(VisualisableElementSchema):
         ObjectData(Image),
         widget=FileWidget(),
         required=False,
+        missing=None,
         title=_('Logo'),
         )
 
@@ -63,17 +64,20 @@ class OrganizationSchema(VisualisableElementSchema):
             colander.Email(),
             colander.Length(max=100)
             ),
+        missing='',
         title=_('Email'),
         )
 
     phone = colander.SchemaNode(
          colander.String(),
          title=_("Phone number"),
+         missing=''
          )
 
     fax = colander.SchemaNode(
          colander.String(),
          title=_("Fax"),
+         missing=''
          )
 
     members = colander.SchemaNode(

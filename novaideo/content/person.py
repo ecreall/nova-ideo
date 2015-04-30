@@ -35,6 +35,8 @@ from novaideo.core import (
     CorrelableEntity)
 from .interface import IPerson
 from novaideo import _
+from novaideo.views.widget import TOUCheckboxWidget
+
 
 
 DEFAULT_LOCALE = 'fr'
@@ -131,6 +133,13 @@ def locale_missing(node, kw):
     return kw['request'].locale_name
 
 
+@colander.deferred
+def conditions_widget(node, kw):
+    root = getSite()
+    terms_of_use = root.terms_of_use
+    return TOUCheckboxWidget(tou_file=terms_of_use)
+
+
 def context_is_a_person(context, request):
     return request.registry.content.istype(context, 'person')
 
@@ -206,6 +215,14 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         title=_('Organization'),
         )
 
+    accept_conditions = colander.SchemaNode(
+               colander.Boolean(),
+               widget=conditions_widget,
+               label=_('I have read and accept the terms and conditions'),
+               title ='',
+               missing=False
+            )
+
 
     @invariant
     def person_name_invariant(self, appstruct):
@@ -274,7 +291,8 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     @property
     def participations(self):
         result = [p for p in list(self.proposals) \
-                  if not any(s in p.state for s in ['draft', 'published', 'examined'])]
+                  if not any(s in p.state for s \
+                             in ['draft', 'published', 'examined'])]
         return result
 
     @property
