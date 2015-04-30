@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-04-09 19:20+0200\n"
+"POT-Creation-Date: 2015-04-30 13:23+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -24,9 +24,8 @@ msgid "Moderator"
 msgstr ""
 
 #: novaideo/role.py:77
-#, fuzzy
 msgid "Examiner"
-msgstr "Examinée"
+msgstr "Examinateur"
 
 #: novaideo/core.py:160
 #: novaideo/views/idea_management/templates/diff_result.pt:8
@@ -535,11 +534,12 @@ msgstr "Validation de l'invitation"
 
 #: novaideo/views/invitation_management/accept_invitation.py:35
 #: novaideo/views/user_management/templates/login.pt:17
-#: novaideo/content/person.py:199
+#: novaideo/content/person.py:208
 msgid "Password"
 msgstr "Mot de passe"
 
 #: novaideo/views/invitation_management/accept_invitation.py:41
+#: novaideo/content/person.py:221
 msgid "I have read and accept the terms and conditions"
 msgstr "J'ai lu et accepte les termes et conditions d'utilisation"
 
@@ -554,7 +554,7 @@ msgstr ""
 #: novaideo/views/invitation_management/templates/see_invitation.pt:17
 #: novaideo/views/invitation_management/templates/see_invitations.pt:19
 #: novaideo/content/novaideo_application.py:134
-#: novaideo/content/person.py:206
+#: novaideo/content/person.py:215
 msgid "Organization"
 msgstr "Organisation"
 
@@ -599,7 +599,7 @@ msgstr "Réinitialiser le mot de passe"
 
 #: novaideo/views/user_management/reset_password.py:105
 #: novaideo/views/user_management/templates/login.pt:14
-#: novaideo/content/person.py:160
+#: novaideo/content/person.py:169
 msgid "Login (email)"
 msgstr "Identifiant (courriel)"
 
@@ -670,7 +670,7 @@ msgstr "Se connecter avec un autre profil"
 
 #: novaideo/views/user_management/templates/see_person.pt:16
 #: novaideo/views/templates/person_result.pt:22
-#: novaideo/content/person.py:149
+#: novaideo/content/person.py:158
 msgid "Preferences"
 msgstr "Centres d'intérêt"
 
@@ -791,7 +791,18 @@ msgstr "Choix"
 msgid "FPTP vote"
 msgstr "FPTP vote"
 
-#: novaideo/views/ballot_processes/fptp/vote.py:65
+#: novaideo/views/ballot_processes/fptp/vote.py:57
+#: novaideo/views/proposal_management/edit_proposal.py:42
+#: novaideo/views/amendment_management/explanation_amendment.py:26
+#: novaideo/views/novaideo_view_manager/search.py:299
+#: novaideo/content/correlation.py:54
+#: novaideo/content/comment.py:31
+#: novaideo/content/person.py:55
+#: novaideo/content/person.py:63
+msgid "- Select -"
+msgstr "- Sélectionner -"
+
+#: novaideo/views/ballot_processes/fptp/vote.py:66
 #: novaideo/views/proposal_management/submit_proposal.py:87
 msgid "Choices"
 msgstr "Choix"
@@ -970,16 +981,6 @@ msgstr "Noter une nouvelle idée"
 #: novaideo/content/processes/proposal_management/behaviors.py:555
 msgid "Edit the proposal"
 msgstr "Modifier la proposition"
-
-#: novaideo/views/proposal_management/edit_proposal.py:42
-#: novaideo/views/amendment_management/explanation_amendment.py:26
-#: novaideo/views/novaideo_view_manager/search.py:299
-#: novaideo/content/correlation.py:54
-#: novaideo/content/comment.py:31
-#: novaideo/content/person.py:53
-#: novaideo/content/person.py:61
-msgid "- Select -"
-msgstr "- Sélectionner -"
 
 #: novaideo/views/proposal_management/delete_proposal.py:26
 msgid "Alert for deletion"
@@ -1170,13 +1171,13 @@ msgstr "modifiée le"
 #: novaideo/views/templates/organization_result.pt:41
 #: novaideo/views/templates/panels/novaideo_contents.pt:18
 #: novaideo/views/organization_management/templates/see_organization.pt:43
-#: novaideo/content/organization.py:82
+#: novaideo/content/organization.py:86
 msgid "Members"
 msgstr "Membres"
 
 #: novaideo/views/templates/organization_result.pt:58
 #: novaideo/views/organization_management/templates/see_organization.pt:60
-#: novaideo/content/organization.py:88
+#: novaideo/content/organization.py:92
 msgid "Managers"
 msgstr "Les responsables"
 
@@ -1974,6 +1975,19 @@ msgstr ""
 msgid "The intention of changes"
 msgstr "L'intention des modifications"
 
+#: novaideo/views/http_views/templates/404.pt:11
+msgid "Document not found!"
+msgstr "Document non trouvé"
+
+#: novaideo/views/http_views/templates/404.pt:19
+#: novaideo/views/http_views/templates/500.pt:19
+msgid "Homepage"
+msgstr "Accueil"
+
+#: novaideo/views/http_views/templates/500.pt:11
+msgid "An error has occurred!"
+msgstr ""
+
 #: novaideo/views/novaideo_view_manager/see_my_selections.py:24
 msgid "Aucune éléments en favori"
 msgstr ""
@@ -2220,19 +2234,19 @@ msgstr "Modifier l'échéance courante"
 msgid "Remove from my favorites"
 msgstr "Retirer de mes favoris"
 
-#: novaideo/content/organization.py:57
+#: novaideo/content/organization.py:58
 msgid "Logo"
 msgstr "Logo"
 
-#: novaideo/content/organization.py:66
+#: novaideo/content/organization.py:68
 msgid "Email"
 msgstr "Courriel"
 
-#: novaideo/content/organization.py:71
+#: novaideo/content/organization.py:73
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: novaideo/content/organization.py:76
+#: novaideo/content/organization.py:79
 msgid "Fax"
 msgstr ""
 
@@ -2357,7 +2371,7 @@ msgid "Deadline"
 msgstr "Échéance"
 
 #: novaideo/content/novaideo_application.py:71
-#: novaideo/content/person.py:184
+#: novaideo/content/person.py:193
 msgid "Title"
 msgstr "Civilité"
 
@@ -2461,24 +2475,24 @@ msgstr "Choisissez le contenu à associer"
 msgid "Candidacy"
 msgstr ""
 
-#: novaideo/content/person.py:88
+#: novaideo/content/person.py:90
 #, python-format
 msgid "${email} email address already in use"
 msgstr "Adresse courriel ${email} déjà utilisée"
 
-#: novaideo/content/person.py:166
+#: novaideo/content/person.py:175
 msgid "Picture"
 msgstr "Portrait"
 
-#: novaideo/content/person.py:173
+#: novaideo/content/person.py:182
 msgid "First name"
 msgstr "Prénom"
 
-#: novaideo/content/person.py:178
+#: novaideo/content/person.py:187
 msgid "Last name"
 msgstr "Nom"
 
-#: novaideo/content/person.py:189
+#: novaideo/content/person.py:198
 msgid "Locale"
 msgstr "Langue"
 
@@ -2616,9 +2630,9 @@ msgstr "Voir"
 #: novaideo/content/processes/idea_management/behaviors.py:52
 #: novaideo/content/processes/idea_management/behaviors.py:91
 #: novaideo/content/processes/idea_management/behaviors.py:172
-#: novaideo/content/processes/invitation_management/behaviors.py:213
-#: novaideo/content/processes/invitation_management/behaviors.py:241
-#: novaideo/content/processes/invitation_management/behaviors.py:265
+#: novaideo/content/processes/invitation_management/behaviors.py:214
+#: novaideo/content/processes/invitation_management/behaviors.py:242
+#: novaideo/content/processes/invitation_management/behaviors.py:266
 #: novaideo/content/processes/user_management/behaviors.py:59
 #: novaideo/content/processes/user_management/behaviors.py:149
 #: novaideo/content/processes/user_management/behaviors.py:271
@@ -2705,7 +2719,7 @@ msgstr "Voir les invitations"
 
 #: novaideo/content/processes/invitation_management/definition.py:67
 #: novaideo/content/processes/invitation_management/definition.py:68
-#: novaideo/content/processes/invitation_management/behaviors.py:240
+#: novaideo/content/processes/invitation_management/behaviors.py:241
 msgid "Edit the invitation"
 msgstr "Modifier l'invitation"
 
@@ -2734,7 +2748,7 @@ msgstr "Re-inviter"
 msgid "Remind the person"
 msgstr "Rappeler"
 
-#: novaideo/content/processes/invitation_management/behaviors.py:164
+#: novaideo/content/processes/invitation_management/behaviors.py:165
 msgid "Plus"
 msgstr ""
 
