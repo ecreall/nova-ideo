@@ -31,7 +31,8 @@ class RegistrationView(FormView):
                      'first_name', 
                      'last_name',
                      'email',
-                     'password'])
+                     'password',
+                     'accept_conditions'])
     behaviors = [Registration, Cancel]
     formid = 'formregistration'
     name = 'registration'
