@@ -1977,7 +1977,7 @@ msgstr "L'intention des modifications"
 
 #: novaideo/views/http_views/templates/404.pt:11
 msgid "Document not found!"
-msgstr "Document non trouvé"
+msgstr "Document non trouvé!"
 
 #: novaideo/views/http_views/templates/404.pt:19
 #: novaideo/views/http_views/templates/500.pt:19
@@ -1986,7 +1986,7 @@ msgstr "Accueil"
 
 #: novaideo/views/http_views/templates/500.pt:11
 msgid "An error has occurred!"
-msgstr ""
+msgstr "Une erreur est survenue!"
 
 #: novaideo/views/novaideo_view_manager/see_my_selections.py:24
 msgid "Aucune éléments en favori"
