@@ -325,7 +325,11 @@ ins {
     border-radius: 4px;
     margin-bottom: 20px;
     min-height: 20px;
-    padding: 19px 19px 0;
+    padding: 19px;
+}
+
+.object-well>dl{
+    margin-bottom: 0px
 }
 
 .idea-well {
@@ -1357,7 +1361,6 @@ ins {
 .search-item .content-image{
     min-width: 5%;
     display: table-cell;
-    vertical-align: middle;
 }
 
 .search-item{
