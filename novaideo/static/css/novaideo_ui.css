@@ -1111,21 +1111,21 @@ ins {
 .novaideo-contents li {
     color: gray;
     float: left;
-    font-size: 16px;
-    line-height: 44px;
+    font-size: 15px;
+    line-height: 40px;
     list-style: outside none none;
     margin-right: 55px;
 }
 
 .novaideo-contents strong {
     color: #4d4d4d;
-    font-size: 22px;
+    font-size: 20px;
     margin-right: 5px;
 }
 
 .novaideo-contents-list{
     float: left;
-    margin-top: -25px
+    margin-top: -20px
 }
 
 .alert-wg-closed{
