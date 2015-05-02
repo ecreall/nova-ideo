@@ -332,6 +332,10 @@ ins {
     margin-bottom: 0px
 }
 
+.deform-seq-container .object-well{
+    margin-bottom: 0px !important
+}
+
 .idea-well {
     margin-top: -25px
 }
@@ -365,6 +369,11 @@ ins {
 .invitation-well {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(76, 164, 76, 0.16);
     background-color: #f5f5f5
+}
+
+.default-well {
+    background-image: linear-gradient(to right, #f7f7f7 20%, white 150%);
+    box-shadow: -1px 0 3px #c3c3c3;
 }
 
 .entity-well {
@@ -1052,7 +1061,7 @@ ins {
     color: white;
     cursor: pointer;
     font-size: 23px;
-    height: 53px;
+    height: 46px;
     left: 25px;
     padding-right: 30px;
     position: relative;
@@ -1078,6 +1087,7 @@ ins {
 .admin-nav.list-group .list-group-item{
     background-color: #333333;
     cursor: pointer;
+    padding: 4px 1px 4px 15px;
 }
 
 .admin-nav.list-group .list-group-item > a{
@@ -1090,13 +1100,10 @@ ins {
 }
 
 .admin-nav.list-group .list-group-item.active-item{
-    background-color: #8d8d8d;
-    text-decoration: none;
-}
-
-.admin-nav.list-group .list-group-item:hover, .admin-nav.list-group .list-group-item:focus {
-    background-color: #5cb85c;
-    text-decoration: none;
+  background-color: #419641;
+  border-color: #419641;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.125) inset;
+  text-decoration: none;
 }
 
 .admin-nav ul.list-group{
@@ -1133,7 +1140,8 @@ ins {
     margin-left: -52px;
     padding: 3px;
     position: absolute;
-    top: 84px;
+    top: 77px;
+    transform: rotate(90deg);
     width: 125px;
     z-index: -1;
      -webkit-transform:  rotate(90deg);
@@ -1142,6 +1150,15 @@ ins {
      writing-mode: tb-rl;
 }
 
+.admin-nav > .list-group-item > span.btn > span, .list-group-item > a > span {
+  font-size: 17px;
+  margin-right: 5px;
+}
+
+.admin-nav.list-group .list-group-item:hover, .admin-nav.list-group .list-group-item:focus {
+  background-image: linear-gradient(to bottom, #5cb85c 0%, #419641 100%);
+  text-decoration: none;
+}
 
 .deadline-panel{
     border-radius: 4px;
