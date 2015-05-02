@@ -26,7 +26,7 @@ class CreatOrganizationsSchema(Schema):
                 select(omit(OrganizationSchema(factory=Organization,
                                                editable=True,
                                                name='Organization',
-                                               widget=SimpleMappingWidget(css_class='object-well invitation-well')), 
+                                               widget=SimpleMappingWidget(css_class='object-well default-well')), 
                             ['_csrf_token_']),
                        ['title',
                         'description',
