@@ -27,7 +27,7 @@ CONTENTS_MESSAGES = {
         '0': _(u"""No invitation found"""),
         '1': _(u"""One invitation found"""),
         '*': _(u"""${nember} invitations found""")
-                        }
+        }
 
 @view_config(
     name='seeinvitations',

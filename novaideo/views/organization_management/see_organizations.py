@@ -23,7 +23,7 @@ CONTENTS_MESSAGES = {
         '0': _(u"""No organization found"""),
         '1': _(u"""One organization found"""),
         '*': _(u"""${nember} organizations found""")
-                        }
+        }
 
 @view_config(
     name='seeorganizations',

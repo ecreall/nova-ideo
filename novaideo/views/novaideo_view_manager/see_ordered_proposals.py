@@ -22,6 +22,13 @@ from novaideo.content.processes import get_states_mapping
 from novaideo import _
 
 
+CONTENTS_MESSAGES = {
+        '0': _(u"""No proposal found"""),
+        '1': _(u"""One proposal found"""),
+        '*': _(u"""${nember} proposals found""")
+        }
+
+
 def sort_proposals(proposals):
     ordered_proposals = [(proposal, 
                           (len(proposal.tokens_support) - \
@@ -68,6 +75,12 @@ class SeeOrderedProposalView(BasicView):
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_participations"
         len_result = batch.seqlen
+        index = str(len_result)
+        if len_result > 1:
+            index = '*'
+
+        self.title = _(CONTENTS_MESSAGES[index] , 
+                       mapping={'nember': len_result})
         result_body = []
         for obj in batch:
             object_values = {'object': obj, 
