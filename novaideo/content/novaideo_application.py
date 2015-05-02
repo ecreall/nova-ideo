@@ -57,6 +57,28 @@ def context_is_a_root(context, request):
     return request.registry.content.istype(context, 'Root')
 
 
+@colander.deferred
+def invitations_choice(node, kw):
+    context = node.bindings['context']
+    len_invitations = len(context.invitations)
+    if len_invitations == 0:
+        len_invitations = -1
+
+    return SequenceWidget(min_len=len_invitations,
+                          max_len=len_invitations)
+
+
+@colander.deferred
+def organizations_choice(node, kw):
+    context = node.bindings['context']
+    len_organizations = len(context.organizations)
+    if len_organizations == 0:
+        len_organizations = -1
+
+    return SequenceWidget(min_len=len_organizations,
+                          max_len=len_organizations)
+
+
 class NovaIdeoApplicationSchema(VisualisableElementSchema):
     """Schema for Nova-Ideo configuration"""
 
@@ -115,7 +137,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                name=_('Invitations'),
                                widget=SimpleMappingWidget(css_class='object-well default-well')),
             ['_csrf_token_']),
-        widget=SequenceWidget(),
+        widget=invitations_choice,
         title=_('List of invitation'),
         )
 
@@ -135,7 +157,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                 widget=SimpleMappingWidget(css_class='object-well default-well'),
                 omit=['managers']),
             ['_csrf_token_']),
-        widget=SequenceWidget(),
+        widget=organizations_choice,
         title=_('Organizations'),
         )
 

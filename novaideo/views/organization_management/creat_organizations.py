@@ -11,6 +11,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.schema import Schema, omit, select
 from pontus.widget import SimpleMappingWidget, SequenceWidget
+from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.organization_management.behaviors import (
     CreatOrganizations)
@@ -48,7 +49,7 @@ class CreatOrganizationsView(FormView):
 
     title = _('Creat organizations')
     schema = CreatOrganizationsSchema()
-    behaviors = [CreatOrganizations]
+    behaviors = [CreatOrganizations, Cancel]
     formid = 'formcreatorganizations'
     name = 'creatorganizations'
 

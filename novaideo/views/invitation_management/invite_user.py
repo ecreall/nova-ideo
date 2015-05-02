@@ -12,6 +12,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.schema import Schema, omit, select
 from pontus.widget import Select2Widget, SequenceWidget, SimpleMappingWidget
+from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.invitation_management.behaviors import (
     InviteUsers)
@@ -49,7 +50,7 @@ class InviteUserView(FormView):
 
     title = _('Invite users')
     schema = InviteUsersSchema()
-    behaviors = [InviteUsers]
+    behaviors = [InviteUsers, Cancel]
     formid = 'forminviteusers'
     name = 'inviteusers'
 

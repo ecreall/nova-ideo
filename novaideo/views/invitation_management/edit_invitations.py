@@ -9,6 +9,7 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.schema import select
+from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.invitation_management.behaviors import (
     EditInvitations)
@@ -34,7 +35,7 @@ class EditInvitationsView(FormView):
                                         'last_name',
                                         'email',
                                         'organization'])])
-    behaviors = [EditInvitations]
+    behaviors = [EditInvitations, Cancel]
     formid = 'formeditinvitations'
     name = 'editinvitations'
 

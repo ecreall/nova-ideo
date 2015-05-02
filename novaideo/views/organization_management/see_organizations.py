@@ -19,6 +19,12 @@ from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo import _
 
 
+CONTENTS_MESSAGES = {
+        '0': _(u"""No organization found"""),
+        '1': _(u"""One organization found"""),
+        '*': _(u"""${nember} organizations found""")
+                        }
+
 @view_config(
     name='seeorganizations',
     context=NovaIdeoApplication,
@@ -33,15 +39,21 @@ class SeeOrganizationsView(BasicView):
 
 
     def update(self):
-        self.execute(None) 
+        self.execute(None)
         objects = self.context.organizations
-        objects = sorted(objects, 
+        objects = sorted(objects,
                          key=lambda e: getattr(e, 'modified_at', 
                                                datetime.datetime.today()), 
                          reverse=True)
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_organizations"
         len_result = batch.seqlen
+        index = str(len_result)
+        if len_result > 1:
+            index = '*'
+
+        self.title = _(CONTENTS_MESSAGES[index] , 
+                       mapping={'nember': len_result})
         result_body = []
         for obj in batch:
             object_values = {'object': obj}
