@@ -109,7 +109,7 @@ class CreatOrganizations(InfiniteCardinality):
 
 
 def edit_roles_validation(process, context):
-    return has_role(role=('Moderator',))
+    return has_role(role=('Admin',))
 
 
 def edit_processsecurity_validation(process, context):
@@ -145,8 +145,7 @@ def seeorgs_roles_validation(process, context):
 
 
 def seeorgs_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
-           context.organizations
+    return global_user_processsecurity(process, context) 
 
 
 class SeeOrganizations(InfiniteCardinality):

@@ -22,6 +22,13 @@ from novaideo import _
 from novaideo.core import can_access 
 
 
+
+CONTENTS_MESSAGES = {
+        '0': _(u"""No invitation found"""),
+        '1': _(u"""One invitation found"""),
+        '*': _(u"""${nember} invitations found""")
+        }
+
 @view_config(
     name='seeinvitations',
     context=NovaIdeoApplication,
@@ -41,6 +48,13 @@ class SeeInvitationsView(BasicView):
         result = {}
         invitations = [i for i in self.context.invitations \
                        if can_access(user, i)]
+        len_result = len(invitations)
+        index = str(len_result)
+        if len_result > 1:
+            index = '*'
+
+        self.title = _(CONTENTS_MESSAGES[index] , 
+                       mapping={'nember': len_result})
         all_invitation_data = {'invitations':[]}
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
                                                         'dace_ui_api')

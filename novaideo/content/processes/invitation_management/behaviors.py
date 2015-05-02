@@ -199,7 +199,7 @@ class SeeInvitations(InfiniteCardinality):
 
 
 def edit_roles_validation(process, context):
-    return has_role(role=('Moderator',))
+    return has_role(role=('Admin',))
 
 
 def edit_processsecurity_validation(process, context):
