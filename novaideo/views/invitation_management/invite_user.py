@@ -26,7 +26,7 @@ class InviteUsersSchema(Schema):
                 select(omit(InvitationSchema(factory=Invitation,
                                          editable=True,
                                          name='Invitation',
-                                         widget=SimpleMappingWidget(css_class='object-well invitation-well')), 
+                                         widget=SimpleMappingWidget(css_class='object-well default-well')), 
                             ['_csrf_token_']), 
                        ['user_title', 'roles', 'first_name', 
                        'last_name','email']),
