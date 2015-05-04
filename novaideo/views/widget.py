@@ -62,7 +62,7 @@ class ObjectWidget(deform.widget.MappingWidget):
 
 class SimpleMappingtWidget(deform.widget.MappingWidget):
     template = 'novaideo:views/templates/mapping_simple.pt'
-
+    requirements = ( ('deform', None), ('simple_mapping', None))
 
 class Select2WidgetSearch(Select2Widget):
     template = 'novaideo:views/templates/select2_search.pt'
@@ -90,6 +90,9 @@ class DragDropMappingWidget(deform.widget.MappingWidget):
     template = 'novaideo:views/templates/dragdrop_sequence/mapping.pt'
     item_template = 'novaideo:views/templates/dragdrop_sequence/mapping_item.pt'
 
+
+default_resource_registry.set_js_resources('simple_mapping', None,
+               'novaideo:static/js/simple_mapping.js'  )
 
 default_resource_registry.set_js_resources('toucheckbox', None,
                'novaideo:static/js/toucheckbox.js'  )

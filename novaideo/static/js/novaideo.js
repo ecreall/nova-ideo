@@ -219,14 +219,6 @@ $(document).ready(function(){
 
   $('.proposal-opinion button.close').on('click', close_explanation);
 
-  $('.control-form-button').on('click', function(){
-        var form = $($(this).parents('div.ajax-form').first()).find('.controled-form').first();
-        if (form.hasClass('hide-bloc')) {
-            form.removeClass('hide-bloc')           
-        }else{
-            form.addClass('hide-bloc')       }
-    });
-
   $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
      menuSwitchChange(state, false);
   });
