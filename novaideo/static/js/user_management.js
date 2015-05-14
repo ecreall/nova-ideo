@@ -9,10 +9,4 @@ $(document).ready(function(){
             changepassword.prop('checked', false)
         }
     });
-
-    if($('.change-password-form .alert').length>0){
-       var form = $($('.change-password-form')[0]);
-       $($(form.parents('.ajax-form').first()).find('.control-form-button').first()).click();
-    };
-
 });
