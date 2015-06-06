@@ -2,7 +2,7 @@
 <hr class="soften">
 <div class="right-caption span4"  i18n:domain="novaideo">
   <div >
-    <img tal:condition="object.logo" tal:attributes="src object.logo.url(request)"  width="300"/>
+    <img tal:condition="object.logo" tal:attributes="src object.logo.url"  width="300"/>
   </div>
   <div class="caption">
     <h3>${object.title} </h3>
