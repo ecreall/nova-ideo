@@ -48,8 +48,8 @@ class DetailIdeaView(BasicView):
         files = getattr(self.context, 'attached_files', [])
         files_urls = []
         for file in files:
-            files_urls.append({'title':file.title, 
-                               'url':file.url(self.request)})
+            files_urls.append({'title': file.title, 
+                               'url': file.url})
 
         def actions_getter():
             return [a for a in self.context.actions \

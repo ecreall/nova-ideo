@@ -81,20 +81,20 @@ class RelatedContentsView(BasicView):
             for content in contents:
                 correlation_data, resources, \
                 messages, action_updated = self._correlation_action(correlation)
-                correlation_data.update({'content': content, 
-                                         'url': content.url(self.request), 
+                correlation_data.update({'content': content,
+                                         'url': content.url,
                                          'correlation': correlation})
                 relatedcontents.append(correlation_data)
                 isactive = action_updated or isactive
-                self._update_data(messages, resources, 
+                self._update_data(messages, resources,
                                   all_messages, all_resources)
 
         for correlation in target_correlations:
             content = correlation.source
             correlation_data, resources, \
             messages, action_updated = self._correlation_action(correlation)
-            correlation_data.update({'content': content, 
-                                     'url': content.url(self.request), 
+            correlation_data.update({'content': content,
+                                     'url': content.url,
                                      'correlation': correlation})
             relatedcontents.append(correlation_data)
             isactive = action_updated or isactive

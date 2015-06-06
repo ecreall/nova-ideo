@@ -19,7 +19,7 @@ function related_item_template(item){
 
 
 try {
-    select2_ajac_templates['related_item_template'] = related_item_template;
+    select2_ajax_templates['related_item_template'] = related_item_template;
 }
 catch(err) {
 }
