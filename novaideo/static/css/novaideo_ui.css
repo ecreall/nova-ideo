@@ -92,7 +92,7 @@
 }
 
 .navbar.navbar-inverse.navbar-bottom{
-    background-image: linear-gradient(to bottom, #6080b4 0%, #7a97c5 100%);
+    background-image: linear-gradient(to bottom, #6080b4 0%, #7a97c5 150%);
     box-shadow: 0 2px 3px #888888;
     border-radius: 0;
     border: 0px;
@@ -606,16 +606,14 @@ ins {
 }
 
 .navbar-entity .nav > li > a {
-    background-image: linear-gradient(to bottom, #c0e7c6 -100%, #419641 88%);
+    background-image: linear-gradient(to bottom, #c0e7c6 -100%, #419641 65%);
     background-repeat: repeat-x;
     border-color: #ddd;
     border-radius: 0;
     color: white;
     font-weight: bold;
-    height: 42px;
-    line-height: 10pt;
-    min-width: 70px;
-    padding: 10px;
+    height: 30px;
+    padding: 4px 10px;
 }
 
 .navbar-entity .navbar-nav{
@@ -629,12 +627,12 @@ ins {
 .navbar-entity .nav > li > a:hover, .navbar-entity .nav > li > a:focus, .navbar-entity .nav > li > a:active {
     background-image: linear-gradient(to bottom, #419641 -31%, #419641 0%);
     background-repeat: repeat-x;
-    color: white;
-    height: 42px;
-    border-radius: 0px;
     border-color: #ddd;
-    padding: 10px;
+    border-radius: 0;
+    color: white;
     font-weight: bold;
+    height: 30px;
+    padding: 4px 10px;
 }
 
 .navbar-entity .nav.navbar-right > li > a{
