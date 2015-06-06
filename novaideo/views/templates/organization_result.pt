@@ -1,6 +1,6 @@
 <div class="thumbnail right-caption span4 search-item"  i18n:domain="novaideo">
   <div >
-    <img tal:condition="object.logo" tal:attributes="src object.logo.url(request)"  width="300"/>
+    <img tal:condition="object.logo" tal:attributes="src object.logo.url"  width="300"/>
   </div>
   <div class="caption">
     <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>

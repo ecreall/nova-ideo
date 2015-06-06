@@ -40,8 +40,8 @@ class SeeRelatedIdeasView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        relatedideas = [{'content':target, 
-                         'url':target.url(self.request),
+        relatedideas = [{'content': target,
+                         'url': target.url,
                          'correlation': correlation} \
                         for target, correlation in \
                             self.context.related_ideas.items()]

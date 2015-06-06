@@ -1,7 +1,7 @@
 <div tal:replace="structure navbar_body"/>
 <hr class="soften">
 <div class="thumbnail right-caption span4" i18n:domain="novaideo">
-  <img tal:condition="user.picture is not None" tal:attributes="src user.picture.url(request)"  width="100"/>
+  <img tal:condition="user.picture is not None" tal:attributes="src user.picture"  width="100"/>
   <div class="media-body" style="width:auto;">
     <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
       <h3>${getattr(user, 'title', user.name)}</h3>
