@@ -100,7 +100,7 @@
     ${panel('steps')}
     ${panel('deadline')}
       <metal:slot metal:define-slot="outer-content">
-        
+        <div class="container-fluid">
         <div class="row clearfix novaideo-content">
 
           <div class="col-md-2 column ui-sortable novaideo-left">
@@ -136,15 +136,17 @@
              <div metal:define-slot="right"></div>
           </div>
         </div>
-
-        <div class="row clearfix">
-          <div class="col-md-2">
-          </div>
-          <div class="col-md-7 column ui-sortable novaideo-footer">
-          </div>
-          <div class="col-md-3">
-          </div>
-         </div>
+        </div>
+        <div class="container-fluid">
+          <div class="row clearfix">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-7 column ui-sortable novaideo-footer">
+            </div>
+            <div class="col-md-3">
+            </div>
+           </div>
+       </div>
 
       </metal:slot>
 
