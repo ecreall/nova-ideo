@@ -33,6 +33,7 @@
           </div>
       </div>
   </div>
+  <div class="container-fluid">
   <div class="steps-container row">
     <div class="col-md-2"></div>
 	  <div class="steps col-md-10">
@@ -78,6 +79,7 @@
 
       </ul>
     </div>
+  </div>
   </div>
 </div>
 
