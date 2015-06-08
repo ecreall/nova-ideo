@@ -80,6 +80,7 @@
 .content-select.btn-default {
     background-image: none;
     color: gray;
+    background-color: white !important;
 }
 
 .content-select.btn-default:focus {
@@ -235,7 +236,7 @@ body{
     font-family: inherit;
     font-weight: 500;
     line-height: 1.1;
-     font-size: 24px;
+     font-size: 20px;
 }
 
 hr.soften{
@@ -890,6 +891,10 @@ ins {
     width: 100%;
 }
 
+.access-menu > .container-fluid, .access-menu > .container-fluid> .navbar-collapse{
+    padding-left: 0px;
+}
+
 .nav.access-menu {
  padding-left: 0;
  margin-top: 18px;
@@ -1121,22 +1126,25 @@ ins {
 
 .novaideo-contents li {
     color: gray;
-    float: left;
-    font-size: 15px;
-    line-height: 40px;
+    font-size: 16px;
+    line-height: 44px;
     list-style: outside none none;
     margin-right: 55px;
+    display: inline-block;
 }
 
 .novaideo-contents strong {
     color: #4d4d4d;
-    font-size: 20px;
+    font-size: 16px;
     margin-right: 5px;
 }
 
 .novaideo-contents-list{
-    float: left;
-    margin-top: -20px
+    margin-top: -10px;
+    margin-right: auto; 
+    margin-left: auto; 
+    width: 100%; 
+    text-align: center;
 }
 
 .alert-wg-closed{
