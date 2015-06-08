@@ -20,7 +20,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-3"  style="padding-right: 0px">
+      <div class="col-md-3"  style="padding-right: 0px; padding-left: 0px">
               <div tal:omit-tag="" tal:define="k list(actions['menu3'].keys())[0]; a actions['menu3'][k]['url'] ">
                   <a class="add-idea-btn btn btn-success ${((a is None) and 'disabled') or ''}"  href="${a}" >
                      <span class="novaideo-icon icon-idea"></span> ${k}
