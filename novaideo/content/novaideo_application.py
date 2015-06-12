@@ -19,7 +19,8 @@ from dace.objectofcollaboration.application import Application
 from dace.descriptors import CompositeMultipleProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
-    SequenceWidget, LineWidget, TableWidget, SimpleMappingWidget)
+    SequenceWidget, LineWidget, TableWidget,
+    SimpleMappingWidget, CheckboxChoiceWidget)
 from pontus.schema import omit, select
 
 from .working_group import WorkingGroupSchema, WorkingGroup
@@ -29,6 +30,7 @@ from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
 from .keyword import KeywordSchema, Keyword
 from novaideo import _
+from novaideo.content.processes.proposal_management import WORK_MODES
 
 
 DEFAULT_TITLES = [_('Mr'), _('Madam'), _('Miss')]
@@ -77,6 +79,15 @@ def organizations_choice(node, kw):
 
     return SequenceWidget(min_len=len_organizations,
                           max_len=len_organizations)
+
+
+@colander.deferred
+def modes_choice(node, kw):
+    context = node.bindings['context']
+    modes = list(WORK_MODES.items())
+    modes = sorted(modes, key=lambda e: e[1].order)
+    values = [(key, value.title) for key, value in modes]
+    return CheckboxChoiceWidget(values=values, multiple=True)
 
 
 class NovaIdeoApplicationSchema(VisualisableElementSchema):
@@ -149,6 +160,13 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         title=_('Working groups'),
         )
 
+    work_modes = colander.SchemaNode(
+        colander.Set(),
+        title=_('Work modes'),
+        widget=modes_choice,
+        default=[],
+        )
+
     organizations = colander.SchemaNode(
         colander.Sequence(),
         omit(OrganizationSchema(factory=Organization,
@@ -210,9 +228,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
 
 class NovaIdeoApplicationPropertySheet(PropertySheet):
     schema = select(NovaIdeoApplicationSchema(), ['title',
-                                                  'participants_mini', 
-                                                  'participants_maxi',
-                                                  'participations_maxi',
+                                                  'work_modes',
                                                   'tokens_mini'])
 
 
@@ -245,6 +261,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     def initialization(self):
         self.reset_default_values()
         self.deadlines = PersistentList([datetime.datetime.today()])
+        self.work_modes = list(WORK_MODES.keys())
 
     def reset_default_values(self):
         self.participants_mini = 3
@@ -278,3 +295,16 @@ class NovaIdeoApplication(VisualisableElement, Application):
                 newkeywords.append(key)
 
         return result, newkeywords
+
+    def get_work_modes(self):
+        modes = getattr(self, 'work_modes', [])
+        modes = {m: WORK_MODES[m] for m in modes if m in WORK_MODES}
+        if modes:
+            return modes
+
+        return WORK_MODES
+
+    def get_default_work_mode(self):
+        modes = list(self.get_work_modes().values())
+        modes = sorted(modes, key=lambda e: e.order)
+        return modes[0]

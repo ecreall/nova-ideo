@@ -154,7 +154,7 @@ class SeeProposal(InfiniteCardinality):
 
 
 def seeproposals_roles_validation(process, context):
-    return has_role(role=('Moderator', ))
+    return has_role(role=('Examiner', ))
 
 
 def seeproposals_processsecurity_validation(process, context):

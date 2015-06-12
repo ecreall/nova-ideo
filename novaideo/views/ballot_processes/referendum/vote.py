@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
@@ -41,34 +42,46 @@ class VoteViewStudyReport(BasicView):
         values = {'context': self.context, 'ballot_report': ballot_report}
         body = self.content(result=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
-@colander.deferred
-def vote_choice(node, kw):
-    values = [(True, _('Favour')), (False, _('Against'))]
+def vote_choice(ballot_report):
+    values = [(True, getattr(ballot_report.ballottype,
+                            'true_val', _('Against'))),
+              (False, getattr(ballot_report.ballottype,
+                             'false_val', _('Favour')))]
     return RadioChoiceWidget(values=values)
 
 
 class VoteSchema(Schema):
 
     vote = colander.SchemaNode(
-        colander.Boolean(),
-        widget=vote_choice,
+        colander.Boolean(false_val='False', true_val='True'),
+        default=False,
         title=_('Options'),
         )
-    
+
 
 class VoteFormView(FormView):
-    title =  _('Vote')
+    title = _('Vote')
     name = 'voteform'
     formid = 'formvote'
-    behaviors = [Vote,  Cancel]
+    behaviors = [Vote, Cancel]
     schema = VoteSchema()
     validate_behaviors = False
 
     def before_update(self):
+        ballot_report = None
+        try:
+            vote_actions = list(self.behaviors_instances.values())
+            ballot_report = vote_actions[0].process.ballot.report
+        except Exception:
+            return
+
+        vote_widget = vote_choice(ballot_report)
+        self.schema.get('vote').widget = vote_widget
+        self.schema.view = self
         formwidget = deform.widget.FormWidget(css_class='vote-form')
         self.schema.widget = formwidget
 

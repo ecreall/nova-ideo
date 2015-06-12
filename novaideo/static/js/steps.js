@@ -72,9 +72,12 @@ $(document).ready(function(){
             var height = step.height();
             var element_by_media = step;
             //responsive design
-            if (window.matchMedia('(max-width: 991px)').matches) {
-               element_by_media = $('body');
-            };
+            try{
+              if (window.matchMedia('(max-width: 991px)').matches) {
+                 element_by_media = $('body');
+              };
+            }catch(err){
+            }
             var offset = element_by_media.offset();
             var element_by_media_width = element_by_media.width();
             var message_wdth = message.width();

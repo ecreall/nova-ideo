@@ -34,7 +34,7 @@ from novaideo.core import (
     DuplicableEntity,
     VersionableEntity,
     PresentableEntity)
-
+from novaideo.content.processes.proposal_management import WORK_MODES
 
 OPINIONS = OrderedDict([
             ('favorable', _('Favorable')),
@@ -141,3 +141,15 @@ class Proposal(Commentable,
     @property
     def is_published(self):
         return 'draft' not in self.state
+
+    @property
+    def work_mode(self):
+        mode_id = getattr(self, 'work_mode_id', None)
+        if mode_id:
+            return WORK_MODES.get(mode_id, None)
+
+        root = self.__parent__
+        if hasattr(root, 'get_work_modes') and len(root.get_work_modes()) == 1:
+            return root.get_default_work_mode()
+
+        return None

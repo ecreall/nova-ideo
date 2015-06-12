@@ -9,24 +9,25 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.proposal_management.behaviors import  Alert
+from novaideo.content.processes.work_mode_processes.wiki_work_mode_process.behaviors import (
+    CloseWork)
 from novaideo.content.proposal import Proposal
 from novaideo import _
 
 
 @view_config(
-    name='alert',
+    name='closewikiwork',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class AlertView(BasicView):
-    title = _('Alert')
-    name = 'alert'
-    behaviors = [Alert]
-    viewid = 'alert'
+class CloseWorkView(BasicView):
+    title = _('Close work')
+    name = 'closewikiwork'
+    behaviors = [CloseWork]
+    viewid = 'closewikiwork'
 
     def update(self):
         results = self.execute(None)
         return results[0]
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({Alert:AlertView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({CloseWork: CloseWorkView})

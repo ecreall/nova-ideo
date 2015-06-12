@@ -48,7 +48,10 @@ class Referendum(object):
         if isinstance(self.report.subjects, (list, tuple, PersistentList)):
             self.subject = self.report.subjects[0]
         else:
-            self.subject =  self.report.subjects
+            self.subject = self.report.subjects
+
+        self.false_val = kwargs.get('false_val', _('Favour'))
+        self.true_val = kwargs.get('true_val', _('Against'))
 
     def run_ballot(self, context=None):
         """Run referendum election processes for all electors"""
@@ -227,6 +230,9 @@ class FPTP(object):
     def __init__(self, report, vote_process_id='fptpprocess', **kwargs):
         self.vote_process_id = vote_process_id
         self.report = report
+        self.group_title = kwargs.get('group_title', _('Choices'))
+        self.group_values = kwargs.get('group_values', None)
+        self.group_default = kwargs.get('group_default', None)
 
     def run_ballot(self, context=None):
         """Run FPTP election processes for all electors"""

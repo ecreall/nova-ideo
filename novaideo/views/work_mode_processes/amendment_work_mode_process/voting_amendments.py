@@ -9,7 +9,7 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.proposal_management.behaviors import (
+from novaideo.content.processes.work_mode_processes.amendment_work_mode_process.behaviors import (
     VotingAmendments)
 from novaideo.content.proposal import Proposal
 from novaideo import _

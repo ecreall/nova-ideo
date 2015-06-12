@@ -6,6 +6,10 @@
     <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
       <h3>${getattr(user, 'title', user.name)}</h3>
       <dl>
+        <dt tal:condition="getattr(user, 'organization', None)" i18n:translate="">Organization</dt>
+        <dd tal:condition="getattr(user, 'organization', None)">
+           <a tal:attributes="href request.resource_url(user.organization, '@@index')">${user.organization.title}</a>
+        </dd>
         <dt i18n:translate="">Preferences</dt>
         <dd tal:condition="getattr(user, 'keywords', [])">
           <tal:loop repeat="k user.keywords">

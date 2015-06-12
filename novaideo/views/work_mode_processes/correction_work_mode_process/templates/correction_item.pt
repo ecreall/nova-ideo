@@ -1,0 +1,6 @@
+<span id="correction_actions">
+  <span class="btn-group-vertical btn-group-xs">
+     <button data-url="${favour_action_url}" data-favour="true" type="button" class="btn btn-success correction-action"><span class="glyphicon glyphicon-ok"></span></button>
+     <button data-url="${against_action_url}" data-favour="false" type="button" class="btn btn-danger correction-action"><span class="glyphicon glyphicon-remove"></span></button>
+  </span>
+</span>

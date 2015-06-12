@@ -1,0 +1,11 @@
+<div id="correction">
+	<div id="correction_title">
+	 ${structure:title}
+	</div>
+	<div id="correction_description">
+	 ${structure:description}
+	</div>
+	<div id="correction_text">
+	 ${structure:text}
+	</div>
+</div>

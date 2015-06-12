@@ -11,7 +11,7 @@ from pontus.form import FormView
 from pontus.schema import select
 from pontus.default_behavior import Cancel
 
-from novaideo.content.processes.proposal_management.behaviors import (
+from novaideo.content.processes.work_mode_processes.amendment_work_mode_process.behaviors import (
     ImproveProposal)
 from novaideo.content.proposal import Proposal
 from novaideo.content.amendment import AmendmentSchema

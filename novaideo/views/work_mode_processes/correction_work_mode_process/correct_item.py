@@ -10,7 +10,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.proposal_management.behaviors import (
+from novaideo.content.processes.work_mode_processes.correction_work_mode_process.behaviors import (
     CorrectItem)
 from novaideo.content.correction import Correction
 from novaideo import _

@@ -34,7 +34,7 @@ class Moderator(Role):
 
 @role(name='Examiner',
       superiors=[Administrator],
-      lowers=[Collaborator, Member])
+      lowers=[Collaborator, Member, Moderator])
 class Examiner(Role):
     pass
 

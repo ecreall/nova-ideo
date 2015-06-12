@@ -44,31 +44,34 @@ class VoteViewStudyReport(BasicView):
         return result
 
 
-
 def subjects_choice(ballot_report):
     subjects = ballot_report.subjects
+    group_values = getattr(ballot_report.ballottype, 'group_values', None)
     def get_title(ob):
         if isinstance(ob, Entity):
             return ob.title
         else:
             return _(ob)
 
-    values = [(i, get_title(i)) for i in subjects]
-    values.insert(0, ('', _('- Select -')))
-    return Select2Widget(values=values)
+    if group_values:
+        values = group_values
+    else:
+        values = [(i, get_title(i)) for i in subjects]
 
+    return Select2Widget(values=values)
 
 
 class CandidatesSchema(Schema):
 
     elected = colander.SchemaNode(
             colander.String(),
+            default="Ten minutes",
             title=_('Choices'),
         )
-    
+
 
 class VoteFormView(FormView):
-    title =  _('Vote')
+    title = _('Vote')
     name = 'voteform'
     formid = 'formvote'
     behaviors = [Vote, Cancel]
@@ -84,7 +87,14 @@ class VoteFormView(FormView):
             return
 
         subjects_widget = subjects_choice(ballot_report)
-        self.schema.get('elected').widget = subjects_widget
+        elected_node = self.schema.get('elected')
+        elected_node.title = getattr(ballot_report.ballottype,
+                                    'group_title', _('Choices'))
+        group_default = getattr(ballot_report.ballottype, 'group_default', None)
+        if group_default:
+            elected_node.default = group_default
+
+        elected_node.widget = subjects_widget
         self.schema.view = self
         formwidget = deform.widget.FormWidget(css_class='vote-form')
         self.schema.widget = formwidget

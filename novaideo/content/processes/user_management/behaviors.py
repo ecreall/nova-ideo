@@ -182,7 +182,7 @@ def deactivate_roles_validation(process, context):
     return (context.organization and \
             has_role(role=('OrganizationResponsible', 
                            context.organization))) or \
-            has_role(role=('Moderator',))
+            has_role(role=('Admin',))
 
 
 def deactivate_processsecurity_validation(process, context):
@@ -251,7 +251,7 @@ class Activate(InfiniteCardinality):
 
 
 def assignroles_roles_validation(process, context):
-    return has_role(role=('Moderator', ))
+    return has_role(role=('Admin', ))
 
 
 def assignroles_processsecurity_validation(process, context):

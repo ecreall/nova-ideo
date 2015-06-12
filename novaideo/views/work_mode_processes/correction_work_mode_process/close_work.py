@@ -9,25 +9,25 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.proposal_management.behaviors import  Amendable
+from novaideo.content.processes.work_mode_processes.correction_work_mode_process.behaviors import (
+    CloseWork)
 from novaideo.content.proposal import Proposal
 from novaideo import _
 
 
 @view_config(
-    name='amendable',
+    name='closecorrectionwork',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class AmendableView(BasicView):
-    title = _('Amendable')
-    name = 'amendable'
-    behaviors = [Amendable]
-    viewid = 'amendable'
-
+class CloseWorkView(BasicView):
+    title = _('Close work')
+    name = 'closecorrectionwork'
+    behaviors = [CloseWork]
+    viewid = 'closecorrectionwork'
 
     def update(self):
         results = self.execute(None)
         return results[0]
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({Amendable:AmendableView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({CloseWork: CloseWorkView})

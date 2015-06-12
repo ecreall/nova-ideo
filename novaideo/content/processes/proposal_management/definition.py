@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
@@ -9,14 +10,14 @@ powered by the dace engine.
 """
 
 from persistent.list import PersistentList
-from pyramid.threadlocal import get_current_registry, get_current_request
+from pyramid.threadlocal import get_current_request
 
 from dace.processdefinition.processdef import ProcessDefinition
-from dace.util import getSite
+from dace.util import getSite, find_service
 from dace.processinstance.activity import (
   SubProcess as OriginSubProcess)
 from dace.processdefinition.activitydef import (
-  ActivityDefinition, 
+  ActivityDefinition,
   SubProcessDefinition as OriginSubProcessDefinition)
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
@@ -24,9 +25,7 @@ from dace.processdefinition.gatewaydef import (
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
-    EndEventDefinition,
-    IntermediateCatchEventDefinition,
-    TimerEventDefinition)
+    EndEventDefinition,)
 from dace.objectofcollaboration.services.processdef_container import (
   process_definition)
 from pontus.core import VisualisableElement
@@ -39,66 +38,52 @@ from .behaviors import (
     CommentProposal,
     PresentProposal,
     Associate,
-    ImproveProposal,
-    CorrectProposal,
+    Work,
     VotingPublication,
     Withdraw,
     Resign,
     Participate,
     FirstParticipate,
     SubmitProposal,
-    VotingAmendments,
-    AmendmentsResult,
-    Amendable,
     SeeAmendments,
-    AddParagraph,
-    Alert,
-    CorrectItem,
     PublishAsProposal,
     SupportProposal,
     OpposeProposal,
     WithdrawToken,
     SeeRelatedIdeas,
-    ProofreadingDone,
     CompareProposal,
     MakeOpinion,
     DeleteProposal,
     close_votes,
     AMENDMENTS_CYCLE_DEFAULT_DURATION,
-    calculate_amendments_cycle_duration,
     VOTE_PUBLISHING_MESSAGE,
     VOTE_DURATION_MESSAGE,
-    VOTE_REOPENING_MESSAGE, 
-    VOTE_AMENDMENTS_MESSAGE, 
-    VP_DEFAULT_DURATION, 
-    AMENDMENTS_VOTE_DEFAULT_DURATION,
+    VOTE_REOPENING_MESSAGE,
+    VP_DEFAULT_DURATION,
+    VOTE_MODEWORK_MESSAGE,
     eg3_publish_condition
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
-from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 def eg3_amendable_condition(process):
     return not eg3_publish_condition(process)
 
 
-def eg4_votingamendments_condition(process):
-    proposal = process.execution_context.created_entity('proposal')
-    if any('published' in a.state for a in proposal.amendments):
-        return True
-
-    return False
-
-
-def eg4_alert_condition(process):
-    return not eg4_votingamendments_condition(process)
-
-
-class SubProcess(OriginSubProcess):
+class SubProcessFirstVote(OriginSubProcess):
 
     def __init__(self, definition):
-        super(SubProcess, self).__init__(definition)
+        super(SubProcessFirstVote, self).__init__(definition)
+
+    def _start_subprocess(self, action):
+        if not hasattr(self.process, 'first_vote'):
+            self.process.first_vote = True
+            # next
+            return None
+        else:
+            self.process.first_vote = False
+            return super(SubProcessFirstVote, self)._start_subprocess(action)
 
     def stop(self):
         request = get_current_request()
@@ -109,23 +94,8 @@ class SubProcess(OriginSubProcess):
                               if not process._finished]
             if vote_processes:
                 close_votes(None, request, vote_processes)
-            
-        super(SubProcess, self).stop()
-
-
-class SubProcessFirstVote(SubProcess):
-
-    def __init__(self, definition):
-        super(SubProcessFirstVote, self).__init__(definition)
-
-    def _start_subprocess(self):
-        if not hasattr(self.process, 'first_vote'):
-            self.process.first_vote = True
-            # next
-            return None
-        else:
-            self.process.first_vote = False
-            return super(SubProcessFirstVote, self)._start_subprocess()
+     
+        super(SubProcessFirstVote, self).stop()
 
 
 class SubProcessDefinition(OriginSubProcessDefinition):
@@ -138,24 +108,55 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
         wg = proposal.working_group
-        electors = wg.members[:root.participants_mini]
+        participants_mini = root.participants_mini
+        participants_maxi = root.participants_maxi
+        work_mode = getattr(proposal, 'work_mode', None)
+        if work_mode:
+            participants_mini = work_mode.participants_mini
+            participants_maxi = work_mode.participants_maxi
+
+        electors = wg.members[:participants_mini]
         if not getattr(process, 'first_decision', True):
             electors = wg.members
 
         subjects = [proposal]
-        ballot = Ballot('Referendum' , electors, subjects, VP_DEFAULT_DURATION)
+        ballot = Ballot('Referendum', electors, subjects, VP_DEFAULT_DURATION,
+                        true_val=_("Submit the proposal"),
+                        false_val=_("Continue to improve the proposal"))
         wg.addtoproperty('ballots', ballot)
         ballot.report.description = VOTE_PUBLISHING_MESSAGE
-        ballot.title = _("Submit the proposal")
+        ballot.title = _("Continue to improve the proposal or not")
         processes = ballot.run_ballot()
         subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
         process.vp_ballot = ballot #vp for voting for publishing
 
+        root_modes = root.get_work_modes()
+        if len(root_modes) > 1:
+            modes = [(m, root_modes[m].title) for m in root_modes \
+                     if root_modes[m].participants_mini <= len(wg.members)]
+            modes = sorted(modes,
+                           key=lambda e: root_modes[e[0]].order)
+            group = [m[0] for m in modes]
+            default_mode = proposal.work_mode.work_id
+            if default_mode not in root_modes:
+                default_mode = modes[0][0]
+
+            ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
+                            group_title=_('Work mode'),
+                            group_values=modes,
+                            group_default=default_mode)
+            wg.addtoproperty('ballots', ballot)
+            ballot.title = _('Work modes')
+            ballot.report.description = VOTE_MODEWORK_MESSAGE
+            processes.extend(ballot.run_ballot(context=proposal))
+            subprocess.ballots.append(ballot)
+            process.work_mode_configuration_ballot = ballot
+
         if not getattr(process, 'first_decision', True) and \
           'closed' in wg.state:
             subjects = [wg]
-            ballot = Ballot('Referendum' , electors,
+            ballot = Ballot('Referendum', electors,
                             subjects, VP_DEFAULT_DURATION)
             wg.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_REOPENING_MESSAGE
@@ -164,11 +165,13 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             subprocess.ballots.append(ballot)
             process.reopening_configuration_ballot = ballot
 
-        if len(wg.members) <= root.participants_maxi:
+        if len(wg.members) <= participants_maxi:
             durations = list(AMENDMENTS_CYCLE_DEFAULT_DURATION.keys())
-            group = sorted(durations, 
+            group = sorted(durations,
                            key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
-            ballot = Ballot('FPTP' , electors, group, VP_DEFAULT_DURATION)
+            ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
+                            group_title=_('Delay'),
+                            group_default='One week')
             wg.addtoproperty('ballots', ballot)
             ballot.title = _('Amendment duration')
             ballot.report.description = VOTE_DURATION_MESSAGE
@@ -181,68 +184,42 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         subprocess.duration = VP_DEFAULT_DURATION
 
 
-class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
-    """Run the voting process for amendments"""
+class WorkSubProcess(OriginSubProcess):
 
-    factory = SubProcess
+    def __init__(self, definition):
+        super(WorkSubProcess, self).__init__(definition)
 
-    def _init_subprocess(self, process, subprocess):
-        proposal = process.execution_context.created_entity('proposal')
-        electors = proposal.working_group.members
-        amendments = [a for a in proposal.amendments if 'published' in a.state]
-        processes = []
-        text_analyzer = get_current_registry().getUtility(
-                                                  ITextAnalyzer,
-                                                  'text_analyzer')
-        groups = []
-        for amendment in amendments:
-            isadded = False
-            related_ideas_amendment = list(amendment.related_ideas)
-            for group in groups:
-                for amt in group:
-                    related_ideas_a = list(amt.related_ideas)
-                    if text_analyzer.has_conflict(amt.text, 
-                                                  [amendment.text]) or \
-                       (related_ideas_amendment and \
-                        any(e in related_ideas_amendment \
-                            for e in related_ideas_a)):
-                        group.append(amendment)
-                        isadded = True
-                        break
+    def _start_subprocess(self, action):
+        proposal = self.process.execution_context.created_entity('proposal')
+        work_mode_ballot = getattr(self.process,
+                            'work_mode_configuration_ballot', None)
+        if work_mode_ballot is not None and work_mode_ballot.report.voters:
+            electeds = work_mode_ballot.report.get_electeds()
+            if electeds:
+                proposal.work_mode_id = electeds[0]
 
-            if not isadded:
-                groups.append([amendment])
+        root = proposal.__parent__
+        work_mode = getattr(proposal, 'work_mode',
+                                  root.get_default_work_mode())
+        def_container = find_service('process_definition_container')
+        pd = def_container.get_definition(work_mode.work_mode_process_id)
+        proc = pd()
+        proc.__name__ = proc.id
+        runtime = find_service('runtime')
+        runtime.addtoproperty('processes', proc)
+        proc.defineGraph(pd)
+        self.definition._init_subprocess(self.process, proc)
+        proc.attachedTo = action
+        proc.execute()
+        self.sub_processes.append(proc)
+        return proc
 
-        for amendment in amendments:
-            commungroups = [group for group in groups if amendment in group]
-            new_group = set()
-            for group in commungroups:
-                new_group.update(group)
-                groups.pop(groups.index(group))
 
-            groups.append(list(new_group))
+class WorkSubProcessDefinition(OriginSubProcessDefinition):
+    """Run the voting process for proposal publishing 
+       and working group configuration"""
 
-        for group in groups:
-            group.insert(0, proposal)
-
-        subprocess.ballots = PersistentList()
-        process.amendments_ballots = PersistentList()
-        i = 1
-        for group in groups:
-            ballot = Ballot('MajorityJudgment' , electors, 
-                       group, AMENDMENTS_VOTE_DEFAULT_DURATION)
-            proposal.working_group.addtoproperty('ballots', ballot)
-            ballot.report.description = VOTE_AMENDMENTS_MESSAGE
-            ballot.title = _('Vote for amendments (group ${nbi})', 
-                              mapping={'nbi': i})
-            processes.extend(ballot.run_ballot(context=proposal))
-            subprocess.ballots.append(ballot)
-            process.amendments_ballots.append(ballot)
-            i += 1
-
-        subprocess.execution_context.add_involved_collection(
-                       'vote_processes', processes)
-        subprocess.duration = AMENDMENTS_VOTE_DEFAULT_DURATION
+    factory = WorkSubProcess
 
 
 @process_definition(name='proposalmanagement', id='proposalmanagement')
@@ -310,19 +287,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Start voting for publication"),
                                        title=_("Start voting for publication"),
                                        groups=[]),
-                votingamendments = SubProcessDefinitionAmendments(pd='ballotprocess', contexts=[VotingAmendments],
-                                       description=_("Start voting for amendments"),
-                                       title=_("Start voting for amendments"),
+                work = WorkSubProcessDefinition(pd='None', contexts=[Work],
+                                       description=_("Start work"),
+                                       title=_("Start work"),
                                        groups=[]),
-                alert = ActivityDefinition(contexts=[Alert],
-                                       description=_("Alert"),
-                                       title=_("Alert"),
-                                       groups=[]),
-                amendable = ActivityDefinition(contexts=[Amendable],
-                                       description=_("Change the state to amendable"),
-                                       title=_("Amendable"),
-                                       groups=[]),
-                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=calculate_amendments_cycle_duration)),
                 publish = ActivityDefinition(contexts=[PublishProposal],
                                        description=_("Submit the proposal"),
                                        title=_("Submit"),
@@ -343,10 +311,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Withdraw token from proposal"),
                                        title=_("Withdraw my token"),
                                        groups=[]),
-                amendmentsresult = ActivityDefinition(contexts=[AmendmentsResult],
-                                       description=_("Amendments result"),
-                                       title=_("Amendments result"),
-                                       groups=[]),
                 present = ActivityDefinition(contexts=[PresentProposal],
                                        description=_("Submit the proposal to others"),
                                        title=_("Submit to others"),
@@ -366,26 +330,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 seerelatedideas = ActivityDefinition(contexts=[SeeRelatedIdeas],
                                        description=_("Related ideas"),
                                        title=_("Related ideas"),
-                                       groups=[]),
-                correct = ActivityDefinition(contexts=[CorrectProposal],
-                                       description=_("Correct the proposal"),
-                                       title=_("Correct"),
-                                       groups=[]),
-                correctitem = ActivityDefinition(contexts=[CorrectItem],
-                                       description=_("Correct item"),
-                                       title=_("Correct"),
-                                       groups=[]),
-                proofreading = ActivityDefinition(contexts=[ProofreadingDone],
-                                       description=_("Proofreading done"),
-                                       title=_("Proofreading done"),
-                                       groups=[]),
-                addparagraph = ActivityDefinition(contexts=[AddParagraph],
-                                       description=_("Add a paragraph"),
-                                       title=_("Add a paragraph"),
-                                       groups=[]),
-                improve = ActivityDefinition(contexts=[ImproveProposal],
-                                       description=_("Improve the proposal"),
-                                       title=_("Improve"),
                                        groups=[]),
                 compare = ActivityDefinition(contexts=[CompareProposal],
                                        description=_("Compare versions"),
@@ -417,26 +361,15 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg3', 'participate'),
                 TransitionDefinition('pg3', 'firstparticipate'),
                 TransitionDefinition('pg3', 'withdraw'),
-                TransitionDefinition('pg3', 'correct'),
-                TransitionDefinition('pg3', 'proofreading'),
-                TransitionDefinition('pg3', 'correctitem'),
-                TransitionDefinition('pg3', 'addparagraph'),
-                TransitionDefinition('pg3', 'improve'),
                 TransitionDefinition('pg3', 'eg2'),
                 TransitionDefinition('eg2', 'votingpublication'),
                 TransitionDefinition('votingpublication', 'eg3'),
-                TransitionDefinition('eg3', 'amendable', eg3_amendable_condition, sync=True),
+                TransitionDefinition('eg3', 'work', eg3_amendable_condition, sync=True),
                 TransitionDefinition('eg3', 'publish', eg3_publish_condition, sync=True),
                 TransitionDefinition('publish', 'pg6'),
                 TransitionDefinition('pg6', 'support'),
                 TransitionDefinition('pg6', 'makeitsopinion'),
                 TransitionDefinition('pg6', 'oppose'),
                 TransitionDefinition('pg6', 'withdraw_token'),
-                TransitionDefinition('amendable', 'timer'),
-                TransitionDefinition('timer', 'eg4'),
-                TransitionDefinition('eg4', 'votingamendments', eg4_votingamendments_condition, sync=True),
-                TransitionDefinition('eg4', 'alert', eg4_alert_condition, sync=True),
-                TransitionDefinition('alert', 'eg2'),
-                TransitionDefinition('votingamendments', 'amendmentsresult'),
-                TransitionDefinition('amendmentsresult', 'eg2'),
+                TransitionDefinition('work', 'eg2'),
         )

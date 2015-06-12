@@ -15,7 +15,7 @@ from substanced.util import renamer
 
 from dace.util import get_obj
 from dace.objectofcollaboration.entity import Entity
-from dace.descriptors import SharedUniqueProperty
+from dace.descriptors import SharedUniqueProperty, CompositeUniqueProperty
 
 from pontus.widget import RichTextWidget
 from pontus.core import VisualisableElementSchema, VisualisableElement
@@ -63,6 +63,7 @@ class Correction(VisualisableElement, Entity):
     name = renamer()
     author = SharedUniqueProperty('author')
     proposal = SharedUniqueProperty('proposal', 'corrections')
+    current_version = CompositeUniqueProperty('current_version')
 
     def __init__(self, **kwargs):
         super(Correction, self).__init__(**kwargs)

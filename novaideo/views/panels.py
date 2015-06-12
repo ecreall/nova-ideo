@@ -264,8 +264,12 @@ class StepsPanel(object):
         user = get_current()
         working_group_states = [_(get_states_mapping(user, wg, s)) \
                                 for s in wg.state]
-        if any(s in context.state for s in ['proofreading','amendable']):
-            date_iteration = process['timer'].eventKind.time_date
+        if 'amendable' in context.state:
+            subprocesses = process['work'].sub_processes
+            date_iteration = None
+            if subprocesses:
+                date_iteration = subprocesses[-1]['timer'].eventKind.time_date
+
             today = datetime.datetime.today()
             if date_iteration is not None and date_iteration > today:
                 time_delta = date_iteration - today
@@ -295,10 +299,11 @@ class StepsPanel(object):
                                     request)
         elif 'votes for amendments'  in context.state:
             voters = []
+            subprocess = process['work'].sub_processes[-1]
             [voters.extend(b.report.voters) \
-            for b in process.amendments_ballots]
+            for b in subprocess.amendments_ballots]
             voters = list(set(voters))
-            ballot = process.amendments_ballots[-1]
+            ballot = subprocess.amendments_ballots[-1]
             today = datetime.datetime.today()
             if ballot.finished_at is not None and ballot.finished_at > today:
                 time_delta = ballot.finished_at - today
@@ -313,11 +318,16 @@ class StepsPanel(object):
                                      'ballot_report': ballot.report,
                                      'voters': voters},
                                     request)
-        elif 'open to a working group'  in context.state:
+        elif 'open to a working group' in context.state:
+            participants_mini = getSite().participants_mini
+            work_mode = getattr(context, 'work_mode', None)
+            if work_mode:
+                participants_mini = work_mode.participants_mini
+
             return renderers.render(self.step3_0_template,
-                                   {'context':context, 
+                                   {'context': context,
                                     'process': process,
-                                    'min_members': getSite().participants_mini},
+                                    'min_members': participants_mini},
                                    request)
 
         return _('No more Information.')

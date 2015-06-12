@@ -1,9 +1,11 @@
 <div  i18n:domain="novaideo">
  <div class="alert alert-info">
  	<span class="glyphicon glyphicon-info-sign pull-right"></span>
-   <div i18n:translate="">As soon as the proposal has been published, it will be opened to a working group. The working group is active as soon as it reaches three persons. Once active, the working group can submit the proposal to the appreciation of the collective or decide to work together for improving it.</div>
-  <div tal:condition="vp_ballot_report">${vp_ballot_report.description}</div>
-  <div tal:condition="duration_ballot_report">${duration_ballot_report.description}</div>
+   <p>Dès que vous avez publié votre proposition, vous ne pouvez plus la modifier seul. Celle-ci devient ouverte à un groupe de travail, qui peut décider soit de l'améliorer à plusieurs, soit de la soumettre en l'état aux autres membres de la plateforme.</p>
+
+	<p>Par défaut, en cliquant sur "Continuer", vous décidez que la proposition doit être améliorée à plusieurs et que le délai du cycle d'amélioration soit fixé à une semaine.</p>
+
+	<p>Vous pouvez changer le délai du cycle d'amélioration ou au contraire opter pour soumettre la proposition en l'état.</p>
  </div>
 </div>
 

@@ -12,7 +12,7 @@ from pontus.form import FormView
 from pontus.schema import select
 from pontus.default_behavior import Cancel
 
-from novaideo.content.processes.proposal_management.behaviors import (
+from novaideo.content.processes.work_mode_processes.correction_work_mode_process.behaviors import (
     CorrectProposal)
 from novaideo.content.proposal import Proposal
 from novaideo.content.correction import Correction, CorrectionSchema
@@ -25,7 +25,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CorrectProposalView(FormView):
-    title = _('Correct the proposal')
+    title = _('Improve the proposal')
     name = 'correctproposal'
     behaviors = [CorrectProposal, Cancel]
     viewid = 'correctproposal'

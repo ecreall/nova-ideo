@@ -57,7 +57,7 @@ class FirstParticipateFormView(SubmitProposalFormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class FirstParticipateViewMultipleView(MultipleView):
-    title = _('Participate')
+    title = _('Participer au groupe de travail')
     name = 'firstparticipate'
     viewid = 'firstparticipate'
     template = 'daceui:templates/mergedmultipleview.pt'

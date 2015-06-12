@@ -139,7 +139,12 @@ class DetailProposalView(BasicView):
         ct_participate_closed = False
         ct_participate = False
         if wg:
-            ct_participate_max = len(wg.members) == root.participants_maxi
+            participants_maxi = root.participants_maxi
+            work_mode = getattr(self.context, 'work_mode', None)
+            if work_mode:
+                participants_maxi = work_mode.participants_maxi
+
+            ct_participate_max = len(wg.members) == participants_maxi
             ct_participate_closed = 'closed' in wg.state
             ct_participate = 'archived' not in wg.state and \
                          not isinstance(user, Anonymous) and \
