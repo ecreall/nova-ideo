@@ -39,6 +39,7 @@ from .behaviors import (
     AmendmentsResult,
     VOTE_AMENDMENTS_MESSAGE,
     AMENDMENTS_VOTE_DEFAULT_DURATION,
+    close_votes
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
