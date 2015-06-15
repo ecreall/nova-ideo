@@ -3522,38 +3522,3 @@ msgstr ""
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:52
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
-
-#~ msgid "Change with corrections"
-#~ msgstr "Modification avec amendements"
-
-#~ msgid "Proofreading done"
-#~ msgstr "Relecture effectuée"
-
-#~ msgid "Add a paragraph"
-#~ msgstr "Ajouter un paragraphe"
-
-#~ msgid "Correct the proposal"
-#~ msgstr "Corriger la proposition"
-
-#~ msgid ""
-#~ "As soon as the proposal has been published, it will be opened to a "
-#~ "working group. The working group is active as soon as it reaches three "
-#~ "persons. Once active, the working group can submit the proposal to the "
-#~ "appreciation of the collective or decide to work together for improving "
-#~ "it."
-#~ msgstr ""
-#~ "Dès que vous avez publié votre proposition, vous ne pourrez plus la "
-#~ "modifier seul. Celle-ci devient ouverte à un groupe de travail, qui peut "
-#~ "décider soit de l'améliorer, soit de la soumettre à l'appréciation des "
-#~ "autres membres de la plateforme. Si vous publiez votre proposition, votre "
-#~ "première action sera de voter pour ou contre l'amélioration de la "
-#~ "proposition."
-
-#~ msgid "Ideas to moderate"
-#~ msgstr "Les idées à modérer"
-
-#~ msgid "Submit for publishing"
-#~ msgstr "Soumettre pour publication"
-
-#~ msgid "Submit the idea"
-#~ msgstr "Soumettre l'idée"
