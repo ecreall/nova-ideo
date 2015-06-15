@@ -39,31 +39,31 @@
 
 <div class="nb-iteration">${getattr(process, 'iteration', 1)}</div>
 
-<div class="sub-steps" i18n:domain="novaideo">
-  	  <ul>
-    	    <li class="step sub-step-1 ${( 'votes for publishing' not in context.state) and 'off'}">
-      	      <span class="step-content">
+<div class="sub-steps" i18n:domain="novaideo" tal:define="is_amendment (getattr(context.work_mode, 'work_id', '')=='amendment')">
+      <ul>
+          <li class="step sub-step-1 ${( 'votes for publishing' not in context.state) and 'off'}">
+              <span class="step-content">
                   <div class="step-text" i18n:translate="">
                      Vote for improving or not the proposal
                   </div>
               </span>
             </li>
-            <li class="step sub-step-2 ${( 'proofreading' not in context.state) and 'off'}">
-      	      <span class="step-content">
+            <li class="step sub-step-2 ${( 'amendable' not in context.state) and 'off'}">
+              <span class="step-content step-ignored">
                  <div class="step-text" i18n:translate="">
                    Correction of the proposal
                  </div>
               </span>
             </li>
             <li class="step sub-step-3 ${( 'amendable' not in context.state) and 'off'}">
-      	       <span data-step="message-step-3" class="step-content">
+               <span data-step="message-step-3" class="step-content">
                  <div class="step-text" i18n:translate="">
                    Proposal improvement
                  </div>
                </span>
             </li>
-            <li class="step sub-step-4 ${( 'votes for amendments' not in context.state) and 'off'} ">
-      	       <span class="step-content">
+            <li class="step sub-step-4 ${((is_amendment and ('votes for amendments' not in context.state)) or ((not is_amendment) and ('votes for publishing' not in context.state))) and 'off'} ">
+               <span class="step-content ${(not is_amendment) and 'step-ignored'}">
                  <div class="step-text" i18n:translate="">
                    Vote for amendments
                  </div>

@@ -188,8 +188,8 @@ ul, ol {
 }
 
 .sub-steps li.sub-step-2{
-    right: -180px;
-    top: -52px;
+    right: -176px;
+    top: -51px;
     z-index: 4;
 }
 
@@ -200,8 +200,8 @@ ul, ol {
 }
 
 .sub-steps li.sub-step-4{
-    left: 11px;
-    top: -350px;
+    left: 15px;
+    top: -351px;
     z-index: 2;
 }
 
@@ -281,6 +281,15 @@ ul, ol {
         padding-top: 4px;
 }
 
+.sub-steps li.sub-step-2 .step-content.step-ignored{
+    background: transparent url(step-corr-ig.png) no-repeat scroll right center / 90px auto !important;
+        background-size: 90px;
+        height: 13.5em;
+        padding-bottom: 4px;
+        padding-right: 25px;
+        padding-top: 4px;
+}
+
 .sub-steps li.sub-step-3 .step-content {
 	background: transparent url(step-imp.png) center right no-repeat;
         background-size: cover;
@@ -298,6 +307,16 @@ ul, ol {
     padding-top: 4px;
 }
 
+.sub-steps li.sub-step-4 .step-content.step-ignored {
+    background: transparent url(step-am-ig.png) no-repeat scroll right center / 90px auto !important;
+    background-size: 90px;
+    height: 13.5em;
+    padding-bottom: 4px;
+    padding-right: 25px;
+    padding-top: 4px;
+}
+
+
 .sub-steps li.sub-step-1.off .step-content{
 	background: transparent url(step-pub-off.png) center right no-repeat;
     background-size: cover;
@@ -308,6 +327,10 @@ ul, ol {
     background-size: 90px;
 }
 
+.sub-steps li.sub-step-2.off .step-content.step-ignored{
+    background: transparent url(step-corr-ig-off.png) no-repeat scroll right center / 90px auto !important;
+}
+
 .sub-steps li.sub-step-3.off .step-content{
 	background: transparent url(step-imp-off.png) center right no-repeat;
     background-size: cover;
@@ -316,6 +339,15 @@ ul, ol {
 .sub-steps li.sub-step-4.off .step-content{
 	background: transparent url(step-am-off.png) center right no-repeat;
     background-size: 90px;
+}
+
+.sub-steps li.sub-step-4.off .step-content.step-ignored{
+    background: transparent url(step-am-ig-off.png) no-repeat scroll right center / 90px auto !important;
+    background-size: 90px;
+}
+
+.step-ignored .step-text{
+    display: none !important;
 }
 
 .glyphicons-group{

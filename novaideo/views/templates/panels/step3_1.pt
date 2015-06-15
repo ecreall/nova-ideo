@@ -18,7 +18,7 @@
 
 <div class="nb-iteration">${getattr(process, 'iteration', 1)}</div>
 
-<div class="sub-steps" i18n:domain="novaideo">
+<div class="sub-steps" i18n:domain="novaideo" tal:define="is_amendment (getattr(context.work_mode, 'work_id', '')=='amendment')">
   	  <ul>
     	    <li class="step sub-step-1 ${( 'votes for publishing' not in context.state) and 'off'}">
       	      <span class="step-content">
@@ -27,8 +27,8 @@
                   </div>
               </span>
             </li>
-            <li class="step sub-step-2 ${( 'proofreading' not in context.state) and 'off'}">
-      	      <span class="step-content">
+            <li class="step sub-step-2 ${( 'amendable' not in context.state) and 'off'}">
+      	      <span class="step-content step-ignored">
                  <div class="step-text" i18n:translate="">
                    Correction of the proposal
                  </div>
@@ -41,8 +41,8 @@
                  </div>
                </span>
             </li>
-            <li class="step sub-step-4 ${( 'votes for amendments' not in context.state) and 'off'} ">
-      	       <span class="step-content">
+            <li class="step sub-step-4 ${((is_amendment and ('votes for amendments' not in context.state)) or ((not is_amendment) and ('votes for publishing' not in context.state))) and 'off'} ">
+      	       <span class="step-content ${(not is_amendment) and 'step-ignored'}">
                  <div class="step-text" i18n:translate="">
                    Vote for amendments
                  </div>
