@@ -5,12 +5,12 @@
 # author: Amen Souissi
 
 import unittest
-
 from pyramid import testing
 from pyramid_robot.layer import Layer
 from webtest import http
 from substanced.db import root_factory
 
+from dace.subscribers import stop_ioloop
 
 class BaseFunctionalTests(object):
 
@@ -18,13 +18,14 @@ class BaseFunctionalTests(object):
         import tempfile
         import os.path
         self.tmpdir = tempfile.mkdtemp()
-        dbpath = os.path.join( self.tmpdir, 'test.db')
-        uri = 'file://' + dbpath
+        dbpath = os.path.join(self.tmpdir, 'test.db')
+        uri = 'file://' + dbpath + '?blobstorage_dir=' + self.tmpdir
         settings = {'zodbconn.uri': uri,
                     'substanced.secret': 'sosecret',
                     'substanced.initial_login': 'admin',
                     'substanced.initial_password': 'admin',
                     'novaideo.secret' : 'seekri1',
+                    'substanced.uploads_tempdir' : self.tmpdir,
                     'novaideo.admin_email': 'admin@example.com',
                     'pyramid.includes': [
                         'substanced',
@@ -49,20 +50,7 @@ class BaseFunctionalTests(object):
 
 
     def tearDown(self):
-        from dace.processinstance import event
-        with event.callbacks_lock:
-            for dc_or_stream in event.callbacks.values():
-                if hasattr(dc_or_stream, 'close'):
-                    dc_or_stream.close()
-                else:
-                    dc_or_stream.stop()
-
-            event.callbacks = {}
-
-        from dace.objectofcollaboration.system import CRAWLERS
-        for crawler in CRAWLERS:
-            crawler.stop()
-
+        stop_ioloop()
         import shutil
         testing.tearDown()
         self.db.close()
