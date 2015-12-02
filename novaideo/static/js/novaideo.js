@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 function collapse_current_collpsein(){
   var current_btn = $(this);
   var btns = $('.navbar-toggle.collapsed');
@@ -211,12 +209,6 @@ $(document).ready(function(){
       initscroll()
   });
 
-=======
-$(document).ready(function(){
->>>>>>> Stashed changes
-=======
-$(document).ready(function(){
->>>>>>> Stashed changes
   $('nav a nav-control').on('click', function(){
       $(".navbar-toggle").click();
   });
@@ -228,8 +220,6 @@ $(document).ready(function(){
   $('.panel-collapse').on('show.bs.collapse', function () {
     $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-minus');
   });
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
   $('.scroll-able.result-scroll').endlessScroll({
       fireOnce: false,
@@ -324,8 +314,4 @@ $(function () {
     });
 });
 
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 });
