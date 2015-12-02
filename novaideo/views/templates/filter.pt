@@ -1,0 +1,19 @@
+<div tal:omit-tag="" tal:define="filterbody filter_body|nothing" i18n:domain="novaideo">
+  <div tal:condition="filterbody" class="filter-container">
+    <div class="filter-btn ${(filter_resul and 'open') or 'closed'}"
+       data-url="${filter_url}"
+       data-filter_source="${filter_source}"
+       data-filter_message="${filter_message}">
+        <span class="glyphicon glyphicon-filter"></span> <span i18n:translate="">Filter</span></div>
+      <div class="filter-form well well-sm ${(not filter_resul and 'hide-bloc')}" >
+        <div class="filter-title"><span class="glyphicon glyphicon-filter"></span> <span i18n:translate="">Filter results</span>
+                 <img class="loading-indicator hide-bloc" src="${request.static_url('novaideo:static/images/progress.gif')}"/>
+          </div>
+       <hr class="soften">
+       ${structure: filterbody}
+      </div>
+      <script>
+        init_filter()
+      </script>
+    </div>
+</div>

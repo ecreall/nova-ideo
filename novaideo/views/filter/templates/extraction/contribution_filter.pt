@@ -1,0 +1,23 @@
+<div tal:omit-tag="" 
+	 i18n:domain="creationculturelle"
+	 tal:define="artists_ids value.get('artists_ids', {});
+	             authors value.get('authors', {})">
+	<h4 class="sub-filter-title"><span class="glyphicon glyphicon-user"></span> ${value.get('title')} <span class="badge" tal:condition="value['negation']">Exclude</span></h4>
+	<dt  i18n:translate="">Authors</dt>
+	<dd >
+		<span i18n:translate="" tal:condition="not authors" style="color:#d9534f">Unspecified value</span>
+		<tal:loop repeat="author authors">
+           <a tal:attributes="href request.resource_url(author, '@@index')">${author.title}</a>
+        <tal:separator condition="not: repeat['author'].end">, </tal:separator> 
+        </tal:loop>
+	</dd>
+
+	<dt  i18n:translate="">Artists</dt>
+	<dd >
+		<span i18n:translate="" tal:condition="not artists_ids" style="color:#d9534f">Unspecified value</span>
+		<tal:loop repeat="artist artists_ids">
+           <a tal:attributes="href request.resource_url(artist, '@@index')">${artist.title}</a>
+        <tal:separator condition="not: repeat['artist'].end">, </tal:separator> 
+        </tal:loop>
+	</dd>
+</div>

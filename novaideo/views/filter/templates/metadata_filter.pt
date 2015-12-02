@@ -1,0 +1,31 @@
+<div tal:omit-tag=""
+	 i18n:domain="creationculturelle" 
+	 tal:define="content_types value.get('content_types', []);
+	             states value.get('states', []);
+	             tree value.get('tree', {})">
+	<h4 class="sub-filter-title"><span class="glyphicon glyphicon-cog"></span> ${value.get('title')} <span class="badge" tal:condition="value['negation']">Exclude</span></h4>
+	<dt  i18n:translate="">Content types</dt>
+	<dd >
+		<span i18n:translate="" tal:condition="not content_types" style="color:#d9534f">Unspecified value</span>
+		<tal:loop repeat="type content_types">
+           ${type}
+        <tal:separator condition="not: repeat['type'].end">, </tal:separator> 
+        </tal:loop>
+	</dd>
+
+	<dt  i18n:translate="">States</dt>
+	<dd >
+		<span i18n:translate="" tal:condition="not states" style="color:#d9534f">Unspecified value</span>
+		<tal:loop repeat="state states">
+           ${state}
+        <tal:separator condition="not: repeat['state'].end">, </tal:separator> 
+        </tal:loop>
+	</dd>
+
+	<dt  i18n:translate="">Categories</dt>
+	<dd >
+		<div class="read-tree"
+           data-source_tree="${tree}"></div>
+	</dd>
+</div>
+

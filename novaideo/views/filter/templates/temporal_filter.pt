@@ -1,0 +1,29 @@
+<div tal:omit-tag=""
+	 i18n:domain="creationculturelle"
+	 tal:define="start_end_dates value.get('start_end_dates', {});
+	             created_date value.get('created_date', {})">
+	<h4 class="sub-filter-title"><span class="glyphicon glyphicon-calendar"></span> ${value.get('title')} <span class="badge" tal:condition="value['negation']">Exclude</span></h4>
+	<dt  i18n:translate="">Schedules</dt>
+	<dd >
+		<dl>
+			<dt  i18n:translate="">Start date</dt>
+			<dd tal:condition="start_end_dates['start_date']"><span tal:replace="layout.to_localized_time(start_end_dates['start_date'], date_only=True)"/></dd>
+			<dd tal:condition="not start_end_dates['start_date']" i18n:translate="">Since always</dd>
+			<dt  i18n:translate="">End date</dt>
+			<dd tal:condition="start_end_dates['end_date']"><span tal:replace="layout.to_localized_time(start_end_dates['end_date'], date_only=True)"/>
+		</dd>
+			<dd tal:condition="not start_end_dates['end_date']" i18n:translate="">Always</dd>
+		</dl>
+	</dd>
+	<dt  i18n:translate="">Creation date</dt>
+	<dd >
+		<dl>
+			<dt  i18n:translate="">Created after</dt>
+			<dd tal:condition="created_date['created_after']"><span tal:replace="layout.to_localized_time(created_date['created_after'], date_only=True)"/></dd>
+			<dd tal:condition="not created_date['created_after']" i18n:translate="">Since always</dd>
+			<dt  i18n:translate="">Created before</dt>
+			<dd tal:condition="created_date['created_before']"><span tal:replace="layout.to_localized_time(created_date['created_before'], date_only=True)"/></dd>
+			<dd tal:condition="not created_date['created_before']" i18n:translate="">Always</dd>
+		</dl>
+	</dd>
+</div>

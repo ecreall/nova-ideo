@@ -1,0 +1,7 @@
+<div i18n:domain="creationculturelle">
+    <tal:loop repeat="body bodies">
+    	<div >
+    		<dl> ${structure:body}</dl>
+        </div>
+    </tal:loop>
+</div>

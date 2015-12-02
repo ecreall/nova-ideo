@@ -1,0 +1,22 @@
+<div class="panel-group" 
+	 id="filter_accordion" 
+	 role="tablist" 
+	 aria-multiselectable="true"
+	 tal:define="len_filters len(bodies)">
+  <tal:loop repeat="(index, body) enumerate(bodies)">
+    <div class="panel panel-success">
+	    <div class="panel-heading" role="tab" id="heading-${index}">
+	      <h4 class="panel-title">
+	        <a role="button" data-toggle="collapse" data-parent="#filter_accordion" href="#collapseOne-${index}" aria-expanded="${len_filters==1 and 'true' or 'false'}" aria-controls="collapseOne">
+	        	<span class="glyphicon glyphicon-filter"></span> <span i18n:translate="">Filter ${index+1}</span>
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseOne-${index}" class="panel-collapse collapse ${len_filters==1 and 'in'}" role="tabpanel" aria-labelledby="heading-${index}">
+	      <div class="panel-body">
+	           ${structure:body}
+	      </div>
+	    </div>
+  	</div>
+  </tal:loop>
+</div>

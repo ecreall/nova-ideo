@@ -1,0 +1,33 @@
+<div tal:omit-tag="" 
+     i18n:domain="creationculturelle"
+     tal:define="country value.get('country', None);
+	             cities value.get('city', []);
+	             zipcode value.get('zipcode', [])">
+	<h4 class="sub-filter-title"><span class="glyphicon glyphicon-map-marker"></span> ${value.get('title')} <span class="badge" tal:condition="value['negation']">Exclude</span></h4>
+	<dt  i18n:translate="">Countries</dt>
+	<dd >
+		<span i18n:translate="" tal:condition="not country" style="color:#d9534f">Unspecified value</span>
+        <span tal:condition="country">${country}</span>
+	</dd>
+
+	<dt  i18n:translate="">Cities</dt>
+	<dd >
+		<span i18n:translate="" tal:condition="not cities" style="color:#d9534f">Unspecified value</span>
+		<tal:loop repeat="city cities">
+           ${city}
+        <tal:separator condition="not: repeat['city'].end">, </tal:separator> 
+        </tal:loop>
+	</dd>
+
+	<dt  i18n:translate="">Zipcodes</dt>
+	<dd >
+		<span i18n:translate="" tal:condition="not zipcode" style="color:#d9534f">Unspecified value</span>
+		<div tal:omit-tag="" tal:condition="zipcode">
+			<span tal:condition="zipcode">Include</span>
+			<tal:loop repeat="zipc zipcode">
+	           ${zipc}
+	        <tal:separator condition="not: repeat['zipc'].end">, </tal:separator> 
+	        </tal:loop>
+        </div>
+	</dd>
+</div>

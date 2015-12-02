@@ -1,0 +1,13 @@
+<div tal:omit-tag=""
+	 i18n:domain="creationculturelle"
+	 tal:define="sources value.get('sources', [])">
+	<h4 class="sub-filter-title"><span class="glyphicon glyphicon-option-horizontal"></span> ${value.get('title')} <span class="badge" tal:condition="value['negation']">Exclude</span></h4>
+	<dt  i18n:translate="">Sites</dt>
+	<dd >
+		<span i18n:translate="" tal:condition="not sources" style="color:#d9534f">Unspecified value</span>
+		<tal:loop repeat="site sources">
+           <a tal:attributes="href request.resource_url(site, '@@index')">${site.title}</a>
+        <tal:separator condition="not: repeat['site'].end">, </tal:separator> 
+        </tal:loop>
+	</dd>
+</div>

@@ -1,0 +1,16 @@
+<div class="btn-group-vertical lateral-menu" role="group">
+  <div tal:omit-tag="" tal:repeat="item items">
+    <a   tal:condition="item['action']" 
+    	 class="btn ${item.get('style_btn', 'btn-warning')} lateral-menu-item"
+    	 href="${item['action'].url(request.root)}">
+    	<span class="${item['style_picto']}"></span> ${item['title']}
+    </a>
+
+    <a  tal:condition="item['action'] is None and item['unavailable_link'] is not None"
+    	 class="btn ${item.get('style_btn', 'btn-warning')} ${not item['unavailable_link'] and 'disabled' or ''} lateral-menu-item "
+    	 href="${request.resource_url(request.root, item['unavailable_link'])}">
+    	<span class="${item['style_picto']}"></span> ${item['title']}
+    </a>
+  </div>
+</div>
+

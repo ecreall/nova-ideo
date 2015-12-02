@@ -1,0 +1,10 @@
+<div tal:omit-tag="" 
+	 i18n:domain="creationculturelle"
+	 tal:define="text_to_search value.get('text_to_search', '');">
+	 <h4><span class="glyphicon glyphicon-pencil"></span> ${value.get('title')} <span class="badge" tal:condition="value['negation']">Exclude</span></h4>
+	<dt  i18n:translate="">Text</dt>
+	<dd >
+		<span i18n:translate="" tal:condition="not text_to_search" style="color:#d9534f">Unspecified value</span>
+		${text_to_search}
+	</dd>
+</div>
