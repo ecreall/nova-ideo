@@ -32,6 +32,10 @@ class DuplicateIdeaView(FormView):
     behaviors = [DuplicateIdea, Cancel]
     formid = 'formduplicateidea'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
     def default_data(self):
         return self.context
