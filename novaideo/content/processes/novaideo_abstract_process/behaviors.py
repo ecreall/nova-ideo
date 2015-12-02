@@ -10,16 +10,14 @@ from pyramid.httpexceptions import HTTPFound
 from persistent.list import PersistentList
 
 from dace.objectofcollaboration.principal.util import (
-    has_role,  
+    has_role,
     get_current)
 from dace.interfaces import IEntity
 from dace.processinstance.activity import InfiniteCardinality
 
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.content.interface import INovaIdeoApplication
-from novaideo.core import can_access
 from novaideo import _
-
 
 
 def select_roles_validation(process, context):
@@ -27,9 +25,8 @@ def select_roles_validation(process, context):
 
 
 def select_processsecurity_validation(process, context):
-    user =  get_current()
-    return can_access(user, context) and \
-           not (context in getattr(user, 'selections', [])) and \
+    user = get_current()
+    return not (context in getattr(user, 'selections', [])) and \
            global_user_processsecurity(process, context)
 
 
@@ -44,7 +41,7 @@ class SelectEntity(InfiniteCardinality):
     processsecurity_validation = select_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        user =  get_current()
+        user = get_current()
         user.addtoproperty('selections', context)
         return {}
 
@@ -57,9 +54,8 @@ def deselect_roles_validation(process, context):
 
 
 def deselect_processsecurity_validation(process, context):
-    user =  get_current()
-    return can_access(user, context) and \
-           (context in getattr(user, 'selections', [])) and \
+    user = get_current()
+    return (context in getattr(user, 'selections', [])) and \
            global_user_processsecurity(process, context)
 
 
@@ -78,7 +74,7 @@ class DeselectEntity(InfiniteCardinality):
     processsecurity_validation = deselect_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        user =  get_current()
+        user = get_current()
         user.delfromproperty('selections', context)
         return {}
 

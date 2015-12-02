@@ -9,19 +9,18 @@ import colander
 import deform
 from pyramid.view import view_config
 
+from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import find_entities
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.form import FormView
 from pontus.schema import select, Schema
-from pontus.widget import Select2Widget, Length
+from pontus.widget import AjaxSelect2Widget, Length
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 
-from novaideo.content.processes.idea_management.behaviors import  PresentIdea
+from novaideo.content.processes.idea_management.behaviors import PresentIdea
 from novaideo.content.idea import Idea
-from novaideo.content.interface import IPerson
-from novaideo import _
+from novaideo import _, log
 from novaideo.mail import PRESENTATION_IDEA_MESSAGE, PRESENTATION_IDEA_SUBJECT
 
 
@@ -29,7 +28,6 @@ try:
     basestring
 except NameError:
     basestring = str
-
 
 
 PRESENT_MESSAGE = {'0': _(u"""Aucune personne contactée"""),
@@ -45,7 +43,6 @@ class SentToView(BasicView):
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     viewid = 'sentto'
 
-
     def update(self):
         members = self.context.persons_contacted
         len_members = len(members)
@@ -58,28 +55,44 @@ class SentToView(BasicView):
                    index)
         result = {}
         values = {
-                'message': message,
-                'members': members,
-                'basestring': basestring,
-               }
+            'message': message,
+            'members': members,
+            'basestring': basestring,
+        }
         self.message = message
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
 @colander.deferred
 def members_choice(node, kw):
     context = node.bindings['context']
+    request = node.bindings['request']
     values = []
-    user = get_current()
-    prop = list(find_entities([IPerson], states=['active']))
-    if user in prop:
-        prop.remove(user)
-        
-    values = [(i, i.name) for i in prop]
-    return Select2Widget(values=values, create=True, multiple=True)
+    ajax_url = request.resource_url(context,
+                                    '@@novaideoapi',
+                                    query={'op': 'find_user'})
+
+    def title_getter(oid):
+        try:
+            obj = get_obj(int(oid), None)
+            if obj:
+                return obj.title
+            else:
+                return oid
+        except Exception as e:
+            log.warning(e)
+            return oid
+
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        multiple=True,
+        create=True,
+        title_getter=title_getter,
+        )
 
 
 @colander.deferred
@@ -96,16 +109,16 @@ def default_message(node, kw):
     url = request.resource_url(context, "@@index")
     user = get_current()
     return PRESENTATION_IDEA_MESSAGE.format(
-                recipient_title='',
-                recipient_first_name='',
-                recipient_last_name='',
-                subject_url=url,
-                subject_title=getattr(context, 'title', context.name),
-                my_title=localizer.translate(_(getattr(user, 'user_title',''))),
-                my_first_name=getattr(user, 'first_name', user.name),
-                my_last_name=getattr(user, 'last_name',''),
-                novaideo_title=request.root.title
-                 )
+        recipient_title='',
+        recipient_first_name='',
+        recipient_last_name='',
+        subject_url=url,
+        subject_title=getattr(context, 'title', context.name),
+        my_title=localizer.translate(_(getattr(user, 'user_title', ''))),
+        my_first_name=getattr(user, 'first_name', user.name),
+        my_last_name=getattr(user, 'last_name', ''),
+        novaideo_title=request.root.title
+    )
 
 
 @colander.deferred
@@ -114,24 +127,24 @@ def emails_validator(node, kw):
     validator = colander.Email()
     for email in new_emails:
         validator(node, email)
-    
+
 
 class PresentIdeaSchema(Schema):
 
     members = colander.SchemaNode(
         colander.Set(),
         widget=members_choice,
-        validator = colander.All(
-                      Length(_, min=1,
-                             min_message="""Vous devez sélectionner """
-                                """au moins {min} membre, ou saisir {min}"""
-                                """ adresse courrier électronique."""),
-                      emails_validator),
+        validator=colander.All(
+            Length(_, min=1,
+                   min_message="""Vous devez sélectionner """
+                               """au moins {min} membre, ou saisir {min}"""
+                               """ adresse courrier électronique."""),
+            emails_validator),
 
         title=_('Recipients')
         )
 
-    subject =  colander.SchemaNode(
+    subject = colander.SchemaNode(
         colander.String(),
         default=default_subject,
         title=_('Subject'),
@@ -144,11 +157,11 @@ class PresentIdeaSchema(Schema):
         widget=deform.widget.TextAreaWidget(rows=10, cols=60),
         )
 
-    send_to_me =  colander.SchemaNode(
+    send_to_me = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
         label=_('Send to me'),
-        title ='',
+        title='',
         missing=False
         )
 
@@ -156,18 +169,19 @@ class PresentIdeaSchema(Schema):
 class PresentIdeaFormView(FormView):
 
     title = _('Submit the idea to others')
-    schema = select(PresentIdeaSchema(), 
+    schema = select(PresentIdeaSchema(),
                     ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentIdea]
     formid = 'formpresentideaform'
     name = 'presentideaform'
 
     def before_update(self):
-        formwidget = deform.widget.FormWidget(css_class='controled-form', 
-                                activable=True,
-                                button_css_class="pull-right",
-                                picto_css_class="glyphicon glyphicon-envelope",
-                                button_title=_("Present"))
+        formwidget = deform.widget.FormWidget(
+            css_class='controled-form',
+            activable=True,
+            button_css_class="pull-right",
+            picto_css_class="glyphicon glyphicon-envelope",
+            button_title=_("Present"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 
@@ -195,4 +209,5 @@ class PresentIdeaView(MultipleView):
         return message
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({PresentIdea:PresentIdeaView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {PresentIdea: PresentIdeaView})

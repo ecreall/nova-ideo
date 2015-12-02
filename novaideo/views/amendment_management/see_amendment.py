@@ -95,7 +95,7 @@ class DetailAmendmentView(BasicView):
                 'end_explanation':self._end_explanation(global_actions)
                }
         self._add_requirements(user)
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive

@@ -1,9 +1,10 @@
-<div class="thumbnail right-caption span4 search-item"  i18n:domain="novaideo">
+<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="novaideo"
+  tal:define="icon getattr(object, 'icon')">
   <div >
     <img tal:condition="object.logo" tal:attributes="src object.logo.url"  width="300"/>
   </div>
   <div class="caption">
-    <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h3><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title} </h3></a>
     <p class="text-muted" tal:condition="object.description">
              <small  >${object.description}</small>
     </p>

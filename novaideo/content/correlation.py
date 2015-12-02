@@ -13,16 +13,15 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
+from dace.util import get_obj, getSite
 from dace.descriptors import SharedUniqueProperty, SharedMultipleProperty
-from dace.util import find_entities, getSite
-from dace.objectofcollaboration.principal.util import get_current
 from pontus.core import VisualisableElementSchema
-from pontus.widget import Select2Widget
+from pontus.widget import Select2Widget, AjaxSelect2Widget
 from pontus.file import Object as ObjectType
 
-from .interface import ICorrelation, ICorrelableEntity
-from novaideo.core import Commentable, can_access
-from novaideo import _
+from .interface import ICorrelation
+from novaideo.core import Commentable
+from novaideo import _, log
 
 
 class CorrelationType:
@@ -34,23 +33,35 @@ class CorrelationType:
 def targets_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
-    root = getSite()
-    user = get_current()
     values = []
-    entities = find_entities([ICorrelableEntity], 
-        states=('archived',), not_any=True)
-    values = [(i, i.title) for i in entities \
-              if can_access(user, i, request, root)] #i.actions
-    values.remove((context, context.title))
-    values = sorted(values, key=lambda p: p[1])
-    return Select2Widget(values=values, multiple=True, min_len=1)
+    ajax_url = request.resource_url(context,
+                                    '@@novaideoapi',
+                                    query={'op': 'find_correlable_entity'})
+
+    def title_getter(oid):
+        try:
+            obj = get_obj(int(oid), None)
+            if obj:
+                return obj.title
+            else:
+                return oid
+        except Exception as e:
+            log.warning(e)
+            return oid
+
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        multiple=True,
+        title_getter=title_getter,
+        )
 
 
 @colander.deferred
 def intention_choice(node, kw):
     root = getSite()
     intentions = sorted(root.correlation_intentions)
-    values = [(i, i) for i in intentions ]
+    values = [(i, i) for i in intentions]
     values.insert(0, ('', _('- Select -')))
     return Select2Widget(values=values)
 
@@ -82,7 +93,7 @@ class CorrelationSchema(VisualisableElementSchema):
     targets = colander.SchemaNode(
         ObjectType(),
         widget=targets_choice,
-        validator = colander.Length(min=1),
+        validator=colander.Length(min=1),
         title=_('Targets'),
         )
 
@@ -109,5 +120,5 @@ class Correlation(Commentable):
     def ends(self):
         """Return the ends of the correlation"""
         result = list(self.targets)
-        result .append(self.source) 
+        result .append(self.source)
         return result

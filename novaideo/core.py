@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -8,12 +8,16 @@ import colander
 import venusian
 from persistent.list import PersistentList
 from zope.interface import implementer
-from pyramid.threadlocal import get_current_request
+from pyramid.threadlocal import get_current_request, get_current_registry
 
+from substanced.util import get_oid
 from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
 from substanced.util import renamer
+from substanced.content import content
 
+from dace.objectofcollaboration.principal.role import DACE_ROLES
+from dace.objectofcollaboration.principal.util import get_access_keys
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import (
     SharedUniqueProperty,
@@ -25,7 +29,7 @@ from pontus.schema import Schema
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import RichTextWidget, Select2Widget
 
-from novaideo import _
+from novaideo import _, ACCESS_ACTIONS
 from novaideo.content.interface import (
     IVersionableEntity,
     IDuplicableEntity,
@@ -36,9 +40,9 @@ from novaideo.content.interface import (
     IFile)
 
 
-
 BATCH_DEFAULT_SIZE = 100
 
+SEARCHABLE_CONTENTS = {}
 
 NOVAIDO_ACCES_ACTIONS = {}
 
@@ -50,17 +54,22 @@ def to_localized_time(date, date_only=False):
         return date.strftime('%d/%m/%Y %H:%M')
 
 
-class acces_action(object):
-    """ Decorator for novaideo access actions. 
+class access_action(object):
+    """ Decorator for creationculturelle access actions.
     An access action allows to view an object"""
+
+    def __init__(self, access_key=None):
+        self.access_key = access_key
 
     def __call__(self, wrapped):
         def callback(scanner, name, ob):
-            if ob.context in NOVAIDO_ACCES_ACTIONS:
-                NOVAIDO_ACCES_ACTIONS[ob.context].append(ob)
-            else: 
-                NOVAIDO_ACCES_ACTIONS[ob.context] = [ob]
- 
+            if ob.context in ACCESS_ACTIONS:
+                ACCESS_ACTIONS[ob.context].append({'action': ob,
+                                                   'access_key': self.access_key})
+            else:
+                ACCESS_ACTIONS[ob.context] = [{'action': ob,
+                                               'access_key': self.access_key}]
+
         venusian.attach(wrapped, callback)
         return wrapped
 
@@ -68,9 +77,68 @@ class acces_action(object):
 def can_access(user, context, request=None, root=None):
     """ Return 'True' if the user can access to the context"""
     declared = context.__provides__.declared[0]
-    for action in NOVAIDO_ACCES_ACTIONS.get(declared, []):
-        if action.processsecurity_validation(None, context):
+    for data in ACCESS_ACTIONS.get(declared, []):
+        if data['action'].processsecurity_validation(None, context):
             return True
+
+    return False
+
+
+_marker = object()
+
+
+def serialize_roles(roles, root=None):
+    result = []
+    principal_root = getSite()
+    if principal_root is None:
+        return []
+
+    if root is None:
+        root = principal_root
+
+    root_oid = str(get_oid(root, ''))
+    principal_root_oid = str(get_oid(principal_root, ''))
+    for role in roles:
+        if isinstance(role, tuple):
+            obj_oid = str(get_oid(role[1], ''))
+            result.append((role[0]+'_'+obj_oid).lower())
+            superiors = getattr(DACE_ROLES.get(role[0], _marker),
+                                'all_superiors', [])
+            result.extend([(r.name+'_'+obj_oid).lower()
+                           for r in superiors])
+        else:
+            result.append(role.lower()+'_'+root_oid)
+            superiors = getattr(DACE_ROLES.get(role, _marker),
+                                'all_superiors', [])
+            result.extend([(r.name+'_'+root_oid).lower() for r in
+                           superiors])
+
+        for superior in superiors:
+            if superior.name == 'Admin':
+                result.append('admin_'+principal_root_oid)
+                break
+
+    return list(set(result))
+
+
+def generate_access_keys(user, root):
+    root_oid = str(get_oid(root))
+    access_keys = get_access_keys(
+        user, root=root)
+    root_keys = [a for a in access_keys if a.endswith(root_oid)]
+    root_roles = [(a, a.replace('_'+root_oid, '')) for a in root_keys]
+    local_keys = list(set(access_keys) - set(root_keys))
+
+    def is_valid(role, local_keys):
+        return role == 'admin' or\
+            any(a.startswith(role)
+                for a in local_keys)
+
+    valid_root_keys = [a for a, role in root_roles
+                       if is_valid(role, local_keys)]
+    valid_access_keys = local_keys
+    valid_access_keys.extend(valid_root_keys)
+    return valid_access_keys
 
 
 @implementer(ICommentable)
@@ -112,7 +180,7 @@ class VersionableEntity(Entity):
 
     def destroy(self):
         """Remove branch"""
-        
+
         if self.version:
             self.version.destroy()
 
@@ -136,7 +204,7 @@ def keywords_choice(node, kw):
     values = [(i.title, i.title) for i in prop]
     return Select2Widget(max_len=5,
                          values=values,
-                         create=True, 
+                         create=True,
                          multiple=True)
 
 
@@ -167,7 +235,8 @@ class SearchableEntitySchema(Schema):
 class SearchableEntity(Entity):
     """ A Searchable entity is an entity that can be searched"""
 
-    result_template = 'novaideo:templates/views/default_result.pt'
+    templates = {'default': 'novaideo:templates/views/default_result.pt',
+                 'bloc': 'novaideo:templates/views/default_result.pt'}
     keywords_ref = SharedMultipleProperty('keywords_ref', 'referenced_elements')
 
     @property
@@ -177,6 +246,31 @@ class SearchableEntity(Entity):
     @property
     def is_published(self):
         return 'published' in self.state
+
+    @property
+    def relevant_data(self):
+        return [getattr(self, 'title', ''),
+                getattr(self, 'description', ''),
+                ', '.join(self.keywords)]
+
+    def _init_presentation_text(self):
+        pass
+
+    def get_release_date(self):
+        return getattr(self, 'release_date', self.modified_at)
+
+    def presentation_text(self, nb_characters=400):
+        return getattr(self, 'description', "")[:nb_characters]+'...'
+
+    def get_visibility_filter(self):
+        registry = get_current_registry()
+        return {
+            'metadata_filter': {
+                'keywords': list(self.keywords),
+                'content_types': [registry.content.typeof(self)],
+                'states': list(getattr(self, 'state', []))
+            }
+        }
 
 
 @implementer(IPresentableEntity)
@@ -235,16 +329,22 @@ class FileSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     text = colander.SchemaNode(
         colander.String(),
-        widget= RichTextWidget(),
+        widget=RichTextWidget(),
         title=_("Text")
         )
 
 
+@content(
+    'file',
+    icon='icon novaideo-icon icon-user',
+    )
 @implementer(IFile)
 class FileEntity(SearchableEntity):
     """ A file entity is an entity that can be searched"""
 
-    result_template = 'novaideo:views/templates/file_result.pt'
+    icon = "glyphicon glyphicon-file"
+    templates = {'default': 'novaideo:views/templates/file_result.pt'}
+    type_title = _('File')
 
     def __init__(self, **kwargs):
         super(FileEntity, self).__init__(**kwargs)

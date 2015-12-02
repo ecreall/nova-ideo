@@ -53,7 +53,7 @@ class RelatedIdeasView(BasicView):
                 'items': ideas,
                 'target' : target
                }
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
@@ -70,7 +70,7 @@ class PublishAsProposalStudyReport(BasicView):
 
     def update(self):
         result = {}
-        body = self.content(result={}, template=self.template)['body']
+        body = self.content(args={}, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result

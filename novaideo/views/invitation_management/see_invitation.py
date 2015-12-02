@@ -78,7 +78,7 @@ class SeeInvitationView(BasicView):
                 'organization': getattr(invitation, 'organization', None),
                 'state': get_states_mapping(user, invitation, state)
                }
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = action_updated

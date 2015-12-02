@@ -17,14 +17,14 @@ from dace.processinstance.activity import (
 from novaideo.content.interface import INovaIdeoApplication, IProposal
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.core import acces_action
+from novaideo.core import access_action, serialize_roles
 
 
 def search_processsecurity_validation(process, context):
     return True
 
 
-@acces_action()
+@access_action()
 class Search(InfiniteCardinality):
     isSequential = False
     context = INovaIdeoApplication
@@ -134,12 +134,21 @@ class SeeMySupports(InfiniteCardinality):
         return {}
 
 
-def seeproposal_processsecurity_validation(process, context):
-    return not ('draft' in context.state) or \
-           has_role(role=('Owner', context))
-           
+def get_access_key(obj):
+    if 'draft' not in obj.state:
+        return ['always']
+    else:
+        result = serialize_roles(
+            (('Owner', obj), 'Admin', 'Moderator'))
+        return result
 
-@acces_action()
+
+def seeproposal_processsecurity_validation(process, context):
+    return 'draft' not in context.state or \
+           has_role(role=('Owner', context))
+
+
+@access_action(access_key=get_access_key)
 class SeeProposal(InfiniteCardinality):
     title = _('Details')
     context = IProposal

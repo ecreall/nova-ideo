@@ -45,8 +45,8 @@ class SeeFilesView(BasicView):
         result_body = []
         for obj in batch:
             object_values = {'object': obj}
-            body = self.content(result=object_values, 
-                                template=obj.result_template)['body']
+            body = self.content(args=object_values, 
+                                template=obj.templates.get('default'))['body']
             result_body.append(body)
 
         result = {}
@@ -55,7 +55,7 @@ class SeeFilesView(BasicView):
                 'length': len_result,
                 'batch': batch,
                }
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result

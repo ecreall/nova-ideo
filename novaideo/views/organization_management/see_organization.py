@@ -45,7 +45,7 @@ class SeeOrganizationView(BasicView):
         resources = actions_navbar['modal-action']['resources']
         values = {'object': self.context,
                   'navbar_body': navbar_body_getter(self, actions_navbar)}
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive

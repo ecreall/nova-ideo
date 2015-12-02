@@ -6,6 +6,19 @@
 
 from zope.interface import Interface
 
+from dace.interfaces import Attribute, IEntity as IEntityO
+
+from novaideo.utilities.data_manager import (
+    interface_config,
+    OBJECTTYPE,
+    IMAGETYPE,
+    FILETYPE,
+    file_deserializer)
+
+
+class IEntity(IEntityO):
+    pass
+
 
 class ICorrection(Interface):
     pass
@@ -51,7 +64,7 @@ class IDuplicableEntity(Interface):
     pass
 
 
-class ISearchableEntity(Interface):
+class ISearchableEntity(IEntity):
     pass
 
 
@@ -78,6 +91,7 @@ class Iidea(ICommentable,
             ICorrelableEntity,
             IPresentableEntity):
     pass
+
 
 class IFile(ISearchableEntity):
     pass

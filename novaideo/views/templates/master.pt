@@ -69,6 +69,10 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/novaideo.js')}"
           type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/admin_nav.js')}"
+          type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/filter.js')}"
+          type="text/javascript"></script>
     <script src="${su('novaideo:static/js/steps.js')}"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/contextual_help.js')}"
@@ -132,6 +136,7 @@
           </div>
 
           <div class="col-md-3 column ui-sortable novaideo-right">
+            ${panel('lateral_menu')}
              ${panel('contextual_help')}
              <div metal:define-slot="right"></div>
           </div>

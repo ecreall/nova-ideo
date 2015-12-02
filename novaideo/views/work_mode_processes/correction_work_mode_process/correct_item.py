@@ -40,7 +40,7 @@ class CorrectItemView(BasicView):
                 'text': self.context.get_adapted_text(get_current()),
                 'description': self.context.get_adapted_description(user),
                }
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result

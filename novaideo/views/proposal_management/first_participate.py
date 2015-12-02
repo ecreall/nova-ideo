@@ -38,7 +38,7 @@ class FirstParticipateViewStudyReport(BasicView):
         values = {'context': self.context, 
                   'duration_ballot_report': duration_ballot_report,
                   'vp_ballot_report': vp_ballot,}
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result

@@ -30,7 +30,7 @@ from ..user_management.behaviors import global_user_processsecurity
 from novaideo import _
 from novaideo.content.amendment import Amendment
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
-from novaideo.core import acces_action
+from novaideo.core import access_action, serialize_roles
 from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea, 
     CommentIdea, 
@@ -47,20 +47,20 @@ except NameError:
 
 def get_text_amendment_diff(proposal, amendment):
     text_analyzer = get_current_registry().getUtility(
-                                 ITextAnalyzer,'text_analyzer')
-    soup, textdiff =  text_analyzer.render_html_diff(
-                            getattr(proposal, 'text', ''), 
-                            getattr(amendment, 'text', ''))
+        ITextAnalyzer, 'text_analyzer')
+    soup, textdiff = text_analyzer.render_html_diff(
+        getattr(proposal, 'text', ''),
+        getattr(amendment, 'text', ''))
     return textdiff
 
 
 def get_text_amendment_diff_explanation(amendment, request, process):
     text_analyzer = get_current_registry().getUtility(
-                             ITextAnalyzer, 'text_analyzer')
+        ITextAnalyzer, 'text_analyzer')
     amendment_viewer = get_current_registry().getUtility(
-                             IAmendmentViewer, 'amendment_viewer')
+        IAmendmentViewer, 'amendment_viewer')
     souptextdiff, explanations = amendment_viewer.get_explanation_diff(
-                                                        amendment, request)
+        amendment, request)
     amendment_viewer.add_actions(explanations, process, amendment,
                                  request, souptextdiff)
     return explanations, text_analyzer.soup_to_text(souptextdiff)
@@ -68,11 +68,11 @@ def get_text_amendment_diff_explanation(amendment, request, process):
 
 def get_text_amendment_diff_submitted(amendment, request):
     text_analyzer = get_current_registry().getUtility(
-                             ITextAnalyzer, 'text_analyzer')
+        ITextAnalyzer, 'text_analyzer')
     amendment_viewer = get_current_registry().getUtility(
-                             IAmendmentViewer, 'amendment_viewer')
+        IAmendmentViewer, 'amendment_viewer')
     souptextdiff, explanations = amendment_viewer.get_explanation_diff(
-                                                    amendment, request)
+        amendment, request)
     amendment_viewer.add_details(explanations, amendment, request, souptextdiff)
     return explanations, text_analyzer.soup_to_text(souptextdiff)
 
@@ -135,8 +135,8 @@ class DuplicateAmendment(InfiniteCardinality):
         copy_of_amendment.text_diff = get_text_amendment_diff(
                                            context.proposal, copy_of_amendment)
         copy_of_amendment.reindex()
-        context.proposal._amendments_counter = getattr(context.proposal, 
-                                                 '_amendments_counter', 1) + 1
+        context.proposal._amendments_counter = getattr(
+            context.proposal, '_amendments_counter', 1) + 1
         context.reindex()
         return {'newcontext': copy_of_amendment}
 
@@ -183,12 +183,12 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) 
+    return global_user_processsecurity(process, context)
 
 
 def edit_state_validation(process, context):
     return 'draft' in context.state and \
-           'explanation' not in context.state 
+           'explanation' not in context.state
 
 
 class EditAmendment(InfiniteCardinality):
@@ -214,7 +214,7 @@ class EditAmendment(InfiniteCardinality):
         context.set_data(appstruct)
         context.text = normalize_text(context.text)
         context.text_diff = get_text_amendment_diff(
-                                   context.proposal, context)
+            context.proposal, context)
         context.reindex()
         return {}
 
@@ -251,13 +251,13 @@ class ExplanationAmendment(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.append('explanation')
         explanations, text_diff = get_text_amendment_diff_explanation(
-                                   context, request, self.process)
-        context.explanations = PersistentDict(explanations) 
+            context, request, self.process)
+        context.explanations = PersistentDict(explanations)
         context.text_diff = text_diff
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index")) 
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 def expitem_state_validation(process, context):
@@ -278,7 +278,7 @@ class ExplanationItem(InfiniteCardinality):
 
     def _add_css_item(self, context, item):
         text_analyzer = get_current_registry().getUtility(
-                                 ITextAnalyzer,'text_analyzer')
+            ITextAnalyzer, 'text_analyzer')
         soup = BeautifulSoup(context.text_diff)
         tag_item = soup.find('button', {'data-target': '#'+str(item)})
         if tag_item and self.item_css_off in tag_item['class']:
@@ -289,7 +289,7 @@ class ExplanationItem(InfiniteCardinality):
 
     def _remove_css_item(self, context, item):
         text_analyzer = get_current_registry().getUtility(
-                                 ITextAnalyzer,'text_analyzer')
+            ITextAnalyzer, 'text_analyzer')
         soup = BeautifulSoup(context.text_diff)
         tag_item = soup.find('button', {'data-target': '#'+str(item)})
         if tag_item and self.item_css_on in tag_item['class']:
@@ -345,25 +345,26 @@ class SubmitAmendment(InfiniteCardinality):
     roles_validation = pub_roles_validation
     processsecurity_validation = pub_processsecurity_validation
     state_validation = pub_state_validation
-   
 
     def _get_amendment_text(self, context, group):
         text_analyzer = get_current_registry().getUtility(
-                                 ITextAnalyzer, 'text_analyzer')
+            ITextAnalyzer, 'text_analyzer')
         items = [str(e['oid']) for e in group]
         soup = BeautifulSoup(context.text_diff)
-        allexplanations = soup.find_all('span', {'id':'explanation'})
-        explanations = [tag for tag in allexplanations 
-                        if not (tag['data-item'] in items)]
-        blocstodel = ('span', {'id':'explanation_action'})
-        soup = text_analyzer.include_diffs(soup, explanations,
-                        "ins", "del", blocstodel)
-        explanations = [tag for tag in allexplanations 
-                        if (tag['data-item'] in items)]
-        soup = text_analyzer.include_diffs(soup, explanations,
-                        "del", "ins", blocstodel)
-        allmodal = [ m for m in soup.find_all('div', {'class':'modal'}) 
-                     if m['id'].endswith("explanation_modal")]
+        allexplanations = soup.find_all('span', {'id': 'explanation'})
+        explanations = [tag for tag in allexplanations
+                        if tag['data-item'] not in items]
+        blocstodel = ('span', {'id': 'explanation_action'})
+        soup = text_analyzer.include_diffs(
+            soup, explanations,
+            "ins", "del", blocstodel)
+        explanations = [tag for tag in allexplanations
+                        if tag['data-item'] in items]
+        soup = text_analyzer.include_diffs(
+            soup, explanations,
+            "del", "ins", blocstodel)
+        allmodal = [m for m in soup.find_all('div', {'class': 'modal'})
+                    if m['id'].endswith("explanation_modal")]
         for modal in allmodal:
             modal.extract()
 
@@ -372,7 +373,7 @@ class SubmitAmendment(InfiniteCardinality):
 
     def _get_explanation_data(self, context, group):
         data = {
-            'title': group['title'] ,
+            'title': group['title'],
             'text': self._get_amendment_text(context, group['explanations']),
             'description': context.description,
             'justification': group.get('justification', '')
@@ -400,15 +401,15 @@ class SubmitAmendment(InfiniteCardinality):
             i += 1
 
         explanations, text_diff = get_text_amendment_diff_submitted(
-                                                amendment, request)
-        amendment.explanations = PersistentDict(explanations) 
+            amendment, request)
+        amendment.explanations = PersistentDict(explanations)
         amendment.text_diff = text_diff
         amendment.reindex()
         self._publish_ideas(amendment)
 
     def _publish_ideas(self, amendment):
-        for idea in [i for i in amendment.get_used_ideas() \
-                     if not('published' in i.state)]:
+        for idea in [i for i in amendment.get_used_ideas()
+                     if 'published' not in i.state]:
             idea.state = PersistentList(['published'])
             idea.reindex()
 
@@ -416,16 +417,16 @@ class SubmitAmendment(InfiniteCardinality):
         single_amendment = appstruct['single_amendment']
         groups = []
         if single_amendment:
-            group = {'title': context.title, 
-                    'explanations': list(context.explanations.values()),
-                    'justification': appstruct.get('justification', '')}
-            groups = [group]             
+            group = {'title': context.title,
+                     'explanations': list(context.explanations.values()),
+                     'justification': appstruct.get('justification', '')}
+            groups = [group]
         else:
             groups = appstruct['groups']
             for group in groups:
-                group['explanations'] = [context.explanations[e] 
+                group['explanations'] = [context.explanations[e]
                                          for e in group['explanations']]
-            
+
         context.state.remove('draft')
         context.state.remove('explanation')
         if len(groups) == 1:
@@ -436,17 +437,17 @@ class SubmitAmendment(InfiniteCardinality):
             context.set_data(data)
             context.state.append('published')
             explanations, text_diff = get_text_amendment_diff_submitted(
-                                                       context, request)
-            context.explanations = PersistentDict(explanations) 
+                context, request)
+            context.explanations = PersistentDict(explanations)
             context.text_diff = text_diff
             self._publish_ideas(context)
         else:
             for group in groups:
                 self._add_sub_amendment(context, request, group)
-                
+
             context.state.append('archived')
 
-        context.reindex()         
+        context.reindex()
         return {}
 
     def redirect(self, context, request, **kw):
@@ -503,20 +504,32 @@ class Associate(AssociateIdea):
     processsecurity_validation = associate_processsecurity_validation
 
 
+def get_access_key(obj):
+    result = []
+    if 'published' in obj.state:
+        result = serialize_roles(
+            (('Participant', obj.proposal), 'Moderator', 'Admin'))
+    elif 'draft' in obj.state:
+        result = serialize_roles(
+            (('Owner', obj), 'Moderator', 'Admin'))
+
+    return result
+
+
 def seeamendment_processsecurity_validation(process, context):
     return ('published' in context.state and \
             has_role(role=('Participant', context.proposal))) or \
            ('draft' in context.state and has_role(role=('Owner', context)))
 
 
-@acces_action()
+@access_action(access_key=get_access_key)
 class SeeAmendment(InfiniteCardinality):
     """SeeAmendment is the behavior allowing access to context"""
-    
+
     title = _('Details')
     context = IAmendment
     actionType = ActionType.automatic
-    processsecurity_validation = seeamendment_processsecurity_validation  
+    processsecurity_validation = seeamendment_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return {}

@@ -1,31 +1,19 @@
-<nav class="navbar navbar-inverse navbar-bottom" >
+<nav class="collapse navbar-collapse navbar-access-collapse navbar navbar-inverse navbar-bottom" >
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2"></div>
       <div class="access-menu col-md-7">
         <div class="container-fluid">
           <div class="navbar-collapse">
-            <ul tal:condition="actions['menu2']"  class="nav navbar-nav">
-               <li tal:repeat="(k, a) actions['menu1'].items()" class="menu-item">
-                  <a class="${(request.view_name == actions['menu1'][k]['view_name']) and 'active'} ${((actions['menu1'][k]['url']  is None) and 'disabled') or ''}" href="${actions['menu1'][k]['url']}" tal:define="action actions['menu1'][k]['action']">
+            <ul tal:condition="actions"  class="nav navbar-nav">
+               <li tal:repeat="(k, a) actions.items()" class="menu-item">
+                  <a class="${(request.view_name == actions[k]['view_name']) and 'active'} ${((actions[k]['url']  is None) and 'disabled') or ''}" href="${actions[k]['url']}" tal:define="action actions[k]['action']">
                      ${k}  <span tal:condition="action is not None" class="badge">${action.contents_nb()}</span>  
-                  </a>
-               </li>
-               <li tal:repeat="(k, a) actions['menu2'].items()" class="menu-item">
-                  <a class="${(request.view_name == actions['menu2'][k]['view_name']) and 'active'} ${((actions['menu2'][k]['url'] is None) and 'disabled') or ''}"  href="${actions['menu2'][k]['url'] }" tal:define="action actions['menu2'][k]['action']">
-                     ${k}  <span tal:condition="action is not None" class="badge">${action.contents_nb()}</span>
                   </a>
                </li>
             </ul>
           </div>
         </div>
-      </div>
-      <div class="col-md-3"  style="padding-right: 0px; padding-left: 0px">
-              <div tal:omit-tag="" tal:define="k list(actions['menu3'].keys())[0]; a actions['menu3'][k]['url'] ">
-                  <a class="add-idea-btn btn btn-success ${((a is None) and 'disabled') or ''}"  href="${a}" >
-                     <span class="novaideo-icon icon-idea"></span> ${k}
-                  </a>
-              </div>
       </div>
     </div>
 </div>

@@ -101,7 +101,9 @@ class OrganizationSchema(VisualisableElementSchema):
 class Organization(VisualisableElement, Entity):
     """Organization class"""
 
-    result_template = 'novaideo:views/templates/organization_result.pt'
+    templates = {
+        'default': 'novaideo:views/templates/organization_result.pt'
+    }
     name = renamer()
     members = SharedMultipleProperty('members', 'organization')
     logo = CompositeUniqueProperty('logo')

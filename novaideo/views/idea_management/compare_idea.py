@@ -73,7 +73,7 @@ class DiffView(BasicView):
                 'descriptiondiff':descriptiondiff,
                 'keywordsdiff':keywordsdiff
                }
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result

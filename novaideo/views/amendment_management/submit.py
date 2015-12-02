@@ -150,7 +150,7 @@ class SubmitAmendmentViewStudyReport(BasicView):
         values = {'context': self.context,
                   'explanationtext': text_diff,
                   'ideas': not_published_ideas}
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result

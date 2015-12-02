@@ -1,56 +1,14 @@
-function init_admin_nav(){
-   var adminnav = $('#adminnavbar');
-   var actions = $(adminnav.find('ul').first());
-   if (!actions.hasClass('hide-bloc')){
-     var menueheight = actions.height()+5;
-     adminnav.css({'height': menueheight+'px'});
-   }else{
-     adminnav.css({'height': '180px'});
-   }
+function collapse_current_collpsein(){
+  var current_btn = $(this);
+  var btns = $('.navbar-toggle.collapsed');
+  for(var i = 0; i<= btns.length; i++){
+      var btn = $(btns[i]);
+      if (btn != current_btn){
+        $(btn.data('target')).collapse('hide');
+      }
+  }
+
 }
-
-function admin_nav_on(event, element){
-        var parent = $($(element).parents('#adminnavbar').first());
-        var target = parent.find('.admin-nav');
-        $.cookie('admin_nav', 'on', {path: '/',  expires: 1});
-        $(element).animate({left: '+='+187}, 500);
-        $(element).removeClass('admin-off');
-        $(element).addClass('admin-on');
-        $(element).find('.admin-nav-label').addClass('hide-bloc');
-        $(target).removeClass('hide-bloc');
-        var adminnav = $('#adminnavbar');
-        var menueheight = $(adminnav.find('ul').first()).height()+5;
-        adminnav.css({'height': menueheight+'px'});
-        //$(target).show(300);
-};
-
-function admin_nav_off(event, element){
-        var parent = $($(element).parents('#adminnavbar').first());
-        var target = parent.find('.admin-nav');
-        $.cookie('admin_nav', 'off', {path: '/',  expires: 1});
-        //target.hide(300);
-        $(element).animate({left: '-='+187}, 500);
-        $(element).addClass('admin-off');
-        $(element).removeClass('admin-on');
-        
-        setTimeout(function() {
-           $(target).addClass('hide-bloc');
-           var adminnav = $('#adminnavbar');
-           adminnav.css({'height': '180px'});
-           $(element).find('.admin-nav-label').removeClass('hide-bloc');
-        }, 510);
-        
-};
-
-function admin_nav_onclick(event){
-  if ($(event.target).hasClass('admin-call') || $(event.target).hasClass('admin-nav-title')){
-    if ($(this).hasClass( "admin-on" )){
-      admin_nav_off(event, this)
-    }else{
-      admin_nav_on(event, this)
-    }
-   }
-};
 
 
 function activate_explanation(event){
@@ -143,15 +101,37 @@ function init_switch() {
 };
 
 function initscroll(){
+  $('.results').infinitescroll('destroy');
   $('.results').infinitescroll({
     navSelector  : ".results .batch",
                    // selector for the paged navigation (it will be hidden)
     nextSelector : ".results .pager .next",
                    // selector for the NEXT link (to page 2)
-    itemSelector : ".results div.col-md-12",
+    itemSelector : ".results div.result-container",
                    // selector for all items you'll retrieve
+    binder: $('.result-scroll'),
     pathParse: function(path, next_page) {
-       var parts = path.match(/^(.*?batch_num=)1(.*|$)/).slice(1);
+       var new_path = path;
+       var filter = $('#filter-'+$('.results').first().attr('id'));
+       if (filter.length>0){
+            var form = $($(filter).find('form').first());
+            var filter_container = $(form.parents('.filter-container'));
+            var progress = filter_container.find('img.loading-indicator');
+            var filter_btn = $(filter_container.find('.filter-btn').first());
+            var data_get = $(form).serialize();
+            data_get += '&'+'op=filter_result';
+            var target = $($('.pontus-main .panel-body').first());
+            var target_title = $($('.pontus-main .panel-heading').first());
+            var url = filter_btn.data('url');
+            var filter_source = filter_btn.data('filter_source');
+            if (filter_source !== ''){
+              data_get += '&'+'filter_source='+filter_source;
+            }
+            data_get += '&'+'filter_result=true';
+            data_get += '&'+'scroll=true';
+            new_path += '&'+ data_get;
+      };
+      var parts = new_path.match(/^(.*?batch_num=)1(.*|$)/).slice(1);
 // ["http://0.0.0.0:6543/@@seemyideas?batch_num=", "&batch_size=1&action_uid=-4657697968224339750"]
 // substanced Batch starts at 0, not 1
        var f = function(currPage) {
@@ -177,19 +157,25 @@ function init_content_text(){
 };
 
 function init_result_scroll(){
-  var last_child = $('.result-scroll .search-item:last-child');
-  if (last_child.length > 0){
-      var top = last_child.offset().top - $('.result-scroll').offset().top  + last_child.height() + 30
-      if (top < 1600){
-       $('.result-scroll').height(top)
-      }
-  }else{
-       $('.result-scroll').height(100)
-  }
+  var result_scrolls = $('.result-scroll');
+  for(var i = 0; i<= result_scrolls.length; i++){
+    var result_scroll = $(result_scrolls[i]);
+    var last_child = $(result_scroll.find('.result-item').last());
+    if (last_child.length > 0){
+        var top = last_child.offset().top - result_scroll.offset().top  + last_child.height() + 150
+        if (top < 1600){
+         result_scroll.height(top);
+        }
+    }else{
+         result_scroll.height(100);
+    }
+ }
 };
 
 $(document).ready(function(){
   
+  // $(".navbar-toggle.collapsed").on('click', collapse_current_collpsein);
+
   $('input, textarea').placeholder();
 
   set_visited();
@@ -201,18 +187,6 @@ $(document).ready(function(){
   init_content_text();
 
   init_result_scroll();
-
-  init_admin_nav();
-
-  $('.admin-call').on('click', admin_nav_onclick);
-
-  $('.admin-nav .group').hover(function(){
-      var actions = $($(this).find('ul.actions').first());
-      actions.show();
-  }, function(){
-      var actions = $($(this).find('ul.actions').first());
-      actions.hide();
-  });
 
   $('.proposal-opinion').on('click', activate_explanation);
 

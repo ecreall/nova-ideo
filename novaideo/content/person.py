@@ -7,7 +7,8 @@
 import os
 import colander
 import deform.widget
-from zope.interface import implementer, invariant
+from persistent.list import PersistentList
+from zope.interface import implementer
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -16,7 +17,7 @@ from substanced.principal import UserSchema
 from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
 
-from dace.util import getSite, find_entities, find_catalog
+from dace.util import getSite
 from dace.objectofcollaboration.principal import User
 from dace.descriptors import (
     SharedUniqueProperty,
@@ -32,15 +33,14 @@ from novaideo.core import (
     SearchableEntitySchema,
     default_keywords_choice,
     keywords_choice,
-    CorrelableEntity)
+    CorrelableEntity,
+    generate_access_keys)
 from .interface import IPerson
 from novaideo import _
 from novaideo.views.widget import TOUCheckboxWidget
 
 
-
 DEFAULT_LOCALE = 'fr'
-
 
 @colander.deferred
 def organization_choice(node, kw):
@@ -89,17 +89,6 @@ def email_validator(node, kw):
         raise colander.Invalid(node,
                 _('${email} email address already in use',
                   mapping={'email': kw}))
-
-
-@colander.deferred
-def contacts_choice(node, kw):
-    context = node.bindings['context']
-    values = []
-    users = find_entities([IPerson], ['active'])
-    values = [(i, i.name) for i in users if not (i in context.contacts)]
-    values = sorted(values, key=lambda p: p[1])
-    return Select2Widget(values=values, multiple=True)
-
 
 @colander.deferred
 def default_contacts(node, kw):
@@ -151,7 +140,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         editing=context_is_a_person,
         )
 
-    keywords =  colander.SchemaNode(
+    keywords = colander.SchemaNode(
         colander.Set(),
         default=default_keywords_choice,
         widget=keywords_choice,
@@ -177,7 +166,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         missing=None,
         )
 
-    first_name =  colander.SchemaNode(
+    first_name = colander.SchemaNode(
         colander.String(),
         title=_('First name'),
         )
@@ -203,7 +192,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     password = colander.SchemaNode(
         colander.String(),
-        widget = deform.widget.CheckedPasswordWidget(),
+        widget=deform.widget.CheckedPasswordWidget(),
         validator=colander.Length(min=3, max=100),
         title=_("Password")
         )
@@ -216,36 +205,12 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         )
 
     accept_conditions = colander.SchemaNode(
-               colander.Boolean(),
-               widget=conditions_widget,
-               label=_('I have read and accept the terms and conditions'),
-               title ='',
-               missing=False
-            )
-
-
-    @invariant
-    def person_name_invariant(self, appstruct):
-        context = self.bindings['context']
-        name = ''
-        if 'first_name' in appstruct and appstruct['first_name'] is not colander.null:
-            name = name + appstruct['first_name']
-            if 'last_name' in appstruct and appstruct['last_name'] is not colander.null:
-                name = name + ' ' + appstruct['last_name']
-        
-        if not name:
-            return
-
-        if context.name == name:
-            return 
-
-        system_catalog = find_catalog('system')
-        name_index = system_catalog['name']
-        query = name_index.eq(name)
-        resultset = query.execute()
-        if resultset.__len__() > 0:
-            raise colander.Invalid(self, _
-                        ('The user ' + name + ' already exists!'))
+        colander.Boolean(),
+        widget=conditions_widget,
+        label=_('I have read and accept the terms and conditions'),
+        title='',
+        missing=False
+    )
 
 
 @content(
@@ -256,8 +221,10 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     """Person class"""
 
+    type_title = _('Person')
     icon = 'icon novaideo-icon icon-user'
-    result_template = 'novaideo:views/templates/person_result.pt'
+    templates = {'default': 'novaideo:views/templates/person_result.pt',
+                 'bloc': 'novaideo:views/templates/person_result.pt'}
     name = renamer()
     tokens = CompositeMultipleProperty('tokens')
     tokens_ref = SharedMultipleProperty('tokens_ref')
@@ -290,8 +257,8 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
 
     @property
     def participations(self):
-        result = [p for p in list(self.proposals) \
-                  if not any(s in p.state for s \
+        result = [p for p in list(self.proposals)
+                  if not any(s in p.state for s
                              in ['draft', 'published', 'examined'])]
         return result
 
@@ -303,7 +270,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
 
     @property
     def supports(self):
-        result = [t.__parent__ for t in self.tokens_ref \
+        result = [t.__parent__ for t in self.tokens_ref
                   if not(t.__parent__ is self)]
         return list(set(result))
 
@@ -314,3 +281,13 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     @property
     def is_published(self):
         return 'active' in self.state
+
+    def reindex(self):
+        super(Person, self).reindex()
+        root = getSite()
+        self.__access_keys__ = PersistentList(generate_access_keys(
+            self, root))
+
+    def get_more_contents_criteria(self):
+        "return specific query, filter values"
+        return None, None

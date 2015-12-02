@@ -8,7 +8,8 @@
                   style style|field.widget.style;
                   url url|getattr(field.widget, 'url', '');
                   placeholder placeholder|getattr(field.widget, 'placeholder', '');
-                  choices choices|getattr(field.widget, 'choices', [])"
+                  choices choices|getattr(field.widget, 'choices', []);
+                  advanced_search_url advanced_search_url|getattr(field.widget, 'advanced_search_url', '');"
       tal:omit-tag="">
       <div id="searchsection" class="input-group input-group-sm">
        <input type="text" name="${name}" value="${cstruct}" 
@@ -23,6 +24,7 @@
                    class="content-select btn" 
                    data-color="default">${choice['title']}</button>
            <button class="btn btn-success" type="${button_type}" data-url="${url}" i18n:domain="novaideo" i18n:translate=""><span class="glyphicon glyphicon-search"></span></button>
+           <a class="btn btn-default" href="${advanced_search_url}" i18n:translate=""><span class="glyphicon glyphicon-zoom-in"></span> <span class="hidden-sm hidden-xs" i18n:translate="">Advanced search</span></a>
         </span>
       </div>
     <script type="text/javascript">

@@ -37,10 +37,8 @@ def relatedcontents_choice(node, kw):
     request = node.bindings['request']
     root = getSite()
     values = []
-    ajax_url = request.resource_url(root, '@@search', 
-                                    query={'op':'find_entities', 
-                                           'content_types':['CorrelableEntity']
-                                           }
+    ajax_url = request.resource_url(root, '@@novaideoapi',
+                                    query={'op': 'find_correlable_entity'}
                                )
     return AjaxSelect2Widget(values=values,
                         ajax_url=ajax_url,
@@ -66,7 +64,7 @@ class RelatedContentsSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="hide-bloc"),
         label='',
-        title ='',
+        title='',
         default=False,
         missing=False
         )
@@ -100,8 +98,9 @@ class CommentSchema(VisualisableElementSchema):
     related_contents = RelatedContentsSchema(
                 widget=SimpleMappingtWidget(
                     mapping_css_class="controled-form associate-form hide-bloc",
+                    activator_css_class="pull-right",
+                    activator_icon="glyphicon glyphicon-link",
                     ajax=True,
-                    activator_css_class="glyphicon glyphicon-link",
                     activator_title=_('Associate')))
 
 

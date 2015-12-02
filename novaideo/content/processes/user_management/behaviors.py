@@ -16,11 +16,11 @@ from substanced.util import find_service
 from dace.util import getSite, name_chooser
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.objectofcollaboration.principal.util import (
-    grant_roles, 
-    has_role, 
-    get_current, 
-    has_any_roles, 
-    revoke_roles, 
+    grant_roles,
+    has_role,
+    get_current,
+    has_any_roles,
+    revoke_roles,
     get_roles)
 from dace.processinstance.activity import (
     InfiniteCardinality,
@@ -31,8 +31,7 @@ from novaideo.content.interface import INovaIdeoApplication, IPerson
 from novaideo.content.token import Token
 from novaideo.mail import CONFIRMATION_MESSAGE, CONFIRMATION_SUBJECT
 from novaideo import _
-from novaideo.core import acces_action
-
+from novaideo.core import access_action
 
 
 def initialize_tokens(person, tokens_nb):
@@ -64,9 +63,10 @@ class Registration(InfiniteCardinality):
         person = appstruct['_object_data']
         root = context
         principals = find_service(root, 'principals')
-        name = person.first_name + ' ' +person.last_name
-        name = name_chooser(name=name)
-        principals['users'][name] = person
+        name = person.first_name + ' ' + person.last_name
+        users = principals['users']
+        name = name_chooser(users, name=name)
+        users[name] = person
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
@@ -292,11 +292,15 @@ class AssignRoles(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def get_access_key(obj):
+    return ['always']
+
+
 def seeperson_processsecurity_validation(process, context):
     return True#'active' in context.state
 
 
-@acces_action()
+@access_action(access_key=get_access_key)
 class SeePerson(InfiniteCardinality):
     title = _('Details')
     context = IPerson

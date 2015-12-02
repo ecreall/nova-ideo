@@ -28,6 +28,7 @@ requires = [
     'html2text',
     'beautifulsoup4',
     'pyramid_robot',
+    'profilehooks'
     ]
 
 setup(name='novaideo',

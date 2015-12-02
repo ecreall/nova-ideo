@@ -67,7 +67,7 @@ class SeeAmendmentsView(BasicView):
                   'get_states_mapping': get_states_mapping
                    }
         self.message = message
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result

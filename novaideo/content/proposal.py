@@ -14,18 +14,17 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
-from dace.util import getSite
-from dace.objectofcollaboration.principal.util import get_current
+from dace.util import get_obj
 from dace.descriptors import (
     CompositeMultipleProperty,
     SharedUniqueProperty)
-from pontus.widget import RichTextWidget, Select2Widget, Length
+from pontus.widget import RichTextWidget, AjaxSelect2Widget, Length
 from pontus.core import VisualisableElementSchema
 
 from .interface import IProposal
 from novaideo.content.correlation import CorrelationType
-from novaideo.core import Commentable, can_access
-from novaideo import _
+from novaideo.core import Commentable
+from novaideo import _, log
 from novaideo.views.widget import LimitedTextAreaWidget
 from novaideo.core import (
     SearchableEntity,
@@ -36,25 +35,44 @@ from novaideo.core import (
     PresentableEntity)
 from novaideo.content.processes.proposal_management import WORK_MODES
 
+
 OPINIONS = OrderedDict([
-            ('favorable', _('Favorable')),
-            ('to_study', _('To study')),
-            ('unfavorable', _('Unfavorable'))
-           ])
+    ('favorable', _('Favorable')),
+    ('to_study', _('To study')),
+    ('unfavorable', _('Unfavorable'))
+])
 
 
 @colander.deferred
 def ideas_choice(node, kw):
-    root = getSite()
-    user = get_current()
-    values = [(i, i.title) for i in root.ideas \
-              if can_access(user, i) and not('archived' in i.state)]
-    return Select2Widget(values=values, multiple=True)
+    context = node.bindings['context']
+    request = node.bindings['request']
+    values = []
+    ajax_url = request.resource_url(context,
+                                    '@@novaideoapi',
+                                    query={'op': 'find_ideas'})
+
+    def title_getter(oid):
+        try:
+            obj = get_obj(int(oid), None)
+            if obj:
+                return obj.title
+            else:
+                return oid
+        except Exception as e:
+            log.warning(e)
+            return oid
+
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        multiple=True,
+        title_getter=title_getter,
+        )
 
 
 def context_is_a_proposal(context, request):
     return request.registry.content.istype(context, 'proposal')
-
 
 
 class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
@@ -67,15 +85,15 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     description = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=300),
-        widget=LimitedTextAreaWidget(rows=5, 
-                                     cols=30, 
+        widget=LimitedTextAreaWidget(rows=5,
+                                     cols=30,
                                      limit=300),
         title=_("Abstract")
         )
 
     text = colander.SchemaNode(
         colander.String(),
-        widget= RichTextWidget(),
+        widget=RichTextWidget(),
         title=_("Text")
         )
 
@@ -83,7 +101,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.Set(),
         widget=ideas_choice,
         title=_('Related ideas'),
-        validator = Length(_, min=1),
+        validator=Length(_, min=1),
         default=[],
         )
 
@@ -95,14 +113,15 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(IProposal)
 class Proposal(Commentable,
                VersionableEntity,
-               SearchableEntity, 
-               DuplicableEntity, 
-               CorrelableEntity, 
+               SearchableEntity,
+               DuplicableEntity,
+               CorrelableEntity,
                PresentableEntity):
     """Proposal class"""
 
+    type_title = _('Proposal')
     icon = 'icon novaideo-icon icon-proposal'
-    result_template = 'novaideo:views/templates/proposal_result.pt'
+    templates = {'default': 'novaideo:views/templates/proposal_result.pt'}
     template = 'novaideo:views/templates/proposal_list_element.pt'
     name = renamer()
     author = SharedUniqueProperty('author')
@@ -111,7 +130,6 @@ class Proposal(Commentable,
     tokens_support = CompositeMultipleProperty('tokens_support')
     amendments = CompositeMultipleProperty('amendments', 'proposal')
     corrections = CompositeMultipleProperty('corrections', 'proposal')
-
 
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
@@ -122,11 +140,11 @@ class Proposal(Commentable,
 
     @property
     def related_ideas(self):
-        lists_targets = [(c.targets, c) for c in self.source_correlations \
-                          if ((c.type==CorrelationType.solid) and \
-                              ('related_ideas' in c.tags))]
-        return MultiDict([(target, c) for targets, c in lists_targets \
-                     for target in targets])
+        lists_targets = [(c.targets, c) for c in self.source_correlations
+                         if c.type == CorrelationType.solid and
+                         'related_ideas' in c.tags]
+        return MultiDict([(target, c) for targets, c in lists_targets
+                          for target in targets])
 
     @property
     def tokens(self):

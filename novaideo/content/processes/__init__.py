@@ -3,21 +3,21 @@
 
 # licence: AGPL
 # author: Amen Souissi
+from webob.multidict import MultiDict
+from pyramid.threadlocal import get_current_registry
 
 from dace.objectofcollaboration.principal.util import has_role
 
-from novaideo.content.proposal import Proposal
-from novaideo.content.amendment import Amendment
 from novaideo.core import _
 
 
 STATES_PARTICIPANT_MAPPING = {
          #Commun
-	    'draft': {Amendment:_('In preparation'),
+	    'draft': {'amendment':_('In preparation'),
 	              'default': _('Draft')},
 	    #state by context. 'default' key is required!
-	    'published': {Proposal:_('Submitted'),
-	                  Amendment:_('Submitted'),
+	    'published': {'proposal':_('Submitted'),
+	                  'amendment':_('Submitted'),
 	                  'default': _('Published')},
 	    'archived': _('Archived'),
         #Amendment
@@ -50,11 +50,11 @@ STATES_PARTICIPANT_MAPPING = {
 #states by memeber
 STATES_MEMBER_MAPPING = {
          #Commun
-	    'draft': {Amendment:_('In preparation'),
+	    'draft': {'amendment':_('In preparation'),
 	              'default': _('Draft')},
 	    #state by context. 'default' key is required!
-	    'published': {Proposal:_('Submitted'),
-	                  Amendment:_('Submitted'),
+	    'published': {'proposal':_('Submitted'),
+	                  'amendment':_('Submitted'),
 	                  'default': _('Published')},
 	    'archived': _('Archived'),
         #Amendment
@@ -84,10 +84,30 @@ STATES_MEMBER_MAPPING = {
          }
 
 
+def get_flattened_mapping(mapping):
+    result = MultiDict({key: value for key, value in
+              mapping.items() if not isinstance(value, dict)})
+    for key, value in mapping.items():
+        if key not in result:
+            values = set(value.values())
+            for newvalue in values:
+                result[key] = newvalue
+
+    return result
+
+
+FLATTENED_STATES_MEMBER_MAPPING = get_flattened_mapping(STATES_MEMBER_MAPPING)
+
+
+FLATTENED_STATES_PARTICIPANT_MAPPING = get_flattened_mapping(STATES_PARTICIPANT_MAPPING)
+
+
 def get_states_mapping(user, context, state):
     """get the state of the context"""
+    registry = get_current_registry()
+    content_type = registry.content.typeof(context)
     result = STATES_PARTICIPANT_MAPPING.get(state, None)
     if isinstance(result, dict):
-        return result.get(context.__class__, result['default'])
+        return result.get(content_type, result['default'])
 
     return result

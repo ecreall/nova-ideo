@@ -61,7 +61,8 @@ class InvitationSchema(PersonSchema):
 @implementer(IInvitation)
 class Invitation(VisualisableElement, Entity):
     """Invitation class"""
-    result_template = 'novaideo:views/templates/invitation_result.pt'
+    templates = {'default': 'novaideo:views/templates/invitation_result.pt',
+                 'bloc': 'novaideo:views/templates/invitation_result.pt'}
     name = renamer()
     organization = SharedUniqueProperty('organization')
     manager = SharedUniqueProperty('manager')

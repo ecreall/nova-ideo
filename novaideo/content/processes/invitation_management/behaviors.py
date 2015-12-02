@@ -29,7 +29,7 @@ from novaideo import _
 from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity,
     initialize_tokens)
-from novaideo.core import acces_action
+from novaideo.core import access_action, serialize_roles
 from novaideo.utilities.util import gen_random_token
 from novaideo.content.person import Person
 from novaideo.content.invitation import InvitationSchema
@@ -150,16 +150,28 @@ class InviteUsers(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, '@@seeinvitations'))
 
 
+def get_access_key(obj):
+    organization = obj.organization
+    result = []
+    if organization:
+        result = serialize_roles(
+            (('OrganizationResponsible', organization),))
+
+    result.extend(serialize_roles(
+            ('Moderator', 'Anonymous')))
+    return result
+
+
 def seeinv_processsecurity_validation(process, context):
     organization = context.organization
     return (organization and \
             has_role(role=('OrganizationResponsible',
                            organization))) or \
-            has_any_roles(roles=('Moderator', 
+            has_any_roles(roles=('Moderator',
                                 'Anonymous'))
 
 
-@acces_action()
+@access_action(access_key=get_access_key)
 class SeeInvitation(InfiniteCardinality):
     isSequential = False
     title = _('Plus')

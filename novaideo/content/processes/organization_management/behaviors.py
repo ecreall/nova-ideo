@@ -17,14 +17,14 @@ from novaideo.content.interface import INovaIdeoApplication, IOrganization
 from novaideo.content.organization import Organization
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.core import acces_action
+from novaideo.core import access_action, serialize_roles
 
 
 def update_manager(organization, managers):
-    managers_toadd = [u for u in managers \
-                          if not has_role(user=u,
-                                          role=('OrganizationResponsible', 
-                                                 organization))]
+    managers_toadd = [u for u in managers
+                      if not has_role(user=u,
+                                      role=('OrganizationResponsible', 
+                                            organization))]
     managers_todel = [u for u in organization.managers \
                           if u not in managers]
 
@@ -165,12 +165,17 @@ class SeeOrganizations(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
+def get_access_key(obj):
+    return serialize_roles(
+            ('Member',))
+
+
 def see_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) and \
            has_role(role=('Member',))
 
 
-@acces_action()
+@access_action(access_key=get_access_key)
 class SeeOrganization(InfiniteCardinality):
     isSequential = False
     title = _('Details')

@@ -16,7 +16,7 @@ from dace.util import getSite, get_obj
 from dace.descriptors import SharedUniqueProperty
 
 from pontus.widget import (
-    RichTextWidget, 
+    RichTextWidget,
     SimpleMappingWidget,
     AjaxSelect2Widget)
 from pontus.core import VisualisableElementSchema
@@ -31,7 +31,7 @@ from novaideo.core import (
     PresentableEntity,
     DuplicableEntity)
 from novaideo import _
-from novaideo.views.widget import ( 
+from novaideo.views.widget import (
     AddIdeaWidget, 
     LimitedTextAreaWidget)
 from novaideo.content.idea import Idea, IdeaSchema
@@ -55,10 +55,8 @@ def relatedideas_choice(node, kw):
     ideas.extend(used_ideas)
     ideas = set(ideas)
     values = [(i, i.title) for i in ideas]
-    ajax_url = request.resource_url(root, '@@search', 
-                                    query={'op':'find_entities', 
-                                           'content_types':['Idea']
-                                           }
+    ajax_url = request.resource_url(root, '@@novaideoapi',
+                                    query={'op': 'find_ideas'}
                                )
     return AjaxSelect2Widget(values=values,
                         ajax_url=ajax_url,
@@ -79,10 +77,9 @@ class RelatedExplanationSchema(Schema):
 
 class NewIdeaSchema(Schema):
 
-
-    new_idea = select(IdeaSchema(factory=Idea, 
+    new_idea = select(IdeaSchema(factory=Idea,
                                  editable=True,
-                                 omit=['keywords'], 
+                                 omit=['keywords'],
                                  widget=SimpleMappingWidget()),
                       ['title',
                        'text',
@@ -153,9 +150,7 @@ class Intention(object):
     @classmethod
     def get_explanation_ideas(cls, args):
         """Return all related ideas"""
-        data = cls.get_explanation_data(args)
-        result = data['related_ideas']
-        return result
+        return cls.get_explanation_data(args)['related_ideas']
 
     @classmethod
     def get_explanation_default_data(cls, args):
@@ -247,9 +242,12 @@ class Amendment(Commentable,
                 PresentableEntity):
     """Amendment class"""
 
+    type_title = _('Amendment')
     icon = 'icon novaideo-icon icon-amendment'
     name = renamer()
-    result_template = 'novaideo:views/templates/amendment_result.pt'
+    templates = {
+        'default': 'novaideo:views/templates/amendment_result.pt'
+    }
     author = SharedUniqueProperty('author')
     proposal = SharedUniqueProperty('proposal', 'amendments')
 

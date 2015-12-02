@@ -66,7 +66,7 @@ class EditPersonSchema(PersonSchema):
                       widget=SimpleMappingtWidget(
                             mapping_css_class="controled-form change-password-form hide-bloc",
                             ajax=True,
-                            activator_css_class="glyphicon glyphicon-asterisk",
+                            activator_icon="glyphicon glyphicon-asterisk",
                             activator_title=_('Change Password')),
                       validator=Password_validator())
 

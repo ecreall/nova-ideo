@@ -170,7 +170,7 @@ class DetailProposalView(BasicView):
                 'ct_participate_max': ct_participate_max,
                 'navbar_body': navbar_body_getter(self, actions_navbar)
                }
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive or modal_isactive

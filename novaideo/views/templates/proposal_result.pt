@@ -1,12 +1,13 @@
-<div class="thumbnail right-caption span4 search-item"  
+<div class="thumbnail right-caption span4 search-item result-item"  
      i18n:domain="novaideo"
-     tal:define="url request.resource_url(object, '@@index')">
+     tal:define="url request.resource_url(object, '@@index');
+                 icon getattr(object, 'icon')">
   <div id="proposal-image" class="content-image">
-    <a href="${url}"><span class="icon novaideo-icon icon-proposal"></span></a>
+    <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
   </div>
   <div class="media-body">
     <a href="${url}"><h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4></a>
-    <a tal:attributes="href url"><h3>${object.title} </h3></a>
+    <a tal:attributes="href url"><h3><span class="visible-xs-inline-block icon ${icon}"></span>  ${object.title}</h3></a>
     <dl i18n:domain="novaideo">
       <dt i18n:translate="">Abstract</dt><dd>${object.description}</dd>
       <dt tal:condition="object.keywords"  i18n:translate="">Keywords</dt>

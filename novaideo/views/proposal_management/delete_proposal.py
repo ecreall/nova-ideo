@@ -31,7 +31,7 @@ class DeleteProposalViewStudyReport(BasicView):
         result = {}
         values = {'context': self.context,
                   'draft_owner': getattr(self.parent, 'is_draft_owner', False)}
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result

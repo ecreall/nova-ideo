@@ -87,7 +87,7 @@ class SeeInvitationsView(BasicView):
          
         all_invitation_data['tabid'] = self.__class__.__name__ + \
                                        'InvitationActions'
-        body = self.content(result=all_invitation_data, 
+        body = self.content(args=all_invitation_data, 
                             template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages

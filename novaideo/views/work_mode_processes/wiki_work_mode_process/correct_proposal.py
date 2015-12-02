@@ -13,8 +13,8 @@ from pyramid import renderers
 from substanced.util import get_oid
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite, find_entities
-from dace.processinstance.core import  Behavior
+from dace.util import getSite
+from dace.processinstance.core import Behavior
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
@@ -22,16 +22,17 @@ from pontus.schema import select, Schema
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.file import Object as ObjectType
-from pontus.widget import Select2Widget, AjaxSelect2Widget
+from pontus.widget import AjaxSelect2Widget
 
-from novaideo.content.processes.work_mode_processes.wiki_work_mode_process.behaviors import (
-    CorrectProposal)
+from novaideo.content.processes.work_mode_processes.\
+    wiki_work_mode_process.behaviors import (
+        CorrectProposal)
 from novaideo.content.proposal import ProposalSchema, Proposal
-from novaideo.content.idea import IdeaSchema, Idea, Iidea
+from novaideo.content.idea import IdeaSchema, Idea
 from novaideo import _
 from novaideo.core import can_access, to_localized_time
 from novaideo.views.widget import SimpleMappingtWidget
-
+from novaideo.views.proposal_management.create_proposal import ideas_choice
 
 
 @colander.deferred
@@ -40,14 +41,12 @@ def idea_choice(node, kw):
     root = getSite()
     values = []
     values.insert(0, ('', _('- Select -')))
-    ajax_url = request.resource_url(root, '@@search', 
-                                    query={'op':'find_entities', 
-                                           'content_types':['Idea']
-                                           }
-                               )
-    return AjaxSelect2Widget(values=values,
-                        ajax_url=ajax_url,
-                        css_class="search-idea-form")
+    ajax_url = request.resource_url(root, '@@novaideoapi',
+                                    query={'op': 'find_ideas'})
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        css_class="search-idea-form")
 
 
 class AddIdeaSchema(Schema):
@@ -64,16 +63,16 @@ class AddIdeaSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="new-idea-control"),
         label=_('Add a new idea'),
-        title ='',
+        title='',
         missing=False
         )
 
-    new_idea = select(IdeaSchema(factory=Idea, 
+    new_idea = select(IdeaSchema(factory=Idea,
                                  editable=True,
-                                 omit=['keywords'], 
+                                 omit=['keywords'],
                                  widget=SimpleMappingtWidget(
-                                         mapping_css_class='hide-bloc new-idea-form',
-                                        ajax=False)),
+                                    mapping_css_class='hide-bloc new-idea-form',
+                                    ajax=False)),
                     ['title',
                      'text',
                      'keywords'])
@@ -105,7 +104,7 @@ class AddIdeaFormView(FormView):
         root = getSite()
         formwidget = deform.widget.FormWidget(css_class='add-idea-form')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
-        formwidget.ajax_url = self.request.resource_url(root, 
+        formwidget.ajax_url = self.request.resource_url(root,
                                            '@@ideasmanagement')
         self.schema.widget = formwidget
         self.schema.widget.ajax_button = _('Validate')
@@ -132,13 +131,13 @@ class RelatedIdeasView(BasicView):
 
     def update(self):
         user = get_current()
-        related_ideas = [i for i in self.context.related_ideas.keys() \
+        related_ideas = [i for i in self.context.related_ideas.keys()
                          if can_access(user, i)]
         result = {}
         target = None
         try:
             editform = self.parent.parent.validated_children[0]
-            target = editform.viewid+'_'+editform.formid 
+            target = editform.viewid+'_'+editform.formid
         except Exception:
             pass
 
@@ -146,18 +145,18 @@ class RelatedIdeasView(BasicView):
         for i in related_ideas:
             data = {'title': i.title,
                     'id': get_oid(i),
-                    'body': renderers.render(self.idea_template, 
-                                             {'idea':i}, self.request)
+                    'body': renderers.render(self.idea_template,
+                                             {'idea': i}, self.request)
                     }
             ideas.append(data)
 
         values = {
-                'items': ideas,
-                'target' : target
-               }
-        body = self.content(result=values, template=self.template)['body']
+            'items': ideas,
+            'target': target
+        }
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
@@ -168,13 +167,6 @@ class IdeaManagementView(MultipleView):
     views = (RelatedIdeasView, AddIdeaFormView)
     coordinates = 'right'
     css_class = 'idea-managements panel-success'
-
-
-def ideas_choice():
-    user = get_current()
-    ideas = find_entities([Iidea], states=('archived',), not_any=True) 
-    values = [(i, i.title) for i in ideas if can_access(user, i)]
-    return Select2Widget(values=values, multiple=True)
 
 
 class CorrectProposalFormView(FormView):
@@ -193,7 +185,7 @@ class CorrectProposalFormView(FormView):
         return self.context
 
     def before_update(self):
-        ideas_widget = ideas_choice()
+        ideas_widget = ideas_choice(self.context, self.request)
         ideas_widget.item_css_class = 'hide-bloc'
         ideas_widget.css_class = 'controlled-items'
         self.schema.get('related_ideas').widget = ideas_widget
@@ -208,8 +200,8 @@ class CorrectProposalView(MultipleView):
     title = _('Improve the proposal')
     name = 'correctproposalwiki'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/ideas_management.js']}
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/ideas_management.js']}
     views = (CorrectProposalFormView, IdeaManagementView)
     validators = [CorrectProposal.get_validator()]
 

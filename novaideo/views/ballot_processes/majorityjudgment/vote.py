@@ -128,7 +128,7 @@ class VoteViewStudyReport(BasicView):
             pass
 
         values = {'context': self.context, 'ballot_report': ballot_report}
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates:[item]}
         return result
@@ -216,7 +216,7 @@ class VoteFormView(FormView):
                 values['text'] = get_trimed_amendment_text(
                                 getattr(subject, 'text_diff', ''))
 
-            body = self.content(result=values, 
+            body = self.content(args=values, 
                                 template=description_template)['body']
             return body
         except Exception:

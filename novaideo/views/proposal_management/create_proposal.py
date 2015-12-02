@@ -3,28 +3,119 @@
 
 # licence: AGPL
 # author: Amen Souissi
-
+import colander
+import deform
+import datetime
 from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPFound
 
-from dace.util import find_entities
 from dace.objectofcollaboration.principal.util import get_current
+from dace.util import get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.util import getSite
+from dace.processinstance.core import Behavior
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select
+from pontus.schema import select, Schema
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
-from pontus.widget import Select2Widget
+from pontus.file import Object as ObjectType
+from pontus.widget import AjaxSelect2Widget
 
+from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.processes.proposal_management.behaviors import (
     CreateProposal)
 from novaideo.content.proposal import ProposalSchema, Proposal
-from novaideo.content.idea import Iidea
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo import _
-from novaideo.core import can_access
-from .edit_proposal import AddIdeaFormView
+from novaideo.core import to_localized_time
+from novaideo.views.widget import SimpleMappingtWidget
+from novaideo import _, log
 
+
+@colander.deferred
+def idea_choice(node, kw):
+    request = node.bindings['request']
+    root = getSite()
+    values = []
+    values.insert(0, ('', _('- Select -')))
+    ajax_url = request.resource_url(root, '@@novaideoapi',
+                                    query={'op': 'find_ideas'})
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        css_class="search-idea-form")
+
+
+class AddIdeaSchema(Schema):
+
+    idea = colander.SchemaNode(
+        ObjectType(),
+        widget=idea_choice,
+        title=_('Use an idea'),
+        missing=None,
+        #description=_('Choose an idea')
+        )
+
+    new_idea_choice = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(css_class="new-idea-control"),
+        label=_('Add a new idea'),
+        title='',
+        missing=False
+        )
+
+    new_idea = select(IdeaSchema(factory=Idea,
+                                 editable=True,
+                                 omit=['keywords'],
+                                 widget=SimpleMappingtWidget(
+                                         mapping_css_class='hide-bloc new-idea-form',
+                                        ajax=False)),
+                    ['title',
+                     'text',
+                     'keywords'])
+
+
+class AddIdea(Behavior):
+
+    behavior_id = "addidea"
+    title = _("Validate")
+    description = _("Use an idea")
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class AddIdeaFormView(FormView):
+
+    title = _('Add a new idea')
+    schema = AddIdeaSchema()
+    formid = 'formaddidea'
+    behaviors = [AddIdea]
+    name = 'addideaform'
+    coordinates = 'right'
+
+    def before_update(self):
+        root = getSite()
+        formwidget = deform.widget.FormWidget(css_class='add-idea-form')
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
+        formwidget.ajax_url = self.request.resource_url(root,
+                                           '@@ideasmanagement')
+        self.schema.widget = formwidget
+        self.schema.widget.ajax_button = _('Validate')
+        self.schema.get('new_idea').get('keywords').default = []
+
+    def default_data(self):
+        localizer = self.request.localizer
+        user = get_current()
+        time = to_localized_time(datetime.datetime.today())
+        title = localizer.translate(_('Idea by'))+' '+\
+                getattr(user, 'title', user.name)+' '+\
+                localizer.translate(_('the'))+' '+\
+                time+' (UTC)'
+        return {'new_idea': {'title': title}}
 
 
 class RelatedIdeasView(BasicView):
@@ -40,18 +131,18 @@ class RelatedIdeasView(BasicView):
         target = None
         try:
             editform = self.parent.parent.validated_children[0]
-            target = editform.viewid + '_' + editform.formid 
+            target = editform.viewid + '_' + editform.formid
         except Exception:
             pass
 
         ideas = []
         values = {
-                'items': ideas,
-                'target' : target
-               }
-        body = self.content(result=values, template=self.template)['body']
+            'items': ideas,
+            'target': target
+        }
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
@@ -64,12 +155,29 @@ class IdeaManagementView(MultipleView):
     css_class = 'idea-managements panel-success'
 
 
+def ideas_choice(context, request):
+    values = []
+    ajax_url = request.resource_url(context,
+                                    '@@novaideoapi',
+                                    query={'op': 'find_ideas'})
 
-def ideas_choice():
-    user = get_current()
-    ideas = find_entities([Iidea], states=('archived',), not_any=True)    
-    values = [(i, i.title) for i in ideas if can_access(user, i)]
-    return Select2Widget(values=values, multiple=True)
+    def title_getter(oid):
+        try:
+            obj = get_obj(int(oid), None)
+            if obj:
+                return obj.title
+            else:
+                return oid
+        except Exception as e:
+            log.warning(e)
+            return oid
+
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        multiple=True,
+        title_getter=title_getter,
+        )
 
 
 class CreateProposalFormView(FormView):
@@ -87,10 +195,10 @@ class CreateProposalFormView(FormView):
     name = 'createproposal'
 
     def before_update(self):
-        ideas_widget = ideas_choice()
+        ideas_widget = ideas_choice(self.context, self.request)
         ideas_widget.item_css_class = 'hide-bloc'
         ideas_widget.css_class = 'controlled-items'
-        self.schema.get('related_ideas').widget = ideas_widget 
+        self.schema.get('related_ideas').widget = ideas_widget
 
 
 @view_config(
@@ -102,8 +210,8 @@ class CreateProposalView(MultipleView):
     title = _('Create a proposal')
     name = 'createproposal'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/ideas_management.js']}
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/ideas_management.js']}
     views = (CreateProposalFormView, IdeaManagementView)
 
 

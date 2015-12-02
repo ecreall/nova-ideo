@@ -71,7 +71,7 @@ class DetailIdeaView(BasicView):
                 'cant_publish': self._cant_publish_alert(global_actions),
                 'navbar_body': navbar_body_getter(self, actions_navbar)
                }
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive

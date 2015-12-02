@@ -10,8 +10,8 @@ from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
-    has_role, 
-    grant_roles, 
+    has_role,
+    grant_roles,
     get_current)
 from dace.processinstance.activity import (
     InfiniteCardinality,
@@ -19,15 +19,19 @@ from dace.processinstance.activity import (
 
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.content.interface import INovaIdeoApplication, IFile
-from novaideo.core import acces_action
+from novaideo.core import access_action
 from novaideo import _
+
+
+def get_access_key(obj):
+    return ['always']
 
 
 def seefile_processsecurity_validation(process, context):
     return True
 
 
-@acces_action()
+@access_action(access_key=get_access_key)
 class SeeFile(InfiniteCardinality):
     """SeeFile is the behavior allowing access to context"""
     title = _('Details')

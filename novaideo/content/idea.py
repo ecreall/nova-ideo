@@ -86,10 +86,12 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(Iidea)
 class Idea(Commentable, VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity):
-    """Idea class""" 
+    """Idea class"""
 
+    type_title = _('Idea')
     icon = 'icon novaideo-icon icon-idea'
-    result_template = 'novaideo:views/templates/idea_result.pt'
+    templates = {'default': 'novaideo:views/templates/idea_result.pt',
+                 'bloc': 'novaideo:views/templates/idea_result.pt'}
     template = 'novaideo:views/templates/idea_list_element.pt'
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')
@@ -102,6 +104,6 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     @property
     def related_proposals(self):
         """Return all proposals that uses this idea"""
-        return MultiDict([(c.source, c) for c in self.target_correlations\
-                if ((c.type==CorrelationType.solid) and \
-                    ('related_proposals' in c.tags))])
+        return MultiDict([(c.source, c) for c in self.target_correlations
+                          if c.type == CorrelationType.solid and
+                          'related_proposals' in c.tags])

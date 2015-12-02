@@ -66,15 +66,15 @@ class SeePersonView(BasicView):
                              'state': get_states_mapping(current_user, obj, 
                                    getattr(obj, 'state', [None])[0])
                              }
-            body = self.content(result=object_values,
-                    template=obj.result_template)['body']
+            body = self.content(args=object_values,
+                    template=obj.templates.get('default'))['body']
             result_body.append(body)
 
         values = {'bodies': result_body,
                   'length': len_result,
                   'batch': batch
                   }
-        contents_body = self.content(result=values,
+        contents_body = self.content(args=values,
                 template=SearchResultView.template)['body']
 
         values = {'contents': (result_body and contents_body) or None,
@@ -83,7 +83,7 @@ class SeePersonView(BasicView):
                   'state': get_states_mapping(current_user, user, 
                                 getattr(user, 'state', [None])[0]), 
                   'navbar_body': navbar_body_getter(self, actions_navbar)}
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive

@@ -29,7 +29,7 @@ from ..user_management.behaviors import global_user_processsecurity
 from novaideo import _
 from novaideo.content.idea import Idea
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
-from novaideo.core import acces_action
+from novaideo.core import access_action, serialize_roles
 from novaideo.utilities.util import connect
 from novaideo.event import ObjectPublished, CorrelableRemoved
 
@@ -49,6 +49,10 @@ def createidea_processsecurity_validation(process, context):
 
 
 class CreateIdea(InfiniteCardinality):
+    style_picto = 'icon novaideo-icon icon-idea'
+    style_order = 0
+    title = _('Create an idea')
+    unavailable_link = 'docanonymous'
     submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = createidea_roles_validation
@@ -462,11 +466,20 @@ class Associate(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def get_access_key(obj):
+    if 'published' in obj.state:
+        return ['always']
+    else:
+        result = serialize_roles(
+            (('Owner', obj), 'Admin', 'Moderator'))
+        return result
+
+
 def seeidea_processsecurity_validation(process, context):
     return ('published' in context.state or has_role(role=('Owner', context)))
 
 
-@acces_action()
+@access_action(access_key=get_access_key)
 class SeeIdea(InfiniteCardinality):
     """SeeIdea is the behavior allowing access to context"""
     title = _('Details')

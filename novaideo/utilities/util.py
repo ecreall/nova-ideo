@@ -6,6 +6,9 @@
 
 import random
 import string
+import unicodedata
+from persistent.dict import PersistentDict
+from persistent.list import PersistentList
 from pyramid import renderers
 from pyramid.threadlocal import get_current_request
 from pyramid.threadlocal import get_current_registry
@@ -26,6 +29,29 @@ try:
     _LETTERS = string.letters
 except AttributeError: #pragma NO COVER
     _LETTERS = string.ascii_letters
+
+
+def deepcopy(obj):
+    result = None
+    if isinstance(obj, (dict, PersistentDict)):
+        result = {}
+        for key, value in obj.items():
+            result[key] = deepcopy(value)
+
+    elif isinstance(obj, (list, tuple, PersistentList)):
+        result = [deepcopy(value) for value in obj]
+    else:
+        result = obj
+
+    return result
+
+
+def normalize_title(obj_title):
+    obj_title = unicodedata.normalize(
+        'NFKD', obj_title).encode('ascii',
+                                  'ignore').decode().lower()
+    obj_title = obj_title.replace('(', '').replace(')', '')
+    return obj_title
 
 
 def gen_random_token():

@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import datetime
+import pytz
 import deform
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
@@ -35,8 +36,8 @@ class CommentsView(BasicView):
     viewid = 'comments'
 
     def _datetimedelta(self, date):
-        now = datetime.datetime.now()
-        delta = now - date 
+        now = datetime.datetime.now(tz=pytz.UTC)
+        delta = now - date
         hours, remainder = divmod(delta.seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
         result = {}
@@ -72,7 +73,7 @@ class CommentsView(BasicView):
                 'origin':origin,
                 'level': COMMENT_LEVEL
                }
-        body = self.content(result=values, template=self.template)['body']
+        body = self.content(args=values, template=self.template)['body']
         return body, resources, messages, action_updated
 
     def update(self):

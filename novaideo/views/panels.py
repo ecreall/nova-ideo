@@ -13,11 +13,11 @@ from pyramid.threadlocal import get_current_registry
 
 
 from dace.objectofcollaboration.entity import Entity
-from dace.util import getBusinessAction, getSite, find_catalog
+from dace.util import (
+    getBusinessAction, getSite, find_catalog, getAllBusinessAction)
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from daceui.interfaces import IDaceUIAPI
-from pontus.schema import select
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMyContents,
@@ -34,12 +34,21 @@ from novaideo.content.amendment import Amendment
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.core import _, SearchableEntity
 from novaideo.content.processes import get_states_mapping
-from novaideo.content.processes.user_management.behaviors import global_user_processsecurity
+from novaideo.content.processes.user_management.behaviors import (
+    global_user_processsecurity)
 
 
 USER_MENU_ACTIONS = {'menu1': [SeeMyContents, SeeMyParticipations],
-                     'menu2': [SeeMySelections, SeeMySupports],
-                     'menu3': [CreateIdea]}#, CreateProposal]}
+                     'menu2': [SeeMySelections, SeeMySupports]}
+
+
+GROUPS_PICTO = {
+    'Add': (0, 'glyphicon glyphicon-plus'),
+    'See': (1, 'glyphicon glyphicon-eye-open'),
+    'Edit': (2, 'glyphicon glyphicon-pencil'),
+    'Directory': (3, 'glyphicon glyphicon-book'),
+    'More': (4, 'glyphicon glyphicon-cog'),
+ }
 
 
 def _getaction(view, process_id, action_id):
@@ -57,7 +66,7 @@ def _getaction(view, process_id, action_id):
 
 @panel_config(
     name='usermenu',
-    context = Entity ,
+    context=Entity,
     renderer='templates/panels/usermenu.pt'
     )
 class Usermenu_panel(object):
@@ -101,70 +110,43 @@ class Usermenu_panel(object):
 
 @panel_config(
     name = 'usernavbar',
-    context = Entity ,
+    context=Entity,
     renderer='templates/panels/navbar_view.pt'
     )
 class UserNavBarPanel(object):
+
+    navbar_actions = [SeeMyContents, SeeMyParticipations,
+                      SeeMySelections, SeeMySupports]
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
 
-
     def __call__(self):
         root = getSite()
-        search_action, search_view = _getaction(self, 
-                                                'novaideoviewmanager',
-                                                'search')
-        search_view_instance = search_view(root, self.request,
-                                           behaviors=[search_action])
-        actions_url = {'menu1': OrderedDict(),
-                       'menu2': OrderedDict(),
-                       'menu3': OrderedDict()}
-        for (menu, actions) in USER_MENU_ACTIONS.items():
-            for actionclass in actions:
-                process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
-                action, view = _getaction(self, process_id, action_id)
-                if not (None in (action, view)):
-                    actions_url[menu][action.title] = {
-                                'action':action,
-                                'url':action.url(root),
-                                'view_name': getattr(view,'name', None)}
-                else:
-                    actions_url[menu][actionclass.node_definition.title] = {
-                                'action':None,
-                                'url':None,
-                                'view_name': getattr(view,'name', None)}
-
-        posted_formid = None
-        if self.request.POST :
-            if '__formid__' in self.request.POST:
-                posted_formid = self.request.POST['__formid__']
-
-            if posted_formid and \
-               posted_formid.startswith(search_view_instance.viewid):
-                search_view_instance.postedform = self.request.POST.copy()
-                self.request.POST.clear()
-
-        search_view_result = search_view_instance()
-        search_body = ''
-        if isinstance(search_view_result, dict) and \
-           'coordinates' in search_view_result:
-            search_body = search_view_instance.render_item(
-                              search_view_result['coordinates'][search_view_instance.coordinates][0],
-                              search_view_instance.coordinates,
-                              None)
-
+        actions_url = OrderedDict()
+        for actionclass in self.navbar_actions:
+            process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
+            action, view = _getaction(self, process_id, action_id)
+            if None not in (action, view):
+                actions_url[action.title] = {
+                            'action': action,
+                            'url': action.url(root),
+                            'view_name': getattr(view,'name', None)}
+            else:
+                actions_url[actionclass.node_definition.title] = {
+                            'action': None,
+                            'url': None,
+                            'view_name': getattr(view,'name', None)}
         result = {}
         result['actions'] = actions_url
-        result['search_body'] = search_body
         result['view'] = self
         return result
 
 
 @panel_config(
     name = 'novaideo_contents',
-    context = NovaIdeoApplication ,
+    context=NovaIdeoApplication,
     renderer='templates/panels/novaideo_contents.pt'
     )
 class NovaideoContents(object):
@@ -207,7 +189,7 @@ def days_hours_minutes(timed):
 
 @panel_config(
     name = 'steps',
-    context = Entity ,
+    context =Entity,
     renderer='templates/panels/steps.pt'
     )
 class StepsPanel(object):
@@ -234,7 +216,7 @@ class StepsPanel(object):
         proposal_nember = len(list(dict(context.related_proposals).keys()))
         duplicates_len = len(context.duplicates)
         return renderers.render(self.step1_0_template,
-                                {'context':context,
+                                {'context': context,
                                  'proposal_nember': proposal_nember,
                                  'duplicates_len': duplicates_len},
                                 request)
@@ -252,7 +234,7 @@ class StepsPanel(object):
             len_related_proposals -= 1
 
         return renderers.render(self.step2_0_template,
-                                {'context':context,
+                                {'context': context,
                                  'proposal_nember': len_related_proposals},
                                 request)
 
@@ -313,7 +295,7 @@ class StepsPanel(object):
                                     {'context':context,
                                      'working_group_states': working_group_states,
                                      'is_closed': is_closed,
-                                     'duration':time_delta,
+                                     'duration': time_delta,
                                      'process': process,
                                      'ballot_report': ballot.report,
                                      'voters': voters},
@@ -341,13 +323,13 @@ class StepsPanel(object):
             support = -1
 
         return renderers.render(self.step4_0_template,
-                                {'context':context,
+                                {'context': context,
                                  'support': support},
                                 request)
 
     def _get_step5_informations(self, context, request):
         return renderers.render(self.step5_0_template,
-                                    {'context':context},
+                                    {'context': context},
                                     request)
 
     def __call__(self):
@@ -373,7 +355,7 @@ class StepsPanel(object):
                 result['current_step'] = 5
                 result['step5_message'] = self._get_step5_informations(context,
                                                                    self.request)                
-            elif not ('archived' in context.state):
+            elif 'archived' not in context.state:
                 result['current_step'] = 3
                 result['step3_message'] = self._get_step3_informations(context,
                                                                    self.request)
@@ -401,12 +383,45 @@ class NovaideoFooter(object):
         return {}
 
 
-GROUPS_PICTO = {
-                'More': 'glyphicon glyphicon-cog',
-                'See': 'glyphicon glyphicon-eye-open',
-                'Add': 'glyphicon glyphicon-plus',
-                'Edit': 'glyphicon glyphicon-pencil',    
-             }
+
+@panel_config(
+    name='lateral_menu',
+    context=Entity,
+    renderer='templates/panels/lateral_menu.pt'
+    )
+class LateralMenu(object):
+    actions = {
+        CreateIdea: ('ideamanagement', 'creat', 'btn-success')}
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        root = getSite()
+        actions = []
+        for action_class, data in self.actions.items():
+            item_actions = getAllBusinessAction(
+                root,
+                self.request,
+                process_id=data[0],
+                node_id=data[1])
+            action = None
+            if item_actions:
+                action = item_actions[0]
+
+            actions.append({'title': action_class.title,
+                            'action': action,
+                            'unavailable_link': getattr(
+                                action_class, 'unavailable_link', None),
+                            'order': getattr(action_class, 'style_order', 100),
+                            'style_btn': data[2],
+                            'style_picto': getattr(action_class,
+                                                   'style_picto', '')})
+
+        actions = sorted(actions, key=lambda e: e['order'])
+        return {'items': actions}
+
 
 def group_actions(actions):
     groups = {}
@@ -420,61 +435,45 @@ def group_actions(actions):
             group.append(action)
         else:
             groups[group_id] = [action]
- 
+
     for group_id, group in groups.items():
-        groups[group_id] = sorted(group, 
-                           key=lambda e: getattr(e[1], 'style_order', 0))
-    groups = sorted(list(groups.items()), 
-                    key=lambda g: getattr(g[1][0][1], 'style_order', 0))
+        groups[group_id] = sorted(group,
+            key=lambda e: getattr(e[1], 'style_order', 0))
+    groups = sorted(list(groups.items()),
+                    key=lambda g: GROUPS_PICTO.get(g[0], ("default", 0))[0])
     return groups
 
 
 @panel_config(
     name='adminnavbar',
-    context = Entity ,
+    context=Entity,
     renderer='templates/panels/admin_navbar.pt'
     )
 class Adminnavbar_panel(object):
 
-    processids = ['invitationmanagement', 
-                  'organizationmanagement',
-                  'novaideoabstractprocess',
-                  'novaideoviewmanager',
-                  'novaideofilemanagement',
-                  'novaideoprocessmanagement']
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
-
-    def _get_actions(self, context, processid):
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
-                                                        'dace_ui_api')
-        return dace_ui_api.get_actions(
-                            [context], self.request,
-                            process_or_id=processid)
 
     def __call__(self):
         root = getSite()
         if not global_user_processsecurity(None, root):
             return {'error': True}
 
-        actions = []
-        for processid in self.processids:
-            actions.extend(self._get_actions(root, processid))
-
-        admin_actions = [a for a in  actions \
-                        if getattr(a[1], 'style_descriminator','') == \
-                          'admin-action']
-        grouped_actions = group_actions(admin_actions)
-        return {'groups': grouped_actions,
-                'pictos': GROUPS_PICTO,
+        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
+                                                        'dace_ui_api')
+        actions = dace_ui_api.get_actions([root], self.request)
+        admin_actions = [a for a in actions
+                         if getattr(a[1], 'style_descriminator', '') ==
+                         'admin-action']
+        return {'groups': group_actions(admin_actions),
+                'pictos': {g: v[1] for g, v in GROUPS_PICTO.items()},
                 'error': False}
 
 
 @panel_config(
     name='deadline',
-    context = NovaIdeoApplication ,
+    context=NovaIdeoApplication,
     renderer='templates/panels/deadline.pt'
     )
 class Deadline_panel(object):
@@ -516,7 +515,7 @@ from novaideo.contextual_help_messages import CONTEXTUAL_HELP_MESSAGES
 
 @panel_config(
     name='contextual_help',
-    context = Entity ,
+    context=Entity,
     renderer='templates/panels/contextual_help.pt'
     )
 class ContextualHelp(object):
@@ -530,9 +529,9 @@ class ContextualHelp(object):
             return {'condition': False}
 
         user = get_current()
-        messages = [CONTEXTUAL_HELP_MESSAGES.get((self.context.__class__, 
-                                                  s, self.request.view_name), 
-                                                 None) \
+        messages = [CONTEXTUAL_HELP_MESSAGES.get((self.context.__class__,
+                                                  s, self.request.view_name),
+                                                 None)
                     for s in self.context.state]
         messages.append(CONTEXTUAL_HELP_MESSAGES.get(
                         (self.context.__class__, 'any', self.request.view_name),
@@ -540,10 +539,10 @@ class ContextualHelp(object):
         messages = [m for m in messages if m is not None]
         messages = [item for sublist in messages for item in sublist]
         messages = sorted(messages, key=lambda m: m[2])
-        messages = [ renderers.render(m[1],
-                      {'context':self.context,
+        messages = [renderers.render(m[1],
+                      {'context': self.context,
                        'user': user},
-                      self.request) for m in messages \
+                      self.request) for m in messages
                     if m[0] is None or m[0](self.context, user)]
         return {'messages': messages,
                 'condition': True}
@@ -551,7 +550,7 @@ class ContextualHelp(object):
 
 @panel_config(
     name='social_share',
-    context = Entity ,
+    context=Entity,
     renderer='templates/panels/social_share.pt'
     )
 class SocialShare(object):
