@@ -98,5 +98,8 @@ class EditView(FormView):
     def default_data(self):
         return self.context
 
+    def default_data(self):
+        return self.context
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Edit:EditView})

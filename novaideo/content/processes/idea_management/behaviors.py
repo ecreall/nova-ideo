@@ -87,6 +87,7 @@ def duplicate_processsecurity_validation(process, context):
            global_user_processsecurity(process, context) 
 
 
+
 class DuplicateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'

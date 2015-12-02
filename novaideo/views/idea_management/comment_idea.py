@@ -129,7 +129,7 @@ class CommentIdeaView(MultipleView):
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CommentIdeaFormView, CommentsView)
     contextual_help = 'comment-help'
-    
+
     def get_message(self):
         lencomments = len(self.context.comments)
         index = str(lencomments)
