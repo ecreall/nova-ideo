@@ -4,11 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
-import math
-import calendar
 import datetime
-import collections
-import pytz
 import string
 import random
 import unicodedata
