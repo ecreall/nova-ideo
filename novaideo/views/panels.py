@@ -6,6 +6,7 @@
 # author: Amen Souissi
 
 import datetime
+import pytz
 from collections import OrderedDict
 from pyramid import renderers
 from pyramid_layout.panel import panel_config
@@ -36,6 +37,9 @@ from novaideo.core import _, SearchableEntity
 from novaideo.content.processes import get_states_mapping
 from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity)
+from novaideo.utilities.util import (
+    get_actions_navbar,
+    footer_navbar_body)
 
 
 USER_MENU_ACTIONS = {'menu1': [SeeMyContents, SeeMyParticipations],
@@ -252,7 +256,7 @@ class StepsPanel(object):
             if subprocesses:
                 date_iteration = subprocesses[-1]['timer'].eventKind.time_date
 
-            today = datetime.datetime.today()
+            today = datetime.datetime.now(tz=pytz.UTC)
             if date_iteration is not None and date_iteration > today:
                 time_delta = date_iteration - today
                 time_delta = days_hours_minutes(time_delta)
@@ -266,7 +270,7 @@ class StepsPanel(object):
                                     request)
         elif 'votes for publishing'  in context.state:
             ballot = process.vp_ballot
-            today = datetime.datetime.today()
+            today = datetime.datetime.now(tz=pytz.UTC)
             if ballot.finished_at is not None and ballot.finished_at > today:
                 time_delta = ballot.finished_at - today
                 time_delta = days_hours_minutes(time_delta)
@@ -286,7 +290,7 @@ class StepsPanel(object):
             for b in subprocess.amendments_ballots]
             voters = list(set(voters))
             ballot = subprocess.amendments_ballots[-1]
-            today = datetime.datetime.today()
+            today = datetime.datetime.now(tz=pytz.UTC)
             if ballot.finished_at is not None and ballot.finished_at > today:
                 time_delta = ballot.finished_at - today
                 time_delta = days_hours_minutes(time_delta)
@@ -370,7 +374,7 @@ class StepsPanel(object):
 
 
 @panel_config(
-    name = 'novaideo_footer',
+    name='novaideo_footer',
     renderer='templates/panels/novaideo_footer.pt'
     )
 class NovaideoFooter(object):
@@ -380,8 +384,15 @@ class NovaideoFooter(object):
         self.request = request
 
     def __call__(self):
-        return {}
+        root = getSite()
+        def actions_getter():
+            return [a for a in root.actions
+                    if getattr(a.action, 'style', '') == 'button']
 
+        actions_navbar = get_actions_navbar(
+            actions_getter, self.request, ['footer-action'])
+        return {'navbar_body': footer_navbar_body(
+            self, self.context, actions_navbar)}
 
 
 @panel_config(
@@ -493,7 +504,7 @@ class Deadline_panel(object):
         except Exception:
             pass
 
-        current_date = datetime.datetime.today()
+        current_date = datetime.datetime.now(tz=pytz.UTC)
         total_sec_current_deadline = (current_deadline - previous_deadline).total_seconds()
         percent = 100
         expired = False
@@ -567,3 +578,19 @@ class SocialShare(object):
 
         return {'request': self.request,
                 'condition': True}
+
+
+@panel_config(
+    name='social_share_toggle',
+    context=Entity,
+    renderer='templates/panels/social_share_toggle.pt'
+    )
+class SocialToggleShare(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        return {'object': self.context}
+

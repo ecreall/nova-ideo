@@ -1,0 +1,29 @@
+<div tal:repeat="(index, item) enumerate(history)" tal:define="lenh len(history)">
+  <div class="panel panel-primary" i18n:domain="novaideo">
+    <div tal:omit-tag="" 
+         tal:define="process item['activity_data'][0];
+                  action item['activity_data'][1];
+                  state item['state'];
+                  user get_obj(item['user']);
+                  date item['date']">
+    <div class="panel-heading">
+      <span style="font-weight: bold; font-size: 16px">${process} <span class="glyphicon glyphicon-cog"></span> ${action}</span>: 
+      <span tal:omit-tag="" tal:condition="user is not None" ><span i18n:translate="">By</span> <a style="color:white" href="${request.resource_url(user, '@@index')}">${getattr(user, 'title', user.__name__)}</a></span> <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(date)"/> 
+    </div>
+    <div class="panel-body">
+      <div tal:condition="state">
+        <span tal:condition="len(state)>1" style="font-weight: bold; font-size: 16px" i18n:translate="">States</span>
+        <span tal:condition="len(state) == 1" style="font-weight: bold; font-size: 16px" i18n:translate="">State</span>:
+        <tal:loop repeat="s state">
+            ${get_states_mapping(current_user, context, s)}
+            <tal:separator condition="not: repeat['s'].end">, </tal:separator> 
+        </tal:loop>
+    </div>
+    </div>
+  </div>
+  </div>
+  <div tal:condition="lenh > 1 and (index+1) < lenh " style="text-align:center; margin-top: -16px">
+    <span style="font-weight: bold; font-size: 25px" class="glyphicon glyphicon-arrow-down">
+    </span>
+  </div>
+</div>

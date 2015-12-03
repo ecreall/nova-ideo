@@ -102,3 +102,4 @@
           </div>
      </div>
 </div>
+<div tal:replace="structure footer_body"/>

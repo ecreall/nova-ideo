@@ -5,6 +5,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import pytz
 import colander
 import datetime
 from zope.interface import implementer
@@ -260,7 +261,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
 
     def initialization(self):
         self.reset_default_values()
-        self.deadlines = PersistentList([datetime.datetime.today()])
+        self.deadlines = PersistentList([datetime.datetime.now(tz=pytz.UTC)])
         self.work_modes = list(WORK_MODES.keys())
 
     def reset_default_values(self):

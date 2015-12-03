@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import pytz
 import datetime
 from pyramid.view import view_config
 
@@ -35,9 +36,9 @@ class SeeFilesView(BasicView):
     def update(self):
         self.execute(None) 
         objects = self.context.files
+        now = datetime.datetime.now(tz=pytz.UTC)
         objects = sorted(objects, 
-                         key=lambda e: getattr(e, 'modified_at', 
-                                               datetime.datetime.today()), 
+                         key=lambda e: getattr(e, 'modified_at', now), 
                          reverse=True)
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_files"

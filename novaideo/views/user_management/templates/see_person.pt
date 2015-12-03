@@ -1,11 +1,19 @@
 <div tal:replace="structure navbar_body"/>
-<hr class="soften">
-<div class="thumbnail right-caption span4" i18n:domain="novaideo">
-  <img tal:condition="user.picture is not None" tal:attributes="src user.picture"  width="100"/>
-  <div class="media-body" style="width:auto;">
-    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
-      <h3>${getattr(user, 'title', user.name)}</h3>
-      <dl>
+<div class="media" i18n:domain="novaideo">
+  <div class="media-left">
+    <img class="img-thumbnail" tal:condition="user.picture is not None" tal:attributes="src user.picture.url"  width="100"/>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">
+        <strong>${getattr(user, 'title', user.name)}</strong>
+    </h4>
+      <dl class="dl-horizontal well well-sm dl-left">
+        <dt i18n:translate="">Member since</dt>
+        <dd><span tal:replace="layout.to_localized_time(user.created_at, date_only=True)"/></dd>
+        <dt tal:condition="is_portal_manager" i18n:translate="">Email</dt>
+        <dd tal:condition="is_portal_manager" tal:define="mail getattr(user, 'email', '')">
+          <a href="mailto:${mail}">${mail}</a>
+        </dd>
         <dt tal:condition="getattr(user, 'organization', None)" i18n:translate="">Organization</dt>
         <dd tal:condition="getattr(user, 'organization', None)">
            <a tal:attributes="href request.resource_url(user.organization, '@@index')">${user.organization.title}</a>
@@ -19,25 +27,18 @@
         </dd>
         <dd tal:condition="not getattr(user, 'keywords', [])" i18n:translate="">No preferences</dd>
       </dl>
-      <span class="date">
-        <span  i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(user.created_at, date_only=True)"/>
-      </span>
   </div>
 </div>
-<div id="panel-contributions" class="panel-group" i18n:domain="novaideo">
-  <div tal:condition="contents" class="panel panel-default">
-    <div class="panel-heading">
-      <a  href="#contents" data-parent="#contributions" data-toggle="collapse" class="panel-title" i18n:translate="">
-	     Member contributions
-      </a>
-    </div>
-    <div class="panel-collapse  in" id="contents" style="height: auto;">
-	<div  class="panel-body">
-	    ${structure:contents}
-	</div>
-    </div>
-  </div>
+<h4 tal:condition="len_contents" id="contents" class="section-title">
+  <span class="icon glyphicon glyphicon-th"></span> 
+  <span i18n:translate="">Contribution</span> 
+  <span class="pull-right badge hidden-xs">${len_contents} 
+    <span tal:condition="len_contents > 1" i18n:translate="">contents</span>
+    <span tal:condition="len_contents == 1" i18n:translate="">content</span>
+  </span>
+</h4>
+<div tal:condition="len_contents">
+  ${structure:contents}
 </div>
-<div tal:condition="user.is_published" class="social-share-contaier">
-   <div class="social-share" data-social-share-privacy="true"></div>
-</div>
+<div tal:replace="structure footer_body"/>
+${panel('social_share_toggle')}

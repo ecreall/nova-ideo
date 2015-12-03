@@ -43,4 +43,4 @@
  </blockquote>
 </small>
 </div>
-
+<div tal:replace="structure footer_body"/>

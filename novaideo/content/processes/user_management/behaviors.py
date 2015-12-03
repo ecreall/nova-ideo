@@ -6,6 +6,7 @@
 # author: Amen Souissi
 
 import datetime
+import pytz
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember
 
@@ -25,6 +26,7 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
+from dace.processinstance.core import ActivityExecuted
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IPerson
@@ -82,15 +84,16 @@ class Registration(InfiniteCardinality):
                 recipients=[person.email], body=message)
 
         person.reindex()
+        request.registry.notify(ActivityExecuted(self, [person], person))
         return {'person': person}
 
     def redirect(self, context, request, **kw):
         person = kw['person']
         headers = remember(request, get_oid(person))
-        request.registry.notify(LoggedIn(person.email, person, 
+        request.registry.notify(LoggedIn(person.email, person,
                                          context, request))
-        return HTTPFound(location = request.resource_url(context),
-                         headers = headers)
+        return HTTPFound(location=request.resource_url(context),
+                         headers=headers)
 
 
 def login_roles_validation(process, context):
@@ -170,8 +173,9 @@ class Edit(InfiniteCardinality):
         context.setproperty('keywords_ref', result)
         context.set_title()
         context.name = name_chooser(name=context.title)
-        context.modified_at = datetime.datetime.today()
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -207,7 +211,9 @@ class Deactivate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('active')
         context.state.append('deactivated')
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -243,7 +249,9 @@ class Activate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('deactivated')
         context.state.append('active')
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -285,7 +293,9 @@ class AssignRoles(InfiniteCardinality):
                           if r not in current_roles]
         revoke_roles(context, roles_to_revoke)
         grant_roles(context, roles_to_grant)
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):

@@ -6,6 +6,7 @@
 # author: Amen Souissi
 
 import datetime
+import pytz
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
@@ -16,6 +17,7 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
+from dace.processinstance.core import ActivityExecuted
 
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.content.interface import INovaIdeoApplication, IFile
@@ -60,13 +62,15 @@ class CreateFile(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        user = get_current()
         newfile = appstruct['_object_data']
         root.addtoproperty('files', newfile)
         newfile.state.append('published')
-        grant_roles(roles=(('Owner', newfile), ))
-        newfile.setproperty('author', get_current())
+        grant_roles(user=user, roles=(('Owner', newfile), ))
+        newfile.setproperty('author', user)
         newfile.reindex()
         self.newcontext = newfile
+        request.registry.notify(ActivityExecuted(self, [newfile], user))
         return {'newcontext': newfile}
 
     def redirect(self, context, request, **kw):
@@ -87,8 +91,10 @@ class EditFile(InfiniteCardinality):
     roles_validation = edit_roles_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.modified_at = datetime.datetime.today()
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        request.registry.notify(
+            ActivityExecuted(self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):

@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import pytz
 import datetime
 from persistent.list import PersistentList
 from zope.interface import implementer
@@ -474,7 +475,7 @@ class Ballot(VisualisableElement, Entity):
 
     def run_ballot(self, context=None):
         """Run the ballot"""
-        self.run_at = datetime.datetime.today()
+        self.run_at = datetime.datetime.now(tz=pytz.UTC)
         self.finished_at = self.run_at + self.duration
         processes = self.report.ballottype.run_ballot(context)
         return processes

@@ -4,10 +4,12 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import datetime
+import pytz
 from pyramid.httpexceptions import HTTPFound
 from substanced.util import find_service
 
-from dace.util import getSite
+from dace.util import getSite, name_chooser
 from dace.objectofcollaboration.principal.util import (
     grant_roles, has_role, get_current, has_any_roles)
 from dace.processinstance.activity import (
@@ -257,6 +259,8 @@ class EditInvitation(InfiniteCardinality):
     processsecurity_validation = editinv_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        context.reidex()
         return {}
 
     def redirect(self, context, request, **kw):
@@ -293,8 +297,10 @@ class AcceptInvitation(InfiniteCardinality):
         person = Person(password=password, **datas)
         root = getSite(context)
         principals = find_service(root, 'principals')
+        users = principals['users']
         name = person.first_name + ' ' + person.last_name
-        principals['users'][name] = person
+        name = name_chooser(users, name=name)
+        users[name] = person
         if getattr(context, 'ismanager', False) and \
            context.organization:
             grant_roles(person, (('OrganizationResponsible', 
@@ -355,7 +361,9 @@ class RefuseInvitation(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('pending')
-        context.state.append('refused')        
+        context.state.append('refused')
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        context.reindex()
         if context.manager:
             localizer = request.localizer
             user_title = localizer.translate(
@@ -377,9 +385,9 @@ class RefuseInvitation(InfiniteCardinality):
                     invitation_url=url,
                     roles=", ".join(context.roles),
                     novaideo_title=novaideo_title)
-            mailer_send(subject= subject, 
-                        recipients=[context.manager.email], 
-                        body=message )
+            mailer_send(subject=subject,
+                        recipients=[context.manager.email],
+                        body=message)
         return {}
 
     def redirect(self, context, request, **kw):
@@ -443,9 +451,9 @@ class ReinviteUser(InfiniteCardinality):
             invitation_url=url,
             roles=", ".join(getattr(context, 'roles', [])),
                 novaideo_title=request.root.title)
-        mailer_send(subject='Invitation', 
-                    recipients=[context.email], 
-                    body=message )
+        mailer_send(subject='Invitation',
+                    recipients=[context.email],
+                    body=message)
         context.state.remove('refused')
         context.state.append('pending')
         return {}
@@ -485,9 +493,9 @@ class RemindInvitation(InfiniteCardinality):
             invitation_url=url,
             roles=", ".join(getattr(context, 'roles', [])),
             novaideo_title=request.root.title)
-        mailer_send(subject='Invitation', 
-            recipients=[context.email], 
-            body=message )
+        mailer_send(subject='Invitation',
+            recipients=[context.email],
+            body=message)
         return {}
 
     def redirect(self, context, request, **kw):

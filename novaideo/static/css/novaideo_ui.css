@@ -1,3 +1,18 @@
+.social-share-contaier {
+  margin-bottom: -15px;
+  text-align: center;
+}
+
+.social-share-toggle {
+  color: gray;
+  float: left;
+}
+
+.social-share-toggle > span.fa {
+  font-size: 30px;
+  vertical-align: sub;
+}
+
 .novaideo-left{
     padding-right: 0px
 }
@@ -16,6 +31,23 @@
     background-image: none;
     border-color: #fff;
     padding: 0 !important;
+}
+
+.section-title {
+  background-image: linear-gradient(to right, #555 -32%, #fff 84%);
+  border-radius: 3px;
+  box-shadow: -2px 3px 4px gray;
+  color: #fff;
+  font-weight: 700;
+  padding: 5px;
+}
+
+.dl-left.dl-horizontal dt{
+  text-align: left;
+}
+
+.dl-left.dl-horizontal dd{
+  margin-left: 5px;
 }
 
 .lateral-menu {
@@ -66,7 +98,6 @@ button.navbar-toggle
 
 .user-nav-top{
     padding: 0px;
-    text-align: center;
 }
 
 .user-nav-top>.search-nav-top{
@@ -685,7 +716,7 @@ ins {
 }
 
 .navbar-entity{
-   margin-top: -57px;
+   margin-top: -17px;
 }
 
 .navbar-entity .navbar-entity-content{
@@ -784,8 +815,8 @@ ins {
 }
 
 .proposal-support {
-    margin-bottom: 10px;
-    margin-top: -5px;
+    margin-bottom: 0px;
+    margin-top: 3px;
 }
 
 .proposal-members-nb {
@@ -1555,7 +1586,7 @@ ins {
 }
 
 .filter-btn.closed{
-    color: #f0ad4e
+    color: #6080b4
 }
 
 .filter-btn.open{
@@ -1617,6 +1648,9 @@ ins {
    .novaideo-left{
      padding-right: 15px
  }
+ .del-left.dl-horizontal dd{
+      margin-left: 30px;
+  }
 }
 
 @media (max-width: 320px) {

@@ -9,10 +9,12 @@ from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
-    has_role, get_current)
+    has_role, get_current, has_any_roles)
+from dace.interfaces import IEntity
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
+from dace.processinstance.core import PROCESS_HISTORY_KEY
 
 from novaideo.content.interface import INovaIdeoApplication, IProposal
 from novaideo import _
@@ -184,6 +186,31 @@ class SeeOrderedProposal(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
+
+
+def history_roles_validation(process, context):
+    return has_any_roles(roles=('PortalManager', ('Owner', context)))
+
+
+def history_processsecurity_validation(process, context):
+    return getattr(context, 'annotations', {}).get(PROCESS_HISTORY_KEY, {}) and \
+           global_user_processsecurity(process, context)
+
+
+class SeeEntityHistory(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'footer-entity-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-time'
+    title = _('Processes history')
+    style_order = 2
+    isSequential = False
+    context = IEntity
+    processsecurity_validation = history_processsecurity_validation
+    roles_validation = history_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 #TODO behaviors

@@ -4,18 +4,25 @@
 # licence: AGPL
 # author: Amen Souissi
 
-import random
+import math
+import calendar
+import datetime
+import collections
+import pytz
 import string
+import random
 import unicodedata
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 from pyramid import renderers
-from pyramid.threadlocal import get_current_request
-from pyramid.threadlocal import get_current_registry
+from babel.core import Locale
+from bs4 import BeautifulSoup
+from pyramid.threadlocal import get_current_registry, get_current_request
 
-from daceui.interfaces import IDaceUIAPI
-from dace.util import getSite, find_catalog
+from dace.processinstance.activity import ActionType
 from dace.objectofcollaboration.principal.util import get_current
+from daceui.interfaces import IDaceUIAPI
+
 
 from novaideo.content.correlation import Correlation, CorrelationType
 from novaideo.mail import (
@@ -29,6 +36,105 @@ try:
     _LETTERS = string.letters
 except AttributeError: #pragma NO COVER
     _LETTERS = string.ascii_letters
+
+
+DATE_FORMAT = {
+    'defined_literal': {
+        'day_month_year': _('On ${month} ${day} ${year}'),
+        'day_month': _('On ${month} ${day}'),
+        'day': _('On ${day}'),
+        'day_hour_minute_month_year': _("On ${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_minute_month': _("On ${month} ${day} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_minute': _("On ${day} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_month_year': _("On ${month} ${day} ${year} at ${hour} o'clock"),
+        'day_hour_month': _("On ${month} ${day} at ${hour} o'clock"),
+        'day_hour': _("On ${day} at ${hour} o'clock")
+    },
+    'direct_literal': {
+        'day_month_year': _('${month} ${day} ${year}'),
+        'day_month': _('${month} ${day}'),
+        'day': _('${day}'),
+        'day_hour_minute_month_year': _("${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_minute_month': _("${month} ${day} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_minute': _("${day} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_month_year': _("${month} ${day} ${year} at ${hour} o'clock"),
+        'day_hour_month': _("${month} ${day} at ${hour} o'clock"),
+        'day_hour': _("${day} at ${hour} o'clock")
+    },
+    'digital': {
+        'day_month_year': _('${month}/${day}/${year}'),
+        'day_month': _('${month}/${day}'),
+        'day': _('${day}'),
+        'day_hour_minute_month_year': _('${month}/${day}/${year} ${hour}:${minute}'),
+        'day_hour_minute_month': _('${month}/${day} ${hour}:${minute}'),
+        'day_hour_minute': _('${day} ${hour}:${minute}'),
+        'day_hour_month_year': _('${month}/${day}/${year} ${hour}:00'),
+        'day_hour_month': _('${month}/${day} ${hour}:00'),
+        'day_hour_month': _('${day} ${hour}:00')
+    }
+}
+
+
+def to_localized_time(
+    date, request=None, date_from=None,
+    date_only=False, format_id='digital',
+    ignore_month=False, ignore_year=False,
+    add_day_name=False, translate=False):
+    if request is None:
+        request = get_current_request()
+
+    if date_from is None:
+        date_from = datetime.datetime.now()
+
+    hour = getattr(date, 'hour', None)
+    minute = getattr(date, 'minute', None)
+    date_dict = {
+        'year': date.year,
+        'day': date.day,
+        'month': date.month,
+        'hour': hour if not date_only else None,
+        'minute': minute if not date_only and minute != 0 else None
+    }
+    if ignore_month:
+        month = ((date_from.month != date_dict['month'] or \
+                  date_from.year != date_dict['year']) and \
+                 date_dict['month']) or None
+        date_dict['month'] = month
+        if month is None:
+            date_dict['year'] = None
+
+    if ignore_year and date_dict['year']:
+        year = ((date_from.year != date_dict['year']) and \
+                date_dict['year']) or None
+        date_dict['year'] = year
+
+    date_dict = {key: value for key, value in date_dict.items() if value}
+    if 'minute' in date_dict and date_dict['minute'] < 10:
+        date_dict['minute'] = '0' + str(date_dict['minute'])
+
+    localizer = request.localizer
+    if format_id.endswith('literal'):
+        locale = Locale(localizer.locale_name)
+        if 'day' in date_dict:
+            if date_dict['day'] == 1:
+                date_dict['day'] = localizer.translate(_('1st'))
+
+            if add_day_name:
+                weekday = date.weekday()
+                day_name = locale.days['format']['wide'][weekday]
+                date_dict['day'] = localizer.translate(
+                    _('${name} ${day}',
+                      mapping={'name': day_name, 'day': date_dict['day']}))
+
+        if 'month' in date_dict:
+            date_dict['month'] = locale.months['format']['wide'][date_dict['month']]
+
+    date_format_id = '_'.join(sorted(list(date_dict.keys())))
+    format = DATE_FORMAT[format_id].get(date_format_id)
+    if translate:
+        return localizer.translate(_(format, mapping=date_dict))
+
+    return _(format, mapping=date_dict)
 
 
 def deepcopy(obj):
@@ -163,13 +269,34 @@ def send_alert_new_content(content):
             body=message)
 
 
+def html_to_text(html):
+    soup = BeautifulSoup(html, "lxml")
+    element = soup.body
+    if element is None:
+        return ''
+
+    text = ' '.join(element.stripped_strings)
+    return text
+
+
+def html_article_to_text(html):
+    soup = BeautifulSoup(html, "lxml")
+    articles = soup.find_all('div', 'article-body')
+    if articles:
+        article = articles[0]
+        text = ' '.join(article.stripped_strings)
+        return text
+
+    return ''
+
+
 def get_modal_actions(actions, request):
-    dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
-                                                   'dace_ui_api')
+    dace_ui_api = get_current_registry().getUtility(
+        IDaceUIAPI, 'dace_ui_api')
     actions = [(a.context, a.action) for a in actions]
     action_updated, messages, \
-    resources, actions = dace_ui_api.update_actions(request,
-                                                    actions)
+    resources, actions = dace_ui_api.update_actions(
+        request, actions)
     return action_updated, messages, resources, actions
 
 
@@ -180,31 +307,33 @@ def get_actions_navbar(actions_getter, request, descriminators):
     update_nb = 0
     while isactive and update_nb < 2:
         actions = actions_getter()
-        modal_actions = [a for a in  actions \
-                        if getattr(a.action, 'style_interaction', '') == \
-                           'modal-action']
+        modal_actions = [a for a in actions
+                         if getattr(a.action, 'style_interaction', '') ==
+                         'modal-action']
         isactive, messages, \
         resources, modal_actions = get_modal_actions(modal_actions, request)
         update_nb += 1
 
     modal_actions = [(a['action'], a) for a in modal_actions]
     result['modal-action'] = {'isactive': isactive,
-                              'messages': messages ,
+                              'messages': messages,
                               'resources': resources,
                               'actions': modal_actions
                               }
     for descriminator in descriminators:
-        descriminator_actions = [a for a in actions \
-                    if getattr(a.action, 'style_descriminator','') == \
-                       descriminator]
-        descriminator_actions = sorted(descriminator_actions, 
-                       key=lambda e: getattr(e.action, 'style_order', 0))
+        descriminator_actions = [a for a in actions
+                                 if getattr(a.action,
+                                            'style_descriminator', '') ==
+                                 descriminator]
+        descriminator_actions = sorted(
+            descriminator_actions,
+            key=lambda e: getattr(e.action, 'style_order', 0))
         result[descriminator] = descriminator_actions
 
-    return  result
+    return result
 
 
-def default_navbar_body(view, actions_navbar):
+def default_navbar_body(view, context, actions_navbar):
     global_actions = actions_navbar['global-action']
     text_actions = actions_navbar['text-action']
     modal_actions = actions_navbar['modal-action']['actions']
@@ -213,9 +342,82 @@ def default_navbar_body(view, actions_navbar):
         'global_actions': global_actions,
         'modal_actions': dict(modal_actions),
         'text_actions': text_actions,
-       }
-    body = renderers.render(template, result, view.request)
-    return body
+    }
+    return renderers.render(template, result, view.request)
+
+
+def footer_navbar_body(view, context, actions_navbar):
+    global_actions = actions_navbar['footer-action']
+    modal_actions = actions_navbar['modal-action']['actions']
+    template = 'novaideo:views/templates/footer_navbar_actions.pt'
+    result = {
+        'footer_actions': global_actions,
+        'modal_actions': dict(modal_actions)
+    }
+    return renderers.render(template, result, view.request)
 
 
 navbar_body_getter = default_navbar_body
+
+
+def footer_block_body(view, context, actions_navbar):
+    footer_actions = actions_navbar['footer-entity-action']
+    modal_actions = actions_navbar['modal-action']['actions']
+    template = 'novaideo:views/templates/footer_entity_actions.pt'
+    result = {
+        'footer_actions': footer_actions,
+        'modal_actions': dict(modal_actions)
+    }
+    return renderers.render(template, result, view.request)
+
+
+class ObjectRemovedException(Exception):
+    pass
+
+
+def generate_navbars(view, context, request, **args):
+    def actions_getter():
+        return [a for a in context.actions
+                if a.action.actionType != ActionType.automatic]
+
+    all_actions = {}
+    footer_navbar = get_actions_navbar(
+        actions_getter, request, ['footer-entity-action'])
+    actions_navbar = get_actions_navbar(
+        actions_getter, request, ['global-action',
+                                  'text-action',
+                                  'admin-action',
+                                  'wg-action'])
+    actions_navbar['global-action'].extend(
+        actions_navbar.pop('admin-action'))
+    actions_body = get_actions_navbar(
+        actions_getter, request, ['body-action'])
+
+    actions_navbar['global-action'].extend(args.get('global_action', []))
+    actions_navbar['text-action'].extend(args.get('text_action', []))
+    footer_navbar['footer-entity-action'].extend(
+        args.get('footer_entity_action', []))
+    actions_body['body-action'].extend(args.get('body_action', []))
+    all_actions.update(footer_navbar)
+    all_actions.update(actions_navbar)
+    all_actions.update(actions_body)
+    if getattr(context, '__parent__', None) is None:
+        raise ObjectRemovedException("Object removed")
+
+    actions_bodies = []
+    for action in actions_body['body-action']:
+        object_values = {'action': action}
+        body = view.content(args=object_values,
+                            template=action.action.template)['body']
+        actions_bodies.append(body)
+
+    isactive = actions_navbar['modal-action']['isactive']
+    messages = actions_navbar['modal-action']['messages']
+    resources = actions_navbar['modal-action']['resources']
+    return {'isactive': isactive,
+            'messages': messages,
+            'resources': resources,
+            'all_actions': all_actions,
+            'navbar_body': navbar_body_getter(view, context, actions_navbar),
+            'footer_body': footer_block_body(view, context, footer_navbar),
+            'body_actions': actions_bodies}

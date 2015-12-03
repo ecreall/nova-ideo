@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import pytz
 import datetime
 import colander
 import deform
@@ -26,7 +27,7 @@ def define_date_node(schema):
     schema['vote'] = colander.SchemaNode(
             colander.DateTime(),
             widget=deform.widget.DateTimeInputWidget(),
-            validator=colander.Range(min=datetime.datetime.today(),
+            validator=colander.Range(min=datetime.datetime.now(tz=pytz.UTC),
                 min_err=_('${val} is earlier than earliest datetime ${min}')),
             title=_('Date')
             )               
@@ -53,7 +54,7 @@ class VoteViewStudyReport(BasicView):
         values = {'context': self.context, 'ballot_report': ballot_report}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 

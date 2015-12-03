@@ -9,7 +9,8 @@
 This module represent all of behaviors used in the 
 Amendments management process definition. 
 """
-
+import datetime
+import pytz
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
 from pyramid.httpexceptions import HTTPFound
@@ -20,10 +21,11 @@ from dace.util import (
     getSite,
     copy)
 from dace.objectofcollaboration.principal.util import (
-    has_role, 
-    grant_roles, 
+    has_role,
+    grant_roles,
     get_current)
 from dace.processinstance.activity import InfiniteCardinality, ActionType
+from dace.processinstance.core import ActivityExecuted
 
 from novaideo.content.interface import IAmendment
 from ..user_management.behaviors import global_user_processsecurity
@@ -106,6 +108,7 @@ class DuplicateAmendment(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        user = get_current()
         copy_of_amendment = copy(context, 
                                  (context.proposal, 'amendments'),
                                  omit=('created_at',
@@ -122,7 +125,7 @@ class DuplicateAmendment(InfiniteCardinality):
         copy_of_amendment.text = normalize_text(copy_of_amendment.text)
         copy_of_amendment.setproperty('originalentity', context)
         copy_of_amendment.state = PersistentList(['draft'])
-        copy_of_amendment.setproperty('author', get_current())
+        copy_of_amendment.setproperty('author', user)
         localizer = request.localizer
         # copy_of_amendment.title = context.proposal.title + \
         #                         localizer.translate(_('_Amended version ')) + \
@@ -131,13 +134,14 @@ class DuplicateAmendment(InfiniteCardinality):
         copy_of_amendment.title = localizer.translate(_('Amended version ')) + \
                                 str(getattr(context.proposal,
                                            '_amendments_counter', 1)) 
-        grant_roles(roles=(('Owner', copy_of_amendment), ))
+        grant_roles(user=user, roles=(('Owner', copy_of_amendment), ))
         copy_of_amendment.text_diff = get_text_amendment_diff(
                                            context.proposal, copy_of_amendment)
         copy_of_amendment.reindex()
         context.proposal._amendments_counter = getattr(
             context.proposal, '_amendments_counter', 1) + 1
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], user))
         return {'newcontext': copy_of_amendment}
 
     def redirect(self, context, request, **kw):
@@ -215,7 +219,9 @@ class EditAmendment(InfiniteCardinality):
         context.text = normalize_text(context.text)
         context.text_diff = get_text_amendment_diff(
             context.proposal, context)
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -254,6 +260,7 @@ class ExplanationAmendment(InfiniteCardinality):
             context, request, self.process)
         context.explanations = PersistentDict(explanations)
         context.text_diff = text_diff
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -447,7 +454,9 @@ class SubmitAmendment(InfiniteCardinality):
 
             context.state.append('archived')
 
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):

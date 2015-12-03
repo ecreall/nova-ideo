@@ -5,6 +5,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import pytz
 import datetime
 from pyramid.httpexceptions import HTTPFound
 from persistent.list import PersistentList
@@ -86,8 +87,8 @@ def deadline_roles_validation(process, context):
 
 
 def adddeadline_processsecurity_validation(process, context):
-    return datetime.datetime.today() >= \
-           context.deadlines[-1].replace(tzinfo=None) and \
+    return datetime.datetime.now(tz=pytz.UTC) >= \
+           context.deadlines[-1].replace(tzinfo=pytz.UTC) and \
            global_user_processsecurity(process, context)
 
 

@@ -5,6 +5,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import pytz
 import datetime
 from pyramid.view import view_config
 
@@ -45,11 +46,11 @@ class SeeAmendmentsView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        objects = [o for o in getattr( self.context, 'amendments', []) \
-                  if not('archived' in o.state) and can_access(user, o)]
-        objects = sorted(objects, 
-                         key=lambda e: getattr(e, 'modified_at', 
-                                               datetime.datetime.today()), 
+        objects = [o for o in getattr(self.context, 'amendments', [])
+                   if not('archived' in o.state) and can_access(user, o)]
+        now = datetime.datetime.now(tz=pytz.UTC)
+        objects = sorted(objects,
+                         key=lambda e: getattr(e, 'modified_at', now),
                          reverse=True)
         lenamendments = len(objects)
         index = str(lenamendments)

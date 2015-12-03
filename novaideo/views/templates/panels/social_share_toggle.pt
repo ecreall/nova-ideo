@@ -1,0 +1,17 @@
+<div tal:condition="object.is_published"
+	 class="social-share-contaier"
+	 i18n:domain="novaideo">
+  <a class="social-share-toggle"
+     role="button"
+  	 data-toggle="collapse"
+  	 href="#collapse-social-share"
+  	 aria-expanded="false"
+  	 aria-controls="collapse-social-share">
+  	<span class="fa glyphicon glyphicon-globe"></span> <span i18n:translate="">Share</span>
+  </a>
+  <div class="collapse"
+  	   id="collapse-social-share">
+    <div class="social-share"
+    	 data-social-share-privacy="true"></div>
+  </div>
+</div>

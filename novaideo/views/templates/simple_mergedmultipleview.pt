@@ -11,10 +11,7 @@
                    </div>
                </div>
             </div>
-
-            <div tal:condition="getattr(subitem['view'].context, 'is_published', False)" class="social-share-contaier">
-              <div class="social-share" data-social-share-privacy="true"></div>
-            </div>
+            ${panel('social_share_toggle')}
     </div>
 </div>
 

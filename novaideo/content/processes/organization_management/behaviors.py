@@ -4,6 +4,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import datetime
+import pytz
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
@@ -12,6 +14,8 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
+from dace.processinstance.core import ActivityExecuted
+
 from novaideo.ips.xlreader import create_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IOrganization
 from novaideo.content.organization import Organization
@@ -69,6 +73,7 @@ class AddOrganizations(InfiniteCardinality):
                             properties={'title':('String', False),
                                         'description':('String', False)})
         root.setproperty('organizations', organizations)
+        request.registry.notify(ActivityExecuted(self, organizations, get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -101,7 +106,7 @@ class CreatOrganizations(InfiniteCardinality):
             organization = organization_dict['_object_data']
             root.addtoproperty('organizations', organization)
             #send mail
-
+        request.registry.notify(ActivityExecuted(self, new_organizations, get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -131,9 +136,11 @@ class EditOrganizations(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         for org_struct in appstruct['organizations']:
             organization = org_struct['_object_data']
+            organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
             managers = org_struct['managers']
             update_manager(organization, managers)
 
+        request.registry.notify(ActivityExecuted(self, appstruct['organizations'], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -213,8 +220,10 @@ class EditOrganization(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         organization = appstruct['_object_data']
+        organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
         managers = appstruct['managers'] 
         update_manager(organization, managers)
+        request.registry.notify(ActivityExecuted(self, [organization], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):

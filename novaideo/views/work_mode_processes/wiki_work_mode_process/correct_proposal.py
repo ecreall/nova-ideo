@@ -7,6 +7,7 @@
 import colander
 import deform
 import datetime
+import pytz
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from pyramid import renderers
@@ -30,9 +31,10 @@ from novaideo.content.processes.work_mode_processes.\
 from novaideo.content.proposal import ProposalSchema, Proposal
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo import _
-from novaideo.core import can_access, to_localized_time
+from novaideo.core import can_access
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.views.proposal_management.create_proposal import ideas_choice
+from novaideo.utilities.util import to_localized_time
 
 
 @colander.deferred
@@ -113,7 +115,8 @@ class AddIdeaFormView(FormView):
     def default_data(self):
         localizer = self.request.localizer
         user = get_current()
-        time = to_localized_time(datetime.datetime.today())
+        time = to_localized_time(datetime.datetime.now(
+            tz=pytz.UTC), translate=True)
         title = localizer.translate(_('Idea by'))+' '+\
                 getattr(user, 'title', user.name)+' '+\
                 localizer.translate(_('the'))+' '+\

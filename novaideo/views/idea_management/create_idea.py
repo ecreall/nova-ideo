@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import pytz
 import datetime
 from pyramid.view import view_config
 from substanced.util import get_oid
@@ -17,11 +18,11 @@ from pontus.form import FormView
 from pontus.schema import select
 from pontus.view import BasicView
 
-from novaideo.content.processes.idea_management.behaviors import  CreateIdea
+from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.core import to_localized_time
 from novaideo import _
+from novaideo.utilities.util import to_localized_time
 
 
 @view_config(
@@ -45,13 +46,13 @@ class CreateIdeaView(FormView):
     def default_data(self):
         localizer = self.request.localizer
         user = get_current()
-        time = to_localized_time(datetime.datetime.today())
+        time = to_localized_time(
+            datetime.datetime.now(tz=pytz.UTC), translate=True)
         title = localizer.translate(_('Idea by'))+' '+\
                 getattr(user, 'title', user.name)+' '+\
                 localizer.translate(_('the'))+' '+\
                 time+' (UTC)'
         return {'title': title}
-              
 
 
 @view_config(name='ideasmanagement',
@@ -70,14 +71,15 @@ class CreateIdeaView_Json(BasicView):
             values = {'title': self.params('title'),
                       'text': self.params('text')}
             idea = Idea()
-            idea.set_data(values) 
+            idea.set_data(values)
             appstruct = {'_object_data': idea,
                          'keywords': self.params('keywords')}
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
             localizer = self.request.localizer
             user = get_current()
-            time = to_localized_time(datetime.datetime.today())
+            time = to_localized_time(
+                datetime.datetime.now(tz=pytz.UTC), translate=True)
             new_title = localizer.translate(_('Idea by'))+' '+\
                     getattr(user, 'title', user.name)+' '+\
                     localizer.translate(_('the'))+' '+\
@@ -85,7 +87,7 @@ class CreateIdeaView_Json(BasicView):
             data = {'title': idea.title,
                     'oid': str(oid),
                     'body': renderers.render(self.idea_template,
-                                             {'idea':idea},
+                                             {'idea': idea},
                                              self.request),
                     'new_title': new_title
                     }
@@ -100,8 +102,8 @@ class CreateIdeaView_Json(BasicView):
             idea = get_obj(oid)
             data = {'title': idea.title,
                     'oid': str(oid),
-                    'body': renderers.render(self.idea_template, 
-                                             {'idea':idea}, 
+                    'body': renderers.render(self.idea_template,
+                                             {'idea': idea},
                                              self.request)
                     }
             result = data
@@ -119,4 +121,5 @@ class CreateIdeaView_Json(BasicView):
         return {}
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({CreateIdea: CreateIdeaView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CreateIdea: CreateIdeaView})

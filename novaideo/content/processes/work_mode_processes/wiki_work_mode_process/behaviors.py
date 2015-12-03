@@ -9,6 +9,7 @@
 This module represent all of behaviors used in the 
 Proposal management process definition. 
 """
+import pytz
 import datetime
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
@@ -103,7 +104,7 @@ class CorrectProposal(InfiniteCardinality):
         context.state = PersistentList(['archived'])
         copy_of_proposal.set_data(appstruct)
         copy_of_proposal.text = normalize_text(copy_of_proposal.text)
-        copy_of_proposal.modified_at = datetime.datetime.today()
+        copy_of_proposal.modified_at = datetime.datetime.now(tz=pytz.UTC)
         for nkw in newkeywords:
             root.addtoproperty('keywords', nkw)
 

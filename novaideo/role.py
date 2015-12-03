@@ -17,6 +17,13 @@ class Member(Role):
     pass
 
 
+@role(name='PortalManager',
+      superiors=[Administrator],
+      lowers=[Collaborator, Member])
+class PortalManager(Role):
+    pass
+
+
 @role(name='Observer',
       superiors=[Administrator],
       lowers=[Collaborator],
@@ -27,7 +34,7 @@ class Observer(Role):
 
 @role(name='Moderator',
       superiors=[Administrator],
-      lowers=[Collaborator, Member])
+      lowers=[Collaborator, Member, PortalManager])
 class Moderator(Role):
     pass
 
@@ -66,6 +73,8 @@ class Elector(Role):
      lowers=[Collaborator])
 class Certifier(Role):
     pass
+
+
 
 
 DEFAULT_ROLES = ['Member']

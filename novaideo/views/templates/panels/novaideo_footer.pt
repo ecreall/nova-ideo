@@ -1,16 +1,17 @@
-    <div id="footer">
-        <div id="custom-footer">
-          <a id="logo" href="${request.resource_url(request.virtual_root, '')}"></a>
-          <div id="portal-colophon">
-            <div class="colophonWrapper">
-              <span>
-                <a href="${request.resource_url(request.virtual_root.ml_file, '@@index')}">Mentions légales</a>
-                - 
-                <a href="http://www.pylonsproject.org/" title="">Réalisé avec Pyramid &amp; Python</a>
-                -  Copyright © 2014-2015
-                  <a href="http://www.ecreall.com">Ecréall</a>
-              </span>
-           </div>
-          </div>
-        </div>
+<div id="footer">
+  <div tal:replace="structure navbar_body"/>
+    <div id="custom-footer">
+      <a id="logo" href="${request.resource_url(request.virtual_root, '')}"></a>
+      <div id="portal-colophon">
+        <div class="colophonWrapper">
+          <span>
+            <a href="${request.resource_url(request.virtual_root.ml_file, '@@index')}">Mentions légales</a>
+            - 
+            <a href="http://www.pylonsproject.org/" title="">Réalisé avec Pyramid &amp; Python</a>
+            -  Copyright © 2014-2015
+              <a href="http://www.ecreall.com">Ecréall</a>
+          </span>
+       </div>
+      </div>
     </div>
+</div>

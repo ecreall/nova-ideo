@@ -47,13 +47,6 @@ SEARCHABLE_CONTENTS = {}
 NOVAIDO_ACCES_ACTIONS = {}
 
 
-def to_localized_time(date, date_only=False):
-    if date_only:
-        return date.strftime('%d/%m/%Y')
-    else:
-        return date.strftime('%d/%m/%Y %H:%M')
-
-
 class access_action(object):
     """ Decorator for creationculturelle access actions.
     An access action allows to view an object"""

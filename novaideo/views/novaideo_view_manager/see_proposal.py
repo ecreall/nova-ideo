@@ -19,7 +19,8 @@ from pontus.util import merge_dicts
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeProposal)
-from novaideo.utilities.util import get_actions_navbar, navbar_body_getter
+from novaideo.utilities.util import (
+    generate_navbars, ObjectRemovedException)
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.content.processes import get_states_mapping
@@ -45,26 +46,19 @@ class DetailProposalView(BasicView):
     filigrane_template = 'novaideo:views/novaideo_view_manager/templates/filigrane.pt'
     validate_behaviors = False
 
-
     def _vote_actions(self):
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
-                                                       'dace_ui_api')
-        vote_actions = dace_ui_api.get_actions([self.context],
-                                           self.request,
-                                           process_discriminator='Vote process',
-                                            )
+        dace_ui_api = get_current_registry().getUtility(
+            IDaceUIAPI, 'dace_ui_api')
+        vote_actions = dace_ui_api.get_actions(
+            [self.context], self.request,
+            process_discriminator='Vote process')
         action_updated, messages, \
-        resources, actions = dace_ui_api.update_actions(
-                                        self.request, 
-                                        vote_actions,
-                                        True,
-                                        )
+            resources, actions = dace_ui_api.update_actions(
+                self.request, vote_actions, True)
         for action in list(actions):
-            action['body'] = dace_ui_api.get_action_body(self.context, 
-                                                         self.request, 
-                                                         action['action'], 
-                                                         True,
-                                                         False)
+            action['body'] = dace_ui_api.get_action_body(
+                self.context, self.request, action['action'],
+                True, False)
             if not action['body']:
                 actions.remove(action)
 
@@ -76,106 +70,97 @@ class DetailProposalView(BasicView):
         description = getattr(self.context, 'description', '')
         title = getattr(self.context, 'title', '')
         add_filigrane = False
-        corrections = [c for c in self.context.corrections \
+        corrections = [c for c in self.context.corrections
                        if 'in process' in c.state]
         if corrections and is_participant:
             text = corrections[-1].get_adapted_text(user)
             description = corrections[-1].get_adapted_description(user)
             title = corrections[-1].get_adapted_title(user)
         elif not is_participant and \
-             not any(s in self.context.state \
-                     for s in ['published', 'examined']):
+            not any(s in self.context.state
+                    for s in ['published', 'examined']):
             add_filigrane = True
 
         return title, description, text, add_filigrane
 
     def _cant_submit_alert(self, actions):
         if 'draft' in self.context.state:
-            not_published_ideas = [i for i in self.context.related_ideas.keys()\
-                              if not('published' in i.state)]
-            return (not any(a.title == 'Publish' for a in actions), 
-                   not_published_ideas)
+            not_published_ideas = [i for i in self.context.related_ideas.keys()
+                                   if 'published' not in i.state]
+            return (not any(a.title == 'Publish' for a in actions),
+                    not_published_ideas)
 
         return False, []
 
     def update(self):
         self.execute(None)
-        user = get_current()
-        root = getSite()
-        wg = self.context.working_group
         vote_actions, resources, messages, isactive = self._vote_actions()
-        def actions_getter():
-            return [a for a in self.context.actions \
-                   if getattr(a.action, 'style', '') == 'button']
-
         try:
-            actions_navbar = get_actions_navbar(actions_getter, self.request,
-                                ['global-action', 'text-action', 'wg-action'])
-        except TypeError:
-            pass
+            text_action = [{'title': _('Vote'),
+                            'class_css': 'vote-action',
+                            'style_picto': 'glyphicon glyphicon-stats'}] \
+                if vote_actions else []
 
-        if getattr(self.context, '__parent__', None) is None:
-            return HTTPFound(self.request.resource_url(root, ''))
-
-        if vote_actions:
-            actions_navbar['text-action'].append({
-                                 'title': _('Vote'),
-                                 'class_css': 'vote-action',
-                                 'style_picto': 'glyphicon glyphicon-stats'})
-
-        global_actions = actions_navbar['global-action']
-        wg_actions = actions_navbar['wg-action']
-        modal_isactive = actions_navbar['modal-action']['isactive']
-        modal_messages = actions_navbar['modal-action']['messages']
-        modal_resources = actions_navbar['modal-action']['resources']
-        resources = merge_dicts(modal_resources, resources, 
-                                ('js_links', 'css_links'))
-        resources['js_links'] = list(set(resources['js_links']))
-        resources['css_links'] = list(set(resources['css_links']))
-        if not messages:
-            messages = modal_messages
+            navbars = generate_navbars(
+                self, self.context, self.request,
+                text_action=text_action)
+        except ObjectRemovedException:
+            return HTTPFound(self.request.resource_url(getSite(), ''))
 
         ct_participate_max = False
         ct_participate_closed = False
         ct_participate = False
-        if wg:
+        user = get_current()
+        root = getSite()
+        working_group = self.context.working_group
+        wg_actions = navbars['all_actions']['wg-action']
+        resources = merge_dicts(navbars['resources'], resources,
+                                ('js_links', 'css_links'))
+        resources['js_links'] = list(set(resources['js_links']))
+        resources['css_links'] = list(set(resources['css_links']))
+        if not messages:
+            messages = navbars['messages']
+
+        if working_group:
             participants_maxi = root.participants_maxi
             work_mode = getattr(self.context, 'work_mode', None)
             if work_mode:
                 participants_maxi = work_mode.participants_maxi
 
-            ct_participate_max = len(wg.members) == participants_maxi
-            ct_participate_closed = 'closed' in wg.state
-            ct_participate = 'archived' not in wg.state and \
-                         not isinstance(user, Anonymous) and \
-                         user not in wg.members and \
-                         (ct_participate_max or ct_participate_closed)
-        
+            ct_participate_max = len(working_group.members) == participants_maxi
+            ct_participate_closed = 'closed' in working_group.state
+            ct_participate = 'archived' not in working_group.state and \
+                not isinstance(user, Anonymous) and \
+                user not in working_group.members and \
+                (ct_participate_max or ct_participate_closed)
+
         title, description, text, add_filigrane = self._get_adapted_text(user)
         result = {}
         values = {
-                'proposal': self.context,
-                'state': get_states_mapping(user, self.context, 
-                                            self.context.state[0]),
-                'title': title,
-                'description': description,
-                'text': text,
-                'current_user': user,
-                'wg_actions': wg_actions,
-                'voteactions': vote_actions,
-                'filigrane': add_filigrane,
-                'cant_submit': self._cant_submit_alert(global_actions),
-                'ct_participate': ct_participate,
-                'ct_participate_closed': ct_participate_closed,
-                'ct_participate_max': ct_participate_max,
-                'navbar_body': navbar_body_getter(self, actions_navbar)
-               }
+            'proposal': self.context,
+            'state': get_states_mapping(user, self.context,
+                                        self.context.state[0]),
+            'title': title,
+            'description': description,
+            'text': text,
+            'current_user': user,
+            'wg_actions': wg_actions,
+            'voteactions': vote_actions,
+            'filigrane': add_filigrane,
+            'cant_submit': self._cant_submit_alert(navbars['all_actions']),
+            'ct_participate': ct_participate,
+            'ct_participate_closed': ct_participate_closed,
+            'ct_participate_max': ct_participate_max,
+            'navbar_body': navbars['navbar_body'],
+            'actions_bodies': navbars['body_actions'],
+            'footer_body': navbars['footer_body']
+        }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
-        item['isactive'] = isactive or modal_isactive
+        item['isactive'] = isactive or navbars['isactive']
         result.update(resources)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
@@ -183,10 +168,10 @@ class SeeProposalActionsView(MultipleView):
     title = _('actions')
     name = 'seeiactionsdea'
     template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (SeeAmendmentsView, 
-             SeeRelatedIdeasView, 
-             PresentProposalView, 
-             CompareProposalView, 
+    views = (SeeAmendmentsView,
+             SeeRelatedIdeasView,
+             PresentProposalView,
+             CompareProposalView,
              CommentProposalView)
 
     def _activate(self, items):
@@ -202,13 +187,14 @@ class SeeProposalView(MultipleView):
     title = ''
     name = 'seeproposal'
     template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/correct_proposal.js',
-                                'novaideo:static/js/comment.js',
-                                'novaideo:static/js/compare_idea.js',
-                                'novaideo:static/js/ballot_management.js']}
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/correct_proposal.js',
+                                 'novaideo:static/js/comment.js',
+                                 'novaideo:static/js/compare_idea.js',
+                                 'novaideo:static/js/ballot_management.js']}
     views = (DetailProposalView, SeeProposalActionsView)
     validators = [SeeProposal.get_validator()]
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeProposal:SeeProposalView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {SeeProposal: SeeProposalView})

@@ -38,3 +38,5 @@
 
   </div>
 </div>
+<div tal:replace="structure footer_body"/>
+${panel('social_share_toggle')}

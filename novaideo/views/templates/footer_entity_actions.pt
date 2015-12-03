@@ -1,0 +1,51 @@
+<ul class="list-inline" style="z-index: 1300">
+  <tal:loop repeat="a footer_actions">
+    <li>
+      <a tal:condition="a.action not in modal_actions" tal:attributes="href a.url" class="btn btn-sm"><span class="${getattr(a.action,'style_picto','')}" ></span> ${a.title}</a>
+        <div tal:omit-tag="" 
+           tal:condition="a.action in modal_actions"
+           tal:define="item modal_actions.get(a.action, None)">
+           <a id="${item['action_id']}-btn" 
+                class="btn btn-sm dace-action"
+                href="${item['action'].url(item['context'])}"   
+                data-toggle="modal"
+                data-actionid ="${item['action_id']}" 
+                data-target="#${item['action_id']}"
+                data-updateurl="${item['actionurl_update']}"
+                data-toreplay="${'toreplay' in item}">
+               <span class="${getattr(a.action,'style_picto','')}" ></span> ${item['action'].title}
+             </a>
+             <script tal:condition="'toreplay' in item">       
+                  $(document).ready(function(){
+                       $(${'\'#'+item['action_id']+'-btn\''}).click();
+                  });
+             </script>  
+             <script>
+                  $(document).ready(function(){
+                      $(${'\'#'+item['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
+                         //after_execution(${'\"'+item['actionurl_after']+'\"'})
+                        })
+                  });
+             </script>
+          <!-- Modal -->
+             <div class="modal fade" 
+                 id="${item['action_id']}-modal" 
+                 role="dialog" 
+                 aria-labelledby="myModalLabel" 
+                 aria-hidden="true" style="text-align: justify;color: #333;">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                         <h4 class="modal-title" id="myModalLabel"> ${item['view_title']}</h4>
+                     </div>
+                     <div class="modal-body">
+                        ${structure:item['body']}
+                     </div>
+                   </div>
+                </div>
+             </div>
+      </div>
+    </li>
+  </tal:loop>
+</ul>

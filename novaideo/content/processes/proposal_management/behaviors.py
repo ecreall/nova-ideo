@@ -10,6 +10,7 @@ This module represent all of behaviors used in the
 Proposal management process definition. 
 """
 import datetime
+import pytz
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 from substanced.util import get_oid
@@ -25,6 +26,7 @@ from dace.objectofcollaboration.principal.util import (
 #from dace.objectofcollaboration import system
 from dace.processinstance.activity import (
     InfiniteCardinality, ElementaryAction)
+from dace.processinstance.core import ActivityExecuted
 from pontus.file import OBJECT_DATA
 
 from novaideo.ips.mailer import mailer_send
@@ -62,12 +64,12 @@ from novaideo.content.correlation import CorrelationType
 from novaideo.content.token import Token
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.processes.idea_management.behaviors import (
-    PresentIdea, 
+    PresentIdea,
     CommentIdea,
     Associate as AssociateIdea)
 from novaideo.utilities.text_analyzer import normalize_text
-from novaideo.utilities.util import connect, disconnect
-from novaideo.core import to_localized_time
+from novaideo.utilities.util import (
+    connect, disconnect, to_localized_time)
 from novaideo.event import ObjectPublished, CorrelableRemoved
 from novaideo.content.ballot import Ballot
 from novaideo.content.processes.proposal_management import WORK_MODES
@@ -238,10 +240,10 @@ def calculate_amendments_cycle_duration(process):
         electeds = duration_ballot.report.get_electeds()
         if electeds:
             return AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]] + \
-                   datetime.datetime.today()
+                   datetime.datetime.now(tz=pytz.UTC)
 
     return AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"] + \
-           datetime.datetime.today()
+           datetime.datetime.now(tz=pytz.UTC)
 
 
 def createproposal_roles_validation(process, context):
@@ -279,14 +281,14 @@ class CreateProposal(ElementaryAction):
         root.addtoproperty('proposals', proposal)
         proposal.setproperty('keywords_ref', result)
         proposal.state.append('draft')
-        grant_roles(roles=(('Owner', proposal), ))
-        grant_roles(roles=(('Participant', proposal), ))
+        grant_roles(user=user, roles=(('Owner', proposal), ))
+        grant_roles(user=user, roles=(('Participant', proposal), ))
         proposal.setproperty('author', user)
         self.process.execution_context.add_created_entity('proposal', proposal)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
         wg.setproperty('proposal', proposal)
-        wg.addtoproperty('members', get_current())
+        wg.addtoproperty('members', user)
         wg.state.append('deactivated')
         if related_ideas:
             connect(proposal, 
@@ -300,6 +302,7 @@ class CreateProposal(ElementaryAction):
         proposal.reindex()
         init_proposal_ballots(proposal, self.process)
         wg.reindex()
+        request.registry.notify(ActivityExecuted(self, [proposal, wg], user))
         return {'newcontext': proposal}
 
     def redirect(self, context, request, **kw):
@@ -454,7 +457,9 @@ class SubmitProposal(ElementaryAction):
             if not hasattr(self.process, 'first_decision'):
                 self.process.first_decision = True
         
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         request.registry.notify(ObjectPublished(object=context))
+        request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
 
     def after_execution(self, context, request, **kw):
@@ -499,15 +504,15 @@ class DuplicateProposal(ElementaryAction):
         copy_of_proposal.text = normalize_text(copy_of_proposal.text)
         copy_of_proposal.setproperty('originalentity', context)
         copy_of_proposal.state = PersistentList(['draft'])
-        grant_roles(roles=(('Owner', copy_of_proposal), ))
-        grant_roles(roles=(('Participant', copy_of_proposal), ))
+        grant_roles(user=user, roles=(('Owner', copy_of_proposal), ))
+        grant_roles(user=user, roles=(('Participant', copy_of_proposal), ))
         copy_of_proposal.setproperty('author', user)
         self.process.execution_context.add_created_entity(
                                        'proposal', copy_of_proposal)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
         wg.setproperty('proposal', copy_of_proposal)
-        wg.addtoproperty('members', get_current())
+        wg.addtoproperty('members', user)
         wg.state.append('deactivated')
         if related_ideas:
             connect(copy_of_proposal, 
@@ -522,6 +527,7 @@ class DuplicateProposal(ElementaryAction):
         copy_of_proposal.reindex()
         init_proposal_ballots(copy_of_proposal, self.process)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [copy_of_proposal, wg], user))
         return {'newcontext': copy_of_proposal}
 
     def redirect(self, context, request, **kw):
@@ -583,7 +589,7 @@ class EditProposal(InfiniteCardinality):
                        CorrelationType.solid)
 
         context.text = normalize_text(context.text)
-        context.modified_at = datetime.datetime.today()
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         keywords_ids = appstruct.pop('keywords')
         result, newkeywords = root.get_keywords(keywords_ids)
         for nkw in newkeywords:
@@ -593,6 +599,7 @@ class EditProposal(InfiniteCardinality):
         datas = {'keywords_ref': result}
         context.set_data(datas)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -652,8 +659,10 @@ class PublishProposal(ElementaryAction):
               recipients=[member.email],
               body=message)
 
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         wg.reindex()
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context, wg], get_current()))
         #TODO wg desactive, members vide...
         return {}
 
@@ -671,7 +680,7 @@ def support_roles_validation(process, context):
 
 def support_processsecurity_validation(process, context):
     user = get_current()
-    return user.tokens and  \
+    return getattr(user, 'tokens', []) and  \
            not (user in [t.owner for t in context.tokens]) and \
            global_user_processsecurity(process, context)
 
@@ -703,7 +712,8 @@ class SupportProposal(InfiniteCardinality):
             token = user.tokens[-1]
 
         context.addtoproperty('tokens_support', token)
-        context._support_history.append((get_oid(user), datetime.datetime.today(), 1))
+        context._support_history.append((get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
+        request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -734,7 +744,8 @@ class OpposeProposal(InfiniteCardinality):
             token = user.tokens[-1]
 
         context.addtoproperty('tokens_opposition', token)
-        context._support_history.append((get_oid(user), datetime.datetime.today(), 0))
+        context._support_history.append((get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
+        request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -805,6 +816,8 @@ class MakeOpinion(InfiniteCardinality):
             mailer_send(subject=subject, 
                 recipients=[member.email], 
                 body=message)
+
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -836,7 +849,8 @@ class WithdrawToken(InfiniteCardinality):
         token = user_tokens[-1]
         context.delfromproperty(token.__property__, token)
         user.addtoproperty('tokens', token)
-        context._support_history.append((get_oid(user), datetime.datetime.today(), -1))
+        context._support_history.append((get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
+        request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1010,6 +1024,7 @@ class VotingPublication(ElementaryAction):
                     body=message)
 
         self.process.iteration = getattr(self.process, 'iteration', 0) + 1
+        request.registry.notify(ActivityExecuted(self, [context], get_current()))
         return {}
 
     def after_execution(self, context, request, **kw):
@@ -1052,7 +1067,8 @@ class Work(ElementaryAction):
     def _send_mails(self, context, request, subject_template, message_template):
         working_group = context.working_group
         duration = to_localized_time(
-                     calculate_amendments_cycle_duration(self.process))
+            calculate_amendments_cycle_duration(self.process),
+            translate=True)
         isclosed = 'closed' in working_group.state
         members = working_group.members
         url = request.resource_url(context, "@@index")
@@ -1099,6 +1115,7 @@ class Work(ElementaryAction):
         self._send_mails(context, request, 
                          AMENDABLE_SUBJECT, AMENDABLE_MESSAGE)
         context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context, wg], get_current()))
         return {}
 
     def after_execution(self, context, request, **kw):
@@ -1159,6 +1176,7 @@ class Withdraw(InfiniteCardinality):
         mailer_send(subject=subject, 
             recipients=[user.email], 
             body=message)
+        request.registry.notify(ActivityExecuted(self, [context, wg], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1257,7 +1275,7 @@ class Resign(InfiniteCardinality):
         mailer_send(subject=subject, 
              recipients=[user.email], 
              body=message)
-
+        request.registry.notify(ActivityExecuted(self, [context, wg], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1353,6 +1371,7 @@ class Participate(InfiniteCardinality):
             self._send_mail_to_user(WATINGLIST_SUBJECT, WATINGLIST_MESSAGE,
                  user, context, request)
 
+        request.registry.notify(ActivityExecuted(self, [context, wg], user))
         return {}
 
     def redirect(self, context, request, **kw):

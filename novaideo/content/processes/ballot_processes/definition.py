@@ -10,6 +10,7 @@ this process is instantiated only once. And is used as part of a sub-process.
 And is vlolatile, which means that this process is automatically removed after 
 the end.
 """
+import pytz
 from datetime import datetime
 
 from dace.processdefinition.processdef import ProcessDefinition
@@ -31,7 +32,7 @@ from novaideo import _
 
 
 def time_duration(process):
-    duration = datetime.today()
+    duration = datetime.now(tz=pytz.UTC)
     if hasattr(process, 'duration'):
         duration = duration + getattr(process, 'duration')
         
@@ -49,7 +50,7 @@ def event_condition(process):
             return False
 
     for ballot in process.ballots:
-        ballot.finished_at = datetime.today()
+        ballot.finished_at = datetime.now(tz=pytz.UTC)
 
     return True
 
