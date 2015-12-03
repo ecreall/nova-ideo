@@ -21,6 +21,7 @@ from pyramid.threadlocal import get_current_registry, get_current_request
 
 from dace.processinstance.activity import ActionType
 from dace.objectofcollaboration.principal.util import get_current
+from dace.util import getSite
 from daceui.interfaces import IDaceUIAPI
 
 
