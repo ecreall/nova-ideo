@@ -21,7 +21,6 @@ from pontus.view import BasicView
 from novaideo.content.processes.idea_management.behaviors import PresentIdea
 from novaideo.content.idea import Idea
 from novaideo import _, log
-from novaideo.mail import PRESENTATION_IDEA_MESSAGE, PRESENTATION_IDEA_SUBJECT
 
 
 try:
@@ -98,17 +97,19 @@ def members_choice(node, kw):
 @colander.deferred
 def default_subject(node, kw):
     context = node.bindings['context']
-    return PRESENTATION_IDEA_SUBJECT.format(subject_title=context.title)
+    mail_template = node.bindings['mail_template']
+    return mail_template['subject'].format(subject_title=context.title)
 
 
 @colander.deferred
 def default_message(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
+    mail_template = node.bindings['mail_template']
     localizer = request.localizer
     url = request.resource_url(context, "@@index")
     user = get_current()
-    return PRESENTATION_IDEA_MESSAGE.format(
+    return mail_template['template'].format(
         recipient_title='',
         recipient_first_name='',
         recipient_last_name='',
@@ -184,6 +185,11 @@ class PresentIdeaFormView(FormView):
             button_title=_("Present"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
+
+    def bind(self):
+        root = self.request.root
+        mail_template = root.get_mail_template('presentation_idea')
+        return {'mail_template': mail_template}
 
 
 @view_config(

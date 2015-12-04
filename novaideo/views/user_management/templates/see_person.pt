@@ -26,6 +26,10 @@
           </tal:loop>
         </dd>
         <dd tal:condition="not getattr(user, 'keywords', [])" i18n:translate="">No preferences</dd>
+        <dt tal:condition="getattr(user, 'last_connection', None)" i18n:translate="">Last connection</dt>
+        <dd tal:condition="getattr(user, 'last_connection', None)">
+          <span tal:replace="layout.to_localized_time(user.last_connection)"/>
+        </dd>
       </dl>
   </div>
 </div>

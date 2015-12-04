@@ -5,6 +5,8 @@
 # author: Amen Souissi
 # TODO: finish to clean, use our own templates, ... ?
 
+import datetime
+import pytz
 from pyramid.view import view_config
 from pyramid.httpexceptions import (
     HTTPForbidden,
@@ -25,7 +27,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView, ViewError
 
 from novaideo import _
-from novaideo.content.processes.user_management.behaviors import  LogIn
+from novaideo.content.processes.user_management.behaviors import LogIn
 from novaideo.content.novaideo_application import NovaIdeoApplication
 
 
@@ -87,9 +89,13 @@ class LoginView(BasicView):
                    'active' in getattr(user, 'state', [])):
                     request.session.pop('novaideo.came_from', None)
                     headers = remember(request, get_oid(user))
-                    request.registry.notify(LoggedIn(login, user, 
+                    request.registry.notify(LoggedIn(login, user,
                                                context, request))
-                    return HTTPFound(location = came_from, headers = headers)
+                    user.last_connection = datetime.datetime.now(tz=pytz.UTC)
+                    if hasattr(user, 'reindex'):
+                        user.reindex()
+
+                    return HTTPFound(location=came_from, headers=headers)
                 error = ViewError()
                 error.principalmessage = u"Failed login"
                 message = error.render_message(request)

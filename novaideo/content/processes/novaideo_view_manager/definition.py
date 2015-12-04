@@ -25,7 +25,8 @@ from .behaviors import (
     SeeMySupports,
     SeeProposal,
     SeeOrderedProposal,
-    SeeEntityHistory
+    SeeEntityHistory,
+    Contact
     )
 from novaideo import _
 
@@ -75,6 +76,10 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                                        description=_("See the processes history"),
                                        title=_("Processes history"),
                                        groups=[]),
+                contact = ActivityDefinition(contexts=[Contact],
+                                       description=_("Contact"),
+                                       title=_("Contact"),
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -96,5 +101,7 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('seeorderedproposal', 'eg'),
                 TransitionDefinition('pg', 'seehistory'),
                 TransitionDefinition('seehistory', 'eg'),
+                TransitionDefinition('pg', 'contact'),
+                TransitionDefinition('contact', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )

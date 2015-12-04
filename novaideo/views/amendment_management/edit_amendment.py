@@ -25,8 +25,7 @@ from novaideo import _
 class EditAmendmentView(FormView):
     title = _('Edit the amendment')
     schema = select(AmendmentSchema(factory=Amendment, 
-                                    editable=True, 
-                                    omit=['keywords']),
+                                    editable=True),
                     ['title',
                      'description',
                      'keywords', 

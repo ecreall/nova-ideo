@@ -18,9 +18,6 @@ from novaideo.content.processes.proposal_management.behaviors import (
     PresentProposal)
 from novaideo.content.proposal import Proposal
 from novaideo import _
-from novaideo.mail import (
-    PRESENTATION_PROPOSAL_MESSAGE, 
-    PRESENTATION_PROPOSAL_SUBJECT)
 from novaideo.views.idea_management.present_idea import (
     PresentIdeaView, 
     PresentIdeaSchema, 
@@ -35,17 +32,19 @@ class SentToView(IdeaSentToView):
 @colander.deferred
 def default_subject(node, kw):
     context = node.bindings['context']
-    return PRESENTATION_PROPOSAL_SUBJECT.format(subject_title=context.title)
+    mail_template = node.bindings['mail_template']
+    return mail_template['subject'].format(subject_title=context.title)
 
 
 @colander.deferred
 def default_message(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
+    mail_template = node.bindings['mail_template']
     localizer = request.localizer
     url = request.resource_url(context, "@@index")
     user = get_current()
-    return PRESENTATION_PROPOSAL_MESSAGE.format(
+    return mail_template['template'].format(
                 recipient_title='',
                 recipient_first_name='',
                 recipient_last_name='',
@@ -91,6 +90,11 @@ class PresentProposalFormView(FormView):
                                               button_title=_("Present"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
+
+    def bind(self):
+        root = self.request.root
+        mail_template = root.get_mail_template('presentation_proposal')
+        return {'mail_template': mail_template}
 
 
 @view_config(

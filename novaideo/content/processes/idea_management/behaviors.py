@@ -66,15 +66,9 @@ class CreateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        keywords_ids = appstruct.pop('keywords')
-        result, newkeywords = root.get_keywords(keywords_ids)
-        for nkw in newkeywords:
-            root.addtoproperty('keywords', nkw)
-
-        result.extend(newkeywords)
         idea = appstruct['_object_data']
+        root.merge_keywords(idea.keywords)
         root.addtoproperty('ideas', idea)
-        idea.setproperty('keywords_ref', result)
         idea.state.append('to work')
         grant_roles(user=user, roles=(('Owner', idea), ))
         idea.setproperty('author', user)
@@ -107,13 +101,7 @@ class DuplicateIdea(InfiniteCardinality):
         root = getSite()
         user = get_current()
         copy_of_idea = copy(context, (root, 'ideas'))
-        keywords_ids = appstruct.pop('keywords')
-        result, newkeywords = root.get_keywords(keywords_ids)
-        for nkw in newkeywords:
-            root.addtoproperty('keywords', nkw)
-
-        result.extend(newkeywords)
-        appstruct['keywords_ref'] = result
+        root.merge_keywords(appstruct['keywords'])
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         copy_of_idea.setproperty('originalentity', context)
@@ -199,8 +187,7 @@ class EditIdea(InfiniteCardinality):
             select=('modified_at',),
             omit=('created_at',),
             roles=True)
-        copy_keywords, newkeywords = root.get_keywords(context.keywords)
-        copy_of_idea.setproperty('keywords_ref', copy_keywords)
+        copy_of_idea.keywords = context.keywords
         copy_of_idea.setproperty('version', last_version)
         copy_of_idea.setproperty('originalentity', context.originalentity)
         if last_version is not None:
@@ -208,13 +195,7 @@ class EditIdea(InfiniteCardinality):
 
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
-        keywords_ids = appstruct.pop('keywords')
-        result, newkeywords = root.get_keywords(keywords_ids)
-        for nkw in newkeywords:
-            root.addtoproperty('keywords', nkw)
-
-        result.extend(newkeywords)
-        appstruct['keywords_ref'] = result
+        root.merge_keywords(appstruct['keywords'])
         copy_of_idea.state = PersistentList(['archived', 'version'])
         copy_of_idea.setproperty('author', user)
         note = appstruct.pop('note', '')
@@ -453,6 +434,7 @@ class PresentIdea(InfiniteCardinality):
                  )
             mailer_send(subject=subject,
                   recipients=[member_email],
+                  sender=request.root.get_site_sender(),
                   body=message)
             if member is not user:
                 context._email_persons_contacted.append(

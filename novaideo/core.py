@@ -27,7 +27,8 @@ from dace.descriptors import (
 from dace.util import getSite
 from pontus.schema import Schema
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import RichTextWidget, Select2Widget
+from pontus.widget import (
+    RichTextWidget, Select2Widget)
 
 from novaideo import _, ACCESS_ACTIONS
 from novaideo.content.interface import (
@@ -191,32 +192,18 @@ class DuplicableEntity(Entity):
 
 @colander.deferred
 def keywords_choice(node, kw):
-    values = []
     root = getSite()
-    prop = sorted(root.keywords, key=lambda p: p.title)
-    values = [(i.title, i.title) for i in prop]
+    values = [(i, i) for i in sorted(root.keywords)]
     return Select2Widget(max_len=5,
                          values=values,
                          create=True,
                          multiple=True)
 
 
-@colander.deferred
-def default_keywords_choice(node, kw):
-    context = node.bindings['context']
-    root = getSite()
-    if context is root:
-        return []
-
-    values = sorted(context.keywords)
-    return values
-
-
 class SearchableEntitySchema(Schema):
 
     keywords =  colander.SchemaNode(
         colander.Set(),
-        default=default_keywords_choice,
         widget=keywords_choice,
         title=_('Keywords'),
         description=_("To add keywords, you need to tap the « Enter »"
@@ -230,11 +217,10 @@ class SearchableEntity(Entity):
 
     templates = {'default': 'novaideo:templates/views/default_result.pt',
                  'bloc': 'novaideo:templates/views/default_result.pt'}
-    keywords_ref = SharedMultipleProperty('keywords_ref', 'referenced_elements')
 
-    @property
-    def keywords(self):
-        return [k.title for k in self.keywords_ref]
+    def __init__(self, **kwargs):
+        super(SearchableEntity, self).__init__(**kwargs)
+        self.keywords = PersistentList()
 
     @property
     def is_published(self):

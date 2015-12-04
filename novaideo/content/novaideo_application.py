@@ -10,6 +10,7 @@ import colander
 import datetime
 from zope.interface import implementer
 from persistent.list import PersistentList
+from pyramid.threadlocal import get_current_registry
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -20,33 +21,42 @@ from dace.objectofcollaboration.application import Application
 from dace.descriptors import CompositeMultipleProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
-    SequenceWidget, LineWidget, TableWidget,
-    SimpleMappingWidget, CheckboxChoiceWidget)
+    SequenceWidget,
+    SimpleMappingWidget)
+from pontus.file import ObjectData as ObjectDataOrigine
 from pontus.schema import omit, select
 
-from .working_group import WorkingGroupSchema, WorkingGroup
+from novaideo import _, DEFAULT_FILES
+from novaideo.core import FileEntity
 from .organization import OrganizationSchema, Organization
-from .idea import IdeaSchema, Idea
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
-from .keyword import KeywordSchema, Keyword
-from novaideo import _
+from novaideo.content.keyword import Keyword
 from novaideo.content.processes.proposal_management import WORK_MODES
+from novaideo.mail import DEFAULT_SITE_MAILS
+from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.content.site_configuration import (
+    WorkParamsConfigurationSchema,
+    MailTemplatesConfigurationSchema,
+    UserParamsConfigurationSchema,
+    KeywordsConfSchema,
+    OtherSchema,
+)
 
 
 DEFAULT_TITLES = [_('Mr'), _('Madam'), _('Miss')]
 
 DEFAULT_COMMENT_INTENTIONS = [
-            _('Changing an idea'),
-            _('Propose improvements'),
-            _('Reformulate'),
-            _('Generalize'),
-            _('Expand'),
-            _('Ask a question'),
-            _('Review'),
-            _('Irony'),
-            _('Use humor')
-        ]
+    _('Changing an idea'),
+    _('Propose improvements'),
+    _('Reformulate'),
+    _('Generalize'),
+    _('Expand'),
+    _('Ask a question'),
+    _('Review'),
+    _('Irony'),
+    _('Use humor')
+]
 
 DEFAULT_CORRELATION_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
 
@@ -55,9 +65,43 @@ DEFAULT_IDEA_INTENTIONS = [_('Improvement'), _('Humor'), _('Irony')]
 DEFAULT_AMENDMENT_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
 
 
-
 def context_is_a_root(context, request):
     return request.registry.content.istype(context, 'Root')
+
+
+class ObjectData(ObjectDataOrigine):
+
+    def clean_cstruct(self, node, cstruct):
+        result, appstruct, hasevalue = super(ObjectData, self)\
+            .clean_cstruct(node, cstruct)
+
+        if 'work_conf' in result:
+            work_conf = result.pop('work_conf')
+            result.update(work_conf)
+
+        if 'user_conf' in result:
+            user_conf = result.pop('user_conf')
+            result.update(user_conf)
+
+        if 'mail_conf' in result:
+            mail_conf = result.pop('mail_conf')
+            templates = mail_conf['mail_templates']
+            for template in templates:
+                mail_id = template['mail_id']
+                if mail_id in DEFAULT_SITE_MAILS:
+                    template['title'] = DEFAULT_SITE_MAILS[mail_id]['title']
+
+            result.update(mail_conf)
+
+        if 'keywords_conf' in result:
+            keywords_conf = result.pop('keywords_conf')
+            result.update(keywords_conf)
+
+        if 'other_conf' in result:
+            other_conf = result.pop('other_conf')
+            result.update(other_conf)
+
+        return result, appstruct, hasevalue
 
 
 @colander.deferred
@@ -82,64 +126,13 @@ def organizations_choice(node, kw):
                           max_len=len_organizations)
 
 
-@colander.deferred
-def modes_choice(node, kw):
-    context = node.bindings['context']
-    modes = list(WORK_MODES.items())
-    modes = sorted(modes, key=lambda e: e[1].order)
-    values = [(key, value.title) for key, value in modes]
-    return CheckboxChoiceWidget(values=values, multiple=True)
-
-
 class NovaIdeoApplicationSchema(VisualisableElementSchema):
     """Schema for Nova-Ideo configuration"""
 
+    typ_factory = ObjectData
+
     name = NameSchemaNode(
         editing=context_is_a_root,
-        )
-
-    titles = colander.SchemaNode(
-        colander.Sequence(),
-        colander.SchemaNode(
-            colander.String(),
-            name=_("Title")
-            ),
-        widget=SequenceWidget(),
-        default=DEFAULT_TITLES,
-        title=_('List of titles'),
-        )
-
-    comment_intention = colander.SchemaNode(
-        colander.Sequence(),
-        colander.SchemaNode(
-            colander.String(),
-            name=_("Comment intention")
-            ),
-        widget=SequenceWidget(),
-        default=DEFAULT_COMMENT_INTENTIONS,
-        title=_('Comment intentions'),
-        )
-
-    idea_intention = colander.SchemaNode(
-        colander.Sequence(),
-        colander.SchemaNode(
-            colander.String(),
-            name=_("Idea intention")
-            ),
-        widget=SequenceWidget(),
-        default=DEFAULT_IDEA_INTENTIONS,
-        title=_('Idea intentions'),
-        )
-
-    amendment_intention = colander.SchemaNode(
-        colander.Sequence(),
-        colander.SchemaNode(
-            colander.String(),
-            name=_("Amendment intention")
-            ),
-        widget=SequenceWidget(),
-        default=DEFAULT_AMENDMENT_INTENTIONS,
-        title=_('Amendment intentions'),
         )
 
     invitations = colander.SchemaNode(
@@ -151,21 +144,6 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
             ['_csrf_token_']),
         widget=invitations_choice,
         title=_('List of invitation'),
-        )
-
-    working_groups = colander.SchemaNode(
-        colander.Sequence(),
-        omit(WorkingGroupSchema(factory=WorkingGroup,
-                editable=True,
-                name=_('Working group')),['_csrf_token_']),
-        title=_('Working groups'),
-        )
-
-    work_modes = colander.SchemaNode(
-        colander.Set(),
-        title=_('Work modes'),
-        widget=modes_choice,
-        default=[],
         )
 
     organizations = colander.SchemaNode(
@@ -180,51 +158,50 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         title=_('Organizations'),
         )
 
-    keywords = colander.SchemaNode(
-        colander.Sequence(),
-        omit(KeywordSchema(widget=LineWidget(),
-                           factory=Keyword,
-                           editable=True,
-                           name='Keyword'),['_csrf_token_']),
-        widget=TableWidget(min_len=1),
-        title='Keywords',
-        )
+    work_conf = omit(WorkParamsConfigurationSchema(
+                                widget=SimpleMappingtWidget(
+                                mapping_css_class='controled-form'
+                                                  ' object-well default-well hide-bloc',
+                                ajax=True,
+                                activator_icon="glyphicon glyphicon-filter",
+                                activator_title=_('Set up work parameters'))),
+                        ["_csrf_token_"])
 
-    ideas = colander.SchemaNode(
-        colander.Sequence(),
-        omit(IdeaSchema(factory=Idea,
-                        name=_('Idea')),['_csrf_token_']),
-        title=_('Ideas'),
-        )
+    mail_conf = omit(MailTemplatesConfigurationSchema(
+                                widget=SimpleMappingtWidget(
+                                mapping_css_class='controled-form'
+                                                  ' object-well default-well hide-bloc',
+                                ajax=True,
+                                activator_icon="glyphicon glyphicon-envelope",
+                                activator_title=_('Edit mail templates'))),
+                        ["_csrf_token_"])
 
-    participants_mini = colander.SchemaNode(
-        colander.Integer(),
-        title=_('Minimum number of participants for a working group'),
-        default=3,
-        )
+    user_conf = omit(UserParamsConfigurationSchema(
+                                widget=SimpleMappingtWidget(
+                                mapping_css_class='controled-form'
+                                                  ' object-well default-well hide-bloc',
+                                ajax=True,
+                                activator_icon="creationculturelle-icon icon-history",
+                                activator_title=_('Configure user parameters'))),
+                        ["_csrf_token_"])
+    keywords_conf = omit(KeywordsConfSchema(
+                                widget=SimpleMappingtWidget(
+                                mapping_css_class='controled-form'
+                                                  ' object-well default-well hide-bloc',
+                                ajax=True,
+                                activator_icon="glyphicon glyphicon-tags",
+                                activator_title=_('Configure the keywords tree'))),
+                        ["_csrf_token_"])
 
-    participants_maxi = colander.SchemaNode(
-        colander.Integer(),
-        title=_('Maximum number of participants for a working group'),
-        default=12,
-        )
+    other_conf = omit(OtherSchema(
+                                widget=SimpleMappingtWidget(
+                                mapping_css_class='controled-form'
+                                                  ' object-well default-well hide-bloc',
+                                ajax=True,
+                                activator_icon="glyphicon glyphicon-plus",
+                                activator_title=_('Other'))),
+                        ["_csrf_token_"])
 
-    participations_maxi = colander.SchemaNode(
-        colander.Integer(),
-        title=_('Maximum number of working group by member'),
-        default=5,
-        )
-
-    tokens_mini = colander.SchemaNode(
-        colander.Integer(),
-        title=_('Minimum number of tokens by member'),
-        default=7,
-        )
-
-    deadline = colander.SchemaNode(
-                colander.DateTime(),
-                title=_('Deadline')
-                )
 
 
 class NovaIdeoApplicationPropertySheet(PropertySheet):
@@ -246,18 +223,45 @@ class NovaIdeoApplication(VisualisableElement, Application):
     """Nova-Ideo class (Root)"""
 
     name = renamer()
+    preregistrations = CompositeMultipleProperty('preregistrations')
     working_groups = CompositeMultipleProperty('working_groups')
     proposals = CompositeMultipleProperty('proposals')
     organizations = CompositeMultipleProperty('organizations')
     invitations = CompositeMultipleProperty('invitations')
     ideas = CompositeMultipleProperty('ideas')
-    keywords = CompositeMultipleProperty('keywords')
     correlations = CompositeMultipleProperty('correlations')
     files = CompositeMultipleProperty('files')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
+        self.keywords = PersistentList()
         self.initialization()
+
+    @property
+    def mail_conf(self):
+        return self.get_data(omit(MailTemplatesConfigurationSchema(),
+                                 '_csrf_token_'))
+
+    @property
+    def work_conf(self):
+        result = self.get_data(omit(WorkParamsConfigurationSchema(),
+                                  '_csrf_token_'))
+        return result
+
+    @property
+    def user_conf(self):
+        return self.get_data(omit(UserParamsConfigurationSchema(),
+                                  '_csrf_token_'))
+
+    @property
+    def keywords_conf(self):
+        return self.get_data(omit(KeywordsConfSchema(),
+                                  '_csrf_token_'))
+
+    @property
+    def other_conf(self):
+        return self.get_data(omit(OtherSchema(),
+                                  '_csrf_token_'))
 
     def initialization(self):
         self.reset_default_values()
@@ -275,27 +279,30 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.idea_intentions = DEFAULT_IDEA_INTENTIONS
         self.amendment_intentions = DEFAULT_AMENDMENT_INTENTIONS
 
-    @property
-    def keywords_ids(self):
-        """Return titles of keywords"""
+    def init_files(self):
+        for information in DEFAULT_FILES:
+            if not self.get(information['name'], None):
+                info_file = FileEntity(title=information['title'])
+                info_file.text = information['content']
+                info_file.__name__ = information['name']
+                self.addtoproperty('files', info_file)
 
-        return dict([(k.title, k) for k in self.keywords])
+    def get_mail_template(self, id):
+        for mail in getattr(self, 'mail_templates', {}):
+            if mail.get('mail_id', None) == id:
+                return mail
 
-    def get_keywords(self, keywords_ids):
-        """
-        Return existing Keywords objects in the application 
-        if keyword is in the application otherwise return a new key object
-        """
-        result = []
-        newkeywords = []
-        for k in keywords_ids:
-            if k in self.keywords_ids.keys():
-                result.append(self.keywords_ids[k])
-            else:
-                key = Keyword(title=k)
-                newkeywords.append(key)
+        template = DEFAULT_SITE_MAILS.get(id, None)
+        if template:
+            template = template.copy()
+            template['mail_id'] = id
 
-        return result, newkeywords
+        return template
+
+    def get_site_sender(self):
+        registry = get_current_registry()
+        default_sender = registry.settings['novaideo.admin_email']
+        return getattr(self, 'site_sender', default_sender)
 
     def get_work_modes(self):
         modes = getattr(self, 'work_modes', [])
@@ -309,3 +316,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         modes = list(self.get_work_modes().values())
         modes = sorted(modes, key=lambda e: e.order)
         return modes[0]
+
+    def merge_keywords(self, newkeywords):
+        self.keywords.extend([kw for kw in newkeywords
+                               if kw not in self.keywords])

@@ -5,15 +5,20 @@
 # licence: AGPL
 # author: Amen Souissi
 
+from novaideo import _
+
 """ The contents of e-mails"""
 
 PORTAL_SIGNATURE = """Cordialement,
                                                                                 
 La Plateforme {novaideo_title}
 """
+
 PORTAL_PRESENTATION = u"""{novaideo_title} est une plateforme participative qui permet à tout membre d'initier des idées pouvant être utilisées dans des propositions améliorées par des groupes de travail. Une fois améliorées, ces propositions peuvent être soumises à l'appréciation des membres et faire l'objet d'une décision d'un comité d'examen.
 
 """
+
+INVITATION_SUBJECT = u"""Invitation"""
 
 INVITATION_MESSAGE = u"""
 Bonjour ,
@@ -270,3 +275,147 @@ Bonjour {recipient_title} {recipient_last_name},
 Vous avez oublié votre mot de passe sur la plateforme {novaideo_title} et vous souhaitez en utiliser un nouveau, merci de cliquer sur {reseturl} et de saisir votre nouveau mot de passe.
 
 """+ PORTAL_SIGNATURE
+
+
+PREREGISTRATION_SUBJECT = u"""Veuillez confirmer votre inscription"""
+
+
+PREREGISTRATION_MESSAGE = u"""
+Bonjour,
+
+Pour confirmer votre inscription veuillez accéder à ce lien {url}. Ce lien est valide 48h. La date d'expiration de ce lien est prévue {deadline_date}.
+
+"""+ PORTAL_SIGNATURE
+
+
+DEFAULT_SITE_MAILS = {
+    'invitation': {
+              'title': _("Invitation"),
+              'subject': INVITATION_SUBJECT,
+              'template': INVITATION_MESSAGE
+    },
+    'refuse_invitation': {
+              'title': _("Refuse the invitation"),
+              'subject': REFUSE_INVITATION_SUBJECT,
+              'template': REFUSE_INVITATION_MESSAGE
+    },
+    'accept_invitation': {
+              'title': _("Accept the invitation"),
+              'subject': ACCEPT_INVITATION_SUBJECT,
+              'template': ACCEPT_INVITATION_MESSAGE
+    },
+    'reset_password': {
+              'title': _("Reset the password"),
+              'subject': RESETPW_SUBJECT,
+              'template': RESETPW_MESSAGE
+    },
+    'registration_confiramtion': {
+              'title': _("Registration confiramtion"),
+              'subject': CONFIRMATION_SUBJECT,
+              'template': CONFIRMATION_MESSAGE
+    },
+    'preregistration': {
+              'title': _("Users preregistration"),
+              'subject': PREREGISTRATION_SUBJECT,
+              'template': PREREGISTRATION_MESSAGE
+    },
+
+    'presentation_idea': {
+              'title': _("Presentation of an idea"),
+              'subject': PRESENTATION_IDEA_SUBJECT,
+              'template': PRESENTATION_IDEA_MESSAGE
+    },
+
+    'presentation_proposal': {
+              'title': _("Presentation of a proposal"),
+              'subject': PRESENTATION_PROPOSAL_SUBJECT,
+              'template': PRESENTATION_PROPOSAL_MESSAGE
+    },
+    'presentation_amendment': {
+              'title': _('Presentation of an amendment'),
+              'subject': PRESENTATION_AMENDMENT_SUBJECT,
+              'template': PRESENTATION_AMENDMENT_MESSAGE
+    },
+
+    'start_work': {
+              'title': _('Beginning of the improvement cycle'),
+              'subject': AMENDABLE_SUBJECT,
+              'template': AMENDABLE_MESSAGE
+    },
+
+    'proofreading': {
+              'title': _("Beginning of the proofreading"),
+              'subject': PROOFREADING_SUBJECT,
+              'template': PROOFREADING_MESSAGE
+    },
+    'alert_amendment': {
+              'title': _("Inactivity alert"),
+              'subject': ALERT_SUBJECT,
+              'template': ALERT_MESSAGE
+    },
+    'vote_amendment_result': {
+              'title': _("Vote result (amendments)"),
+              'subject': RESULT_VOTE_AMENDMENT_SUBJECT,
+              'template': RESULT_VOTE_AMENDMENT_MESSAGE
+    },
+    'publish_proposal': {
+              'title': _("Proposal publishing"),
+              'subject': PUBLISHPROPOSAL_SUBJECT,
+              'template': PUBLISHPROPOSAL_MESSAGE
+    },
+    'start_vote_publishing': {
+              'title': _("Start votes (publishing proposal)"),
+              'subject': VOTINGPUBLICATION_SUBJECT,
+              'template': VOTINGPUBLICATION_MESSAGE
+    },
+    'start_vote_amendments': {
+              'title': _("Start votes (amendments)"),
+              'subject': VOTINGAMENDMENTS_SUBJECT,
+              'template': VOTINGAMENDMENTS_MESSAGE
+    },
+    'withdeaw': {
+              'title': _("Withdeaw"),
+              'subject': WITHDRAW_SUBJECT,
+              'template': WITHDRAW_MESSAGE
+    },
+    'wg_participation': {
+              'title': _("Participation of the working group"),
+              'subject': PARTICIPATE_SUBJECT,
+              'template': PARTICIPATE_MESSAGE
+    },
+    'wg_resign': {
+              'title': _("Resignation of the working group"),
+              'subject': RESIGN_SUBJECT,
+              'template': RESIGN_SUBJECT
+    },
+    'wating_list': {
+              'title': _("Registration on the waiting list"),
+              'subject': WATINGLIST_SUBJECT,
+              'template': WATINGLIST_MESSAGE
+    },
+    'alert_new_content': {
+              'title': _("Alert (new content)"),
+              'subject': NEWCONTENT_SUBJECT,
+              'template': NEWCONTENT_MESSAGE
+    },
+    'archive_idea_decision': {
+              'title': _("Moderation: Archive the idea"),
+              'subject': ARCHIVEIDEA_SUBJECT,
+              'template': ARCHIVEIDEA_MESSAGE
+    },
+    'opinion_proposal': {
+              'title': _("Moderation: Opinion on the proposal"),
+              'subject': ALERTOPINION_SUBJECT,
+              'template': ALERTOPINION_MESSAGE
+    },
+    'publish_idea_decision': {
+              'title': _("Moderation: Publish the idea"),
+              'subject': PUBLISHEDIDEA_SUBJECT,
+              'template': PUBLISHEDIDEA_MESSAGE
+    },
+    'delete_proposal': {
+              'title': _("Moderation: Delete the proposal"),
+              'subject': PROPOSALREMOVED_SUBJECT,
+              'template': PROPOSALREMOVED_MESSAGE
+    }
+}

@@ -11,11 +11,12 @@ from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
 
-from novaideo.content.processes.novaideo_abstract_process.behaviors import  (
+from novaideo.content.processes.novaideo_abstract_process.behaviors import (
     EditDeadLine)
 from novaideo.content.novaideo_application import (
-    NovaIdeoApplication, NovaIdeoApplicationSchema)
+    NovaIdeoApplication)
 from novaideo import _
+from .add_deadline import DeadlineSchema
 
 
 @view_config(
@@ -26,7 +27,7 @@ from novaideo import _
 class EditDeadLineView(FormView):
 
     title = _('Edit the current deadline')
-    schema = select(NovaIdeoApplicationSchema(), ['deadline'])
+    schema = select(DeadlineSchema(), ['deadline'])
     behaviors = [EditDeadLine, Cancel]
     formid = 'formeditdeadline'
     name = 'editdeadline'
@@ -34,13 +35,14 @@ class EditDeadLineView(FormView):
     @property
     def requirements(self):
         if self.request.locale_name == 'fr':
-            return {'css_links':[],
-                    'js_links':['deform:static/pickadate/translations/fr_FR.js']}
+            return {'css_links': [],
+                    'js_links': ['deform:static/pickadate/translations/fr_FR.js']}
 
-        return {'css_links':[],
-                 'js_links':[]}
-                 
+        return {'css_links': [],
+                'js_links': []}
+
     def default_data(self):
         return {'deadline': self.context.deadlines[-1]}
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({EditDeadLine: EditDeadLineView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {EditDeadLine: EditDeadLineView})

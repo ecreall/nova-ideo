@@ -1,0 +1,5 @@
+<div i18n:domain="novaideo">
+	<p i18n:translate="">
+		Thank you for registering. A confirmation e-mail has been sent to you. Please click on the link in the email in order to complete your registration.
+	</p>
+</div>

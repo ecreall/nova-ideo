@@ -9,7 +9,7 @@
 This module represent all of behaviors used in the 
 Proposal management process definition. 
 """
-import datetime 
+import datetime
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 from pyramid.threadlocal import get_current_registry
@@ -30,14 +30,6 @@ from dace.processinstance.activity import (
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IProposal
 from ...user_management.behaviors import global_user_processsecurity
-from novaideo.mail import (
-    ALERT_SUBJECT,
-    ALERT_MESSAGE,
-    RESULT_VOTE_AMENDMENT_SUBJECT,
-    RESULT_VOTE_AMENDMENT_MESSAGE,
-    VOTINGAMENDMENTS_SUBJECT,
-    VOTINGAMENDMENTS_MESSAGE)
-
 from novaideo import _
 from novaideo.content.correlation import CorrelationType
 from novaideo.content.amendment import Amendment
@@ -95,11 +87,13 @@ class Alert(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         members = context.working_group.members
         url = request.resource_url(context, "@@index")
-        subject = ALERT_SUBJECT.format(subject_title=context.title)
+        root = request.root
+        mail_template = root.get_mail_template('alert_amendment')
+        subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
         for member in members:
-            message = ALERT_MESSAGE.format(
-                recipient_title=localizer.translate(_(getattr(member, 
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(_(getattr(member,
                                                     'user_title',''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
@@ -108,7 +102,8 @@ class Alert(ElementaryAction):
                 novaideo_title=request.root.title
                  )
             mailer_send(subject=subject, 
-                recipients=[member.email], 
+                recipients=[member.email],
+                sender=root.get_site_sender(),
                 body=message)
 
         return {}
@@ -218,18 +213,21 @@ class VotingAmendments(ElementaryAction):
         members = wg.members
         url = request.resource_url(context, "@@index")
         localizer = request.localizer
-        subject = VOTINGAMENDMENTS_SUBJECT.format(subject_title=context.title)
+        root = request.root
+        mail_template = root.get_mail_template('start_vote_amendments')
+        subject = mail_template['subject'].format(subject_title=context.title)
         for member in members:
-            message = VOTINGAMENDMENTS_MESSAGE.format(
+            message = mail_template['template'].format(
                 recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
                 subject_title=context.title,
                 subject_url=url,
-                novaideo_title=request.root.title
+                novaideo_title=root.title
                  )
-            mailer_send(subject=subject, 
-                 recipients=[member.email], 
+            mailer_send(subject=subject,
+                 recipients=[member.email],
+                 sender = root.get_site_sender(),
                  body=message)
 
         return {}
@@ -314,18 +312,21 @@ class AmendmentsResult(ElementaryAction):
         result_body = renderers.render(
             self.amendments_vote_result_template, values, request)
         localizer = request.localizer
-        subject = RESULT_VOTE_AMENDMENT_SUBJECT.format(
+        root = request.root
+        mail_template = root.get_mail_template('vote_amendment_result')
+        subject = mail_template['subject'].format(
                         subject_title=context.title)
         for member in members:
-            message = RESULT_VOTE_AMENDMENT_MESSAGE.format(
+            message = mail_template['template'].format(
                 recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name',''),
                 message_result=result_body,
-                novaideo_title=request.root.title
+                novaideo_title=root.title
                  )
-            mailer_send(subject=subject, 
-                 recipients=[member.email], 
+            mailer_send(subject=subject,
+                 recipients=[member.email],
+                 sender=root.get_site_sender(),
                  html=message)
         
     def start(self, context, request, appstruct, **kw):

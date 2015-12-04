@@ -26,7 +26,7 @@ function init_textarea(textarea_id, textarea_limit){
 (function($){
   $.fn.clearTextLimit=function(){
     return this.each(function(){
-      this.onkeydown=this.onkeyup=null;}
+      this.onkeydown=this.onkeyup=this.onchange=null;}
   );};
   $.fn.textLimit=function(limit,callback){
       if(typeof callback!=='function')
@@ -34,7 +34,7 @@ function init_textarea(textarea_id, textarea_limit){
       return this.each(function(){
         this.limit=limit;
         this.callback=callback;
-        this.onkeydown=this.onkeyup=function(){
+        this.onkeydown=this.onkeyup=this.onchange=function(){
           this.value=this.value.substr(0,this.limit);
           this.reached=this.limit-this.value.length;
           this.reached=(this.reached==0)?true:false;

@@ -67,7 +67,6 @@ class AddIdeaSchema(Schema):
 
     new_idea = select(IdeaSchema(factory=Idea,
                                  editable=True,
-                                 omit=['keywords'],
                                  widget=SimpleMappingtWidget(
                                          mapping_css_class='hide-bloc new-idea-form',
                                         ajax=False)),
@@ -186,7 +185,7 @@ class CreateProposalFormView(FormView):
 
     title = _('Create a proposal')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
-                               omit=['keywords', 'related_ideas']),
+                               omit=['related_ideas']),
                     ['title',
                      'description',
                      'keywords',

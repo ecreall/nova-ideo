@@ -68,3 +68,15 @@ def main(global_config, **settings):
                        timeout=DEFAULT_SESSION_TIMEOUT) 
     config.set_session_factory(session_factory)
     return config.make_wsgi_app()
+
+
+DEFAULT_FILES = [
+    {'name': 'ml_file',
+     'title': _('Legal notices'),
+     'description': _('The legal notices'),
+     'content': ''},
+    {'name': 'terms_of_use',
+     'title': _('Terms of use'),
+     'description': _('The terms of use'),
+     'content': ''}
+]

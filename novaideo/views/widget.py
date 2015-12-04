@@ -13,6 +13,10 @@ from pontus.widget import (
   SequenceWidget, Select2Widget)
 
 
+class EmailInputWidget(deform.widget.TextInputWidget):
+    template = 'novaideo:views/templates/email_input.pt'
+
+
 class TOUCheckboxWidget(deform.widget.CheckboxWidget):
     template = 'novaideo:views/templates/terms_of_use_checkbox.pt'
     requirements = ( ('toucheckbox', None), )

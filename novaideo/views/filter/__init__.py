@@ -634,10 +634,8 @@ def authors_choices(node, kw):
 
 @colander.deferred
 def keyword_widget(node, kw):
-    values = []
     root = getSite()
-    prop = sorted(root.keywords, key=lambda p: p.title)
-    values = [(i.title, i.title) for i in prop]
+    values = [(i, i) for i in sorted(root.keywords)]
     return Select2Widget(values=values,
                          multiple=True)
 
@@ -1083,5 +1081,11 @@ def get_entities_by_title(interfaces, title, **args):
         user=user,
         interfaces=interfaces,
         add_query=query,
-        include_site=True,
         **args)
+
+
+def get_users_by_keywords(keywords):
+    return find_entities(
+        metadata_filter={'content_types': ['person'],
+                         'states': ['active'],
+                         'keywords': keywords})

@@ -1,0 +1,20 @@
+<div tal:replace="structure navbar_body"/>
+<div class="media" i18n:domain="novaideo">
+  <div class="media-body">
+    <h4 class="media-heading">
+        <strong>${getattr(registration, 'title', registration.name)}</strong> 
+        <small style="color: #d43f3a" tal:condition="registration.is_expired" >(<span i18n:translate="">Expired</span>)</small>
+    </h4>
+      <dl class="dl-horizontal well well-sm film-data">
+        <dt i18n:translate="">Email</dt>
+        <dd tal:define="mail getattr(registration, 'email', '')">
+          <a href="mailto:${mail}">${mail}</a>
+        </dd>
+        <dt i18n:translate="">Subscribed the</dt>
+        <dd><span tal:replace="layout.to_localized_time(registration.created_at)"/></dd>
+        <dt i18n:translate="">Expire the</dt>
+        <dd><span tal:replace="layout.to_localized_time(registration.get_deadline_date())"/></dd>
+      </dl>
+  </div>
+</div>
+<div tal:replace="structure footer_body"/>

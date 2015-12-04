@@ -1,0 +1,15 @@
+<div tal:repeat="contact contacts">
+<h5 class="section-title"><span class="glyphicon glyphicon-comment"></span> <span i18n:translate="">${contact['title']}</span></h5>
+   <blockquote >
+         <small tal:condition="contact.get('address', None)"><span class="glyphicon glyphicon-map-marker"></span>  ${contact['address']}</small>
+   	   <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+   	   <a tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+   	   <a tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+   	   </small>
+   	   <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+   	   <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
+   	   	<span class="glyphicon glyphicon-earphone"></span>  ${contact['phone']} 
+   	   	<span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
+   	   <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</small>
+  </blockquote>
+</div>

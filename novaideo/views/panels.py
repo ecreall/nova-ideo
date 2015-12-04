@@ -497,10 +497,10 @@ class Deadline_panel(object):
         if self.request.view_name != '':
             return {'condition': False}
 
-        current_deadline = self.context.deadlines[-1].replace(tzinfo=None)
-        previous_deadline = current_deadline
+        current_deadline = self.context.deadlines[-1].replace(tzinfo=pytz.UTC)
+        previous_deadline = datetime.datetime.now(tz=pytz.UTC)
         try:
-            previous_deadline = self.context.deadlines[-2].replace(tzinfo=None)
+            previous_deadline = self.context.deadlines[-2].replace(tzinfo=pytz.UTC)
         except Exception:
             pass
 
@@ -511,7 +511,7 @@ class Deadline_panel(object):
         if total_sec_current_deadline > 0 and \
            not current_date > current_deadline:
             total_sec_current_date = (current_date - previous_deadline).total_seconds()
-            percent = (total_sec_current_date * 100) / total_sec_current_deadline 
+            percent = (total_sec_current_date * 100) / total_sec_current_deadline
         else:
             expired = True
 

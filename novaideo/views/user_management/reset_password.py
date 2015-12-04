@@ -13,7 +13,7 @@ from substanced.interfaces import IUserLocator, IPasswordReset
 from substanced.principal import DefaultUserLocator
 from substanced.util import find_service
 
-from dace.processinstance.core import  Behavior
+from dace.processinstance.core import Behavior
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
@@ -23,9 +23,6 @@ from pontus.default_behavior import Cancel as DefaultCancel
 from novaideo import _
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.mail import (
-    RESETPW_SUBJECT,
-    RESETPW_MESSAGE)
 
 
 
@@ -57,18 +54,21 @@ class Send(Behavior):
             reseturl = request.resource_url(reset)
             if not user.email:
                 raise ValueError('User does not possess a valid email address.')
-
-            subject = RESETPW_SUBJECT.format(novaideo_title=request.root.title)
+            
+            root = request.root
+            mail_template = root.get_mail_template('reset_password')
+            subject = mail_template['subject'].format(novaideo_title=request.root.title)
             localizer = request.localizer
-            message = RESETPW_MESSAGE.format(
+            message = mail_template['template'].format(
                 recipient_title=localizer.translate(_(getattr(user, 'user_title',''))),
                 recipient_first_name=getattr(user, 'first_name', user.name),
                 recipient_last_name=getattr(user, 'last_name',''),
                 reseturl=reseturl,
                 novaideo_title=request.root.title
                  )
-            mailer_send(subject=subject, 
-                recipients=[user.email], 
+            mailer_send(subject=subject,
+                recipients=[user.email],
+                sender=root.get_site_sender(),
                 body=message)
 
         return {}

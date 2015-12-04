@@ -1,3 +1,4 @@
+
 .social-share-contaier {
   margin-bottom: -15px;
   text-align: center;
@@ -265,23 +266,19 @@ body{
 }
 
 #footer {
-    /*background: none repeat scroll 0 0 #e7e7e7;*/
     color: #7d7d7d;
     font-size: 0.9em;
     height: 70px;
     padding-top: 30px;
-    position: absolute;
     text-align: center;
-    width: 100%;
-    z-index: -2;
 }
 
 
 #custom-footer {
     margin: 0 auto;
-    min-width: 1000px;
     position: relative;
-    width: 0;
+    text-align: center;
+    width: 100%;
 }
 
 #footer a#logo {
@@ -296,11 +293,6 @@ body{
     left: 0;
     position: relative;
     width: 32px;
-}
-
-#footer #portal-colophon .colophonWrapper {
-    float: right;
-    width: 90%;   
 }
 
 
@@ -1061,11 +1053,16 @@ ins {
     text-decoration: none;
 }
 
-.ajax-form{
-    margin-top: 30px
+
+.ajax-form .control-form-button {
+  color: gray;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 15px;
+  margin-bottom: 15px;
 }
 
-.ajax-form .control-form-button, .comment-replay-nb{
+.comment-replay-nb{
     color: gray;
     cursor: pointer;
     font-size: 15px;
@@ -1673,10 +1670,6 @@ ins {
   .search-item .content-image>img{
     width: 50px
   }
-  #footer #portal-colophon .colophonWrapper{
-        float: none;
-        width: 65%; 
-  }
 
   .navbar.navbar-inverse.navbar-bottom{
       min-height: 160px !important;
@@ -1726,10 +1719,6 @@ ins {
 }
 
 @media (max-width: 675px) {
-  #footer #portal-colophon .colophonWrapper{
-        float: none;
-        width: 28%;
-  }
 
   #custom-footer {
     margin: -15px auto;

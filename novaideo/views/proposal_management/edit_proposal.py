@@ -77,7 +77,7 @@ class IdeaManagementView(MultipleView):
 class EditProposalFormView(FormView):
     title = _('Edit the proposal')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
-                               omit=['keywords', 'related_ideas']),
+                               omit=['related_ideas']),
                     ['title',
                      'description',
                      'keywords',

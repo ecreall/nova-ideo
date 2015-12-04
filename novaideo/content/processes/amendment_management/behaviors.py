@@ -114,13 +114,7 @@ class DuplicateAmendment(InfiniteCardinality):
                                  omit=('created_at',
                                        'modified_at',
                                        'explanations'))
-        keywords_ids = appstruct.pop('keywords')
-        result, newkeywords = root.get_keywords(keywords_ids)
-        for nkw in newkeywords:
-            root.addtoproperty('keywords', nkw)
-
-        result.extend(newkeywords)
-        appstruct['keywords_ref'] = result
+        root.merge_keywords(appstruct['keywords'])
         copy_of_amendment.set_data(appstruct)
         copy_of_amendment.text = normalize_text(copy_of_amendment.text)
         copy_of_amendment.setproperty('originalentity', context)
@@ -208,13 +202,7 @@ class EditAmendment(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        keywords_ids = appstruct.pop('keywords')
-        result, newkeywords = root.get_keywords(keywords_ids)
-        for nkw in newkeywords:
-            root.addtoproperty('keywords', nkw)
-
-        result.extend(newkeywords)
-        appstruct['keywords_ref'] = result
+        root.merge_keywords(context.keywords)
         context.set_data(appstruct)
         context.text = normalize_text(context.text)
         context.text_diff = get_text_amendment_diff(
@@ -389,11 +377,7 @@ class SubmitAmendment(InfiniteCardinality):
 
     def _add_sub_amendment(self, context, request, group):
         data = self._get_explanation_data(context, group)
-        keywords_ref = context.keywords_ref
-        amendment = Amendment()
-        for k in keywords_ref:
-            amendment.addtoproperty('keywords_ref', k)
-
+        amendment.keywords = context.keywords
         amendment.set_data(data)
         context.proposal.addtoproperty('amendments', amendment)
         amendment.state.append('published')

@@ -33,8 +33,7 @@ from novaideo.utilities.util import to_localized_time
 class CreateIdeaView(FormView):
 
     title = _('Create an idea')
-    schema = select(IdeaSchema(factory=Idea, editable=True,
-                               omit=['keywords']),
+    schema = select(IdeaSchema(factory=Idea, editable=True),
                     ['title',
                      'text',
                      'keywords',
@@ -69,11 +68,11 @@ class CreateIdeaView_Json(BasicView):
         try:
             behavior = self.behaviors_instances['Create_an_idea']
             values = {'title': self.params('title'),
-                      'text': self.params('text')}
+                      'text': self.params('text'),
+                      'keywords': self.params('keywords')}
             idea = Idea()
             idea.set_data(values)
-            appstruct = {'_object_data': idea,
-                         'keywords': self.params('keywords')}
+            appstruct = {'_object_data': idea}
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
             localizer = self.request.localizer

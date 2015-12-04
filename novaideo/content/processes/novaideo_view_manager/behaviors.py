@@ -16,6 +16,7 @@ from dace.processinstance.activity import (
     ActionType)
 from dace.processinstance.core import PROCESS_HISTORY_KEY
 
+from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, IProposal
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
@@ -212,5 +213,39 @@ class SeeEntityHistory(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         return {}
 
+
+def contact_processsecurity_validation(process, context):
+    root = getSite()
+    for contact in getattr(root, 'contacts', []):
+        if contact.get('email', None):
+            return True
+
+    return False
+
+
+class Contact(InfiniteCardinality):
+    style = 'button'
+    style_descriminator = 'footer-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-send'
+    submission_title = _('Send')
+    style_order = 1
+    isSequential = False
+    context = IEntity
+    #processsecurity_validation = contact_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        subject = appstruct.get('subject')
+        mail = appstruct.get('message')
+        sender = appstruct.get('email')
+        services = appstruct.get('services')
+        mailer_send(subject=subject, body=mail,
+                    recipients=list(services),
+                    sender=sender)
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(
+            request.resource_url(context, ''))
 
 #TODO behaviors

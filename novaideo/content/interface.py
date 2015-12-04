@@ -6,7 +6,9 @@
 
 from zope.interface import Interface
 
-from dace.interfaces import Attribute, IEntity as IEntityO
+from dace.interfaces import Attribute, IUser, IEntity as IEntityO, IApplication
+
+from pontus.interfaces import IVisualisableElement
 
 from novaideo.utilities.data_manager import (
     interface_config,
@@ -121,6 +123,29 @@ class IPerson(ISearchableEntity,
     pass
 
 
+class IBaseUser(IEntity):
+
+    first_name = Attribute('first_name')
+
+    last_name = Attribute('last_name')
+
+    user_title = Attribute('user_title')
+
+
+@interface_config(type_id='person')
+class IPerson(IVisualisableElement,
+              ISearchableEntity,
+              ICorrelableEntity,
+              IBaseUser,
+              IUser):
+
+    picture = Attribute('picture', type=IMAGETYPE)
+
+
+class IPreregistration(IBaseUser):
+    pass
+
+
 class IProposal(ICommentable,
                 ISearchableEntity,
                 ICorrelableEntity,
@@ -137,5 +162,5 @@ class IOrganization(Interface):
     pass
 
 
-class INovaIdeoApplication(Interface):
+class INovaIdeoApplication(IApplication):
     pass

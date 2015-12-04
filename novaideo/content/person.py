@@ -5,6 +5,8 @@
 # author: Amen Souissi
 # -*- coding: utf8 -*-
 import os
+import datetime
+import pytz
 import colander
 import deform.widget
 from persistent.list import PersistentList
@@ -18,6 +20,7 @@ from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
 
 from dace.util import getSite
+from dace.objectofcollaboration.entity import Entity
 from dace.objectofcollaboration.principal import User
 from dace.descriptors import (
     SharedUniqueProperty,
@@ -31,16 +34,18 @@ from pontus.file import Image, ObjectData, Object as ObjectType
 from novaideo.core import (
     SearchableEntity,
     SearchableEntitySchema,
-    default_keywords_choice,
     keywords_choice,
     CorrelableEntity,
     generate_access_keys)
-from .interface import IPerson
+from .interface import IPerson, IPreregistration
 from novaideo import _
 from novaideo.views.widget import TOUCheckboxWidget
 
 
+DEADLINE_PREREGISTRATION = 86400*2  # 2 days
+
 DEFAULT_LOCALE = 'fr'
+
 
 @colander.deferred
 def organization_choice(node, kw):
@@ -125,7 +130,7 @@ def locale_missing(node, kw):
 @colander.deferred
 def conditions_widget(node, kw):
     root = getSite()
-    terms_of_use = root.terms_of_use
+    terms_of_use = root.get('terms_of_use')
     return TOUCheckboxWidget(tou_file=terms_of_use)
 
 
@@ -142,7 +147,6 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     keywords = colander.SchemaNode(
         colander.Set(),
-        default=default_keywords_choice,
         widget=keywords_choice,
         title=_('Preferences'),
         missing=[]
@@ -242,6 +246,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
         kwargs.pop('password')
         self.set_data(kwargs)
         self.set_title()
+        self.last_connection = datetime.datetime.now(tz=pytz.UTC)
 
     def set_title(self):
         self.title = getattr(self, 'first_name', '') + ' ' + \
@@ -291,3 +296,40 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     def get_more_contents_criteria(self):
         "return specific query, filter values"
         return None, None
+
+
+@content(
+    'preregistration',
+    icon='glyphicon glyphicon-align-left',
+    )
+@implementer(IPreregistration)
+class Preregistration(VisualisableElement, Entity):
+    """Preregistration class"""
+    icon = 'typcn typcn-user-add'
+    templates = {'default': 'novaideo:views/templates/preregistration_result.pt',
+                 'bloc': 'novaideo:views/templates/preregistration_result.pt'}
+    name = renamer()
+    structure = CompositeUniqueProperty('structure')
+
+    def __init__(self, **kwargs):
+        super(Preregistration, self).__init__(**kwargs)
+        self.set_data(kwargs)
+        self.title = self.first_name + ' ' + \
+                     self.last_name
+
+    def init_deadline(self, date):
+        self.deadline_date = date\
+            + datetime.timedelta(seconds=DEADLINE_PREREGISTRATION)
+        return self.deadline_date
+
+    def get_deadline_date(self):
+        if getattr(self, 'deadline_date', None) is not None:
+            return self.deadline_date
+
+        self.deadline_date = self.created_at\
+            + datetime.timedelta(seconds=DEADLINE_PREREGISTRATION)
+        return self.deadline_date
+
+    @property
+    def is_expired(self):
+        return datetime.datetime.now(tz=pytz.UTC) > self.get_deadline_date()

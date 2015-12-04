@@ -25,7 +25,12 @@ from .behaviors import (
     Activate,
     Deactivate,
     SeePerson,
-    AssignRoles)
+    AssignRoles,
+    ConfirmRegistration,
+    Remind,
+    SeeRegistration,
+    SeeRegistrations,
+    RemoveRegistration)
 from novaideo import _
 
 
@@ -42,10 +47,6 @@ class UserManagement(ProcessDefinition, VisualisableElement):
         self.defineNodes(
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
-                registration = ActivityDefinition(contexts=[Registration],
-                                       description=_("User registration"),
-                                       title=_("User registration"),
-                                       groups=[]),
                 login = ActivityDefinition(contexts=[LogIn],
                                        description=_("Log in"),
                                        title=_("Log in"),
@@ -79,14 +80,12 @@ class UserManagement(ProcessDefinition, VisualisableElement):
         )
         self.defineTransitions(
                 TransitionDefinition('start', 'pg'),
-                TransitionDefinition('pg', 'registration'),
                 TransitionDefinition('pg', 'login'),
                 TransitionDefinition('pg', 'logout'),
                 TransitionDefinition('login', 'eg'),
                 TransitionDefinition('logout', 'eg'),
                 TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('edit', 'eg'),
-                TransitionDefinition('registration', 'eg'),
                 TransitionDefinition('pg', 'deactivate'),
                 TransitionDefinition('deactivate', 'eg'),
                 TransitionDefinition('pg', 'activate'),
@@ -95,5 +94,62 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('assign_roles', 'eg'),
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('see', 'eg'),
+                TransitionDefinition('eg', 'end'),
+        )
+
+@process_definition(name='registrationmanagement', id='registrationmanagement')
+class RegistrationManagement(ProcessDefinition, VisualisableElement):
+    isUnique = True
+
+    def __init__(self, **kwargs):
+        super(RegistrationManagement, self).__init__(**kwargs)
+        self.title = _('Registration management')
+        self.description = _('Registration management')
+
+    def _init_definition(self):
+        self.defineNodes(
+                start = StartEventDefinition(),
+                pg = ParallelGatewayDefinition(),
+                registration = ActivityDefinition(contexts=[Registration],
+                                       description=_("User registration"),
+                                       title=_("User registration"),
+                                       groups=[]),
+                confirmregistration = ActivityDefinition(contexts=[ConfirmRegistration],
+                                       description=_("Confirm registration"),
+                                       title=_("Confirm registration"),
+                                       groups=[]),
+                remind = ActivityDefinition(contexts=[Remind],
+                                       description=_("Remind user"),
+                                       title=_("Remind"),
+                                       groups=[]),
+                see_registration = ActivityDefinition(contexts=[SeeRegistration],
+                                       description=_("Details"),
+                                       title=_("Details"),
+                                       groups=[]),
+                see_registrations = ActivityDefinition(contexts=[SeeRegistrations],
+                                       description=_("See registrations"),
+                                       title=_("Registrations"),
+                                       groups=[_('See')]),
+                remove = ActivityDefinition(contexts=[RemoveRegistration],
+                                       description=_("Remove the registration"),
+                                       title=_("Remove"),
+                                       groups=[]),
+                eg = ExclusiveGatewayDefinition(),
+                end = EndEventDefinition(),
+        )
+        self.defineTransitions(
+                TransitionDefinition('start', 'pg'),
+                TransitionDefinition('pg', 'registration'),
+                TransitionDefinition('registration', 'eg'),
+                TransitionDefinition('pg', 'confirmregistration'),
+                TransitionDefinition('confirmregistration', 'eg'),
+                TransitionDefinition('pg', 'remind'),
+                TransitionDefinition('remind', 'eg'),
+                TransitionDefinition('pg', 'see_registration'),
+                TransitionDefinition('see_registration', 'eg'),
+                TransitionDefinition('pg', 'see_registrations'),
+                TransitionDefinition('see_registrations', 'eg'),
+                TransitionDefinition('pg', 'remove'),
+                TransitionDefinition('remove', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )

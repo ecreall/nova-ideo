@@ -79,7 +79,6 @@ class NewIdeaSchema(Schema):
 
     new_idea = select(IdeaSchema(factory=Idea,
                                  editable=True,
-                                 omit=['keywords'],
                                  widget=SimpleMappingWidget()),
                       ['title',
                        'text',
@@ -91,10 +90,10 @@ class IntentionItemSchema(Schema):
 
     comment = colander.SchemaNode(
         colander.String(),
-        title= _('Give a specific explanation'),
+        title=_('Give a specific explanation'),
         validator=colander.Length(max=300),
-        widget=LimitedTextAreaWidget(rows=5, 
-                                     cols=30, 
+        widget=LimitedTextAreaWidget(rows=5,
+                                     cols=30,
                                      limit=300),
         )
 
