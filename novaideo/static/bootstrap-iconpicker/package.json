@@ -1,0 +1,21 @@
+{
+  "name": "bootstrap-iconpicker",
+  "version": "1.7.0",
+  "homepage": "https://victor-valencia.github.com/bootstrap-iconpicker",
+  "author": {
+    "name": "Victor Valencia Rico",
+    "email": "valencia_vik@hotmail.com.com",
+    "url": "https://victor-valencia.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/victor-valencia/bootstrap-iconpicker.git"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-cssmin": "^0.12.3",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}
