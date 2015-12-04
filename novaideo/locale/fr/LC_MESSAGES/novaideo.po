@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-12-04 15:46+0100\n"
+"POT-Creation-Date: 2015-12-04 17:29+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -35,36 +35,49 @@ msgstr ""
 msgid "The terms of use"
 msgstr ""
 
-#: novaideo/core_schema.py:26
+#: novaideo/core_schema.py:35
+msgid "Administration service"
+msgstr ""
+
+#: novaideo/core_schema.py:27
 #, python-format
 msgid "${phone} phone number not valid"
 msgstr ""
 
-#: novaideo/core_schema.py:47
-msgid "Phone"
-msgstr ""
+#: novaideo/core_schema.py:42 novaideo/content/site_configuration.py:85
+#: novaideo/content/person.py:186
+msgid "Title"
+msgstr "Civilité"
 
-#: novaideo/core_schema.py:55
-msgid "Surtax"
-msgstr ""
-
-#: novaideo/core_schema.py:56
-msgid "Indicate the amount of the surcharge (for the premium-rate number)."
-msgstr ""
-
-#: novaideo/core_schema.py:62 novaideo/content/organization.py:79
-msgid "Fax"
+#: novaideo/core_schema.py:49
+msgid "Address"
 msgstr ""
 
 #: novaideo/core_schema.py:68
+msgid "Phone"
+msgstr ""
+
+#: novaideo/core_schema.py:76
+msgid "Surtax"
+msgstr ""
+
+#: novaideo/core_schema.py:77
+msgid "Indicate the amount of the surcharge (for the premium-rate number)."
+msgstr ""
+
+#: novaideo/core_schema.py:83 novaideo/content/organization.py:79
+msgid "Fax"
+msgstr ""
+
+#: novaideo/core_schema.py:89
 msgid "Website"
 msgstr ""
 
-#: novaideo/core_schema.py:81
+#: novaideo/core_schema.py:102
 msgid "One value must be entered."
 msgstr ""
 
-#: novaideo/core_schema.py:87
+#: novaideo/core_schema.py:108
 msgid "Surtax field must be filled in."
 msgstr ""
 
@@ -462,7 +475,7 @@ msgstr "Supprimer"
 #: novaideo/content/processes/novaideo_file_management/behaviors.py:39
 #: novaideo/content/processes/idea_management/definition.py:94
 #: novaideo/content/processes/idea_management/definition.py:95
-#: novaideo/content/processes/idea_management/behaviors.py:493
+#: novaideo/content/processes/idea_management/behaviors.py:492
 #: novaideo/content/processes/invitation_management/definition.py:56
 #: novaideo/content/processes/user_management/definition.py:75
 #: novaideo/content/processes/user_management/definition.py:76
@@ -473,9 +486,9 @@ msgstr "Supprimer"
 #: novaideo/content/processes/amendment_management/definition.py:88
 #: novaideo/content/processes/amendment_management/definition.py:89
 #: novaideo/content/processes/amendment_management/behaviors.py:522
-#: novaideo/content/processes/novaideo_view_manager/definition.py:67
 #: novaideo/content/processes/novaideo_view_manager/definition.py:68
-#: novaideo/content/processes/novaideo_view_manager/behaviors.py:155
+#: novaideo/content/processes/novaideo_view_manager/definition.py:69
+#: novaideo/content/processes/novaideo_view_manager/behaviors.py:156
 #: novaideo/content/processes/correlation_management/behaviors.py:81
 #: novaideo/content/processes/organization_management/definition.py:65
 #: novaideo/content/processes/organization_management/behaviors.py:188
@@ -619,6 +632,7 @@ msgstr "À"
 #: novaideo/views/idea_management/present_idea.py:151
 #: novaideo/views/proposal_management/present_proposal.py:65
 #: novaideo/views/amendment_management/present_amendment.py:65
+#: novaideo/views/novaideo_view_manager/contact.py:64
 #: novaideo/content/site_configuration.py:91
 msgid "Subject"
 msgstr "Sujet"
@@ -824,7 +838,7 @@ msgstr "Inviter des utilisateurs"
 
 #: novaideo/views/invitation_management/invite_user.py:35
 #: novaideo/views/invitation_management/see_invitations.py:38
-#: novaideo/content/novaideo_application.py:140
+#: novaideo/content/novaideo_application.py:142
 #: novaideo/content/processes/invitation_management/definition.py:60
 msgid "Invitations"
 msgstr "Les invitations"
@@ -901,7 +915,7 @@ msgstr ""
 #: novaideo/views/invitation_management/templates/see_invitations.pt:19
 #: novaideo/views/user_management/templates/see_person.pt:36
 #: novaideo/views/templates/person_result.pt:22
-#: novaideo/content/novaideo_application.py:151 novaideo/content/person.py:208
+#: novaideo/content/novaideo_application.py:153 novaideo/content/person.py:208
 msgid "Organization"
 msgstr "Organisation"
 
@@ -1061,8 +1075,9 @@ msgstr "Inscription"
 
 #: novaideo/views/user_management/reset_password.py:38
 #: novaideo/views/user_management/reset_password.py:145
-#: novaideo/content/processes/idea_management/behaviors.py:388
+#: novaideo/content/processes/idea_management/behaviors.py:387
 #: novaideo/content/processes/invitation_management/behaviors.py:108
+#: novaideo/content/processes/novaideo_view_manager/behaviors.py:231
 msgid "Send"
 msgstr "Envoyer"
 
@@ -1188,6 +1203,7 @@ msgstr "Membre depuis le"
 
 #: novaideo/views/user_management/templates/see_person.pt:26
 #: novaideo/views/user_management/templates/see_registration.pt:20
+#: novaideo/views/novaideo_view_manager/contact.py:58
 #: novaideo/content/organization.py:68
 msgid "Email"
 msgstr "Courriel"
@@ -2819,7 +2835,7 @@ msgid "${nember} éléments en favori"
 msgstr ""
 
 #: novaideo/views/novaideo_view_manager/see_my_selections.py:36
-#: novaideo/content/processes/novaideo_view_manager/definition.py:56
+#: novaideo/content/processes/novaideo_view_manager/definition.py:57
 msgid "My favorites"
 msgstr "Mes favoris"
 
@@ -2844,13 +2860,13 @@ msgid ""
 msgstr ""
 
 #: novaideo/views/novaideo_view_manager/see_my_supports.py:40
-#: novaideo/content/processes/novaideo_view_manager/definition.py:64
+#: novaideo/content/processes/novaideo_view_manager/definition.py:65
 msgid "My supports"
 msgstr "Mes appréciations"
 
 #: novaideo/views/novaideo_view_manager/see_history.py:29
-#: novaideo/content/processes/novaideo_view_manager/definition.py:76
-#: novaideo/content/processes/novaideo_view_manager/behaviors.py:205
+#: novaideo/content/processes/novaideo_view_manager/definition.py:77
+#: novaideo/content/processes/novaideo_view_manager/behaviors.py:206
 #, fuzzy
 msgid "Processes history"
 msgstr "Effectuée"
@@ -2875,8 +2891,8 @@ msgstr ""
 
 #: novaideo/views/novaideo_view_manager/search.py:123
 #: novaideo/views/novaideo_view_manager/search.py:95
-#: novaideo/content/processes/novaideo_view_manager/definition.py:47
 #: novaideo/content/processes/novaideo_view_manager/definition.py:48
+#: novaideo/content/processes/novaideo_view_manager/definition.py:49
 msgid "Search"
 msgstr "Rechercher"
 
@@ -2902,6 +2918,39 @@ msgstr ""
 "Pour les recherches sur plusieurs mots, il faut mettre des virgules entre "
 "les mots."
 
+#: novaideo/views/novaideo_view_manager/contact.py:76
+#: novaideo/views/novaideo_view_manager/contact.py:40
+msgid "Services to contact"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/contact.py:103
+#: novaideo/views/novaideo_view_manager/contact.py:118
+#: novaideo/content/processes/novaideo_view_manager/definition.py:80
+#: novaideo/content/processes/novaideo_view_manager/definition.py:81
+msgid "Contact"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/contact.py:46
+msgid "Name"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/contact.py:48
+msgid "Please enter your full name"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/contact.py:59
+msgid "Please enter your email address"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/contact.py:70
+#: novaideo/content/correlation.py:90 novaideo/content/comment.py:95
+msgid "Message"
+msgstr "Message"
+
+#: novaideo/views/novaideo_view_manager/contact.py:71
+msgid "Please enter the message you want to send."
+msgstr ""
+
 #: novaideo/views/novaideo_view_manager/doc_anonymous.py:32
 #, fuzzy
 msgid "Contribute"
@@ -2925,7 +2974,7 @@ msgid "${nember} contenus auxquels j'ai contribué"
 msgstr ""
 
 #: novaideo/views/novaideo_view_manager/see_my_contents.py:39
-#: novaideo/content/processes/novaideo_view_manager/definition.py:52
+#: novaideo/content/processes/novaideo_view_manager/definition.py:53
 msgid "My contents"
 msgstr "Mes contenus"
 
@@ -2943,7 +2992,7 @@ msgid "${nember} groupes de travail auxquels j'ai participé"
 msgstr ""
 
 #: novaideo/views/novaideo_view_manager/see_my_participations.py:37
-#: novaideo/content/processes/novaideo_view_manager/definition.py:60
+#: novaideo/content/processes/novaideo_view_manager/definition.py:61
 msgid "My participations"
 msgstr "Mes groupes de travail"
 
@@ -2962,8 +3011,8 @@ msgid "${nember} proposals found"
 msgstr "${nember} propositions trouvées"
 
 #: novaideo/views/novaideo_view_manager/see_ordered_proposals.py:61
-#: novaideo/content/processes/novaideo_view_manager/definition.py:71
 #: novaideo/content/processes/novaideo_view_manager/definition.py:72
+#: novaideo/content/processes/novaideo_view_manager/definition.py:73
 msgid "Proposals to examine"
 msgstr "Les propositions à examiner"
 
@@ -3067,7 +3116,7 @@ msgid "${nember} organizations found"
 msgstr "${nember} organisations trouvées"
 
 #: novaideo/views/organization_management/see_organizations.py:36
-#: novaideo/content/novaideo_application.py:156
+#: novaideo/content/novaideo_application.py:158
 #: novaideo/content/processes/organization_management/definition.py:57
 msgid "Organizations"
 msgstr "Les organisations"
@@ -3104,9 +3153,14 @@ msgstr "Les organisations à créer"
 msgid "Edit"
 msgstr "Modifier"
 
-#: novaideo/views/novaideo_abstract_process/add_deadline.py:28
+#: novaideo/views/novaideo_abstract_process/add_deadline.py:38
 msgid "Add the deadline"
 msgstr "Ajouter une échéance"
+
+#: novaideo/views/novaideo_abstract_process/add_deadline.py:27
+#: novaideo/content/site_configuration.py:43
+msgid "Deadline"
+msgstr "Échéance"
 
 #: novaideo/views/novaideo_abstract_process/select.py:24
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:43
@@ -3114,7 +3168,7 @@ msgstr "Ajouter une échéance"
 msgid "Add to my favorites"
 msgstr "Ajouter à mes favoris"
 
-#: novaideo/views/novaideo_abstract_process/edit_deadline.py:28
+#: novaideo/views/novaideo_abstract_process/edit_deadline.py:29
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:55
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:56
 msgid "Edit the current deadline"
@@ -3133,10 +3187,6 @@ msgstr "Logo"
 #: novaideo/content/organization.py:73
 msgid "Phone number"
 msgstr "Numéro de téléphone"
-
-#: novaideo/content/correlation.py:90 novaideo/content/comment.py:95
-msgid "Message"
-msgstr "Message"
 
 #: novaideo/content/correlation.py:97
 msgid "Targets"
@@ -3208,27 +3258,27 @@ msgstr "Remarque"
 msgid "Improvement"
 msgstr "Amélioration"
 
-#: novaideo/content/novaideo_application.py:144
+#: novaideo/content/novaideo_application.py:146
 msgid "List of invitation"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:165
+#: novaideo/content/novaideo_application.py:167
 msgid "Set up work parameters"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:174
+#: novaideo/content/novaideo_application.py:176
 msgid "Edit mail templates"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:183
+#: novaideo/content/novaideo_application.py:185
 msgid "Configure user parameters"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:191
+#: novaideo/content/novaideo_application.py:193
 msgid "Configure the keywords tree"
 msgstr ""
 
-#: novaideo/content/novaideo_application.py:200
+#: novaideo/content/novaideo_application.py:202
 msgid "Other"
 msgstr ""
 
@@ -3285,10 +3335,6 @@ msgstr "À rejeter"
 msgid "Work modes"
 msgstr "Les modes de travail"
 
-#: novaideo/content/site_configuration.py:43
-msgid "Deadline"
-msgstr "Échéance"
-
 #: novaideo/content/site_configuration.py:51
 msgid "Minimum number of participants for a working group"
 msgstr ""
@@ -3308,10 +3354,6 @@ msgstr ""
 #: novaideo/content/site_configuration.py:79
 msgid "Mail id"
 msgstr ""
-
-#: novaideo/content/site_configuration.py:85 novaideo/content/person.py:186
-msgid "Title"
-msgstr "Civilité"
 
 #: novaideo/content/site_configuration.py:97
 #, fuzzy
@@ -3537,7 +3579,7 @@ msgstr "Ajouter"
 #: novaideo/content/processes/novaideo_file_management/definition.py:57
 #: novaideo/content/processes/invitation_management/definition.py:61
 #: novaideo/content/processes/user_management/definition.py:132
-#: novaideo/content/processes/novaideo_view_manager/definition.py:73
+#: novaideo/content/processes/novaideo_view_manager/definition.py:74
 #: novaideo/content/processes/organization_management/definition.py:58
 msgid "See"
 msgstr "Voir"
@@ -3545,8 +3587,8 @@ msgstr "Voir"
 #: novaideo/content/processes/novaideo_file_management/behaviors.py:59
 #: novaideo/content/processes/novaideo_file_management/behaviors.py:89
 #: novaideo/content/processes/idea_management/behaviors.py:61
-#: novaideo/content/processes/idea_management/behaviors.py:97
-#: novaideo/content/processes/idea_management/behaviors.py:174
+#: novaideo/content/processes/idea_management/behaviors.py:96
+#: novaideo/content/processes/idea_management/behaviors.py:173
 #: novaideo/content/processes/invitation_management/behaviors.py:225
 #: novaideo/content/processes/invitation_management/behaviors.py:253
 #: novaideo/content/processes/invitation_management/behaviors.py:279
@@ -3610,14 +3652,14 @@ msgid "Discuss"
 msgstr "Discuter"
 
 #: novaideo/content/processes/idea_management/definition.py:99
-#: novaideo/content/processes/idea_management/behaviors.py:514
+#: novaideo/content/processes/idea_management/behaviors.py:513
 #: novaideo/content/processes/proposal_management/definition.py:336
 #: novaideo/content/processes/proposal_management/behaviors.py:1400
 msgid "Compare"
 msgstr "Comparer"
 
-#: novaideo/content/processes/idea_management/behaviors.py:140
-#: novaideo/content/processes/idea_management/behaviors.py:246
+#: novaideo/content/processes/idea_management/behaviors.py:139
+#: novaideo/content/processes/idea_management/behaviors.py:245
 #: novaideo/content/processes/user_management/behaviors.py:429
 #: novaideo/content/processes/proposal_management/behaviors.py:315
 #: novaideo/content/processes/proposal_management/behaviors.py:397
@@ -4067,28 +4109,28 @@ msgstr "Corriger un item"
 msgid "Change without validation"
 msgstr "Modification sans validation"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:39
 #: novaideo/content/processes/novaideo_view_manager/definition.py:40
+#: novaideo/content/processes/novaideo_view_manager/definition.py:41
 msgid "User access manager"
 msgstr ""
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:51
+#: novaideo/content/processes/novaideo_view_manager/definition.py:52
 msgid "See my contents"
 msgstr ""
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:55
+#: novaideo/content/processes/novaideo_view_manager/definition.py:56
 msgid "See my favorites"
 msgstr "Mes favoris"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:59
+#: novaideo/content/processes/novaideo_view_manager/definition.py:60
 msgid "See my participations"
 msgstr ""
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:63
+#: novaideo/content/processes/novaideo_view_manager/definition.py:64
 msgid "See my supports"
 msgstr ""
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:75
+#: novaideo/content/processes/novaideo_view_manager/definition.py:76
 msgid "See the processes history"
 msgstr ""
 
