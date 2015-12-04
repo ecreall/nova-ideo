@@ -1,7 +1,7 @@
 
 <html>
 <head>
-    <link href="${request.static_url('substanced.sdi:static/css/sdi_bootstrap.css')}"
+    <link href="${request.static_url('novaideo:static/css/bootstrap.css')}"
           rel="stylesheet"/>
 </head>
 <body linkifying="true" linkifycurrent="0" linkifymax="0" 
