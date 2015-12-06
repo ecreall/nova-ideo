@@ -174,15 +174,16 @@ function init_result_scroll(){
 
 $(document).ready(function(){
   
-  // $(".navbar-toggle.collapsed").on('click', collapse_current_collpsein);
+
+  $(".navbar-toggle.collapsed").on('click', collapse_current_collpsein);
 
   $('input, textarea').placeholder();
 
   set_visited();
 
-  $("[name='globalmenuswitch']").bootstrapSwitch();
+  // $("[name='globalmenuswitch']").bootstrapSwitch();
 
-  init_switch();
+  // init_switch();
 
   init_content_text();
 
@@ -192,9 +193,9 @@ $(document).ready(function(){
 
   $('.proposal-opinion button.close').on('click', close_explanation);
 
-  $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
-     menuSwitchChange(state, false);
-  });
+  // $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
+  //    menuSwitchChange(state, false);
+  // });
 
 
   $('.panel-collapse.collapse .results').attr('class', 'results-collapse');

@@ -67,7 +67,7 @@
 
 .nav-steps li .step-content:before {
     border-bottom: 25px inset transparent;
-    border-left: 20px solid #f2f2f2;
+    border-left: 20px solid #fafafa;
     border-top: 25px inset transparent;
     content: "";
     height: 0;

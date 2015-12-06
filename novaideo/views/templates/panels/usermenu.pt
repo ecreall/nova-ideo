@@ -14,7 +14,7 @@
          <span class="glyphicon glyphicon-search"></span>
        </button>
        <button data-target=".navbar-access-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
-         <span class="glyphicon glyphicon-align-justify"></span>
+         <span class="glyphicon glyphicon-menu-hamburger"></span>
        </button>
       <a class="navbar-brand" href="/"><img alt="Nova-Ideo" src="${request.static_url('novaideo:static/images/novaideo32.png')}" class="globe-logo"> Nova-Ideo</a>
   </div>
