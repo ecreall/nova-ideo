@@ -33,15 +33,14 @@ class DuplicateProposalFormView(FormView):
     behaviors = [DuplicateProposal, Cancel]
     formid = 'formduplicateproposal'
 
-
     def default_data(self):
         return self.context
 
     def before_update(self):
-        ideas_widget = ideas_choice()
+        ideas_widget = ideas_choice(self.context, self.request)
         ideas_widget.item_css_class = 'hide-bloc'
         ideas_widget.css_class = 'controlled-items'
-        self.schema.get('related_ideas').widget = ideas_widget 
+        self.schema.get('related_ideas').widget = ideas_widget
 
 
 @view_config(

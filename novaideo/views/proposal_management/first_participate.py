@@ -10,8 +10,7 @@ from novaideo.content.processes.proposal_management.behaviors import (
     FirstParticipate)
 from novaideo.content.proposal import Proposal
 from novaideo import _
-from .submit_proposal import SubmitProposalFormView
-
+from .publish_proposal import PublishProposalFormView
 
 
 class FirstParticipateViewStudyReport(BasicView):
@@ -21,31 +20,21 @@ class FirstParticipateViewStudyReport(BasicView):
 
     def update(self):
         result = {}
-        duration_ballot_report = None
-        vp_ballot = None
-        try:
-            voteform_view = self.parent.validated_children[1]
-            voteform_actions = list(voteform_view.behaviors_instances.values())
-            duration_ballot_report = voteform_actions[0].process.\
-                                           duration_configuration_ballot.\
-                                           report
-            vp_ballot = voteform_actions[0].process.\
-                                           vp_ballot.\
-                                           report
-        except Exception:
-            pass
-
-        values = {'context': self.context, 
+        duration_ballot = self.context.working_group.duration_configuration_ballot
+        vp_ballot = self.context.working_group.vp_ballot
+        duration_ballot_report = duration_ballot.report if duration_ballot else None
+        vp_ballot_report = vp_ballot.report if vp_ballot else None
+        values = {'context': self.context,
                   'duration_ballot_report': duration_ballot_report,
-                  'vp_ballot_report': vp_ballot,}
+                  'vp_ballot_report': vp_ballot_report}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
-class FirstParticipateFormView(SubmitProposalFormView):
-    title =  _('Vote')
+class FirstParticipateFormView(PublishProposalFormView):
+    title = _('Vote')
     name = 'firstparticipateform'
     formid = 'formfirstparticipate'
     behaviors = [FirstParticipate, Cancel]
@@ -65,4 +54,5 @@ class FirstParticipateViewMultipleView(MultipleView):
     validators = [FirstParticipate.get_validator()]
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({FirstParticipate: FirstParticipateViewMultipleView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {FirstParticipate: FirstParticipateViewMultipleView})

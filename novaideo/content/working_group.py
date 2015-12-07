@@ -46,3 +46,4 @@ class WorkingGroup(VisualisableElement, Entity):
     members = SharedMultipleProperty('members', 'working_groups')
     wating_list = SharedMultipleProperty('wating_list')
     ballots = CompositeMultipleProperty('ballots')
+    improvement_cycle_proc = SharedUniqueProperty('improvement_cycle_proc')

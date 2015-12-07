@@ -52,10 +52,10 @@ AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(days=1)
 
 
 def close_votes(context, request, vote_processes):
-    vote_actions = [process.get_actions('vote') \
+    vote_actions = [process.get_actions('vote')
                     for process in vote_processes]
-    vote_actions = [action for actions in vote_actions \
-                   for action in actions]
+    vote_actions = [action for actions in vote_actions
+                    for action in actions]
     for action in vote_actions:
         action.close_vote(context, request)
 
@@ -93,15 +93,18 @@ class Alert(ElementaryAction):
         localizer = request.localizer
         for member in members:
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(_(getattr(member,
-                                                    'user_title',''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name',''),
+                recipient_title=localizer.translate(
+                    _(getattr(member, 'user_title', ''))),
+                recipient_first_name=getattr(
+                    member, 'first_name', member.name),
+                recipient_last_name=getattr(
+                    member, 'last_name', ''),
                 subject_url=url,
                 subject_title=context.title,
                 novaideo_title=request.root.title
-                 )
-            mailer_send(subject=subject, 
+            )
+            mailer_send(
+                subject=subject,
                 recipients=[member.email],
                 sender=root.get_site_sender(),
                 body=message)
@@ -144,7 +147,6 @@ class ImproveProposal(InfiniteCardinality):
     processsecurity_validation = improve_processsecurity_validation
     state_validation = improve_state_validation
 
-
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         data = {}
@@ -156,13 +158,7 @@ class ImproveProposal(InfiniteCardinality):
                         str(getattr(context, '_amendments_counter', 1))
         data['text'] = normalize_text(appstruct['text'])
         data['description'] = appstruct['description']
-        keywords_ids = appstruct.pop('keywords')
-        result, newkeywords = root.get_keywords(keywords_ids)
-        for nkw in newkeywords:
-            root.addtoproperty('keywords', nkw)
-
-        result.extend(newkeywords)
-        data['keywords_ref'] = result
+        data['keywords'] = appstruct['keywords']
         amendment = Amendment()
         amendment.set_data(data)
         context.addtoproperty('amendments', amendment)
@@ -218,17 +214,21 @@ class VotingAmendments(ElementaryAction):
         subject = mail_template['subject'].format(subject_title=context.title)
         for member in members:
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name',''),
+                recipient_title=localizer.translate(
+                    _(getattr(member, 'user_title', ''))),
+                recipient_first_name=getattr(
+                    member, 'first_name', member.name),
+                recipient_last_name=getattr(
+                    member, 'last_name', ''),
                 subject_title=context.title,
                 subject_url=url,
                 novaideo_title=root.title
-                 )
-            mailer_send(subject=subject,
-                 recipients=[member.email],
-                 sender = root.get_site_sender(),
-                 body=message)
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[member.email],
+                sender=root.get_site_sender(),
+                body=message)
 
         return {}
 
@@ -236,14 +236,14 @@ class VotingAmendments(ElementaryAction):
         proposal = self.process.execution_context.involved_entity('proposal')
         exec_ctx = self.sub_process.execution_context
         vote_processes = exec_ctx.get_involved_collection('vote_processes')
-        vote_processes = [process for process in vote_processes \
+        vote_processes = [process for process in vote_processes
                           if not process._finished]
         if vote_processes:
             close_votes(context, request, vote_processes)
 
         super(VotingAmendments, self).after_execution(proposal, request, **kw)
         self.process.execute_action(
-                  proposal, request, 'amendmentsresult', {})
+            proposal, request, 'amendmentsresult', {})
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -277,27 +277,26 @@ class AmendmentsResult(ElementaryAction):
                                 new_name=context.__name__,
                                 omit=('created_at', 'modified_at'),
                                 roles=True)
-        copy_keywords, newkeywords = root.get_keywords(context.keywords)
-        copy_of_proposal.setproperty('keywords_ref', copy_keywords)
+        copy_of_proposal.keywords = context.keywords
         copy_of_proposal.setproperty('version', context)
         copy_of_proposal.setproperty('originalentity', context.originalentity)
         root.rename(copy_of_proposal.__name__, contextname)
         copy_of_proposal.state = PersistentList(['amendable'])
         copy_of_proposal.setproperty('author', context.author)
         copy_of_proposal.setproperty('comments', context.comments)
-        self.process.attachedTo.process.execution_context.add_created_entity('proposal',
-                                                          copy_of_proposal)
+        self.process.attachedTo.process.execution_context.add_created_entity(
+            'proposal', copy_of_proposal)
         wg.setproperty('proposal', copy_of_proposal)
         return copy_of_proposal
 
     def _send_ballot_result(self, context, request, electeds, members):
         group_nb = 0
         amendments_vote_result = []
-        for ballot in self.process.amendments_ballots: 
+        for ballot in self.process.amendments_ballots:
             group_nb += 1
             judgments = ballot.report.ballottype.judgments
-            sorted_judgments = sorted(list(judgments.keys()), 
-                                key=lambda o: judgments[o])
+            sorted_judgments = sorted(
+                list(judgments.keys()), key=lambda o: judgments[o])
             values = {'group_nb': group_nb,
                       'report': ballot.report,
                       'sorted_judgments': sorted_judgments,
@@ -315,20 +314,24 @@ class AmendmentsResult(ElementaryAction):
         root = request.root
         mail_template = root.get_mail_template('vote_amendment_result')
         subject = mail_template['subject'].format(
-                        subject_title=context.title)
+            subject_title=context.title)
         for member in members:
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(_(getattr(member, 'user_title',''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name',''),
+                recipient_title=localizer.translate(
+                    _(getattr(member, 'user_title', ''))),
+                recipient_first_name=getattr(
+                    member, 'first_name', member.name),
+                recipient_last_name=getattr(
+                    member, 'last_name', ''),
                 message_result=result_body,
                 novaideo_title=root.title
-                 )
-            mailer_send(subject=subject,
-                 recipients=[member.email],
-                 sender=root.get_site_sender(),
-                 html=message)
-        
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[member.email],
+                sender=root.get_site_sender(),
+                html=message)
+
     def start(self, context, request, appstruct, **kw):
         result = set()
         for ballot in self.process.amendments_ballots:
@@ -340,26 +343,26 @@ class AmendmentsResult(ElementaryAction):
         wg = context.working_group
         root = getSite()
         user = get_current()
-        newcontext = context 
+        newcontext = context
         if amendments:
             text_analyzer = get_current_registry().getUtility(
-                                            ITextAnalyzer,'text_analyzer')
-            merged_text = text_analyzer.merge(context.text, 
-                                 [a.text for a in amendments])
+                ITextAnalyzer, 'text_analyzer')
+            merged_text = text_analyzer.merge(
+                context.text, [a.text for a in amendments])
             merged_text = normalize_text(merged_text)
             #TODO merged_keywords + merged_description
             copy_of_proposal = self._get_newversion(context, root, wg)
-            self._send_ballot_result(copy_of_proposal, request, 
+            self._send_ballot_result(copy_of_proposal, request,
                                      result, wg.members)
             context.state = PersistentList(['archived'])
             copy_of_proposal.text = merged_text
             #correlation idea of replacement ideas... del replaced_idea
             related_ideas = [a.related_ideas for a in amendments]
-            related_ideas = [item for sublist in related_ideas \
+            related_ideas = [item for sublist in related_ideas
                              for item in sublist]
             related_ideas.extend(context.related_ideas)
             related_ideas = list(set(related_ideas))
-            connect(copy_of_proposal, 
+            connect(copy_of_proposal,
                     related_ideas,
                     {'comment': _('Add related ideas'),
                      'type': _('New version')},
@@ -382,4 +385,3 @@ class AmendmentsResult(ElementaryAction):
 
 
 #TODO behaviors
-

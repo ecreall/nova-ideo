@@ -8,6 +8,7 @@
 This module represent the Proposal management process definition 
 powered by the dace engine.
 """
+from persistent.list import PersistentList
 
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import (

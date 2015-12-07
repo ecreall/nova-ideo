@@ -371,13 +371,14 @@ class SubmitAmendment(InfiniteCardinality):
             'title': group['title'],
             'text': self._get_amendment_text(context, group['explanations']),
             'description': context.description,
-            'justification': group.get('justification', '')
+            'justification': group.get('justification', ''),
+            'keywords': context.keywords
         }
         return data
 
     def _add_sub_amendment(self, context, request, group):
         data = self._get_explanation_data(context, group)
-        amendment.keywords = context.keywords
+        amendment = Amendment()
         amendment.set_data(data)
         context.proposal.addtoproperty('amendments', amendment)
         amendment.state.append('published')

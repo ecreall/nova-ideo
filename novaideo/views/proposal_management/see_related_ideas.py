@@ -21,6 +21,7 @@ ADDIDEAS_MESSAGES = {'0': _(u"""Pas d'idées liées"""),
                      '1': _(u"""Idée liée"""),
                      '*': _(u"""Idées liées""")}
 
+
 @view_config(
     name='addideas',
     context=Proposal,
@@ -36,15 +37,14 @@ class SeeRelatedIdeasView(BasicView):
     viewid = 'relatedideas'
     contextual_help = 'related-ideas-help'
 
-
     def update(self):
         self.execute(None)
         user = get_current()
         relatedideas = [{'content': target,
                          'url': target.url,
-                         'correlation': correlation} \
-                        for target, correlation in \
-                            self.context.related_ideas.items()]
+                         'correlation': correlation}
+                        for target, correlation in
+                        self.context.related_ideas.items()]
         len_ideas = len(relatedideas)
 
         index = str(len_ideas)
@@ -56,18 +56,19 @@ class SeeRelatedIdeasView(BasicView):
                    index)
         result = {}
         values = {
-                'relatedcontents': relatedideas,
-                'current_user': user,
-                'message': message
-               }
+            'relatedcontents': relatedideas,
+            'current_user': user,
+            'message': message
+        }
         self.message = message
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
     def get_message(self):
         return self.message
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeRelatedIdeas:SeeRelatedIdeasView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {SeeRelatedIdeas: SeeRelatedIdeasView})

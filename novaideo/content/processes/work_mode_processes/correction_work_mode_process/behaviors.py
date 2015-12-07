@@ -45,6 +45,41 @@ except NameError:
 DEFAULT_NB_CORRECTORS = 1
 
 
+def valid_correction(process, correction, current_version, user):
+    correction.state.remove('in process')
+    correction.state.append('processed')
+    proposal = correction.proposal
+    wg = proposal.working_group
+    root = getSite()
+    contextname = current_version.__name__
+    root.addtoproperty('proposals', current_version, moving=current_version)
+    current_version.setproperty('version', proposal)
+    root.rename(current_version.__name__, contextname)
+    current_version.state = PersistentList(['amendable'])
+    current_version.setproperty('author', proposal.author)
+    current_version.setproperty('comments', proposal.comments)
+    current_version.keywords = proposal.keywords
+    related_ideas = proposal.related_ideas
+    connect(current_version,
+        related_ideas,
+        {'comment': _('Add related ideas'),
+         'type': _('New version')},
+        user,
+        ['related_proposals', 'related_ideas'],
+        CorrelationType.solid)
+    proposal.state = PersistentList(['archived'])
+    process.attachedTo.process.execution_context.add_created_entity(
+        'proposal', current_version)
+    wg.setproperty('proposal', current_version)
+    for member in wg.members:
+        grant_roles(member, (('Participant', current_version),))
+
+    current_version.reindex()
+    proposal.reindex()
+    process.attachedTo.process.reindex()
+    process.reindex()
+
+
 def correctitem_relation_validation(process, context):
     return process.execution_context.has_relation(context.proposal, 'proposal')
 
@@ -72,8 +107,8 @@ class CorrectItem(InfiniteCardinality):
     state_validation = correctitem_state_validation
 
     def _include_to_proposal(self, context, proposal, text_to_correct, request, content):
-        corrections = [item for item in context.corrections.keys() \
-                       if not('included' in context.corrections[item])]
+        corrections = [item for item in context.corrections.keys()
+                       if 'included' not in context.corrections[item]]
         text = self._include_items(text_to_correct, request, corrections)
         if content == 'description' or content == 'title':
             text = text.replace('<p>', '').replace('</p>', '')
@@ -95,7 +130,7 @@ class CorrectItem(InfiniteCardinality):
             corrections.extend(soup.find_all('span', {'id':'correction', 
                                                       'data-item': item}))
 
-        blocstodel = ('span', {'id':'correction_actions'})
+        blocstodel = ('span', {'id': 'correction_actions'})
         soup = text_analyzer.include_diffs(soup, corrections,
                         todel, toins, blocstodel)
         return text_analyzer.soup_to_text(soup)
@@ -111,47 +146,15 @@ class CorrectItem(InfiniteCardinality):
 
         if len_vote >= \
             DEFAULT_NB_CORRECTORS:
-            text = self._include_items(text_to_correct, 
+            text = self._include_items(text_to_correct,
                            request, [item], vote_bool)
             setattr(context, content, text)
             text_to_correct = getattr(context, content, '')
             context.corrections[item]['included'] = True
             current_version = context.current_version
-            if not any(not('included' in context.corrections[c]) \
+            if not any(not('included' in context.corrections[c])
                        for c in context.corrections.keys()):
-                context.state.remove('in process')
-                context.state.append('processed')
-                proposal = context.proposal
-                wg = proposal.working_group
-                root = getSite()
-                contextname = current_version.__name__
-                root.addtoproperty('proposals', current_version, moving=current_version)
-                current_version.setproperty('version', proposal)
-                root.rename(current_version.__name__, contextname)
-                current_version.state = PersistentList(['amendable'])
-                current_version.setproperty('author', proposal.author)
-                current_version.setproperty('comments', proposal.comments)
-                copy_keywords, newkeywords = root.get_keywords(proposal.keywords)
-                current_version.setproperty('keywords_ref', copy_keywords)
-                related_ideas = proposal.related_ideas
-                connect(current_version,
-                    related_ideas,
-                    {'comment': _('Add related ideas'),
-                     'type': _('New version')},
-                    user,
-                    ['related_proposals', 'related_ideas'],
-                    CorrelationType.solid)
-                proposal.state = PersistentList(['archived'])
-                self.process.attachedTo.process.execution_context.add_created_entity('proposal',
-                                                                  current_version)
-                wg.setproperty('proposal', current_version)
-                for member in wg.members:
-                    grant_roles(member, (('Participant', current_version),))
-
-                current_version.reindex()
-                proposal.reindex()
-                self.process.attachedTo.process.reindex()
-                self.process.reindex()
+                valid_correction(self.process, context, current_version, user)
 
             self._include_to_proposal(context, current_version, text_to_correct,
                                       request, content)
@@ -163,8 +166,8 @@ class CorrectItem(InfiniteCardinality):
         user = get_current()
         user_oid = get_oid(user)
         correction_data = context.corrections[item]
-        if not(user_oid in correction_data['favour']) and \
-               not(user_oid in correction_data['against']):
+        if user_oid not in correction_data['favour'] and \
+           user_oid not in correction_data['against']:
             if vote:
                 self._include_vote(context, request, 
                                    item, content,
@@ -189,10 +192,11 @@ def correct_roles_validation(process, context):
 
 
 def correct_processsecurity_validation(process, context):
-    correction_in_process = any(('in process' in c.state \
+    correction_in_process = any(('in process' in c.state
                                  for c in context.corrections))
+
     return not correction_in_process and \
-           not getattr(process.attachedTo.process, 'first_decision', True) and \
+           not getattr(context.working_group, 'first_decision', True) and \
            global_user_processsecurity(process, context)
 
 
@@ -232,15 +236,15 @@ class CorrectProposal(InfiniteCardinality):
                                                         'dace_ui_api')
         if not hasattr(self, '_correctitemaction'):
             correctitemnode = self.process['correctitem']
-            correctitem_wis = [wi for wi in correctitemnode.workitems \
+            correctitem_wis = [wi for wi in correctitemnode.workitems
                                if wi.node is correctitemnode]
             if correctitem_wis:
                 self._correctitemaction = correctitem_wis[0].actions[0]
 
         if hasattr(self, '_correctitemaction'):
             actionurl_update = dace_ui_api.updateaction_viewurl(
-                               request=request, 
-                               action_uid=str(get_oid(self._correctitemaction)), 
+                               request=request,
+                               action_uid=str(get_oid(self._correctitemaction)),
                                context_uid=str(get_oid(correction)))
             values = {'favour_action_url': actionurl_update,
                      'against_action_url': actionurl_update}
@@ -251,7 +255,7 @@ class CorrectProposal(InfiniteCardinality):
             tag.body.unwrap()
 
     def _add_actions(self, correction, request, soup):
-        corrections_tags = soup.find_all('span', {'id':'correction'})
+        corrections_tags = soup.find_all('span', {'id': 'correction'})
         for correction_tag in corrections_tags:
             self._add_vote_actions(correction_tag, correction, request)
 
@@ -264,7 +268,7 @@ class CorrectProposal(InfiniteCardinality):
             correction_tag['data-correction'] = correction_oid
             correction_tag['data-item'] = str(descriminator)
             correction_tag['data-content'] = content
-            init_vote = {'favour':[user_oid], 'against': []}
+            init_vote = {'favour': [user_oid], 'against': []}
             correction.corrections[str(descriminator)] = init_vote
             descriminator += 1
 
@@ -280,29 +284,29 @@ class CorrectProposal(InfiniteCardinality):
                                                 ITextAnalyzer,
                                                 'text_analyzer')
         souptextdiff, textdiff = text_analyzer.render_html_diff(
-                                       getattr(context, 'text', ''), 
+                                       getattr(context, 'text', ''),
                                        getattr(correction, 'text', ''),
                                        "correction")
         soupdescriptiondiff, descriptiondiff = text_analyzer.render_html_diff(
-                                        getattr(context, 'description', ''), 
-                                        getattr(correction, 'description', ''), 
+                                        getattr(context, 'description', ''),
+                                        getattr(correction, 'description', ''),
                                         "correction")
         souptitlediff, titlediff = text_analyzer.render_html_diff(
-                                        getattr(context, 'title', ''), 
-                                        getattr(correction, 'title', ''), 
+                                        getattr(context, 'title', ''),
+                                        getattr(correction, 'title', ''),
                                         "correction")
         descriminator = 0
-        descriminator = self._identify_corrections(souptitlediff, 
-                                                   correction, 
-                                                   descriminator, 
+        descriminator = self._identify_corrections(souptitlediff,
+                                                   correction,
+                                                   descriminator,
                                                    'title')
         self._add_actions(correction, request, souptitlediff)
-        descriminator = self._identify_corrections(soupdescriptiondiff, 
-                                                   correction, 
-                                                   descriminator, 
+        descriminator = self._identify_corrections(soupdescriptiondiff,
+                                                   correction,
+                                                   descriminator,
                                                    'description')
         self._add_actions(correction, request, soupdescriptiondiff)
-        self._identify_corrections(souptextdiff, correction, 
+        self._identify_corrections(souptextdiff, correction,
                                    descriminator, 'text')
         self._add_actions(correction, request, souptextdiff)
         correction.text = text_analyzer.soup_to_text(souptextdiff)
@@ -344,10 +348,17 @@ class CloseWork(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         #TODO
+        if context.corrections:
+            last_correction = context.corrections[-1]
+            if 'in process' in last_correction.state:
+                current_version = last_correction.current_version
+                valid_correction(self.process, last_correction,
+                                 current_version, get_current())
+                last_correction.state = PersistentList(['processed'])
+
         return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 #TODO behaviors
-

@@ -7,14 +7,14 @@
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
-    ExclusiveGatewayDefinition, 
+    ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
     EndEventDefinition)
 from dace.objectofcollaboration.services.processdef_container import (
-  process_definition)
+    process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import (
@@ -23,7 +23,6 @@ from .behaviors import (
     SeeMySelections,
     SeeMyParticipations,
     SeeMySupports,
-    SeeProposal,
     SeeOrderedProposal,
     SeeEntityHistory,
     Contact
@@ -64,10 +63,6 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                                        description=_("See my supports"),
                                        title=_("My supports"),
                                        groups=[]),
-                seeproposal = ActivityDefinition(contexts=[SeeProposal],
-                                       description=_("Details"),
-                                       title=_("Details"),
-                                       groups=[]),
                 seeorderedproposal = ActivityDefinition(contexts=[SeeOrderedProposal],
                                        description=_("Proposals to examine"),
                                        title=_("Proposals to examine"),
@@ -85,8 +80,6 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
         )
         self.defineTransitions(
                 TransitionDefinition('start', 'pg'),
-                TransitionDefinition('pg', 'seeproposal'),
-                TransitionDefinition('seeproposal', 'eg'),
                 TransitionDefinition('pg', 'search'),
                 TransitionDefinition('search', 'eg'),
                 TransitionDefinition('pg', 'mycontents'),

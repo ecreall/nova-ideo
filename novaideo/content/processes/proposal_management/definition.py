@@ -15,10 +15,10 @@ from pyramid.threadlocal import get_current_request
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.util import getSite, find_service
 from dace.processinstance.activity import (
-  SubProcess as OriginSubProcess)
+    SubProcess as OriginSubProcess)
 from dace.processdefinition.activitydef import (
-  ActivityDefinition,
-  SubProcessDefinition as OriginSubProcessDefinition)
+    ActivityDefinition,
+    SubProcessDefinition as OriginSubProcessDefinition)
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
@@ -27,11 +27,12 @@ from dace.processdefinition.eventdef import (
     StartEventDefinition,
     EndEventDefinition,)
 from dace.objectofcollaboration.services.processdef_container import (
-  process_definition)
+    process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import (
     CreateProposal,
+    SeeProposal,
     DuplicateProposal,
     EditProposal,
     PublishProposal,
@@ -90,16 +91,16 @@ class SubProcessFirstVote(OriginSubProcess):
         for process in self.sub_processes:
             exec_ctx = process.execution_context
             vote_processes = exec_ctx.get_involved_collection('vote_processes')
-            vote_processes = [process for process in vote_processes \
+            vote_processes = [process for process in vote_processes
                               if not process._finished]
             if vote_processes:
                 close_votes(None, request, vote_processes)
-     
+
         super(SubProcessFirstVote, self).stop()
 
 
 class SubProcessDefinition(OriginSubProcessDefinition):
-    """Run the voting process for proposal publishing 
+    """Run the voting process for proposal publishing
        and working group configuration"""
 
     factory = SubProcessFirstVote
@@ -129,11 +130,11 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         processes = ballot.run_ballot()
         subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
-        process.vp_ballot = ballot #vp for voting for publishing
+        wg.vp_ballot = ballot #vp for voting for publishing
 
         root_modes = root.get_work_modes()
         if len(root_modes) > 1:
-            modes = [(m, root_modes[m].title) for m in root_modes \
+            modes = [(m, root_modes[m].title) for m in root_modes
                      if root_modes[m].participants_mini <= len(wg.members)]
             modes = sorted(modes,
                            key=lambda e: root_modes[e[0]].order)
@@ -151,10 +152,10 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             ballot.report.description = VOTE_MODEWORK_MESSAGE
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
-            process.work_mode_configuration_ballot = ballot
+            wg.work_mode_configuration_ballot = ballot
 
         if not getattr(process, 'first_decision', True) and \
-          'closed' in wg.state:
+           'closed' in wg.state:
             subjects = [wg]
             ballot = Ballot('Referendum', electors,
                             subjects, VP_DEFAULT_DURATION)
@@ -163,7 +164,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             ballot.title = _('Reopening working group')
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
-            process.reopening_configuration_ballot = ballot
+            wg.reopening_configuration_ballot = ballot
 
         if len(wg.members) <= participants_maxi:
             durations = list(AMENDMENTS_CYCLE_DEFAULT_DURATION.keys())
@@ -177,10 +178,10 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             ballot.report.description = VOTE_DURATION_MESSAGE
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
-            process.duration_configuration_ballot = ballot
+            wg.duration_configuration_ballot = ballot
 
         subprocess.execution_context.add_involved_collection(
-                                      'vote_processes', processes)
+            'vote_processes', processes)
         subprocess.duration = VP_DEFAULT_DURATION
 
 
@@ -191,18 +192,19 @@ class WorkSubProcess(OriginSubProcess):
 
     def _start_subprocess(self, action):
         proposal = self.process.execution_context.created_entity('proposal')
-        work_mode_ballot = getattr(self.process,
-                            'work_mode_configuration_ballot', None)
+        work_mode_ballot = getattr(
+            proposal.working_group, 'work_mode_configuration_ballot', None)
         if work_mode_ballot is not None and work_mode_ballot.report.voters:
             electeds = work_mode_ballot.report.get_electeds()
             if electeds:
                 proposal.work_mode_id = electeds[0]
 
         root = proposal.__parent__
-        work_mode = getattr(proposal, 'work_mode',
-                                  root.get_default_work_mode())
+        work_mode = getattr(
+            proposal, 'work_mode', root.get_default_work_mode())
         def_container = find_service('process_definition_container')
-        pd = def_container.get_definition(work_mode.work_mode_process_id)
+        pd = def_container.get_definition(
+            work_mode.work_mode_process_id)
         proc = pd()
         proc.__name__ = proc.id
         runtime = find_service('runtime')
@@ -216,7 +218,7 @@ class WorkSubProcess(OriginSubProcess):
 
 
 class WorkSubProcessDefinition(OriginSubProcessDefinition):
-    """Run the voting process for proposal publishing 
+    """Run the voting process for proposal publishing
        and working group configuration"""
 
     factory = WorkSubProcess
@@ -224,6 +226,7 @@ class WorkSubProcessDefinition(OriginSubProcessDefinition):
 
 @process_definition(name='proposalmanagement', id='proposalmanagement')
 class ProposalManagement(ProcessDefinition, VisualisableElement):
+    isUnique = True
 
     def __init__(self, **kwargs):
         super(ProposalManagement, self).__init__(**kwargs)
@@ -233,16 +236,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
     def _init_definition(self):
         self.defineNodes(
                 start = StartEventDefinition(),
-                eg0 = ExclusiveGatewayDefinition(),
-                pg2 = ParallelGatewayDefinition(),
-                pg3 = ParallelGatewayDefinition(),
-                pg4 = ParallelGatewayDefinition(),
-                pg5 = ParallelGatewayDefinition(),
-                eg1 = ExclusiveGatewayDefinition(),
-                eg2 = ExclusiveGatewayDefinition(),
-                eg3 = ExclusiveGatewayDefinition(),
-                eg4 = ExclusiveGatewayDefinition(),
-                pg6 = ParallelGatewayDefinition(),
+                eg = ExclusiveGatewayDefinition(),
+                pg = ParallelGatewayDefinition(),
                 creat = ActivityDefinition(contexts=[CreateProposal],
                                        description=_("Create a new proposal"),
                                        title=_("Create a proposal"),
@@ -259,7 +254,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Duplicate this proposal"),
                                        title=_("Duplicate"),
                                        groups=[]),
-                submit = ActivityDefinition(contexts=[SubmitProposal],
+                publish = ActivityDefinition(contexts=[PublishProposal],
                                        description=_("Publish the proposal"),
                                        title=_("Publish"),
                                        groups=[]),
@@ -282,18 +277,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 withdraw = ActivityDefinition(contexts=[Withdraw],
                                        description=_("Withdraw from the wating list"),
                                        title=_("Withdraw"),
-                                       groups=[]),
-                votingpublication = SubProcessDefinition(pd='ballotprocess', contexts=[VotingPublication],
-                                       description=_("Start voting for publication"),
-                                       title=_("Start voting for publication"),
-                                       groups=[]),
-                work = WorkSubProcessDefinition(pd='None', contexts=[Work],
-                                       description=_("Start work"),
-                                       title=_("Start work"),
-                                       groups=[]),
-                publish = ActivityDefinition(contexts=[PublishProposal],
-                                       description=_("Submit the proposal"),
-                                       title=_("Submit"),
                                        groups=[]),
                 support = ActivityDefinition(contexts=[SupportProposal],
                                        description=_("Support the proposal"),
@@ -335,41 +318,98 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Compare versions"),
                                        title=_("Compare"),
                                        groups=[]),
+                seeproposal = ActivityDefinition(contexts=[SeeProposal],
+                                       description=_("Details"),
+                                       title=_("Details"),
+                                       groups=[]),
                 end = EndEventDefinition(),
         )
         self.defineTransitions(
-                TransitionDefinition('start', 'eg0'),
-                TransitionDefinition('eg0', 'creat'),
-                TransitionDefinition('eg0', 'publishasproposal'),
-                TransitionDefinition('eg0', 'duplicate'),
-                TransitionDefinition('creat', 'eg1'),
-                TransitionDefinition('publishasproposal', 'eg1'),
-                TransitionDefinition('duplicate', 'eg1'),
-                TransitionDefinition('eg1', 'pg2'),
-                TransitionDefinition('pg2', 'submit'),
-                TransitionDefinition('pg2', 'edit'),
-                TransitionDefinition('pg2', 'delete'),
-                TransitionDefinition('delete', 'end'),
-                TransitionDefinition('pg2', 'seerelatedideas'),
-                TransitionDefinition('submit', 'pg3'),
-                TransitionDefinition('pg3', 'comment'),
-                TransitionDefinition('pg3', 'compare'),
-                TransitionDefinition('pg3', 'seeamendments'),
-                TransitionDefinition('pg2', 'associate'),
-                TransitionDefinition('pg3', 'present'),
-                TransitionDefinition('pg3', 'resign'),
-                TransitionDefinition('pg3', 'participate'),
-                TransitionDefinition('pg3', 'firstparticipate'),
-                TransitionDefinition('pg3', 'withdraw'),
-                TransitionDefinition('pg3', 'eg2'),
-                TransitionDefinition('eg2', 'votingpublication'),
-                TransitionDefinition('votingpublication', 'eg3'),
-                TransitionDefinition('eg3', 'work', eg3_amendable_condition, sync=True),
-                TransitionDefinition('eg3', 'publish', eg3_publish_condition, sync=True),
-                TransitionDefinition('publish', 'pg6'),
-                TransitionDefinition('pg6', 'support'),
-                TransitionDefinition('pg6', 'makeitsopinion'),
-                TransitionDefinition('pg6', 'oppose'),
-                TransitionDefinition('pg6', 'withdraw_token'),
-                TransitionDefinition('work', 'eg2'),
+                TransitionDefinition('start', 'pg'),
+                TransitionDefinition('pg', 'creat'),
+                TransitionDefinition('pg', 'publishasproposal'),
+                TransitionDefinition('pg', 'duplicate'),
+                TransitionDefinition('pg', 'publish'),
+                TransitionDefinition('pg', 'edit'),
+                TransitionDefinition('pg', 'delete'),
+                TransitionDefinition('pg', 'seerelatedideas'),
+                TransitionDefinition('pg', 'comment'),
+                TransitionDefinition('pg', 'compare'),
+                TransitionDefinition('pg', 'seeamendments'),
+                TransitionDefinition('pg', 'associate'),
+                TransitionDefinition('pg', 'present'),
+                TransitionDefinition('pg', 'resign'),
+                TransitionDefinition('pg', 'participate'),
+                TransitionDefinition('pg', 'firstparticipate'),
+                TransitionDefinition('pg', 'withdraw'),
+                TransitionDefinition('pg', 'support'),
+                TransitionDefinition('pg', 'makeitsopinion'),
+                TransitionDefinition('pg', 'oppose'),
+                TransitionDefinition('pg', 'withdraw_token'),
+                TransitionDefinition('pg', 'seeproposal'),
+                TransitionDefinition('seeproposal', 'eg'),
+                TransitionDefinition('creat', 'eg'),
+                TransitionDefinition('publishasproposal', 'eg'),
+                TransitionDefinition('duplicate', 'eg'),
+                TransitionDefinition('publish', 'eg'),
+                TransitionDefinition('edit', 'eg'),
+                TransitionDefinition('delete', 'eg'),
+                TransitionDefinition('seerelatedideas', 'eg'),
+                TransitionDefinition('comment', 'eg'),
+                TransitionDefinition('compare', 'eg'),
+                TransitionDefinition('seeamendments', 'eg'),
+                TransitionDefinition('associate', 'eg'),
+                TransitionDefinition('present', 'eg'),
+                TransitionDefinition('resign', 'eg'),
+                TransitionDefinition('participate', 'eg'),
+                TransitionDefinition('firstparticipate', 'eg'),
+                TransitionDefinition('withdraw', 'eg'),
+                TransitionDefinition('support', 'eg'),
+                TransitionDefinition('makeitsopinion', 'eg'),
+                TransitionDefinition('oppose', 'eg'),
+                TransitionDefinition('withdraw_token', 'eg'),
+                TransitionDefinition('eg', 'end')
+                 
+               
+        )
+
+
+@process_definition(name='proposalimprovementcycle',
+                    id='proposalimprovementcycle')
+class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
+    isControlled = True
+    isVolatile = True
+
+    def __init__(self, **kwargs):
+        super(ProposalImprovementCycle, self).__init__(**kwargs)
+        self.title = _('Proposals improvement cycle')
+        self.description = _('Proposals improvement cycle')
+
+    def _init_definition(self):
+        self.defineNodes(
+                start = StartEventDefinition(),
+                eg = ExclusiveGatewayDefinition(),
+                eg1 = ExclusiveGatewayDefinition(),
+                votingpublication = SubProcessDefinition(pd='ballotprocess', contexts=[VotingPublication],
+                                       description=_("Start voting for publication"),
+                                       title=_("Start voting for publication"),
+                                       groups=[]),
+                work = WorkSubProcessDefinition(pd='None', contexts=[Work],
+                                       description=_("Start work"),
+                                       title=_("Start work"),
+                                       groups=[]),
+                submit = ActivityDefinition(contexts=[SubmitProposal],
+                                       description=_("Submit the proposal"),
+                                       title=_("Submit"),
+                                       groups=[]),
+                end = EndEventDefinition(),
+        )
+        self.defineTransitions(
+                TransitionDefinition('start', 'eg'),
+                TransitionDefinition('eg', 'votingpublication'),
+                TransitionDefinition('votingpublication', 'eg1'),
+                TransitionDefinition('eg1', 'work', eg3_amendable_condition, sync=True),
+                TransitionDefinition('eg1', 'submit', eg3_publish_condition, sync=True),
+                TransitionDefinition('submit', 'end'),
+                TransitionDefinition('work', 'eg'),
         )

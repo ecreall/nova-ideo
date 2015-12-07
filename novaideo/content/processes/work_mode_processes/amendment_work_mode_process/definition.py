@@ -12,11 +12,11 @@ from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry, get_current_request
 
 from dace.processinstance.activity import (
-  SubProcess as OriginSubProcess)
+    SubProcess as OriginSubProcess)
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import (
-  ActivityDefinition,
-  SubProcessDefinition as OriginSubProcessDefinition)
+    ActivityDefinition,
+    SubProcessDefinition as OriginSubProcessDefinition)
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
@@ -27,11 +27,11 @@ from dace.processdefinition.eventdef import (
     IntermediateCatchEventDefinition,
     TimerEventDefinition)
 from dace.objectofcollaboration.services.processdef_container import (
-  process_definition)
+    process_definition)
 from pontus.core import VisualisableElement
 
 from novaideo.content.processes.proposal_management.behaviors import (
-  calculate_amendments_cycle_duration)
+    calculate_amendments_cycle_duration)
 from .behaviors import (
     ImproveProposal,
     VotingAmendments,
@@ -68,11 +68,11 @@ class SubProcess(OriginSubProcess):
         for process in self.sub_processes:
             exec_ctx = process.execution_context
             vote_processes = exec_ctx.get_involved_collection('vote_processes')
-            vote_processes = [process for process in vote_processes \
+            vote_processes = [process for process in vote_processes
                               if not process._finished]
             if vote_processes:
                 close_votes(None, request, vote_processes)
-     
+
         super(SubProcess, self).stop()
 
 
@@ -96,10 +96,10 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             for group in groups:
                 for amt in group:
                     related_ideas_a = list(amt.related_ideas)
-                    if text_analyzer.has_conflict(amt.text, 
+                    if text_analyzer.has_conflict(amt.text,
                                                   [amendment.text]) or \
                        (related_ideas_amendment and \
-                        any(e in related_ideas_amendment \
+                        any(e in related_ideas_amendment
                             for e in related_ideas_a)):
                         group.append(amendment)
                         isadded = True
@@ -122,21 +122,19 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
 
         subprocess.ballots = PersistentList()
         process.amendments_ballots = PersistentList()
-        i = 1
-        for group in groups:
-            ballot = Ballot('MajorityJudgment', electors, 
-                       group, AMENDMENTS_VOTE_DEFAULT_DURATION)
+        for index, group in enumerate(groups):
+            ballot = Ballot('MajorityJudgment', electors,
+                            group, AMENDMENTS_VOTE_DEFAULT_DURATION)
             proposal.working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_AMENDMENTS_MESSAGE
             ballot.title = _('Vote for amendments (group ${nbi})',
-                              mapping={'nbi': i})
+                             mapping={'nbi': index+1})
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
             process.amendments_ballots.append(ballot)
-            i += 1
 
         subprocess.execution_context.add_involved_collection(
-                       'vote_processes', processes)
+            'vote_processes', processes)
         subprocess.duration = AMENDMENTS_VOTE_DEFAULT_DURATION
 
 

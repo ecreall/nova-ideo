@@ -34,13 +34,10 @@ from novaideo.utilities.text_analyzer import normalize_text
 from novaideo.content.correlation import CorrelationType
 from novaideo.utilities.util import connect
 
-
-
 try:
     basestring
 except NameError:
     basestring = str
-
 
 
 def correct_relation_validation(process, context):
@@ -86,28 +83,22 @@ class CorrectProposal(InfiniteCardinality):
         copy_of_proposal.state = PersistentList(['amendable'])
         copy_of_proposal.setproperty('author', context.author)
         copy_of_proposal.setproperty('comments', context.comments)
-        self.process.attachedTo.process.execution_context.add_created_entity('proposal',
-                                                          copy_of_proposal)
+        self.process.attachedTo.process.execution_context.add_created_entity(
+            'proposal', copy_of_proposal)
         wg.setproperty('proposal', copy_of_proposal)
+        self.process.reindex()
         return copy_of_proposal
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
         wg = context.working_group
-        keywords_ids = appstruct.pop('keywords')
         related_ideas = appstruct.pop('related_ideas')
-        result, newkeywords = root.get_keywords(keywords_ids)
-        result.extend(newkeywords)
-        appstruct['keywords_ref'] = result
         copy_of_proposal = self._get_newversion(context, root, wg)
         context.state = PersistentList(['archived'])
         copy_of_proposal.set_data(appstruct)
         copy_of_proposal.text = normalize_text(copy_of_proposal.text)
         copy_of_proposal.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        for nkw in newkeywords:
-            root.addtoproperty('keywords', nkw)
-
         #correlation idea of replacement ideas... del replaced_idea
         connect(copy_of_proposal,
                 related_ideas,
@@ -157,6 +148,4 @@ class CloseWork(ElementaryAction):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-
 #TODO behaviors
-

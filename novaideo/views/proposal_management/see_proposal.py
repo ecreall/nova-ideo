@@ -17,7 +17,7 @@ from daceui.interfaces import IDaceUIAPI
 from pontus.view_operation import MultipleView
 from pontus.util import merge_dicts
 
-from novaideo.content.processes.novaideo_view_manager.behaviors import (
+from novaideo.content.processes.proposal_management.behaviors import (
     SeeProposal)
 from novaideo.utilities.util import (
     generate_navbars, ObjectRemovedException)
@@ -40,10 +40,10 @@ class DetailProposalView(BasicView):
     title = _('Details')
     name = 'seeProposal'
     behaviors = [SeeProposal]
-    template = 'novaideo:views/novaideo_view_manager/templates/see_proposal.pt'
+    template = 'novaideo:views/proposal_management/templates/see_proposal.pt'
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     viewid = 'seeproposal'
-    filigrane_template = 'novaideo:views/novaideo_view_manager/templates/filigrane.pt'
+    filigrane_template = 'novaideo:views/proposal_management/templates/filigrane.pt'
     validate_behaviors = False
 
     def _vote_actions(self):
@@ -83,11 +83,12 @@ class DetailProposalView(BasicView):
 
         return title, description, text, add_filigrane
 
-    def _cant_submit_alert(self, actions):
+    def _cant_publish_alert(self, actions):
         if 'draft' in self.context.state:
             not_published_ideas = [i for i in self.context.related_ideas.keys()
                                    if 'published' not in i.state]
-            return (not any(a.title == 'Publish' for a in actions),
+            return (not any(a.action.behavior_id == 'publish'
+                            for a in actions.get('global-action', [])),
                     not_published_ideas)
 
         return False, []
@@ -147,7 +148,7 @@ class DetailProposalView(BasicView):
             'wg_actions': wg_actions,
             'voteactions': vote_actions,
             'filigrane': add_filigrane,
-            'cant_submit': self._cant_submit_alert(navbars['all_actions']),
+            'cant_publish': self._cant_publish_alert(navbars['all_actions']),
             'ct_participate': ct_participate,
             'ct_participate_closed': ct_participate_closed,
             'ct_participate_max': ct_participate_max,

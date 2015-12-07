@@ -36,7 +36,7 @@ class DetailIdeaView(BasicView):
     validate_behaviors = False
 
     def _cant_publish_alert(self, actions, user):
-        if 'to work' in self.context.state and self.context is user:
+        if 'to work' in self.context.state and self.context.author is user:
             return not any(a.action.behavior_id == 'publish'
                            for a in actions.get('global-action', []))
 

@@ -6,7 +6,7 @@
         tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context']">
        <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
           <img tal:condition="getattr(comment.author, 'picture', None) is not None" tal:attributes="src comment.author.picture.url"  class="img-circle" width="60"/>
-          <div class="media-body" style="width:auto;">
+          <div class="media-body">
            <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span></div>
             <small tal:define="diff_len  len(diff.keys())">
               <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
@@ -64,7 +64,7 @@
         <li>
           <div id="${item['action_id']}-replay" class="replay-body">
             <div class="thumbnail right-caption span4 comment-data ">
-               <div style="width:auto;" class="media-body">
+               <div class="media-body">
                </div>
             </div>  
             <script>

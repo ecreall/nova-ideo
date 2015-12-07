@@ -225,12 +225,11 @@ class StepsPanel(object):
                                  'duplicates_len': duplicates_len},
                                 request)
 
-
     def _get_step2_informations(self, context, request):
         related_ideas = list(dict(context.related_ideas).keys())
-        related_proposals = [list(dict(idea.related_proposals).keys()) \
+        related_proposals = [list(dict(idea.related_proposals).keys())
                              for idea in related_ideas]
-        related_proposals = [item for sublist in related_proposals \
+        related_proposals = [item for sublist in related_proposals
                              for item in sublist]
         related_proposals = list(set(related_proposals))
         len_related_proposals = len(related_proposals)
@@ -244,19 +243,19 @@ class StepsPanel(object):
 
     def _get_step3_informations(self, context, request):
         time_delta = None
-        process = context.creator
-        wg = context.working_group
-        is_closed = 'closed' in wg.state
+        working_group = context.working_group
+        process = working_group.improvement_cycle_proc
+        is_closed = 'closed' in working_group.state
         user = get_current()
-        working_group_states = [_(get_states_mapping(user, wg, s)) \
-                                for s in wg.state]
+        working_group_states = [_(get_states_mapping(user, working_group, s))
+                                for s in working_group.state]
         if 'amendable' in context.state:
             subprocesses = process['work'].sub_processes
             date_iteration = None
             if subprocesses:
                 date_iteration = subprocesses[-1]['timer'].eventKind.time_date
 
-            today = datetime.datetime.now(tz=pytz.UTC)
+            today = datetime.datetime.now()
             if date_iteration is not None and date_iteration > today:
                 time_delta = date_iteration - today
                 time_delta = days_hours_minutes(time_delta)
@@ -265,11 +264,11 @@ class StepsPanel(object):
                                     {'context':context,
                                      'working_group_states': working_group_states,
                                      'is_closed': is_closed,
-                                     'duration':time_delta,
+                                     'duration': time_delta,
                                      'process': process},
                                     request)
         elif 'votes for publishing'  in context.state:
-            ballot = process.vp_ballot
+            ballot = working_group.vp_ballot
             today = datetime.datetime.now(tz=pytz.UTC)
             if ballot.finished_at is not None and ballot.finished_at > today:
                 time_delta = ballot.finished_at - today
