@@ -10,7 +10,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
-    has_role, grant_roles, revoke_roles)
+    has_role, grant_roles, revoke_roles, get_current)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
@@ -27,19 +27,19 @@ from novaideo.core import access_action, serialize_roles
 def update_manager(organization, managers):
     managers_toadd = [u for u in managers
                       if not has_role(user=u,
-                                      role=('OrganizationResponsible', 
+                                      role=('OrganizationResponsible',
                                             organization))]
-    managers_todel = [u for u in organization.managers \
-                          if u not in managers]
+    managers_todel = [u for u in organization.managers
+                      if u not in managers]
 
     for manager in managers_todel:
-        revoke_roles(manager, (('OrganizationResponsible', 
-                                     organization),))
+        revoke_roles(manager, (('OrganizationResponsible',
+                                organization),))
 
     for manager in managers_toadd:
         grant_roles(user=manager,
-                    roles=(('OrganizationResponsible', 
-                           organization),))
+                    roles=(('OrganizationResponsible',
+                            organization),))
 
     for manager in managers:
         if manager not in organization.members:
@@ -68,12 +68,14 @@ class AddOrganizations(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         xlfile = appstruct['file']['_object_data']
-        organizations = create_object_from_xl(file=xlfile, 
-                            factory=Organization, 
-                            properties={'title':('String', False),
-                                        'description':('String', False)})
+        organizations = create_object_from_xl(
+            file=xlfile,
+            factory=Organization,
+            properties={'title': ('String', False),
+                        'description': ('String', False)})
         root.setproperty('organizations', organizations)
-        request.registry.notify(ActivityExecuted(self, organizations, get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, organizations, get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -106,7 +108,8 @@ class CreatOrganizations(InfiniteCardinality):
             organization = organization_dict['_object_data']
             root.addtoproperty('organizations', organization)
             #send mail
-        request.registry.notify(ActivityExecuted(self, new_organizations, get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, new_organizations, get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -140,7 +143,8 @@ class EditOrganizations(InfiniteCardinality):
             managers = org_struct['managers']
             update_manager(organization, managers)
 
-        request.registry.notify(ActivityExecuted(self, appstruct['organizations'], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, appstruct['organizations'], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -152,7 +156,7 @@ def seeorgs_roles_validation(process, context):
 
 
 def seeorgs_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) 
+    return global_user_processsecurity(process, context)
 
 
 class SeeOrganizations(InfiniteCardinality):
@@ -221,9 +225,10 @@ class EditOrganization(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         organization = appstruct['_object_data']
         organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        managers = appstruct['managers'] 
+        managers = appstruct['managers']
         update_manager(organization, managers)
-        request.registry.notify(ActivityExecuted(self, [organization], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [organization], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):

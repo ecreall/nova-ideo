@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -7,14 +7,14 @@
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
-    ExclusiveGatewayDefinition, 
+    ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
     EndEventDefinition)
 from dace.objectofcollaboration.services.processdef_container import (
-  process_definition)
+    process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import (
@@ -96,6 +96,7 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('see', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
+
 
 @process_definition(name='registrationmanagement', id='registrationmanagement')
 class RegistrationManagement(ProcessDefinition, VisualisableElement):

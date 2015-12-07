@@ -10,14 +10,18 @@ from dace.processinstance.activity import InfiniteCardinality
 
 from novaideo.content.interface import IWorkingGroup
 
+
 def edit_relation_validation(process, context):
     return True
+
 
 def edit_roles_validation(process, context):
     return True
 
+
 def edit_processsecurity_validation(process, context):
     return True
+
 
 def edit_state_validation(process, context):
     return True

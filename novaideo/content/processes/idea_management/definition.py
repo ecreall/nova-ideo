@@ -1,11 +1,11 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 """
-This module represent the Idea management process definition 
-powered by the dace engine. This process is unique, which means that 
+This module represent the Idea management process definition
+powered by the dace engine. This process is unique, which means that
 this process is instantiated only once.
 """
 from dace.processdefinition.processdef import ProcessDefinition
@@ -18,7 +18,7 @@ from dace.processdefinition.eventdef import (
     StartEventDefinition,
     EndEventDefinition)
 from dace.objectofcollaboration.services.processdef_container import (
-  process_definition)
+    process_definition)
 from pontus.core import VisualisableElement
 
 from .behaviors import (

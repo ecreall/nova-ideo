@@ -96,6 +96,7 @@ class LogOut(InfiniteCardinality):
         root = getSite()
         return HTTPFound(request.resource_url(root))
 
+
 def edit_roles_validation(process, context):
     return has_role(role=('Owner', context))
 
@@ -142,7 +143,7 @@ class Edit(InfiniteCardinality):
 
 def deactivate_roles_validation(process, context):
     return (context.organization and \
-            has_role(role=('OrganizationResponsible', 
+            has_role(role=('OrganizationResponsible',
                            context.organization))) or \
             has_role(role=('Admin',))
 
@@ -171,7 +172,8 @@ class Deactivate(InfiniteCardinality):
         context.state.append('deactivated')
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -180,7 +182,7 @@ class Deactivate(InfiniteCardinality):
 
 def activate_roles_validation(process, context):
     return (context.organization and \
-            has_role(role=('OrganizationResponsible', 
+            has_role(role=('OrganizationResponsible',
                            context.organization))) or \
             has_role(role=('Admin',))
 
@@ -209,7 +211,8 @@ class Activate(InfiniteCardinality):
         context.state.append('active')
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -242,18 +245,19 @@ class AssignRoles(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         new_roles = list(appstruct['roles'])
-        current_roles = [ r for r in get_roles(context) if \
-                          not getattr(DACE_ROLES.get(r, None),
-                                     'islocal', False)]
-        roles_to_revoke = [r for r in current_roles \
+        current_roles = [r for r in get_roles(context) if
+                         not getattr(
+                         DACE_ROLES.get(r, None), 'islocal', False)]
+        roles_to_revoke = [r for r in current_roles
                            if r not in new_roles]
-        roles_to_grant = [r for r in new_roles \
+        roles_to_grant = [r for r in new_roles
                           if r not in current_roles]
         revoke_roles(context, roles_to_revoke)
         grant_roles(context, roles_to_grant)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -280,8 +284,6 @@ class SeePerson(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
-
-#TODO behaviors
 
 
 def reg_roles_validation(process, context):
@@ -353,7 +355,6 @@ def confirm_processsecurity_validation(process, context):
     return not context.is_expired
 
 
-
 class ConfirmRegistration(InfiniteCardinality):
     submission_title = _('Save')
     context = IPreregistration
@@ -391,15 +392,16 @@ class ConfirmRegistration(InfiniteCardinality):
         localizer = request.localizer
         mail_template = root.get_mail_template('registration_confiramtion')
         message = mail_template['template'].format(
-                    person=person,
-                    user_title=localizer.translate(
-                                   _(getattr(person, 'user_title', ''))),
-                    login_url=request.resource_url(root, '@@login'),
-                    novaideo_title=request.root.title)
-        mailer_send(subject=mail_template['subject'],
-                recipients=[person.email],
-                sender=root.get_site_sender(),
-                body=message)
+            person=person,
+            user_title=localizer.translate(
+                _(getattr(person, 'user_title', ''))),
+            login_url=request.resource_url(root, '@@login'),
+            novaideo_title=request.root.title)
+        mailer_send(
+            subject=mail_template['subject'],
+            recipients=[person.email],
+            sender=root.get_site_sender(),
+            body=message)
         return {'person': person}
 
     def redirect(self, context, request, **kw):
@@ -457,7 +459,8 @@ class Remind(InfiniteCardinality):
                     recipients=[context.email],
                     sender=root.get_site_sender(),
                     body=message)
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -520,3 +523,5 @@ class RemoveRegistration(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['root'], ""))
+
+#TODO behaviors

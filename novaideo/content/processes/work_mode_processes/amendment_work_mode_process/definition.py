@@ -87,8 +87,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         amendments = [a for a in proposal.amendments if 'published' in a.state]
         processes = []
         text_analyzer = get_current_registry().getUtility(
-                                                  ITextAnalyzer,
-                                                  'text_analyzer')
+            ITextAnalyzer, 'text_analyzer')
         groups = []
         for amendment in amendments:
             isadded = False

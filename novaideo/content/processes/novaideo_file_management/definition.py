@@ -7,7 +7,7 @@
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
-    ExclusiveGatewayDefinition, 
+    ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (

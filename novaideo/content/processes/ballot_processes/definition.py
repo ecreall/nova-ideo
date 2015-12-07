@@ -1,13 +1,13 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 """
-This module represent the Ballot global process definition 
-powered by the dace engine. This process is unique, which means that 
+This module represent the Ballot global process definition
+powered by the dace engine. This process is unique, which means that
 this process is instantiated only once. And is used as part of a sub-process.
-And is vlolatile, which means that this process is automatically removed after 
+And is vlolatile, which means that this process is automatically removed after
 the end.
 """
 import pytz
@@ -15,7 +15,7 @@ from datetime import datetime
 
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.gatewaydef import (
-    ExclusiveGatewayDefinition, 
+    ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
@@ -35,7 +35,7 @@ def time_duration(process):
     duration = datetime.now(tz=pytz.UTC)
     if hasattr(process, 'duration'):
         duration = duration + getattr(process, 'duration')
-        
+
     return duration
 
 

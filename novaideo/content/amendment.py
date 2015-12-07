@@ -32,7 +32,7 @@ from novaideo.core import (
     DuplicableEntity)
 from novaideo import _
 from novaideo.views.widget import (
-    AddIdeaWidget, 
+    AddIdeaWidget,
     LimitedTextAreaWidget)
 from novaideo.content.idea import Idea, IdeaSchema
 
@@ -127,7 +127,7 @@ class Intention(object):
                         listvalue = []
                         for val in value:
                             obj = get_obj(int(val), True)
-                            if obj is None :
+                            if obj is None:
                                 raise Exception()
  
                             listvalue.append(obj)
@@ -136,7 +136,7 @@ class Intention(object):
 
                     else:
                         obj = get_obj(int(value), True)
-                        if obj is None :
+                        if obj is None:
                             raise Exception()
                        
                         result[k] = obj

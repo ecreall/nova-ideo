@@ -16,10 +16,7 @@ from pyramid.httpexceptions import HTTPFound
 
 from dace.util import (
     getSite,
-    copy,
-    get_obj)
-
-
+    copy)
 from dace.objectofcollaboration.principal.util import (
     has_role,
     get_current)

@@ -36,8 +36,8 @@ class Update(InfiniteCardinality):
         if self.process in processes:
             processes.remove(self.process)
 
-        [runtime.delfromproperty('processes', p) for p in processes if \
-         getattr(p.definition, 'isUnique', False)]
+        [runtime.delfromproperty('processes', p) for p in processes
+         if getattr(p.definition, 'isUnique', False)]
 
         root.reset_default_values()
         return {}

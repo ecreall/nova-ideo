@@ -8,11 +8,10 @@
 This module represent the Proposal management process definition 
 powered by the dace engine.
 """
-from persistent.list import PersistentList
 
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import (
-  ActivityDefinition)
+    ActivityDefinition)
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
@@ -23,18 +22,17 @@ from dace.processdefinition.eventdef import (
     IntermediateCatchEventDefinition,
     TimerEventDefinition)
 from dace.objectofcollaboration.services.processdef_container import (
-  process_definition)
+    process_definition)
 from pontus.core import VisualisableElement
 
 from novaideo.content.processes.proposal_management.behaviors import (
-  calculate_amendments_cycle_duration)
+    calculate_amendments_cycle_duration)
 from .behaviors import (
-  CorrectProposal,
-  CorrectItem,
-  CloseWork
+    CorrectProposal,
+    CorrectItem,
+    CloseWork
     )
 from novaideo import _
-
 
 
 @process_definition(name='correctionworkmodeprocess', id='correctionworkmodeprocess')

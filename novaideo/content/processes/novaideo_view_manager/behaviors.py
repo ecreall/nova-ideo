@@ -108,7 +108,6 @@ class SeeMyParticipations(InfiniteCardinality):
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemypa_processsecurity_validation
 
-
     def contents_nb(self):
         user = get_current()
         return len(getattr(user, 'participations', []))

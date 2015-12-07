@@ -82,6 +82,7 @@ class DeselectEntity(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@index'))
 
+
 def deadline_roles_validation(process, context):
     return has_role(role=('Moderator', ))
 

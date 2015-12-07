@@ -159,8 +159,8 @@ def init_proposal_ballots(proposal, process):
     electors = []
     subjects = [proposal]
     ballot = Ballot('Referendum', electors, subjects, VP_DEFAULT_DURATION,
-                        true_val=_("Submit the proposal"),
-                        false_val=_("Continue to improve the proposal"))
+                    true_val=_("Submit the proposal"),
+                    false_val=_("Continue to improve the proposal"))
     wg.addtoproperty('ballots', ballot)
     ballot.report.description = FIRST_VOTE_PUBLISHING_MESSAGE
     ballot.title = _("Submit the proposal or not")
@@ -169,8 +169,8 @@ def init_proposal_ballots(proposal, process):
     group = sorted(durations,
                    key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
     ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
-                        group_title=_('Delay'),
-                        group_default='One week')
+                    group_title=_('Delay'),
+                    group_default='One week')
     wg.addtoproperty('ballots', ballot)
     ballot.title = _('Amendment duration')
     ballot.report.description = FIRST_VOTE_DURATION_MESSAGE
@@ -949,12 +949,13 @@ class Resign(InfiniteCardinality):
                 wg.delfromproperty('wating_list', next_user)
                 wg.addtoproperty('members', next_user)
                 grant_roles(next_user, (('Participant', context),))
-                subject = mail_template['subject'].format(subject_title=context.title)
+                subject = mail_template['subject'].format(
+                    subject_title=context.title)
                 message = mail_template['template'].format(
                     recipient_title=localizer.translate(
                         _(getattr(next_user, 'user_title', ''))),
-                    recipient_first_name=getattr(next_user,
-                        'first_name', next_user.name),
+                    recipient_first_name=getattr(
+                        next_user, 'first_name', next_user.name),
                     recipient_last_name=getattr(next_user, 'last_name', ''),
                     subject_title=context.title,
                     subject_url=url,
@@ -1231,7 +1232,7 @@ class VotingPublication(ElementaryAction):
                     subject_title=context.title,
                     subject_url=url,
                     novaideo_title=request.root.title
-                     )
+                )
                 mailer_send(
                     subject=subject,
                     recipients=[member.email],

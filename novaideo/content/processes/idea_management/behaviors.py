@@ -1,13 +1,13 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 
 """
-This module represent all of behaviors used in the 
-Idea management process definition. 
+This module represent all of behaviors used in the
+Idea management process definition.
 """
 import datetime
 import pytz
@@ -111,7 +111,8 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.set_data(appstruct)
         copy_of_idea.reindex()
         context.reindex()
-        request.registry.notify(ActivityExecuted(self, [context, copy_of_idea], user))
+        request.registry.notify(ActivityExecuted(
+            self, [context, copy_of_idea], user))
         return {'newcontext': copy_of_idea}
 
     def redirect(self, context, request, **kw):
@@ -253,7 +254,8 @@ class PublishIdea(InfiniteCardinality):
         context.state.append('published')
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -287,7 +289,8 @@ class AbandonIdea(InfiniteCardinality):
         context.state.append('archived')
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -322,7 +325,8 @@ class RecuperateIdea(InfiniteCardinality):
         context.state.append('to work')
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -431,11 +435,12 @@ class PresentIdea(InfiniteCardinality):
                 my_first_name=user_first_name,
                 my_last_name=user_last_name,
                 novaideo_title=request.root.title
-                 )
-            mailer_send(subject=subject,
-                  recipients=[member_email],
-                  sender=request.root.get_site_sender(),
-                  body=message)
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[member_email],
+                sender=request.root.get_site_sender(),
+                body=message)
             if member is not user:
                 context._email_persons_contacted.append(
                     member_email)
@@ -449,7 +454,7 @@ class PresentIdea(InfiniteCardinality):
 def associate_processsecurity_validation(process, context):
     return (has_role(role=('Owner', context)) or \
            (has_role(role=('Member',)) and 'published' in context.state)) and \
-           global_user_processsecurity(process, context) 
+           global_user_processsecurity(process, context)
 
 
 class Associate(InfiniteCardinality):

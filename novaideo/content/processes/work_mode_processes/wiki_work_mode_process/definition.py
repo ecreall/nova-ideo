@@ -11,7 +11,7 @@ powered by the dace engine.
 
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import (
-  ActivityDefinition)
+    ActivityDefinition)
 from dace.processdefinition.gatewaydef import (
     ParallelGatewayDefinition)
 from dace.processdefinition.transitiondef import TransitionDefinition
@@ -21,17 +21,16 @@ from dace.processdefinition.eventdef import (
     IntermediateCatchEventDefinition,
     TimerEventDefinition)
 from dace.objectofcollaboration.services.processdef_container import (
-  process_definition)
+    process_definition)
 from pontus.core import VisualisableElement
 
 from novaideo.content.processes.proposal_management.behaviors import (
-  calculate_amendments_cycle_duration)
+    calculate_amendments_cycle_duration)
 from .behaviors import (
-  CorrectProposal,
-  CloseWork
+    CorrectProposal,
+    CloseWork
     )
 from novaideo import _
-
 
 
 @process_definition(name='wikiworkmodeprocess', id='wikiworkmodeprocess')

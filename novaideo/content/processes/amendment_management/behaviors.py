@@ -1,13 +1,13 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 
 """
-This module represent all of behaviors used in the 
-Amendments management process definition. 
+This module represent all of behaviors used in the
+Amendments management process definition.
 """
 import datetime
 import pytz
@@ -34,8 +34,8 @@ from novaideo.content.amendment import Amendment
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
 from novaideo.content.processes.idea_management.behaviors import (
-    PresentIdea, 
-    CommentIdea, 
+    PresentIdea,
+    CommentIdea,
     Associate as AssociateIdea)
 from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
@@ -109,7 +109,7 @@ class DuplicateAmendment(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        copy_of_amendment = copy(context, 
+        copy_of_amendment = copy(context,
                                  (context.proposal, 'amendments'),
                                  omit=('created_at',
                                        'modified_at',
@@ -121,13 +121,9 @@ class DuplicateAmendment(InfiniteCardinality):
         copy_of_amendment.state = PersistentList(['draft'])
         copy_of_amendment.setproperty('author', user)
         localizer = request.localizer
-        # copy_of_amendment.title = context.proposal.title + \
-        #                         localizer.translate(_('_Amended version ')) + \
-        #                         str(getattr(context.proposal,
-        #                                    '_amendments_counter', 1)) 
-        copy_of_amendment.title = localizer.translate(_('Amended version ')) + \
-                                str(getattr(context.proposal,
-                                           '_amendments_counter', 1)) 
+        copy_of_amendment.title = localizer.translate(
+            _('Amended version ')) + str(getattr(context.proposal,
+                                         '_amendments_counter', 1))
         grant_roles(user=user, roles=(('Owner', copy_of_amendment), ))
         copy_of_amendment.text_diff = get_text_amendment_diff(
                                            context.proposal, copy_of_amendment)
@@ -209,13 +205,14 @@ class EditAmendment(InfiniteCardinality):
             context.proposal, context)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
-  
+
 def exp_roles_validation(process, context):
     return has_role(role=('Participant', context.proposal)) and \
            has_role(role=('Owner', context))
@@ -248,7 +245,8 @@ class ExplanationAmendment(InfiniteCardinality):
             context, request, self.process)
         context.explanations = PersistentDict(explanations)
         context.text_diff = text_diff
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -267,7 +265,6 @@ class ExplanationItem(InfiniteCardinality):
     roles_validation = exp_roles_validation
     processsecurity_validation = exp_processsecurity_validation
     state_validation = expitem_state_validation
-
     item_css_on = 'btn-white'
     item_css_off = 'btn-black'
 
@@ -384,7 +381,6 @@ class SubmitAmendment(InfiniteCardinality):
         amendment.state.append('published')
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
-        #amendment.setproperty('originalentity', context)
         explanations = sorted(group['explanations'], key=lambda e: e['oid'])
         i = 1
         for explanation in explanations:
@@ -441,7 +437,8 @@ class SubmitAmendment(InfiniteCardinality):
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
-        request.registry.notify(ActivityExecuted(self, [context], get_current()))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -489,8 +486,8 @@ class PresentAmendment(PresentIdea):
 
 def associate_processsecurity_validation(process, context):
     return (has_role(role=('Owner', context)) or \
-           ('published' in context.state and has_role(role=('Member',)))) and \
-           global_user_processsecurity(process, context) 
+            ('published' in context.state and has_role(role=('Member',)))) and \
+           global_user_processsecurity(process, context)
 
 
 class Associate(AssociateIdea):

@@ -127,12 +127,12 @@ class CorrectItem(InfiniteCardinality):
         soup = BeautifulSoup(text)
         corrections = []
         for item in items:
-            corrections.extend(soup.find_all('span', {'id':'correction', 
+            corrections.extend(soup.find_all('span', {'id': 'correction',
                                                       'data-item': item}))
 
         blocstodel = ('span', {'id': 'correction_actions'})
-        soup = text_analyzer.include_diffs(soup, corrections,
-                        todel, toins, blocstodel)
+        soup = text_analyzer.include_diffs(
+            soup, corrections, todel, toins, blocstodel)
         return text_analyzer.soup_to_text(soup)
 
     def _include_vote(self, context, request, item, content, vote, user_oid, user):
@@ -144,10 +144,9 @@ class CorrectItem(InfiniteCardinality):
             len_vote -= 1
             vote_bool = True
 
-        if len_vote >= \
-            DEFAULT_NB_CORRECTORS:
-            text = self._include_items(text_to_correct,
-                           request, [item], vote_bool)
+        if len_vote >= DEFAULT_NB_CORRECTORS:
+            text = self._include_items(
+                text_to_correct, request, [item], vote_bool)
             setattr(context, content, text)
             text_to_correct = getattr(context, content, '')
             context.corrections[item]['included'] = True
@@ -169,11 +168,11 @@ class CorrectItem(InfiniteCardinality):
         if user_oid not in correction_data['favour'] and \
            user_oid not in correction_data['against']:
             if vote:
-                self._include_vote(context, request, 
+                self._include_vote(context, request,
                                    item, content,
                                    'favour', user_oid, user)
             else:
-                self._include_vote(context, request, 
+                self._include_vote(context, request,
                                    item, content,
                                    'against', user_oid, user)
 
@@ -224,7 +223,8 @@ class CorrectProposal(InfiniteCardinality):
         copy_of_proposal = copy(context,
                                 (correction, 'current_version'),
                                 new_name=context.__name__,
-                                omit=('created_at', 'modified_at', 'corrections'),
+                                omit=('created_at', 'modified_at',
+                                      'corrections'),
                                 roles=True)
         copy_of_proposal.setproperty('originalentity', context.originalentity)
         copy_of_proposal.state = PersistentList(['archived'])
@@ -243,13 +243,13 @@ class CorrectProposal(InfiniteCardinality):
 
         if hasattr(self, '_correctitemaction'):
             actionurl_update = dace_ui_api.updateaction_viewurl(
-                               request=request,
-                               action_uid=str(get_oid(self._correctitemaction)),
-                               context_uid=str(get_oid(correction)))
+                request=request,
+                action_uid=str(get_oid(self._correctitemaction)),
+                context_uid=str(get_oid(correction)))
             values = {'favour_action_url': actionurl_update,
-                     'against_action_url': actionurl_update}
+                      'against_action_url': actionurl_update}
             body = renderers.render(
-                             self.correction_item_template, values, request)
+                self.correction_item_template, values, request)
             correction_item_soup = BeautifulSoup(body)
             tag.append(correction_item_soup.body)
             tag.body.unwrap()

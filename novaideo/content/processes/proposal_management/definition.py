@@ -131,7 +131,6 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
         wg.vp_ballot = ballot #vp for voting for publishing
-
         root_modes = root.get_work_modes()
         if len(root_modes) > 1:
             modes = [(m, root_modes[m].title) for m in root_modes
@@ -369,8 +368,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('oppose', 'eg'),
                 TransitionDefinition('withdraw_token', 'eg'),
                 TransitionDefinition('eg', 'end')
-                 
-               
         )
 
 

@@ -22,7 +22,6 @@ from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.core import can_access, access_action, get_access_keys
 
 
-
 def comm_roles_validation(process, context):
     return has_role(role=('Member',))
 
@@ -89,5 +88,7 @@ class SeeCorrelation(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
-#TODO behaviors
+
 VALIDATOR_BY_CONTEXT[Correlation] = CommentCorrelation
+
+#TODO behaviors
