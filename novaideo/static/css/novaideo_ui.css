@@ -1858,6 +1858,7 @@ ins {
     font-variant: normal;
     text-transform: none;
     line-height: 1;
+    position: relative;
 
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;

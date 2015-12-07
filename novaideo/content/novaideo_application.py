@@ -181,7 +181,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                 mapping_css_class='controled-form'
                                                   ' object-well default-well hide-bloc',
                                 ajax=True,
-                                activator_icon="creationculturelle-icon icon-history",
+                                activator_icon="glyphicon glyphicon-user",
                                 activator_title=_('Configure user parameters'))),
                         ["_csrf_token_"])
     keywords_conf = omit(KeywordsConfSchema(
@@ -190,7 +190,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                                   ' object-well default-well hide-bloc',
                                 ajax=True,
                                 activator_icon="glyphicon glyphicon-tags",
-                                activator_title=_('Configure the keywords tree'))),
+                                activator_title=_('Configure keywords'))),
                         ["_csrf_token_"])
 
     other_conf = omit(OtherSchema(

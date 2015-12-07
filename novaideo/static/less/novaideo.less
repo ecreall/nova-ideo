@@ -75,6 +75,11 @@
     min-height: 40px;
 }
 
+.navbar-default .navbar-collapse, .navbar-default .navbar-form,
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+  border-color: transparent !important;
+}
+
 .user-nav-top > .search-nav-top {
   display: flex !important;
 }
@@ -194,8 +199,18 @@ button.navbar-toggle
     min-height: 34px;
 }
 
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .open > a {
+  background-image: none !important;
+  background-color: transparent !important;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.075) inset;
+}
+
 .globe-logo {
   margin-top: -8px;
+}
+
+.navbar-brand > img{
+    display: inline;
 }
 
 .navbar-header a.navbar-brand{
@@ -514,8 +529,8 @@ ins {
 }
 
 .legend-carre-del{
-	width:30px;
-	height:20px;
+    width:30px;
+    height:20px;
     background-image: -webkit-linear-gradient(45deg, #ef827d 46%, #ef3128 100%);
     background-image:      -o-linear-gradient(45deg, #ef827d 46%, #ef3128 100%);
     background-image: linear-gradient(45deg, #ef827d 46%, #ef3128 100%);
@@ -525,8 +540,8 @@ ins {
 }
 
 .legend-carre-ins{
-	width:30px;
-	height:20px;
+    width:30px;
+    height:20px;
     background-image: -webkit-linear-gradient(45deg, #89e189 46%, #4eaf4e 100%);
     background-image:      -o-linear-gradient(45deg, #89e189 46%, #4eaf4e 100%);
     background-image: linear-gradient(45deg, #89e189 46%, #4eaf4e 100%);
@@ -883,14 +898,14 @@ ins {
 
 
 .item-closed {
-	background: transparent url(../images/open_button.png) center right no-repeat;
+    background: transparent url(../images/open_button.png) center right no-repeat;
         padding-bottom: 12px;
         padding-right: 32px;
         padding-top: 4px;
 }
 
 .del-item {
-	background: transparent url(../images/del_button.png) center right no-repeat;
+    background: transparent url(../images/del_button.png) center right no-repeat;
     margin-right: -3px;
     padding-bottom: 10.5px;
     padding-right: 39px;
@@ -900,7 +915,7 @@ ins {
 }
 
 .disabled-del-item {
-	background: transparent url(../images/del_button_disabled.png) center right no-repeat;
+    background: transparent url(../images/del_button_disabled.png) center right no-repeat;
     margin-right: -3px;
     padding-bottom: 10.5px;
     padding-right: 39px;
@@ -1673,6 +1688,16 @@ ins {
   .navbar.navbar-inverse.navbar-bottom{
       min-height: 160px !important;
    }
+   .navbar.navbar-default.navbar-fixed-top {
+     height: auto;
+   }
+   .navbar-brand {
+        height: 40px !important;
+    }
+
+   .novaideo-alert-container .novaideo-alert-left, .novaideo-right{
+        padding-right: 15px
+    }
    .access-menu{
       max-height: 130px;
    }
@@ -1685,10 +1710,6 @@ ins {
         display: inline;
         position: relative;
         width: 45%;
-    }
-    .navbar.navbar-default.navbar-fixed-top {
-      height: auto;
-      min-height: auto;
     }
 
     .admin-nav ul.list-group {
@@ -1811,10 +1832,11 @@ ins {
 }
 
 .thumbnail.right-caption > .content-image .icon {
-    color: white;
-    font-size: 40px;
-    padding-left: 7px;
-    padding-right: 3px;
+  color: #fff;
+  font-size: 29px;
+  padding-left: 7px;
+  padding-right: 3px;
+  top: 10px;
 }
 
 @font-face {
@@ -1836,6 +1858,7 @@ ins {
     font-variant: normal;
     text-transform: none;
     line-height: 1;
+    position: relative;
 
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
