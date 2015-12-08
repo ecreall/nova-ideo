@@ -225,6 +225,19 @@ les modérateurs ont émis un avis {opinion} sur la proposition « {subject_titl
 """+ PORTAL_SIGNATURE
 
 
+ALERTOPINIONIDEA_SUBJECT = u"""Avis des modérateur sur l'idée « {subject_title} »"""
+
+
+ALERTOPINIONIDEA_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+les modérateurs ont émis un avis {opinion} sur l'idée « {subject_title} »: 
+
+{explanation}
+
+"""+ PORTAL_SIGNATURE
+
+
 PUBLISHEDIDEA_SUBJECT = u"""Décision des modérateurs de publier l'idée « {subject_title} »"""
 
 
@@ -407,6 +420,11 @@ DEFAULT_SITE_MAILS = {
               'title': _("Moderation: Opinion on the proposal"),
               'subject': ALERTOPINION_SUBJECT,
               'template': ALERTOPINION_MESSAGE
+    },
+    'opinion_idea': {
+              'title': _("Moderation: Opinion on the idea"),
+              'subject': ALERTOPINIONIDEA_SUBJECT,
+              'template': ALERTOPINIONIDEA_MESSAGE
     },
     'publish_idea_decision': {
               'title': _("Moderation: Publish the idea"),

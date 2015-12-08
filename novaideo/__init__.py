@@ -43,10 +43,20 @@ def my_locale_negotiator(request):
     return request.accept_language.best_match(('en', 'fr'), 'fr')
 
 
+def moderate_ideas(root, registry):
+    return getattr(root, 'moderate_ideas', False)
+
+
+def content_to_examine(root, registry):
+    return getattr(root, 'content_to_examine', [])
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     config = Configurator(settings=settings, root_factory=root_factory)
+    config.add_request_method(moderate_ideas, reify=True)
+    config.add_request_method(content_to_examine, reify=True)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

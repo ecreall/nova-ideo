@@ -7,6 +7,7 @@
 
 import colander
 from webob.multidict import MultiDict
+from collections import OrderedDict
 from zope.interface import implementer
 
 from substanced.content import content
@@ -34,6 +35,12 @@ from novaideo.core import (
     PresentableEntity)
 
 
+OPINIONS = OrderedDict([
+    ('favorable', _('Favorable')),
+    ('to_study', _('To study')),
+    ('unfavorable', _('Unfavorable'))
+])
+
 
 def context_is_a_idea(context, request):
     return request.registry.content.istype(context, 'idea')
@@ -48,20 +55,22 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     text = colander.SchemaNode(
         colander.String(),
-        widget=LimitedTextAreaWidget(rows=5, 
-                                     cols=30, 
-                                     limit=600,
-                                     alert_template='novaideo:views/templates/idea_text_alert.pt',
-                                     alert_values={'limit': 600}),
+        widget=LimitedTextAreaWidget(
+            rows=5,
+            cols=30,
+            limit=600,
+            alert_template='novaideo:views/templates/idea_text_alert.pt',
+            alert_values={'limit': 600}),
         title=_("Text")
         )
 
     note = colander.SchemaNode(
         colander.String(),
-        widget=LimitedTextAreaWidget(rows=5, 
-                                     cols=30, 
-                                     limit=300,
-                                     alert_values={'limit': 300}),
+        widget=LimitedTextAreaWidget(
+            rows=5,
+            cols=30,
+            limit=300,
+            alert_values={'limit': 300}),
         title=_("Note"),
         missing=""
         )
@@ -73,7 +82,8 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             name=_("File"),
             widget=FileWidget()
             ),
-        widget=SequenceWidget(add_subitem_text_template = _('Add file')),
+        widget=SequenceWidget(
+            add_subitem_text_template=_('Add file')),
         missing=[],
         title=_('Attached files'),
         )

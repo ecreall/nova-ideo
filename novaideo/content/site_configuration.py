@@ -19,6 +19,7 @@ from novaideo.mail import DEFAULT_SITE_MAILS
 from novaideo.views.widget import (
     EmailInputWidget)
 from novaideo.core_schema import ContactSchema
+from novaideo import core
 
 
 @colander.deferred
@@ -29,6 +30,15 @@ def modes_choice(node, kw):
     return CheckboxChoiceWidget(values=values, multiple=True)
 
 
+@colander.deferred
+def content_types_choices(node, kw):
+    content_to_examine = ['idea', 'proposal']
+    values = [(key, getattr(c, 'type_title', c.__class__.__name__))
+              for key, c in list(core.SEARCHABLE_CONTENTS.items())
+              if key in content_to_examine]
+    return Select2Widget(values=values, multiple=True)
+
+
 class WorkParamsConfigurationSchema(Schema):
     """Schema for site configuration."""
 
@@ -37,6 +47,21 @@ class WorkParamsConfigurationSchema(Schema):
         title=_('Work modes'),
         widget=modes_choice,
         default=[],
+    )
+
+    moderate_ideas = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Moderate ideas'),
+        title='',
+        missing=False
+    )
+
+    content_to_examine = colander.SchemaNode(
+        colander.Set(),
+        widget=content_types_choices,
+        label=_('Content to examine'),
+        missing=[]
     )
 
     deadline = colander.SchemaNode(

@@ -13,6 +13,8 @@ import datetime
 import pytz
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
+from pyramid.threadlocal import get_current_request
+
 from substanced.util import get_oid
 
 from dace.util import (
@@ -649,6 +651,10 @@ def opinion_roles_validation(process, context):
 
 
 def opinion_processsecurity_validation(process, context):
+    request = get_current_request()
+    if 'proposal' not in request.content_to_examine:
+        return False
+
     return global_user_processsecurity(process, context)
 
 

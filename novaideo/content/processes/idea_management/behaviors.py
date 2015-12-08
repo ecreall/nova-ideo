@@ -11,8 +11,9 @@ Idea management process definition.
 """
 import datetime
 import pytz
-from pyramid.httpexceptions import HTTPFound
 from persistent.list import PersistentList
+from pyramid.httpexceptions import HTTPFound
+from pyramid.threadlocal import get_current_request
 
 from dace.util import (
     getSite,
@@ -220,11 +221,161 @@ class EditIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def submit_roles_validation(process, context):
+    return has_role(role=('Owner', context))
+
+
+def submit_processsecurity_validation(process, context):
+    request = get_current_request()
+    if not request.moderate_ideas:
+        return False
+
+    if getattr(context, 'originalentity', None):
+        originalentity = getattr(context, 'originalentity')
+        if originalentity.text == context.text:
+            return False
+
+    return global_user_processsecurity(process, context)
+
+
+def submit_state_validation(process, context):
+    return 'to work' in context.state
+
+
+class SubmitIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-share'
+    style_order = 6
+    submission_title = _('Continue')
+    context = Iidea
+    roles_validation = submit_roles_validation
+    processsecurity_validation = submit_processsecurity_validation
+    state_validation = submit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state.remove('to work')
+        context.state.append('submited')
+        context.reindex()
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def decision_roles_validation(process, context):
+    return has_role(role=('Moderator',))
+
+
+def decision_processsecurity_validation(process, context):
+    request = get_current_request()
+    if not request.moderate_ideas:
+        return False
+
+    return global_user_processsecurity(process, context)
+
+
+def decision_state_validation(process, context):
+    return 'submited' in context.state
+
+
+class ArchiveIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-inbox'
+    style_order = 4
+    submission_title = _('Continue')
+    context = Iidea
+    roles_validation = decision_roles_validation
+    processsecurity_validation = decision_processsecurity_validation
+    state_validation = decision_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        explanation = appstruct['explanation']
+        context.state.remove('submited')
+        context.state.append('archived')
+        context.reindex()
+        user = context.author
+        mail_template = root.get_mail_template('archive_idea_decision')
+        localizer = request.localizer
+        subject = mail_template['subject'].format(subject_title=context.title)
+        message = mail_template['template'].format(
+            recipient_title=localizer.translate(
+                _(getattr(user, 'user_title', ''))),
+            recipient_first_name=getattr(user, 'first_name', user.name),
+            recipient_last_name=getattr(user, 'last_name', ''),
+            subject_title=context.title,
+            subject_url=request.resource_url(context, "@@index"),
+            explanation=explanation,
+            novaideo_title=root.title
+        )
+        mailer_send(
+            subject=subject,
+            recipients=[user.email],
+            sender=root.get_site_sender(),
+            body=message)
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class PublishIdeaModeration(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-share'
+    style_order = 5
+    submission_title = _('Continue')
+    context = Iidea
+    roles_validation = decision_roles_validation
+    processsecurity_validation = decision_processsecurity_validation
+    state_validation = decision_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        context.state.remove('submited')
+        context.state.append('published')
+        context.reindex()
+        user = context.author
+        localizer = request.localizer
+        mail_template = root.get_mail_template('publish_idea_decision')
+        subject = mail_template['subject'].format(subject_title=context.title)
+        message = mail_template['template'].format(
+            recipient_title=localizer.translate(
+                _(getattr(user, 'user_title', ''))),
+            recipient_first_name=getattr(user, 'first_name', user.name),
+            recipient_last_name=getattr(user, 'last_name', ''),
+            subject_title=context.title,
+            subject_url=request.resource_url(context, "@@index"),
+            novaideo_title=root.title
+        )
+        mailer_send(
+            subject=subject,
+            recipients=[user.email],
+            sender=root.get_site_sender(),
+            body=message)
+        request.registry.notify(ObjectPublished(object=context))
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
 def pub_roles_validation(process, context):
     return has_role(role=('Owner', context))
 
 
 def pub_processsecurity_validation(process, context):
+    request = get_current_request()
+    if request.moderate_ideas:
+        return False
+
     if getattr(context, 'originalentity', None):
         originalentity = getattr(context, 'originalentity')
         if originalentity.text == context.text:
@@ -234,7 +385,8 @@ def pub_processsecurity_validation(process, context):
 
 
 def pub_state_validation(process, context):
-    return 'to work' in context.state
+    return 'to work' in context.state or \
+           'submited' in context.state
 
 
 class PublishIdea(InfiniteCardinality):
@@ -478,7 +630,7 @@ class Associate(InfiniteCardinality):
 
 
 def get_access_key(obj):
-    if 'published' in obj.state:
+    if 'published' in obj.state or 'examined' in obj.state:
         return ['always']
     else:
         result = serialize_roles(
@@ -487,8 +639,8 @@ def get_access_key(obj):
 
 
 def seeidea_processsecurity_validation(process, context):
-    return ('published' in context.state or\
-            has_any_roles(roles=(('Owner', context), 'Admin')))
+    return 'published' in context.state or 'examined' in context.state or\
+           has_any_roles(roles=(('Owner', context), 'Admin'))
 
 
 @access_action(access_key=get_access_key)
@@ -526,6 +678,71 @@ class CompareIdea(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
+def opinion_roles_validation(process, context):
+    return has_role(role=('Examiner',))
+
+
+def opinion_processsecurity_validation(process, context):
+    request = get_current_request()
+    if 'idea' not in request.content_to_examine:
+        return False
+
+    return global_user_processsecurity(process, context)
+
+
+def opinion_state_validation(process, context):
+    return 'published' in context.state and 'examined' not in context.state
+
+
+class MakeOpinion(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-pencil'
+    style_order = 10
+    submission_title = _('Save')
+    context = Iidea
+    roles_validation = opinion_roles_validation
+    processsecurity_validation = opinion_processsecurity_validation
+    state_validation = opinion_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.opinion = appstruct['opinion']
+        context.explanation = appstruct['explanation']
+        context.state.insert(0, 'examined')
+        if 'favorable' != context.opinion and\
+           'published' in context.state:
+            context.state.remove('published')
+
+        context.reindex()
+        member = context.author
+        url = request.resource_url(context, "@@index")
+        root = getSite()
+        mail_template = root.get_mail_template('opinion_idea')
+        subject = mail_template['subject'].format(subject_title=context.title)
+        localizer = request.localizer
+        message = mail_template['template'].format(
+            recipient_title=localizer.translate(
+                _(getattr(member, 'user_title', ''))),
+            recipient_first_name=getattr(member, 'first_name', member.name),
+            recipient_last_name=getattr(member, 'last_name', ''),
+            subject_url=url,
+            subject_title=context.title,
+            opinion=localizer.translate(_(context.opinion)),
+            explanation=context.explanation,
+            novaideo_title=root.title
+        )
+        mailer_send(
+            subject=subject,
+            recipients=[member.email],
+            sender=root.get_site_sender(),
+            body=message)
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 #TODO behaviors
 

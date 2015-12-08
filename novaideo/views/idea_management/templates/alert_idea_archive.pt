@@ -1,0 +1,4 @@
+<div class="alert alert-info" i18n:domain="novaideo">
+    <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+   <p i18n:translate="">En cliquant sur « Continuer », l'idée sera archivée. Vous devez expliquer cette décision, afin que l'auteur de l'idée comprenne pourquoi son idée n'est pas publiée. Un courriel lui sera envoyé avec votre explication.</p>
+</div>
