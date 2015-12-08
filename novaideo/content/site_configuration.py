@@ -49,12 +49,9 @@ class WorkParamsConfigurationSchema(Schema):
         default=[],
     )
 
-    moderate_ideas = colander.SchemaNode(
-        colander.Boolean(),
-        widget=deform.widget.CheckboxWidget(),
-        label=_('Moderate ideas'),
-        title='',
-        missing=False
+    deadline = colander.SchemaNode(
+        colander.DateTime(),
+        title=_('Deadline')
     )
 
     content_to_examine = colander.SchemaNode(
@@ -64,9 +61,12 @@ class WorkParamsConfigurationSchema(Schema):
         missing=[]
     )
 
-    deadline = colander.SchemaNode(
-        colander.DateTime(),
-        title=_('Deadline')
+    moderate_ideas = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Moderate ideas'),
+        title='',
+        missing=False
     )
 
 
