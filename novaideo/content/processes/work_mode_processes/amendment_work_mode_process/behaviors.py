@@ -151,9 +151,6 @@ class ImproveProposal(InfiniteCardinality):
         root = getSite()
         data = {}
         localizer = request.localizer
-        # data['title'] = context.title + \
-        #                localizer.translate(_('_Amended version ')) + \
-        #                 str(getattr(context, '_amendments_counter', 1))
         data['title'] = localizer.translate(_('Amended version ')) + \
                         str(getattr(context, '_amendments_counter', 1))
         data['text'] = normalize_text(appstruct['text'])
@@ -290,10 +287,8 @@ class AmendmentsResult(ElementaryAction):
         return copy_of_proposal
 
     def _send_ballot_result(self, context, request, electeds, members):
-        group_nb = 0
         amendments_vote_result = []
-        for ballot in self.process.amendments_ballots:
-            group_nb += 1
+        for group_nb, ballot in enumerate(self.process.amendments_ballots):
             judgments = ballot.report.ballottype.judgments
             sorted_judgments = sorted(
                 list(judgments.keys()), key=lambda o: judgments[o])

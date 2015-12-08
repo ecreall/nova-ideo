@@ -94,9 +94,6 @@ button.navbar-toggle
     background-color: transparent !important
 }
 
-.navbar-fixed-top *:not(.dropdown-menu){
-  max-height: 40px
-}
 
 .navbar-deault .navbar-brand {
   font-size: 15px;
@@ -205,8 +202,10 @@ button.navbar-toggle
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.075) inset;
 }
 
-.globe-logo {
-  margin-top: -8px;
+.globe-logo{
+  margin-top: -12px;
+  vertical-align: top;
+  height: 40px;
 }
 
 .navbar-brand > img{
@@ -1702,10 +1701,6 @@ ins {
       max-height: 130px;
    }
 
-   .navbar-fixed-top *:not(.dropdown-menu) {
-    max-height: 100%;
-    }
-
     .search-form-container {
         display: inline;
         position: relative;
@@ -1734,8 +1729,9 @@ ins {
      padding-left: 0px;
     }
 
-
-
+    .globe-logo {
+      margin-top: -9px;
+    }
 }
 
 @media (max-width: 675px) {

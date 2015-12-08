@@ -22,6 +22,15 @@ from novaideo import _
 from novaideo.mail import DEFAULT_SITE_MAILS
 
 
+def add_file_data(container, attr):
+    file_ = container.get(attr, None)
+    if file_ and hasattr(file_, 'get_data'):
+        container[attr] = file_.get_data(None)
+        container[attr][OBJECT_OID] = str(get_oid(file_))
+
+    return container
+
+
 @view_config(
     name='configuresite',
     context=NovaIdeoApplication,
@@ -31,13 +40,14 @@ class ConfigureSiteView(FormView):
 
     title = _('Configure the site')
     schema = select(NovaIdeoApplicationSchema(
-                            factory=NovaIdeoApplication,
-                            editable=True,
-                            omit=('work_conf',)),
+                        factory=NovaIdeoApplication,
+                        editable=True,
+                        omit=('work_conf',)),
                     ['work_conf',
                      'user_conf',
                      'keywords_conf',
                      'mail_conf',
+                     'ui_conf',
                      'other_conf'
                      ])
     behaviors = [ConfigureSite, Cancel]
@@ -54,6 +64,13 @@ class ConfigureSiteView(FormView):
         for template in templates:
             template['title'] = localizer.translate(
                 template['title'])
+
+        ui_conf = data.get('ui_conf', {})
+        if ui_conf:
+            ui_conf = add_file_data(ui_conf, 'picture')
+            ui_conf = add_file_data(ui_conf, 'favicon')
+            ui_conf = add_file_data(ui_conf, 'theme')
+            data['ui_conf'] = ui_conf
 
         templates = sorted(templates, key=lambda e: e['mail_id'])
         data['mail_conf'] = {'mail_templates': templates}

@@ -62,14 +62,14 @@ from .behaviors import (
     VOTE_REOPENING_MESSAGE,
     VP_DEFAULT_DURATION,
     VOTE_MODEWORK_MESSAGE,
-    eg3_publish_condition
+    publish_condition
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
 
 
-def eg3_amendable_condition(process):
-    return not eg3_publish_condition(process)
+def amendable_condition(process):
+    return not publish_condition(process)
 
 
 class SubProcessFirstVote(OriginSubProcess):
@@ -78,12 +78,13 @@ class SubProcessFirstVote(OriginSubProcess):
         super(SubProcessFirstVote, self).__init__(definition)
 
     def _start_subprocess(self, action):
-        if not hasattr(self.process, 'first_vote'):
-            self.process.first_vote = True
-            # next
+        proposal = self.process.execution_context.created_entity('proposal')
+        working_group = proposal.working_group
+        if not hasattr(working_group, 'first_vote'):
+            working_group.first_vote = True
             return None
         else:
-            self.process.first_vote = False
+            working_group.first_vote = False
             return super(SubProcessFirstVote, self)._start_subprocess(action)
 
     def stop(self):
@@ -108,29 +109,25 @@ class SubProcessDefinition(OriginSubProcessDefinition):
     def _init_subprocess(self, process, subprocess):
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
-        wg = proposal.working_group
-        participants_mini = root.participants_mini
-        participants_maxi = root.participants_maxi
+        working_group = proposal.working_group
         work_mode = getattr(proposal, 'work_mode', None)
-        if work_mode:
-            participants_mini = work_mode.participants_mini
-            participants_maxi = work_mode.participants_maxi
-
-        electors = wg.members[:participants_mini]
-        if not getattr(process, 'first_decision', True):
-            electors = wg.members
+        participants_mini = work_mode.participants_mini if work_mode else root.participants_mini
+        participants_maxi = work_mode.participants_maxi if work_mode else root.participants_maxi
+        electors = working_group.members[:participants_mini]
+        if not getattr(working_group, 'first_decision', True):
+            electors = working_group.members
 
         subjects = [proposal]
         ballot = Ballot('Referendum', electors, subjects, VP_DEFAULT_DURATION,
                         true_val=_("Submit the proposal"),
                         false_val=_("Continue to improve the proposal"))
-        wg.addtoproperty('ballots', ballot)
+        working_group.addtoproperty('ballots', ballot)
         ballot.report.description = VOTE_PUBLISHING_MESSAGE
         ballot.title = _("Continue to improve the proposal or not")
         processes = ballot.run_ballot()
         subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
-        wg.vp_ballot = ballot #vp for voting for publishing
+        working_group.vp_ballot = ballot #vp for voting for publishing
         root_modes = root.get_work_modes()
         if len(root_modes) > 1:
             modes = [(m, root_modes[m].title) for m in root_modes
@@ -146,38 +143,38 @@ class SubProcessDefinition(OriginSubProcessDefinition):
                             group_title=_('Work mode'),
                             group_values=modes,
                             group_default=default_mode)
-            wg.addtoproperty('ballots', ballot)
+            working_group.addtoproperty('ballots', ballot)
             ballot.title = _('Work modes')
             ballot.report.description = VOTE_MODEWORK_MESSAGE
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
-            wg.work_mode_configuration_ballot = ballot
+            working_group.work_mode_configuration_ballot = ballot
 
-        if not getattr(process, 'first_decision', True) and \
-           'closed' in wg.state:
-            subjects = [wg]
+        if not getattr(working_group, 'first_decision', True) and \
+           'closed' in working_group.state:
+            subjects = [working_group]
             ballot = Ballot('Referendum', electors,
                             subjects, VP_DEFAULT_DURATION)
-            wg.addtoproperty('ballots', ballot)
+            working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_REOPENING_MESSAGE
             ballot.title = _('Reopening working group')
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
-            wg.reopening_configuration_ballot = ballot
+            working_group.reopening_configuration_ballot = ballot
 
-        if len(wg.members) <= participants_maxi:
+        if len(working_group.members) <= participants_maxi:
             durations = list(AMENDMENTS_CYCLE_DEFAULT_DURATION.keys())
             group = sorted(durations,
                            key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
             ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
                             group_title=_('Delay'),
                             group_default='One week')
-            wg.addtoproperty('ballots', ballot)
+            working_group.addtoproperty('ballots', ballot)
             ballot.title = _('Amendment duration')
             ballot.report.description = VOTE_DURATION_MESSAGE
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
-            wg.duration_configuration_ballot = ballot
+            working_group.duration_configuration_ballot = ballot
 
         subprocess.execution_context.add_involved_collection(
             'vote_processes', processes)
@@ -405,8 +402,8 @@ class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'eg'),
                 TransitionDefinition('eg', 'votingpublication'),
                 TransitionDefinition('votingpublication', 'eg1'),
-                TransitionDefinition('eg1', 'work', eg3_amendable_condition, sync=True),
-                TransitionDefinition('eg1', 'submit', eg3_publish_condition, sync=True),
+                TransitionDefinition('eg1', 'work', amendable_condition, sync=True),
+                TransitionDefinition('eg1', 'submit', publish_condition, sync=True),
                 TransitionDefinition('submit', 'end'),
                 TransitionDefinition('work', 'eg'),
         )

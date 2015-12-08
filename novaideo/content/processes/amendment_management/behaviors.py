@@ -382,11 +382,10 @@ class SubmitAmendment(InfiniteCardinality):
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
         explanations = sorted(group['explanations'], key=lambda e: e['oid'])
-        i = 1
-        for explanation in explanations:
-            explanation['oid'] = i
-            amendment.explanations[str(i)] = explanation
-            i += 1
+        for index, explanation in enumerate(explanations):
+            oid = index + 1
+            explanation['oid'] = oid
+            amendment.explanations[str(oid)] = explanation
 
         explanations, text_diff = get_text_amendment_diff_submitted(
             amendment, request)

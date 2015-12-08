@@ -116,8 +116,8 @@ class CorrectItem(InfiniteCardinality):
         setattr(proposal, content, text)
 
     def _include_items(self, text, request, items, to_add=False):
-        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
-                                                          'text_analyzer')
+        text_analyzer = get_current_registry().getUtility(
+            ITextAnalyzer, 'text_analyzer')
         todel = "ins"
         toins = "del"
         if to_add:
@@ -135,7 +135,8 @@ class CorrectItem(InfiniteCardinality):
             soup, corrections, todel, toins, blocstodel)
         return text_analyzer.soup_to_text(soup)
 
-    def _include_vote(self, context, request, item, content, vote, user_oid, user):
+    def _include_vote(self, context, request, item,
+                      content, vote, user_oid, user):
         text_to_correct = getattr(context, content, '')
         context.corrections[item][vote].append(user_oid)
         len_vote = len(context.corrections[item][vote])
@@ -151,7 +152,7 @@ class CorrectItem(InfiniteCardinality):
             text_to_correct = getattr(context, content, '')
             context.corrections[item]['included'] = True
             current_version = context.current_version
-            if not any(not('included' in context.corrections[c])
+            if not any('included' not in context.corrections[c]
                        for c in context.corrections.keys()):
                 valid_correction(self.process, context, current_version, user)
 

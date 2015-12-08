@@ -107,3 +107,15 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
         return MultiDict([(c.source, c) for c in self.target_correlations
                           if c.type == CorrelationType.solid and
                           'related_proposals' in c.tags])
+
+    def presentation_text(self, nb_characters=400):
+        return getattr(self, 'text', "")[:nb_characters]+'...'
+
+    def get_more_contents_criteria(self):
+        "return specific query, filter values"
+        return None, {
+            'metadata_filter': {
+                'content_types': ['proposal', 'idea'],
+                'keywords': list(self.keywords)
+            }
+        }

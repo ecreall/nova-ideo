@@ -18,12 +18,12 @@ from substanced.util import renamer
 from substanced.property import PropertySheet
 
 from dace.objectofcollaboration.application import Application
-from dace.descriptors import CompositeMultipleProperty
+from dace.descriptors import CompositeMultipleProperty, CompositeUniqueProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
     SequenceWidget,
     SimpleMappingWidget)
-from pontus.file import ObjectData as ObjectDataOrigine
+from pontus.file import ObjectData as ObjectDataOrigine, OBJECT_DATA
 from pontus.schema import omit, select
 
 from novaideo import _, DEFAULT_FILES
@@ -31,7 +31,6 @@ from novaideo.core import FileEntity
 from .organization import OrganizationSchema, Organization
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
-from novaideo.content.keyword import Keyword
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo.mail import DEFAULT_SITE_MAILS
 from novaideo.views.widget import SimpleMappingtWidget
@@ -40,6 +39,7 @@ from novaideo.content.site_configuration import (
     MailTemplatesConfigurationSchema,
     UserParamsConfigurationSchema,
     KeywordsConfSchema,
+    UserInterfaceConfigurationSchema,
     OtherSchema,
 )
 
@@ -74,6 +74,22 @@ class ObjectData(ObjectDataOrigine):
     def clean_cstruct(self, node, cstruct):
         result, appstruct, hasevalue = super(ObjectData, self)\
             .clean_cstruct(node, cstruct)
+
+        if 'ui_conf' in result:
+            ui_conf = result.pop('ui_conf')
+            if 'picture' in ui_conf and ui_conf['picture'] and \
+               OBJECT_DATA in ui_conf['picture']:
+                ui_conf['picture'] = ui_conf['picture'][OBJECT_DATA]
+
+            if 'favicon' in ui_conf and ui_conf['favicon'] and \
+               OBJECT_DATA in ui_conf['favicon']:
+                ui_conf['favicon'] = ui_conf['favicon'][OBJECT_DATA]
+
+            if 'theme' in ui_conf and ui_conf['theme'] and\
+               OBJECT_DATA in ui_conf['theme']:
+                ui_conf['theme'] = ui_conf['theme'][OBJECT_DATA]
+
+            result.update(ui_conf)
 
         if 'work_conf' in result:
             work_conf = result.pop('work_conf')
@@ -184,6 +200,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                 activator_icon="glyphicon glyphicon-user",
                                 activator_title=_('Configure user parameters'))),
                         ["_csrf_token_"])
+
     keywords_conf = omit(KeywordsConfSchema(
                                 widget=SimpleMappingtWidget(
                                 mapping_css_class='controled-form'
@@ -202,6 +219,13 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                 activator_title=_('Other'))),
                         ["_csrf_token_"])
 
+    ui_conf = omit(UserInterfaceConfigurationSchema(widget=SimpleMappingtWidget(
+                                mapping_css_class='controled-form'
+                                                  ' object-well default-well hide-bloc',
+                                ajax=True,
+                                activator_icon="glyphicon glyphicon-eye-open",
+                                activator_title=_('Configure the ui'))),
+                        ["_csrf_token_"])
 
 
 class NovaIdeoApplicationPropertySheet(PropertySheet):
@@ -213,7 +237,7 @@ class NovaIdeoApplicationPropertySheet(PropertySheet):
 @content(
     'Root',
     icon='glyphicon glyphicon-home',
-    propertysheets = (
+    propertysheets=(
         ('Basic', NovaIdeoApplicationPropertySheet),
         ),
     after_create='after_create',
@@ -231,6 +255,9 @@ class NovaIdeoApplication(VisualisableElement, Application):
     ideas = CompositeMultipleProperty('ideas')
     correlations = CompositeMultipleProperty('correlations')
     files = CompositeMultipleProperty('files')
+    picture = CompositeUniqueProperty('picture')
+    favicon = CompositeUniqueProperty('favicon')
+    theme = CompositeUniqueProperty('theme')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
@@ -256,6 +283,11 @@ class NovaIdeoApplication(VisualisableElement, Application):
     @property
     def keywords_conf(self):
         return self.get_data(omit(KeywordsConfSchema(),
+                                  '_csrf_token_'))
+
+    @property
+    def ui_conf(self):
+        return self.get_data(omit(UserInterfaceConfigurationSchema(),
                                   '_csrf_token_'))
 
     @property
@@ -319,4 +351,4 @@ class NovaIdeoApplication(VisualisableElement, Application):
 
     def merge_keywords(self, newkeywords):
         self.keywords.extend([kw for kw in newkeywords
-                               if kw not in self.keywords])
+                              if kw not in self.keywords])

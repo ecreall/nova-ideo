@@ -241,13 +241,12 @@ class SearchableEntity(Entity):
     def presentation_text(self, nb_characters=400):
         return getattr(self, 'description', "")[:nb_characters]+'...'
 
-    def get_visibility_filter(self):
-        registry = get_current_registry()
-        return {
+    def get_more_contents_criteria(self):
+        "return specific query, filter values"
+        return None, {
             'metadata_filter': {
-                'keywords': list(self.keywords),
-                'content_types': [registry.content.typeof(self)],
-                'states': list(getattr(self, 'state', []))
+                'states': ['published'],
+                'keywords': list(self.keywords)
             }
         }
 

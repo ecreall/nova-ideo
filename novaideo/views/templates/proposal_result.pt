@@ -9,7 +9,7 @@
     <a href="${url}"><h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4></a>
     <a tal:attributes="href url"><h3><span class="visible-xs-inline-block icon ${icon}"></span>  ${object.title}</h3></a>
     <dl i18n:domain="novaideo">
-      <dt i18n:translate="">Abstract</dt><dd>${object.description}</dd>
+      <dt i18n:translate="">Abstract</dt><dd>${object.presentation_text(400)}</dd>
       <dt tal:condition="object.keywords"  i18n:translate="">Keywords</dt>
       <dd tal:condition="object.keywords">
         <tal:loop repeat="k object.keywords">

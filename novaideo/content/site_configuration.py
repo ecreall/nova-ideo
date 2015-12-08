@@ -10,7 +10,8 @@ import deform
 from pontus.schema import omit, select, Schema
 from pontus.widget import (
     SequenceWidget, SimpleMappingWidget,
-    CheckboxChoiceWidget, Select2Widget)
+    CheckboxChoiceWidget, Select2Widget, FileWidget)
+from pontus.file import ObjectData, File
 
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo import _
@@ -68,6 +69,41 @@ class UserParamsConfigurationSchema(Schema):
         colander.Integer(),
         title=_('Minimum number of tokens by member'),
         default=7,
+        )
+
+
+class UserInterfaceConfigurationSchema(Schema):
+
+    picture = colander.SchemaNode(
+        ObjectData(File),
+        widget=FileWidget(file_extensions=['png', 'jpg', 'svg']),
+        title=_('Logo'),
+        missing=None,
+        description=_("Only PNG and SVG files are supported."),
+        )
+
+    favicon = colander.SchemaNode(
+        ObjectData(File),
+        widget=FileWidget(file_extensions=['ico']),
+        title=_('Favicon'),
+        missing=None,
+        description=_("Only ICO file is supported."),
+        )
+
+    theme = colander.SchemaNode(
+        ObjectData(File),
+        widget=FileWidget(file_extensions=['css']),
+        title=_('Theme'),
+        missing=None,
+        description=_("Only CSS files are supported."),
+        )
+
+    social_share = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Activate the social share'),
+        title='',
+        missing=False
         )
 
 

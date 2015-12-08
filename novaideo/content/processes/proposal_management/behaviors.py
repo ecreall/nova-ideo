@@ -115,10 +115,11 @@ AMENDMENTS_CYCLE_DEFAULT_DURATION = {
     "Two weeks": datetime.timedelta(weeks=2)}
 
 
-def eg3_publish_condition(process):
+def publish_condition(process):
     proposal = process.execution_context.created_entity('proposal')
-    report = proposal.working_group.vp_ballot.report
-    if not getattr(process, 'first_vote', True):
+    working_group = proposal.working_group
+    report = working_group.vp_ballot.report
+    if not getattr(working_group, 'first_vote', True):
         electeds = report.get_electeds()
         if electeds is None:
             return False
@@ -410,20 +411,20 @@ class PublishProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('draft')
+        user = get_current()
         root = getSite()
         default_mode = root.get_default_work_mode()
         working_group = context.working_group
+        participants_mini = root.participants_mini
         if 'work_mode' not in appstruct:
             mode_id = default_mode.work_id
         else:
             mode_id = appstruct['work_mode']
 
-        participants_mini = root.participants_mini
         if mode_id:
             context.work_mode_id = mode_id
             participants_mini = WORK_MODES[mode_id].participants_mini
 
-        user = get_current()
         first_vote_registration(user, working_group, appstruct)
         if participants_mini > 1:
             context.state.append('open to a working group')
@@ -436,7 +437,6 @@ class PublishProposal(InfiniteCardinality):
             if not hasattr(working_group, 'first_decision'):
                 working_group.first_decision = True
 
-        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         if 'amendable' in context.state:
             if not working_group.improvement_cycle_proc:
                 improvement_cycle_proc = start_improvement_cycle(context)
@@ -446,6 +446,7 @@ class PublishProposal(InfiniteCardinality):
             working_group.improvement_cycle_proc.execute_action(
                 context, request, 'votingpublication', {})
 
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
@@ -934,7 +935,7 @@ class Resign(InfiniteCardinality):
         wg = context.working_group
         wg.delfromproperty('members', user)
         mode = getattr(context, 'work_mode', root.get_default_work_mode())
-        if getattr(self.process, 'first_vote', True):
+        if getattr(wg, 'first_vote', True):
             #remove user vote if first_vote
             first_vote_remove(user, wg)
 
@@ -1213,8 +1214,9 @@ class VotingPublication(ElementaryAction):
         context.state.remove(state)
         context.state.append('votes for publishing')
         context.reindex()
-        if not getattr(self.process, 'first_vote', True):
-            members = context.working_group.members
+        working_group = context.working_group
+        if not getattr(working_group, 'first_vote', True):
+            members = working_group.members
             url = request.resource_url(context, "@@index")
             root = getSite()
             mail_template = root.get_mail_template('start_vote_publishing')
@@ -1231,7 +1233,7 @@ class VotingPublication(ElementaryAction):
                         member, 'last_name', ''),
                     subject_title=context.title,
                     subject_url=url,
-                    novaideo_title=request.root.title
+                    novaideo_title=root.title
                 )
                 mailer_send(
                     subject=subject,
@@ -1239,7 +1241,7 @@ class VotingPublication(ElementaryAction):
                     sender=root.get_site_sender(),
                     body=message)
 
-        context.working_group.iteration = getattr(self.process, 'iteration', 0) + 1
+        working_group.iteration = getattr(self.process, 'iteration', 0) + 1
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}
@@ -1255,7 +1257,7 @@ class VotingPublication(ElementaryAction):
                 close_votes(proposal, request, opened_vote_processes)
 
         super(VotingPublication, self).after_execution(proposal, request, **kw)
-        is_published = eg3_publish_condition(self.process)
+        is_published = publish_condition(self.process)
         if is_published:
             self.process.execute_action(proposal, request, 'submit', {})
         else:
@@ -1313,12 +1315,12 @@ class Work(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('votes for publishing')
-        wg = context.working_group
-        if wg.first_decision:
-            wg.first_decision = False
+        working_group = context.working_group
+        if working_group.first_decision:
+            working_group.first_decision = False
 
         reopening_ballot = getattr(
-            wg, 'reopening_configuration_ballot', None)
+            working_group, 'reopening_configuration_ballot', None)
         if reopening_ballot is not None:
             report = reopening_ballot.report
             voters_len = len(report.voters)
@@ -1327,9 +1329,9 @@ class Work(ElementaryAction):
             #absolute majority
             if (voters_len == electors_len) and \
                (report.result['False'] == 0) and \
-               'closed' in wg.state:
-                wg.state.remove('closed')
-                wg.reindex()
+               'closed' in working_group.state:
+                working_group.state.remove('closed')
+                working_group.reindex()
 
         context.state.append('amendable')
         root = getSite()
@@ -1338,7 +1340,7 @@ class Work(ElementaryAction):
                          mail_template['subject'], mail_template['template'])
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, wg], get_current()))
+            self, [context, working_group], get_current()))
         return {}
 
     def after_execution(self, context, request, **kw):

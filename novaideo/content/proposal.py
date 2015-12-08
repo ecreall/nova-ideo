@@ -171,3 +171,12 @@ class Proposal(Commentable,
             return root.get_default_work_mode()
 
         return None
+
+    def get_more_contents_criteria(self):
+        "return specific query, filter values"
+        return None, {
+            'metadata_filter': {
+                'content_types': ['proposal', 'idea'],
+                'keywords': list(self.keywords)
+            }
+        }

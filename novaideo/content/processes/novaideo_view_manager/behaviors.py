@@ -206,7 +206,7 @@ class Contact(InfiniteCardinality):
     style_order = 1
     isSequential = False
     context = IEntity
-    #processsecurity_validation = contact_processsecurity_validation
+    processsecurity_validation = contact_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         subject = appstruct.get('subject')

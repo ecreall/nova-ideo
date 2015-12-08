@@ -17,18 +17,21 @@
           content="width=device-width, initial-scale=1.0"/>
 
     <!-- Styles -->
-    <link href="${su('novaideo:static/css/bootstrap.css')}"
-          rel="stylesheet"/>
+    <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}"
+            rel="stylesheet"/>
+    </div>
     <link href="${su('daceui:static/css/dace_ui.css')}"
-          rel="stylesheet"/>
-    <link href="${su('novaideo:static/css/novaideo_ui.css')}"
           rel="stylesheet"/>
     <link href="${su('novaideo:static/css/steps/steps.css')}"
           rel="stylesheet"/>
-
     <!-- Fav icons -->
-    <link rel="shortcut icon"
-          href="${su('substanced.sdi:static/img/favicon.ico')}"/>
+
+    <div tal:omit-tag=""
+         tal:define="favicon getattr(request.root, 'favicon', None)">
+        <link rel="shortcut icon"
+              href="${favicon.url if favicon else su('substanced.sdi:static/img/favicon.ico')}">
+    </div>
 
     <!-- Chart -->
      <script type="text/javascript" src="https://www.google.com/jsapi"></script>
