@@ -1,0 +1,18 @@
+<div class="well vertical-slick-well " tal:condition="contents"  i18n:domain="novaideo">
+	<h4 ><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">See more</span></h4>
+	<div class="more-content-carousel verticla">
+		<div tal:repeat="object contents">
+				<div class="right-caption span4 search-item" >
+				  <div class="media-body cultural-event-body">
+				    <a class="alert-link" tal:attributes="href request.resource_url(object, '@@index')"><h5>
+				    	<span class="icon ${getattr(object, 'icon', '')}"></span> ${object.title} </h5></a>
+				    <div tal:condition="getattr(object, 'picture', None)" class="footer-picture">
+				      <div class="footer-message" i18n:translate="">All rights reserved</div>
+				        <img width="75px" src="${getattr(object.picture, 'medium', object.picture).url}" class="img-thumbnail illustration" />
+				    </div>
+				    <div>${object.presentation_text(400)}</div>
+				  </div>
+				</div>
+		</div>
+	</div>
+</div>

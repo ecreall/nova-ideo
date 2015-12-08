@@ -40,6 +40,10 @@ from novaideo.content.processes.user_management.behaviors import (
 from novaideo.utilities.util import (
     get_actions_navbar,
     footer_navbar_body)
+from novaideo.views.filter import find_entities, find_more_contents
+
+
+MORE_NB = 20
 
 
 USER_MENU_ACTIONS = {'menu1': [SeeMyContents, SeeMyParticipations],
@@ -591,5 +595,59 @@ class SocialToggleShare(object):
         self.request = request
 
     def __call__(self):
-        return {'object': self.context}
+        return {'has_social_share': getattr(
+                    self.request.root, 'social_share', False),
+                'object': self.context}
 
+
+@panel_config(
+    name='more_contents',
+    context=NovaIdeoApplication,
+    renderer='templates/panels/more_contents.pt'
+    )
+@panel_config(
+    name='more_contents',
+    context=SearchableEntity,
+    renderer='templates/panels/more_contents.pt'
+    )
+class MoreContents(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        is_root = False
+        objects = []
+        if self.request.view_name in ('', 'index', '@@index'):
+            user = get_current()
+            more_result = []
+            root = getSite()
+            if self.context is root:
+                more_result = find_entities(
+                    user=get_current(),
+                    metadata_filter={'content_types': ['proposal', 'idea'],
+                                     'states': getattr(user, 'keywords', [])},
+                    sort_on='modified_at', reverse=True)
+                is_root = True
+            else:
+                more_result = find_more_contents(self.context)
+
+            for index, obj in enumerate(more_result):
+                objects.append(obj)
+                if index > MORE_NB:
+                    break
+
+            if self.context in objects:
+                objects.remove(self.context)
+
+            objects = sorted(
+                list(set(objects)),
+                key=lambda e: getattr(e, 'release_date', e.modified_at),
+                reverse=True)
+        else:
+            objects = []
+
+        return {'contents': objects,
+                'is_root': is_root,
+                'request': self.request}

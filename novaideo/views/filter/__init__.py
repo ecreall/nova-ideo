@@ -1038,7 +1038,7 @@ def find_entities(user=None,
     return result_set
 
 
-def find_more_contents(obj, state=[]):
+def find_more_contents(obj):
     user = get_current()
     request = get_current_request()
     registry = request.registry
@@ -1054,8 +1054,6 @@ def find_more_contents(obj, state=[]):
         args['request'] = request
         return find_entities(
             user=user,
-            metadata_filter={'content_types': [content_type],
-                             'states': state},
             add_query=query,
             sort_on='release_date',
             reverse=True,

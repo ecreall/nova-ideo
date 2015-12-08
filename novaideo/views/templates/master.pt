@@ -25,6 +25,11 @@
           rel="stylesheet"/>
     <link href="${su('novaideo:static/css/steps/steps.css')}"
           rel="stylesheet"/>
+
+    <link href="${request.static_url('novaideo:static/slick/slick/slick.css')}"
+      rel="stylesheet"/>
+    <link href="${request.static_url('novaideo:static/css/slick-theme-cc.css')}"
+      rel="stylesheet"/>
     <!-- Fav icons -->
 
     <div tal:omit-tag=""
@@ -64,6 +69,8 @@
     <script src="${su('novaideo:static/js/contextual_help.js')}"
           type="text/javascript"></script>
 
+    <script src="${request.static_url('novaideo:static/slick/slick/slick.min.js')}"
+        type="text/javascript"></script>
 
     <more tal:omit-tag="" metal:define-slot="head-more"></more>
     ${panel('social_share')}
@@ -89,10 +96,13 @@
     ${panel('deadline')}
       <metal:slot metal:define-slot="outer-content">
         <div class="container-fluid">
-        <div class="row clearfix novaideo-content">
+        <div tal:define="more_panel panel('more_contents')" class="row clearfix novaideo-content">
 
           <div class="col-md-2 column ui-sortable novaideo-left">
             ${panel('adminnavbar')}
+            <div class="visible-lg-inline-block"  style="width: 100%">
+              ${more_panel}
+            </div>
              <div metal:define-slot="left"></div>
           </div>
 
@@ -122,6 +132,9 @@
           <div class="col-md-3 column ui-sortable novaideo-right">
             ${panel('lateral_menu')}
              ${panel('contextual_help')}
+             <div class="more-contents-panel-s visible-xs-inline-block visible-sm-inline-block">
+                   ${more_panel}
+               </div>
              <div metal:define-slot="right"></div>
           </div>
         </div>
