@@ -350,5 +350,6 @@ class NovaIdeoApplication(VisualisableElement, Application):
         return modes[0]
 
     def merge_keywords(self, newkeywords):
-        self.keywords.extend([kw for kw in newkeywords
-                              if kw not in self.keywords])
+        current_keywords = list(self.keywords)
+        current_keywords.extend(newkeywords)
+        self.keywords = PersistentList(list(set(current_keywords)))

@@ -43,12 +43,12 @@ def my_locale_negotiator(request):
     return request.accept_language.best_match(('en', 'fr'), 'fr')
 
 
-def moderate_ideas(root, registry):
-    return getattr(root, 'moderate_ideas', False)
+def moderate_ideas(request):
+    return getattr(request.root, 'moderate_ideas', False)
 
 
-def content_to_examine(root, registry):
-    return getattr(root, 'content_to_examine', [])
+def content_to_examine(request):
+    return getattr(request.root, 'content_to_examine', [])
 
 
 def main(global_config, **settings):
