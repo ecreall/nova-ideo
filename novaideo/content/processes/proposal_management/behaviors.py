@@ -117,6 +117,14 @@ AMENDMENTS_CYCLE_DEFAULT_DURATION = {
     "Two weeks": datetime.timedelta(weeks=2)}
 
 
+def publish_ideas(ideas, request):
+    for idea in ideas:
+        idea.state = PersistentList(['published'])
+        idea.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        idea.reindex()
+        request.registry.notify(ObjectPublished(object=idea))
+
+
 def publish_condition(process):
     proposal = process.execution_context.created_entity('proposal')
     working_group = proposal.working_group
@@ -301,7 +309,14 @@ class CreateProposal(InfiniteCardinality):
 
 
 def pap_processsecurity_validation(process, context):
-    return 'published' in context.state and has_role(role=('Member',))
+    request = get_current_request()
+    condition = False
+    if 'idea' in request.content_to_examine:
+        condition = 'favorable' in context.state
+    else:
+        condition = 'published' in context.state
+
+    return condition and has_role(role=('Member',))
 
 
 class PublishAsProposal(CreateProposal):
@@ -359,7 +374,7 @@ class DeleteProposal(InfiniteCardinality):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            for member in members:
+            for member in [m for m in members if getattr(m, 'email', '')]:
                 message = mail_template['template'].format(
                     recipient_title=localizer.translate(
                         _(getattr(member, 'user_title', ''))),
@@ -389,9 +404,17 @@ def publish_roles_validation(process, context):
 def publish_processsecurity_validation(process, context):
     user = get_current()
     root = getSite()
-    not_published_ideas = any('published' not in i.state
-                              for i in context.related_ideas.keys())
-    return not not_published_ideas and \
+    not_published_ideas = False
+    if getattr(root, 'moderate_ideas', False):
+        not_published_ideas = any('published' not in i.state
+                                  for i in context.related_ideas.keys())
+
+    not_favorable_ideas = False
+    if 'idea' in getattr(root, 'content_to_examine', []):
+        not_favorable_ideas = any('favorable' not in i.state
+                                  for i in context.related_ideas.keys())
+
+    return not (not_published_ideas or not_favorable_ideas) and \
            len(user.active_working_groups) < root.participations_maxi and \
            global_user_processsecurity(process, context)
 
@@ -449,8 +472,16 @@ class PublishProposal(InfiniteCardinality):
                 context, request, 'votingpublication', {})
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        not_published_ideas = []
+        if not request.moderate_ideas and\
+           'idea' not in request.content_to_examine:
+            not_published_ideas = [i for i in context.related_ideas.keys()
+                                   if 'published' not in i.state]
+            publish_ideas(not_published_ideas, request)
+
+        not_published_ideas.extend(context)
         request.registry.notify(ObjectPublished(object=context))
-        request.registry.notify(ActivityExecuted(self, [context], user))
+        request.registry.notify(ActivityExecuted(self, not_published_ideas, user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -695,7 +726,7 @@ class MakeOpinion(InfiniteCardinality):
         mail_template = root.get_mail_template('opinion_proposal')
         subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        for member in members:
+        for member in [m for m in members if getattr(m, 'email', '')]:
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
                     _(getattr(member, 'user_title', ''))),
@@ -878,24 +909,26 @@ class Withdraw(InfiniteCardinality):
         user = get_current()
         wg = context.working_group
         wg.delfromproperty('wating_list', user)
-        localizer = request.localizer
-        root = getSite()
-        mail_template = root.get_mail_template('withdeaw')
-        subject = mail_template['subject'].format(subject_title=context.title)
-        message = mail_template['template'].format(
-            recipient_title=localizer.translate(
-                _(getattr(user, 'user_title', ''))),
-            recipient_first_name=getattr(user, 'first_name', user.name),
-            recipient_last_name=getattr(user, 'last_name', ''),
-            subject_title=context.title,
-            subject_url=request.resource_url(context, "@@index"),
-            novaideo_title=request.root.title
-        )
-        mailer_send(
-            subject=subject,
-            recipients=[user.email],
-            sender=root.get_site_sender(),
-            body=message)
+        if getattr(user, 'email', ''):
+            localizer = request.localizer
+            root = getSite()
+            mail_template = root.get_mail_template('withdeaw')
+            subject = mail_template['subject'].format(subject_title=context.title)
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(user, 'user_title', ''))),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name', ''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index"),
+                novaideo_title=request.root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[user.email],
+                sender=root.get_site_sender(),
+                body=message)
+
         request.registry.notify(ActivityExecuted(self, [context, wg], user))
         return {}
 
@@ -956,23 +989,24 @@ class Resign(InfiniteCardinality):
                 wg.delfromproperty('wating_list', next_user)
                 wg.addtoproperty('members', next_user)
                 grant_roles(next_user, (('Participant', context),))
-                subject = mail_template['subject'].format(
-                    subject_title=context.title)
-                message = mail_template['template'].format(
-                    recipient_title=localizer.translate(
-                        _(getattr(next_user, 'user_title', ''))),
-                    recipient_first_name=getattr(
-                        next_user, 'first_name', next_user.name),
-                    recipient_last_name=getattr(next_user, 'last_name', ''),
-                    subject_title=context.title,
-                    subject_url=url,
-                    novaideo_title=request.root.title
-                )
-                mailer_send(
-                    subject=subject,
-                    recipients=[next_user.email],
-                    sender=sender,
-                    body=message)
+                if getattr(next_user, 'email', ''):
+                    subject = mail_template['subject'].format(
+                        subject_title=context.title)
+                    message = mail_template['template'].format(
+                        recipient_title=localizer.translate(
+                            _(getattr(next_user, 'user_title', ''))),
+                        recipient_first_name=getattr(
+                            next_user, 'first_name', next_user.name),
+                        recipient_last_name=getattr(next_user, 'last_name', ''),
+                        subject_title=context.title,
+                        subject_url=url,
+                        novaideo_title=request.root.title
+                    )
+                    mailer_send(
+                        subject=subject,
+                        recipients=[next_user.email],
+                        sender=sender,
+                        body=message)
 
         participants = wg.members
         len_participants = len(participants)
@@ -983,22 +1017,24 @@ class Resign(InfiniteCardinality):
             wg.reindex()
             context.reindex()
 
-        mail_template = root.get_mail_template('wg_resign')
-        subject = mail_template['subject'].format(subject_title=context.title)
-        message = mail_template['template'].format(
-            recipient_title=localizer.translate(
-                _(getattr(user, 'user_title', ''))),
-            recipient_first_name=getattr(user, 'first_name', user.name),
-            recipient_last_name=getattr(user, 'last_name', ''),
-            subject_title=context.title,
-            subject_url=url,
-            novaideo_title=request.root.title
-        )
-        mailer_send(
-            subject=subject,
-            recipients=[user.email],
-            sender=sender,
-            body=message)
+        if getattr(user, 'email', ''):
+            mail_template = root.get_mail_template('wg_resign')
+            subject = mail_template['subject'].format(subject_title=context.title)
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(user, 'user_title', ''))),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name', ''),
+                subject_title=context.title,
+                subject_url=url,
+                novaideo_title=request.root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[user.email],
+                sender=sender,
+                body=message)
+
         request.registry.notify(ActivityExecuted(self, [context, wg], user))
         return {}
 
@@ -1085,10 +1121,12 @@ class Participate(InfiniteCardinality):
                 working_group.reindex()
                 context.reindex()
 
-            mail_template = root.get_mail_template('wg_participation')
-            self._send_mail_to_user(
-                mail_template['subject'], mail_template['template'],
-                user, context, request)
+            if getattr(user, 'email', ''):
+                mail_template = root.get_mail_template('wg_participation')
+                self._send_mail_to_user(
+                    mail_template['subject'], mail_template['template'],
+                    user, context, request)
+
             if first_decision:
                 if not working_group.improvement_cycle_proc:
                     improvement_cycle_proc = start_improvement_cycle(context)
@@ -1100,10 +1138,11 @@ class Participate(InfiniteCardinality):
         else:
             working_group.addtoproperty('wating_list', user)
             working_group.reindex()
-            mail_template = root.get_mail_template('wating_list')
-            self._send_mail_to_user(
-                mail_template['subject'], mail_template['template'],
-                user, context, request)
+            if getattr(user, 'email', ''):
+                mail_template = root.get_mail_template('wating_list')
+                self._send_mail_to_user(
+                    mail_template['subject'], mail_template['template'],
+                    user, context, request)
 
         request.registry.notify(ActivityExecuted(
             self, [context, working_group], user))
@@ -1229,7 +1268,7 @@ class VotingPublication(ElementaryAction):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            for member in members:
+            for member in [m for m in members if getattr(m, 'email', '')]:
                 message = mail_template['template'].format(
                     recipient_title=localizer.translate(
                         _(getattr(member, 'user_title', ''))),
@@ -1299,7 +1338,7 @@ class Work(ElementaryAction):
         url = request.resource_url(context, "@@index")
         subject = subject_template.format(subject_title=context.title)
         localizer = request.localizer
-        for member in members:
+        for member in [m for m in members if getattr(m, 'email', '')]:
             message = message_template.format(
                 recipient_title=localizer.translate(
                     _(getattr(member, 'user_title', ''))),
@@ -1390,7 +1429,7 @@ class SubmitProposal(ElementaryAction):
         mail_template = root.get_mail_template('publish_proposal')
         subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        for member in members:
+        for member in [m for m in members if getattr(m, 'email', '')]:
             token = Token(title='Token_'+context.title)
             token.setproperty('proposal', context)
             member.addtoproperty('tokens_ref', token)

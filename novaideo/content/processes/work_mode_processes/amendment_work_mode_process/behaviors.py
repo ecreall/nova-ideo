@@ -91,7 +91,7 @@ class Alert(ElementaryAction):
         mail_template = root.get_mail_template('alert_amendment')
         subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        for member in members:
+        for member in [m for m in members if getattr(m, 'email', '')]:
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
                     _(getattr(member, 'user_title', ''))),
@@ -209,7 +209,7 @@ class VotingAmendments(ElementaryAction):
         root = request.root
         mail_template = root.get_mail_template('start_vote_amendments')
         subject = mail_template['subject'].format(subject_title=context.title)
-        for member in members:
+        for member in [m for m in members if getattr(m, 'email', '')]:
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
                     _(getattr(member, 'user_title', ''))),
@@ -310,7 +310,7 @@ class AmendmentsResult(ElementaryAction):
         mail_template = root.get_mail_template('vote_amendment_result')
         subject = mail_template['subject'].format(
             subject_title=context.title)
-        for member in members:
+        for member in [m for m in members if getattr(m, 'email', '')]:
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
                     _(getattr(member, 'user_title', ''))),

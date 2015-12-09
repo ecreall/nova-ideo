@@ -84,11 +84,12 @@ class DeselectEntity(InfiniteCardinality):
 
 
 def deadline_roles_validation(process, context):
-    return has_role(role=('Moderator', ))
+    return has_role(role=('Examiner', ))
 
 
 def adddeadline_processsecurity_validation(process, context):
-    return datetime.datetime.now(tz=pytz.UTC) >= \
+    return getattr(context, 'content_to_examine', []) and\
+           datetime.datetime.now(tz=pytz.UTC) >= \
            context.deadlines[-1].replace(tzinfo=pytz.UTC) and \
            global_user_processsecurity(process, context)
 
@@ -116,7 +117,8 @@ class AddDeadLine(InfiniteCardinality):
 
 
 def editdeadline_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
+    return getattr(context, 'content_to_examine', []) and\
+           global_user_processsecurity(process, context) and \
            getattr(context, 'deadlines', [])
 
 

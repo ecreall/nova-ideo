@@ -145,14 +145,17 @@ class SubmitAmendmentViewStudyReport(BasicView):
                                      souptextdiff,
                                      self.readonly_explanation_template)
         text_diff = text_analyzer.soup_to_text(souptextdiff)
-        not_published_ideas = [i for i in self.context.get_used_ideas() \
-                               if not('published' in i.state)]
+        not_published_ideas = []
+        if not self.request.moderate_ideas:
+            not_published_ideas = [i for i in self.context.get_used_ideas()
+                                   if 'published' not in i.state]
+
         values = {'context': self.context,
                   'explanationtext': text_diff,
-                  'ideas': not_published_ideas}
+                  'not_published_ideas': not_published_ideas}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 

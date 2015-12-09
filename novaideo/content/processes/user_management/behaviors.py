@@ -325,24 +325,26 @@ class Registration(InfiniteCardinality):
         preregistration.reindex()
         transaction.commit()
         deadline_date = preregistration.get_deadline_date()
-        localizer = request.localizer
-        mail_template = root.get_mail_template('preregistration')
-        subject = mail_template['subject']
-        deadline_str = to_localized_time(
-            deadline_date, request,
-            format_id='defined_literal', ignore_month=True,
-            ignore_year=True, translate=True)
-        message = mail_template['template'].format(
-            preregistration=preregistration,
-            user_title=localizer.translate(
-                _(getattr(preregistration, 'user_title', ''))),
-            url=url,
-            deadline_date=deadline_str.lower(),
-            novaideo_title=request.root.title)
-        mailer_send(subject=subject,
-                    recipients=[preregistration.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+        if getattr(preregistration, 'email', ''):
+            localizer = request.localizer
+            mail_template = root.get_mail_template('preregistration')
+            subject = mail_template['subject']
+            deadline_str = to_localized_time(
+                deadline_date, request,
+                format_id='defined_literal', ignore_month=True,
+                ignore_year=True, translate=True)
+            message = mail_template['template'].format(
+                preregistration=preregistration,
+                user_title=localizer.translate(
+                    _(getattr(preregistration, 'user_title', ''))),
+                url=url,
+                deadline_date=deadline_str.lower(),
+                novaideo_title=request.root.title)
+            mailer_send(subject=subject,
+                        recipients=[preregistration.email],
+                        sender=root.get_site_sender(),
+                        body=message)
+
         request.registry.notify(ActivityExecuted(self, [preregistration], None))
         return {'preregistration': preregistration}
 
@@ -389,19 +391,21 @@ class ConfirmRegistration(InfiniteCardinality):
         person.reindex()
         request.registry.notify(ActivityExecuted(self, [person], person))
         transaction.commit()
-        localizer = request.localizer
-        mail_template = root.get_mail_template('registration_confiramtion')
-        message = mail_template['template'].format(
-            person=person,
-            user_title=localizer.translate(
-                _(getattr(person, 'user_title', ''))),
-            login_url=request.resource_url(root, '@@login'),
-            novaideo_title=request.root.title)
-        mailer_send(
-            subject=mail_template['subject'],
-            recipients=[person.email],
-            sender=root.get_site_sender(),
-            body=message)
+        if getattr(person, 'email', ''):
+            localizer = request.localizer
+            mail_template = root.get_mail_template('registration_confiramtion')
+            message = mail_template['template'].format(
+                person=person,
+                user_title=localizer.translate(
+                    _(getattr(person, 'user_title', ''))),
+                login_url=request.resource_url(root, '@@login'),
+                novaideo_title=request.root.title)
+            mailer_send(
+                subject=mail_template['subject'],
+                recipients=[person.email],
+                sender=root.get_site_sender(),
+                body=message)
+
         return {'person': person}
 
     def redirect(self, context, request, **kw):
@@ -418,7 +422,8 @@ def remind_roles_validation(process, context):
 
 
 def remind_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return getattr(context, 'email', '') and \
+        global_user_processsecurity(process, context)
 
 
 class Remind(InfiniteCardinality):

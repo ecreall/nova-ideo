@@ -286,11 +286,11 @@ class StepsPanel(object):
                                      'process': process,
                                      'ballot_report': ballot.report},
                                     request)
-        elif 'votes for amendments'  in context.state:
+        elif 'votes for amendments' in context.state:
             voters = []
             subprocess = process['work'].sub_processes[-1]
-            [voters.extend(b.report.voters) \
-            for b in subprocess.amendments_ballots]
+            [voters.extend(b.report.voters)
+             for b in subprocess.amendments_ballots]
             voters = list(set(voters))
             ballot = subprocess.amendments_ballots[-1]
             today = datetime.datetime.now(tz=pytz.UTC)
@@ -497,7 +497,8 @@ class Deadline_panel(object):
         self.request = request
 
     def __call__(self):
-        if self.request.view_name != '':
+        if not self.request.content_to_examine or \
+           self.request.view_name != '':
             return {'condition': False}
 
         current_deadline = self.context.deadlines[-1].replace(tzinfo=pytz.UTC)

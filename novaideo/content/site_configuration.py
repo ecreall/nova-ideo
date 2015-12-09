@@ -49,15 +49,10 @@ class WorkParamsConfigurationSchema(Schema):
         default=[],
     )
 
-    deadline = colander.SchemaNode(
-        colander.DateTime(),
-        title=_('Deadline')
-    )
-
     content_to_examine = colander.SchemaNode(
         colander.Set(),
         widget=content_types_choices,
-        label=_('Content to examine'),
+        title=_('Contents to examine'),
         missing=[]
     )
 
@@ -213,6 +208,14 @@ class KeywordsConfSchema(Schema):
         widget=keywords_choice,
         title='Keywords',
         )
+
+    can_add_keywords = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Authorize the addition of keywords'),
+        title='',
+        missing=False
+    )
 
 
 @colander.deferred

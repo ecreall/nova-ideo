@@ -1,11 +1,22 @@
 <div  i18n:domain="novaideo">
  <div class="alert alert-info">
+ 	<div tal:omit-tag="" tal:condition="not request.moderate_ideas and not_published_ideas">
+      <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+      <p i18n:translate="">Pour qu'une proposition soit publiée, l'ensemble des idées liées doivent être préalablement publiées. Vous pouvez soit les publier en l'état en cliquant sur « Continuer », soit les modifier en cliquant sur celles qui sont à retravailler.</p>
+        <ol class="list-unstyled not-published-list">
+          <tal:loop repeat="i not_published_ideas">
+            <li><a target="_blank" class="btn btn-info btn-xs" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+          </tal:loop>
+        </ol>
+    </div>
  	<span class="glyphicon glyphicon-info-sign pull-right"></span>
-   <p>Dès que vous avez publié votre proposition, vous ne pouvez plus la modifier seul. Celle-ci devient ouverte à un groupe de travail, qui peut décider soit de l'améliorer à plusieurs, soit de la soumettre en l'état aux autres membres de la plateforme.</p>
+    <div>
+	   <p>Dès que vous avez publié votre proposition, vous ne pouvez plus la modifier seul. Celle-ci devient ouverte à un groupe de travail, qui peut décider soit de l'améliorer à plusieurs, soit de la soumettre en l'état aux autres membres de la plateforme.</p>
 
-	<p>Par défaut, en cliquant sur "Continuer", vous décidez que la proposition doit être améliorée à plusieurs et que le délai du cycle d'amélioration soit fixé à une semaine.</p>
+		<p>Par défaut, en cliquant sur "Continuer", vous décidez que la proposition doit être améliorée à plusieurs et que le délai du cycle d'amélioration soit fixé à une semaine.</p>
 
-	<p>Vous pouvez changer le délai du cycle d'amélioration ou au contraire opter pour soumettre la proposition en l'état.</p>
+		<p>Vous pouvez changer le délai du cycle d'amélioration ou au contraire opter pour soumettre la proposition en l'état.</p>
+   </div>
  </div>
 </div>
 

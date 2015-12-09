@@ -144,17 +144,68 @@ def seeproposals_roles_validation(process, context):
 
 
 def seeproposals_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return 'proposal' in getattr(context, 'content_to_examine', [] ) and\
+           global_user_processsecurity(process, context)
 
 
 class SeeOrderedProposal(InfiniteCardinality):
     style_descriminator = 'admin-action'
-    style_picto = 'glyphicon glyphicon-th-list'
+    style_picto = 'octicon octicon-checklist'
     style_order = -2
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeproposals_roles_validation
     processsecurity_validation = seeproposals_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
+
+
+def seeindeas_roles_validation(process, context):
+    return has_role(role=('Examiner', ))
+
+
+def seeindeas_processsecurity_validation(process, context):
+    return 'idea' in getattr(context, 'content_to_examine', [] ) and\
+           global_user_processsecurity(process, context)
+
+
+class SeeIdeasToExamine(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'octicon octicon-checklist'
+    style_order = -3
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seeindeas_roles_validation
+    processsecurity_validation = seeindeas_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
+
+
+def seeindeasm_roles_validation(process, context):
+    return has_role(role=('Moderator', ))
+
+
+def seeindeasm_processsecurity_validation(process, context):
+    return getattr(context, 'moderate_ideas', False) and\
+           global_user_processsecurity(process, context)
+
+
+class SeeIdeasToModerate(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'octicon octicon-check'
+    style_order = -4
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seeindeasm_roles_validation
+    processsecurity_validation = seeindeasm_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return {}

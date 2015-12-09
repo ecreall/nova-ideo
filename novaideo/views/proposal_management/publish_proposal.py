@@ -31,16 +31,12 @@ class PublishProposalStudyReport(BasicView):
 
     def update(self):
         result = {}
-        not_published_ideas = [i for i in self.context.related_ideas.keys()
-                               if 'published' not in i.state]
-        duration_ballot = self.context.working_group.duration_configuration_ballot
-        vp_ballot = self.context.working_group.vp_ballot
-        duration_ballot_report = duration_ballot.report if duration_ballot else None
-        vp_ballot_report = vp_ballot.report if vp_ballot else None
+        not_published_ideas = []
+        if not self.request.moderate_ideas:
+            not_published_ideas = [i for i in self.context.related_ideas.keys()
+                                   if 'published' not in i.state]
         values = {'context': self.context,
-                  'duration_ballot_report': duration_ballot_report,
-                  'vp_ballot_report': vp_ballot_report,
-                  'ideas': not_published_ideas}
+                  'not_published_ideas': not_published_ideas}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
@@ -145,7 +141,7 @@ class PublishProposalFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishProposalView(MultipleView):
-    title = _("Améliorer la proposition à plusieurs ou la soumettre en l'état")
+    title = _("Améliorer la proposition ou la soumettre en l'état")
     name = 'publishproposal'
     viewid = 'publishproposal'
     template = 'daceui:templates/mergedmultipleview.pt'

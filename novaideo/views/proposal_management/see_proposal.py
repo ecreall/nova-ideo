@@ -85,13 +85,10 @@ class DetailProposalView(BasicView):
 
     def _cant_publish_alert(self, actions):
         if 'draft' in self.context.state:
-            not_published_ideas = [i for i in self.context.related_ideas.keys()
-                                   if 'published' not in i.state]
-            return (not any(a.action.behavior_id == 'publish'
-                            for a in actions.get('global-action', [])),
-                    not_published_ideas)
+            return not any(a.action.behavior_id == 'publish'
+                           for a in actions.get('global-action', []))
 
-        return False, []
+        return False
 
     def update(self):
         self.execute(None)
@@ -136,6 +133,18 @@ class DetailProposalView(BasicView):
                 (ct_participate_max or ct_participate_closed)
 
         title, description, text, add_filigrane = self._get_adapted_text(user)
+        related_ideas = list(self.context.related_ideas.keys())
+        not_published_ideas = [i for i in related_ideas
+                               if 'published' not in i.state]
+        not_favorable_ideas = []
+        idea_to_examine = 'idea' in self.request.content_to_examine
+        if idea_to_examine:
+            not_favorable_ideas = [i for i in related_ideas
+                                   if 'favorable' not in i.state and
+                                   'published' in i.state]
+            if not self.request.moderate_ideas:
+                not_favorable_ideas.extend(not_published_ideas)
+
         result = {}
         values = {
             'proposal': self.context,
@@ -149,6 +158,9 @@ class DetailProposalView(BasicView):
             'voteactions': vote_actions,
             'filigrane': add_filigrane,
             'cant_publish': self._cant_publish_alert(navbars['all_actions']),
+            'idea_to_examine': idea_to_examine,
+            'not_published_ideas': not_published_ideas,
+            'not_favorable_ideas': not_favorable_ideas,
             'ct_participate': ct_participate,
             'ct_participate_closed': ct_participate_closed,
             'ct_participate_max': ct_participate_max,

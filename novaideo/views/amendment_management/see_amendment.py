@@ -81,6 +81,19 @@ class DetailAmendmentView(BasicView):
 
         [keywordsdiff.append({'title': k, 'state': 'ins'})
          for k in self.context.keywords if k not in proposal.keywords]
+
+        related_ideas = list(self.context.get_used_ideas())
+        not_published_ideas = [i for i in related_ideas
+                               if 'published' not in i.state]
+        not_favorable_ideas = []
+        idea_to_examine = 'idea' in self.request.content_to_examine
+        if idea_to_examine:
+            not_favorable_ideas = [i for i in related_ideas
+                                   if 'favorable' not in i.state and
+                                   'published' in i.state]
+            if not self.request.moderate_ideas:
+                not_favorable_ideas.extend(not_published_ideas)
+
         values = {
             'amendment': self.context,
             'state': get_states_mapping(
@@ -92,7 +105,10 @@ class DetailAmendmentView(BasicView):
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body'],
-            'end_explanation': self._end_explanation(navbars['all_actions'])
+            'cant_submit': self._end_explanation(navbars['all_actions']),
+            'idea_to_examine': idea_to_examine,
+            'not_published_ideas': not_published_ideas,
+            'not_favorable_ideas': not_favorable_ideas
         }
         self._add_requirements(user)
         body = self.content(args=values, template=self.template)['body']

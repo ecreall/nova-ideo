@@ -47,12 +47,12 @@
     </span>
   </div>
   <div tal:condition="'examined' in object.state" class="proposal-opinion pull-right"  title="${object.opinion_value}" >
-      <div class="circle red ${(object.opinion != 'unfavorable') and 'off' or 'on' }"></div>
-      <div class="circle orange ${(object.opinion != 'to_study') and 'off' or 'on' }"></div>
-      <div class="circle green ${(object.opinion != 'favorable') and 'off' or 'on'}"></div>
       <div class="proposal-explanation hide-bloc">
         <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
          ${structure:object.explanation}</div>
+      <div class="circle red ${(object.opinion != 'unfavorable') and 'off' or 'on' }"></div>
+      <div class="circle orange ${(object.opinion != 'to_study') and 'off' or 'on' }"></div>
+      <div class="circle green ${(object.opinion != 'favorable') and 'off' or 'on'}"></div>
   </div>
   </div>
 </div>

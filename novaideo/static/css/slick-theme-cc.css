@@ -245,10 +245,10 @@
 }
 
 .vertical-slick-well {
-  background-image: linear-gradient(to bottom, transparent 0px, #dcdcdc 139%);
+  background-image: linear-gradient(to bottom, #fafafa 5%, #dcdcdc 100%);
   border: 0 none !important;
   border-radius: 4px !important;
-  box-shadow: 0 6px 7px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: 0 7px 5px 0 rgba(0, 0, 0, 0.35);
   margin-left: 0;
   margin-right: 0;
   padding: 1px 0 !important;

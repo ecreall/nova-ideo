@@ -8,6 +8,7 @@ from pyramid.view import view_config
 
 from substanced.util import get_oid
 
+from dace.util import find_catalog
 from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView
@@ -115,7 +116,7 @@ class NovaideoAPI(IndexManagementJsonView):
 
         return {'items': [], 'total_count': 0}
 
-    def find_entity(self, interfaces=[], states=['published', 'active']):
+    def find_entity(self, interfaces=[], states=['published', 'active'], query=None):
         name = self.params('q')
         if name:
             user = get_current()
@@ -125,14 +126,16 @@ class NovaideoAPI(IndexManagementJsonView):
                     interfaces=interfaces,
                     metadata_filter={
                         'states': states},
-                    user=user)
+                    user=user,
+                    add_query=query)
             else:
                 result = find_entities(
                     interfaces=interfaces,
                     metadata_filter={
                         'states': states},
                     user=user,
-                    text_filter={'text_to_search': name})
+                    text_filter={'text_to_search': name},
+                    add_query=query)
 
             total_count = len(result)
             if total_count >= start:
@@ -154,7 +157,10 @@ class NovaideoAPI(IndexManagementJsonView):
         return self.find_entity(interfaces=[ICorrelableEntity])
 
     def find_ideas(self):
-        return self.find_entity(interfaces=[Iidea], states=[])
+        novaideo_index = find_catalog('novaideo')
+        is_workable_index = novaideo_index['is_workable']
+        query = is_workable_index.eq(True)
+        return self.find_entity(interfaces=[Iidea], states=[], query=query)
 
     def filter_result(self):
         filter_source = self.params('filter_source')

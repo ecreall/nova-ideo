@@ -1,22 +1,28 @@
 <div tal:replace="structure navbar_body"/>
 <hr class="soften">
 <div class="media-body content-title-body"
-     tal:define="cant_publish_condition cant_publish[0];
-                 ideas_not_published cant_publish[1]"
      i18n:domain="novaideo">
-  <div tal:condition="cant_publish_condition" role="alert" class="alert alert-info alert-dismissible">
+  <div tal:condition="cant_publish" role="alert" class="alert alert-info alert-dismissible">
      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
      <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-     <div tal:omit-tag="" tal:condition="not ideas_not_published">
+     <div tal:omit-tag="" tal:condition="not (request.moderate_ideas and not_published_ideas) and not not_favorable_ideas">
       <span  i18n:translate="">Vous avez atteint la limite de participations autorisées. Afin de pouvoir soumettre votre proposition, veuillez démissionner de l'un de</span> <a tal:attributes="href request.resource_url(request.virtual_root, '@@seemyparticipations')"  i18n:translate="">vos groupes de travail actuels</a>.
      </div>
-     <div tal:omit-tag="" tal:condition="ideas_not_published">
+     <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
       <span i18n:translate="">Pour qu'une proposition soit publiée, l'ensemble de ses idées liées doivent être préalablement publiées par les modérateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
-      <ol class="list-unstyled">
-        <tal:loop repeat="i ideas_not_published">
-          <li><a class="btn btn-warning btn-sm" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+      <ol class="list-unstyled not-published-list">
+        <tal:loop repeat="i not_published_ideas">
+          <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
         </tal:loop>
-      <ol>
+      </ol>
+     </div>
+     <div tal:omit-tag="" tal:condition="not_favorable_ideas and idea_to_examine">
+      <span i18n:translate="">Pour qu'une proposition soit publiée, l'ensemble de ses idées liées doivent être préalablement publiées et désignées comme favorables par les examinateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
+      <ol class="list-unstyled not-published-list">
+        <tal:loop repeat="i not_favorable_ideas">
+          <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+        </tal:loop>
+      </ol>
      </div>
   </div>
   <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>

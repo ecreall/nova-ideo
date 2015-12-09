@@ -37,6 +37,9 @@ from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea,
     CommentIdea,
     Associate as AssociateIdea)
+
+from novaideo.content.processes.proposal_management.behaviors import (
+    publish_ideas)
 from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
 from novaideo.event import CorrelableRemoved
@@ -315,10 +318,22 @@ def pub_roles_validation(process, context):
 
 
 def pub_processsecurity_validation(process, context):
-    return not context.explanations or \
+    root = getSite()
+    not_published_ideas = False
+    if getattr(root, 'moderate_ideas', False):
+        not_published_ideas = any('published' not in i.state
+                                  for i in context.get_used_ideas())
+
+    not_favorable_ideas = False
+    if 'idea' in getattr(root, 'content_to_examine', []):
+        not_favorable_ideas = any('favorable' not in i.state
+                                  for i in context.get_used_ideas())
+
+    return not (not_published_ideas or not_favorable_ideas) and \
+           (not context.explanations or \
            not(context.explanations and \
                any(e['intention'] is None 
-                   for e in context.explanations.values())) and \
+                   for e in context.explanations.values()))) and \
            global_user_processsecurity(process, context)
 
 
@@ -392,13 +407,6 @@ class SubmitAmendment(InfiniteCardinality):
         amendment.explanations = PersistentDict(explanations)
         amendment.text_diff = text_diff
         amendment.reindex()
-        self._publish_ideas(amendment)
-
-    def _publish_ideas(self, amendment):
-        for idea in [i for i in amendment.get_used_ideas()
-                     if 'published' not in i.state]:
-            idea.state = PersistentList(['published'])
-            idea.reindex()
 
     def start(self, context, request, appstruct, **kw):
         single_amendment = appstruct['single_amendment']
@@ -416,6 +424,13 @@ class SubmitAmendment(InfiniteCardinality):
 
         context.state.remove('draft')
         context.state.remove('explanation')
+        not_published_ideas = []
+        if not request.moderate_ideas and\
+           'idea' not in request.content_to_examine:
+            not_published_ideas = [i for i in context.get_used_ideas()
+                                   if 'published' not in i.state]
+            publish_ideas(not_published_ideas, request)
+
         if len(groups) == 1:
             group = groups[0]
             data = self._get_explanation_data(context, group)
@@ -427,7 +442,6 @@ class SubmitAmendment(InfiniteCardinality):
                 context, request)
             context.explanations = PersistentDict(explanations)
             context.text_diff = text_diff
-            self._publish_ideas(context)
         else:
             for group in groups:
                 self._add_sub_amendment(context, request, group)
@@ -436,8 +450,9 @@ class SubmitAmendment(InfiniteCardinality):
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        not_published_ideas.extend(context)
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, not_published_ideas, get_current()))
         return {}
 
     def redirect(self, context, request, **kw):

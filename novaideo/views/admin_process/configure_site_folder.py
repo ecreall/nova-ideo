@@ -41,8 +41,8 @@ class ConfigureSiteView(FormView):
     title = _('Configure the site')
     schema = select(NovaIdeoApplicationSchema(
                         factory=NovaIdeoApplication,
-                        editable=True,
-                        omit=('work_conf',)),
+                        editable=True),
+                        # omit=('work_conf',)),
                     ['work_conf',
                      'user_conf',
                      'keywords_conf',
@@ -75,9 +75,9 @@ class ConfigureSiteView(FormView):
         templates = sorted(templates, key=lambda e: e['mail_id'])
         data['mail_conf'] = {'mail_templates': templates}
         data[OBJECT_OID] = str(get_oid(self.context))
-        deadlines = getattr(self.context, 'deadlines', [])
-        if deadlines:
-            data['work_conf']['deadline'] = deadlines[-1]
+        # deadlines = getattr(self.context, 'deadlines', [])
+        # if deadlines:
+        #     data['work_conf']['deadline'] = deadlines[-1]
 
         return data
 

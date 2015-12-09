@@ -50,7 +50,7 @@ def mysubscriber_object_published(event):
     mail_template = root.get_mail_template('alert_new_content')
     subject = mail_template['subject'].format(subject_title=content.title)
     localizer = request.localizer
-    for member in users:
+    for member in [m for m in users if getattr(m, 'email', '')]:
         message = mail_template['template'].format(
             recipient_title=localizer.translate(_(getattr(member,
                                                         'user_title', ''))),

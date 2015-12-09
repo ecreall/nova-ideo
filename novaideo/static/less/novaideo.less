@@ -99,9 +99,16 @@ button.navbar-toggle
     background-color: transparent !important
 }
 
+.navbar-brand > img {
+    display: inline;
+}
 
-.navbar-deault .navbar-brand {
-  font-size: 15px;
+.navbar-brand{
+    font-size: 15px;
+    max-height: 40px;
+    text-shadow: none;
+    min-width: 180px
+
 }
 
 .user-nav-top{
@@ -208,18 +215,11 @@ button.navbar-toggle
 }
 
 .globe-logo{
-  margin-top: -12px;
+  margin-top: -15px;
   vertical-align: top;
   height: 40px;
 }
 
-.navbar-brand > img{
-    display: inline;
-}
-
-.navbar-header a.navbar-brand{
-   padding-top: 10px
-}
 
 .navbar .btn.add-idea-btn{
     width: 100%;
@@ -1495,13 +1495,15 @@ ins {
     overflow: auto;
 }
 
+.not-published-list{
+   margin-top: 10px;    
+}
 
 .proposal-explanation{
     background-color: window;
     border: 1px solid gray;
     border-radius: 9px;
     box-shadow: 0 7px 11px #888888;
-    margin-top: -185px;
     max-width: 400px;
     padding: 9px;
     position: absolute;
@@ -1695,9 +1697,11 @@ ins {
    .navbar.navbar-default.navbar-fixed-top {
      height: auto;
    }
-   .navbar-brand {
-        height: 40px !important;
-    }
+
+   .navbar-brand{
+      padding: 9px 0px !important;
+      font-size: 13px !important;
+   }
 
    .novaideo-alert-container .novaideo-alert-left, .novaideo-right{
         padding-right: 15px

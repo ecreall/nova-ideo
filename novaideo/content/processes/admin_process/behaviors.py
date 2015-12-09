@@ -34,17 +34,17 @@ class ConfigureSite(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         site = appstruct['_object_data']
-        work_conf = appstruct.pop('work_conf')
-        site.set_data(work_conf)
+        # work_conf = appstruct.pop('work_conf')
+        # site.set_data(work_conf)
         site.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        deadline = work_conf.pop('deadline', None)
-        if deadline:
-            deadline = deadline.replace(tzinfo=pytz.UTC)
-            if site.deadlines:
-                current = site.deadlines[-1]
-                site.deadlines.remove(current)
+        # deadline = work_conf.pop('deadline', None)
+        # if deadline:
+        #     deadline = deadline.replace(tzinfo=pytz.UTC)
+        #     if site.deadlines:
+        #         current = site.deadlines[-1]
+        #         site.deadlines.remove(current)
 
-            site.deadlines.append(deadline)
+        #     site.deadlines.append(deadline)
 
         site.reindex()
         return {}

@@ -60,6 +60,9 @@ class ISearchableObject(Interface):
     def relevant_data():
         pass
 
+    def is_workable():
+        pass
+
 
 @indexview_defaults(catalog_name='novaideo')
 class NovaideoCatalogViews(object):
@@ -187,6 +190,20 @@ class NovaideoCatalogViews(object):
 
         return relevant_data
 
+    @indexview()
+    def is_workable(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        is_workable = adapter.is_workable()
+        if is_workable is None:
+            return default
+
+        return is_workable
+
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -196,6 +213,7 @@ class NovaideoIndexes(object):
     created_at = Field()
     modified_at = Field()
     release_date = Field()
+    is_workable = Field()
     # publication_start_date = Field()
     # publication_end_date = Field()
     object_id = Field()
@@ -256,3 +274,6 @@ class SearchableObject(Adapter):
             return None
 
         return relevant_data
+
+    def is_workable(self):
+        return getattr(self.context, 'is_workable', False)

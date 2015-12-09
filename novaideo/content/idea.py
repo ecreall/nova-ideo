@@ -9,6 +9,7 @@ import colander
 from webob.multidict import MultiDict
 from collections import OrderedDict
 from zope.interface import implementer
+from pyramid.threadlocal import get_current_request
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -110,6 +111,19 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)
         self.set_data(kwargs)
+
+    @property
+    def is_workable(self):
+        request = get_current_request()
+        if 'idea' in request.content_to_examine and \
+           'favorable' in self.state:
+            return True
+
+        return False
+
+    @property
+    def opinion_value(self):
+        return OPINIONS.get(getattr(self, 'opinion', None), None)
 
     @property
     def related_proposals(self):

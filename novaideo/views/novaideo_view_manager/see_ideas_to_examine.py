@@ -13,7 +13,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
-    SeeOrderedProposal)
+    SeeIdeasToExamine)
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import get_states_mapping
@@ -23,52 +23,33 @@ from novaideo.views.filter import (
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""No proposal found"""),
-    '1': _(u"""One proposal found"""),
-    '*': _(u"""${nember} proposals found""")
+    '0': _(u"""No idea found"""),
+    '1': _(u"""One idea found"""),
+    '*': _(u"""${nember} ideas found""")
     }
 
 
-def sort_proposals(proposals):
-    ordered_proposals = [(proposal,
-                          (len(proposal.tokens_support) - \
-                           len(proposal.tokens_opposition))) \
-                         for proposal in proposals]
-    groups = {}
-    for proposal in ordered_proposals:
-        if groups.get(proposal[1], None):
-            groups[proposal[1]].append(proposal)
-        else:
-            groups[proposal[1]] = [proposal]
-
-    for group_key in list(groups.keys()):
-        sub_proposals = list(groups[group_key])
-        groups[group_key] = sorted(sub_proposals,
-                    key=lambda proposal: len(proposal[0].tokens_support),
-                    reverse=True)
-
-    groups = sorted(groups.items(), key=lambda value: value[0], reverse=True)
-    return [proposal[0] for sublist in groups \
-           for proposal in sublist[1]]
-
-
 @view_config(
-    name='proposalstoexamine',
+    name='seeideastoexamine',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class SeeOrderedProposalView(BasicView):
+class SeeIdeasToExamineView(BasicView):
     title = _('Proposals to examine')
-    name = 'proposalstoexamine'
-    behaviors = [SeeOrderedProposal]
+    name = 'seeideastoexamine'
+    behaviors = [SeeIdeasToExamine]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
-    viewid = 'proposalstoexamine'
+    viewid = 'seeideastoexamine'
 
     def _add_filter(self, user):
         def source(**args):
             filters = [
                 {'metadata_filter': {
-                    'content_types': ['proposal'],
+                    'negation': True,
+                    'states': ['examined']
+                }},
+                {'metadata_filter': {
+                    'content_types': ['idea'],
                     'states': ['published']
                 }}
             ]
@@ -91,19 +72,21 @@ class SeeOrderedProposalView(BasicView):
         filter_form, filter_data = self._add_filter(user)
         filters = [
             {'metadata_filter': {
-                'content_types': ['proposal'],
+                'negation': True,
+                'states': ['examined']
+            }},
+            {'metadata_filter': {
+                'content_types': ['idea'],
                 'states': ['published']
             }}
         ]
         args = {}
         args = merge_with_filter_view(self, args)
         args['request'] = self.request
-        objects = find_entities(
-            user=user,
-            filters=filters,
-            **args)
-        objects = sort_proposals(objects)
-        url = self.request.resource_url(self.context, 'proposalstoexamine')
+        objects = find_entities(user=user,
+                                filters=filters,
+                                **args)
+        url = self.request.resource_url(self.context, 'seeideastoexamine')
         batch = Batch(objects, self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
@@ -140,8 +123,8 @@ class SeeOrderedProposalView(BasicView):
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
-    {SeeOrderedProposal: SeeOrderedProposalView})
+    {SeeIdeasToExamine: SeeIdeasToExamineView})
 
 
 FILTER_SOURCES.update(
-    {SeeOrderedProposalView.name: SeeOrderedProposalView})
+    {SeeIdeasToExamineView.name: SeeIdeasToExamineView})

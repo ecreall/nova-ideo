@@ -255,8 +255,7 @@ class SubmitIdea(InfiniteCardinality):
     state_validation = submit_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('to work')
-        context.state.append('submited')
+        context.state = PersistentList(['submited'])
         context.reindex()
         return {}
 
@@ -295,28 +294,29 @@ class ArchiveIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         explanation = appstruct['explanation']
-        context.state.remove('submited')
-        context.state.append('archived')
+        context.state = PersistentList(['archived'])
         context.reindex()
         user = context.author
-        mail_template = root.get_mail_template('archive_idea_decision')
-        localizer = request.localizer
-        subject = mail_template['subject'].format(subject_title=context.title)
-        message = mail_template['template'].format(
-            recipient_title=localizer.translate(
-                _(getattr(user, 'user_title', ''))),
-            recipient_first_name=getattr(user, 'first_name', user.name),
-            recipient_last_name=getattr(user, 'last_name', ''),
-            subject_title=context.title,
-            subject_url=request.resource_url(context, "@@index"),
-            explanation=explanation,
-            novaideo_title=root.title
-        )
-        mailer_send(
-            subject=subject,
-            recipients=[user.email],
-            sender=root.get_site_sender(),
-            body=message)
+        if getattr(user, 'email', ''):
+            mail_template = root.get_mail_template('archive_idea_decision')
+            localizer = request.localizer
+            subject = mail_template['subject'].format(subject_title=context.title)
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(user, 'user_title', ''))),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name', ''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index"),
+                explanation=explanation,
+                novaideo_title=root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[user.email],
+                sender=root.get_site_sender(),
+                body=message)
+
         return {}
 
     def redirect(self, context, request, **kw):
@@ -337,27 +337,28 @@ class PublishIdeaModeration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        context.state.remove('submited')
-        context.state.append('published')
+        context.state = PersistentList(['published'])
         context.reindex()
         user = context.author
-        localizer = request.localizer
-        mail_template = root.get_mail_template('publish_idea_decision')
-        subject = mail_template['subject'].format(subject_title=context.title)
-        message = mail_template['template'].format(
-            recipient_title=localizer.translate(
-                _(getattr(user, 'user_title', ''))),
-            recipient_first_name=getattr(user, 'first_name', user.name),
-            recipient_last_name=getattr(user, 'last_name', ''),
-            subject_title=context.title,
-            subject_url=request.resource_url(context, "@@index"),
-            novaideo_title=root.title
-        )
-        mailer_send(
-            subject=subject,
-            recipients=[user.email],
-            sender=root.get_site_sender(),
-            body=message)
+        if getattr(user, 'email', ''):
+            localizer = request.localizer
+            mail_template = root.get_mail_template('publish_idea_decision')
+            subject = mail_template['subject'].format(subject_title=context.title)
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(user, 'user_title', ''))),
+                recipient_first_name=getattr(user, 'first_name', user.name),
+                recipient_last_name=getattr(user, 'last_name', ''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index"),
+                novaideo_title=root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[user.email],
+                sender=root.get_site_sender(),
+                body=message)
+
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
@@ -402,8 +403,7 @@ class PublishIdea(InfiniteCardinality):
     state_validation = pub_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('to work')
-        context.state.append('published')
+        context.state = PersistentList(['published'])
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
@@ -437,8 +437,7 @@ class AbandonIdea(InfiniteCardinality):
     state_validation = ab_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('to work')
-        context.state.append('archived')
+        context.state = PersistentList(['archived'])
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(
@@ -473,8 +472,7 @@ class RecuperateIdea(InfiniteCardinality):
     state_validation = re_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('archived')
-        context.state.append('to work')
+        context.state = PersistentList(['to work'])
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(
@@ -567,33 +565,35 @@ class PresentIdea(InfiniteCardinality):
             recipient_last_name = ''
             member_email = ''
             if not isinstance(member, basestring):
+                member_email = getattr(member, 'email', '')
                 recipient_title = localizer.translate(
                     _(getattr(member, 'user_title', '')))
                 recipient_first_name = getattr(
                     member, 'first_name', member.name)
                 recipient_last_name = getattr(
                     member, 'last_name', '')
-                member_email = member.email
             else:
                 member_email = member
 
-            message = presentation_message.format(
-                recipient_title=recipient_title,
-                recipient_first_name=recipient_first_name,
-                recipient_last_name=recipient_last_name,
-                subject_url=url,
-                subject_title=getattr(context, 'title', context.name),
-                my_title=user_title,
-                my_first_name=user_first_name,
-                my_last_name=user_last_name,
-                novaideo_title=request.root.title
-            )
-            mailer_send(
-                subject=subject,
-                recipients=[member_email],
-                sender=request.root.get_site_sender(),
-                body=message)
-            if member is not user:
+            if member_email:
+                message = presentation_message.format(
+                    recipient_title=recipient_title,
+                    recipient_first_name=recipient_first_name,
+                    recipient_last_name=recipient_last_name,
+                    subject_url=url,
+                    subject_title=getattr(context, 'title', context.name),
+                    my_title=user_title,
+                    my_first_name=user_first_name,
+                    my_last_name=user_last_name,
+                    novaideo_title=request.root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[member_email],
+                    sender=request.root.get_site_sender(),
+                    body=message)
+
+            if member is not user and member_email:
                 context._email_persons_contacted.append(
                     member_email)
 
@@ -710,33 +710,32 @@ class MakeOpinion(InfiniteCardinality):
         context.opinion = appstruct['opinion']
         context.explanation = appstruct['explanation']
         context.state.insert(0, 'examined')
-        if 'favorable' != context.opinion and\
-           'published' in context.state:
-            context.state.remove('published')
-
+        context.state.append(context.opinion)
         context.reindex()
         member = context.author
-        url = request.resource_url(context, "@@index")
-        root = getSite()
-        mail_template = root.get_mail_template('opinion_idea')
-        subject = mail_template['subject'].format(subject_title=context.title)
-        localizer = request.localizer
-        message = mail_template['template'].format(
-            recipient_title=localizer.translate(
-                _(getattr(member, 'user_title', ''))),
-            recipient_first_name=getattr(member, 'first_name', member.name),
-            recipient_last_name=getattr(member, 'last_name', ''),
-            subject_url=url,
-            subject_title=context.title,
-            opinion=localizer.translate(_(context.opinion)),
-            explanation=context.explanation,
-            novaideo_title=root.title
-        )
-        mailer_send(
-            subject=subject,
-            recipients=[member.email],
-            sender=root.get_site_sender(),
-            body=message)
+        if getattr(member, 'email', ''):
+            url = request.resource_url(context, "@@index")
+            root = getSite()
+            mail_template = root.get_mail_template('opinion_idea')
+            subject = mail_template['subject'].format(subject_title=context.title)
+            localizer = request.localizer
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(member, 'user_title', ''))),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name', ''),
+                subject_url=url,
+                subject_title=context.title,
+                opinion=localizer.translate(_(context.opinion)),
+                explanation=context.explanation,
+                novaideo_title=root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[member.email],
+                sender=root.get_site_sender(),
+                body=message)
+
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}

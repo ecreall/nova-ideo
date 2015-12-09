@@ -20,12 +20,12 @@
     </dl>
     <span><span i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a></span>
     <div tal:condition="'examined' in object.state" class="proposal-opinion pull-right"  title="${object.opinion_value}" >
-      <div class="circle red ${(object.opinion != 'unfavorable') and 'off' or 'on' }"></div>
-      <div class="circle orange ${(object.opinion != 'to_study') and 'off' or 'on' }"></div>
-      <div class="circle green ${(object.opinion != 'favorable') and 'off' or 'on'}"></div>
       <div class="proposal-explanation hide-bloc">
         <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
          ${structure:object.explanation}</div>
+      <div class="circle red ${(object.opinion != 'unfavorable') and 'off' or 'on' }"></div>
+      <div class="circle orange ${(object.opinion != 'to_study') and 'off' or 'on' }"></div>
+      <div class="circle green ${(object.opinion != 'favorable') and 'off' or 'on'}"></div>
     </div>
   </div>
 </div>

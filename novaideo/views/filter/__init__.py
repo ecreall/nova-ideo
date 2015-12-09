@@ -1083,6 +1083,9 @@ def get_entities_by_title(interfaces, title, **args):
 
 
 def get_users_by_keywords(keywords):
+    if not keywords:
+        return []
+
     return find_entities(
         metadata_filter={'content_types': ['person'],
                          'states': ['active'],

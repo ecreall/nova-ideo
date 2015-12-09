@@ -194,15 +194,16 @@ class DuplicableEntity(Entity):
 def keywords_choice(node, kw):
     root = getSite()
     values = [(i, i) for i in sorted(root.keywords)]
+    create = getattr(root, 'can_add_keywords', True)
     return Select2Widget(max_len=5,
                          values=values,
-                         create=True,
+                         create=create,
                          multiple=True)
 
 
 class SearchableEntitySchema(Schema):
 
-    keywords =  colander.SchemaNode(
+    keywords = colander.SchemaNode(
         colander.Set(),
         widget=keywords_choice,
         title=_('Keywords'),
@@ -225,6 +226,10 @@ class SearchableEntity(Entity):
     @property
     def is_published(self):
         return 'published' in self.state
+
+    @property
+    def is_workable(self):
+        return self.is_published
 
     @property
     def relevant_data(self):
