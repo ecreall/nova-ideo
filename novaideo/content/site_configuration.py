@@ -56,6 +56,13 @@ class WorkParamsConfigurationSchema(Schema):
         missing=[]
     )
 
+    content_to_support = colander.SchemaNode(
+        colander.Set(),
+        widget=content_types_choices,
+        title=_('Contents to support'),
+        missing=[]
+    )
+
     moderate_ideas = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
@@ -214,7 +221,8 @@ class KeywordsConfSchema(Schema):
         widget=deform.widget.CheckboxWidget(),
         label=_('Authorize the addition of keywords'),
         title='',
-        missing=False
+        default=True,
+        missing=True
     )
 
 

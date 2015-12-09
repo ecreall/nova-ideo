@@ -29,13 +29,35 @@ CONTENTS_MESSAGES = {
     }
 
 
+def sort_ideas(ideas):
+    ordered_ideas = [(idea,
+                          (len(idea.tokens_support) - \
+                           len(idea.tokens_opposition))) \
+                         for idea in ideas]
+    groups = {}
+    for idea in ordered_ideas:
+        if groups.get(idea[1], None):
+            groups[idea[1]].append(idea)
+        else:
+            groups[idea[1]] = [idea]
+
+    for group_key in list(groups.keys()):
+        sub_ideas = list(groups[group_key])
+        groups[group_key] = sorted(sub_ideas,
+                    key=lambda idea: len(idea[0].tokens_support),
+                    reverse=True)
+    groups = sorted(groups.items(), key=lambda value: value[0], reverse=True)
+    return [idea[0] for sublist in groups
+            for idea in sublist[1]]
+
+
 @view_config(
     name='seeideastoexamine',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeIdeasToExamineView(BasicView):
-    title = _('Proposals to examine')
+    title = _('Ideas to examine')
     name = 'seeideastoexamine'
     behaviors = [SeeIdeasToExamine]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
@@ -86,6 +108,9 @@ class SeeIdeasToExamineView(BasicView):
         objects = find_entities(user=user,
                                 filters=filters,
                                 **args)
+        if 'idea' in self.request.content_to_support:
+            objects = sort_ideas(objects)
+
         url = self.request.resource_url(self.context, 'seeideastoexamine')
         batch = Batch(objects, self.request,
                       url=url,

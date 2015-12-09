@@ -8,6 +8,7 @@
 import colander
 from webob.multidict import MultiDict
 from collections import OrderedDict
+from persistent.list import PersistentList
 from zope.interface import implementer
 from pyramid.threadlocal import get_current_request
 
@@ -107,6 +108,8 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')
     attached_files = CompositeMultipleProperty('attached_files')
+    tokens_opposition = CompositeMultipleProperty('tokens_opposition')
+    tokens_support = CompositeMultipleProperty('tokens_support')
 
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)
@@ -131,6 +134,16 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
         return MultiDict([(c.source, c) for c in self.target_correlations
                           if c.type == CorrelationType.solid and
                           'related_proposals' in c.tags])
+
+    @property
+    def tokens(self):
+        result = list(self.tokens_opposition)
+        result.extend(list(self.tokens_support))
+        return result
+
+    def init_support_history(self):
+        if not hasattr(self, '_support_history'):
+            setattr(self, '_support_history', PersistentList())
 
     def presentation_text(self, nb_characters=400):
         return getattr(self, 'text', "")[:nb_characters]+'...'

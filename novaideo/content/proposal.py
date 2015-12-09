@@ -134,8 +134,6 @@ class Proposal(Commentable,
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
         self.set_data(kwargs)
-        # [(user_oid, date, support_type), ...], support_type = {1:support, 0:oppose, -1:withdraw}
-        self._support_history = PersistentList()
         self._amendments_counter = 1
 
     @property
@@ -171,6 +169,11 @@ class Proposal(Commentable,
             return root.get_default_work_mode()
 
         return None
+
+    def init_support_history(self):
+        # [(user_oid, date, support_type), ...], support_type = {1:support, 0:oppose, -1:withdraw}
+        if not hasattr(self, '_support_history'):
+            setattr(self, '_support_history', PersistentList())
 
     def get_more_contents_criteria(self):
         "return specific query, filter values"

@@ -606,6 +606,10 @@ def support_roles_validation(process, context):
 
 
 def support_processsecurity_validation(process, context):
+    request = get_current_request()
+    if 'proposal' not in request.content_to_support:
+        return False
+
     user = get_current()
     return getattr(user, 'tokens', []) and  \
            not (user in [t.owner for t in context.tokens]) and \
@@ -637,6 +641,7 @@ class SupportProposal(InfiniteCardinality):
             token = user.tokens[-1]
 
         context.addtoproperty('tokens_support', token)
+        context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
         request.registry.notify(ActivityExecuted(self, [context], user))
@@ -668,6 +673,7 @@ class OpposeProposal(InfiniteCardinality):
             token = user.tokens[-1]
 
         context.addtoproperty('tokens_opposition', token)
+        context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
         request.registry.notify(ActivityExecuted(self, [context], user))
@@ -775,6 +781,7 @@ class WithdrawToken(InfiniteCardinality):
         token = user_tokens[-1]
         context.delfromproperty(token.__property__, token)
         user.addtoproperty('tokens', token)
+        context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
         request.registry.notify(ActivityExecuted(self, [context], user))

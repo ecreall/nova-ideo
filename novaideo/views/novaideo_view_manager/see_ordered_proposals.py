@@ -102,7 +102,9 @@ class SeeOrderedProposalView(BasicView):
             user=user,
             filters=filters,
             **args)
-        objects = sort_proposals(objects)
+        if 'proposal' in self.request.content_to_support:
+            objects = sort_proposals(objects)
+
         url = self.request.resource_url(self.context, 'proposalstoexamine')
         batch = Batch(objects, self.request,
                       url=url,

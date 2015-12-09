@@ -51,12 +51,17 @@ def content_to_examine(request):
     return getattr(request.root, 'content_to_examine', [])
 
 
+def content_to_support(request):
+    return getattr(request.root, 'content_to_support', [])
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     config = Configurator(settings=settings, root_factory=root_factory)
     config.add_request_method(moderate_ideas, reify=True)
     config.add_request_method(content_to_examine, reify=True)
+    config.add_request_method(content_to_support, reify=True)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

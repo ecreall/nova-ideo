@@ -15,6 +15,8 @@ from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 from pyramid.threadlocal import get_current_request
 
+from substanced.util import get_oid
+
 from dace.util import (
     getSite,
     getBusinessAction,
@@ -712,6 +714,9 @@ class MakeOpinion(InfiniteCardinality):
         context.state.insert(0, 'examined')
         context.state.append(context.opinion)
         context.reindex()
+        for token in list(context.tokens):
+            token.owner.addtoproperty('tokens', token)
+
         member = context.author
         if getattr(member, 'email', ''):
             url = request.resource_url(context, "@@index")
@@ -743,6 +748,106 @@ class MakeOpinion(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
+
+def support_roles_validation(process, context):
+    return has_role(role=('Member',))
+
+
+def support_processsecurity_validation(process, context):
+    user = get_current()
+    request = get_current_request()
+    if 'idea' not in request.content_to_support:
+        return False
+
+    return getattr(user, 'tokens', []) and  \
+           not (user in [t.owner for t in context.tokens]) and \
+           global_user_processsecurity(process, context)
+
+
+def support_state_validation(process, context):
+    return 'published' in context.state and \
+        'examined' not in context.state
+
+
+class SupportIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-thumbs-up'
+    style_order = 4
+    context = Iidea
+    roles_validation = support_roles_validation
+    processsecurity_validation = support_processsecurity_validation
+    state_validation = support_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        token = user.tokens[-1]
+        context.addtoproperty('tokens_support', token)
+        context.init_support_history()
+        context._support_history.append(
+            (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
+        request.registry.notify(ActivityExecuted(self, [context], user))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class OpposeIdea(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-thumbs-down'
+    style_order = 5
+    context = Iidea
+    roles_validation = support_roles_validation
+    processsecurity_validation = support_processsecurity_validation
+    state_validation = support_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        token = user.tokens[-1]
+        context.addtoproperty('tokens_opposition', token)
+        context.init_support_history()
+        context._support_history.append(
+            (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
+        request.registry.notify(ActivityExecuted(self, [context], user))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def withdrawt_processsecurity_validation(process, context):
+    user = get_current()
+    return any((t.owner is user) for t in context.tokens) and \
+           global_user_processsecurity(process, context)
+
+
+class WithdrawToken(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-share-alt'
+    style_order = 6
+    context = Iidea
+    roles_validation = support_roles_validation
+    processsecurity_validation = withdrawt_processsecurity_validation
+    state_validation = support_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        user_tokens = [t for t in context.tokens
+                       if t.owner is user]
+        token = user_tokens[-1]
+        context.delfromproperty(token.__property__, token)
+        user.addtoproperty('tokens', token)
+        context.init_support_history()
+        context._support_history.append(
+            (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
+        request.registry.notify(ActivityExecuted(self, [context], user))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 #TODO behaviors
 
 VALIDATOR_BY_CONTEXT[Idea] = CommentIdea
