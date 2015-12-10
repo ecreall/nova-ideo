@@ -34,7 +34,7 @@ class ImproveProposalView(FormView):
                      'keywords', 
                      'text'])
     requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/improve_proposal.js']}
+                    'js_links':['novaideo:static/js/proposal_management.js']}
 
     def default_data(self):
         return self.context

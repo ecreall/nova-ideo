@@ -27,16 +27,20 @@ from novaideo import _
 class PublishProposalStudyReport(BasicView):
     title = _('Alert for submission')
     name = 'alertforexplanation'
-    template ='novaideo:views/proposal_management/templates/alert_publish_proposal.pt'
+    template = 'novaideo:views/proposal_management/templates/alert_publish_proposal.pt'
 
     def update(self):
         result = {}
+        root = getSite()
+        modes = list(root.get_work_modes().keys())
         not_published_ideas = []
         if not self.request.moderate_ideas:
             not_published_ideas = [i for i in self.context.related_ideas.keys()
                                    if 'published' not in i.state]
         values = {'context': self.context,
-                  'not_published_ideas': not_published_ideas}
+                  'not_published_ideas': not_published_ideas,
+                  'is_unique_choice': len(modes) == 1 and 'wiki' in modes}
+
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
@@ -52,7 +56,9 @@ def subjects_choice(ballot_report):
             return _(ob)
 
     values = [(i, get_title(i)) for i in subjects]
-    return Select2Widget(values=values)
+    return Select2Widget(
+        values=values,
+        item_css_class='work-duration')
 
 
 @colander.deferred
@@ -62,7 +68,9 @@ def mode_choice(node, kw):
     modes = list(root.get_work_modes().items())
     modes = sorted(modes, key=lambda e: e[1].order)
     values = [(key, value.title) for key, value in modes]
-    return RadioChoiceWidget(values=values)
+    return RadioChoiceWidget(
+        values=values,
+        item_css_class='work-mode')
 
 
 @colander.deferred
@@ -109,6 +117,8 @@ class PublishProposalFormView(FormView):
     formid = 'publishproposalform'
     validate_behaviors = False
     schema = PublishProposalSchema()
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/proposal_management.js']}
 
     def before_update(self):
         if getattr(self.context, 'work_mode', None):

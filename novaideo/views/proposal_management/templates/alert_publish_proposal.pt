@@ -1,4 +1,4 @@
-<div  i18n:domain="novaideo">
+<div  i18n:domain="novaideo" id="publication-data" data-is_unique="${'true' if is_unique_choice else 'false'}">
  <div class="alert alert-info">
  	<div tal:omit-tag="" tal:condition="not request.moderate_ideas and not_published_ideas">
       <span class="glyphicon glyphicon-warning-sign pull-right"></span>
