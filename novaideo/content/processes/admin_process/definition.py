@@ -18,7 +18,8 @@ from dace.objectofcollaboration.services.processdef_container import (
 from pontus.core import VisualisableElement
 
 from .behaviors import (
-    ConfigureSite
+    ConfigureSite,
+    ManageKeywords
     )
 from novaideo import _
 
@@ -41,6 +42,10 @@ class AdminProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Configure the site"),
                                        title=_("Configure"),
                                        groups=[_('More')]),
+                managekeywords = ActivityDefinition(contexts=[ManageKeywords],
+                                       description=_("Manage keywords"),
+                                       title=_("Manage keywords"),
+                                       groups=[_('More')]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -48,5 +53,7 @@ class AdminProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'configure_site'),
                 TransitionDefinition('configure_site', 'eg'),
+                TransitionDefinition('pg', 'managekeywords'),
+                TransitionDefinition('managekeywords', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
