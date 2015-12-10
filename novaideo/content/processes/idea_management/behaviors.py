@@ -12,6 +12,7 @@ Idea management process definition.
 import datetime
 import pytz
 from persistent.list import PersistentList
+from persistent.dict import PersistentDict
 from pyramid.httpexceptions import HTTPFound
 from pyramid.threadlocal import get_current_request
 
@@ -37,7 +38,9 @@ from novaideo.content.idea import Idea
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
 from novaideo.utilities.util import connect
-from novaideo.event import ObjectPublished, CorrelableRemoved
+from novaideo.event import (
+    ObjectPublished, CorrelableRemoved,
+    ObjectModified)
 
 
 try:
@@ -709,10 +712,10 @@ class MakeOpinion(InfiniteCardinality):
     state_validation = opinion_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.opinion = appstruct['opinion']
-        context.explanation = appstruct['explanation']
+        appstruct.pop('_csrf_token_')
+        context.opinion = PersistentDict(appstruct)
         context.state.insert(0, 'examined')
-        context.state.append(context.opinion)
+        context.state.append(context.opinion['opinion'])
         context.reindex()
         for token in list(context.tokens):
             token.owner.addtoproperty('tokens', token)
@@ -731,8 +734,8 @@ class MakeOpinion(InfiniteCardinality):
                 recipient_last_name=getattr(member, 'last_name', ''),
                 subject_url=url,
                 subject_title=context.title,
-                opinion=localizer.translate(_(context.opinion)),
-                explanation=context.explanation,
+                opinion=localizer.translate(_(context.opinion['opinion'])),
+                explanation=context.opinion['explanation'],
                 novaideo_title=root.title
             )
             mailer_send(
@@ -741,6 +744,12 @@ class MakeOpinion(InfiniteCardinality):
                 sender=root.get_site_sender(),
                 body=message)
 
+        request.registry.notify(ObjectModified(
+            object=context,
+            args={
+                'state_source': 'published',
+                'state_target': 'examined'
+            }))
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}

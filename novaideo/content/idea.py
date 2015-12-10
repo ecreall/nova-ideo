@@ -126,7 +126,8 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
 
     @property
     def opinion_value(self):
-        return OPINIONS.get(getattr(self, 'opinion', None), None)
+        return OPINIONS.get(
+            getattr(self, 'opinion', {}).get('opinion', ''), None)
 
     @property
     def related_proposals(self):

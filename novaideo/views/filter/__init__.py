@@ -1090,3 +1090,19 @@ def get_users_by_keywords(keywords):
         metadata_filter={'content_types': ['person'],
                          'states': ['active'],
                          'keywords': keywords})
+
+
+
+def get_users_by_preferences(content):
+    novaideo_catalog = find_catalog('novaideo')
+    favorites_index = novaideo_catalog['favorites']
+    oid = get_oid(content, None)
+    if oid is None:
+        return []
+
+    query = favorites_index.any([oid])
+
+    return find_entities(
+        metadata_filter={'content_types': ['person'],
+                         'states': ['active']},
+        add_query=query)

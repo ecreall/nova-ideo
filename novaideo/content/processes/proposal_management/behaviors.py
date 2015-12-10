@@ -12,6 +12,7 @@ Proposal management process definition.
 import datetime
 import pytz
 from persistent.list import PersistentList
+from persistent.dict import PersistentDict
 from pyramid.httpexceptions import HTTPFound
 from pyramid.threadlocal import get_current_request
 
@@ -51,7 +52,8 @@ from novaideo.content.processes.idea_management.behaviors import (
 from novaideo.utilities.text_analyzer import normalize_text
 from novaideo.utilities.util import (
     connect, disconnect, to_localized_time)
-from novaideo.event import ObjectPublished, CorrelableRemoved
+from novaideo.event import (
+    ObjectPublished, CorrelableRemoved, ObjectModified)
 from novaideo.content.ballot import Ballot
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo.core import access_action, serialize_roles
@@ -507,7 +509,7 @@ class DuplicateProposal(InfiniteCardinality):
         user = get_current()
         copy_of_proposal = copy(context, (root, 'proposals'), 
                              omit=('created_at', 'modified_at',
-                                   'explanation', 'opinion', 'work_mode_id'))
+                                   'opinion', 'work_mode_id'))
         related_ideas = appstruct.pop('related_ideas')
         root.merge_keywords(appstruct['keywords'])
         copy_of_proposal.set_data(appstruct)
@@ -711,12 +713,11 @@ class MakeOpinion(InfiniteCardinality):
     state_validation = opinion_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.opinion = appstruct['opinion']
-        context.explanation = appstruct['explanation']
-        if 'published' in context.state:
-            context.state.remove('published')
-            context.state.append('examined')
-
+        appstruct.pop('_csrf_token_')
+        context.opinion = PersistentDict(appstruct)
+        context.state.remove('published')
+        context.state.append('examined')
+        context.state.append(context.opinion['opinion'])
         context.reindex()
         tokens = [t for t in context.tokens if not t.proposal]
         proposal_tokens = [t for t in context.tokens if t.proposal]
@@ -740,8 +741,8 @@ class MakeOpinion(InfiniteCardinality):
                 recipient_last_name=getattr(member, 'last_name', ''),
                 subject_url=url,
                 subject_title=context.title,
-                opinion=localizer.translate(_(context.opinion)),
-                explanation=context.explanation,
+                opinion=localizer.translate(_(context.opinion['opinion'])),
+                explanation=context.opinion['explanation'],
                 novaideo_title=request.root.title
             )
             mailer_send(
@@ -750,6 +751,12 @@ class MakeOpinion(InfiniteCardinality):
                 sender=root.get_site_sender(),
                 body=message)
 
+        request.registry.notify(ObjectModified(
+            object=context,
+            args={
+                'state_source': 'published',
+                'state_target': 'examined'
+            }))
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}

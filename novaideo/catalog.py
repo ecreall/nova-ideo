@@ -22,7 +22,8 @@ from novaideo.fr_lexicon import (
     StopWordRemover, Lexicon,
     normalize_word)
 from novaideo.content.interface import (
-    IEntity)
+    IEntity,
+    IPerson)
 
 
 class ISearchableObject(Interface):
@@ -61,6 +62,9 @@ class ISearchableObject(Interface):
         pass
 
     def is_workable():
+        pass
+
+    def favorites():
         pass
 
 
@@ -203,6 +207,18 @@ class NovaideoCatalogViews(object):
 
         return is_workable
 
+    @indexview()
+    def favorites(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        favorites = adapter.favorites()
+        if favorites is None:
+            return default
+
+        return favorites
 
 
 @catalog_factory('novaideo')
@@ -214,6 +230,7 @@ class NovaideoIndexes(object):
     modified_at = Field()
     release_date = Field()
     is_workable = Field()
+    favorites = Keyword()
     # publication_start_date = Field()
     # publication_end_date = Field()
     object_id = Field()
@@ -277,3 +294,15 @@ class SearchableObject(Adapter):
 
     def is_workable(self):
         return getattr(self.context, 'is_workable', False)
+
+    def favorites(self):
+        return []
+
+
+@adapter(context=IPerson)
+@implementer(ISearchableObject)
+class ArtistSearch(SearchableObject):
+
+    def favorites(self):
+        selections = getattr(self.context, 'selections', [])
+        return [get_oid(s) for s in selections]

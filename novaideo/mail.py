@@ -197,6 +197,17 @@ Bonjour {recipient_title} {recipient_last_name},
 """+ PORTAL_SIGNATURE
 
 
+CONTENTMODIFIEF_SUBJECT = u"""Un contenu vient d'être modifié"""
+
+
+CONTENTMODIFIEF_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+{subject_type} « {subject_title} » faisant partie de vos selections vient de changer d'état de {state_source} à {state_target}. Vous pouvez la consulter sous {subject_url}
+
+"""+ PORTAL_SIGNATURE
+
+
 ARCHIVEIDEA_SUBJECT = u"""Décision des modérateurs d'archiver l'idée « {subject_title} »"""
 
 
@@ -410,6 +421,11 @@ DEFAULT_SITE_MAILS = {
               'title': _("Alert (new content)"),
               'subject': NEWCONTENT_SUBJECT,
               'template': NEWCONTENT_MESSAGE
+    },
+    'alert_content_modified': {
+              'title': _("Alert (content modified)"),
+              'subject': CONTENTMODIFIEF_SUBJECT,
+              'template': CONTENTMODIFIEF_MESSAGE
     },
     'archive_idea_decision': {
               'title': _("Moderation: Archive the idea"),

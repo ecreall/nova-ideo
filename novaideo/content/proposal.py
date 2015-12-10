@@ -152,7 +152,8 @@ class Proposal(Commentable,
 
     @property
     def opinion_value(self):
-        return OPINIONS.get(getattr(self, 'opinion', None), None)
+        return OPINIONS.get(
+            getattr(self, 'opinion', {}).get('opinion', ''), None)
 
     @property
     def is_published(self):

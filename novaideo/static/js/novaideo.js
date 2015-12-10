@@ -12,7 +12,7 @@ function collapse_current_collpsein(){
 
 
 function activate_explanation(event){
-  if(!$(event.target).hasClass('close')){
+  if($(event.target).parents('.proposal-explanation').length == 0){
     var explanation = $($(this).find('.proposal-explanation').first());
     explanation.removeClass('hide-bloc');}
 };

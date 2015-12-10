@@ -31,3 +31,16 @@ class CorrelableRemoved(object): # pragma: no cover
     """ An event sent when an object has been removed."""
     def __init__(self, object):
         self.object = object
+
+
+class IObjectModified(IObjectEvent):
+    """ An event type sent when an object is modified """
+    object = Attribute('The object being modified')
+
+
+@implementer(IObjectModified)
+class ObjectModified(object): # pragma: no cover
+    """ An event sent when an object has been modified."""
+    def __init__(self, object, args):
+        self.object = object
+        self.args = args

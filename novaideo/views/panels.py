@@ -577,13 +577,16 @@ class SocialShare(object):
         self.request = request
 
     def __call__(self):
+
         if self.request.view_name != 'index' or \
            not isinstance(self.context, SearchableEntity) or \
            not self.context.is_published:
             return {'condition': False}
 
+        has_social_share = getattr(
+            self.request.root, 'social_share', False),
         return {'request': self.request,
-                'condition': True}
+                'condition': has_social_share}
 
 
 @panel_config(

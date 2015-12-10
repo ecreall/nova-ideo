@@ -17,8 +17,12 @@ from dace.util import getSite
 
 from novaideo.ips.mailer import mailer_send
 from novaideo import core
-from novaideo.event import ObjectPublished, CorrelableRemoved
-from novaideo.views.filter import get_users_by_keywords
+from novaideo.event import (
+    ObjectPublished, CorrelableRemoved,
+    ObjectModified)
+from novaideo.views.filter import (
+    get_users_by_keywords, get_users_by_preferences)
+from novaideo.content.processes import get_states_mapping
 from novaideo import _
 
 
@@ -56,6 +60,49 @@ def mysubscriber_object_published(event):
                                                         'user_title', ''))),
             recipient_first_name=getattr(member, 'first_name', member.name),
             recipient_last_name=getattr(member, 'last_name', ''),
+            subject_title=content.title,
+            subject_url=url,
+            subject_type=localizer.translate(
+                _("The " + content.__class__.__name__.lower())),
+            novaideo_title=root.title
+             )
+        mailer_send(
+            subject=subject,
+            recipients=[member.email],
+            sender=root.get_site_sender(),
+            body=message)
+
+
+@subscriber(ObjectModified)
+def mysubscriber_object_modified(event):
+    content = event.object
+    args = event.args
+    state_source = args.get('state_source', '')
+    state_target = args.get('state_target', '')
+    request = get_current_request()
+    users = get_users_by_preferences(content)
+    url = request.resource_url(content, "@@index")
+    root = request.root
+    mail_template = root.get_mail_template('alert_content_modified')
+    subject = mail_template['subject'].format(subject_title=content.title)
+    localizer = request.localizer
+    for member in [m for m in users if getattr(m, 'email', '')]:
+        if state_source:
+            state_source = localizer.translate(
+                get_states_mapping(
+                    member, content, state_source))
+        if state_target:
+            state_target = localizer.translate(
+                get_states_mapping(
+                    member, content, state_target))
+
+        message = mail_template['template'].format(
+            recipient_title=localizer.translate(_(getattr(member,
+                                                        'user_title', ''))),
+            recipient_first_name=getattr(member, 'first_name', member.name),
+            recipient_last_name=getattr(member, 'last_name', ''),
+            state_source=state_source,
+            state_target=state_target,
             subject_title=content.title,
             subject_url=url,
             subject_type=localizer.translate(
