@@ -1,0 +1,38 @@
+.step-text{
+    width: 99%;
+}
+
+.nav-steps li .step-content {
+    padding: 10px 0 10px 15px;
+}
+
+.nav-steps li {
+    float: left;
+    width: 17.58%;
+}
+
+/*steps responsive design*/
+
+@media (max-width: 991px) {
+
+  .nav-steps li{
+    width: 25%
+  }
+
+}
+
+@media (max-width: 501px) {
+  .nav-steps .step-content{
+    margin-top: 5px;
+  }
+
+  .nav-steps li{
+    width: 33%
+  }
+}
+
+@media (max-width: 391px){
+  .nav-steps li{
+    width: 50%
+  }
+}

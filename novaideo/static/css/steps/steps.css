@@ -99,15 +99,9 @@
     color: #ffffff;
     display: inline-block;
     margin-right: 5px;
-    padding: 10px 0 10px 20px;
     position: relative;
     text-decoration: none;
     min-height: 50px;
-}
-
-.nav-steps li {
-    float: left;
-    width: 14.09%;
 }
 
 li {
@@ -162,7 +156,6 @@ ul, ol {
     line-height: unset;
     text-align: center;
     vertical-align: sub;
-    width: 97%;
 }
 
 
@@ -355,30 +348,4 @@ ul, ol {
     background-size: cover;
     height: 18px;
     width: 25px;
-}
-
-/*steps responsive design*/
-
-@media (max-width: 991px) {
-
-  .nav-steps li{
-    width: 20%
-  }
-
-}
-
-@media (max-width: 630px) {
-  .nav-steps .step-content{
-    margin-top: 5px;
-  }
-
-  .nav-steps li{
-    width: 33%
-  }
-}
-
-@media (max-width: 391px){
-  .nav-steps li{
-    width: 50%
-  }
 }

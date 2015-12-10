@@ -26,6 +26,21 @@
     <link href="${su('novaideo:static/css/steps/steps.css')}"
           rel="stylesheet"/>
 
+    <div tal:omit-tag=""
+         tal:define="to_examine 'proposal' in request.content_to_examine;
+                     to_support 'proposal' in request.content_to_support;
+                     tosupport_toexamine to_examine and to_support">
+      <link tal:condition="tosupport_toexamine"
+              href="${su('novaideo:static/css/steps/steps_5.css')}"
+              rel="stylesheet"/>
+      <link tal:condition="not tosupport_toexamine and (to_examine or to_support)" 
+              href="${su('novaideo:static/css/steps/steps_4.css')}"
+              rel="stylesheet"/>
+      <link tal:condition="not tosupport_toexamine"
+              href="${su('novaideo:static/css/steps/steps_3.css')}"
+              rel="stylesheet"/>
+    </div>
+
     <link href="${request.static_url('novaideo:static/slick/slick/slick.css')}"
       rel="stylesheet"/>
     <link href="${request.static_url('novaideo:static/css/slick-theme-cc.css')}"

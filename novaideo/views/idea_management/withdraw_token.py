@@ -22,9 +22,9 @@ from novaideo import _
     )
 class WithdrawTokenView(BasicView):
     title = _('Withdraw my token')
-    name = 'withdrawtoken'
+    name = 'withdrawtokenidea'
     behaviors = [WithdrawToken]
-    viewid = 'withdrawtoken'
+    viewid = 'withdrawtokenidea'
 
     def update(self):
         results = self.execute(None)

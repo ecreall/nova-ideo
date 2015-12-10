@@ -1,5 +1,6 @@
 <div class="well vertical-slick-well " tal:condition="contents"  i18n:domain="novaideo">
-	<h4 ><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">See more</span></h4>
+	<h4 tal:condition="is_root"><span class="glyphicon glyphicon-bookmark"></span> <span i18n:translate="">My interests</span></h4>
+	<h4 tal:condition="not is_root"><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">See more</span></h4>
 	<div class="more-content-carousel verticla">
 		<div tal:repeat="object contents">
 				<div class="right-caption span4 search-item" >

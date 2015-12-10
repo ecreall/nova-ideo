@@ -60,7 +60,7 @@
                  </div>
                </span>
          </li>
-         <li class="3 ${(current_step == 4)  and 'active'}">
+         <li tal:condition="'proposal' in request.content_to_support" class="3 ${(current_step == 4)  and 'active'}">
                <span class="${(current_step == 4)  and 'active'} step-content" data-step="message-step-4">
                  <div class="step-text">
                    <span i18n:translate="" >Support of the proposal</span>
@@ -68,7 +68,7 @@
                  </div>
                </span>
          </li>
-         <li class="4 last ${(current_step == 5)  and 'active'}">
+         <li tal:condition="'proposal' in request.content_to_examine" class="4 last ${(current_step == 5)  and 'active'}">
                <span class="${(current_step == 5)  and 'active'} step-content" data-step="message-step-5">
                  <div class="step-text">
                    <span i18n:translate="" >Examination of the proposal</span>

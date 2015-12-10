@@ -354,11 +354,13 @@ class StepsPanel(object):
                 result['current_step'] = 2
                 result['step2_message'] = self._get_step2_informations(context,
                                                                    self.request)
-            elif 'published' in context.state:
+            elif 'proposal' in self.request.content_to_support and \
+                 'published' in context.state:
                 result['current_step'] = 4
                 result['step4_message'] = self._get_step4_informations(context,
                                                                    self.request)
-            elif 'examined' in context.state:
+            elif 'proposal' in self.request.content_to_examine and\
+                 'examined' in context.state:
                 result['current_step'] = 5
                 result['step5_message'] = self._get_step5_informations(context,
                                                                    self.request)                
@@ -625,11 +627,16 @@ class MoreContents(object):
             more_result = []
             root = getSite()
             if self.context is root:
-                more_result = find_entities(
-                    user=get_current(),
-                    metadata_filter={'content_types': ['proposal', 'idea'],
-                                     'states': getattr(user, 'keywords', [])},
-                    sort_on='modified_at', reverse=True)
+                keywords = getattr(user, 'keywords', [])
+                if not keywords:
+                    more_result = []
+                else:
+                    more_result = find_entities(
+                        user=get_current(),
+                        metadata_filter={'content_types': ['proposal', 'idea'],
+                                         'keywords': getattr(user, 'keywords', [])},
+                        sort_on='modified_at', reverse=True)
+
                 is_root = True
             else:
                 more_result = find_more_contents(self.context)
