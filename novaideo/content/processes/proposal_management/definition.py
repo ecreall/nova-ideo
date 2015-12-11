@@ -9,6 +9,7 @@ This module represent the Proposal management process definition
 powered by the dace engine.
 """
 
+import datetime
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_request
 
@@ -19,13 +20,15 @@ from dace.processinstance.activity import (
 from dace.processdefinition.activitydef import (
     ActivityDefinition,
     SubProcessDefinition as OriginSubProcessDefinition)
+from dace.processdefinition.eventdef import (
+    StartEventDefinition,
+    EndEventDefinition,
+    IntermediateCatchEventDefinition,
+    TimerEventDefinition)
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
 from dace.processdefinition.transitiondef import TransitionDefinition
-from dace.processdefinition.eventdef import (
-    StartEventDefinition,
-    EndEventDefinition,)
 from dace.objectofcollaboration.services.processdef_container import (
     process_definition)
 from pontus.core import VisualisableElement
@@ -62,10 +65,35 @@ from .behaviors import (
     VOTE_REOPENING_MESSAGE,
     VP_DEFAULT_DURATION,
     VOTE_MODEWORK_MESSAGE,
-    publish_condition
+    publish_condition,
+    AlertEnd,
+    SeeWorkspace,
+    AddFiles,
+    RemoveFile,
+    AttachFiles
     )
-from novaideo import _
+from novaideo import _, log
 from novaideo.content.ballot import Ballot
+
+
+def alert_end_cycle_duration(process):
+    proposal = process.execution_context.created_entity('proposal')
+    working_group = proposal.working_group
+    duration_ballot = getattr(
+        working_group, 'duration_configuration_ballot', None)
+    default_date = AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"]
+    date = None
+    if duration_ballot is not None and duration_ballot.report.voters:
+        electeds = duration_ballot.report.get_electeds()
+        if electeds:
+            date = AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]]
+
+    date = date if date else default_date
+    alert_date = datetime.timedelta(seconds=(date.total_seconds()/3) * 2) + \
+        datetime.datetime.now()
+
+    log.warning(alert_date)
+    return alert_date
 
 
 def amendable_condition(process):
@@ -110,7 +138,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
         working_group = proposal.working_group
-        work_mode = getattr(proposal, 'work_mode', None)
+        work_mode = getattr(working_group, 'work_mode', None)
         participants_mini = work_mode.participants_mini if work_mode else root.participants_mini
         participants_maxi = work_mode.participants_maxi if work_mode else root.participants_maxi
         electors = working_group.members[:participants_mini]
@@ -129,13 +157,13 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         subprocess.ballots.append(ballot)
         working_group.vp_ballot = ballot #vp for voting for publishing
         root_modes = root.get_work_modes()
-        if len(root_modes) > 1:
-            modes = [(m, root_modes[m].title) for m in root_modes
-                     if root_modes[m].participants_mini <= len(wg.members)]
+        modes = [(m, root_modes[m].title) for m in root_modes
+                 if root_modes[m].participants_mini <= len(working_group.members)]
+        if len(modes) > 1:
             modes = sorted(modes,
                            key=lambda e: root_modes[e[0]].order)
             group = [m[0] for m in modes]
-            default_mode = proposal.work_mode.work_id
+            default_mode = working_group.work_mode.work_id
             if default_mode not in root_modes:
                 default_mode = modes[0][0]
 
@@ -188,16 +216,17 @@ class WorkSubProcess(OriginSubProcess):
 
     def _start_subprocess(self, action):
         proposal = self.process.execution_context.created_entity('proposal')
+        working_group = proposal.working_group
         work_mode_ballot = getattr(
-            proposal.working_group, 'work_mode_configuration_ballot', None)
+            working_group, 'work_mode_configuration_ballot', None)
         if work_mode_ballot is not None and work_mode_ballot.report.voters:
             electeds = work_mode_ballot.report.get_electeds()
             if electeds:
-                proposal.work_mode_id = electeds[0]
+                working_group.work_mode_id = electeds[0]
 
         root = proposal.__parent__
         work_mode = getattr(
-            proposal, 'work_mode', root.get_default_work_mode())
+            working_group, 'work_mode', root.get_default_work_mode())
         def_container = find_service('process_definition_container')
         pd = def_container.get_definition(
             work_mode.work_mode_process_id)
@@ -318,6 +347,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Details"),
                                        title=_("Details"),
                                        groups=[]),
+                attach_files = ActivityDefinition(contexts=[AttachFiles],
+                                       description=_("Attache files"),
+                                       title=_("Attache files"),
+                                       groups=[]),
                 end = EndEventDefinition(),
         )
         self.defineTransitions(
@@ -343,6 +376,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'oppose'),
                 TransitionDefinition('pg', 'withdraw_token'),
                 TransitionDefinition('pg', 'seeproposal'),
+                TransitionDefinition('pg', 'attach_files'),
+                TransitionDefinition('attach_files', 'eg'),
                 TransitionDefinition('seeproposal', 'eg'),
                 TransitionDefinition('creat', 'eg'),
                 TransitionDefinition('publishasproposal', 'eg'),
@@ -384,9 +419,15 @@ class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
                 start = StartEventDefinition(),
                 eg = ExclusiveGatewayDefinition(),
                 eg1 = ExclusiveGatewayDefinition(),
+                pg = ParallelGatewayDefinition(),
                 votingpublication = SubProcessDefinition(pd='ballotprocess', contexts=[VotingPublication],
                                        description=_("Start voting for publication"),
                                        title=_("Start voting for publication"),
+                                       groups=[]),
+                timer_alert = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=alert_end_cycle_duration)),
+                alert_end = ActivityDefinition(contexts=[AlertEnd],
+                                       description=_("Alert the end of cycle"),
+                                       title=_("Alert the end of cycle"),
                                        groups=[]),
                 work = WorkSubProcessDefinition(pd='None', contexts=[Work],
                                        description=_("Start work"),
@@ -402,8 +443,52 @@ class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'eg'),
                 TransitionDefinition('eg', 'votingpublication'),
                 TransitionDefinition('votingpublication', 'eg1'),
-                TransitionDefinition('eg1', 'work', amendable_condition, sync=True),
+                TransitionDefinition('eg1', 'pg', amendable_condition, sync=True),
+                TransitionDefinition('pg', 'timer_alert'),
+                TransitionDefinition('timer_alert', 'alert_end'),
+                TransitionDefinition('pg', 'work'),
                 TransitionDefinition('eg1', 'submit', publish_condition, sync=True),
                 TransitionDefinition('submit', 'end'),
                 TransitionDefinition('work', 'eg'),
+        )
+
+
+@process_definition(name='workspacemanagement',
+                    id='workspacemanagement')
+class WorkspaceManagement(ProcessDefinition, VisualisableElement):
+    isUnique = True
+
+    def __init__(self, **kwargs):
+        super(WorkspaceManagement, self).__init__(**kwargs)
+        self.title = _('Workspace management')
+        self.description = _('Workspace management')
+
+    def _init_definition(self):
+        self.defineNodes(
+                start = StartEventDefinition(),
+                eg = ExclusiveGatewayDefinition(),
+                pg = ParallelGatewayDefinition(),
+                see = ActivityDefinition(contexts=[SeeWorkspace],
+                                       description=_("Workspace"),
+                                       title=_("Workspace"),
+                                       groups=[]),
+                remove_file = ActivityDefinition(contexts=[RemoveFile],
+                                       description=_("Remove a file"),
+                                       title=_("Remove a file"),
+                                       groups=[]),
+                add_files = ActivityDefinition(contexts=[AddFiles],
+                                       description=_("Add files"),
+                                       title=_("Add files"),
+                                       groups=[]),
+                end = EndEventDefinition(),
+        )
+        self.defineTransitions(
+                TransitionDefinition('start', 'pg'),
+                TransitionDefinition('pg', 'see'),
+                TransitionDefinition('pg', 'remove_file'),
+                TransitionDefinition('pg', 'add_files'),
+                TransitionDefinition('see', 'eg'),
+                TransitionDefinition('remove_file', 'eg'),
+                TransitionDefinition('add_files', 'eg'),
+                TransitionDefinition('eg', 'end'),
         )

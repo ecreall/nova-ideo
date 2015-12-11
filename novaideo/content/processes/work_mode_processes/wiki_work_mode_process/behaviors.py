@@ -30,6 +30,8 @@ from novaideo import _
 from novaideo.utilities.text_analyzer import normalize_text
 from novaideo.content.correlation import CorrelationType
 from novaideo.utilities.util import connect
+from ...proposal_management.behaviors import add_attached_files
+
 
 try:
     basestring
@@ -91,6 +93,7 @@ class CorrectProposal(InfiniteCardinality):
         user = get_current()
         wg = context.working_group
         related_ideas = appstruct.pop('related_ideas')
+        add_files = appstruct.pop('add_files')
         copy_of_proposal = self._get_newversion(context, root, wg)
         context.state = PersistentList(['archived'])
         copy_of_proposal.set_data(appstruct)
@@ -104,10 +107,10 @@ class CorrectProposal(InfiniteCardinality):
                 user,
                 ['related_proposals', 'related_ideas'],
                 CorrelationType.solid)
-        newcontext = copy_of_proposal
+        add_attached_files({'add_files': add_files}, copy_of_proposal)
         copy_of_proposal.reindex()
         context.reindex()
-        return {'newcontext': newcontext}
+        return {'newcontext': copy_of_proposal}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))

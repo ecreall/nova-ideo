@@ -154,7 +154,6 @@ class NovaideoCatalogViews(object):
 
         return modified_at
 
-
     @indexview()
     def object_title(self, default):
         adapter = get_current_registry().queryAdapter(

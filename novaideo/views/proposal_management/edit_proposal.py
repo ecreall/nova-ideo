@@ -17,6 +17,7 @@ from pontus.form import FormView
 from pontus.schema import select
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
+from pontus.file import OBJECT_OID
 
 from novaideo.content.processes.proposal_management.behaviors import (
     EditProposal)
@@ -24,6 +25,7 @@ from novaideo.content.proposal import ProposalSchema, Proposal
 from novaideo import _
 from novaideo.core import can_access
 from .create_proposal import ideas_choice, AddIdeaFormView
+
 
 
 class RelatedIdeasView(BasicView):
@@ -77,18 +79,25 @@ class IdeaManagementView(MultipleView):
 class EditProposalFormView(FormView):
     title = _('Edit the proposal')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
-                               omit=['related_ideas']),
+                               omit=['related_ideas', 'add_files']),
                     ['title',
                      'description',
                      'keywords',
                      'text',
-                     'related_ideas'])
+                     'related_ideas',
+                     'add_files'])
     behaviors = [EditProposal, Cancel]
     formid = 'formeditproposal'
     name = 'editproposalform'
 
     def default_data(self):
-        return self.context
+        data = self.context.get_data(self.schema)
+        attached_files = self.context.attached_files
+        if attached_files:
+            data['add_files'] = {'ws_files': attached_files}
+
+        data[OBJECT_OID] = str(get_oid(self.context))
+        return data
 
     def before_update(self):
         ideas_widget = ideas_choice(self.context, self.request)

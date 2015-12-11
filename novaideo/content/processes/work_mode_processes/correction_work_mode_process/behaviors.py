@@ -59,6 +59,7 @@ def valid_correction(process, correction, current_version, user):
     current_version.setproperty('author', proposal.author)
     current_version.setproperty('comments', proposal.comments)
     current_version.keywords = proposal.keywords
+    current_version.setproperty('attached_files', proposal.attached_files)
     related_ideas = proposal.related_ideas
     connect(current_version,
         related_ideas,

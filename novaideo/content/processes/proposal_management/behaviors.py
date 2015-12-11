@@ -21,12 +21,14 @@ from substanced.util import get_oid
 from dace.util import (
     getSite,
     copy,
-    find_service)
+    find_service,
+    get_obj)
 from dace.objectofcollaboration.principal.util import (
     has_role,
     grant_roles,
     get_current,
-    revoke_roles)
+    revoke_roles,
+    has_any_roles)
 #from dace.objectofcollaboration import system
 from dace.processinstance.activity import (
     InfiniteCardinality, ElementaryAction, ActionType)
@@ -37,9 +39,10 @@ from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import (
     INovaIdeoApplication,
     IProposal,
-    Iidea)
+    Iidea,
+    IWorkspace)
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo import _
+from novaideo import _, log
 from novaideo.content.proposal import Proposal
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.content.correlation import CorrelationType
@@ -117,6 +120,33 @@ AMENDMENTS_CYCLE_DEFAULT_DURATION = {
     "Three days": datetime.timedelta(days=3),
     "One week": datetime.timedelta(weeks=1),
     "Two weeks": datetime.timedelta(weeks=2)}
+
+
+def add_files_to_workspace(files_data, workspace):
+    files = []
+    for file_data in files_data:
+        file_ = file_data.get('_object_data', None)
+        if file_:
+            workspace.addtoproperty('files', file_)
+            files.append(file_)
+
+    return files
+
+
+def add_attached_files(appstruct, proposal):
+    files = appstruct.get('add_files', None)
+    files_to_add = []
+    if files is not None:
+        attached_files = files.get('attached_files', [])
+        if attached_files:
+            workspace = proposal.working_group.workspace
+            files_to_add = add_files_to_workspace(attached_files, workspace)
+
+        ws_files = files.get('ws_files', [])
+        if ws_files:
+            files_to_add.extend(ws_files)
+
+    proposal.setproperty('attached_files', files_to_add)
 
 
 def publish_ideas(ideas, request):
@@ -288,6 +318,7 @@ class CreateProposal(InfiniteCardinality):
         proposal.setproperty('author', user)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
+        wg.init_workspace()
         wg.setproperty('proposal', proposal)
         wg.addtoproperty('members', user)
         wg.state.append('deactivated')
@@ -300,6 +331,7 @@ class CreateProposal(InfiniteCardinality):
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
 
+        add_attached_files(appstruct, proposal)
         proposal.reindex()
         init_proposal_ballots(proposal, self.process)
         wg.reindex()
@@ -449,7 +481,7 @@ class PublishProposal(InfiniteCardinality):
             mode_id = appstruct['work_mode']
 
         if mode_id:
-            context.work_mode_id = mode_id
+            working_group.work_mode_id = mode_id
             participants_mini = WORK_MODES[mode_id].participants_mini
 
         first_vote_registration(user, working_group, appstruct)
@@ -509,7 +541,7 @@ class DuplicateProposal(InfiniteCardinality):
         user = get_current()
         copy_of_proposal = copy(context, (root, 'proposals'), 
                              omit=('created_at', 'modified_at',
-                                   'opinion', 'work_mode_id'))
+                                   'opinion', 'attached_files'))
         related_ideas = appstruct.pop('related_ideas')
         root.merge_keywords(appstruct['keywords'])
         copy_of_proposal.set_data(appstruct)
@@ -521,6 +553,7 @@ class DuplicateProposal(InfiniteCardinality):
         copy_of_proposal.setproperty('author', user)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
+        wg.init_workspace()
         wg.setproperty('proposal', copy_of_proposal)
         wg.addtoproperty('members', user)
         wg.state.append('deactivated')
@@ -533,6 +566,7 @@ class DuplicateProposal(InfiniteCardinality):
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
 
+        add_attached_files(appstruct, copy_of_proposal)
         wg.reindex()
         copy_of_proposal.reindex()
         init_proposal_ballots(copy_of_proposal, self.process)
@@ -570,7 +604,7 @@ class EditProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current
+        user = get_current()
         if 'related_ideas' in appstruct:
             relatedideas = appstruct['related_ideas']
             current_related_ideas = list(context.related_ideas.keys())
@@ -592,6 +626,7 @@ class EditProposal(InfiniteCardinality):
                        'related_ideas',
                        CorrelationType.solid)
 
+        add_attached_files(appstruct, context)
         context.text = normalize_text(context.text)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         root.merge_keywords(context.keywords)
@@ -987,7 +1022,7 @@ class Resign(InfiniteCardinality):
         user = get_current()
         wg = context.working_group
         wg.delfromproperty('members', user)
-        mode = getattr(context, 'work_mode', root.get_default_work_mode())
+        mode = getattr(wg, 'work_mode', root.get_default_work_mode())
         if getattr(wg, 'first_vote', True):
             #remove user vote if first_vote
             first_vote_remove(user, wg)
@@ -1118,7 +1153,7 @@ class Participate(InfiniteCardinality):
         user = get_current()
         working_group = context.working_group
         participants = working_group.members
-        mode = getattr(context, 'work_mode', root.get_default_work_mode())
+        mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
         len_participants = len(participants)
         first_decision = False
         if len_participants < mode.participants_maxi:
@@ -1207,6 +1242,42 @@ class CompareProposal(InfiniteCardinality):
     processsecurity_validation = compare_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def attach_roles_validation(process, context):
+    return has_role(role=('Participant', context))
+
+
+def attach_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+def attach_state_validation(process, context):
+    wg = context.working_group
+    return 'active' in wg.state and 'amendable' in context.state
+
+
+class AttachFiles(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'footer-entity-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-paperclip'
+    style_order = 0
+    submission_title = _('Save')
+    context = IProposal
+    roles_validation = attach_roles_validation
+    processsecurity_validation = attach_processsecurity_validation
+    state_validation = attach_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        add_attached_files({'add_files': appstruct}, context)
+        context.reindex()
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1471,6 +1542,126 @@ class SubmitProposal(ElementaryAction):
         request.registry.notify(ActivityExecuted(
             self, [context, wg], get_current()))
         #TODO wg desactive, members vide...
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+
+def alert_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'proposal')
+
+
+def alert_roles_validation(process, context):
+    return has_role(role=('System',))
+
+
+class AlertEnd(ElementaryAction):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 4
+    context = IProposal
+    actionType = ActionType.system
+    processs_relation_id = 'proposal'
+    roles_validation = alert_roles_validation
+    relation_validation = alert_relation_validation
+
+    def start(self, context, request, appstruct, **kw):
+        working_group = context.working_group
+        if 'active' in working_group.state and 'amendable' in context.state:
+            members = working_group.members
+            url = request.resource_url(context, "@@index")
+            root = request.root
+            mail_template = root.get_mail_template('alert_end')
+            subject = mail_template['subject'].format(
+                subject_title=context.title)
+            localizer = request.localizer
+            for member in [m for m in members if getattr(m, 'email', '')]:
+                message = mail_template['template'].format(
+                    recipient_title=localizer.translate(
+                        _(getattr(member, 'user_title', ''))),
+                    recipient_first_name=getattr(
+                        member, 'first_name', member.name),
+                    recipient_last_name=getattr(
+                        member, 'last_name', ''),
+                    subject_url=url,
+                    subject_title=context.title,
+                    novaideo_title=request.root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[member.email],
+                    sender=root.get_site_sender(),
+                    body=message)
+
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+#**********************************************Workspace***************************************************
+
+
+def get_access_key_ws(obj):
+    return serialize_roles(
+        (('Participant', obj.proposal), 'Admin', 'Moderator'))
+
+
+def seeworkspace_processsecurity_validation(process, context):
+    return has_any_roles(
+        roles=(('Participant', context.proposal), 'Admin', 'Moderator'))
+
+
+@access_action(access_key=get_access_key_ws)
+class SeeWorkspace(InfiniteCardinality):
+    title = _('Details')
+    context = IWorkspace
+    actionType = ActionType.automatic
+    processsecurity_validation = seeworkspace_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class AddFiles(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-import'
+    style_order = 4
+    submission_title = _('Save')
+    context = IWorkspace
+    roles_validation = seeworkspace_processsecurity_validation
+    processsecurity_validation = createproposal_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        add_files_to_workspace(appstruct.get('files', []), context)
+        context.reindex()
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class RemoveFile(InfiniteCardinality):
+    context = IWorkspace
+    roles_validation = seeworkspace_processsecurity_validation
+    processsecurity_validation = createproposal_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        oid = appstruct.get('oid', None)
+        if oid:
+            try:
+                file_ = get_obj(int(oid))
+                if file_ and file_ in context.files:
+                    context.delfromproperty('files', file_)
+            except Exception as error:
+                log.warning(error)
+
         return {}
 
     def redirect(self, context, request, **kw):

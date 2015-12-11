@@ -1,0 +1,21 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="novaideo">
+  <div class="caption" tal:define="proposal workspace.proposal">
+    <h3><span class="glyphicon glyphicon-folder-open"></span> <a href="${request.resource_url(proposal, '@@index')}">${proposal.title}</a>/${workspace.title} </h3>
+    <div class="folder-files">
+      <div class="row" tal:repeat="row_index range(row_len)">
+        <div class="col-md-2" tal:repeat="file files[(row_index*6): (row_index*6)+6]">
+          <div class="thumbnail search-item file-item">
+            <span class="glyphicon glyphicon-file" ></span>
+            <div class="caption">
+              <h4><a tal:attributes="href request.resource_url(file, '')" >${file.title}</a></h4>
+              <a class="btn btn-danger btn-xs" href="${request.resource_url(workspace, '@@removefile', query={'oid': get_oid(file)})}"><span class="glyphicon glyphicon-trash"></span> <span i18n:translate="">Remove</span></a>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+<div tal:replace="structure footer_body"/>

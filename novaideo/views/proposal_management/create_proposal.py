@@ -33,6 +33,13 @@ from novaideo.views.widget import SimpleMappingtWidget
 from novaideo import _, log
 
 
+def add_file_data(file_):
+    if file_ and hasattr(file_, 'get_data'):
+        return file_.get_data(None)
+
+    return None
+
+
 @colander.deferred
 def idea_choice(node, kw):
     request = node.bindings['request']
@@ -185,12 +192,13 @@ class CreateProposalFormView(FormView):
 
     title = _('Create a proposal')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
-                               omit=['related_ideas']),
+                               omit=['related_ideas', 'add_files']),
                     ['title',
                      'description',
                      'keywords',
                      'text',
-                     'related_ideas'])
+                     'related_ideas',
+                     ('add_files', ['attached_files'])])
     behaviors = [CreateProposal, Cancel]
     formid = 'formcreateproposal'
     name = 'createproposal'

@@ -107,6 +107,16 @@ Alors que le cycle d'amélioration est terminé, aucun amendement n'a été soum
 
 """ + PORTAL_SIGNATURE
 
+ALERT_END_SUBJECT = u"""Echéance « {subject_title} »"""
+
+ALERT_END_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+Vite vite c'est bientôt la fin pour la proposition « {subject_title} » qui se trouve sous {subject_url}. Vous allez devoir procéder au vote pour soumettre la proposition en l'état ou pour commencer un nouveau cycle d'amélioration. 
+
+""" + PORTAL_SIGNATURE
+
+
 RESULT_VOTE_AMENDMENT_SUBJECT = u"""Les résultats du vote sur les amendements liés à la proposition « {subject_title} » """
 
 RESULT_VOTE_AMENDMENT_MESSAGE = u"""
@@ -376,6 +386,11 @@ DEFAULT_SITE_MAILS = {
               'title': _("Inactivity alert"),
               'subject': ALERT_SUBJECT,
               'template': ALERT_MESSAGE
+    },
+    'alert_end': {
+              'title': _("Inactivity alert"),
+              'subject': ALERT_END_SUBJECT,
+              'template': ALERT_END_MESSAGE
     },
     'vote_amendment_result': {
               'title': _("Vote result (amendments)"),

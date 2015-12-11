@@ -1,5 +1,4 @@
 <div tal:replace="structure navbar_body"/>
-<hr class="soften">
 <div class="media-body content-title-body"
      i18n:domain="novaideo">
   <div tal:condition="cant_publish" role="alert" class="alert alert-info alert-dismissible">
@@ -33,7 +32,7 @@
   </div>
 </div>
 
-<div class="object-well proposal-well"  i18n:domain="novaideo">
+<div class="well object-well proposal-well"  i18n:domain="novaideo">
     <dl >
         <dt  i18n:translate="">Abstract</dt>
 	<dd class="content-description correction-container-description">${structure:description}</dd>
@@ -69,6 +68,11 @@
           </dd>
         </div>
     </dl>
+    <div class="pull-right" tal:condition="is_participant and proposal.working_group.workspace" style="margin-top: -10px">
+      <a href="${request.resource_url(proposal.working_group.workspace, '@@index')}">
+        <span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Workspace</span>
+      </a>
+    </div>
 </div>
 
 <div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} content-text correction-container-text">
@@ -108,6 +112,25 @@
           </div>
      </div>
 </div>
+
+<div tal:condition="proposal.attached_files" class="attached-files" i18n:domain="novaideo">
+<small>
+ <blockquote class="attached_contents" tal:define="
+      files proposal.attached_files;
+      file_len len(files)">
+   <dl >
+   <dt tal:condition="file_len>1" i18n:translate="">Attachments:</dt>
+   <dt tal:condition="file_len==1" i18n:translate="">Attachment:</dt>
+   <dd>
+        <tal:loop repeat="f files">
+          <a tal:attributes="href f.url">${f.title}</a>
+            <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+        </tal:loop>
+   </dd>
+ </blockquote>
+</small>
+</div>
+
 <div tal:replace="structure footer_body"/>
 
 <div tal:condition="'proposal' in request.content_to_support and 'published' in proposal.state and 'examined' not in proposal.state" class="proposal-support pull-right" style="margin-top: -35px">

@@ -12,14 +12,20 @@ from zope.interface import implementer
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
-from substanced.util import renamer
+from substanced.util import renamer, get_oid
 
-from dace.util import get_obj
+from dace.util import get_obj, getSite
 from dace.descriptors import (
     CompositeMultipleProperty,
-    SharedUniqueProperty)
-from pontus.widget import RichTextWidget, AjaxSelect2Widget, Length
+    SharedUniqueProperty,
+    SharedMultipleProperty)
+from pontus.widget import (
+    RichTextWidget, AjaxSelect2Widget,
+    Length, SequenceWidget, Select2Widget,
+    FileWidget)
+from pontus.file import ObjectData, File
 from pontus.core import VisualisableElementSchema
+from pontus.schema import omit, Schema
 
 from .interface import IProposal
 from novaideo.content.correlation import CorrelationType
@@ -33,7 +39,7 @@ from novaideo.core import (
     DuplicableEntity,
     VersionableEntity,
     PresentableEntity)
-from novaideo.content.processes.proposal_management import WORK_MODES
+from novaideo.views.widget import SimpleMappingtWidget
 
 
 OPINIONS = OrderedDict([
@@ -71,6 +77,45 @@ def ideas_choice(node, kw):
         )
 
 
+@colander.deferred
+def files_choice(node, kw):
+    context = node.bindings['context']
+    values = []
+    root = getSite()
+    if context is not root:
+        workspace = context.working_group.workspace
+        values = [(get_oid(file_), file_.title) for file_ in workspace.files]
+
+    return Select2Widget(
+        values=values,
+        multiple=True
+        )
+
+
+class AddFilesSchemaSchema(Schema):
+    """Schema for interview"""
+
+    ws_files = colander.SchemaNode(
+        colander.Set(),
+        widget=files_choice,
+        missing=[],
+        title=_("Connect to workspace's files")
+        )
+
+    attached_files = colander.SchemaNode(
+        colander.Sequence(),
+        colander.SchemaNode(
+            ObjectData(File),
+            name=_("File"),
+            widget=FileWidget()
+            ),
+        widget=SequenceWidget(
+            add_subitem_text_template=_('Upload a new file')),
+        missing=[],
+        title=_('Upload new files'),
+        )
+
+
 def context_is_a_proposal(context, request):
     return request.registry.content.istype(context, 'proposal')
 
@@ -97,13 +142,22 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         title=_("Text")
         )
 
-    related_ideas  = colander.SchemaNode(
+    related_ideas = colander.SchemaNode(
         colander.Set(),
         widget=ideas_choice,
         title=_('Related ideas'),
         validator=Length(_, min=1),
         default=[],
         )
+
+    add_files = omit(AddFilesSchemaSchema(
+                        widget=SimpleMappingtWidget(
+                        mapping_css_class='controled-form'
+                                          ' object-well default-well hide-bloc',
+                        ajax=True,
+                        activator_icon="glyphicon glyphicon-file",
+                        activator_title=_('Add files'))),
+                    ["_csrf_token_"])
 
 
 @content(
@@ -130,6 +184,7 @@ class Proposal(Commentable,
     tokens_support = CompositeMultipleProperty('tokens_support')
     amendments = CompositeMultipleProperty('amendments', 'proposal')
     corrections = CompositeMultipleProperty('corrections', 'proposal')
+    attached_files = SharedMultipleProperty('attached_files')
 
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
@@ -158,18 +213,6 @@ class Proposal(Commentable,
     @property
     def is_published(self):
         return 'draft' not in self.state
-
-    @property
-    def work_mode(self):
-        mode_id = getattr(self, 'work_mode_id', None)
-        if mode_id:
-            return WORK_MODES.get(mode_id, None)
-
-        root = self.__parent__
-        if hasattr(root, 'get_work_modes') and len(root.get_work_modes()) == 1:
-            return root.get_default_work_mode()
-
-        return None
 
     def init_support_history(self):
         # [(user_oid, date, support_type), ...], support_type = {1:support, 0:oppose, -1:withdraw}

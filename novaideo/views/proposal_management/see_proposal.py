@@ -64,8 +64,7 @@ class DetailProposalView(BasicView):
 
         return actions, resources, messages, action_updated
 
-    def _get_adapted_text(self, user):
-        is_participant = has_role(user=user, role=('Participant', self.context))
+    def _get_adapted_text(self, user, is_participant):
         text = getattr(self.context, 'text', '')
         description = getattr(self.context, 'description', '')
         title = getattr(self.context, 'title', '')
@@ -109,6 +108,7 @@ class DetailProposalView(BasicView):
         ct_participate_closed = False
         ct_participate = False
         user = get_current()
+        is_participant = has_role(user=user, role=('Participant', self.context))
         root = getSite()
         working_group = self.context.working_group
         wg_actions = navbars['all_actions']['wg-action']
@@ -121,7 +121,7 @@ class DetailProposalView(BasicView):
 
         if working_group:
             participants_maxi = root.participants_maxi
-            work_mode = getattr(self.context, 'work_mode', None)
+            work_mode = getattr(working_group, 'work_mode', None)
             if work_mode:
                 participants_maxi = work_mode.participants_maxi
 
@@ -132,7 +132,7 @@ class DetailProposalView(BasicView):
                 user not in working_group.members and \
                 (ct_participate_max or ct_participate_closed)
 
-        title, description, text, add_filigrane = self._get_adapted_text(user)
+        title, description, text, add_filigrane = self._get_adapted_text(user, is_participant)
         related_ideas = list(self.context.related_ideas.keys())
         not_published_ideas = [i for i in related_ideas
                                if 'published' not in i.state]
@@ -154,6 +154,7 @@ class DetailProposalView(BasicView):
             'description': description,
             'text': text,
             'current_user': user,
+            'is_participant': is_participant,
             'wg_actions': wg_actions,
             'voteactions': vote_actions,
             'filigrane': add_filigrane,

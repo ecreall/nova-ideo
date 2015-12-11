@@ -121,7 +121,7 @@ class PublishProposalFormView(FormView):
                     'js_links': ['novaideo:static/js/proposal_management.js']}
 
     def before_update(self):
-        if getattr(self.context, 'work_mode', None):
+        if getattr(self.context.working_group, 'work_mode', None):
             self.schema = select(PublishProposalSchema(), ['vote', 'elected'])
 
         duration_ballot = self.context.working_group.duration_configuration_ballot

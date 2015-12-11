@@ -299,7 +299,7 @@ class StepsPanel(object):
                 time_delta = days_hours_minutes(time_delta)
 
             return renderers.render(self.step3_2_template,
-                                    {'context':context,
+                                    {'context': context,
                                      'working_group_states': working_group_states,
                                      'is_closed': is_closed,
                                      'duration': time_delta,
@@ -309,7 +309,7 @@ class StepsPanel(object):
                                     request)
         elif 'open to a working group' in context.state:
             participants_mini = getSite().participants_mini
-            work_mode = getattr(context, 'work_mode', None)
+            work_mode = getattr(working_group, 'work_mode', None)
             if work_mode:
                 participants_mini = work_mode.participants_mini
 

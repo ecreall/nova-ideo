@@ -39,7 +39,7 @@
 
 <div class="nb-iteration">${getattr(process, 'iteration', 1)}</div>
 
-<div class="sub-steps" i18n:domain="novaideo" tal:define="is_amendment (getattr(context.work_mode, 'work_id', '')=='amendment')">
+<div class="sub-steps" i18n:domain="novaideo" tal:define="is_amendment (getattr(context.working_group.work_mode, 'work_id', '')=='amendment')">
       <ul>
           <li class="step sub-step-1 ${( 'votes for publishing' not in context.state) and 'off'}">
               <span class="step-content">

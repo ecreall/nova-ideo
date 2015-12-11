@@ -17,7 +17,7 @@ from novaideo.content.processes.proposal_management.behaviors import (
 from novaideo.content.proposal import Proposal, ProposalSchema
 from novaideo import _
 from .edit_proposal import IdeaManagementView
-from .create_proposal import ideas_choice
+from .create_proposal import ideas_choice, add_file_data
 
 
 class DuplicateProposalFormView(FormView):
@@ -28,13 +28,27 @@ class DuplicateProposalFormView(FormView):
                      'description',
                      'keywords',
                      'text',
-                     'related_ideas'])
+                     'related_ideas',
+                     ('add_files', ['attached_files'])])
 
     behaviors = [DuplicateProposal, Cancel]
     formid = 'formduplicateproposal'
 
     def default_data(self):
-        return self.context
+        data = self.context.get_data(self.schema)
+        files = []
+        attached_files = self.context.attached_files
+        data['add_files'] = {'attached_files': []}
+        files = []
+        for file_ in attached_files:
+            file_data = add_file_data(file_)
+            if file_data:
+                files.append(file_data)
+
+        if files:
+            data['add_files']['attached_files'] = files
+
+        return data
 
     def before_update(self):
         ideas_widget = ideas_choice(self.context, self.request)
@@ -52,8 +66,10 @@ class DuplicateProposalView(MultipleView):
     title = _('Duplicate the proposal')
     name = 'duplicateproposal'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/ideas_management.js']}
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/ideas_management.js']}
     views = (DuplicateProposalFormView, IdeaManagementView)
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({DuplicateProposal:DuplicateProposalView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {DuplicateProposal: DuplicateProposalView})

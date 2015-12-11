@@ -9,27 +9,25 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.novaideo_abstract_process.behaviors import (
-    SelectEntity)
+from novaideo.content.processes.proposal_management.behaviors import AlertEnd
+from novaideo.content.proposal import Proposal
 from novaideo import _
-from novaideo.core import SearchableEntity
 
 
 @view_config(
-    name='selectentity',
-    context=SearchableEntity,
+    name='alertend',
+    context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class SelectEntityView(BasicView):
-    title = _('Add to my favorites')
-    name = 'selectentity'
-    behaviors = [SelectEntity]
-    viewid = 'selectentity'
+class AlertEndView(BasicView):
+    title = _('Alert the end of cycle')
+    name = 'alertend'
+    behaviors = [AlertEnd]
+    viewid = 'alertend'
 
     def update(self):
         results = self.execute(None)
         return results[0]
 
-
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
-    {SelectEntity: SelectEntityView})
+    {AlertEnd: AlertEndView})

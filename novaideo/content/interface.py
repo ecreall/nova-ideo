@@ -22,47 +22,35 @@ class IEntity(IEntityO):
     pass
 
 
-class ICorrection(Interface):
+class ICorrection(IEntity):
     pass
 
 
-class IPresentableEntity(Interface):
+class IPresentableEntity(IEntity):
     pass
 
 
-class IVote(Interface):
+class IVote(IEntity):
     pass
 
 
-class IBallotType(Interface):
+class IBallotType(IEntity):
     pass
 
 
-class IReport(Interface):
+class IReport(IEntity):
     pass
 
 
-class IBallot(Interface):
+class IBallot(IEntity):
     pass
 
 
-class IBallotBox(Interface):
+class IBallotBox(IEntity):
     pass
 
 
-class ICorrelableEntity(Interface):
-    pass
-
-
-class ISearchableEntity(Interface):
-    pass
-
-
-class IVersionableEntity(Interface):
-    pass
-
-
-class IDuplicableEntity(Interface):
+class ICorrelableEntity(IEntity):
     pass
 
 
@@ -70,7 +58,15 @@ class ISearchableEntity(IEntity):
     pass
 
 
-class ICommentable(Interface):
+class IVersionableEntity(IEntity):
+    pass
+
+
+class IDuplicableEntity(IEntity):
+    pass
+
+
+class ICommentable(IEntity):
     pass
 
 
@@ -98,23 +94,24 @@ class Iidea(ICommentable,
 class IFile(ISearchableEntity):
     pass
 
+
 class ICorrelation(ICommentable):
     pass
 
 
-class IInvitation(Interface):
+class IInvitation(IEntity):
     pass
 
 
-class IKeyword(Interface):
+class IKeyword(IEntity):
     pass
 
 
-class ICandidacy(Interface):
+class ICandidacy(IEntity):
     pass
 
 
-class IToken(Interface):
+class IToken(IEntity):
     pass
 
 
@@ -154,13 +151,18 @@ class IProposal(ICommentable,
     pass
 
 
-class IWorkingGroup(Interface):
+class IWorkingGroup(IEntity):
     pass
 
 
-class IOrganization(Interface):
+class IWorkspace(IVisualisableElement,
+                 IEntity):
     pass
 
 
-class INovaIdeoApplication(IApplication):
+class IOrganization(IEntity):
+    pass
+
+
+class INovaIdeoApplication(IEntity, IApplication):
     pass

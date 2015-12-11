@@ -179,13 +179,20 @@ class CorrectProposalFormView(FormView):
                      'description',
                      'keywords',
                      'text',
-                     'related_ideas'])
+                     'related_ideas',
+                     'add_files'
+                     ])
     behaviors = [CorrectProposal, Cancel]
     formid = 'formcorrectproposal'
     name = 'correctproposalform'
 
     def default_data(self):
-        return self.context
+        data = self.context.get_data(self.schema)
+        attached_files = self.context.attached_files
+        if attached_files:
+            data['add_files'] = {'ws_files': attached_files}
+
+        return data
 
     def before_update(self):
         ideas_widget = ideas_choice(self.context, self.request)

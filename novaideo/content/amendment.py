@@ -13,14 +13,16 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.util import getSite, get_obj
-from dace.descriptors import SharedUniqueProperty
+from dace.descriptors import (
+    SharedUniqueProperty,
+    SharedMultipleProperty)
 
 from pontus.widget import (
     RichTextWidget,
     SimpleMappingWidget,
     AjaxSelect2Widget)
 from pontus.core import VisualisableElementSchema
-from pontus.schema import Schema, select
+from pontus.schema import Schema, select, omit
 
 from .interface import IAmendment
 from novaideo.core import (
@@ -33,8 +35,10 @@ from novaideo.core import (
 from novaideo import _
 from novaideo.views.widget import (
     AddIdeaWidget,
-    LimitedTextAreaWidget)
+    LimitedTextAreaWidget,
+    SimpleMappingtWidget)
 from novaideo.content.idea import Idea, IdeaSchema
+from novaideo.content.proposal import AddFilesSchemaSchema
 
 
 @colander.deferred
@@ -216,8 +220,8 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
     description = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=300),
-        widget=LimitedTextAreaWidget(rows=5, 
-                                     cols=30, 
+        widget=LimitedTextAreaWidget(rows=5,
+                                     cols=30,
                                      limit=300),
         title=_("Abstract")
         )
@@ -227,6 +231,15 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
         widget=RichTextWidget(),
         title=_("Text")
         )
+
+    add_files = omit(AddFilesSchemaSchema(
+                    widget=SimpleMappingtWidget(
+                    mapping_css_class='controled-form'
+                                      ' object-well default-well hide-bloc',
+                    ajax=True,
+                    activator_icon="glyphicon glyphicon-file",
+                    activator_title=_('Add files'))),
+                        ["_csrf_token_"])
 
 
 @content(
@@ -249,11 +262,16 @@ class Amendment(Commentable,
     }
     author = SharedUniqueProperty('author')
     proposal = SharedUniqueProperty('proposal', 'amendments')
+    attached_files = SharedMultipleProperty('attached_files')
 
     def __init__(self, **kwargs):
         super(Amendment, self).__init__(**kwargs)
         self.explanations = PersistentDict()
         self.set_data(kwargs)
+
+    @property
+    def working_group(self):
+        return self.proposal.working_group
 
    # @region.cache_on_arguments() 
     def get_used_ideas(self):
@@ -291,26 +309,3 @@ class Amendment(Commentable,
                     pass
 
         return list(set(result))
-
-    # @property
-    # def explanation(self):
-    #     """Return all comments"""
-
-    #     result = []
-    #     values = sorted(list(self.explanations.values()),
-    #                     key=lambda e: e['oid'])
-    #     for explanation in values:
-    #         if explanation['intention'] is not None:
-    #             try:
-    #                 result.append(
-    #                     '<p>'+(Intention.get_explanation_data(
-    #                         explanation['intention'])['comment'])+'</p>'
-    #                     )
-    #             except Exception:
-    #                 pass
-
-    #     if result:
-    #         return '<div>'+"\n".join(list(set(result)))+'</div>'
-    
-    #     return ''
-

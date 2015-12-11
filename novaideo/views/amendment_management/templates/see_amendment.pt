@@ -38,7 +38,7 @@
 </div>
 <div class="amendment-diff" i18n:domain="novaideo">
  <div id="diff-container">
-  <div class="object-well proposal-well">
+  <div class="well object-well proposal-well">
     <dl tal:define="justification getattr(amendment, 'justification', '')">
         <dt tal:condition="justification" i18n:translate="">Justification</dt>
         <dd tal:condition="justification">${justification}</dd>

@@ -17,7 +17,7 @@ from dace.interfaces import IEntity
 from dace.processinstance.activity import InfiniteCardinality
 
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.content.interface import INovaIdeoApplication
+from novaideo.content.interface import INovaIdeoApplication, ISearchableEntity
 from novaideo import _
 
 
@@ -37,7 +37,7 @@ class SelectEntity(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-star-empty'
     style_order = 100
     isSequential = False
-    context = IEntity
+    context = ISearchableEntity
     roles_validation = select_roles_validation
     processsecurity_validation = select_processsecurity_validation
 

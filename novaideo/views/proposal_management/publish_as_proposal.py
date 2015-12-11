@@ -18,9 +18,10 @@ from novaideo.content.processes.proposal_management.behaviors import (
     PublishAsProposal)
 from novaideo.content.idea import Idea
 from .create_proposal import (
-    CreateProposalFormView, 
-    CreateProposalView, 
+    CreateProposalFormView,
+    CreateProposalView,
     AddIdeaFormView,
+    add_file_data,
     IdeaManagementView as IdeaManagementViewOr)
 from novaideo import _
 
@@ -91,16 +92,28 @@ class PublishFormView(CreateProposalFormView):
         localizer = self.request.localizer
         title = self.context.title + \
                     localizer.translate(_(" (the proposal)"))
-        return {'title': title,
+        data = {'title': title,
                 'text': self.context.text,
                 'keywords': self.context.keywords,
                 'related_ideas': [self.context]}
+        attached_files = self.context.attached_files
+        data['add_files'] = {'attached_files': []}
+        files = []
+        for file_ in attached_files:
+            file_data = add_file_data(file_)
+            if file_data:
+                files.append(file_data)
+
+        if files:
+            data['add_files']['attached_files'] = files
+
+        return data
 
     def before_update(self):
         ideas_widget = ideas_choice(self.context, self.request)
         ideas_widget.item_css_class = 'hide-bloc'
         ideas_widget.css_class = 'controlled-items'
-        self.schema.get('related_ideas').widget = ideas_widget 
+        self.schema.get('related_ideas').widget = ideas_widget
 
 
 class PublishAsProposalFormView(MultipleView):

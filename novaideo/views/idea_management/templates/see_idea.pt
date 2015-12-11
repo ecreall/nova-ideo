@@ -28,7 +28,7 @@
     </dl>
 </div>
 
-<div tal:condition="files" id="idea_files"  i18n:domain="novaideo">
+<div tal:condition="files" id="idea_files" class="attached-files" i18n:domain="novaideo">
 <small>
  <blockquote class="attached_contents" tal:define="file_len len(files)">
    <dl >

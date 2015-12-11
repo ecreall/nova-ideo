@@ -12,12 +12,15 @@ from substanced.schema import NameSchemaNode
 
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import (
-    SharedMultipleProperty, 
-    SharedUniqueProperty, 
-    CompositeMultipleProperty)
+    SharedMultipleProperty,
+    SharedUniqueProperty,
+    CompositeMultipleProperty,
+    CompositeUniqueProperty)
 from pontus.core import VisualisableElement, VisualisableElementSchema
 
 from .interface import IWorkingGroup
+from .workspace import Workspace
+from novaideo.content.processes.proposal_management import WORK_MODES
 
 
 def context_is_a_workinggroup(context, request):
@@ -47,3 +50,19 @@ class WorkingGroup(VisualisableElement, Entity):
     wating_list = SharedMultipleProperty('wating_list')
     ballots = CompositeMultipleProperty('ballots')
     improvement_cycle_proc = SharedUniqueProperty('improvement_cycle_proc')
+    workspace = CompositeUniqueProperty('workspace', 'working_group')
+
+    def init_workspace(self):
+        self.addtoproperty('workspace', Workspace(title="Workspace"))
+
+    @property
+    def work_mode(self):
+        mode_id = getattr(self, 'work_mode_id', None)
+        if mode_id:
+            return WORK_MODES.get(mode_id, None)
+
+        root = self.__parent__
+        if hasattr(root, 'get_work_modes') and len(root.get_work_modes()) == 1:
+            return root.get_default_work_mode()
+
+        return None
