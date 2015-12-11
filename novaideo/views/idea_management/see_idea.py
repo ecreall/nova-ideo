@@ -36,8 +36,17 @@ class DetailIdeaView(BasicView):
     validate_behaviors = False
 
     def _cant_publish_alert(self, actions, user):
-        if 'to work' in self.context.state and self.context.author is user:
+        if not self.request.moderate_ideas and \
+           'to work' in self.context.state and self.context.author is user:
             return not any(a.action.behavior_id == 'publish'
+                           for a in actions.get('global-action', []))
+
+        return False
+
+    def _cant_submit_alert(self, actions, user):
+        if self.request.moderate_ideas and \
+           'to work' in self.context.state and self.context.author is user:
+            return not any(a.action.behavior_id == 'submit'
                            for a in actions.get('global-action', []))
 
         return False
@@ -63,6 +72,7 @@ class DetailIdeaView(BasicView):
             'current_user': user,
             'files': files_urls,
             'cant_publish': self._cant_publish_alert(navbars['all_actions'], user),
+            'cant_submit': self._cant_submit_alert(navbars['all_actions'], user),
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body']
