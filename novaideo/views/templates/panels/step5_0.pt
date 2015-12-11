@@ -5,5 +5,5 @@
   </div>
   
   <div class="proposal-explanation-step">
-         ${structure:context.opinion['explanation']}
+         ${context.opinion['explanation']}
   </div>

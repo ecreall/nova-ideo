@@ -151,7 +151,7 @@
 <div tal:condition="'proposal' in request.content_to_examine and  'examined' in proposal.state" class="proposal-opinion pull-right"  title="${proposal.opinion_value}" style="margin-top: -55px">
   <div class="proposal-explanation hide-bloc">
     <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-     ${structure:proposal.opinion['explanation']}</div>
+     ${proposal.opinion['explanation']}</div>
   <div class="circle red ${(proposal.opinion['opinion'] != 'unfavorable') and 'off' or 'on' }"></div>
   <div class="circle orange ${(proposal.opinion['opinion'] != 'to_study') and 'off' or 'on' }"></div>
   <div class="circle green ${(proposal.opinion['opinion'] != 'favorable') and 'off' or 'on'}"></div>
