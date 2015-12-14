@@ -338,13 +338,13 @@ $(function () {
             // Update the button's color
             if (isChecked) {
                 $button
-                    .removeClass('btn-default')
-                    .addClass('btn-' + color + ' active');
+                    .addClass('active');
+                $('#'+$button.attr('id')+'-icon').removeClass('hide-bloc')
             }
             else {
                 $button
-                    .removeClass('btn-' + color + ' active')
-                    .addClass('btn-default');
+                    .removeClass('active')
+                $('#'+$button.attr('id')+'-icon').addClass('hide-bloc')
             }
         }
 

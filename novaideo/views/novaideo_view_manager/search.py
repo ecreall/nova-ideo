@@ -27,6 +27,10 @@ from novaideo.content.processes import get_states_mapping
 from novaideo.views.filter import (
     get_filter, FilterView, FILTER_SOURCES,
     merge_with_filter_view, find_entities)
+from novaideo.content.idea import Idea
+from novaideo.content.proposal import Proposal
+from novaideo.content.person import Person
+
 
 
 CONTENTS_MESSAGES = {
@@ -35,9 +39,9 @@ CONTENTS_MESSAGES = {
     '*': _(u"""${nember} elements found""")
 }
 
-DEFAULT_SEARCHABLE_CONTENT = [('idea', _('Ideas')),
-                              ('proposal', _('Proposals')),
-                              ('person', _('Persons'))
+DEFAULT_SEARCHABLE_CONTENT = [('idea', Idea),
+                              ('proposal', Proposal),
+                              ('person', Person)
                             ]
 
 
@@ -65,7 +69,8 @@ class AdvancedSearchView(FilterView):
 
 @colander.deferred
 def content_types_choices(node, kw):
-    return CheckboxChoiceWidget(values=DEFAULT_SEARCHABLE_CONTENT,
+    return CheckboxChoiceWidget(values=[(i, v.type_title) for i, v in
+                                        DEFAULT_SEARCHABLE_CONTENT],
                                 inline=True,
                                 css_class='search-choice',
                                 item_css_class="search-choices")
@@ -80,7 +85,8 @@ def default_content_types_choices(node, kw):
 def text_to_search_widget(node, kw):
     request = node.bindings['request']
     choices = [{'id': 'search-choice-'+k[0],
-               'title': k[1],
+               'title': k[1].type_title,
+               'icon': k[1].icon,
                'order': index} for index, k
                in enumerate(DEFAULT_SEARCHABLE_CONTENT)]
     choices = sorted(

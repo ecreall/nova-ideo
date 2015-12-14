@@ -18,11 +18,23 @@
            id="${oid}" placeholder="${placeholder}"
            title="${description}">
         <span class="input-group-btn">
-           <button tal:condition="choices" tal:repeat="choice choices"
-                   id="${choice['id']}" 
+            <div tal:condition="choices" class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span id="${choice['id']}-icon" tal:repeat="choice choices" title="${choice['title']}" class="${choice['icon']} hide-bloc"> </span>
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <li tal:repeat="choice choices">
+                  <a 
+                   id="${choice['id']}"
                    type="button" 
-                   class="content-select btn" 
-                   data-color="default">${choice['title']}</button>
+                   class="content-select" 
+                   data-color="default">${choice['title']}</a>
+                </li>
+              </ul>
+            </div>
            <button class="btn btn-success" type="${button_type}" data-url="${url}" i18n:domain="novaideo" i18n:translate=""><span class="glyphicon glyphicon-search"></span></button>
            <a class="btn btn-default" href="${advanced_search_url}" i18n:translate=""><span class="glyphicon glyphicon-zoom-in"></span> <span class="hidden-sm hidden-xs" i18n:translate="">Advanced search</span></a>
         </span>
