@@ -97,15 +97,20 @@ def content_types_query(node, **args):
         value = args['metadata_filter']
 
     content_types = value.get('content_types', []) if value else []
+    request = args.get('request', None)
+    if not request:
+        request = get_current_request()
+
+    searchable_contents = core.get_searchable_content(request)
     if not content_types:
-        content_types = list(core.SEARCHABLE_CONTENTS.keys())
+        content_types = list(searchable_contents.keys())
 
     if args.get('interfaces', []):
         interfaces = [i.__identifier__ for i in args['interfaces']]
     else:
-        interfaces = [list(core.SEARCHABLE_CONTENTS[i].
+        interfaces = [list(searchable_contents[i].
                      __implemented__.interfaces())[0].__identifier__
-                      for i in content_types if i in core.SEARCHABLE_CONTENTS]
+                      for i in content_types if i in searchable_contents]
     #catalog
     dace_catalog = None
     if 'dace' in args:
@@ -429,8 +434,9 @@ def metadata_filter_repr(value, request, template_type='default'):
     template = FILTER_TEMPLATES['metadata_filter'].get(template_type, None)
     value_cp = deepcopy(value)
     content_types = value_cp['content_types']
-    content_types = [getattr(core.SEARCHABLE_CONTENTS[c], 'type_title', c)
-                    for c in content_types if c in core.SEARCHABLE_CONTENTS]
+    searchable_contents = core.get_searchable_content()
+    content_types = [getattr(searchable_contents[c], 'type_title', c)
+                    for c in content_types if c in searchable_contents]
     value_cp['content_types'] = content_types
     tree = value_cp['tree']
     tree = json.dumps(dict(tree))
@@ -564,17 +570,19 @@ def content_types_choices(node, kw):
     analyzed_data = node.bindings.get('analyzed_data', {})
     values = []
     registry = get_current_registry()
+    searchable_contents = core.get_searchable_content(request)
     if 'content_types' in analyzed_data:
         values = [(c, '{} ({})'.format(
             localizer.translate(
                 getattr(registry.content.content_types[c],
                         'type_title', str(c))),
             str(analyzed_data['content_types'].get(c, 0))))
-            for c in sorted(analyzed_data['content_types'].keys())]
+            for c in sorted(analyzed_data['content_types'].keys())
+            if c in searchable_contents]
     else:
         exclude_internal = request.user is None
         values = [(key, getattr(c, 'type_title', c.__class__.__name__))
-                  for key, c in list(core.SEARCHABLE_CONTENTS.items())
+                  for key, c in list(searchable_contents.items())
                   if not exclude_internal or
                   (exclude_internal and not getattr(c, 'internal_type', False))]
 

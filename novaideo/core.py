@@ -48,6 +48,18 @@ SEARCHABLE_CONTENTS = {}
 NOVAIDO_ACCES_ACTIONS = {}
 
 
+def get_searchable_content(request=None):
+    if request is None:
+        request = get_current_request()
+
+    if getattr(request, 'is_idea_box', False):
+        return {type_: SEARCHABLE_CONTENTS[type_]
+                for type_ in SEARCHABLE_CONTENTS
+                if type_ != 'proposal'}
+
+    return SEARCHABLE_CONTENTS
+
+
 class access_action(object):
     """ Decorator for creationculturelle access actions.
     An access action allows to view an object"""

@@ -173,7 +173,7 @@ def get_valid_interfaces(interfaces, args):
             return False
 
         content_types = args.get('content_types', [])
-        searchable_contents = core.SEARCHABLE_CONTENTS
+        searchable_contents = core.get_searchable_content()
         valid_interfaces = [list(searchable_contents[i].
                                  __implemented__.declared)
                             for i in content_types if i in searchable_contents]

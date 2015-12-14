@@ -46,10 +46,6 @@ from novaideo.views.filter import find_entities, find_more_contents
 MORE_NB = 20
 
 
-USER_MENU_ACTIONS = {'menu1': [SeeMyContents, SeeMyParticipations],
-                     'menu2': [SeeMySelections, SeeMySupports]}
-
-
 GROUPS_PICTO = {
     'Add': (0, 'glyphicon glyphicon-plus'),
     'See': (1, 'glyphicon glyphicon-eye-open'),
@@ -82,7 +78,6 @@ class Usermenu_panel(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-
 
     def __call__(self):
         root = getSite()
@@ -117,7 +112,7 @@ class Usermenu_panel(object):
 
 
 @panel_config(
-    name = 'usernavbar',
+    name='usernavbar',
     context=Entity,
     renderer='templates/panels/navbar_view.pt'
     )
@@ -132,6 +127,9 @@ class UserNavBarPanel(object):
 
     def __call__(self):
         root = getSite()
+        if getattr(self.request, 'is_idea_box', False):
+            self.navbar_actions = [SeeMyContents, SeeMySelections]
+
         actions_url = OrderedDict()
         for actionclass in self.navbar_actions:
             process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
@@ -167,22 +165,22 @@ class NovaideoContents(object):
         if self.request.view_name != '':
             return {'condition': False}
 
+        result = {}
         dace_catalog = find_catalog('dace')
         states_index = dace_catalog['object_states']
         object_provides_index = dace_catalog['object_provides']
         query = object_provides_index.any((IPerson.__identifier__ ,)) & \
-                states_index.notany(['deactivated']) 
-        nb_person = query.execute().__len__()
+                states_index.notany(['deactivated'])
+        result['nb_person'] = query.execute().__len__()
         query = object_provides_index.any((Iidea.__identifier__ ,)) & \
-                states_index.any(['published']) 
-        nb_idea = query.execute().__len__()
-        query = object_provides_index.any((IProposal.__identifier__ ,)) & \
-                states_index.notany(['archived', 'draft']) 
-        nb_proposal = query.execute().__len__()
-        result = {}
-        result['nb_person'] = nb_person
-        result['nb_idea'] = nb_idea
-        result['nb_proposal'] = nb_proposal
+                states_index.any(['published'])
+        result['nb_idea'] = query.execute().__len__()
+        result['nb_proposal'] = 0
+        if not getattr(self.request, 'is_idea_box', False):
+            query = object_provides_index.any((IProposal.__identifier__ ,)) & \
+                    states_index.notany(['archived', 'draft'])
+            result['nb_proposal'] = query.execute().__len__()
+
         result['condition'] = True
         return result
 
@@ -340,6 +338,9 @@ class StepsPanel(object):
                                     request)
 
     def __call__(self):
+        if getattr(self.request, 'is_idea_box', False):
+            return {'condition': False}
+
         result = {}
         context = self._get_process_context()
         result['condition'] = isinstance(context, (Proposal, Idea))

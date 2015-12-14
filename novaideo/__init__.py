@@ -47,6 +47,10 @@ def moderate_ideas(request):
     return getattr(request.root, 'moderate_ideas', False)
 
 
+def is_idea_box(request):
+    return getattr(request.root, 'is_idea_box', False)
+
+
 def content_to_examine(request):
     return getattr(request.root, 'content_to_examine', [])
 
@@ -62,6 +66,7 @@ def main(global_config, **settings):
     config.add_request_method(moderate_ideas, reify=True)
     config.add_request_method(content_to_examine, reify=True)
     config.add_request_method(content_to_support, reify=True)
+    config.add_request_method(is_idea_box, reify=True)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
@@ -70,7 +75,7 @@ def main(global_config, **settings):
     config.scan()
     YEAR = 86400 * 365
     config.add_static_view('novaideostatic',
-                           'novaideo:static', 
+                           'novaideo:static',
                            cache_max_age=YEAR)
     #    config.set_locale_negotiator(my_locale_negotiator)
     settings = config.registry.settings

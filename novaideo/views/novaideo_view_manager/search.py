@@ -7,6 +7,7 @@
 
 import colander
 from pyramid.view import view_config
+from pyramid.threadlocal import get_current_request
 
 from substanced.util import Batch
 
@@ -45,6 +46,17 @@ DEFAULT_SEARCHABLE_CONTENT = [('idea', Idea),
                             ]
 
 
+def get_default_searchable_content(request=None):
+    if request is None:
+        request = get_current_request()
+
+    if getattr(request, 'is_idea_box', False):
+        return [c for c in DEFAULT_SEARCHABLE_CONTENT
+                if c[0] != 'proposal']
+
+    return DEFAULT_SEARCHABLE_CONTENT
+
+
 @view_config(
     name='advanced_search',
     renderer='pontus:templates/views_templates/grid.pt',
@@ -69,8 +81,8 @@ class AdvancedSearchView(FilterView):
 
 @colander.deferred
 def content_types_choices(node, kw):
-    return CheckboxChoiceWidget(values=[(i, v.type_title) for i, v in
-                                        DEFAULT_SEARCHABLE_CONTENT],
+    request = node.bindings['request']
+    return CheckboxChoiceWidget(values=get_default_searchable_content(request),
                                 inline=True,
                                 css_class='search-choice',
                                 item_css_class="search-choices")
@@ -78,7 +90,8 @@ def content_types_choices(node, kw):
 
 @colander.deferred
 def default_content_types_choices(node, kw):
-    return [k[0] for k in DEFAULT_SEARCHABLE_CONTENT]
+    request = node.bindings['request']
+    return [k[0] for k in get_default_searchable_content(request)]
 
 
 @colander.deferred
@@ -88,7 +101,7 @@ def text_to_search_widget(node, kw):
                'title': k[1].type_title,
                'icon': k[1].icon,
                'order': index} for index, k
-               in enumerate(DEFAULT_SEARCHABLE_CONTENT)]
+               in enumerate(get_default_searchable_content(request))]
     choices = sorted(
         choices, key=lambda v: v['order'])
     advanced_search_url = request.resource_url(
@@ -139,7 +152,7 @@ class SearchView(FormView):
         form, reqts = self._build_form()
         form.formid = self.viewid + '_' + form.formid
         posted_formid = None
-        default_content = [key[0] for key in DEFAULT_SEARCHABLE_CONTENT]
+        default_content = [key[0] for key in get_default_searchable_content(self.request)]
         default_content.remove("person")
         if '__formid__' in post:
             posted_formid = post['__formid__']
@@ -202,7 +215,7 @@ class SearchResultView(BasicView):
 
     def _add_filter(self, user):
         def source(**args):
-            default_content = [key[0] for key in DEFAULT_SEARCHABLE_CONTENT]
+            default_content = [key[0] for key in get_default_searchable_content(self.request)]
             default_content.remove("person")
             filter_ = {
                 'metadata_filter': {'content_types': default_content}
@@ -235,7 +248,7 @@ class SearchResultView(BasicView):
         filter_form = None
         if not executed:
             filter_form, filter_data = self._add_filter(user)
-            default_content = [key[0] for key in DEFAULT_SEARCHABLE_CONTENT]
+            default_content = [key[0] for key in get_default_searchable_content(self.request)]
             default_content.remove("person")
             filter_ = {
                 'metadata_filter': {'content_types': default_content}

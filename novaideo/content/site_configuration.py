@@ -32,6 +32,7 @@ def modes_choice(node, kw):
 
 @colander.deferred
 def content_types_choices(node, kw):
+    request = node.bindings['request']
     content_to_examine = ['idea', 'proposal']
     values = [(key, getattr(c, 'type_title', c.__class__.__name__))
               for key, c in list(core.SEARCHABLE_CONTENTS.items())
@@ -42,11 +43,20 @@ def content_types_choices(node, kw):
 class WorkParamsConfigurationSchema(Schema):
     """Schema for site configuration."""
 
-    work_modes = colander.SchemaNode(
-        colander.Set(),
-        title=_('Work modes'),
-        widget=modes_choice,
-        default=[],
+    is_idea_box = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Is an idea box'),
+        title='',
+        missing=False
+    )
+
+    moderate_ideas = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Moderate ideas'),
+        title='',
+        missing=False
     )
 
     content_to_examine = colander.SchemaNode(
@@ -63,12 +73,11 @@ class WorkParamsConfigurationSchema(Schema):
         missing=[]
     )
 
-    moderate_ideas = colander.SchemaNode(
-        colander.Boolean(),
-        widget=deform.widget.CheckboxWidget(),
-        label=_('Moderate ideas'),
-        title='',
-        missing=False
+    work_modes = colander.SchemaNode(
+        colander.Set(),
+        title=_('Work modes'),
+        widget=modes_choice,
+        default=[],
     )
 
 

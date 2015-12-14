@@ -18,6 +18,7 @@ from dace.processinstance.core import PROCESS_HISTORY_KEY
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication
+from novaideo.content.proposal import Proposal
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.core import access_action
@@ -66,9 +67,14 @@ class SeeMyContents(InfiniteCardinality):
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemyc_processsecurity_validation
 
-    def contents_nb(self):
+    def contents_nb(self, request, context):
         user = get_current()
-        return len([o for o in getattr(user, 'contents', [])])
+        contents = [o for o in getattr(user, 'contents', [])]
+        if getattr(request, 'is_idea_box', False):
+            return len([s for s in contents
+                        if not isinstance(s, Proposal)])
+
+        return len(contents)
 
     def start(self, context, request, appstruct, **kw):
         return {}
@@ -87,10 +93,15 @@ class SeeMySelections(InfiniteCardinality):
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemys_processsecurity_validation
 
-    def contents_nb(self):
+    def contents_nb(self, request, context):
         user = get_current()
-        return len([o for o in getattr(user, 'selections', [])
-                    if 'archived' not in o.state])
+        selections = [o for o in getattr(user, 'selections', [])
+                      if 'archived' not in o.state]
+        if getattr(request, 'is_idea_box', False):
+            return len([s for s in selections
+                        if not isinstance(s, Proposal)])
+
+        return len(selections)
 
     def start(self, context, request, appstruct, **kw):
         return {}
@@ -98,6 +109,9 @@ class SeeMySelections(InfiniteCardinality):
 
 def seemypa_processsecurity_validation(process, context):
     user = get_current()
+    if getattr(context, 'is_idea_box', False):
+        return False
+
     return getattr(user, 'participations', []) and \
                    global_user_processsecurity(process, context)
 
@@ -108,7 +122,7 @@ class SeeMyParticipations(InfiniteCardinality):
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemypa_processsecurity_validation
 
-    def contents_nb(self):
+    def contents_nb(self, request, context):
         user = get_current()
         return len(getattr(user, 'participations', []))
 
@@ -118,6 +132,9 @@ class SeeMyParticipations(InfiniteCardinality):
 
 def seemysu_processsecurity_validation(process, context):
     user = get_current()
+    if getattr(context, 'is_idea_box', False):
+        return False
+
     supports = [o for o in getattr(user, 'supports', [])
                 if 'archived' not in o.state]
     return supports and global_user_processsecurity(process, context)
@@ -129,7 +146,7 @@ class SeeMySupports(InfiniteCardinality):
     roles_validation = seemy_roles_validation
     processsecurity_validation = seemysu_processsecurity_validation
 
-    def contents_nb(self):
+    def contents_nb(self, request, context):
         user = get_current()
         len_supports = len([o for o in getattr(user, 'supports', [])
                             if 'archived' not in o.state])
@@ -144,6 +161,9 @@ def seeproposals_roles_validation(process, context):
 
 
 def seeproposals_processsecurity_validation(process, context):
+    if getattr(context, 'is_idea_box', False):
+        return False
+
     return 'proposal' in getattr(context, 'content_to_examine', [] ) and\
            global_user_processsecurity(process, context)
 
