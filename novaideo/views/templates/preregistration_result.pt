@@ -4,8 +4,8 @@
     <span  class="hidden-xs icon ${icon}"></span>
   </div>
   <div class="media-body">
-      <a tal:attributes="href request.resource_url(object, '@@index')"><h3><span class="visible-xs-inline-block icon ${icon}"></span> ${getattr(object, 'title', object.__name__)} 
-      <small style="color: #d43f3a" tal:condition="object.is_expired" >(<span i18n:translate="">Expired</span>)</small></h3></a>
+      <a tal:attributes="href request.resource_url(object, '@@index')"><h4><span class="visible-xs-inline-block icon ${icon}"></span> ${getattr(object, 'title', object.__name__)} 
+      <small style="color: #d43f3a" tal:condition="object.is_expired" >(<span i18n:translate="">Expired</span>)</small></h4></a>
         <dl class="dl-horizontal film-data">
         <dt i18n:translate="">Email</dt>
         <dd tal:define="mail getattr(object, 'email', '')">

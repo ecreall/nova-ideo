@@ -639,7 +639,7 @@ def get_access_key(obj):
         return ['always']
     else:
         result = serialize_roles(
-            (('Owner', obj), 'Admin', 'Moderator'))
+            (('Owner', obj), 'Admin'))
         return result
 
 

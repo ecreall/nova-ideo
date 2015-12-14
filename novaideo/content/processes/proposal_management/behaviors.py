@@ -366,9 +366,8 @@ class PublishAsProposal(CreateProposal):
 
 def del_processsecurity_validation(process, context):
     return global_user_processsecurity(process, context) and \
-           ((has_role(role=('Owner', context)) and \
-           'draft' in context.state) or \
-           has_role(role=('Moderator', )))
+           (has_role(role=('Owner', context)) and \
+           'draft' in context.state)
 
 
 class DeleteProposal(InfiniteCardinality):
@@ -1289,13 +1288,13 @@ def get_access_key(obj):
         return ['always']
     else:
         result = serialize_roles(
-            (('Owner', obj), 'Admin', 'Moderator'))
+            (('Owner', obj), 'Admin'))
         return result
 
 
 def seeproposal_processsecurity_validation(process, context):
     return 'draft' not in context.state or \
-           has_role(role=('Owner', context))
+           has_any_roles(roles=(('Owner', context), 'Admin'))
 
 
 @access_action(access_key=get_access_key)
@@ -1606,12 +1605,12 @@ class AlertEnd(ElementaryAction):
 
 def get_access_key_ws(obj):
     return serialize_roles(
-        (('Participant', obj.proposal), 'Admin', 'Moderator'))
+        (('Participant', obj.proposal), 'Admin'))
 
 
 def seeworkspace_processsecurity_validation(process, context):
     return has_any_roles(
-        roles=(('Participant', context.proposal), 'Admin', 'Moderator'))
+        roles=(('Participant', context.proposal), 'Admin'))
 
 
 @access_action(access_key=get_access_key_ws)

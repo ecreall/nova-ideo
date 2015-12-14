@@ -6,8 +6,8 @@
     <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
   </div>
   <div class="media-body">
-    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
-    <a tal:attributes="href url"><h3><span class="visible-xs-inline-block icon ${icon}"></span>  ${object.title} </h3></a>
+    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+    <a tal:attributes="href url"><h4><span class="visible-xs-inline-block icon ${icon}"></span>  ${object.title} </h4></a>
     <dl >
         <div tal:omit-tag=""
           tal:condition="getattr(object, 'justification', '')"

@@ -8,7 +8,7 @@
         <small><span class="glyphicon glyphicon-plus"></span> ${subitem['view'].title}</small>
     </a>
     <span class="action-message pull-right" tal:define="messagea subitem['view'].get_message()">
-       <strong tal:condition="messagea[2]=='*' or messagea[2]=='1'">${messagea[1]}</strong>
+       <strong><span tal:omit-tag="" tal:condition="messagea[2]=='*' or messagea[2]=='1'">${messagea[1]}</span></strong>
        ${messagea[0]}
     </span>
   </div>

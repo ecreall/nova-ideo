@@ -22,6 +22,7 @@ from dace.util import (
     copy)
 from dace.objectofcollaboration.principal.util import (
     has_role,
+    has_any_roles,
     grant_roles,
     get_current)
 from dace.processinstance.activity import InfiniteCardinality, ActionType
@@ -151,7 +152,7 @@ def del_processsecurity_validation(process, context):
 
 
 def del_state_validation(process, context):
-    return ('draft' in context.state)
+    return 'draft' in context.state
 
 
 class DelAmendment(InfiniteCardinality):
@@ -513,18 +514,19 @@ def get_access_key(obj):
     result = []
     if 'published' in obj.state:
         result = serialize_roles(
-            (('Participant', obj.proposal), 'Moderator', 'Admin'))
+            (('Participant', obj.proposal), 'Admin', 'Moderator'))
     elif 'draft' in obj.state:
         result = serialize_roles(
-            (('Owner', obj), 'Moderator', 'Admin'))
+            (('Owner', obj), 'Admin'))
 
     return result
 
 
 def seeamendment_processsecurity_validation(process, context):
     return ('published' in context.state and \
-            has_role(role=('Participant', context.proposal))) or \
-           ('draft' in context.state and has_role(role=('Owner', context)))
+            has_any_roles(roles=(('Participant', context.proposal), 'Moderator'))) or \
+           ('draft' in context.state and has_role(role=('Owner', context))) or \
+           has_any_roles(roles=('Admin',))
 
 
 @access_action(access_key=get_access_key)

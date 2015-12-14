@@ -4,7 +4,7 @@
     <img tal:condition="object.logo" tal:attributes="src object.logo.url"  width="300"/>
   </div>
   <div class="caption">
-    <a tal:attributes="href request.resource_url(object, '@@index')"><h3><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title} </h3></a>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h4><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title} </h4></a>
     <p class="text-muted" tal:condition="object.description">
              <small  >${object.description}</small>
     </p>
