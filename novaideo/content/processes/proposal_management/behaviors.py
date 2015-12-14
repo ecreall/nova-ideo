@@ -344,6 +344,9 @@ class CreateProposal(InfiniteCardinality):
 
 def pap_processsecurity_validation(process, context):
     request = get_current_request()
+    if getattr(request, 'is_idea_box', False):
+        return False
+
     condition = False
     if 'idea' in request.content_to_examine:
         condition = 'favorable' in context.state

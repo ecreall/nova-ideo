@@ -14,6 +14,7 @@ from substanced.db import root_factory
 
 from dace.util import getSite
 
+
 log = logging.getLogger('creationculturelle')
 
 _ = TranslationStringFactory('novaideo')
@@ -59,6 +60,16 @@ def content_to_support(request):
     return getattr(request.root, 'content_to_support', [])
 
 
+def searchable_contents(request):
+    from novaideo.core import SEARCHABLE_CONTENTS
+    if getattr(request, 'is_idea_box', False):
+        searchable_contents = dict(SEARCHABLE_CONTENTS)
+        searchable_contents.pop('proposal')
+        return searchable_contents
+
+    return SEARCHABLE_CONTENTS
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -67,6 +78,7 @@ def main(global_config, **settings):
     config.add_request_method(content_to_examine, reify=True)
     config.add_request_method(content_to_support, reify=True)
     config.add_request_method(is_idea_box, reify=True)
+    config.add_request_method(searchable_contents, reify=True)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
