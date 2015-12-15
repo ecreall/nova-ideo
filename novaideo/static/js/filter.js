@@ -48,6 +48,7 @@ function filter(){
             }
             catch(err) {};
             initscroll();
+            init_opinions();
             init_result_scroll()
         }
     });

@@ -219,6 +219,13 @@ function more_content(elements, isvertical){
 
 }
 
+function init_opinions(){
+  $('.proposal-opinion').on('click', activate_explanation);
+
+  $('.proposal-opinion button.close').on('click', close_explanation);
+}
+
+
 $(document).ready(function(){
   
 
@@ -236,9 +243,7 @@ $(document).ready(function(){
 
   init_result_scroll();
 
-  $('.proposal-opinion').on('click', activate_explanation);
-
-  $('.proposal-opinion button.close').on('click', close_explanation);
+  init_opinions();
 
   // $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
   //    menuSwitchChange(state, false);
