@@ -216,7 +216,7 @@ class MailTemplatesConfigurationSchema(Schema):
 @colander.deferred
 def keywords_choice(node, kw):
     context = node.bindings['context']
-    values = [(i, i) for i in sorted(context.keywords)]
+    values = [(i, i) for i in sorted(getattr(context, 'keywords', []))]
     return Select2Widget(values=values,
                          create=True,
                          multiple=True)
