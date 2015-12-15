@@ -112,7 +112,7 @@ class LoginView(BasicView):
         values = dict(
             url=request.resource_url(request.virtual_root, 'login'),
             came_from=came_from,
-            logi=login,
+            login=login,
             password=password,
             login_template=template,
             )
