@@ -276,7 +276,10 @@ class SearchableObject(Adapter):
     def object_authors(self):
         author = getattr(self.context, 'author', None)
         if author:
-            return [get_oid(author)]
+            try:
+                return [get_oid(author)]
+            except:
+                return []
 
         return []
 
