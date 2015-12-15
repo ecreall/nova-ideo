@@ -29,9 +29,7 @@ from novaideo.utilities.util import to_localized_time
 
 INACTIVITY_DURATION = 90
 
-INACTIVITY_ALERT = 45
-
-INACTIVITY_LASTALERT = 1
+INACTIVITY_ALERTS = [45, 60, 88]
 
 
 def system_roles_validation(process, context):
@@ -43,8 +41,9 @@ class DeactivateUsers(ElementaryAction):
     actionType = ActionType.system
     roles_validation = system_roles_validation
 
-    def send_alert(self, users, mail_template, context, request, localizer):
+    def send_alert(self, users, mail_template, context, request, alert):
         subject = mail_template['subject'].format()
+        localizer = request.localizer
         for member in [m for m in users if getattr(m, 'email', '')]:
             last_connection = to_localized_time(
                 getattr(member, 'last_connection'), request,
@@ -56,7 +55,8 @@ class DeactivateUsers(ElementaryAction):
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name', ''),
                 novaideo_title=context.title,
-                last_connection=last_connection.lower()
+                last_connection=last_connection.lower(),
+                days=alert
             )
             mailer_send(
                 subject=subject,
@@ -67,10 +67,7 @@ class DeactivateUsers(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         all_deactivated = []
         mail_template = context.get_mail_template('inactivity_users')
-        localizer = request.localizer
         inactivity_duration = datetime.timedelta(days=INACTIVITY_DURATION)
-        inactivity_alert = datetime.timedelta(days=INACTIVITY_ALERT)
-        inactivity_lastalert = datetime.timedelta(days=INACTIVITY_LASTALERT)
         novaideo_catalog = find_catalog('novaideo')
         last_connection_index = novaideo_catalog['last_connection']
         current_date = datetime.datetime.combine(
@@ -89,25 +86,18 @@ class DeactivateUsers(ElementaryAction):
             user.reindex()
             all_deactivated.append(user)
 
-        # First alert
-        alert_date = current_date - inactivity_alert
-        query = last_connection_index.lt(alert_date)
-        users = find_entities(
-            interfaces=[IPerson],
-            metadata_filter={
-                'states': ['active']},
-            add_query=query)
+        for alert in INACTIVITY_ALERTS:
+            inactivity_alert = datetime.timedelta(days=alert)
+            alert_date = current_date - inactivity_alert
+            query = last_connection_index.lt(alert_date)
+            users = find_entities(
+                interfaces=[IPerson],
+                metadata_filter={
+                    'states': ['active']},
+                add_query=query)
 
-        self.send_alert(users, mail_template, context, request, localizer)
-        # Last alert
-        alert_date = current_date - inactivity_lastalert
-        query = last_connection_index.lt(alert_date)
-        users = find_entities(
-            interfaces=[IPerson],
-            metadata_filter={
-                'states': ['active']},
-            add_query=query)
-        self.send_alert(users, mail_template, context, request, localizer)
+            self.send_alert(users, mail_template, context, request, alert)
+
         request.registry.notify(ActivityExecuted(
             self, all_deactivated, get_current()))
         return {}

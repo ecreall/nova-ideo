@@ -328,7 +328,7 @@ INACTIVITY_SUBJECT = u"""Inactivité de votre compte"""
 INACTIVITY_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Votre dernière connexion remonte au {last_connection}.
+Votre dernière connexion remonte à plus de {days} jour(s) (dernière connexion remonte le {last_connection}).
 Pour information, au bout de 6 mois d'inactivité ininterrompus votre compte sera désactivé.
 Afin d'éviter ceci, veuillez vous connecter régulièrement sur la plateforme.
 

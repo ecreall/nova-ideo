@@ -10,7 +10,6 @@ function collapse_current_collpsein(){
 
 }
 
-
 function activate_explanation(event){
   if($(event.target).parents('.proposal-explanation').length == 0){
     var explanation = $($(this).find('.proposal-explanation').first());
@@ -22,83 +21,11 @@ function close_explanation(event){
     explanation.addClass('hide-bloc');
 };
 
-function switchon(slide_toggle){
-    if ($('#navbaruser').hasClass('hide-bloc')){
-       if (slide_toggle){$('#navbaruser').slideToggle("fast");}
-       $('#navbaruser').removeClass('hide-bloc');
-       var steps_container = $('.steps-container.row');
-       var novaideo_contents = $('.novaideo-contents');
-       if (novaideo_contents.length > 0){
-           novaideo_contents.css('margin-top', '-20px')
-       }else{
-          if (steps_container.length > 0){
-           steps_container.css('margin-top', '0px')
-          }else{
-            $('.novaideo-content').css('margin-top', '0px')
-          }
-        }
-    };
-    if (!$('#searchform').hasClass('hide-bloc')){
-       if (slide_toggle){$('#searchform').slideToggle("fast");}
-       $('#searchform').addClass('hide-bloc');
-    };
-};
-
-
-function switchoff(slide_toggle){
-    if (!$('#navbaruser').hasClass('hide-bloc')){
-       if (slide_toggle){$('#navbaruser').slideToggle("fast");}
-       $('#navbaruser').addClass('hide-bloc');
-       var steps_container = $('.steps-container.row');
-       var novaideo_contents = $('.novaideo-contents');
-       if (novaideo_contents.length > 0){
-           novaideo_contents.css('margin-top', '10px')
-       }else{
-          if (steps_container.length > 0){
-           steps_container.css('margin-top', '20px')
-          }else{
-            $('.novaideo-content').css('margin-top', '20px')
-          }
-        }
-    };
-    if ($('#searchform').hasClass('hide-bloc')){
-       if (slide_toggle){$('#searchform').slideToggle("fast");}
-       $('#searchform').removeClass('hide-bloc');
-    };
-};
-
-
-function menuSwitchChange(state, is_init) {
-    $.cookie('menu_switch_state', state, {path: '/',  expires: 1});
-    if (state==true){
-      if (is_init){
-          $('input[name="globalmenuswitch"]').bootstrapSwitch('state', true);
-          //$('.switchchoice').click();
-      };
-      switchon(!is_init);
-    }else{
-      if (is_init){
-          $('input[name="globalmenuswitch"]').bootstrapSwitch('state', false);
-      };
-      switchoff(!is_init);
-    }
-};
 
 function set_visited(){
     $.cookie('visited', 'true', {path: '/',  expires: 1});
 }
 
-function init_switch() {
-    var menustate = $.cookie('menu_switch_state');
-    if(menustate) {
-      state = false;
-      if (menustate=='true'){state = true;};
-      menuSwitchChange(state, true)
-    }else{
-      menuSwitchChange(true, true);
-    };
-    init_switch = function(){};
-};
 
 function initscroll(){
   $('.results').infinitescroll('destroy');
@@ -219,10 +146,26 @@ function more_content(elements, isvertical){
 
 }
 
-function init_opinions(){
+function init_search_results(){
   $('.proposal-opinion').on('click', activate_explanation);
 
   $('.proposal-opinion button.close').on('click', close_explanation);
+
+  $('.working-group-toggle').on('click', function(){
+      var wg_section_body = $($($(this).parents('.media-body').first()).find('.working-group-section').first());
+      if(wg_section_body.hasClass('hide-bloc')){
+        $(this).addClass('glyphicon-chevron-up');
+        $(this).removeClass('glyphicon-chevron-down');
+        wg_section_body.removeClass('hide-bloc');
+      }else{
+        $(this).removeClass('glyphicon-chevron-up');
+        $(this).addClass('glyphicon-chevron-down');
+        wg_section_body.addClass('hide-bloc');
+      };
+      
+      init_result_scroll();
+        
+  });
 }
 
 
@@ -235,20 +178,13 @@ $(document).ready(function(){
 
   set_visited();
 
-  // $("[name='globalmenuswitch']").bootstrapSwitch();
-
-  // init_switch();
-
   init_content_text();
+
+  init_search_results();
 
   init_result_scroll();
 
-  init_opinions();
-
-  // $('input[name="globalmenuswitch"]').unbind("switchChange.bootstrapSwitch").bind('switchChange.bootstrapSwitch',function(event, state) {
-  //    menuSwitchChange(state, false);
-  // });
-
+  initscroll();
 
   $('.panel-collapse.collapse .results').attr('class', 'results-collapse');
 
@@ -280,25 +216,6 @@ $(document).ready(function(){
         $(window).scroll()
       }
     });
-  
-  initscroll();
-
-
-  $('.working-group-toggle').on('click', function(){
-      var wg_section_body = $($($(this).parents('.media-body').first()).find('.working-group-section').first());
-      if(wg_section_body.hasClass('hide-bloc')){
-        $(this).addClass('glyphicon-chevron-up');
-        $(this).removeClass('glyphicon-chevron-down');
-        wg_section_body.removeClass('hide-bloc');
-      }else{
-        $(this).removeClass('glyphicon-chevron-up');
-        $(this).addClass('glyphicon-chevron-down');
-        wg_section_body.addClass('hide-bloc');
-      };
-      
-      init_result_scroll();
-        
-  });
 
 //code adapted from http://bootsnipp.com/snippets/featured/jquery-checkbox-buttons
 $(function () {

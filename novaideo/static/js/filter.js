@@ -47,9 +47,9 @@ function filter(){
                 deform.processCallbacks();
             }
             catch(err) {};
-            initscroll();
-            init_opinions();
+            init_search_results();
             init_result_scroll()
+            initscroll();
         }
     });
   //}, 5000);
