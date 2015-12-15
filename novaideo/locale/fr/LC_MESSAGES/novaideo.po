@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-12-15 13:59+0100\n"
+"POT-Creation-Date: 2015-12-15 15:13+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -562,7 +562,7 @@ msgstr "Archiver l'idée"
 #: novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:24
 #: novaideo/views/amendment_management/templates/readonly/explanation_inline_item.pt:6
 #: novaideo/content/processes/__init__.py:24
-#: novaideo/content/processes/__init__.py:61
+#: novaideo/content/processes/__init__.py:65
 msgid "Explanation"
 msgstr "Explication"
 
@@ -1575,7 +1575,7 @@ msgstr "Voir les versions amendées"
 
 #: novaideo/views/proposal_management/work.py:23
 #: novaideo/content/processes/__init__.py:37
-#: novaideo/content/processes/__init__.py:74
+#: novaideo/content/processes/__init__.py:78
 msgid "Amendable"
 msgstr "En cours d'amendement"
 
@@ -1956,6 +1956,10 @@ msgstr "Pas d'appréciation"
 #: novaideo/views/templates/panels/step4.pt:33
 msgid "Total appreciations"
 msgstr "Total des appréciations"
+
+#: novaideo/views/templates/panels/admin_navbar.pt:11
+msgid "Dashboard"
+msgstr "Tableau de bord"
 
 #: novaideo/views/templates/panels/step3_0.pt:4
 msgid "Composition of the working group"
@@ -3079,6 +3083,7 @@ msgid "${nember} elements found"
 msgstr "${nember} éléments trouvés"
 
 #: novaideo/views/novaideo_view_manager/search.py:65
+#: novaideo/views/novaideo_view_manager/templates/search_textinput.pt:39
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
@@ -3204,6 +3209,10 @@ msgstr "Les idées à examiner"
 
 #: novaideo/views/novaideo_view_manager/templates/search_textinput.pt:36
 msgid "<dynamic element>"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/templates/search_textinput.pt:38
+msgid "<dynamic element> <dynamic element>"
 msgstr ""
 
 #: novaideo/views/novaideo_view_manager/templates/entity_history.pt:13
@@ -3447,14 +3456,20 @@ msgid "Idea"
 msgstr "Idée"
 
 #: novaideo/content/idea.py:41 novaideo/content/proposal.py:46
+#: novaideo/content/processes/__init__.py:40
+#: novaideo/content/processes/__init__.py:81
 msgid "Favorable"
 msgstr "Favorable"
 
 #: novaideo/content/idea.py:42 novaideo/content/proposal.py:47
+#: novaideo/content/processes/__init__.py:41
+#: novaideo/content/processes/__init__.py:82
 msgid "To study"
 msgstr "À retravailler"
 
 #: novaideo/content/idea.py:43 novaideo/content/proposal.py:48
+#: novaideo/content/processes/__init__.py:42
+#: novaideo/content/processes/__init__.py:83
 msgid "Unfavorable"
 msgstr "Défavorable"
 
@@ -3685,104 +3700,104 @@ msgid "Locale"
 msgstr "Langue"
 
 #: novaideo/content/processes/__init__.py:22
-#: novaideo/content/processes/__init__.py:59
+#: novaideo/content/processes/__init__.py:63
 msgid "Archived"
 msgstr "Archivé(e)"
 
 #: novaideo/content/processes/__init__.py:26
-#: novaideo/content/processes/__init__.py:63
+#: novaideo/content/processes/__init__.py:67
 msgid "To work"
 msgstr "À travailler"
 
 #: novaideo/content/processes/__init__.py:27
-#: novaideo/content/processes/__init__.py:64
+#: novaideo/content/processes/__init__.py:68
 msgid "Submitted for moderation"
 msgstr "Soumise à modération"
 
 #: novaideo/content/processes/__init__.py:29
-#: novaideo/content/processes/__init__.py:66
+#: novaideo/content/processes/__init__.py:70
 msgid "Pending"
 msgstr "En attente"
 
 #: novaideo/content/processes/__init__.py:30
-#: novaideo/content/processes/__init__.py:67
+#: novaideo/content/processes/__init__.py:71
 msgid "Accepted"
 msgstr "Acceptée"
 
 #: novaideo/content/processes/__init__.py:31
-#: novaideo/content/processes/__init__.py:68
+#: novaideo/content/processes/__init__.py:72
 msgid "Refused"
 msgstr "Refusée"
 
 #: novaideo/content/processes/__init__.py:33
-#: novaideo/content/processes/__init__.py:70
+#: novaideo/content/processes/__init__.py:74
 msgid "Open to a working group"
 msgstr "Ouverte à un groupe de travail"
 
 #: novaideo/content/processes/__init__.py:34
-#: novaideo/content/processes/__init__.py:71
+#: novaideo/content/processes/__init__.py:75
 msgid "Votes for publishing"
 msgstr "Vote pour améliorer ou non la proposition"
 
 #: novaideo/content/processes/__init__.py:35
-#: novaideo/content/processes/__init__.py:72
+#: novaideo/content/processes/__init__.py:76
 msgid "Votes for amendments"
 msgstr "Votes sur les amendements"
 
 #: novaideo/content/processes/__init__.py:36
-#: novaideo/content/processes/__init__.py:73
+#: novaideo/content/processes/__init__.py:77
 msgid "Proofreading"
 msgstr "En cours d'amélioration"
 
-#: novaideo/content/processes/__init__.py:38
-#: novaideo/content/processes/__init__.py:75
+#: novaideo/content/processes/__init__.py:39
+#: novaideo/content/processes/__init__.py:80
 msgid "Examined"
 msgstr "Examinée"
 
-#: novaideo/content/processes/__init__.py:40
-#: novaideo/content/processes/__init__.py:77
+#: novaideo/content/processes/__init__.py:44
+#: novaideo/content/processes/__init__.py:85
 msgid "In process"
 msgstr "En progression"
 
-#: novaideo/content/processes/__init__.py:41
-#: novaideo/content/processes/__init__.py:78
+#: novaideo/content/processes/__init__.py:45
+#: novaideo/content/processes/__init__.py:86
 msgid "Processed"
 msgstr "Effectuée"
 
-#: novaideo/content/processes/__init__.py:43
-#: novaideo/content/processes/__init__.py:80
+#: novaideo/content/processes/__init__.py:47
+#: novaideo/content/processes/__init__.py:88
 msgid "Active"
 msgstr "Actif"
 
-#: novaideo/content/processes/__init__.py:44
-#: novaideo/content/processes/__init__.py:81
+#: novaideo/content/processes/__init__.py:48
+#: novaideo/content/processes/__init__.py:89
 msgid "Deactivated"
 msgstr "Désactivé"
 
-#: novaideo/content/processes/__init__.py:46
-#: novaideo/content/processes/__init__.py:83
+#: novaideo/content/processes/__init__.py:50
+#: novaideo/content/processes/__init__.py:91
 msgid "Closed"
 msgstr "Fermé"
 
 #: novaideo/content/processes/__init__.py:16
-#: novaideo/content/processes/__init__.py:53
+#: novaideo/content/processes/__init__.py:57
 msgid "In preparation"
 msgstr "En préparation"
 
 #: novaideo/content/processes/__init__.py:17
-#: novaideo/content/processes/__init__.py:54
+#: novaideo/content/processes/__init__.py:58
 msgid "Draft"
 msgstr "Privée"
 
 #: novaideo/content/processes/__init__.py:19
 #: novaideo/content/processes/__init__.py:20
-#: novaideo/content/processes/__init__.py:56
-#: novaideo/content/processes/__init__.py:57
+#: novaideo/content/processes/__init__.py:60
+#: novaideo/content/processes/__init__.py:61
 msgid "Submitted"
 msgstr "Soumise"
 
 #: novaideo/content/processes/__init__.py:21
-#: novaideo/content/processes/__init__.py:58
+#: novaideo/content/processes/__init__.py:62
 msgid "Published"
 msgstr "Publié(e)"
 
@@ -4458,6 +4473,3 @@ msgstr "Ajouter une nouvelle échéance"
 
 #~ msgid "Member contributions"
 #~ msgstr "Contenus auxquels le membre a contribué"
-
-#~ msgid "Dashboard"
-#~ msgstr "Tableau de bord"

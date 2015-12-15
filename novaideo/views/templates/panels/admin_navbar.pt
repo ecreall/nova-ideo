@@ -1,4 +1,4 @@
-<div tal:condition="not error and groups" tal:define="collpsed request.cookies.get('admin_nav', 'off')=='off'" id="adminnavbar" i18n:domain="creationculturelle">
+<div tal:condition="not error and groups" tal:define="collpsed request.cookies.get('admin_nav', 'off')=='off'" id="adminnavbar" i18n:domain="novaideo">
     <button class="btn ${not collpsed and 'admin-in'} admin-nav-bar-toggle" data-toggle="collapse" data-target="#collapse_admin_nav" aria-expanded="${collpsed and 'false' or 'true'}" aria-controls="collapse_admin_nav">
       <span tal:condition="collpsed" class="pull-right glyphicon glyphicon-chevron-down"></span>
       <span tal:condition="not collpsed" class="pull-right glyphicon glyphicon-chevron-up"></span>

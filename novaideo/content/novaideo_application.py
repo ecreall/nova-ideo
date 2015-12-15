@@ -55,7 +55,8 @@ DEFAULT_COMMENT_INTENTIONS = [
     _('Ask a question'),
     _('Review'),
     _('Irony'),
-    _('Use humor')
+    _('Use humor'),
+    _('Remark')
 ]
 
 DEFAULT_CORRELATION_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
@@ -305,11 +306,26 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.participants_maxi = 12
         self.participations_maxi = 5
         self.tokens_mini = 7
-        self.titles = DEFAULT_TITLES
-        self.comment_intentions = DEFAULT_COMMENT_INTENTIONS
-        self.correlation_intentions = DEFAULT_CORRELATION_INTENTIONS
-        self.idea_intentions = DEFAULT_IDEA_INTENTIONS
-        self.amendment_intentions = DEFAULT_AMENDMENT_INTENTIONS
+
+    @property
+    def titles(self):
+        return DEFAULT_TITLES
+
+    @property
+    def comment_intentions(self):
+        return DEFAULT_COMMENT_INTENTIONS
+
+    @property
+    def correlation_intentions(self):
+        return DEFAULT_CORRELATION_INTENTIONS
+
+    @property
+    def idea_intentions(self):
+        return DEFAULT_IDEA_INTENTIONS
+
+    @property
+    def amendment_intentions(self):
+        return DEFAULT_AMENDMENT_INTENTIONS
 
     def init_files(self):
         for information in DEFAULT_FILES:
