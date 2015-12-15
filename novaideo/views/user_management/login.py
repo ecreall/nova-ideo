@@ -44,7 +44,6 @@ class LoginView(BasicView):
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     viewid = 'login'
 
-
     def update(self):
         request = self.request
         context = self.context
@@ -84,7 +83,8 @@ class LoginView(BasicView):
                 if adapter is None:
                     adapter = DefaultUserLocator(context, request)
                 user = adapter.get_user_by_email(login)
-                if user and user.check_password(password) and \
+                valid_check = user and user.check_password(password)
+                if valid_check and \
                    (has_role(user=user, role=('Admin', )) or \
                    'active' in getattr(user, 'state', [])):
                     request.session.pop('novaideo.came_from', None)
@@ -96,26 +96,33 @@ class LoginView(BasicView):
                         user.reindex()
 
                     return HTTPFound(location=came_from, headers=headers)
-                error = ViewError()
-                error.principalmessage = u"Failed login"
-                message = error.render_message(request)
-                messages.update({error.type: [message]})
+                elif valid_check and 'deactivated' in getattr(user, 'state', []):
+                    error = ViewError()
+                    error.principalmessage = _("Disabled account! Contact the site administrator to activate your account.")
+                    message = error.render_message(request)
+                    messages.update({error.type: [message]})
+                else:
+                    error = ViewError()
+                    error.principalmessage = _("Failed login")
+                    message = error.render_message(request)
+                    messages.update({error.type: [message]})
 
         # Pass this through FBO views (e.g., forbidden) which use its macros.
         template = get_renderer('novaideo:views/user_management/templates/login.pt').implementation()
         values = dict(
-            url = request.resource_url(request.virtual_root, 'login'),
-            came_from = came_from,
-            login = login,
-            password = password,
-            login_template = template,
+            url=request.resource_url(request.virtual_root, 'login'),
+            came_from=came_from,
+            logi=login,
+            password=password,
+            login_template=template,
             )
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         result = {}
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({LogIn:LoginView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {LogIn: LoginView})

@@ -289,6 +289,10 @@ def createproposal_roles_validation(process, context):
 
 
 def createproposal_processsecurity_validation(process, context):
+    request = get_current_request()
+    if getattr(request, 'is_idea_box', False):
+        return False
+
     return global_user_processsecurity(process, context)
 
 

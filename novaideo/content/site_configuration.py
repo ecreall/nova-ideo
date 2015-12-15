@@ -46,7 +46,8 @@ class WorkParamsConfigurationSchema(Schema):
     is_idea_box = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Is an idea box'),
+        label=_('Is a suggestion box'),
+        description=_('In a suggestion box, only the ideas are managed.'),
         title='',
         missing=False
     )
@@ -55,27 +56,31 @@ class WorkParamsConfigurationSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
         label=_('Moderate ideas'),
+        description=_('Ideas will be published after moderation.'),
         title='',
         missing=False
-    )
-
-    content_to_examine = colander.SchemaNode(
-        colander.Set(),
-        widget=content_types_choices,
-        title=_('Contents to examine'),
-        missing=[]
     )
 
     content_to_support = colander.SchemaNode(
         colander.Set(),
         widget=content_types_choices,
         title=_('Contents to support'),
+        description=_('Contents can be supported by users.'),
+        missing=[]
+    )
+
+    content_to_examine = colander.SchemaNode(
+        colander.Set(),
+        widget=content_types_choices,
+        title=_('Contents to examine'),
+        description=_('Contents must be examined by a review committee.'),
         missing=[]
     )
 
     work_modes = colander.SchemaNode(
         colander.Set(),
         title=_('Work modes'),
+        description=_('Work modes of the working group (for proposals).'),
         widget=modes_choice,
         default=[],
     )

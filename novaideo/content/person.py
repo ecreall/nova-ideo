@@ -226,7 +226,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     """Person class"""
 
     type_title = _('Person')
-    icon = 'icon novaideo-icon icon-user'
+    icon = 'icon glyphicon glyphicon-user' #'icon novaideo-icon icon-user'
     templates = {'default': 'novaideo:views/templates/person_result.pt',
                  'bloc': 'novaideo:views/templates/person_result.pt'}
     name = renamer()

@@ -67,6 +67,9 @@ class ISearchableObject(Interface):
     def favorites():
         pass
 
+    def last_connection():
+        pass
+
 
 @indexview_defaults(catalog_name='novaideo')
 class NovaideoCatalogViews(object):
@@ -219,6 +222,19 @@ class NovaideoCatalogViews(object):
 
         return favorites
 
+    @indexview()
+    def last_connection(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        last_connection = adapter.last_connection()
+        if last_connection is None:
+            return default
+
+        return last_connection
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -230,6 +246,7 @@ class NovaideoIndexes(object):
     release_date = Field()
     is_workable = Field()
     favorites = Keyword()
+    last_connection = Field()
     # publication_start_date = Field()
     # publication_end_date = Field()
     object_id = Field()
@@ -297,6 +314,9 @@ class SearchableObject(Adapter):
     def favorites(self):
         return []
 
+    def last_connection(self):
+        return None
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
@@ -305,3 +325,6 @@ class ArtistSearch(SearchableObject):
     def favorites(self):
         selections = getattr(self.context, 'selections', [])
         return [get_oid(s) for s in selections]
+
+    def last_connection(self):
+        return getattr(self.context, 'last_connection', None)
