@@ -36,7 +36,7 @@
       <link tal:condition="not tosupport_toexamine and (to_examine or to_support)" 
               href="${su('novaideo:static/css/steps/steps_4.css')}"
               rel="stylesheet"/>
-      <link tal:condition="not tosupport_toexamine"
+      <link tal:condition="not (to_examine or to_support)"
               href="${su('novaideo:static/css/steps/steps_3.css')}"
               rel="stylesheet"/>
     </div>
