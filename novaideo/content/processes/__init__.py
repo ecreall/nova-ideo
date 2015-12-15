@@ -35,7 +35,11 @@ STATES_PARTICIPANT_MAPPING = {
 	    'votes for amendments': _('Votes for amendments'),
 	    'proofreading': _('Proofreading'),
 	    'amendable': _('Amendable'),
+	    #Proposal, Idea
 	    'examined': _('Examined'),
+	    'favorable': _('Favorable'),
+	    'to_study': _('To study'),
+	    'unfavorable': _('Unfavorable'),
 	    #Correction
 	    'in process': _('In process'),
 	    'processed': _('Processed'),
@@ -72,7 +76,11 @@ STATES_MEMBER_MAPPING = {
 	    'votes for amendments': _('Votes for amendments'),
 	    'proofreading': _('Proofreading'),
 	    'amendable': _('Amendable'),
+	    #Proposal, Idea
 	    'examined': _('Examined'),
+	    'favorable': _('Favorable'),
+	    'to_study': _('To study'),
+	    'unfavorable': _('Unfavorable'),
 	    #Correction
 	    'in process': _('In process'),
 	    'processed': _('Processed'),

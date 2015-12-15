@@ -3080,7 +3080,7 @@ msgstr "${nember} éléments trouvés"
 
 #: novaideo/views/novaideo_view_manager/search.py:65
 msgid "Advanced search"
-msgstr ""
+msgstr "Recherche avancée"
 
 #: novaideo/views/novaideo_view_manager/search.py:142
 #: novaideo/views/novaideo_view_manager/search.py:114

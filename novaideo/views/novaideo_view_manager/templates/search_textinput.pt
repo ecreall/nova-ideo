@@ -11,7 +11,7 @@
                   choices choices|getattr(field.widget, 'choices', []);
                   advanced_search_url advanced_search_url|getattr(field.widget, 'advanced_search_url', '');"
       tal:omit-tag="">
-      <div id="searchsection" class="input-group input-group-sm">
+      <div id="searchsection" class="input-group input-group-sm" i18n:domain="novaideo">
        <input type="text" name="${name}" value="${cstruct}" 
            tal:attributes="class string: form-control ${css_class};
                            style style"
@@ -31,11 +31,11 @@
                    id="${choice['id']}"
                    type="button" 
                    class="content-select" 
-                   data-color="default">${choice['title']}</a>
+                   data-color="default"><span class="${choice['icon']}"></span> ${choice['title']}</a>
                 </li>
               </ul>
             </div>
-           <button class="btn btn-success" type="${button_type}" data-url="${url}" i18n:domain="novaideo" i18n:translate=""><span class="glyphicon glyphicon-search"></span></button>
+           <button class="btn btn-success" type="${button_type}" data-url="${url}" i18n:translate=""><span class="glyphicon glyphicon-search"></span></button>
            <a class="btn btn-default" href="${advanced_search_url}" i18n:translate=""><span class="glyphicon glyphicon-zoom-in"></span> <span class="hidden-sm hidden-xs" i18n:translate="">Advanced search</span></a>
         </span>
       </div>
