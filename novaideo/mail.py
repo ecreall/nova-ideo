@@ -431,7 +431,7 @@ DEFAULT_SITE_MAILS = {
               'template': WITHDRAW_MESSAGE
     },
     'wg_participation': {
-              'title': _("Participation of the working group"),
+              'title': _("Participation to the working group"),
               'subject': PARTICIPATE_SUBJECT,
               'template': PARTICIPATE_MESSAGE
     },
