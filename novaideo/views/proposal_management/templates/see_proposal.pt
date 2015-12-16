@@ -34,9 +34,12 @@
 
 <div class="well object-well proposal-well"  i18n:domain="novaideo">
     <dl >
-        <dt  i18n:translate="">Abstract</dt>
+        <dt><span class="glyphicon glyphicon-compressed"></span> <span i18n:translate="">Abstract</span></dt>
 	<dd class="content-description correction-container-description">${structure:description}</dd>
-      <dt tal:condition="proposal.keywords" i18n:translate="">Keywords</dt>
+      <dt tal:condition="proposal.keywords">
+        <span class="glyphicon glyphicon-tags"></span> 
+        <span i18n:translate="">Keywords</span>
+      </dt>
       <dd tal:condition="proposal.keywords">
         <tal:loop repeat="k proposal.keywords">
           <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
@@ -44,14 +47,17 @@
         </tal:loop>
       </dd>
         <div tal:omit-tag="" tal:condition="proposal.working_group is not None">
-          <dt  i18n:translate="">Working group</dt>
-	  <dd>
+          <dt>
+            <span class="md md-group" style="font-size: 20px; vertical-align: sub;"></span> 
+            <span i18n:translate="">Working group</span>
+          </dt>
+	         <dd>
             <tal:loop repeat="m proposal.working_group.members">
               <a tal:attributes="href request.resource_url(m, '@@index')">${getattr(m, 'title', m.name)}</a>
                 <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
-           </tal:loop>
-          </dd>
-          <dd>
+             </tal:loop>
+            </dd>
+            <dd>
             <span tal:condition="ct_participate" class="alert alert-info alert-wg-closed" role="alert">
               <span class="glyphicon glyphicon-info-sign pull-right"></span>
              <span tal:condition="ct_participate_closed" i18n:translate="">The working group is closed</span>

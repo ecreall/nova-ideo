@@ -1,13 +1,15 @@
 <div tal:replace="structure navbar_body"/>
-<div class="media" i18n:domain="novaideo">
+<div class="media user-media" i18n:domain="novaideo">
   <div class="media-left">
-    <img class="img-thumbnail" tal:condition="user.picture is not None" tal:attributes="src user.picture.url"  width="100"/>
+    <img class="img-thumbnail" tal:condition="user.picture is not None" tal:attributes="src getattr(user.picture, 'profil', user.picture).url" />
+    <img class="img-thumbnail" tal:condition="user.picture is None" src="${request.static_url('novaideo:static/images/user.png')}" />
   </div>
   <div class="media-body">
-    <h4 class="media-heading">
+    <h3 class="media-heading">
         <strong>${getattr(user, 'title', user.name)}</strong>
-    </h4>
-      <dl class="dl-horizontal well well-sm dl-left">
+    </h3>
+    <div class="user-function" tal:condition="getattr(user, 'function', '')">${user.function}</div>
+    <dl class="dl-horizontal dl-left">
         <dt i18n:translate="">Member since</dt>
         <dd><span tal:replace="layout.to_localized_time(user.created_at, date_only=True)"/></dd>
         <dt tal:condition="is_portal_manager" i18n:translate="">Email</dt>
@@ -26,13 +28,14 @@
           </tal:loop>
         </dd>
         <dd tal:condition="not getattr(user, 'keywords', [])" i18n:translate="">No preferences</dd>
-        <dt tal:condition="getattr(user, 'last_connection', None)" i18n:translate="">Last connection</dt>
-        <dd tal:condition="getattr(user, 'last_connection', None)">
+        <dt tal:condition="is_portal_manager and getattr(user, 'last_connection', None)" i18n:translate="">Last connection</dt>
+        <dd tal:condition="is_portal_manager and getattr(user, 'last_connection', None)">
           <span tal:replace="layout.to_localized_time(user.last_connection)"/>
         </dd>
-      </dl>
+    </dl>
   </div>
 </div>
+<div class="user-description" tal:condition="getattr(user, 'description', '')">${user.description}</div>
 <h4 tal:condition="len_contents" id="contents" class="section-title">
   <span class="icon glyphicon glyphicon-th"></span> 
   <span i18n:translate="">Contribution</span> 

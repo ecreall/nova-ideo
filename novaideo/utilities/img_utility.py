@@ -8,7 +8,8 @@ from novaideo import log
 IMAGES_FORMATS = [{'id': 'xlarge', 'size': (400, 200)},
                   {'id': 'large', 'size': (300, 200)},
                   {'id': 'medium', 'size': (125, 188)},
-                  {'id': 'small', 'size': (128, 85)}]
+                  {'id': 'small', 'size': (128, 85)},
+                  {'id': 'profil', 'size': (140, 140)}]
 
 AVAILABLE_FORMATS = [img_format['id'] for img_format in IMAGES_FORMATS]
 

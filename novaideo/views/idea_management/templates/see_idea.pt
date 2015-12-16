@@ -21,17 +21,15 @@
   </div>
 </div>
 
-<div id="contenttext" class="content-text idea-well"  i18n:domain="novaideo">
-  ${idea.text}
-    <dl >
-      <dt tal:condition="idea.keywords" i18n:translate="">Keywords</dt>
-      <dd tal:condition="idea.keywords">
-        <tal:loop repeat="k idea.keywords">
-          <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
+<div id="contenttext" class="content-text"  i18n:domain="novaideo">
+  <div>${idea.text}</div>
+      <div class="keywords-result">
+      <span class="glyphicon glyphicon-tags"></span> 
+      <tal:loop repeat="k idea.keywords">
+            <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
             <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
-        </tal:loop>
-      </dd>
-    </dl>
+      </tal:loop>
+    </div>
 </div>
 
 <div tal:condition="files" id="idea_files" class="attached-files" i18n:domain="novaideo">

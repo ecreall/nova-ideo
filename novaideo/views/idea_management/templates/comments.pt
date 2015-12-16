@@ -3,9 +3,11 @@
   <tal:loop repeat="(i, item) enumerate(comments)">
     <li class="commentli ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
         data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" 
-        tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context']">
-       <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}" >
-          <img tal:condition="getattr(comment.author, 'picture', None) is not None" tal:attributes="src comment.author.picture.url"  class="img-circle" width="60"/>
+        tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context'];
+                    picture getattr(comment.author, 'picture', None)">
+       <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}">
+          <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="60"/>
+          <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="60"/>
           <div class="media-body">
            <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span></div>
             <small tal:define="diff_len  len(diff.keys())">

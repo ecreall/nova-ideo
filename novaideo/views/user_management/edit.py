@@ -84,10 +84,12 @@ class EditView(FormView):
                     ['user_title',
                      'first_name', 
                      'last_name',
-                     'email',
-                     'locale',
+                     'function',
+                     'description',
                      'keywords',
                      'picture',
+                     'email',
+                     'locale',
                      'change_password'])
     behaviors = [Edit, Cancel]
     formid = 'formedit'

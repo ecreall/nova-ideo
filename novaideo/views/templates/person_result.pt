@@ -3,29 +3,35 @@
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon')">
   <a class="content-user-img" tal:condition="object.picture is not None" href="${url}">
-    <img class="img-circle" tal:attributes="src object.picture"  width="100"/></a>
+     <img class="img-circle" tal:attributes="src getattr(object.picture, 'profil', object.picture).url"  width="100"/>
+  </a>
+
   <div tal:condition="object.picture is None" id="person-image" class="content-image">
     <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
   </div>
   <div class="media-body">
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
       <a tal:attributes="href url"><h4><span class="visible-xs-inline-block icon ${icon}"></span>  ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)} </h4></a>
-      <dl>
+    <div class="user-function" tal:condition="getattr(object, 'function', '')">${object.function}</div>
+    <div>${object.presentation_text(300)}</div>
+      <dl style="margin-top: 10px; margin-bottom: 10px">
         <dt tal:condition="getattr(object, 'organization', None)" i18n:translate="">Organization</dt>
         <dd tal:condition="getattr(object, 'organization', None)">
            <a tal:attributes="href request.resource_url(object.organization, '@@index')">${object.organization.title}</a>
         </dd>
-        <dt i18n:translate="">Preferences</dt>
+        <dt><span class="glyphicon glyphicon-tags"></span> <span i18n:translate="">Preferences</span></dt>
         <dd tal:condition="getattr(object, 'keywords', [])">
-          <tal:loop repeat="k object.keywords">
-            <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
-            <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
-          </tal:loop>
+          <div class="keywords-result">
+            <tal:loop repeat="k object.keywords">
+                  <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
+                  <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+            </tal:loop>
+          </div>
         </dd>
         <dd tal:condition="not getattr(object, 'keywords', [])" i18n:translate="">No preferences</dd>
       </dl>
-      <span class="date">
+      <small class="date">
         <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.created_at, date_only=True)"/>
-      </span>
+      </small>
   </div>
 </div>

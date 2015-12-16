@@ -28,8 +28,12 @@ from dace.descriptors import (
     CompositeUniqueProperty,
     SharedMultipleProperty)
 from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import FileWidget, Select2Widget
-from pontus.file import Image, ObjectData, Object as ObjectType
+from pontus.widget import (
+    ImageWidget,
+    Select2Widget
+    )
+from pontus.form import FileUploadTempStore
+from pontus.file import ObjectData, Object as ObjectType
 
 from novaideo.core import (
     SearchableEntity,
@@ -39,7 +43,8 @@ from novaideo.core import (
     generate_access_keys)
 from .interface import IPerson, IPreregistration
 from novaideo import _
-from novaideo.views.widget import TOUCheckboxWidget
+from novaideo.file import Image
+from novaideo.views.widget import TOUCheckboxWidget, LimitedTextAreaWidget
 
 
 DEADLINE_PREREGISTRATION = 86400*2  # 2 days
@@ -134,6 +139,26 @@ def conditions_widget(node, kw):
     return TOUCheckboxWidget(tou_file=terms_of_use)
 
 
+@colander.deferred
+def picture_widget(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    root = getSite()
+    tmpstore = FileUploadTempStore(request)
+    source = None
+    if context is not root:
+        if context.picture:
+            source = context.picture
+
+    return ImageWidget(
+        tmpstore=tmpstore,
+        max_height=500,
+        max_width=400,
+        source=source,
+        selection_message=_("Upload image.")
+        )
+
+
 def context_is_a_person(context, request):
     return request.registry.content.istype(context, 'person')
 
@@ -144,6 +169,24 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     name = NameSchemaNode(
         editing=context_is_a_person,
         )
+
+    function = colander.SchemaNode(
+        colander.String(),
+        widget=deform.widget.TextInputWidget(),
+        title=_('Function'),
+        missing=''
+    )
+
+    description = colander.SchemaNode(
+        colander.String(),
+        widget=LimitedTextAreaWidget(
+            rows=5,
+            cols=30,
+            limit=600,
+            alert_values={'limit': 600}),
+        title=_("Description"),
+        missing=""
+    )
 
     keywords = colander.SchemaNode(
         colander.Set(),
@@ -164,7 +207,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     picture = colander.SchemaNode(
         ObjectData(Image),
-        widget=FileWidget(file_type=['image']),
+        widget=picture_widget,
         title=_('Picture'),
         required=False,
         missing=None,

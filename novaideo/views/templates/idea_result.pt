@@ -5,20 +5,26 @@
   <div id="idea-image" class="content-image">
     <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
   </div>
-  <div class="media-body">
+  <div class="media-body" tal:define="author_picture getattr(object.author, 'picture', None)">
     <a href="${url}"><h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4></a>
-    <a tal:attributes="href url"><h4><span class="visible-xs-inline-block icon ${icon}"></span>  ${object.title} </h4></a>
-    <dl >
-      <dd>${object.presentation_text(400)}</dd>
-      <dt tal:condition="object.keywords" i18n:translate="">Keywords</dt>
-      <dd tal:condition="object.keywords">
-        <tal:loop repeat="k object.keywords">
-          <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
-          <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
-        </tal:loop>
-      </dd>
-    </dl>
-    <small><span i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a></small>
+    <div class="object-title-block" >
+      <a tal:attributes="href url"><h4>
+    <img class="author-img img-circle" tal:condition="author_picture is not None" tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="50"/>
+
+        <span class="visible-xs-inline-block icon ${icon}"></span>  ${object.title} </h4></a>
+      <div class="object-description-result">
+        <small><span i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a></small>
+      </div>
+    </div>
+    <div>${object.presentation_text(400)}</div>
+    <div class="keywords-result">
+      <span class="glyphicon glyphicon-tags"></span> 
+      <tal:loop repeat="k object.keywords">
+            <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
+            <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+      </tal:loop>
+    </div>
+
     <div tal:condition="'idea' in request.content_to_support and 'published' in object.state and 'examined' not in object.state" class="proposal-support pull-right">
         <span class="label success">
             <span tal:condition="any(t.owner is current_user for t in object.tokens_support)" 

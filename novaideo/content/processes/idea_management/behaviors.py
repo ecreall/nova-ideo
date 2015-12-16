@@ -115,6 +115,7 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.setproperty('author', user)
         grant_roles(user=user, roles=(('Owner', copy_of_idea), ))
         copy_of_idea.set_data(appstruct)
+        copy_of_idea.modified_at = datetime.datetime.now(tz=pytz.UTC)
         copy_of_idea.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
