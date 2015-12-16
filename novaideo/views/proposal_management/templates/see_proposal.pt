@@ -52,10 +52,19 @@
             <span i18n:translate="">Working group</span>
           </dt>
 	         <dd>
-            <tal:loop repeat="m proposal.working_group.members">
-              <a tal:attributes="href request.resource_url(m, '@@index')">${getattr(m, 'title', m.name)}</a>
-                <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
-             </tal:loop>
+              <div class="working-group-section">
+                <tal:loop repeat="m proposal.working_group.members">
+                  <a tal:attributes="href request.resource_url(m, '@@index')"
+                    tal:define="picture getattr(m, 'picture', None);
+                                profil_picture getattr(picture, 'profil', None)">
+                    <img class="author-img img-circle" 
+                      tal:condition="profil_picture is not None"
+                       tal:attributes="src profil_picture.url"  width="25"/>
+                    <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+                    ${getattr(m, 'title', m.name)}</a>
+                    <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
+               </tal:loop>
+              </div>
             </dd>
             <dd>
             <span tal:condition="ct_participate" class="alert alert-info alert-wg-closed" role="alert">
