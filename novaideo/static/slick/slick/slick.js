@@ -1711,7 +1711,8 @@
                 });
             }
         } else {
-            _.$list.height(_.$slides.first().outerHeight(true) * _.options.slidesToShow);
+            var len_slides = Math.min(_.$slides.length, _.options.slidesToShow);
+            _.$list.height(_.$slides.first().outerHeight(true) * len_slides);
             if (_.options.centerMode === true) {
                 _.$list.css({
                     padding: (_.options.centerPadding + ' 0px')
