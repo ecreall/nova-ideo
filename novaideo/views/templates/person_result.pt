@@ -1,17 +1,22 @@
 <div class="thumbnail right-caption span4 search-item result-item" 
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
-                 icon getattr(object, 'icon')">
-  <a class="content-user-img" tal:condition="object.picture is not None" href="${url}">
-     <img class="img-circle" tal:attributes="src getattr(object.picture, 'profil', object.picture).url"  width="100"/>
+                 icon getattr(object, 'icon');
+                 picture object.picture;
+                 profil_picture getattr(picture, 'profil', picture)">
+  <a class="hidden-xs content-user-img" tal:condition="profil_picture is not None" href="${url}">
+     <img class="img-circle" tal:attributes="src profil_picture.url"  width="100"/>
   </a>
 
-  <div tal:condition="object.picture is None" id="person-image" class="content-image">
+  <div tal:condition="profil_picture is None" id="person-image" class="content-image">
     <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
   </div>
   <div class="media-body">
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-      <a tal:attributes="href url"><h4><span class="visible-xs-inline-block icon ${icon}"></span>  ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)} </h4></a>
+      <a tal:attributes="href url"><h4>
+        <img class="visible-xs-inline-block img-circle" tal:condition="profil_picture is not None" tal:attributes="src profil_picture.url"  width="50"/>
+        <img class="visible-xs-inline-block img-thumbnail" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user.png')}" width="50"/>
+          ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)} </h4></a>
     <div class="user-function" tal:condition="getattr(object, 'function', '')">${object.function}</div>
     <div>${object.presentation_text(300)}</div>
       <dl style="margin-top: 10px; margin-bottom: 10px">

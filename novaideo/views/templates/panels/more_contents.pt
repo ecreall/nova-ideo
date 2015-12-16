@@ -11,7 +11,7 @@
 				      <div class="footer-message" i18n:translate="">All rights reserved</div>
 				        <img width="75px" src="${getattr(object.picture, 'medium', object.picture).url}" class="img-thumbnail illustration" />
 				    </div>
-				    <div>${object.presentation_text(400)}</div>
+				    <div>${object.presentation_text(200)}</div>
 				  </div>
 				</div>
 		</div>
