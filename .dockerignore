@@ -1,10 +1,17 @@
+*.egg-info
+*.pyc
+*.swo
 *.swp
+*~
 .installed.cfg
 .mr.developer.cfg
+__pycache__
 bin
-cache
+# cache # we want the cache directory to be uploaded to the docker engine when building the image
 develop-eggs
-*.egg-info
+eggs
+node_modules
 parts
 src
+tmp
 var
