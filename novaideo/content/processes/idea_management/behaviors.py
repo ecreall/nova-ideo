@@ -41,6 +41,7 @@ from novaideo.utilities.util import connect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
     ObjectModified)
+from novaideo.content.alert import CommentAlert
 
 
 try:
@@ -527,6 +528,10 @@ class CommentIdea(InfiniteCardinality):
         author = getattr(context, 'author', None)
         if author is not user and getattr(author, 'email', ''):
             root = getSite()
+            alert = CommentAlert()
+            root.addtoproperty('alerts', alert)
+            alert.subscribe(author)
+            alert.addtoproperty('subjects', context)
             mail_template = root.get_mail_template('alert_comment')
             localizer = request.localizer
             subject = mail_template['subject'].format(
