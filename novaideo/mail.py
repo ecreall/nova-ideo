@@ -332,8 +332,29 @@ Votre dernière connexion remonte à plus de {days} jour(s) (dernière connexion
 Pour information, au bout de 6 mois d'inactivité ininterrompus votre compte sera désactivé.
 Afin d'éviter ceci, veuillez vous connecter régulièrement sur la plateforme.
 
-"""+ PORTAL_SIGNATURE 
+"""+ PORTAL_SIGNATURE
 
+
+ALERTCOMMENT_SUBJECT = u"""Votre contribution « {subject_title} » vient d'être commentée"""
+
+
+ALERTCOMMENT_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+Votre contribution « {subject_title} » sous {subject_url} vient d'être commentée.
+
+"""+ PORTAL_SIGNATURE
+
+
+ALERTRESPONS_SUBJECT = u"""Une personne a répondu à votre commentaire « {subject_title} »"""
+
+
+ALERTRESPONS_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+Une personne a répondu à votre commentaire concernant la contribution « {subject_title} » sous {subject_url}.
+
+"""+ PORTAL_SIGNATURE
 
 DEFAULT_SITE_MAILS = {
     'invitation': {
@@ -484,5 +505,15 @@ DEFAULT_SITE_MAILS = {
               'title': _("Users inactivity"),
               'subject': INACTIVITY_SUBJECT,
               'template': INACTIVITY_MESSAGE
+    },
+    'alert_comment': {
+              'title': _("Alert comment"),
+              'subject': ALERTCOMMENT_SUBJECT,
+              'template': ALERTCOMMENT_MESSAGE
+    },
+    'alert_respons': {
+              'title': _("Alert respons"),
+              'subject': ALERTRESPONS_SUBJECT,
+              'template': ALERTRESPONS_MESSAGE
     }
 }

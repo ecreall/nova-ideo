@@ -293,4 +293,27 @@ class Contact(InfiniteCardinality):
         return HTTPFound(
             request.resource_url(context, ''))
 
+
+def seealerts_roles_validation(process, context):
+    return has_role(role=('Member',))
+
+
+def seealerts_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+class SeeAlerts(InfiniteCardinality):
+    isSequential = False
+    context = INovaIdeoApplication
+    processsecurity_validation = seealerts_processsecurity_validation
+    roles_validation = seealerts_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = get_current()
+        for alert in user.alerts:
+            alert.unsubscribe(user)
+
+        return {}
+
+
 #TODO behaviors

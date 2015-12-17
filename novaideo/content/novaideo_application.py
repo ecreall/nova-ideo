@@ -256,6 +256,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     ideas = CompositeMultipleProperty('ideas')
     correlations = CompositeMultipleProperty('correlations')
     files = CompositeMultipleProperty('files')
+    alerts = CompositeMultipleProperty('alerts')
     picture = CompositeUniqueProperty('picture')
     favicon = CompositeUniqueProperty('favicon')
     theme = CompositeUniqueProperty('theme')

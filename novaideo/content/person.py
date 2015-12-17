@@ -280,6 +280,8 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     ideas = SharedMultipleProperty('ideas', 'author')
     selections = SharedMultipleProperty('selections')
     working_groups = SharedMultipleProperty('working_groups', 'members')
+    alerts = SharedMultipleProperty('alerts', 'users_to_alert')
+    old_alerts = SharedMultipleProperty('old_alerts', 'alerted_users')
 
     def __init__(self, **kwargs):
         if 'locale' not in kwargs:

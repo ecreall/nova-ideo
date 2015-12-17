@@ -273,7 +273,48 @@ button.navbar-toggle
 }
 
 ul.nav.navbar-right a.dropdown-toggle{
-   padding-top: 10px
+   padding-top: 10px;
+   display: inline-block
+}
+
+.alert-block,
+.alert-block>a{
+    color: #eb0000;
+    display:inline-block;
+}
+
+.alert-block.off,
+.alert-block.off>a{
+   color: gray   
+}
+
+.alert-block.off>span.alert-nb{
+    display: none;
+}
+
+.alert-block span.icon{
+    font-size: 20px;
+    top: 5px;
+    margin-right: -3px
+}
+
+.alert-block>span.alert-nb{
+    font-size: 15px;
+}
+
+.alerts-content{
+  background-color: #fafafa;
+  border-radius: 5px;
+  box-shadow: 0 7px 11px #888;
+  color: #333;
+  font-size: 12px;
+  margin-left: -130px;
+  margin-top: 6px;
+  max-height: 400px;
+  max-width: 300px;
+  overflow: scroll;
+  padding: 10px 15px;
+  position: absolute;
 }
 
 body{

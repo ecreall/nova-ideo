@@ -1,0 +1,9 @@
+<div class="thumbnail right-caption span4 search-item result-item" 
+     i18n:domain="novaideo"
+     tal:condition="object.subjects"
+     tal:define="icon getattr(object, 'icon')">
+  <div class="media-body" tal:define="subject object.subjects[0]">
+    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
+    <span>Un commentaire a été ajouté à la contribution <a href="{request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a></span>
+  </div>
+</div>

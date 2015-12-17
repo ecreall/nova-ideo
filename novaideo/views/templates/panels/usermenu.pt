@@ -38,6 +38,14 @@
   <div class="collapse navbar-collapse navbar-user-collapse">
     <ul class="nav navbar-nav navbar-right" tal:condition="request.user">
       <li>
+        <span tal:condition="hasattr(request.user, 'alerts')"
+          tal:define="len_alerts len(request.user.alerts)"
+          class="alert-block ${len_alerts==0 and 'off'}"
+          data-url="${request.resource_url(request.root, 'novaideoapi', query={'op': 'get_user_alerts'})}">
+            <a href="${request.resource_url(request.root, '@@seealerts')}"><span class="icon glyphicon glyphicon-bell"></span></a>
+            <span class="alert-nb" >${len_alerts}</span>
+            <div class="alerts-content hide-bloc"></div>
+        </span>
         <a href="#" class="dropdown-toggle"
                 data-toggle="dropdown" style="padding-bottom: 5px"
                 tal:define="picture getattr(request.user, 'picture', None);

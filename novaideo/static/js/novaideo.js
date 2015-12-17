@@ -286,4 +286,21 @@ $(function () {
 
   more_content($('.more-content-carousel.verticla'), true);
   more_content($('.more-content-carousel:not(.vertical)'), false);
+
+  $('.alert-block:not(.off)').hover(function(){
+        var $this = $(this);
+        var url = $this.data('url');
+        var target = $($this.find('.alerts-content').first());
+        target.removeClass('hide-bloc');
+        $.getJSON(url,{}, function(data) {
+          if(data['body']){
+            target.html(data['body']);
+          }
+        });
+
+    }, function(){
+        var $this = $(this);
+        $this.find('.alerts-content').addClass('hide-bloc')
+    });
+
 });

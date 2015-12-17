@@ -39,7 +39,7 @@
                </small>
             </div>
             <div tal:condition="'action' in item"  id="commentaction" class="pull-right" tal:define="commentlen len(comment.comments)">
-                <span tal:condition="commentlen-(level-1) > 0" 
+                <span tal:condition="commentlen-level > 0" 
                       class="comment-replay-nb closed"
                       onclick="javascript:replays_show(this);">
                   <small><span class="glyphicon glyphicon-chevron-down"></span> 

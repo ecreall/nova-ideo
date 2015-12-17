@@ -524,6 +524,28 @@ class CommentIdea(InfiniteCardinality):
                 unique=True)
             comment.setproperty('related_correlation', correlation)
 
+        author = getattr(context, 'author', None)
+        if author is not user and getattr(author, 'email', ''):
+            root = getSite()
+            mail_template = root.get_mail_template('alert_comment')
+            localizer = request.localizer
+            subject = mail_template['subject'].format(
+                subject_title=context.title)
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(author, 'user_title', ''))),
+                recipient_first_name=getattr(author, 'first_name', author.name),
+                recipient_last_name=getattr(author, 'last_name', ''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index"),
+                novaideo_title=root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[author.email],
+                sender=root.get_site_sender(),
+                body=message)
+
         context.reindex()
         return {}
 

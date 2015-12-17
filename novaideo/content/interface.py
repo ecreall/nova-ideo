@@ -166,3 +166,16 @@ class IOrganization(IEntity):
 
 class INovaIdeoApplication(IEntity, IApplication):
     pass
+
+
+class IAlert(IVisualisableElement,
+             IEntity):
+    pass
+
+
+class ICommentAlert(IAlert):
+    pass
+
+
+class IResponsAlert(IAlert):
+    pass

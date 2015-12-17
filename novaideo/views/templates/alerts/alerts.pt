@@ -1,0 +1,10 @@
+<div i18n:domain="novaideo">
+  <div tal:condition="bodies">
+    <div class="result-container">
+      <div tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
+    </div>
+  </div>
+ <a href="${request.resource_url(request.root, '@@seealerts')}" class="pull-right btn btn-primary btn-xs">
+    	<span class="icon glyphicon glyphicon-bell"></span> <span i18n:translate="">See all alerts</span>
+    </a>
+</div>

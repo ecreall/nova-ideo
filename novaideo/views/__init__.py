@@ -3,7 +3,8 @@
 
 # licence: AGPL
 # author: Amen Souissi, Sophie Jazwiecki
-
+import datetime
+import pytz
 from pyramid.view import view_config
 
 from substanced.util import get_oid
@@ -62,6 +63,7 @@ class IndexManagementJsonView(BasicView):
              xhr=True,
              renderer='json')
 class NovaideoAPI(IndexManagementJsonView):
+    alert_template = 'novaideo:views/templates/alerts/alerts.pt'
 
     def find_user(self):
         name = self.params('q')
@@ -172,6 +174,28 @@ class NovaideoAPI(IndexManagementJsonView):
             return {'body': body}
 
         return {'body': ''}
+
+    def get_user_alerts(self):
+        user = get_current()
+        objects = getattr(user, 'alerts', [])
+        now = datetime.datetime.now(tz=pytz.UTC)
+        objects = sorted(
+            objects,
+            key=lambda e: getattr(e, 'modified_at', now),
+            reverse=True)
+        result_body = []
+        for obj in objects:
+            render_dict = {
+                'object': obj,
+                'current_user': user
+            }
+            body = self.content(args=render_dict,
+                                template=obj.templates['small'])['body']
+            result_body.append(body)
+
+        values = {'bodies': result_body}
+        body = self.content(args=values, template=self.alert_template)['body']
+        return {'body': body}
 
     def __call__(self):
         operation_name = self.params('op')

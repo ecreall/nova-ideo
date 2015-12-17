@@ -23,7 +23,9 @@ from novaideo.fr_lexicon import (
     normalize_word)
 from novaideo.content.interface import (
     IEntity,
-    IPerson)
+    IPerson,
+    IProposal,
+    Iidea)
 
 
 class ISearchableObject(Interface):
@@ -68,6 +70,9 @@ class ISearchableObject(Interface):
         pass
 
     def last_connection():
+        pass
+
+    def related_contents():
         pass
 
 
@@ -235,6 +240,19 @@ class NovaideoCatalogViews(object):
 
         return last_connection
 
+    @indexview()
+    def related_contents(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        related_contents = adapter.related_contents()
+        if related_contents is None:
+            return default
+
+        return related_contents
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -246,6 +264,7 @@ class NovaideoIndexes(object):
     release_date = Field()
     is_workable = Field()
     favorites = Keyword()
+    related_contents = Keyword()
     last_connection = Field()
     # publication_start_date = Field()
     # publication_end_date = Field()
@@ -317,6 +336,9 @@ class SearchableObject(Adapter):
     def last_connection(self):
         return None
 
+    def related_contents(self):
+        return []
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
@@ -328,3 +350,29 @@ class ArtistSearch(SearchableObject):
 
     def last_connection(self):
         return getattr(self.context, 'last_connection', None)
+
+
+@adapter(context=IProposal)
+@implementer(ISearchableObject)
+class ProposalSearch(SearchableObject):
+
+    def related_contents(self):
+        ideas = getattr(self.context, 'related_ideas', [])
+        ids = list(set([get_oid(i, None) for i in ideas]))
+        if None in ids:
+            ids.remove(None)
+
+        return ids
+
+
+@adapter(context=Iidea)
+@implementer(ISearchableObject)
+class IdeaSearch(SearchableObject):
+
+    def related_contents(self):
+        proposals = getattr(self.context, 'related_proposals', [])
+        ids = list(set([get_oid(i, None) for i in proposals]))
+        if None in ids:
+            ids.remove(None)
+
+        return ids

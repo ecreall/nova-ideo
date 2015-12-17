@@ -112,4 +112,5 @@
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
+  <hr class="soften" style="">
 </nav>

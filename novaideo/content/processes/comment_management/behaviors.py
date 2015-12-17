@@ -11,11 +11,14 @@ Comment management process definition.
 """
 from pyramid.httpexceptions import HTTPFound
 
+from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.activity import InfiniteCardinality
 
+from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IComment
 from novaideo import _
+from novaideo.content.alert import CommentAlert
 
 
 VALIDATOR_BY_CONTEXT = {}
@@ -76,6 +79,55 @@ class Respond(InfiniteCardinality):
         context.addtoproperty('comments', comment)
         user = get_current()
         comment.setproperty('author', user)
+        content = comment.subject
+        author = getattr(content, 'author', None)
+        root = getSite()
+        localizer = request.localizer
+        if author is not user and getattr(author, 'email', ''):
+            alert = CommentAlert()
+            root.addtoproperty('alerts', alert)
+            alert.subscribe(author)
+            alert.addtoproperty('subjects', content)
+            mail_template = root.get_mail_template('alert_comment')
+            subject = mail_template['subject'].format(
+                subject_title=content.title)
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(author, 'user_title', ''))),
+                recipient_first_name=getattr(author, 'first_name', author.name),
+                recipient_last_name=getattr(author, 'last_name', ''),
+                subject_title=content.title,
+                subject_url=request.resource_url(content, "@@index"),
+                novaideo_title=root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[author.email],
+                sender=root.get_site_sender(),
+                body=message)
+
+        comment_author = getattr(context, 'author', None)
+        if comment_author not in (user, author) and \
+           getattr(comment_author, 'email', ''):
+            mail_template = root.get_mail_template('alert_respons')
+            subject = mail_template['subject'].format(
+                subject_title=content.title)
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(comment_author, 'user_title', ''))),
+                recipient_first_name=getattr(
+                    comment_author, 'first_name', comment_author.name),
+                recipient_last_name=getattr(comment_author, 'last_name', ''),
+                subject_title=content.title,
+                subject_url=request.resource_url(content, "@@index"),
+                novaideo_title=root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[comment_author.email],
+                sender=root.get_site_sender(),
+                body=message)
+
         return {'newcontext': comment.subject}
 
     def redirect(self, context, request, **kw):
