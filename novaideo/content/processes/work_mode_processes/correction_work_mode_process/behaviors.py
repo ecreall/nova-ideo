@@ -34,7 +34,8 @@ from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _
 from novaideo.utilities.text_analyzer import ITextAnalyzer
 from novaideo.utilities.util import connect
-
+from novaideo.content.alert import (
+    WorkingGroupAlert)
 
 try:
     basestring
@@ -318,6 +319,9 @@ class CorrectProposal(InfiniteCardinality):
            soupdescriptiondiff.find_all("span", id="correction"):
             correction.state.append('in process')
 
+        alert = WorkingGroupAlert(alert_kind='correction_added')
+        root.addtoproperty('alerts', alert)
+        alert.init_alert(context.working_group.members, [context])
         return {}
 
     def redirect(self, context, request, **kw):

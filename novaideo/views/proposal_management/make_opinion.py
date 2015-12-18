@@ -58,7 +58,7 @@ class MakeOpinionFormView(FormView):
     name = 'makeopinionform'
 
     def default_data(self):
-        return self.context
+        return getattr(self.context, 'opinion', {})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({MakeOpinion: MakeOpinionFormView})

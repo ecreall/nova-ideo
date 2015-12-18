@@ -1,0 +1,19 @@
+<div i18n:domain="novaideo"
+     tal:condition="object.subjects"
+     tal:define="icon getattr(object, 'icon');
+                 support_kind getattr(object, 'support_kind', '')">
+  <div tal:define="subject object.subjects[0]">
+    <h4>
+    	<span tal:condition="support_kind == 'support'" class="icon glyphicon glyphicon-thumbs-up"></span> 
+    	<span tal:condition="support_kind == 'oppose'" class="icon glyphicon glyphicon-thumbs-down"></span> 
+    	<span tal:condition="support_kind == 'withdraw'" class="icon glyphicon glyphicon-hand-up"></span> 
+        <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)
+    </h4>
+    <span>
+      <span tal:condition="support_kind == 'support'">Une personne a soutenu votre contribution</span>
+	  <span tal:condition="support_kind == 'oppose'">Une personne s'est opposé à votre contribution</span>
+	  <span tal:condition="support_kind == 'withdraw'">Une personne a retiré son jeton de votre contribution</span>
+
+       <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a></span>
+  </div>
+</div>

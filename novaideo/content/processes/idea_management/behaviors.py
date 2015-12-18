@@ -41,7 +41,11 @@ from novaideo.utilities.util import connect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
     ObjectModified)
-from novaideo.content.alert import CommentAlert
+from novaideo.content.alert import (
+    CommentAlert,
+    ExaminationAlert,
+    ModerationAlert,
+    SupportAlert)
 
 
 try:
@@ -107,7 +111,11 @@ class DuplicateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        copy_of_idea = copy(context, (root, 'ideas'))
+        copy_of_idea = copy(
+            context, (root, 'ideas'),
+            omit=('created_at', 'modified_at',
+                  'opinion',))
+        copy_of_idea.opinion = {}
         root.merge_keywords(appstruct['keywords'])
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
@@ -304,6 +312,9 @@ class ArchiveIdea(InfiniteCardinality):
         context.state = PersistentList(['archived'])
         context.reindex()
         user = context.author
+        alert = ModerationAlert()
+        root.addtoproperty('alerts', alert)
+        alert.init_alert([user], [context])
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('archive_idea_decision')
             localizer = request.localizer
@@ -347,6 +358,9 @@ class PublishIdeaModeration(InfiniteCardinality):
         context.state = PersistentList(['published'])
         context.reindex()
         user = context.author
+        alert = ModerationAlert()
+        root.addtoproperty('alerts', alert)
+        alert.init_alert([user], [context])
         if getattr(user, 'email', ''):
             localizer = request.localizer
             mail_template = root.get_mail_template('publish_idea_decision')
@@ -530,8 +544,7 @@ class CommentIdea(InfiniteCardinality):
             root = getSite()
             alert = CommentAlert()
             root.addtoproperty('alerts', alert)
-            alert.subscribe(author)
-            alert.addtoproperty('subjects', context)
+            alert.init_alert([author], [context])
             mail_template = root.get_mail_template('alert_comment')
             localizer = request.localizer
             subject = mail_template['subject'].format(
@@ -749,9 +762,12 @@ class MakeOpinion(InfiniteCardinality):
             token.owner.addtoproperty('tokens', token)
 
         member = context.author
+        root = getSite()
+        alert = ExaminationAlert()
+        root.addtoproperty('alerts', alert)
+        alert.init_alert([member], [context])
         if getattr(member, 'email', ''):
             url = request.resource_url(context, "@@index")
-            root = getSite()
             mail_template = root.get_mail_template('opinion_idea')
             subject = mail_template['subject'].format(subject_title=context.title)
             localizer = request.localizer
@@ -824,6 +840,10 @@ class SupportIdea(InfiniteCardinality):
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
         request.registry.notify(ActivityExecuted(self, [context], user))
+        if user is not context.author:
+            alert = SupportAlert(support_kind='support')
+            request.root.addtoproperty('alerts', alert)
+            alert.init_alert([context.author], [context])
         return {}
 
     def redirect(self, context, request, **kw):
@@ -848,6 +868,10 @@ class OpposeIdea(InfiniteCardinality):
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
         request.registry.notify(ActivityExecuted(self, [context], user))
+        if user is not context.author:
+            alert = SupportAlert(support_kind='oppose')
+            request.root.addtoproperty('alerts', alert)
+            alert.init_alert([context.author], [context])
         return {}
 
     def redirect(self, context, request, **kw):
@@ -881,6 +905,10 @@ class WithdrawToken(InfiniteCardinality):
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
         request.registry.notify(ActivityExecuted(self, [context], user))
+        if user is not context.author:
+            alert = SupportAlert(support_kind='withdraw')
+            request.root.addtoproperty('alerts', alert)
+            alert.init_alert([context.author], [context])
         return {}
 
     def redirect(self, context, request, **kw):

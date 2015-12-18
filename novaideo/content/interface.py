@@ -179,3 +179,23 @@ class ICommentAlert(IAlert):
 
 class IResponsAlert(IAlert):
     pass
+
+
+class IModerationAlert(IAlert):
+    pass
+
+
+class IExaminationAlert(IAlert):
+    pass
+
+
+class IWorkingGroupAlert(IAlert):
+    pass
+
+
+class ISupportAlert(IAlert):
+    pass
+
+
+class IContentAlert(IAlert):
+    pass

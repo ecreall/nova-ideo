@@ -7,7 +7,7 @@
         <span class="glyphicon glyphicon-filter"></span> <span i18n:translate="">Filter</span></div>
       <div class="filter-form well well-sm ${(not filter_resul and 'hide-bloc')}" >
         <div class="filter-title"><span class="glyphicon glyphicon-filter"></span> <span i18n:translate="">Filter results</span>
-                 <img class="loading-indicator hide-bloc" src="${request.static_url('novaideo:static/images/progress.gif')}"/>
+            <img class="loading-indicator hide-bloc" src="${request.static_url('novaideo:static/images/progress.gif')}"/>
           </div>
        <hr class="soften">
        ${structure: filterbody}

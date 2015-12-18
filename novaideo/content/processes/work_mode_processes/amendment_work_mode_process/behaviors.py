@@ -37,7 +37,8 @@ from novaideo.content.processes.amendment_management.behaviors import (
     get_text_amendment_diff)
 from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.util import connect
-
+from novaideo.content.alert import (
+    WorkingGroupAlert)
 
 try:
     basestring
@@ -91,23 +92,27 @@ class Alert(ElementaryAction):
         mail_template = root.get_mail_template('alert_amendment')
         subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        for member in [m for m in members if getattr(m, 'email', '')]:
-            message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(member, 'user_title', ''))),
-                recipient_first_name=getattr(
-                    member, 'first_name', member.name),
-                recipient_last_name=getattr(
-                    member, 'last_name', ''),
-                subject_url=url,
-                subject_title=context.title,
-                novaideo_title=request.root.title
-            )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                body=message)
+        alert = WorkingGroupAlert(alert_kind='no_amendment')
+        root.addtoproperty('alerts', alert)
+        alert.init_alert(members, [context])
+        for member in members:
+            if getattr(member, 'email', ''):
+                message = mail_template['template'].format(
+                    recipient_title=localizer.translate(
+                        _(getattr(member, 'user_title', ''))),
+                    recipient_first_name=getattr(
+                        member, 'first_name', member.name),
+                    recipient_last_name=getattr(
+                        member, 'last_name', ''),
+                    subject_url=url,
+                    subject_title=context.title,
+                    novaideo_title=request.root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[member.email],
+                    sender=root.get_site_sender(),
+                    body=message)
 
         return {}
 
@@ -209,23 +214,27 @@ class VotingAmendments(ElementaryAction):
         root = request.root
         mail_template = root.get_mail_template('start_vote_amendments')
         subject = mail_template['subject'].format(subject_title=context.title)
-        for member in [m for m in members if getattr(m, 'email', '')]:
-            message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(member, 'user_title', ''))),
-                recipient_first_name=getattr(
-                    member, 'first_name', member.name),
-                recipient_last_name=getattr(
-                    member, 'last_name', ''),
-                subject_title=context.title,
-                subject_url=url,
-                novaideo_title=root.title
-            )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                body=message)
+        alert = WorkingGroupAlert()
+        root.addtoproperty('alerts', alert)
+        alert.init_alert(members, [context])
+        for member in members:
+            if getattr(member, 'email', ''):
+                message = mail_template['template'].format(
+                    recipient_title=localizer.translate(
+                        _(getattr(member, 'user_title', ''))),
+                    recipient_first_name=getattr(
+                        member, 'first_name', member.name),
+                    recipient_last_name=getattr(
+                        member, 'last_name', ''),
+                    subject_title=context.title,
+                    subject_url=url,
+                    novaideo_title=root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[member.email],
+                    sender=root.get_site_sender(),
+                    body=message)
 
         return {}
 
@@ -310,22 +319,23 @@ class AmendmentsResult(ElementaryAction):
         mail_template = root.get_mail_template('vote_amendment_result')
         subject = mail_template['subject'].format(
             subject_title=context.title)
-        for member in [m for m in members if getattr(m, 'email', '')]:
-            message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(member, 'user_title', ''))),
-                recipient_first_name=getattr(
-                    member, 'first_name', member.name),
-                recipient_last_name=getattr(
-                    member, 'last_name', ''),
-                message_result=result_body,
-                novaideo_title=root.title
-            )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                html=message)
+        for member in members:
+            if getattr(member, 'email', ''):
+                message = mail_template['template'].format(
+                    recipient_title=localizer.translate(
+                        _(getattr(member, 'user_title', ''))),
+                    recipient_first_name=getattr(
+                        member, 'first_name', member.name),
+                    recipient_last_name=getattr(
+                        member, 'last_name', ''),
+                    message_result=result_body,
+                    novaideo_title=root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[member.email],
+                    sender=root.get_site_sender(),
+                    html=message)
 
     def start(self, context, request, appstruct, **kw):
         result = set()
@@ -336,6 +346,7 @@ class AmendmentsResult(ElementaryAction):
 
         amendments = [a for a in result if isinstance(a, Amendment)]
         wg = context.working_group
+        members = wg.members
         root = getSite()
         user = get_current()
         newcontext = context
@@ -348,7 +359,7 @@ class AmendmentsResult(ElementaryAction):
             #TODO merged_keywords + merged_description
             copy_of_proposal = self._get_newversion(context, root, wg)
             self._send_ballot_result(copy_of_proposal, request,
-                                     result, wg.members)
+                                     result, members)
             context.state = PersistentList(['archived'])
             copy_of_proposal.text = merged_text
             #correlation idea of replacement ideas... del replaced_idea
@@ -366,8 +377,14 @@ class AmendmentsResult(ElementaryAction):
                     CorrelationType.solid)
             newcontext = copy_of_proposal
             copy_of_proposal.reindex()
+            alert = WorkingGroupAlert(alert_kind='amendments_result')
+            root.addtoproperty('alerts', alert)
+            alert.init_alert(members, [copy_of_proposal])
         else:
             context.state = PersistentList(['amendable'])
+            alert = WorkingGroupAlert()
+            root.addtoproperty('alerts', alert)
+            alert.init_alert(members, [context])
             for amendment in context.amendments:
                 amendment.state = PersistentList(['archived'])
                 amendment.reindex()

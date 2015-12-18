@@ -290,11 +290,14 @@ $(function () {
   $('.alert-block:not(.off)').hover(function(){
         var $this = $(this);
         var url = $this.data('url');
-        var target = $($this.find('.alerts-content').first());
-        target.removeClass('hide-bloc');
+        var alert_content = $($this.find('.alerts-content').first());
+        var target = $(alert_content.find('.content').first());
+        alert_content.find('.loading-indicator').removeClass('hide-bloc')
+        alert_content.removeClass('hide-bloc');
         $.getJSON(url,{}, function(data) {
           if(data['body']){
             target.html(data['body']);
+            alert_content.find('.loading-indicator').addClass('hide-bloc')
           }
         });
 

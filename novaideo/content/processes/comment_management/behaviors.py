@@ -86,8 +86,7 @@ class Respond(InfiniteCardinality):
         if author is not user and getattr(author, 'email', ''):
             alert = CommentAlert()
             root.addtoproperty('alerts', alert)
-            alert.subscribe(author)
-            alert.addtoproperty('subjects', content)
+            alert.init_alert([author], [content])
             mail_template = root.get_mail_template('alert_comment')
             subject = mail_template['subject'].format(
                 subject_title=content.title)
@@ -111,8 +110,7 @@ class Respond(InfiniteCardinality):
            getattr(comment_author, 'email', ''):
             alert = ResponsAlert()
             root.addtoproperty('alerts', alert)
-            alert.subscribe(comment_author)
-            alert.addtoproperty('subjects', content)
+            alert.init_alert([comment_author], [content])
             mail_template = root.get_mail_template('alert_respons')
             subject = mail_template['subject'].format(
                 subject_title=content.title)

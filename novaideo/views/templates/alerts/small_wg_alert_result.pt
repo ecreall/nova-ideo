@@ -1,0 +1,20 @@
+<div i18n:domain="novaideo"
+     tal:condition="object.subjects"
+     tal:define="icon getattr(object, 'icon');
+                 alert_kind getattr(object, 'alert_kind', '')">
+  <div tal:define="subject object.subjects[0]">
+    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
+    <span tal:condition="alert_kind == ''">La proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est maintenant dans l'état ${object.get_subject_state(subject)}</span>
+
+    <span tal:condition="alert_kind == 'end_work'">La fin du cycle d'amélioration associé à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est proche.</span>
+
+    <span tal:condition="alert_kind == 'new_amendments'">Des amendments pour la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> viennent d'être ajoutés.</span>
+    
+    <span tal:condition="alert_kind == 'no_amendment'">Le cycle d'amélioration associé à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a fini sans proposition d'amendements.</span>
+    
+    <span tal:condition="alert_kind == 'amendments_result'">Le résultat sur les votes sur les amendements associés à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été calculé.</span>
+    
+    <span tal:condition="alert_kind == 'correction_added'">Une amélioration de la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été ajouté.</span>
+    
+  </div>
+</div>

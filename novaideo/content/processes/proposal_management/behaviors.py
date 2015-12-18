@@ -60,6 +60,11 @@ from novaideo.event import (
 from novaideo.content.ballot import Ballot
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo.core import access_action, serialize_roles
+from novaideo.content.alert import (
+    WorkingGroupAlert,
+    ExaminationAlert,
+    ModerationAlert,
+    SupportAlert)
 
 try:
     basestring
@@ -414,22 +419,27 @@ class DeleteProposal(InfiniteCardinality):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            for member in [m for m in members if getattr(m, 'email', '')]:
-                message = mail_template['template'].format(
-                    recipient_title=localizer.translate(
-                        _(getattr(member, 'user_title', ''))),
-                    recipient_first_name=getattr(
-                        member, 'first_name', member.name),
-                    recipient_last_name=getattr(member, 'last_name', ''),
-                    subject_title=context.title,
-                    explanation=explanation,
-                    novaideo_title=request.root.title
-                )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+            alert = ModerationAlert(removed=True,
+                                    subject_title=context.title)
+            root.addtoproperty('alerts', alert)
+            alert.init_alert(members)
+            for member in members:
+                if getattr(member, 'email', ''):
+                    message = mail_template['template'].format(
+                        recipient_title=localizer.translate(
+                            _(getattr(member, 'user_title', ''))),
+                        recipient_first_name=getattr(
+                            member, 'first_name', member.name),
+                        recipient_last_name=getattr(member, 'last_name', ''),
+                        subject_title=context.title,
+                        explanation=explanation,
+                        novaideo_title=request.root.title
+                    )
+                    mailer_send(
+                        subject=subject,
+                        recipients=[member.email],
+                        sender=root.get_site_sender(),
+                        body=message)
 
         return {'newcontext': root}
 
@@ -545,7 +555,7 @@ class DuplicateProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        copy_of_proposal = copy(context, (root, 'proposals'), 
+        copy_of_proposal = copy(context, (root, 'proposals'),
                              omit=('created_at', 'modified_at',
                                    'opinion', 'attached_files'))
         related_ideas = appstruct.pop('related_ideas')
@@ -688,6 +698,9 @@ class SupportProposal(InfiniteCardinality):
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
         request.registry.notify(ActivityExecuted(self, [context], user))
+        alert = SupportAlert(support_kind='support')
+        request.root.addtoproperty('alerts', alert)
+        alert.init_alert(context.working_group.members, [context])
         return {}
 
     def redirect(self, context, request, **kw):
@@ -720,6 +733,9 @@ class OpposeProposal(InfiniteCardinality):
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
         request.registry.notify(ActivityExecuted(self, [context], user))
+        alert = SupportAlert(support_kind='oppose')
+        request.root.addtoproperty('alerts', alert)
+        alert.init_alert(context.working_group.members, [context])
         return {}
 
     def redirect(self, context, request, **kw):
@@ -774,23 +790,27 @@ class MakeOpinion(InfiniteCardinality):
         mail_template = root.get_mail_template('opinion_proposal')
         subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        for member in [m for m in members if getattr(m, 'email', '')]:
-            message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(member, 'user_title', ''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name', ''),
-                subject_url=url,
-                subject_title=context.title,
-                opinion=localizer.translate(_(context.opinion['opinion'])),
-                explanation=context.opinion['explanation'],
-                novaideo_title=request.root.title
-            )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                body=message)
+        alert = ExaminationAlert()
+        root.addtoproperty('alerts', alert)
+        alert.init_alert(members, [context])
+        for member in members:
+            if getattr(member, 'email', ''):
+                message = mail_template['template'].format(
+                    recipient_title=localizer.translate(
+                        _(getattr(member, 'user_title', ''))),
+                    recipient_first_name=getattr(member, 'first_name', member.name),
+                    recipient_last_name=getattr(member, 'last_name', ''),
+                    subject_url=url,
+                    subject_title=context.title,
+                    opinion=localizer.translate(_(context.opinion['opinion'])),
+                    explanation=context.opinion['explanation'],
+                    novaideo_title=request.root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[member.email],
+                    sender=root.get_site_sender(),
+                    body=message)
 
         request.registry.notify(ObjectModified(
             object=context,
@@ -833,6 +853,9 @@ class WithdrawToken(InfiniteCardinality):
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
         request.registry.notify(ActivityExecuted(self, [context], user))
+        alert = SupportAlert(support_kind='withdeaw')
+        request.root.addtoproperty('alerts', alert)
+        alert.init_alert(context.working_group.members, [context])
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1359,23 +1382,27 @@ class VotingPublication(ElementaryAction):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            for member in [m for m in members if getattr(m, 'email', '')]:
-                message = mail_template['template'].format(
-                    recipient_title=localizer.translate(
-                        _(getattr(member, 'user_title', ''))),
-                    recipient_first_name=getattr(
-                        member, 'first_name', member.name),
-                    recipient_last_name=getattr(
-                        member, 'last_name', ''),
-                    subject_title=context.title,
-                    subject_url=url,
-                    novaideo_title=root.title
-                )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+            alert = WorkingGroupAlert()
+            root.addtoproperty('alerts', alert)
+            alert.init_alert(members, [context])
+            for member in members:
+                if getattr(member, 'email', ''):
+                    message = mail_template['template'].format(
+                        recipient_title=localizer.translate(
+                            _(getattr(member, 'user_title', ''))),
+                        recipient_first_name=getattr(
+                            member, 'first_name', member.name),
+                        recipient_last_name=getattr(
+                            member, 'last_name', ''),
+                        subject_title=context.title,
+                        subject_url=url,
+                        novaideo_title=root.title
+                    )
+                    mailer_send(
+                        subject=subject,
+                        recipients=[member.email],
+                        sender=root.get_site_sender(),
+                        body=message)
 
         working_group.iteration = getattr(self.process, 'iteration', 0) + 1
         request.registry.notify(ActivityExecuted(
@@ -1429,25 +1456,30 @@ class Work(ElementaryAction):
         url = request.resource_url(context, "@@index")
         subject = subject_template.format(subject_title=context.title)
         localizer = request.localizer
-        for member in [m for m in members if getattr(m, 'email', '')]:
-            message = message_template.format(
-                recipient_title=localizer.translate(
-                    _(getattr(member, 'user_title', ''))),
-                recipient_first_name=getattr(
-                    member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name', ''),
-                subject_title=context.title,
-                subject_url=url,
-                duration=duration,
-                isclosed=localizer.translate((isclosed and _('closed')) or\
-                                             _('open')),
-                novaideo_title=request.root.title
-            )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=request.root.get_site_sender(),
-                body=message)
+        root = request.root
+        alert = WorkingGroupAlert()
+        root.addtoproperty('alerts', alert)
+        alert.init_alert(members, [context])
+        for member in members:
+            if getattr(member, 'email', ''):
+                message = message_template.format(
+                    recipient_title=localizer.translate(
+                        _(getattr(member, 'user_title', ''))),
+                    recipient_first_name=getattr(
+                        member, 'first_name', member.name),
+                    recipient_last_name=getattr(member, 'last_name', ''),
+                    subject_title=context.title,
+                    subject_url=url,
+                    duration=duration,
+                    isclosed=localizer.translate((isclosed and _('closed')) or\
+                                                 _('open')),
+                    novaideo_title=root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[member.email],
+                    sender=root.get_site_sender(),
+                    body=message)
 
     def start(self, context, request, appstruct, **kw):
         context.state.remove('votes for publishing')
@@ -1520,27 +1552,31 @@ class SubmitProposal(ElementaryAction):
         mail_template = root.get_mail_template('publish_proposal')
         subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        for member in [m for m in members if getattr(m, 'email', '')]:
+        alert = WorkingGroupAlert()
+        root.addtoproperty('alerts', alert)
+        alert.init_alert(members, [context])
+        for member in members:
             token = Token(title='Token_'+context.title)
             token.setproperty('proposal', context)
             member.addtoproperty('tokens_ref', token)
             member.addtoproperty('tokens', token)
             token.setproperty('owner', member)
             revoke_roles(member, (('Participant', context),))
-            message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(member, 'user_title', ''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name', ''),
-                subject_title=context.title,
-                subject_url=url,
-                novaideo_title=request.root.title
-            )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                body=message)
+            if getattr(member, 'email', ''):
+                message = mail_template['template'].format(
+                    recipient_title=localizer.translate(
+                        _(getattr(member, 'user_title', ''))),
+                    recipient_first_name=getattr(member, 'first_name', member.name),
+                    recipient_last_name=getattr(member, 'last_name', ''),
+                    subject_title=context.title,
+                    subject_url=url,
+                    novaideo_title=request.root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[member.email],
+                    sender=root.get_site_sender(),
+                    body=message)
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         wg.reindex()
@@ -1583,23 +1619,27 @@ class AlertEnd(ElementaryAction):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            for member in [m for m in members if getattr(m, 'email', '')]:
-                message = mail_template['template'].format(
-                    recipient_title=localizer.translate(
-                        _(getattr(member, 'user_title', ''))),
-                    recipient_first_name=getattr(
-                        member, 'first_name', member.name),
-                    recipient_last_name=getattr(
-                        member, 'last_name', ''),
-                    subject_url=url,
-                    subject_title=context.title,
-                    novaideo_title=request.root.title
-                )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+            alert = WorkingGroupAlert(alert_kind='end_work')
+            root.addtoproperty('alerts', alert)
+            alert.init_alert(members, [context])
+            for member in members:
+                if getattr(member, 'email', ''):
+                    message = mail_template['template'].format(
+                        recipient_title=localizer.translate(
+                            _(getattr(member, 'user_title', ''))),
+                        recipient_first_name=getattr(
+                            member, 'first_name', member.name),
+                        recipient_last_name=getattr(
+                            member, 'last_name', ''),
+                        subject_url=url,
+                        subject_title=context.title,
+                        novaideo_title=request.root.title
+                    )
+                    mailer_send(
+                        subject=subject,
+                        recipients=[member.email],
+                        sender=root.get_site_sender(),
+                        body=message)
 
         return {}
 

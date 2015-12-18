@@ -44,6 +44,8 @@ from novaideo.content.processes.proposal_management.behaviors import (
 from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
 from novaideo.event import CorrelableRemoved
+from novaideo.content.alert import (
+    WorkingGroupAlert)
 
 try:
     basestring
@@ -454,6 +456,10 @@ class SubmitAmendment(InfiniteCardinality):
         not_published_ideas.extend(context)
         request.registry.notify(ActivityExecuted(
             self, not_published_ideas, get_current()))
+        alert = WorkingGroupAlert(alert_kind='new_amendments')
+        request.root.addtoproperty('alerts', alert)
+        alert.init_alert(
+            context.proposal.working_group.members, [context.proposal])
         return {}
 
     def redirect(self, context, request, **kw):

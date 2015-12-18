@@ -24,6 +24,7 @@ from novaideo.views.filter import (
     get_users_by_keywords, get_users_by_preferences)
 from novaideo.content.processes import get_states_mapping
 from novaideo import _
+from novaideo.content.alert import ContentAlert
 
 
 _CONTENT_TRANSLATION = [_("The proposal"),
@@ -54,23 +55,34 @@ def mysubscriber_object_published(event):
     mail_template = root.get_mail_template('alert_new_content')
     subject = mail_template['subject'].format(subject_title=content.title)
     localizer = request.localizer
-    for member in [m for m in users if getattr(m, 'email', '')]:
-        message = mail_template['template'].format(
-            recipient_title=localizer.translate(_(getattr(member,
-                                                        'user_title', ''))),
-            recipient_first_name=getattr(member, 'first_name', member.name),
-            recipient_last_name=getattr(member, 'last_name', ''),
-            subject_title=content.title,
-            subject_url=url,
-            subject_type=localizer.translate(
-                _("The " + content.__class__.__name__.lower())),
-            novaideo_title=root.title
-             )
-        mailer_send(
-            subject=subject,
-            recipients=[member.email],
-            sender=root.get_site_sender(),
-            body=message)
+    author = getattr(content, 'author', None)
+    all_users = []
+    for member in users:
+        all_users.append(member)
+        if getattr(member, 'email', '') and author is not member:
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(_(getattr(member,
+                                                            'user_title', ''))),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name', ''),
+                subject_title=content.title,
+                subject_url=url,
+                subject_type=localizer.translate(
+                    _("The " + content.__class__.__name__.lower())),
+                novaideo_title=root.title
+                 )
+            mailer_send(
+                subject=subject,
+                recipients=[member.email],
+                sender=root.get_site_sender(),
+                body=message)
+
+    if author in all_users:
+        all_users.remove(author)
+
+    alert = ContentAlert(alert_kind='published')
+    root.addtoproperty('alerts', alert)
+    alert.init_alert(all_users, [content])
 
 
 @subscriber(ObjectModified)
@@ -86,34 +98,41 @@ def mysubscriber_object_modified(event):
     mail_template = root.get_mail_template('alert_content_modified')
     subject = mail_template['subject'].format(subject_title=content.title)
     localizer = request.localizer
-    for member in [m for m in users if getattr(m, 'email', '')]:
-        if state_source:
-            state_source = localizer.translate(
-                get_states_mapping(
-                    member, content, state_source))
-        if state_target:
-            state_target = localizer.translate(
-                get_states_mapping(
-                    member, content, state_target))
+    all_users = []
+    for member in users:
+        all_users.append(member)
+        if getattr(member, 'email', ''):
+            if state_source:
+                state_source = localizer.translate(
+                    get_states_mapping(
+                        member, content, state_source))
+            if state_target:
+                state_target = localizer.translate(
+                    get_states_mapping(
+                        member, content, state_target))
 
-        message = mail_template['template'].format(
-            recipient_title=localizer.translate(_(getattr(member,
-                                                        'user_title', ''))),
-            recipient_first_name=getattr(member, 'first_name', member.name),
-            recipient_last_name=getattr(member, 'last_name', ''),
-            state_source=state_source,
-            state_target=state_target,
-            subject_title=content.title,
-            subject_url=url,
-            subject_type=localizer.translate(
-                _("The " + content.__class__.__name__.lower())),
-            novaideo_title=root.title
-             )
-        mailer_send(
-            subject=subject,
-            recipients=[member.email],
-            sender=root.get_site_sender(),
-            body=message)
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(_(getattr(member,
+                                                            'user_title', ''))),
+                recipient_first_name=getattr(member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name', ''),
+                state_source=state_source,
+                state_target=state_target,
+                subject_title=content.title,
+                subject_url=url,
+                subject_type=localizer.translate(
+                    _("The " + content.__class__.__name__.lower())),
+                novaideo_title=root.title
+                 )
+            mailer_send(
+                subject=subject,
+                recipients=[member.email],
+                sender=root.get_site_sender(),
+                body=message)
+
+    alert = ContentAlert(alert_kind='modified')
+    root.addtoproperty('alerts', alert)
+    alert.init_alert(all_users, [content])
 
 
 @subscriber(CorrelableRemoved)
