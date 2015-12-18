@@ -5,7 +5,12 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="novaideo"
       tal:define="mp request.sdiapi.mgmt_path;"
-      tal:omit-tag="">
+      tal:omit-tag=""
+      tal:define="hasalerts hasattr(request.user, 'alerts');
+                  alerts getattr(request.user, 'alerts', []);
+                  len_alerts len(alerts);
+                  alerts_url request.resource_url(request.root, 'novaideoapi', query={'op': 'get_user_alerts'});
+                  all_alerts_url request.resource_url(request.root, '@@seealerts')">
   <div class="navbar-header" >
       <button data-target=".navbar-user-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
          <span class="glyphicon glyphicon-user"></span>
@@ -16,6 +21,13 @@
        <button data-target=".navbar-access-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
          <span class="glyphicon glyphicon-menu-hamburger"></span>
        </button>
+       <span tal:condition="hasalerts"
+          class="visible-xs-inline-block alert-block ${len_alerts==0 and 'off'}"
+          data-url="${alerts_url}">
+            <a href="${all_alerts_url}"><span class="icon glyphicon glyphicon-bell"></span></a>
+            <span class="alert-nb" >${len_alerts}</span>
+            <div class="alerts-content hide-bloc"></div>
+        </span>
 
       <a class="navbar-brand" href="/" tal:define="logo getattr(request.root, 'picture', None)">
         <img tal:condition="logo" src="${logo.url}" class="globe-logo">
@@ -38,11 +50,10 @@
   <div class="collapse navbar-collapse navbar-user-collapse">
     <ul class="nav navbar-nav navbar-right" tal:condition="request.user">
       <li>
-        <span tal:condition="hasattr(request.user, 'alerts')"
-          tal:define="len_alerts len(request.user.alerts)"
-          class="alert-block ${len_alerts==0 and 'off'}"
-          data-url="${request.resource_url(request.root, 'novaideoapi', query={'op': 'get_user_alerts'})}">
-            <a href="${request.resource_url(request.root, '@@seealerts')}"><span class="icon glyphicon glyphicon-bell"></span></a>
+        <span tal:condition="hasalerts"
+          class="hidden-xs alert-block ${len_alerts==0 and 'off'}"
+          data-url="${alerts_url}">
+            <a href="${all_alerts_url}"><span class="icon glyphicon glyphicon-bell"></span></a>
             <span class="alert-nb" >${len_alerts}</span>
             <div class="alerts-content hide-bloc"></div>
         </span>

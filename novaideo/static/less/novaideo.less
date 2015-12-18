@@ -279,8 +279,9 @@ ul.nav.navbar-right a.dropdown-toggle{
 
 .alert-block,
 .alert-block>a{
-    color: #eb0000;
-    display:inline-block;
+    color: #ff0000;
+    display: inline-block;
+    font-weight: bold;
 }
 
 .alert-block.off,
@@ -292,7 +293,15 @@ ul.nav.navbar-right a.dropdown-toggle{
     display: none;
 }
 
-.alert-block span.icon{
+.navbar-header .alert-block{
+    position: relative;
+    margin-right: 15px;
+    top: 8px;
+    float: right
+}
+
+
+.alert-block>a>span.icon{
     font-size: 20px;
     top: 5px;
     margin-right: -3px
@@ -308,13 +317,19 @@ ul.nav.navbar-right a.dropdown-toggle{
   box-shadow: 0 7px 11px #888;
   color: #333;
   font-size: 12px;
+  font-weight: normal;
   margin-left: -130px;
   margin-top: 6px;
-  max-height: 400px;
-  max-width: 300px;
-  overflow: scroll;
+  max-height: 500px;
+  max-width: 400px;
+  overflow: auto;
   padding: 10px 15px;
   position: absolute;
+}
+
+.navbar-header .alerts-content{
+    margin-left: -170px;
+    width: 300px;
 }
 
 body{
