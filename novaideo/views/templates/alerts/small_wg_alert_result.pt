@@ -4,7 +4,7 @@
                  alert_kind getattr(object, 'alert_kind', '')">
   <div tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
-    <span tal:condition="alert_kind == ''">La proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est maintenant dans l'état ${object.get_subject_state(subject)}</span>
+    <span tal:condition="alert_kind == ''">La proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est maintenant dans l'état ${object.get_subject_state(subject, current_user)}</span>
 
     <span tal:condition="alert_kind == 'end_work'">La fin du cycle d'amélioration associé à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est proche.</span>
 
