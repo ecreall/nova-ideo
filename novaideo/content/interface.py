@@ -171,31 +171,3 @@ class INovaIdeoApplication(IEntity, IApplication):
 class IAlert(IVisualisableElement,
              IEntity):
     pass
-
-
-class ICommentAlert(IAlert):
-    pass
-
-
-class IResponsAlert(IAlert):
-    pass
-
-
-class IModerationAlert(IAlert):
-    pass
-
-
-class IExaminationAlert(IAlert):
-    pass
-
-
-class IWorkingGroupAlert(IAlert):
-    pass
-
-
-class ISupportAlert(IAlert):
-    pass
-
-
-class IContentAlert(IAlert):
-    pass

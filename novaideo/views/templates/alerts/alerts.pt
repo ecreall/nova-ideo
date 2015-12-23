@@ -4,7 +4,7 @@
       <div tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
     </div>
   </div>
- <a href="${request.resource_url(request.root, '@@seealerts')}" class="pull-right btn btn-primary btn-xs">
+ <a href="${request.resource_url(request.root, '@@seealerts')}" class="all-alerts-btn pull-right btn btn-primary btn-xs">
     	<span class="icon glyphicon glyphicon-bell"></span> <span i18n:translate="">See all alerts</span>
     </a>
 </div>

@@ -190,7 +190,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 'current_user': user
             }
             body = self.content(args=render_dict,
-                                template=obj.templates['small'])['body']
+                                template=obj.get_templates()['small'])['body']
             result_body.append(body)
 
         values = {'bodies': result_body}

@@ -1,7 +1,7 @@
 <div class="thumbnail right-caption span4 search-item result-item" 
      i18n:domain="novaideo"
      tal:condition="object.subjects"
-     tal:define="icon getattr(object, 'icon');
+     tal:define="icon 'md md-group';
                  alert_kind getattr(object, 'alert_kind', '')">
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
@@ -18,4 +18,5 @@
     <span tal:condition="alert_kind == 'correction_added'">Une amélioration de la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été ajouté.</span>
     
   </div>
+  <span tal:condition="current_user in object.users_to_alert" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 </div>

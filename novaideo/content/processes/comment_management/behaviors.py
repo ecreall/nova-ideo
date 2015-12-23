@@ -18,7 +18,7 @@ from dace.processinstance.activity import InfiniteCardinality
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IComment
 from novaideo import _
-from novaideo.content.alert import CommentAlert, ResponsAlert
+from novaideo.content.alert import CommentAlert
 
 
 VALIDATOR_BY_CONTEXT = {}
@@ -108,7 +108,7 @@ class Respond(InfiniteCardinality):
         comment_author = getattr(context, 'author', None)
         if comment_author not in (user, author) and \
            getattr(comment_author, 'email', ''):
-            alert = ResponsAlert()
+            alert = CommentAlert(is_respons=True)
             root.addtoproperty('alerts', alert)
             alert.init_alert([comment_author], [content])
             mail_template = root.get_mail_template('alert_respons')

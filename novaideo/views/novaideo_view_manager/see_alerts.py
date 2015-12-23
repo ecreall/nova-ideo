@@ -9,16 +9,14 @@ from pyramid.view import view_config
 
 from substanced.util import Batch
 
-from dace.util import get_obj
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import (
-    DEFAULTMAPPING_ACTIONS_VIEWS, PROCESS_HISTORY_KEY)
+    DEFAULTMAPPING_ACTIONS_VIEWS)
 
 from pontus.view import BasicView
 
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.content.processes import get_states_mapping
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeAlerts)
 from novaideo import _
@@ -44,9 +42,9 @@ class SeeAlertsView(BasicView):
     viewid = 'seealerts'
 
     def update(self):
-        self.execute(None)
         user = get_current()
-        objects = getattr(user, 'old_alerts', [])
+        objects = getattr(user, 'alerts', [])
+        objects.extend(getattr(user, 'old_alerts', []))
         now = datetime.datetime.now(tz=pytz.UTC)
         objects = sorted(
             objects,
@@ -71,7 +69,7 @@ class SeeAlertsView(BasicView):
                 'current_user': user
             }
             body = self.content(args=render_dict,
-                                template=obj.templates['default'])['body']
+                                template=obj.get_templates()['default'])['body']
             result_body.append(body)
 
         result = {}
@@ -80,6 +78,7 @@ class SeeAlertsView(BasicView):
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
+        self.execute(None)
         return result
 
 

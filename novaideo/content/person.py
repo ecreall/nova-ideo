@@ -182,8 +182,8 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         widget=LimitedTextAreaWidget(
             rows=5,
             cols=30,
-            limit=600,
-            alert_values={'limit': 600}),
+            limit=1200,
+            alert_values={'limit': 1200}),
         title=_("Description"),
         missing=""
     )
