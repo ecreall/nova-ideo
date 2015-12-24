@@ -56,7 +56,7 @@ class SeeUsersView(BasicView):
         return _(self.contents_messages[args.get('index')],
                  mapping={'nember': args.get('len_result')})
 
-    def _add_filter(self, user):
+    def _add_filter(self, user, is_manager):
         def source(**args):
             filters = [
                 {'metadata_filter': {
@@ -71,20 +71,27 @@ class SeeUsersView(BasicView):
 
         url = self.request.resource_url(self.context,
                                         '@@novaideoapi')
+        select = self.selected_filter
+        if not is_manager:
+            select = [('metadata_filter', ['neagtion', 'states', 'keywords']),
+                      ('temporal_filter', ['negation', 'created_date']),
+                      'text_filter', 'other_filter']
+
         return get_filter(
             self, url=url,
-            select=self.selected_filter,
+            select=select,
             source=source)
 
     def update(self):
         self.execute(None)
         user = get_current()
+        is_manager = has_role(user=user, role=('PortalManager', ))
         filters = [
             {'metadata_filter': {
                 'content_types': ['person']
             }}
         ]
-        filter_form, filter_data = self._add_filter(user)
+        filter_form, filter_data = self._add_filter(user, is_manager)
         args = merge_with_filter_view(self, {})
         args['request'] = self.request
         objects = find_entities(
@@ -126,7 +133,7 @@ class SeeUsersView(BasicView):
         result = {}
         values = {'bodies': result_body,
                   'batch': batch,
-                  'is_manager': has_role(user=user, role=('PortalManager', )),
+                  'is_manager': is_manager,
                   'inactivity_duration': INACTIVITY_DURATION,
                   'inactive_users': inactive_users.__len__(),
                   'filter_body': filter_body}
