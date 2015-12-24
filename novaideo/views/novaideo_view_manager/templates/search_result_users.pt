@@ -1,0 +1,29 @@
+<div tal:omit-tag="" tal:define="batch_value batch|nothing;
+	                             id (batch_value and batch_value.target.replace('#', '')) or 'results'">
+	<div tal:omit-tag="" tal:define="filterbody filter_body|nothing" i18n:domain="novaideo">
+		<div id="filter-${id}" tal:condition="filterbody">
+			${structure: filterbody}
+	    </div>
+	</div>
+	<div tal:omit-tag="" tal:condition="is_manager">
+		<div tal:condition="inactive_users == 0" class="alert alert-success">
+	        Tous les utilisateurs se sont connectés au moins une fois pendant ces ${inactivity_duration} derniers jours.
+		</div>
+		<div tal:condition="inactive_users >= 1" class="alert alert-warning">
+	        <span tal:condition="inactive_users == 1">
+	        	<a class="alert-link" href="${request.resource_url(request.root, '@@seeinactiveusers')}">${inactive_users}</a> utilisateur ne s'est pas connecté pendant ces ${inactivity_duration} derniers jours.
+	        </span>
+	        <span tal:condition="inactive_users > 1">
+	        	<a class="alert-link" href="${request.resource_url(request.root, '@@seeinactiveusers')}">${inactive_users}</a> utilisateurs ne se sont pas connectés pendant ces ${inactivity_duration} derniers jours.
+	        </span>
+		</div>
+	</div>
+	<div class="row scroll-able result-scroll">
+	  <div tal:condition="bodies" id="${id}" class="results">
+	    <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
+	    <div class="col-md-12 result-container">
+	      <div tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
+	    </div>
+	  </div>
+	</div>
+</div>

@@ -42,8 +42,8 @@ class SeeMyContentsView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seemycontents'
     contents_messages = CONTENTS_MESSAGES
-    selected_filter = ['metadata_filter', 'temporal_filter',
-                     'text_filter', 'other_filter']
+    selected_filter = ['metadata_filter', ('temporal_filter', ['negation', 'created_date']),
+                       'text_filter', 'other_filter']
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],

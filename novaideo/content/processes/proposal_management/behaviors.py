@@ -522,6 +522,7 @@ class PublishProposal(InfiniteCardinality):
                 context, request, 'votingpublication', {})
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        context.init_published_at()
         not_published_ideas = []
         if not request.moderate_ideas and\
            'idea' not in request.content_to_examine:
@@ -557,6 +558,7 @@ class DuplicateProposal(InfiniteCardinality):
         user = get_current()
         copy_of_proposal = copy(context, (root, 'proposals'),
                              omit=('created_at', 'modified_at',
+                                   'examined_at', 'published_at',
                                    'opinion', 'attached_files'))
         related_ideas = appstruct.pop('related_ideas')
         root.merge_keywords(appstruct['keywords'])
@@ -775,6 +777,7 @@ class MakeOpinion(InfiniteCardinality):
         context.state.remove('published')
         context.state.append('examined')
         context.state.append(context.opinion['opinion'])
+        context.init_examined_at()
         context.reindex()
         tokens = [t for t in context.tokens if not t.proposal]
         proposal_tokens = [t for t in context.tokens if t.proposal]

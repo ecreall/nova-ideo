@@ -28,7 +28,8 @@ from .behaviors import (
     SeeIdeasToExamine,
     SeeEntityHistory,
     Contact,
-    SeeAlerts
+    SeeAlerts,
+    SeeUsers
     )
 from novaideo import _
 
@@ -78,6 +79,10 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                                        description=_("Ideas to examine"),
                                        title=_("Ideas to examine"),
                                        groups=[_('See')]),
+                seeusers = ActivityDefinition(contexts=[SeeUsers],
+                                       description=_("Members"),
+                                       title=_("Members"),
+                                       groups=[_('See')]),
                 seehistory = ActivityDefinition(contexts=[SeeEntityHistory],
                                        description=_("See the processes history"),
                                        title=_("Processes history"),
@@ -109,6 +114,8 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('seeorderedproposal', 'eg'),
                 TransitionDefinition('pg', 'seeideastoexamine'),
                 TransitionDefinition('seeideastoexamine', 'eg'),
+                TransitionDefinition('pg', 'seeusers'),
+                TransitionDefinition('seeusers', 'eg'),
                 TransitionDefinition('pg', 'seeideastomoderate'),
                 TransitionDefinition('seeideastomoderate', 'eg'),
                 TransitionDefinition('pg', 'seehistory'),

@@ -44,7 +44,8 @@ class SeeMySupportsView(SeeMyContentsView):
     viewid = 'seemysupports'
     contents_messages = CONTENTS_MESSAGES
     selected_filter = [('metadata_filter', ['negation', 'keywords', 'states']),
-                       'temporal_filter', 'text_filter', 'other_filter']
+                       ('temporal_filter', ['negation', 'created_date']),
+                       'text_filter', 'other_filter']
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],

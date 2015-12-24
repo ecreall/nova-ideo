@@ -10,6 +10,7 @@ import colander
 import datetime
 from zope.interface import implementer
 from persistent.list import PersistentList
+from persistent.dict import PersistentDict
 from pyramid.threadlocal import get_current_registry
 
 from substanced.content import content
@@ -31,6 +32,7 @@ from novaideo.core import FileEntity
 from .organization import OrganizationSchema, Organization
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
+from novaideo.utilities.analytics_utility import hover_color, random_color
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo.mail import DEFAULT_SITE_MAILS
 from novaideo.views.widget import SimpleMappingtWidget
@@ -265,6 +267,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         super(NovaIdeoApplication, self).__init__(**kwargs)
         self.keywords = PersistentList()
         self.initialization()
+        self.keywords_mapping = PersistentDict()
 
     @property
     def mail_conf(self):
@@ -366,7 +369,38 @@ class NovaIdeoApplication(VisualisableElement, Application):
         modes = sorted(modes, key=lambda e: e.order)
         return modes[0]
 
+    def init_keywords_mapping(self):
+        if not hasattr(self, 'keywords_mapping'):
+            self.keywords_mapping = PersistentDict()
+
+        for key in self.keywords_mapping:
+            if key not in self.keywords:
+                self.keywords_mapping.pop(key)
+
+        new_keywords = [k for k in self.keywords if k
+                        not in self.keywords_mapping.keys()]
+        for index, keyword in enumerate(new_keywords):
+            background = random_color()
+            hover = hover_color(background)
+            self.keywords_mapping[keyword] = {'color': {
+                'background': background,
+                'hover': hover
+            }}
+
+    def reset_keywords_mapping(self):
+        if not hasattr(self, 'keywords_mapping'):
+            self.keywords_mapping = PersistentDict()
+
+        for index, keyword in enumerate(self.keywords):
+            background = random_color()
+            hover = hover_color(background)
+            self.keywords_mapping[keyword] = {'color': {
+                'background': background,
+                'hover': hover
+            }}
+
     def merge_keywords(self, newkeywords):
         current_keywords = list(self.keywords)
         current_keywords.extend(newkeywords)
         self.keywords = PersistentList(list(set(current_keywords)))
+        self.init_keywords_mapping()

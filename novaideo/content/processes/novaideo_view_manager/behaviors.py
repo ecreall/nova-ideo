@@ -316,4 +316,29 @@ class SeeAlerts(InfiniteCardinality):
         return {}
 
 
+def seeusers_roles_validation(process, context):
+    return has_role(role=('Member', ))
+
+
+def seeusers_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+class SeeUsers(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-user'
+    style_order = 0
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seeusers_roles_validation
+    processsecurity_validation = seeusers_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
+
+
+
 #TODO behaviors

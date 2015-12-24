@@ -5,6 +5,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import datetime
+import pytz
 import colander
 from webob.multidict import MultiDict
 from collections import OrderedDict
@@ -141,6 +143,12 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
         result = list(self.tokens_opposition)
         result.extend(list(self.tokens_support))
         return result
+
+    def init_published_at(self):
+        setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
+
+    def init_examined_at(self):
+        setattr(self, 'examined_at', datetime.datetime.now(tz=pytz.UTC))
 
     def init_support_history(self):
         if not hasattr(self, '_support_history'):

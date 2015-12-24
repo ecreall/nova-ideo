@@ -241,6 +241,49 @@ def created_date_query(node, **args):
     return query
 
 
+def connected_date_query(node, **args):
+    value = None
+    if 'temporal_filter' in args:
+        value = args['temporal_filter']
+
+    if value is None:
+        return None
+
+    connected_date = value.get('connected_date', None)
+    if not connected_date:
+        return None
+
+    novaideo_catalog = None
+    if 'novaideo' in args:
+        novaideo_catalog = args['novaideo']
+    else:
+        novaideo_catalog = find_catalog('novaideo')
+
+    #index
+    connected_after = connected_date['connected_after']
+    connected_before = connected_date['connected_before']
+    connected_at_index = novaideo_catalog['last_connection']
+    query = None
+    if connected_after:
+        connected_after = datetime.datetime.combine(
+            connected_after,
+            datetime.datetime.min.time())
+        connected_after = connected_after.replace(tzinfo=pytz.UTC)
+        query = connected_at_index.gt(connected_after)
+
+    if connected_before:
+        connected_before = datetime.datetime.combine(
+            connected_before,
+            datetime.datetime.min.time())
+        connected_before = connected_before.replace(tzinfo=pytz.UTC)
+        if query is None:
+            query = connected_at_index.lt(connected_before)
+        else:
+            query = query & connected_at_index.lt(connected_before)
+
+    return query
+
+
 def authors_query(node, **args):
     value = None
     if 'contribution_filter' in args:
@@ -708,6 +751,23 @@ class CreatedDates(Schema):
         )
 
 
+class ConnectedDates(Schema):
+
+    connected_after = colander.SchemaNode(
+        colander.Date(),
+        title=_('Connected after'),
+        missing=None
+        )
+
+    connected_before = colander.SchemaNode(
+        colander.Date(),
+        title=_('Connected before'),
+        description_bottom=True,
+        description=_('You can select the last connection dates of users to be displayed.'),
+        missing=None,
+        )
+
+
 class TemporalSchema(Schema):
 
     negation = colander.SchemaNode(
@@ -724,6 +784,14 @@ class TemporalSchema(Schema):
                                              " object-well"
                                              " default-well"),
         query=created_date_query
+        ),
+            ["_csrf_token_"])
+
+    connected_date = omit(ConnectedDates(
+        widget=SimpleMappingWidget(css_class="filter-block"
+                                             " object-well"
+                                             " default-well"),
+        query=connected_date_query
         ),
             ["_csrf_token_"])
 
@@ -769,7 +837,6 @@ class TextFilterSchema(Schema):
         missing='',
         query=text_to_search_query
     )
-
 
 
 class FilterSchema(Schema):
@@ -861,7 +928,8 @@ class FilterView(FormView):
             self.calculate_posted_filter()
 
         self.schema = select(FilterSchema(),
-                             ['metadata_filter', 'temporal_filter', 
+                             ['metadata_filter',
+                              ('temporal_filter', ['negation', 'created_date']),
                               'contribution_filter', 'text_filter'])
 
     def calculate_posted_filter(self):
@@ -894,10 +962,10 @@ class FilterView(FormView):
         return getattr(self, '_validated', {})
 
     def omit_filters(self, filters):
-        self.schema = omit(self.schema, filters)
+        self.schema = omit(FilterSchema(), filters)
 
     def select_filters(self, filters):
-        self.schema = select(self.schema, filters)
+        self.schema = select(FilterSchema(), filters)
 
     def analyze_data(self, source):
         self.analyzed_data = get_analyzed_data(
@@ -1100,7 +1168,6 @@ def get_users_by_keywords(keywords):
                          'keywords': keywords})
 
 
-
 def get_users_by_preferences(content):
     novaideo_catalog = find_catalog('novaideo')
     favorites_index = novaideo_catalog['favorites']
@@ -1114,3 +1181,43 @@ def get_users_by_preferences(content):
         metadata_filter={'content_types': ['person'],
                          'states': ['active']},
         add_query=query)
+
+
+def get_contents_by_keywords(types_, states, user, root):
+    keywords = root.keywords
+    keywords_mapping = dict([(k.lower(), k) for k in keywords])
+    objects = find_entities(
+        user=user,
+        metadata_filter={'content_types': types_,
+                         'states': states})
+
+    index = find_catalog('novaideo')['object_keywords']
+    intersection = index.family.IF.intersection
+    object_ids = getattr(objects, 'ids', objects)
+    if isinstance(object_ids, (list, types.GeneratorType)):
+        object_ids = index.family.IF.Set(object_ids)
+
+    result = [(keyword_id, len(intersection(oids, object_ids)))
+              for keyword_id, oids in index._fwd_index.items()]
+    result = dict([(keywords_mapping.get(k, k), v) for k, v in result])
+    return result
+
+
+def get_contents_by_states(types_, keywords, user, root, states):
+    keywords = root.keywords
+    objects = find_entities(
+        user=user,
+        metadata_filter={'content_types': types_,
+                         'keywords': keywords,
+                         'states': states})
+
+    index = find_catalog('dace')['object_states']
+    intersection = index.family.IF.intersection
+    object_ids = getattr(objects, 'ids', objects)
+    if isinstance(object_ids, (list, types.GeneratorType)):
+        object_ids = index.family.IF.Set(object_ids)
+
+    result = [(state_id, len(intersection(oids, object_ids)))
+              for state_id, oids in index._fwd_index.items()]
+    result = dict([(k, v) for k, v in result if states and k in states])
+    return result

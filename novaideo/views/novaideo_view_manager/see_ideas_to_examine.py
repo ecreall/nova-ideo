@@ -85,7 +85,7 @@ class SeeIdeasToExamineView(BasicView):
             url=url,
             source=source,
             select=[('metadata_filter', ['keywords']),
-                    'contribution_filter', 'temporal_filter',
+                    'contribution_filter', ('temporal_filter', ['negation', 'created_date']),
                     'text_filter', 'other_filter'])
 
     def update(self):

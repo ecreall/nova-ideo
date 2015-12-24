@@ -11,6 +11,7 @@ from pyramid.threadlocal import get_current_request
 
 from substanced.util import Batch
 
+from dace.objectofcollaboration.principal.util import has_role
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
@@ -77,6 +78,15 @@ class AdvancedSearchView(FilterView):
             return result
         else:
             return super(AdvancedSearchView, self).update()
+
+    def before_update(self):
+        if has_role(role=('PortalManager', )):
+            self.select_filters(
+                ['metadata_filter', 'geographic_filter',
+                 'contribution_filter', 'temporal_filter',
+                 'text_filter', 'other_filter'])
+
+        super(AdvancedSearchView, self).before_update()
 
 
 @colander.deferred
@@ -215,7 +225,8 @@ class SearchResultView(BasicView):
 
     def _add_filter(self, user):
         def source(**args):
-            default_content = [key[0] for key in get_default_searchable_content(self.request)]
+            default_content = [key[0] for key in
+                               get_default_searchable_content(self.request)]
             default_content.remove("person")
             filter_ = {
                 'metadata_filter': {'content_types': default_content}
@@ -224,13 +235,15 @@ class SearchResultView(BasicView):
             return objects
 
         url = self.request.resource_url(self.context, '@@novaideoapi')
+        select = ['metadata_filter', 'geographic_filter',
+                  'contribution_filter',
+                  ('temporal_filter', ['negation', 'created_date']),
+                  'text_filter', 'other_filter']
         return get_filter(
             self,
             url=url,
             source=source,
-            select=['metadata_filter', 'geographic_filter',
-                    'contribution_filter', 'temporal_filter',
-                    'text_filter', 'other_filter'],
+            select=select,
             filter_source="search_source")
 
     def update(self):
@@ -248,7 +261,8 @@ class SearchResultView(BasicView):
         filter_form = None
         if not executed:
             filter_form, filter_data = self._add_filter(user)
-            default_content = [key[0] for key in get_default_searchable_content(self.request)]
+            default_content = [key[0] for key in
+                               get_default_searchable_content(self.request)]
             default_content.remove("person")
             filter_ = {
                 'metadata_filter': {'content_types': default_content}

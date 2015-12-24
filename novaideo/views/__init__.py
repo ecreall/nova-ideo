@@ -197,11 +197,3 @@ class NovaideoAPI(IndexManagementJsonView):
         body = self.content(args=values, template=self.alert_template)['body']
         return {'body': body}
 
-    def __call__(self):
-        operation_name = self.params('op')
-        if operation_name is not None:
-            operation = getattr(self, operation_name, None)
-            if operation is not None:
-                return operation()
-
-        return {}

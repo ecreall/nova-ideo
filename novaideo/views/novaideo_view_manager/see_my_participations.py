@@ -41,7 +41,8 @@ class SeeMyParticipationsView(SeeMyContentsView):
     viewid = 'seemyparticipations'
     contents_messages = CONTENTS_MESSAGES
     selected_filter = [('metadata_filter', ['keywords', 'states']),
-                       'temporal_filter', 'text_filter', 'other_filter']
+                       ('temporal_filter', ['negation', 'created_date']),
+                       'text_filter', 'other_filter']
 
     def _get_content_ids(self):
         user = get_current()

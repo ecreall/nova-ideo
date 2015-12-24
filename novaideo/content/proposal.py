@@ -4,6 +4,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import datetime
+import pytz
 import colander
 from collections import OrderedDict
 from webob.multidict import MultiDict
@@ -213,6 +215,12 @@ class Proposal(Commentable,
     @property
     def is_published(self):
         return 'draft' not in self.state
+
+    def init_published_at(self):
+        setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
+
+    def init_examined_at(self):
+        setattr(self, 'examined_at', datetime.datetime.now(tz=pytz.UTC))
 
     def init_support_history(self):
         # [(user_oid, date, support_type), ...], support_type = {1:support, 0:oppose, -1:withdraw}

@@ -1,0 +1,71 @@
+<script>
+    var randomColorFactor = function() {
+            return Math.round(Math.random() * 255);
+        };
+    var randomColor = function() {
+        return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',.7)';
+    };
+    var barChartData = {
+    labels: [${','.join(["\""+a+"\"" for a in labels])}],
+    datasets: [
+        <div tal:omit-tag="" tal:repeat="(item, value) analytics.items()">
+            {
+                label: "${item}",
+                fillColor: "${value['color']['background']}",
+                strokeColor: "${value['color']['background']}",
+                highlightFill: "${value['color']['hover']}",
+                highlightStroke: "${value['color']['hover']}",
+                data: [${','.join([str(value['data'].get(a, 0)) for a in labels])}]
+            },
+       </div>
+    ]
+    };
+    var doughnutData = [
+        <div tal:omit-tag="" tal:repeat="(index, item) enumerate(labels)">
+            <div tal:omit-tag=""  tal:define="color view.get_color(item)">
+            {
+                label: "${item}",
+                fillColor: "${color['color']['background']}",
+                color: "${color['color']['background']}",
+                highlight: "${color['color']['hover']}",
+                value: ${sum([value['data'].get(item, 0) for key, value in analytics.items()])}
+            },
+            </div>
+       </div>
+
+    ];
+    var newcanvas = get_new_canvas("canvas");
+    $('#canvas').replaceWith(newcanvas)
+    var ctx = document.getElementById("canvas").getContext("2d");
+
+    ctx.clearRect(0, 0, 1500, 1500);
+    var bar = new Chart(ctx).Bar(barChartData, {
+                responsive: true,
+                generateLegend: true,
+                hoverMode: 'label',
+                hoverAnimationDuration: 400,
+                stacked: false,
+                scales: {
+                    yAxes: [{
+                        type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                        display: true,
+                        position: "left",
+                        id: "y-axis-1",
+                    }],
+                }
+            }
+        );
+        var newcanvas = get_new_canvas("canvasdoughnut");
+        $('#canvasdoughnut').replaceWith(newcanvas)
+        var ctxdoughnut = document.getElementById("canvasdoughnut").getContext("2d");
+        ctxdoughnut.clearRect(0, 0, 1500, 1500);
+        var doughnut = new Chart(ctxdoughnut).Doughnut(doughnutData, {
+            responsive: true,
+            generateLegend: true,
+        });
+        var barlegend = bar.generateLegend();
+        $('#barlegend').html(barlegend)
+        var doughnutlegend = doughnut.generateLegend();
+        $('#doughnutlegend').html(doughnutlegend)
+
+</script>

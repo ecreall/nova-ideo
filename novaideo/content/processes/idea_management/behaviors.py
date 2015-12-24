@@ -114,7 +114,7 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea = copy(
             context, (root, 'ideas'),
             omit=('created_at', 'modified_at',
-                  'opinion',))
+                  'opinion', 'examined_at', 'published_at'))
         copy_of_idea.opinion = {}
         root.merge_keywords(appstruct['keywords'])
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
@@ -356,6 +356,7 @@ class PublishIdeaModeration(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         context.state = PersistentList(['published'])
+        context.init_published_at()
         context.reindex()
         user = context.author
         alert = ModerationAlert()
@@ -425,6 +426,7 @@ class PublishIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.state = PersistentList(['published'])
+        context.init_published_at()
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
@@ -757,6 +759,7 @@ class MakeOpinion(InfiniteCardinality):
         context.opinion = PersistentDict(appstruct)
         context.state.insert(0, 'examined')
         context.state.append(context.opinion['opinion'])
+        context.init_examined_at()
         context.reindex()
         for token in list(context.tokens):
             token.owner.addtoproperty('tokens', token)

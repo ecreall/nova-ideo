@@ -51,6 +51,12 @@ class ISearchableObject(Interface):
     def modified_at():
         pass
 
+    def published_at():
+        pass
+
+    def examined_at():
+        pass
+
     def object_title():
         pass
 
@@ -163,6 +169,32 @@ class NovaideoCatalogViews(object):
         return modified_at
 
     @indexview()
+    def published_at(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        published_at = adapter.published_at()
+        if published_at is None:
+            return default
+
+        return published_at
+
+    @indexview()
+    def examined_at(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        examined_at = adapter.examined_at()
+        if examined_at is None:
+            return default
+
+        return examined_at
+
+    @indexview()
     def object_title(self, default):
         adapter = get_current_registry().queryAdapter(
             self.resource, ISearchableObject)
@@ -261,6 +293,8 @@ class NovaideoIndexes(object):
     object_authors = Keyword()
     created_at = Field()
     modified_at = Field()
+    published_at = Field()
+    examined_at = Field()
     release_date = Field()
     is_workable = Field()
     favorites = Keyword()
@@ -312,6 +346,12 @@ class SearchableObject(Adapter):
 
     def modified_at(self):
         return getattr(self.context, 'modified_at', None)
+
+    def published_at(self):
+        return getattr(self.context, 'published_at', self.created_at())
+
+    def examined_at(self):
+        return getattr(self.context, 'examined_at', None)
 
     def object_access_control(self):
         access_control = getattr(self.context, 'access_control', ['all'])
