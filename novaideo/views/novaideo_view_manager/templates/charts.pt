@@ -1,0 +1,13 @@
+<div class="container-fluid analytics-container">
+  <div class="row clearfix" tal:repeat="row_index range(row_len)">
+    <div class="col-md-6"
+         tal:repeat="chart charts[(row_index*2): (row_index*2)+2]">
+        <div class="canvas-title hide-bloc"
+             id="title-${chart['id']+'-'+id}">${chart['title']}
+        </div>
+        <canvas id="canvas-${chart['id']+'-'+id}" ></canvas>
+        <div class="legend" id="legend-${chart['id']+'-'+id}"></div>
+    </div>
+  </div>
+  <div id="chart-script"></div>
+</div>

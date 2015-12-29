@@ -38,12 +38,26 @@ class ContentsByKeywords(BasicView):
     title = _('Contents by keywords')
     name = 'content_by_keywords'
     # validators = [Search.get_validator()]
-    template = 'novaideo:views/novaideo_view_manager/templates/content_by_keywords.pt'
+    template = 'novaideo:views/novaideo_view_manager/templates/charts.pt'
     viewid = 'content_by_keywords'
 
     def update(self):
         result = {}
-        body = self.content(args={}, template=self.template)['body']
+        values = {
+            'id': 'keywords',
+            'row_len': 2,
+            'charts': [
+                {
+                    'id': 'bar',
+                    'title': _('Total des contenus classé par types par mots clés')
+                },
+                {
+                    'id': 'doughnut',
+                    'title': _('Pourcentage du cumul par mots clés')
+                }
+            ]
+        }
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
@@ -130,7 +144,7 @@ class ContentsByKeywordsForm(FormView):
 
     def before_update(self):
         formwidget = deform.widget.FormWidget(
-            css_class='content-by-keywords filter-form well')
+            css_class='analytics-form filter-form well')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         formwidget.ajax_url = self.request.resource_url(
             self.context, '@@analyticsapi', query={'op': 'contents_by_keywords'})
@@ -150,12 +164,26 @@ class ContentsByStates(BasicView):
     title = _('Contents by states')
     name = 'content_by_keywords'
     # validators = [Search.get_validator()]
-    template = 'novaideo:views/novaideo_view_manager/templates/content_by_states.pt'
+    template = 'novaideo:views/novaideo_view_manager/templates/charts.pt'
     viewid = 'content_by_states'
 
     def update(self):
         result = {}
-        body = self.content(args={}, template=self.template)['body']
+        values = {
+            'id': 'states',
+            'row_len': 2,
+            'charts': [
+                {
+                    'id': 'bar',
+                    'title': _('Total des contenus classé par types par états')
+                },
+                {
+                    'id': 'doughnut',
+                    'title': _('Pourcentage du cumul par états')
+                }
+            ]
+        }
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
@@ -191,7 +219,7 @@ class ContentsByStatesForm(FormView):
 
     def before_update(self):
         formwidget = deform.widget.FormWidget(
-            css_class='content-by-states filter-form well')
+            css_class='analytics-form filter-form well')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         formwidget.ajax_url = self.request.resource_url(
             self.context, '@@analyticsapi', query={'op': 'contents_by_states'})
@@ -290,6 +318,7 @@ class AnalyticsAPIJsonView(BasicView):
         values = {'analytics': results,
                   'labels': labels,
                   'view': self,
+                  'charts': ['bar', 'doughnut'],
                   'id': 'keywords'}
         body = self.content(
             args=values, template=self.analytics_template)['body']
@@ -336,7 +365,7 @@ class AnalyticsAPIJsonView(BasicView):
                 }
 
         localizer = self.request.localizer
-        states = [flattened_states[s] for s in states]
+        states = [flattened_states[s] for s in states if s in flattened_states]
         states = list(set([localizer.translate(item) for sublist in states
                            for item in sublist]))
         labels = [list(v['data'].keys()) for v in results.values()]
@@ -346,6 +375,7 @@ class AnalyticsAPIJsonView(BasicView):
         values = {'analytics': results,
                   'labels': labels,
                   'view': self,
+                  'charts': ['bar', 'doughnut'],
                   'id': 'states'}
         body = self.content(
             args=values, template=self.analytics_template)['body']
