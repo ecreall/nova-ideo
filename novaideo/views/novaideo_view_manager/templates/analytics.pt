@@ -1,10 +1,5 @@
-<script>
-    var randomColorFactor = function() {
-            return Math.round(Math.random() * 255);
-        };
-    var randomColor = function() {
-        return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',.7)';
-    };
+<script tal:define="barid 'canvas'+id;
+                    doughnutid 'canvasdoughnut'+id">
     var barChartData = {
     labels: [${','.join(["\""+a+"\"" for a in labels])}],
     datasets: [
@@ -21,22 +16,25 @@
     ]
     };
     var doughnutData = [
-        <div tal:omit-tag="" tal:repeat="(index, item) enumerate(labels)">
-            <div tal:omit-tag=""  tal:define="color view.get_color(item)">
+        <div tal:omit-tag="" tal:repeat="(index, item) enumerate(labels)"
+            tal:define="glob sum([sum([value['data'].get(i, 0) for key, value in analytics.items()]) for i in labels])">
+            <div tal:omit-tag=""
+                 tal:define="color view.get_color(item);
+                             val sum([value['data'].get(item, 0) for key, value in analytics.items()])">
             {
                 label: "${item}",
                 fillColor: "${color['color']['background']}",
                 color: "${color['color']['background']}",
                 highlight: "${color['color']['hover']}",
-                value: ${sum([value['data'].get(item, 0) for key, value in analytics.items()])}
+                value: ${(val*100/glob) if glob else 0}
             },
             </div>
        </div>
 
     ];
-    var newcanvas = get_new_canvas("canvas");
-    $('#canvas').replaceWith(newcanvas)
-    var ctx = document.getElementById("canvas").getContext("2d");
+    var newcanvas = get_new_canvas("${barid}");
+    $('#${barid}').replaceWith(newcanvas)
+    var ctx = document.getElementById("${barid}").getContext("2d");
 
     ctx.clearRect(0, 0, 1500, 1500);
     var bar = new Chart(ctx).Bar(barChartData, {
@@ -55,17 +53,18 @@
                 }
             }
         );
-        var newcanvas = get_new_canvas("canvasdoughnut");
-        $('#canvasdoughnut').replaceWith(newcanvas)
-        var ctxdoughnut = document.getElementById("canvasdoughnut").getContext("2d");
+        var newcanvas = get_new_canvas("${doughnutid}");
+        $('#${doughnutid}').replaceWith(newcanvas)
+        var ctxdoughnut = document.getElementById("${doughnutid}").getContext("2d");
         ctxdoughnut.clearRect(0, 0, 1500, 1500);
         var doughnut = new Chart(ctxdoughnut).Doughnut(doughnutData, {
             responsive: true,
+            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> %",
             generateLegend: true,
         });
         var barlegend = bar.generateLegend();
-        $('#barlegend').html(barlegend)
         var doughnutlegend = doughnut.generateLegend();
-        $('#doughnutlegend').html(doughnutlegend)
+        $('.analytics-${id}-container #barlegend').html(barlegend)
+        $('.analytics-${id}-container #doughnutlegend').html(doughnutlegend)
 
 </script>

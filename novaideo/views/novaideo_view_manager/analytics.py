@@ -6,30 +6,40 @@ import deform
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
+from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
 from dace.processinstance.core import Behavior
 from pontus.schema import Schema
 from pontus.widget import (
     SequenceWidget, SimpleMappingWidget,
-    CheckboxChoiceWidget, Select2Widget, FileWidget)
+    RadioChoiceWidget, Select2Widget, FileWidget)
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 
+from novaideo.content.processes.novaideo_view_manager.behaviors import (
+    SeeAnalytics)
 from novaideo.utilities.analytics_utility import hover_color
-from novaideo.content.processes import FLATTENED_STATES_MEMBER_MAPPING
+from novaideo.content.processes import get_content_types_states
 from novaideo import core, _
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.views.filter import get_contents_by_keywords
+from novaideo.views.filter import (
+    get_contents_by_keywords, get_contents_by_states)
 
+
+DEFAULT_CONTENT_TYPES = ['idea', 'proposal']
+
+
+
+#****************************** Content by keywords ***********************************
 
 class ContentsByKeywords(BasicView):
     title = _('Contents by keywords')
-    name = 'idea_by_keywords'
+    name = 'content_by_keywords'
     # validators = [Search.get_validator()]
-    template = 'novaideo:views/novaideo_view_manager/templates/idea_by_keywords.pt'
-    viewid = 'idea_by_keywords'
+    template = 'novaideo:views/novaideo_view_manager/templates/content_by_keywords.pt'
+    viewid = 'content_by_keywords'
 
     def update(self):
         result = {}
@@ -41,19 +51,32 @@ class ContentsByKeywords(BasicView):
 
 @colander.deferred
 def states_choices(node, kw):
-    values = [(k, FLATTENED_STATES_MEMBER_MAPPING[k])
-              for k in sorted(FLATTENED_STATES_MEMBER_MAPPING.keys())]
+    request = node.bindings['request']
+    localizer = request.localizer
+    states_mapping = get_content_types_states(DEFAULT_CONTENT_TYPES, True)
+    values = [(k, ', '.join([localizer.translate(st)
+                       for st in states_mapping[k]]))
+              for k in sorted(states_mapping.keys())]
 
     return Select2Widget(values=values, multiple=True)
 
 
 @colander.deferred
 def content_types_choices(node, kw):
-    content_to_examine = ['idea', 'proposal']
+    content_to_examine = DEFAULT_CONTENT_TYPES
     values = [(key, getattr(c, 'type_title', c.__class__.__name__))
               for key, c in list(core.SEARCHABLE_CONTENTS.items())
               if key in content_to_examine]
     return Select2Widget(values=values, multiple=True)
+
+
+@colander.deferred
+def keywords_choice(node, kw):
+    context = node.bindings['context']
+    values = [(i, i) for i in sorted(context.keywords)]
+    return Select2Widget(values=values,
+                         create=False,
+                         multiple=True)
 
 
 class ContentsByKeywordsSchema(Schema):
@@ -63,7 +86,8 @@ class ContentsByKeywordsSchema(Schema):
         widget=content_types_choices,
         title=_('Types'),
         description=_('You can select the content types to be displayed.'),
-        missing=[]
+        default=DEFAULT_CONTENT_TYPES,
+        missing=DEFAULT_CONTENT_TYPES
     )
 
     states = colander.SchemaNode(
@@ -74,6 +98,14 @@ class ContentsByKeywordsSchema(Schema):
         default=[],
         missing=[]
     )
+
+    keywords = colander.SchemaNode(
+        colander.Set(),
+        widget=keywords_choice,
+        title=_('Keywords'),
+        description=_("You can select the keywords of the contents to be displayed."),
+        missing=[]
+        )
 
 
 class Send(Behavior):
@@ -93,11 +125,12 @@ class ContentsByKeywordsForm(FormView):
     title = _('Contents by keywords')
     schema = ContentsByKeywordsSchema()
     behaviors = [Send]
-    formid = 'idea_by_keywords_form'
-    name = 'idea_by_keywords_form'
+    formid = 'content_by_keywords_form'
+    name = 'content_by_keywords_form'
 
     def before_update(self):
-        formwidget = deform.widget.FormWidget(css_class='idea-by-keywords')
+        formwidget = deform.widget.FormWidget(
+            css_class='content-by-keywords filter-form well')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         formwidget.ajax_url = self.request.resource_url(
             self.context, '@@analyticsapi', query={'op': 'contents_by_keywords'})
@@ -106,9 +139,73 @@ class ContentsByKeywordsForm(FormView):
 
 class ContentsByKeywordsView(MultipleView):
     title = _('Contents by keywords')
-    name = 'idea_by_keywords_view'
+    name = 'content_by_keywords_view'
     template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
     views = (ContentsByKeywordsForm, ContentsByKeywords)
+
+
+#****************************** Content by states ***********************************
+
+class ContentsByStates(BasicView):
+    title = _('Contents by states')
+    name = 'content_by_keywords'
+    # validators = [Search.get_validator()]
+    template = 'novaideo:views/novaideo_view_manager/templates/content_by_states.pt'
+    viewid = 'content_by_states'
+
+    def update(self):
+        result = {}
+        body = self.content(args={}, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        return result
+
+
+@colander.deferred
+def content_type_choices(node, kw):
+    content_to_examine = DEFAULT_CONTENT_TYPES
+    values = [(key, getattr(c, 'type_title', c.__class__.__name__))
+              for key, c in list(core.SEARCHABLE_CONTENTS.items())
+              if key in content_to_examine]
+    return Select2Widget(values=values)
+
+
+class ContentsByStatesSchema(ContentsByKeywordsSchema):
+
+    content_types = colander.SchemaNode(
+        colander.String(),
+        widget=content_type_choices,
+        title=_('Type'),
+        description=_('You can select the content type to be displayed.'),
+        default='proposal',
+        missing='proposal'
+    )
+
+
+class ContentsByStatesForm(FormView):
+    title = _('Contents by states')
+    schema = ContentsByStatesSchema()
+    behaviors = [Send]
+    formid = 'content_by_states_form'
+    name = 'content_by_states_form'
+
+    def before_update(self):
+        formwidget = deform.widget.FormWidget(
+            css_class='content-by-states filter-form well')
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
+        formwidget.ajax_url = self.request.resource_url(
+            self.context, '@@analyticsapi', query={'op': 'contents_by_states'})
+        self.schema.widget = formwidget
+
+
+class ContentsByStatesView(MultipleView):
+    title = _('Contents by states')
+    name = 'content_by_states_view'
+    template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
+    views = (ContentsByStatesForm, ContentsByStates)
+
+
+#****************************** Content by states ***********************************
 
 
 @view_config(
@@ -119,11 +216,15 @@ class ContentsByKeywordsView(MultipleView):
 class AnalyticsView(MultipleView):
     title = _('Analytics')
     name = 'analytics'
-    template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
-    views = (ContentsByKeywordsView, )
+    validators = [SeeAnalytics.get_validator()]
+    views = (ContentsByStatesView, ContentsByKeywordsView)
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/chartjs/Chart.js',
                                  'novaideo:static/js/analytics.js']}
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {SeeAnalytics: AnalyticsView})
 
 
 @view_config(name='analyticsapi',
@@ -145,10 +246,11 @@ class AnalyticsAPIJsonView(BasicView):
 
     def get_color(self, key, index=1, is_hover=False):
         root = self.request.root
-        return root.keywords_mapping.get(key)
+        return root.get_color(key)
 
     def contents_by_keywords(self):
         states = self.params('states')
+        keywords = self.params('keywords')
         types = self.params('content_types')
         results = {}
         user = get_current()
@@ -163,18 +265,88 @@ class AnalyticsAPIJsonView(BasicView):
         elif not isinstance(states, (list, tuple)):
             states = [states]
 
+        if keywords is None:
+            keywords = []
+        elif not isinstance(keywords, (list, tuple)):
+            keywords = [keywords]
+
         for type_ in types:
             title = getattr(
                 core.SEARCHABLE_CONTENTS.get(type_), 'type_title', type_)
+            filter_ = {'metadata_filter': {
+                'content_types': [type_],
+                'states': states,
+                'keywords': keywords
+            }}
             results[title] = {
                 'data': get_contents_by_keywords(
-                    [type_], states, user, root),
+                    filter_, user, root),
+                'color': self.color_mapping.get(type_)
+                }
+        labels = [list(v['data'].keys()) for v in results.values()]
+        labels = sorted(list(set([item for sublist in labels
+                                  for item in sublist
+                                  if not keywords or item in keywords])))
+        values = {'analytics': results,
+                  'labels': labels,
+                  'view': self,
+                  'id': 'keywords'}
+        body = self.content(
+            args=values, template=self.analytics_template)['body']
+        return {'body': body}
+
+    def contents_by_states(self):
+        states = self.params('states')
+        keywords = self.params('keywords')
+        types = self.params('content_types')
+        results = {}
+        user = get_current()
+        root = self.request.root
+        if types is None:
+            types = []
+        elif not isinstance(types, (list, tuple)):
+            types = [types]
+
+        if states is None:
+            states = []
+        elif not isinstance(states, (list, tuple)):
+            states = [states]
+
+        if keywords is None:
+            keywords = []
+        elif not isinstance(keywords, (list, tuple)):
+            keywords = [keywords]
+
+        flattened_states = get_content_types_states(types, True)
+        if not states:
+            states = list(flattened_states.keys())
+
+        for type_ in types:
+            title = getattr(
+                core.SEARCHABLE_CONTENTS.get(type_), 'type_title', type_)
+            filter_ = {'metadata_filter': {
+                'content_types': [type_],
+                'states': states,
+                'keywords': keywords
+            }}
+            results[title] = {
+                'data': get_contents_by_states(
+                    filter_, user, root, self.request),
                 'color': self.color_mapping.get(type_)
                 }
 
+        localizer = self.request.localizer
+        states = [flattened_states[s] for s in states]
+        states = list(set([localizer.translate(item) for sublist in states
+                           for item in sublist]))
+        labels = [list(v['data'].keys()) for v in results.values()]
+        labels = sorted(list(set([item for sublist in labels
+                                  for item in sublist
+                                  if not states or item in states])))
         values = {'analytics': results,
-                  'labels': self.request.root.keywords,
-                  'view': self}
+                  'labels': labels,
+                  'view': self,
+                  'id': 'states'}
         body = self.content(
             args=values, template=self.analytics_template)['body']
         return {'body': body}

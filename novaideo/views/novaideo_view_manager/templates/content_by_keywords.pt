@@ -1,0 +1,15 @@
+<div class="container-fluid analytics-keywords-container">
+  <div class="row clearfix">
+    <div class="col-md-6">
+        <div class="canvas-title hide-bloc" id="bartitle">Total des contenus classé par types par mots clés</div>
+        <canvas id="canvaskeywords" ></canvas>
+        <div class="legend" id="barlegend"></div>
+    </div>
+    <div class="col-md-6">
+        <div class="canvas-title hide-bloc" id="doughnuttitle">Pourcentage du cumul par mots clés</div>
+        <canvas id="canvasdoughnutkeywords"></canvas>
+        <div class="legend" id="doughnutlegend"></div>
+    </div>
+ </div>
+ <div id="chart-script"></div>
+</div>

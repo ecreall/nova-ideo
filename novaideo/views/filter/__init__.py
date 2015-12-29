@@ -31,7 +31,9 @@ from pontus.form import FormView
 
 from novaideo import _
 from novaideo import core
-from novaideo.content.processes import FLATTENED_STATES_MEMBER_MAPPING
+from novaideo.content.processes import (
+    FLATTENED_STATES_MEMBER_MAPPING,
+    get_content_types_states)
 from novaideo.utilities.util import (
     normalize_title)
 from novaideo.views.filter.util import (
@@ -396,7 +398,8 @@ def states_analyzer(node, source, validated, validated_value):
 
     result = [(state_id, len(intersection(oids, object_ids)))
               for state_id, oids in index._fwd_index.items()]
-    result = dict([(k, v) for k, v in result if v != 0 and k in FLATTENED_STATES_MEMBER_MAPPING])
+    result = dict([(k, v) for k, v in result
+                   if v != 0 and k in FLATTENED_STATES_MEMBER_MAPPING])
     return {'states': result}
 
 
@@ -485,8 +488,11 @@ def metadata_filter_repr(value, request, template_type='default'):
     tree = json.dumps(dict(tree))
     value_cp['tree'] = tree
     states = value_cp['states']
-    states = [FLATTENED_STATES_MEMBER_MAPPING[s] for s in states
-             if s in FLATTENED_STATES_MEMBER_MAPPING]
+    localizer = request.localizer
+    states = [', '.join([localizer.translate(st)
+                       for st in FLATTENED_STATES_MEMBER_MAPPING[s]])
+              for s in states
+              if s in FLATTENED_STATES_MEMBER_MAPPING]
     value_cp['states'] = states
     value_cp['title'] = _('Metadata filter')
     return default_repr(value_cp, request, template)
@@ -641,11 +647,13 @@ def states_choices(node, kw):
     values = []
     if 'states' in analyzed_data:
         values = [(state, '{} ({})'.format(
-            localizer.translate(FLATTENED_STATES_MEMBER_MAPPING[state]),
+            ', '.join([localizer.translate(s)
+                       for s in FLATTENED_STATES_MEMBER_MAPPING[state]]),
             str(analyzed_data['states'].get(state, 0))))
             for state in sorted(analyzed_data['states'].keys())]
     else:
-        values = [(k, FLATTENED_STATES_MEMBER_MAPPING[k])
+        values = [(k, ', '.join([localizer.translate(s)
+                       for s in FLATTENED_STATES_MEMBER_MAPPING[k]]))
                   for k in sorted(FLATTENED_STATES_MEMBER_MAPPING.keys())]
 
     return Select2Widget(values=values, multiple=True)
@@ -1183,13 +1191,12 @@ def get_users_by_preferences(content):
         add_query=query)
 
 
-def get_contents_by_keywords(types_, states, user, root):
-    keywords = root.keywords
+def get_contents_by_keywords(filter_, user, root):
+    keywords = filter_.get('keywords', root.keywords)
     keywords_mapping = dict([(k.lower(), k) for k in keywords])
     objects = find_entities(
         user=user,
-        metadata_filter={'content_types': types_,
-                         'states': states})
+        **filter_)
 
     index = find_catalog('novaideo')['object_keywords']
     intersection = index.family.IF.intersection
@@ -1199,18 +1206,18 @@ def get_contents_by_keywords(types_, states, user, root):
 
     result = [(keyword_id, len(intersection(oids, object_ids)))
               for keyword_id, oids in index._fwd_index.items()]
-    result = dict([(keywords_mapping.get(k, k), v) for k, v in result])
+    result = dict([(keywords_mapping.get(k, k), v)
+                   for k, v in result if v != 0])
     return result
 
 
-def get_contents_by_states(types_, keywords, user, root, states):
-    keywords = root.keywords
+def get_contents_by_states(filter_, user, root, request):
     objects = find_entities(
         user=user,
-        metadata_filter={'content_types': types_,
-                         'keywords': keywords,
-                         'states': states})
-
+        **filter_)
+    content_types = filter_.get('metadata_filter').get('content_types')
+    states = filter_.get('metadata_filter').get('states')
+    flattened_states = get_content_types_states(content_types, True)
     index = find_catalog('dace')['object_states']
     intersection = index.family.IF.intersection
     object_ids = getattr(objects, 'ids', objects)
@@ -1219,5 +1226,9 @@ def get_contents_by_states(types_, keywords, user, root, states):
 
     result = [(state_id, len(intersection(oids, object_ids)))
               for state_id, oids in index._fwd_index.items()]
-    result = dict([(k, v) for k, v in result if states and k in states])
+    localizer = request.localizer
+    result = dict([(', '.join([localizer.translate(s)
+                               for s in flattened_states[k]]), v)
+                   for k, v in result if v != 0 and
+                   k in list(flattened_states.keys())])
     return result

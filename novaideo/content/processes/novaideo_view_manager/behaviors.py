@@ -340,5 +340,27 @@ class SeeUsers(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
+def seeanalytics_roles_validation(process, context):
+    return has_role(role=('Examiner', ))
+
+
+def seeanalytics_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+class SeeAnalytics(InfiniteCardinality):
+    style_descriminator = 'admin-action'
+    style_picto = 'glyphicon glyphicon-equalizer'
+    style_order = -1
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seeanalytics_roles_validation
+    processsecurity_validation = seeanalytics_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
 
 #TODO behaviors
