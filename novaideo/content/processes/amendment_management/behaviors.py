@@ -90,7 +90,7 @@ def duplicate_roles_validation(process, context):
 
 
 def duplicate_processsecurity_validation(process, context):
-    return ('published' in context.state or \
+    return ('submitted' in context.state or \
             ('draft' in context.state and \
              has_role(role=('Owner', context)))) and \
            global_user_processsecurity(process, context)
@@ -396,7 +396,7 @@ class SubmitAmendment(InfiniteCardinality):
         amendment = Amendment()
         amendment.set_data(data)
         context.proposal.addtoproperty('amendments', amendment)
-        amendment.state.append('published')
+        amendment.state.append('submitted')
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
         explanations = sorted(group['explanations'], key=lambda e: e['oid'])
@@ -440,7 +440,7 @@ class SubmitAmendment(InfiniteCardinality):
             data.pop('description')
             data.pop('text')
             context.set_data(data)
-            context.state.append('published')
+            context.state.append('submitted')
             explanations, text_diff = get_text_amendment_diff_submitted(
                 context, request)
             context.explanations = PersistentDict(explanations)
@@ -475,7 +475,7 @@ def comm_processsecurity_validation(process, context):
 
 
 def comm_state_validation(process, context):
-    return 'published' in context.state
+    return 'submitted' in context.state
 
 
 class CommentAmendment(CommentIdea):
@@ -495,7 +495,7 @@ def present_processsecurity_validation(process, context):
 
 
 def present_state_validation(process, context):
-    return 'published' in context.state
+    return 'submitted' in context.state
 
 
 class PresentAmendment(PresentIdea):
@@ -507,7 +507,7 @@ class PresentAmendment(PresentIdea):
 
 def associate_processsecurity_validation(process, context):
     return (has_role(role=('Owner', context)) or \
-            ('published' in context.state and has_role(role=('Member',)))) and \
+            ('submitted' in context.state and has_role(role=('Member',)))) and \
            global_user_processsecurity(process, context)
 
 
@@ -518,7 +518,7 @@ class Associate(AssociateIdea):
 
 def get_access_key(obj):
     result = []
-    if 'published' in obj.state:
+    if 'submitted' in obj.state:
         result = serialize_roles(
             (('Participant', obj.proposal), 'Admin', 'Moderator'))
     elif 'draft' in obj.state:
@@ -529,7 +529,7 @@ def get_access_key(obj):
 
 
 def seeamendment_processsecurity_validation(process, context):
-    return ('published' in context.state and \
+    return ('submitted' in context.state and \
             has_any_roles(roles=(('Participant', context.proposal), 'Moderator'))) or \
            ('draft' in context.state and has_role(role=('Owner', context))) or \
            has_any_roles(roles=('Admin',))

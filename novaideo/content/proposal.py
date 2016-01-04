@@ -214,7 +214,7 @@ class Proposal(Commentable,
 
     @property
     def is_published(self):
-        return 'draft' not in self.state
+        return 'published' in self.state
 
     def init_published_at(self):
         setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))

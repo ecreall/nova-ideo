@@ -263,7 +263,7 @@ class SearchResultView(BasicView):
             executed = getattr(formviewinstance, 'executed', False)
 
         filter_form = None
-        if not executed:
+        if not executed or self.params('filter_result'):
             filter_form, filter_data = self._add_filter(user)
             default_content = [key[0] for key in
                                get_default_searchable_content(self.request)]

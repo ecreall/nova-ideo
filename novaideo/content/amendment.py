@@ -270,6 +270,10 @@ class Amendment(Commentable,
         self.set_data(kwargs)
 
     @property
+    def is_published(self):
+        return 'submitted' in self.state
+
+    @property
     def working_group(self):
         return self.proposal.working_group
 

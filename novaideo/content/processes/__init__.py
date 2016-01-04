@@ -19,7 +19,7 @@ STATES_PARTICIPANT_MAPPING = {
     },
     'amendment': {
         'draft': _('In preparation'),
-	    'published': _('Submitted'),
+	    'submitted': _('Submitted'),
 	    'explanation': _('Explanation'),
         'archived': _('Archived')
     },
@@ -75,7 +75,7 @@ STATES_MEMBER_MAPPING = {
     },
     'amendment': {
         'draft': _('In preparation'),
-	    'published': _('Submitted'),
+	    'submitted': _('Submitted'),
 	    'explanation': _('Explanation'),
         'archived': _('Archived')
     },

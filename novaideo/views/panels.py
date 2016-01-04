@@ -356,7 +356,7 @@ class StepsPanel(object):
                 result['step2_message'] = self._get_step2_informations(context,
                                                                    self.request)
             elif 'proposal' in self.request.content_to_support and \
-                 'published' in context.state:
+                 'submitted_support' in context.state:
                 result['current_step'] = 4
                 result['step4_message'] = self._get_step4_informations(context,
                                                                    self.request)
@@ -364,7 +364,7 @@ class StepsPanel(object):
                  'examined' in context.state:
                 result['current_step'] = 5
                 result['step5_message'] = self._get_step5_informations(context,
-                                                                   self.request)                
+                                                                   self.request)
             elif 'archived' not in context.state:
                 result['current_step'] = 3
                 result['step3_message'] = self._get_step3_informations(context,
