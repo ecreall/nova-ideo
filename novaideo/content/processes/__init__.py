@@ -28,7 +28,8 @@ STATES_PARTICIPANT_MAPPING = {
 	    'processed': _('Processed'),
     },
     'proposal': {
-        'published': _('Submitted'),
+        'submitted_support': _('Submitted for support'),
+        'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
 	    'votes for publishing': _('Votes for publishing'),
 	    'votes for amendments': _('Votes for amendments'),
@@ -42,7 +43,7 @@ STATES_PARTICIPANT_MAPPING = {
     },
     'idea': {
 	    'to work': _('To work'),
-	    'submited': _('Submitted for moderation'),
+	    'submitted': _('Submitted for moderation'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
 	    'favorable': _('Favorable'),
@@ -83,7 +84,8 @@ STATES_MEMBER_MAPPING = {
 	    'processed': _('Processed'),
     },
     'proposal': {
-        'published': _('Submitted'),
+        'submitted_support': _('Submitted for support'),
+        'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
 	    'votes for publishing': _('Votes for publishing'),
 	    'votes for amendments': _('Votes for amendments'),
@@ -97,7 +99,7 @@ STATES_MEMBER_MAPPING = {
     },
     'idea': {
 	    'to work': _('To work'),
-	    'submited': _('Submitted for moderation'),
+	    'submitted': _('Submitted for moderation'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
 	    'favorable': _('Favorable'),
@@ -122,6 +124,41 @@ STATES_MEMBER_MAPPING = {
 }
 
 
+def get_flattened_mapping(mapping):
+    result = [list(s.items()) for s in mapping.values()]
+    result = list(set([item for sublist in result for item in sublist]))
+    result = MultiDict(result).dict_of_lists()
+    return result
+
+
+FLATTENED_STATES_MEMBER_MAPPING = get_flattened_mapping(
+    STATES_MEMBER_MAPPING)
+
+
+FLATTENED_STATES_PARTICIPANT_MAPPING = get_flattened_mapping(
+    STATES_PARTICIPANT_MAPPING)
+
+
+def get_content_types_states(content_types, flatten=False):
+    results = {c: dict(STATES_PARTICIPANT_MAPPING.get(
+        c, STATES_PARTICIPANT_MAPPING.get('default')))
+        for c in content_types}
+
+    if flatten:
+        return get_flattened_mapping(results)
+
+    return results
+
+
+def get_states_mapping(user, context, state):
+    """get the state of the context"""
+    registry = get_current_registry()
+    content_type = registry.content.typeof(context)
+    result = STATES_PARTICIPANT_MAPPING.get(
+        content_type, STATES_PARTICIPANT_MAPPING.get('default'))
+    return result.get(state, None)
+
+
 # STATES_PARTICIPANT_MAPPING = {
 #          #Commun
 # 	    'draft': {'amendment':_('In preparation'),
@@ -135,7 +172,7 @@ STATES_MEMBER_MAPPING = {
 # 	    'explanation': _('Explanation'),
 # 	    #Ideas
 # 	    'to work': _('To work'),
-# 	    'submited': _('Submitted for moderation'),
+# 	    'submitted': _('Submitted for moderation'),
 # 	    #Invitation
 # 	    'pending': _('Pending'),
 # 	    'accepted': _('Accepted'),
@@ -175,7 +212,7 @@ STATES_MEMBER_MAPPING = {
 # 	    'explanation': _('Explanation'),
 # 	    #Ideas
 # 	    'to work': _('To work'),
-# 	    'submited': _('Submitted for moderation'),
+# 	    'submitted': _('Submitted for moderation'),
 # 	    #Invitation
 # 	    'pending': _('Pending'),
 # 	    'accepted': _('Accepted'),
@@ -199,38 +236,3 @@ STATES_MEMBER_MAPPING = {
 # 	    #Working group
 # 	    'closed': _('Closed')
 #          }
-
-
-def get_flattened_mapping(mapping):
-    result = [list(s.items()) for s in mapping.values()]
-    result = list(set([item for sublist in result for item in sublist]))
-    result = MultiDict(result).dict_of_lists()
-    return result
-
-
-FLATTENED_STATES_MEMBER_MAPPING = get_flattened_mapping(
-    STATES_MEMBER_MAPPING)
-
-
-FLATTENED_STATES_PARTICIPANT_MAPPING = get_flattened_mapping(
-    STATES_PARTICIPANT_MAPPING)
-
-
-def get_content_types_states(content_types, flatten=False):
-    results = {c: dict(STATES_PARTICIPANT_MAPPING.get(
-        c, STATES_PARTICIPANT_MAPPING.get('default')))
-        for c in content_types}
-
-    if flatten:
-        return get_flattened_mapping(results)
-
-    return results
-
-
-def get_states_mapping(user, context, state):
-    """get the state of the context"""
-    registry = get_current_registry()
-    content_type = registry.content.typeof(context)
-    result = STATES_PARTICIPANT_MAPPING.get(
-        content_type, STATES_PARTICIPANT_MAPPING.get('default'))
-    return result.get(state, None)

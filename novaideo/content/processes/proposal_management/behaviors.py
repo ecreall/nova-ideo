@@ -502,10 +502,10 @@ class PublishProposal(InfiniteCardinality):
 
         first_vote_registration(user, working_group, appstruct)
         if participants_mini > 1:
-            context.state.append('open to a working group')
+            context.state = PersistentList(['open to a working group', 'published'])
             context.reindex()
         else:
-            context.state.append('amendable')
+            context.state = PersistentList(['amendable', 'published'])
             working_group.state = PersistentList(['active'])
             context.reindex()
             working_group.reindex()
@@ -672,7 +672,7 @@ def support_processsecurity_validation(process, context):
 
 
 def support_state_validation(process, context):
-    return 'published' in context.state
+    return 'submitted_support' in context.state
 
 
 class SupportProposal(InfiniteCardinality):
@@ -757,7 +757,7 @@ def opinion_processsecurity_validation(process, context):
 
 
 def opinion_state_validation(process, context):
-    return 'published' in context.state
+    return 'submitted_support' in context.state and 'examined' not in context.state
 
 
 class MakeOpinion(InfiniteCardinality):
@@ -774,9 +774,8 @@ class MakeOpinion(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         appstruct.pop('_csrf_token_')
         context.opinion = PersistentDict(appstruct)
-        context.state.remove('published')
-        context.state.append('examined')
-        context.state.append(context.opinion['opinion'])
+        context.state = PersistentList(
+            ['examined', context.opinion['opinion'], 'published'])
         context.init_examined_at()
         context.reindex()
         tokens = [t for t in context.tokens if not t.proposal]
@@ -1093,7 +1092,7 @@ class Resign(InfiniteCardinality):
         len_participants = len(participants)
         if len_participants < mode.participants_mini and \
            'open to a working group' not in context.state:
-            context.state = PersistentList(['open to a working group'])
+            context.state = PersistentList(['open to a working group', 'published'])
             wg.state = PersistentList(['deactivated'])
             wg.reindex()
             context.reindex()
@@ -1198,7 +1197,7 @@ class Participate(InfiniteCardinality):
                     working_group.first_decision = True
                     first_decision = True
 
-                context.state.append('amendable')
+                context.state = PersistentList(['amendable', 'published'])
                 working_group.reindex()
                 context.reindex()
 
@@ -1372,9 +1371,8 @@ class VotingPublication(ElementaryAction):
     state_validation = decision_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        state = context.state[0]
-        context.state.remove(state)
-        context.state.append('votes for publishing')
+        context.state.remove(context.state[0])
+        context.state.insert(0, 'votes for publishing')
         context.reindex()
         working_group = context.working_group
         if not getattr(working_group, 'first_vote', True):
@@ -1504,7 +1502,7 @@ class Work(ElementaryAction):
                 working_group.state.remove('closed')
                 working_group.reindex()
 
-        context.state.append('amendable')
+        context.state.insert(0, 'amendable')
         root = getSite()
         mail_template = root.get_mail_template('start_work')
         self._send_mails(context, request,
@@ -1547,7 +1545,7 @@ class SubmitProposal(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         wg = context.working_group
         context.state.remove('votes for publishing')
-        context.state.append('published')
+        context.state = PersistentList(['submitted_support', 'published'])
         wg.state = PersistentList(['archived'])
         members = wg.members
         url = request.resource_url(context, "@@index")

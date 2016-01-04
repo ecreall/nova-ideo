@@ -104,11 +104,11 @@
     min-height: 50px;
 }
 
-li {
+.nav-steps li {
     color: #404040;
 }
 
-li {
+.nav-steps li {
     line-height: 20px;
 }
 

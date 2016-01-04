@@ -188,6 +188,9 @@ class SearchView(FormView):
 
         content_types = self.params('content_types')
         text = self.params('text_to_search')
+        if content_types is not None or text is not None:
+            self.executed = True
+
         if text is None:
             text = ''
 
@@ -249,10 +252,11 @@ class SearchResultView(BasicView):
     def update(self):
         user = get_current()
         validated = getattr(self, 'validated', {})
+        not_validated = True if not validated else False
         posted = self.request.POST or self.request.GET or {}
         posted = posted.copy()
-        executed = True if validated else False
-        if not validated:
+        executed = not not_validated
+        if not_validated:
             formviewinstance = SearchView(self.context, self.request)
             formviewinstance.postedform = posted
             validated = formviewinstance.calculate_posted_filter()

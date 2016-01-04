@@ -1,8 +1,16 @@
 <script tal:define="barid 'canvas-bar-'+id;
-                    doughnutid 'canvas-doughnut-'+id">
-    <div tal:omit-tag="" tal:condition="'bar' in charts">
+                    doughnutid 'canvas-doughnut-'+id"
+        data-has_value="${has_value and 'true' or 'false'}">
+
+    <div tal:omit-tag="" tal:condition="not has_value">
+        $('.analytics-container .analytics-study-${id}').html(generate_analytics_alert())
+    </div>
+    <div tal:omit-tag="" tal:condition="has_value">
+        $('.analytics-container .analytics-study-${id}').html(generate_analytics_study({${','.join(["\"{key}\":{value}".format(key=key, value=value['len']) for key, value in analytics.items()])}}))
+    </div>
+    <div tal:omit-tag="" tal:condition="has_value and 'bar' in charts">
         var barChartData = {
-        labels: [${','.join(["\""+a+"\"" for a in labels])}],
+        labels: [${','.join(["\""+translation+"\"" for a, translation in labels.items()])}],
         datasets: [
             <div tal:omit-tag="" tal:repeat="(item, value) analytics.items()">
                 {
@@ -38,17 +46,18 @@
                 }
             );
         var barlegend = bar.generateLegend();
-        $('.analytics-container #legend-bar-${id}').html(barlegend)
+        $('.analytics-container #legend-bar-${id}').html(barlegend);
+        $('.analytics-container .chart-container-bar-${id}').addClass("object-well well")
     </div>
-    <div tal:omit-tag="" tal:condition="'doughnut' in charts">
+    <div tal:omit-tag="" tal:condition="has_value and 'doughnut' in charts">
         var doughnutData = [
-            <div tal:omit-tag="" tal:repeat="(index, item) enumerate(labels)"
+            <div tal:omit-tag="" tal:repeat="(item, translation) labels.items()"
                 tal:define="glob sum([sum([value['data'].get(i, 0) for key, value in analytics.items()]) for i in labels])">
                 <div tal:omit-tag=""
                      tal:define="color view.get_color(item);
                                  val sum([value['data'].get(item, 0) for key, value in analytics.items()])">
                 {
-                    label: "${item}",
+                    label: "${translation}",
                     fillColor: "${color['color']['background']}",
                     color: "${color['color']['background']}",
                     highlight: "${color['color']['hover']}",
@@ -69,5 +78,6 @@
         });
         var doughnutlegend = doughnut.generateLegend();
         $('.analytics-container #legend-doughnut-${id}').html(doughnutlegend)
+        $('.analytics-container .chart-container-doughnut-${id}').addClass("object-well well")
     </div>
 </script>

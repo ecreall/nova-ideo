@@ -270,7 +270,7 @@ class SubmitIdea(InfiniteCardinality):
     state_validation = submit_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state = PersistentList(['submited'])
+        context.state = PersistentList(['submitted'])
         context.reindex()
         return {}
 
@@ -291,7 +291,7 @@ def decision_processsecurity_validation(process, context):
 
 
 def decision_state_validation(process, context):
-    return 'submited' in context.state
+    return 'submitted' in context.state
 
 
 class ArchiveIdea(InfiniteCardinality):
@@ -409,7 +409,7 @@ def pub_processsecurity_validation(process, context):
 
 def pub_state_validation(process, context):
     return 'to work' in context.state or \
-           'submited' in context.state
+           'submitted' in context.state
 
 
 class PublishIdea(InfiniteCardinality):

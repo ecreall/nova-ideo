@@ -1,0 +1,8 @@
+<div class="alert alert-info">
+    Ces graphiques sont produit à partir d'un échantiont présentant:
+    <ul>
+    	<li tal:repeat="(item, value) results.items()">
+         ${value['len']} contenus de type ${item}
+    	</li>
+    </ul>
+</div>

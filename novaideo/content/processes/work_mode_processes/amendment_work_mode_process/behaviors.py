@@ -381,7 +381,7 @@ class AmendmentsResult(ElementaryAction):
             root.addtoproperty('alerts', alert)
             alert.init_alert(members, [copy_of_proposal])
         else:
-            context.state = PersistentList(['amendable'])
+            context.state = PersistentList(['amendable', 'published'])
             alert = WorkingGroupAlert()
             root.addtoproperty('alerts', alert)
             alert.init_alert(members, [context])

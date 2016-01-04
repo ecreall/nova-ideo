@@ -1,0 +1,16 @@
+<div tal:omit-tag="" tal:define=" item subitem|nothing; hasparent (subitem['view'].parent is not None)">
+  <div class="container-fluid">
+    <div class="row clearfix">
+      <div tal:omit-tag="" tal:condition="item">
+        <div tal:omit-tag="" tal:define=" items subitem['items'];
+                              itemslen len(items)|0">
+          <div tal:repeat="(index, item) enumerate(items)" >
+            <div class="${index==0 and 'col-md-4' or 'col-md-8'}">
+              <div tal:replace="item['view'].render_item(item, coordinates, subitem['view'])" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

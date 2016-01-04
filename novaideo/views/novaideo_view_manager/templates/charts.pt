@@ -1,6 +1,10 @@
 <div class="container-fluid analytics-container">
+  <div style="width: 100%; text-align: center;">
+     <img class="loading-indicator hide-bloc" src="${request.static_url('novaideo:static/images/progress.gif')}"/>
+  </div>
+  <div class="analytics-study-${id}"></div>
   <div class="row clearfix" tal:repeat="row_index range(row_len)">
-    <div class="col-md-6"
+    <div class="col-md-12 chart-container ${'chart-container-'+chart['id']+'-'+id}"
          tal:repeat="chart charts[(row_index*2): (row_index*2)+2]">
         <div class="canvas-title hide-bloc"
              id="title-${chart['id']+'-'+id}">${chart['title']}

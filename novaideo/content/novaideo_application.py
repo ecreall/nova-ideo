@@ -67,6 +67,17 @@ DEFAULT_IDEA_INTENTIONS = [_('Improvement'), _('Humor'), _('Irony')]
 
 DEFAULT_AMENDMENT_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
 
+DEFAULT_COLORS = {
+    'idea': {
+        'background': '#adcce7',
+        'hover': hover_color('#adcce7')
+    },
+    'proposal': {
+        'background': '#959595',
+        'hover': hover_color('#959595')
+    }
+}
+
 
 def context_is_a_root(context, request):
     return request.registry.content.istype(context, 'Root')
@@ -304,6 +315,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.reset_default_values()
         self.deadlines = PersistentList([datetime.datetime.now(tz=pytz.UTC)])
         self.work_modes = list(WORK_MODES.keys())
+        self.colors_mapping = PersistentDict(DEFAULT_COLORS)
 
     def reset_default_values(self):
         self.participants_mini = 3
@@ -370,28 +382,9 @@ class NovaIdeoApplication(VisualisableElement, Application):
         return modes[0]
 
     def init_keywords_mapping(self):
-        if not hasattr(self, 'keywords_mapping'):
-            self.keywords_mapping = PersistentDict()
-
-        for key in self.keywords_mapping:
-            if key not in self.keywords:
-                self.keywords_mapping.pop(key)
-
         new_keywords = [k for k in self.keywords if k
-                        not in self.keywords_mapping.keys()]
-        for index, keyword in enumerate(new_keywords):
-            background = random_color()
-            hover = hover_color(background)
-            self.keywords_mapping[keyword] = {'color': {
-                'background': background,
-                'hover': hover
-            }}
-
-    def reset_keywords_mapping(self):
-        if not hasattr(self, 'keywords_mapping'):
-            self.keywords_mapping = PersistentDict()
-
-        for index, keyword in enumerate(self.keywords):
+                        not in self.keywords_mapping]
+        for keyword in new_keywords:
             background = random_color()
             hover = hover_color(background)
             self.keywords_mapping[keyword] = {'color': {
@@ -400,9 +393,6 @@ class NovaIdeoApplication(VisualisableElement, Application):
             }}
 
     def add_colors_mapping(self, keys):
-        if not hasattr(self, 'colors_mapping'):
-            self.colors_mapping = PersistentDict()
-
         new_keywords = [k for k in keys
                         if k not in self.colors_mapping]
         for keyword in new_keywords:
@@ -414,9 +404,6 @@ class NovaIdeoApplication(VisualisableElement, Application):
             }}
 
     def get_color(self, key):
-        if key in getattr(self, 'keywords_mapping', {}):
-            return self.keywords_mapping[key]
-
         if key in getattr(self, 'colors_mapping', {}):
             return self.colors_mapping[key]
 

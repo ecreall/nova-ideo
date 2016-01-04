@@ -23,6 +23,9 @@ _ = TranslationStringFactory('novaideo')
 DEFAULT_SESSION_TIMEOUT = 25200
 
 
+ANALYTICS_DEFAUT_CONTENTS = ['idea', 'proposal']
+
+
 ACCESS_ACTIONS = {}
 
 
@@ -60,6 +63,13 @@ def content_to_support(request):
     return getattr(request.root, 'content_to_support', [])
 
 
+def analytics_default_content_types(request):
+    if request.is_idea_box:
+        return ['idea']
+    else:
+        return list(ANALYTICS_DEFAUT_CONTENTS)
+
+
 def searchable_contents(request):
     from novaideo.core import SEARCHABLE_CONTENTS
     if getattr(request, 'is_idea_box', False):
@@ -79,6 +89,7 @@ def main(global_config, **settings):
     config.add_request_method(content_to_support, reify=True)
     config.add_request_method(is_idea_box, reify=True)
     config.add_request_method(searchable_contents, reify=True)
+    config.add_request_method(analytics_default_content_types, reify=True)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

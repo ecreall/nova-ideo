@@ -1208,10 +1208,10 @@ def get_contents_by_keywords(filter_, user, root):
               for keyword_id, oids in index._fwd_index.items()]
     result = dict([(keywords_mapping.get(k, k), v)
                    for k, v in result if v != 0])
-    return result
+    return result, object_ids.__len__()
 
 
-def get_contents_by_states(filter_, user, root, request):
+def get_contents_by_states(filter_, user, root):
     objects = find_entities(
         user=user,
         **filter_)
@@ -1226,9 +1226,6 @@ def get_contents_by_states(filter_, user, root, request):
 
     result = [(state_id, len(intersection(oids, object_ids)))
               for state_id, oids in index._fwd_index.items()]
-    localizer = request.localizer
-    result = dict([(', '.join([localizer.translate(s)
-                               for s in flattened_states[k]]), v)
-                   for k, v in result if v != 0 and
+    result = dict([(k, v) for k, v in result if v != 0 and
                    k in list(flattened_states.keys())])
-    return result
+    return result, object_ids.__len__()

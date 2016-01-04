@@ -46,7 +46,7 @@ class SeeIdeasToModerateView(BasicView):
             filters = [
                 {'metadata_filter': {
                     'content_types': ['idea'],
-                    'states': ['submited']
+                    'states': ['submitted']
                 }}
             ]
             objects = find_entities(
@@ -69,7 +69,7 @@ class SeeIdeasToModerateView(BasicView):
         filters = [
             {'metadata_filter': {
                 'content_types': ['idea'],
-                'states': ['submited']
+                'states': ['submitted']
             }}
         ]
         args = {}

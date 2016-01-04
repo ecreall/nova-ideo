@@ -27,11 +27,11 @@ def homepage_connected_condition(context, user):
            not homepage_search(context, user)
 
 
-def idea_submited_owner(context, user):
+def idea_submitted_owner(context, user):
     return has_role(role=('Owner', context))
 
 
-def idea_submited_moderator(context, user):
+def idea_submitted_moderator(context, user):
     return has_role(role=('Moderator', ))
 
 
@@ -129,11 +129,11 @@ CONTEXTUAL_HELP_MESSAGES = {
 
 	(Proposal, 'proofreading', 'index'): [
 	   (proposal_proofreading_not_started, 'novaideo:views/templates/panels/'
-	   	      'contextual_help_messages/proposal_proofreading_not_started.pt', 1),
+	   	     'contextual_help_messages/proposal_proofreading_not_started.pt', 1),
 	   (proposal_proofreading_started_owner, 'novaideo:views/templates/panels/'
-	   	      'contextual_help_messages/proposal_proofreading_started_owner.pt', 1),
+	   	     'contextual_help_messages/proposal_proofreading_started_owner.pt', 1),
 	   (proposal_proofreading_started, 'novaideo:views/templates/panels/'
-	   	      'contextual_help_messages/proposal_proofreading_started.pt', 1)],
+	   	     'contextual_help_messages/proposal_proofreading_started.pt', 1)],
 
 	(Amendment, 'draft', 'index'): [
 	   (amendment_draft, 'novaideo:views/templates/panels/'
@@ -169,11 +169,11 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/idea_archived.pt', 1)],
 
-	(Idea, 'submited', 'index'): [
-	   (idea_submited_owner, 'novaideo:views/templates/panels/'
-	   	                    'contextual_help_messages/idea_submited_owner.pt', 1),
-	   (idea_submited_moderator, 'novaideo:views/templates/panels/'
-	   	                'contextual_help_messages/idea_submited_moderator.pt', 1)],
+	(Idea, 'submitted', 'index'): [
+	   (idea_submitted_owner, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/idea_submitted_owner.pt', 1),
+	   (idea_submitted_moderator, 'novaideo:views/templates/panels/'
+	   	                'contextual_help_messages/idea_submitted_moderator.pt', 1)],
 
 	(Idea, 'published', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
