@@ -369,7 +369,7 @@ class AnalyticsAPIJsonView(BasicView):
             contribution_filter = {'authors': [author]}
 
         localizer = self.request.localizer
-        has_value = types
+        has_value = False
         for type_ in types:
             title = getattr(
                 core.SEARCHABLE_CONTENTS.get(type_), 'type_title', type_)
@@ -383,7 +383,7 @@ class AnalyticsAPIJsonView(BasicView):
             }
             data = get_contents_by_keywords(
                 filter_, user, root)
-            has_value = has_value and data[1] > 0
+            has_value = has_value or data[1] > 0
             results[localizer.translate(title)] = {
                 'data': data[0],
                 'len': data[1],
@@ -432,7 +432,7 @@ class AnalyticsAPIJsonView(BasicView):
             states = list(flattened_states.keys())
 
         localizer = self.request.localizer
-        has_value = type_ is not None
+        has_value = False
         if type_ is not None:
             title = getattr(
                 core.SEARCHABLE_CONTENTS.get(type_), 'type_title', type_)
@@ -445,7 +445,7 @@ class AnalyticsAPIJsonView(BasicView):
                 'contribution_filter': contribution_filter}
             data = get_contents_by_states(
                 filter_, user, root)
-            has_value = has_value and data[1] > 0
+            has_value = has_value or data[1] > 0
             results[localizer.translate(title)] = {
                 'data': data[0],
                 'len': data[1],
