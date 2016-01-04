@@ -56,7 +56,7 @@ def valid_correction(process, correction, current_version, user):
     root.addtoproperty('proposals', current_version, moving=current_version)
     current_version.setproperty('version', proposal)
     root.rename(current_version.__name__, contextname)
-    current_version.state = PersistentList(['amendable'])
+    current_version.state = PersistentList(['amendable', 'published'])
     current_version.setproperty('author', proposal.author)
     current_version.setproperty('comments', proposal.comments)
     current_version.keywords = proposal.keywords
