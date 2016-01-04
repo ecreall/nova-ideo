@@ -381,7 +381,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         return modes[0]
 
     def add_colors_mapping(self, keys):
-        if not hasattr('colors_mapping'):
+        if not hasattr(self, 'colors_mapping'):
             self.colors_mapping = PersistentDict(DEFAULT_COLORS)
 
         new_keywords = [k for k in keys
