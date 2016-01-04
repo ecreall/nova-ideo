@@ -278,7 +278,6 @@ class NovaIdeoApplication(VisualisableElement, Application):
         super(NovaIdeoApplication, self).__init__(**kwargs)
         self.keywords = PersistentList()
         self.initialization()
-        self.keywords_mapping = PersistentDict()
 
     @property
     def mail_conf(self):
@@ -381,18 +380,10 @@ class NovaIdeoApplication(VisualisableElement, Application):
         modes = sorted(modes, key=lambda e: e.order)
         return modes[0]
 
-    def init_keywords_mapping(self):
-        new_keywords = [k for k in self.keywords if k
-                        not in self.keywords_mapping]
-        for keyword in new_keywords:
-            background = random_color()
-            hover = hover_color(background)
-            self.keywords_mapping[keyword] = {'color': {
-                'background': background,
-                'hover': hover
-            }}
-
     def add_colors_mapping(self, keys):
+        if not hasattr('colors_mapping'):
+            self.colors_mapping = PersistentDict(DEFAULT_COLORS)
+
         new_keywords = [k for k in keys
                         if k not in self.colors_mapping]
         for keyword in new_keywords:
@@ -414,4 +405,3 @@ class NovaIdeoApplication(VisualisableElement, Application):
         current_keywords = list(self.keywords)
         current_keywords.extend(newkeywords)
         self.keywords = PersistentList(list(set(current_keywords)))
-        self.init_keywords_mapping()
