@@ -221,7 +221,7 @@ def edit_processsecurity_validation(process, context):
 
 class EditInvitations(InfiniteCardinality):
     style_descriminator = 'admin-action'
-    style_picto = 'glyphicon glyphicon-pencil'
+    style_picto = 'glyphicon glyphicon-bullhorn'
     style_order = 7
     submission_title = _('Save')
     isSequential = True
