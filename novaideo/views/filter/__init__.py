@@ -422,7 +422,7 @@ def authors_analyzer(node, source, validated, validated_value):
     validated_value_ = []
     if 'contribution_filter' in validated:
         validated_value_ = validated['contribution_filter'].pop(
-            'author', [])
+            'authors', [])
 
     objects = source(**validated)
 
