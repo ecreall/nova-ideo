@@ -419,8 +419,10 @@ def authors_analyzer(node, source, validated, validated_value):
     dict([('7422658066368290778', 1))])
     7422658066368290778 is the oid of the Person object
     """
+    validated_value_ = []
     if 'contribution_filter' in validated:
-        validated['contribution_filter'].pop('artists_ids', None)
+        validated_value_ = validated['contribution_filter'].pop(
+            'author', [])
 
     objects = source(**validated)
 
@@ -431,7 +433,7 @@ def authors_analyzer(node, source, validated, validated_value):
         object_ids = index.family.IF.Set(object_ids)
 
     result = {}
-    for author in validated_value:
+    for author in validated_value_:
         author_oid = get_oid(author)
         oids = index._fwd_index.get(author_oid)
         if oids:
@@ -589,10 +591,6 @@ def contribution_filter_data(value):
         negation = contribution_filter.get('negation', False)
         authors = contribution_filter.get('authors', [])
         result['authors'] = {'is_unique': (len(authors) == 1) and not negation}
-
-        artists_ids = contribution_filter.get('artists_ids', [])
-        result['artists_ids'] = {
-            'is_unique': (len(artists_ids) == 1) and not negation}
 
     return result
 
