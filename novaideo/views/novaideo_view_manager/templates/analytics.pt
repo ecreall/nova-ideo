@@ -1,5 +1,6 @@
 <script tal:define="barid 'canvas-bar-'+id;
-                    doughnutid 'canvas-doughnut-'+id"
+                    doughnutid 'canvas-doughnut-'+id;
+                    lineid 'canvas-line-'+id"
         data-has_value="${has_value and 'true' or 'false'}">
 
     <div tal:omit-tag="" tal:condition="not has_value">
@@ -79,5 +80,48 @@
         var doughnutlegend = doughnut.generateLegend();
         $('.analytics-container #legend-doughnut-${id}').html(doughnutlegend)
         $('.analytics-container .chart-container-doughnut-${id}').addClass("object-well well")
+    </div>
+    <div tal:omit-tag="" tal:condition="has_value and 'line' in charts">
+        var lineChartData = {
+        labels: [${','.join(["\""+translation+"\"" for a, translation in labels.items()])}],
+        datasets: [
+            <div tal:omit-tag="" tal:repeat="(item, value) analytics.items()">
+                {
+                    label: "${item}",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "${value['color']['background']}",
+                    pointColor: "${value['color']['background']}",
+                    pointStrokeColor: "${value['color']['background']}",
+                    pointHighlightFill: "${value['color']['hover']}",
+                    pointHighlightStroke: "${value['color']['hover']}",
+                    data: [${','.join([str(value['data'].get(a, 0)) for a in labels])}]
+                },
+           </div>
+        ]
+        };
+        var newcanvas = get_new_canvas("${lineid}");
+        $('#${lineid}').replaceWith(newcanvas)
+        var ctx = document.getElementById("${lineid}").getContext("2d");
+
+        ctx.clearRect(0, 0, 1500, 1500);
+        var line = new Chart(ctx).Line(lineChartData, {
+                    responsive: true,
+                    generateLegend: true,
+                    hoverMode: 'label',
+                    hoverAnimationDuration: 400,
+                    stacked: false,
+                    scales: {
+                        yAxes: [{
+                            type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                            display: true,
+                            position: "left",
+                            id: "y-axis-1",
+                        }],
+                    }
+                }
+            );
+        var linelegend = line.generateLegend();
+        $('.analytics-container #legend-line-${id}').html(linelegend);
+        $('.analytics-container .chart-container-line-${id}').addClass("object-well well")
     </div>
 </script>

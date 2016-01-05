@@ -51,6 +51,17 @@ from novaideo import log
 FILTER_SOURCES = {}
 
 
+INDEX_MAPPING = {
+    ('publication', 'day'): 'published_at_str',
+    ('publication', 'month'): 'published_at_month_str',
+    ('publication', 'year'): 'published_at_year_str',
+    ('examination', 'day'): 'examined_at_str',
+    ('examination', 'month'): 'examined_at_month_str',
+    ('examination', 'year'): 'examined_at_year_str',
+
+}
+
+
 FILTER_TEMPLATES = {
     'geographic_filter': {
         'default': 'novaideo:views/filter/templates/geographic_filter.pt',
@@ -1191,14 +1202,37 @@ def get_users_by_preferences(content):
         add_query=query)
 
 
-def get_contents_by_keywords(filter_, user, root):
+def get_contents_by_keywords(
+    filter_, user, root,
+    date_from, date_to):
+    novaideo_catalog = find_catalog('novaideo')
+    date_index = novaideo_catalog['published_at']
+    query = None
+    if date_from:
+        date_from = datetime.datetime.combine(
+            date_from,
+            datetime.datetime.min.time())
+        date_from = date_from.replace(tzinfo=pytz.UTC)
+        query = date_index.gt(date_from)
+
+    if date_to:
+        date_to = datetime.datetime.combine(
+            date_to,
+            datetime.datetime.min.time())
+        date_to = date_to.replace(tzinfo=pytz.UTC)
+        if query is None:
+            query = date_index.lt(date_to)
+        else:
+            query = query & date_index.lt(date_to)
+
     keywords = filter_.get('keywords', root.keywords)
     keywords_mapping = dict([(k.lower(), k) for k in keywords])
     objects = find_entities(
         user=user,
+        add_query=query,
         **filter_)
 
-    index = find_catalog('novaideo')['object_keywords']
+    index = novaideo_catalog['object_keywords']
     intersection = index.family.IF.intersection
     object_ids = getattr(objects, 'ids', objects)
     if isinstance(object_ids, (list, types.GeneratorType)):
@@ -1211,9 +1245,32 @@ def get_contents_by_keywords(filter_, user, root):
     return result, object_ids.__len__()
 
 
-def get_contents_by_states(filter_, user, root):
+def get_contents_by_states(
+    filter_, user, root,
+    date_from, date_to):
+    novaideo_catalog = find_catalog('novaideo')
+    date_index = novaideo_catalog['published_at']
+    query = None
+    if date_from:
+        date_from = datetime.datetime.combine(
+            date_from,
+            datetime.datetime.min.time())
+        date_from = date_from.replace(tzinfo=pytz.UTC)
+        query = date_index.gt(date_from)
+
+    if date_to:
+        date_to = datetime.datetime.combine(
+            date_to,
+            datetime.datetime.min.time())
+        date_to = date_to.replace(tzinfo=pytz.UTC)
+        if query is None:
+            query = date_index.lt(date_to)
+        else:
+            query = query & date_index.lt(date_to)
+
     objects = find_entities(
         user=user,
+        add_query=query,
         **filter_)
     content_types = filter_.get('metadata_filter').get('content_types')
     states = filter_.get('metadata_filter').get('states')
@@ -1228,4 +1285,50 @@ def get_contents_by_states(filter_, user, root):
               for state_id, oids in index._fwd_index.items()]
     result = dict([(k, v) for k, v in result if v != 0 and
                    k in list(flattened_states.keys())])
+    return result, object_ids.__len__()
+
+
+def get_contents_by_dates(
+    filter_, user, root,
+    date_of, frequency,
+    date_from, date_to):
+    novaideo_catalog = find_catalog('novaideo')
+    if date_of == 'examination':
+        date_index = novaideo_catalog['examined_at']
+    else:
+        date_index = novaideo_catalog['published_at']
+
+    query = None
+    if date_from:
+        date_from = datetime.datetime.combine(
+            date_from,
+            datetime.datetime.min.time())
+        date_from = date_from.replace(tzinfo=pytz.UTC)
+        query = date_index.gt(date_from)
+
+    if date_to:
+        date_to = datetime.datetime.combine(
+            date_to,
+            datetime.datetime.min.time())
+        date_to = date_to.replace(tzinfo=pytz.UTC)
+        if query is None:
+            query = date_index.lt(date_to)
+        else:
+            query = query & date_index.lt(date_to)
+
+    objects = find_entities(
+        user=user,
+        add_query=query,
+        **filter_)
+    index = novaideo_catalog[
+        INDEX_MAPPING.get((date_of, frequency), 'published_at_month_str')]
+    intersection = index.family.IF.intersection
+    object_ids = getattr(objects, 'ids', objects)
+    if isinstance(object_ids, (list, types.GeneratorType)):
+        object_ids = index.family.IF.Set(object_ids)
+
+    result = [(dateid, len(intersection(oids, object_ids)))
+              for dateid, oids in index._fwd_index.items()]
+
+    result = dict([(k, v) for k, v in result if v != 0])
     return result, object_ids.__len__()

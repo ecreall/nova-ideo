@@ -33,6 +33,9 @@ DATE_FORMAT = {
     'defined_literal': {
         'day_month_year': _('On ${month} ${day} ${year}'),
         'day_month': _('On ${month} ${day}'),
+        'month_year': _('On ${month} ${year}'),
+        'month': _('On ${month}'),
+        'year': _('On ${year}'),
         'day': _('On ${day}'),
         'day_hour_minute_month_year': _("On ${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"),
         'day_hour_minute_month': _("On ${month} ${day} at ${hour} o'clock and ${minute} minutes"),
@@ -44,6 +47,9 @@ DATE_FORMAT = {
     'direct_literal': {
         'day_month_year': _('${month} ${day} ${year}'),
         'day_month': _('${month} ${day}'),
+        'month_year': _('${month} ${year}'),
+        'month': _('${month}'),
+        'year': _('${year}'),
         'day': _('${day}'),
         'day_hour_minute_month_year': _("${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"),
         'day_hour_minute_month': _("${month} ${day} at ${hour} o'clock and ${minute} minutes"),
@@ -55,6 +61,9 @@ DATE_FORMAT = {
     'digital': {
         'day_month_year': _('${month}/${day}/${year}'),
         'day_month': _('${month}/${day}'),
+        'month_year': _('${month}/${year}'),
+        'month': _('${month}'),
+        'year': _('${year}'),
         'day': _('${day}'),
         'day_hour_minute_month_year': _('${month}/${day}/${year} ${hour}:${minute}'),
         'day_hour_minute_month': _('${month}/${day} ${hour}:${minute}'),
@@ -70,7 +79,8 @@ def to_localized_time(
     date, request=None, date_from=None,
     date_only=False, format_id='digital',
     ignore_month=False, ignore_year=False,
-    add_day_name=False, translate=False):
+    ignore_day=False, add_day_name=False,
+    force_ignore=False, translate=False):
     if request is None:
         request = get_current_request()
 
@@ -87,21 +97,30 @@ def to_localized_time(
         'minute': minute if not date_only and minute != 0 else None
     }
     if ignore_month:
-        month = ((date_from.month != date_dict['month'] or \
-                  date_from.year != date_dict['year']) and \
-                 date_dict['month']) or None
-        date_dict['month'] = month
-        if month is None:
-            date_dict['year'] = None
+        if force_ignore:
+            date_dict.pop('month')
+        else:
+            month = ((date_from.month != date_dict['month'] or \
+                      date_from.year != date_dict['year']) and \
+                     date_dict['month']) or None
+            date_dict['month'] = month
+            if month is None:
+                date_dict['year'] = None
 
     if ignore_year and date_dict['year']:
-        year = ((date_from.year != date_dict['year']) and \
-                date_dict['year']) or None
-        date_dict['year'] = year
+        if force_ignore:
+            date_dict.pop('year')
+        else:
+            year = ((date_from.year != date_dict['year']) and \
+                    date_dict['year']) or None
+            date_dict['year'] = year
 
     date_dict = {key: value for key, value in date_dict.items() if value}
     if 'minute' in date_dict and date_dict['minute'] < 10:
         date_dict['minute'] = '0' + str(date_dict['minute'])
+
+    if ignore_day:
+        date_dict.pop('day')
 
     localizer = request.localizer
     if format_id.endswith('literal'):

@@ -56,7 +56,25 @@ class ISearchableObject(Interface):
 
     def examined_at():
         pass
+    #str
+    def published_at_str():
+        pass
 
+    def examined_at_str():
+        pass
+
+    def published_at_month_str():
+        pass
+
+    def examined_at_month_str():
+        pass
+
+    def published_at_year_str():
+        pass
+
+    def examined_at_year_str():
+        pass
+    #end
     def object_title():
         pass
 
@@ -285,6 +303,84 @@ class NovaideoCatalogViews(object):
 
         return related_contents
 
+    @indexview()
+    def published_at_str(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        published_at_str = adapter.published_at_str()
+        if published_at_str is None:
+            return default
+
+        return published_at_str
+
+    @indexview()
+    def examined_at_str(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        examined_at_str = adapter.examined_at_str()
+        if examined_at_str is None:
+            return default
+
+        return examined_at_str
+
+    @indexview()
+    def published_at_month_str(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        published_at_month_str = adapter.published_at_month_str()
+        if published_at_month_str is None:
+            return default
+
+        return published_at_month_str
+
+    @indexview()
+    def examined_at_month_str(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        examined_at_month_str = adapter.examined_at_month_str()
+        if examined_at_month_str is None:
+            return default
+
+        return examined_at_month_str
+
+    @indexview()
+    def published_at_year_str(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        published_at_year_str = adapter.published_at_year_str()
+        if published_at_year_str is None:
+            return default
+
+        return published_at_year_str
+
+    @indexview()
+    def examined_at_year_str(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        examined_at_year_str = adapter.examined_at_year_str()
+        if examined_at_year_str is None:
+            return default
+
+        return examined_at_year_str
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -295,6 +391,12 @@ class NovaideoIndexes(object):
     modified_at = Field()
     published_at = Field()
     examined_at = Field()
+    published_at_str = Field()
+    examined_at_str = Field()
+    published_at_month_str = Field()
+    examined_at_month_str = Field()
+    published_at_year_str = Field()
+    examined_at_year_str = Field()
     release_date = Field()
     is_workable = Field()
     favorites = Keyword()
@@ -352,6 +454,39 @@ class SearchableObject(Adapter):
 
     def examined_at(self):
         return getattr(self.context, 'examined_at', None)
+
+    def published_at_str(self):
+        date = getattr(self.context, 'published_at', self.created_at())
+        return date.strftime("%d/%m/%Y")
+
+    def examined_at_str(self):
+        date = getattr(self.context, 'examined_at', None)
+        if date:
+            return date.strftime("%d/%m/%Y")
+
+        return None
+
+    def published_at_month_str(self):
+        date = getattr(self.context, 'published_at', self.created_at())
+        return date.strftime("%m/%Y")
+
+    def examined_at_month_str(self):
+        date = getattr(self.context, 'examined_at', None)
+        if date:
+            return date.strftime("%m/%Y")
+
+        return None
+
+    def published_at_year_str(self):
+        date = getattr(self.context, 'published_at', self.created_at())
+        return date.strftime("%Y")
+
+    def examined_at_year_str(self):
+        date = getattr(self.context, 'examined_at', None)
+        if date:
+            return date.strftime("%Y")
+
+        return None
 
     def object_access_control(self):
         access_control = getattr(self.context, 'access_control', ['all'])
