@@ -12,7 +12,7 @@ from pontus.schema import select
 from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.organization_management.behaviors import (
-  EditOrganization)
+    EditOrganization)
 from novaideo.content.organization import OrganizationSchema, Organization
 from novaideo import _
 
@@ -25,16 +25,14 @@ from novaideo import _
 class EditOrganizationView(FormView):
 
     title = _('Edit organization')
-    schema = select(OrganizationSchema(editable=True, 
+    schema = select(OrganizationSchema(editable=True,
                                        omit=['managers']),
                     ['title',
-                    'description',
-                    'email',
-                    'phone',
-                    'fax',
-                    'logo',
-                    'members',
-                    'managers'])
+                     'description',
+                     'logo',
+                     'members',
+                     'managers',
+                     'contacts'])
     behaviors = [EditOrganization, Cancel]
     formid = 'formeditorganization'
     name = 'editorganization'
@@ -43,4 +41,4 @@ class EditOrganizationView(FormView):
         return self.context
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({EditOrganization:EditOrganizationView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({EditOrganization: EditOrganizationView})

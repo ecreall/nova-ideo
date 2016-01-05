@@ -180,7 +180,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         colander.Sequence(),
         omit(OrganizationSchema(factory=Organization,
                 editable=True,
-                name=_('Organization'),
+                name='organization',
                 widget=SimpleMappingWidget(css_class='object-well default-well'),
                 omit=['managers']),
             ['_csrf_token_']),

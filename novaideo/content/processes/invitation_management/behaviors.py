@@ -75,7 +75,7 @@ class UploadUsers(InfiniteCardinality):
             root.addtoproperty('invitations', invitation)
             url = request.resource_url(invitation, "")
             localizer = request.localizer
-            message = mail_template['templae'].format(
+            message = mail_template['template'].format(
                 invitation=invitation,
                 user_title=localizer.translate(_(getattr(
                             invitation, 'user_title', ''))),
@@ -132,7 +132,7 @@ class InviteUsers(InfiniteCardinality):
 
             url = request.resource_url(invitation, "")
             localizer = request.localizer
-            message = mail_template['templae'].format(
+            message = mail_template['template'].format(
                 invitation=invitation,
                 user_title=localizer.translate(_(getattr(
                     invitation, 'user_title', ''))),
@@ -258,7 +258,7 @@ class EditInvitation(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        context.reidex()
+        context.reindex()
         return {}
 
     def redirect(self, context, request, **kw):

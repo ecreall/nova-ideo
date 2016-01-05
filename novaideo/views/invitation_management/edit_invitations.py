@@ -14,7 +14,7 @@ from pontus.default_behavior import Cancel
 from novaideo.content.processes.invitation_management.behaviors import (
     EditInvitations)
 from novaideo.content.novaideo_application import (
-    NovaIdeoApplicationSchema, 
+    NovaIdeoApplicationSchema,
     NovaIdeoApplication)
 from novaideo import _
 
@@ -27,14 +27,13 @@ from novaideo import _
 class EditInvitationsView(FormView):
 
     title = _('Edit invitations')
-    schema = select(NovaIdeoApplicationSchema(editable=True), 
-                    [(u'invitations', [ 'title',
-                                        'user_title',
-                                        'roles',
-                                        'first_name', 
-                                        'last_name',
-                                        'email',
-                                        'organization'])])
+    schema = select(NovaIdeoApplicationSchema(editable=True),
+                    [(u'invitations', ['title',
+                                       'user_title',
+                                       'roles',
+                                       'first_name',
+                                       'last_name',
+                                       'organization'])])
     behaviors = [EditInvitations, Cancel]
     formid = 'formeditinvitations'
     name = 'editinvitations'
@@ -43,4 +42,5 @@ class EditInvitationsView(FormView):
         return self.context
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({EditInvitations:EditInvitationsView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {EditInvitations: EditInvitationsView})

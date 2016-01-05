@@ -23,21 +23,20 @@ from novaideo import _
 class CreatOrganizationsSchema(Schema):
 
     organizations = colander.SchemaNode(
-                colander.Sequence(),
-                select(omit(OrganizationSchema(factory=Organization,
-                                               editable=True,
-                                               name='Organization',
-                                               widget=SimpleMappingWidget(css_class='object-well default-well')), 
-                            ['_csrf_token_']),
-                       ['title',
-                        'description',
-                        'email',
-                        'phone',
-                        'fax',
-                        'logo']),
-                widget=SequenceWidget(min_len=1),
-                title=_('Organizations to creat')
-                )
+        colander.Sequence(),
+        select(omit(OrganizationSchema(factory=Organization,
+                                       editable=True,
+                                       name='Organization',
+                                       widget=SimpleMappingWidget(
+                                           css_class='object-well default-well')),
+                    ['_csrf_token_']),
+               ['title',
+                'description',
+                'logo',
+                'contacts']),
+        widget=SequenceWidget(min_len=1),
+        title=_('Organizations to creat')
+    )
 
 
 @view_config(
@@ -54,4 +53,4 @@ class CreatOrganizationsView(FormView):
     name = 'creatorganizations'
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({CreatOrganizations:CreatOrganizationsView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({CreatOrganizations: CreatOrganizationsView})

@@ -9,34 +9,48 @@ from zope.interface import implementer
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
-from substanced.util import renamer, find_service
+from substanced.util import renamer
 
+from dace.util import get_obj
 from dace.objectofcollaboration.principal.util import get_users_with_role
-
-from pontus.core import VisualisableElement, VisualisableElementSchema
-from pontus.widget import Select2Widget, FileWidget
-from pontus.file import Image, ObjectData
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedMultipleProperty, CompositeUniqueProperty
-from dace.util import getSite
+from pontus.core import VisualisableElement, VisualisableElementSchema
+from pontus.widget import (
+    FileWidget, AjaxSelect2Widget, SimpleMappingWidget, SequenceWidget)
+from pontus.file import Image, ObjectData
+from pontus.schema import omit, select
 
+from novaideo.core_schema import ContactSchema
 from .interface import IOrganization
 from novaideo import _
 
 
-
 @colander.deferred
 def members_choice(node, kw):
+    """"""
     context = node.bindings['context']
+    request = node.bindings['request']
     values = []
-    root = getSite(context)
-    if root is None:
-        root = context.__parent__.__parent__
 
-    principals = find_service(root, 'principals')
-    prop = list(principals['users'].values())
-    values = [(i, i.name) for i in prop ]
-    return Select2Widget(values=values, multiple=True)
+    def title_getter(oid):
+        author = None
+        try:
+            author = get_obj(int(oid))
+        except Exception:
+            return oid
+
+        title = getattr(author, 'title', author.__name__)
+        return title
+
+    ajax_url = request.resource_url(context,
+                                    '@@novaideoapi',
+                                    query={'op': 'find_user'})
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        multiple=True,
+        title_getter=title_getter)
 
 
 def context_is_a_organization(context, request):
@@ -58,27 +72,19 @@ class OrganizationSchema(VisualisableElementSchema):
         title=_('Logo'),
         )
 
-    email = colander.SchemaNode(
-        colander.String(),
-        validator=colander.All(
-            colander.Email(),
-            colander.Length(max=100)
-            ),
-        missing='',
-        title=_('Email'),
+    contacts = colander.SchemaNode(
+        colander.Sequence(),
+        omit(select(ContactSchema(name='contact',
+                                  widget=SimpleMappingWidget(
+                                  css_class='contact-well object-well default-well')),
+                    ['title', 'address', 'phone', 'surtax', 'email', 'website', 'fax']),
+            ['_csrf_token_']),
+        widget=SequenceWidget(
+            min_len=1,
+            add_subitem_text_template=_('Add a new contact')),
+        title='Contacts',
+        oid='contacts'
         )
-
-    phone = colander.SchemaNode(
-         colander.String(),
-         title=_("Phone number"),
-         missing=''
-         )
-
-    fax = colander.SchemaNode(
-         colander.String(),
-         title=_("Fax"),
-         missing=''
-         )
 
     members = colander.SchemaNode(
         colander.Set(),
@@ -104,6 +110,7 @@ class Organization(VisualisableElement, Entity):
     templates = {
         'default': 'novaideo:views/templates/organization_result.pt'
     }
+    icon = 'glyphicon glyphicon-home'
     name = renamer()
     members = SharedMultipleProperty('members', 'organization')
     logo = CompositeUniqueProperty('logo')
