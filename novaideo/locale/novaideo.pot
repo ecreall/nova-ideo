@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-01-04 15:58+0100\n"
+"POT-Creation-Date: 2016-01-05 14:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,7 +113,8 @@ msgstr ""
 #: ./novaideo/views/proposal_management/templates/see_proposal.pt:101
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:15
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:131
-#: ./novaideo/views/novaideo_view_manager/analytics.py:186
+#: ./novaideo/views/novaideo_view_manager/analytics.py:226
+#: ./novaideo/views/novaideo_view_manager/analytics.py:472
 msgid "Keywords"
 msgstr ""
 
@@ -123,7 +124,7 @@ msgid ""
 "separate them with commas."
 msgstr ""
 
-#: ./novaideo/core.py:323 ./novaideo/views/filter/__init__.py:842
+#: ./novaideo/core.py:323 ./novaideo/views/filter/__init__.py:853
 #: ./novaideo/views/proposal_management/templates/idea_data.pt:5
 #: ./novaideo/views/correlation_management/templates/see_correlation.pt:10
 #: ./novaideo/content/idea.py:68 ./novaideo/content/correction.py:52
@@ -267,129 +268,164 @@ msgstr ""
 
 #: ./novaideo/utilities/util.py:36
 #, python-format
-msgid "On ${day}"
+msgid "On ${month} ${year}"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:37
 #, python-format
-msgid "On ${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"
+msgid "On ${month}"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:38
 #, python-format
-msgid "On ${month} ${day} at ${hour} o'clock and ${minute} minutes"
+msgid "On ${year}"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:39
 #, python-format
-msgid "On ${day} at ${hour} o'clock and ${minute} minutes"
+msgid "On ${day}"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:40
 #, python-format
-msgid "On ${month} ${day} ${year} at ${hour} o'clock"
+msgid "On ${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:41
 #, python-format
-msgid "On ${month} ${day} at ${hour} o'clock"
+msgid "On ${month} ${day} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:42
 #, python-format
-msgid "On ${day} at ${hour} o'clock"
+msgid "On ${day} at ${hour} o'clock and ${minute} minutes"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:43
+#, python-format
+msgid "On ${month} ${day} ${year} at ${hour} o'clock"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:44
+#, python-format
+msgid "On ${month} ${day} at ${hour} o'clock"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:45
 #, python-format
-msgid "${month} ${day} ${year}"
-msgstr ""
-
-#: ./novaideo/utilities/util.py:46
-#, python-format
-msgid "${month} ${day}"
-msgstr ""
-
-#: ./novaideo/utilities/util.py:47 ./novaideo/utilities/util.py:58
-#, python-format
-msgid "${day}"
+msgid "On ${day} at ${hour} o'clock"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:48
 #, python-format
-msgid "${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"
+msgid "${month} ${day} ${year}"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:49
 #, python-format
-msgid "${month} ${day} at ${hour} o'clock and ${minute} minutes"
+msgid "${month} ${day}"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:50
 #, python-format
-msgid "${day} at ${hour} o'clock and ${minute} minutes"
+msgid "${month} ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:51
+#: ./novaideo/utilities/util.py:51 ./novaideo/utilities/util.py:65
 #, python-format
-msgid "${month} ${day} ${year} at ${hour} o'clock"
+msgid "${month}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:52
+#: ./novaideo/utilities/util.py:52 ./novaideo/utilities/util.py:66
 #, python-format
-msgid "${month} ${day} at ${hour} o'clock"
+msgid "${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:53
+#: ./novaideo/utilities/util.py:53 ./novaideo/utilities/util.py:67
 #, python-format
-msgid "${day} at ${hour} o'clock"
+msgid "${day}"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:54
+#, python-format
+msgid "${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:55
+#, python-format
+msgid "${month} ${day} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:56
 #, python-format
-msgid "${month}/${day}/${year}"
+msgid "${day} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:57
 #, python-format
-msgid "${month}/${day}"
+msgid "${month} ${day} ${year} at ${hour} o'clock"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:58
+#, python-format
+msgid "${month} ${day} at ${hour} o'clock"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:59
 #, python-format
-msgid "${month}/${day}/${year} ${hour}:${minute}"
-msgstr ""
-
-#: ./novaideo/utilities/util.py:60
-#, python-format
-msgid "${month}/${day} ${hour}:${minute}"
-msgstr ""
-
-#: ./novaideo/utilities/util.py:61
-#, python-format
-msgid "${day} ${hour}:${minute}"
+msgid "${day} at ${hour} o'clock"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:62
 #, python-format
-msgid "${month}/${day}/${year} ${hour}:00"
+msgid "${month}/${day}/${year}"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:63
 #, python-format
-msgid "${month}/${day} ${hour}:00"
+msgid "${month}/${day}"
 msgstr ""
 
 #: ./novaideo/utilities/util.py:64
 #, python-format
+msgid "${month}/${year}"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:68
+#, python-format
+msgid "${month}/${day}/${year} ${hour}:${minute}"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:69
+#, python-format
+msgid "${month}/${day} ${hour}:${minute}"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:70
+#, python-format
+msgid "${day} ${hour}:${minute}"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:71
+#, python-format
+msgid "${month}/${day}/${year} ${hour}:00"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:72
+#, python-format
+msgid "${month}/${day} ${hour}:00"
+msgstr ""
+
+#: ./novaideo/utilities/util.py:73
+#, python-format
 msgid "${day} ${hour}:00"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:111
+#: ./novaideo/utilities/util.py:130
 msgid "1st"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:117
+#: ./novaideo/utilities/util.py:136
 #, python-format
 msgid "${name} ${day}"
 msgstr ""
@@ -1020,116 +1056,119 @@ msgstr ""
 msgid "Organization"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:497
-#: ./novaideo/views/filter/__init__.py:857
+#: ./novaideo/views/filter/__init__.py:508
+#: ./novaideo/views/filter/__init__.py:868
 msgid "Metadata filter"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:504
+#: ./novaideo/views/filter/__init__.py:515
 msgid "Geographic filter"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:511
-#: ./novaideo/views/filter/__init__.py:870
+#: ./novaideo/views/filter/__init__.py:522
+#: ./novaideo/views/filter/__init__.py:881
 msgid "Temporal filter"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:518
-#: ./novaideo/views/filter/__init__.py:883
+#: ./novaideo/views/filter/__init__.py:529
+#: ./novaideo/views/filter/__init__.py:894
 msgid "Contribution filter"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:525
-#: ./novaideo/views/filter/__init__.py:896
+#: ./novaideo/views/filter/__init__.py:536
+#: ./novaideo/views/filter/__init__.py:907
 msgid "Text filter"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:532
+#: ./novaideo/views/filter/__init__.py:543
 msgid "Other filter"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:910
+#: ./novaideo/views/filter/__init__.py:921
 #: ./novaideo/views/templates/filter.pt:8
 msgid "Filter"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:707
-#: ./novaideo/views/filter/__init__.py:785
-#: ./novaideo/views/filter/__init__.py:813
-#: ./novaideo/views/filter/__init__.py:835
+#: ./novaideo/views/filter/__init__.py:718
+#: ./novaideo/views/filter/__init__.py:796
+#: ./novaideo/views/filter/__init__.py:824
+#: ./novaideo/views/filter/__init__.py:846
 msgid "Not"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:709
-#: ./novaideo/views/filter/__init__.py:787
-#: ./novaideo/views/filter/__init__.py:815
-#: ./novaideo/views/filter/__init__.py:837
+#: ./novaideo/views/filter/__init__.py:720
+#: ./novaideo/views/filter/__init__.py:798
+#: ./novaideo/views/filter/__init__.py:826
+#: ./novaideo/views/filter/__init__.py:848
 msgid "Check the box to exclude values entered below."
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:715
-#: ./novaideo/views/novaideo_view_manager/analytics.py:168
+#: ./novaideo/views/filter/__init__.py:726
+#: ./novaideo/views/novaideo_view_manager/analytics.py:208
+#: ./novaideo/views/novaideo_view_manager/analytics.py:463
 msgid "Types"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:716
-#: ./novaideo/views/novaideo_view_manager/analytics.py:169
+#: ./novaideo/views/filter/__init__.py:727
+#: ./novaideo/views/novaideo_view_manager/analytics.py:209
+#: ./novaideo/views/novaideo_view_manager/analytics.py:464
 msgid "You can select the content types to be displayed."
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:726
+#: ./novaideo/views/filter/__init__.py:737
 msgid "keywords"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:727
-#: ./novaideo/views/novaideo_view_manager/analytics.py:187
+#: ./novaideo/views/filter/__init__.py:738
+#: ./novaideo/views/novaideo_view_manager/analytics.py:227
+#: ./novaideo/views/novaideo_view_manager/analytics.py:473
 msgid "You can select the keywords of the contents to be displayed."
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:735
-#: ./novaideo/views/novaideo_view_manager/analytics.py:177
+#: ./novaideo/views/filter/__init__.py:746
+#: ./novaideo/views/novaideo_view_manager/analytics.py:217
 #: ./novaideo/views/novaideo_view_manager/templates/entity_history.pt:27
 msgid "States"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:736
-#: ./novaideo/views/novaideo_view_manager/analytics.py:178
+#: ./novaideo/views/filter/__init__.py:747
+#: ./novaideo/views/novaideo_view_manager/analytics.py:218
 msgid "You can select the states of the contents to be displayed."
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:749
+#: ./novaideo/views/filter/__init__.py:760
 msgid "Created after"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:755
+#: ./novaideo/views/filter/__init__.py:766
 msgid "Created before"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:757
+#: ./novaideo/views/filter/__init__.py:768
 msgid "You can select the creation dates of contents to be displayed."
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:766
+#: ./novaideo/views/filter/__init__.py:777
 msgid "Connected after"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:772
+#: ./novaideo/views/filter/__init__.py:783
 msgid "Connected before"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:774
+#: ./novaideo/views/filter/__init__.py:785
 msgid "You can select the last connection dates of users to be displayed."
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:821
+#: ./novaideo/views/filter/__init__.py:832
 msgid "Authors"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:822
+#: ./novaideo/views/filter/__init__.py:833
 msgid "You can enter the authors names of the contents to be displayed."
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:843
+#: ./novaideo/views/filter/__init__.py:854
 msgid "You can enter the words that appear in the contents to be displayed."
 msgstr ""
 
@@ -3030,58 +3069,121 @@ msgstr ""
 msgid "Correct"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:40
+#: ./novaideo/views/novaideo_view_manager/analytics.py:63
 msgid "Compute"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:68
-#: ./novaideo/views/novaideo_view_manager/analytics.py:202
-#: ./novaideo/views/novaideo_view_manager/analytics.py:220
+#: ./novaideo/views/novaideo_view_manager/analytics.py:91
+#: ./novaideo/views/novaideo_view_manager/analytics.py:250
+#: ./novaideo/views/novaideo_view_manager/analytics.py:268
 msgid "Contents by keywords"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:229
-#: ./novaideo/views/novaideo_view_manager/analytics.py:287
-#: ./novaideo/views/novaideo_view_manager/analytics.py:305
+#: ./novaideo/views/novaideo_view_manager/analytics.py:277
+#: ./novaideo/views/novaideo_view_manager/analytics.py:335
+#: ./novaideo/views/novaideo_view_manager/analytics.py:353
 msgid "Contents by states"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:320
+#: ./novaideo/views/novaideo_view_manager/analytics.py:362
+#: ./novaideo/views/novaideo_view_manager/analytics.py:495
+#: ./novaideo/views/novaideo_view_manager/analytics.py:516
+msgid "Contents by dates"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:532
 #: ./novaideo/content/site_configuration.py:279
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:97
 msgid "Analytics"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:194
+#: ./novaideo/views/novaideo_view_manager/analytics.py:41
+msgid "Publication"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:42
+msgid "Examination"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:54
+msgid "Day"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:55
+msgid "Month"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:56
+msgid "Year"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:190
+#: ./novaideo/views/novaideo_view_manager/analytics.py:445
+msgid "From"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:196
+#: ./novaideo/views/novaideo_view_manager/analytics.py:451
+msgid "To"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:198
+#: ./novaideo/views/novaideo_view_manager/analytics.py:453
+msgid "You can select the dates of contents to be displayed."
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:234
+#: ./novaideo/views/novaideo_view_manager/analytics.py:480
 msgid "Author"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:195
+#: ./novaideo/views/novaideo_view_manager/analytics.py:235
+#: ./novaideo/views/novaideo_view_manager/analytics.py:481
 msgid "You can enter the author name of the contents to be displayed."
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:279
+#: ./novaideo/views/novaideo_view_manager/analytics.py:327
 msgid "Type"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:280
+#: ./novaideo/views/novaideo_view_manager/analytics.py:328
 msgid "You can select the content type to be displayed."
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:82
+#: ./novaideo/views/novaideo_view_manager/analytics.py:428
+msgid "Date type"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:429
+msgid "You can select the date type."
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:437
+msgid "Frequency"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:438
+msgid "You can select the frequency."
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:105
 msgid "Total des contenus classé par types par mots clés"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:86
+#: ./novaideo/views/novaideo_view_manager/analytics.py:109
 msgid "Pourcentage du cumul par mots clés"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:242
+#: ./novaideo/views/novaideo_view_manager/analytics.py:290
 msgid "Total des contenus classé par types par états"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/analytics.py:246
+#: ./novaideo/views/novaideo_view_manager/analytics.py:294
 msgid "Pourcentage du cumul par états"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/analytics.py:376
+msgid "Total des contenus classé par types par date"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_my_selections.py:25
