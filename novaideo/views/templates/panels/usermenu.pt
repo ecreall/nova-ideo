@@ -94,7 +94,8 @@
        <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary " id="log-in">
           <i class="glyphicon glyphicon-log-in"> </i> <span i18n:translate="">Log In</span>
        </a>
-       <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary " id="registration" >
+       <a tal:condition="not getattr(request.root, 'only_invitation', False)"
+          href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary " id="registration" >
           <i class="glyphicon glyphicon-pencil"> </i> <span  i18n:translate="">Registration</span>
        </a>
     </div>

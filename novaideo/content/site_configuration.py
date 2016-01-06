@@ -88,6 +88,15 @@ class WorkParamsConfigurationSchema(Schema):
 
 class UserParamsConfigurationSchema(Schema):
 
+    only_invitation = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Invitation only'),
+        description=_('Users can register by invitation only.'),
+        title='',
+        missing=False
+    )
+
     participants_mini = colander.SchemaNode(
         colander.Integer(),
         title=_('Minimum number of participants for a working group'),

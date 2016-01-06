@@ -290,6 +290,11 @@ def reg_roles_validation(process, context):
     return has_role(role=('Anonymous',))
 
 
+def reg_processsecurity_validation(process, context):
+    root = getSite()
+    return not getattr(root, 'only_invitation', False)
+
+
 def remove_expired_preregistration(root, preregistration):
     if preregistration.__parent__ is not None:
         oid = str(get_oid(preregistration))
@@ -302,6 +307,7 @@ class Registration(InfiniteCardinality):
     submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = reg_roles_validation
+    processsecurity_validation = reg_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         preregistration = appstruct['_object_data']

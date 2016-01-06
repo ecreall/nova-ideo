@@ -12,7 +12,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
 from dace.processinstance.core import Behavior
-from pontus.schema import Schema, omit
+from pontus.schema import Schema, omit, select
 from pontus.widget import (
     SequenceWidget, SimpleMappingWidget,
     RadioChoiceWidget, Select2Widget, FileWidget,
@@ -384,33 +384,6 @@ class ContentsByDates(BasicView):
 
 
 @colander.deferred
-def content_types_choices(node, kw):
-    request = node.bindings['request']
-    values = [(key, getattr(c, 'type_title', c.__class__.__name__))
-              for key, c in list(core.SEARCHABLE_CONTENTS.items())
-              if key in request.analytics_default_content_types]
-    return Select2Widget(values=values, multiple=True)
-
-
-@colander.deferred
-def default_content_types(node, kw):
-    request = node.bindings['request']
-    if request.is_idea_box:
-        return ['idea']
-
-    return ['proposal']
-
-
-@colander.deferred
-def keywords_choice(node, kw):
-    context = node.bindings['context']
-    values = [(i, i) for i in sorted(context.keywords)]
-    return Select2Widget(values=values,
-                         create=False,
-                         multiple=True)
-
-
-@colander.deferred
 def date_of_choices(node, kw):
     return Select2Widget(values=DATESOF, multiple=False)
 
@@ -455,33 +428,7 @@ class IntervalDates(Schema):
         )
 
 
-class ContentsByDatesSchema(Schema):
-
-    content_types = colander.SchemaNode(
-        colander.Set(),
-        widget=content_types_choices,
-        title=_('Types'),
-        description=_('You can select the content types to be displayed.'),
-        default=default_content_types,
-        missing=default_content_types
-    )
-
-    keywords = colander.SchemaNode(
-        colander.Set(),
-        widget=keywords_choice,
-        title=_('Keywords'),
-        description=_("You can select the keywords of the contents to be displayed."),
-        missing=[]
-        )
-
-    author = colander.SchemaNode(
-        ObjectType(),
-        widget=authors_choices,
-        title=_('Author'),
-        description=_('You can enter the author name of the contents to be displayed.'),
-        default=None,
-        missing=None
-        )
+class ContentsByDatesSchema(ContentsByKeywordsSchema):
 
     dates = omit(IntervalDates(
         widget=SimpleMappingWidget(css_class="filter-block"
@@ -493,7 +440,8 @@ class ContentsByDatesSchema(Schema):
 
 class ContentsByDatesForm(AnalyticsForm):
     title = _('Contents by dates')
-    schema = ContentsByDatesSchema()
+    schema = select(ContentsByDatesSchema(),
+                    ['content_types', 'keywords', 'author', 'dates'])
     formid = 'content_by_dates_form'
     name = 'content_by_dates_form'
 
