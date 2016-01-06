@@ -320,7 +320,7 @@ class CorrectProposal(InfiniteCardinality):
             correction.state.append('in process')
 
         alert = WorkingGroupAlert(alert_kind='correction_added')
-        root.addtoproperty('alerts', alert)
+        request.root.addtoproperty('alerts', alert)
         alert.init_alert(context.working_group.members, [context])
         return {}
 
