@@ -322,19 +322,6 @@ Pour confirmer votre inscription veuillez accéder à ce lien {url}. Ce lien est
 """+ PORTAL_SIGNATURE
 
 
-INACTIVITY_SUBJECT = u"""Inactivité de votre compte"""
-
-
-INACTIVITY_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
-
-Votre dernière connexion remonte à plus de {days} jour(s) (dernière connexion remonte le {last_connection}).
-Pour information, au bout de 6 mois d'inactivité ininterrompus votre compte sera désactivé.
-Afin d'éviter ceci, veuillez vous connecter régulièrement sur la plateforme.
-
-"""+ PORTAL_SIGNATURE
-
-
 ALERTCOMMENT_SUBJECT = u"""Votre contribution « {subject_title} » vient d'être commentée"""
 
 
@@ -500,11 +487,6 @@ DEFAULT_SITE_MAILS = {
               'title': _("Moderation: Delete the proposal"),
               'subject': PROPOSALREMOVED_SUBJECT,
               'template': PROPOSALREMOVED_MESSAGE
-    },
-    'inactivity_users': {
-              'title': _("Users inactivity"),
-              'subject': INACTIVITY_SUBJECT,
-              'template': INACTIVITY_MESSAGE
     },
     'alert_comment': {
               'title': _("Alert comment"),

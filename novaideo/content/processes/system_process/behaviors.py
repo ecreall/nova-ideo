@@ -9,6 +9,7 @@ import datetime
 import pytz
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
+from pyramid import renderers
 
 from dace.util import find_catalog
 from dace.objectofcollaboration.principal.util import (
@@ -21,7 +22,9 @@ from dace.processinstance.core import ActivityExecuted
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import (
     INovaIdeoApplication,
-    IPerson)
+    IPerson,
+    IProposal,
+    Iidea)
 from novaideo.views.filter import find_entities
 from novaideo import _
 from novaideo.utilities.util import to_localized_time
@@ -33,27 +36,27 @@ INACTIVITY_ALERTS = [45, 60, 88]
 
 
 def send_alert(users, mail_template, context, request, alert):
+    entities = find_entities(
+        interfaces=[IProposal, Iidea],
+        metadata_filter={
+            'content_types': ['idea', 'proposal'],
+            'states': ['published']})
+
+    result = []
+    for obj in entities:
+        result.append(obj)
+        if len(result) == 5:
+            break
+
+    body = renderers.render(
+        mail_template['template'], {'entities': result}, request)
     subject = mail_template['subject'].format()
-    localizer = request.localizer
     for member in [m for m in users if getattr(m, 'email', '')]:
-        last_connection = to_localized_time(
-            getattr(member, 'last_connection'), request,
-            format_id='defined_literal', ignore_month=True,
-            ignore_year=True, translate=True)
-        message = mail_template['template'].format(
-            recipient_title=localizer.translate(
-                _(getattr(member, 'user_title', ''))),
-            recipient_first_name=getattr(member, 'first_name', member.name),
-            recipient_last_name=getattr(member, 'last_name', ''),
-            novaideo_title=context.title,
-            last_connection=last_connection.lower(),
-            days=alert[0]
-        )
         mailer_send(
             subject=subject,
             recipients=[member.email],
             sender=context.get_site_sender(),
-            body=message)
+            html=body)
 
 
 def find_users(last_connection_index, current_date, alert):
@@ -108,9 +111,14 @@ class Alert1Users(ElementaryAction):
     actionType = ActionType.system
     roles_validation = system_roles_validation
     alerts_int = (INACTIVITY_ALERTS[0], INACTIVITY_ALERTS[1])
+    mail_template = 'novaideo:views/templates/alert_deactiveted.pt'
 
     def start(self, context, request, appstruct, **kw):
-        mail_template = context.get_mail_template('inactivity_users')
+        localizer = request.localizer
+        mail_template = {
+            'subject': localizer.translate(_('Contenus inactivity')),
+            'template': self.mail_template
+        }
         novaideo_catalog = find_catalog('novaideo')
         last_connection_index = novaideo_catalog['last_connection']
         current_date = datetime.datetime.combine(
