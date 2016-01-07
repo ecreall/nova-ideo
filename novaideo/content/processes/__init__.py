@@ -33,7 +33,7 @@ STATES_PARTICIPANT_MAPPING = {
 	    'open to a working group': _('Open to a working group'),
 	    'votes for publishing': _('Votes for publishing'),
 	    'votes for amendments': _('Votes for amendments'),
-	    'amendable': _('Amendable'),
+	    'amendable': _('Being improved'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
 	    'favorable': _('Favorable'),
@@ -89,7 +89,7 @@ STATES_MEMBER_MAPPING = {
 	    'open to a working group': _('Open to a working group'),
 	    'votes for publishing': _('Votes for publishing'),
 	    'votes for amendments': _('Votes for amendments'),
-	    'amendable': _('Amendable'),
+	    'amendable': _('Being improved'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
 	    'favorable': _('Favorable'),
@@ -157,82 +157,3 @@ def get_states_mapping(user, context, state):
     result = STATES_PARTICIPANT_MAPPING.get(
         content_type, STATES_PARTICIPANT_MAPPING.get('default'))
     return result.get(state, None)
-
-
-# STATES_PARTICIPANT_MAPPING = {
-#          #Commun
-# 	    'draft': {'amendment':_('In preparation'),
-# 	              'default': _('Draft')},
-# 	    #state by context. 'default' key is required!
-# 	    'published': {'proposal':_('Submitted'),
-# 	                  'amendment':_('Submitted'),
-# 	                  'default': _('Published')},
-# 	    'archived': _('Archived'),
-#         #Amendment
-# 	    'explanation': _('Explanation'),
-# 	    #Ideas
-# 	    'to work': _('To work'),
-# 	    'submitted': _('Submitted for moderation'),
-# 	    #Invitation
-# 	    'pending': _('Pending'),
-# 	    'accepted': _('Accepted'),
-# 	    'refused': _('Refused'),
-# 	    #Proposal
-# 	    'open to a working group': _('Open to a working group'),
-# 	    'votes for publishing': _('Votes for publishing'),
-# 	    'votes for amendments': _('Votes for amendments'),
-# 	    'amendable': _('Amendable'),
-# 	    #Proposal, Idea
-# 	    'examined': _('Examined'),
-# 	    'favorable': _('Favorable'),
-# 	    'to_study': _('To study'),
-# 	    'unfavorable': _('Unfavorable'),
-# 	    #Correction
-# 	    'in process': _('In process'),
-# 	    'processed': _('Processed'),
-# 	    #Working group, Person
-# 	    'active': _('Active'),
-# 	    'deactivated': _('Deactivated'),
-# 	    #Working group
-# 	    'closed': _('Closed')
-#          }
-
-
-#states by memeber
-# STATES_MEMBER_MAPPING = {
-#          #Commun
-# 	    'draft': {'amendment':_('In preparation'),
-# 	              'default': _('Draft')},
-# 	    #state by context. 'default' key is required!
-# 	    'published': {'proposal':_('Submitted'),
-# 	                  'amendment':_('Submitted'),
-# 	                  'default': _('Published')},
-# 	    'archived': _('Archived'),
-#         #Amendment
-# 	    'explanation': _('Explanation'),
-# 	    #Ideas
-# 	    'to work': _('To work'),
-# 	    'submitted': _('Submitted for moderation'),
-# 	    #Invitation
-# 	    'pending': _('Pending'),
-# 	    'accepted': _('Accepted'),
-# 	    'refused': _('Refused'),
-# 	    #Proposal
-# 	    'open to a working group': _('Open to a working group'),
-# 	    'votes for publishing': _('Votes for publishing'),
-# 	    'votes for amendments': _('Votes for amendments'),
-# 	    'amendable': _('Amendable'),
-# 	    #Proposal, Idea
-# 	    'examined': _('Examined'),
-# 	    'favorable': _('Favorable'),
-# 	    'to_study': _('To study'),
-# 	    'unfavorable': _('Unfavorable'),
-# 	    #Correction
-# 	    'in process': _('In process'),
-# 	    'processed': _('Processed'),
-# 	    #Working group, Person
-# 	    'active': _('Active'),
-# 	    'deactivated': _('Deactivated'),
-# 	    #Working group
-# 	    'closed': _('Closed')
-#          }
