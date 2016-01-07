@@ -5,7 +5,10 @@
 	<p i18n:translate="">
 		Dès lors qu'une idée est dupliquée, elle peut être modifiée.
     </p>
-	<p i18n:translate="">
+	<p i18n:translate="" tal:condition="not request.moderate_ideas">
 		Pour qu'elle soit publiée, une idée dupliquée ne doit pas être identique à l'idée d'origine.
+    </p>
+    <p i18n:translate="" tal:condition="request.moderate_ideas">
+		Pour qu'elle soit soumise à modération, une idée dupliquée ne doit pas être identique à l'idée d'origine.
     </p>
 </div>

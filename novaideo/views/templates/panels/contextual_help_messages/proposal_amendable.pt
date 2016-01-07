@@ -1,7 +1,7 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
-   <p i18n:translate="">La relecture de la proposition a été effectuée, la proposition est en cours d'amendement.</p>
+   <p i18n:translate="">La proposition est en cours d'amendement.</p>
 
-	<p i18n:translate="">Vous pouvez améliorer la proposition et soumettre aux autres participants vos améliorations sous forme d'amendements.</p>
+	<p i18n:translate="">Vous pouvez améliorer la proposition et soumettre aux autres participants vos améliorations.</p>
 
 	<p i18n:translate="">Vous pouvez également dupliquer la proposition et dans quel cas vous pourrez en modifier une copie que vous pourrez publier par la suite.</p>
 </div>

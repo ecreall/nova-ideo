@@ -1,16 +1,26 @@
-
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
         Les idées publiées sont visibles par l'ensemble des utilisateurs.
     </p>
-    <p i18n:translate="">
+    <span tal:omit-tag="" tal:condition="'idea' in request.content_to_examine" >
+        <p i18n:translate="" tal:condition="'examined' in context.state and 'unfavorable' in context.state">
+            Cette idée n'est pas favorable. Elle ne peut, donc, pas être transformée en proposition ou utilisée dans des propositions existantes par les membres de la plateforme.
+        </p>
+        <p i18n:translate="" tal:condition="'favorable' in context.state">
+            Cette idée est favorable. Elle peut, donc, être transformée en proposition ou utilisée dans des propositions existantes par les membres de la plateforme.
+        </p>
+    </span>
+
+    <p i18n:translate="" tal:condition="'idea' not in request.content_to_examine">
         Elles peuvent être transformées en proposition ou utilisées dans des propositions existantes par n'importe quel membre de la plateforme.
     </p>
+    
     <p i18n:translate="">
-        Elles peuvent également être dupliquées pour qu'une copie soit travaillée différemment ou vous pouvez les ajouter à vos favoris.
+        Les idées peuvent également être dupliquées pour qu'une copie soit travaillée différemment ou vous pouvez les ajouter à vos favoris.
     </p>
     <p i18n:translate="">
         Elles peuvent enfin être communiquées à des tiers ou discutées entre membres.
     </p>
 </div>
+
 
