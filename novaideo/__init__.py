@@ -1,5 +1,6 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# -*- coding: utf8 -*-
+# Copyright (c) 2015 by Ecreall under licence AGPL terms
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -8,7 +9,7 @@ import logging
 from pyramid.config import Configurator
 from pyramid.exceptions import ConfigurationError
 from pyramid.i18n import TranslationStringFactory
-from pyramid.session import UnencryptedCookieSessionFactoryConfig
+from pyramid.session import SignedCookieSessionFactory
 
 from substanced.db import root_factory
 
@@ -96,10 +97,9 @@ def main(global_config, **settings):
     config.add_translation_dirs('deform:locale/')
     config.add_translation_dirs('colander:locale/')
     config.scan()
-    YEAR = 86400 * 365
     config.add_static_view('novaideostatic',
                            'novaideo:static',
-                           cache_max_age=YEAR)
+                           cache_max_age=86400)
     #    config.set_locale_negotiator(my_locale_negotiator)
     settings = config.registry.settings
     secret = settings.get('novaideo.secret')
@@ -107,8 +107,10 @@ def main(global_config, **settings):
         raise ConfigurationError(
             'You must set a novaideo.secret key in your .ini file')
 
-    session_factory = UnencryptedCookieSessionFactoryConfig(secret, 
-                       timeout=DEFAULT_SESSION_TIMEOUT) 
+    session_factory = SignedCookieSessionFactory(
+        secret,
+        timeout=DEFAULT_SESSION_TIMEOUT,
+        reissue_time=3600)
     config.set_session_factory(session_factory)
     return config.make_wsgi_app()
 
