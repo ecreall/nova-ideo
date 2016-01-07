@@ -1,12 +1,13 @@
 <div tal:replace="structure navbar_body"/>
-<hr class="soften">
-<div class="right-caption span4"  i18n:domain="novaideo">
+<div class="media user-media"  i18n:domain="novaideo">
   <div class="media-left">
     <img class="img-thumbnail" tal:condition="object.logo" tal:attributes="src object.logo.url"  width="150"/>
   </div>
   <div class="media-body">
     <h3 class="media-heading">
-        <strong><span class="${getattr(object, 'icon', '')}" ></span> ${object.title}</strong>
+      <strong>
+          <span class="${getattr(object, 'icon', '')}" ></span> ${object.title}
+      </strong>
     </h3>
     <p class="text-muted" tal:condition="object.description">
              <small  >${object.description}</small>
