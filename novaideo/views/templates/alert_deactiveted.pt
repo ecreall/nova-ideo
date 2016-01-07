@@ -39,17 +39,30 @@
 		        </a>
 			</div>
 			<div>
-				TODO le texte du mail
-		    </div>
+                <p>Bonjour,</p>
+                <p>
+                    Pendant votre absence du portail d'innovation participative ${request.root.title}, de nouvelles idées et propositions ont été proposées.
+                </p>
+                <p>
+                    Vous verrez ci-dessous les dernières idées et les dernières propositions.
+                </p>
+                <p>
+                    Partagez vos idées! Venez enrichir les propositions des autres.
+                </p>
+                <p>
+                    Venez soutenir les propositions à mettre en application.
+                </p>
+                <p>
+                    Nova-Ideo, participons pour ensemble faire avancer notre entreprise.
+                </p>
+            </div>
           	<div tal:repeat="object entities">
 			    <a style="text-decoration: none;" tal:attributes="href request.resource_url(object, '@@index')" target="_blank">
 			    	<h5 style="font-weight: bold">${object.title} </h5>
 			    </a>
 			    <div style="color: #333333;
-							font-size: 12px;
-							line-height: 25px;
-							padding: 0 15px 10px;
-							text-align: justify;">
+							font-size: 13px;
+							padding: 0 10px 5px;">
 					${object.presentation_text(200)}
 				</div>
 			</div>
