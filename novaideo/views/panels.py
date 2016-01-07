@@ -365,11 +365,15 @@ class StepsPanel(object):
                 result['current_step'] = 5
                 result['step5_message'] = self._get_step5_informations(context,
                                                                    self.request)
-            elif 'archived' not in context.state:
+            elif not ('examined' in context.state or \
+                      'submitted_support' in context.state or\
+                      'archived' in context.state):
                 result['current_step'] = 3
                 result['step3_message'] = self._get_step3_informations(context,
                                                                    self.request)
-            elif 'archived' in context.state:
+            elif 'examined' in context.state or \
+                 'submitted_support' in context.state or\
+                 'archived' in context.state:
                 result['current_step'] = 0
 
         if isinstance(context, Idea):
