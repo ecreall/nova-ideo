@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:define-macro="main"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="novaideo"
+      tal:define="
+      su request.static_url;">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<body>
+        <div style="display: table;
+		        	color: #333;
+					font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+					font-size: 14px;
+					line-height: 1.42857;
+					background-color: #f3f3f3;
+					padding-bottom: 15px;">
+          <div style="width: 20%;
+          	          min-height: 1px;
+          	          position: relative;
+          	          display: table-cell">
+          </div>
+          <div style="box-shadow: 0 7px 11px #888888;
+					min-height: 1px;
+					padding: 15px;
+					position: relative;
+					width: 50%;
+					background-color: white;">
+			<div style="text-align: center; padding-bottom: 25px">
+				<a style="text-decoration: none; color: #777" href="${request.resource_url(request.root, '')}" tal:define="logo getattr(request.root, 'picture', None)">
+			        <img tal:condition="logo" src="${logo.url}" class="globe-logo" style=" height: 35px;
+																						    margin-top: -12px;
+																						    vertical-align: top;">
+			        <div tal:omit-tag="" tal:condition="not logo">
+			          <img alt="Nova-Ideo" src="${request.static_url('novaideo:static/images/novaideo32.png')}" style=" height: 35px;
+																						    margin-top: -12px;
+																						    vertical-align: top;"> Nova-Ideo
+			        </div>
+		        </a>
+			</div>
+			<div>
+				TODO le texte du mail
+		    </div>
+          	<div tal:repeat="object entities">
+			    <a style="text-decoration: none;" tal:attributes="href request.resource_url(object, '@@index')" target="_blank">
+			    	<h5 style="font-weight: bold">${object.title} </h5>
+			    </a>
+			    <div style="color: #333333;
+							font-size: 12px;
+							line-height: 25px;
+							padding: 0 15px 10px;
+							text-align: justify;">
+					${object.presentation_text(200)}
+				</div>
+			</div>
+		  </div>
+		  <div style="width: 30%;
+		  	          min-height: 1px;
+		  	          position: relative;"></div>
+		 </div>
+  </body>
+</html>
