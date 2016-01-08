@@ -1,4 +1,5 @@
 #!/bin/bash
+sleep 10s
 sed -e 's@dace.wosystem@dace.wosystem dace.system@' \
     -e 's@^substanced.catalogs.autosync = .*@substanced.catalogs.autosync = false@' \
     -e 's@^port = .*@port = 5002@' \
