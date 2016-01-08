@@ -1,0 +1,22 @@
+<div tal:condition="sources" class="advertisement">
+	<div data-ride="carousel" data-interval="10000" class="carousel slide  advertisement-right-11" id="advertisement_right_11">   
+	      <div role="listbox" class="carousel-inner advertisement-container">
+	        <div tal:repeat="(i, source) enumerate(sources)" class="item ${i==0 and 'active'}">
+	           <a tal:condition="source['type'] == 'img'" href="${source['url']}" target="_blank">
+	             <img alt="publicite" src="${source['content']}" data-holder-rendered="true" width="240">
+	           </a>
+	           <object tal:condition="source['type'] == 'flash'" width="240" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
+					<param name="movie" value="${source['content']}">
+					<param name="quality" value="high">
+					<embed src="${source['content']}" quality="high"  width="240" height="90" 
+					  type="application/x-shockwave-flash" 
+                      pluginspage="http://www.macromedia.com/go/getflashplayer">
+					</embed>
+			   </object>
+	           <div tal:condition="source['type'] == 'html'" style="height: 90px; width: 240px">
+					${structure:source['content']}
+			   </div>
+	        </div>
+	      </div>
+	</div>
+</div>

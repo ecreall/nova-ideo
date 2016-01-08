@@ -273,6 +273,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     picture = CompositeUniqueProperty('picture')
     favicon = CompositeUniqueProperty('favicon')
     theme = CompositeUniqueProperty('theme')
+    advertisings = CompositeMultipleProperty('advertisings')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)

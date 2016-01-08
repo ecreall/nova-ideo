@@ -18,7 +18,7 @@ from novaideo.content.interface import (
     IPerson,
     ICorrelableEntity,
     Iidea)
-from novaideo.views.filter import find_entities, FILTER_SOURCES
+from novaideo.views import filter as filter_
 
 
 ALL_VALUES_KEY = "*"
@@ -70,10 +70,10 @@ class NovaideoAPI(IndexManagementJsonView):
         if name:
             page_limit, current_page, start, end = self._get_pagin_data()
             if is_all_values_key(name):
-                result = find_entities(interfaces=[IPerson],
+                result = filter_.find_entities(interfaces=[IPerson],
                                        metadata_filter={'states': ['active']})
             else:
-                result = find_entities(interfaces=[IPerson],
+                result = filter_.find_entities(interfaces=[IPerson],
                                        text_filter={'text_to_search': name},
                                        metadata_filter={'states': ['active']})
 
@@ -95,11 +95,11 @@ class NovaideoAPI(IndexManagementJsonView):
             user = get_current()
             page_limit, current_page, start, end = self._get_pagin_data()
             if is_all_values_key(name):
-                result = find_entities(
+                result = filter_.find_entities(
                     user=user,
                     interfaces=[IBaseReview])
             else:
-                result = find_entities(
+                result = filter_.find_entities(
                     user=user,
                     interfaces=[IBaseReview],
                     text_filter={'text_to_search': name})
@@ -124,14 +124,14 @@ class NovaideoAPI(IndexManagementJsonView):
             user = get_current()
             page_limit, current_page, start, end = self._get_pagin_data()
             if is_all_values_key(name):
-                result = find_entities(
+                result = filter_.find_entities(
                     interfaces=interfaces,
                     metadata_filter={
                         'states': states},
                     user=user,
                     add_query=query)
             else:
-                result = find_entities(
+                result = filter_.find_entities(
                     interfaces=interfaces,
                     metadata_filter={
                         'states': states},
@@ -166,8 +166,8 @@ class NovaideoAPI(IndexManagementJsonView):
 
     def filter_result(self):
         filter_source = self.params('filter_source')
-        if filter_source is not None and FILTER_SOURCES.get(filter_source, None):
-            view_source = FILTER_SOURCES[filter_source](
+        if filter_source is not None and filter_.FILTER_SOURCES.get(filter_source, None):
+            view_source = filter_.FILTER_SOURCES[filter_source](
                 self.context, self.request)
             result = view_source.update()
             body = result['coordinates'][view_source.coordinates][0]['body']

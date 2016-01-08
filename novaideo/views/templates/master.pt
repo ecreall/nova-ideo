@@ -145,8 +145,18 @@
           </div>
 
           <div class="col-md-3 column ui-sortable novaideo-right">
-            ${panel('lateral_menu')}
-             ${panel('contextual_help')}
+               ${panel('lateral_menu')}
+               ${panel('advertisting_right_1')}
+               ${panel('advertisting_right_2')}
+               ${panel('advertisting_right_3')}
+               ${panel('advertisting_right_5')}
+               ${panel('advertisting_right_6')}
+               ${panel('advertisting_right_7')}
+               ${panel('advertisting_right_8')}
+               ${panel('advertisting_right_9')}
+               ${panel('advertisting_right_10')}
+               ${panel('advertisting_right_11')}
+               ${panel('contextual_help')}
              <div class="more-contents-panel-s visible-xs-inline-block visible-sm-inline-block">
                    ${more_panel}
                </div>

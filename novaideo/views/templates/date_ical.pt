@@ -1,0 +1,69 @@
+<span tal:define="name name|field.name;
+                  css_class css_class|field.widget.css_class;
+                  oid oid|field.oid;
+                  mask mask|field.widget.mask;
+                  mask_placeholder mask_placeholder|field.widget.mask_placeholder;
+                  style style|field.widget.style;
+"
+      tal:omit-tag="">
+<div class="help-date-wdget">
+      <div>
+        <div class="helpWriteSeances hide-bloc" id="${oid}helpWriteSeances">
+          <div class="row help-date-ical-title">
+            <span class="glyphicon glyphicon-calendar"></span> S&eacute;lectionnez vos dates
+          </div> 
+        <hr class="soften">
+        <div class="row">  <!-- second line -->
+          <div class="col-md-3 col-xs-5">   <!-- column 1 -->  
+            <div data-oid="${oid}">
+              <br />
+              <label><input type="radio" name="choixPeriode" data-oid="${oid}" id="${oid}choixPeriode1" value="Le" onclick="selectMode(1, this)"/> Le</label>
+              <br />
+              <label><input type="radio" name="choixPeriode" id="${oid}choixPeriode2" value="Les" onclick="selectMode(2, this)"/> Les</label>
+              <br />
+              <label><input type="radio" name="choixPeriode" id="${oid}choixPeriode3" value="Du...Au..." onclick="selectMode(3, this)"/> Du...Au...</label>
+              <br />
+              <label><input type="radio" name="choixPeriode" id="${oid}choixPeriode4" value="Jusqu'au" onclick="selectMode(4, this)"/> Jusqu'au...</label>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-xs-6">   <!-- column 2 -->  
+            <div class="SortirCalendar" id="${oid}SortirCalendar">
+              <script type="text/javascript">
+              
+              </script>
+            </div>
+          </div>
+
+          <div class="col-md-5 col-xs-8">   <!-- column 3 -->
+            <div id="${oid}choixADe"></div>
+          </div> 
+        </div> <!-- end second line -->
+
+        <div class="row">
+          <div class="col-md-12" style="vertical-align: bottom">
+            <div class="message-validation" id="${oid}messageValidation"></div>
+          </div>
+        </div>
+
+        <div class="row"> <!-- line 3 -->
+          <div class="col-md-12">
+            <div class="list-des-dates" id="${oid}ListeDesDates"></div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+
+ <div class="input-group">
+    <input type="text" name="${name}" value="${cstruct}" 
+           tal:attributes="class string: form-control form-control-date ${css_class or ''};"
+           id="${oid}"
+           style="color:#408c40; font-weight: bold;"/>
+      <span class="input-group-btn">
+        <button class="btn btn-primary help-activator closed" type="button"><span class="glyphicon glyphicon-calendar"></span></button>
+      </span>
+  </div>
+</div>
+
+</span>

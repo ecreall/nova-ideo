@@ -171,3 +171,18 @@ class INovaIdeoApplication(IEntity, IApplication):
 class IAlert(IVisualisableElement,
              IEntity):
     pass
+
+
+class IAdvertising(IVisualisableElement, ISearchableEntity):
+
+    dates = Attribute('dates')
+
+
+@interface_config(type_id='web_advertising')
+class IWebAdvertising(IAdvertising):
+
+    picture = Attribute('picture', type=FILETYPE)
+
+    html_content = Attribute('html_content')
+
+    advertisting_url = Attribute('advertisting_url')

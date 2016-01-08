@@ -26,6 +26,7 @@ from novaideo.content.interface import (
     IPerson,
     IProposal,
     Iidea)
+from novaideo.dateindex import DateRecurring
 
 
 class ISearchableObject(Interface):
@@ -33,11 +34,11 @@ class ISearchableObject(Interface):
     def release_date():
         pass
 
-    # def publication_start_date():
-    #     pass
+    def publication_start_date():
+        pass
 
-    # def publication_end_date():
-    #     pass
+    def publication_end_date():
+        pass
 
     def object_keywords():
         pass
@@ -115,23 +116,23 @@ class NovaideoCatalogViews(object):
 
         return adapter.release_date()
 
-    # @indexview()
-    # def publication_start_date(self, default):
-    #     adapter = get_current_registry().queryAdapter(
-    #         self.resource, ISearchableObject)
-    #     if adapter is None:
-    #         return default
+    @indexview()
+    def publication_start_date(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
 
-    #     return adapter.publication_start_date()
+        return adapter.publication_start_date()
 
-    # @indexview()
-    # def publication_end_date(self, default):
-    #     adapter = get_current_registry().queryAdapter(
-    #         self.resource, ISearchableObject)
-    #     if adapter is None:
-    #         return default
+    @indexview()
+    def publication_end_date(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
 
-    #     return adapter.publication_end_date()
+        return adapter.publication_end_date()
 
     @indexview()
     def object_keywords(self, default):
@@ -402,8 +403,8 @@ class NovaideoIndexes(object):
     favorites = Keyword()
     related_contents = Keyword()
     last_connection = Field()
-    # publication_start_date = Field()
-    # publication_end_date = Field()
+    publication_start_date = DateRecurring()
+    publication_end_date = DateRecurring()
     object_id = Field()
     object_title = Field()
     object_access_control = Keyword()
@@ -513,6 +514,24 @@ class SearchableObject(Adapter):
 
     def related_contents(self):
         return []
+
+    def publication_start_date(self):
+        start_date = getattr(
+            self.context, 'visibility_dates_start_date', None)
+        if start_date:
+            return {'attr': 'visibility_dates',
+                    'date': start_date}
+
+        return None
+
+    def publication_end_date(self):
+        end_date = getattr(
+            self.context, 'visibility_dates_end_date', None)
+        if end_date:
+            return {'attr': 'visibility_dates',
+                    'date': end_date}
+
+        return None
 
 
 @adapter(context=IPerson)

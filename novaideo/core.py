@@ -6,6 +6,7 @@
 
 import colander
 import venusian
+import deform
 from persistent.list import PersistentList
 from zope.interface import implementer
 from pyramid.threadlocal import get_current_request, get_current_registry
@@ -47,12 +48,53 @@ SEARCHABLE_CONTENTS = {}
 
 NOVAIDO_ACCES_ACTIONS = {}
 
+ADVERTISING_CONTAINERS = {}
+
 
 def get_searchable_content(request=None):
     if request is None:
         request = get_current_request()
 
     return getattr(request, 'searchable_contents', {})
+
+
+class advertising_banner_config(object):
+    """ A function, class or method decorator which allows a
+    developer to create advertising banner registrations.
+
+    Advertising banner is a panel. See pyramid_layout.panel_config.
+    """
+    def __init__(self, name='', context=None, renderer=None, attr=None):
+        self.name = name
+        self.context = context
+        self.renderer = renderer
+        self.attr = attr
+
+    def __call__(self, wrapped):
+        settings = self.__dict__.copy()
+
+        def callback(context, name, ob):
+            config = context.config.with_package(info.module)
+            config.add_panel(panel=ob, **settings)
+            ADVERTISING_CONTAINERS[self.name] = {'title': ob.title,
+                                                 'description': ob.description,
+                                                 'order': ob.order,
+                                                 'validator': ob.validator,
+                                                 'tags': ob.tags
+                                                 #TODO add validator ob.validator
+                                                 }
+
+        info = venusian.attach(wrapped, callback, category='pyramid_layout')
+
+        if info.scope == 'class':
+            # if the decorator was attached to a method in a class, or
+            # otherwise executed at class scope, we need to set an
+            # 'attr' into the settings if one isn't already in there
+            if settings['attr'] is None:
+                settings['attr'] = wrapped.__name__
+
+        settings['_info'] = info.codeinfo # fbo "action_method"
+        return wrapped
 
 
 class access_action(object):

@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import datetime
+import pytz
 import string
 import random
 import unicodedata
@@ -20,6 +21,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from dace.util import getSite
 from daceui.interfaces import IDaceUIAPI
 
+from .ical_date_utility import getDatesFromString, set_recurrence
 from novaideo.content.correlation import Correlation, CorrelationType
 from novaideo.core import _
 
@@ -145,6 +147,47 @@ def to_localized_time(
         return localizer.translate(_(format, mapping=date_dict))
 
     return _(format, mapping=date_dict)
+
+
+def dates(propertyname):
+    """Return a dates property.
+    """
+    def _get(self):
+        return getattr(self, propertyname + '_dates_str', '')
+
+    def _set(self, dates_str):
+        """Set _dates_str, start_date, end_date and recurrence attributes
+        """
+        setattr(self, propertyname + '_dates_str', dates_str)
+        dates = getDatesFromString(self, dates_str)
+        # Set start and end dates from dates (list of list representing datetime)
+        if not dates:
+            setattr(self, propertyname + '_start_date', None)
+            setattr(self, propertyname + '_end_date', None)
+            setattr(self, propertyname + '_recurrence', '')
+            return
+
+        now = datetime.datetime.now(tz=pytz.UTC)
+        if dates[0]:
+            setattr(self, propertyname + '_start_date',
+                    datetime.datetime(
+                        dates[0][0], dates[0][1],
+                        dates[0][2], tzinfo=pytz.UTC))
+            setattr(self, propertyname + '_end_date',
+                    datetime.datetime(
+                        dates[0][0], dates[0][1],
+                        dates[0][2], 23, 59, 59, tzinfo=pytz.UTC))
+        else:
+            setattr(self, propertyname + '_start_date', now)
+            setattr(self, propertyname + '_end_date',
+                    datetime.datetime(
+                        now.year, now.month,
+                        now.day, 23, 59, 59, tzinfo=pytz.UTC))
+
+        setattr(self, propertyname + '_recurrence',
+                set_recurrence(dates, dates_str))
+
+    return property(_get, _set)
 
 
 def deepcopy(obj):

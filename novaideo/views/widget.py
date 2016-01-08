@@ -10,7 +10,8 @@ from pyramid.threadlocal import get_current_request
 from pyramid import renderers
 
 from pontus.widget import (
-  SequenceWidget, Select2Widget)
+    SequenceWidget, Select2Widget,
+    TextInputWidget)
 
 
 class EmailInputWidget(deform.widget.TextInputWidget):
@@ -95,6 +96,12 @@ class DragDropMappingWidget(deform.widget.MappingWidget):
     item_template = 'novaideo:views/templates/dragdrop_sequence/mapping_item.pt'
 
 
+class DateIcalWidget(TextInputWidget):
+    template = 'novaideo:views/templates/date_ical.pt'
+    requirements = (('jquery.maskedinput', None),
+                    ('date_ical', None))
+
+
 default_resource_registry.set_js_resources('simple_mapping', None,
                'novaideo:static/js/simple_mapping.js'  )
 
@@ -125,3 +132,10 @@ default_resource_registry.set_js_resources('limitedtextarea', None,
 
 default_resource_registry.set_css_resources('limitedtextarea', None, 
               'novaideo:static/limitedtextarea/limitedtextarea.css'  )
+
+
+default_resource_registry.set_js_resources('date_ical', None,
+               'novaideo:static/js/date_ical.js')
+
+default_resource_registry.set_css_resources('date_ical', None,
+              'novaideo:static/css/date_ical.css')

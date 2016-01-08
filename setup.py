@@ -21,6 +21,7 @@ requires = [
     'substanced',
     'waitress',
     'gunicorn',
+    'plone.event',
     'xlrd',
     'diff-match-patch',
     'Genshi',

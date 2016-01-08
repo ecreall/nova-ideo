@@ -1,0 +1,47 @@
+<div class="thumbnail right-caption span4 search-item result-item"
+  i18n:domain="novaideo"
+  tal:define="icon getattr(object, 'icon', '')">
+    <div id="advertisting-image" class="content-image">
+    <span  class="hidden-xs icon ${icon}"></span>
+  </div>
+  <div class="media-body cultural-event-body">
+    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+    <h3><small class="pull-right">${getattr(object, 'click', 0)} <span i18n:translate="">click(s)</span></small></h3>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h4 class="content-title"><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title}</h4></a>
+    <div class="advertisement pull-right">
+        <div data-ride="carousel" data-interval="10000" class="carousel slide  advertisement-preview" id="advertisement_preview">
+          <div role="listbox" class="carousel-inner advertisement-container">
+                <div tal:define="source object.get_content_data()" class="item active">
+                   <a class="image-preview" tal:condition="source['type'] == 'img'" href="#" target="_blank">
+                     <img alt="publicite" src="${source['content']}" data-holder-rendered="true" width="100">
+                   </a>
+                   <object tal:condition="source['type'] == 'flash'" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
+                <param name="movie" value="${source['content']}">
+                <param name="quality" value="high">
+                <embed src="${source['content']}" quality="high" height="90"
+                  type="application/x-shockwave-flash"
+                            pluginspage="http://www.macromedia.com/go/getflashplayer">
+                </embed>
+               </object>
+               <div tal:condition="source['type'] == 'html'" style="height: 90px">
+                ${structure:source['content']}
+               </div>
+            </div>
+          </div>
+        </div>
+   </div>
+   <dl tal:condition="getattr(object,'positions', [])">
+     <dt i18n:translate="">Positions</dt>
+     <dd>
+       <tal:loop repeat="k object.get_positions()">
+         ${k}
+        <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+       </tal:loop>
+     </dd>
+   </dl>
+    <dl>
+        <dt i18n:translate="">Date</dt>
+        <dd>${object.visibility_dates}</dd>
+    </dl>
+  </div>
+</div>
