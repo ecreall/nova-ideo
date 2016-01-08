@@ -55,7 +55,7 @@ def createfile_roles_validation(process, context):
 class CreateFile(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-file'
-    style_order = 0
+    style_order = 99
     submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = createfile_roles_validation
@@ -112,7 +112,7 @@ def seefiles_processsecurity_validation(process, context):
 class SeeFiles(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-file'
-    style_order = -1
+    style_order = 99
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seefiles_roles_validation
