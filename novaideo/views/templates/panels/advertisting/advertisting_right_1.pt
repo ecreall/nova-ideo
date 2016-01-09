@@ -3,12 +3,12 @@
 	      <div role="listbox" class="carousel-inner advertisement-container">
 	        <div tal:repeat="(i, source) enumerate(sources)" class="item ${i==0 and 'active'}">
 	           <a tal:condition="source['type'] == 'img'" href="${source['url']}" target="_blank">
-	             <img alt="publicite" src="${source['content']}" data-holder-rendered="true" width="330">
+	             <img alt="publicite" src="${source['content']}" data-holder-rendered="true" width="100%">
 	           </a>
-	           <object tal:condition="source['type'] == 'flash'" width="330" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
+	           <object tal:condition="source['type'] == 'flash'" width="100%" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
 					<param name="movie" value="${source['content']}">
 					<param name="quality" value="high">
-					<embed src="${source['content']}" quality="high"  width="330" height="90" 
+					<embed src="${source['content']}" quality="high"  width="100%" height="90" 
 					  type="application/x-shockwave-flash" 
                       pluginspage="http://www.macromedia.com/go/getflashplayer">
 					</embed>
