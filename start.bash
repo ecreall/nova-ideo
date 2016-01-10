@@ -21,7 +21,7 @@ sed -i \
     production-heroku.ini
 mkdir -p var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 chmod 700 var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
-chown u1000 var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
+chown u1000 var var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 sed -e 's@dace$@dace.wosystem@' -e 's@^substanced.catalogs.autosync = .*@substanced.catalogs.autosync = false@' production-heroku.ini > production-script.ini
 /usr/sbin/varnishd -P /app/var/varnishd.pid -a 0.0.0.0:5000 -f /app/etc/varnish.vcl -s malloc,256m -t 0
 exec ./start_all.bash production-heroku.ini $TIMEOUT
