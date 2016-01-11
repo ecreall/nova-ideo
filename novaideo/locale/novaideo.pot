@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-01-08 13:58+0100\n"
+"POT-Creation-Date: 2016-01-11 13:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -680,7 +680,7 @@ msgid "Details"
 msgstr ""
 
 #: ./novaideo/views/idea_management/see_idea.py:90
-#: ./novaideo/views/proposal_management/see_proposal.py:182
+#: ./novaideo/views/proposal_management/see_proposal.py:184
 #: ./novaideo/views/amendment_management/see_amendment.py:125
 msgid "actions"
 msgstr ""
@@ -1063,12 +1063,12 @@ msgid ", duplicated from the idea"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:39
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:137
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:146
 msgid "Attachments:"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:40
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:138
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:147
 msgid "Attachment:"
 msgstr ""
 
@@ -1520,7 +1520,7 @@ msgstr ""
 #: ./novaideo/views/ballot_processes/majorityjudgment/vote.py:166
 #: ./novaideo/views/ballot_processes/majorityjudgment/vote.py:232
 #: ./novaideo/views/proposal_management/first_participate.py:37
-#: ./novaideo/views/proposal_management/see_proposal.py:96
+#: ./novaideo/views/proposal_management/see_proposal.py:94
 #: ./novaideo/content/processes/ballot_processes/__init__.py:31
 #: ./novaideo/content/processes/ballot_processes/rangevoting/definition.py:42
 #: ./novaideo/content/processes/ballot_processes/rangevoting/definition.py:43
@@ -1963,7 +1963,39 @@ msgstr ""
 msgid "Workspace"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:112
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:96
+msgid "Display all differences"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:96
+msgid "Display"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:97
+msgid "Hide all differences"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:97
+msgid "Hide"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:98
+msgid "Accept all improvements"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:98
+msgid "Accept all"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:99
+msgid "Reject all improvements"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:99
+msgid "Reject all"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:121
 msgid "Votes"
 msgstr ""
 
@@ -3313,6 +3345,10 @@ msgstr ""
 #: ./novaideo/views/work_mode_processes/correction_work_mode_process/correct_item.py:25
 #: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:62
 msgid "Correct"
+msgstr ""
+
+#: ./novaideo/views/work_mode_processes/correction_work_mode_process/correct_item.py:56
+msgid "Correct all"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:63

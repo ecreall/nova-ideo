@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-01-08 13:58+0100\n"
+"POT-Creation-Date: 2016-01-11 13:01+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -680,7 +680,7 @@ msgid "Details"
 msgstr "Détails"
 
 #: novaideo/views/idea_management/see_idea.py:90
-#: novaideo/views/proposal_management/see_proposal.py:182
+#: novaideo/views/proposal_management/see_proposal.py:184
 #: novaideo/views/amendment_management/see_amendment.py:125
 msgid "actions"
 msgstr "actions"
@@ -1059,12 +1059,12 @@ msgid ", duplicated from the idea"
 msgstr ", dupliquée à partir de l'idée"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:39
-#: novaideo/views/proposal_management/templates/see_proposal.pt:137
+#: novaideo/views/proposal_management/templates/see_proposal.pt:146
 msgid "Attachments:"
 msgstr "Pièces jointes :"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:40
-#: novaideo/views/proposal_management/templates/see_proposal.pt:138
+#: novaideo/views/proposal_management/templates/see_proposal.pt:147
 msgid "Attachment:"
 msgstr "Pièce jointe :"
 
@@ -1515,7 +1515,7 @@ msgstr "Procès-verbal"
 #: novaideo/views/ballot_processes/majorityjudgment/vote.py:166
 #: novaideo/views/ballot_processes/majorityjudgment/vote.py:232
 #: novaideo/views/proposal_management/first_participate.py:37
-#: novaideo/views/proposal_management/see_proposal.py:96
+#: novaideo/views/proposal_management/see_proposal.py:94
 #: novaideo/content/processes/ballot_processes/__init__.py:31
 #: novaideo/content/processes/ballot_processes/rangevoting/definition.py:42
 #: novaideo/content/processes/ballot_processes/rangevoting/definition.py:43
@@ -1958,7 +1958,39 @@ msgstr "Le nombre maximum de participants a été atteint"
 msgid "Workspace"
 msgstr "Espace de travail"
 
-#: novaideo/views/proposal_management/templates/see_proposal.pt:112
+#: novaideo/views/proposal_management/templates/see_proposal.pt:96
+msgid "Display all differences"
+msgstr "Afficher toutes les différences"
+
+#: novaideo/views/proposal_management/templates/see_proposal.pt:96
+msgid "Display"
+msgstr "Afficher"
+
+#: novaideo/views/proposal_management/templates/see_proposal.pt:97
+msgid "Hide all differences"
+msgstr "Cacher toutes les différences"
+
+#: novaideo/views/proposal_management/templates/see_proposal.pt:97
+msgid "Hide"
+msgstr "Cacher"
+
+#: novaideo/views/proposal_management/templates/see_proposal.pt:98
+msgid "Accept all improvements"
+msgstr "Accepter toutes les améliorations"
+
+#: novaideo/views/proposal_management/templates/see_proposal.pt:98
+msgid "Accept all"
+msgstr "Accepter tout"
+
+#: novaideo/views/proposal_management/templates/see_proposal.pt:99
+msgid "Reject all improvements"
+msgstr "Rejeter toutes les améliorations"
+
+#: novaideo/views/proposal_management/templates/see_proposal.pt:99
+msgid "Reject all"
+msgstr "Rejeter tout"
+
+#: novaideo/views/proposal_management/templates/see_proposal.pt:121
 msgid "Votes"
 msgstr "Votes"
 
@@ -3316,6 +3348,11 @@ msgstr "Cloturer le travail"
 #: novaideo/views/work_mode_processes/correction_work_mode_process/correct_item.py:25
 #: novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:62
 msgid "Correct"
+msgstr "Corriger"
+
+#: novaideo/views/work_mode_processes/correction_work_mode_process/correct_item.py:56
+#, fuzzy
+msgid "Correct all"
 msgstr "Corriger"
 
 #: novaideo/views/novaideo_view_manager/analytics.py:63
@@ -5048,6 +5085,3 @@ msgstr ""
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:52
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
-
-#~ msgid "Phone number"
-#~ msgstr "Numéro de téléphone"
