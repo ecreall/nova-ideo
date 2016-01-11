@@ -338,6 +338,14 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
         self.__access_keys__ = PersistentList(generate_access_keys(
             self, root))
 
+    def get_picture_url(self, kind, default):
+        if self.picture:
+            img = getattr(self.picture, kind, None)
+            if img:
+                return img.url
+
+        return default
+
     def get_more_contents_criteria(self):
         "return specific query, filter values"
         return None, None

@@ -90,6 +90,7 @@ def members_choice(node, kw):
         ajax_url=ajax_url,
         multiple=True,
         create=True,
+        ajax_item_template="user_item_template",
         title_getter=title_getter,
         )
 

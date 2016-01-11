@@ -88,6 +88,8 @@
         type="text/javascript"></script>
 
     <more tal:omit-tag="" metal:define-slot="head-more"></more>
+    <script src="${su('novaideo:static/js/templates.js')}"
+          type="text/javascript"></script>
     ${panel('social_share')}
   </head>
 

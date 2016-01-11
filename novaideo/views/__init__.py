@@ -83,7 +83,13 @@ class NovaideoAPI(IndexManagementJsonView):
             else:
                 result = result[:end]
 
-            entries = [{'id': str(get_oid(e)), 'text': e.title} for e in result]
+            default_img_url = self.request.static_url(
+                'novaideo:static/images/user100.png')
+            entries = [{'id': str(get_oid(e)),
+                        'text': e.title,
+                        'img_url': e.get_picture_url(
+                            'profil', default_img_url)}
+                       for e in result]
             result = {'items': entries, 'total_count': len(result)}
             return result
 
