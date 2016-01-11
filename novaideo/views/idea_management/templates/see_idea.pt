@@ -42,6 +42,7 @@
           <a tal:attributes="href f['url']">${f['title']}</a><tal:separator condition="not: repeat['f'].end">, </tal:separator> 
         </tal:loop>
    </dd>
+ </dl>
  </blockquote>
 </small>
 </div>

@@ -279,7 +279,9 @@ class CorrectProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
+
         correction = appstruct['_object_data']
+        old_text = correction.text
         correction.setproperty('author', user)
         context.addtoproperty('corrections', correction)
         self._get_newversion(context, correction)
@@ -316,12 +318,15 @@ class CorrectProposal(InfiniteCardinality):
         correction.description = text_analyzer.soup_to_text(soupdescriptiondiff)
         correction.title = text_analyzer.soup_to_text(souptitlediff)
         if souptextdiff.find_all("span", id="correction") or \
-           soupdescriptiondiff.find_all("span", id="correction"):
+           soupdescriptiondiff.find_all("span", id="correction") or\
+           souptitlediff.find_all("span", id="correction"):
             correction.state.append('in process')
+            alert = WorkingGroupAlert(alert_kind='correction_added')
+            request.root.addtoproperty('alerts', alert)
+            alert.init_alert(context.working_group.members, [context])
+        else:
+            context.text = old_text
 
-        alert = WorkingGroupAlert(alert_kind='correction_added')
-        request.root.addtoproperty('alerts', alert)
-        alert.init_alert(context.working_group.members, [context])
         return {}
 
     def redirect(self, context, request, **kw):
