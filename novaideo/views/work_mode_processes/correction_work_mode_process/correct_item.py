@@ -32,18 +32,48 @@ class CorrectItemView(BasicView):
         item = self.params('item')
         vote = self.params('vote')
         content = self.params('content')
-        self.execute({'item':item, 'vote':vote, 'content':content})
+        self.execute({'item': item, 'vote': vote, 'content': content})
         result = {}
         user = get_current()
         values = {
-                'title': self.context.get_adapted_title(get_current()), 
-                'text': self.context.get_adapted_text(get_current()),
-                'description': self.context.get_adapted_description(user),
-               }
+            'title': self.context.get_adapted_title(get_current()),
+            'text': self.context.get_adapted_text(get_current()),
+            'description': self.context.get_adapted_description(user),
+        }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
-        
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({CorrectItem:CorrectItemView})
+
+@view_config(
+    name='correctallitems',
+    context=Correction,
+    xhr=True,
+    renderer='json'
+    )
+class CorrectAllItemsView(BasicView):
+    title = _('Correct all')
+    name = 'correctallitems'
+    template = 'novaideo:views/proposal_management/templates/correction_text.pt'
+    behaviors = [CorrectItem]
+    viewid = 'correctallitems'
+
+    def __call__(self):
+        vote = self.params('vote')
+        content = self.params('content')
+        for item in self.context.corrections.keys():
+            self.execute({'item': item, 'vote': vote, 'content': content})
+
+        user = get_current()
+        values = {
+            'title': self.context.get_adapted_title(get_current()),
+            'text': self.context.get_adapted_text(get_current()),
+            'description': self.context.get_adapted_description(user),
+        }
+        body = self.content(args=values, template=self.template)['body']
+        return {'body': body}
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CorrectItem: CorrectItemView})

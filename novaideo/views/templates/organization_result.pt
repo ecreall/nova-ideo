@@ -19,8 +19,7 @@
       <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
       <dd tal:condition="managers">
         <tal:loop repeat="member managers">
-          <a tal:attributes="href request.resource_url(member, '@@index')">${member.title}</a>
-            <tal:separator condition="not: repeat['member'].end">, </tal:separator> 
+          <a tal:attributes="href request.resource_url(member, '@@index')">${member.title}</a><tal:separator condition="not: repeat['member'].end">, </tal:separator> 
         </tal:loop>
       </dd>
     </dl>

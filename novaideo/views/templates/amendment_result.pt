@@ -21,8 +21,7 @@
           <dt  i18n:translate="">Related ideas</dt>
 	  <dd>
             <tal:loop repeat="idea object.related_ideas">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
-               <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
+               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a><tal:separator condition="not: repeat['idea'].end">, </tal:separator>
             </tal:loop>
           </dd>
         </div>

@@ -42,8 +42,7 @@
       </dt>
       <dd tal:condition="proposal.keywords">
         <tal:loop repeat="k proposal.keywords">
-          <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
-            <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+          <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
         </tal:loop>
       </dd>
         <div tal:omit-tag="" tal:condition="proposal.working_group is not None">
@@ -62,7 +61,6 @@
                        tal:attributes="src profil_picture.url"  width="25"/>
                     <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
                     ${getattr(m, 'title', m.name)}</a>
-                    <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
                </tal:loop>
               </div>
             </dd>
@@ -89,7 +87,16 @@
       </a>
     </div>
 </div>
-
+<nav tal:condition="corrections" class="correction-navbar navbar navbar-inverse"  i18n:domain="novaideo">
+  <ul class="nav navbar-nav correction-text-actions"
+      tal:define="correction corrections[-1]"
+      data-url="${request.resource_url(correction, '@@correctallitems')}">
+        <li class="active"><a id="see-all" title="Display all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Display</span></a></li>
+        <li><a id="hide-all" title="Hide all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-close"></span> <span i18n:translate="">Hide</span></a></li>
+        <li><a id="accept-all" title="Accept all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-ok"></span> <span i18n:translate="">Accept all</span></a></li>
+        <li><a id="refuse-all" title="Reject all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-remove"></span> <span i18n:translate="">Reject all</span></a></li>
+  </ul>
+</nav>
 <div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} content-text correction-container-text">
   ${structure:text}
 </div>
@@ -138,8 +145,7 @@
    <dt tal:condition="file_len==1" i18n:translate="">Attachment:</dt>
    <dd>
         <tal:loop repeat="f files">
-          <a tal:attributes="href f.url">${f.title}</a>
-            <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+          <a tal:attributes="href f.url">${f.title}</a><tal:separator condition="not: repeat['f'].end">, </tal:separator> 
         </tal:loop>
    </dd>
  </blockquote>

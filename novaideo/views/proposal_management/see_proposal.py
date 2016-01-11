@@ -64,13 +64,11 @@ class DetailProposalView(BasicView):
 
         return actions, resources, messages, action_updated
 
-    def _get_adapted_text(self, user, is_participant):
+    def _get_adapted_text(self, user, is_participant, corrections):
         text = getattr(self.context, 'text', '')
         description = getattr(self.context, 'description', '')
         title = getattr(self.context, 'title', '')
         add_filigrane = False
-        corrections = [c for c in self.context.corrections
-                       if 'in process' in c.state]
         if corrections and is_participant:
             text = corrections[-1].get_adapted_text(user)
             description = corrections[-1].get_adapted_description(user)
@@ -132,7 +130,10 @@ class DetailProposalView(BasicView):
                 user not in working_group.members and \
                 (ct_participate_max or ct_participate_closed)
 
-        title, description, text, add_filigrane = self._get_adapted_text(user, is_participant)
+        corrections = [c for c in self.context.corrections
+                       if 'in process' in c.state]
+        title, description, text, add_filigrane = self._get_adapted_text(
+            user, is_participant, corrections)
         related_ideas = list(self.context.related_ideas.keys())
         not_published_ideas = [i for i in related_ideas
                                if 'published' not in i.state]
@@ -153,6 +154,7 @@ class DetailProposalView(BasicView):
             'title': title,
             'description': description,
             'text': text,
+            'corrections': corrections,
             'current_user': user,
             'is_participant': is_participant,
             'wg_actions': wg_actions,
