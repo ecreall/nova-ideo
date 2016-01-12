@@ -3353,9 +3353,8 @@ msgid "Correct"
 msgstr "Corriger"
 
 #: novaideo/views/work_mode_processes/correction_work_mode_process/correct_item.py:56
-#, fuzzy
 msgid "Correct all"
-msgstr "Corriger"
+msgstr "Corriger tout"
 
 #: novaideo/views/novaideo_view_manager/analytics.py:63
 msgid "Compute"
@@ -4095,12 +4094,11 @@ msgstr "Les utilisateurs peuvent s'enregistrer seulement sous invitation"
 
 #: novaideo/content/site_configuration.py:103
 msgid "Accessible only by members"
-msgstr ""
+msgstr "Accessible, seulement, par les membres."
 
 #: novaideo/content/site_configuration.py:104
-#, fuzzy
 msgid "Contents can be displayed only by members."
-msgstr "Les contenus peuvent être soutenus par les utilisateurs"
+msgstr "Les contenus peuvent être affichés, seulement, par les membres."
 
 #: novaideo/content/site_configuration.py:111
 msgid "Minimum number of participants for a working group"
