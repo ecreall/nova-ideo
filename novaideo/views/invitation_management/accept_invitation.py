@@ -23,7 +23,7 @@ from novaideo import _
 @colander.deferred
 def conditions_widget(node, kw):
     root = getSite()
-    terms_of_use = root.terms_of_use
+    terms_of_use = root['terms_of_use']
     return TOUCheckboxWidget(tou_file=terms_of_use)
 
 
