@@ -103,7 +103,7 @@ class WebAdvertisingSchema(AdvertisingSchema):
         widget=FileWidget(item_css_class="advertising-file-content",
                           css_class="file-content",
                           file_type=['image', 'flash']),
-        title=_('Advertisement file'),
+        title=_('Announcement file'),
         description=_("Only image and flash files are supported."),
         missing=None
         )

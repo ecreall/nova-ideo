@@ -36,8 +36,8 @@ class AdvertisingManagement(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(AdvertisingManagement, self).__init__(**kwargs)
-        self.title = _('Advertising management')
-        self.description = _('Advertising management')
+        self.title = _('Announcements management')
+        self.description = _('Announcements management')
 
     def _init_definition(self):
         self.defineNodes(
