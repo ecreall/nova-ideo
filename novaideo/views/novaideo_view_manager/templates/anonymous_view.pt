@@ -1,6 +1,6 @@
-<div class="">
+<div i18n:domain="novaideo">
   <h1>Bienvenue sur ${request.root.title}!</h1>
-  <p>${request.root.title} est une plateforme permettant de fournir un processus complet permettant à des groupes de travail de transformer des idées en propositions abouties grâce à un système de sessions d'amendements et de votes. Cette plateforme est à accès restreint au membre inscrit.</p>
+  <p><strong>${request.root.title}</strong> <span i18n:translate="">est une plateforme permettant de fournir un processus complet permettant à des groupes de travail de transformer des idées en propositions abouties grâce à un système de sessions d'amendements et de votes. Cette plateforme est à accès restreint au membre inscrit.</span></p>
   <p>
     <div class="btn-group navbar-right">
        <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary " id="log-in">
