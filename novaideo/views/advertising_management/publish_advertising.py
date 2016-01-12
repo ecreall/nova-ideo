@@ -48,7 +48,7 @@ class PublishAdvertisingView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishAdvertisingViewMultipleView(MultipleView):
-    title = _('Publish the advertisement')
+    title = _('Publish the announcement')
     name = 'publishadvertising'
     viewid = 'publishadvertising'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

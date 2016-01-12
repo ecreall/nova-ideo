@@ -47,7 +47,7 @@ class RemoveAdvertisingView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class RemoveAdvertisingViewMultipleView(MultipleView):
-    title = _('Remove the advertisement')
+    title = _('Remove the announcement')
     name = 'removeadvertising'
     viewid = 'removeadvertising'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

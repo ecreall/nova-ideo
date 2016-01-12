@@ -47,7 +47,7 @@ class ArchiveAdvertisingView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class ArchiveAdvertisingViewMultipleView(MultipleView):
-    title = _('Archive the advertisement')
+    title = _('Archive the announcement')
     name = 'archiveadvertising'
     viewid = 'archiveadvertising'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

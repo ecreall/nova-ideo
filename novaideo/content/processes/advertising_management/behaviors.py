@@ -70,7 +70,7 @@ class CreateWebAdvertising(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-picture'
     style_order = 100
-    title = _('Create a web advertising')
+    title = _('Create an announcement')
     submission_title = _('Save')
     context = INovaIdeoApplication
     roles_validation = createwebadvertising_roles_validation

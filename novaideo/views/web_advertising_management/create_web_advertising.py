@@ -27,7 +27,7 @@ from novaideo import _
     )
 class CreateWebAdvertisingView(FormView):
 
-    title = _('Create a web advertising')
+    title = _('Create an announcement')
     schema = select(WebAdvertisingSchema(factory=WebAdvertising,
                                          editable=True),
                     ['title', 'visibility_dates',

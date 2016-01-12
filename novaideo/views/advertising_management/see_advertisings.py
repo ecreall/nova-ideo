@@ -23,9 +23,9 @@ from novaideo import _
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""No advertising found"""),
-    '1': _(u"""One advertising found"""),
-    '*': _(u"""${nember} advertisings found""")
+    '0': _(u"""No announcement found"""),
+    '1': _(u"""One announcement found"""),
+    '*': _(u"""${nember} announcements found""")
     }
 
 
@@ -35,7 +35,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeAdvertisingsView(BasicView):
-    title = _('Advertisings')
+    title = _('Announcements')
     name = 'seeadvertisings'
     behaviors = [SeeAdvertisings]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

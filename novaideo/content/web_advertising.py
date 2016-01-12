@@ -152,7 +152,7 @@ class WebAdvertisingSchema(AdvertisingSchema):
 class WebAdvertising(Advertising):
     """WebAdvertising class"""
 
-    type_title = _('Web advertisement')
+    type_title = _('Announcement')
     icon = 'glyphicon glyphicon-picture'
     templates = {'default': 'novaideo:views/templates/web_advertisting_result.pt',
                  'bloc': 'novaideo:views/templates/web_advertisting_result.pt'}

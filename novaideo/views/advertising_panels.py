@@ -95,7 +95,7 @@ def default_validator(node, appstruct):
 class AdvertistingBanner(object):
 
     title = _('Banner')
-    description = _('Banner for advertistings')
+    description = _('Banner for announcements')
     tags = ['advertisting']
     name = 'banner'
     order = -1
