@@ -41,7 +41,9 @@ from novaideo.content.interface import (
     IProposal,
     Iidea,
     IWorkspace)
-from ..user_management.behaviors import global_user_processsecurity
+from ..user_management.behaviors import (
+    global_user_processsecurity,
+    access_user_processsecurity)
 from novaideo import _, log
 from novaideo.content.proposal import Proposal
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
@@ -1325,8 +1327,9 @@ def get_access_key(obj):
 
 
 def seeproposal_processsecurity_validation(process, context):
-    return 'draft' not in context.state or \
-           has_any_roles(roles=(('Owner', context), 'Admin'))
+    return access_user_processsecurity(process, context) and \
+           ('draft' not in context.state or \
+            has_any_roles(roles=(('Owner', context), 'Admin')))
 
 
 @access_action(access_key=get_access_key)

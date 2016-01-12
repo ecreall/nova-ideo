@@ -97,6 +97,15 @@ class UserParamsConfigurationSchema(Schema):
         missing=False
     )
 
+    only_for_members = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Accessible only by members'),
+        description=_('Contents can be displayed only by members.'),
+        title='',
+        missing=False
+    )
+
     participants_mini = colander.SchemaNode(
         colander.Integer(),
         title=_('Minimum number of participants for a working group'),
@@ -256,6 +265,12 @@ def default_sender(node, kw):
 
 
 class OtherSchema(Schema):
+
+    title = colander.SchemaNode(
+        colander.String(),
+        title=_('Title'),
+        missing=""
+        )
 
     contacts = colander.SchemaNode(
         colander.Sequence(),

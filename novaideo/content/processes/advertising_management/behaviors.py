@@ -20,7 +20,9 @@ from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
 
-from ..user_management.behaviors import global_user_processsecurity
+from ..user_management.behaviors import (
+    global_user_processsecurity,
+    access_user_processsecurity)
 from novaideo.content.interface import (
     INovaIdeoApplication,
     IWebAdvertising,
@@ -39,9 +41,10 @@ def get_access_key(obj):
 
 
 def seewebadvertising_processsecurity_validation(process, context):
-    return 'published' in context.state or \
+    return access_user_processsecurity(process, context) and \
+          ('published' in context.state or \
            has_any_roles(
-            roles=(('Owner', context), 'Moderator'))
+            roles=(('Owner', context), 'Moderator')))
 
 
 @access_action(access_key=get_access_key)

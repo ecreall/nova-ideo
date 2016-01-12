@@ -32,7 +32,9 @@ from dace.processinstance.core import ActivityExecuted
 
 from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, Iidea
-from ..user_management.behaviors import global_user_processsecurity
+from ..user_management.behaviors import (
+    global_user_processsecurity,
+    access_user_processsecurity)
 from novaideo import _
 from novaideo.content.idea import Idea
 from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
@@ -687,8 +689,9 @@ def get_access_key(obj):
 
 
 def seeidea_processsecurity_validation(process, context):
-    return 'published' in context.state or 'examined' in context.state or\
-           has_any_roles(roles=(('Owner', context), 'Admin'))
+    return access_user_processsecurity(process, context) and \
+           ('published' in context.state or 'examined' in context.state or\
+            has_any_roles(roles=(('Owner', context), 'Admin')))
 
 
 @access_action(access_key=get_access_key)

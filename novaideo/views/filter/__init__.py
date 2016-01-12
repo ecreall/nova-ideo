@@ -21,6 +21,7 @@ from pyramid.threadlocal import (
 
 from substanced.util import get_oid
 
+from dace.objectofcollaboration.principal.util import Anonymous
 from dace.util import getSite, find_catalog, get_obj
 from dace.objectofcollaboration.principal.util import (
     get_current, has_any_roles)
@@ -1094,7 +1095,10 @@ def find_entities(user=None,
             keys = core.generate_access_keys(user, root)
 
         keys = list(keys)
-        keys.append('always')
+        if not(isinstance(user, Anonymous) and \
+               getattr(root, 'only_for_members', False)):
+            keys.append('always')
+
         query = and_op(query, access_keys.any(keys))
 
     #add publication interval

@@ -12,6 +12,7 @@ import pytz
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember
+from pyramid.threadlocal import get_current_request
 
 from substanced.util import get_oid
 from substanced.event import LoggedIn
@@ -27,7 +28,8 @@ from dace.objectofcollaboration.principal.util import (
     get_current,
     has_any_roles,
     revoke_roles,
-    get_roles)
+    get_roles,
+    Anonymous)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
@@ -59,6 +61,11 @@ def global_user_processsecurity(process, context):
 
     user = get_current()
     return 'active' in list(getattr(user, 'state', []))
+
+
+def access_user_processsecurity(process, context):
+    request = get_current_request()
+    return request.accessible_to_anonymous
 
 
 def login_roles_validation(process, context):
@@ -269,7 +276,7 @@ def get_access_key(obj):
 
 
 def seeperson_processsecurity_validation(process, context):
-    return True#'active' in context.state
+    return access_user_processsecurity(process, context)#'active' in context.state
 
 
 @access_action(access_key=get_access_key)

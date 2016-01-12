@@ -92,7 +92,6 @@
           type="text/javascript"></script>
     ${panel('social_share')}
   </head>
-
   <body>
     
     <img class="loading-indicator"
@@ -100,88 +99,127 @@
          src="${su('substanced.sdi:static/img/progress_bar.gif')}"
          style="display:none;"
          alt="Loading indicator"/>
-
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        ${panel('usermenu')}
+    <div tal:omit-tag="" tal:condition="request.accessible_to_anonymous">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+          ${panel('usermenu')}
+        </div>
       </div>
-    </div>
-    <!-- bar  -->
-    ${panel('usernavbar')}
-    ${panel('novaideo_contents')}
-    ${panel('steps')}
-    ${panel('deadline')}
-      <metal:slot metal:define-slot="outer-content">
-        <div class="container-fluid">
-        <div tal:define="more_panel panel('more_contents')" class="row clearfix novaideo-content">
+      <!-- bar  -->
+      ${panel('usernavbar')}
+      ${panel('novaideo_contents')}
+      ${panel('steps')}
+      ${panel('deadline')}
+        <metal:slot metal:define-slot="outer-content">
+          <div class="container-fluid">
+          <div tal:define="more_panel panel('more_contents')" class="row clearfix novaideo-content">
 
-          <div class="col-md-2 column ui-sortable novaideo-left">
-            ${panel('adminnavbar')}
-            <div class="visible-lg-inline-block"  style="width: 100%">
-              ${more_panel}
+            <div class="col-md-2 column ui-sortable novaideo-left">
+              ${panel('adminnavbar')}
+              <div class="visible-lg-inline-block"  style="width: 100%">
+                ${more_panel}
+              </div>
+               <div metal:define-slot="left"></div>
             </div>
-             <div metal:define-slot="left"></div>
-          </div>
 
-          <div class="col-md-7 column ui-sortable novaideo-main">
-            <div class="above-content"></div>
-            <div id="messages"
-                 tal:attributes="class request.is_xhr and 'ajax-replace' or None">
-              <div tal:repeat="queue ('', 'info', 'success', 'warning', 'danger')"
-                   tal:omit-tag="">
-                <div class="alert alert-${queue or 'info'}"
-                     tal:define="messages request.session.pop_flash(queue)"
-                     tal:condition="messages"
-                     tal:repeat="message messages">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  ${structure:message}
+            <div class="col-md-7 column ui-sortable novaideo-main">
+              <div class="above-content"></div>
+              <div id="messages"
+                   tal:attributes="class request.is_xhr and 'ajax-replace' or None">
+                <div tal:repeat="queue ('', 'info', 'success', 'warning', 'danger')"
+                     tal:omit-tag="">
+                  <div class="alert alert-${queue or 'info'}"
+                       tal:define="messages request.session.pop_flash(queue)"
+                       tal:condition="messages"
+                       tal:repeat="message messages">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    ${structure:message}
+                  </div>
                 </div>
               </div>
+
+              <div class="inner-content">
+                 <div metal:define-slot="main"></div>
+              </div>
+
+              <div class="below-content"></div>
             </div>
 
-            <div class="inner-content">
-               <div metal:define-slot="main"></div>
+            <div class="col-md-3 column ui-sortable novaideo-right">
+                 ${panel('lateral_menu')}
+                 ${panel('advertisting_right_1')}
+                 ${panel('advertisting_right_2')}
+                 ${panel('advertisting_right_3')}
+                 ${panel('advertisting_right_5')}
+                 ${panel('advertisting_right_6')}
+                 ${panel('advertisting_right_7')}
+                 ${panel('advertisting_right_8')}
+                 ${panel('advertisting_right_9')}
+                 ${panel('advertisting_right_10')}
+                 ${panel('advertisting_right_11')}
+                 ${panel('contextual_help')}
+               <div class="more-contents-panel-s visible-xs-inline-block visible-sm-inline-block">
+                     ${more_panel}
+                 </div>
+               <div metal:define-slot="right"></div>
             </div>
-
-            <div class="below-content"></div>
           </div>
-
-          <div class="col-md-3 column ui-sortable novaideo-right">
-               ${panel('lateral_menu')}
-               ${panel('advertisting_right_1')}
-               ${panel('advertisting_right_2')}
-               ${panel('advertisting_right_3')}
-               ${panel('advertisting_right_5')}
-               ${panel('advertisting_right_6')}
-               ${panel('advertisting_right_7')}
-               ${panel('advertisting_right_8')}
-               ${panel('advertisting_right_9')}
-               ${panel('advertisting_right_10')}
-               ${panel('advertisting_right_11')}
-               ${panel('contextual_help')}
-             <div class="more-contents-panel-s visible-xs-inline-block visible-sm-inline-block">
-                   ${more_panel}
-               </div>
-             <div metal:define-slot="right"></div>
           </div>
-        </div>
-        </div>
-        <div class="container-fluid">
-          <div class="row clearfix">
-            <div class="col-md-2">
-            </div>
-            <div class="col-md-7 column ui-sortable novaideo-footer">
-            </div>
-            <div class="col-md-3">
-            </div>
-           </div>
-       </div>
+          <div class="container-fluid">
+            <div class="row clearfix">
+              <div class="col-md-2">
+              </div>
+              <div class="col-md-7 column ui-sortable novaideo-footer">
+              </div>
+              <div class="col-md-3">
+              </div>
+             </div>
+         </div>
 
-      </metal:slot>
+        </metal:slot>
 
-    <!--/div-->
+      <!--/div-->
 
-    <more tal:omit-tag="" metal:define-slot="tail-more"></more>
+      <more tal:omit-tag="" metal:define-slot="tail-more"></more>
+    </div>
+    <div tal:omit-tag="" tal:condition="not request.accessible_to_anonymous">
+        <div class="container-fluid anonymous-container">
+          <div class="anonymous-logo">
+            <a class="navbar-brand" href="/" tal:define="logo getattr(request.root, 'picture', None)" >
+                <img tal:condition="logo" src="${logo.url}" class="globe-logo">
+                <div tal:omit-tag="" tal:condition="not logo">
+                  <img alt="Nova-Ideo" src="${request.static_url('novaideo:static/images/novaideo32.png')}" class="globe-logo"> Nova-Ideo
+                </div>
+            </a>
+          </div>
+          <div class="row clearfix novaideo-content">
+            <div class="col-md-3 column ui-sortable novaideo-left">
+            </div>
+            <div class="col-md-6 column ui-sortable novaideo-main novaideo-anonymous">
+              <div class="above-content"></div>
+              <div id="messages"
+                   tal:attributes="class request.is_xhr and 'ajax-replace' or None">
+                <div tal:repeat="queue ('', 'info', 'success', 'warning', 'danger')"
+                     tal:omit-tag="">
+                  <div class="alert alert-${queue or 'info'}"
+                       tal:define="messages request.session.pop_flash(queue)"
+                       tal:condition="messages"
+                       tal:repeat="message messages">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    ${structure:message}
+                  </div>
+                </div>
+              </div>
+              <div class="inner-content">
+                 <div metal:define-slot="main"></div>
+              </div>
+              <div class="below-content"></div>
+            </div>
+            <div class="col-md-3 column ui-sortable novaideo-right">
+            </div>
+          </div>
+          </div>
+    </div>
     ${panel('novaideo_footer')}
     <!--TODO footer panel-->
 

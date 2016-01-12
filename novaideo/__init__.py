@@ -64,6 +64,16 @@ def content_to_support(request):
     return getattr(request.root, 'content_to_support', [])
 
 
+def accessible_to_anonymous(request):
+    only_for_members = getattr(request.root, 'only_for_members', False)
+    if not only_for_members or \
+       (only_for_members and \
+        request.user):
+        return True
+
+    return False
+
+
 def analytics_default_content_types(request):
     if request.is_idea_box:
         return ['idea']
@@ -89,6 +99,7 @@ def main(global_config, **settings):
     config.add_request_method(content_to_examine, reify=True)
     config.add_request_method(content_to_support, reify=True)
     config.add_request_method(is_idea_box, reify=True)
+    config.add_request_method(accessible_to_anonymous, reify=True)
     config.add_request_method(searchable_contents, reify=True)
     config.add_request_method(analytics_default_content_types, reify=True)
     config.add_translation_dirs('novaideo:locale/')

@@ -224,6 +224,7 @@ class SearchResultView(BasicView):
     name = ''
     validators = [Search.get_validator()]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
+    anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
     viewid = 'search_result'
 
     def _add_filter(self, user):
@@ -249,8 +250,23 @@ class SearchResultView(BasicView):
             select=select,
             filter_source="search_source")
 
+    def update_anonymous(self):
+        values = {}
+        result = {}
+        body = self.content(
+            args=values, template=self.anonymous_template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        self.title = ''
+        self.wrapper_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view_wrapper.pt'
+        return result
+
     def update(self):
         user = get_current()
+
+        if not self.request.accessible_to_anonymous:
+            return self.update_anonymous()
+
         validated = getattr(self, 'validated', {})
         not_validated = True if not validated else False
         posted = self.request.POST or self.request.GET or {}

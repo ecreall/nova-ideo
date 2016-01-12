@@ -1,0 +1,22 @@
+<div tal:omit-tag="" tal:define=" item subitem|nothing; hasparent (parent is not None)">
+    <div tal:omit-tag="" tal:condition="item">
+    <div tal:omit-tag="hasparent" class="${getattr(item['view'], 'css_class', '')}" >
+         <div tal:condition="not hasparent" class="panel-heading"><div tal:condition="item['view'].title" class="panel-title">${item['view'].title}</div></div>
+         <div tal:omit-tag="hasparent" class="panel-body">
+            <div  tal:condition="'messages' in item" id="messages" class="ajax-replace">
+              <div tal:omit-tag="" tal:define="allmessages item['messages']" tal:repeat="queue allmessages.keys()">
+                <div class="alert alert-${queue or 'info'}"
+                     tal:define="messagesr allmessages[queue]"
+                     tal:condition="messagesr"
+                     tal:repeat="message messagesr">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  ${structure:message}
+                </div>
+              </div>
+            </div> 
+            <div tal:replace="structure item['body']" />
+        </div>
+      </div>
+    </div>
+</div>
+

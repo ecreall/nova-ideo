@@ -1,0 +1,15 @@
+<div class="">
+  <h1>Bienvenue sur ${request.root.title}!</h1>
+  <p>${request.root.title} est une plateforme permettant de fournir un processus complet permettant à des groupes de travail de transformer des idées en propositions abouties grâce à un système de sessions d'amendements et de votes. Cette plateforme est à accès restreint au membre inscrit.</p>
+  <p>
+    <div class="btn-group navbar-right">
+       <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary " id="log-in">
+          <i class="glyphicon glyphicon-log-in"> </i> <span i18n:translate="">Log In</span>
+       </a>
+       <a tal:condition="not getattr(request.root, 'only_invitation', False)"
+          href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary " id="registration" >
+          <i class="glyphicon glyphicon-pencil"> </i> <span  i18n:translate="">Registration</span>
+       </a>
+    </div>
+  </p>
+</div>
