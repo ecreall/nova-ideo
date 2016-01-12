@@ -32,32 +32,6 @@ from novaideo.utilities.util import to_localized_time
 
 INACTIVITY_DURATION = 90
 
-INACTIVITY_ALERTS = [45, 60, 88]
-
-
-def send_alert(users, mail_template, context, request, alert):
-    entities = find_entities(
-        interfaces=[IProposal, Iidea],
-        metadata_filter={
-            'content_types': ['idea', 'proposal'],
-            'states': ['published']})
-
-    result = []
-    for obj in entities:
-        result.append(obj)
-        if len(result) == 5:
-            break
-
-    body = renderers.render(
-        mail_template['template'], {'entities': result}, request)
-    subject = mail_template['subject'].format()
-    for member in [m for m in users if getattr(m, 'email', '')]:
-        mailer_send(
-            subject=subject,
-            recipients=[member.email],
-            sender=context.get_site_sender(),
-            html=body)
-
 
 def find_users(last_connection_index, current_date, alert):
     alert_date_min = current_date - datetime.timedelta(days=alert[0])
@@ -106,39 +80,50 @@ class DeactivateUsers(ElementaryAction):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-class Alert1Users(ElementaryAction):
+class SendNewsLetter(ElementaryAction):
     context = INovaIdeoApplication
     actionType = ActionType.system
     roles_validation = system_roles_validation
-    alerts_int = (INACTIVITY_ALERTS[0], INACTIVITY_ALERTS[1])
-    mail_template = 'novaideo:views/templates/alert_deactiveted.pt'
+    mail_template = 'novaideo:views/templates/newsletter_template.pt'
 
     def start(self, context, request, appstruct, **kw):
         localizer = request.localizer
         mail_template = {
-            'subject': localizer.translate(_('Contenus inactivity')),
+            'subject': _('${name}, voici des idées qui pourraient vous intéresser!'),
             'template': self.mail_template
         }
-        novaideo_catalog = find_catalog('novaideo')
-        last_connection_index = novaideo_catalog['last_connection']
-        current_date = datetime.datetime.combine(
-            datetime.datetime.now(),
-            datetime.time(0, 0, 0, tzinfo=pytz.UTC))
-        users = find_users(
-            last_connection_index, current_date, self.alerts_int)
-        send_alert(users, mail_template, context, request, self.alerts_int)
+        members = context.news_letter_members
+        for member in [m for m in members if getattr(m, 'email', '')]:
+            name = getattr(
+                member, 'first_name', member.title)
+            subject = localizer.translate(
+                _(mail_template['subject'],
+                  mapping={'name': name}))
+            entities = find_entities(
+                interfaces=[IProposal, Iidea],
+                metadata_filter={
+                    'content_types': ['idea', 'proposal'],
+                    'states': ['published'],
+                    'keywords': getattr(member, 'keywords', [])})
+
+            result = []
+            for obj in entities:
+                result.append(obj)
+                if len(result) == 5:
+                    break
+
+            body = renderers.render(
+                mail_template['template'], {'entities': result,
+                                            'name': name}, request)
+            mailer_send(
+                subject=subject,
+                recipients=[member.email],
+                sender=context.get_site_sender(),
+                html=body)
+
         return {}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
-
-
-class Alert2Users(Alert1Users):
-    alerts_int = (INACTIVITY_ALERTS[1], INACTIVITY_ALERTS[2])
-
-
-class Alert3Users(Alert1Users):
-    alerts_int = (INACTIVITY_ALERTS[2], INACTIVITY_DURATION)
-
 
 #TODO behaviors

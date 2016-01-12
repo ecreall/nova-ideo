@@ -403,6 +403,7 @@ class ConfirmRegistration(InfiniteCardinality):
             PROCESS_HISTORY_KEY, PersistentList()).extend(annotations)
         person.reindex()
         request.registry.notify(ActivityExecuted(self, [person], person))
+        root.addtoproperty('news_letter_members', person)
         transaction.commit()
         if getattr(person, 'email', ''):
             localizer = request.localizer

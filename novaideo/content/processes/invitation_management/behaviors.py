@@ -310,6 +310,7 @@ class AcceptInvitation(InfiniteCardinality):
         initialize_tokens(person, root.tokens_mini)
         manager = context.manager
         root.delfromproperty('invitations', context)
+        root.addtoproperty('news_letter_members', person)
         context.person = person
         if manager:
             mail_template = root.get_mail_template('accept_invitation')

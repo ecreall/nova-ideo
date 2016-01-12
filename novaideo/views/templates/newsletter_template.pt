@@ -39,12 +39,9 @@
 		        </a>
 			</div>
 			<div>
-                <p>Bonjour,</p>
+                <p>Bonjour ${name},</p>
                 <p>
-                    Pendant votre absence du portail d'innovation participative ${request.root.title}, de nouvelles idées et propositions ont été proposées.
-                </p>
-                <p>
-                    Vous verrez ci-dessous les dernières idées et les dernières propositions.
+                    Vous verrez ci-dessous les dernières idées et les dernières propositions qui pourraient vous intéresser.
                 </p>
                 <p>
                     Partagez vos idées! Venez enrichir les propositions des autres.
@@ -53,7 +50,7 @@
                     Venez soutenir les propositions à mettre en application.
                 </p>
                 <p>
-                    Nova-Ideo, participons pour ensemble faire avancer notre entreprise.
+                    <strong>${request.root.title}</strong>, participons pour ensemble faire avancer notre entreprise.
                 </p>
             </div>
           	<div tal:repeat="object entities">

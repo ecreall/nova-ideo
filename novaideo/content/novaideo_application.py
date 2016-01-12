@@ -19,7 +19,9 @@ from substanced.util import renamer
 from substanced.property import PropertySheet
 
 from dace.objectofcollaboration.application import Application
-from dace.descriptors import CompositeMultipleProperty, CompositeUniqueProperty
+from dace.descriptors import (
+    CompositeMultipleProperty, CompositeUniqueProperty,
+    SharedMultipleProperty)
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
     SequenceWidget,
@@ -274,6 +276,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     favicon = CompositeUniqueProperty('favicon')
     theme = CompositeUniqueProperty('theme')
     advertisings = CompositeMultipleProperty('advertisings')
+    news_letter_members = SharedMultipleProperty('news_letter_members')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)

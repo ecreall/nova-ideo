@@ -10,8 +10,7 @@
        i18n:domain="novaideo">
     <div tal:condition="platform_members">
         <span i18n:translate="">The idea has been sent:</span> <tal:loop repeat="m platform_members">
-                                <a tal:attributes="href request.resource_url(m, '@@index')">${m.name}</a>
-                                <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
+                                <a tal:attributes="href request.resource_url(m, '@@index')">${getattr(m, 'title', m.name)}</a><tal:separator condition="not: repeat['m'].end">, </tal:separator> 
                               </tal:loop>
     </div>
     <div tal:condition="external_members and platform_members">

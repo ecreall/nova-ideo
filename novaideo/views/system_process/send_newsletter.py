@@ -10,22 +10,22 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
 from novaideo.content.processes.system_process.behaviors import (
-    Alert3Users)
+    SendNewsLetter)
 from novaideo.content.novaideo_application import (
     NovaIdeoApplication)
 from novaideo import _
 
 
 @view_config(
-    name='alert3users',
+    name='sendnewsletter',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class Alert3UsersView(BasicView):
-    title = _('Deactivate')
-    name = 'alert3users'
-    behaviors = [Alert3Users]
-    viewid = 'alert3users'
+class SendNewsLetterView(BasicView):
+    title = _('Send the news letter')
+    name = 'sendnewsletter'
+    behaviors = [SendNewsLetter]
+    viewid = 'sendnewsletter'
 
     def update(self):
         results = self.execute(None)
@@ -33,4 +33,4 @@ class Alert3UsersView(BasicView):
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
-    {Alert3Users: Alert3UsersView})
+    {SendNewsLetter: SendNewsLetterView})

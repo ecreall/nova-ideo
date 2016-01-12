@@ -308,8 +308,11 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     @property
     def participations(self):
         result = [p for p in list(self.proposals)
-                  if not any(s in p.state for s
-                             in ['draft', 'published', 'examined'])]
+                  if any(s in p.state for s
+                         in ['amendable',
+                             'open to a working group',
+                             'votes for publishing',
+                             'votes for amendments'])]
         return result
 
     @property
