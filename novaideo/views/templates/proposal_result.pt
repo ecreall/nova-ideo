@@ -40,7 +40,7 @@
        </tal:loop>
       </div>
     </div>
-  <div tal:condition="'proposal' in getattr(request, 'content_to_support', []) and 'published' in object.state" class="proposal-support pull-right">
+  <div tal:condition="'proposal' in getattr(request, 'content_to_support', []) and 'submitted_support' in object.state" class="proposal-support pull-right">
     <span class="label success">
         <span tal:condition="any(t.owner is current_user for t in object.tokens_support)" 
               class="hidden-xs glyphicon glyphicon-hand-down my-token-success"> </span>

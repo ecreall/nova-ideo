@@ -717,6 +717,7 @@ class MetadataFilter(Schema):
         label=_('Not'),
         title=None,
         description=_('Check the box to exclude values entered below.'),
+        description_bottom=True,
         )
 
     content_types = colander.SchemaNode(
@@ -795,6 +796,7 @@ class TemporalSchema(Schema):
         label=_('Not'),
         title=None,
         description=_('Check the box to exclude values entered below.'),
+        description_bottom=True,
         )
 
     created_date = omit(CreatedDates(
@@ -823,6 +825,7 @@ class ContributionFilterSchema(Schema):
         label=_('Not'),
         title=None,
         description=_('Check the box to exclude values entered below.'),
+        description_bottom=True,
         )
 
     authors = colander.SchemaNode(
@@ -845,6 +848,7 @@ class TextFilterSchema(Schema):
         label=_('Not'),
         title=None,
         description=_('Check the box to exclude values entered below.'),
+        description_bottom=True,
         )
 
     text_to_search = colander.SchemaNode(

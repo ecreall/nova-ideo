@@ -29,6 +29,7 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
 #     CreateProposal)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.proposal import Proposal
+from novaideo.content.workspace import Workspace
 from novaideo.content.idea import Idea
 from novaideo.content.interface import IPerson, Iidea, IProposal
 from novaideo.content.amendment import Amendment
@@ -213,7 +214,7 @@ class StepsPanel(object):
         self.request = request
 
     def _get_process_context(self):
-        if isinstance(self.context, Amendment):
+        if isinstance(self.context, (Amendment, Workspace)):
             return self.context.proposal
 
         return self.context
