@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-01-12 17:43+0100\n"
+"POT-Creation-Date: 2016-01-12 17:56+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -4175,8 +4175,8 @@ msgid "Announcement"
 msgstr "Annonce"
 
 #: novaideo/content/web_advertising.py:106
-msgid "Advertisement file"
-msgstr "Fichier publicitaire"
+msgid "Announcement file"
+msgstr "Fichier de l'annonce"
 
 #: novaideo/content/web_advertising.py:107
 msgid "Only image and flash files are supported."
@@ -4925,8 +4925,8 @@ msgstr "fermé"
 
 #: novaideo/content/processes/advertising_management/definition.py:39
 #: novaideo/content/processes/advertising_management/definition.py:40
-msgid "Advertising management"
-msgstr "Gestionnaire des publicités"
+msgid "Announcements management"
+msgstr "Gestion des annonces"
 
 #: novaideo/content/processes/advertising_management/definition.py:59
 msgid "See announcements"
@@ -5093,6 +5093,12 @@ msgstr ""
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:52
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
+
+#~ msgid "Advertisement file"
+#~ msgstr "Fichier publicitaire"
+
+#~ msgid "Advertising management"
+#~ msgstr "Gestionnaire des publicités"
 
 #~ msgid "Banner for advertistings"
 #~ msgstr "Bannière pour publicités"
