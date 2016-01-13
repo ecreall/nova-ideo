@@ -101,7 +101,7 @@ class CommentSchema(VisualisableElementSchema):
                     activator_css_class="pull-right",
                     activator_icon="glyphicon glyphicon-link",
                     ajax=True,
-                    activator_title=_('Associate')))
+                    activator_title=_('Associate contents')))
 
 
 @content(
@@ -126,4 +126,4 @@ class Comment(Commentable):
         if not isinstance(self.__parent__, Comment):
             return self.__parent__
         else:
-            return self.__parent__.subject 
+            return self.__parent__.subject

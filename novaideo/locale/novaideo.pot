@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-01-12 17:56+0100\n"
+"POT-Creation-Date: 2016-01-13 12:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -787,10 +787,7 @@ msgstr ""
 #: ./novaideo/views/amendment_management/associate.py:27
 #: ./novaideo/views/amendment_management/associate.py:41
 #: ./novaideo/content/comment.py:104
-#: ./novaideo/content/processes/idea_management/definition.py:110
-#: ./novaideo/content/processes/proposal_management/definition.py:336
-#: ./novaideo/content/processes/amendment_management/definition.py:85
-msgid "Associate"
+msgid "Associate contents"
 msgstr ""
 
 #: ./novaideo/views/idea_management/associate.py:157
@@ -4491,6 +4488,12 @@ msgstr ""
 #: ./novaideo/content/processes/proposal_management/definition.py:328
 #: ./novaideo/content/processes/amendment_management/definition.py:81
 msgid "Discuss"
+msgstr ""
+
+#: ./novaideo/content/processes/idea_management/definition.py:110
+#: ./novaideo/content/processes/proposal_management/definition.py:336
+#: ./novaideo/content/processes/amendment_management/definition.py:85
+msgid "Associate"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:118
