@@ -127,10 +127,10 @@ class RelatedContentsView(BasicView):
 
 class AssociateFormView(FormView):
 
-    title = _('Associate')
+    title = _('Associate contents')
     schema = select(CorrelationSchema(factory=Correlation, 
                                       editable=True),
-                    ['targets', 'intention','comment'])
+                    ['targets', 'intention', 'comment'])
     behaviors = [Associate]
     formid = 'formassociate'
     name = 'associateform'
@@ -143,7 +143,7 @@ class AssociateFormView(FormView):
                                 activable=True,
                                 button_css_class="pull-right",
                                 picto_css_class="glyphicon glyphicon-link",
-                                button_title=_("Associate"))
+                                button_title=_("Associate contents"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 
