@@ -1021,7 +1021,7 @@ class Withdraw(InfiniteCardinality):
 def resign_roles_validation(process, context):
     user = get_current()
     working_group = context.working_group
-    return user in working_group.members
+    return working_group and user in working_group.members
 
 
 def resign_processsecurity_validation(process, context):
@@ -1129,7 +1129,7 @@ class Resign(InfiniteCardinality):
 def participate_roles_validation(process, context):
     user = get_current()
     working_group = context.working_group
-    return has_role(role=('Member',)) and \
+    return working_group and has_role(role=('Member',)) and \
         user not in working_group.members
 
 
@@ -1140,7 +1140,7 @@ def participate_processsecurity_validation(process, context):
 
     user = get_current()
     root = getSite()
-    wgs = user.active_working_groups
+    wgs = getattr(user, 'active_working_groups', [])
     return working_group and \
        user not in working_group.wating_list and \
        len(wgs) < root.participations_maxi and \
@@ -1295,7 +1295,7 @@ def attach_processsecurity_validation(process, context):
 
 def attach_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and 'amendable' in context.state
+    return wg and 'active' in wg.state and 'amendable' in context.state
 
 
 class AttachFiles(InfiniteCardinality):
@@ -1427,6 +1427,8 @@ class VotingPublication(ElementaryAction):
             if opened_vote_processes:
                 close_votes(proposal, request, opened_vote_processes)
 
+        setattr(self.process, 'new_cycle_date', datetime.datetime.now())
+        setattr(self.process, 'previous_alert', -1)
         super(VotingPublication, self).after_execution(proposal, request, **kw)
         is_published = publish_condition(self.process)
         if is_published:
@@ -1619,6 +1621,8 @@ class AlertEnd(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         working_group = context.working_group
+        previous_alert = getattr(self.process, 'previous_alert', -1)
+        setattr(self.process, 'previous_alert', previous_alert + 1)
         if 'active' in working_group.state and 'amendable' in context.state:
             members = working_group.members
             url = request.resource_url(context, "@@index")

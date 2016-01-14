@@ -76,24 +76,48 @@ from novaideo import _, log
 from novaideo.content.ballot import Ballot
 
 
-def alert_end_cycle_duration(process):
-    proposal = process.execution_context.created_entity('proposal')
-    working_group = proposal.working_group
-    duration_ballot = getattr(
-        working_group, 'duration_configuration_ballot', None)
-    default_date = AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"]
-    date = None
-    if duration_ballot is not None and duration_ballot.report.voters:
-        electeds = duration_ballot.report.get_electeds()
-        if electeds:
-            date = AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]]
-
-    date = date if date else default_date
+def firs_alert(process, date):
     alert_date = datetime.timedelta(seconds=(date.total_seconds()/3) * 2) + \
-        datetime.datetime.now()
-
-    log.warning(alert_date)
+        getattr(process, 'new_cycle_date', datetime.datetime.now())
     return alert_date
+
+
+def second_alert(process, date):
+    alert_date = datetime.timedelta(seconds=(date.total_seconds()/7) * 6) + \
+        getattr(process, 'new_cycle_date', datetime.datetime.now())
+    return alert_date
+
+
+ALERTS = {0: firs_alert, 1: second_alert}
+
+
+def alert_end_cycle_duration(process):
+    alert = getattr(process, 'previous_alert', -1) + 1
+    alert_op = ALERTS.get(alert, None)
+    if alert_op:
+        proposal = process.execution_context.created_entity('proposal')
+        working_group = proposal.working_group
+        duration_ballot = getattr(
+            working_group, 'duration_configuration_ballot', None)
+        default_date = AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"]
+        date = None
+        if duration_ballot is not None and duration_ballot.report.voters:
+            electeds = duration_ballot.report.get_electeds()
+            if electeds:
+                date = AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]]
+
+        date = date if date else default_date
+        alert_date = alert_op(process, date)
+        log.warning(alert_date)
+        return alert_date
+
+    return datetime.datetime.now()
+
+
+def has_alert_condition(process):
+    alert = getattr(process, 'previous_alert', -1) + 1
+    alert_op = ALERTS.get(alert, None)
+    return True if alert_op else False
 
 
 def amendable_condition(process):
@@ -419,6 +443,7 @@ class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
                 start = StartEventDefinition(),
                 eg = ExclusiveGatewayDefinition(),
                 eg1 = ExclusiveGatewayDefinition(),
+                eg2 = ExclusiveGatewayDefinition(),
                 pg = ParallelGatewayDefinition(),
                 votingpublication = SubProcessDefinition(pd='ballotprocess', contexts=[VotingPublication],
                                        description=_("Start voting for publication"),
@@ -444,8 +469,10 @@ class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('eg', 'votingpublication'),
                 TransitionDefinition('votingpublication', 'eg1'),
                 TransitionDefinition('eg1', 'pg', amendable_condition, sync=True),
-                TransitionDefinition('pg', 'timer_alert'),
+                TransitionDefinition('pg', 'eg2'),
+                TransitionDefinition('eg2', 'timer_alert'),
                 TransitionDefinition('timer_alert', 'alert_end'),
+                TransitionDefinition('alert_end', 'eg2', has_alert_condition, sync=True),
                 TransitionDefinition('pg', 'work'),
                 TransitionDefinition('eg1', 'submit', publish_condition, sync=True),
                 TransitionDefinition('submit', 'end'),
