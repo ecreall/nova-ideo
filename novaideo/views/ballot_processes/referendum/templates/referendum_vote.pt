@@ -11,14 +11,14 @@
        <dt tal:condition="ballot_report.electors"  i18n:translate="">Participant voting</dt>
        <dd tal:condition="ballot_report.electors">
          <tal:loop repeat="e ballot_report.electors">
-           <a tal:attributes="href request.resource_url(e, '@@index')">${e.name}</a>
+           <a tal:attributes="href request.resource_url(e, '@@index')">${getattr(e, 'title', e.name)}</a>
            <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
          </tal:loop>
        </dd>
        <dt tal:condition="ballot_report.voters" i18n:translate="">Voters</dt>
        <dd tal:condition="ballot_report.voters">
          <tal:loop repeat="e ballot_report.voters">
-          ${e.name}
+          ${getattr(e, 'title', e.name)}
           <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
          </tal:loop>
        </dd>
