@@ -1019,7 +1019,9 @@ class Withdraw(InfiniteCardinality):
 
 
 def resign_roles_validation(process, context):
-    return has_role(role=('Participant', context))
+    user = get_current()
+    working_group = context.working_group
+    return user in working_group.members
 
 
 def resign_processsecurity_validation(process, context):
@@ -1125,8 +1127,10 @@ class Resign(InfiniteCardinality):
 
 
 def participate_roles_validation(process, context):
+    user = get_current()
+    working_group = context.working_group
     return has_role(role=('Member',)) and \
-        not has_role(role=('Participant', context))
+        user not in working_group.members
 
 
 def participate_processsecurity_validation(process, context):

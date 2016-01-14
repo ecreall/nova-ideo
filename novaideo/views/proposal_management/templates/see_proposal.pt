@@ -26,8 +26,9 @@
   </div>
   <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
   <h3 class="content-title"><span class="icon novaideo-icon icon-proposal"></span> <span class="correction-container-title">${structure:title}</span></h3>
-  <div class="object-description">
-   <small><span  i18n:translate="">(Submitted by</span> <a tal:attributes="href request.resource_url(proposal.author, '@@index')">${((proposal.author is current_user) and 'Vous') or getattr(proposal.author, 'title', proposal.author.name)}</a> <span  i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(proposal.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${proposal.modified_at.hour}:${proposal.modified_at.minute}:${proposal.modified_at.second}<span tal:omit-tag="" tal:condition="proposal.originalentity is not None"><span  i18n:translate="">, duplicated from the proposal</span> <a tal:attributes="href request.resource_url(proposal.originalentity, '@@index')">${proposal.originalentity.title}</a></span>)
+  <div class="object-description" 
+    tal:define="author proposal.author">
+   <small><span  i18n:translate="">(Submitted by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a> <span  i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(proposal.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${proposal.modified_at.hour}:${proposal.modified_at.minute}:${proposal.modified_at.second}<span tal:omit-tag="" tal:condition="proposal.originalentity is not None"><span  i18n:translate="">, duplicated from the proposal</span> <a tal:attributes="href request.resource_url(proposal.originalentity, '@@index')">${proposal.originalentity.title}</a></span>)
    </small>
   </div>
 </div>

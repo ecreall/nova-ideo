@@ -9,8 +9,9 @@
     <a href="${url}"><h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4></a>
     <a tal:attributes="href url"><h4><span class="visible-xs-inline-block icon ${icon}"></span>  ${object.title}</h4></a>
     <div class="object-description-result">
-      <small tal:condition="(object.version is None or not object.working_group) and not object.corrections">
-        <span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(object.author, '@@index')">${((object.author is current_user) and 'Vous') or object.author.name}</a>
+      <small tal:condition="(object.version is None or not object.working_group) and not object.corrections"
+             tal:define="author object.author">
+        <span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a>
       </small>
 
       <small tal:condition="(object.version or object.corrections) and object.working_group">

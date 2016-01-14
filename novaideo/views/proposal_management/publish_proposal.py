@@ -39,7 +39,7 @@ class PublishProposalStudyReport(BasicView):
                                    if 'published' not in i.state]
         values = {'context': self.context,
                   'not_published_ideas': not_published_ideas,
-                  'is_unique_choice': len(modes) == 1 and 'wiki' in modes}
+                  'is_unique_choice': len(modes) == 1}
 
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
