@@ -46,7 +46,7 @@ class SeeWorkspaceView(BasicView):
         values = {
             'workspace': self.context,
             'files': files,
-            'row_len': math.ceil(len(files)/6),
+            'row_len': math.ceil(len(files)/3),
             'get_oid': get_oid,
             'can_remove_file': can_remove_file,
             'navbar_body': navbars['navbar_body'],

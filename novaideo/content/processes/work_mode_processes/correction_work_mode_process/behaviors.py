@@ -32,7 +32,9 @@ from novaideo.content.correlation import CorrelationType
 from novaideo.content.interface import IProposal, ICorrection
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _
-from novaideo.utilities.text_analyzer import ITextAnalyzer
+from novaideo.utilities.text_analyzer import (
+    ITextAnalyzer,
+    normalize_text)
 from novaideo.utilities.util import connect
 from novaideo.content.alert import (
     WorkingGroupAlert)
@@ -279,8 +281,8 @@ class CorrectProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
-
         correction = appstruct['_object_data']
+        correction.text = normalize_text(correction.text)
         old_text = correction.text
         correction.setproperty('author', user)
         context.addtoproperty('corrections', correction)
