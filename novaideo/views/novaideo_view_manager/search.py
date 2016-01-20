@@ -263,7 +263,6 @@ class SearchResultView(BasicView):
 
     def update(self):
         user = get_current()
-
         if not self.request.accessible_to_anonymous:
             return self.update_anonymous()
 

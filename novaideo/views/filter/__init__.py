@@ -324,7 +324,8 @@ def authors_query(node, **args):
 def contribution_filter_query(node, **args):
     filter_ = args.get('contribution_filter', {})
     if filter_.get('negation', False):
-        return Not(get_node_query(node, **args))
+        query = get_node_query(node, **args)
+        return query if not query else Not(query)
 
     return get_node_query(node, **args)
 
@@ -340,7 +341,8 @@ def geographic_filter_query(node, **args):
 def metadata_filter_query(node, **args):
     filter_ = args.get('metadata_filter', {})
     if filter_.get('negation', False):
-        return Not(get_node_query(node, **args))
+        query = get_node_query(node, **args)
+        return query if not query else Not(query)
 
     return get_node_query(node, **args)
 
@@ -348,7 +350,8 @@ def metadata_filter_query(node, **args):
 def temporal_filter_query(node, **args):
     filter_ = args.get('temporal_filter', {})
     if filter_.get('negation', False):
-        return Not(get_node_query(node, **args))
+        query = get_node_query(node, **args)
+        return query if not query else Not(query)
 
     return get_node_query(node, **args)
 
@@ -356,7 +359,8 @@ def temporal_filter_query(node, **args):
 def text_filter_query(node, **args):
     filter_ = args.get('text_filter', {})
     if filter_.get('negation', False):
-        return Not(get_node_query(node, **args))
+        query = get_node_query(node, **args)
+        return query if not query else Not(query)
 
     return get_node_query(node, **args)
 
@@ -364,7 +368,8 @@ def text_filter_query(node, **args):
 def other_filter_query(node, **args):
     filter_ = args.get('other_filter', {})
     if filter_.get('negation', False):
-        return Not(get_node_query(node, **args))
+        query = get_node_query(node, **args)
+        return query if not query else Not(query)
 
     return get_node_query(node, **args)
 
