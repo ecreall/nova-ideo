@@ -23,9 +23,9 @@ from novaideo import _
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""Aucune alerts"""),
-    '1': _(u"""Une alerts"""),
-    '*': _(u"""${nember} alerts""")
+    '0': _(u"""You have no alerts"""),
+    '1': _(u"""You have an alert"""),
+    '*': _(u"""You have ${nember} alerts""")
     }
 
 

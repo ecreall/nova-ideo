@@ -92,7 +92,8 @@ def login_validator(node, kw):
 
         user = adapter.get_user_by_email(value)
         if user is None:
-            raise colander.Invalid(node, 'No such user %s' % value)
+            raise colander.Invalid(node, _('No such user ${member}',
+                                            mapping={'member': value}))
 
     return _login_validator
 
