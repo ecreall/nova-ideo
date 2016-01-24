@@ -20,6 +20,7 @@ from novaideo.views.widget import (
     EmailInputWidget)
 from novaideo.core_schema import ContactSchema
 from novaideo import core
+from novaideo.content import get_file_widget
 
 
 @colander.deferred
@@ -135,7 +136,7 @@ class UserInterfaceConfigurationSchema(Schema):
 
     picture = colander.SchemaNode(
         ObjectData(File),
-        widget=FileWidget(file_extensions=['png', 'jpg', 'svg']),
+        widget=get_file_widget(file_extensions=['png', 'jpg', 'svg']),
         title=_('Logo'),
         missing=None,
         description=_("Only PNG and SVG files are supported."),
@@ -143,7 +144,7 @@ class UserInterfaceConfigurationSchema(Schema):
 
     favicon = colander.SchemaNode(
         ObjectData(File),
-        widget=FileWidget(file_extensions=['ico']),
+        widget=get_file_widget(file_extensions=['ico']),
         title=_('Favicon'),
         missing=None,
         description=_("Only ICO file is supported."),
@@ -151,7 +152,7 @@ class UserInterfaceConfigurationSchema(Schema):
 
     theme = colander.SchemaNode(
         ObjectData(File),
-        widget=FileWidget(file_extensions=['css']),
+        widget=get_file_widget(file_extensions=['css']),
         title=_('Theme'),
         missing=None,
         description=_("Only CSS files are supported."),

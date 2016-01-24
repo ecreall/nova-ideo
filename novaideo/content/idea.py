@@ -21,8 +21,7 @@ from substanced.util import renamer
 from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
-    SequenceWidget,
-    FileWidget)
+    SequenceWidget)
 from pontus.file import ObjectData, File
 
 from .interface import Iidea
@@ -37,6 +36,7 @@ from novaideo.core import (
     SearchableEntitySchema,
     CorrelableEntity,
     PresentableEntity)
+from novaideo.content import get_file_widget
 
 
 OPINIONS = OrderedDict([
@@ -84,7 +84,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.SchemaNode(
             ObjectData(File),
             name=_("File"),
-            widget=FileWidget()
+            widget=get_file_widget()
             ),
         widget=SequenceWidget(
             add_subitem_text_template=_('Add file')),

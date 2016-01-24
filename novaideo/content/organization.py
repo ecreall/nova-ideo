@@ -17,13 +17,14 @@ from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedMultipleProperty, CompositeUniqueProperty
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
-    FileWidget, AjaxSelect2Widget, SimpleMappingWidget, SequenceWidget)
+    AjaxSelect2Widget, SimpleMappingWidget, SequenceWidget)
 from pontus.file import Image, ObjectData
 from pontus.schema import omit, select
 
 from novaideo.core_schema import ContactSchema
 from .interface import IOrganization
 from novaideo import _
+from novaideo.content import get_file_widget
 
 
 @colander.deferred
@@ -66,7 +67,7 @@ class OrganizationSchema(VisualisableElementSchema):
 
     logo = colander.SchemaNode(
         ObjectData(Image),
-        widget=FileWidget(),
+        widget=get_file_widget(),
         required=False,
         missing=None,
         title=_('Logo'),

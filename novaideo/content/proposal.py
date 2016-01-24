@@ -23,8 +23,7 @@ from dace.descriptors import (
     SharedMultipleProperty)
 from pontus.widget import (
     RichTextWidget, AjaxSelect2Widget,
-    Length, SequenceWidget, Select2Widget,
-    FileWidget)
+    Length, SequenceWidget, Select2Widget)
 from pontus.file import ObjectData, File
 from pontus.core import VisualisableElementSchema
 from pontus.schema import omit, Schema
@@ -42,6 +41,7 @@ from novaideo.core import (
     VersionableEntity,
     PresentableEntity)
 from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.content import get_file_widget
 
 
 OPINIONS = OrderedDict([
@@ -109,7 +109,7 @@ class AddFilesSchemaSchema(Schema):
         colander.SchemaNode(
             ObjectData(File),
             name=_("File"),
-            widget=FileWidget()
+            widget=get_file_widget()
             ),
         widget=SequenceWidget(
             add_subitem_text_template=_('Upload a new file')),

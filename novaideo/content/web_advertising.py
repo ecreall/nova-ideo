@@ -16,7 +16,6 @@ from dace.descriptors import (
     SharedUniqueProperty,
     CompositeUniqueProperty)
 from pontus.widget import (
-    FileWidget,
     Select2Widget,
     RichTextWidget)
 from pontus.file import ObjectData, File
@@ -34,6 +33,7 @@ from novaideo.core import (
 from novaideo.utilities import french_dates_parser as Parser
 from novaideo.utilities.util import dates
 from novaideo.views.widget import DateIcalWidget
+from novaideo.content import get_file_widget
 
 
 @colander.deferred
@@ -100,9 +100,10 @@ class WebAdvertisingSchema(AdvertisingSchema):
 
     picture = colander.SchemaNode(
         ObjectData(File),
-        widget=FileWidget(item_css_class="advertising-file-content",
-                          css_class="file-content",
-                          file_type=['image', 'flash']),
+        widget=get_file_widget(
+            item_css_class="advertising-file-content",
+            css_class="file-content",
+            file_type=['image', 'flash']),
         title=_('Announcement file'),
         description=_("Only image and flash files are supported."),
         missing=None

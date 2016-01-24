@@ -14,8 +14,8 @@ from dace.objectofcollaboration.entity import Entity
 from dace.processinstance.core import Behavior
 from pontus.schema import Schema, omit, select
 from pontus.widget import (
-    SequenceWidget, SimpleMappingWidget,
-    RadioChoiceWidget, Select2Widget, FileWidget,
+    SimpleMappingWidget,
+    Select2Widget,
     AjaxSelect2Widget)
 from pontus.form import FormView
 from pontus.view_operation import MultipleView

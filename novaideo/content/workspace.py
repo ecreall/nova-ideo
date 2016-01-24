@@ -16,14 +16,14 @@ from dace.descriptors import (
     SharedUniqueProperty,
     CompositeMultipleProperty)
 from pontus.widget import (
-    SequenceWidget,
-    FileWidget)
+    SequenceWidget)
 from pontus.file import ObjectData, File
 
 from pontus.core import VisualisableElement, VisualisableElementSchema
 
 from novaideo import _
 from .interface import IWorkspace
+from novaideo.content import get_file_widget
 
 
 def context_is_a_workspace(context, request):
@@ -42,7 +42,7 @@ class WorkspaceSchema(VisualisableElementSchema):
         colander.SchemaNode(
             ObjectData(File),
             name=_("File"),
-            widget=FileWidget()
+            widget=get_file_widget()
             ),
         widget=SequenceWidget(
             add_subitem_text_template=_('Add file')),
