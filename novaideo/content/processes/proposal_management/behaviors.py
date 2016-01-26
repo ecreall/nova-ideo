@@ -219,7 +219,7 @@ def init_proposal_ballots(proposal, process):
     group = sorted(durations,
                    key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
     ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
-                    group_title=_('Delay'),
+                    group_title=_('Amendment duration'),
                     group_default='One week')
     wg.addtoproperty('ballots', ballot)
     ballot.title = _('Amendment duration')
