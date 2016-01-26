@@ -1,7 +1,7 @@
 <div tal:replace="structure navbar_body"/>
 <div class="right-caption span4"  i18n:domain="novaideo">
   <div class="caption" tal:define="proposal workspace.proposal">
-    <h3><span class="glyphicon glyphicon-folder-open"></span> <a href="${request.resource_url(proposal, '@@index')}">${proposal.title}</a>/${workspace.title} </h3>
+    <h3><span class="glyphicon glyphicon-folder-open"></span> <a href="${request.resource_url(proposal, '@@index')}">${proposal.title}</a>/${workspace.type_title} </h3>
     <div class="folder-files container-fluid">
       <div class="row clearfix" tal:repeat="row_index range(row_len)">
         <div class="col-md-4" tal:repeat="file files[(row_index*3): (row_index*3)+3]">

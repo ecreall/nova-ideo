@@ -105,7 +105,7 @@ class PublishProposalSchema(Schema):
 
     elected = colander.SchemaNode(
         colander.String(),
-        title=_('Delay'),
+        title=_('Amendment duration'),
     )
 
 
@@ -134,14 +134,12 @@ class PublishProposalFormView(FormView):
                                      'group_title', _('Choices'))
         group_default = getattr(duration_ballot_report.ballottype,
                                 'group_default', None)
-        elected_node.description = duration_ballot_report.ballot.title
         if group_default:
             elected_node.default = group_default
 
         elected_node.widget = subjects_widget
         vote_widget = vote_choice(vp_ballot_report)
         self.schema.get('vote').widget = vote_widget
-        self.schema.get('vote').description = vp_ballot_report.ballot.title
         self.schema.view = self
 
 

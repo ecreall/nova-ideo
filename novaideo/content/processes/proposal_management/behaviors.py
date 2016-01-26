@@ -1135,9 +1135,6 @@ def participate_roles_validation(process, context):
 
 def participate_processsecurity_validation(process, context):
     working_group = context.working_group
-    if getattr(working_group, 'first_decision', True):
-        return False
-
     user = get_current()
     root = getSite()
     wgs = getattr(user, 'active_working_groups', [])
@@ -1232,33 +1229,6 @@ class Participate(InfiniteCardinality):
 
         request.registry.notify(ActivityExecuted(
             self, [context, working_group], user))
-        return {}
-
-    def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
-
-
-def firstparticipate_processsecurity_validation(process, context):
-    working_group = context.working_group
-    if not getattr(working_group, 'first_decision', True):
-        return False
-
-    user = get_current()
-    root = getSite()
-    wgs = user.active_working_groups
-    return working_group and\
-           not(user in working_group.wating_list) and \
-           len(wgs) < root.participations_maxi and \
-           global_user_processsecurity(process, context)
-
-
-class FirstParticipate(Participate):
-    processsecurity_validation = firstparticipate_processsecurity_validation
-
-    def start(self, context, request, appstruct, **kw):
-        user = get_current()
-        first_vote_registration(user, context.working_group, appstruct)
-        super(FirstParticipate, self).start(context, request, appstruct, **kw)
         return {}
 
     def redirect(self, context, request, **kw):

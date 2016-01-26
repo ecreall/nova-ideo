@@ -63,8 +63,8 @@ class WikiWorkMode(WorkMode):
 class CorrectionWorkMode(WorkMode):
 
     work_mode_process_id = 'correctionworkmodeprocess'
-    participants_mini = 2
-    title = _('Change with validation (At least two members)')
+    participants_mini = 3
+    title = _('Change with validation (At least three members)')
     work_id = 'correction'
     order = 1
 

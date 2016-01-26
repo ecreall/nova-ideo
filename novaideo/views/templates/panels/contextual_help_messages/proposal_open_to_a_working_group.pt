@@ -4,7 +4,7 @@
 
 	<p i18n:translate="">Pour l'améliorer, il faut que le groupe de travail atteigne le nombre minimum de participants.</p>
 
-	<p i18n:translate="">Tout membre peut se porter candidat au groupe de travail, à condition qu'il ne soit pas déjà candidat ou participant à cinq autres groupes de travail. Si vous êtes candidat, votre première action sera de voter pour ou contre l'amélioration de la proposition. Le scrutin de vote est clos dès que le groupe de travail a atteint trois participants.</p>
+	<p i18n:translate="">Tout membre peut se porter candidat au groupe de travail, à condition qu'il ne soit pas déjà candidat ou participant à cinq autres groupes de travail. Le groupe de travail sera actif dès qu'il atteint trois participants.</p>
 
 	<p i18n:translate="">Un groupe de travail peut comprendre au maximum douze participants, les autres candidats sont mis sur liste d'attente. Si un participant quitte le groupe de travail et que des candidats sont sur liste d'attente, le premier inscrit rejoint automatiquement le groupe de travail.</p>
 </div>

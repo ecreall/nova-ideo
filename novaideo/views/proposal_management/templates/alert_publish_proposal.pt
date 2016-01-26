@@ -11,11 +11,13 @@
     </div>
  	<span class="glyphicon glyphicon-info-sign pull-right"></span>
     <div>
-	   <p>Dès que vous avez publié votre proposition, vous ne pouvez plus la modifier seul. Celle-ci devient ouverte à un groupe de travail, qui peut décider soit de l'améliorer à plusieurs, soit de la soumettre en l'état aux autres membres de la plateforme.</p>
+      <p>Une fois votre proposition publiée, vous pouvez décider :</p>
+      <ul>
+        <li>soit de la soumettre à appréciation en l'état à l'ensemble des utilisateurs sans l'améliorer,</li>
+        <li>soit l'améliorer d'abord avec d'autres utilisateurs dans un groupe de travail puis la soumettre à appréciation à l'ensemble des utilisateurs.</li>
+      </ul>
 
-		<p>Par défaut, en cliquant sur "Continuer", vous décidez que la proposition doit être améliorée à plusieurs et que le délai du cycle d'amélioration soit fixé à une semaine.</p>
-
-		<p>Vous pouvez changer le délai du cycle d'amélioration ou au contraire opter pour soumettre la proposition en l'état.</p>
+      <p>Si vous décider de l'améliorer avec d'autres utilisateurs, ce qui est le choix proposé par défaut, vous devez indiquer la durée du cycle d'amélioration, celle-ci est fixée par défaut à une semaine.</p>
    </div>
  </div>
 </div>

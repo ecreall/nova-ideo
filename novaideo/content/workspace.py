@@ -60,6 +60,7 @@ class Workspace(VisualisableElement, Entity):
     """Working group class"""
 
     name = renamer()
+    type_title = _('Workspace')
     template = 'pontus:templates/visualisable_templates/object.pt'
     files = CompositeMultipleProperty('files')
     working_group = SharedUniqueProperty('working_group', 'workspace')

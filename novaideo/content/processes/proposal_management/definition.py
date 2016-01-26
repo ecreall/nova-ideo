@@ -47,7 +47,6 @@ from .behaviors import (
     Withdraw,
     Resign,
     Participate,
-    FirstParticipate,
     SubmitProposal,
     SeeAmendments,
     PublishAsProposal,
@@ -219,7 +218,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             group = sorted(durations,
                            key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
             ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
-                            group_title=_('Delay'),
+                            group_title=_('Amendment duration'),
                             group_default='One week')
             working_group.addtoproperty('ballots', ballot)
             ballot.title = _('Amendment duration')
@@ -315,10 +314,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Participate"),
                                        title=_("Participate"),
                                        groups=[]),
-                firstparticipate = ActivityDefinition(contexts=[FirstParticipate],
-                                       description=_("Participate"),
-                                       title=_("Participate"),
-                                       groups=[]),
                 resign = ActivityDefinition(contexts=[Resign],
                                        description=_("Resign"),
                                        title=_("Resign"),
@@ -393,7 +388,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'present'),
                 TransitionDefinition('pg', 'resign'),
                 TransitionDefinition('pg', 'participate'),
-                TransitionDefinition('pg', 'firstparticipate'),
                 TransitionDefinition('pg', 'withdraw'),
                 TransitionDefinition('pg', 'support'),
                 TransitionDefinition('pg', 'makeitsopinion'),
@@ -417,7 +411,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('present', 'eg'),
                 TransitionDefinition('resign', 'eg'),
                 TransitionDefinition('participate', 'eg'),
-                TransitionDefinition('firstparticipate', 'eg'),
                 TransitionDefinition('withdraw', 'eg'),
                 TransitionDefinition('support', 'eg'),
                 TransitionDefinition('makeitsopinion', 'eg'),
