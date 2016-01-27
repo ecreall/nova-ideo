@@ -44,6 +44,7 @@ class SeeMyContentsView(BasicView):
     contents_messages = CONTENTS_MESSAGES
     selected_filter = ['metadata_filter', ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
+    include_archived = True
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],
@@ -75,7 +76,7 @@ class SeeMyContentsView(BasicView):
         args['request'] = self.request
         objects = find_entities(user=user, intersect=self._get_content_ids(),
                                 sort_on='release_date', reverse=True,
-                                **args)
+                                include_archived=self.include_archived, **args)
         url = self.request.resource_url(self.context, self.name)
         batch = Batch(objects, self.request,
                       url=url,

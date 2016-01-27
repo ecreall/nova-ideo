@@ -56,8 +56,7 @@ def seemy_roles_validation(process, context):
 
 def seemyc_processsecurity_validation(process, context):
     user = get_current()
-    contents = [o for o in getattr(user, 'contents', [])
-                if 'archived' not in o.state]
+    contents = [o for o in getattr(user, 'contents', [])]
     return contents and global_user_processsecurity(process, context)
 
 

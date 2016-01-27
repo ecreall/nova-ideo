@@ -46,6 +46,7 @@ class SeeMySupportsView(SeeMyContentsView):
     selected_filter = [('metadata_filter', ['negation', 'keywords', 'states']),
                        ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
+    include_archived = False
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],

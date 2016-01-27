@@ -43,6 +43,7 @@ class SeeMyParticipationsView(SeeMyContentsView):
     selected_filter = [('metadata_filter', ['keywords', 'states']),
                        ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
+    include_archived = False
 
     def _get_content_ids(self):
         user = get_current()

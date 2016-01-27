@@ -39,6 +39,7 @@ class SeeMySelectionsView(SeeMyContentsView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seemyselections'
     contents_messages = CONTENTS_MESSAGES
+    include_archived = False
 
     def _get_content_ids(self):
         user = get_current()

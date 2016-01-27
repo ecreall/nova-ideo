@@ -153,7 +153,8 @@ def states_query(node, **args):
     #index
     states_index = dace_catalog['object_states']
     if not states:
-        return states_index.notany(['archived'])
+        return None if args.get('include_archived', False) \
+            else states_index.notany(['archived'])
 
     if args.get('all_states', False):
         return states_index.all(states)

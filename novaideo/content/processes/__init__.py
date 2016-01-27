@@ -28,6 +28,7 @@ STATES_PARTICIPANT_MAPPING = {
 	    'processed': _('Processed'),
     },
     'proposal': {
+        'draft': _('Draft'),
         'submitted_support': _('Submitted for support'),
         'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
@@ -84,6 +85,7 @@ STATES_MEMBER_MAPPING = {
 	    'processed': _('Processed'),
     },
     'proposal': {
+        'draft': _('Draft'),
         'submitted_support': _('Submitted for support'),
         'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
