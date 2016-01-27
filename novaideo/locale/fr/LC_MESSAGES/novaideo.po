@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-01-26 13:28+0100\n"
+"POT-Creation-Date: 2016-01-27 16:17+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -121,7 +121,7 @@ msgstr ""
 "Pour ajouter des mots clés, vous devez taper sur la touche « Entrée » après "
 "chaque mot clé ou les séparer par des virgules."
 
-#: novaideo/core.py:365 novaideo/views/filter/__init__.py:861
+#: novaideo/core.py:365 novaideo/views/filter/__init__.py:863
 #: novaideo/views/proposal_management/templates/idea_data.pt:3
 #: novaideo/views/correlation_management/templates/see_correlation.pt:7
 #: novaideo/content/idea.py:68 novaideo/content/correction.py:52
@@ -712,7 +712,7 @@ msgstr "Archiver l'idée"
 #: novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:10
 #: novaideo/views/amendment_management/templates/readonly/explanation_inline_item.pt:3
 #: novaideo/content/processes/__init__.py:23
-#: novaideo/content/processes/__init__.py:79
+#: novaideo/content/processes/__init__.py:80
 msgid "Explanation"
 msgstr "Explication"
 
@@ -1153,110 +1153,110 @@ msgstr ""
 msgid "Organization"
 msgstr "Organisation"
 
-#: novaideo/views/filter/__init__.py:516 novaideo/views/filter/__init__.py:876
+#: novaideo/views/filter/__init__.py:518 novaideo/views/filter/__init__.py:878
 msgid "Metadata filter"
 msgstr "Filtre sur les métadonnées"
 
-#: novaideo/views/filter/__init__.py:523
+#: novaideo/views/filter/__init__.py:525
 msgid "Geographic filter"
 msgstr "Filtre géographique"
 
-#: novaideo/views/filter/__init__.py:530 novaideo/views/filter/__init__.py:889
+#: novaideo/views/filter/__init__.py:532 novaideo/views/filter/__init__.py:891
 msgid "Temporal filter"
 msgstr "Filtre temporel"
 
-#: novaideo/views/filter/__init__.py:537 novaideo/views/filter/__init__.py:902
+#: novaideo/views/filter/__init__.py:539 novaideo/views/filter/__init__.py:904
 msgid "Contribution filter"
 msgstr "Filtre sur les contributeurs"
 
-#: novaideo/views/filter/__init__.py:544 novaideo/views/filter/__init__.py:915
+#: novaideo/views/filter/__init__.py:546 novaideo/views/filter/__init__.py:917
 msgid "Text filter"
 msgstr "Filtre textuel"
 
-#: novaideo/views/filter/__init__.py:551
+#: novaideo/views/filter/__init__.py:553
 msgid "Other filter"
 msgstr "Autre filtre"
 
-#: novaideo/views/filter/__init__.py:929 novaideo/views/templates/filter.pt:7
+#: novaideo/views/filter/__init__.py:931 novaideo/views/templates/filter.pt:7
 msgid "Filter"
 msgstr "Filtrer"
 
-#: novaideo/views/filter/__init__.py:722 novaideo/views/filter/__init__.py:801
-#: novaideo/views/filter/__init__.py:830 novaideo/views/filter/__init__.py:853
+#: novaideo/views/filter/__init__.py:724 novaideo/views/filter/__init__.py:803
+#: novaideo/views/filter/__init__.py:832 novaideo/views/filter/__init__.py:855
 msgid "Not"
 msgstr "Sauf"
 
-#: novaideo/views/filter/__init__.py:724 novaideo/views/filter/__init__.py:803
-#: novaideo/views/filter/__init__.py:832 novaideo/views/filter/__init__.py:855
+#: novaideo/views/filter/__init__.py:726 novaideo/views/filter/__init__.py:805
+#: novaideo/views/filter/__init__.py:834 novaideo/views/filter/__init__.py:857
 msgid "Check the box to exclude values entered below."
 msgstr "Cochez pour exclure les valeurs saisis ci-dessous."
 
-#: novaideo/views/filter/__init__.py:731
+#: novaideo/views/filter/__init__.py:733
 #: novaideo/views/novaideo_view_manager/analytics.py:208
 msgid "Types"
 msgstr "Types"
 
-#: novaideo/views/filter/__init__.py:732
+#: novaideo/views/filter/__init__.py:734
 #: novaideo/views/novaideo_view_manager/analytics.py:209
 msgid "You can select the content types to be displayed."
 msgstr "Vous pouvez sélectionner les types des contenus à afficher."
 
-#: novaideo/views/filter/__init__.py:742
+#: novaideo/views/filter/__init__.py:744
 msgid "keywords"
 msgstr "Mots clés"
 
-#: novaideo/views/filter/__init__.py:743
+#: novaideo/views/filter/__init__.py:745
 #: novaideo/views/novaideo_view_manager/analytics.py:227
 msgid "You can select the keywords of the contents to be displayed."
 msgstr "Vous pouvez sélectionner les mots clés des contenus à afficher."
 
-#: novaideo/views/filter/__init__.py:751
+#: novaideo/views/filter/__init__.py:753
 #: novaideo/views/novaideo_view_manager/analytics.py:217
 #: novaideo/views/novaideo_view_manager/templates/entity_history.pt:15
 msgid "States"
 msgstr "États"
 
-#: novaideo/views/filter/__init__.py:752
+#: novaideo/views/filter/__init__.py:754
 #: novaideo/views/novaideo_view_manager/analytics.py:218
 msgid "You can select the states of the contents to be displayed."
 msgstr "Vous pouvez sélectionner les états des contenus à afficher."
 
-#: novaideo/views/filter/__init__.py:765
+#: novaideo/views/filter/__init__.py:767
 msgid "Created after"
 msgstr "Date de création après"
 
-#: novaideo/views/filter/__init__.py:771
+#: novaideo/views/filter/__init__.py:773
 msgid "Created before"
 msgstr "Date de création avant"
 
-#: novaideo/views/filter/__init__.py:773
+#: novaideo/views/filter/__init__.py:775
 msgid "You can select the creation dates of contents to be displayed."
 msgstr ""
 "Vous pouvez sélectionner les dates de création des contenus à afficher."
 
-#: novaideo/views/filter/__init__.py:782
+#: novaideo/views/filter/__init__.py:784
 msgid "Connected after"
 msgstr "Connecté aprés"
 
-#: novaideo/views/filter/__init__.py:788
+#: novaideo/views/filter/__init__.py:790
 msgid "Connected before"
 msgstr "Connecté avant"
 
-#: novaideo/views/filter/__init__.py:790
+#: novaideo/views/filter/__init__.py:792
 msgid "You can select the last connection dates of users to be displayed."
 msgstr ""
 "Vous pouvez sélectionner la date de la dernière connection des membres à "
 "afficher."
 
-#: novaideo/views/filter/__init__.py:839
+#: novaideo/views/filter/__init__.py:841
 msgid "Authors"
 msgstr "Auteurs"
 
-#: novaideo/views/filter/__init__.py:840
+#: novaideo/views/filter/__init__.py:842
 msgid "You can enter the authors names of the contents to be displayed."
 msgstr "Vous pouvez saisir les noms des auteurs des contenus à afficher."
 
-#: novaideo/views/filter/__init__.py:862
+#: novaideo/views/filter/__init__.py:864
 msgid "You can enter the words that appear in the contents to be displayed."
 msgstr ""
 "Vous pouvez saisir les mots qui apparaissent dans les contenus à afficher."
@@ -1334,7 +1334,7 @@ msgstr "Inscriptions"
 #: novaideo/views/user_management/reset_password.py:146
 #: novaideo/content/processes/idea_management/behaviors.py:591
 #: novaideo/content/processes/invitation_management/behaviors.py:109
-#: novaideo/content/processes/novaideo_view_manager/behaviors.py:276
+#: novaideo/content/processes/novaideo_view_manager/behaviors.py:275
 msgid "Send"
 msgstr "Envoyer"
 
@@ -1692,6 +1692,7 @@ msgstr "Choisissez le mode de travail"
 #: novaideo/content/processes/proposal_management/definition.py:224
 #: novaideo/content/processes/proposal_management/definition.py:221
 #: novaideo/content/processes/proposal_management/behaviors.py:225
+#: novaideo/content/processes/proposal_management/behaviors.py:222
 msgid "Amendment duration"
 msgstr "Durée du cycle d'amélioration"
 
@@ -3302,18 +3303,25 @@ msgstr ""
 msgid "Number of clicks"
 msgstr "Nombre des clics"
 
-#: novaideo/views/http_views/templates/404.pt:11
+#: novaideo/views/http_views/__init__.py:21
 msgid "Document not found!"
 msgstr "Document non trouvé!"
 
-#: novaideo/views/http_views/templates/404.pt:14
-#: novaideo/views/http_views/templates/500.pt:14
-msgid "Homepage"
-msgstr "Accueil"
-
-#: novaideo/views/http_views/templates/500.pt:11
+#: novaideo/views/http_views/__init__.py:43
 msgid "An error has occurred!"
 msgstr "Une erreur est survenue!"
+
+#: novaideo/views/http_views/templates/404.pt:4
+msgid ""
+"Le contenu que vous recherchez n'existe pas ou n'est plus disponible sur "
+"notre site."
+msgstr ""
+
+#: novaideo/views/http_views/templates/500.pt:4
+msgid ""
+"Une erreur inattendue s'est produite. Un rapport d'erreur est envoyé aux "
+"administrateurs du site."
+msgstr ""
 
 #: novaideo/views/work_mode_processes/amendment_work_mode_process/improve_proposal.py:27
 #: novaideo/views/work_mode_processes/correction_work_mode_process/correct_proposal.py:28
@@ -3542,7 +3550,7 @@ msgstr "Mes appréciations"
 #: novaideo/views/novaideo_view_manager/see_history.py:29
 #: novaideo/views/novaideo_view_manager/see_alerts.py:38
 #: novaideo/content/processes/novaideo_view_manager/definition.py:89
-#: novaideo/content/processes/novaideo_view_manager/behaviors.py:251
+#: novaideo/content/processes/novaideo_view_manager/behaviors.py:250
 msgid "Processes history"
 msgstr "Historique des processus"
 
@@ -3978,26 +3986,26 @@ msgid "Idea"
 msgstr "Idée"
 
 #: novaideo/content/idea.py:43 novaideo/content/proposal.py:48
-#: novaideo/content/processes/__init__.py:39
-#: novaideo/content/processes/__init__.py:49
-#: novaideo/content/processes/__init__.py:95
-#: novaideo/content/processes/__init__.py:105
+#: novaideo/content/processes/__init__.py:40
+#: novaideo/content/processes/__init__.py:50
+#: novaideo/content/processes/__init__.py:97
+#: novaideo/content/processes/__init__.py:107
 msgid "Favorable"
 msgstr "Favorable"
 
 #: novaideo/content/idea.py:44 novaideo/content/proposal.py:49
-#: novaideo/content/processes/__init__.py:40
-#: novaideo/content/processes/__init__.py:50
-#: novaideo/content/processes/__init__.py:96
-#: novaideo/content/processes/__init__.py:106
+#: novaideo/content/processes/__init__.py:41
+#: novaideo/content/processes/__init__.py:51
+#: novaideo/content/processes/__init__.py:98
+#: novaideo/content/processes/__init__.py:108
 msgid "To study"
 msgstr "À retravailler"
 
 #: novaideo/content/idea.py:45 novaideo/content/proposal.py:50
-#: novaideo/content/processes/__init__.py:41
-#: novaideo/content/processes/__init__.py:51
-#: novaideo/content/processes/__init__.py:97
-#: novaideo/content/processes/__init__.py:107
+#: novaideo/content/processes/__init__.py:42
+#: novaideo/content/processes/__init__.py:52
+#: novaideo/content/processes/__init__.py:99
+#: novaideo/content/processes/__init__.py:109
 msgid "Unfavorable"
 msgstr "Défavorable"
 
@@ -4272,123 +4280,125 @@ msgid "Locale"
 msgstr "Langue"
 
 #: novaideo/content/processes/__init__.py:16
-#: novaideo/content/processes/__init__.py:72
+#: novaideo/content/processes/__init__.py:31
+#: novaideo/content/processes/__init__.py:73
+#: novaideo/content/processes/__init__.py:88
 msgid "Draft"
 msgstr "Privée"
 
 #: novaideo/content/processes/__init__.py:17
-#: novaideo/content/processes/__init__.py:32
-#: novaideo/content/processes/__init__.py:52
-#: novaideo/content/processes/__init__.py:73
-#: novaideo/content/processes/__init__.py:88
-#: novaideo/content/processes/__init__.py:108
+#: novaideo/content/processes/__init__.py:33
+#: novaideo/content/processes/__init__.py:53
+#: novaideo/content/processes/__init__.py:74
+#: novaideo/content/processes/__init__.py:90
+#: novaideo/content/processes/__init__.py:110
 msgid "Published"
 msgstr "Publié(e)"
 
 #: novaideo/content/processes/__init__.py:18
 #: novaideo/content/processes/__init__.py:24
-#: novaideo/content/processes/__init__.py:37
-#: novaideo/content/processes/__init__.py:47
-#: novaideo/content/processes/__init__.py:74
-#: novaideo/content/processes/__init__.py:80
-#: novaideo/content/processes/__init__.py:93
-#: novaideo/content/processes/__init__.py:103
+#: novaideo/content/processes/__init__.py:38
+#: novaideo/content/processes/__init__.py:48
+#: novaideo/content/processes/__init__.py:75
+#: novaideo/content/processes/__init__.py:81
+#: novaideo/content/processes/__init__.py:95
+#: novaideo/content/processes/__init__.py:105
 msgid "Archived"
 msgstr "Archivé(e)"
 
 #: novaideo/content/processes/__init__.py:21
-#: novaideo/content/processes/__init__.py:77
+#: novaideo/content/processes/__init__.py:78
 msgid "In preparation"
 msgstr "En préparation"
 
 #: novaideo/content/processes/__init__.py:22
-#: novaideo/content/processes/__init__.py:78
+#: novaideo/content/processes/__init__.py:79
 msgid "Submitted"
 msgstr "Soumise"
 
 #: novaideo/content/processes/__init__.py:27
-#: novaideo/content/processes/__init__.py:83
+#: novaideo/content/processes/__init__.py:84
 msgid "In process"
 msgstr "En progression"
 
 #: novaideo/content/processes/__init__.py:28
-#: novaideo/content/processes/__init__.py:84
+#: novaideo/content/processes/__init__.py:85
 msgid "Processed"
 msgstr "Effectuée"
 
-#: novaideo/content/processes/__init__.py:31
-#: novaideo/content/processes/__init__.py:87
+#: novaideo/content/processes/__init__.py:32
+#: novaideo/content/processes/__init__.py:89
 msgid "Submitted for support"
 msgstr "Soumise pour appréciation"
 
-#: novaideo/content/processes/__init__.py:33
-#: novaideo/content/processes/__init__.py:89
+#: novaideo/content/processes/__init__.py:34
+#: novaideo/content/processes/__init__.py:91
 msgid "Open to a working group"
 msgstr "Ouverte à un groupe de travail"
 
-#: novaideo/content/processes/__init__.py:34
-#: novaideo/content/processes/__init__.py:90
+#: novaideo/content/processes/__init__.py:35
+#: novaideo/content/processes/__init__.py:92
 msgid "Votes for publishing"
 msgstr "Vote pour améliorer ou non la proposition"
 
-#: novaideo/content/processes/__init__.py:35
-#: novaideo/content/processes/__init__.py:91
+#: novaideo/content/processes/__init__.py:36
+#: novaideo/content/processes/__init__.py:93
 msgid "Votes for amendments"
 msgstr "Votes sur les amendements"
 
-#: novaideo/content/processes/__init__.py:36
-#: novaideo/content/processes/__init__.py:92
+#: novaideo/content/processes/__init__.py:37
+#: novaideo/content/processes/__init__.py:94
 msgid "Being improved"
 msgstr "En cours d'amélioration"
 
-#: novaideo/content/processes/__init__.py:38
-#: novaideo/content/processes/__init__.py:48
-#: novaideo/content/processes/__init__.py:94
-#: novaideo/content/processes/__init__.py:104
+#: novaideo/content/processes/__init__.py:39
+#: novaideo/content/processes/__init__.py:49
+#: novaideo/content/processes/__init__.py:96
+#: novaideo/content/processes/__init__.py:106
 msgid "Examined"
 msgstr "Examinée"
 
-#: novaideo/content/processes/__init__.py:45
-#: novaideo/content/processes/__init__.py:101
+#: novaideo/content/processes/__init__.py:46
+#: novaideo/content/processes/__init__.py:103
 msgid "To work"
 msgstr "À travailler"
 
-#: novaideo/content/processes/__init__.py:46
-#: novaideo/content/processes/__init__.py:102
+#: novaideo/content/processes/__init__.py:47
+#: novaideo/content/processes/__init__.py:104
 msgid "Submitted for moderation"
 msgstr "Soumise à modération"
 
-#: novaideo/content/processes/__init__.py:55
-#: novaideo/content/processes/__init__.py:111
+#: novaideo/content/processes/__init__.py:56
+#: novaideo/content/processes/__init__.py:113
 msgid "Pending"
 msgstr "En attente"
 
-#: novaideo/content/processes/__init__.py:56
-#: novaideo/content/processes/__init__.py:112
+#: novaideo/content/processes/__init__.py:57
+#: novaideo/content/processes/__init__.py:114
 msgid "Accepted"
 msgstr "Acceptée"
 
-#: novaideo/content/processes/__init__.py:57
-#: novaideo/content/processes/__init__.py:113
+#: novaideo/content/processes/__init__.py:58
+#: novaideo/content/processes/__init__.py:115
 msgid "Refused"
 msgstr "Refusée"
 
-#: novaideo/content/processes/__init__.py:60
-#: novaideo/content/processes/__init__.py:64
-#: novaideo/content/processes/__init__.py:116
-#: novaideo/content/processes/__init__.py:120
+#: novaideo/content/processes/__init__.py:61
+#: novaideo/content/processes/__init__.py:65
+#: novaideo/content/processes/__init__.py:118
+#: novaideo/content/processes/__init__.py:122
 msgid "Active"
 msgstr "Actif"
 
-#: novaideo/content/processes/__init__.py:61
-#: novaideo/content/processes/__init__.py:65
-#: novaideo/content/processes/__init__.py:117
-#: novaideo/content/processes/__init__.py:121
+#: novaideo/content/processes/__init__.py:62
+#: novaideo/content/processes/__init__.py:66
+#: novaideo/content/processes/__init__.py:119
+#: novaideo/content/processes/__init__.py:123
 msgid "Deactivated"
 msgstr "Désactivé"
 
-#: novaideo/content/processes/__init__.py:66
-#: novaideo/content/processes/__init__.py:122
+#: novaideo/content/processes/__init__.py:67
+#: novaideo/content/processes/__init__.py:124
 msgid "Closed"
 msgstr "Fermé"
 
@@ -4899,10 +4909,6 @@ msgstr ""
 msgid "Submit the proposal or not"
 msgstr "Soumettre la proposition ou non"
 
-#: novaideo/content/processes/proposal_management/behaviors.py:222
-msgid "Delay"
-msgstr "Délai"
-
 #: novaideo/content/processes/proposal_management/behaviors.py:339
 #: novaideo/content/processes/proposal_management/behaviors.py:583
 #: novaideo/content/processes/proposal_management/behaviors.py:638
@@ -5094,3 +5100,9 @@ msgstr ""
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:52
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
+
+#~ msgid "Homepage"
+#~ msgstr "Accueil"
+
+#~ msgid "Delay"
+#~ msgstr "Délai"
