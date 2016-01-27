@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-01-27 16:17+0100\n"
+"POT-Creation-Date: 2016-01-27 16:28+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -3670,8 +3670,8 @@ msgid "My contents"
 msgstr "Mes contenus"
 
 #: novaideo/views/novaideo_view_manager/see_alerts.py:26
-msgid "You have no alerts"
-msgstr "Vous n'avez pas d'alertes"
+msgid "You have no alert"
+msgstr "Vous n'avez pas d'alerte"
 
 #: novaideo/views/novaideo_view_manager/see_alerts.py:27
 msgid "You have an alert"
