@@ -1,18 +1,5 @@
-
-<html>
-<head>
-    <link href="${request.static_url('novaideo:static/css/bootstrap.css')}"
-          rel="stylesheet"/>
-</head>
-<body linkifying="true" linkifycurrent="0" linkifymax="0" 
-	  style="width: 100%; height: 100%; background-image: radial-gradient(white, #626262); text-align: center;"
-	  i18n:domain="novaideo" >
-	<img src="${request.static_url('novaideo:static/images/red_cross.svg')}" style="margin-top: 10%;" width="20%">
-	<div style="font-size: 50px; margin-top: 35px; color: white" i18n:translate="">An error has occurred!</div> 
-	<div style="font-size: 20px">
-		<a href="${request.resource_url(request.root)}" style="text-decoration: none; color: white;">
-			<span class="glyphicon glyphicon-share-alt"></span> <span i18n:translate="">Homepage</span>
-		</a>
-	</div> 
-</body>
-</html>
+<div class="httperror-container"
+	  i18n:domain="novaideo">
+	<img class="httperror-img" src="${request.static_url('novaideo:static/images/red_cross.svg')}">
+	<div class="httperror-title" i18n:translate="">Une erreur inattendue s'est produite. Un rapport d'erreur est envoyé aux administrateurs du site.</div> 
+</div>
