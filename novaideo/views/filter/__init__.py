@@ -153,13 +153,14 @@ def states_query(node, **args):
     #index
     states_index = dace_catalog['object_states']
     if not states:
-        return None if args.get('include_archived', False) \
-            else states_index.notany(['archived'])
+        return states_index.notany(['version']) if \
+            args.get('include_archived', False) \
+            else states_index.notany(['archived', 'version'])
 
     if args.get('all_states', False):
-        return states_index.all(states)
+        return states_index.notany(['version']) & states_index.all(states)
 
-    return states_index.any(states)
+    return states_index.notany(['version']) & states_index.any(states)
 
 
 def keywords_query(node, **args):
