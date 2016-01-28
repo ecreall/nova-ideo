@@ -1,6 +1,12 @@
 
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
 	<p i18n:translate="">
-	Le groupe de travail a atteint le nombre minimum de participants, il peut dorénavant intervenir sur la proposition.
+	  La durée du cycle d'exploitation est écoulée, les participants doivent voter pour améliorer ou non la proposition.
+    </p>
+	<p i18n:translate="">
+		S'ils votent en majorité pour améliorer la proposition à plusieurs, ils doivent indiquer une nouvelle durée pour le cycle d'amélioration et ils peuvent de nouveau améliorer la proposition pendant ce nouveau cycle.
+	</p>
+	<p i18n:translate="">
+		S'ils votent en majorité pour soumettre la proposition en l'état, la proposition ne peut plus être améliorée et les membres de la plateforme peuvent dès lors soutenir ou s'opposer à la proposition.
 	</p>
 </div>

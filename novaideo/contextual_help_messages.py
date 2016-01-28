@@ -35,10 +35,6 @@ def idea_submitted_moderator(context, user):
     return has_role(role=('Moderator', ))
 
 
-def proposal_first_vote(context, user):
-    return context.creator and getattr(context.creator, 'iteration', 1) == 1
-
-
 def proposal_proofreading_started(context, user):
     corrections_in_process = [c for c in context.corrections \
                               if 'in process' in c.state]
@@ -124,7 +120,7 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   	      'contextual_help_messages/proposal_open_to_a_working_group.pt', 1)],
 
 	(Proposal, 'votes for publishing', 'index'): [
-	   (proposal_first_vote, 'novaideo:views/templates/panels/'
+	   (None, 'novaideo:views/templates/panels/'
 	   	      'contextual_help_messages/proposal_first_vote.pt', 1)],
 
 	(Proposal, 'proofreading', 'index'): [
