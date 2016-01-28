@@ -8,7 +8,10 @@
       <span  i18n:translate="">Vous avez atteint la limite de participations autorisées. Afin de pouvoir soumettre votre proposition, veuillez démissionner de l'un de</span> <a tal:attributes="href request.resource_url(request.virtual_root, '@@seemyparticipations')"  i18n:translate="">vos groupes de travail actuels</a>.
      </div>
      <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
-      <span i18n:translate="">Pour qu'une proposition soit publiée, l'ensemble de ses idées liées doivent être préalablement publiées par les modérateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
+      <p i18n:translate="">
+        Pour qu'une proposition puisse être publiée, l'ensemble de ses idées liées doivent avoir été préalablement examinées favorablement par un Examinateur, sans quoi la proposition ne peut être publiée.</p>
+      <p i18n:translate="">
+         Vous pouvez accéder ci-dessous aux idées concernées et les envoyer à un Examinateur pour qu'il puisse les examiner, du moment que ces idées ont été préalablement publiées par les modérateurs.</p>
       <ol class="list-unstyled not-published-list">
         <tal:loop repeat="i not_published_ideas">
           <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
@@ -16,7 +19,10 @@
       </ol>
      </div>
      <div tal:omit-tag="" tal:condition="not_favorable_ideas and idea_to_examine">
-      <span i18n:translate="">Pour qu'une proposition soit publiée, l'ensemble de ses idées liées doivent être préalablement publiées et désignées comme favorables par les examinateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
+      <p i18n:translate="">
+        Pour qu'une proposition puisse être publiée, l'ensemble de ses idées liées doivent avoir été préalablement examinées favorablement par un Examinateur, sans quoi la proposition ne peut être publiée.</p>
+      <p i18n:translate="">
+         Vous pouvez accéder ci-dessous aux idées concernées et les envoyer à un Examinateur pour qu'il puisse les examiner, du moment que ces idées ont été préalablement publiées.</p>
       <ol class="list-unstyled not-published-list">
         <tal:loop repeat="i not_favorable_ideas">
           <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>

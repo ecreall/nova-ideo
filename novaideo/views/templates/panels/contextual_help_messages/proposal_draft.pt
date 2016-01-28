@@ -1,8 +1,11 @@
 
-<div class="contextual-help-item principal-help"  i18n:domain="novaideo">
+<div class="contextual-help-item principal-help"  i18n:domain="novaideo"
+   tal:define="idea_to_examine 'idea' in request.content_to_examine"
+	>
 	<p i18n:translate="">Votre proposition est dans un statut privé, vous êtes le seul à la voir.</p>
 
-	<p i18n:translate="">Si vous souhaitez la rendre publique, vous devez la publier. Pour que ses idées liées deviennent également visibles aux autres utilisateurs, vous devrez préalablement les publier.</p>
+	<p i18n:translate="" tal:condition="not idea_to_examine">Si vous souhaitez la rendre publique, vous devez la publier. Pour que ses idées liées deviennent également visibles aux autres utilisateurs, vous devrez préalablement les publier.</p>
+	<p i18n:translate="" tal:condition="idea_to_examine">Si vous souhaitez la rendre publique, vous devez la publier. Pour la rendre publique, vous devez vous assurez préalablement que toutes les idées liées à la proposition ont été examinés favorablement, il n'est pas possible d'utiliser des idées qui n'ont pas obtenu avant un avis favorable du Comité d'examen.</p>
 
 	<p i18n:translate="">Si vous n'êtes pas satisfait de votre proposition, vous pouvez la supprimer ou la modifier.</p>
 </div>
