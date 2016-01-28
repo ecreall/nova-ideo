@@ -27,6 +27,10 @@ def homepage_connected_condition(context, user):
            not homepage_search(context, user)
 
 
+def idea_not_examined(context, user):
+    return 'examined' not in context.state
+
+
 def idea_submitted_owner(context, user):
     return has_role(role=('Owner', context))
 
@@ -152,6 +156,9 @@ CONTEXTUAL_HELP_MESSAGES = {
 	(Idea, 'to work', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/idea_to_work.pt', 1)],
+	(Idea, 'examined', 'index'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/idea_examined.pt', 1)],
 	   
 	(Idea, 'any', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
@@ -172,7 +179,7 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   	                'contextual_help_messages/idea_submitted_moderator.pt', 1)],
 
 	(Idea, 'published', 'index'): [
-	   (None, 'novaideo:views/templates/panels/'
+	   (idea_not_examined, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/idea_published.pt', 1)],
 
 	(Idea, 'any', 'duplicateidea'): [
