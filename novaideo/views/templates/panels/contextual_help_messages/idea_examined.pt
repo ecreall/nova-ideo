@@ -2,15 +2,22 @@
     <p i18n:translate="">
         Les idées examinées sont visibles par l'ensemble des utilisateurs.
     </p>
-    <p i18n:translate="" tal:condition="'unfavorable' in context.state">
-        Le Comité d'examen a émis un avis défavorable à cette idée. En conséquence de quoi, elle ne peut être transformée en proposition ou utilisée dans des propositions existantes par les membres de la plateforme.
-    </p>
-    <p i18n:translate="" tal:condition="'favorable' in context.state">
-        Le Comité d'examen a émis un avis favorable à cette idée. En conséquence de quoi, elle peut être transformée en proposition ou utilisée dans des propositions existantes par les membres de la plateforme.
-    </p>
-    <p i18n:translate="">
-        Les idées examinées, même avec un avis défavorable, peuvent être dupliquées pour qu'une copie soit travaillée différemment et vous pouvez les ajouter à vos favoris.
-    </p>
+    <span tal:omit-tag="" tal:condition="'favorable' in context.state">
+        <p i18n:translate="" >
+            Le Comité d'examen a émis un avis favorable à cette idée. En conséquence de quoi, elle peut être transformée en proposition ou utilisée dans des propositions existantes par les membres de la plateforme.
+        </p>
+         <p i18n:translate="">
+            Les idées examinées, avec un avis favorable, peuvent également être dupliquées pour qu'une copie soit travaillée différemment et vous pouvez les ajouter à vos favoris.
+        </p>
+    </span>
+    <span tal:omit-tag="" tal:condition="'unfavorable' in context.state">
+        <p i18n:translate="" >
+            Le Comité d'examen a émis un avis défavorable à cette idée. En conséquence de quoi, elle ne peut être transformée en proposition ou utilisée dans des propositions existantes par les membres de la plateforme.
+        </p>
+        <p i18n:translate="">
+            Les idées examinées, même avec un avis défavorable, peuvent être dupliquées pour qu'une copie soit travaillée différemment et vous pouvez les ajouter à vos favoris.
+        </p>
+    </span>
     <p i18n:translate="">
         Elles peuvent enfin être communiquées à des tiers ou discutées entre membres.
     </p>
