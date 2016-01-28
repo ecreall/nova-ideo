@@ -69,7 +69,7 @@ class SeeOrderedProposalView(BasicView):
             filters = [
                 {'metadata_filter': {
                     'content_types': ['proposal'],
-                    'states': ['published']
+                    'states': ['submitted_support']
                 }}
             ]
             objects = find_entities(
@@ -93,7 +93,7 @@ class SeeOrderedProposalView(BasicView):
         filters = [
             {'metadata_filter': {
                 'content_types': ['proposal'],
-                'states': ['published']
+                'states': ['submitted_support']
             }}
         ]
         args = {}
