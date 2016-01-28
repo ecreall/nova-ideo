@@ -487,41 +487,46 @@ class PublishProposal(InfiniteCardinality):
     state_validation = publish_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('draft')
         user = get_current()
         root = getSite()
-        default_mode = root.get_default_work_mode()
         working_group = context.working_group
-        participants_mini = root.participants_mini
-        if 'work_mode' not in appstruct:
-            mode_id = default_mode.work_id
+        context.state.remove('draft')
+        if appstruct.get('vote', False):
+            context.state = PersistentList(['submitted_support', 'published'])
+            working_group.state = PersistentList(['archived'])
         else:
-            mode_id = appstruct['work_mode']
+            default_mode = root.get_default_work_mode()
+            participants_mini = root.participants_mini
+            if 'work_mode' not in appstruct:
+                mode_id = default_mode.work_id
+            else:
+                mode_id = appstruct['work_mode']
 
-        if mode_id:
-            working_group.work_mode_id = mode_id
-            participants_mini = WORK_MODES[mode_id].participants_mini
+            if mode_id:
+                working_group.work_mode_id = mode_id
+                participants_mini = WORK_MODES[mode_id].participants_mini
 
-        first_vote_registration(user, working_group, appstruct)
-        if participants_mini > 1:
-            context.state = PersistentList(['open to a working group', 'published'])
-            context.reindex()
-        else:
-            context.state = PersistentList(['amendable', 'published'])
-            working_group.state = PersistentList(['active'])
-            context.reindex()
-            working_group.reindex()
-            if not hasattr(working_group, 'first_decision'):
-                working_group.first_decision = True
+            first_vote_registration(user, working_group, appstruct)
+            if participants_mini > 1:
+                context.state = PersistentList(
+                    ['open to a working group', 'published'])
+                context.reindex()
+            else:
+                context.state = PersistentList(['amendable', 'published'])
+                working_group.state = PersistentList(['active'])
+                context.reindex()
+                working_group.reindex()
+                if not hasattr(working_group, 'first_decision'):
+                    working_group.first_decision = True
 
-        if 'amendable' in context.state:
-            if not working_group.improvement_cycle_proc:
-                improvement_cycle_proc = start_improvement_cycle(context)
-                working_group.setproperty(
-                    'improvement_cycle_proc', improvement_cycle_proc)
+            if 'amendable' in context.state:
+                if not working_group.improvement_cycle_proc:
+                    improvement_cycle_proc = start_improvement_cycle(context)
+                    working_group.setproperty(
+                        'improvement_cycle_proc', improvement_cycle_proc)
 
-            working_group.improvement_cycle_proc.execute_action(
-                context, request, 'votingpublication', {})
+                working_group.improvement_cycle_proc.execute_action(
+                    context, request, 'votingpublication', {})
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.init_published_at()
