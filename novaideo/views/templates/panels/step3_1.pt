@@ -16,7 +16,7 @@
    <span tal:condition="duration is None" style="color:#d9534f;" i18n:translate="">Period expired</span>
 </div>
 
-<div class="nb-iteration">${getattr(process, 'iteration', 1)}</div>
+<div class="nb-iteration">${getattr(context.working_group, 'iteration', 1)}</div>
 
 <div class="sub-steps" i18n:domain="novaideo" tal:define="is_amendment (getattr(context.working_group.work_mode, 'work_id', '')=='amendment')">
   	  <ul>

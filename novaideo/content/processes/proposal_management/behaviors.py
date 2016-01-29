@@ -1357,6 +1357,7 @@ class VotingPublication(ElementaryAction):
         context.state.insert(0, 'votes for publishing')
         context.reindex()
         working_group = context.working_group
+        working_group.iteration = getattr(working_group, 'iteration', 0) + 1
         if not getattr(working_group, 'first_vote', True):
             members = working_group.members
             url = request.resource_url(context, "@@index")
@@ -1387,7 +1388,6 @@ class VotingPublication(ElementaryAction):
                         sender=root.get_site_sender(),
                         body=message)
 
-        working_group.iteration = getattr(self.process, 'iteration', 0) + 1
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}
