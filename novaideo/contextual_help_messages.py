@@ -99,6 +99,14 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/create_idea.pt', 1)],
 
+	(NovaIdeoApplication, 'any', 'seeideastoexamine'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/ideas_to_examine.pt', 1)],
+
+	(NovaIdeoApplication, 'any', 'proposalstoexamine'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/proposals_to_examine.pt', 1)],
+
 	(Proposal, 'draft', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/proposal_draft.pt', 1)],

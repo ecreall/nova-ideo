@@ -5063,7 +5063,7 @@ msgstr "Voir les alertes"
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:93
 msgid "Alerts"
-msgstr " Les alertes"
+msgstr "Les alertes"
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:96
 msgid "See analytics"
