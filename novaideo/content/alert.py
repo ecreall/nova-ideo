@@ -86,10 +86,14 @@ class Alert(VisualisableElement, Entity):
         self.delfromproperty('users_to_alert', user)
         self.addtoproperty('alerted_users', user)
 
-    def get_subject_state(self, subject, user):
+    def get_subject_state(self, subject, user, last_state=False):
+        states = getattr(subject, 'state_or_none', [None])
+        state = states[0]
+        if last_state:
+            state = states[-1]
+
         return get_states_mapping(
-            user, subject,
-            getattr(subject, 'state_or_none', [None])[0])
+            user, subject, state)
 
     def get_templates(self):
         return self.templates.get(self.kind, {})

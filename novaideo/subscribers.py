@@ -84,6 +84,17 @@ def mysubscriber_object_published(event):
     root.addtoproperty('alerts', alert)
     alert.init_alert(all_users, [content])
 
+    if getattr(content, 'original', None):
+        original = content.original
+        alert = ContentAlert(
+            alert_kind='duplicated',
+            url=request.resource_url(original, '@@index'),
+            duplicate_title=original.title)
+        root.addtoproperty('alerts', alert)
+        users = list(get_users_by_preferences(original))
+        users.append(original.author)
+        alert.init_alert(set(users), [content])
+
 
 @subscriber(ObjectModified)
 def mysubscriber_object_modified(event):

@@ -2,11 +2,19 @@
      i18n:domain="novaideo"
      tal:condition="object.subjects"
      tal:define="icon 'glyphicon glyphicon-bookmark';
-                 alert_kind getattr(object, 'alert_kind', '')">
+                 alert_kind getattr(object, 'alert_kind', '');
+                 url getattr(object, 'url', None);
+                 duplicate_title getattr(object, 'duplicate_title', None);">
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
-    <span tal:condition="alert_kind == 'modified'">Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> faisant partie de vos favoris a été modifié</span>
-    <span tal:condition="alert_kind == 'published'">Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>  faisant partie de vos centres d'intérêt a été publié</span>
+    <span tal:condition="alert_kind == 'duplicated'">
+      Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été dupliqué, le contenu dupliqué est visible sous <a href="${url}"><span class="${getattr(subject, 'icon')}"></span> ${duplicate_title}</a>.
+    </span>
+    <span tal:condition="alert_kind == 'modified'">Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> faisant partie de vos favoris a été modifié.</span>
+    <span tal:condition="alert_kind == 'published'">Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>  faisant partie de vos centres d'intérêt a été publié.</span>
+    <span tal:condition="alert_kind == 'present'">
+      Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> vous a été communiqué.
+    </span>
   </div>
   <span tal:condition="current_user in object.users_to_alert" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 </div>

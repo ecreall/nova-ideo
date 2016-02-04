@@ -5,9 +5,9 @@
                  alert_kind getattr(object, 'alert_kind', '')">
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
-    <span tal:condition="alert_kind == ''">La proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est maintenant dans l'état ${object.get_subject_state(subject, current_user)}</span>
+    <span tal:condition="alert_kind == ''">La proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est maintenant dans l'état ${object.get_subject_state(subject, current_user, True)}</span>
 
-    <span tal:condition="alert_kind == 'end_work'">La fin du cycle d'amélioration associé à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est proche.</span>
+    <span tal:condition="alert_kind == 'end_work'">La fin du cycle d'amélioration associé à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est pratiquement terminé.</span>
 
     <span tal:condition="alert_kind == 'new_amendments'">Des amendments pour la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> viennent d'être ajoutés.</span>
     
@@ -15,8 +15,18 @@
     
     <span tal:condition="alert_kind == 'amendments_result'">Le résultat sur les votes sur les amendements associés à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été calculé.</span>
     
-    <span tal:condition="alert_kind == 'correction_added'">Une amélioration de la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été ajouté.</span>
+     <span tal:condition="alert_kind == 'correction_added'">La proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a fait l'objet de suggestions d'amélioration et est à relire.</span>
+
+    <span tal:condition="alert_kind == 'participate'">Une personne a rejoint le groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+
+    <span tal:condition="alert_kind == 'resign'">Une personne a quitté le groupe de travail lié à la proposition<a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+
+    <span tal:condition="alert_kind == 'resign_to_wg_open'">Le groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est en dessous de trois participants et ne peut plus améliorer la proposition tant qu'il n'a pas atteint de nouveau au moins trois participants.</span>
+
+    <span tal:condition="alert_kind == 'amendable'">Le groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a atteint trois participants et peut améliorer la proposition.</span>
     
+    <span tal:condition="alert_kind == 'add_files'">Des fichiers ont été ajoutés dans l'espace de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+
   </div>
   <span tal:condition="current_user in object.users_to_alert" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 </div>

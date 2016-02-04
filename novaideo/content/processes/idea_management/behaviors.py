@@ -48,6 +48,8 @@ from novaideo.content.alert import (
     ExaminationAlert,
     ModerationAlert,
     SupportAlert)
+from novaideo.content.alert import ContentAlert
+from novaideo.views.filter import get_users_by_preferences
 
 
 try:
@@ -527,6 +529,14 @@ class CommentIdea(InfiniteCardinality):
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
 
+    def alert_users(self, context, request, root, author, user):
+        alert = CommentAlert()
+        root.addtoproperty('alerts', alert)
+        users = list(get_users_by_preferences(context))
+        context_author = context.author
+        users.extend([author, context_author])
+        alert.init_alert(set(users), [context])
+
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
@@ -543,12 +553,10 @@ class CommentIdea(InfiniteCardinality):
                 unique=True)
             comment.setproperty('related_correlation', correlation)
 
+        root = getSite()
         author = getattr(context, 'author', None)
+        self.alert_users(context, request, root, author, user)
         if author is not user and getattr(author, 'email', ''):
-            root = getSite()
-            alert = CommentAlert()
-            root.addtoproperty('alerts', alert)
-            alert.init_alert([author], [context])
             mail_template = root.get_mail_template('alert_comment')
             localizer = request.localizer
             subject = mail_template['subject'].format(
@@ -597,6 +605,7 @@ class PresentIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         send_to_me = appstruct['send_to_me']
         members = list(appstruct['members'])
+        root = request.root
         user = get_current()
         if send_to_me:
             members.append(user)
@@ -609,6 +618,10 @@ class PresentIdea(InfiniteCardinality):
         presentation_subject = appstruct['subject']
         presentation_message = appstruct['message']
         subject = presentation_subject.format(subject_title=context.title)
+        alert = ContentAlert(alert_kind='present')
+        root.addtoproperty('alerts', alert)
+        alert.init_alert(
+            [m for m in members if not isinstance(m, basestring)], [context])
         for member in members:
             recipient_title = ''
             recipient_first_name = ''
@@ -635,12 +648,12 @@ class PresentIdea(InfiniteCardinality):
                     my_title=user_title,
                     my_first_name=user_first_name,
                     my_last_name=user_last_name,
-                    novaideo_title=request.root.title
+                    novaideo_title=root.title
                 )
                 mailer_send(
                     subject=subject,
                     recipients=[member_email],
-                    sender=request.root.get_site_sender(),
+                    sender=root.get_site_sender(),
                     body=message)
 
             if member is not user and member_email:
@@ -771,7 +784,9 @@ class MakeOpinion(InfiniteCardinality):
         root = getSite()
         alert = ExaminationAlert()
         root.addtoproperty('alerts', alert)
-        alert.init_alert([member], [context])
+        users = list(get_users_by_preferences(context))
+        users.append(member)
+        alert.init_alert(users, [context])
         if getattr(member, 'email', ''):
             url = request.resource_url(context, "@@index")
             mail_template = root.get_mail_template('opinion_idea')

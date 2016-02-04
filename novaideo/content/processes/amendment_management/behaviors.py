@@ -45,7 +45,8 @@ from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
 from novaideo.event import CorrelableRemoved
 from novaideo.content.alert import (
-    WorkingGroupAlert)
+    WorkingGroupAlert,
+    CommentAlert)
 
 try:
     basestring
@@ -484,6 +485,13 @@ class CommentAmendment(CommentIdea):
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
+
+    def alert_users(self, context, request, root, author, user):
+        alert = CommentAlert()
+        root.addtoproperty('alerts', alert)
+        users = context.proposal.working_group.members
+        users.append(author)
+        alert.init_alert(set(users), [context])
 
 
 def present_roles_validation(process, context):

@@ -66,7 +66,9 @@ from novaideo.content.alert import (
     WorkingGroupAlert,
     ExaminationAlert,
     ModerationAlert,
-    SupportAlert)
+    SupportAlert,
+    CommentAlert)
+from novaideo.views.filter import get_users_by_preferences
 
 try:
     basestring
@@ -137,6 +139,11 @@ def add_files_to_workspace(files_data, workspace):
             workspace.addtoproperty('files', file_)
             files.append(file_)
 
+    root = getSite()
+    members = workspace.working_group.members
+    alert = WorkingGroupAlert(alert_kind='add_files')
+    root.addtoproperty('alerts', alert)
+    alert.init_alert(members, [workspace.proposal])
     return files
 
 
@@ -709,7 +716,9 @@ class SupportProposal(InfiniteCardinality):
         request.registry.notify(ActivityExecuted(self, [context], user))
         alert = SupportAlert(support_kind='support')
         request.root.addtoproperty('alerts', alert)
-        alert.init_alert(context.working_group.members, [context])
+        users = list(get_users_by_preferences(context))
+        users.extend(context.working_group.members)
+        alert.init_alert(users, [context])
         return {}
 
     def redirect(self, context, request, **kw):
@@ -744,7 +753,9 @@ class OpposeProposal(InfiniteCardinality):
         request.registry.notify(ActivityExecuted(self, [context], user))
         alert = SupportAlert(support_kind='oppose')
         request.root.addtoproperty('alerts', alert)
-        alert.init_alert(context.working_group.members, [context])
+        users = list(get_users_by_preferences(context))
+        users.extend(context.working_group.members)
+        alert.init_alert(users, [context])
         return {}
 
     def redirect(self, context, request, **kw):
@@ -801,7 +812,9 @@ class MakeOpinion(InfiniteCardinality):
         localizer = request.localizer
         alert = ExaminationAlert()
         root.addtoproperty('alerts', alert)
-        alert.init_alert(members, [context])
+        users = list(get_users_by_preferences(context))
+        users.extend(members)
+        alert.init_alert(users, [context])
         for member in members:
             if getattr(member, 'email', ''):
                 message = mail_template['template'].format(
@@ -864,7 +877,9 @@ class WithdrawToken(InfiniteCardinality):
         request.registry.notify(ActivityExecuted(self, [context], user))
         alert = SupportAlert(support_kind='withdeaw')
         request.root.addtoproperty('alerts', alert)
-        alert.init_alert(context.working_group.members, [context])
+        users = list(get_users_by_preferences(context))
+        users.extend(context.working_group.members)
+        alert.init_alert(users, [context])
         return {}
 
     def redirect(self, context, request, **kw):
@@ -893,6 +908,14 @@ class CommentProposal(CommentIdea):
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
+
+    def alert_users(self, context, request, root, author, user):
+        alert = CommentAlert()
+        root.addtoproperty('alerts', alert)
+        users = list(get_users_by_preferences(context))
+        users.extend(context.working_group.members)
+        users.append(author)
+        alert.init_alert(set(users), [context])
 
 
 def seea_roles_validation(process, context):
@@ -1062,6 +1085,12 @@ class Resign(InfiniteCardinality):
         user = get_current()
         wg = context.working_group
         wg.delfromproperty('members', user)
+        members = wg.members
+        if members:
+            alert = WorkingGroupAlert(alert_kind='resign')
+            root.addtoproperty('alerts', alert)
+            alert.init_alert(members, [context])
+
         mode = getattr(wg, 'work_mode', root.get_default_work_mode())
         if getattr(wg, 'first_vote', True):
             #remove user vote if first_vote
@@ -1105,6 +1134,9 @@ class Resign(InfiniteCardinality):
             wg.state = PersistentList(['deactivated'])
             wg.reindex()
             context.reindex()
+            alert = WorkingGroupAlert(alert_kind='resign_to_wg_open')
+            root.addtoproperty('alerts', alert)
+            alert.init_alert(participants, [context])
 
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('wg_resign')
@@ -1196,6 +1228,11 @@ class Participate(InfiniteCardinality):
         len_participants = len(participants)
         first_decision = False
         if len_participants < mode.participants_maxi:
+            if participants:
+                alert = WorkingGroupAlert(alert_kind='participate')
+                root.addtoproperty('alerts', alert)
+                alert.init_alert(participants, [context])
+
             working_group.addtoproperty('members', user)
             grant_roles(user, (('Participant', context),))
             if (len_participants+1) == mode.participants_mini:
@@ -1208,6 +1245,9 @@ class Participate(InfiniteCardinality):
                 context.state = PersistentList(['amendable', 'published'])
                 working_group.reindex()
                 context.reindex()
+                alert = WorkingGroupAlert(alert_kind='amendable')
+                root.addtoproperty('alerts', alert)
+                alert.init_alert(participants, [context])
 
             if getattr(user, 'email', ''):
                 mail_template = root.get_mail_template('wg_participation')
