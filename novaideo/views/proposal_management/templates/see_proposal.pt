@@ -9,9 +9,9 @@
      </div>
      <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
       <p i18n:translate="">
-        Pour qu'une proposition puisse être publiée, l'ensemble de ses idées liées doivent avoir été préalablement examinées favorablement par un Examinateur, sans quoi la proposition ne peut être publiée.</p>
+        Pour que vous puissiez publier votre proposition, il faut que l'ensemble de ses idées liées soit préalablement examiné favorablement par un Examinateur.</p>
       <p i18n:translate="">
-         Vous pouvez accéder ci-dessous aux idées concernées et les envoyer à un Examinateur pour qu'il puisse les examiner, du moment que ces idées ont été préalablement publiées par les modérateurs.</p>
+         Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont pas été examinée favorablement, du moment que ces idées ont été préalablement publiées par les modérateurs.</p>
       <ol class="list-unstyled not-published-list">
         <tal:loop repeat="i not_published_ideas">
           <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
@@ -20,9 +20,9 @@
      </div>
      <div tal:omit-tag="" tal:condition="not_favorable_ideas and idea_to_examine">
       <p i18n:translate="">
-        Pour qu'une proposition puisse être publiée, l'ensemble de ses idées liées doivent avoir été préalablement examinées favorablement par un Examinateur, sans quoi la proposition ne peut être publiée.</p>
+        Pour que vous puissiez publier votre proposition, il faut que l'ensemble de ses idées liées soit préalablement examiné favorablement par un Examinateur.</p>
       <p i18n:translate="">
-         Vous pouvez accéder ci-dessous aux idées concernées et les envoyer à un Examinateur pour qu'il puisse les examiner, du moment que ces idées ont été préalablement publiées.</p>
+         Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont pas été examinée favorablement.</p>
       <ol class="list-unstyled not-published-list">
         <tal:loop repeat="i not_favorable_ideas">
           <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
@@ -33,9 +33,15 @@
   <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
   <h3 class="content-title"><span class="icon novaideo-icon icon-proposal"></span> <span class="correction-container-title">${structure:title}</span></h3>
   <div class="object-description" 
-    tal:define="author proposal.author">
-   <small><span  i18n:translate="">(Submitted by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a> <span  i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(proposal.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${proposal.modified_at.hour}:${proposal.modified_at.minute}:${proposal.modified_at.second}<span tal:omit-tag="" tal:condition="proposal.originalentity is not None"><span  i18n:translate="">, duplicated from the proposal</span> <a tal:attributes="href request.resource_url(proposal.originalentity, '@@index')">${proposal.originalentity.title}</a></span>)
-   </small>
+    tal:define="author proposal.author;
+                original proposal.originalentity;
+                current_version proposal.current_version;
+                is_current proposal is current_version">
+    <small>
+        <span  i18n:translate="">(Submitted by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a> <span  i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(proposal.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${proposal.modified_at.hour}:${proposal.modified_at.minute}:${proposal.modified_at.second}<span tal:omit-tag="" tal:condition="original is not None"><span  i18n:translate="">, duplicated from the proposal</span> <a tal:attributes="href request.resource_url(original, '@@index')">${original.title}</a></span>
+        <span tal:omit-tag="" tal:condition="current_version and not is_current"><span i18n:translate="">, previous version of the current version of the proposal</span> <a tal:attributes="href request.resource_url(current_version, '@@index')">${current_version.title}</a></span>
+       )
+    </small>
   </div>
 </div>
 

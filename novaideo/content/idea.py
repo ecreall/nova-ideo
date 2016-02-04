@@ -120,11 +120,11 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     @property
     def is_workable(self):
         request = get_current_request()
-        if 'idea' in request.content_to_examine and \
-           'favorable' in self.state:
-            return True
+        idea_to_examine = 'idea' in request.content_to_examine
+        if idea_to_examine:
+            return True if 'favorable' in self.state else False
 
-        return False
+        return True
 
     @property
     def opinion_value(self):

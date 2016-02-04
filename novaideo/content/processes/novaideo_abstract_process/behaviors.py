@@ -31,6 +31,11 @@ def select_processsecurity_validation(process, context):
            global_user_processsecurity(process, context)
 
 
+def select_state_validation(process, context):
+    return "archived" not in context.state and \
+           "version" not in context.state
+
+
 class SelectEntity(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
@@ -40,6 +45,7 @@ class SelectEntity(InfiniteCardinality):
     context = ISearchableEntity
     roles_validation = select_roles_validation
     processsecurity_validation = select_processsecurity_validation
+    state_validation = select_state_validation
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()

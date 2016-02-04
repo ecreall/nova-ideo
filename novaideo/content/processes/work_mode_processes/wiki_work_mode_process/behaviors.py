@@ -95,7 +95,7 @@ class CorrectProposal(InfiniteCardinality):
         related_ideas = appstruct.pop('related_ideas')
         add_files = appstruct.pop('add_files')
         copy_of_proposal = self._get_newversion(context, root, wg)
-        context.state = PersistentList(['archived', 'version'])
+        context.state = PersistentList(['version', 'archived'])
         copy_of_proposal.set_data(appstruct)
         copy_of_proposal.text = normalize_text(copy_of_proposal.text)
         copy_of_proposal.modified_at = datetime.datetime.now(tz=pytz.UTC)

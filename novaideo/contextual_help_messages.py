@@ -31,6 +31,10 @@ def idea_not_examined(context, user):
     return 'examined' not in context.state
 
 
+def not_version(context, user):
+    return 'version' not in context.state
+
+
 def idea_submitted_owner(context, user):
     return has_role(role=('Owner', context))
 
@@ -177,19 +181,19 @@ CONTEXTUAL_HELP_MESSAGES = {
                             'contextual_help_messages/idea_to_work_edit.pt', 1)],
 
 	(Idea, 'archived', 'index'): [
-	   (None, 'novaideo:views/templates/panels/'
+	   (not_version, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/idea_archived.pt', 1)],
-
+    (Idea, 'version', 'index'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/idea_version.pt', 1)],
 	(Idea, 'submitted', 'index'): [
 	   (idea_submitted_owner, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/idea_submitted_owner.pt', 1),
 	   (idea_submitted_moderator, 'novaideo:views/templates/panels/'
 	   	                'contextual_help_messages/idea_submitted_moderator.pt', 1)],
-
 	(Idea, 'published', 'index'): [
 	   (idea_not_examined, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/idea_published.pt', 1)],
-
 	(Idea, 'any', 'duplicateidea'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/duplicate_idea.pt', 1)],

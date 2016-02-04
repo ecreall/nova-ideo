@@ -215,7 +215,7 @@ class EditIdea(InfiniteCardinality):
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         root.merge_keywords(appstruct['keywords'])
-        copy_of_idea.state = PersistentList(['archived', 'version'])
+        copy_of_idea.state = PersistentList(['version', 'archived'])
         copy_of_idea.setproperty('author', user)
         note = appstruct.pop('note', '')
         context.note = note

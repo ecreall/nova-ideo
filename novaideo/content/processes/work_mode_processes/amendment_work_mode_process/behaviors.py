@@ -360,7 +360,7 @@ class AmendmentsResult(ElementaryAction):
             copy_of_proposal = self._get_newversion(context, root, wg)
             self._send_ballot_result(copy_of_proposal, request,
                                      result, members)
-            context.state = PersistentList(['archived', 'version'])
+            context.state = PersistentList(['version', 'archived'])
             copy_of_proposal.text = merged_text
             #correlation idea of replacement ideas... del replaced_idea
             related_ideas = [a.related_ideas for a in amendments]

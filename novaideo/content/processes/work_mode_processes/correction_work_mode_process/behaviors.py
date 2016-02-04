@@ -71,7 +71,7 @@ def valid_correction(process, correction, current_version, user):
         user,
         ['related_proposals', 'related_ideas'],
         CorrelationType.solid)
-    proposal.state = PersistentList(['archived', 'version'])
+    proposal.state = PersistentList(['version', 'archived'])
     process.attachedTo.process.execution_context.add_created_entity(
         'proposal', current_version)
     wg.setproperty('proposal', current_version)
@@ -232,7 +232,7 @@ class CorrectProposal(InfiniteCardinality):
                                       'corrections'),
                                 roles=True)
         copy_of_proposal.setproperty('originalentity', context.originalentity)
-        copy_of_proposal.state = PersistentList(['archived', 'version'])
+        copy_of_proposal.state = PersistentList(['version', 'archived'])
         copy_of_proposal.reindex()
         return copy_of_proposal
 
