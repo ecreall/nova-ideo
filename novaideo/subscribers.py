@@ -82,6 +82,15 @@ def mysubscriber_object_published(event):
 
     alert = ContentAlert(alert_kind='published')
     root.addtoproperty('alerts', alert)
+    alert.init_alert(set(all_users), [content])
+
+    pref_author = get_users_by_preferences(author)
+    all_users = [u for u in pref_author if u not in set(all_users)]
+    alert = ContentAlert(
+        alert_kind='published_author',
+        member_url=request.resource_url(author, '@@index'),
+        member_title=getattr(author, 'title', author.__name__))
+    root.addtoproperty('alerts', alert)
     alert.init_alert(all_users, [content])
 
     if getattr(content, 'original', None):

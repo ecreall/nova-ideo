@@ -4,9 +4,17 @@
                  alert_kind getattr(object, 'alert_kind', '')">
   <div tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
-    <span tal:condition="alert_kind == ''">La proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est maintenant dans l'état ${object.get_subject_state(subject, current_user, True)}</span>
+    
+    <span tal:condition="alert_kind == 'start_work'">
+      Le groupe de travail a voté pour la poursuite de l'amélioration de la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
+    </span>
+    <span tal:condition="alert_kind == 'submit_proposal'">
+      Le groupe de travail a voté pour soumettre la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> en l'état aux membres de la plateforme.
+    </span>
 
-    <span tal:condition="alert_kind == 'end_work'">La fin du cycle d'amélioration associé à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est pratiquement terminé.</span>
+    <span tal:condition="alert_kind == 'end_work'">
+        Le cycle d'amélioration de la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est terminé, vous devez voter si vous voulez continuer à l'améliorer ou la soumettre en l'état aux membres de la plateforme.
+    </span>
 
     <span tal:condition="alert_kind == 'new_amendments'">Des amendments pour la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> viennent d'être ajoutés.</span>
     
@@ -26,5 +34,14 @@
 
     <span tal:condition="alert_kind == 'add_files'">Des fichiers ont été ajoutés dans l'espace de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
     
+    <span tal:condition="alert_kind == 'wg_participation_max'">
+        Le groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a atteint le nombre maximal des participants et ne peut plus accueillir de nouveaux participants, sauf s'il y en a un qui démissionne.
+    </span>
+    <span tal:condition="alert_kind == 'participations_maxi'">
+        Vous participez actuellement à ${request.root.participations_maxi} groupes de travail, vous ne pouvez plus rejoindre d'autres groupes de travail.
+    </span>
+    <span tal:condition="alert_kind == 'correction_validated'">
+        Les suggestions d'amélioration sur la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> ont été entièrement acceptées ou refusées, vous pouvez suggérer de nouvelles améliorations.
+    </span>
   </div>
 </div>

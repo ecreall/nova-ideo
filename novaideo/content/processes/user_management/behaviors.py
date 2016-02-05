@@ -45,6 +45,8 @@ from novaideo.utilities.util import (
     to_localized_time, gen_random_token)
 from novaideo import _
 from novaideo.core import access_action, serialize_roles
+from novaideo.views.filter import get_users_by_preferences
+from novaideo.content.alert import ContentAlert
 
 
 def initialize_tokens(person, tokens_nb):
@@ -179,6 +181,10 @@ class Deactivate(InfiniteCardinality):
         context.state.append('deactivated')
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
+        alert = ContentAlert(alert_kind='user_deactivated')
+        request.root.addtoproperty('alerts', alert)
+        pref_author = get_users_by_preferences(context)
+        alert.init_alert(pref_author, [context])
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}

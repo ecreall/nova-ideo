@@ -82,6 +82,9 @@ def valid_correction(process, correction, current_version, user):
     proposal.reindex()
     process.attachedTo.process.reindex()
     process.reindex()
+    alert = WorkingGroupAlert(alert_kind='correction_validated')
+    root.addtoproperty('alerts', alert)
+    alert.init_alert(wg.members, [current_version])
 
 
 def correctitem_relation_validation(process, context):

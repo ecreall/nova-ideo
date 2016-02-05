@@ -1235,6 +1235,12 @@ class Participate(InfiniteCardinality):
 
             working_group.addtoproperty('members', user)
             grant_roles(user, (('Participant', context),))
+            active_wgs = getattr(user, 'active_working_groups', [])
+            if len(active_wgs) == root.participations_maxi:
+                alert = WorkingGroupAlert(alert_kind='participations_maxi')
+                root.addtoproperty('alerts', alert)
+                alert.init_alert([user], [user])
+
             if (len_participants+1) == mode.participants_mini:
                 context.state = PersistentList()
                 working_group.state = PersistentList(['active'])
@@ -1266,6 +1272,11 @@ class Participate(InfiniteCardinality):
         else:
             working_group.addtoproperty('wating_list', user)
             working_group.reindex()
+            alert = WorkingGroupAlert(alert_kind='wg_participation_max')
+            root.addtoproperty('alerts', alert)
+            users = list(participants)
+            users.append(user)
+            alert.init_alert(users, [context])
             if getattr(user, 'email', ''):
                 mail_template = root.get_mail_template('wating_list')
                 self._send_mail_to_user(
@@ -1482,7 +1493,7 @@ class Work(ElementaryAction):
         subject = subject_template.format(subject_title=context.title)
         localizer = request.localizer
         root = request.root
-        alert = WorkingGroupAlert()
+        alert = WorkingGroupAlert(alert_kind='start_work')
         root.addtoproperty('alerts', alert)
         alert.init_alert(members, [context])
         for member in members:
@@ -1577,7 +1588,7 @@ class SubmitProposal(ElementaryAction):
         mail_template = root.get_mail_template('publish_proposal')
         subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        alert = WorkingGroupAlert()
+        alert = WorkingGroupAlert(alert_kind='submit_proposal')
         root.addtoproperty('alerts', alert)
         alert.init_alert(members, [context])
         for member in members:
@@ -1613,7 +1624,6 @@ class SubmitProposal(ElementaryAction):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
-
 
 
 def alert_relation_validation(process, context):
