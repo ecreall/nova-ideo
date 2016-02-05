@@ -4,7 +4,9 @@
      tal:define="icon 'glyphicon glyphicon-bookmark';
                  alert_kind getattr(object, 'alert_kind', '');
                  url getattr(object, 'url', None);
-                 duplicate_title getattr(object, 'duplicate_title', None);">
+                 duplicate_title getattr(object, 'duplicate_title', None);
+                 member_url getattr(object, 'member_url', None);
+                 member_title getattr(object, 'member_title', None);">
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
     <span tal:condition="alert_kind == 'duplicated'">

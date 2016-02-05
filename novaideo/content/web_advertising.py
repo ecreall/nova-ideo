@@ -64,7 +64,7 @@ class Advertising(VisualisableElement, SearchableEntity):
     """Advertising class"""
 
     picture = CompositeUniqueProperty('picture')
-    author = SharedUniqueProperty('author', 'contents')
+    author = SharedUniqueProperty('author')
     visibility_dates = dates('visibility_dates')
     internal_type = True
 
