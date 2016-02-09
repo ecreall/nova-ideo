@@ -71,7 +71,7 @@ def prepare_text_spaces(text):
 
 
 def format_spaces(text):
-    soup = BeautifulSoup(text)
+    soup = BeautifulSoup(text, "lxml")
     for tagstring in list(soup.strings):
         value = tagstring.replace(' ', '').replace(SPACE_TAG, ' ')
         new_tag = soup.new_string(value)
@@ -85,7 +85,7 @@ def format_spaces(text):
 def normalize_text(text):
     parser = HTMLParser()
     text = parser.unescape(text)
-    soup = BeautifulSoup(text)
+    soup = BeautifulSoup(text, "lxml")
     return tag_to_text(soup.body)
 
 
@@ -249,7 +249,7 @@ def _find_optimum_text(source, tofind):
     if notvalid.match(tofind) or len(tofind) < 2:
         return None
 
-    soup = BeautifulSoup(source)
+    soup = BeautifulSoup(source, "lxml")
     strings = list(soup.body.strings)
     for source_string in strings:
         if source_string.find(tofind) >= 0:
@@ -298,7 +298,7 @@ def normalize_diff(diff, diff_id):
     if isinstance(diff, BeautifulSoup):
         soup = diff
     else:
-        soup = BeautifulSoup(diff)
+        soup = BeautifulSoup(diff, "lxml")
 
     #wrap inline parent
     tags = soup.find_all(['del', 'ins'])
@@ -415,20 +415,21 @@ def order_diff(tag):
 
 
 def merge_modifs(soup, diff_id):
+    soup = BeautifulSoup(tag_to_text(soup.body), 'lxml')
     tags = soup.find_all("span", id=diff_id)
     for tag in list(tags):
         if tag.parent:
             merge_with_next_modif(tag, diff_id, soup)
 
     #order diffs
-    tags = soup.find_all('span', {'id':diff_id})
+    tags = soup.find_all('span', {'id': diff_id})
     for tag in list(tags):
-        order_diff(tag) 
+        order_diff(tag)
 
     #remove no valid diff
-    tags = soup.find_all('span', {'id':diff_id})
+    tags = soup.find_all('span', {'id': diff_id})
     for tag in list(tags):
-        normalize_diff_item(tag) 
+        normalize_diff_item(tag)
 
     return soup
 
@@ -518,7 +519,7 @@ class TextAnalyzer(object):
         if isinstance(diff, BeautifulSoup):
             soup = diff
         else:
-            soup = BeautifulSoup(diff)
+            soup = BeautifulSoup(diff, "lxml")
 
         ins_tags = soup.find_all('ins')
         del_tags = soup.find_all('del')
