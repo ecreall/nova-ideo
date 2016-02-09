@@ -61,6 +61,7 @@ class UploadUsers(InfiniteCardinality):
         title_template = u"""{title} {user_title} {first_name} {last_name}"""
         mail_template = root.get_mail_template('invitation')
         localizer = request.localizer
+        novaideo_title = root.title
         for invitation in new_invitations:
             invitation.title = title_template.format(
                 title=invitation.title,
@@ -77,14 +78,18 @@ class UploadUsers(InfiniteCardinality):
             url = request.resource_url(invitation, "")
             roles_translate = [localizer.translate(APPLICATION_ROLES.get(r, r))
                                for r in getattr(invitation, 'roles', [])]
+
+            subject = mail_template['subject'].format(
+                novaideo_title=novaideo_title
+            )
             message = mail_template['template'].format(
                 invitation=invitation,
                 user_title=localizer.translate(_(getattr(
                             invitation, 'user_title', ''))),
                 invitation_url=url,
                 roles=", ".join(roles_translate),
-                novaideo_title=request.root.title)
-            mailer_send(subject=mail_template['subject'],
+                novaideo_title=novaideo_title)
+            mailer_send(subject=subject,
                         recipients=[invitation.email],
                         sender=root.get_site_sender(),
                         body=message)
@@ -121,6 +126,7 @@ class InviteUsers(InfiniteCardinality):
         organization = getattr(user, 'organization', None)
         mail_template = root.get_mail_template('invitation')
         localizer = request.localizer
+        novaideo_title = root.title
         for invitation_dict in invitations:
             invitation = invitation_dict['_object_data']
             invitation.state.append('pending')
@@ -136,14 +142,17 @@ class InviteUsers(InfiniteCardinality):
                 invitation.setproperty('organization', organization)
 
             url = request.resource_url(invitation, "")
+            subject = mail_template['subject'].format(
+                novaideo_title=novaideo_title
+            )
             message = mail_template['template'].format(
                 invitation=invitation,
                 user_title=localizer.translate(_(getattr(
                     invitation, 'user_title', ''))),
                 invitation_url=url,
                 roles=", ".join(roles_translate),
-                novaideo_title=request.root.title)
-            mailer_send(subject=mail_template['subject'],
+                novaideo_title=novaideo_title)
+            mailer_send(subject=subject,
                         recipients=[invitation.email],
                         sender=root.get_site_sender(),
                         body=message)
@@ -462,14 +471,17 @@ class ReinviteUser(InfiniteCardinality):
         mail_template = root.get_mail_template('invitation')
         localizer = request.localizer
         roles_translate = [localizer.translate(APPLICATION_ROLES.get(r, r))
-                               for r in getattr(context, 'roles', [])]
+                           for r in getattr(context, 'roles', [])]
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title
+        )
         message = mail_template['template'].format(
             invitation=context,
             user_title=localizer.translate(getattr(context, 'user_title', '')),
             invitation_url=url,
             roles=", ".join(roles_translate),
-            novaideo_title=request.root.title)
-        mailer_send(subject=mail_template['subject'],
+            novaideo_title=root.title)
+        mailer_send(subject=subject,
                     recipients=[context.email],
                     sender=root.get_site_sender(),
                     body=message)
@@ -510,15 +522,18 @@ class RemindInvitation(InfiniteCardinality):
         mail_template = root.get_mail_template('invitation')
         localizer = request.localizer
         roles_translate = [localizer.translate(APPLICATION_ROLES.get(r, r))
-                               for r in getattr(context, 'roles', [])]
+                           for r in getattr(context, 'roles', [])]
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title
+        )
         message = mail_template['template'].format(
             invitation=context,
             user_title=localizer.translate(getattr(context, 'user_title', '')),
             invitation_url=url,
             roles=", ".join(roles_translate),
-            novaideo_title=request.root.title)
+            novaideo_title=root.title)
         mailer_send(
-            subject=mail_template['subject'],
+            subject=subject,
             recipients=[context.email],
             sender=root.get_site_sender(),
             body=message)

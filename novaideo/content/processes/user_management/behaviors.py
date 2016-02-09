@@ -347,18 +347,17 @@ class Registration(InfiniteCardinality):
         if getattr(preregistration, 'email', ''):
             localizer = request.localizer
             mail_template = root.get_mail_template('preregistration')
-            subject = mail_template['subject']
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title)
             deadline_str = to_localized_time(
-                deadline_date, request,
-                format_id='defined_literal', ignore_month=True,
-                ignore_year=True, translate=True)
+                deadline_date, request, translate=True)
             message = mail_template['template'].format(
                 preregistration=preregistration,
                 user_title=localizer.translate(
                     _(getattr(preregistration, 'user_title', ''))),
                 url=url,
                 deadline_date=deadline_str.lower(),
-                novaideo_title=request.root.title)
+                novaideo_title=root.title)
             mailer_send(subject=subject,
                         recipients=[preregistration.email],
                         sender=root.get_site_sender(),
@@ -414,14 +413,16 @@ class ConfirmRegistration(InfiniteCardinality):
         if getattr(person, 'email', ''):
             localizer = request.localizer
             mail_template = root.get_mail_template('registration_confiramtion')
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title)
             message = mail_template['template'].format(
                 person=person,
                 user_title=localizer.translate(
                     _(getattr(person, 'user_title', ''))),
                 login_url=request.resource_url(root, '@@login'),
-                novaideo_title=request.root.title)
+                novaideo_title=root.title)
             mailer_send(
-                subject=mail_template['subject'],
+                subject=subject,
                 recipients=[person.email],
                 sender=root.get_site_sender(),
                 body=message)
@@ -468,7 +469,8 @@ class Remind(InfiniteCardinality):
             format_id='defined_literal', ignore_month=True,
             ignore_year=True, translate=True)
         mail_template = root.get_mail_template('preregistration')
-        subject = mail_template['subject']
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title)
         deadline_str = to_localized_time(
             deadline_date, request,
             format_id='defined_literal', ignore_month=True,
@@ -479,7 +481,7 @@ class Remind(InfiniteCardinality):
                 _(getattr(context, 'user_title', ''))),
             url=url,
             deadline_date=deadline_str.lower(),
-            novaideo_title=request.root.title)
+            novaideo_title=root.title)
         mailer_send(subject=subject,
                     recipients=[context.email],
                     sender=root.get_site_sender(),
