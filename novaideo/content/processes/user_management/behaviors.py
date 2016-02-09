@@ -465,16 +465,12 @@ class Remind(InfiniteCardinality):
             datetime.datetime.now(tz=pytz.UTC))
         localizer = request.localizer
         deadline_str = to_localized_time(
-            deadline_date, request,
-            format_id='defined_literal', ignore_month=True,
-            ignore_year=True, translate=True)
+            deadline_date, request, translate=True)
         mail_template = root.get_mail_template('preregistration')
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         deadline_str = to_localized_time(
-            deadline_date, request,
-            format_id='defined_literal', ignore_month=True,
-            ignore_year=True, translate=True)
+            deadline_date, request, translate=True)
         message = mail_template['template'].format(
             preregistration=context,
             user_title=localizer.translate(
