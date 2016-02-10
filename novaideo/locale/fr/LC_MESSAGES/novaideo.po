@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-02-10 17:24+0100\n"
+"POT-Creation-Date: 2016-02-10 17:37+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -42,45 +42,45 @@ msgstr ""
 #: novaideo/core_schema.py:27
 #, python-format
 msgid "${phone} phone number not valid"
-msgstr ""
+msgstr "Le numéro ${phone} est non valide"
 
-#: novaideo/core_schema.py:42 novaideo/content/site_configuration.py:181
-#: novaideo/content/site_configuration.py:272 novaideo/content/person.py:229
+#: novaideo/core_schema.py:42
+msgctxt "contact"
 msgid "Title"
-msgstr "Civilité"
+msgstr "Titre"
 
 #: novaideo/core_schema.py:49
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
-#: novaideo/core_schema.py:68
+#: novaideo/core_schema.py:67
 msgid "Phone"
-msgstr ""
+msgstr "Téléphone"
+
+#: novaideo/core_schema.py:75
+#: novaideo/views/organization_management/templates/see_organization.pt:37
+msgid "Surtax"
+msgstr "Surtaxe"
 
 #: novaideo/core_schema.py:76
-#: novaideo/views/organization_management/templates/see_organization.pt:36
-msgid "Surtax"
-msgstr ""
-
-#: novaideo/core_schema.py:77
 msgid "Indicate the amount of the surcharge (for the premium-rate number)."
-msgstr ""
+msgstr "Indiquez le montant de la surtaxe (pour les numéros surtaxés)."
 
-#: novaideo/core_schema.py:83
+#: novaideo/core_schema.py:82
 msgid "Fax"
-msgstr ""
+msgstr "Fax"
 
-#: novaideo/core_schema.py:89
+#: novaideo/core_schema.py:88
 msgid "Website"
-msgstr ""
+msgstr "Site Internet"
 
-#: novaideo/core_schema.py:102
+#: novaideo/core_schema.py:101
 msgid "One value must be entered."
-msgstr ""
+msgstr "Une valeur doit être saisie."
 
-#: novaideo/core_schema.py:108
+#: novaideo/core_schema.py:107
 msgid "Surtax field must be filled in."
-msgstr ""
+msgstr "Le champ surtaxe doit être rempli."
 
 #: novaideo/role.py:83 novaideo/views/templates/panels/novaideo_contents.pt:9
 msgid "Member"
@@ -4265,6 +4265,11 @@ msgstr "Activer le partage avec les réseaux sociaux"
 #: novaideo/content/site_configuration.py:175
 msgid "Mail id"
 msgstr ""
+
+#: novaideo/content/site_configuration.py:181
+#: novaideo/content/site_configuration.py:272 novaideo/content/person.py:229
+msgid "Title"
+msgstr "Civilité"
 
 #: novaideo/content/site_configuration.py:193
 msgid "Template"

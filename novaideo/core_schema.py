@@ -39,7 +39,7 @@ class ContactSchema(Schema):
 
     title = colander.SchemaNode(
         colander.String(),
-        title=_('Title'),
+        title=_('Title', context='contact'),
         default=default_title
         )
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-02-10 17:24+0100\n"
+"POT-Creation-Date: 2016-02-10 17:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,9 +49,8 @@ msgstr ""
 msgid "${phone} phone number not valid"
 msgstr ""
 
-#: ./novaideo/core_schema.py:42 ./novaideo/content/site_configuration.py:181
-#: ./novaideo/content/site_configuration.py:272
-#: ./novaideo/content/person.py:229
+#: ./novaideo/core_schema.py:42
+msgctxt "contact"
 msgid "Title"
 msgstr ""
 
@@ -4251,6 +4250,12 @@ msgstr ""
 
 #: ./novaideo/content/site_configuration.py:175
 msgid "Mail id"
+msgstr ""
+
+#: ./novaideo/content/site_configuration.py:181
+#: ./novaideo/content/site_configuration.py:272
+#: ./novaideo/content/person.py:229
+msgid "Title"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:193
