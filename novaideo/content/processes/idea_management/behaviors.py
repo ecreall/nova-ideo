@@ -586,7 +586,7 @@ class CommentIdea(InfiniteCardinality):
                 unique=True)
             comment.setproperty('related_correlation', correlation)
 
-        self.alert_users(context, request, user)
+        self._alert_users(context, request, user)
         context.reindex()
         return {}
 

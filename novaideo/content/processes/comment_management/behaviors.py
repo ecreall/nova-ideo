@@ -82,8 +82,12 @@ class Respond(InfiniteCardinality):
         content = comment.subject
         author = getattr(content, 'author', None)
         authors = getattr(content, 'authors', [author] if author else [])
+        comment_author = getattr(context, 'author', None)
         if user in authors:
             authors.remove(user)
+
+        if comment_author in authors:
+            authors.remove(comment_author)
 
         root = getSite()
         localizer = request.localizer
@@ -114,30 +118,29 @@ class Respond(InfiniteCardinality):
                 sender=root.get_site_sender(),
                 body=message)
 
-        comment_author = getattr(context, 'author', None)
-        if comment_author not in (user, author) and \
-           getattr(comment_author, 'email', ''):
+        if comment_author is not user:
             alert = CommentAlert(is_respons=True)
             root.addtoproperty('alerts', alert)
             alert.init_alert([comment_author], [content])
-            mail_template = root.get_mail_template('alert_respons')
-            subject = mail_template['subject'].format(
-                subject_title=content.title)
-            message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(comment_author, 'user_title', ''))),
-                recipient_first_name=getattr(
-                    comment_author, 'first_name', comment_author.name),
-                recipient_last_name=getattr(comment_author, 'last_name', ''),
-                subject_title=content.title,
-                subject_url=request.resource_url(content, "@@index"),
-                novaideo_title=root.title
-            )
-            mailer_send(
-                subject=subject,
-                recipients=[comment_author.email],
-                sender=root.get_site_sender(),
-                body=message)
+            if getattr(comment_author, 'email', ''):
+                mail_template = root.get_mail_template('alert_respons')
+                subject = mail_template['subject'].format(
+                    subject_title=content.title)
+                message = mail_template['template'].format(
+                    recipient_title=localizer.translate(
+                        _(getattr(comment_author, 'user_title', ''))),
+                    recipient_first_name=getattr(
+                        comment_author, 'first_name', comment_author.name),
+                    recipient_last_name=getattr(comment_author, 'last_name', ''),
+                    subject_title=content.title,
+                    subject_url=request.resource_url(content, "@@index"),
+                    novaideo_title=root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[comment_author.email],
+                    sender=root.get_site_sender(),
+                    body=message)
 
         return {'newcontext': comment.subject}
 
