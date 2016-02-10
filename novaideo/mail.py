@@ -337,7 +337,7 @@ PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaid
 PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Vous avez été inscrit à la plateforme participative {novaideo_title}. Vous devez cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant {deadline_date}.
+Vous avez été inscrit à la plateforme participative {novaideo_title}. Vous devez cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
 """+ PORTAL_SIGNATURE
 
 
