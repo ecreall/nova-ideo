@@ -28,6 +28,8 @@
 
     <span tal:condition="alert_kind == 'participate'">Une personne a rejoint le groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 
+    <span tal:condition="alert_kind == 'wg_wating_list_participation'">Une personne, faisant partie de la liste d'attente, a rejoint le groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+
     <span tal:condition="alert_kind == 'resign'">Une personne a quitté le groupe de travail lié à la proposition<a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 
     <span tal:condition="alert_kind == 'resign_to_wg_open'">Le groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est en dessous de trois participants et ne peut plus améliorer la proposition tant qu'il n'a pas atteint de nouveau au moins trois participants.</span>

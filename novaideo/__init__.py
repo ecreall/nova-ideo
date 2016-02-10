@@ -91,6 +91,27 @@ def searchable_contents(request):
     return SEARCHABLE_CONTENTS
 
 
+def evolve_wg(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IWorkingGroup
+    import transaction
+
+    contents = find_entities(interfaces=[IWorkingGroup])
+    len_entities = str(len(contents))
+    for index, wg in enumerate(contents):
+        if hasattr(wg, 'first_decision'):
+            wg.first_improvement_cycle = wg.first_decision
+            wg.reindex()
+
+        if index % 1000 == 0:
+            log.info("**** Commit ****")
+            transaction.commit()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Working groups evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -102,6 +123,7 @@ def main(global_config, **settings):
     config.add_request_method(accessible_to_anonymous, reify=True)
     config.add_request_method(searchable_contents, reify=True)
     config.add_request_method(analytics_default_content_types, reify=True)
+    config.add_evolution_step(evolve_wg)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

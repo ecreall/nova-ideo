@@ -165,7 +165,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         participants_mini = work_mode.participants_mini if work_mode else root.participants_mini
         participants_maxi = work_mode.participants_maxi if work_mode else root.participants_maxi
         electors = working_group.members[:participants_mini]
-        if not getattr(working_group, 'first_decision', True):
+        if not getattr(working_group, 'first_improvement_cycle', True):
             electors = working_group.members
 
         subjects = [proposal]
@@ -201,7 +201,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             subprocess.ballots.append(ballot)
             working_group.work_mode_configuration_ballot = ballot
 
-        if not getattr(working_group, 'first_decision', True) and \
+        if not getattr(working_group, 'first_improvement_cycle', True) and \
            'closed' in working_group.state:
             subjects = [working_group]
             ballot = Ballot('Referendum', electors,

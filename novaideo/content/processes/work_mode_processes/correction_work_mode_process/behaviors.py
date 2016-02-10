@@ -203,7 +203,7 @@ def correct_processsecurity_validation(process, context):
                                  for c in context.corrections))
 
     return not correction_in_process and \
-           not getattr(context.working_group, 'first_decision', True) and \
+           not getattr(context.working_group, 'first_improvement_cycle', True) and \
            global_user_processsecurity(process, context)
 
 

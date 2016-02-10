@@ -557,7 +557,8 @@ class CommentIdea(InfiniteCardinality):
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
                     _(getattr(user_to_alert, 'user_title', ''))),
-                recipient_first_name=getattr(user_to_alert, 'first_name', user_to_alert.name),
+                recipient_first_name=getattr(
+                    user_to_alert, 'first_name', user_to_alert.name),
                 recipient_last_name=getattr(user_to_alert, 'last_name', ''),
                 subject_title=context.title,
                 subject_url=request.resource_url(context, "@@index"),

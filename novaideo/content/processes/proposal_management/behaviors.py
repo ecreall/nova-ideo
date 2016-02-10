@@ -504,15 +504,12 @@ class PublishProposal(InfiniteCardinality):
         else:
             default_mode = root.get_default_work_mode()
             participants_mini = root.participants_mini
-            if 'work_mode' not in appstruct:
-                mode_id = default_mode.work_id
-            else:
-                mode_id = appstruct['work_mode']
-
+            mode_id = appstruct.get('work_mode', default_mode.work_id)
             if mode_id:
                 working_group.work_mode_id = mode_id
                 participants_mini = WORK_MODES[mode_id].participants_mini
 
+            #Only the vote of the author is considered
             first_vote_registration(user, working_group, appstruct)
             if participants_mini > 1:
                 context.state = PersistentList(
@@ -523,10 +520,9 @@ class PublishProposal(InfiniteCardinality):
                 working_group.state = PersistentList(['active'])
                 context.reindex()
                 working_group.reindex()
-                if not hasattr(working_group, 'first_decision'):
-                    working_group.first_decision = True
+                if not hasattr(working_group, 'first_improvement_cycle'):
+                    working_group.first_improvement_cycle = True
 
-            if 'amendable' in context.state:
                 if not working_group.improvement_cycle_proc:
                     improvement_cycle_proc = start_improvement_cycle(context)
                     working_group.setproperty(
@@ -546,7 +542,8 @@ class PublishProposal(InfiniteCardinality):
 
         not_published_ideas.extend(context)
         request.registry.notify(ObjectPublished(object=context))
-        request.registry.notify(ActivityExecuted(self, not_published_ideas, user))
+        request.registry.notify(ActivityExecuted(
+            self, not_published_ideas, user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1009,13 +1006,14 @@ class Withdraw(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
-        wg = context.working_group
-        wg.delfromproperty('wating_list', user)
+        working_group = context.working_group
+        working_group.delfromproperty('wating_list', user)
         if getattr(user, 'email', ''):
             localizer = request.localizer
             root = getSite()
             mail_template = root.get_mail_template('withdeaw')
-            subject = mail_template['subject'].format(subject_title=context.title)
+            subject = mail_template['subject'].format(
+                subject_title=context.title)
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
                     _(getattr(user, 'user_title', ''))),
@@ -1031,7 +1029,8 @@ class Withdraw(InfiniteCardinality):
                 sender=root.get_site_sender(),
                 body=message)
 
-        request.registry.notify(ActivityExecuted(self, [context, wg], user))
+        request.registry.notify(ActivityExecuted(
+            self, [context, working_group], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1075,30 +1074,33 @@ class Resign(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        wg = context.working_group
-        wg.delfromproperty('members', user)
-        members = wg.members
+        working_group = context.working_group
+        working_group.delfromproperty('members', user)
+        members = working_group.members
+        mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
+        revoke_roles(user, (('Participant', context),))
         if members:
             alert = WorkingGroupAlert(alert_kind='resign')
             root.addtoproperty('alerts', alert)
             alert.init_alert(members, [context])
 
-        mode = getattr(wg, 'work_mode', root.get_default_work_mode())
-        if getattr(wg, 'first_vote', True):
-            #remove user vote if first_vote
-            first_vote_remove(user, wg)
-
-        revoke_roles(user, (('Participant', context),))
         url = request.resource_url(context, "@@index")
         localizer = request.localizer
         sender = root.get_site_sender()
-        if wg.wating_list:
-            next_user = self._get_next_user(wg.wating_list, root)
+        if working_group.wating_list:
+            next_user = self._get_next_user(working_group.wating_list, root)
             if next_user is not None:
-                mail_template = root.get_mail_template('wg_participation')
-                wg.delfromproperty('wating_list', next_user)
-                wg.addtoproperty('members', next_user)
+                mail_template = root.get_mail_template(
+                    'wg_wating_list_participation')
+                working_group.delfromproperty('wating_list', next_user)
+                working_group.addtoproperty('members', next_user)
                 grant_roles(next_user, (('Participant', context),))
+                if members:
+                    alert = WorkingGroupAlert(
+                        alert_kind='wg_wating_list_participation')
+                    root.addtoproperty('alerts', alert)
+                    alert.init_alert(members, [context])
+
                 if getattr(next_user, 'email', ''):
                     subject = mail_template['subject'].format(
                         subject_title=context.title)
@@ -1118,13 +1120,14 @@ class Resign(InfiniteCardinality):
                         sender=sender,
                         body=message)
 
-        participants = wg.members
+        participants = working_group.members
         len_participants = len(participants)
         if len_participants < mode.participants_mini and \
            'open to a working group' not in context.state:
-            context.state = PersistentList(['open to a working group', 'published'])
-            wg.state = PersistentList(['deactivated'])
-            wg.reindex()
+            context.state = PersistentList(
+                ['open to a working group', 'published'])
+            working_group.state = PersistentList(['deactivated'])
+            working_group.reindex()
             context.reindex()
             alert = WorkingGroupAlert(alert_kind='resign_to_wg_open')
             root.addtoproperty('alerts', alert)
@@ -1132,7 +1135,8 @@ class Resign(InfiniteCardinality):
 
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('wg_resign')
-            subject = mail_template['subject'].format(subject_title=context.title)
+            subject = mail_template['subject'].format(
+                subject_title=context.title)
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
                     _(getattr(user, 'user_title', ''))),
@@ -1148,7 +1152,8 @@ class Resign(InfiniteCardinality):
                 sender=sender,
                 body=message)
 
-        request.registry.notify(ActivityExecuted(self, [context, wg], user))
+        request.registry.notify(ActivityExecuted(
+            self, [context, working_group], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1218,8 +1223,8 @@ class Participate(InfiniteCardinality):
         participants = working_group.members
         mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
         len_participants = len(participants)
-        first_decision = False
         if len_participants < mode.participants_maxi:
+            #Alert new participant
             if participants:
                 alert = WorkingGroupAlert(alert_kind='participate')
                 root.addtoproperty('alerts', alert)
@@ -1227,6 +1232,7 @@ class Participate(InfiniteCardinality):
 
             working_group.addtoproperty('members', user)
             grant_roles(user, (('Participant', context),))
+            #alert maw working groups
             active_wgs = getattr(user, 'active_working_groups', [])
             if len(active_wgs) == root.participations_maxi:
                 alert = WorkingGroupAlert(alert_kind='participations_maxi')
@@ -1234,33 +1240,34 @@ class Participate(InfiniteCardinality):
                 alert.init_alert([user], [user])
 
             if (len_participants+1) == mode.participants_mini:
-                context.state = PersistentList()
                 working_group.state = PersistentList(['active'])
-                if not hasattr(working_group, 'first_decision'):
-                    working_group.first_decision = True
-                    first_decision = True
-
                 context.state = PersistentList(['amendable', 'published'])
                 working_group.reindex()
                 context.reindex()
+                #Only if is the first improvement cycle
+                if not hasattr(working_group, 'first_improvement_cycle'):
+                    working_group.first_improvement_cycle = True
+                    if not working_group.improvement_cycle_proc:
+                        improvement_cycle_proc = start_improvement_cycle(
+                            context)
+                        working_group.setproperty(
+                            'improvement_cycle_proc', improvement_cycle_proc)
+
+                    #Run the improvement cycle proc
+                    working_group.improvement_cycle_proc.execute_action(
+                        context, request, 'votingpublication', {})
+
+                #Alert start of the improvement cycle proc
                 alert = WorkingGroupAlert(alert_kind='amendable')
                 root.addtoproperty('alerts', alert)
                 alert.init_alert(participants, [context])
 
+            #Send Mail alert to user
             if getattr(user, 'email', ''):
                 mail_template = root.get_mail_template('wg_participation')
                 self._send_mail_to_user(
                     mail_template['subject'], mail_template['template'],
                     user, context, request)
-
-            if first_decision:
-                if not working_group.improvement_cycle_proc:
-                    improvement_cycle_proc = start_improvement_cycle(context)
-                    working_group.setproperty(
-                        'improvement_cycle_proc', improvement_cycle_proc)
-
-                working_group.improvement_cycle_proc.execute_action(
-                    context, request, 'votingpublication', {})
         else:
             working_group.addtoproperty('wating_list', user)
             working_group.reindex()
@@ -1488,33 +1495,31 @@ class Work(ElementaryAction):
         alert = WorkingGroupAlert(alert_kind='start_work')
         root.addtoproperty('alerts', alert)
         alert.init_alert(members, [context])
-        for member in members:
-            if getattr(member, 'email', ''):
-                message = message_template.format(
-                    recipient_title=localizer.translate(
-                        _(getattr(member, 'user_title', ''))),
-                    recipient_first_name=getattr(
-                        member, 'first_name', member.name),
-                    recipient_last_name=getattr(member, 'last_name', ''),
-                    subject_title=context.title,
-                    subject_url=url,
-                    duration=duration,
-                    isclosed=localizer.translate((isclosed and _('closed')) or\
-                                                 _('open')),
-                    novaideo_title=root.title
-                )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+        for member in [m for m in members if getattr(m, 'email', '')]:
+            message = message_template.format(
+                recipient_title=localizer.translate(
+                    _(getattr(member, 'user_title', ''))),
+                recipient_first_name=getattr(
+                    member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name', ''),
+                subject_title=context.title,
+                subject_url=url,
+                duration=duration,
+                isclosed=localizer.translate(
+                    (isclosed and _('closed')) or _('open')),
+                novaideo_title=root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[member.email],
+                sender=root.get_site_sender(),
+                body=message)
 
     def start(self, context, request, appstruct, **kw):
-        context.state.remove('votes for publishing')
+        root = getSite()
         working_group = context.working_group
-        if working_group.first_decision:
-            working_group.first_decision = False
-
+        context.state.remove('votes for publishing')
+        #Only for amendments work mode
         reopening_ballot = getattr(
             working_group, 'reopening_configuration_ballot', None)
         if reopening_ballot is not None:
@@ -1527,14 +1532,23 @@ class Work(ElementaryAction):
                (report.result['False'] == 0) and \
                'closed' in working_group.state:
                 working_group.state.remove('closed')
-                working_group.reindex()
 
         context.state.insert(0, 'amendable')
-        root = getSite()
-        mail_template = root.get_mail_template('start_work')
-        self._send_mails(context, request,
-                         mail_template['subject'], mail_template['template'])
+        #The first improvement cycle is started
+        if working_group.first_improvement_cycle:
+            mail_template = root.get_mail_template('start_work')
+            self._send_mails(
+                context, request,
+                mail_template['subject'], mail_template['template'])
+            working_group.first_improvement_cycle = False
+        else:
+            mail_template = root.get_mail_template('first_start_work')
+            self._send_mails(
+                context, request,
+                mail_template['subject'], mail_template['template'])
+
         context.reindex()
+        working_group.reindex()
         request.registry.notify(ActivityExecuted(
             self, [context, working_group], get_current()))
         return {}
@@ -1570,19 +1584,12 @@ class SubmitProposal(ElementaryAction):
     state_validation = submit_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        wg = context.working_group
-        context.state.remove('votes for publishing')
-        context.state = PersistentList(['submitted_support', 'published'])
-        wg.state = PersistentList(['archived'])
-        members = wg.members
-        url = request.resource_url(context, "@@index")
         root = getSite()
-        mail_template = root.get_mail_template('publish_proposal')
-        subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        alert = WorkingGroupAlert(alert_kind='submit_proposal')
-        root.addtoproperty('alerts', alert)
-        alert.init_alert(members, [context])
+        working_group = context.working_group
+        context.state = PersistentList(['submitted_support', 'published'])
+        working_group.state = PersistentList(['archived'])
+        members = working_group.members
         for member in members:
             token = Token(title='Token_'+context.title)
             token.setproperty('proposal', context)
@@ -1590,28 +1597,40 @@ class SubmitProposal(ElementaryAction):
             member.addtoproperty('tokens', token)
             token.setproperty('owner', member)
             revoke_roles(member, (('Participant', context),))
-            if getattr(member, 'email', ''):
-                message = mail_template['template'].format(
-                    recipient_title=localizer.translate(
-                        _(getattr(member, 'user_title', ''))),
-                    recipient_first_name=getattr(member, 'first_name', member.name),
-                    recipient_last_name=getattr(member, 'last_name', ''),
-                    subject_title=context.title,
-                    subject_url=url,
-                    novaideo_title=request.root.title
-                )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+
+        #Alert users
+        users = list(get_users_by_preferences(context))
+        users.extend(members)
+        users = set(users)
+        url = request.resource_url(context, "@@index")
+        mail_template = root.get_mail_template('publish_proposal')
+        subject = mail_template['subject'].format(
+            subject_title=context.title)
+        alert = WorkingGroupAlert(alert_kind='submit_proposal')
+        root.addtoproperty('alerts', alert)
+        alert.init_alert(users, [context])
+        for member in [m for m in users if getattr(m, 'email', '')]:
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(member, 'user_title', ''))),
+                recipient_first_name=getattr(
+                    member, 'first_name', member.name),
+                recipient_last_name=getattr(member, 'last_name', ''),
+                subject_title=context.title,
+                subject_url=url,
+                novaideo_title=request.root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[member.email],
+                sender=root.get_site_sender(),
+                body=message)
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        wg.reindex()
+        working_group.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, wg], get_current()))
-        #TODO wg desactive, members vide...
+            self, [context, working_group], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1651,24 +1670,23 @@ class AlertEnd(ElementaryAction):
             alert = WorkingGroupAlert(alert_kind='end_work')
             root.addtoproperty('alerts', alert)
             alert.init_alert(members, [context])
-            for member in members:
-                if getattr(member, 'email', ''):
-                    message = mail_template['template'].format(
-                        recipient_title=localizer.translate(
-                            _(getattr(member, 'user_title', ''))),
-                        recipient_first_name=getattr(
-                            member, 'first_name', member.name),
-                        recipient_last_name=getattr(
-                            member, 'last_name', ''),
-                        subject_url=url,
-                        subject_title=context.title,
-                        novaideo_title=request.root.title
-                    )
-                    mailer_send(
-                        subject=subject,
-                        recipients=[member.email],
-                        sender=root.get_site_sender(),
-                        body=message)
+            for member in [m for m in members if getattr(m, 'email', '')]:
+                message = mail_template['template'].format(
+                    recipient_title=localizer.translate(
+                        _(getattr(member, 'user_title', ''))),
+                    recipient_first_name=getattr(
+                        member, 'first_name', member.name),
+                    recipient_last_name=getattr(
+                        member, 'last_name', ''),
+                    subject_url=url,
+                    subject_title=context.title,
+                    novaideo_title=request.root.title
+                )
+                mailer_send(
+                    subject=subject,
+                    recipients=[member.email],
+                    sender=root.get_site_sender(),
+                    body=message)
 
         return {}
 

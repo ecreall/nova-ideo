@@ -71,15 +71,29 @@ Bonjour,
 PRESENTATION_AMENDMENT_SUBJECT = u"""« {subject_title} »"""
 
 
+AMENDABLE_FIRST_SUBJECT = u"""Début du cycle d'amélioration de la proposition « {subject_title} »"""
+
+
+AMENDABLE_FIRST_MESSAGE = u"""
+BBonjour {recipient_title} {recipient_last_name},
+
+Vous êtes dorénavant trois participants au groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}, vous pouvez commencer à l'améliorer. 
+
+Chaque participant peut faire des suggestions d'amélioration que les autres participants peuvent soit accepter, soit refuser. Lorsque le cycle d'amélioration est terminé, l'ensemble des participants votent soit pour continuer à améliorer la proposition, soit pour la soumettre à l'appréciation des membres de la plateforme.
+
+Le cycle d'amélioration se termine le {duration}.
+
+""" + PORTAL_SIGNATURE
+
 AMENDABLE_SUBJECT = u"""Début du cycle d'amélioration de la proposition « {subject_title} »"""
 
 
 AMENDABLE_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Le cycle d'amélioration de la proposition « {subject_title} » qui se trouve sous {subject_url} vient de commencer, chaque participant au groupe de travail peut faire des suggestions d'amélioration que les autres participants peuvent soit accepter, soit refuser.
+Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} a voté à la majorité pour continuer à améliorer la proposition.
 
-Lorsque le cycle d'amélioration est terminé, l'ensemble des participants votent soit pour continuer à améliorer la proposition, soit pour la soumettre à l'appréciation des membres de la plateforme.
+Chaque participant peut faire des suggestions d'amélioration que les autres participants peuvent soit accepter, soit refuser. Lorsque le cycle d'amélioration est terminé, l'ensemble des participants votent soit pour continuer à améliorer la proposition, soit pour la soumettre à l'appréciation des membres de la plateforme.
 
 Le cycle d'amélioration se termine le {duration}.
 
@@ -148,12 +162,25 @@ Les votes sur les amendements portant sur la proposition « {subject_title} » q
 
 """ + PORTAL_SIGNATURE
 
-WITHDRAW_SUBJECT = u"""Désinscription de la liste d'attente concernant la proposition « {subject_title} »"""
+WITHDRAW_SUBJECT = u"""Retrait de la liste d'attente du groupe de travail de la proposition « {subject_title} »"""
 
 WITHDRAW_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Pour information, vous ne faites plus partie de la liste d'attente du groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}. 
+Vous ne faites plus partie de la liste d'attente du groupe de travail de la proposition {subject_title} » qui se trouve sous {subject_url}, suite à votre retrait de cette liste d'attente. 
+
+Vous pourrez à tout moment chercher à rejoindre à nouveau le groupe de travail de la proposition, si elle est encore en cours d'amélioration.
+
+""" + PORTAL_SIGNATURE
+
+PARTICIPATE_WL_SUBJECT = u"""Participation au groupe de travail de la proposition « {subject_title} »"""
+
+PARTICIPATE_WL_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+Vous faites partie du groupe de travail de la proposition {subject_title} » qui se trouve sous {subject_url}, suite au départ de l'un des participants. 
+
+Vous pouvez en tant que participant au groupe de travail améliorer la proposition et vous pourrez, à la fin du cycle d'amélioration, voter pour continuer à l'améliorer ou la soumettre à l'appréciation des membres de la plateforme.
 
 """ + PORTAL_SIGNATURE
 
@@ -383,7 +410,11 @@ DEFAULT_SITE_MAILS = {
               'subject': PRESENTATION_AMENDMENT_SUBJECT,
               'template': PRESENTATION_AMENDMENT_MESSAGE
     },
-
+    'first_start_work': {
+              'title': _('Beginning of the improvement cycle'),
+              'subject': AMENDABLE_FIRST_SUBJECT,
+              'template': AMENDABLE_FIRST_MESSAGE
+    },
     'start_work': {
               'title': _('Beginning of the improvement cycle'),
               'subject': AMENDABLE_SUBJECT,
@@ -395,7 +426,7 @@ DEFAULT_SITE_MAILS = {
               'template': ALERT_MESSAGE
     },
     'alert_end': {
-              'title': _("Inactivity alert"),
+              'title': _("End of the improvement cycle alert"),
               'subject': ALERT_END_SUBJECT,
               'template': ALERT_END_MESSAGE
     },
@@ -423,6 +454,11 @@ DEFAULT_SITE_MAILS = {
               'title': _("Withdeaw"),
               'subject': WITHDRAW_SUBJECT,
               'template': WITHDRAW_MESSAGE
+    },
+    'wg_wating_list_participation': {
+              'title': _("Automatic addition of a participant in the working group that was on the waiting list"),
+              'subject': PARTICIPATE_WL_SUBJECT,
+              'template': PARTICIPATE_WL_MESSAGE
     },
     'wg_participation': {
               'title': _("Participation to the working group"),
