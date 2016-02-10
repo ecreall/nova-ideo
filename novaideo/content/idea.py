@@ -144,6 +144,10 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
         result.extend(list(self.tokens_support))
         return result
 
+    @property
+    def authors(self):
+        return [self.author]
+
     def init_published_at(self):
         setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
 

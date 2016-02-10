@@ -18,42 +18,45 @@ PORTAL_PRESENTATION = u"""{novaideo_title} est une plateforme participative qui 
 
 """
 
-INVITATION_SUBJECT = u"""Invitation"""
+INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
 
 INVITATION_MESSAGE = u"""
-Bonjour ,
+Bonjour,
 
-{user_title} {invitation.last_name} vous êtes invité à rejoindre l\'application collaborative {novaideo_title} en tant que {roles}. Veuilliez visiter ce lien {invitation_url} afin de valider votre invitation.
+{user_title} {invitation.last_name} vous êtes invité à rejoindre la plateforme participative {novaideo_title} en tant que {roles}.
+Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
 """ + PORTAL_SIGNATURE
+
+
+PRESENTATION_IDEA_SUBJECT = u"""Présentation de l'idée « {subject_title} »""" 
 
 
 PRESENTATION_IDEA_MESSAGE = u"""
 Bonjour,
 
-{my_first_name} {my_last_name} souhaite vous présenter l'idée « {subject_title} » figurant sur la plateforme {novaideo_title} sous {subject_url}.""" + \
- PORTAL_PRESENTATION + PORTAL_SIGNATURE
+{my_first_name} {my_last_name} souhaite vous présenter l'idée « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette idée est accessible à l'adresse : {subject_url}.
 
-PRESENTATION_IDEA_SUBJECT = u"""« {subject_title} »""" 
+""" +  PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription"""
+CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription à la plateforme participative {novaideo_title}"""
 
 CONFIRMATION_MESSAGE = u"""
-Bonjour,
+Bienvenue sur la plateforme {novaideo_title}, nous vous confirmons votre inscription à la plateforme participative {novaideo_title}. 
 
-Bienvenue sur la plateforme {novaideo_title}. L'accès à la plateforme se fait sous {login_url}. Pour y ajouter des idées ou des propositions, vous devez préalablement vous identifier avec votre courriel et votre mot de passe.
-
+Faites-nous part de vos idées en vous connectant à l'adresse {login_url}.
 """ + PORTAL_SIGNATURE
+
+
+PRESENTATION_PROPOSAL_SUBJECT = u"""Présentation de la proposition « {subject_title} »""" 
 
 
 PRESENTATION_PROPOSAL_MESSAGE = u"""
 Bonjour,
 
-{my_first_name} {my_last_name} souhaite vous présenter la proposition « {subject_title} » figurant sur la plateforme {novaideo_title} sous {subject_url}.""" + \
- PORTAL_PRESENTATION + PORTAL_SIGNATURE
+{my_first_name} {my_last_name} souhaite vous présenter la proposition « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette proposition est accessible à l'adresse : {subject_url}.
 
-
-PRESENTATION_PROPOSAL_SUBJECT = u"""« {subject_title} »""" 
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
 PRESENTATION_AMENDMENT_MESSAGE = u"""
@@ -74,45 +77,29 @@ AMENDABLE_SUBJECT = u"""Début du cycle d'amélioration de la proposition « {su
 AMENDABLE_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Les participants au groupe de travail sur la proposition « {subject_title} » ont voté à la majorité pour l'amélioration de la proposition.
+Le cycle d'amélioration de la proposition « {subject_title} » qui se trouve sous {subject_url} vient de commencer, chaque participant au groupe de travail peut faire des suggestions d'amélioration que les autres participants peuvent soit accepter, soit refuser.
 
-Un cycle d'amélioration commence, il comprend : la relecture de la proposition, son amélioration sous forme d'amendements, le vote sur ces amendements et le vote pour soumettre la proposition améliorée à l'appréciation des autres membres de la plateforme ou au contraire recommencer un nouveau cycle d'amélioration.
+Lorsque le cycle d'amélioration est terminé, l'ensemble des participants votent soit pour continuer à améliorer la proposition, soit pour la soumettre à l'appréciation des membres de la plateforme.
 
-La fin de ce cycle d'amélioration est fixée au {duration}.
-
-""" + PORTAL_SIGNATURE
-
-
-PROOFREADING_SUBJECT = u"""Début du cycle d'amélioration de la proposition « {subject_title} »"""
-
-
-PROOFREADING_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
-
-Les participants au groupe de travail sur la proposition « {subject_title} » ont voté à la majorité pour l'amélioration de la proposition.
-
-Un cycle d'amélioration commence, il comprend : la relecture de la proposition, son amélioration sous forme d'amendements, le vote sur ces amendements et le vote pour soumettre la proposition améliorée à l'appréciation des autres membres de la plateforme ou au contraire recommencer un nouveau cycle d'amélioration.
-
-La fin de ce cycle d'amélioration est fixée au {duration}.
+Le cycle d'amélioration se termine le {duration}.
 
 """ + PORTAL_SIGNATURE
 
-
-ALERT_SUBJECT = u"""Aucun amendement sur la proposition « {subject_title} »"""
+ALERT_SUBJECT = u"""Fin du cycle d'amélioration de la proposition « {subject_title} » sans aucune amélioration"""
 
 ALERT_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Alors que le cycle d'amélioration est terminé, aucun amendement n'a été soumis pour la proposition « {subject_title} » qui se trouve sous {subject_url}. Vous allez devoir procéder au vote pour soumettre la proposition en l'état ou pour commencer un nouveau cycle d'amélioration. 
+Alors que le cycle d'amélioration est terminé, aucune amélioration n'a été apportée à la proposition « {subject_title} » qui se trouve sous {subject_url}. Vous allez devoir procéder au vote pour soumettre la proposition en l'état ou pour recommencer un nouveau cycle d'amélioration. 
 
 """ + PORTAL_SIGNATURE
 
-ALERT_END_SUBJECT = u"""Echéance « {subject_title} »"""
+ALERT_END_SUBJECT = u"""Dernières améliorations avant la fin du cycle d'amélioration de la proposition « {subject_title} »"""
 
 ALERT_END_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Vite vite c'est bientôt la fin pour la proposition « {subject_title} » qui se trouve sous {subject_url}. Vous allez devoir procéder au vote pour soumettre la proposition en l'état ou pour commencer un nouveau cycle d'amélioration. 
+Le cycle d'amélioration pour la proposition « {subject_title} » qui se trouve sous {subject_url} touche pratiquement à sa fin. Vous pouvez encore y apporter des améliorations, avant que le groupe de travail vote pour soumettre la proposition en l'état ou pour recommencer un nouveau cycle d'amélioration.
 
 """ + PORTAL_SIGNATURE
 
@@ -128,24 +115,26 @@ Bonjour {recipient_title} {recipient_last_name},
 """ + PORTAL_SIGNATURE
 
 
-PUBLISHPROPOSAL_SUBJECT = u"""Décision de soumettre en l'état la proposition « {subject_title} » à l'appréciation des membres de la plateforme"""
+PUBLISHPROPOSAL_SUBJECT = u"""Décision de soumettre la proposition « {subject_title} » à l'appréciation des membres de la plateforme"""
 
 PUBLISHPROPOSAL_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} a voté contre l'amélioration de la proposition.
+Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} a voté à la majorité pour soumettre la proposition à l'appréciation des membres de la plateforme.
 
-En conséquence, la proposition est soumise en l'état à l'appréciation des membres de la plateforme. Chaque membre peut dorénavant soutenir ou s'opposer à la proposition.
+Chaque membre de la plateforme peut dorénavant soutenir ou s'opposer à la proposition et le Comité d'examen peut l'examiner.
 
 """ + PORTAL_SIGNATURE
 
 
-VOTINGPUBLICATION_SUBJECT = u"""Début des votes pour soumettre en l'état la proposition « {subject_title} » """
+VOTINGPUBLICATION_SUBJECT = u"""Début du vote pour améliorer la proposition « {subject_title} » ou la soumettre à l'appréciation des membres de la plateforme """
 
 VOTINGPUBLICATION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Les votes pour soumettre en l'état la proposition « {subject_title} » qui se trouve sous {subject_url} ont commencé. Merci de prendre part aux votes.
+Le cycle d'amélioration de la proposition « {subject_title} » qui se trouve sous {subject_url} est terminé, vous êtes invité à prendre part au vote pour améliorer la proposition ou la soumettre à l'appréciation des membres de la plateforme.
+
+Vous disposez de 24 heures pour voter, après quoi le vote sera dépouillé en tenant compte du choix de la majorité des votants. Si aucun vote n'a lieu, un nouveau cycle d'amélioration commence pour une semaine.
 
 """ + PORTAL_SIGNATURE
 
@@ -168,52 +157,58 @@ Pour information, vous ne faites plus partie de la liste d'attente du groupe de 
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_SUBJECT = u"""Participation au groupe de travail sur la proposition « {subject_title} » """
+PARTICIPATE_SUBJECT = u"""Votre participation au groupe de travail de la proposition « {subject_title} »"""
 
 PARTICIPATE_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Pour information, vous faites partie du groupe de travail sur la proposition {subject_title} qui se trouve sous {subject_url}. Dès que le groupe de travail a atteint trois participants, vous pourrez participer aux votes pour soumettre la proposition en l'état ou au contraire commencer un cycle d'amélioration.
+Vous faites partie du groupe de travail de la proposition {subject_title} qui se trouve sous {subject_url}.
+
+Vous pouvez en tant que participant au groupe de travail améliorer la proposition, s'il elle est en cours d'amélioration, et vous pourrez, à la fin du cycle d'amélioration, voter pour continuer à l'améliorer ou la soumettre à l'appréciation des membres de la plateforme.
 
 """ + PORTAL_SIGNATURE
 
-RESIGN_SUBJECT = u"""Démission du groupe de travail sur la proposition « {subject_title} » """
+RESIGN_SUBJECT = u"""Votre départ du groupe de travail de la proposition « {subject_title} »"""
 
 RESIGN_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Vous avez décidé de quitter le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url}. S'il est ouvert, vous pourrez décider de le rejoindre de nouveau en cliquant sur l'action "Participer".
+Nous vous confirmons que vous ne faites plus partie du groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
+
+Vous pourrez à tout moment le rejoindre de nouveau, si vous ne faites pas partie déjà de cinq autres groupes de travail, qui est le nombre maximum de groupes de travail auxquels un membre a le droit de participer simultanément.
 
 """ + PORTAL_SIGNATURE
 
-WATINGLIST_SUBJECT = u"""Participation au groupe de travail sur la proposition « {subject_title} »"""
+WATINGLIST_SUBJECT = u"""Inscription sur la liste d'attente du groupe de travail de la proposition « {subject_title} »"""
 
 WATINGLIST_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Pour information, vous faites partie de la liste d'attente du groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url}. Si le groupe de travail atteint moins de 12 personnes et si le ne vous faites pas partie de plus de 5 groupes de travail, vous y serez immédiatement ajouté en tant que participant. 
+Vous souhaitez participer au groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}, mais le nombre de participants a déjà atteint 12 personnes, qui est le nombre maximum de participants dans un groupe de travail.
+
+Vous êtes sur la liste d'attente de ce groupe de travail et vous en ferez automatiquement partie, dès qu'une place se sera libérée.
 
 """ + PORTAL_SIGNATURE
 
 
-NEWCONTENT_SUBJECT = u"""Un contenu vient d'être publié"""
+NEWCONTENT_SUBJECT = u"""{subject_type} « {subject_title} qui contient un des mots clés faisant partie de vos centres d'intérêt vient d'être publiée."""
 
 
 NEWCONTENT_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-{subject_type} « {subject_title} » qui contient un des mots clés faisant partie de vos centres d'intérêt vient d'être publiée. Vous pouvez la consulter sous {subject_url}
+{subject_type} « {subject_title} » qui contient un des mots clés faisant partie de vos centres d'intérêt vient d'être publiée. Vous pouvez la consulter sous {subject_url}.
 
 """+ PORTAL_SIGNATURE
 
 
-CONTENTMODIFIEF_SUBJECT = u"""Un contenu vient d'être modifié"""
+CONTENTMODIFIEF_SUBJECT = u"""{subject_type} « {subject_title} » qui fait partie de vos favoris vient de changer d'état"""
 
 
 CONTENTMODIFIEF_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-{subject_type} « {subject_title} » faisant partie de vos selections vient de changer d'état de {state_source} à {state_target}. Vous pouvez la consulter sous {subject_url}
+{subject_type} « {subject_title} » qui fait partie de vos favoris vient de passer de l'état {state_source} à l'état {state_target}. Vous pouvez la consulter sous {subject_url}.
 
 """+ PORTAL_SIGNATURE
 
@@ -233,28 +228,24 @@ Vous pouvez retrouver votre idée sous {subject_url}.
 """+ PORTAL_SIGNATURE
 
 
-ALERTOPINION_SUBJECT = u"""Avis des modérateur sur la proposition « {subject_title} »"""
+ALERTOPINION_SUBJECT = u"""Avis du Comité d'examen sur la proposition « {subject_title} »"""
 
 
 ALERTOPINION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-les modérateurs ont émis un avis {opinion} sur la proposition « {subject_title} »: 
-
-{explanation}
+Le Comité d'examen a émis un avis « {opinion} » sur la proposition « {subject_title} » avec l'explication suivante : « {explanation} ».
 
 """+ PORTAL_SIGNATURE
 
 
-ALERTOPINIONIDEA_SUBJECT = u"""Avis des modérateur sur l'idée « {subject_title} »"""
+ALERTOPINIONIDEA_SUBJECT = u"""Avis d'un Examinateur sur l'idée « {subject_title} »"""
 
 
 ALERTOPINIONIDEA_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-les modérateurs ont émis un avis {opinion} sur l'idée « {subject_title} »: 
-
-{explanation}
+Un Examinateur a émis un avis « {opinion} » sur l'idée « {subject_title} » avec l'explication suivante : « {explanation} ».
 
 """+ PORTAL_SIGNATURE
 
@@ -276,18 +267,20 @@ PROPOSALREMOVED_SUBJECT = u"""Suppression de la proposition « {subject_title} �
 PROPOSALREMOVED_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-La proposition « {subject_title} » viens d'être supprimée par les modérateurs pour le motif suivant.
-{explanation}
+La proposition « {subject_title} » viens d'être supprimée par les modérateurs pour le motif suivant:
+
+« {explanation} »
 
 """+ PORTAL_SIGNATURE 
 
 
-REFUSE_INVITATION_SUBJECT = u"""Refus de {user_first_name} {user_last_name} de rejoindre la plateforme {novaideo_title}"""
+REFUSE_INVITATION_SUBJECT = u"""Refus de {user_title} {user_first_name} {user_last_name} de rejoindre la plateforme {novaideo_title}"""
 
 
 REFUSE_INVITATION_MESSAGE = u"""
-{user_title} {user_first_name} {user_last_name} a refusé votre invitation de rejoindre la plateforme {novaideo_title}.
+Bonjour,
 
+Nous vous signalons que {user_title} {user_first_name} {user_last_name} a refusé votre invitation de rejoindre la plateforme {novaideo_title}.
 """+ PORTAL_SIGNATURE 
 
 
@@ -295,8 +288,9 @@ ACCEPT_INVITATION_SUBJECT = u"""Acceptation de {user_first_name} {user_last_name
 
 
 ACCEPT_INVITATION_MESSAGE = u"""
-{user_title} {user_first_name} {user_last_name} a accepté votre invitation de rejoindre la plateforme {novaideo_title}.
+Bonjour {recipient_title} {recipient_last_name},
 
+{user_title} {user_first_name} {user_last_name} a accepté votre invitation de rejoindre la plateforme {novaideo_title}.
 """+ PORTAL_SIGNATURE
 
 
@@ -306,40 +300,38 @@ RESETPW_SUBJECT = u"""Votre nouveau mot de passe sur la plateforme {novaideo_tit
 RESETPW_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Vous avez oublié votre mot de passe sur la plateforme {novaideo_title} et vous souhaitez en utiliser un nouveau, merci de cliquer sur {reseturl} et de saisir votre nouveau mot de passe.
-
+Vous souhaitez avoir un nouveau votre mot de passe sur la plateforme {novaideo_title}, merci de cliquer sur l'adresse {reseturl} et de saisir votre nouveau mot de passe.
 """+ PORTAL_SIGNATURE
 
 
-PREREGISTRATION_SUBJECT = u"""Veuillez confirmer votre inscription"""
+PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
 
 
 PREREGISTRATION_MESSAGE = u"""
-Bonjour,
+Bonjour {recipient_title} {recipient_last_name},
 
-Pour confirmer votre inscription veuillez accéder à ce lien {url}. Ce lien est valide 48h. La date d'expiration de ce lien est prévue {deadline_date}.
-
+Vous avez été inscrit à la plateforme participative {novaideo_title}. Vous devez cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant {deadline_date}.
 """+ PORTAL_SIGNATURE
 
 
-ALERTCOMMENT_SUBJECT = u"""Votre contribution « {subject_title} » vient d'être commentée"""
+ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_title} »"""
 
 
 ALERTCOMMENT_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Votre contribution « {subject_title} » sous {subject_url} vient d'être commentée.
+Un nouveau commentaire a été fait sur {subject_type} « {subject_title} ». Vous pouvez le retrouver sous {subject_url} et lui apporter une réponse.
 
 """+ PORTAL_SIGNATURE
 
 
-ALERTRESPONS_SUBJECT = u"""Une personne a répondu à votre commentaire « {subject_title} »"""
+ALERTRESPONS_SUBJECT = u"""Une personne a donné une réponse à un commentaire sur {subject_type} « {subject_title} »"""
 
 
 ALERTRESPONS_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
-Une personne a répondu à votre commentaire concernant la contribution « {subject_title} » sous {subject_url}.
+Une personne a donné une réponse à un commentaire sur {subject_type} « {subject_title} » qui se trouve sous {subject_url}.
 
 """+ PORTAL_SIGNATURE
 
@@ -396,12 +388,6 @@ DEFAULT_SITE_MAILS = {
               'title': _('Beginning of the improvement cycle'),
               'subject': AMENDABLE_SUBJECT,
               'template': AMENDABLE_MESSAGE
-    },
-
-    'proofreading': {
-              'title': _("Beginning of the proofreading"),
-              'subject': PROOFREADING_SUBJECT,
-              'template': PROOFREADING_MESSAGE
     },
     'alert_amendment': {
               'title': _("Inactivity alert"),

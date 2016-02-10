@@ -81,27 +81,36 @@ class Respond(InfiniteCardinality):
         comment.setproperty('author', user)
         content = comment.subject
         author = getattr(content, 'author', None)
+        authors = getattr(content, 'authors', [author] if author else [])
+        if user in authors:
+            authors.remove(user)
+
         root = getSite()
         localizer = request.localizer
-        if author is not user and getattr(author, 'email', ''):
-            alert = CommentAlert()
-            root.addtoproperty('alerts', alert)
-            alert.init_alert([author], [content])
+        alert = CommentAlert()
+        root.addtoproperty('alerts', alert)
+        alert.init_alert(authors, [content])
+        for user_to_alert in [u for u in authors if getattr(u, 'email', '')]:
             mail_template = root.get_mail_template('alert_comment')
+            subject_type = localizer.translate(
+                _("The " + content.__class__.__name__.lower()))
             subject = mail_template['subject'].format(
-                subject_title=content.title)
+                subject_title=content.title,
+                subject_type=subject_type)
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
-                    _(getattr(author, 'user_title', ''))),
-                recipient_first_name=getattr(author, 'first_name', author.name),
-                recipient_last_name=getattr(author, 'last_name', ''),
+                    _(getattr(user_to_alert, 'user_title', ''))),
+                recipient_first_name=getattr(
+                    user_to_alert, 'first_name', user_to_alert.name),
+                recipient_last_name=getattr(user_to_alert, 'last_name', ''),
                 subject_title=content.title,
                 subject_url=request.resource_url(content, "@@index"),
+                subject_type=subject_type,
                 novaideo_title=root.title
             )
             mailer_send(
                 subject=subject,
-                recipients=[author.email],
+                recipients=[user_to_alert.email],
                 sender=root.get_site_sender(),
                 body=message)
 

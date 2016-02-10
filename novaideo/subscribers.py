@@ -53,24 +53,27 @@ def mysubscriber_object_published(event):
     url = request.resource_url(content, "@@index")
     root = request.root
     mail_template = root.get_mail_template('alert_new_content')
-    subject = mail_template['subject'].format(subject_title=content.title)
     localizer = request.localizer
+    subject_type = localizer.translate(
+        _("The " + content.__class__.__name__.lower()))
+    subject = mail_template['subject'].format(
+        subject_title=content.title,
+        subject_type=subject_type)
     author = getattr(content, 'author', None)
     all_users = []
     for member in users:
         all_users.append(member)
         if getattr(member, 'email', '') and author is not member:
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(_(getattr(member,
-                                                            'user_title', ''))),
+                recipient_title=localizer.translate(
+                    _(getattr(member, 'user_title', ''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name', ''),
                 subject_title=content.title,
                 subject_url=url,
-                subject_type=localizer.translate(
-                    _("The " + content.__class__.__name__.lower())),
+                subject_type=subject_type,
                 novaideo_title=root.title
-                 )
+            )
             mailer_send(
                 subject=subject,
                 recipients=[member.email],
@@ -116,8 +119,12 @@ def mysubscriber_object_modified(event):
     url = request.resource_url(content, "@@index")
     root = request.root
     mail_template = root.get_mail_template('alert_content_modified')
-    subject = mail_template['subject'].format(subject_title=content.title)
     localizer = request.localizer
+    subject_type = localizer.translate(
+        _("The " + content.__class__.__name__.lower()))
+    subject = mail_template['subject'].format(
+        subject_title=content.title,
+        subject_type=subject_type)
     all_users = []
     for member in users:
         all_users.append(member)
@@ -132,18 +139,17 @@ def mysubscriber_object_modified(event):
                         member, content, state_target))
 
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(_(getattr(member,
-                                                            'user_title', ''))),
+                recipient_title=localizer.translate(
+                    _(getattr(member, 'user_title', ''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name', ''),
                 state_source=state_source,
                 state_target=state_target,
                 subject_title=content.title,
                 subject_url=url,
-                subject_type=localizer.translate(
-                    _("The " + content.__class__.__name__.lower())),
+                subject_type=subject_type,
                 novaideo_title=root.title
-                 )
+            )
             mailer_send(
                 subject=subject,
                 recipients=[member.email],

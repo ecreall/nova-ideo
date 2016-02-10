@@ -216,6 +216,11 @@ class Proposal(Commentable,
     def is_published(self):
         return 'published' in self.state
 
+    @property
+    def authors(self):
+        return self.working_group.members
+
+
     def init_published_at(self):
         setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
 

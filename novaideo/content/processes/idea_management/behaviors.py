@@ -529,13 +529,46 @@ class CommentIdea(InfiniteCardinality):
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
 
-    def alert_users(self, context, request, root, author, user):
+    def _get_users_to_alerts(self, context, request):
+        users = list(get_users_by_preferences(context))
+        author = getattr(context, 'author', None)
+        context_authors = getattr(
+            context, 'authors', [author] if author else [])
+        users.extend(context_authors)
+        return list(set(users))
+
+    def _alert_users(self, context, request, user):
+        root = getSite()
         alert = CommentAlert()
         root.addtoproperty('alerts', alert)
-        users = list(get_users_by_preferences(context))
-        context_author = context.author
-        users.extend([author, context_author])
-        alert.init_alert(set(users), [context])
+        users = self._get_users_to_alerts(context, request)
+        alert.init_alert(users, [context])
+        if user in users:
+            users.remove(user)
+
+        mail_template = root.get_mail_template('alert_comment')
+        localizer = request.localizer
+        subject_type = localizer.translate(
+            _("The " + context.__class__.__name__.lower()))
+        subject = mail_template['subject'].format(
+            subject_title=context.title,
+            subject_type=subject_type)
+        for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(user_to_alert, 'user_title', ''))),
+                recipient_first_name=getattr(user_to_alert, 'first_name', user_to_alert.name),
+                recipient_last_name=getattr(user_to_alert, 'last_name', ''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index"),
+                subject_type=subject_type,
+                novaideo_title=root.title
+            )
+            mailer_send(
+                subject=subject,
+                recipients=[user_to_alert.email],
+                sender=root.get_site_sender(),
+                body=message)
 
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
@@ -553,29 +586,7 @@ class CommentIdea(InfiniteCardinality):
                 unique=True)
             comment.setproperty('related_correlation', correlation)
 
-        root = getSite()
-        author = getattr(context, 'author', None)
-        self.alert_users(context, request, root, author, user)
-        if author is not user and getattr(author, 'email', ''):
-            mail_template = root.get_mail_template('alert_comment')
-            localizer = request.localizer
-            subject = mail_template['subject'].format(
-                subject_title=context.title)
-            message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(author, 'user_title', ''))),
-                recipient_first_name=getattr(author, 'first_name', author.name),
-                recipient_last_name=getattr(author, 'last_name', ''),
-                subject_title=context.title,
-                subject_url=request.resource_url(context, "@@index"),
-                novaideo_title=root.title
-            )
-            mailer_send(
-                subject=subject,
-                recipients=[author.email],
-                sender=root.get_site_sender(),
-                body=message)
-
+        self.alert_users(context, request, user)
         context.reindex()
         return {}
 

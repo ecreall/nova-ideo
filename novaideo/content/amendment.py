@@ -277,6 +277,10 @@ class Amendment(Commentable,
     def working_group(self):
         return self.proposal.working_group
 
+    @property
+    def authors(self):
+        return [self.author]
+
    # @region.cache_on_arguments() 
     def get_used_ideas(self):
         """Return used ideas"""
