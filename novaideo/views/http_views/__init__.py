@@ -6,9 +6,13 @@
 # author: Amen Souissi
 
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPNotFound, HTTPInternalServerError
+from pyramid.httpexceptions import (
+    HTTPFound, HTTPNotFound, HTTPInternalServerError)
 
-from pontus.view import BasicView
+from dace.processinstance.core import Validator
+
+from pontus.view import (
+    BasicView, ViewError, ViewErrorView)
 
 from novaideo import _
 
@@ -55,3 +59,24 @@ class InternalServerError(BasicView):
         result['coordinates'] = {self.coordinates: [item]}
         self.request.response.status = 500
         return result
+
+
+@view_config(
+    context=ViewError,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class ViewErrorToLoginView(ViewErrorView):
+    title = _('An error has occurred!')
+    name = 'internalservererror'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
+    wrapper_template = 'novaideo:views/http_views/templates/simple_wrapper.pt'
+
+    def update(self):
+        only_for_members = getattr(self.request.root, 'only_for_members', False)
+        if self.request.user or not only_for_members:
+            return super(ViewErrorToLoginView, self).update()
+
+        self.title = self.request.localizer.translate(self.title)
+        return HTTPFound(self.request.resource_url(
+            self.request.root, "@@login", query={'came_from': self.request.url}))

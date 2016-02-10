@@ -49,7 +49,10 @@ class LoginView(BasicView):
         context = self.context
         login_url = request.resource_url(request.context, 'login')
         login_url2 = request.resource_url(request.context, '@@login')
-        referrer = request.path_url
+        referrer = self.params('came_from')
+        if not referrer:
+            referrer = request.path_url
+
         if '/auditstream-sse' in referrer:
             # If we're being invoked as the result of a failed request to the
             # auditstream sse view, bail.  Otherwise the came_from will be set to
@@ -61,6 +64,7 @@ class LoginView(BasicView):
         if login_url in referrer or login_url2 in referrer:
             # never use the login form itself as came_from
             referrer = request.resource_url(request.virtual_root)
+
         came_from = request.session.setdefault('novaideo.came_from', referrer)
         login = ''
         password = ''
