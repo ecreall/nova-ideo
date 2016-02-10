@@ -280,7 +280,7 @@ class CorrectProposal(InfiniteCardinality):
             correction.corrections[str(descriminator)] = init_vote
             descriminator += 1
 
-        return descriminator      
+        return descriminator
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
@@ -348,7 +348,7 @@ def close_roles_validation(process, context):
 
 def close_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and 'amendable' in context.state
+    return wg and 'active' in wg.state and 'amendable' in context.state
 
 
 class CloseWork(ElementaryAction):
@@ -363,7 +363,6 @@ class CloseWork(ElementaryAction):
     state_validation = close_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        #TODO
         if context.corrections:
             last_correction = context.corrections[-1]
             if 'in process' in last_correction.state:
