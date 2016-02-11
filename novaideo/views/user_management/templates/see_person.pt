@@ -35,7 +35,7 @@
   </div>
 </div>
 <div class="user-description" tal:condition="getattr(user, 'description', '')">${user.description}</div>
-<h4 tal:condition="len_contents" id="contents" class="section-title">
+<h4 tal:condition="len_contents" id="contents" class="section-title" i18n:domain="novaideo">
   <span class="icon glyphicon glyphicon-th"></span> 
   <span i18n:translate="">Contribution</span> 
   <span class="pull-right badge hidden-xs">${len_contents} 
