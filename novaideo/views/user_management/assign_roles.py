@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -7,14 +7,13 @@
 import colander
 from pyramid.view import view_config
 
-
 from dace.objectofcollaboration.principal.role import DACE_ROLES
-from dace.objectofcollaboration.principal.util import  get_roles, has_role
+from dace.objectofcollaboration.principal.util import get_roles, has_role
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.widget import Select2Widget
-from pontus.schema import Schema 
+from pontus.schema import Schema
 
 from novaideo.content.processes.user_management.behaviors import (
     AssignRoles)
@@ -29,7 +28,7 @@ def roles_choice(node, kw):
     if not has_role(role=('Admin', )) and 'Admin' in roles:
         roles.pop('Admin')
 
-    values = [(key, name) for (key, name) in roles.items() \
+    values = [(key, name) for (key, name) in roles.items()
               if not DACE_ROLES[key].islocal]
     values = sorted(values, key=lambda e: e[0])
     return Select2Widget(values=values, multiple=True)
@@ -38,11 +37,11 @@ def roles_choice(node, kw):
 class RolesSchema(Schema):
 
     roles = colander.SchemaNode(
-               colander.Set(),
-               widget=roles_choice,
-               title =_('Roles'),
-               missing='Member'
-            )
+        colander.Set(),
+        widget=roles_choice,
+        title=_('Roles'),
+        missing='Member'
+    )
 
 
 @view_config(
@@ -59,9 +58,10 @@ class AssignRolesView(FormView):
     name = 'assignroles'
 
     def default_data(self):
-        roles = [r for r in get_roles(self.context) \
+        roles = [r for r in get_roles(self.context)
                  if not getattr(DACE_ROLES.get(r, None), 'islocal', False)]
         return {'roles': roles}
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({AssignRoles:AssignRolesView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {AssignRoles: AssignRolesView})

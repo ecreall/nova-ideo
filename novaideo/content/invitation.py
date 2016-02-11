@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -11,6 +11,7 @@ from zope.interface import implementer
 from substanced.content import content
 from substanced.util import renamer
 
+from dace.objectofcollaboration.principal.util import has_role
 from dace.objectofcollaboration.entity import Entity
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.descriptors import SharedUniqueProperty
@@ -20,13 +21,18 @@ from pontus.core import VisualisableElement
 from .interface import IInvitation
 from .person import PersonSchema
 from novaideo import _
-from novaideo.role import DEFAULT_ROLES
+from novaideo.role import DEFAULT_ROLES, APPLICATION_ROLES
 
 
 @colander.deferred
 def roles_choice(node, kw):
-    roles = sorted(DACE_ROLES.keys())
-    values = [(i, i) for i in roles if not DACE_ROLES[i].islocal]
+    roles = APPLICATION_ROLES.copy()
+    if not has_role(role=('Admin', )) and 'Admin' in roles:
+        roles.pop('Admin')
+
+    values = [(key, name) for (key, name) in roles.items()
+              if not DACE_ROLES[key].islocal]
+    values = sorted(values, key=lambda e: e[0])
     return Select2Widget(values=values, multiple=True)
 
 
@@ -46,12 +52,12 @@ class InvitationSchema(PersonSchema):
         )
 
     ismanager = colander.SchemaNode(
-               colander.Boolean(),
-               widget=deform.widget.CheckboxWidget(),
-               label=_('Is the manager'),
-               title ='',
-               missing=False
-            )
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Is the manager'),
+        title='',
+        missing=False
+    )
 
 
 @content(
