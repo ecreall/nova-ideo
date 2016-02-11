@@ -9,7 +9,7 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.user_management.behaviors import  Deactivate
+from novaideo.content.processes.user_management.behaviors import Deactivate
 from novaideo.content.person import Person
 from novaideo import _
 
@@ -20,15 +20,14 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class DeactivateView(BasicView):
-    title = _('Deactivate the member')
+    title = _('Deactivate the profile')
     name = 'deactivate'
     behaviors = [Deactivate]
     viewid = 'deactivateview'
-
 
     def update(self):
         results = self.execute(None)
         return results[0]
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({Deactivate:DeactivateView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({Deactivate: DeactivateView})
