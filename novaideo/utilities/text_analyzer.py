@@ -504,7 +504,7 @@ class TextAnalyzer(object):
         parser = HTMLParser()
         normalized_space_t1 = prepare_text_spaces(text1)
         normalized_space_t2 = prepare_text_spaces(text2)
-        result = htmldiff.render_html_diff(normalized_space_t1, 
+        result = htmldiff.render_html_diff(normalized_space_t1,
                                            normalized_space_t2)
         soup, result = format_spaces(result)
         soup, result = normalize_diff(soup, diff_id)
@@ -517,7 +517,7 @@ class TextAnalyzer(object):
         """Wrap diff with span tags"""
         soup = None
         if isinstance(diff, BeautifulSoup):
-            soup = diff
+            soup = BeautifulSoup(tag_to_text(diff.body), "lxml")
         else:
             soup = BeautifulSoup(diff, "lxml")
 

@@ -24,7 +24,9 @@ INVITATION_MESSAGE = u"""
 Bonjour,
 
 {user_title} {invitation.last_name} vous êtes invité à rejoindre la plateforme participative {novaideo_title} en tant que {roles}.
+
 Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
+
 """ + PORTAL_SIGNATURE
 
 
@@ -45,6 +47,7 @@ CONFIRMATION_MESSAGE = u"""
 Bienvenue sur la plateforme {novaideo_title}, nous vous confirmons votre inscription à la plateforme participative {novaideo_title}. 
 
 Faites-nous part de vos idées en vous connectant à l'adresse {login_url}.
+
 """ + PORTAL_SIGNATURE
 
 
@@ -75,7 +78,7 @@ AMENDABLE_FIRST_SUBJECT = u"""Début du cycle d'amélioration de la proposition 
 
 
 AMENDABLE_FIRST_MESSAGE = u"""
-BBonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_title} {recipient_last_name},
 
 Vous êtes dorénavant trois participants au groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}, vous pouvez commencer à l'améliorer. 
 
@@ -308,6 +311,7 @@ REFUSE_INVITATION_MESSAGE = u"""
 Bonjour,
 
 Nous vous signalons que {user_title} {user_first_name} {user_last_name} a refusé votre invitation de rejoindre la plateforme {novaideo_title}.
+
 """+ PORTAL_SIGNATURE 
 
 
@@ -318,6 +322,7 @@ ACCEPT_INVITATION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
 {user_title} {user_first_name} {user_last_name} a accepté votre invitation de rejoindre la plateforme {novaideo_title}.
+
 """+ PORTAL_SIGNATURE
 
 
@@ -328,6 +333,7 @@ RESETPW_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
 Vous souhaitez avoir un nouveau votre mot de passe sur la plateforme {novaideo_title}, merci de cliquer sur l'adresse {reseturl} et de saisir votre nouveau mot de passe.
+
 """+ PORTAL_SIGNATURE
 
 
@@ -338,6 +344,7 @@ PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_title} {recipient_last_name},
 
 Vous avez été inscrit à la plateforme participative {novaideo_title}. Vous devez cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
+
 """+ PORTAL_SIGNATURE
 
 

@@ -328,6 +328,9 @@ class AcceptInvitation(InfiniteCardinality):
         if manager:
             mail_template = root.get_mail_template('accept_invitation')
             localizer = request.localizer
+            recipient_title = localizer.translate(
+                _(getattr(manager, 'user_title', '')))
+            recipient_last_name = getattr(manager, 'last_name', '')
             user_title = localizer.translate(
                 _(getattr(person, 'user_title', '')))
             user_first_name = getattr(person, 'first_name', '')
@@ -346,6 +349,8 @@ class AcceptInvitation(InfiniteCardinality):
                 user_title=user_title,
                 user_first_name=user_first_name,
                 user_last_name=user_last_name,
+                recipient_title=recipient_title,
+                recipient_last_name=recipient_last_name,
                 user_url=url,
                 roles=", ".join(roles_translate),
                 novaideo_title=novaideo_title)
@@ -381,10 +386,14 @@ class RefuseInvitation(InfiniteCardinality):
         context.state.append('refused')
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
-        if context.manager:
+        manager = context.manager
+        if manager:
             root = getSite()
             mail_template = root.get_mail_template('refuse_invitation')
             localizer = request.localizer
+            recipient_title = localizer.translate(
+                _(getattr(manager, 'user_title', '')))
+            recipient_last_name = getattr(manager, 'last_name', '')
             user_title = localizer.translate(
                            _(getattr(context, 'user_title', '')))
             user_first_name = getattr(context, 'first_name', '')
@@ -403,6 +412,8 @@ class RefuseInvitation(InfiniteCardinality):
                 user_title=user_title,
                 user_first_name=user_first_name,
                 user_last_name=user_last_name,
+                recipient_title=recipient_title,
+                recipient_last_name=recipient_last_name,
                 invitation_url=url,
                 roles=", ".join(roles_translate),
                 novaideo_title=novaideo_title)

@@ -347,14 +347,17 @@ class Registration(InfiniteCardinality):
         if getattr(preregistration, 'email', ''):
             localizer = request.localizer
             mail_template = root.get_mail_template('preregistration')
+            recipient_title = localizer.translate(
+                _(getattr(preregistration, 'user_title', '')))
+            recipient_last_name = getattr(preregistration, 'last_name', '')
             subject = mail_template['subject'].format(
                 novaideo_title=root.title)
             deadline_str = to_localized_time(
                 deadline_date, request, translate=True)
             message = mail_template['template'].format(
                 preregistration=preregistration,
-                user_title=localizer.translate(
-                    _(getattr(preregistration, 'user_title', ''))),
+                recipient_title=recipient_title,
+                recipient_last_name=recipient_last_name,
                 url=url,
                 deadline_date=deadline_str.lower(),
                 novaideo_title=root.title)
@@ -467,14 +470,17 @@ class Remind(InfiniteCardinality):
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
         mail_template = root.get_mail_template('preregistration')
+        recipient_title = localizer.translate(
+            _(getattr(context, 'user_title', '')))
+        recipient_last_name = getattr(context, 'last_name', '')
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
         message = mail_template['template'].format(
             preregistration=context,
-            user_title=localizer.translate(
-                _(getattr(context, 'user_title', ''))),
+            recipient_title=recipient_title,
+            recipient_last_name=recipient_last_name,
             url=url,
             deadline_date=deadline_str.lower(),
             novaideo_title=root.title)
