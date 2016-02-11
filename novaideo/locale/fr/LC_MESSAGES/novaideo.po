@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-02-11 15:18+0100\n"
+"POT-Creation-Date: 2016-02-11 15:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1322,7 +1322,7 @@ msgstr "Rappeler l'utilisateur"
 #: novaideo/content/processes/user_management/definition.py:68
 #: novaideo/content/processes/user_management/behaviors.py:216
 msgid "Activate the profile"
-msgstr "Activer le profil"
+msgstr "Activer le compte"
 
 #: novaideo/views/user_management/remove_registration.py:49
 #: novaideo/content/processes/user_management/definition.py:135
@@ -1501,6 +1501,18 @@ msgstr "Aucun centre d'intérêt"
 #: novaideo/views/user_management/templates/see_person.pt:30
 msgid "Last connection"
 msgstr "Dernière connexion"
+
+#: novaideo/views/user_management/templates/see_person.pt:40
+msgid "Contribution"
+msgstr "Contribution"
+
+#: novaideo/views/user_management/templates/see_person.pt:42
+msgid "contents"
+msgstr "contenus"
+
+#: novaideo/views/user_management/templates/see_person.pt:43
+msgid "content"
+msgstr "contenu"
 
 #: novaideo/views/user_management/templates/alert_remove_registration.pt:1
 msgid "En cliquant sur Continuer..."
@@ -5216,7 +5228,7 @@ msgstr "Ajouter une nouvelle échéance"
 #~ msgstr "Désactiver le compte"
 
 #~ msgid "Activate the member"
-#~ msgstr "Activer le membre"
+#~ msgstr "Activer le compte"
 
 #~ msgid "Beginning of the proofreading"
 #~ msgstr "Début de la relecture"

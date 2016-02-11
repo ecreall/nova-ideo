@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-02-11 15:18+0100\n"
+"POT-Creation-Date: 2016-02-11 15:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1500,6 +1500,18 @@ msgstr ""
 
 #: ./novaideo/views/user_management/templates/see_person.pt:30
 msgid "Last connection"
+msgstr ""
+
+#: ./novaideo/views/user_management/templates/see_person.pt:40
+msgid "Contribution"
+msgstr ""
+
+#: ./novaideo/views/user_management/templates/see_person.pt:42
+msgid "contents"
+msgstr ""
+
+#: ./novaideo/views/user_management/templates/see_person.pt:43
+msgid "content"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_remove_registration.pt:1
