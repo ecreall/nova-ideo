@@ -25,25 +25,26 @@ from pontus.core import VisualisableElement
 from .behaviors import (
     SendNewsLetter,
     DeactivateUsers,
-    INACTIVITY_DURATION
+    INACTIVITY_DURATION,
+    NEWSLETTER_DURATION
     )
 from novaideo import _
 
 
-NEWSLETTER_DURATION = 30
-
 
 def calculate_next_date_newsletter(process):
     next_date = datetime.timedelta(days=NEWSLETTER_DURATION) + \
-                datetime.datetime.today()
-    return datetime.datetime.combine(next_date,
-                              datetime.time(0, 0, 0, tzinfo=pytz.UTC))
+        datetime.datetime.today()
+    return datetime.datetime.combine(
+        next_date,
+        datetime.time(0, 0, 0, tzinfo=pytz.UTC))
+
 
 def calculate_next_date_block1(process):
     next_date = datetime.timedelta(days=INACTIVITY_DURATION) + \
-                datetime.datetime.today()
-    return datetime.datetime.combine(next_date,
-                              datetime.time(0, 0, 0, tzinfo=pytz.UTC))
+        datetime.datetime.today()
+    return datetime.datetime.combine(
+        next_date, datetime.time(0, 0, 0, tzinfo=pytz.UTC))
 
 
 @process_definition(name='systemprocess',

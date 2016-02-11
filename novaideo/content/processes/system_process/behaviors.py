@@ -33,6 +33,9 @@ from novaideo.utilities.util import to_localized_time
 INACTIVITY_DURATION = 90
 
 
+NEWSLETTER_DURATION = 15
+
+
 def find_users(last_connection_index, current_date, alert):
     alert_date_min = current_date - datetime.timedelta(days=alert[0])
     query = last_connection_index.le(alert_date_min)
@@ -87,39 +90,48 @@ class SendNewsLetter(ElementaryAction):
     mail_template = 'novaideo:views/templates/newsletter_template.pt'
 
     def start(self, context, request, appstruct, **kw):
-        localizer = request.localizer
-        mail_template = {
-            'subject': _('${name}, voici des idées qui pourraient vous intéresser!'),
-            'template': self.mail_template
-        }
-        members = context.news_letter_members
-        for member in [m for m in members if getattr(m, 'email', '')]:
-            name = getattr(
-                member, 'first_name', member.title)
-            subject = localizer.translate(
-                _(mail_template['subject'],
-                  mapping={'name': name}))
-            entities = find_entities(
-                interfaces=[IProposal, Iidea],
-                metadata_filter={
-                    'content_types': ['idea', 'proposal'],
-                    'states': ['published'],
-                    'keywords': getattr(member, 'keywords', [])})
+        root = request.root
+        previous_date = getattr(root, 'newsletter_date', None)
+        now = datetime.datetime.now(tz=pytz.UTC)
+        to_send = previous_date is None or \
+            (previous_date + datetime.timedelta(
+                days=NEWSLETTER_DURATION)) <= now
+        if to_send:
+            localizer = request.localizer
+            mail_template = {
+                'subject': _('${name}, voici des idées qui pourraient vous intéresser!'),
+                'template': self.mail_template
+            }
+            members = context.news_letter_members
+            for member in [m for m in members if getattr(m, 'email', '')]:
+                name = getattr(
+                    member, 'first_name', member.title)
+                subject = localizer.translate(
+                    _(mail_template['subject'],
+                      mapping={'name': name}))
+                entities = find_entities(
+                    interfaces=[IProposal, Iidea],
+                    metadata_filter={
+                        'content_types': ['idea', 'proposal'],
+                        'states': ['published'],
+                        'keywords': getattr(member, 'keywords', [])})
 
-            result = []
-            for obj in entities:
-                result.append(obj)
-                if len(result) == 5:
-                    break
+                result = []
+                for obj in entities:
+                    result.append(obj)
+                    if len(result) == 5:
+                        break
 
-            body = renderers.render(
-                mail_template['template'], {'entities': result,
-                                            'name': name}, request)
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=context.get_site_sender(),
-                html=body)
+                body = renderers.render(
+                    mail_template['template'], {'entities': result,
+                                                'name': name}, request)
+                mailer_send(
+                    subject=subject,
+                    recipients=[member.email],
+                    sender=context.get_site_sender(),
+                    html=body)
+
+            root.newsletter_date = now
 
         return {}
 
