@@ -12,7 +12,6 @@
         <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
         <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
         <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' not in request.content_to_support">soit publiée</span>
-        <span tal:omit-tag="" tal:condition="'idea' in request.content_to_support">soit soumise à appréciation</span>
         <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' in request.content_to_examine">, soit examinée</span> 
         <span i18n:translate="">et une proposition peut être soit privée, soit ouverte à un groupe de travail, soit en cours d'amélioration,</span> 
         <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' not in request.content_to_support">soit publiée</span>
@@ -34,7 +33,6 @@
         <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
         <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
         <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' not in request.content_to_support">soit publiée</span>
-        <span tal:omit-tag="" tal:condition="'idea' in request.content_to_support">soit soumise à appréciation</span>
         <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' in request.content_to_examine">, soit examinée</span> 
         <span i18n:translate="">.
     </p>
