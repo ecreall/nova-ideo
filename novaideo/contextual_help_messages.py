@@ -83,7 +83,14 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   	           'contextual_help_messages/homepage_search.pt', 2),
 	   ],
 
+    (NovaIdeoApplication, 'any', 'analytics'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/analytics.pt', 1)],
 	(NovaIdeoApplication, 'any', 'seemycontents'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/see_my.pt', 1)],
+
+	(NovaIdeoApplication, 'any', 'seealerts'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/see_my.pt', 1)],
 

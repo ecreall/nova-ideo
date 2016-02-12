@@ -21,4 +21,19 @@
           Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions soumises à appréciation dont vous avez l'un des participants sans que ces appréciations soient décomptées de vos sept jetons d'appréciation initiaux. Une fois allouée, ces appréciations ne peuvent plus en revanche être réutilisées pour d'autres propositions.
         </p>
     </tal:block>
+
+    <tal:block tal:condition="request.view_name == 'seealerts'" >
+        <p i18n:translate="">Le picto <span style="color: red" class="icon glyphicon glyphicon-bell"></span> indique les dernières alertes que vous avez reçues.</p>
+        <p i18n:translate="">
+         Vous recevez une alerte :
+         <ul>
+            <li> lorsqu'une idée ou une proposition vient d'être publiée et que l'un des mots clés correspond à vos centres d'intérêt,</li>
+            <li> lorsqu'il se passe quelque chose sur vos idées ou les propositions auxquelles vous contribuez ou vous avez contribué,</li>
+            <li> lorsqu'un membre vous communique une idée ou une proposition,</li>
+            <li> lorsqu'il y a une réponse à l'un de vos commentaires,</li>
+            <li> lorsqu'il se passe quelque chose sur une idée, une proposition, un membre que vous avez mis en favori.</li>
+        </ul>
+        </p>
+    </tal:block>
+
 </div>
