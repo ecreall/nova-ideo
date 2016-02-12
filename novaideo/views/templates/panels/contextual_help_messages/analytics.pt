@@ -1,5 +1,11 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
-	<p i18n:translate="">
-        @TODO
+    <p i18n:translate="">
+        Dans ces vues statistiques, vous pouvez voir la répartition des idées et des propositions selon différents critères (par états, par mots clés, par dates).
+    </p>
+    <p i18n:translate="">
+      Vous pouvez affiner vos sélections d'éléments, en précisant spécifiquement les états, les mots clés, l'auteur et/ou les périodes à prendre en compte. Vous avez en résultat dans la partie du haut, le nombre de contenu correspondant à votre sélection.
+    </p>
+    <p i18n:translate="">
+      Pour rafraîchir les vues, vous devez appuyer sur le bouton "Calculer".
     </p>
 </div>
