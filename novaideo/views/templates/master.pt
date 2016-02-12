@@ -87,7 +87,11 @@
     <script src="${request.static_url('novaideo:static/slick/slick/slick.min.js')}"
         type="text/javascript"></script>
 
+
     <more tal:omit-tag="" metal:define-slot="head-more"></more>
+    <script tal:condition="request.locale_name == 'fr'"
+            src="${request.static_url('deform:static/pickadate/translations/fr_FR.js')}"
+            type="text/javascript"></script>
     <script src="${su('novaideo:static/js/templates.js')}"
           type="text/javascript"></script>
     ${panel('social_share')}
