@@ -34,7 +34,7 @@ RUN addgroup --quiet --gid "1000" "u1000" && \
         --quiet \
         --home "/app" \
         "u1000"
-RUN pip install --no-cache-dir --upgrade pip setuptools==18.3.2 zc.buildout
+RUN pip install zc.buildout==2.5.0
 RUN mkdir -p /app/cache/eggs /app/cache/src
 RUN chown -R u1000:u1000 /app
 USER u1000
