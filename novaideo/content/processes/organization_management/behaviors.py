@@ -25,11 +25,10 @@ from novaideo.core import access_action, serialize_roles
 
 
 def update_manager(organization, managers):
+    old_managers = organization.managers
     managers_toadd = [u for u in managers
-                      if not has_role(user=u,
-                                      role=('OrganizationResponsible',
-                                            organization))]
-    managers_todel = [u for u in organization.managers
+                      if u not in old_managers]
+    managers_todel = [u for u in old_managers
                       if u not in managers]
 
     for manager in managers_todel:
@@ -37,6 +36,10 @@ def update_manager(organization, managers):
                                 organization),))
 
     for manager in managers_toadd:
+        for current_org in manager.managed_organization:
+            revoke_roles(manager, (('OrganizationResponsible',
+                         current_org),))
+
         grant_roles(user=manager,
                     roles=(('OrganizationResponsible',
                             organization),))
@@ -140,8 +143,6 @@ class EditOrganizations(InfiniteCardinality):
         for org_struct in appstruct['organizations']:
             organization = org_struct['_object_data']
             organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
-            managers = org_struct['managers']
-            update_manager(organization, managers)
 
         request.registry.notify(ActivityExecuted(
             self, appstruct['organizations'], get_current()))
@@ -225,8 +226,6 @@ class EditOrganization(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         organization = appstruct['_object_data']
         organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        managers = appstruct['managers']
-        update_manager(organization, managers)
         request.registry.notify(ActivityExecuted(
             self, [organization], get_current()))
         return {}

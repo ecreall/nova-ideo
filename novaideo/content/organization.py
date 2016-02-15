@@ -12,9 +12,11 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.util import get_obj
-from dace.objectofcollaboration.principal.util import get_users_with_role
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedMultipleProperty, CompositeUniqueProperty
+from dace.objectofcollaboration.principal.util import (
+    get_users_with_role, grant_roles, revoke_roles)
+
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
     AjaxSelect2Widget, SimpleMappingWidget, SequenceWidget)
@@ -25,6 +27,44 @@ from novaideo.core_schema import ContactSchema
 from .interface import IOrganization
 from novaideo import _
 from novaideo.content import get_file_widget
+
+
+def managers():
+    """Return a property. The getter of the property returns the
+    ``_tree`` attribute of the instance on which it's defined. The setter
+    of the property calls ``synchronize_tree()``.
+
+      class SomeContentType(Persistent):
+          tree = synchronize_tree()
+    """
+    def _get(self):
+        return get_users_with_role(role=('OrganizationResponsible', self))
+
+    def _set(self, new_managers):
+        old_managers = self.managers
+        managers_toadd = [u for u in new_managers
+                          if u not in old_managers]
+        managers_todel = [u for u in old_managers
+                          if u not in new_managers]
+
+        for manager in managers_todel:
+            revoke_roles(manager, (('OrganizationResponsible',
+                                    self),))
+
+        for manager in managers_toadd:
+            for current_org in manager.managed_organization:
+                revoke_roles(manager, (('OrganizationResponsible',
+                             current_org),))
+
+            grant_roles(user=manager,
+                        roles=(('OrganizationResponsible',
+                                self),))
+
+        for manager in new_managers:
+            if manager not in self.members:
+                self.addtoproperty('members', manager)
+
+    return property(_get, _set)
 
 
 @colander.deferred
@@ -113,13 +153,10 @@ class Organization(VisualisableElement, Entity):
     }
     icon = 'glyphicon glyphicon-home'
     name = renamer()
+    managers = managers()
     members = SharedMultipleProperty('members', 'organization')
     logo = CompositeUniqueProperty('logo')
 
     def __init__(self, **kwargs):
         super(Organization, self).__init__(**kwargs)
         self.set_data(kwargs)
-
-    @property
-    def managers(self):
-        return get_users_with_role(role=('OrganizationResponsible', self))

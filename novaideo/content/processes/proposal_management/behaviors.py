@@ -1416,7 +1416,7 @@ class VotingPublication(ElementaryAction):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            alert = WorkingGroupAlert()
+            alert = WorkingGroupAlert(alert_kind='end_work')
             root.addtoproperty('alerts', alert)
             alert.init_alert(members, [context])
             for member in members:
@@ -1667,7 +1667,7 @@ class AlertEnd(ElementaryAction):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            alert = WorkingGroupAlert(alert_kind='end_work')
+            alert = WorkingGroupAlert(alert_kind='alert_end_work')
             root.addtoproperty('alerts', alert)
             alert.init_alert(members, [context])
             for member in [m for m in members if getattr(m, 'email', '')]:

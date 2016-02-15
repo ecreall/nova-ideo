@@ -27,6 +27,7 @@ from dace.descriptors import (
     CompositeMultipleProperty,
     CompositeUniqueProperty,
     SharedMultipleProperty)
+from dace.objectofcollaboration.principal.util import get_objects_with_role
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
     ImageWidget,
@@ -334,6 +335,10 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     @property
     def is_published(self):
         return 'active' in self.state
+
+    @property
+    def managed_organization(self):
+        return get_objects_with_role(user=self, role='OrganizationResponsible')
 
     def reindex(self):
         super(Person, self).reindex()

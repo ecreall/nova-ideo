@@ -18,6 +18,10 @@
         Le cycle d'amélioration de la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est terminé, vous devez voter si vous voulez continuer à l'améliorer ou la soumettre en l'état aux membres de la plateforme.
     </span>
 
+    <span tal:condition="alert_kind == 'alert_end_work'">
+      Le cycle d'amélioration pour la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> touche pratiquement à sa fin. Vous pouvez encore y apporter des améliorations, avant que le groupe de travail vote pour soumettre la proposition en l'état ou pour recommencer un nouveau cycle d'amélioration.
+    </span>
+
     <span tal:condition="alert_kind == 'new_amendments'">Des amendments pour la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> viennent d'être ajoutés.</span>
     
     <span tal:condition="alert_kind == 'no_amendment'">Le cycle d'amélioration associé à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a fini sans proposition d'amendements.</span>

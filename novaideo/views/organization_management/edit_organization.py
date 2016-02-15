@@ -25,8 +25,7 @@ from novaideo import _
 class EditOrganizationView(FormView):
 
     title = _('Edit organization')
-    schema = select(OrganizationSchema(editable=True,
-                                       omit=['managers']),
+    schema = select(OrganizationSchema(editable=True),
                     ['title',
                      'description',
                      'logo',
