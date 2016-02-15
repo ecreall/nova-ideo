@@ -27,7 +27,8 @@ from dace.descriptors import (
     CompositeMultipleProperty,
     CompositeUniqueProperty,
     SharedMultipleProperty)
-from dace.objectofcollaboration.principal.util import get_objects_with_role
+from dace.objectofcollaboration.principal.util import (
+    get_objects_with_role, has_role, revoke_roles)
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
     ImageWidget,
@@ -357,6 +358,18 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     def get_more_contents_criteria(self):
         "return specific query, filter values"
         return None, None
+
+    def set_organization(self, organization):
+        if organization:
+            current_organization = self.organization
+            if current_organization is not organization:
+                is_manager = has_role(
+                    self, (('AgencyResponsible', current_organization),))
+                if current_organization and is_manager:
+                    revoke_roles(
+                        self, (('AgencyResponsible', current_organization),))
+
+                self.setproperty('organization', organization)
 
 
 @content(
