@@ -1,0 +1,14 @@
+<div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
+	<p i18n:translate="">
+		Vous pouvez en tant que membre de la plateforme soutenir ou vous opposer à une proposition soumise à appréciation.
+	</p>
+	<p i18n:translate="">
+		Si vous changez d'avis, vous pouvez retirer votre jeton de soutien ou d'opposition.
+	</p>
+	<p i18n:translate="">
+		Vous disposez en tout de sept jetons que vous êtes libre d'allouer ou de retirer à n'importe quelles idées publiées ou propositions soumises à appréciation. Si vous ne pouvez plus soutenir ou vous opposer à une idée ou à une opposition, c'est que vous avez déjà utilisé vos sept jetons.
+	</p>
+	<p i18n:translate="">
+		Vous disposez également de jetons supplémentaires pour les idées dont vous avez l'auteur ou les propositions dont vous avez l'un des participants au groupe de travail qui a voté pour soumettre la proposition à l'appréciation des membres de la plateforme. Ces jetons supplémentaires sont destinés uniquement à ces idées et ces propositions.
+	</p>
+</div>

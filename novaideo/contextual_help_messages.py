@@ -143,6 +143,10 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/edit_proposal.pt', 1)],
 
+    (Proposal, 'submitted_support', 'index'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/proposal_submitted_support.pt', 1)],
+
 	(Proposal, 'any', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/proposal_sub_helps.pt', 2)],
