@@ -24,30 +24,6 @@ from ..user_management.behaviors import global_user_processsecurity
 from novaideo.core import access_action, serialize_roles
 
 
-def update_manager(organization, managers):
-    old_managers = organization.managers
-    managers_toadd = [u for u in managers
-                      if u not in old_managers]
-    managers_todel = [u for u in old_managers
-                      if u not in managers]
-
-    for manager in managers_todel:
-        revoke_roles(manager, (('OrganizationResponsible',
-                                organization),))
-
-    for manager in managers_toadd:
-        for current_org in manager.managed_organization:
-            revoke_roles(manager, (('OrganizationResponsible',
-                         current_org),))
-
-        grant_roles(user=manager,
-                    roles=(('OrganizationResponsible',
-                            organization),))
-
-    for manager in managers:
-        if manager not in organization.members:
-            organization.addtoproperty('members', manager)
-
 
 def add_roles_validation(process, context):
     return False#has_role(role=('Moderator',))
