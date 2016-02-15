@@ -9,6 +9,7 @@ from novaideo.content.proposal import Proposal
 from novaideo.content.person import Person
 from novaideo.content.idea import Idea
 from novaideo.content.amendment import Amendment
+from novaideo.content.workspace import Workspace
 
 
 
@@ -130,6 +131,14 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/proposal_improve.pt', 1)],
 
+	(Proposal, 'amendable', 'improveproposalcorrection'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/proposal_improve.pt', 1)],
+
+	(Proposal, 'amendable', 'improveproposalwiki'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/proposal_improve.pt', 1)],
+
 	(Proposal, 'any', 'editproposal'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/edit_proposal.pt', 1)],
@@ -153,6 +162,14 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   	     'contextual_help_messages/proposal_proofreading_started_owner.pt', 1),
 	   (proposal_proofreading_started, 'novaideo:views/templates/panels/'
 	   	     'contextual_help_messages/proposal_proofreading_started.pt', 1)],
+
+    (Workspace, 'any', 'addfilesws'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/proposal_workspace_addfiles.pt', 1)],
+
+	(Workspace, 'any', 'index'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/proposal_workspace_index.pt', 1)],
 
 	(Amendment, 'draft', 'index'): [
 	   (amendment_draft, 'novaideo:views/templates/panels/'

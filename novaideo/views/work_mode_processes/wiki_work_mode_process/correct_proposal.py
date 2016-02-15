@@ -202,13 +202,13 @@ class CorrectProposalFormView(FormView):
 
 
 @view_config(
-    name='correctproposalwiki',
+    name='improveproposalwiki',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CorrectProposalView(MultipleView):
     title = _('Improve the proposal')
-    name = 'correctproposalwiki'
+    name = 'improveproposalwiki'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/ideas_management.js']}

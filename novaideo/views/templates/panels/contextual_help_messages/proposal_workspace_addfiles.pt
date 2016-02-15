@@ -1,0 +1,4 @@
+<div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
+	<p i18n:translate="">Vous pouvez ajouter tout type de fichier dans un espace de travail.</p>
+	<p i18n:translate="">Ces fichiers ne seront accessibles qu'aux participants du groupe de travail.</p>
+</div>

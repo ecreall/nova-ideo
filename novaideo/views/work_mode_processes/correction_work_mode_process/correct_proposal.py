@@ -20,15 +20,15 @@ from novaideo import _
 
 
 @view_config(
-    name='correctproposal',
+    name='improveproposalcorrection',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CorrectProposalView(FormView):
     title = _('Improve the proposal')
-    name = 'correctproposal'
+    name = 'improveproposalcorrection'
     behaviors = [CorrectProposal, Cancel]
-    viewid = 'correctproposal'
+    viewid = 'improveproposalcorrection'
     formid = 'formcorrectproposal'
     schema = select(CorrectionSchema(factory=Correction,
                                      editable=True,

@@ -1,5 +1,20 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
+  <div tal:omit-tag="" tal:condition="request.view_name == 'improveproposal'">
 	<p i18n:translate="">Vous avez décidé d'améliorer la proposition.</p>
-
 	<p i18n:translate="">Vos améliorations sont à effectuer directement dans le texte de la proposition.</p>
+  </div>
+
+  <div tal:omit-tag="" tal:condition="request.view_name == 'improveproposalwiki'">
+	<p i18n:translate="">Vous avez décidé d'améliorer la proposition.</p>
+	<p i18n:translate="">Vos améliorations sont à effectuer directement dans le texte de la proposition.</p>
+  </div>
+
+  <div tal:omit-tag="" tal:condition="request.view_name == 'improveproposalcorrection'">
+	<p i18n:translate="">Vous êtes en train d'améliorer la proposition.</p>
+	<p i18n:translate="">
+	Vous pouvez directement faire vos suggestion d'amélioration dans le titre, le résumé ou le texte de la proposition.
+	</p>
+	<p i18n:translate="">
+	Pour que vos suggestions d'amélioration soient retenues, il faut qu'un autre participant du groupe de travail les accepte. Il se peut également qu'il les refuse, dans quel cas, elles n'apparaîtront pas dans la proposition.</p>
+  </div>
 </div>
