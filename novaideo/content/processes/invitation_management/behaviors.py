@@ -237,7 +237,7 @@ class EditInvitations(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-bullhorn'
     style_order = 7
     submission_title = _('Save')
-    isSequential = True
+    isSequential = False
     context = INovaIdeoApplication
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation

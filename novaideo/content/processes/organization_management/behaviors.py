@@ -60,7 +60,7 @@ class AddOrganizations(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-home'
     style_order = 1
     submission_title = _('Save')
-    isSequential = True
+    isSequential = False
     context = INovaIdeoApplication
     roles_validation = add_roles_validation
     processsecurity_validation = add_processsecurity_validation
@@ -96,7 +96,7 @@ class CreatOrganizations(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-home'
     style_order = 2
     submission_title = _('Save')
-    isSequential = True
+    isSequential = False
     context = INovaIdeoApplication
     roles_validation = creatorg_roles_validation
     processsecurity_validation = creatorg_processsecurity_validation
@@ -131,7 +131,7 @@ class EditOrganizations(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-home'
     style_order = 4
     submission_title = _('Save')
-    isSequential = True
+    isSequential = False
     context = INovaIdeoApplication
     roles_validation = edit_roles_validation
     processsecurity_validation = edit_processsecurity_validation
