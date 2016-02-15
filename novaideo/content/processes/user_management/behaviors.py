@@ -183,7 +183,7 @@ class Deactivate(InfiniteCardinality):
         context.reindex()
         alert = ContentAlert(alert_kind='user_deactivated')
         request.root.addtoproperty('alerts', alert)
-        pref_author = get_users_by_preferences(context)
+        pref_author = list(get_users_by_preferences(context))
         alert.init_alert(pref_author, [context])
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))

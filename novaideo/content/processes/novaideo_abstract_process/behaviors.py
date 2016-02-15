@@ -50,6 +50,8 @@ class SelectEntity(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         user.addtoproperty('selections', context)
+        user.reindex()
+        context.reindex()
         return {}
 
     def redirect(self, context, request, **kw):
@@ -83,6 +85,8 @@ class DeselectEntity(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         user.delfromproperty('selections', context)
+        user.reindex()
+        context.reindex()
         return {}
 
     def redirect(self, context, request, **kw):
