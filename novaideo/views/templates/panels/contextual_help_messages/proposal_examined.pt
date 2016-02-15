@@ -1,0 +1,43 @@
+<div class="contextual-help-item principal-help"  i18n:domain="novaideo">
+    <p i18n:translate="">
+        Les propositions examinées sont visibles par l'ensemble des utilisateurs.
+    </p>
+    <span tal:omit-tag="" tal:condition="'favorable' in context.state">
+        <p i18n:translate="" >
+            Le Comité d'examen a émis un avis favorable sur cette proposition, ce qui signifie qu'il est prêt à la mettre en oeuvre.
+        </p>
+        <p i18n:translate="" >
+            En cliquant sur le picto "Feu vert", vous pouvez avoir des explications supplémentaires concernant l'avis du Comité d'examen.
+        </p>
+        <p i18n:translate="">
+            Les propositions examinées peuvent également être dupliquées pour qu'une copie soit travaillée différemment et vous pouvez les ajouter à vos favoris.
+        </p>
+    </span>
+    <span tal:omit-tag="" tal:condition="'unfavorable' in context.state">
+        <p i18n:translate="" >
+            Le Comité d'examen a émis un avis défavorable sur cette proposition, ce qui signifie qu'il ne l'a pas retenue.
+        </p>
+        <p i18n:translate="" >
+            En cliquant sur le picto "Feu rouge", vous pouvez avoir des explications supplémentaires concernant l'avis du Comité d'examen.
+        </p>
+        <p i18n:translate="">
+            Même les propositions examinées défavorablement peuvent être dupliquées pour qu'une copie soit travaillée différemment et vous pouvez les ajouter à vos favoris.
+        </p>
+    </span>
+    <span tal:omit-tag="" tal:condition="'to_study' in context.state">
+        <p i18n:translate="" >     
+          Le Comité d'examen a émis un avis "À retravailler" sur cette proposition, ce qui signifie que pour être retenue, elle devra être retravaillée auparavant.
+        </p>
+        <p i18n:translate="" >
+            En cliquant sur le picto "Feu orange", vous pouvez avoir des explications supplémentaires concernant l'avis du Comité d'examen.
+        </p>
+        <p i18n:translate="">
+            Pour être retravaillée, la proposition doit être dupliquée, la proposition initiale ne pouvant être modifiée.
+        </p>
+    </span>
+    <p i18n:translate="">
+        Elles peuvent enfin être communiquées à des tiers, ajoutées à vos favoris et discutées entre membres.
+    </p>
+</div>
+
+

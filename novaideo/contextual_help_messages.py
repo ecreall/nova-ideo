@@ -159,6 +159,14 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   (None, 'novaideo:views/templates/panels/'
 	   	      'contextual_help_messages/proposal_first_vote.pt', 1)],
 
+	(Proposal, 'any', 'makeopinionform'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/proposal_makeopinion.pt', 1)],
+
+	(Proposal, 'examined', 'index'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/proposal_examined.pt', 1)],
+
 	(Proposal, 'proofreading', 'index'): [
 	   (proposal_proofreading_not_started, 'novaideo:views/templates/panels/'
 	   	     'contextual_help_messages/proposal_proofreading_not_started.pt', 1),
@@ -229,6 +237,9 @@ CONTEXTUAL_HELP_MESSAGES = {
 	(Idea, 'any', 'publishasproposal'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/transform_idea.pt', 1)],
+	(Idea, 'any', 'makeopinionformidea'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	                    'contextual_help_messages/idea_makeopinion.pt', 1)],
 
 }
 

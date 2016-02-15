@@ -1,0 +1,14 @@
+<div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
+	<p i18n:translate="">
+		En tant qu'Examinateur, vous pouvez donner votre avis sur une proposition.
+	</p>
+	<p i18n:translate="">
+		Cet avis peut être soit favorable, soit défavorable, soit "À retravailler".
+	</p>
+	<p i18n:translate="">
+		En complément de cet avis, vous devez évaluer la proposition selon trois critères (« Impact Client et/ou Interne », « Faisabilité » et « Reproductibilité Occurrence ») et en donner une explication.
+	</p>
+	<p i18n:translate="">
+		Un avis favorable signifie que le Comité d'examen est prêt à la mettre en oeuvre, "À retravailler" qu'elle est intéressante, mais qu'elle demande avant à être retravaillée, et défavorable qu'elle n'est finalement pas retenue.
+	</p>
+</div>
