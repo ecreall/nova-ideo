@@ -20,12 +20,13 @@ from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication
 from novaideo.content.proposal import Proposal
 from novaideo import _
-from ..user_management.behaviors import global_user_processsecurity
+from ..user_management.behaviors import (
+    global_user_processsecurity, access_user_processsecurity)
 from novaideo.core import access_action
 
 
 def search_processsecurity_validation(process, context):
-    return True
+    return access_user_processsecurity(process, context)
 
 
 @access_action()

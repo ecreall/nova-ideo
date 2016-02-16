@@ -160,6 +160,10 @@ def get_content_types_states(content_types, flatten=False, request=None):
             results['idea'].pop('to_study')
 
     if 'proposal' in results:
+        modes = request.root.get_work_modes()
+        if 'amendment' not in modes:
+            results['proposal'].pop('votes for amendments')
+
         if 'proposal' not in request.content_to_examine:
             results['proposal'].pop('examined')
             results['proposal'].pop('favorable')
