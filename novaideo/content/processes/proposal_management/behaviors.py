@@ -499,7 +499,13 @@ class PublishProposal(InfiniteCardinality):
         working_group = context.working_group
         context.state.remove('draft')
         if appstruct.get('vote', False):
-            context.state = PersistentList(['submitted_support', 'published'])
+            if 'proposal' in request.content_to_support:
+                context.state = PersistentList(
+                    ['submitted_support', 'published'])
+            else:
+                context.state = PersistentList(
+                    ['published', 'submitted_support'])
+
             working_group.state = PersistentList(['archived'])
         else:
             default_mode = root.get_default_work_mode()
@@ -1587,7 +1593,11 @@ class SubmitProposal(ElementaryAction):
         root = getSite()
         localizer = request.localizer
         working_group = context.working_group
-        context.state = PersistentList(['submitted_support', 'published'])
+        if 'proposal' in request.content_to_support:
+            context.state = PersistentList(['submitted_support', 'published'])
+        else:
+            context.state = PersistentList(['published', 'submitted_support'])
+
         working_group.state = PersistentList(['archived'])
         members = working_group.members
         for member in members:

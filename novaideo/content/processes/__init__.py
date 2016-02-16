@@ -44,6 +44,7 @@ STATES_PARTICIPANT_MAPPING = {
     },
     'idea': {
 	    'to work': _('To work'),
+        'submitted_support': _('Submitted for support'),
 	    'submitted': _('Submitted for moderation'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
@@ -101,6 +102,7 @@ STATES_MEMBER_MAPPING = {
     },
     'idea': {
 	    'to work': _('To work'),
+        'submitted_support': _('Submitted for support'),
 	    'submitted': _('Submitted for moderation'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
@@ -159,6 +161,9 @@ def get_content_types_states(content_types, flatten=False, request=None):
             results['idea'].pop('unfavorable')
             results['idea'].pop('to_study')
 
+        if 'idea' not in request.content_to_support:
+            results['idea'].pop('submitted_support')
+
     if 'proposal' in results:
         modes = request.root.get_work_modes()
         if 'amendment' not in modes:
@@ -169,6 +174,9 @@ def get_content_types_states(content_types, flatten=False, request=None):
             results['proposal'].pop('favorable')
             results['proposal'].pop('unfavorable')
             results['proposal'].pop('to_study')
+
+        if 'proposal' not in request.content_to_support:
+            results['proposal'].pop('submitted_support')
 
     if flatten:
         return get_flattened_mapping(results)

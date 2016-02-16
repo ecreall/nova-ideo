@@ -118,6 +118,27 @@ def evolve_wg(root, registry):
     log.info('Working groups evolved.')
 
 
+def evolve_states_ideas(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import Iidea
+    from persistent.list import PersistentList
+
+    contents = find_entities(interfaces=[Iidea],
+                             metadata_filter={'states': ['published']})
+    len_entities = str(len(contents))
+    idea_to_support = 'idea' in getattr(root, 'content_to_support', [])
+    sates = ['published', 'submitted_support']
+    if idea_to_support:
+        sates = ['submitted_support', 'published']
+
+    for index, idea in enumerate(contents):
+        idea.state = PersistentList(sates)
+        idea.reindex()
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Ideas states evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -130,6 +151,7 @@ def main(global_config, **settings):
     config.add_request_method(searchable_contents, reify=True)
     config.add_request_method(analytics_default_content_types, reify=True)
     config.add_evolution_step(evolve_wg)
+    config.add_evolution_step(evolve_states_ideas)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
