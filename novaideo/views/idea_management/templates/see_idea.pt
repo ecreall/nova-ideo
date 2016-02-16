@@ -25,7 +25,6 @@
    </small>
   </div>
 </div>
-previous version of the current version of the idea
 <div id="contenttext" class="content-text"  i18n:domain="novaideo">
   <div>${idea.text}</div>
       <div class="keywords-result">
