@@ -319,6 +319,20 @@ def default_content_type(node, kw):
     return 'proposal'
 
 
+@colander.deferred
+def default_states(node, kw):
+    request = node.bindings['request']
+    to_exclude = ['draft', 'published', 'archived',
+                  'favorable', 'to_study', 'unfavorable',
+                  'to work']
+    default = get_content_types_states(['proposal'])['proposal']
+    if request.is_idea_box:
+        default = get_content_types_states(['idea'])['idea']
+
+    [default.pop(s) for s in to_exclude if s in default]
+    return default
+
+
 class ContentsByStatesSchema(ContentsByKeywordsSchema):
 
     content_types = colander.SchemaNode(
@@ -328,6 +342,15 @@ class ContentsByStatesSchema(ContentsByKeywordsSchema):
         description=_('You can select the content type to be displayed.'),
         default=default_content_type,
         missing=default_content_type
+    )
+
+    states = colander.SchemaNode(
+        colander.Set(),
+        widget=states_choices,
+        title=_('States'),
+        description=_('You can select the states of the contents to be displayed.'),
+        default=default_states,
+        missing=default_states
     )
 
 
