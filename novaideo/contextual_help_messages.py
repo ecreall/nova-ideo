@@ -12,7 +12,6 @@ from novaideo.content.amendment import Amendment
 from novaideo.content.workspace import Workspace
 
 
-
 def homepage_search(context, user):
     request = get_current_request()
     return not isinstance(request.POST, NoVars) or request.GET
@@ -118,6 +117,10 @@ CONTEXTUAL_HELP_MESSAGES = {
 	(NovaIdeoApplication, 'any', 'proposalstoexamine'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	      'contextual_help_messages/proposals_to_examine.pt', 1)],
+
+	(NovaIdeoApplication, 'any', 'advanced_search'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/advanced_search.pt', 1)],
 
 	(Proposal, 'draft', 'index'): [
 	   (None, 'novaideo:views/templates/panels/'

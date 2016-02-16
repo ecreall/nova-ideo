@@ -1,0 +1,19 @@
+<div class="contextual-help-item principal-help" i18n:domain="novaideo">
+	<p i18n:translate="">
+	   La recherche avancée permet de faire des recherches sur l'ensemble des contenus de la plateforme en appliquant des filtres.
+	</p>
+	<p i18n:translate="">
+		Ces filtres peuvent porter sur :
+		<ul>
+			<li tal:condition="request.is_idea_box"> les métadonnées des contenus, c'est-à-dire les types de contenu de la plateforme (idée, personne), les mots clés, les états dans lesquels ces différents contenus peuvent se trouver,</li>
+			<li tal:condition="not request.is_idea_box"> les métadonnées des contenus, c'est-à-dire les types de contenu de la plateforme (idée, proposition, personne), les mots clés, les états dans lesquels ces différents contenus peuvent se trouver,</li>
+			<li> une période entre deux dates pendant laquelle les contenus ont été créés,</li>
+			<li> les contributeurs, c'est-à-dire un ou des auteurs en particulier,</li>
+			<li> un ou des textes en particulier présents dans les éléments trouvés.</li>
+	   </ul>
+	</p>
+
+	<p i18n:translate="">
+	Ces filtres peuvent également être utilisés de manière inverse, c'est-à-dire en excluant des résultats, ceux qui correspondent aux filtres sélectionnés.
+	</p>
+</div>
