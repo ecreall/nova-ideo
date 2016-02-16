@@ -83,12 +83,18 @@ def analytics_default_content_types(request):
 
 def searchable_contents(request):
     from novaideo.core import SEARCHABLE_CONTENTS
+    searchable_contents = dict(SEARCHABLE_CONTENTS)
+    modes = request.root.get_work_modes()
+    searchable_contents.pop('webadvertising')
+    searchable_contents.pop('file')
+    if 'amendment' not in modes:
+        searchable_contents.pop('amendment')
+
     if getattr(request, 'is_idea_box', False):
-        searchable_contents = dict(SEARCHABLE_CONTENTS)
         searchable_contents.pop('proposal')
         return searchable_contents
 
-    return SEARCHABLE_CONTENTS
+    return searchable_contents
 
 
 def evolve_wg(root, registry):
