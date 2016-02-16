@@ -242,13 +242,13 @@ def created_date_query(node, **args):
     if created_after:
         created_after = datetime.datetime.combine(
             created_after,
-            datetime.datetime.min.time())
+            datetime.datetime.min.time()).replace(tzinfo=pytz.UTC)
         query = created_at_index.gt(created_after)
 
     if created_before:
         created_before = datetime.datetime.combine(
             created_before,
-            datetime.datetime.min.time())
+            datetime.datetime.min.time()).replace(tzinfo=pytz.UTC)
         if query is None:
             query = created_at_index.lt(created_before)
         else:
@@ -661,17 +661,20 @@ def states_choices(node, kw):
     request = node.bindings['request']
     localizer = request.localizer
     analyzed_data = node.bindings.get('analyzed_data', {})
+    searchable_contents = core.get_searchable_content(request)
+    flattened_states = get_content_types_states(
+        searchable_contents, True, request)
     values = []
     if 'states' in analyzed_data:
         values = [(state, '{} ({})'.format(
             ', '.join([localizer.translate(s)
-                       for s in FLATTENED_STATES_MEMBER_MAPPING[state]]),
+                       for s in flattened_states[state]]),
             str(analyzed_data['states'].get(state, 0))))
             for state in sorted(analyzed_data['states'].keys())]
     else:
         values = [(k, ', '.join([localizer.translate(s)
-                       for s in FLATTENED_STATES_MEMBER_MAPPING[k]]))
-                  for k in sorted(FLATTENED_STATES_MEMBER_MAPPING.keys())]
+                  for s in flattened_states[k]]))
+                  for k in sorted(flattened_states.keys())]
 
     return Select2Widget(values=values, multiple=True)
 

@@ -4,7 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 from webob.multidict import MultiDict
-from pyramid.threadlocal import get_current_registry
+from pyramid.threadlocal import get_current_registry, get_current_request
 
 from dace.objectofcollaboration.principal.util import has_role
 
@@ -141,10 +141,30 @@ FLATTENED_STATES_PARTICIPANT_MAPPING = get_flattened_mapping(
     STATES_PARTICIPANT_MAPPING)
 
 
-def get_content_types_states(content_types, flatten=False):
+def get_content_types_states(content_types, flatten=False, request=None):
+    if request is None:
+        request = get_current_request()
+
     results = {c: dict(STATES_PARTICIPANT_MAPPING.get(
         c, STATES_PARTICIPANT_MAPPING.get('default')))
         for c in content_types}
+
+    if 'idea' in results:
+        if not request.moderate_ideas:
+            results['idea'].pop('submitted')
+
+        if 'idea' not in request.content_to_examine:
+            results['idea'].pop('examined')
+            results['idea'].pop('favorable')
+            results['idea'].pop('unfavorable')
+            results['idea'].pop('to_study')
+
+    if 'proposal' in results:
+        if 'proposal' not in request.content_to_examine:
+            results['proposal'].pop('examined')
+            results['proposal'].pop('favorable')
+            results['proposal'].pop('unfavorable')
+            results['proposal'].pop('to_study')
 
     if flatten:
         return get_flattened_mapping(results)
