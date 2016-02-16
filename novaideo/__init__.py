@@ -132,8 +132,10 @@ def evolve_states_ideas(root, registry):
         sates = ['submitted_support', 'published']
 
     for index, idea in enumerate(contents):
-        idea.state = PersistentList(sates)
-        idea.reindex()
+        if 'examined' not in idea.state:
+            idea.state = PersistentList(sates)
+            idea.reindex()
+
         log.info(str(index) + "/" + len_entities)
 
     log.info('Ideas states evolved.')
