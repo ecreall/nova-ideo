@@ -1,7 +1,7 @@
 FROM python:3.4
 MAINTAINER Vincent Fretin <vincentfretin@ecreall.com>
 
-ARG userid=1000
+ENV userid=1000
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y varnish && \
