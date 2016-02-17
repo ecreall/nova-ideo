@@ -1,6 +1,26 @@
 FROM python:3.4
 MAINTAINER Vincent Fretin <vincentfretin@ecreall.com>
 
+ARG userid=1000
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y varnish && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN addgroup --quiet --gid $userid "u1000" && \
+    adduser \
+        --shell /bin/bash \
+        --disabled-password \
+        --force-badname \
+        --no-create-home \
+        --uid $userid \
+        --gid $userid \
+        --gecos '' \
+        --quiet \
+        --home "/app" \
+        "u1000"
+RUN pip install zc.buildout==2.5.0
+
 # grab gosu for easy step-down from root
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
 RUN arch="$(dpkg --print-architecture)" \
@@ -17,24 +37,6 @@ RUN test -d /app/cache/eggs && cp -rf /app/cache/eggs /app/eggs || exit 0
 RUN test -d /app/cache/src && cp -rf /app/cache/src /app/src || exit 0
 COPY start.bash /start
 RUN chmod +x /start /app/copy_to_cache_and_start.sh
-
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y varnish && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN addgroup --quiet --gid "1000" "u1000" && \
-    adduser \
-        --shell /bin/bash \
-        --disabled-password \
-        --force-badname \
-        --no-create-home \
-        --uid "1000" \
-        --gid "1000" \
-        --gecos '' \
-        --quiet \
-        --home "/app" \
-        "u1000"
-RUN pip install zc.buildout==2.5.0
 RUN mkdir -p /app/cache/eggs /app/cache/src
 RUN chown -R u1000:u1000 /app
 USER u1000
