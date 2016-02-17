@@ -30,8 +30,18 @@
       </ol>
      </div>
   </div>
+  <nav tal:condition="corrections" class="correction-navbar navbar navbar-inverse"  i18n:domain="novaideo">
+  <ul class="nav navbar-nav correction-nav-actions"
+      tal:define="correction corrections[-1]"
+      data-url="${request.resource_url(correction, '@@correctallitems')}">
+        <li class="active"><a id="see-all" title="Display all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Display</span></a></li>
+        <li><a id="hide-all" title="Hide all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-close"></span> <span i18n:translate="">Hide</span></a></li>
+        <li><a id="accept-all" title="Accept all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-ok"></span> <span i18n:translate="">Accept all</span></a></li>
+        <li><a id="refuse-all" title="Reject all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-remove"></span> <span i18n:translate="">Reject all</span></a></li>
+  </ul>
+</nav>
   <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
-  <h3 class="content-title"><span class="icon novaideo-icon icon-proposal"></span> <span class="correction-container-title">${structure:title}</span></h3>
+  <h3 class="content-title"><span class="icon novaideo-icon icon-proposal"></span> <span class="correction-container correction-container-title">${structure:title}</span></h3>
   <div class="object-description" 
     tal:define="author proposal.author;
                 original proposal.originalentity;
@@ -48,7 +58,7 @@
 <div class="well object-well proposal-well"  i18n:domain="novaideo">
     <dl >
         <dt><span class="glyphicon glyphicon-compressed"></span> <span i18n:translate="">Abstract</span></dt>
-	<dd class="content-description correction-container-description">${structure:description}</dd>
+	<dd class="content-description correction-container correction-container-description">${structure:description}</dd>
       <dt tal:condition="proposal.keywords">
         <span class="glyphicon glyphicon-tags"></span> 
         <span i18n:translate="">Keywords</span>
@@ -100,17 +110,7 @@
       </a>
     </div>
 </div>
-<nav tal:condition="corrections" class="correction-navbar navbar navbar-inverse"  i18n:domain="novaideo">
-  <ul class="nav navbar-nav correction-text-actions"
-      tal:define="correction corrections[-1]"
-      data-url="${request.resource_url(correction, '@@correctallitems')}">
-        <li class="active"><a id="see-all" title="Display all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Display</span></a></li>
-        <li><a id="hide-all" title="Hide all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-close"></span> <span i18n:translate="">Hide</span></a></li>
-        <li><a id="accept-all" title="Accept all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-ok"></span> <span i18n:translate="">Accept all</span></a></li>
-        <li><a id="refuse-all" title="Reject all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-remove"></span> <span i18n:translate="">Reject all</span></a></li>
-  </ul>
-</nav>
-<div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} content-text correction-container-text">
+<div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} content-text correction-container correction-container-text">
   ${structure:text}
 </div>
 

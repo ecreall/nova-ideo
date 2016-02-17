@@ -147,35 +147,36 @@ def get_content_types_states(content_types, flatten=False, request=None):
     if request is None:
         request = get_current_request()
 
+    root = request.root
     results = {c: dict(STATES_PARTICIPANT_MAPPING.get(
         c, STATES_PARTICIPANT_MAPPING.get('default')))
         for c in content_types}
 
     if 'idea' in results:
-        if not request.moderate_ideas:
+        if not root.moderate_ideas:
             results['idea'].pop('submitted')
 
-        if 'idea' not in request.content_to_examine:
+        if 'idea' not in root.content_to_examine:
             results['idea'].pop('examined')
             results['idea'].pop('favorable')
             results['idea'].pop('unfavorable')
             results['idea'].pop('to_study')
 
-        if 'idea' not in request.content_to_support:
+        if 'idea' not in root.content_to_support:
             results['idea'].pop('submitted_support')
 
     if 'proposal' in results:
-        modes = request.root.get_work_modes()
+        modes = root.get_work_modes()
         if 'amendment' not in modes:
             results['proposal'].pop('votes for amendments')
 
-        if 'proposal' not in request.content_to_examine:
+        if 'proposal' not in root.content_to_examine:
             results['proposal'].pop('examined')
             results['proposal'].pop('favorable')
             results['proposal'].pop('unfavorable')
             results['proposal'].pop('to_study')
 
-        if 'proposal' not in request.content_to_support:
+        if 'proposal' not in root.content_to_support:
             results['proposal'].pop('submitted_support')
 
     if flatten:

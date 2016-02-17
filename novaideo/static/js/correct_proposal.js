@@ -32,71 +32,52 @@ function correct_handler(event){
    }
 
 function see_all(){
-  $('.correction-container-text del').removeClass('hide-correction');
-  $('.correction-container-text ins').removeClass('hide-correction');
-  $('.correction-container-text #correction_actions').removeClass('hide-correction');
-  $('.correction-container-text #correction').removeClass('hide-correction');
-  $('.correction-text-actions li').removeClass('active');
+  $('.correction-container del').removeClass('hide-correction');
+  $('.correction-container ins').removeClass('hide-correction');
+  $('.correction-container #correction_actions').removeClass('hide-correction');
+  $('.correction-container #correction').removeClass('hide-correction');
+  $('.correction-nav-actions li').removeClass('active');
   $($(this).parents('li').first()).addClass('active');
 }
 
 function hide_all(){
-  $('.correction-container-text del').addClass('hide-correction');
-  $('.correction-container-text ins').addClass('hide-correction');
-  $('.correction-container-text #correction_actions').addClass('hide-correction');
-  $('.correction-container-text #correction').addClass('hide-correction');
-  $('.correction-text-actions li').removeClass('active');
+  $('.correction-container del').addClass('hide-correction');
+  $('.correction-container ins').addClass('hide-correction');
+  $('.correction-container #correction_actions').addClass('hide-correction');
+  $('.correction-container #correction').addClass('hide-correction');
+  $('.correction-nav-actions li').removeClass('active');
   $($(this).parents('li').first()).addClass('active');
 }
 
-function correct_all_action(element, vote, correction_attr){
-    var url = $(element.parents('ul.correction-text-actions').first()).data('url');
-    var target = $($('.correction-container-'+correction_attr).first());
+
+function correct_all_action(element, vote){
+    var url = $(element.parents('ul.correction-nav-actions').first()).data('url');
     dict_post = {};
     dict_post['vote'] = vote;
-    dict_post['content'] = correction_attr;
     $.get(url, dict_post, function(data) {
-      if (data){
-        var content = $(data['body']).find('#correction_'+correction_attr);
-        if (content){
-             $(target).html($(content).html());
-             $('.correction-navbar').css('display', 'none');
-             var corrections = $(target).find('.correction-action');
-             if (corrections.length>0){
-                 corrections.on('click', correct_handler)
-             }else{
-                 location.reload();
-             }
-        }else{
-           location.reload();
-           return false
-         };
-      }else{
-           location.reload();
-           return false
-         };
+      location.reload();
       });
 }
 
 function accept_all(){
-    correct_all_action($(this), true, 'text')
+    correct_all_action($(this), true);
 }
 
 function refuse_all(){
-    correct_all_action($(this), false, 'text')
+    correct_all_action($(this), false);
 }
 
 function init_correction_navbar(){
-  $('.correction-navbar .correction-text-actions #see-all').on('click', see_all);
-  $('.correction-navbar .correction-text-actions #hide-all').on('click', hide_all);
+  $('.correction-navbar .correction-nav-actions #see-all').on('click', see_all);
+  $('.correction-navbar .correction-nav-actions #hide-all').on('click', hide_all);
   
-  var actions = $('.correction-container-text #correction_actions');
+  var actions = $('.correction-container #correction_actions');
   if (actions.length == 0){
-      $('.correction-navbar .correction-text-actions #accept-all').remove();
-      $('.correction-navbar .correction-text-actions #refuse-all').remove();
+      $('.correction-navbar .correction-nav-actions #accept-all').remove();
+      $('.correction-navbar .correction-nav-actions #refuse-all').remove();
   }else{
-    $('.correction-navbar .correction-text-actions #accept-all').on('click', accept_all);
-    $('.correction-navbar .correction-text-actions #refuse-all').on('click', refuse_all);
+    $('.correction-navbar .correction-nav-actions #accept-all').on('click', accept_all);
+    $('.correction-navbar .correction-nav-actions #refuse-all').on('click', refuse_all);
    }
 }
 

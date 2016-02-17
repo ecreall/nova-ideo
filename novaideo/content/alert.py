@@ -76,7 +76,7 @@ class Alert(VisualisableElement, Entity):
             self.addtoproperty('subjects', subject)
 
     def subscribe(self, users):
-        if not isinstance(users, (list, tuple)):
+        if not isinstance(users, (list, tuple, set)):
             users = [users]
 
         for user in users:

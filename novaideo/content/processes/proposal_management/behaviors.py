@@ -442,7 +442,7 @@ class DeleteProposal(InfiniteCardinality):
                         recipient_last_name=getattr(member, 'last_name', ''),
                         subject_title=context.title,
                         explanation=explanation,
-                        novaideo_title=request.root.title
+                        novaideo_title=root.title
                     )
                     mailer_send(
                         subject=subject,
@@ -499,7 +499,7 @@ class PublishProposal(InfiniteCardinality):
         working_group = context.working_group
         context.state.remove('draft')
         if appstruct.get('vote', False):
-            if 'proposal' in request.content_to_support:
+            if 'proposal' in root.content_to_support:
                 context.state = PersistentList(
                     ['submitted_support', 'published'])
             else:
@@ -540,8 +540,8 @@ class PublishProposal(InfiniteCardinality):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.init_published_at()
         not_published_ideas = []
-        if not request.moderate_ideas and\
-           'idea' not in request.content_to_examine:
+        if not root.moderate_ideas and\
+           'idea' not in root.content_to_examine:
             not_published_ideas = [i for i in context.related_ideas.keys()
                                    if 'published' not in i.state]
             publish_ideas(not_published_ideas, request)
@@ -795,6 +795,7 @@ class MakeOpinion(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         appstruct.pop('_csrf_token_')
         context.opinion = PersistentDict(appstruct)
+        old_sate = context.state[0]
         context.state = PersistentList(
             ['examined', context.opinion['opinion'], 'published'])
         context.init_examined_at()
@@ -840,7 +841,7 @@ class MakeOpinion(InfiniteCardinality):
         request.registry.notify(ObjectModified(
             object=context,
             args={
-                'state_source': 'published',
+                'state_source': old_sate,
                 'state_target': 'examined'
             }))
         request.registry.notify(ActivityExecuted(
@@ -1118,7 +1119,7 @@ class Resign(InfiniteCardinality):
                         recipient_last_name=getattr(next_user, 'last_name', ''),
                         subject_title=context.title,
                         subject_url=url,
-                        novaideo_title=request.root.title
+                        novaideo_title=root.title
                     )
                     mailer_send(
                         subject=subject,
@@ -1150,7 +1151,7 @@ class Resign(InfiniteCardinality):
                 recipient_last_name=getattr(user, 'last_name', ''),
                 subject_title=context.title,
                 subject_url=url,
-                novaideo_title=request.root.title
+                novaideo_title=root.title
             )
             mailer_send(
                 subject=subject,
@@ -1593,7 +1594,7 @@ class SubmitProposal(ElementaryAction):
         root = getSite()
         localizer = request.localizer
         working_group = context.working_group
-        if 'proposal' in request.content_to_support:
+        if 'proposal' in root.content_to_support:
             context.state = PersistentList(['submitted_support', 'published'])
         else:
             context.state = PersistentList(['published', 'submitted_support'])
@@ -1628,7 +1629,7 @@ class SubmitProposal(ElementaryAction):
                 recipient_last_name=getattr(member, 'last_name', ''),
                 subject_title=context.title,
                 subject_url=url,
-                novaideo_title=request.root.title
+                novaideo_title=root.title
             )
             mailer_send(
                 subject=subject,
@@ -1690,7 +1691,7 @@ class AlertEnd(ElementaryAction):
                         member, 'last_name', ''),
                     subject_url=url,
                     subject_title=context.title,
-                    novaideo_title=request.root.title
+                    novaideo_title=root.title
                 )
                 mailer_send(
                     subject=subject,

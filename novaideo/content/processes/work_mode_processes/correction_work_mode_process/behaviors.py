@@ -144,9 +144,11 @@ class CorrectItem(InfiniteCardinality):
 
     def _include_vote(self, context, request, item,
                       content, vote, user_oid, user):
+
+        item_data = context.corrections[item]
         text_to_correct = getattr(context, content, '')
-        context.corrections[item][vote].append(user_oid)
-        len_vote = len(context.corrections[item][vote])
+        item_data[vote].append(user_oid)
+        len_vote = len(item_data[vote])
         vote_bool = False
         if vote == 'favour':
             len_vote -= 1
@@ -157,7 +159,7 @@ class CorrectItem(InfiniteCardinality):
                 text_to_correct, request, [item], vote_bool)
             setattr(context, content, text)
             text_to_correct = getattr(context, content, '')
-            context.corrections[item]['included'] = True
+            item_data['included'] = True
             current_version = context.current_version
             if not any('included' not in context.corrections[c]
                        for c in context.corrections.keys()):
@@ -169,20 +171,21 @@ class CorrectItem(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         item = appstruct['item']
         content = appstruct['content']
-        vote = (appstruct['vote'].lower() == 'true')
-        user = get_current()
-        user_oid = get_oid(user)
-        correction_data = context.corrections[item]
-        if user_oid not in correction_data['favour'] and \
-           user_oid not in correction_data['against']:
-            if vote:
-                self._include_vote(context, request,
-                                   item, content,
-                                   'favour', user_oid, user)
-            else:
-                self._include_vote(context, request,
-                                   item, content,
-                                   'against', user_oid, user)
+        item_data = context.corrections[item]
+        if item_data.get('content', '#') == content:
+            vote = (appstruct['vote'].lower() == 'true')
+            user = get_current()
+            user_oid = get_oid(user)
+            if user_oid not in item_data['favour'] and \
+               user_oid not in item_data['against']:
+                if vote:
+                    self._include_vote(context, request,
+                                       item, content,
+                                       'favour', user_oid, user)
+                else:
+                    self._include_vote(context, request,
+                                       item, content,
+                                       'against', user_oid, user)
 
         return {}
 
@@ -276,7 +279,7 @@ class CorrectProposal(InfiniteCardinality):
             correction_tag['data-correction'] = correction_oid
             correction_tag['data-item'] = str(descriminator)
             correction_tag['data-content'] = content
-            init_vote = {'favour': [user_oid], 'against': []}
+            init_vote = {'favour': [user_oid], 'against': [], 'content': content}
             correction.corrections[str(descriminator)] = init_vote
             descriminator += 1
 

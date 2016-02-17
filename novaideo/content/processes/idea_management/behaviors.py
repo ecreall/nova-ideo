@@ -359,7 +359,7 @@ class PublishIdeaModeration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        if 'idea' in request.content_to_support:
+        if 'idea' in root.content_to_support:
             context.state = PersistentList(['submitted_support', 'published'])
         else:
             context.state = PersistentList(['published', 'submitted_support'])
@@ -433,7 +433,8 @@ class PublishIdea(InfiniteCardinality):
     state_validation = pub_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        if 'idea' in request.content_to_support:
+        root = request.root
+        if 'idea' in root.content_to_support:
             context.state = PersistentList(['submitted_support', 'published'])
         else:
             context.state = PersistentList(['published', 'submitted_support'])
@@ -793,6 +794,7 @@ class MakeOpinion(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         appstruct.pop('_csrf_token_')
         context.opinion = PersistentDict(appstruct)
+        old_state = context.state[0]
         context.state = PersistentList(
             ['examined', context.opinion['opinion'], 'published'])
         context.init_examined_at()
@@ -832,7 +834,7 @@ class MakeOpinion(InfiniteCardinality):
         request.registry.notify(ObjectModified(
             object=context,
             args={
-                'state_source': 'published',
+                'state_source': old_state,
                 'state_target': 'examined'
             }))
         request.registry.notify(ActivityExecuted(

@@ -61,9 +61,9 @@ class CorrectAllItemsView(BasicView):
 
     def __call__(self):
         vote = self.params('vote')
-        content = self.params('content')
-        for item in self.context.corrections.keys():
-            self.execute({'item': item, 'vote': vote, 'content': content})
+        for item, data in self.context.corrections.items():
+            self.execute({'item': item, 'vote': vote,
+                          'content': data.get('content')})
 
         user = get_current()
         values = {
