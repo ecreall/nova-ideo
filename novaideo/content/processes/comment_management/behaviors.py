@@ -94,13 +94,13 @@ class Respond(InfiniteCardinality):
         alert = CommentAlert()
         root.addtoproperty('alerts', alert)
         alert.init_alert(authors, [content])
+        mail_template = root.get_mail_template('alert_comment')
+        subject_type = localizer.translate(
+            _("The " + content.__class__.__name__.lower()))
+        subject = mail_template['subject'].format(
+            subject_title=content.title,
+            subject_type=subject_type)
         for user_to_alert in [u for u in authors if getattr(u, 'email', '')]:
-            mail_template = root.get_mail_template('alert_comment')
-            subject_type = localizer.translate(
-                _("The " + content.__class__.__name__.lower()))
-            subject = mail_template['subject'].format(
-                subject_title=content.title,
-                subject_type=subject_type)
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
                     _(getattr(user_to_alert, 'user_title', ''))),
@@ -125,15 +125,18 @@ class Respond(InfiniteCardinality):
             if getattr(comment_author, 'email', ''):
                 mail_template = root.get_mail_template('alert_respons')
                 subject = mail_template['subject'].format(
-                    subject_title=content.title)
+                    subject_title=content.title,
+                    subject_type=subject_type)
                 message = mail_template['template'].format(
                     recipient_title=localizer.translate(
                         _(getattr(comment_author, 'user_title', ''))),
                     recipient_first_name=getattr(
                         comment_author, 'first_name', comment_author.name),
-                    recipient_last_name=getattr(comment_author, 'last_name', ''),
+                    recipient_last_name=getattr(
+                        comment_author, 'last_name', ''),
                     subject_title=content.title,
                     subject_url=request.resource_url(content, "@@index"),
+                    subject_type=subject_type,
                     novaideo_title=root.title
                 )
                 mailer_send(

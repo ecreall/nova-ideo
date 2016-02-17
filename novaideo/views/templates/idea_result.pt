@@ -14,7 +14,7 @@
 
         <span class="visible-xs-inline-block icon ${icon}"></span>  ${object.title} </h4></a>
       <div class="object-description-result">
-        <small><span i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a></small>
+        <small><span i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC) <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a></small>
       </div>
     </div>
     <div>${object.presentation_text(400)}</div>

@@ -14,7 +14,7 @@
         <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' not in request.content_to_support">soit publiée</span>
         <span tal:omit-tag="" tal:condition="'idea' in request.content_to_support">soit soumise à appréciation</span>
         <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' in request.content_to_examine">, soit examinée</span> 
-        <span i18n:translate="">et une proposition peut être soit privée, soit ouverte à un groupe de travail, soit en cours d'amélioration,</span> 
+        <span i18n:translate="">et une proposition peut être soit privée, soit ouverte à un groupe de travail, soit en cours d'amélioration, soit faire l'objet d'un vote pour améliorer ou non la proposition,</span> 
         <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' not in request.content_to_support">soit publiée</span>
         <span tal:omit-tag="" tal:condition="'proposal' in request.content_to_support">soit soumise à appréciation</span>
         <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">, soit examinée</span>.

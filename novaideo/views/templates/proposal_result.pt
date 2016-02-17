@@ -11,11 +11,11 @@
     <div class="object-description-result">
       <small tal:condition="(object.version is None or not object.working_group) and not object.corrections"
              tal:define="author object.author">
-        <span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a>
+        <span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC) <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a>
       </small>
 
       <small tal:condition="(object.version or object.corrections) and object.working_group">
-        <span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span  i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second} <span i18n:translate="">by its working group</span>
+        <span  i18n:translate="">Modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC) <span i18n:translate="">by its working group</span>
       </small>
     </div>
     <div>${object.presentation_text(400)}</div>

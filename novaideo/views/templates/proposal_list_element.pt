@@ -1,3 +1,3 @@
 <span i18n:domain="novaideo">
-  <a href="${request.resource_url(object, '@@index')}">${object.title}</a> <span i18n:translate="">modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at, date_only=True)"/> <span i18n:translate="">at</span> ${object.modified_at.hour}:${object.modified_at.minute}:${object.modified_at.second}
+  <a href="${request.resource_url(object, '@@index')}">${object.title}</a> <span i18n:translate="">modify the</span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)
 </span>

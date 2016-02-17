@@ -819,7 +819,7 @@ class MakeOpinion(InfiniteCardinality):
                 recipient_last_name=getattr(member, 'last_name', ''),
                 subject_url=url,
                 subject_title=context.title,
-                opinion=localizer.translate(_(context.opinion['opinion'])),
+                opinion=localizer.translate(_(context.opinion_value)),
                 explanation=context.opinion['explanation'],
                 novaideo_title=root.title
             )
