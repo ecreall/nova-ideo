@@ -21,7 +21,7 @@
             Vous disposez en tout de sept jetons d'appréciation, soutiens ou oppositions, que vous êtes libre à tout moment d'allouer ou de retirer à n'importe quelles idées ou propositions soumises à appréciation. Pour soutenir ou vous opposer à une idée ou à une proposition, il vous suffit de cliquer sur l'idée ou la proposition concernée.
         </p>
         <p i18n:translate="">
-            Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions soumises à appréciation dont vous avez l'un des participants sans que ces appréciations soient décomptées de vos sept jetons d'appréciation initiaux. Une fois allouée, ces appréciations ne peuvent plus en revanche être réutilisées pour d'autres propositions.
+            Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions soumises à appréciation dont vous avez été l'un des participants sans que ces appréciations soient décomptées de vos sept jetons d'appréciation initiaux. Une fois allouée, ces appréciations ne peuvent plus en revanche être réutilisées pour d'autres propositions.
         </p>
      </div>
      <div tal:omit-tag="" tal:condition="'idea' in request.content_to_support and 'proposal' not in request.content_to_support" >
@@ -40,7 +40,7 @@
             Vous disposez en tout de sept jetons d'appréciation, soutiens ou oppositions, que vous êtes libre à tout moment d'allouer ou de retirer à n'importe quelles propositions soumises à appréciation. Pour soutenir ou vous opposer à une proposition, il vous suffit de cliquer sur la proposition concernée.
         </p>
         <p i18n:translate="">
-            Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions soumises à appréciation dont vous avez l'un des participants sans que ces appréciations soient décomptées de vos sept jetons d'appréciation initiaux. Une fois allouée, ces appréciations ne peuvent plus en revanche être réutilisées pour d'autres propositions.
+            Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions soumises à appréciation dont vous avez été l'un des participants sans que ces appréciations soient décomptées de vos sept jetons d'appréciation initiaux. Une fois allouée, ces appréciations ne peuvent plus en revanche être réutilisées pour d'autres propositions.
         </p>
      </div>
     </tal:block>

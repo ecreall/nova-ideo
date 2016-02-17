@@ -85,8 +85,8 @@ def searchable_contents(request):
     from novaideo.core import SEARCHABLE_CONTENTS
     searchable_contents = dict(SEARCHABLE_CONTENTS)
     modes = request.root.get_work_modes()
-    searchable_contents.pop('webadvertising')
-    searchable_contents.pop('file')
+    # searchable_contents.pop('webadvertising')
+    # searchable_contents.pop('file')
     if 'amendment' not in modes:
         searchable_contents.pop('amendment')
 

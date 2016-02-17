@@ -10,7 +10,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
-from pontus.default_behavior import Cancel
+from dace.objectofcollaboration.principal.util import has_role
 
 from novaideo.content.processes.invitation_management.behaviors import (
     EditInvitation)
@@ -26,18 +26,29 @@ from novaideo import _
 class EditInvitationView(FormView):
 
     title = _('Edit invitation')
-    schema = select(InvitationSchema(editable=True), ['title',
-                                                     'user_title',
-                                                     'roles',
-                                                     'first_name', 
-                                                     'last_name',
-                                                     'email',
-                                                     'organization'])
+    schema = select(InvitationSchema(editable=True),
+                    ['title',
+                     'user_title',
+                     'roles',
+                     'first_name',
+                     'last_name',
+                     'email',
+                     'organization'])
     behaviors = [EditInvitation, Cancel]
     formid = 'formeditinvitation'
     name = 'editinvitation'
 
+    def before_update(self):
+        if not has_role(role=('Moderator',)):
+            self.schema = select(InvitationSchema(editable=True),
+                                 ['title',
+                                  'user_title',
+                                  'first_name',
+                                  'last_name',
+                                  'email'])
+
     def default_data(self):
         return self.context
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({EditInvitation:EditInvitationView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {EditInvitation: EditInvitationView})

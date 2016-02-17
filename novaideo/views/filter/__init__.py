@@ -115,7 +115,7 @@ def content_types_query(node, **args):
     if not request:
         request = get_current_request()
 
-    searchable_contents = core.get_searchable_content(request)
+    searchable_contents = dict(core.get_searchable_content(request))
     if not content_types:
         content_types = list(searchable_contents.keys())
 
@@ -501,9 +501,9 @@ def metadata_filter_repr(value, request, template_type='default'):
     template = FILTER_TEMPLATES['metadata_filter'].get(template_type, None)
     value_cp = deepcopy(value)
     content_types = value_cp['content_types']
-    searchable_contents = core.get_searchable_content()
+    searchable_contents = dict(core.get_searchable_content())
     content_types = [getattr(searchable_contents[c], 'type_title', c)
-                    for c in content_types if c in searchable_contents]
+                     for c in content_types if c in searchable_contents]
     value_cp['content_types'] = content_types
     tree = value_cp['tree']
     tree = json.dumps(dict(tree))
@@ -511,7 +511,7 @@ def metadata_filter_repr(value, request, template_type='default'):
     states = value_cp['states']
     localizer = request.localizer
     states = [', '.join([localizer.translate(st)
-                       for st in FLATTENED_STATES_MEMBER_MAPPING[s]])
+                         for st in FLATTENED_STATES_MEMBER_MAPPING[s]])
               for s in states
               if s in FLATTENED_STATES_MEMBER_MAPPING]
     value_cp['states'] = states
@@ -636,7 +636,7 @@ def content_types_choices(node, kw):
     analyzed_data = node.bindings.get('analyzed_data', {})
     values = []
     registry = get_current_registry()
-    searchable_contents = core.get_searchable_content(request)
+    searchable_contents = dict(core.get_searchable_content(request))
     if 'content_types' in analyzed_data:
         values = [(c, '{} ({})'.format(
             localizer.translate(
@@ -646,6 +646,8 @@ def content_types_choices(node, kw):
             for c in sorted(analyzed_data['content_types'].keys())
             if c in searchable_contents]
     else:
+        searchable_contents.pop('file')
+        searchable_contents.pop('webadvertising')
         exclude_internal = request.user is None
         values = [(key, getattr(c, 'type_title', c.__class__.__name__))
                   for key, c in list(searchable_contents.items())
@@ -661,17 +663,21 @@ def states_choices(node, kw):
     request = node.bindings['request']
     localizer = request.localizer
     analyzed_data = node.bindings.get('analyzed_data', {})
-    searchable_contents = core.get_searchable_content(request)
-    flattened_states = get_content_types_states(
-        searchable_contents, True, request)
+    searchable_contents = dict(core.get_searchable_content(request))
     values = []
     if 'states' in analyzed_data:
+        flattened_states = get_content_types_states(
+            searchable_contents, True, request)
         values = [(state, '{} ({})'.format(
             ', '.join([localizer.translate(s)
                        for s in flattened_states[state]]),
             str(analyzed_data['states'].get(state, 0))))
             for state in sorted(analyzed_data['states'].keys())]
     else:
+        searchable_contents.pop('file')
+        searchable_contents.pop('webadvertising')
+        flattened_states = get_content_types_states(
+            searchable_contents, True, request)
         values = [(k, ', '.join([localizer.translate(s)
                   for s in flattened_states[k]]))
                   for k in sorted(flattened_states.keys())]
