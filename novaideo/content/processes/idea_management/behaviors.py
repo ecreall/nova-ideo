@@ -796,7 +796,7 @@ class MakeOpinion(InfiniteCardinality):
         context.opinion = PersistentDict(appstruct)
         old_state = context.state[0]
         context.state = PersistentList(
-            ['examined', context.opinion['opinion'], 'published'])
+            ['examined', 'published', context.opinion['opinion']])
         context.init_examined_at()
         context.reindex()
         for token in list(context.tokens):
