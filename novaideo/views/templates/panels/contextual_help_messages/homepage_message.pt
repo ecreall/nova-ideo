@@ -1,39 +1,44 @@
-<div  tal:condition="not request.is_idea_box" class="contextual-help-item principal-help"  i18n:domain="novaideo">
-    <p i18n:translate="" tal:condition="not ('idea' in request.content_to_support or 'proposal' in request.content_to_support)">
-        Pour noter une idée, accéder à vos éléments ou intervenir sur une idée ou une proposition, vous devez préalablement être inscrit et vous connecter.
-    </p>
-     <p i18n:translate="">
-        Si vous n'êtes pas connecté, vous pourrez uniquement faire des recherches, consulter les contenus  (idées et propositions) et voir les membres inscrits.
-    </p>
+<div   class="contextual-help-item principal-help"  i18n:domain="novaideo">
+    <div tal:omit-tag="" tal:condition="not request.is_idea_box" >
+        <p i18n:translate="" tal:condition="not ('idea' in request.content_to_support or 'proposal' in request.content_to_support)">
+            Pour noter une idée, accéder à vos éléments ou intervenir sur une idée ou une proposition, vous devez préalablement être inscrit et vous connecter.
+        </p>
+         <p i18n:translate="">
+            Si vous n'êtes pas connecté, vous pourrez uniquement faire des recherches, consulter les contenus  (idées et propositions) et voir les membres inscrits.
+        </p>
+        <p i18n:translate="">
+            Une idée est une note personnelle, courte, émise spontanément, alors qu'une proposition est un document rédigé à plusieurs, finalisé, avec un travail de fond.
+        </p>
+        <p >
+            <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' not in request.content_to_support">soit publiée</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' in request.content_to_examine">, soit examinée</span> 
+            <span i18n:translate="">et une proposition peut être soit privée, soit ouverte à un groupe de travail, soit en cours d'amélioration, soit faire l'objet d'un vote pour améliorer ou non la proposition,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' not in request.content_to_support">soit publiée</span>
+            <span tal:omit-tag="" tal:condition="'proposal' in request.content_to_support">soit soumise à appréciation</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">, soit examinée</span>.
+        </p>
+    </div>
+    <div  tal:omit-tag="" tal:condition="request.is_idea_box">
+        <p i18n:translate="">
+            Pour noter une idée, accéder à vos éléments ou intervenir sur une idée ou une proposition, vous devez préalablement être inscrit et vous connecter.
+        </p>
+         <p i18n:translate="">
+            Si vous n'êtes pas connecté, vous pourrez uniquement faire des recherches, consulter les contenus  (idées) et voir les membres inscrits.
+        </p>
+        <p i18n:translate="">
+            Une idée est une note personnelle, courte, émise spontanément.
+        </p>
+        <p >
+            <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' not in request.content_to_support">soit publiée</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' in request.content_to_examine">, soit examinée</span> 
+            <span i18n:translate="">.
+        </p>
+    </div>
     <p i18n:translate="">
-        Une idée est une note personnelle, courte, émise spontanément, alors qu'une proposition est un document rédigé à plusieurs, finalisé, avec un travail de fond.
-    </p>
-    <p >
-        <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
-        <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
-        <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' not in request.content_to_support">soit publiée</span>
-        <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' in request.content_to_examine">, soit examinée</span> 
-        <span i18n:translate="">et une proposition peut être soit privée, soit ouverte à un groupe de travail, soit en cours d'amélioration, soit faire l'objet d'un vote pour améliorer ou non la proposition,</span> 
-        <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' not in request.content_to_support">soit publiée</span>
-        <span tal:omit-tag="" tal:condition="'proposal' in request.content_to_support">soit soumise à appréciation</span>
-        <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">, soit examinée</span>.
-    </p>
-</div>
-<div  tal:condition="request.is_idea_box" class="contextual-help-item principal-help"  i18n:domain="novaideo">
-    <p i18n:translate="">
-        Pour noter une idée, accéder à vos éléments ou intervenir sur une idée ou une proposition, vous devez préalablement être inscrit et vous connecter.
-    </p>
-     <p i18n:translate="">
-        Si vous n'êtes pas connecté, vous pourrez uniquement faire des recherches, consulter les contenus  (idées) et voir les membres inscrits.
-    </p>
-    <p i18n:translate="">
-        Une idée est une note personnelle, courte, émise spontanément.
-    </p>
-    <p >
-        <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
-        <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
-        <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' not in request.content_to_support">soit publiée</span>
-        <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' in request.content_to_examine">, soit examinée</span> 
-        <span i18n:translate="">.
+        Avec la recherche avancée et les filtres, vous pouvez également affiner votre recherche en spécifiant pour des périodes particulières les types de contenus et leurs états, les mots clés, les contributeurs et les textes à rechercher.
     </p>
 </div>
