@@ -27,7 +27,7 @@
         </div>
         <dt  i18n:translate="">Proposed the</dt>
 	      <dd tal:define="author object.author">
-          <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC) <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((uthor is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a>
+          <span tal:replace="layout.to_localized_time(object.created_at)"/> (UTC) <span i18n:translate="">by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a>
         </dd>
     </dl>
     <div tal:omit-tag="" tal:on-error="nothing">

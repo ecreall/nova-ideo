@@ -114,6 +114,7 @@ def mysubscriber_object_modified(event):
     args = event.args
     state_source = args.get('state_source', '')
     state_target = args.get('state_target', '')
+    import pdb; pdb.set_trace()
     request = get_current_request()
     users = get_users_by_preferences(content)
     url = request.resource_url(content, "@@index")
