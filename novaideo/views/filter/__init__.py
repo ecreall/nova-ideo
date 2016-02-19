@@ -198,7 +198,8 @@ def text_to_search_query(node, **args):
     if text:
         if args.get('defined_search', False):
             text = text.replace('(', '').replace(')', '').lower()
-            text = ' AND '.join(re.split(', *', text))
+            list_text = [t + '*' for t in re.split(', *', text)]
+            text = ' AND '.join(list_text)
     else:
         return None
 
