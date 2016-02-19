@@ -114,7 +114,6 @@ def mysubscriber_object_modified(event):
     args = event.args
     state_source = args.get('state_source', '')
     state_target = args.get('state_target', '')
-    import pdb; pdb.set_trace()
     request = get_current_request()
     users = get_users_by_preferences(content)
     url = request.resource_url(content, "@@index")
@@ -130,12 +129,14 @@ def mysubscriber_object_modified(event):
     for member in users:
         all_users.append(member)
         if getattr(member, 'email', ''):
+            state_source_translate = state_source
+            state_target_translate = state_target
             if state_source:
-                state_source = localizer.translate(
+                state_source_translate = localizer.translate(
                     get_states_mapping(
                         member, content, state_source))
             if state_target:
-                state_target = localizer.translate(
+                state_target_translate = localizer.translate(
                     get_states_mapping(
                         member, content, state_target))
 
@@ -144,8 +145,8 @@ def mysubscriber_object_modified(event):
                     _(getattr(member, 'user_title', ''))),
                 recipient_first_name=getattr(member, 'first_name', member.name),
                 recipient_last_name=getattr(member, 'last_name', ''),
-                state_source=state_source,
-                state_target=state_target,
+                state_source=state_source_translate,
+                state_target=state_target_translate,
                 subject_title=content.title,
                 subject_url=url,
                 subject_type=subject_type,
