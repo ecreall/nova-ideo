@@ -200,6 +200,8 @@ def text_to_search_query(node, **args):
             text = text.replace('(', '').replace(')', '').lower()
             list_text = [t + '*' for t in re.split(', *', text)]
             text = ' AND '.join(list_text)
+        else:
+            text += '*'
     else:
         return None
 
