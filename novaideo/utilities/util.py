@@ -117,7 +117,8 @@ def to_localized_time(
                     date_dict['year']) or None
             date_dict['year'] = year
 
-    date_dict = {key: value for key, value in date_dict.items() if value}
+    date_dict = {key: value for key, value in date_dict.items()
+                 if value is not None}
     if 'minute' in date_dict and date_dict['minute'] < 10:
         date_dict['minute'] = '0' + str(date_dict['minute'])
 
