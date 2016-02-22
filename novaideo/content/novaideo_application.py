@@ -352,6 +352,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
                 info_file.text = information['content']
                 info_file.__name__ = information['name']
                 self.addtoproperty('files', info_file)
+                info_file.state = PersistentList(['draft'])
 
     def get_mail_template(self, id):
         for mail in getattr(self, 'mail_templates', {}):

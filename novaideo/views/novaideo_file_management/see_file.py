@@ -7,6 +7,8 @@
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
+from dace.objectofcollaboration.principal.util import (
+    get_current, has_role)
 from dace.util import getSite
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
@@ -15,6 +17,7 @@ from novaideo.content.processes.novaideo_file_management.behaviors import (
     SeeFile)
 from novaideo.core import FileEntity
 from novaideo.utilities.util import generate_navbars, ObjectRemovedException
+from novaideo.content.processes import get_states_mapping
 
 
 @view_config(
@@ -37,8 +40,12 @@ class SeeFileView(BasicView):
             return HTTPFound(self.request.resource_url(getSite(), ''))
 
         result = {}
+        user = get_current()
         values = {
             'object': self.context,
+            'state': get_states_mapping(
+                user, self.context, self.context.state[0]),
+            'is_portalmanager': has_role(user=user, role=('PortalManager',)),
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body']

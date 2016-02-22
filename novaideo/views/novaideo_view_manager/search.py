@@ -222,7 +222,7 @@ class SearchView(FormView):
 class SearchResultView(BasicView):
     title = _('Nova-Ideo contents')
     name = ''
-    validators = [Search.get_validator()]
+    # validators = [Search.get_validator()]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
     viewid = 'search_result'

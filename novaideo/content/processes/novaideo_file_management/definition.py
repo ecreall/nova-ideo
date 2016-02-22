@@ -22,6 +22,8 @@ from .behaviors import (
     SeeFile,
     EditFile,
     SeeFiles,
+    Private,
+    Publish
     )
 from novaideo import _
 
@@ -51,6 +53,14 @@ class NovaIdeoFileManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Details"),
                                        title=_("Details"),
                                        groups=[]),
+                publish = ActivityDefinition(contexts=[Publish],
+                                       description=_("Publish"),
+                                       title=_("Publish"),
+                                       groups=[]),
+                private = ActivityDefinition(contexts=[Private],
+                                       description=_("Private"),
+                                       title=_("Private"),
+                                       groups=[]),
                 seefiles = ActivityDefinition(contexts=[SeeFiles],
                                        description=_("See files"),
                                        title=_("See files"),
@@ -64,6 +74,10 @@ class NovaIdeoFileManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('creat', 'eg'),
                 TransitionDefinition('pg', 'seefile'),
                 TransitionDefinition('seefile', 'eg'),
+                TransitionDefinition('pg', 'publish'),
+                TransitionDefinition('publish', 'eg'),
+                TransitionDefinition('pg', 'private'),
+                TransitionDefinition('private', 'eg'),
                 TransitionDefinition('pg', 'editfile'),
                 TransitionDefinition('editfile', 'eg'),
                 TransitionDefinition('pg', 'seefiles'),

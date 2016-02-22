@@ -7,30 +7,44 @@
 
 import datetime
 import pytz
+from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
     has_role,
     grant_roles,
-    get_current)
+    get_current,
+    has_any_roles)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
 from dace.processinstance.core import ActivityExecuted
 
-from ..user_management.behaviors import global_user_processsecurity
+from ..user_management.behaviors import (
+    global_user_processsecurity,
+    access_user_processsecurity)
 from novaideo.content.interface import INovaIdeoApplication, IFile
-from novaideo.core import access_action
-from novaideo import _
+from novaideo.core import access_action, serialize_roles
+from novaideo import _, DEFAULT_FILES
 
 
 def get_access_key(obj):
-    return ['always']
+    if 'published' in obj.state:
+        return ['always']
+    else:
+        result = serialize_roles(
+            (('Owner', obj), 'Moderator'))
+        return result
 
 
 def seefile_processsecurity_validation(process, context):
-    return True
+    application_files = [f.get('name') for f in DEFAULT_FILES]
+    is_application_file = context.__name__ in application_files
+    return (is_application_file or \
+            access_user_processsecurity(process, context)) and \
+          ('published' in context.state or \
+           has_any_roles(roles=(('Owner', context), 'Moderator')))
 
 
 @access_action(access_key=get_access_key)
@@ -65,11 +79,10 @@ class CreateFile(InfiniteCardinality):
         user = get_current()
         newfile = appstruct['_object_data']
         root.addtoproperty('files', newfile)
-        newfile.state.append('published')
+        newfile.state = PersistentList(['draft'])
         grant_roles(user=user, roles=(('Owner', newfile), ))
         newfile.setproperty('author', user)
         newfile.reindex()
-        self.newcontext = newfile
         request.registry.notify(ActivityExecuted(self, [newfile], user))
         return {'newcontext': newfile}
 
@@ -124,5 +137,60 @@ class SeeFiles(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
 
+
+def states_roles_validation(process, context):
+    return has_any_roles(roles=('Moderator', ('Owner', context)))
+
+
+def publish_state_validation(process, context):
+    return 'draft' in context.state
+
+
+class Publish(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-share'
+    style_order = 5
+    submission_title = _('Continue')
+    context = IFile
+    roles_validation = states_roles_validation
+    state_validation = publish_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state = PersistentList(['published'])
+        context.reindex()
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def private_state_validation(process, context):
+    return 'published' in context.state
+
+
+class Private(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-step-backward'
+    style_order = 5
+    submission_title = _('Continue')
+    context = IFile
+    roles_validation = states_roles_validation
+    state_validation = private_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state = PersistentList(['draft'])
+        context.reindex()
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 #TODO behaviors

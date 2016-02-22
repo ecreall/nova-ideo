@@ -2,6 +2,7 @@
 <hr class="soften">
 <div class="right-caption span4"  i18n:domain="novaideo">
   <div class="caption">
+  	<h3 tal:condition="is_portalmanager and state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
     <h3>${object.title} </h3>
     <br>
     <div id="contenttext" class="content-text">

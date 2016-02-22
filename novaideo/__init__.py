@@ -6,6 +6,8 @@
 # author: Amen Souissi
 
 import logging
+from persistent.list import PersistentList
+
 from pyramid.config import Configurator
 from pyramid.exceptions import ConfigurationError
 from pyramid.i18n import TranslationStringFactory
@@ -16,7 +18,7 @@ from substanced.db import root_factory
 from dace.util import getSite
 
 
-log = logging.getLogger('creationculturelle')
+log = logging.getLogger('novaideo')
 
 _ = TranslationStringFactory('novaideo')
 
@@ -141,6 +143,19 @@ def evolve_states_ideas(root, registry):
     log.info('Ideas states evolved.')
 
 
+def evolve_state_files(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IFile
+
+    contents = find_entities(interfaces=[IFile])
+    for file_ in contents:
+        if not file_.state:
+            file_.state = PersistentList(['draft'])
+            file_.reindex()
+
+    log.info('Working groups evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -154,6 +169,7 @@ def main(global_config, **settings):
     config.add_request_method(analytics_default_content_types, reify=True)
     config.add_evolution_step(evolve_wg)
     config.add_evolution_step(evolve_states_ideas)
+    config.add_evolution_step(evolve_state_files)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
