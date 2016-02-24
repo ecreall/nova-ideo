@@ -14,6 +14,7 @@ import datetime
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 
+import html_diff_wrapper
 from dace.util import (
     getSite,
     copy)
@@ -27,7 +28,6 @@ from dace.processinstance.activity import (
 from novaideo.content.interface import IProposal
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _
-from novaideo.utilities.text_analyzer import normalize_text
 from novaideo.content.correlation import CorrelationType
 from novaideo.utilities.util import connect
 from ...proposal_management.behaviors import add_attached_files
@@ -97,7 +97,8 @@ class CorrectProposal(InfiniteCardinality):
         copy_of_proposal = self._get_newversion(context, root, wg)
         context.state = PersistentList(['version', 'archived'])
         copy_of_proposal.set_data(appstruct)
-        copy_of_proposal.text = normalize_text(copy_of_proposal.text)
+        copy_of_proposal.text = html_diff_wrapper.normalize_text(
+            copy_of_proposal.text)
         copy_of_proposal.modified_at = datetime.datetime.now(tz=pytz.UTC)
         #correlation idea of replacement ideas... del replaced_idea
         connect(copy_of_proposal,

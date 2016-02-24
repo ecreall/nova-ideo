@@ -18,6 +18,7 @@ from pyramid import renderers
 
 from substanced.util import get_oid
 
+import html_diff_wrapper
 from dace.util import copy, getSite
 from dace.objectofcollaboration.principal.util import (
     has_role,
@@ -32,9 +33,6 @@ from novaideo.content.correlation import CorrelationType
 from novaideo.content.interface import IProposal, ICorrection
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _
-from novaideo.utilities.text_analyzer import (
-    ITextAnalyzer,
-    normalize_text)
 from novaideo.utilities.util import connect
 from novaideo.content.alert import (
     WorkingGroupAlert)
@@ -123,8 +121,6 @@ class CorrectItem(InfiniteCardinality):
         setattr(proposal, content, text)
 
     def _include_items(self, text, request, items, to_add=False):
-        text_analyzer = get_current_registry().getUtility(
-            ITextAnalyzer, 'text_analyzer')
         todel = "ins"
         toins = "del"
         if to_add:
@@ -138,9 +134,9 @@ class CorrectItem(InfiniteCardinality):
                                                       'data-item': item}))
 
         blocstodel = ('span', {'id': 'correction_actions'})
-        soup = text_analyzer.include_diffs(
+        soup = html_diff_wrapper.include_diffs(
             soup, corrections, todel, toins, blocstodel)
-        return text_analyzer.soup_to_text(soup)
+        return html_diff_wrapper.soup_to_text(soup)
 
     def _include_vote(self, context, request, item,
                       content, vote, user_oid, user):
@@ -288,23 +284,20 @@ class CorrectProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         correction = appstruct['_object_data']
-        correction.text = normalize_text(correction.text)
+        correction.text = html_diff_wrapper.normalize_text(correction.text)
         old_text = correction.text
         correction.setproperty('author', user)
         context.addtoproperty('corrections', correction)
         self._get_newversion(context, correction)
-        text_analyzer = get_current_registry().getUtility(
-                                                ITextAnalyzer,
-                                                'text_analyzer')
-        souptextdiff, textdiff = text_analyzer.render_html_diff(
+        souptextdiff, textdiff = html_diff_wrapper.render_html_diff(
                                        getattr(context, 'text', ''),
                                        getattr(correction, 'text', ''),
                                        "correction")
-        soupdescriptiondiff, descriptiondiff = text_analyzer.render_html_diff(
+        soupdescriptiondiff, descriptiondiff = html_diff_wrapper.render_html_diff(
                                         getattr(context, 'description', ''),
                                         getattr(correction, 'description', ''),
                                         "correction")
-        souptitlediff, titlediff = text_analyzer.render_html_diff(
+        souptitlediff, titlediff = html_diff_wrapper.render_html_diff(
                                         getattr(context, 'title', ''),
                                         getattr(correction, 'title', ''),
                                         "correction")
@@ -322,9 +315,9 @@ class CorrectProposal(InfiniteCardinality):
         self._identify_corrections(souptextdiff, correction,
                                    descriminator, 'text')
         self._add_actions(correction, request, souptextdiff)
-        correction.text = text_analyzer.soup_to_text(souptextdiff)
-        correction.description = text_analyzer.soup_to_text(soupdescriptiondiff)
-        correction.title = text_analyzer.soup_to_text(souptitlediff)
+        correction.text = html_diff_wrapper.soup_to_text(souptextdiff)
+        correction.description = html_diff_wrapper.soup_to_text(soupdescriptiondiff)
+        correction.title = html_diff_wrapper.soup_to_text(souptitlediff)
         if souptextdiff.find_all("span", id="correction") or \
            soupdescriptiondiff.find_all("span", id="correction") or\
            souptitlediff.find_all("span", id="correction"):

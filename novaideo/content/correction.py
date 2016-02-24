@@ -13,6 +13,7 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
+import html_diff_wrapper
 from dace.util import get_obj
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedUniqueProperty, CompositeUniqueProperty
@@ -23,8 +24,6 @@ from pontus.core import VisualisableElementSchema, VisualisableElement
 from .interface import ICorrection
 from novaideo import _
 from novaideo.views.widget import LimitedTextAreaWidget
-from novaideo.utilities.text_analyzer import ITextAnalyzer
-
 
 
 def context_is_a_correction(context, request):
@@ -106,8 +105,7 @@ class Correction(VisualisableElement, Entity):
                     self._adapt_correction(correction, False)
        
         registry = get_current_registry()
-        text_analyzer = registry.getUtility(ITextAnalyzer,'text_analyzer')
-        return text_analyzer.soup_to_text(soup)
+        return html_diff_wrapper.soup_to_text(soup)
 
     def get_adapted_description(self, user):
         """Return the appropriate description to the user"""

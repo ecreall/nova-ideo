@@ -9,8 +9,9 @@ This module represent the Proposal management process definition
 powered by the dace engine.
 """
 from persistent.list import PersistentList
-from pyramid.threadlocal import get_current_registry, get_current_request
+from pyramid.threadlocal import get_current_request
 
+import html_diff_wrapper
 from dace.processinstance.activity import (
     SubProcess as OriginSubProcess)
 from dace.processdefinition.processdef import ProcessDefinition
@@ -43,7 +44,6 @@ from .behaviors import (
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
-from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 def eg4_votingamendments_condition(process):
@@ -86,8 +86,6 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         electors = proposal.working_group.members
         amendments = [a for a in proposal.amendments if 'published' in a.state]
         processes = []
-        text_analyzer = get_current_registry().getUtility(
-            ITextAnalyzer, 'text_analyzer')
         groups = []
         for amendment in amendments:
             isadded = False
@@ -95,7 +93,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             for group in groups:
                 for amt in group:
                     related_ideas_a = list(amt.related_ideas)
-                    if text_analyzer.has_conflict(amt.text,
+                    if html_diff_wrapper.has_conflict(amt.text,
                                                   [amendment.text]) or \
                        (related_ideas_amendment and \
                         any(e in related_ideas_amendment

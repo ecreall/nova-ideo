@@ -23,10 +23,8 @@ requires = [
     'gunicorn',
     'plone.event',
     'xlrd',
-    'diff-match-patch',
+    'html_diff_wrapper',
     'Genshi',
-    'html5lib',
-    'html2text',
     'beautifulsoup4',
     'pyramid_robot',
     'profilehooks'

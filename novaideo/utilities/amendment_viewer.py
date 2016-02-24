@@ -12,10 +12,10 @@ from pyramid import renderers
 from substanced.util import get_oid
 from bs4 import BeautifulSoup
 
+import html_diff_wrapper
 from daceui.interfaces import IDaceUIAPI
 
 from novaideo.content.amendment import Intention
-from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 class IAmendmentViewer(Interface):
@@ -120,9 +120,7 @@ class AmendmentViewer(object):
 
     def get_explanation_diff(self, context, request):
         proposal = context.proposal
-        text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
-        	                                              'text_analyzer')
-        souptextdiff, textdiff = text_analyzer.render_html_diff(
+        souptextdiff, textdiff = html_diff_wrapper.render_html_diff(
         	                        getattr(proposal, 'text', ''),
                                     getattr(context, 'text', ''),
                                     "explanation")

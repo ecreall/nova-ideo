@@ -7,9 +7,9 @@
 import colander
 import deform
 from pyramid.view import view_config
-from pyramid.threadlocal import get_current_registry
 from bs4 import BeautifulSoup
 
+import html_diff_wrapper
 from dace.util import get_obj
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -26,7 +26,6 @@ from novaideo.content.processes.ballot_processes.majorityjudgment.behaviors impo
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.views.widget import InLineWidget, ObjectWidget
-from novaideo.utilities.text_analyzer import ITextAnalyzer, HTML_BLOCK_ELEMENTS
 
 
 OMITED_TEXT_TAG = '[...]'
@@ -34,12 +33,12 @@ OMITED_TEXT_TAG = '[...]'
 
 def _prune_text(text, tag_descriminator, attributes_descriminator):
     soup = BeautifulSoup(text)
-    descriminators_tags = soup.find_all(tag_descriminator, 
+    descriminators_tags = soup.find_all(tag_descriminator,
                                         attributes_descriminator)
     conserved_tags = []
     for tag in descriminators_tags:
         parents = []
-        for source_tag in HTML_BLOCK_ELEMENTS:
+        for source_tag in html_diff_wrapper.HTML_BLOCK_ELEMENTS:
             parents = tag.find_parents(source_tag)
             if parents and parents[0] not in conserved_tags:
                 parent = parents[0]
@@ -88,15 +87,11 @@ def get_trimed_amendment_text(text):
     for tag in source_tags:
         soup.body.append(tag)
 
-    text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
-                                                      'text_analyzer')
-    return text_analyzer.soup_to_text(soup)
+    return html_diff_wrapper.soup_to_text(soup)
 
 
 def get_trimed_proposal_text(text, amendments):
-    text_analyzer = get_current_registry().getUtility(ITextAnalyzer,
-                                                      'text_analyzer')
-    merged_text = text_analyzer.get_merged_diffs(
+    merged_text = html_diff_wrapper.get_merged_diffs(
                     text,
                     amendments,
                     {'id': 'modification', 
@@ -109,7 +104,7 @@ def get_trimed_proposal_text(text, amendments):
     for tag in source_tags:
         soup.body.append(tag)
 
-    return text_analyzer.soup_to_text(soup)
+    return html_diff_wrapper.soup_to_text(soup)
 
 
 class VoteViewStudyReport(BasicView):

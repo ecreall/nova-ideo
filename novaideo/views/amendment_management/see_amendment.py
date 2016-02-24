@@ -5,9 +5,9 @@
 # author: Amen Souissi
 
 from pyramid.view import view_config
-from pyramid.threadlocal import get_current_registry
 from pyramid.httpexceptions import HTTPFound
 
+import html_diff_wrapper
 from dace.util import getSite
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current, has_role
@@ -24,7 +24,6 @@ from novaideo import _
 from .present_amendment import PresentAmendmentView
 from .comment_amendment import CommentAmendmentView
 from .explanation_amendment import IntentionFormView
-from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 class DetailAmendmentView(BasicView):
@@ -62,15 +61,13 @@ class DetailAmendmentView(BasicView):
             return HTTPFound(self.request.resource_url(getSite(), ''))
 
         user = get_current()
-        text_analyzer = get_current_registry().getUtility(
-            ITextAnalyzer, 'text_analyzer')
         result = {}
         textdiff = ''
         descriptiondiff = ''
         keywordsdiff = []
         proposal = self.context.proposal
         textdiff = self.context.text_diff
-        soup, descriptiondiff = text_analyzer.render_html_diff(
+        soup, descriptiondiff = html_diff_wrapper.render_html_diff(
             '<div>'+getattr(proposal, 'description', '')+'</div>',
             '<div>'+getattr(self.context, 'description', '')+'</div>')
         for k in proposal.keywords:

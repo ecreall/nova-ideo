@@ -8,8 +8,8 @@
 import colander
 import deform
 from pyramid.view import view_config
-from pyramid.threadlocal import get_current_registry
 
+import html_diff_wrapper
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import get_obj
 from pontus.form import FormView
@@ -17,12 +17,11 @@ from pontus.schema import select, Schema
 from pontus.widget import CheckboxChoiceWidget, RadioChoiceWidget
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
-from pontus.file import  Object as ObjectType
+from pontus.file import Object as ObjectType
 
-from novaideo.content.processes.idea_management.behaviors import  CompareIdea
+from novaideo.content.processes.idea_management.behaviors import CompareIdea
 from novaideo.content.idea import Idea
 from novaideo import _
-from novaideo.utilities.text_analyzer import ITextAnalyzer
 
 
 COMPARE_MESSAGE = {'0': _(u"""Pas de versions"""),
@@ -47,35 +46,32 @@ class DiffView(BasicView):
         versionobj = None
         if version is not None:
             versionobj = get_obj(int(version))
-            text_analyzer = get_current_registry().getUtility(
-                                                     ITextAnalyzer,
-                                                     'text_analyzer')
-            soupt, textdiff =  text_analyzer.render_html_diff(
-                                   getattr(versionobj, 'text', ''), 
-                                   getattr(self.context, 'text', ''))
-            soupd, descriptiondiff = text_analyzer.render_html_diff(
-                                '<div>'+getattr(versionobj, 'description', '')+'</div>', 
+            soupt, textdiff = html_diff_wrapper.render_html_diff(
+                getattr(versionobj, 'text', ''),
+                getattr(self.context, 'text', ''))
+            soupd, descriptiondiff = html_diff_wrapper.render_html_diff(
+                                '<div>'+getattr(versionobj, 'description', '')+'</div>',
                                 '<div>'+getattr(self.context, 'description', '')+'</div>')
             for k in versionobj.keywords:
                 if k in self.context.keywords:
-                    keywordsdiff.append({'title':k, 'state':'nothing'})
+                    keywordsdiff.append({'title': k, 'state': 'nothing'})
                 else:
-                    keywordsdiff.append({'title':k, 'state':'del'})
-                  
-            [keywordsdiff.append({'title':k, 'state':'ins'}) \
+                    keywordsdiff.append({'title': k, 'state': 'del'})
+
+            [keywordsdiff.append({'title': k, 'state': 'ins'})
              for k in self.context.keywords if k not in versionobj.keywords]
 
         result = {}
         values = {
-                'version' : versionobj,
-                'idee': self.context,
-                'textdiff': textdiff,
-                'descriptiondiff':descriptiondiff,
-                'keywordsdiff':keywordsdiff
-               }
+            'version': versionobj,
+            'idee': self.context,
+            'textdiff': textdiff,
+            'descriptiondiff': descriptiondiff,
+            'keywordsdiff': keywordsdiff
+        }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
@@ -84,9 +80,9 @@ def version_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
     current_version = context.current_version
-    values = [(i, i.get_view(request)) for i in current_version.history \
-              if not(i is current_version)]
-    values = sorted(values, key=lambda v: v[0].modified_at, reverse=True) 
+    values = [(i, i.get_view(request)) for i in current_version.history
+              if i is not current_version]
+    values = sorted(values, key=lambda v: v[0].modified_at, reverse=True)
     widget = RadioChoiceWidget(values=values)
     widget.template = 'novaideo:views/idea_management/templates/radio_choice.pt'
     return widget
@@ -124,7 +120,7 @@ class CompareIdeaSchema(Schema):
         title=_('Last versions'),
         description=_("Select the previous version to compare")
         )
-    
+
 
 class CompareIdeaFormView(FormView):
 
@@ -139,7 +135,7 @@ class CompareIdeaFormView(FormView):
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
         view_name = 'compareidea'
-        formwidget.ajax_url = self.request.resource_url(self.context, 
+        formwidget.ajax_url = self.request.resource_url(self.context,
                                                         '@@'+view_name)
 
 
@@ -168,4 +164,5 @@ class CompareIdeaView(MultipleView):
         return message
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({CompareIdea:CompareIdeaView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CompareIdea: CompareIdeaView})

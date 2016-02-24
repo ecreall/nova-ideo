@@ -30,6 +30,7 @@ from dace.objectofcollaboration.principal.util import (
     revoke_roles,
     has_any_roles)
 #from dace.objectofcollaboration import system
+import html_diff_wrapper
 from dace.processinstance.activity import (
     InfiniteCardinality, ElementaryAction, ActionType)
 from dace.processinstance.core import ActivityExecuted
@@ -54,7 +55,6 @@ from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea,
     CommentIdea,
     Associate as AssociateIdea)
-from novaideo.utilities.text_analyzer import normalize_text
 from novaideo.utilities.util import (
     connect, disconnect, to_localized_time)
 from novaideo.event import (
@@ -66,8 +66,7 @@ from novaideo.content.alert import (
     WorkingGroupAlert,
     ExaminationAlert,
     ModerationAlert,
-    SupportAlert,
-    CommentAlert)
+    SupportAlert)
 from novaideo.views.filter import get_users_by_preferences
 
 try:
@@ -328,7 +327,7 @@ class CreateProposal(InfiniteCardinality):
         related_ideas = appstruct.pop('related_ideas')
         proposal = appstruct['_object_data']
         root.merge_keywords(proposal.keywords)
-        proposal.text = normalize_text(proposal.text)
+        proposal.text = html_diff_wrapper.normalize_text(proposal.text)
         root.addtoproperty('proposals', proposal)
         proposal.state.append('draft')
         grant_roles(user=user, roles=(('Owner', proposal), ))
@@ -580,7 +579,7 @@ class DuplicateProposal(InfiniteCardinality):
         related_ideas = appstruct.pop('related_ideas')
         root.merge_keywords(appstruct['keywords'])
         copy_of_proposal.set_data(appstruct)
-        copy_of_proposal.text = normalize_text(copy_of_proposal.text)
+        copy_of_proposal.text = html_diff_wrapper.normalize_text(copy_of_proposal.text)
         copy_of_proposal.setproperty('originalentity', context)
         copy_of_proposal.state = PersistentList(['draft'])
         grant_roles(user=user, roles=(('Owner', copy_of_proposal), ))
@@ -662,7 +661,7 @@ class EditProposal(InfiniteCardinality):
                        CorrelationType.solid)
 
         add_attached_files(appstruct, context)
-        context.text = normalize_text(context.text)
+        context.text = html_diff_wrapper.normalize_text(context.text)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         root.merge_keywords(context.keywords)
         context.reindex()

@@ -17,6 +17,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.threadlocal import get_current_registry
 from bs4 import BeautifulSoup
 
+import html_diff_wrapper
 from dace.util import (
     getSite,
     copy)
@@ -41,7 +42,6 @@ from novaideo.content.processes.idea_management.behaviors import (
 
 from novaideo.content.processes.proposal_management.behaviors import (
     publish_ideas)
-from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
 from novaideo.event import CorrelableRemoved
 from novaideo.content.alert import (
@@ -55,35 +55,29 @@ except NameError:
 
 
 def get_text_amendment_diff(proposal, amendment):
-    text_analyzer = get_current_registry().getUtility(
-        ITextAnalyzer, 'text_analyzer')
-    soup, textdiff = text_analyzer.render_html_diff(
+    soup, textdiff = html_diff_wrapper.render_html_diff(
         getattr(proposal, 'text', ''),
         getattr(amendment, 'text', ''))
     return textdiff
 
 
 def get_text_amendment_diff_explanation(amendment, request, process):
-    text_analyzer = get_current_registry().getUtility(
-        ITextAnalyzer, 'text_analyzer')
     amendment_viewer = get_current_registry().getUtility(
         IAmendmentViewer, 'amendment_viewer')
     souptextdiff, explanations = amendment_viewer.get_explanation_diff(
         amendment, request)
     amendment_viewer.add_actions(explanations, process, amendment,
                                  request, souptextdiff)
-    return explanations, text_analyzer.soup_to_text(souptextdiff)
+    return explanations, html_diff_wrapper.soup_to_text(souptextdiff)
 
 
 def get_text_amendment_diff_submitted(amendment, request):
-    text_analyzer = get_current_registry().getUtility(
-        ITextAnalyzer, 'text_analyzer')
     amendment_viewer = get_current_registry().getUtility(
         IAmendmentViewer, 'amendment_viewer')
     souptextdiff, explanations = amendment_viewer.get_explanation_diff(
         amendment, request)
     amendment_viewer.add_details(explanations, amendment, request, souptextdiff)
-    return explanations, text_analyzer.soup_to_text(souptextdiff)
+    return explanations, html_diff_wrapper.soup_to_text(souptextdiff)
 
 
 def duplicate_roles_validation(process, context):
@@ -123,7 +117,8 @@ class DuplicateAmendment(InfiniteCardinality):
                                        'explanations'))
         root.merge_keywords(appstruct['keywords'])
         copy_of_amendment.set_data(appstruct)
-        copy_of_amendment.text = normalize_text(copy_of_amendment.text)
+        copy_of_amendment.text = html_diff_wrapper.normalize_text(
+            copy_of_amendment.text)
         copy_of_amendment.setproperty('originalentity', context)
         copy_of_amendment.state = PersistentList(['draft'])
         copy_of_amendment.setproperty('author', user)
@@ -133,7 +128,7 @@ class DuplicateAmendment(InfiniteCardinality):
                                          '_amendments_counter', 1))
         grant_roles(user=user, roles=(('Owner', copy_of_amendment), ))
         copy_of_amendment.text_diff = get_text_amendment_diff(
-                                           context.proposal, copy_of_amendment)
+            context.proposal, copy_of_amendment)
         copy_of_amendment.reindex()
         context.proposal._amendments_counter = getattr(
             context.proposal, '_amendments_counter', 1) + 1
@@ -207,7 +202,7 @@ class EditAmendment(InfiniteCardinality):
         root = getSite()
         root.merge_keywords(context.keywords)
         context.set_data(appstruct)
-        context.text = normalize_text(context.text)
+        context.text = html_diff_wrapper.normalize_text(context.text)
         context.text_diff = get_text_amendment_diff(
             context.proposal, context)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
@@ -276,26 +271,22 @@ class ExplanationItem(InfiniteCardinality):
     item_css_off = 'btn-black'
 
     def _add_css_item(self, context, item):
-        text_analyzer = get_current_registry().getUtility(
-            ITextAnalyzer, 'text_analyzer')
         soup = BeautifulSoup(context.text_diff)
         tag_item = soup.find('button', {'data-target': '#'+str(item)})
         if tag_item and self.item_css_off in tag_item['class']:
             tag_item['class'].remove(self.item_css_off)
             tag_item['class'].append(self.item_css_on)
 
-        context.text_diff = text_analyzer.soup_to_text(soup)
+        context.text_diff = html_diff_wrapper.soup_to_text(soup)
 
     def _remove_css_item(self, context, item):
-        text_analyzer = get_current_registry().getUtility(
-            ITextAnalyzer, 'text_analyzer')
         soup = BeautifulSoup(context.text_diff)
         tag_item = soup.find('button', {'data-target': '#'+str(item)})
         if tag_item and self.item_css_on in tag_item['class']:
             tag_item['class'].remove(self.item_css_on)
             tag_item['class'].append(self.item_css_off)
 
-        context.text_diff = text_analyzer.soup_to_text(soup)
+        context.text_diff = html_diff_wrapper.soup_to_text(soup)
 
     def start(self, context, request, appstruct, **kw):
         if appstruct['intention'] is not None:
@@ -358,20 +349,18 @@ class SubmitAmendment(InfiniteCardinality):
     state_validation = pub_state_validation
 
     def _get_amendment_text(self, context, group):
-        text_analyzer = get_current_registry().getUtility(
-            ITextAnalyzer, 'text_analyzer')
         items = [str(e['oid']) for e in group]
         soup = BeautifulSoup(context.text_diff)
         allexplanations = soup.find_all('span', {'id': 'explanation'})
         explanations = [tag for tag in allexplanations
                         if tag['data-item'] not in items]
         blocstodel = ('span', {'id': 'explanation_action'})
-        soup = text_analyzer.include_diffs(
+        soup = html_diff_wrapper.include_diffs(
             soup, explanations,
             "ins", "del", blocstodel)
         explanations = [tag for tag in allexplanations
                         if tag['data-item'] in items]
-        soup = text_analyzer.include_diffs(
+        soup = html_diff_wrapper.include_diffs(
             soup, explanations,
             "del", "ins", blocstodel)
         allmodal = [m for m in soup.find_all('div', {'class': 'modal'})
@@ -379,7 +368,7 @@ class SubmitAmendment(InfiniteCardinality):
         for modal in allmodal:
             modal.extract()
 
-        text = text_analyzer.soup_to_text(soup)
+        text = html_diff_wrapper.soup_to_text(soup)
         return text
 
     def _get_explanation_data(self, context, group):

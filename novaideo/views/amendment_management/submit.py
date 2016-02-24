@@ -6,10 +6,10 @@
 
 import colander
 import deform
-from persistent.dict import PersistentDict
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
+import html_diff_wrapper
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
@@ -22,12 +22,11 @@ from novaideo.content.processes.amendment_management.behaviors import (
     SubmitAmendment)
 from novaideo.content.amendment import Amendment, Intention
 from novaideo.views.widget import (
-    DragDropSelect2Widget, 
-    DragDropSequenceWidget, 
+    DragDropSelect2Widget,
+    DragDropSequenceWidget,
     DragDropMappingWidget,
     LimitedTextAreaWidget)
 from novaideo import _
-from novaideo.utilities.text_analyzer import ITextAnalyzer
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
 
 
@@ -38,7 +37,7 @@ def get_default_explanations_groups(context):
     grouped_explanations = []
     for explanation in explanations.values():
         if not(explanation['oid'] in grouped_explanations):
-            group = [e for e in explanations.values() \
+            group = [e for e in explanations.values()
                      if Intention.eq(explanation['intention'], e['intention'])]
             grouped_explanations.extend([e['oid'] for e in group])
             groups.append(group)
@@ -52,7 +51,7 @@ def get_default_explanations_groups(context):
 def explanations_choice(node, kw):
     context = node.bindings['context']
     values = [(i['oid'], i['oid']) for i in context.explanations.values()]
-    return DragDropSelect2Widget(values=values, 
+    return DragDropSelect2Widget(values=values,
                                  item_css_class="col-md-4",
                                  multiple=True)
 
@@ -67,14 +66,14 @@ class ExplanationGroupSchema(Schema):
                                readonly=True)
         )
 
-    explanations =  colander.SchemaNode(
+    explanations = colander.SchemaNode(
         colander.Set(),
         widget=explanations_choice,
         missing=[],
         default=[],
         title=_('Explanations'),
-        )
-    
+    )
+
     justification = colander.SchemaNode(
         colander.String(),
         widget=LimitedTextAreaWidget(limit=350,
@@ -83,14 +82,14 @@ class ExplanationGroupSchema(Schema):
                                      placeholder=_("Justification")),
         missing="",
         title=_("Justification")
-        )  
+    )
 
 
 @colander.deferred
 def groups_widget(node, kw):
     context = node.bindings['context']
-    return DragDropSequenceWidget(item_css_class="explanation-groups", 
-                                  item_title_template=context.title+'-', 
+    return DragDropSequenceWidget(item_css_class="explanation-groups",
+                                  item_title_template=context.title+'-',
                                   max_len=len(context.explanations))
 
 
@@ -98,7 +97,7 @@ class ExplanationGroupsSchema(Schema):
 
     groups = colander.SchemaNode(
         colander.Sequence(),
-        omit(ExplanationGroupSchema(name='Amendment', 
+        omit(ExplanationGroupSchema(name='Amendment',
                                     widget=DragDropMappingWidget()),
              ['_csrf_token_']),
         widget=groups_widget,
@@ -109,7 +108,7 @@ class ExplanationGroupsSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(css_class="single-amendment-control"),
         label=_('Gather improvements in a single amendment'),
-        title ='',
+        title='',
         missing=False
         )
 
@@ -120,7 +119,7 @@ class ExplanationGroupsSchema(Schema):
                                      placeholder=_("Justification")),
         missing="",
         title=_("Justification")
-        )  
+        )
 
 
 class SubmitAmendmentViewStudyReport(BasicView):
@@ -131,20 +130,17 @@ class SubmitAmendmentViewStudyReport(BasicView):
 
     def update(self):
         result = {}
-        text_analyzer = get_current_registry().getUtility(
-                                                  ITextAnalyzer,
-                                                  'text_analyzer')
         amendment_viewer = get_current_registry().getUtility(
-                                                   IAmendmentViewer,
-                                                   'amendment_viewer')
+            IAmendmentViewer,
+            'amendment_viewer')
         souptextdiff, explanations = amendment_viewer.get_explanation_diff(
-                                                    self.context, self.request)
+            self.context, self.request)
         amendment_viewer.add_details(explanations,
                                      self.context,
                                      self.request,
                                      souptextdiff,
                                      self.readonly_explanation_template)
-        text_diff = text_analyzer.soup_to_text(souptextdiff)
+        text_diff = html_diff_wrapper.soup_to_text(souptextdiff)
         not_published_ideas = []
         if not self.request.moderate_ideas:
             not_published_ideas = [i for i in self.context.get_used_ideas()
@@ -160,7 +156,7 @@ class SubmitAmendmentViewStudyReport(BasicView):
 
 
 class SubmitAmendmentView(FormView):
-    title =  _('Submit')
+    title = _('Submit')
     name = 'submitamendmentform'
     formid = 'formsubmitamendment'
     schema = ExplanationGroupsSchema()
@@ -173,7 +169,7 @@ class SubmitAmendmentView(FormView):
         i = 1
         for group in groups:
             justification = ''.join(list(set([e['intention']['comment'] for e in group])))
-            group_data = {'title':self.context.title +'-'+str(i),
+            group_data = {'title': self.context.title +'-'+str(i),
                           'explanations': [str(e['oid']) for e in group],
                           'justification': justification}
             data['groups'].append(group_data)
@@ -195,9 +191,10 @@ class SubmitAmendmentViewMultipleView(MultipleView):
     views = (SubmitAmendmentViewStudyReport, SubmitAmendmentView)
     behaviors = [SubmitAmendment]
     validators = [SubmitAmendment.get_validator()]
-    requirements = {'css_links':['novaideo:static/css/organize_amendments.css'],
-                    'js_links':['novaideo:static/js/organize_amendments.js',
-                                'novaideo:static/js/jquery.elastic.source.js']}
+    requirements = {'css_links': ['novaideo:static/css/organize_amendments.css'],
+                    'js_links': ['novaideo:static/js/organize_amendments.js',
+                                 'novaideo:static/js/jquery.elastic.source.js']}
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({SubmitAmendment:SubmitAmendmentViewMultipleView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {SubmitAmendment: SubmitAmendmentViewMultipleView})

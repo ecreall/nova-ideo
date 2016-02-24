@@ -15,6 +15,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.threadlocal import get_current_registry
 from pyramid import renderers
 
+import html_diff_wrapper
 from dace.util import (
     getSite,
     copy,
@@ -35,7 +36,6 @@ from novaideo.content.correlation import CorrelationType
 from novaideo.content.amendment import Amendment
 from novaideo.content.processes.amendment_management.behaviors import (
     get_text_amendment_diff)
-from novaideo.utilities.text_analyzer import ITextAnalyzer, normalize_text
 from novaideo.utilities.util import connect
 from novaideo.content.alert import (
     WorkingGroupAlert)
@@ -158,7 +158,7 @@ class ImproveProposal(InfiniteCardinality):
         localizer = request.localizer
         data['title'] = localizer.translate(_('Amended version ')) + \
                         str(getattr(context, '_amendments_counter', 1))
-        data['text'] = normalize_text(appstruct['text'])
+        data['text'] = html_diff_wrapper.normalize_text(appstruct['text'])
         data['description'] = appstruct['description']
         data['keywords'] = appstruct['keywords']
         amendment = Amendment()
@@ -351,11 +351,9 @@ class AmendmentsResult(ElementaryAction):
         user = get_current()
         newcontext = context
         if amendments:
-            text_analyzer = get_current_registry().getUtility(
-                ITextAnalyzer, 'text_analyzer')
-            merged_text = text_analyzer.merge(
+            merged_text = html_diff_wrapper.merge(
                 context.text, [a.text for a in amendments])
-            merged_text = normalize_text(merged_text)
+            merged_text = html_diff_wrapper.normalize_text(merged_text)
             #TODO merged_keywords + merged_description
             copy_of_proposal = self._get_newversion(context, root, wg)
             self._send_ballot_result(copy_of_proposal, request,
