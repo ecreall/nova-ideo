@@ -7,7 +7,7 @@
 .mr.developer.cfg
 __pycache__
 bin
-# cache # we want the cache directory to be uploaded to the docker engine when building the image
+cache
 develop-eggs
 eggs
 node_modules

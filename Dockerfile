@@ -1,7 +1,7 @@
 FROM python:3.4
 MAINTAINER Vincent Fretin <vincentfretin@ecreall.com>
 
-ENV userid=1000
+ARG userid=1000
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y varnish && \
@@ -31,21 +31,22 @@ RUN arch="$(dpkg --print-architecture)" \
     && rm /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu
 
-RUN mkdir -p /app
+RUN mkdir -p /app/cache
 COPY . /app/
-RUN test -d /app/cache/eggs && cp -rf /app/cache/eggs /app/eggs || exit 0
-RUN test -d /app/cache/src && cp -rf /app/cache/src /app/src || exit 0
 COPY start.bash /start
-RUN chmod +x /start /app/copy_to_cache_and_start.sh
-RUN mkdir -p /app/cache/eggs /app/cache/src
 RUN chown -R u1000:u1000 /app
+
 USER u1000
 WORKDIR /app
-RUN buildout bootstrap && ./bin/buildout -c heroku.cfg
-USER root
 
+RUN mkdir -p -m 700 /app/.ssh && \
+    echo "|1|mkhJkTqJT7XEFCg9zJ6vXr9F7KM=|1ihCQCq4xl9SQDtCAqwp4auiRIk= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNn6VI+Ekg/iOz3bZL6bb35tj6fOjmmMOvkw592XDXy+bSes+2qHhcA3uOg5/wEtmRaK583uZH/CJ4512BpLb7M=" >> /app/.ssh/known_hosts && \
+    echo "|1|VmfmXO+MNtehwEnpYIEHO7zfvm8=|ya5Yt/ILBv/gMHQLAfSu2tOWO2I= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNn6VI+Ekg/iOz3bZL6bb35tj6fOjmmMOvkw592XDXy+bSes+2qHhcA3uOg5/wEtmRaK583uZH/CJ4512BpLb7M=" >> /app/.ssh/known_hosts
+RUN buildout bootstrap -c heroku.cfg
+# bin/buildout -c heroku.cfg is done outside this build
+
+USER root
 EXPOSE 5000
 VOLUME /app/var
-VOLUME /app/cache
 
-CMD ["/app/copy_to_cache_and_start.sh"]
+CMD ["/start"]
