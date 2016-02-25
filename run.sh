@@ -18,7 +18,7 @@ do_buildout() {
     # copy cache in docker image
     id=$(cd $CACHE_PATH/.. && tar -c cache | docker run -i -a stdin -u u1000 "$IMAGE" /bin/bash -c "mkdir -p /app/cache && tar -xC /app")
     test "$(docker wait "$id")" -eq 0
-    docker commit --change='CMD ["/start"]' "$id" "$IMAGE"
+    docker commit --change 'USER root' --change='CMD ["/start"]' "$id" "$IMAGE"
 }
 
 case "$1" in
