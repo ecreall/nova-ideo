@@ -153,16 +153,16 @@ def get_content_types_states(content_types, flatten=False, request=None):
         for c in content_types}
 
     if 'idea' in results:
-        if not root.moderate_ideas:
+        if not getattr(root, 'moderate_ideas', False):
             results['idea'].pop('submitted')
 
-        if 'idea' not in root.content_to_examine:
+        if 'idea' not in getattr(root, 'content_to_examine', []):
             results['idea'].pop('examined')
             results['idea'].pop('favorable')
             results['idea'].pop('unfavorable')
             results['idea'].pop('to_study')
 
-        if 'idea' not in root.content_to_support:
+        if 'idea' not in getattr(root, 'content_to_support', []):
             results['idea'].pop('submitted_support')
 
     if 'proposal' in results:
@@ -170,13 +170,13 @@ def get_content_types_states(content_types, flatten=False, request=None):
         if 'amendment' not in modes:
             results['proposal'].pop('votes for amendments')
 
-        if 'proposal' not in root.content_to_examine:
+        if 'proposal' not in getattr(root, 'content_to_examine', []):
             results['proposal'].pop('examined')
             results['proposal'].pop('favorable')
             results['proposal'].pop('unfavorable')
             results['proposal'].pop('to_study')
 
-        if 'proposal' not in root.content_to_support:
+        if 'proposal' not in getattr(root, 'content_to_support', []):
             results['proposal'].pop('submitted_support')
 
     if flatten:

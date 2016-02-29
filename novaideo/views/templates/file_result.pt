@@ -5,7 +5,7 @@
     <span class="hidden-xs icon ${icon}"></span>
   </div>
   <div class="media-body cultural-event-body">
-    <a tal:condition="is_portalmanager and state" href="${url}"><h4><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4></a>
+    <a tal:condition="state" href="${url}"><h4><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4></a>
     <a tal:attributes="href url"><h4 class="content-title content-title-review" style="display: block"><span class="visible-xs-inline-block icon ${icon}"></span> ${getattr(object, 'title', 'File')}</h4></a>
     <div class="heterogeneous-content article-content">
       ${object.presentation_text(400)}

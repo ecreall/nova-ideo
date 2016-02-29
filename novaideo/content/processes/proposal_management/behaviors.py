@@ -498,7 +498,7 @@ class PublishProposal(InfiniteCardinality):
         working_group = context.working_group
         context.state.remove('draft')
         if appstruct.get('vote', False):
-            if 'proposal' in root.content_to_support:
+            if 'proposal' in getattr(root, 'content_to_support', []):
                 context.state = PersistentList(
                     ['submitted_support', 'published'])
             else:
@@ -539,8 +539,8 @@ class PublishProposal(InfiniteCardinality):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.init_published_at()
         not_published_ideas = []
-        if not root.moderate_ideas and\
-           'idea' not in root.content_to_examine:
+        if not getattr(root, 'moderate_ideas', False) and\
+           'idea' not in getattr(root, 'content_to_examine', []):
             not_published_ideas = [i for i in context.related_ideas.keys()
                                    if 'published' not in i.state]
             publish_ideas(not_published_ideas, request)
@@ -1593,7 +1593,7 @@ class SubmitProposal(ElementaryAction):
         root = getSite()
         localizer = request.localizer
         working_group = context.working_group
-        if 'proposal' in root.content_to_support:
+        if 'proposal' in getattr(root, 'content_to_support', []):
             context.state = PersistentList(['submitted_support', 'published'])
         else:
             context.state = PersistentList(['published', 'submitted_support'])

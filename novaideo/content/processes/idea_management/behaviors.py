@@ -359,7 +359,7 @@ class PublishIdeaModeration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        if 'idea' in root.content_to_support:
+        if 'idea' in getattr(root, 'content_to_support', []):
             context.state = PersistentList(['submitted_support', 'published'])
         else:
             context.state = PersistentList(['published', 'submitted_support'])
@@ -434,7 +434,7 @@ class PublishIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = request.root
-        if 'idea' in root.content_to_support:
+        if 'idea' in getattr(root, 'content_to_support', []):
             context.state = PersistentList(['submitted_support', 'published'])
         else:
             context.state = PersistentList(['published', 'submitted_support'])
