@@ -102,7 +102,7 @@ class DetailAmendmentView(BasicView):
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body'],
-            'cant_submit': self._end_explanation(navbars['all_actions']),
+            'to_submit': self._end_explanation(navbars['all_actions']),
             'idea_to_examine': idea_to_examine,
             'not_published_ideas': not_published_ideas,
             'not_favorable_ideas': not_favorable_ideas

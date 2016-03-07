@@ -2,32 +2,33 @@
 <hr class="soften">
 <div class="media-body content-title-body" i18n:domain="novaideo">
 
-  <div tal:condition="not cant_submit" role="alert" class="alert alert-info alert-dismissible">
+  <div tal:condition="to_submit" role="alert" class="alert alert-info alert-dismissible">
      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
      <span class="glyphicon glyphicon-info-sign pull-right"></span>
       <span  i18n:translate="">Vous avez donné des explications à l'ensemble de vos améliorations. Vous pouvez maintenant préparer des amendements que vous pourrez soumettre aux autres participants.</span> 
   </div>
-  <div tal:condition="cant_submit" role="alert" class="alert alert-info alert-dismissible">
-     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-     <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-     <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
-      <span i18n:translate="">Pour qu'un amendment soit soumis, l'ensemble de ses idées liées doivent être préalablement publiées par les modérateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
-      <ol class="list-unstyled not-published-list">
-        <tal:loop repeat="i not_published_ideas">
-          <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
-        </tal:loop>
-      </ol>
-     </div>
-     <div tal:omit-tag="" tal:condition="not_favorable_ideas and idea_to_examine">
-      <span i18n:translate="">Pour qu'un amendment soit soumis, l'ensemble de ses idées liées doivent être préalablement publiées et désignées comme favorables par les examinateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
-      <ol class="list-unstyled not-published-list">
-        <tal:loop repeat="i not_favorable_ideas">
-          <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
-        </tal:loop>
-      </ol>
-     </div>
+  <div tal:omit-tag="" tal:condition="'explanation' in amendment.state and (not_favorable_ideas or not_published_ideas)">
+    <div role="alert" class="alert alert-info alert-dismissible">
+       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+       <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
+        <span i18n:translate="">Pour qu'un amendment soit soumis, l'ensemble de ses idées liées doivent être préalablement publiées par les modérateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
+        <ol class="list-unstyled not-published-list">
+          <tal:loop repeat="i not_published_ideas">
+            <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+          </tal:loop>
+        </ol>
+       </div>
+       <div tal:omit-tag="" tal:condition="not_favorable_ideas and idea_to_examine">
+        <span i18n:translate="">Pour qu'un amendment soit soumis, l'ensemble de ses idées liées doivent être préalablement publiées et désignées comme favorables par les examinateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
+        <ol class="list-unstyled not-published-list">
+          <tal:loop repeat="i not_favorable_ideas">
+            <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+          </tal:loop>
+        </ol>
+       </div>
+    </div>
   </div>
-
 
   <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
   <h3 class="content-title"><span class="icon novaideo-icon icon-amendment"></span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a> / ${amendment.title}</h3>

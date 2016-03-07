@@ -276,7 +276,7 @@ class AmendmentsResult(ElementaryAction):
     roles_validation = ar_roles_validation
     state_validation = ar_state_validation
 
-    def _get_newversion(self, context, root, wg):
+    def _get_newversion(self, context, root, working_group):
         contextname = context.__name__
         copy_of_proposal = copy(context,
                                 (root, 'proposals'),
@@ -292,12 +292,13 @@ class AmendmentsResult(ElementaryAction):
         copy_of_proposal.setproperty('comments', context.comments)
         self.process.attachedTo.process.execution_context.add_created_entity(
             'proposal', copy_of_proposal)
-        wg.setproperty('proposal', copy_of_proposal)
+        working_group.setproperty('proposal', copy_of_proposal)
         return copy_of_proposal
 
     def _send_ballot_result(self, context, request, electeds, members):
         amendments_vote_result = []
-        for group_nb, ballot in enumerate(self.process.amendments_ballots):
+        working_group = context.working_group
+        for group_nb, ballot in enumerate(working_group.amendments_ballots):
             judgments = ballot.report.ballottype.judgments
             sorted_judgments = sorted(
                 list(judgments.keys()), key=lambda o: judgments[o])
@@ -339,14 +340,14 @@ class AmendmentsResult(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         result = set()
-        for ballot in self.process.amendments_ballots:
+        working_group = context.working_group
+        for ballot in working_group.amendments_ballots:
             electeds = ballot.report.get_electeds()
             if electeds is not None:
                 result.update(electeds)
 
         amendments = [a for a in result if isinstance(a, Amendment)]
-        wg = context.working_group
-        members = wg.members
+        members = working_group.members
         root = getSite()
         user = get_current()
         newcontext = context
@@ -355,7 +356,7 @@ class AmendmentsResult(ElementaryAction):
                 context.text, [a.text for a in amendments])
             merged_text = html_diff_wrapper.normalize_text(merged_text)
             #TODO merged_keywords + merged_description
-            copy_of_proposal = self._get_newversion(context, root, wg)
+            copy_of_proposal = self._get_newversion(context, root, working_group)
             self._send_ballot_result(copy_of_proposal, request,
                                      result, members)
             context.state = PersistentList(['version', 'archived'])

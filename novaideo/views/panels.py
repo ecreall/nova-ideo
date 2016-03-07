@@ -287,11 +287,10 @@ class StepsPanel(object):
                                     request)
         elif 'votes for amendments' in context.state:
             voters = []
-            subprocess = process['work'].sub_processes[-1]
             [voters.extend(b.report.voters)
-             for b in subprocess.amendments_ballots]
+             for b in working_group.amendments_ballots]
             voters = list(set(voters))
-            ballot = subprocess.amendments_ballots[-1]
+            ballot = working_group.amendments_ballots[-1]
             today = datetime.datetime.now(tz=pytz.UTC)
             if ballot.finished_at is not None and ballot.finished_at > today:
                 time_delta = ballot.finished_at - today

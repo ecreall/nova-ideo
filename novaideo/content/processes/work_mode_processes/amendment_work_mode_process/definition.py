@@ -47,8 +47,9 @@ from novaideo.content.ballot import Ballot
 
 
 def eg4_votingamendments_condition(process):
-    proposal = process.execution_context.created_entity('proposal')
-    if any('published' in a.state for a in proposal.amendments):
+    proposal = process.attachedTo.process.execution_context.created_entity(
+        'proposal')
+    if any('submitted' in a.state for a in proposal.amendments):
         return True
 
     return False
@@ -82,9 +83,11 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
     factory = SubProcess
 
     def _init_subprocess(self, process, subprocess):
-        proposal = process.execution_context.created_entity('proposal')
-        electors = proposal.working_group.members
-        amendments = [a for a in proposal.amendments if 'published' in a.state]
+        proposal = process.attachedTo.process.execution_context.created_entity(
+            'proposal')
+        working_group = proposal.working_group
+        electors = working_group.members
+        amendments = [a for a in proposal.amendments if 'submitted' in a.state]
         processes = []
         groups = []
         for amendment in amendments:
@@ -118,17 +121,17 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             group.insert(0, proposal)
 
         subprocess.ballots = PersistentList()
-        process.amendments_ballots = PersistentList()
+        working_group.amendments_ballots = PersistentList()
         for index, group in enumerate(groups):
             ballot = Ballot('MajorityJudgment', electors,
                             group, AMENDMENTS_VOTE_DEFAULT_DURATION)
-            proposal.working_group.addtoproperty('ballots', ballot)
+            working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_AMENDMENTS_MESSAGE
             ballot.title = _('Vote for amendments (group ${nbi})',
                              mapping={'nbi': index+1})
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
-            process.amendments_ballots.append(ballot)
+            working_group.amendments_ballots.append(ballot)
 
         subprocess.execution_context.add_involved_collection(
             'vote_processes', processes)
@@ -153,7 +156,6 @@ class AmendmentWorkModeProcess(ProcessDefinition, VisualisableElement):
                 eg1 = ExclusiveGatewayDefinition(),
                 pg1 = ParallelGatewayDefinition(),
                 eg2 = ExclusiveGatewayDefinition(),
-
                 votingamendments = SubProcessDefinitionAmendments(pd='ballotprocess', contexts=[VotingAmendments],
                                        description=_("Start voting for amendments"),
                                        title=_("Start voting for amendments"),
