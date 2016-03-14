@@ -675,7 +675,8 @@ def states_choices(node, kw):
             ', '.join([localizer.translate(s)
                        for s in flattened_states[state]]),
             str(analyzed_data['states'].get(state, 0))))
-            for state in sorted(analyzed_data['states'].keys())]
+            for state in sorted(analyzed_data['states'].keys())
+            if state in flattened_states]
     else:
         searchable_contents.pop('file')
         searchable_contents.pop('webadvertising')
