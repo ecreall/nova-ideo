@@ -1,7 +1,8 @@
 <div class="thumbnail right-caption span4 search-item result-item"  
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
-                 icon getattr(object, 'icon')">
+                 icon getattr(object, 'icon');
+                 comments_len len(object.comments)">
   <div id="proposal-image" class="content-image">
     <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
   </div>
@@ -34,6 +35,13 @@
             ${getattr(m, 'title', m.name)}</a>
             <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
        </tal:loop>
+      </div>
+    </div>
+    <div tal:condition="comments_len" class="search-item-footer">
+      <div >
+        <span class="glyphicon glyphicon-comment"></span>
+        <span tal:condition="comments_len == 1">${comments_len} fil de discussion</span>
+        <span tal:condition="comments_len > 1">${comments_len} fils de discussion</span>
       </div>
     </div>
   <div tal:condition="'proposal' in getattr(request, 'content_to_support', []) and 'submitted_support' in object.state" class="proposal-support pull-right">

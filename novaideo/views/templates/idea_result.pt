@@ -2,7 +2,8 @@
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
-                 author object.author">
+                 author object.author;
+                 comments_len len(object.comments)">
   <div id="idea-image" class="content-image">
     <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
   </div>
@@ -25,6 +26,13 @@
       <tal:loop repeat="k object.keywords">
             <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
       </tal:loop>
+    </div>
+    <div tal:condition="comments_len" class="search-item-footer">
+      <div >
+        <span class="glyphicon glyphicon-comment"></span>
+        <span tal:condition="comments_len == 1">${comments_len} fil de discussion</span>
+        <span tal:condition="comments_len > 1">${comments_len} fils de discussion</span>
+      </div>
     </div>
 
     <div tal:condition="'idea' in getattr(request, 'content_to_support', []) and 'published' in object.state and 'examined' not in object.state" class="proposal-support pull-right">
