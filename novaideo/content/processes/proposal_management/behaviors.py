@@ -506,6 +506,8 @@ class PublishProposal(InfiniteCardinality):
                     ['published', 'submitted_support'])
 
             working_group.state = PersistentList(['archived'])
+            context.reindex()
+            working_group.reindex()
         else:
             default_mode = root.get_default_work_mode()
             participants_mini = root.participants_mini
