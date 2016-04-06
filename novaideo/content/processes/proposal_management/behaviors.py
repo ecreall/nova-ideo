@@ -36,7 +36,6 @@ from dace.processinstance.activity import (
 from dace.processinstance.core import ActivityExecuted
 from pontus.file import OBJECT_DATA
 
-from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import (
     INovaIdeoApplication,
     IProposal,
@@ -62,12 +61,9 @@ from novaideo.event import (
 from novaideo.content.ballot import Ballot
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo.core import access_action, serialize_roles
-from novaideo.content.alert import (
-    WorkingGroupAlert,
-    ExaminationAlert,
-    ModerationAlert,
-    SupportAlert)
+from novaideo.content.alert import InternalAlertKind
 from novaideo.views.filter import get_users_by_preferences
+from novaideo.utilities.alerts_utility import alert
 
 try:
     basestring
@@ -114,7 +110,7 @@ VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
                            " group will be useful")
 
 
-VP_DEFAULT_DURATION = datetime.timedelta(days=1)
+VP_DEFAULT_DURATION = datetime.timedelta(minutes=2)#days=1)
 
 
 AMENDMENTS_CYCLE_DEFAULT_DURATION = {
@@ -140,9 +136,9 @@ def add_files_to_workspace(files_data, workspace):
 
     root = getSite()
     members = workspace.working_group.members
-    alert = WorkingGroupAlert(alert_kind='add_files')
-    root.addtoproperty('alerts', alert)
-    alert.init_alert(members, [workspace.proposal])
+    alert('internal', [root], members,
+          internal_kind=InternalAlertKind.working_group_alert,
+          subjects=[workspace.proposal], alert_kind='add_files')
     return files
 
 
@@ -427,10 +423,10 @@ class DeleteProposal(InfiniteCardinality):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            alert = ModerationAlert(removed=True,
-                                    subject_title=context.title)
-            root.addtoproperty('alerts', alert)
-            alert.init_alert(members)
+            alert('internal', [root], members,
+                  internal_kind=InternalAlertKind.moderation_alert,
+                  subjects=[], removed=True, subject_title=context.title)
+
             for member in members:
                 if getattr(member, 'email', ''):
                     message = mail_template['template'].format(
@@ -443,11 +439,8 @@ class DeleteProposal(InfiniteCardinality):
                         explanation=explanation,
                         novaideo_title=root.title
                     )
-                    mailer_send(
-                        subject=subject,
-                        recipients=[member.email],
-                        sender=root.get_site_sender(),
-                        body=message)
+                    alert('email', [root.get_site_sender()], [member.email],
+                          subject=subject, body=message)
 
         return {'newcontext': root}
 
@@ -718,11 +711,11 @@ class SupportProposal(InfiniteCardinality):
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
         request.registry.notify(ActivityExecuted(self, [context], user))
-        alert = SupportAlert(support_kind='support')
-        request.root.addtoproperty('alerts', alert)
         users = list(get_users_by_preferences(context))
         users.extend(context.working_group.members)
-        alert.init_alert(users, [context])
+        alert('internal', [request.root], users,
+              internal_kind=InternalAlertKind.support_alert,
+              subjects=[context], support_kind='support')
         return {}
 
     def redirect(self, context, request, **kw):
@@ -755,11 +748,11 @@ class OpposeProposal(InfiniteCardinality):
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
         request.registry.notify(ActivityExecuted(self, [context], user))
-        alert = SupportAlert(support_kind='oppose')
-        request.root.addtoproperty('alerts', alert)
         users = list(get_users_by_preferences(context))
         users.extend(context.working_group.members)
-        alert.init_alert(users, [context])
+        alert('internal', [request.root], users,
+              internal_kind=InternalAlertKind.support_alert,
+              subjects=[context], support_kind='oppose')
         return {}
 
     def redirect(self, context, request, **kw):
@@ -815,11 +808,12 @@ class MakeOpinion(InfiniteCardinality):
         mail_template = root.get_mail_template('opinion_proposal')
         subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        alert = ExaminationAlert()
-        root.addtoproperty('alerts', alert)
         users = list(get_users_by_preferences(context))
         users.extend(members)
-        alert.init_alert(users, [context])
+        alert('internal', [root], users,
+              internal_kind=InternalAlertKind.examination_alert,
+              subjects=[context])
+
         for member in members:
             if getattr(member, 'email', ''):
                 message = mail_template['template'].format(
@@ -833,11 +827,8 @@ class MakeOpinion(InfiniteCardinality):
                     explanation=context.opinion['explanation'],
                     novaideo_title=request.root.title
                 )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+                alert('email', [root.get_site_sender()], [member.email],
+                      subject=subject, body=message)
 
         request.registry.notify(ObjectModified(
             object=context,
@@ -880,11 +871,11 @@ class WithdrawToken(InfiniteCardinality):
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
         request.registry.notify(ActivityExecuted(self, [context], user))
-        alert = SupportAlert(support_kind='withdeaw')
-        request.root.addtoproperty('alerts', alert)
         users = list(get_users_by_preferences(context))
         users.extend(context.working_group.members)
-        alert.init_alert(users, [context])
+        alert('internal', [request.root], users,
+              internal_kind=InternalAlertKind.support_alert,
+              subjects=[context], support_kind='withdeaw')
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1031,11 +1022,8 @@ class Withdraw(InfiniteCardinality):
                 subject_url=request.resource_url(context, "@@index"),
                 novaideo_title=request.root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[user.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [user.email],
+                  subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
             self, [context, working_group], user))
@@ -1088,9 +1076,9 @@ class Resign(InfiniteCardinality):
         mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
         revoke_roles(user, (('Participant', context),))
         if members:
-            alert = WorkingGroupAlert(alert_kind='resign')
-            root.addtoproperty('alerts', alert)
-            alert.init_alert(members, [context])
+            alert('internal', [root], members,
+              internal_kind=InternalAlertKind.working_group_alert,
+              subjects=[context], alert_kind='resign')
 
         url = request.resource_url(context, "@@index")
         localizer = request.localizer
@@ -1104,10 +1092,9 @@ class Resign(InfiniteCardinality):
                 working_group.addtoproperty('members', next_user)
                 grant_roles(next_user, (('Participant', context),))
                 if members:
-                    alert = WorkingGroupAlert(
-                        alert_kind='wg_wating_list_participation')
-                    root.addtoproperty('alerts', alert)
-                    alert.init_alert(members, [context])
+                    alert('internal', [root], members,
+                          internal_kind=InternalAlertKind.working_group_alert,
+                          subjects=[context], alert_kind='wg_wating_list_participation')
 
                 if getattr(next_user, 'email', ''):
                     subject = mail_template['subject'].format(
@@ -1122,11 +1109,8 @@ class Resign(InfiniteCardinality):
                         subject_url=url,
                         novaideo_title=root.title
                     )
-                    mailer_send(
-                        subject=subject,
-                        recipients=[next_user.email],
-                        sender=sender,
-                        body=message)
+                    alert('email', [sender], [next_user.email],
+                          subject=subject, body=message)
 
         participants = working_group.members
         len_participants = len(participants)
@@ -1137,9 +1121,9 @@ class Resign(InfiniteCardinality):
             working_group.state = PersistentList(['deactivated'])
             working_group.reindex()
             context.reindex()
-            alert = WorkingGroupAlert(alert_kind='resign_to_wg_open')
-            root.addtoproperty('alerts', alert)
-            alert.init_alert(participants, [context])
+            alert('internal', [root], participants,
+                  internal_kind=InternalAlertKind.working_group_alert,
+                  subjects=[context], alert_kind='resign_to_wg_open')
 
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('wg_resign')
@@ -1154,11 +1138,8 @@ class Resign(InfiniteCardinality):
                 subject_url=url,
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[user.email],
-                sender=sender,
-                body=message)
+            alert('email', [sender], [user.email],
+                  subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
             self, [context, working_group], user))
@@ -1220,9 +1201,8 @@ class Participate(InfiniteCardinality):
             subject_url=request.resource_url(context, "@@index"),
             novaideo_title=request.root.title
         )
-        mailer_send(
-            subject=subject, recipients=[user.email],
-            sender=request.root.get_site_sender(), body=message)
+        alert('email', [request.root.get_site_sender()], [user.email],
+              subject=subject, body=message)
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
@@ -1234,18 +1214,18 @@ class Participate(InfiniteCardinality):
         if len_participants < mode.participants_maxi:
             #Alert new participant
             if participants:
-                alert = WorkingGroupAlert(alert_kind='participate')
-                root.addtoproperty('alerts', alert)
-                alert.init_alert(participants, [context])
+                alert('internal', [root], participants,
+                      internal_kind=InternalAlertKind.working_group_alert,
+                      subjects=[context], alert_kind='participate')
 
             working_group.addtoproperty('members', user)
             grant_roles(user, (('Participant', context),))
             #alert maw working groups
             active_wgs = getattr(user, 'active_working_groups', [])
             if len(active_wgs) == root.participations_maxi:
-                alert = WorkingGroupAlert(alert_kind='participations_maxi')
-                root.addtoproperty('alerts', alert)
-                alert.init_alert([user], [user])
+                alert('internal', [root], [user],
+                      internal_kind=InternalAlertKind.working_group_alert,
+                      subjects=[user], alert_kind='participations_maxi')
 
             if (len_participants+1) == mode.participants_mini:
                 working_group.state = PersistentList(['active'])
@@ -1266,9 +1246,9 @@ class Participate(InfiniteCardinality):
                         context, request, 'votingpublication', {})
 
                 #Alert start of the improvement cycle proc
-                alert = WorkingGroupAlert(alert_kind='amendable')
-                root.addtoproperty('alerts', alert)
-                alert.init_alert(participants, [context])
+                alert('internal', [root], participants,
+                      internal_kind=InternalAlertKind.working_group_alert,
+                      subjects=[context], alert_kind='amendable')
 
             #Send Mail alert to user
             if getattr(user, 'email', ''):
@@ -1279,11 +1259,12 @@ class Participate(InfiniteCardinality):
         else:
             working_group.addtoproperty('wating_list', user)
             working_group.reindex()
-            alert = WorkingGroupAlert(alert_kind='wg_participation_max')
-            root.addtoproperty('alerts', alert)
             users = list(participants)
             users.append(user)
-            alert.init_alert(users, [context])
+            alert('internal', [root], users,
+                  internal_kind=InternalAlertKind.working_group_alert,
+                  subjects=[context], alert_kind='wg_participation_max')
+
             if getattr(user, 'email', ''):
                 mail_template = root.get_mail_template('wating_list')
                 self._send_mail_to_user(
@@ -1424,9 +1405,10 @@ class VotingPublication(ElementaryAction):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            alert = WorkingGroupAlert(alert_kind='end_work')
-            root.addtoproperty('alerts', alert)
-            alert.init_alert(members, [context])
+            alert('internal', [root], members,
+                  internal_kind=InternalAlertKind.working_group_alert,
+                  subjects=[context], alert_kind='end_work')
+
             for member in members:
                 if getattr(member, 'email', ''):
                     message = mail_template['template'].format(
@@ -1440,11 +1422,8 @@ class VotingPublication(ElementaryAction):
                         subject_url=url,
                         novaideo_title=root.title
                     )
-                    mailer_send(
-                        subject=subject,
-                        recipients=[member.email],
-                        sender=root.get_site_sender(),
-                        body=message)
+                    alert('email', [root.get_site_sender()], [member.email],
+                          subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
@@ -1500,9 +1479,9 @@ class Work(ElementaryAction):
         subject = subject_template.format(subject_title=context.title)
         localizer = request.localizer
         root = request.root
-        alert = WorkingGroupAlert(alert_kind='start_work')
-        root.addtoproperty('alerts', alert)
-        alert.init_alert(members, [context])
+        alert('internal', [root], members,
+              internal_kind=InternalAlertKind.working_group_alert,
+              subjects=[context], alert_kind='start_work')
         for member in [m for m in members if getattr(m, 'email', '')]:
             message = message_template.format(
                 recipient_title=localizer.translate(
@@ -1517,11 +1496,8 @@ class Work(ElementaryAction):
                     (isclosed and _('closed')) or _('open')),
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [member.email],
+                  subject=subject, body=message)
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
@@ -1618,9 +1594,10 @@ class SubmitProposal(ElementaryAction):
         mail_template = root.get_mail_template('publish_proposal')
         subject = mail_template['subject'].format(
             subject_title=context.title)
-        alert = WorkingGroupAlert(alert_kind='submit_proposal')
-        root.addtoproperty('alerts', alert)
-        alert.init_alert(users, [context])
+        alert('internal', [root], users,
+              internal_kind=InternalAlertKind.working_group_alert,
+              subjects=[context], alert_kind='submit_proposal')
+
         for member in [m for m in users if getattr(m, 'email', '')]:
             message = mail_template['template'].format(
                 recipient_title=localizer.translate(
@@ -1632,11 +1609,8 @@ class SubmitProposal(ElementaryAction):
                 subject_url=url,
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [member.email],
+                  subject=subject, body=message)
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         working_group.reindex()
@@ -1679,9 +1653,9 @@ class AlertEnd(ElementaryAction):
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer
-            alert = WorkingGroupAlert(alert_kind='alert_end_work')
-            root.addtoproperty('alerts', alert)
-            alert.init_alert(members, [context])
+            alert('internal', [root], members,
+                  internal_kind=InternalAlertKind.working_group_alert,
+                  subjects=[context], alert_kind='alert_end_work')
             for member in [m for m in members if getattr(m, 'email', '')]:
                 message = mail_template['template'].format(
                     recipient_title=localizer.translate(
@@ -1694,11 +1668,8 @@ class AlertEnd(ElementaryAction):
                     subject_title=context.title,
                     novaideo_title=root.title
                 )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+                alert('email', [root.get_site_sender()], [member.email],
+                      subject=subject, body=message)
 
         return {}
 

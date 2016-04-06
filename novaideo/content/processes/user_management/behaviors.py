@@ -35,7 +35,6 @@ from dace.processinstance.activity import (
     ActionType)
 from dace.processinstance.core import ActivityExecuted, PROCESS_HISTORY_KEY
 
-from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import (
     INovaIdeoApplication, IPerson, IPreregistration)
 from novaideo.content.token import Token
@@ -46,7 +45,8 @@ from novaideo.utilities.util import (
 from novaideo import _
 from novaideo.core import access_action, serialize_roles
 from novaideo.views.filter import get_users_by_preferences
-from novaideo.content.alert import ContentAlert
+from novaideo.content.alert import InternalAlertKind
+from novaideo.utilities.alerts_utility import alert
 
 
 def initialize_tokens(person, tokens_nb):
@@ -181,10 +181,10 @@ class Deactivate(InfiniteCardinality):
         context.state.append('deactivated')
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
-        alert = ContentAlert(alert_kind='user_deactivated')
-        request.root.addtoproperty('alerts', alert)
         pref_author = list(get_users_by_preferences(context))
-        alert.init_alert(pref_author, [context])
+        alert('internal', [request.root], pref_author,
+              internal_kind=InternalAlertKind.content_alert,
+              subjects=[context], alert_kind='user_deactivated')
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}
@@ -361,10 +361,8 @@ class Registration(InfiniteCardinality):
                 url=url,
                 deadline_date=deadline_str.lower(),
                 novaideo_title=root.title)
-            mailer_send(subject=subject,
-                        recipients=[preregistration.email],
-                        sender=root.get_site_sender(),
-                        body=message)
+            alert('email', [root.get_site_sender()], [preregistration.email],
+                  subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(self, [preregistration], None))
         return {'preregistration': preregistration}
@@ -424,11 +422,8 @@ class ConfirmRegistration(InfiniteCardinality):
                     _(getattr(person, 'user_title', ''))),
                 login_url=request.resource_url(root, '@@login'),
                 novaideo_title=root.title)
-            mailer_send(
-                subject=subject,
-                recipients=[person.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [person.email],
+                  subject=subject, body=message)
 
         return {'person': person}
 
@@ -484,10 +479,9 @@ class Remind(InfiniteCardinality):
             url=url,
             deadline_date=deadline_str.lower(),
             novaideo_title=root.title)
-        mailer_send(subject=subject,
-                    recipients=[context.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+        alert('email', [root.get_site_sender()], [context.email],
+              subject=subject, body=message)
+
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}

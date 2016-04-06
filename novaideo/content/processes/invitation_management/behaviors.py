@@ -20,7 +20,6 @@ from pontus.schema import select, omit
 from novaideo.ips.xlreader import create_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IInvitation
 from novaideo.content.invitation import Invitation
-from novaideo.ips.mailer import mailer_send
 from novaideo import _
 from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity,
@@ -30,6 +29,7 @@ from novaideo.utilities.util import gen_random_token
 from novaideo.content.person import Person
 from novaideo.content.invitation import InvitationSchema
 from novaideo.role import DEFAULT_ROLES, APPLICATION_ROLES
+from novaideo.utilities.alerts_utility import alert
 
 
 def uploaduser_roles_validation(process, context):
@@ -89,10 +89,8 @@ class UploadUsers(InfiniteCardinality):
                 invitation_url=url,
                 roles=", ".join(roles_translate),
                 novaideo_title=novaideo_title)
-            mailer_send(subject=subject,
-                        recipients=[invitation.email],
-                        sender=root.get_site_sender(),
-                        body=message)
+            alert('email', [root.get_site_sender()], [invitation.email],
+                  subject=subject, body=message)
 
         return {}
 
@@ -152,10 +150,8 @@ class InviteUsers(InfiniteCardinality):
                 invitation_url=url,
                 roles=", ".join(roles_translate),
                 novaideo_title=novaideo_title)
-            mailer_send(subject=subject,
-                        recipients=[invitation.email],
-                        sender=root.get_site_sender(),
-                        body=message)
+            alert('email', [root.get_site_sender()], [invitation.email],
+                  subject=subject, body=message)
 
         return {}
 
@@ -354,10 +350,8 @@ class AcceptInvitation(InfiniteCardinality):
                 user_url=url,
                 roles=", ".join(roles_translate),
                 novaideo_title=novaideo_title)
-            mailer_send(subject=subject,
-                        recipients=[manager.email],
-                        sender=root.get_site_sender(),
-                        body=message)
+            alert('email', [root.get_site_sender()], [manager.email],
+                  subject=subject, body=message)
 
         return {}
 
@@ -417,10 +411,9 @@ class RefuseInvitation(InfiniteCardinality):
                 invitation_url=url,
                 roles=", ".join(roles_translate),
                 novaideo_title=novaideo_title)
-            mailer_send(subject=subject,
-                        recipients=[context.manager.email],
-                        sender=root.get_site_sender(),
-                        body=message)
+            alert('email', [root.get_site_sender()], [context.manager.email],
+                  subject=subject, body=message)
+
         return {}
 
     def redirect(self, context, request, **kw):
@@ -492,10 +485,8 @@ class ReinviteUser(InfiniteCardinality):
             invitation_url=url,
             roles=", ".join(roles_translate),
             novaideo_title=root.title)
-        mailer_send(subject=subject,
-                    recipients=[context.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+        alert('email', [root.get_site_sender()], [context.email],
+              subject=subject, body=message)
         context.state.remove('refused')
         context.state.append('pending')
         return {}
@@ -543,11 +534,8 @@ class RemindInvitation(InfiniteCardinality):
             invitation_url=url,
             roles=", ".join(roles_translate),
             novaideo_title=root.title)
-        mailer_send(
-            subject=subject,
-            recipients=[context.email],
-            sender=root.get_site_sender(),
-            body=message)
+        alert('email', [root.get_site_sender()], [context.email],
+              subject=subject, body=message)
         return {}
 
     def redirect(self, context, request, **kw):

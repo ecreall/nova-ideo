@@ -34,8 +34,8 @@ from novaideo.content.interface import IProposal, ICorrection
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _
 from novaideo.utilities.util import connect
-from novaideo.content.alert import (
-    WorkingGroupAlert)
+from novaideo.content.alert import InternalAlertKind
+from novaideo.utilities.alerts_utility import alert
 
 try:
     basestring
@@ -80,9 +80,9 @@ def valid_correction(process, correction, current_version, user):
     proposal.reindex()
     process.attachedTo.process.reindex()
     process.reindex()
-    alert = WorkingGroupAlert(alert_kind='correction_validated')
-    root.addtoproperty('alerts', alert)
-    alert.init_alert(wg.members, [current_version])
+    alert('internal', [root], wg.members,
+          internal_kind=InternalAlertKind.working_group_alert,
+          subjects=[current_version], alert_kind='correction_validated')
 
 
 def correctitem_relation_validation(process, context):
@@ -322,9 +322,9 @@ class CorrectProposal(InfiniteCardinality):
            soupdescriptiondiff.find_all("span", id="correction") or\
            souptitlediff.find_all("span", id="correction"):
             correction.state.append('in process')
-            alert = WorkingGroupAlert(alert_kind='correction_added')
-            request.root.addtoproperty('alerts', alert)
-            alert.init_alert(context.working_group.members, [context])
+            alert('internal', [request.root], context.working_group.members,
+                  internal_kind=InternalAlertKind.working_group_alert,
+                  subjects=[context], alert_kind='correction_added')
         else:
             context.text = old_text
 

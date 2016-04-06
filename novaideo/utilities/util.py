@@ -393,32 +393,25 @@ def generate_navbars(view, context, request, **args):
         return [a for a in context.actions
                 if a.action.actionType != ActionType.automatic]
 
-    all_actions = {}
-    footer_navbar = get_actions_navbar(
-        actions_getter, request, ['footer-entity-action'])
     actions_navbar = get_actions_navbar(
         actions_getter, request, ['global-action',
                                   'text-action',
                                   'admin-action',
-                                  'wg-action'])
+                                  'wg-action',
+                                  'footer-entity-action',
+                                  'body-action'])
     actions_navbar['global-action'].extend(
         actions_navbar.pop('admin-action'))
-    actions_body = get_actions_navbar(
-        actions_getter, request, ['body-action'])
-
     actions_navbar['global-action'].extend(args.get('global_action', []))
     actions_navbar['text-action'].extend(args.get('text_action', []))
-    footer_navbar['footer-entity-action'].extend(
+    actions_navbar['footer-entity-action'].extend(
         args.get('footer_entity_action', []))
-    actions_body['body-action'].extend(args.get('body_action', []))
-    all_actions.update(footer_navbar)
-    all_actions.update(actions_navbar)
-    all_actions.update(actions_body)
+    actions_navbar['body-action'].extend(args.get('body_action', []))
     if getattr(context, '__parent__', None) is None:
         raise ObjectRemovedException("Object removed")
 
     actions_bodies = []
-    for action in actions_body['body-action']:
+    for action in actions_navbar['body-action']:
         object_values = {'action': action}
         body = view.content(args=object_values,
                             template=action.action.template)['body']
@@ -430,7 +423,7 @@ def generate_navbars(view, context, request, **args):
     return {'isactive': isactive,
             'messages': messages,
             'resources': resources,
-            'all_actions': all_actions,
+            'all_actions': actions_navbar,
             'navbar_body': navbar_body_getter(view, context, actions_navbar),
-            'footer_body': footer_block_body(view, context, footer_navbar),
+            'footer_body': footer_block_body(view, context, actions_navbar),
             'body_actions': actions_bodies}

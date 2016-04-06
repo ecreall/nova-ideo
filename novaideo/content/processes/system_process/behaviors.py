@@ -19,7 +19,6 @@ from dace.processinstance.activity import (
     ActionType)
 from dace.processinstance.core import ActivityExecuted
 
-from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import (
     INovaIdeoApplication,
     IPerson,
@@ -28,6 +27,7 @@ from novaideo.content.interface import (
 from novaideo.views.filter import find_entities
 from novaideo import _
 from novaideo.utilities.util import to_localized_time
+from novaideo.utilities.alerts_utility import alert
 
 
 INACTIVITY_DURATION = 90
@@ -125,11 +125,8 @@ class SendNewsLetter(ElementaryAction):
                 body = renderers.render(
                     mail_template['template'], {'entities': result,
                                                 'name': name}, request)
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=context.get_site_sender(),
-                    html=body)
+                alert('email', [context.get_site_sender()], [member.email],
+                      subject=subject, html=body)
 
             root.newsletter_date = now
 

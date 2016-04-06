@@ -28,7 +28,6 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import (
     InfiniteCardinality, ElementaryAction, ActionType)
 
-from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IProposal
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _
@@ -37,8 +36,8 @@ from novaideo.content.amendment import Amendment
 from novaideo.content.processes.amendment_management.behaviors import (
     get_text_amendment_diff)
 from novaideo.utilities.util import connect
-from novaideo.content.alert import (
-    WorkingGroupAlert)
+from novaideo.content.alert import InternalAlertKind
+from novaideo.utilities.alerts_utility import alert
 
 try:
     basestring
@@ -92,9 +91,9 @@ class Alert(ElementaryAction):
         mail_template = root.get_mail_template('alert_amendment')
         subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
-        alert = WorkingGroupAlert(alert_kind='no_amendment')
-        root.addtoproperty('alerts', alert)
-        alert.init_alert(members, [context])
+        alert('internal', [root], members,
+              internal_kind=InternalAlertKind.working_group_alert,
+              subjects=[context], alert_kind='no_amendment')
         for member in members:
             if getattr(member, 'email', ''):
                 message = mail_template['template'].format(
@@ -108,11 +107,8 @@ class Alert(ElementaryAction):
                     subject_title=context.title,
                     novaideo_title=request.root.title
                 )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+                alert('email', [root.get_site_sender()], [member.email],
+                      subject=subject, body=message)
 
         return {}
 
@@ -153,7 +149,6 @@ class ImproveProposal(InfiniteCardinality):
     state_validation = improve_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        root = getSite()
         data = {}
         localizer = request.localizer
         data['title'] = localizer.translate(_('Amended version ')) + \
@@ -214,9 +209,9 @@ class VotingAmendments(ElementaryAction):
         root = request.root
         mail_template = root.get_mail_template('start_vote_amendments')
         subject = mail_template['subject'].format(subject_title=context.title)
-        alert = WorkingGroupAlert()
-        root.addtoproperty('alerts', alert)
-        alert.init_alert(members, [context])
+        alert('internal', [root], members,
+              internal_kind=InternalAlertKind.working_group_alert,
+              subjects=[context])
         for member in members:
             if getattr(member, 'email', ''):
                 message = mail_template['template'].format(
@@ -230,11 +225,8 @@ class VotingAmendments(ElementaryAction):
                     subject_url=url,
                     novaideo_title=root.title
                 )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+                alert('email', [root.get_site_sender()], [member.email],
+                      subject=subject, body=message)
 
         return {}
 
@@ -332,11 +324,8 @@ class AmendmentsResult(ElementaryAction):
                     message_result=result_body,
                     novaideo_title=root.title
                 )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member.email],
-                    sender=root.get_site_sender(),
-                    html=message)
+                alert('email', [root.get_site_sender()], [member.email],
+                      subject=subject, body=message)
 
     def start(self, context, request, appstruct, **kw):
         result = set()
@@ -376,14 +365,14 @@ class AmendmentsResult(ElementaryAction):
                     CorrelationType.solid)
             newcontext = copy_of_proposal
             copy_of_proposal.reindex()
-            alert = WorkingGroupAlert(alert_kind='amendments_result')
-            root.addtoproperty('alerts', alert)
-            alert.init_alert(members, [copy_of_proposal])
+            alert('internal', [root], members,
+                  internal_kind=InternalAlertKind.working_group_alert,
+                  subjects=[copy_of_proposal], alert_kind='amendments_result')
         else:
             context.state = PersistentList(['amendable', 'published'])
-            alert = WorkingGroupAlert()
-            root.addtoproperty('alerts', alert)
-            alert.init_alert(members, [context])
+            alert('internal', [root], members,
+                  internal_kind=InternalAlertKind.working_group_alert,
+                  subjects=[context])
             for amendment in context.amendments:
                 amendment.state = PersistentList(['archived'])
                 amendment.reindex()

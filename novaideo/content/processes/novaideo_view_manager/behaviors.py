@@ -16,13 +16,13 @@ from dace.processinstance.activity import (
     ActionType)
 from dace.processinstance.core import PROCESS_HISTORY_KEY
 
-from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from ..user_management.behaviors import (
     global_user_processsecurity, access_user_processsecurity)
 from novaideo.core import access_action
+from novaideo.utilities.alerts_utility import alert
 
 
 def search_processsecurity_validation(process, context):
@@ -284,9 +284,8 @@ class Contact(InfiniteCardinality):
         mail = appstruct.get('message')
         sender = appstruct.get('email')
         services = appstruct.get('services')
-        mailer_send(subject=subject, body=mail,
-                    recipients=list(services),
-                    sender=sender)
+        alert('email', [sender], list(services),
+              subject=subject, body=mail)
         return {}
 
     def redirect(self, context, request, **kw):

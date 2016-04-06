@@ -21,7 +21,7 @@ from pontus.schema import Schema
 from pontus.default_behavior import Cancel as DefaultCancel
 
 from novaideo import _
-from novaideo.ips.mailer import mailer_send
+from novaideo.utilities.alerts_utility import alert
 from novaideo.content.novaideo_application import NovaIdeoApplication
 
 
@@ -54,22 +54,20 @@ class Send(Behavior):
             reseturl = request.resource_url(reset)
             if not user.email:
                 raise ValueError('User does not possess a valid email address.')
-            
+
             root = request.root
             mail_template = root.get_mail_template('reset_password')
             subject = mail_template['subject'].format(novaideo_title=request.root.title)
             localizer = request.localizer
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(_(getattr(user, 'user_title',''))),
+                recipient_title=localizer.translate(_(getattr(user, 'user_title', ''))),
                 recipient_first_name=getattr(user, 'first_name', user.name),
-                recipient_last_name=getattr(user, 'last_name',''),
+                recipient_last_name=getattr(user, 'last_name', ''),
                 reseturl=reseturl,
                 novaideo_title=request.root.title
-                 )
-            mailer_send(subject=subject,
-                recipients=[user.email],
-                sender=root.get_site_sender(),
-                body=message)
+            )
+            alert('email', [root.get_site_sender()], [user.email],
+                  subject=subject, body=message)
 
         return {}
 

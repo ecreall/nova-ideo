@@ -30,7 +30,6 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import InfiniteCardinality, ActionType
 from dace.processinstance.core import ActivityExecuted
 
-from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import INovaIdeoApplication, Iidea
 from ..user_management.behaviors import (
     global_user_processsecurity,
@@ -43,12 +42,8 @@ from novaideo.utilities.util import connect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
     ObjectModified)
-from novaideo.content.alert import (
-    CommentAlert,
-    ExaminationAlert,
-    ModerationAlert,
-    SupportAlert)
-from novaideo.content.alert import ContentAlert
+from novaideo.utilities.alerts_utility import alert
+from novaideo.content.alert import InternalAlertKind
 from novaideo.views.filter import get_users_by_preferences
 
 
@@ -316,9 +311,10 @@ class ArchiveIdea(InfiniteCardinality):
         context.state = PersistentList(['archived'])
         context.reindex()
         user = context.author
-        alert = ModerationAlert()
-        root.addtoproperty('alerts', alert)
-        alert.init_alert([user], [context])
+        alert('internal', [root], [user],
+              internal_kind=InternalAlertKind.moderation_alert,
+              subjects=[context])
+
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('archive_idea_decision')
             localizer = request.localizer
@@ -333,11 +329,8 @@ class ArchiveIdea(InfiniteCardinality):
                 explanation=explanation,
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[user.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [user.email],
+                  subject=subject, body=message)
 
         return {}
 
@@ -367,9 +360,9 @@ class PublishIdeaModeration(InfiniteCardinality):
         context.init_published_at()
         context.reindex()
         user = context.author
-        alert = ModerationAlert()
-        root.addtoproperty('alerts', alert)
-        alert.init_alert([user], [context])
+        alert('internal', [root], [user],
+              internal_kind=InternalAlertKind.moderation_alert,
+              subjects=[context])
         if getattr(user, 'email', ''):
             localizer = request.localizer
             mail_template = root.get_mail_template('publish_idea_decision')
@@ -383,11 +376,8 @@ class PublishIdeaModeration(InfiniteCardinality):
                 subject_url=request.resource_url(context, "@@index"),
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[user.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [user.email],
+                  subject=subject, body=message)
 
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
@@ -548,10 +538,11 @@ class CommentIdea(InfiniteCardinality):
 
     def _alert_users(self, context, request, user):
         root = getSite()
-        alert = CommentAlert()
-        root.addtoproperty('alerts', alert)
         users = self._get_users_to_alerts(context, request)
-        alert.init_alert(users, [context])
+        alert('internal', [root], users,
+              internal_kind=InternalAlertKind.comment_alert,
+              subjects=[context])
+
         if user in users:
             users.remove(user)
 
@@ -574,11 +565,8 @@ class CommentIdea(InfiniteCardinality):
                 subject_type=subject_type,
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[user_to_alert.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [user_to_alert.email],
+                  subject=subject, body=message)
 
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
@@ -639,10 +627,10 @@ class PresentIdea(InfiniteCardinality):
         presentation_subject = appstruct['subject']
         presentation_message = appstruct['message']
         subject = presentation_subject.format(subject_title=context.title)
-        alert = ContentAlert(alert_kind='present')
-        root.addtoproperty('alerts', alert)
-        alert.init_alert(
-            [m for m in members if not isinstance(m, basestring)], [context])
+        users = [m for m in members if not isinstance(m, basestring)]
+        alert('internal', [root], users,
+              internal_kind=InternalAlertKind.content_alert,
+              subjects=[context], alert_kind='present')
         for member in members:
             recipient_title = ''
             recipient_first_name = ''
@@ -671,11 +659,8 @@ class PresentIdea(InfiniteCardinality):
                     my_last_name=user_last_name,
                     novaideo_title=root.title
                 )
-                mailer_send(
-                    subject=subject,
-                    recipients=[member_email],
-                    sender=root.get_site_sender(),
-                    body=message)
+                alert('email', [root.get_site_sender()], [member_email],
+                      subject=subject, body=message)
 
             if member is not user and member_email:
                 context._email_persons_contacted.append(
@@ -804,11 +789,12 @@ class MakeOpinion(InfiniteCardinality):
 
         member = context.author
         root = getSite()
-        alert = ExaminationAlert()
-        root.addtoproperty('alerts', alert)
         users = list(get_users_by_preferences(context))
         users.append(member)
-        alert.init_alert(users, [context])
+        alert('internal', [root], users,
+              internal_kind=InternalAlertKind.examination_alert,
+              subjects=[context])
+
         if getattr(member, 'email', ''):
             url = request.resource_url(context, "@@index")
             mail_template = root.get_mail_template('opinion_idea')
@@ -825,11 +811,8 @@ class MakeOpinion(InfiniteCardinality):
                 explanation=context.opinion['explanation'],
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [member.email],
+                  subject=subject, body=message)
 
         request.registry.notify(ObjectModified(
             object=context,
@@ -884,9 +867,10 @@ class SupportIdea(InfiniteCardinality):
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
         request.registry.notify(ActivityExecuted(self, [context], user))
         if user is not context.author:
-            alert = SupportAlert(support_kind='support')
-            request.root.addtoproperty('alerts', alert)
-            alert.init_alert([context.author], [context])
+            alert('internal', [request.root], [context.author],
+              internal_kind=InternalAlertKind.support_alert,
+              subjects=[context], support_kind='support')
+
         return {}
 
     def redirect(self, context, request, **kw):
@@ -912,9 +896,10 @@ class OpposeIdea(InfiniteCardinality):
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
         request.registry.notify(ActivityExecuted(self, [context], user))
         if user is not context.author:
-            alert = SupportAlert(support_kind='oppose')
-            request.root.addtoproperty('alerts', alert)
-            alert.init_alert([context.author], [context])
+            alert('internal', [request.root], [context.author],
+                  internal_kind=InternalAlertKind.support_alert,
+                  subjects=[context], support_kind='oppose')
+
         return {}
 
     def redirect(self, context, request, **kw):
@@ -949,9 +934,10 @@ class WithdrawToken(InfiniteCardinality):
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
         request.registry.notify(ActivityExecuted(self, [context], user))
         if user is not context.author:
-            alert = SupportAlert(support_kind='withdraw')
-            request.root.addtoproperty('alerts', alert)
-            alert.init_alert([context.author], [context])
+            alert('internal', [request.root], [context.author],
+                  internal_kind=InternalAlertKind.support_alert,
+                  subjects=[context], support_kind='withdraw')
+
         return {}
 
     def redirect(self, context, request, **kw):

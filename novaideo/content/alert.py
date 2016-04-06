@@ -18,7 +18,7 @@ from .interface import(
     IAlert)
 
 
-class AlertKind(object):
+class InternalAlertKind(object):
     """Alert's kinds"""
     comment_alert = 'comment_alert'
     content_alert = 'content_alert'
@@ -36,26 +36,26 @@ class AlertKind(object):
 class Alert(VisualisableElement, Entity):
     """Alert class"""
     templates = {
-        AlertKind.comment_alert: {
+        InternalAlertKind.comment_alert: {
             'default': 'novaideo:views/templates/alerts/comment_result.pt',
             'small': 'novaideo:views/templates/alerts/small_comment_result.pt'},
-        AlertKind.content_alert: {
+        InternalAlertKind.content_alert: {
             'default': 'novaideo:views/templates/alerts/content_result.pt',
             'small': 'novaideo:views/templates/alerts/small_content_result.pt'
         },
-        AlertKind.working_group_alert: {
+        InternalAlertKind.working_group_alert: {
             'default': 'novaideo:views/templates/alerts/wg_alert_result.pt',
             'small': 'novaideo:views/templates/alerts/small_wg_alert_result.pt'
         },
-        AlertKind.moderation_alert: {
+        InternalAlertKind.moderation_alert: {
             'default': 'novaideo:views/templates/alerts/moderation_result.pt',
             'small': 'novaideo:views/templates/alerts/small_moderation_result.pt'
         },
-        AlertKind.examination_alert: {
+        InternalAlertKind.examination_alert: {
             'default': 'novaideo:views/templates/alerts/examination_result.pt',
             'small': 'novaideo:views/templates/alerts/small_examination_result.pt'
         },
-        AlertKind.support_alert: {
+        InternalAlertKind.support_alert: {
             'default': 'novaideo:views/templates/alerts/support_result.pt',
             'small': 'novaideo:views/templates/alerts/small_support_result.pt'
         }
@@ -102,7 +102,7 @@ class Alert(VisualisableElement, Entity):
 class _CommentAlert(object):
 
     def __call__(self, **kwargs):
-        return Alert(AlertKind.comment_alert, **kwargs)
+        return Alert(InternalAlertKind.comment_alert, **kwargs)
 
 
 CommentAlert = _CommentAlert()
@@ -111,7 +111,7 @@ CommentAlert = _CommentAlert()
 class _ContentAlert(object):
 
     def __call__(self, **kwargs):
-        return Alert(AlertKind.content_alert, **kwargs)
+        return Alert(InternalAlertKind.content_alert, **kwargs)
 
 
 ContentAlert = _ContentAlert()
@@ -120,7 +120,7 @@ ContentAlert = _ContentAlert()
 class _WorkingGroupAlert(object):
 
     def __call__(self, **kwargs):
-        return Alert(AlertKind.working_group_alert, **kwargs)
+        return Alert(InternalAlertKind.working_group_alert, **kwargs)
 
 
 WorkingGroupAlert = _WorkingGroupAlert()
@@ -129,7 +129,7 @@ WorkingGroupAlert = _WorkingGroupAlert()
 class _ModerationAlert(object):
 
     def __call__(self, **kwargs):
-        return Alert(AlertKind.moderation_alert, **kwargs)
+        return Alert(InternalAlertKind.moderation_alert, **kwargs)
 
 
 ModerationAlert = _ModerationAlert()
@@ -138,7 +138,7 @@ ModerationAlert = _ModerationAlert()
 class _ExaminationAlert(object):
 
     def __call__(self, **kwargs):
-        return Alert(AlertKind.examination_alert, **kwargs)
+        return Alert(InternalAlertKind.examination_alert, **kwargs)
 
 
 ExaminationAlert = _ExaminationAlert()
@@ -147,7 +147,17 @@ ExaminationAlert = _ExaminationAlert()
 class _SupportAlert(object):
 
     def __call__(self, **kwargs):
-        return Alert(AlertKind.support_alert, **kwargs)
+        return Alert(InternalAlertKind.support_alert, **kwargs)
 
 
 SupportAlert = _SupportAlert()
+
+
+INTERNAL_ALERTS = {
+    InternalAlertKind.comment_alert: CommentAlert,
+    InternalAlertKind.working_group_alert: WorkingGroupAlert,
+    InternalAlertKind.moderation_alert: ModerationAlert,
+    InternalAlertKind.examination_alert: ExaminationAlert,
+    InternalAlertKind.support_alert: SupportAlert,
+    InternalAlertKind.content_alert: ContentAlert
+}

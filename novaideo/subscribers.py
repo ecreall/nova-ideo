@@ -15,7 +15,6 @@ from substanced.util import find_service
 
 from dace.util import getSite
 
-from novaideo.ips.mailer import mailer_send
 from novaideo import core
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
@@ -24,8 +23,8 @@ from novaideo.views.filter import (
     get_users_by_keywords, get_users_by_preferences)
 from novaideo.content.processes import get_states_mapping
 from novaideo import _
-from novaideo.content.alert import ContentAlert
-
+from novaideo.content.alert import InternalAlertKind
+from novaideo.utilities.alerts_utility import alert
 
 _CONTENT_TRANSLATION = [_("The proposal"),
                         _("The idea")]
@@ -74,38 +73,33 @@ def mysubscriber_object_published(event):
                 subject_type=subject_type,
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [member.email],
+                  subject=subject, body=message)
 
     if author in all_users:
         all_users.remove(author)
 
-    alert = ContentAlert(alert_kind='published')
-    root.addtoproperty('alerts', alert)
-    alert.init_alert(set(all_users), [content])
+    alert('internal', [root], set(all_users),
+          internal_kind=InternalAlertKind.content_alert,
+          subjects=[content], alert_kind='published')
 
     pref_author = get_users_by_preferences(author)
     all_users = [u for u in pref_author if u not in set(all_users)]
-    alert = ContentAlert(
-        alert_kind='published_author',
-        member_url=request.resource_url(author, '@@index'),
-        member_title=getattr(author, 'title', author.__name__))
-    root.addtoproperty('alerts', alert)
-    alert.init_alert(all_users, [content])
+    alert('internal', [root], all_users,
+          internal_kind=InternalAlertKind.content_alert,
+          subjects=[content], alert_kind='published_author',
+          member_url=request.resource_url(author, '@@index'),
+          member_title=getattr(author, 'title', author.__name__))
 
     if getattr(content, 'original', None):
         original = content.original
-        alert = ContentAlert(
-            alert_kind='duplicated',
-            url=request.resource_url(original, '@@index'),
-            duplicate_title=original.title)
-        root.addtoproperty('alerts', alert)
         users = list(get_users_by_preferences(original))
         users.append(original.author)
-        alert.init_alert(set(users), [content])
+        alert('internal', [root], set(users),
+              internal_kind=InternalAlertKind.content_alert,
+              subjects=[content], alert_kind='duplicated',
+              url=request.resource_url(original, '@@index'),
+              duplicate_title=original.title)
 
 
 @subscriber(ObjectModified)
@@ -152,15 +146,12 @@ def mysubscriber_object_modified(event):
                 subject_type=subject_type,
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[member.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [member.email],
+                  subject=subject, body=message)
 
-    alert = ContentAlert(alert_kind='modified')
-    root.addtoproperty('alerts', alert)
-    alert.init_alert(all_users, [content])
+    alert('internal', [root], all_users,
+          internal_kind=InternalAlertKind.content_alert,
+          subjects=[content], alert_kind='modified')
 
 
 @subscriber(CorrelableRemoved)

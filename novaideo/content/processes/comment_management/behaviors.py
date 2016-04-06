@@ -15,10 +15,10 @@ from dace.util import getSite
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.activity import InfiniteCardinality
 
-from novaideo.ips.mailer import mailer_send
 from novaideo.content.interface import IComment
 from novaideo import _
-from novaideo.content.alert import CommentAlert
+from novaideo.utilities.alerts_utility import alert
+from novaideo.content.alert import InternalAlertKind
 
 
 VALIDATOR_BY_CONTEXT = {}
@@ -91,9 +91,9 @@ class Respond(InfiniteCardinality):
 
         root = getSite()
         localizer = request.localizer
-        alert = CommentAlert()
-        root.addtoproperty('alerts', alert)
-        alert.init_alert(authors, [content])
+        alert('internal', [root], authors,
+              internal_kind=InternalAlertKind.comment_alert,
+              subjects=[content])
         mail_template = root.get_mail_template('alert_comment')
         subject_type = localizer.translate(
             _("The " + content.__class__.__name__.lower()))
@@ -112,16 +112,13 @@ class Respond(InfiniteCardinality):
                 subject_type=subject_type,
                 novaideo_title=root.title
             )
-            mailer_send(
-                subject=subject,
-                recipients=[user_to_alert.email],
-                sender=root.get_site_sender(),
-                body=message)
+            alert('email', [root.get_site_sender()], [user_to_alert.email],
+                  subject=subject, body=message)
 
         if comment_author is not user:
-            alert = CommentAlert(is_respons=True)
-            root.addtoproperty('alerts', alert)
-            alert.init_alert([comment_author], [content])
+            alert('internal', [root], [comment_author],
+                  internal_kind=InternalAlertKind.comment_alert,
+                  subjects=[content], is_respons=True)
             if getattr(comment_author, 'email', ''):
                 mail_template = root.get_mail_template('alert_respons')
                 subject = mail_template['subject'].format(
@@ -139,11 +136,8 @@ class Respond(InfiniteCardinality):
                     subject_type=subject_type,
                     novaideo_title=root.title
                 )
-                mailer_send(
-                    subject=subject,
-                    recipients=[comment_author.email],
-                    sender=root.get_site_sender(),
-                    body=message)
+                alert('email', [root.get_site_sender()], [comment_author.email],
+                      subject=subject, body=message)
 
         return {'newcontext': comment.subject}
 
