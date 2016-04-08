@@ -110,7 +110,7 @@ VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
                            " group will be useful")
 
 
-VP_DEFAULT_DURATION = datetime.timedelta(minutes=2)#days=1)
+VP_DEFAULT_DURATION = datetime.timedelta(days=1)
 
 
 AMENDMENTS_CYCLE_DEFAULT_DURATION = {

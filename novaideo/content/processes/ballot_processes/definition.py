@@ -29,14 +29,15 @@ from dace.objectofcollaboration.services.processdef_container import (
 from pontus.core import VisualisableElement
 
 from novaideo import _
+from novaideo.content.processes.proposal_management.behaviors import (
+    VP_DEFAULT_DURATION)
 
 
 def time_duration(process):
-    duration = datetime.now(tz=pytz.UTC)
     if hasattr(process, 'duration'):
-        duration = duration + getattr(process, 'duration')
+        return getattr(process, 'duration')
 
-    return duration
+    return VP_DEFAULT_DURATION
 
 
 def event_condition(process):
@@ -72,7 +73,7 @@ class BallotProcess(ProcessDefinition, VisualisableElement):
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
                 timer = IntermediateCatchEventDefinition(
-                           TimerEventDefinition(time_date=time_duration)),
+                           TimerEventDefinition(time_duration=time_duration)),
                 conditional = IntermediateCatchEventDefinition(
                              ConditionalEventDefinition(event_condition)),
                 eg = ExclusiveGatewayDefinition(),
