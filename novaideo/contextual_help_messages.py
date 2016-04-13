@@ -1,7 +1,4 @@
 
-from webob.multidict import NoVars
-from pyramid.threadlocal import get_current_request
-
 from dace.objectofcollaboration.principal.util import Anonymous, has_role
 
 from novaideo.content.novaideo_application import NovaIdeoApplication
@@ -12,19 +9,12 @@ from novaideo.content.amendment import Amendment
 from novaideo.content.workspace import Workspace
 
 
-def homepage_search(context, user):
-    request = get_current_request()
-    return not isinstance(request.POST, NoVars) or request.GET
-
-
 def homepage_condition(context, user):
-    return isinstance(user, Anonymous) and \
-           not homepage_search(context, user)
+    return isinstance(user, Anonymous)
 
 
 def homepage_connected_condition(context, user):
-    return not isinstance(user, Anonymous) and \
-           not homepage_search(context, user)
+    return not isinstance(user, Anonymous)
 
 
 def idea_not_examined(context, user):
@@ -79,10 +69,11 @@ CONTEXTUAL_HELP_MESSAGES = {
 	   	                    'contextual_help_messages/homepage_message.pt', 1),
 	   (homepage_connected_condition, 'novaideo:views/templates/panels/'
 	   	           'contextual_help_messages/homepage_connected_message.pt', 1),
-	   (homepage_search, 'novaideo:views/templates/panels/'
-	   	           'contextual_help_messages/homepage_search.pt', 2),
 	   ],
-
+    (NovaIdeoApplication, 'any', 'search'): [
+	   (None, 'novaideo:views/templates/panels/'
+	   	      'contextual_help_messages/homepage_search.pt', 1),
+	   ],
     (NovaIdeoApplication, 'any', 'analytics'): [
 	   (None, 'novaideo:views/templates/panels/'
 	   	                    'contextual_help_messages/analytics.pt', 1)],
