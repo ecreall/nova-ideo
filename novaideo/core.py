@@ -6,10 +6,9 @@
 
 import colander
 import venusian
-import deform
 from persistent.list import PersistentList
 from zope.interface import implementer
-from pyramid.threadlocal import get_current_request, get_current_registry
+from pyramid.threadlocal import get_current_request
 
 from substanced.util import get_oid
 from substanced.interfaces import IUserLocator
@@ -42,7 +41,7 @@ from novaideo.content.interface import (
     IFile)
 
 
-BATCH_DEFAULT_SIZE = 10
+BATCH_DEFAULT_SIZE = 50
 
 SEARCHABLE_CONTENTS = {}
 
