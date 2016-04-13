@@ -51,6 +51,21 @@ class Search(InfiniteCardinality):
                        'content_types': ",".join(kw['content_types'])}))
 
 
+def home_processsecurity_validation(process, context):
+    return access_user_processsecurity(process, context)
+
+
+@access_action()
+class SeeHome(InfiniteCardinality):
+    isSequential = False
+    context = INovaIdeoApplication
+    actionType = ActionType.automatic
+    processsecurity_validation = home_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 def seemy_roles_validation(process, context):
     return has_role(role=('Member',))
 

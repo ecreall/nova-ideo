@@ -18,7 +18,7 @@
      <div class="keywords-result">
       <span class="glyphicon glyphicon-tags"></span> 
       <tal:loop repeat="k object.keywords">
-            <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+            <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
       </tal:loop>
     </div>
     <div class="working-group-result">

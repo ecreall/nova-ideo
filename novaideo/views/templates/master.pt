@@ -69,6 +69,8 @@
             type="text/javascript"></script>
     <script src="${su('daceui:static/jquery.infinitescroll.js')}"
             type="text/javascript"></script>
+    <script src="${su('daceui:static/behaviors.local.js')}"
+            type="text/javascript"></script>
     <script src="${su('daceui:static/jquery-endless-scroll/js/jquery.endless-scroll.js')}"
             type="text/javascript"></script>
     <script src="${su('novaideo:static/js/novaideo_langs.js')}"

@@ -57,7 +57,7 @@
         </dt>
         <dd tal:condition="keywordsdiff">
           <tal:loop repeat="k keywordsdiff">
-            <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k['title']})"><del tal:condition="k['state']=='del'">${k['title']}</del><ins tal:condition="k['state']=='ins'">${k['title']}</ins><span tal:condition="k['state']=='nothing'">${k['title']}</span></a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+            <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k['title']})"><del tal:condition="k['state']=='del'">${k['title']}</del><ins tal:condition="k['state']=='ins'">${k['title']}</ins><span tal:condition="k['state']=='nothing'">${k['title']}</span></a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
           </tal:loop>
         </dd>
     </dl>

@@ -30,7 +30,8 @@ from .behaviors import (
     Contact,
     SeeAlerts,
     SeeUsers,
-    SeeAnalytics
+    SeeAnalytics,
+    SeeHome
     )
 from novaideo import _
 
@@ -51,6 +52,10 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                 search = ActivityDefinition(contexts=[Search],
                                        description=_("Search"),
                                        title=_("Search"),
+                                       groups=[]),
+                home = ActivityDefinition(contexts=[SeeHome],
+                                       description=_("Home"),
+                                       title=_("Home"),
                                        groups=[]),
                 mycontents = ActivityDefinition(contexts=[SeeMyContents],
                                        description=_("See my contents"),
@@ -107,6 +112,8 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'search'),
                 TransitionDefinition('search', 'eg'),
+                TransitionDefinition('pg', 'home'),
+                TransitionDefinition('home', 'eg'),
                 TransitionDefinition('pg', 'mycontents'),
                 TransitionDefinition('mycontents', 'eg'),
                 TransitionDefinition('pg', 'myselections'),

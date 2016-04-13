@@ -30,13 +30,16 @@ function set_visited(){
 function initscroll(){
   $('.results').infinitescroll('destroy');
   $('.results').infinitescroll({
+    behavior: 'local',
+    bufferPx: 0,
+
+    binder: $('.result-scroll'),
     navSelector  : ".results .batch",
                    // selector for the paged navigation (it will be hidden)
     nextSelector : ".results .pager .next",
                    // selector for the NEXT link (to page 2)
-    itemSelector : ".results div.result-container",
-                   // selector for all items you'll retrieve
-    binder: $('.result-scroll'),
+    itemSelector : ".results .result-container",
+
     pathParse: function(path, next_page) {
        var new_path = path;
        var filter = $('#filter-'+$('.results').first().attr('id'));
@@ -58,11 +61,12 @@ function initscroll(){
             data_get += '&'+'scroll=true';
             new_path += '&'+ data_get;
       };
-      var parts = new_path.match(/^(.*?batch_num=)1(.*|$)/).slice(1);
+      // var parts = new_path.match(/^(.*?batch_num=)1(.*|$)/).slice(1);
 // ["http://0.0.0.0:6543/@@seemyideas?batch_num=", "&batch_size=1&action_uid=-4657697968224339750"]
 // substanced Batch starts at 0, not 1
        var f = function(currPage) {
-         return parts.join(currPage - 1);
+          var next_path = $($($('.results .result-container').parents('div').first()).find('.result-container').last()).data('nex_url')
+          return next_path +'&'+ data_get;
        };
        return f;
     },
@@ -170,7 +174,7 @@ function init_search_results(){
 
 
 $(document).ready(function(){
-  
+  $('.hidden-js').css('display', 'none');  
 
   $(".navbar-toggle.collapsed").on('click', collapse_current_collpsein);
 
@@ -210,12 +214,12 @@ $(document).ready(function(){
     $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-minus');
   });
 
-  $('.scroll-able.result-scroll').endlessScroll({
-      fireOnce: false,
-      callback: function(i, n, p) {
-        $(window).scroll()
-      }
-    });
+  // $('.scroll-able.result-scroll').endlessScroll({
+  //     fireOnce: false,
+  //     callback: function(i, n, p) {
+  //       $(window).scroll()
+  //     }
+  //   });
 
 //code adapted from http://bootsnipp.com/snippets/featured/jquery-checkbox-buttons
 $(function () {

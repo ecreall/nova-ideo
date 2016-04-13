@@ -42,7 +42,7 @@ from novaideo.content.interface import (
     IFile)
 
 
-BATCH_DEFAULT_SIZE = 100
+BATCH_DEFAULT_SIZE = 10
 
 SEARCHABLE_CONTENTS = {}
 

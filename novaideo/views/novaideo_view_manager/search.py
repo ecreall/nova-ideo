@@ -27,12 +27,11 @@ from .widget import SearchTextInputWidget, SearchFormWidget
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.content.processes import get_states_mapping
 from novaideo.views.filter import (
-    get_filter, FilterView, FILTER_SOURCES,
+    FilterView, FILTER_SOURCES,
     merge_with_filter_view, find_entities)
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
 from novaideo.content.person import Person
-
 
 
 CONTENTS_MESSAGES = {
@@ -144,10 +143,7 @@ class SearchSchema(Schema):
         )
 
 
-@view_config(
-    name='search',
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
+
 class SearchView(FormView):
     title = _('Search')
     name = 'search'
@@ -204,7 +200,7 @@ class SearchView(FormView):
 
     def before_update(self):
         root = getSite()
-        self.action = self.request.resource_url(root, '')
+        self.action = self.request.resource_url(root, 'search')
 
     def default_data(self):
         appstruct = self.calculate_posted_filter()
@@ -215,57 +211,20 @@ class SearchView(FormView):
 
 
 @view_config(
-    name='',
+    name='search',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SearchResultView(BasicView):
     title = _('Nova-Ideo contents')
     name = ''
-    # validators = [Search.get_validator()]
+    behaviors = [Search]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
     viewid = 'search_result'
 
-    def _add_filter(self, user):
-        def source(**args):
-            default_content = [key[0] for key in
-                               get_default_searchable_content(self.request)]
-            default_content.remove("person")
-            filter_ = {
-                'metadata_filter': {'content_types': default_content}
-            }
-            objects = find_entities(user=user, filters=[filter_], **args)
-            return objects
-
-        url = self.request.resource_url(self.context, '@@novaideoapi')
-        select = ['metadata_filter', 'geographic_filter',
-                  'contribution_filter',
-                  ('temporal_filter', ['negation', 'created_date']),
-                  'text_filter', 'other_filter']
-        return get_filter(
-            self,
-            url=url,
-            source=source,
-            select=select,
-            filter_source="search_source")
-
-    def update_anonymous(self):
-        values = {}
-        result = {}
-        body = self.content(
-            args=values, template=self.anonymous_template)['body']
-        item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates: [item]}
-        self.title = ''
-        self.wrapper_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view_wrapper.pt'
-        return result
-
     def update(self):
         user = get_current()
-        if not self.request.accessible_to_anonymous:
-            return self.update_anonymous()
-
         validated = getattr(self, 'validated', {})
         not_validated = True if not validated else False
         posted = self.request.POST or self.request.GET or {}
@@ -277,9 +236,7 @@ class SearchResultView(BasicView):
             validated = formviewinstance.calculate_posted_filter()
             executed = getattr(formviewinstance, 'executed', False)
 
-        filter_form = None
         if not executed or self.params('filter_result'):
-            filter_form, filter_data = self._add_filter(user)
             default_content = [key[0] for key in
                                get_default_searchable_content(self.request)]
             default_content.remove("person")
@@ -294,8 +251,9 @@ class SearchResultView(BasicView):
             user=user,
             sort_on='release_date', reverse=True,
             **validated)
-        url = self.request.resource_url(self.context, self.request.view_name,
-                                        query=posted)
+        url = self.request.resource_url(
+            self.context, self.request.view_name,
+            query=posted)
         batch = Batch(objects,
                       self.request,
                       url=url,
@@ -308,13 +266,6 @@ class SearchResultView(BasicView):
 
         self.title = _(CONTENTS_MESSAGES[index],
                        mapping={'nember': len_result})
-
-        filter_instance = getattr(self, 'filter_instance', None)
-        filter_body = None
-        if filter_instance:
-            filter_data['filter_message'] = self.title
-            filter_body = filter_instance.get_body(filter_data)
-
         result_body = []
         for obj in batch:
             render_dict = {'object': obj,
@@ -327,15 +278,10 @@ class SearchResultView(BasicView):
 
         result = {}
         values = {'bodies': result_body,
-                  'batch': batch,
-                  'filter_body': filter_body}
+                  'batch': batch}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
-        if filter_form:
-            result['css_links'] = filter_form['css_links']
-            result['js_links'] = filter_form['js_links']
-
         return result
 
 
