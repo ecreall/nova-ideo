@@ -13,7 +13,8 @@ novaideoI18n = {
   "Comment sent": "Comment sent" ,
   "Your comment is integrated": "Your comment is integrated", 
   "Idea already exist!": "Idea already exist" ,
-  "Please select a valid idea!": "Please select a valid idea", 
+  "Please select a valid idea!": "Please select a valid idea",
+  "No more item.": "No more item."
 },
 
 'fr':{
@@ -29,7 +30,8 @@ novaideoI18n = {
   "Comment sent": "Votre message est bien envoyé" ,
   "Your comment is integrated": "Votre message est prise en compte", 
   "Idea already exist!": "Idée est déjà incluse" ,
-  "Please select a valid idea!": "Veuillez sélectionner une idée valide", 
+  "Please select a valid idea!": "Veuillez sélectionner une idée valide",
+  "No more item.": "Pas d'autres éléments."
 }
 }
 
