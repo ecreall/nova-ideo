@@ -71,7 +71,9 @@ function initscroll(){
        return f;
     },
     loading: {
-      finishedMsg: "<em>No more item.</em>"
+      finishedMsg: '<span class="label label-warning">'+ creationculturelle_translate("No more item.")+"</span>",
+      img: window.location.protocol + "//" + window.location.host + "/novaideostatic/images/progress_bar.gif",
+      msgText: "",
     }
   });
 
