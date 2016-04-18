@@ -15,15 +15,15 @@ from novaideo.content.processes.proposal_management.behaviors import (
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.views.idea_management.compare_idea import (
-    CompareIdeaFormView, 
-    CompareIdeaView, 
+    CompareIdeaFormView,
+    CompareIdeaView,
     DiffView as DiffViewIdea)
 
 
 class DiffView(DiffViewIdea):
     template = 'novaideo:views/proposal_management/templates/diff_result.pt'
     validators = [CompareProposal.get_validator()]
-    
+
 
 class CompareProposalFormView(CompareIdeaFormView):
     title = _('Compare proposal form')
@@ -35,20 +35,24 @@ class CompareProposalFormView(CompareIdeaFormView):
         formwidget = deform.widget.FormWidget(css_class='compareform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
-        view_name = 'compareproposal'
-        formwidget.ajax_url = self.request.resource_url(self.context, 
+        view_name = 'compare'
+        formwidget.ajax_url = self.request.resource_url(self.context,
                                                         '@@'+view_name)
 
 
 @view_config(
-    name='compareproposal',
+    name='compare',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CompareProposalView(CompareIdeaView):
     title = _('Compare versions')
-    name = 'compareproposal'
+    name = 'compare'
     views = (CompareProposalFormView, DiffView)
 
+    def before_update(self):
+        self.viewid = 'compare'
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({CompareProposal:CompareProposalView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CompareProposal: CompareProposalView})

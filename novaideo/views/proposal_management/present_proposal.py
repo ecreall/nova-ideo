@@ -19,8 +19,8 @@ from novaideo.content.processes.proposal_management.behaviors import (
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.views.idea_management.present_idea import (
-    PresentIdeaView, 
-    PresentIdeaSchema, 
+    PresentIdeaView,
+    PresentIdeaSchema,
     SentToView as IdeaSentToView)
 
 
@@ -45,21 +45,21 @@ def default_message(node, kw):
     url = request.resource_url(context, "@@index")
     user = get_current()
     return mail_template['template'].format(
-                recipient_title='',
-                recipient_first_name='',
-                recipient_last_name='',
-                subject_url=url,
-                subject_title=getattr(context, 'title', context.name),
-                my_title=localizer.translate(_(getattr(user, 'user_title',''))),
-                my_first_name=getattr(user, 'first_name', user.name),
-                my_last_name=getattr(user, 'last_name',''),
-                novaideo_title=request.root.title
-                 )
+        recipient_title='',
+        recipient_first_name='',
+        recipient_last_name='',
+        subject_url=url,
+        subject_title=getattr(context, 'title', context.name),
+        my_title=localizer.translate(_(getattr(user, 'user_title', ''))),
+        my_first_name=getattr(user, 'first_name', user.name),
+        my_last_name=getattr(user, 'last_name', ''),
+        novaideo_title=request.root.title
+    )
 
 
 class PresentProposalSchema(PresentIdeaSchema):
 
-    subject =  colander.SchemaNode(
+    subject = colander.SchemaNode(
         colander.String(),
         default=default_subject,
         title=_('Subject'),
@@ -76,14 +76,14 @@ class PresentProposalSchema(PresentIdeaSchema):
 class PresentProposalFormView(FormView):
 
     title = _('Submit the proposal to others')
-    schema = select(PresentProposalSchema(), 
-                   ['members', 'subject', 'message', 'send_to_me'])
+    schema = select(PresentProposalSchema(),
+                    ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentProposal]
     formid = 'formpresentproposalform'
     name = 'presentproposalform'
 
     def before_update(self):
-        formwidget = deform.widget.FormWidget(css_class='controled-form', 
+        formwidget = deform.widget.FormWidget(css_class='controled-form',
                                               activable=True,
                                               button_css_class="pull-right",
                                               picto_css_class="glyphicon glyphicon-envelope",
@@ -98,15 +98,19 @@ class PresentProposalFormView(FormView):
 
 
 @view_config(
-    name='presentproposal',
+    name='present',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PresentProposalView(PresentIdeaView):
     title = _('Submit the proposal to others')
     description = _('Submit the proposal to others')
-    name = 'presentproposal'
+    name = 'present'
     views = (SentToView, PresentProposalFormView)
 
+    def before_update(self):
+        self.viewid = 'present'
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({PresentProposal:PresentProposalView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {PresentProposal: PresentProposalView})

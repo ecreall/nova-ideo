@@ -18,7 +18,7 @@ from pontus.view import BasicView
 from pontus.util import merge_dicts
 from daceui.interfaces import IDaceUIAPI
 
-from novaideo.content.processes.idea_management.behaviors import  CommentIdea
+from novaideo.content.processes.idea_management.behaviors import CommentIdea
 from novaideo.content.comment import CommentSchema, Comment
 from novaideo.content.idea import Idea
 from novaideo import _
@@ -58,42 +58,43 @@ class CommentsView(BasicView):
     def _rendre_comments(self, comments, origin=False):
         all_comments = []
         dace_ui_api = get_current_registry().getUtility(
-                                               IDaceUIAPI,'dace_ui_api')
-        comments_actions = dace_ui_api.get_actions(comments, self.request,
-                                                'commentmanagement', 'respond')
+            IDaceUIAPI,'dace_ui_api')
+        comments_actions = dace_ui_api.get_actions(
+            comments, self.request,
+            'commentmanagement', 'respond')
         action_updated, messages, \
         resources, actions = dace_ui_api.update_actions(self.request,
                                                         comments_actions)
         actions = dict([(a['context'], a) for a in actions])
-        all_comments = sorted(list(actions.values()), 
+        all_comments = sorted(list(actions.values()),
                               key=lambda e: e['context'].created_at)
         values = {
-                'comments': all_comments,
-                'view': self,
-                'origin':origin,
-                'level': COMMENT_LEVEL
-               }
+            'comments': all_comments,
+            'view': self,
+            'origin': origin,
+            'level': COMMENT_LEVEL
+        }
         body = self.content(args=values, template=self.template)['body']
         return body, resources, messages, action_updated
 
     def update(self):
         result = {}
-        body, resources, messages, isactive =  self._rendre_comments(
-                                          self.context.comments, True)
+        body, resources, messages, isactive = self._rendre_comments(
+            self.context.comments, True)
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         result.update(resources)
-        result  = merge_dicts(self.requirements_copy, result)
+        result = merge_dicts(self.requirements_copy, result)
         return result
 
 
 class CommentIdeaFormView(FormView):
 
     title = _('Discuss the idea')
-    schema = select(CommentSchema(factory=Comment, 
-                                  editable=True, 
+    schema = select(CommentSchema(factory=Comment,
+                                  editable=True,
                                   omit=('related_contents',)),
                     ['intention', 'comment', 'related_contents'])
     behaviors = [CommentIdea]
@@ -105,26 +106,27 @@ class CommentIdeaFormView(FormView):
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         view_name = self.request.view_name
         if self.request.view_name == 'dace-ui-api-view':
-            view_name = 'commentidea'
+            view_name = 'comment'
 
-        formwidget.ajax_url = self.request.resource_url(self.context, 
+        formwidget.ajax_url = self.request.resource_url(self.context,
                                                         '@@'+view_name)
         self.schema.widget = formwidget
 
 
 COMMENT_MESSAGE = {'0': _(u"""Pas de fils de discussion"""),
-                      '1': _(u"""Fil de discussion"""),
-                      '*': _(u"""Fils de discussion""")} 
+                   '1': _(u"""Fil de discussion"""),
+                   '*': _(u"""Fils de discussion""")}
+
 
 @view_config(
-    name='commentidea',
+    name='comment',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CommentIdeaView(MultipleView):
     title = _('Discuss the idea')
     description = _('Discuss the idea')
-    name = 'commentidea'
+    name = 'comment'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CommentIdeaFormView, CommentsView)
@@ -141,5 +143,8 @@ class CommentIdeaView(MultipleView):
                    index)
         return message
 
+    def before_update(self):
+        self.viewid = 'comment'
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({CommentIdea:CommentIdeaView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CommentIdea: CommentIdeaView})

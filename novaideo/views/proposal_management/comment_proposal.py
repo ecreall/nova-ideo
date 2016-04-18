@@ -35,23 +35,26 @@ class CommentProposalFormView(CommentIdeaFormView):
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         view_name = self.request.view_name
         if self.request.view_name == 'dace-ui-api-view':
-            view_name = 'commentproposal'
+            view_name = 'comment'
 
         formwidget.ajax_url = self.request.resource_url(self.context,
-                                                       '@@'+view_name)
+                                                        '@@'+view_name)
         self.schema.widget = formwidget
 
 
 @view_config(
-    name='commentproposal',
+    name='comment',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CommentProposalView(CommentIdeaView):
     title = _('Discuss the proposal')
     description = _('Discuss the proposal')
-    name = 'commentidea'
+    name = 'comment'
     views = (CommentProposalFormView, CommentsView)
 
+    def before_update(self):
+        self.viewid = 'comment'
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({CommentProposal:CommentProposalView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update({CommentProposal: CommentProposalView})

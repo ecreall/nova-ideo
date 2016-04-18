@@ -16,16 +16,17 @@ from novaideo.content.processes.proposal_management.behaviors import  Associate
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.views.idea_management.associate import (
-    RelatedContentsView, 
+    RelatedContentsView,
     AssociateView as AssociateIdeaView)
 from novaideo.content.correlation import CorrelationSchema, Correlation
+
 
 class AssociateFormView(FormView):
 
     title = _('Associate contents')
-    schema = select(CorrelationSchema(factory=Correlation, 
+    schema = select(CorrelationSchema(factory=Correlation,
                                       editable=True),
-                    ['targets', 'intention','comment'])
+                    ['targets', 'intention', 'comment'])
     behaviors = [Associate]
     formid = 'formassociate'
     name = 'associateform'
@@ -33,17 +34,18 @@ class AssociateFormView(FormView):
     def before_update(self):
         target = self.schema.get('targets')
         target.title = _("Related contents")
-        formwidget = deform.widget.FormWidget(css_class='controled-form', 
-                                              activable=True,
-                                              button_css_class="pull-right",
-                                              picto_css_class="glyphicon glyphicon-link",
-                                              button_title=_("Associate contents"))
+        formwidget = deform.widget.FormWidget(
+            css_class='controled-form',
+            activable=True,
+            button_css_class="pull-right",
+            picto_css_class="glyphicon glyphicon-link",
+            button_title=_("Associate contents"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 
 
 @view_config(
-    name='associateproposal',
+    name='associate',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
     )
@@ -52,5 +54,9 @@ class AssociateView(AssociateIdeaView):
     description = _("Associate the proposal to an other content")
     views = (RelatedContentsView, AssociateFormView)
 
+    def before_update(self):
+        self.viewid = 'associate'
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({Associate:AssociateView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {Associate: AssociateView})

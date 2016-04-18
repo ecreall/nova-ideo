@@ -12,12 +12,11 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from novaideo.content.processes.amendment_management.behaviors import (
     CommentAmendment)
 from novaideo.views.idea_management.comment_idea import (
-    CommentIdeaView, 
-    CommentIdeaFormView, 
+    CommentIdeaView,
+    CommentIdeaFormView,
     CommentsView as CommentsIdeaView)
 from novaideo.content.amendment import Amendment
 from novaideo import _
-
 
 
 class CommentsView(CommentsIdeaView):
@@ -36,23 +35,27 @@ class CommentAmendmentFormView(CommentIdeaFormView):
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         view_name = self.request.view_name
         if self.request.view_name == 'dace-ui-api-view':
-            view_name = 'commentamendment'
+            view_name = 'comment'
 
         formwidget.ajax_url = self.request.resource_url(self.context,
-                                                 '@@'+view_name)
+                                                        '@@'+view_name)
         self.schema.widget = formwidget
 
 
 @view_config(
-    name='commentamendment',
+    name='comment',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CommentAmendmentView(CommentIdeaView):
     title = _('Discuss the amended version')
     description = _('Discuss the amended version')
-    name = 'commentidea'
+    name = 'comment'
     views = (CommentAmendmentFormView, CommentsView)
 
+    def before_update(self):
+        self.viewid = 'comment'
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({CommentAmendment:CommentAmendmentView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CommentAmendment: CommentAmendmentView})

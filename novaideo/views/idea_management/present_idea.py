@@ -194,7 +194,7 @@ class PresentIdeaFormView(FormView):
 
 
 @view_config(
-    name='presentidea',
+    name='present',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
     )
@@ -202,7 +202,7 @@ class PresentIdeaView(MultipleView):
 
     title = _('Submit the idea to others')
     description = _('Submit the idea to others')
-    name = 'presentidea'
+    name = 'present'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (SentToView, PresentIdeaFormView)
@@ -215,6 +215,8 @@ class PresentIdeaView(MultipleView):
 
         return message
 
+    def before_update(self):
+        self.viewid = 'present'
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {PresentIdea: PresentIdeaView})

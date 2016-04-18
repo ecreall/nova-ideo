@@ -50,8 +50,8 @@ class DiffView(BasicView):
                 getattr(versionobj, 'text', ''),
                 getattr(self.context, 'text', ''))
             soupd, descriptiondiff = html_diff_wrapper.render_html_diff(
-                                '<div>'+getattr(versionobj, 'description', '')+'</div>',
-                                '<div>'+getattr(self.context, 'description', '')+'</div>')
+                '<div>'+getattr(versionobj, 'description', '')+'</div>',
+                '<div>'+getattr(self.context, 'description', '')+'</div>')
             for k in versionobj.keywords:
                 if k in self.context.keywords:
                     keywordsdiff.append({'title': k, 'state': 'nothing'})
@@ -134,19 +134,19 @@ class CompareIdeaFormView(FormView):
         formwidget = deform.widget.FormWidget(css_class='compareform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
-        view_name = 'compareidea'
+        view_name = 'compare'
         formwidget.ajax_url = self.request.resource_url(self.context,
                                                         '@@'+view_name)
 
 
 @view_config(
-    name='compareidea',
+    name='compare',
     context=Idea,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CompareIdeaView(MultipleView):
     title = _('Compare versions')
-    name = 'compareidea'
+    name = 'compare'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CompareIdeaFormView, DiffView)
@@ -163,6 +163,8 @@ class CompareIdeaView(MultipleView):
                    index)
         return message
 
+    def before_update(self):
+        self.viewid = 'compare'
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {CompareIdea: CompareIdeaView})

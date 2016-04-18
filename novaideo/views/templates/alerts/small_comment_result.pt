@@ -7,7 +7,7 @@
 	  	 tal:define="subject object.subjects[0];
 	  	             icon 'glyphicon glyphicon-comment'">
 	    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
-	    <span>Un commentaire a été ajouté à la contribution <a href="${request.resource_url(subject, '@@index')}">
+	    <span>Un commentaire a été ajouté à la contribution <a href="${request.resource_url(subject, '@@index#comment')}">
 	    	<span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
 	    </span>
 	  </div>
@@ -16,7 +16,7 @@
 	  	 tal:define="subject object.subjects[0];
 	  	             icon 'glyphicon glyphicon-share-alt'">
 	    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
-	    <span>Une personne a répondu à votre commentaire concernant la contribution <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+	    <span>Une personne a répondu à votre commentaire concernant la contribution <a href="${request.resource_url(subject, '@@index#comment')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 	  </div>
 	</div>
 </div>

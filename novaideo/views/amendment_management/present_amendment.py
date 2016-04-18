@@ -19,8 +19,8 @@ from novaideo.content.processes.amendment_management.behaviors import (
 from novaideo.content.amendment import Amendment
 from novaideo import _
 from novaideo.views.idea_management.present_idea import (
-    PresentIdeaView, 
-    PresentIdeaSchema, 
+    PresentIdeaView,
+    PresentIdeaSchema,
     SentToView as IdeaSentToView)
 
 
@@ -45,21 +45,21 @@ def default_message(node, kw):
     url = request.resource_url(context, "@@index")
     user = get_current()
     return mail_template['template'].format(
-                recipient_title='',
-                recipient_first_name='',
-                recipient_last_name='',
-                subject_url=url,
-                subject_title=getattr(context, 'title', context.name),
-                my_title=localizer.translate(_(getattr(user, 'user_title',''))),
-                my_first_name=getattr(user, 'first_name', user.name),
-                my_last_name=getattr(user, 'last_name',''),
-                novaideo_title=request.root.title
-                 )
+        recipient_title='',
+        recipient_first_name='',
+        recipient_last_name='',
+        subject_url=url,
+        subject_title=getattr(context, 'title', context.name),
+        my_title=localizer.translate(_(getattr(user, 'user_title', ''))),
+        my_first_name=getattr(user, 'first_name', user.name),
+        my_last_name=getattr(user, 'last_name', ''),
+        novaideo_title=request.root.title
+    )
 
 
 class PresentAmendmentSchema(PresentIdeaSchema):
 
-    subject =  colander.SchemaNode(
+    subject = colander.SchemaNode(
         colander.String(),
         default=default_subject,
         title=_('Subject'),
@@ -76,18 +76,19 @@ class PresentAmendmentSchema(PresentIdeaSchema):
 class PresentAmendmentFormView(FormView):
 
     title = _('Submit the amended version to others')
-    schema = select(PresentAmendmentSchema(), 
-                   ['members', 'subject', 'message', 'send_to_me'])
+    schema = select(PresentAmendmentSchema(),
+                    ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentAmendment]
     formid = 'formpresentamendmentform'
     name = 'presentamendmentform'
 
     def before_update(self):
-        formwidget = deform.widget.FormWidget(css_class='controled-form', 
-                                activable=True,
-                                button_css_class="pull-right",
-                                picto_css_class="glyphicon glyphicon-envelope",
-                                button_title=_("Present"))
+        formwidget = deform.widget.FormWidget(
+            css_class='controled-form',
+            activable=True,
+            button_css_class="pull-right",
+            picto_css_class="glyphicon glyphicon-envelope",
+            button_title=_("Present"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 
@@ -98,14 +99,18 @@ class PresentAmendmentFormView(FormView):
 
 
 @view_config(
-    name='presentamendment',
+    name='present',
     context=Amendment,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PresentAmendmentView(PresentIdeaView):
     title = _('Submit the amended version to others')
-    name = 'presentamendment'
+    name = 'present'
     views = (SentToView, PresentAmendmentFormView)
 
+    def before_update(self):
+        self.viewid = 'present'
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({PresentAmendment:PresentAmendmentView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {PresentAmendment: PresentAmendmentView})

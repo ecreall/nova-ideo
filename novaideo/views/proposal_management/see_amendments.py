@@ -76,5 +76,9 @@ class SeeAmendmentsView(BasicView):
     def get_message(self):
         return self.message
 
+    def before_update(self):
+        self.viewid = 'editamendments'
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeAmendments:SeeAmendmentsView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+  {SeeAmendments: SeeAmendmentsView})

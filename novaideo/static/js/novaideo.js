@@ -175,8 +175,17 @@ function init_search_results(){
 }
 
 
+function scroll_to_panel(){
+  var url = document.location.toString();
+  if ( url.match('#') ) {
+      var panel = $('#'+url.split('#')[1])
+      panel.addClass('in');
+      panel.animate({scrollTop : 0},800);
+  }
+}
+
 $(document).ready(function(){
-  $('.hidden-js').css('display', 'none');  
+  $('.hidden-js').css('display', 'none'); 
 
   $(".navbar-toggle.collapsed").on('click', collapse_current_collpsein);
 
@@ -311,5 +320,7 @@ $(function () {
         var $this = $(this);
         $this.find('.alerts-content').addClass('hide-bloc')
     });
+
+ scroll_to_panel()
 
 });
