@@ -52,6 +52,7 @@ class CompareProposalView(CompareIdeaView):
 
     def before_update(self):
         self.viewid = 'compare'
+        super(CompareProposalView, self).before_update()
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

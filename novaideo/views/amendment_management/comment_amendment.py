@@ -55,6 +55,7 @@ class CommentAmendmentView(CommentIdeaView):
 
     def before_update(self):
         self.viewid = 'comment'
+        super(CommentAmendmentView, self).before_update()
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

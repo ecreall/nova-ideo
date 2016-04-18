@@ -56,6 +56,7 @@ class AssociateView(AssociateIdeaView):
 
     def before_update(self):
         self.viewid = 'associate'
+        super(AssociateView, self).before_update()
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

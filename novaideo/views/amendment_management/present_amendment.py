@@ -110,6 +110,7 @@ class PresentAmendmentView(PresentIdeaView):
 
     def before_update(self):
         self.viewid = 'present'
+        super(PresentAmendmentView, self).before_update()
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

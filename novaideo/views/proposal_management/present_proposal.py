@@ -110,6 +110,7 @@ class PresentProposalView(PresentIdeaView):
 
     def before_update(self):
         self.viewid = 'present'
+        super(PresentProposalView, self).before_update()
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

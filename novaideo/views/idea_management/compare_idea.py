@@ -165,6 +165,7 @@ class CompareIdeaView(MultipleView):
 
     def before_update(self):
         self.viewid = 'compare'
+        super(CompareIdeaView, self).before_update()
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {CompareIdea: CompareIdeaView})

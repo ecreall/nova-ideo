@@ -78,6 +78,7 @@ class SeeAmendmentsView(BasicView):
 
     def before_update(self):
         self.viewid = 'editamendments'
+        super(SeeAmendmentsView, self).before_update()
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

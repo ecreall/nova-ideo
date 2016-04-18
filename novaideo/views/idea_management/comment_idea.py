@@ -145,6 +145,8 @@ class CommentIdeaView(MultipleView):
 
     def before_update(self):
         self.viewid = 'comment'
+        super(CommentIdeaView, self).before_update()
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {CommentIdea: CommentIdeaView})

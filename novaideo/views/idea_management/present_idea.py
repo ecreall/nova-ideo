@@ -217,6 +217,7 @@ class PresentIdeaView(MultipleView):
 
     def before_update(self):
         self.viewid = 'present'
+        super(PresentIdeaView, self).before_update()
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {PresentIdea: PresentIdeaView})
