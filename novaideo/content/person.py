@@ -228,7 +228,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     user_title = colander.SchemaNode(
         colander.String(),
         widget=titles_choice,
-        title=_('Title'),
+        title=_('Title', context='user'),
         )
 
     locale = colander.SchemaNode(
