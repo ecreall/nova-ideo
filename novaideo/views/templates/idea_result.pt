@@ -29,9 +29,11 @@
     </div>
     <div tal:condition="comments_len" class="search-item-footer">
       <div >
-        <span class="glyphicon glyphicon-comment"></span>
-        <span tal:condition="comments_len == 1">${comments_len} fil de discussion</span>
-        <span tal:condition="comments_len > 1">${comments_len} fils de discussion</span>
+        <a href="${request.resource_url(object, '@@index')+'#comment'}">
+          <span class="glyphicon glyphicon-comment"></span>
+          <span tal:condition="comments_len == 1">${comments_len} fil de discussion</span>
+          <span tal:condition="comments_len > 1">${comments_len} fils de discussion</span>
+        </a>
       </div>
     </div>
 
