@@ -91,9 +91,17 @@ class Respond(InfiniteCardinality):
 
         root = getSite()
         localizer = request.localizer
+        author_title = localizer.translate(
+            _(getattr(comment_author, 'user_title', '')))
+        author_first_name = getattr(
+            comment_author, 'first_name', comment_author.name)
+        author_last_name = getattr(comment_author, 'last_name', '')
         alert('internal', [root], authors,
               internal_kind=InternalAlertKind.comment_alert,
-              subjects=[content])
+              subjects=[content],
+              author_title=author_title,
+              author_first_name=author_first_name,
+              author_last_name=author_last_name)
         mail_template = root.get_mail_template('alert_comment')
         subject_type = localizer.translate(
             _("The " + content.__class__.__name__.lower()))
@@ -108,8 +116,11 @@ class Respond(InfiniteCardinality):
                     user_to_alert, 'first_name', user_to_alert.name),
                 recipient_last_name=getattr(user_to_alert, 'last_name', ''),
                 subject_title=content.title,
-                subject_url=request.resource_url(content, "@@index"),
+                subject_url=request.resource_url(content, "@@index") + '#comment',
                 subject_type=subject_type,
+                author_title=author_title,
+                author_first_name=author_first_name,
+                author_last_name=author_last_name,
                 novaideo_title=root.title
             )
             alert('email', [root.get_site_sender()], [user_to_alert.email],
@@ -118,7 +129,10 @@ class Respond(InfiniteCardinality):
         if comment_author is not user:
             alert('internal', [root], [comment_author],
                   internal_kind=InternalAlertKind.comment_alert,
-                  subjects=[content], is_respons=True)
+                  subjects=[content], is_respons=True,
+                  author_title=author_title,
+                  author_first_name=author_first_name,
+                  author_last_name=author_last_name)
             if getattr(comment_author, 'email', ''):
                 mail_template = root.get_mail_template('alert_respons')
                 subject = mail_template['subject'].format(
@@ -132,8 +146,11 @@ class Respond(InfiniteCardinality):
                     recipient_last_name=getattr(
                         comment_author, 'last_name', ''),
                     subject_title=content.title,
-                    subject_url=request.resource_url(content, "@@index"),
+                    subject_url=request.resource_url(content, "@@index") + '#comment',
                     subject_type=subject_type,
+                    author_title=author_title,
+                    author_first_name=author_first_name,
+                    author_last_name=author_last_name,
                     novaideo_title=root.title
                 )
                 alert('email', [root.get_site_sender()], [comment_author.email],

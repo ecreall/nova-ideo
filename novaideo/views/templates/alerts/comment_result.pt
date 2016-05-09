@@ -1,4 +1,10 @@
-<div tal:omit-tag="" tal:define="is_respons getattr(object, 'is_respons', False)">
+<div tal:omit-tag=""
+	 tal:define="is_respons getattr(object, 'is_respons', False);
+	             author_title getattr(object, 'author_title', '');
+                 author_first_name getattr(object, 'author_first_name', '');
+                 author_last_name getattr(object, 'author_last_name', '');
+                 author_parts [author_title, author_first_name, author_last_name];
+                 author ' '.join([a for a in author_parts if a])">
 	<div class="thumbnail right-caption span4 search-item result-item" 
 	     i18n:domain="novaideo"
 	     tal:condition="object.subjects">
@@ -8,7 +14,7 @@
 	  	 tal:define="subject object.subjects[0];
 	  	             icon 'glyphicon glyphicon-comment'">
 	    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
-	    <span>Un commentaire a été ajouté à la contribution <a href="${request.resource_url(subject, '@@index')+'#comment'}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+	    <span>${author or 'Une personne'} a commenté la contribution <a href="${request.resource_url(subject, '@@index')+'#comment'}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 	  </div>
 	  <div 
 	     tal:condition="is_respons"
@@ -16,7 +22,7 @@
 	  	 tal:define="subject object.subjects[0];
 	  	             icon 'glyphicon glyphicon-share-alt'">
 	    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
-	    <span>Une personne a répondu à votre commentaire concernant la contribution <a href="${request.resource_url(subject, '@@index')+'#comment'}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+	    <span>${author or 'Une personne'} a répondu à votre commentaire concernant la contribution <a href="${request.resource_url(subject, '@@index')+'#comment'}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 	  </div>
 	  <span tal:condition="current_user in object.users_to_alert" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 	</div>

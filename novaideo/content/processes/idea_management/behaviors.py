@@ -539,15 +539,22 @@ class CommentIdea(InfiniteCardinality):
     def _alert_users(self, context, request, user):
         root = getSite()
         users = self._get_users_to_alerts(context, request)
-        alert('internal', [root], users,
-              internal_kind=InternalAlertKind.comment_alert,
-              subjects=[context])
-
         if user in users:
             users.remove(user)
 
         mail_template = root.get_mail_template('alert_comment')
         localizer = request.localizer
+        author_title = localizer.translate(
+            _(getattr(user, 'user_title', '')))
+        author_first_name = getattr(
+            user, 'first_name', user.name)
+        author_last_name = getattr(user, 'last_name', '')
+        alert('internal', [root], users,
+              internal_kind=InternalAlertKind.comment_alert,
+              subjects=[context],
+              author_title=author_title,
+              author_first_name=author_first_name,
+              author_last_name=author_last_name)
         subject_type = localizer.translate(
             _("The " + context.__class__.__name__.lower()))
         subject = mail_template['subject'].format(
@@ -561,8 +568,11 @@ class CommentIdea(InfiniteCardinality):
                     user_to_alert, 'first_name', user_to_alert.name),
                 recipient_last_name=getattr(user_to_alert, 'last_name', ''),
                 subject_title=context.title,
-                subject_url=request.resource_url(context, "@@index"),
+                subject_url=request.resource_url(context, "@@index") + '#comment',
                 subject_type=subject_type,
+                author_title=author_title,
+                author_first_name=author_first_name,
+                author_last_name=author_last_name,
                 novaideo_title=root.title
             )
             alert('email', [root.get_site_sender()], [user_to_alert.email],
