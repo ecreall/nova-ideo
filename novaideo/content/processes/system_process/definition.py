@@ -31,10 +31,9 @@ from .behaviors import (
 from novaideo import _
 
 
-
 def calculate_next_date_newsletter(process):
     next_date = datetime.timedelta(days=NEWSLETTER_DURATION) + \
-        datetime.datetime.today()
+        datetime.datetime.now(tz=pytz.UTC)
     return datetime.datetime.combine(
         next_date,
         datetime.time(0, 0, 0, tzinfo=pytz.UTC))

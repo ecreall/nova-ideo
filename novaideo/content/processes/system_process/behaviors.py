@@ -93,9 +93,14 @@ class SendNewsLetter(ElementaryAction):
         root = request.root
         previous_date = getattr(root, 'newsletter_date', None)
         now = datetime.datetime.now(tz=pytz.UTC)
+        if previous_date:
+            previous_date = datetime.datetime.combine(
+                (previous_date + datetime.timedelta(
+                    days=NEWSLETTER_DURATION)),
+                datetime.time(0, 0, 0, tzinfo=pytz.UTC))
+
         to_send = previous_date is None or \
-            (previous_date + datetime.timedelta(
-                days=NEWSLETTER_DURATION)) <= now
+            previous_date <= now
         if to_send:
             localizer = request.localizer
             mail_template = {
@@ -121,12 +126,12 @@ class SendNewsLetter(ElementaryAction):
                     result.append(obj)
                     if len(result) == 5:
                         break
-
-                body = renderers.render(
-                    mail_template['template'], {'entities': result,
-                                                'name': name}, request)
-                alert('email', [context.get_site_sender()], [member.email],
-                      subject=subject, html=body)
+                if result:
+                    body = renderers.render(
+                        mail_template['template'], {'entities': result,
+                                                    'name': name}, request)
+                    alert('email', [context.get_site_sender()], [member.email],
+                          subject=subject, html=body)
 
             root.newsletter_date = now
 
