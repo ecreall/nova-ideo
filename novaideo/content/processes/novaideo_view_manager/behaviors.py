@@ -52,7 +52,7 @@ class Search(InfiniteCardinality):
 
 
 def home_processsecurity_validation(process, context):
-    return access_user_processsecurity(process, context)
+    return True
 
 
 @access_action()
