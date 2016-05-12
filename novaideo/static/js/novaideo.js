@@ -184,7 +184,45 @@ function scroll_to_panel(){
   }
 }
 
+
+$(document).on('click', '.proposal-support .token', function(){
+   var $this = $(this)
+   var opposit_class = $this.hasClass('token-success')? '.danger': '.success';
+   var opposit = $($this.parents('.proposal-support').first().find('.label'+opposit_class).first())
+   var opposit_token = $(opposit.find('.token').first())
+   var parent = $($this.parents('.label').first())
+   var action_url = $this.data('action')
+   var mytoken = $(parent.find('.my-token').first())
+   var support_nb = $(parent.find('.support-nb').first())
+   var opposit_mytoken = $(opposit.find('.my-token').first())
+   var opposit_support_nb = $(opposit.find('.support-nb').first())
+   if(action_url){
+     $.getJSON(action_url,{}, function(data) {
+          if(data['state']){
+            if(!data.withdraw){
+             mytoken.removeClass('hide-bloc')
+             var new_nb = parseInt(support_nb.text()) + 1
+             support_nb.text(new_nb)
+             if (data.change){
+               opposit_mytoken.addClass('hide-bloc')
+               var opposit_new_nb = parseInt(opposit_support_nb.text()) - 1
+               opposit_support_nb.text(opposit_new_nb)
+               opposit_token.data('action', data.opposit_action)
+             }
+            }else{
+              mytoken.addClass('hide-bloc')
+              var new_nb = parseInt(support_nb.text()) - 1
+              support_nb.text(new_nb)
+            }
+            $this.data('action', data.action)
+          }
+        });
+   }
+
+})
+
 $(document).ready(function(){
+
   $('.hidden-js').css('display', 'none'); 
 
   $(".navbar-toggle.collapsed").on('click', collapse_current_collpsein);

@@ -859,10 +859,10 @@ def support_state_validation(process, context):
 
 
 class SupportIdea(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
-    style_picto = 'glyphicon glyphicon-thumbs-up'
-    style_order = 4
+    # style = 'button' #TODO add style abstract class
+    # style_descriminator = 'text-action'
+    # style_picto = 'glyphicon glyphicon-thumbs-up'
+    # style_order = 4
     context = Iidea
     roles_validation = support_roles_validation
     processsecurity_validation = support_processsecurity_validation
@@ -888,10 +888,10 @@ class SupportIdea(InfiniteCardinality):
 
 
 class OpposeIdea(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
-    style_picto = 'glyphicon glyphicon-thumbs-down'
-    style_order = 5
+    # style = 'button' #TODO add style abstract class
+    # style_descriminator = 'text-action'
+    # style_picto = 'glyphicon glyphicon-thumbs-down'
+    # style_order = 5
     context = Iidea
     roles_validation = support_roles_validation
     processsecurity_validation = support_processsecurity_validation
@@ -923,10 +923,10 @@ def withdrawt_processsecurity_validation(process, context):
 
 
 class WithdrawToken(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
-    style_picto = 'glyphicon glyphicon-share-alt'
-    style_order = 6
+    # style = 'button' #TODO add style abstract class
+    # style_descriminator = 'text-action'
+    # style_picto = 'glyphicon glyphicon-share-alt'
+    # style_order = 6
     context = Iidea
     roles_validation = support_roles_validation
     processsecurity_validation = withdrawt_processsecurity_validation

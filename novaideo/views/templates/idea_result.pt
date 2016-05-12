@@ -38,18 +38,28 @@
     </div>
 
     <div tal:condition="'idea' in getattr(request, 'content_to_support', []) and 'published' in object.state and 'examined' not in object.state" class="proposal-support pull-right">
-        <span class="label success">
-            <span tal:condition="any(t.owner is current_user for t in object.tokens_support)" 
-                  class="hidden-xs glyphicon glyphicon-hand-down my-token-success"> </span>
-            <span class="token token-success glyphicon glyphicon-thumbs-up"></span>
-            <span class="support-nb">${len(object.tokens_support)}</span>
-        </span>
-        <span class="label danger">
-            <span tal:condition="any(t.owner is current_user for t in object.tokens_opposition)" 
-                  class="hidden-xs glyphicon glyphicon-hand-down my-token-danger"> </span>
-            <span class="token token-danger glyphicon glyphicon-thumbs-down"></span>
-            <span class="support-nb">${len(object.tokens_opposition)}</span>
-        </span>
+      <span class="label success" 
+        tal:define="
+            support any(t.owner is current_user for t in object.tokens_support);
+            action 'withdraw_token_idea' if support else 'support_idea'">
+          <span class="${not support and 'hide-bloc'} hidden-xs glyphicon glyphicon-hand-down my-token my-token-success">
+          </span>
+          <span 
+            data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'support'})}" 
+            class="token token-toggle token-success glyphicon glyphicon-thumbs-up"></span>
+          <span class="support-nb">${len(object.tokens_support)}</span>
+      </span>
+      <span class="label danger"
+        tal:define="
+            oppose any(t.owner is current_user for t in object.tokens_opposition);
+            action 'withdraw_token_idea' if oppose else 'oppose_idea'">
+          <span class="${not oppose and 'hide-bloc'} hidden-xs glyphicon glyphicon-hand-down my-token my-token-danger"> 
+          </span>
+          <span 
+            data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
+            class="token token-toggle token-danger glyphicon glyphicon-thumbs-down"></span>
+          <span class="support-nb">${len(object.tokens_opposition)}</span>
+      </span>
       </div>
 
     <div tal:condition="'idea' in getattr(request, 'content_to_examine', []) and  'examined' in object.state" class="proposal-opinion pull-right"  title="${object.opinion_value}" >

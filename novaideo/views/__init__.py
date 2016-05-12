@@ -9,7 +9,7 @@ from pyramid.view import view_config
 
 from substanced.util import get_oid
 
-from dace.util import find_catalog
+from dace.util import find_catalog, getBusinessAction
 from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView
@@ -203,3 +203,125 @@ class NovaideoAPI(IndexManagementJsonView):
         body = self.content(args=values, template=self.alert_template)['body']
         return {'body': body}
 
+    def _execute_action(self, process_id, node_id, appstruct):
+        actions = getBusinessAction(
+            self.context, self.request,
+            process_id, node_id)
+        if actions:
+            try:
+                action = actions[0]
+                action.validate(self.context, self.request)
+                action.before_execution(self.context, self.request)
+                action.execute(self.context, self.request, appstruct)
+                return {'state': True}
+            except Exception:
+                return {'state': False}
+
+        return {'state': False}
+
+    def oppose_idea(self):
+        result = self._execute_action('ideamanagement', 'oppose', {})
+        if not result.get('state'):
+            self._execute_action(
+                'ideamanagement', 'withdraw_token', {})
+            result = self._execute_action(
+                'ideamanagement', 'oppose', {})
+            result['change'] = True
+
+        if result.get('state'):
+            result['action'] = self.request.resource_url(
+                self.context, 'novaideoapi',
+                query={'op': 'withdraw_token_idea',
+                       'action': 'oppose'})
+            if result.get('change', False):
+                result['opposit_action'] = self.request.resource_url(
+                    self.context, 'novaideoapi',
+                    query={'op': 'support_idea'})
+
+        return result
+
+    def oppose_proposal(self):
+        result = self._execute_action('proposalmanagement', 'oppose', {})
+        if not result.get('state'):
+            self._execute_action(
+                'proposalmanagement', 'withdraw_token', {})
+            result = self._execute_action(
+                'proposalmanagement', 'oppose', {})
+            result['change'] = True
+
+        if result.get('state'):
+            result['action'] = self.request.resource_url(
+                self.context, 'novaideoapi',
+                query={'op': 'withdraw_token_proposal',
+                       'action': 'oppose'})
+            if result.get('change', False):
+                result['opposit_action'] = self.request.resource_url(
+                    self.context, 'novaideoapi',
+                    query={'op': 'support_proposal'})
+
+        return result
+
+    def support_idea(self):
+        result = self._execute_action('ideamanagement', 'support', {})
+        if not result.get('state'):
+            self._execute_action(
+                'ideamanagement', 'withdraw_token', {})
+            result = self._execute_action(
+                'ideamanagement', 'support', {})
+            result['change'] = True
+
+        if result.get('state'):
+            result['action'] = self.request.resource_url(
+                self.context, 'novaideoapi',
+                query={'op': 'withdraw_token_idea',
+                       'action': 'support'})
+            if result.get('change', False):
+                result['opposit_action'] = self.request.resource_url(
+                    self.context, 'novaideoapi',
+                    query={'op': 'oppose_idea'})
+
+        return result
+
+    def support_proposal(self):
+        result = self._execute_action('proposalmanagement', 'support', {})
+        if not result.get('state'):
+            self._execute_action(
+                'proposalmanagement', 'withdraw_token', {})
+            result = self._execute_action(
+                'proposalmanagement', 'support', {})
+            result['change'] = True
+
+        if result.get('state'):
+            result['action'] = self.request.resource_url(
+                self.context, 'novaideoapi',
+                query={'op': 'withdraw_token_proposal',
+                       'action': 'support'})
+            if result.get('change', False):
+                result['opposit_action'] = self.request.resource_url(
+                    self.context, 'novaideoapi',
+                    query={'op': 'oppose_proposal'})
+
+        return result
+
+    def withdraw_token_idea(self):
+        result = self._execute_action('ideamanagement', 'withdraw_token', {})
+        if result.get('state'):
+            previous_action = self.params('action')
+            result['action'] = self.request.resource_url(
+                self.context, 'novaideoapi',
+                query={'op': previous_action + '_idea'})
+            result['withdraw'] = True
+
+        return result
+
+    def withdraw_token_proposal(self):
+        result = self._execute_action(
+            'proposalmanagement', 'withdraw_token', {})
+        if result.get('state'):
+            previous_action = self.params('action')
+            result['action'] = self.request.resource_url(
+                self.context, 'novaideoapi',
+                query={'op': previous_action + '_proposal'})
+            result['withdraw'] = True
+
+        return result

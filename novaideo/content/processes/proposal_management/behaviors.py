@@ -687,10 +687,10 @@ def support_state_validation(process, context):
 
 
 class SupportProposal(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
-    style_picto = 'glyphicon glyphicon-thumbs-up'
-    style_order = 4
+    # style = 'button' #TODO add style abstract class
+    # style_descriminator = 'text-action'
+    # style_picto = 'glyphicon glyphicon-thumbs-up'
+    # style_order = 4
     context = IProposal
     roles_validation = support_roles_validation
     processsecurity_validation = support_processsecurity_validation
@@ -723,10 +723,10 @@ class SupportProposal(InfiniteCardinality):
 
 
 class OpposeProposal(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
-    style_picto = 'glyphicon glyphicon-thumbs-down'
-    style_order = 5
+    # style = 'button' #TODO add style abstract class
+    # style_descriminator = 'text-action'
+    # style_picto = 'glyphicon glyphicon-thumbs-down'
+    # style_order = 5
     context = IProposal
     roles_validation = support_roles_validation
     processsecurity_validation = support_processsecurity_validation
@@ -851,10 +851,10 @@ def withdrawt_processsecurity_validation(process, context):
 
 
 class WithdrawToken(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
-    style_picto = 'glyphicon glyphicon-share-alt'
-    style_order = 6
+    # style = 'button' #TODO add style abstract class
+    # style_descriminator = 'text-action'
+    # style_picto = 'glyphicon glyphicon-share-alt'
+    # style_order = 6
     context = IProposal
     roles_validation = support_roles_validation
     processsecurity_validation = withdrawt_processsecurity_validation
@@ -875,7 +875,7 @@ class WithdrawToken(InfiniteCardinality):
         users.extend(context.working_group.members)
         alert('internal', [request.root], users,
               internal_kind=InternalAlertKind.support_alert,
-              subjects=[context], support_kind='withdeaw')
+              subjects=[context], support_kind='withdraw')
         return {}
 
     def redirect(self, context, request, **kw):
