@@ -27,6 +27,7 @@ do_buildout() {
 case "$1" in
   rebuild)
     mkdir -p cache
+    chmod o+rwx cache
     docker-compose $options pull
     docker-compose $options build --pull
     do_buildout
