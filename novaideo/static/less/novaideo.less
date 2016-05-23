@@ -410,7 +410,7 @@ button.navbar-toggle.collapsed,
 button.navbar-toggle
 {
     border: medium none;
-    color: gray;
+    color: #6080b4;
     font-size: 17px;
     padding: 0;
     background-color: transparent !important
@@ -465,7 +465,7 @@ button.navbar-toggle
 }
 
 
-.navbar-bottom .nav > li > a > .item-nb{
+.navbar-bottom .nav > li > a  .item-nb{
   display: block;
   text-align: center;
   font-weight: bold;
@@ -2247,6 +2247,20 @@ ins {
 
 
 @media (max-width: 767px) {
+  
+  .navbar-header .alert-block{
+    top: 4px !important;
+  }
+
+  .access-menu .nav>li, .access-menu  .nav>li>a{
+    display: inline-block!important;
+    font-size: 15px!important;
+    margin-right: 6%;
+  }
+  .access-menu .nav {
+      margin: 0 !important;
+      text-align: center;
+  }
   .global-actions-menu .action-1 {
     margin-left: -10px;
   }
@@ -2261,6 +2275,10 @@ ins {
   }
    .navbar.navbar-default.navbar-fixed-top {
      height: auto;
+   }
+
+   .navbar.navbar-inverse.navbar-bottom{
+       min-height: 43px !important;
    }
 
    .navbar-brand{
@@ -2287,15 +2305,19 @@ ins {
     }
 
     .admin-nav ul.list-group {
-    left: 110px;
+        left: 110px;
     }
 
-  .admin-nav.list-group .list-group-item {
-    padding: 4px 1px 4px 5px;
-   }
+   .admin-nav.list-group .list-group-item {
+        padding: 4px 1px 4px 5px;
+    }
    .navbar-user-collapse{
         text-align: center;
         padding-bottom: 5px
+    }
+
+    .home-add-idea{
+       margin: 4px 0px !important;
     }
 
     .novaideo-main, .col-md-12{
@@ -2363,11 +2385,6 @@ ins {
     .search-form #searchsection>input{
         min-width: 145px
     }
-
-    .access-menu .nav{
-        margin-bottom: 0px;
-    }
-
 }
 
 
