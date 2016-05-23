@@ -194,7 +194,7 @@ class UserNavBarPanel(object):
             else:
                 actions_url[actionclass.node_definition.title] = {
                             'action': None,
-                            'icon': actionclass.node_definition.style_picto,
+                            'icon': actionclass.style_picto,
                             'url': None,
                             'view_name': getattr(view,'name', None)}
         result = {}
