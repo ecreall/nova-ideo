@@ -127,6 +127,10 @@ class AddIdea(object):
         self.request = request
 
     def __call__(self):
+        result = {
+            'form': None,
+            'css_links': [],
+            'js_links': []}
         if(self.request.view_name not in ('', 'seemycontents')):
             return {'form': None}
 
@@ -135,27 +139,26 @@ class AddIdea(object):
             self.request, 'resources', {'js_links': [], 'css_links': []}))
         add_idea_action, add_idea_view = _getaction(
             self, 'ideamanagement', 'creat')
-        add_idea_view_instance = add_idea_view(
-            root, self.request, behaviors=[add_idea_action])
-        add_idea_view_instance.viewid = 'formcreateideahome'
-        add_idea_view_result = add_idea_view_instance()
-        add_idea_body = ''
-        result = {
-            'css_links': [],
-            'js_links': []}
-        if isinstance(add_idea_view_result, dict) and \
-           'coordinates' in add_idea_view_result:
-            add_idea_body = add_idea_view_result['coordinates'][add_idea_view_instance.coordinates][0]['body']
-            result['css_links'] = [c for c in add_idea_view_result.get('css_links', [])
-                                   if c not in resources['css_links']]
-            result['js_links'] = [c for c in add_idea_view_result.get('js_links', [])
-                                  if c not in resources['js_links']]
+        if add_idea_view:
+            add_idea_view_instance = add_idea_view(
+                root, self.request, behaviors=[add_idea_action])
+            add_idea_view_instance.viewid = 'formcreateideahome'
+            add_idea_view_result = add_idea_view_instance()
+            add_idea_body = ''
+            if isinstance(add_idea_view_result, dict) and \
+               'coordinates' in add_idea_view_result:
+                add_idea_body = add_idea_view_result['coordinates'][add_idea_view_instance.coordinates][0]['body']
+                result['css_links'] = [c for c in add_idea_view_result.get('css_links', [])
+                                       if c not in resources['css_links']]
+                result['js_links'] = [c for c in add_idea_view_result.get('js_links', [])
+                                      if c not in resources['js_links']]
 
-        update_resources(self.request, result)
-        result['form'] = add_idea_body
-        result['view'] = self
-        result['action_url'] = self.request.resource_url(
-            root, '@@ideasmanagement', query={'op': 'creat_home_idea'})
+            update_resources(self.request, result)
+            result['form'] = add_idea_body
+            result['view'] = self
+            result['action_url'] = self.request.resource_url(
+                root, '@@ideasmanagement', query={'op': 'creat_home_idea'})
+
         return result
 
 
