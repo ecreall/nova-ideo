@@ -64,10 +64,11 @@
 }
 
 .navbar.navbar-default.navbar-fixed-top{
-    background-image: -webkit-linear-gradient(to bottom, #f2f2f2 0%, #e6e6e6 100%);
+/*    background-image: -webkit-linear-gradient(to bottom, #f2f2f2 0%, #e6e6e6 100%);
     background-image:      -o-linear-gradient(to bottom, #f2f2f2 0%, #e6e6e6 100%);
     background-image: linear-gradient(to bottom, #f2f2f2 0%, #e6e6e6 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2f2f2', endColorstr='#e6e6e6', GradientType=1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2f2f2', endColorstr='#e6e6e6', GradientType=1);*/
+    background-color: white;
     border: 0 solid;
     border-radius: 0;
     color: #fafafa;

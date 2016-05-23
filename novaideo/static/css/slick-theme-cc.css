@@ -235,8 +235,6 @@
 
 
 .slick-well {
-      background-image: linear-gradient(to right, #4f4f4f -50%, white 200%);
-      box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.28) inset;
       padding: 1px 0px !important;
       margin-left: -16px;
       margin-right: -16px;
@@ -244,20 +242,19 @@
       border-radius: 0px !important
 }
 
-.vertical-slick-well {
-  background-image: linear-gradient(to bottom, #fafafa 5%, #dcdcdc 100%);
-  border: 0 none !important;
-  border-radius: 4px !important;
-  box-shadow: 0 7px 5px 0 rgba(0, 0, 0, 0.35);
-  margin-left: 0;
-  margin-right: 0;
-  padding: 1px 0 !important;
+.more-content-carousel {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 5px 12px!important;
+    height: 1600px;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .slick-well>h4, .vertical-slick-well>h4{
-     margin-top: 5px; 
      margin-bottom: 5px;
-     margin-left: 10px
+     margin-left: 10px;
+     color: gray;
+     font-size: 16px;
 }
 
 .slick-vertical{
@@ -409,3 +406,5 @@
       width: 95% !important;
     }
 }
+
+
