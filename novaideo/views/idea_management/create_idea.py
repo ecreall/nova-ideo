@@ -18,11 +18,16 @@ from pontus.form import FormView
 from pontus.schema import select
 from pontus.view import BasicView
 
-from novaideo.content.processes.idea_management.behaviors import CreateIdea
+from novaideo.utilities.util import (
+    generate_listing_menu, ObjectRemovedException,
+    DEFAUL_LISTING_ACTIONS_TEMPLATE, DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE)
+from novaideo.content.processes.idea_management.behaviors import (
+    CreateIdea, CrateAndPublish)
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.utilities.util import to_localized_time
+from novaideo.content.processes import get_states_mapping
 
 
 @view_config(
@@ -38,7 +43,7 @@ class CreateIdeaView(FormView):
                      'text',
                      'keywords',
                      'attached_files'])
-    behaviors = [CreateIdea, Cancel]
+    behaviors = [CreateIdea, CrateAndPublish, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'
 
@@ -61,7 +66,57 @@ class CreateIdeaView(FormView):
 class CreateIdeaView_Json(BasicView):
 
     idea_template = 'novaideo:views/proposal_management/templates/idea_data.pt'
-    behaviors = [CreateIdea]
+    behaviors = [CreateIdea, CrateAndPublish]
+
+    def _get_new_title(self, user):
+        localizer = self.request.localizer
+        time = to_localized_time(
+            datetime.datetime.now(tz=pytz.UTC), translate=True)
+        return localizer.translate(_('Idea by'))+' '+\
+                getattr(user, 'title', user.name)+' '+\
+                localizer.translate(_('the'))+' '+\
+                time+' (UTC)'
+
+    def _render_obj(self, obj, user):
+        try:
+            navbars = generate_listing_menu(
+                self.request, obj,
+                template=DEFAUL_LISTING_ACTIONS_TEMPLATE,
+                footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE
+                )
+        except ObjectRemovedException:
+            return None
+
+        render_dict = {'object': obj,
+                       'current_user': user,
+                       'menu_body': navbars['menu_body'],
+                       'footer_body': navbars['footer_body'],
+                       'state': get_states_mapping(user, obj,
+                               getattr(obj, 'state_or_none', [None])[0])}
+        return self.content(args=render_dict,
+                            template=obj.templates['default'])['body']
+
+    def creat_home_idea(self):
+        try:
+            add_idea_action = self.behaviors_instances[
+                'Create_an_idea' if 'Create_an_idea' in self.request.POST
+                else 'Create_and_publish']
+            add_idea_view = DEFAULTMAPPING_ACTIONS_VIEWS[add_idea_action.__class__]
+            add_idea_view_instance = add_idea_view(
+                self.context, self.request, behaviors=[add_idea_action])
+            add_idea_view_instance.viewid = 'formcreateideahome'
+            add_idea_view_result = add_idea_view_instance()
+            if add_idea_view_instance.finished_successfully:
+                user = get_current()
+                idea = user.ideas[-1]
+                return {'state': True,
+                        'body': self._render_obj(idea, user),
+                        'new_title': self._get_new_title(user)}
+
+        except Exception:
+            return {'state': False}
+
+        return {'state': False}
 
     def creat_idea(self):
         behavior = None
@@ -75,14 +130,8 @@ class CreateIdeaView_Json(BasicView):
             appstruct = {'_object_data': idea}
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
-            localizer = self.request.localizer
             user = get_current()
-            time = to_localized_time(
-                datetime.datetime.now(tz=pytz.UTC), translate=True)
-            new_title = localizer.translate(_('Idea by'))+' '+\
-                    getattr(user, 'title', user.name)+' '+\
-                    localizer.translate(_('the'))+' '+\
-                    time+' (UTC)'
+            new_title = self._get_new_title(user)
             data = {'title': idea.title,
                     'oid': str(oid),
                     'body': renderers.render(self.idea_template,
@@ -122,3 +171,6 @@ class CreateIdeaView_Json(BasicView):
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {CreateIdea: CreateIdeaView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CrateAndPublish: CreateIdeaView})

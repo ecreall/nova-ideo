@@ -1,0 +1,15 @@
+<div tal:condition="form" class="home-add-idea closed" data-url="${action_url}">
+  <tal:block tal:repeat="jslink js_links">
+            <script src="${request.static_url(jslink)}"></script>
+  </tal:block>
+  <tal:block tal:repeat="csslink css_links">
+      <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+  </tal:block>
+  <div id="controllable-items-messages" class="message-alert">
+       <span id="messageinfo" class="label label-info"></span>
+       <span id="messagesuccess" class="label label-success"></span>
+       <span id="messagedanger" class="label  label-danger"></span>
+   </div>
+   <span class="icon novaideo-icon icon-idea"></span>
+	<div tal:replace="structure form"/>
+</div>

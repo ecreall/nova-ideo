@@ -12,7 +12,9 @@ from substanced.util import Batch
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
+from pontus.util import merge_dicts
 
+from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.organization_management.behaviors import (
     SeeOrganizations)
 from novaideo.content.novaideo_application import NovaIdeoApplication
@@ -44,9 +46,10 @@ class SeeOrganizationsView(BasicView):
         objects = self.context.organizations
         now = datetime.datetime.now(tz=pytz.UTC)
         objects = sorted(objects,
-                         key=lambda e: getattr(e, 'modified_at',now),
+                         key=lambda e: getattr(e, 'modified_at', now),
                          reverse=True)
-        batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
+        batch = Batch(
+            objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_organizations"
         len_result = batch.seqlen
         index = str(len_result)
@@ -55,14 +58,8 @@ class SeeOrganizationsView(BasicView):
 
         self.title = _(CONTENTS_MESSAGES[index],
                        mapping={'nember': len_result})
-        result_body = []
-        for obj in batch:
-            object_values = {'object': obj}
-            body = self.content(args=object_values,
-                                template=obj.templates.get('default'))['body']
-            result_body.append(body)
-
-        result = {}
+        result_body, result = render_listing_objs(
+            self.request, batch, user)
         values = {
             'bodies': result_body,
             'length': len_result,

@@ -11,12 +11,13 @@ from substanced.util import Batch
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
+from pontus.util import merge_dicts
 
+from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeIdeasToExamine)
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.content.processes import get_states_mapping
 from novaideo import _
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES, merge_with_filter_view, find_entities)
@@ -62,6 +63,9 @@ class SeeIdeasToExamineView(BasicView):
     behaviors = [SeeIdeasToExamine]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seeideastoexamine'
+    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
 
     def _add_filter(self, user):
         def source(**args):
@@ -125,25 +129,20 @@ class SeeIdeasToExamineView(BasicView):
                        mapping={'nember': len_result})
         filter_data['filter_message'] = self.title
         filter_body = self.filter_instance.get_body(filter_data)
-        result_body = []
-        for obj in batch:
-            render_dict = {'object': obj,
-                           'current_user': user,
-                           'state': get_states_mapping(user, obj,
-                                   getattr(obj, 'state_or_none', [None])[0])}
-            body = self.content(args=render_dict,
-                                template=obj.templates['default'])['body']
-            result_body.append(body)
+        result_body, result = render_listing_objs(
+            self.request, batch, user)
+        if filter_form:
+            result = merge_dicts(
+                {'css_links': filter_form['css_links'],
+                'js_links': filter_form['js_links']
+                }, result)
 
-        result = {}
         values = {'bodies': result_body,
                   'batch': batch,
                   'filter_body': filter_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
-        result['css_links'] = filter_form['css_links']
-        result['js_links'] = filter_form['js_links']
         return result
 
 

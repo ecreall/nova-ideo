@@ -1052,6 +1052,7 @@ class Resign(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'wg-action'
     style_order = 2
+    style_picto = 'typcn typcn-user-delete'
     style_css_class = 'btn-danger'
     isSequential = False
     context = IProposal
@@ -1179,6 +1180,7 @@ class Participate(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'wg-action'
     style_order = 1
+    style_picto = 'md md-group-add'
     style_css_class = 'btn-success'
     submission_title = _('Save')
     isSequential = False

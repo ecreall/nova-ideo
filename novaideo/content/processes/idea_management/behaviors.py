@@ -63,7 +63,8 @@ def createidea_processsecurity_validation(process, context):
 
 class CreateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'admin-action'
+    style_descriminator = 'primary-action'
+    style_interaction = 'modal-action'
     style_picto = 'icon novaideo-icon icon-idea'
     style_order = 0
     title = _('Create an idea')
@@ -90,6 +91,41 @@ class CreateIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
 
 
+class CrateAndPublish(InfiniteCardinality):
+    style_picto = 'icon novaideo-icon icon-idea'
+    style_order = 0
+    title = _('Create and publish')
+    submission_title = _('Save and publish')
+    context = INovaIdeoApplication
+    roles_validation = createidea_roles_validation
+    processsecurity_validation = createidea_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        create_actions = self.process.get_actions('creat')
+        create_action = create_actions[0] if create_actions else None
+        idea = None
+        if create_action:
+            result = create_action.start(context, request, appstruct, **kw)
+            idea = result.get('newcontext', None)
+            if request.moderate_ideas:
+                submit_actions = self.process.get_actions('submit')
+                submit_action = submit_actions[0] if submit_actions else None
+                if submit_action:
+                    submit_action.start(idea, request, {})
+            else:
+                publish_actions = self.process.get_actions('publish')
+                publish_action = publish_actions[0] if publish_actions else None
+                if publish_action:
+                    publish_action.start(idea, request, {})
+
+            return {'newcontext': idea}
+
+        return {'newcontext': getSite()}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
+
+
 def duplicate_processsecurity_validation(process, context):
     return ((has_role(role=('Owner', context)) and \
             'archived' not in context.state or \
@@ -101,6 +137,7 @@ def duplicate_processsecurity_validation(process, context):
 class DuplicateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
+    style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-resize-full'
     style_order = 2
     submission_title = _('Save')
@@ -184,6 +221,7 @@ def edit_state_validation(process, context):
 class EditIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
+    style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
     submission_title = _('Save')
@@ -455,6 +493,7 @@ def ab_state_validation(process, context):
 class AbandonIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-stop'
     style_order = 4
     context = Iidea
@@ -490,6 +529,7 @@ def re_state_validation(process, context):
 class RecuperateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-play'
     style_order = 8
     context = Iidea
@@ -523,6 +563,10 @@ def comm_state_validation(process, context):
 
 class CommentIdea(InfiniteCardinality):
     isSequential = False
+    style_descriminator = 'communication-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-comment'
+    style_order = 0
     context = Iidea
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
@@ -615,6 +659,10 @@ def present_state_validation(process, context):
 
 
 class PresentIdea(InfiniteCardinality):
+    style_descriminator = 'communication-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-envelope'
+    style_order = 1
     submission_title = _('Send')
     context = Iidea
     roles_validation = present_roles_validation

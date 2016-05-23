@@ -131,6 +131,8 @@ class CommentIdeaView(MultipleView):
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CommentIdeaFormView, CommentsView)
     contextual_help = 'comment-help'
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/comment.js']}
 
     def get_message(self):
         lencomments = len(self.context.comments)

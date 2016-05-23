@@ -1,5 +1,5 @@
 <div tal:define="error subitem['isactive'] and not getattr(subitem['view'], 'finished_successfully', True) and getattr(subitem['view'], 'isexecutable', False)"
-     title="${subitem['view'].description}" class="panel panel-${(error and 'danger') or 'default'}">
+     title="${subitem['view'].description}" class="views-container panel panel-${(error and 'danger') or 'default'}">
   <div class="panel-heading">
     <a href="#${subitem['view'].viewid}" 
       data-parent="#panel-actions-content"

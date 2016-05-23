@@ -4,38 +4,57 @@
                  icon getattr(object, 'icon');
                  picture object.picture;
                  profil_picture getattr(picture, 'profil', picture)">
-  <a class="hidden-xs content-user-img" tal:condition="profil_picture is not None" href="${url}">
-     <img class="img-circle" tal:attributes="src profil_picture.url"  width="100"/>
-  </a>
-
-  <div tal:condition="profil_picture is None" id="person-image" class="content-image">
-    <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
-  </div>
-  <div class="media-body">
-    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-      <a tal:attributes="href url"><h4>
-        <img class="visible-xs-inline-block img-circle" tal:condition="profil_picture is not None" tal:attributes="src profil_picture.url"  width="50"/>
-        <img class="visible-xs-inline-block img-thumbnail" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user.png')}" width="50"/>
-          ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)} </h4></a>
+  <div class="media-body media-person">
+    <h4 tal:condition="state">
+      <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
+    </h4>
+    <div class="object-title-block" >
+      <a tal:attributes="href url">
+        <h4>
+          <img class="img-circle" tal:condition="profil_picture is not None"
+               tal:attributes="src profil_picture.url"  width="50"/>
+          <img class="img-circle"
+               tal:condition="profil_picture is None"
+               src="${request.static_url('novaideo:static/images/user.png')}" width="50"/>
+          ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
+          <small class="date">
+            <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.created_at, date_only=True)"/>
+          </small>
+        </h4>
+      </a>
+    </div>
+    <div class="object-menu pull-right">
+      <div tal:replace="structure menu_body"/>
+    </div>
     <div class="user-function" tal:condition="getattr(object, 'function', '')">${object.function}</div>
     <div>${object.presentation_text(300)}</div>
-      <dl style="margin-top: 10px; margin-bottom: 10px">
-        <dt tal:condition="getattr(object, 'organization', None)" i18n:translate="">Organization</dt>
+      <dl style="margin-top: 10px; margin-bottom: 10px"
+          tal:define="keywords getattr(object, 'keywords', [])">
+        <dt tal:condition="getattr(object, 'organization', None)" >
+          <span class="glyphicon glyphicon-home"></span> <span i18n:translate="">Organization</span>
+        </dt>
         <dd tal:condition="getattr(object, 'organization', None)">
            <a tal:attributes="href request.resource_url(object.organization, '@@index')">${object.organization.title}</a>
         </dd>
-        <dt><span class="glyphicon glyphicon-tags"></span> <span i18n:translate="">Preferences</span></dt>
-        <dd tal:condition="getattr(object, 'keywords', [])">
+        <dt tal:condition="keywords">
+          <span class="glyphicon glyphicon-tags"></span> <span i18n:translate="">Preferences</span>
+        </dt>
+        <dd tal:condition="keywords">
           <div class="keywords-result">
-            <tal:loop repeat="k object.keywords">
+            <tal:loop repeat="k keywords">
                   <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
             </tal:loop>
           </div>
         </dd>
-        <dd tal:condition="not getattr(object, 'keywords', [])" i18n:translate="">No preferences</dd>
       </dl>
-      <small class="date">
-        <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.created_at, date_only=True)"/>
-      </small>
+    <div class="search-item-footer">
+      <div class="actions-block">
+        <div tal:replace="structure footer_body"/>
+      </div>
+    </div>
+    <div class="actions-footer-container" style="display: none;">
+      <div class="container-body">
+      </div>
+    </div>
   </div>
 </div>

@@ -1,4 +1,9 @@
-<div tal:omit-tag="" >
+<div class="study-view study-present" >
+  <div class="message-alert">
+    <span id="messageinfo" class="label label-info"></span>
+    <span id="messagesuccess" class="label label-success"></span>
+    <span id="messagedanger" class="label  label-danger"></span>
+  </div>
   <h4 tal:condition="message">
        <strong tal:condition="message[2]=='*' or message[2]=='1'">${message[1]}</strong>
        ${message[0]}
@@ -9,9 +14,19 @@
                    external_len len(external_members)" 
        i18n:domain="novaideo">
     <div tal:condition="platform_members">
-        <span i18n:translate="">The idea has been sent:</span> <tal:loop repeat="m platform_members">
-                                <a tal:attributes="href request.resource_url(m, '@@index')">${getattr(m, 'title', m.name)}</a><tal:separator condition="not: repeat['m'].end">, </tal:separator> 
-                              </tal:loop>
+        <span i18n:translate="">The idea has been sent:</span>
+        <div class="working-group-section">
+          <tal:loop repeat="m platform_members">
+                    <a tal:attributes="href request.resource_url(m, '@@index')"
+                      tal:define="picture getattr(m, 'picture', None);
+                                  profil_picture getattr(picture, 'profil', None)">
+                      <img class="author-img img-circle" 
+                        tal:condition="profil_picture is not None"
+                         tal:attributes="src profil_picture.url"  width="25"/>
+                      <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+                      ${getattr(m, 'title', m.name)}</a>
+          </tal:loop>
+      </div>
     </div>
     <div tal:condition="external_members and platform_members">
         <span tal:condition="external_len <= 1" i18n:translate="">And <span i18n:name="external_len">${external_len}</span> external person contacted.</span>

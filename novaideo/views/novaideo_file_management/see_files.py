@@ -14,10 +14,11 @@ from dace.objectofcollaboration.principal.util import (
     get_current, has_role)
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
+from pontus.util import merge_dicts
 
+from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_file_management.behaviors import (
     SeeFiles)
-from novaideo.content.processes import get_states_mapping
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo import _
@@ -46,18 +47,11 @@ class SeeFilesView(BasicView):
         batch.target = "#results_files"
         len_result = batch.seqlen
         user = get_current()
-        result_body = []
         is_portalmanager = has_role(user=user, role=('PortalManager',)),
-        for obj in batch:
-            object_values = {'object': obj,
-                             'is_portalmanager': is_portalmanager,
-                             'state': get_states_mapping(user, obj,
-                                getattr(obj, 'state_or_none', [None])[0])}
-            body = self.content(args=object_values,
-                                template=obj.templates.get('default'))['body']
-            result_body.append(body)
-
-        result = {}
+        result_body, result = render_listing_objs(
+            self.request, batch, user,
+            is_portalmanager=is_portalmanager
+            )
         values = {
                 'bodies': result_body,
                 'length': len_result,

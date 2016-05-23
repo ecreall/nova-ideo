@@ -23,6 +23,7 @@ from pontus.core import VisualisableElement
 
 from .behaviors import (
     CreateIdea,
+    CrateAndPublish,
     DuplicateIdea,
     DelIdea,
     EditIdea,
@@ -61,6 +62,10 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Create an idea"),
                                        title=_("Create an idea"),
                                        groups=[_('Add')]),
+                creatandpublish = ActivityDefinition(contexts=[CrateAndPublish],
+                                       description=_("Create an idea"),
+                                       title=_("Create an idea"),
+                                       groups=[]),
                 duplicate = ActivityDefinition(contexts=[DuplicateIdea],
                                        description=_("Duplicate this idea"),
                                        title=_("Duplicate"),
@@ -140,6 +145,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
         self.defineTransitions(
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'creat'),
+                TransitionDefinition('pg', 'creatandpublish'),
                 TransitionDefinition('pg', 'duplicate'),
                 TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('pg', 'publish'),
@@ -163,6 +169,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'withdraw_token'),
                 TransitionDefinition('withdraw_token', 'eg'),
                 TransitionDefinition('creat', 'eg'),
+                TransitionDefinition('creatandpublish', 'eg'),
                 TransitionDefinition('duplicate', 'eg'),
                 TransitionDefinition('recuperate', 'eg'),
                 TransitionDefinition('abandon', 'eg'),

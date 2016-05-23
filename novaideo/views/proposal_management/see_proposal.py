@@ -82,7 +82,7 @@ class DetailProposalView(BasicView):
 
     def _cant_publish_alert(self, actions):
         if 'draft' in self.context.state:
-            return not any(a.action.behavior_id == 'publish'
+            return not any(a.behavior_id == 'publish'
                            for a in actions.get('global-action', []))
 
         return False
@@ -97,7 +97,7 @@ class DetailProposalView(BasicView):
                 if vote_actions else []
 
             navbars = generate_navbars(
-                self, self.context, self.request,
+                self.request, self.context,
                 text_action=text_action)
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))

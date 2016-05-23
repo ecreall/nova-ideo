@@ -1,26 +1,18 @@
 <nav tal:condition="condition" class="hidden-xs novaideo-contents" i18n:domain="novaideo">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="access-menu col-md-7">
-            <div class="novaideo-contents-list">
-                    <ul>
-                        <div tal:omit-tag="" tal:condition="nb_person > 0">
-                           <li tal:condition="nb_person == 1"><strong>${nb_person}</strong> <span i18n:translate="">Member</span></li>
-                           <li tal:condition="nb_person > 1"><strong>${nb_person}</strong> <span i18n:translate="">Members</span></li>
-                        </div>    
-                        <div tal:omit-tag="" tal:condition="nb_idea > 0">
-                           <li tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published idea</span></li>
-                           <li tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published ideas</span></li>
-                        </div> 
-                        <div tal:omit-tag="" tal:condition="nb_proposal > 0">
-                           <li tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposal</span></li>
-                           <li tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposals</span></li>
-                        </div>                    
-                    </ul>
-            </div>
-        </div>
-        <div class="col-md-3"></div>
-      </div>
-  </div>
+    <div class="novaideo-contents-list">
+            <ul>
+                <div tal:omit-tag="" tal:condition="nb_person > 0">
+                   <li tal:condition="nb_person == 1"><strong>${nb_person}</strong> <span i18n:translate="">Member</span></li>
+                   <li tal:condition="nb_person > 1"><strong>${nb_person}</strong> <span i18n:translate="">Members</span></li>
+                </div>    
+                <div tal:omit-tag="" tal:condition="nb_idea > 0">
+                   <li tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published idea</span></li>
+                   <li tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published ideas</span></li>
+                </div> 
+                <div tal:omit-tag="" tal:condition="nb_proposal > 0">
+                   <li tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposal</span></li>
+                   <li tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposals</span></li>
+                </div>                    
+            </ul>
+    </div>
 </nav>

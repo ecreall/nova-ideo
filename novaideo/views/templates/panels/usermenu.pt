@@ -68,7 +68,8 @@
                 data-toggle="dropdown" style="padding-bottom: 5px"
                 tal:define="picture getattr(request.user, 'picture', None);
                             profil_picture getattr(picture, 'profil', None)">
-          <i tal:condition="profil_picture is None" class="glyphicon glyphicon-user" style="margin-right: 5px;"></i>
+          <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+
           <img class="author-img img-circle" tal:condition="profil_picture is not None"
             tal:attributes="src profil_picture.url"  width="25"/>
           ${getattr(request.user, 'title', request.user.name)}<span class="caret" style="margin-left: 8px;"></span>

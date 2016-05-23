@@ -19,13 +19,14 @@ from pontus.view import BasicView
 from pontus.widget import CheckboxChoiceWidget
 from pontus.schema import Schema
 from pontus.form import FormView
+from pontus.util import merge_dicts
 
+from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_view_manager.behaviors import Search
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from .widget import SearchTextInputWidget, SearchFormWidget
 from novaideo.core import BATCH_DEFAULT_SIZE
-from novaideo.content.processes import get_states_mapping
 from novaideo.views.filter import (
     FilterView, FILTER_SOURCES,
     merge_with_filter_view, find_entities)
@@ -67,6 +68,8 @@ class AdvancedSearchView(FilterView):
     behaviors = [Search]
     formid = 'formadvanced_search'
     wrapper_template = 'pontus:templates/views_templates/view_wrapper.pt'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
 
     def update(self):
         self.calculate_posted_filter()
@@ -143,7 +146,6 @@ class SearchSchema(Schema):
         )
 
 
-
 class SearchView(FormView):
     title = _('Search')
     name = 'search'
@@ -218,10 +220,12 @@ class SearchView(FormView):
 class SearchResultView(BasicView):
     title = _('Nova-Ideo contents')
     name = ''
+    viewid = 'search_result'
     behaviors = [Search]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
-    anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
-    viewid = 'search_result'
+    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
 
     def update(self):
         user = get_current()
@@ -266,17 +270,8 @@ class SearchResultView(BasicView):
 
         self.title = _(CONTENTS_MESSAGES[index],
                        mapping={'nember': len_result})
-        result_body = []
-        for obj in batch:
-            render_dict = {'object': obj,
-                           'current_user': user,
-                           'state': get_states_mapping(user, obj,
-                                   getattr(obj, 'state_or_none', [None])[0])}
-            body = self.content(args=render_dict,
-                                template=obj.templates['default'])['body']
-            result_body.append(body)
-
-        result = {}
+        result_body, result = render_listing_objs(
+            self.request, batch, user)
         values = {'bodies': result_body,
                   'batch': batch}
         body = self.content(args=values, template=self.template)['body']

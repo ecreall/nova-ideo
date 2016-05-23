@@ -56,6 +56,8 @@ class EditIdeaView(MultipleView):
     wrapper_template = 'novaideo:views/templates/view_wrapper.pt'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (EditIdeaFormView, EditIdeaActionsView)
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/compare_idea.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({EditIdea:EditIdeaView})

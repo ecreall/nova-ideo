@@ -45,6 +45,8 @@
       rel="stylesheet"/>
     <link href="${request.static_url('novaideo:static/css/slick-theme-cc.css')}"
       rel="stylesheet"/>
+    <link rel="stylesheet" href="${request.static_url('novaideo:static/custom-scrollbar/jquery.mCustomScrollbar.css')}" />
+    <link rel="stylesheet" href="${request.static_url('novaideo:static/css/sidebar.css')}" />
     <!-- Fav icons -->
 
     <div tal:omit-tag=""
@@ -85,6 +87,7 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/contextual_help.js')}"
           type="text/javascript"></script>
+    <script src="${su('novaideo:static/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js')}"></script>
 
     <script src="${request.static_url('novaideo:static/slick/slick/slick.min.js')}"
         type="text/javascript"></script>
@@ -98,7 +101,7 @@
           type="text/javascript"></script>
     ${panel('social_share')}
   </head>
-  <body>
+  <body tal:define="adminnavbar panel('adminnavbar')">
     
     <img class="loading-indicator"
          id="sdi-loading-img"
@@ -107,21 +110,31 @@
          alt="Loading indicator"/>
     <div tal:omit-tag="" tal:condition="request.accessible_to_anonymous">
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div tal:condition="adminnavbar" class="menu-toggle top">
+          <span class="glyphicon glyphicon-menu-hamburger" style=""></span>
+        </div>
         <div class="container">
           ${panel('usermenu')}
         </div>
       </div>
       <!-- bar  -->
       ${panel('usernavbar')}
-      ${panel('novaideo_contents')}
+      <div class="novaideo-info row"
+           tal:define="content panel('novaideo_contents');
+                       deadline panel('deadline')" >
+        <div tal:condition="content or deadline" class="col-md-7 col-md-offset-2">
+          ${content}
+          ${deadline}
+          <div class="separator"></div>
+        </div>
+      </div>
       ${panel('steps')}
-      ${panel('deadline')}
         <metal:slot metal:define-slot="outer-content">
           <div class="container-fluid">
           <div tal:define="more_panel panel('more_contents')" class="row clearfix novaideo-content">
 
             <div class="col-md-2 column ui-sortable novaideo-left">
-              ${panel('adminnavbar')}
+              ${adminnavbar}
               <div class="visible-lg-inline-block"  style="width: 100%">
                 ${more_panel}
               </div>
@@ -145,6 +158,7 @@
               </div>
 
               <div class="inner-content">
+                 ${panel('addideaform')}
                  <div metal:define-slot="main"></div>
               </div>
 
@@ -168,6 +182,7 @@
                      ${more_panel}
                  </div>
                <div metal:define-slot="right"></div>
+               
             </div>
           </div>
           </div>

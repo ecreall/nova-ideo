@@ -1,21 +1,17 @@
-<div class="container-fluid novaideo-alert-container">
-  <div tal:condition="condition" class="row"  i18n:domain="novaideo">
-      <div class="col-md-2"></div>
-  	<div class="col-md-7">
-  		<div class="deadline-panel ${expired and 'alert-danger' or 'alert-warning'}">
-  		   <strong tal:condition="expired">
+<div tal:condition="condition" class="container-fluid novaideo-alert-container">
+  <div  i18n:domain="novaideo">
+  		<div class="deadline-panel">
+         <div class="progress progress-striped">
+           <div class="progress-bar ${expired and 'progress-bar-danger' or 'progress-bar-warning'} " role="progressbar" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100" style="width: ${percent}%;">
+              <span class="sr-only">${percent}% Complete</span>
+           </div>
+         </div>
+  		   <small class="deadline-text-danger" tal:condition="expired">
           <span i18n:translate="">The review committee held recently the</span> <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>, <span i18n:translate="">no new fixed examination date.</span>
-        </strong>
-         <strong tal:condition="not expired">
+        </small>
+         <small class="deadline-text-warning" tal:condition="not expired">
           <span i18n:translate="">The review committee is scheduled to meet the</span> : <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>
-         </strong>
-             <div class="progress progress-striped">
-               <div class="progress-bar ${expired and 'progress-bar-danger' or 'progress-bar-warning'} " role="progressbar" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100" style="width: ${percent}%;">
-                  <span class="sr-only">${percent}% Complete</span>
-               </div>
-             </div>
-          </div>
+         </small>
       </div>
-      <div class="col-md-3 novaideo-alert-left"></div>
   </div>
 </div>

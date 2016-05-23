@@ -83,12 +83,14 @@ class PresentProposalFormView(FormView):
     name = 'presentproposalform'
 
     def before_update(self):
-        formwidget = deform.widget.FormWidget(css_class='controled-form',
-                                              activable=True,
-                                              button_css_class="pull-right",
-                                              picto_css_class="glyphicon glyphicon-envelope",
-                                              button_title=_("Present"))
+        formwidget = deform.widget.FormWidget(css_class='presentform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
+        view_name = self.request.view_name
+        if self.request.view_name == 'dace-ui-api-view':
+            view_name = 'present'
+
+        formwidget.ajax_url = self.request.resource_url(self.context,
+                                                        '@@'+view_name)
         self.schema.widget = formwidget
 
     def bind(self):

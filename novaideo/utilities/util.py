@@ -16,13 +16,15 @@ from babel.core import Locale
 from bs4 import BeautifulSoup
 from pyramid.threadlocal import get_current_registry, get_current_request
 
+from pontus.util import merge_dicts
 from dace.processinstance.activity import ActionType
 from dace.objectofcollaboration.principal.util import get_current
-from dace.util import getSite
+from dace.util import getSite, getAllBusinessAction
 from daceui.interfaces import IDaceUIAPI
 
 from .ical_date_utility import getDatesFromString, set_recurrence
 from novaideo.content.correlation import Correlation, CorrelationType
+from novaideo.content.processes import get_states_mapping
 from novaideo.core import _
 
 try:
@@ -220,7 +222,7 @@ def gen_random_token():
     return ''.join(random.choice(chars) for _ in range(length))
 
 
-def connect(source, 
+def connect(source,
             targets,
             intention,
             author=None,
@@ -302,18 +304,70 @@ def html_article_to_text(html):
 
     return ''
 
+ALL_DESCRIMINATORS = ['global-action',
+                      'text-action',
+                      'admin-action',
+                      'wg-action',
+                      'footer-entity-action',
+                      'text-comm-action',
+                      'body-action',
+                      'communication-action']
 
-def get_modal_actions(actions, request):
+DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_footer_actions.pt'
+
+DEFAUL_LISTING_ACTIONS_TEMPLATE= 'novaideo:views/templates/listing_object_actions.pt'
+
+DEFAUL_NAVBAR_TEMPLATE = 'novaideo:views/templates/navbar_actions.pt'
+
+FOOTER_NAVBAR_TEMPLATE = 'novaideo:views/templates/footer_navbar_actions.pt'
+
+DEFAULT_MENU_TEMPLATE = 'novaideo:views/templates/navbar_actions.pt'
+
+FOOTER_BLOCK_TEMPLATE = 'novaideo:views/templates/footer_entity_actions.pt'
+
+
+def render_listing_objs(request, objs, user, **kw):
+    result_body = []
+    resources = {'css_links': [], 'js_links': []}
+    for obj in objs:
+        try:
+            navbars = generate_listing_menu(
+                request, obj,
+                template=DEFAUL_LISTING_ACTIONS_TEMPLATE,
+                footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE)
+        except ObjectRemovedException:
+            continue
+
+        resources = merge_dicts(navbars['resources'], resources)
+        object_values = {
+            'object': obj,
+            'current_user': user,
+            'menu_body': navbars['menu_body'],
+            'footer_body': navbars['footer_body'],
+            'state': get_states_mapping(user, obj,
+                getattr(obj, 'state_or_none', [None])[0])}
+        object_values.update(kw)
+        body = renderers.render(
+            obj.templates.get('default'),
+            object_values,
+            request)
+        result_body.append(body)
+
+    return result_body, resources
+
+
+def update_modal_actions(actions, context, request):
     dace_ui_api = get_current_registry().getUtility(
         IDaceUIAPI, 'dace_ui_api')
-    actions = [(a.context, a.action) for a in actions]
+    actions = [(context, a) for a in actions]
     action_updated, messages, \
     resources, actions = dace_ui_api.update_actions(
         request, actions)
     return action_updated, messages, resources, actions
 
 
-def get_actions_navbar(actions_getter, request, descriminators):
+def get_actions_navbar(
+    actions_getter, context, request, descriminators):
     result = {}
     actions = []
     isactive = True
@@ -321,10 +375,11 @@ def get_actions_navbar(actions_getter, request, descriminators):
     while isactive and update_nb < 2:
         actions = actions_getter()
         modal_actions = [a for a in actions
-                         if getattr(a.action, 'style_interaction', '') ==
+                         if getattr(a, 'style_interaction', '') ==
                          'modal-action']
         isactive, messages, \
-        resources, modal_actions = get_modal_actions(modal_actions, request)
+        resources, modal_actions = update_modal_actions(
+            modal_actions, context, request)
         update_nb += 1
 
     modal_actions = [(a['action'], a) for a in modal_actions]
@@ -333,88 +388,64 @@ def get_actions_navbar(actions_getter, request, descriminators):
                               'resources': resources,
                               'actions': modal_actions
                               }
-    for descriminator in descriminators:
-        descriminator_actions = [a for a in actions
-                                 if getattr(a.action,
-                                            'style_descriminator', '') ==
-                                 descriminator]
-        descriminator_actions = sorted(
-            descriminator_actions,
-            key=lambda e: getattr(e.action, 'style_order', 0))
-        result[descriminator] = descriminator_actions
+    actions = sorted(
+        actions, key=lambda a: getattr(a, 'style_order', 0))
+    result.update({descriminator: [] for descriminator in descriminators})
+    for action in actions:
+        descriminator = getattr(action, 'style_descriminator', 'None')
+        if descriminator in result:
+            result[descriminator].insert(
+                getattr(action, 'style_order', 0), action)
 
     return result
 
 
-def default_navbar_body(view, context, actions_navbar):
-    global_actions = actions_navbar['global-action']
-    text_actions = actions_navbar['text-action']
+def render_navbar_body(
+    request, context,
+    actions_navbar,
+    template=None,
+    keys=['global-action', 'text-action']):
+    actions = {key.replace('-', '_'): actions_navbar.get(key, [])
+               for key in keys}
     modal_actions = actions_navbar['modal-action']['actions']
-    template = 'novaideo:views/templates/navbar_actions.pt'
-    result = {
-        'global_actions': global_actions,
-        'modal_actions': dict(modal_actions),
-        'text_actions': text_actions,
-    }
-    return renderers.render(template, result, view.request)
-
-
-def footer_navbar_body(view, context, actions_navbar):
-    global_actions = actions_navbar['footer-action']
-    modal_actions = actions_navbar['modal-action']['actions']
-    template = 'novaideo:views/templates/footer_navbar_actions.pt'
-    result = {
-        'footer_actions': global_actions,
-        'modal_actions': dict(modal_actions)
-    }
-    return renderers.render(template, result, view.request)
-
-
-navbar_body_getter = default_navbar_body
-
-
-def footer_block_body(view, context, actions_navbar):
-    footer_actions = actions_navbar['footer-entity-action']
-    modal_actions = actions_navbar['modal-action']['actions']
-    template = 'novaideo:views/templates/footer_entity_actions.pt'
-    result = {
-        'footer_actions': footer_actions,
-        'modal_actions': dict(modal_actions)
-    }
-    return renderers.render(template, result, view.request)
+    template = template if template else DEFAUL_NAVBAR_TEMPLATE
+    actions['modal_actions'] = dict(modal_actions)
+    actions['obj'] = context
+    return renderers.render(template, actions, request)
 
 
 class ObjectRemovedException(Exception):
     pass
 
 
-def generate_navbars(view, context, request, **args):
+def generate_navbars(request, context, **args):
     def actions_getter():
-        return [a for a in context.actions
-                if a.action.actionType != ActionType.automatic]
+        return [a for a in getAllBusinessAction(context)
+                if a.actionType != ActionType.automatic]
 
     actions_navbar = get_actions_navbar(
-        actions_getter, request, ['global-action',
-                                  'text-action',
-                                  'admin-action',
-                                  'wg-action',
-                                  'footer-entity-action',
-                                  'body-action'])
-    actions_navbar['global-action'].extend(
-        actions_navbar.pop('admin-action'))
-    actions_navbar['global-action'].extend(args.get('global_action', []))
-    actions_navbar['text-action'].extend(args.get('text_action', []))
-    actions_navbar['footer-entity-action'].extend(
-        args.get('footer_entity_action', []))
-    actions_navbar['body-action'].extend(args.get('body_action', []))
+        actions_getter, context, request, list(ALL_DESCRIMINATORS))
     if getattr(context, '__parent__', None) is None:
         raise ObjectRemovedException("Object removed")
+
+    actions_navbar['global-action'].extend(
+        actions_navbar.pop('admin-action'))
+    actions_navbar['global-action'].extend(
+        args.get('global_action', []))
+    actions_navbar['text-action'].extend(
+        actions_navbar.pop('text-comm-action'))
+    actions_navbar['text-action'].extend(
+        args.get('text_action', []))
+    actions_navbar['footer-entity-action'].extend(
+        args.get('footer_entity_action', []))
+    actions_navbar['body-action'].extend(
+        args.get('body_action', []))
 
     actions_bodies = []
     for action in actions_navbar['body-action']:
         object_values = {'action': action}
-        body = view.content(args=object_values,
-                            template=action.action.template)['body']
+        body = renderers.render(
+            action.action.template, object_values, request)
         actions_bodies.append(body)
 
     isactive = actions_navbar['modal-action']['isactive']
@@ -424,6 +455,52 @@ def generate_navbars(view, context, request, **args):
             'messages': messages,
             'resources': resources,
             'all_actions': actions_navbar,
-            'navbar_body': navbar_body_getter(view, context, actions_navbar),
-            'footer_body': footer_block_body(view, context, actions_navbar),
+            'navbar_body': render_navbar_body(
+                request, context, actions_navbar, args.get('template', None)),
+            'footer_body': render_navbar_body(
+                request, context, actions_navbar,
+                FOOTER_BLOCK_TEMPLATE, ['footer-entity-action']),
             'body_actions': actions_bodies}
+
+
+def generate_listing_menu(request, context, **args):
+    def actions_getter():
+        return [a for a in getAllBusinessAction(context)
+                if a.actionType != ActionType.automatic]
+
+    descriminators = args.get(
+        'descriminators',
+        list(ALL_DESCRIMINATORS))
+    actions_navbar = get_actions_navbar(
+        actions_getter, context, request, descriminators)
+    if getattr(context, '__parent__', None) is None and \
+       context is not request.root:
+        raise ObjectRemovedException("Object removed")
+
+    actions_navbar['actions'] = []
+    tomerge = descriminators
+    if 'communication-action' in tomerge and \
+       'text-comm-action' in tomerge:
+        actions_navbar['communication-action'].extend(
+            actions_navbar.pop('text-comm-action'))
+        tomerge.remove('communication-action')
+
+    for descriminator in tomerge:
+        if descriminator in actions_navbar:
+            actions_navbar['actions'].extend(
+                actions_navbar.pop(descriminator))
+
+    isactive = actions_navbar['modal-action']['isactive']
+    messages = actions_navbar['modal-action']['messages']
+    resources = actions_navbar['modal-action']['resources']
+    return {'isactive': isactive,
+            'messages': messages,
+            'resources': resources,
+            'menu_body': render_navbar_body(
+                request, context, actions_navbar,
+                args.get('template', None), ['actions']),
+            'footer_body':  render_navbar_body(
+                request, context, actions_navbar,
+                args.get('footer_template', None), ['communication-action'])
+            if 'communication-action' in actions_navbar else None
+            }

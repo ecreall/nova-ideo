@@ -2,24 +2,87 @@
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
-                 comments_len len(object.comments)">
-  <div id="proposal-image" class="content-image">
-    <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
-  </div>
-  <div class="media-body">
-    <a href="${url}"><h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4></a>
-    <a tal:attributes="href url"><h4><span class="visible-xs-inline-block icon ${icon}"></span>  ${object.title}</h4></a>
-    <div class="object-description-result">
-      <small tal:define="author object.author">
-          <span i18n:translate="">Submitted by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a> <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(object.created_at)"/> (UTC).
+                 author object.author;
+                 comments_len len(object.comments);
+                 files object.get_attached_files_data();
+                 len_files len(files);
+                 oid object.__oid__">
+  <div class="media-body media-proposal" tal:define="author_picture getattr(author, 'picture', None)">
+    <a href="${url}">
+      <h4 tal:condition="state">
+        <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
+      </h4>
+    </a>
+    <div class="author-block">
+      <img class="author-img img-circle" 
+         tal:condition="author_picture is not None" 
+         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+      <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
+      <small>
+        <span i18n:translate="">Submitted by</span>
+        <a tal:attributes="href request.resource_url(author, '@@index')">
+          ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+        </a>
+        <span i18n:translate="">the</span>
+        <span tal:replace="layout.to_localized_time(object.created_at)"/> (UTC)
       </small>
     </div>
-    <div>${object.presentation_text(400)}</div>
-     <div class="keywords-result">
+    <div class="object-title-block" >
+      <a tal:attributes="href url">
+        <h4>
+          <span class="icon ${icon}"></span> ${object.title}
+        </h4>
+      </a>
+    </div>
+    <div class="object-menu pull-right">
+      <div tal:replace="structure menu_body"/>
+    </div>
+    <div class="keywords-result">
       <span class="glyphicon glyphicon-tags"></span> 
       <tal:loop repeat="k object.keywords">
             <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
       </tal:loop>
+    </div>
+    <div class="row" tal:omit-tag="not files">
+      <div class="col-xs-12 col-md-8" tal:omit-tag="not files">
+        <div class="object-text">${object.presentation_text(500)}</div>
+      </div>
+      <div class="col-xs-12 col-md-4" tal:condition="files">
+          <div class="file-slider">
+            <div id="filecarousel${oid}" data-ride="carousel" data-interval="3000" class="carousel slide"> 
+              <div role="listbox" class="carousel-inner">
+                    <div tal:repeat="(i, source) enumerate(files)" class="item ${i==0 and 'active'}">
+                       <a tal:condition="source['type'] == 'img'" href="${source['content']}" target="_blank">
+                         <div 
+                          class="img-content"
+                          data-holder-rendered="true"
+                          style="
+                            background: rgba(0, 0, 0, 0) url(${source['content']}) no-repeat scroll center center / cover">
+                         </div>
+                       </a>
+                       <object tal:condition="source['type'] == 'flash'" width="300" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
+                        <param name="movie" value="${source['content']}">
+                        <param name="quality" value="high">
+                        <embed src="${source['content']}" quality="high" class="img-content" 
+                          type="application/x-shockwave-flash" 
+                                    pluginspage="http://www.macromedia.com/go/getflashplayer">
+                        </embed>
+                       </object>
+                    </div>
+              </div>
+              <div tal:omit-tag="" tal:condition="len_files>1">
+                <a class="left carousel-control" href="#filecarousel${oid}" role="button" data-slide="prev">
+                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#filecarousel${oid}" role="button" data-slide="next">
+                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+            </div>
+       </div>
+      </div>
     </div>
     <div class="working-group-result">
       <div class=""><span class="md md-group"></span> <span i18n:translate="">Working group</span> <span class="working-group-toggle glyphicon glyphicon-chevron-down"></span></div>
@@ -37,46 +100,51 @@
        </tal:loop>
       </div>
     </div>
-    <div tal:condition="comments_len" class="search-item-footer">
-      <div >
-        <a href="${request.resource_url(object, '@@index')+'#comment'}">
-          <span class="glyphicon glyphicon-comment"></span>
-          <span tal:condition="comments_len == 1">${comments_len} fil de discussion</span>
-          <span tal:condition="comments_len > 1">${comments_len} fils de discussion</span>
-        </a>  
+    <div class="search-item-footer"
+         tal:define="
+          submitted 'proposal' in getattr(request, 'content_to_support', []) and 'submitted_support' in object.state;
+          examined 'proposal' in getattr(request, 'content_to_examine', []) and  'examined' in object.state
+        ">
+      <div class="actions-block">
+        <div tal:replace="structure footer_body"/>
       </div>
+      <div tal:condition="submitted" class="proposal-support pull-right">
+        <span class="label success" 
+          tal:define="
+              support any(t.owner is current_user for t in object.tokens_support);
+              action 'withdraw_token_proposal' if support else 'support_proposal'">
+            <span class="${not support and 'hide-bloc'} hidden-xs glyphicon glyphicon-hand-down my-token my-token-success">
+            </span>
+            <span 
+              data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'support'})}" 
+              class="token token-toggle token-success glyphicon glyphicon-thumbs-up"></span>
+            <span class="support-nb">${len(object.tokens_support)}</span>
+        </span>
+        <span class="label danger"
+          tal:define="
+              oppose any(t.owner is current_user for t in object.tokens_opposition);
+              action 'withdraw_token_proposal' if oppose else 'oppose_proposal'">
+            <span class=" ${not oppose and 'hide-bloc'} hidden-xs glyphicon glyphicon-hand-down my-token my-token-danger"> 
+            </span>
+            <span 
+              data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
+              class="token token-toggle token-danger glyphicon glyphicon-thumbs-down"></span>
+            <span class="support-nb">${len(object.tokens_opposition)}</span>
+        </span>
+      </div>
+      <div tal:condition="examined" class="proposal-opinion pull-right"  title="${object.opinion_value}" >
+          <div class="proposal-explanation hide-bloc">
+            <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+             ${object.opinion['explanation']}</div>
+          <div class="circle red ${(object.opinion['opinion'] != 'unfavorable') and 'off' or 'on' }"></div>
+          <div class="circle orange ${(object.opinion['opinion'] != 'to_study') and 'off' or 'on' }"></div>
+          <div class="circle green ${(object.opinion['opinion'] != 'favorable') and 'off' or 'on'}"></div>
+      </div>
+
     </div>
-  <div tal:condition="'proposal' in getattr(request, 'content_to_support', []) and 'submitted_support' in object.state" class="proposal-support pull-right">
-    <span class="label success" 
-      tal:define="
-          support any(t.owner is current_user for t in object.tokens_support);
-          action 'withdraw_token_proposal' if support else 'support_proposal'">
-        <span class="${not support and 'hide-bloc'} hidden-xs glyphicon glyphicon-hand-down my-token my-token-success">
-        </span>
-        <span 
-          data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'support'})}" 
-          class="token token-toggle token-success glyphicon glyphicon-thumbs-up"></span>
-        <span class="support-nb">${len(object.tokens_support)}</span>
-    </span>
-    <span class="label danger"
-      tal:define="
-          oppose any(t.owner is current_user for t in object.tokens_opposition);
-          action 'withdraw_token_proposal' if oppose else 'oppose_proposal'">
-        <span class=" ${not oppose and 'hide-bloc'} hidden-xs glyphicon glyphicon-hand-down my-token my-token-danger"> 
-        </span>
-        <span 
-          data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
-          class="token token-toggle token-danger glyphicon glyphicon-thumbs-down"></span>
-        <span class="support-nb">${len(object.tokens_opposition)}</span>
-    </span>
-  </div>
-  <div tal:condition="'proposal' in getattr(request, 'content_to_examine', []) and  'examined' in object.state" class="proposal-opinion pull-right"  title="${object.opinion_value}" >
-      <div class="proposal-explanation hide-bloc">
-        <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-         ${object.opinion['explanation']}</div>
-      <div class="circle red ${(object.opinion['opinion'] != 'unfavorable') and 'off' or 'on' }"></div>
-      <div class="circle orange ${(object.opinion['opinion'] != 'to_study') and 'off' or 'on' }"></div>
-      <div class="circle green ${(object.opinion['opinion'] != 'favorable') and 'off' or 'on'}"></div>
+  <div class="actions-footer-container" style="display: none;">
+    <div class="container-body">
+    </div>
   </div>
   </div>
 </div>

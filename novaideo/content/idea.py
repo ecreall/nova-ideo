@@ -64,14 +64,16 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             cols=30,
             limit=600,
             alert_template='novaideo:views/templates/idea_text_alert.pt',
-            alert_values={'limit': 600}),
+            alert_values={'limit': 600},
+            item_css_class='idea-text',
+            placeholder='Une idée?'),
         title=_("Text")
         )
 
     note = colander.SchemaNode(
         colander.String(),
         widget=LimitedTextAreaWidget(
-            rows=5,
+            rows=3,
             cols=30,
             limit=300,
             alert_values={'limit': 300}),
@@ -87,7 +89,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             widget=get_file_widget()
             ),
         widget=SequenceWidget(
-            add_subitem_text_template=_('Add file')),
+            add_subitem_text_template=''),
         missing=[],
         title=_('Attached files'),
         )
@@ -169,3 +171,30 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
                 'keywords': list(self.keywords)
             }
         }
+
+    def get_attached_files_data(self):
+        result = []
+        for picture in self.attached_files:
+            if picture:
+                if picture.mimetype.startswith('image'):
+                    result.append({
+                        'content': picture.url,
+                        'type': 'img'})
+
+                if picture.mimetype.startswith(
+                        'application/x-shockwave-flash'):
+                    result.append({
+                        'content': picture.url,
+                        'type': 'flash'})
+
+                if picture.mimetype.startswith('text/html'):
+                    blob = picture.blob.open()
+                    blob.seek(0)
+                    content = blob.read().decode("utf-8")
+                    blob.seek(0)
+                    blob.close()
+                    result.append({
+                        'content': content,
+                        'type': 'html'})
+
+        return result

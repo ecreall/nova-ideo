@@ -1,0 +1,49 @@
+<div tal:define="
+     name name|field.name;
+     style field.widget.style;
+     oid oid|field.oid;
+     css_class css_class|field.widget.css_class;
+     multiple False;
+     id oid+'-'+field.get_root().formid;
+     values values|field.widget.values"
+     tal:omit-tag="">
+
+    <input type="hidden" name="__start__" value="${name}:sequence"
+         tal:condition="multiple" />
+
+    <div  class="input-group">
+       <div class="input-group-addon">
+	   	    <select tal:attributes="
+	          name name;
+	          id id;
+	          class string: form-control ${css_class};
+	          multiple multiple;
+	          style style;">
+			    <tal:loop tal:repeat="item values">
+			      <option
+		              tal:attributes="
+		              selected (multiple and item[0] in cstruct or item[0] == cstruct) and 'selected';
+		              value item[0]">${item[1]}</option>
+		        </tal:loop>
+		    </select>
+	    </div>
+        <textarea tal:attributes="
+       	                  class string: form-control ${css_class};
+                          style style"
+          rows="2"
+          id="${oid}"
+          name="${name}"></textarea>
+    </div>
+    <script type="text/javascript">
+	   deform.addCallback(
+	     '${id}',
+	     function(oid) {
+	         $('#' + oid).select2({containerCssClass: 'form-control'});
+	     }
+	   );
+    </script>
+    <input type="hidden" name="__end__" value="${name}:sequence"
+         tal:condition="multiple" />
+</div>
+
+

@@ -240,3 +240,30 @@ class Proposal(Commentable,
                 'keywords': list(self.keywords)
             }
         }
+
+    def get_attached_files_data(self):
+        result = []
+        for picture in self.attached_files:
+            if picture:
+                if picture.mimetype.startswith('image'):
+                    result.append({
+                        'content': picture.url,
+                        'type': 'img'})
+
+                if picture.mimetype.startswith(
+                        'application/x-shockwave-flash'):
+                    result.append({
+                        'content': picture.url,
+                        'type': 'flash'})
+
+                if picture.mimetype.startswith('text/html'):
+                    blob = picture.blob.open()
+                    blob.seek(0)
+                    content = blob.read().decode("utf-8")
+                    blob.seek(0)
+                    blob.close()
+                    result.append({
+                        'content': content,
+                        'type': 'html'})
+
+        return result

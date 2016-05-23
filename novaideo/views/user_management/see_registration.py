@@ -35,7 +35,7 @@ class SeeRegistrationView(BasicView):
     def update(self):
         self.execute(None)
         try:
-            navbars = generate_navbars(self, self.context, self.request)
+            navbars = generate_navbars(self.request, self.context)
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))
 

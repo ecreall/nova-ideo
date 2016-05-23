@@ -12,7 +12,7 @@ from pyramid import renderers
 from pyramid_layout.panel import panel_config
 from pyramid.threadlocal import get_current_registry
 
-
+from pontus.util import update_resources, merge_dicts
 from dace.objectofcollaboration.entity import Entity
 from dace.util import (
     getBusinessAction, getSite, find_catalog, getAllBusinessAction)
@@ -20,6 +20,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from daceui.interfaces import IDaceUIAPI
 
+from novaideo.utilities.util import generate_listing_menu, ObjectRemovedException
 from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMyContents,
     SeeMySelections,
@@ -40,7 +41,9 @@ from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity)
 from novaideo.utilities.util import (
     get_actions_navbar,
-    footer_navbar_body)
+    render_navbar_body,
+    deepcopy,
+    FOOTER_NAVBAR_TEMPLATE)
 from novaideo.views.filter import find_entities, find_more_contents
 
 
@@ -109,6 +112,50 @@ class Usermenu_panel(object):
         result = {}
         result['search_body'] = search_body
         result['view'] = self
+        return result
+
+
+@panel_config(
+    name='addideaform',
+    context=NovaIdeoApplication,
+    renderer='templates/panels/addideaform.pt'
+    )
+class AddIdea(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        if(self.request.view_name not in ('', 'seemycontents')):
+            return {'form': None}
+
+        root = getSite()
+        resources = deepcopy(getattr(
+            self.request, 'resources', {'js_links': [], 'css_links': []}))
+        add_idea_action, add_idea_view = _getaction(
+            self, 'ideamanagement', 'creat')
+        add_idea_view_instance = add_idea_view(
+            root, self.request, behaviors=[add_idea_action])
+        add_idea_view_instance.viewid = 'formcreateideahome'
+        add_idea_view_result = add_idea_view_instance()
+        add_idea_body = ''
+        result = {
+            'css_links': [],
+            'js_links': []}
+        if isinstance(add_idea_view_result, dict) and \
+           'coordinates' in add_idea_view_result:
+            add_idea_body = add_idea_view_result['coordinates'][add_idea_view_instance.coordinates][0]['body']
+            result['css_links'] = [c for c in add_idea_view_result.get('css_links', [])
+                                   if c not in resources['css_links']]
+            result['js_links'] = [c for c in add_idea_view_result.get('js_links', [])
+                                  if c not in resources['js_links']]
+
+        update_resources(self.request, result)
+        result['form'] = add_idea_body
+        result['view'] = self
+        result['action_url'] = self.request.resource_url(
+            root, '@@ideasmanagement', query={'op': 'creat_home_idea'})
         return result
 
 
@@ -184,7 +231,6 @@ class NovaideoContents(object):
 
         result['condition'] = True
         return result
-
 
 
 def days_hours_minutes(timed):
@@ -396,13 +442,14 @@ class NovaideoFooter(object):
     def __call__(self):
         root = getSite()
         def actions_getter():
-            return [a for a in root.actions
-                    if getattr(a.action, 'style', '') == 'button']
+            return [a for a in getAllBusinessAction(root)
+                    if getattr(a, 'style', '') == 'button']
 
         actions_navbar = get_actions_navbar(
-            actions_getter, self.request, ['footer-action'])
-        return {'navbar_body': footer_navbar_body(
-            self, self.context, actions_navbar)}
+            actions_getter, root, self.request, ['footer-action'])
+        return {'navbar_body': render_navbar_body(
+            self, self.context, actions_navbar,
+            FOOTER_NAVBAR_TEMPLATE, ['footer-action'])}
 
 
 @panel_config(
@@ -420,28 +467,48 @@ class LateralMenu(object):
 
     def __call__(self):
         root = getSite()
-        actions = []
-        for action_class, data in self.actions.items():
-            item_actions = getAllBusinessAction(
-                root,
-                self.request,
-                process_id=data[0],
-                node_id=data[1])
-            action = None
-            if item_actions:
-                action = item_actions[0]
+        resources = deepcopy(getattr(
+            self.request, 'resources', {'js_links': [], 'css_links': []}))
+        try:
+            navbars = generate_listing_menu(
+                self.request, root,
+                descriminators=['primary-action'],
+                template='novaideo:views/templates/lateral_menu.pt')
+        except ObjectRemovedException:
+            return {'menu_body': None}
 
-            actions.append({'title': action_class.title,
-                            'action': action,
-                            'unavailable_link': getattr(
-                                action_class, 'unavailable_link', None),
-                            'order': getattr(action_class, 'style_order', 100),
-                            'style_btn': data[2],
-                            'style_picto': getattr(action_class,
-                                                   'style_picto', '')})
+        result = {
+            'css_links': [],
+            'js_links': [],
+            'menu_body': navbars['menu_body']}
+        result['css_links'] = [c for c in navbars['resources'].get('css_links', [])
+                               if c not in resources['css_links']]
+        result['js_links'] = [c for c in navbars['resources'].get('js_links', [])
+                              if c not in resources['js_links']]
+        update_resources(self.request, result)
+        return result
+        # actions = []
+        # for action_class, data in self.actions.items():
+        #     item_actions = getAllBusinessAction(
+        #         root,
+        #         self.request,
+        #         process_id=data[0],
+        #         node_id=data[1])
+        #     action = None
+        #     if item_actions:
+        #         action = item_actions[0]
 
-        actions = sorted(actions, key=lambda e: e['order'])
-        return {'items': actions}
+        #     actions.append({'title': action_class.title,
+        #                     'action': action,
+        #                     'unavailable_link': getattr(
+        #                         action_class, 'unavailable_link', None),
+        #                     'order': getattr(action_class, 'style_order', 100),
+        #                     'style_btn': data[2],
+        #                     'style_picto': getattr(action_class,
+        #                                            'style_picto', '')})
+
+        # actions = sorted(actions, key=lambda e: e['order'])
+        # return {'items': actions}
 
 
 def group_actions(actions):

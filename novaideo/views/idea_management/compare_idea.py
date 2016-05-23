@@ -151,6 +151,8 @@ class CompareIdeaView(MultipleView):
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CompareIdeaFormView, DiffView)
     contextual_help = 'compare-help'
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/compare_idea.js']}
 
     def get_message(self):
         len_history = len(self.context.history)

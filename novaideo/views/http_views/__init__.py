@@ -27,7 +27,7 @@ class NotFoundView(BasicView):
     template = 'novaideo:views/http_views/templates/404.pt'
     css_class = 'simple-bloc'
     container_css_class = 'home'
-    wrapper_template = 'novaideo:views/http_views/templates/simple_wrapper.pt'
+    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
 
     def update(self):
         self.title = self.request.localizer.translate(self.title)

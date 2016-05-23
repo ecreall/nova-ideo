@@ -10,7 +10,6 @@ from pyramid.view import view_config
 from substanced.util import get_oid
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.objectofcollaboration.principal.util import get_current
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeMySupports)
@@ -53,8 +52,7 @@ class SeeMySupportsView(SeeMyContentsView):
             mapping={'nember': args.get('len_result'),
                      'tokens': len(getattr(args.get('user'), 'tokens', []))})
 
-    def _get_content_ids(self):
-        user = get_current()
+    def _get_content_ids(self, user):
         return [get_oid(o) for o in getattr(user, 'supports', [])]
 
 

@@ -48,7 +48,7 @@ class DetailAmendmentView(BasicView):
 
     def _end_explanation(self, actions):
         if 'explanation' in self.context.state:
-            return any(a.action.behavior_id == 'submit'
+            return any(a.behavior_id == 'submit'
                        for a in actions.get('global-action', []))
 
         return False
@@ -56,7 +56,7 @@ class DetailAmendmentView(BasicView):
     def update(self):
         self.execute(None)
         try:
-            navbars = generate_navbars(self, self.context, self.request)
+            navbars = generate_navbars(self.request, self.context)
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))
 

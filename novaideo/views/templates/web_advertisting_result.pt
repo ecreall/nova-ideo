@@ -1,15 +1,21 @@
 <div class="thumbnail right-caption span4 search-item result-item"
   i18n:domain="novaideo"
-  tal:define="icon getattr(object, 'icon', '')">
-    <div id="advertisting-image" class="content-image">
-    <span  class="hidden-xs icon ${icon}"></span>
-  </div>
-  <div class="media-body cultural-event-body">
+  tal:define="url request.resource_url(object, '@@index');
+              icon getattr(object, 'icon', '')">
+  <div class="media-body media-advertisting">
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-    <h3><small class="pull-right">${getattr(object, 'click', 0)} <span i18n:translate="">click(s)</span></small></h3>
-    <a tal:attributes="href request.resource_url(object, '@@index')"><h4 class="content-title"><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title}</h4></a>
-    <div class="advertisement pull-right">
-        <div data-ride="carousel" data-interval="10000" class="carousel slide  advertisement-preview" id="advertisement_preview">
+    <div class="object-title-block" >
+      <a tal:attributes="href url">
+        <h4>
+          <span class="icon ${icon}"></span>  ${object.title}
+          <small style="color:gray">
+            (${getattr(object, 'click', 0)} <span i18n:translate="">click(s)</span>)
+          </small>
+        </h4>
+      </a>
+    </div>
+    <div class="advertisement">
+        <div data-ride="carousel" data-interval="10000" class="pull-right carousel slide  advertisement-preview" id="advertisement_preview">
           <div role="listbox" class="carousel-inner advertisement-container">
                 <div tal:define="source object.get_content_data()" class="item active">
                    <a class="image-preview" tal:condition="source['type'] == 'img'" href="#" target="_blank">

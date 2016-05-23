@@ -38,7 +38,7 @@ class DetailIdeaView(BasicView):
     def _cant_publish_alert(self, actions, user):
         if not self.request.moderate_ideas and \
            'to work' in self.context.state and self.context.author is user:
-            return not any(a.action.behavior_id == 'publish'
+            return not any(a.behavior_id == 'publish'
                            for a in actions.get('global-action', []))
 
         return False
@@ -46,7 +46,7 @@ class DetailIdeaView(BasicView):
     def _cant_submit_alert(self, actions, user):
         if self.request.moderate_ideas and \
            'to work' in self.context.state and self.context.author is user:
-            return not any(a.action.behavior_id == 'submit'
+            return not any(a.behavior_id == 'submit'
                            for a in actions.get('global-action', []))
 
         return False
@@ -54,7 +54,7 @@ class DetailIdeaView(BasicView):
     def update(self):
         self.execute(None)
         try:
-            navbars = generate_navbars(self, self.context, self.request)
+            navbars = generate_navbars(self.request, self.context)
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))
 
