@@ -1,4 +1,4 @@
-	<ul class="list-inline">
+	<ul class="list-inline" tal:condition="communication_action">
         <tal:loop repeat="a communication_action">
           <li tal:condition="not hasattr(a, 'url')">
             <a class="${a.get('class_css','')}"><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>

@@ -1,4 +1,4 @@
-<div class="clearfix listing-object-menu">
+<div class="clearfix listing-object-menu" tal:condition="actions">
 	<div class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	 <span class="glyphicon glyphicon-option-vertical"></span> 
 	</div> 
