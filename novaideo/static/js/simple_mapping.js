@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-  $('.control-form-button').on('click', function(){
+  $(document).on('click','.control-form-button', function(event){
         var form = $($(this).parents('div.ajax-form').first()).find('.controled-form').first();
         if (form.hasClass('hide-bloc')) {
             form.slideDown();

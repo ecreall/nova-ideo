@@ -122,10 +122,9 @@ $(document).ready(function(){
         var button = $(this).find('button').last();
         var intention = $(this).find("select[name=\'intention\']").select2('val');
         var select_related_contents = $($(this).find("select[name='related_contents']").first());
-        var related_contents = get_data(select_related_contents.select2('val'));
         var textarea = $(this).find('textarea');
         var comment = textarea.val();
-        var parent = $($(this).parents('.panel-body').first());
+        var parent = $($(this).parents('.views-container').first());
         var target = parent.find('.comments-scroll');
         var commentmessageinfo = parent.find('#messageinfo');
         var commentmessagesuccess = parent.find('#messagesuccess');
@@ -136,6 +135,7 @@ $(document).ready(function(){
           progress.show();// TODO
           $(button).addClass('disabled');
           $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
+          
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
                  var content = $(data).find('.comments-scroll');
@@ -149,7 +149,7 @@ $(document).ready(function(){
                    $($(select_related_contents.parents('.controled-form').first()).find("input[name='associate']").first()).prop('checked', false);
                    select_related_contents.select2('val', []);
                    init_select_association();
-                  }else{
+                   }else{
                      location.reload();
                      return false
                   };
@@ -159,9 +159,9 @@ $(document).ready(function(){
         }else{
            var errormessage = '';
            if (intention == ''){
-               errormessage =  "intention";
-           };
-           if (comment == ''){
+              errormessage = 'intention'
+            };
+           if (textarea.val() == ''){
               if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
            };
            $( commentmessagedanger).text( "Your "+errormessage+" cannot be empty!" ).show().fadeOut( 4000 );
@@ -171,8 +171,7 @@ $(document).ready(function(){
    });
   
 
-
-    $('.commentform .control-form-button').on('click', function(event){
+    $(document).on('click','.commentform .control-form-button', function(event){
         var form = $($(this).parents('.ajax-form').find(".controled-form").first());
         var associate = $(form.find("input[name='associate']").first());
         if(!form.hasClass('hide-bloc')){
@@ -190,8 +189,8 @@ $(document).ready(function(){
         var textarea = $(this).find('textarea');
         var comment = textarea.val();
 
-        var parent = $($(this).parents('.panel-body').get(1));
-        var modal = $(parent).find('.modal.fade:has(form[id|=\''+formid+'\'])');
+        var parent = $($(this).parents('.views-container').get(1));
+        // var modal = $(parent).find('.modal.fade:has(form[id|=\''+formid+'\'])');
         var parentform = parent.find('.commentform');
         var urlparent = $(parentform).data('url');
 
@@ -203,7 +202,7 @@ $(document).ready(function(){
         var url = $(event.target).data('url');
         if (comment !='' && intention!=''){
           progress.show();// TODO
-          $(modal).modal('hide');
+          // $(modal).modal('hide');
           $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
@@ -233,5 +232,55 @@ $(document).ready(function(){
        };
       event.preventDefault();
    });
+
+
+    $(document).on('submit','.presentform', function( event ) {
+        var button = $(this).find('button').last();
+        var members = $(this).find("select[name=\'members\']");
+        var subject = $(this).find("input[name=\'subject\']").val();
+        var textarea = $(this).find('textarea');
+        var parent = $($(this).parents('.views-container').first());
+        var target = $(parent.find('.study-view').first());
+        var commentmessageinfo = parent.find('#messageinfo');
+        var commentmessagesuccess = parent.find('#messagesuccess');
+        var commentmessagedanger = parent.find('#messagedanger');
+        var progress = parent.find('#progress');
+        var url = $(event.target).data('url');
+        if (subject !='' && textarea.val()!='' && members.val() != null){
+          progress.show();// TODO
+          $(button).addClass('disabled');
+          $( commentmessageinfo).text( novaideo_translate("Message sent") ).show().fadeOut( 4000 );
+          var values = $(this).serialize()+'&'+button.val()+'='+button.val();
+          $.post(url, values, function(data) {
+                 var content = $(data).find('.study-view.study-present');
+                 if (content){
+                  var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
+                   $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
+                   $(target).html($(content).html());
+                   members.select2('val', []);
+                  }else{
+                     location.reload();
+                     return false
+                  };
+                  $(button).removeClass('disabled');
+              });
+              progress.hide();
+        }else{
+           var errormessage = '';
+           if (members.val() == null){
+               errormessage =  "members";
+           };
+           if (subject == ''){
+              if (errormessage != ''){errormessage=errormessage+' and subject'}else{errormessage = 'subject'}
+           };
+           if (textarea.val() == ''){
+              if (errormessage != ''){errormessage=errormessage+' and message'}else{errormessage = 'message'}
+           };
+           $( commentmessagedanger).text( "Your "+errormessage+" cannot be empty!" ).show().fadeOut( 4000 );
+
+       };
+       event.preventDefault();
+   });
+
 
 });
