@@ -77,6 +77,7 @@ def seemyc_processsecurity_validation(process, context):
 
 
 class SeeMyContents(InfiniteCardinality):
+    style_picto = 'glyphicon glyphicon-inbox'
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seemy_roles_validation
@@ -103,6 +104,7 @@ def seemys_processsecurity_validation(process, context):
 
 
 class SeeMySelections(InfiniteCardinality):
+    style_picto = 'glyphicon glyphicon-star'
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seemy_roles_validation
@@ -132,6 +134,7 @@ def seemypa_processsecurity_validation(process, context):
 
 
 class SeeMyParticipations(InfiniteCardinality):
+    style_picto = 'md md-group'
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seemy_roles_validation
@@ -156,6 +159,7 @@ def seemysu_processsecurity_validation(process, context):
 
 
 class SeeMySupports(InfiniteCardinality):
+    style_picto = 'glyphicon glyphicon-hand-down'
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seemy_roles_validation

@@ -1,4 +1,4 @@
-<nav class="collapse navbar-collapse navbar-access-collapse navbar navbar-inverse navbar-bottom" >
+<nav class="navbar navbar-inverse navbar-bottom" >
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2"></div>
@@ -8,7 +8,8 @@
             <ul tal:condition="actions"  class="nav navbar-nav">
                <li tal:repeat="(k, a) actions.items()" class="menu-item">
                   <a class="${(request.view_name == actions[k]['view_name']) and 'active'} ${((actions[k]['url']  is None) and 'disabled') or ''}" href="${actions[k]['url']}" tal:define="action actions[k]['action']">
-                     ${k}  <span tal:condition="action is not None" class="item-nb">${action.contents_nb(view.request, view.context)}</span>  
+                     <span class="hidden-xs">${k} <span tal:condition="action is not None" class=" item-nb">${action.contents_nb(view.request, view.context)}</span></span>
+                     <span class="visible-xs-inline-block action-icon ${actions[k]['icon']}"></span>
                   </a>
                </li>
             </ul>

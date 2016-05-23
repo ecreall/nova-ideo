@@ -188,11 +188,13 @@ class UserNavBarPanel(object):
             if None not in (action, view):
                 actions_url[action.title] = {
                             'action': action,
+                            'icon': action.style_picto,
                             'url': action.url(root),
                             'view_name': getattr(view,'name', None)}
             else:
                 actions_url[actionclass.node_definition.title] = {
                             'action': None,
+                            'icon': actionclass.node_definition.style_picto,
                             'url': None,
                             'view_name': getattr(view,'name', None)}
         result = {}
