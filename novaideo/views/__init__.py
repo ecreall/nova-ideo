@@ -228,7 +228,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, self.request,
                 behaviors=[action])
             comment_view_instance.update()
-            result_view = CommentsView(self.context, self.request)
+            result_view = CommentsView(self.context.subject, self.request)
             body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
             return {'body': body}
 

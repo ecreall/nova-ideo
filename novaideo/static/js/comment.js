@@ -188,8 +188,7 @@ $(document).ready(function(){
         var parent = $($(this).parents('.views-container').get(1));
         // var modal = $(parent).find('.modal.fade:has(form[id|=\''+formid+'\'])');
         var parentform = parent.find('.commentform');
-        var urlparent = $(parentform).data('url');
-
+        
         var target = parent.find('.comments-scroll .commentulorigin');
         var commentmessageinfo = parent.find('#messageinfo');
         var commentmessagesuccess = parent.find('#messagesuccess');
@@ -201,17 +200,16 @@ $(document).ready(function(){
           // $(modal).modal('hide');
           $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
+          $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
           $.post(url, values, function(data) {
-             $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
-             $.post(urlparent, {}, function(data) {
-                  var content = $(data).find('.commentulorigin');
-                  if (content){
-                     $(target).html($(content).html());
-                  }else{
-                     location.reload();
-                     return false
-                   };
-                 });
+              var content = $(data.body).find('.commentulorigin');
+              if (content){
+                 $(target).html($(content).html());
+              }else{
+                 location.reload();
+                 return false
+               };
+    
           });
              progress.hide();
         }else{
