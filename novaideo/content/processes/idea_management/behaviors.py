@@ -136,7 +136,7 @@ def duplicate_processsecurity_validation(process, context):
 
 class DuplicateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
+    style_descriminator = 'global-action'
     style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-resize-full'
     style_order = 2
@@ -565,7 +565,7 @@ class CommentIdea(InfiniteCardinality):
     isSequential = False
     style_descriminator = 'communication-action'
     style_interaction = 'modal-action'
-    style_picto = 'glyphicon glyphicon-comment'
+    style_picto = 'ion-chatbubble'
     style_order = 0
     context = Iidea
     roles_validation = comm_roles_validation
@@ -661,7 +661,7 @@ def present_state_validation(process, context):
 class PresentIdea(InfiniteCardinality):
     style_descriminator = 'communication-action'
     style_interaction = 'modal-action'
-    style_picto = 'glyphicon glyphicon-envelope'
+    style_picto = 'glyphicon glyphicon-share-alt'
     style_order = 1
     submission_title = _('Send')
     context = Iidea

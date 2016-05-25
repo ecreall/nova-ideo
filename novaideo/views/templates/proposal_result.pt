@@ -85,7 +85,11 @@
       </div>
     </div>
     <div class="working-group-result">
-      <div class=""><span class="md md-group"></span> <span i18n:translate="">Working group</span> <span class="working-group-toggle glyphicon glyphicon-chevron-down"></span></div>
+      <div class="working-group-toggle">
+        <span class="md md-group"></span> 
+        <span i18n:translate="">Working group</span> 
+        <span class="working-group-toggle-btn ion-ios7-arrow-down"></span>
+      </div>
       <div class="working-group-section hide-bloc">
         <tal:loop repeat="m object.working_group.members">
           <a tal:attributes="href request.resource_url(m, '@@index')"

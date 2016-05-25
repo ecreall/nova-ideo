@@ -1,7 +1,7 @@
 
 import io
 import os
-from PIL import Image
+from PIL import Image, ImageFilter
 
 from novaideo import log
 
@@ -11,7 +11,7 @@ IMAGES_FORMATS = [{'id': 'xlarge', 'size': (400, 200)},
                   {'id': 'small', 'size': (128, 85)},
                   {'id': 'profil', 'size': (140, 140)}]
 
-AVAILABLE_FORMATS = [img_format['id'] for img_format in IMAGES_FORMATS]
+AVAILABLE_FORMATS = [img_format['id'] for img_format in IMAGES_FORMATS] + ['blur']
 
 
 def _get_multiple(height, width, h, l):
@@ -54,6 +54,24 @@ def _get_coordinates(height, width, area_height, area_width, x, y, h, l):
     return round(left), round(upper), round(right), round(lower)
 
 
+def blur_img(fp, filename):
+    try:
+        img = Image.open(fp)
+        if img.mode == 'P':
+            img = img.convert('RGB')
+    except OSError as e:
+        log.warning(e)
+        return {}
+
+    img = img.filter(ImageFilter.GaussianBlur(radius=25))
+    buf = io.BytesIO()
+    ext = os.path.splitext(filename)[1].lower()
+    img.save(buf, Image.EXTENSION.get(ext, 'jpeg'))
+    buf.seek(0)
+    return {'fp': buf,
+            'id': 'blur'}
+
+
 def generate_images(fp, filename,
                     dimension):
     x = dimension.get('x', 0)
@@ -87,4 +105,5 @@ def generate_images(fp, filename,
         img_data['fp'] = buf
         result.append(img_data)
 
+    result.append(blur_img(fp, filename))
     return result

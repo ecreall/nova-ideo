@@ -34,12 +34,11 @@ class RespondView(FormView):
                     'js_links':['novaideo:static/js/comment.js']}
 
     def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi', query={'op': 'respond_comment'})
         formwidget = deform.widget.FormWidget(css_class='respondform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
-        view_name = 'respond'
-        formwidget.ajax_url = self.request.resource_url(self.context, 
-                                                        '@@'+view_name)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({Respond: RespondView})

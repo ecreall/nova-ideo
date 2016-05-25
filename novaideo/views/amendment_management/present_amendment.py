@@ -83,14 +83,10 @@ class PresentAmendmentFormView(FormView):
     name = 'presentamendmentform'
 
     def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi', query={'op': 'present_entity'})
         formwidget = deform.widget.FormWidget(css_class='presentform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
-        view_name = self.request.view_name
-        if self.request.view_name == 'dace-ui-api-view':
-            view_name = 'present'
-
-        formwidget.ajax_url = self.request.resource_url(self.context,
-                                                        '@@'+view_name)
         self.schema.widget = formwidget
 
     def bind(self):

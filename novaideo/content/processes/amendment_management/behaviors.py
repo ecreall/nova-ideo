@@ -97,7 +97,7 @@ def duplicate_state_validation(process, context):
 
 class DuplicateAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
+    style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-resize-full'
     style_order = 2
     submission_title = _('Save')

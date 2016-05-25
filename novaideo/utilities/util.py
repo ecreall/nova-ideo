@@ -308,7 +308,7 @@ ALL_DESCRIMINATORS = ['global-action',
                       'text-action',
                       'admin-action',
                       'wg-action',
-                      'footer-entity-action',
+                      'plus-action',
                       'text-comm-action',
                       'body-action',
                       'communication-action']
@@ -404,7 +404,7 @@ def render_navbar_body(
     request, context,
     actions_navbar,
     template=None,
-    keys=['global-action', 'text-action']):
+    keys=['global-action', 'text-action', 'plus-action']):
     actions = {key.replace('-', '_'): actions_navbar.get(key, [])
                for key in keys}
     modal_actions = actions_navbar['modal-action']['actions']
@@ -436,8 +436,8 @@ def generate_navbars(request, context, **args):
         actions_navbar.pop('text-comm-action'))
     actions_navbar['text-action'].extend(
         args.get('text_action', []))
-    actions_navbar['footer-entity-action'].extend(
-        args.get('footer_entity_action', []))
+    actions_navbar['plus-action'].extend(
+        args.get('plus_action', []))
     actions_navbar['body-action'].extend(
         args.get('body_action', []))
 
@@ -459,7 +459,8 @@ def generate_navbars(request, context, **args):
                 request, context, actions_navbar, args.get('template', None)),
             'footer_body': render_navbar_body(
                 request, context, actions_navbar,
-                FOOTER_BLOCK_TEMPLATE, ['footer-entity-action']),
+                DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE, ['communication-action'])
+                if 'communication-action' in actions_navbar else None,
             'body_actions': actions_bodies}
 
 

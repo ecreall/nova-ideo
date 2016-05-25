@@ -104,7 +104,7 @@ function init_result_scroll(){
     var result_scroll = $(result_scrolls[i]);
     var last_child = $(result_scroll.find('.result-item').last());
     if (last_child.length > 0){
-        var top = last_child.offset().top - result_scroll.offset().top  + last_child.height() + 150
+        var top = last_child.offset().top - result_scroll.offset().top  + last_child.height() + 420
         if (top < 1600){
          result_scroll.height(top);
         }
@@ -183,14 +183,17 @@ function init_search_results(){
   $('.proposal-opinion button.close').on('click', close_explanation);
 
   $('.working-group-toggle').on('click', function(){
-      var wg_section_body = $($($(this).parents('.media-body').first()).find('.working-group-section').first());
+    var $this = $(this)
+      var wg_section_body = $($($this.parents('.working-group-result').first()).find('.working-group-section').first());
+      var btn = $($this.find('.working-group-toggle-btn').first());
+      
       if(wg_section_body.hasClass('hide-bloc')){
-        $(this).addClass('glyphicon-chevron-up');
-        $(this).removeClass('glyphicon-chevron-down');
+       btn.addClass('ion-ios7-arrow-up');
+        btn.removeClass(' ion-ios7-arrow-down');
         wg_section_body.removeClass('hide-bloc');
       }else{
-        $(this).removeClass('glyphicon-chevron-up');
-        $(this).addClass('glyphicon-chevron-down');
+        btn.removeClass('ion-ios7-arrow-up');
+        btn.addClass(' ion-ios7-arrow-down');
         wg_section_body.addClass('hide-bloc');
       };
       
@@ -273,8 +276,8 @@ $(document).on('click', '.sidebar-nav li > a.primary', function(event){
 
 function update_inline_action(url){
     var $this = $(this)
-    var target = $($this.parents('.search-item').find('.actions-footer-container').first())//closest('.dace-action-inline').data('target')+'-target';
-    var actions = $($this.parents('.search-item').find('.search-item-footer .dace-action-inline'));
+    var target = $($this.parents('.search-item, .content-view').find('.actions-footer-container').first())//closest('.dace-action-inline').data('target')+'-target';
+    var actions = $($this.parents('.actions-block').find('.dace-action-inline'));
     if($this.hasClass('activated')){
        target.slideUp();
        actions.removeClass('activated')

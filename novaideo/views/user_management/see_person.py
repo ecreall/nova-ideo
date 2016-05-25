@@ -36,6 +36,8 @@ class SeePersonView(BasicView):
     behaviors = [SeePerson]
     template = 'novaideo:views/user_management/templates/see_person.pt'
     viewid = 'seeperson'
+    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    css_class = 'simple-bloc user-view-index'
 
     def update(self):
         self.execute(None)

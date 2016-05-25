@@ -19,7 +19,6 @@ from novaideo.content.proposal import Proposal
 from novaideo import _
 
 
-
 class CommentsView(CommentsIdeaView):
     validators = [CommentProposal.get_validator()]
 
@@ -31,14 +30,10 @@ class CommentProposalFormView(CommentIdeaFormView):
     name = 'commentproposalform'
 
     def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi', query={'op': 'comment_entity'})
         formwidget = deform.widget.FormWidget(css_class='commentform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
-        view_name = self.request.view_name
-        if self.request.view_name == 'dace-ui-api-view':
-            view_name = 'comment'
-
-        formwidget.ajax_url = self.request.resource_url(self.context,
-                                                        '@@'+view_name)
         self.schema.widget = formwidget
 
 

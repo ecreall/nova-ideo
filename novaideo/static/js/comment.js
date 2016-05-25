@@ -33,17 +33,6 @@ function get_data(selecteds){
     return result
 };
 
-function init_select_association(){
-    $('.select-associations').click(function(){
-        var comments = $($($($(this).parents('.comments-scroll').first()).find('ul.commentulorigin').first()).children().filter("li[data-association='false']"));
-        if (this.checked) {
-            comments.addClass('hide-bloc')            
-        }else{
-           comments.removeClass('hide-bloc')
-        }
-    });
-};
-
 function replays_show(element){
     var replays = $($($($(element).parents('li').first()).children('ul:not(.replay-bloc)')).children('li'));
     if($(element).hasClass('closed')){
@@ -112,9 +101,17 @@ function update_replay(url){
     return false;
 };
 
+$(document).on('click', '.select-associations', function(){
+      var comments = $($($($(this).parents('.comments-scroll').first()).find('ul.commentulorigin').first()).children().filter("li[data-association='false']"));
+      if (this.checked) {
+          comments.addClass('hide-bloc')            
+      }else{
+         comments.removeClass('hide-bloc')
+      }
+  });
+
 
 $(document).ready(function(){
-    init_select_association();
 
     $(document).on('click', '.replay-action', update_replay);
 
@@ -125,12 +122,12 @@ $(document).ready(function(){
         var textarea = $(this).find('textarea');
         var comment = textarea.val();
         var parent = $($(this).parents('.views-container').first());
-        var target = parent.find('.comments-scroll');
+        var target = parent.find('.comments-scroll .commentulorigin');
         var commentmessageinfo = parent.find('#messageinfo');
         var commentmessagesuccess = parent.find('#messagesuccess');
         var commentmessagedanger = parent.find('#messagedanger');
         var progress = parent.find('#progress');
-        var url = $(event.target).data('url');
+        var url = $(event.target).attr('action');
         if (comment !='' && intention!=''){
           progress.show();// TODO
           $(button).addClass('disabled');
@@ -138,17 +135,16 @@ $(document).ready(function(){
           
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
-                 var content = $(data).find('.comments-scroll');
+                 var content = $(data.body).find('.commentulorigin');
                  if (content){
-                   var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
-                   $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
+                   // var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
+                   // $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
                    $(target).html($(content).html());
                    $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
                    textarea.val('');
-                   select_related_contents.parents('.controled-form').first().addClass('hide-bloc');
-                   $($(select_related_contents.parents('.controled-form').first()).find("input[name='associate']").first()).prop('checked', false);
+                   $(select_related_contents.parents('.ajax-form').first().find('.control-form-button')).click();
                    select_related_contents.select2('val', []);
-                   init_select_association();
+
                    }else{
                      location.reload();
                      return false
@@ -194,31 +190,30 @@ $(document).ready(function(){
         var parentform = parent.find('.commentform');
         var urlparent = $(parentform).data('url');
 
-        var target = parent.find('.comments-scroll');
+        var target = parent.find('.comments-scroll .commentulorigin');
         var commentmessageinfo = parent.find('#messageinfo');
         var commentmessagesuccess = parent.find('#messagesuccess');
         var commentmessagedanger = parent.find('#messagedanger');
         var progress = parent.find('#progress');
-        var url = $(event.target).data('url');
+        var url = $(event.target).attr('action');
         if (comment !='' && intention!=''){
           progress.show();// TODO
           // $(modal).modal('hide');
           $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
-                 $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
-                 $.post(urlparent, {}, function(data) {
-                      var content = $(data).find('.comments-scroll');
-                      if (content){
-                         $(target).html($(content).html());
-                         init_select_association();
-                      }else{
-                         location.reload();
-                         return false
-                       };
-                     });
+             $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
+             $.post(urlparent, {}, function(data) {
+                  var content = $(data).find('.commentulorigin');
+                  if (content){
+                     $(target).html($(content).html());
+                  }else{
+                     location.reload();
+                     return false
+                   };
                  });
-                 progress.hide();
+          });
+             progress.hide();
         }else{
            var errormessage = '';
            if (intention == ''){
@@ -245,17 +240,17 @@ $(document).ready(function(){
         var commentmessagesuccess = parent.find('#messagesuccess');
         var commentmessagedanger = parent.find('#messagedanger');
         var progress = parent.find('#progress');
-        var url = $(event.target).data('url');
+        var url = $(event.target).attr('action');
         if (subject !='' && textarea.val()!='' && members.val() != null){
           progress.show();// TODO
           $(button).addClass('disabled');
           $( commentmessageinfo).text( novaideo_translate("Message sent") ).show().fadeOut( 4000 );
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
-                 var content = $(data).find('.study-view.study-present');
+                 var content = $(data.body).find('.study-view.study-present');
                  if (content){
-                  var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
-                   $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
+                  // var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
+                   // $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
                    $(target).html($(content).html());
                    members.select2('val', []);
                   }else{

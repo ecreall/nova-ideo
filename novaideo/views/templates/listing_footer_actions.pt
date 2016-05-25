@@ -19,7 +19,7 @@
                   data-target="#${item['action_id']}"
                   data-updateurl="${item['actionurl_update']}"
                   data-toreplay="${'toreplay' in item}">
-                 <span class="${getattr(a,'style_picto','')}" ></span> 
+                 <span class="footer-icon ${getattr(a,'style_picto','')}" ></span> 
                  <span class="hidden-xs">${item['action'].title}</span>
                </a>
                <script tal:condition="'toreplay' in item">       

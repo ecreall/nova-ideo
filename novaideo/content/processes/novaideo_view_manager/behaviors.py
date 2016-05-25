@@ -264,7 +264,7 @@ def history_processsecurity_validation(process, context):
 
 class SeeEntityHistory(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'footer-entity-action'
+    style_descriminator = 'plus-action'
     style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-time'
     title = _('Processes history')

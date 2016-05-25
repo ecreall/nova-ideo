@@ -157,7 +157,7 @@
                 </div>
               </div>
 
-              <div class="inner-content">
+              <div class="inner-content ${(context.__class__.__name__ == 'Person' and request.view_name in ('index', '@@index')) and 'user-view-index'}">
                  ${panel('addideaform')}
                  <div metal:define-slot="main"></div>
               </div>

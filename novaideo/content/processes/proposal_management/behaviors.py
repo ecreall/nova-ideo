@@ -557,7 +557,7 @@ def duplicate_processsecurity_validation(process, context):
 
 class DuplicateProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'text-action'
+    style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-resize-full'
     style_order = 7
     submission_title = _('Save')
@@ -1316,10 +1316,10 @@ def attach_state_validation(process, context):
 
 class AttachFiles(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'footer-entity-action'
+    style_descriminator = 'text-action'
     style_interaction = 'modal-action'
     style_picto = 'glyphicon glyphicon-paperclip'
-    style_order = 0
+    style_order = 3
     submission_title = _('Save')
     context = IProposal
     roles_validation = attach_roles_validation

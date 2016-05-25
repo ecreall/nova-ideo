@@ -1,88 +1,89 @@
-<ul class="${(origin and 'commentulorigin') or 'commentul'}"
-    i18n:domain="novaideo">
-  <tal:loop repeat="(i, item) enumerate(comments)">
-    <li class="commentli ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
-        data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" 
-        tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context'];
-                    picture getattr(comment.author, 'picture', None)">
-       <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}">
-          <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
-          <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
-          <div class="media-body comment-content">
-           <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span></div>
-            <small tal:define="diff_len  len(diff.keys())">
-              <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
-              <div  tal:omit-tag="" tal:condition="diff"><span i18n:translate="">There is a</span>  
-                <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
-                <span tal:condition="'hours' in diff">${diff['hours']} <span i18n:translate="">hour(s)</span></span> 
-                <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>
-                <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">second(s)</span></span>
-              </div>
-              <span tal:condition="diff_len == 0" i18n:translate="">Now</span> <span i18n:translate="">- Her intention:</span> 
-              <span tal:condition="getattr(comment, 'intention', None)" i18n:translate="" tal:content="comment.intention"/>
-            </small>
-            <p>${comment.comment}</p>
-            <div tal:condition="comment.related_correlation is not None" id="related_contents">
-               <small tal:define="contents comment.related_correlation.targets">
-                  <blockquote tal:define="contents_len len(contents)" class="attached_contents">
-                    <dl >
-                     <dt tal:condition="contents_len > 1" i18n:translate="">Associated contents:</dt>
-                    <dt tal:condition="contents_len == 1" i18n:translate="">Associated content:</dt>
-                     <dd tal:condition="contents">
-                       <tal:loop repeat="f contents">
-                           <a tal:attributes="href request.resource_url(f, '@@index')">${f.title}</a>
-                           <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
-                       </tal:loop>
-                     </dd>
-                    </dl>
-                   </blockquote>
-               </small>
-            </div>
-            <div tal:condition="'action' in item"  id="commentaction" class="pull-right" tal:define="commentlen len(comment.comments)">
-                <span tal:condition="commentlen-level > 0" 
-                      class="comment-replay-nb closed"
-                      onclick="javascript:replays_show(this);">
-                  <small><span class="glyphicon glyphicon-chevron-down"></span> 
-                  <span class="comment-replay-message-opened" i18n:translate="">View all <span i18n:name="commentlen">${commentlen}</span> responses</span>
-                  <span class="comment-replay-message-closed hide-bloc" i18n:translate="">Hide responses</span>
-                </small>
-                </span>
-                <div tal:omit-tag="">
-                 <a id="${item['action_id']}-btn" 
-                    class="btn btn-default btn-xs replay-action"
-                    style="max-width: 300px;"
-                    href="${item['action'].url(item['context'])}"
-                    data-actionid ="${item['action_id']}" 
-                    data-target="#${item['action_id']}"
-                    data-updateurl="${item['actionurl_update']}"
-                    data-toreplay="${'toreplay' in item}">
-                     <span class="glyphicon glyphicon-comment"></span> ${item['action'].title}
-                   </a>
+<div>
+  <ul class="${(origin and 'commentulorigin') or 'commentul'}"
+      i18n:domain="novaideo">
+    <tal:loop repeat="(i, item) enumerate(comments)">
+      <li class="commentli ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
+          data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" 
+          tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context'];
+                      picture getattr(comment.author, 'picture', None)">
+         <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}">
+            <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
+            <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
+            <div class="media-body comment-content">
+             <div  tal:condition="comment.related_correlation is not None" class="association-tag pull-right"><span class="glyphicon glyphicon-link"></span></div>
+              <small tal:define="diff_len  len(diff.keys())">
+                <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
+                <div  tal:omit-tag="" tal:condition="diff"><span i18n:translate="">There is a</span>  
+                  <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
+                  <span tal:condition="'hours' in diff">${diff['hours']} <span i18n:translate="">hour(s)</span></span> 
+                  <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>
+                  <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">second(s)</span></span>
                 </div>
-            </div>      
-          </div>
-       </div>
-       <ul  class="commentul replay-bloc hide-bloc">
-        <li>
-          <div id="${item['action_id']}-replay" class="replay-body">
-            <div class="thumbnail right-caption span4 comment-data ">
-               <div class="media-body">
-               </div>
-            </div>  
-            <script>
-                $(document).ready(function(){
-                    $(${'\'#'+item['action_id']+'-replay\''}).on('hidden.replay', function (e) {
-                       after_execution(${'\"'+item['actionurl_after']+'\"'})
-                      })
-                });
-           </script>    
-          </div>
-        </li>
-       </ul>
-      <div tal:define="(body, r, m, a) view._rendre_comments(comment.comments)" tal:replace="structure body" />
-    </li>
-  </tal:loop>
-</ul>
-
+                <span tal:condition="diff_len == 0" i18n:translate="">Now</span> <span i18n:translate="">- Her intention:</span> 
+                <span tal:condition="getattr(comment, 'intention', None)" i18n:translate="" tal:content="comment.intention"/>
+              </small>
+              <p>${comment.comment}</p>
+              <div tal:condition="comment.related_correlation is not None" id="related_contents">
+                 <small tal:define="contents comment.related_correlation.targets">
+                    <blockquote tal:define="contents_len len(contents)" class="attached_contents">
+                      <dl >
+                       <dt tal:condition="contents_len > 1" i18n:translate="">Associated contents:</dt>
+                      <dt tal:condition="contents_len == 1" i18n:translate="">Associated content:</dt>
+                       <dd tal:condition="contents">
+                         <tal:loop repeat="f contents">
+                             <a tal:attributes="href request.resource_url(f, '@@index')">${f.title}</a>
+                             <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+                         </tal:loop>
+                       </dd>
+                      </dl>
+                     </blockquote>
+                 </small>
+              </div>
+              <div tal:condition="'action' in item"  id="commentaction" class="pull-right" tal:define="commentlen len(comment.comments)">
+                  <span tal:condition="commentlen-level > 0" 
+                        class="comment-replay-nb closed"
+                        onclick="javascript:replays_show(this);">
+                    <small><span class="glyphicon glyphicon-chevron-down"></span> 
+                    <span class="comment-replay-message-opened" i18n:translate="">View all <span i18n:name="commentlen">${commentlen}</span> responses</span>
+                    <span class="comment-replay-message-closed hide-bloc" i18n:translate="">Hide responses</span>
+                  </small>
+                  </span>
+                  <div tal:omit-tag="">
+                   <a id="${item['action_id']}-btn" 
+                      class="btn btn-default btn-xs replay-action"
+                      style="max-width: 300px;"
+                      href="${item['action'].url(item['context'])}"
+                      data-actionid ="${item['action_id']}" 
+                      data-target="#${item['action_id']}"
+                      data-updateurl="${item['actionurl_update']}"
+                      data-toreplay="${'toreplay' in item}">
+                       <span class="ion-chatbubbles"></span> ${item['action'].title}
+                     </a>
+                  </div>
+              </div>      
+            </div>
+         </div>
+         <ul  class="commentul replay-bloc hide-bloc">
+          <li>
+            <div id="${item['action_id']}-replay" class="replay-body">
+              <div class="thumbnail right-caption span4 comment-data ">
+                 <div class="media-body">
+                 </div>
+              </div>  
+              <script>
+                  $(document).ready(function(){
+                      $(${'\'#'+item['action_id']+'-replay\''}).on('hidden.replay', function (e) {
+                         after_execution(${'\"'+item['actionurl_after']+'\"'})
+                        })
+                  });
+             </script>    
+            </div>
+          </li>
+         </ul>
+        <div tal:define="(body, r, m, a) view._rendre_comments(comment.comments)" tal:replace="structure body" />
+      </li>
+    </tal:loop>
+  </ul>
+</div>
 
 

@@ -66,6 +66,7 @@ def respond_state_validation(process, context):
 
 
 class Respond(InfiniteCardinality):
+    style_picto = 'ion-chatbubbles'
     title = _('Replay')
     access_controled = True
     context = IComment

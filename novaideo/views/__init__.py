@@ -9,11 +9,16 @@ from pyramid.view import view_config
 
 from substanced.util import get_oid
 
-from dace.util import find_catalog, getBusinessAction
+from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.util import find_catalog, getAllBusinessAction
 from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView
 
+from novaideo.views.idea_management.comment_idea import (
+    CommentsView)
+from novaideo.views.idea_management.present_idea import (
+    SentToView)
 from novaideo.content.interface import (
     IPerson,
     ICorrelableEntity,
@@ -177,6 +182,54 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, self.request)
             result = view_source.update()
             body = result['coordinates'][view_source.coordinates][0]['body']
+            return {'body': body}
+
+        return {'body': ''}
+
+    def present_entity(self):
+        present_actions = getAllBusinessAction(
+            self.context, self.request, node_id='present')
+        if present_actions:
+            action = present_actions[0]
+            present_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+            present_view_instance = present_view(
+                self.context, self.request,
+                behaviors=[action])
+            present_view_instance.update()
+            result_view = SentToView(self.context, self.request)
+            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+            return {'body': body}
+
+        return {'body': ''}
+
+    def comment_entity(self):
+        comment_actions = getAllBusinessAction(
+            self.context, self.request, node_id='comment')
+        if comment_actions:
+            action = comment_actions[0]
+            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+            comment_view_instance = comment_view(
+                self.context, self.request,
+                behaviors=[action])
+            comment_view_instance.update()
+            result_view = CommentsView(self.context, self.request)
+            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+            return {'body': body}
+
+        return {'body': ''}
+
+    def respond_comment(self):
+        comment_actions = getAllBusinessAction(
+            self.context, self.request, node_id='respond')
+        if comment_actions:
+            action = comment_actions[0]
+            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+            comment_view_instance = comment_view(
+                self.context, self.request,
+                behaviors=[action])
+            comment_view_instance.update()
+            result_view = CommentsView(self.context, self.request)
+            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
             return {'body': body}
 
         return {'body': ''}
