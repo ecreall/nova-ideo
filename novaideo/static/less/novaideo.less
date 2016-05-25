@@ -1427,6 +1427,7 @@ ins {
 .proposal-support {
     margin-bottom: 0px;
     margin-top: 3px;
+    margin-right: 10px;
 }
 
 .search-item .proposal-support{
@@ -2064,7 +2065,7 @@ ins {
 
 .search-item .proposal-opinion{
     margin-top: -15px;
-    margin-right: 15px;
+    margin-right: 20px;
 }
 
 #messages .proposal-opinion{
@@ -2318,6 +2319,19 @@ ins {
 
 
 @media (max-width: 767px) {
+    .user-data-container>h3>span{
+        display: block !important;
+    }
+    .user-data-addon .pull-right{
+        float: none !important;
+    }
+    .user-panel,
+    .user-data-detail,
+    .user-view-index .section-title
+    {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
     .user-data-container{
         margin-left: 0px;
         text-align: center;
@@ -2329,8 +2343,13 @@ ins {
       float: none !important;
     }
 
+    .navbar-entity-content .navbar-nav .dropdown-menu{
+        left: 0px !important;
+    }
+
     .navbar-entity-content .nav > li.plus-menu{
-      margin-top: 30px;
+        float: none !important;
+        text-align: center;
     }
      
     .navbar-entity-content .navbar-nav .open .dropdown-menu{
