@@ -10,7 +10,7 @@ from pyramid.view import view_config
 from substanced.util import get_oid
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import find_catalog, getAllBusinessAction
+from dace.util import find_catalog, getAllBusinessAction, getBusinessAction
 from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView
