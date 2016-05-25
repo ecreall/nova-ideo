@@ -197,7 +197,7 @@ $(document).ready(function(){
         var url = $(event.target).attr('action');
         if (comment !='' && intention!=''){
           progress.show();// TODO
-          // $(modal).modal('hide');
+          $(button).addClass('disabled');
           $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
           var values = $(this).serialize()+'&'+button.val()+'='+button.val();
           $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
