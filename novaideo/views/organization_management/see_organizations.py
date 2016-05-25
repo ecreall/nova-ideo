@@ -41,6 +41,9 @@ class SeeOrganizationsView(BasicView):
     behaviors = [SeeOrganizations]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seeorganizations'
+    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
 
     def update(self):
         self.execute(None)
