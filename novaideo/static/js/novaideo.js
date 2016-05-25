@@ -74,7 +74,7 @@ function initscroll(){
 // ["http://0.0.0.0:6543/@@seemyideas?batch_num=", "&batch_size=1&action_uid=-4657697968224339750"]
 // substanced Batch starts at 0, not 1
        var f = function(currPage) {
-          var next_path = $($($('.results .result-container').parents('div').first()).find('.result-container').last()).data('nex_url')
+          var next_path = $($('.results .result-container').parents('div').first().find('.result-container').last()).data('nex_url')
           return next_path +'&'+ data_get;
        };
        return f;
@@ -184,7 +184,7 @@ function init_search_results(){
 
   $('.working-group-toggle').on('click', function(){
     var $this = $(this)
-      var wg_section_body = $($($this.parents('.working-group-result').first()).find('.working-group-section').first());
+      var wg_section_body = $($this.parents('.working-group-result').first().find('.working-group-section').first());
       var btn = $($this.find('.working-group-toggle-btn').first());
       
       if(wg_section_body.hasClass('hide-bloc')){
