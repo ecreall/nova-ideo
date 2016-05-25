@@ -145,7 +145,7 @@ $(document).ready(function(){
                    $(target).html($(content).html());
                    $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
                    textarea.val('');
-                   $(select_related_contents.parents('.ajax-form').first().find('.control-form-button')).click();
+                   $(select_related_contents.parents('.ajax-form:has(.controled-form.associate-form:not(.hide-bloc))').first().find('.control-form-button')).click();
                    select_related_contents.select2('val', []);
 
                    }else{
@@ -171,12 +171,15 @@ $(document).ready(function(){
   
 
     $(document).on('click','.commentform .control-form-button', function(event){
-        var form = $($(this).parents('.ajax-form').find(".controled-form").first());
+        var $this = $(this) 
+        var form = $($this.parents('.ajax-form').find(".controled-form").first());
         var associate = $(form.find("input[name='associate']").first());
-        if(!form.hasClass('hide-bloc')){
-            associate.prop('checked', true)
-        }else{
+        if($this.hasClass('opened')){
             associate.prop('checked', false)
+            $this.removeClass('opened')
+        }else{
+            associate.prop('checked', true)
+            $this.addClass('opened')
         }
     });
 

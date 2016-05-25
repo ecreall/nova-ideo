@@ -10,6 +10,7 @@ from pyramid.view import view_config
 
 from substanced.util import Batch
 
+from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 from pontus.util import merge_dicts
@@ -58,6 +59,7 @@ class SeeOrganizationsView(BasicView):
 
         self.title = _(CONTENTS_MESSAGES[index],
                        mapping={'nember': len_result})
+        user = get_current()
         result_body, result = render_listing_objs(
             self.request, batch, user)
         values = {
