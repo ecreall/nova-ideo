@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-05-22 14:28+0200\n"
+"POT-Creation-Date: 2016-05-24 10:28+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -431,11 +431,11 @@ msgstr "1er"
 msgid "${name} ${day}"
 msgstr "${name} ${day}"
 
-#: novaideo/views/panels.py:366
+#: novaideo/views/panels.py:371
 msgid "No more Information."
 msgstr "Information indisponible"
 
-#: novaideo/views/panels.py:517
+#: novaideo/views/panels.py:522
 #: novaideo/content/processes/admin_process/definition.py:44
 #: novaideo/content/processes/admin_process/definition.py:48
 #: novaideo/content/processes/novaideo_process_management/definition.py:42
@@ -649,7 +649,7 @@ msgstr "Modifier l'idée"
 msgid "Support"
 msgstr "Soutenir"
 
-#: novaideo/views/idea_management/create_idea.py:38
+#: novaideo/views/idea_management/create_idea.py:40
 #: novaideo/views/templates/add_idea_widget.pt:10
 #: novaideo/content/processes/idea_management/definition.py:62
 #: novaideo/content/processes/idea_management/definition.py:63
@@ -659,14 +659,14 @@ msgstr "Soutenir"
 msgid "Create an idea"
 msgstr "Noter une idée"
 
-#: novaideo/views/idea_management/create_idea.py:55
-#: novaideo/views/idea_management/create_idea.py:75
-#: novaideo/views/idea_management/templates/see_idea.pt:23
+#: novaideo/views/idea_management/create_idea.py:57
+#: novaideo/views/idea_management/create_idea.py:77
+#: novaideo/views/idea_management/templates/see_idea.pt:24
 #: novaideo/views/proposal_management/create_proposal.py:124
 #: novaideo/views/proposal_management/templates/see_proposal.pt:51
 #: novaideo/views/proposal_management/templates/amendments.pt:12
-#: novaideo/views/templates/idea_result.pt:23
-#: novaideo/views/templates/proposal_result.pt:23
+#: novaideo/views/templates/idea_result.pt:26
+#: novaideo/views/templates/proposal_result.pt:26
 #: novaideo/views/amendment_management/templates/see_amendment.pt:37
 #: novaideo/views/amendment_management/templates/description_amendments.pt:6
 #: novaideo/views/work_mode_processes/wiki_work_mode_process/correct_proposal.py:122
@@ -674,8 +674,8 @@ msgstr "Noter une idée"
 msgid "the"
 msgstr "le"
 
-#: novaideo/views/idea_management/create_idea.py:53
-#: novaideo/views/idea_management/create_idea.py:73
+#: novaideo/views/idea_management/create_idea.py:55
+#: novaideo/views/idea_management/create_idea.py:75
 #: novaideo/views/proposal_management/create_proposal.py:122
 #: novaideo/views/work_mode_processes/wiki_work_mode_process/correct_proposal.py:120
 msgid "Idea by"
@@ -860,7 +860,6 @@ msgstr "Envoyer à"
 #: novaideo/views/idea_management/present_idea.py:173
 #: novaideo/views/idea_management/present_idea.py:214
 #: novaideo/views/idea_management/present_idea.py:215
-#: novaideo/content/processes/idea_management/definition.py:106
 msgid "Submit the idea to others"
 msgstr "Communiquer l'idée à des tiers"
 
@@ -904,7 +903,6 @@ msgstr "Messages"
 #: novaideo/views/idea_management/comment_idea.py:95
 #: novaideo/views/idea_management/comment_idea.py:127
 #: novaideo/views/idea_management/comment_idea.py:128
-#: novaideo/content/processes/idea_management/definition.py:110
 msgid "Discuss the idea"
 msgstr "Discuter l'idée"
 
@@ -1032,23 +1030,23 @@ msgstr ""
 msgid "The idea has been sent:"
 msgstr "L'idée a été envoyée à :"
 
-#: novaideo/views/idea_management/templates/sent_to.pt:22
-#: novaideo/views/proposal_management/templates/sent_to.pt:22
-#: novaideo/views/amendment_management/templates/sent_to.pt:22
+#: novaideo/views/idea_management/templates/sent_to.pt:32
+#: novaideo/views/proposal_management/templates/sent_to.pt:32
+#: novaideo/views/amendment_management/templates/sent_to.pt:32
 msgid "And ${external_len} external person contacted."
 msgstr "Ainsi que ${external_len} personne externe contactée"
 
-#: novaideo/views/idea_management/templates/sent_to.pt:23
-#: novaideo/views/proposal_management/templates/sent_to.pt:23
-#: novaideo/views/amendment_management/templates/sent_to.pt:23
+#: novaideo/views/idea_management/templates/sent_to.pt:33
+#: novaideo/views/proposal_management/templates/sent_to.pt:33
+#: novaideo/views/amendment_management/templates/sent_to.pt:33
 msgid "And ${external_len} external persons contacted."
 msgstr "Ainsi que ${external_len} personnes externes contactées"
 
-#: novaideo/views/idea_management/templates/sent_to.pt:26
+#: novaideo/views/idea_management/templates/sent_to.pt:36
 msgid "The idea has been sent to ${external_len} external person."
 msgstr "L'idée a été envoyée à ${external_len} personne externe"
 
-#: novaideo/views/idea_management/templates/sent_to.pt:27
+#: novaideo/views/idea_management/templates/sent_to.pt:37
 msgid "The idea has been sent to ${external_len} external persons."
 msgstr "L'idée a été envoyée à ${external_len} personnes externes"
 
@@ -1064,26 +1062,26 @@ msgid ""
 "la modifier pour qu'elle ne soit pas identique à l'idée d'origine."
 msgstr ""
 
-#: novaideo/views/idea_management/templates/see_idea.pt:23
+#: novaideo/views/idea_management/templates/see_idea.pt:24
 #: novaideo/views/proposal_management/templates/see_proposal.pt:51
 msgid "(Submitted by"
 msgstr "(Initiée par"
 
-#: novaideo/views/idea_management/templates/see_idea.pt:23
+#: novaideo/views/idea_management/templates/see_idea.pt:24
 msgid ", duplicated from the idea"
 msgstr ", dupliquée à partir de l'idée"
 
-#: novaideo/views/idea_management/templates/see_idea.pt:24
+#: novaideo/views/idea_management/templates/see_idea.pt:25
 msgid ", previous version of the current version of the idea"
 msgstr ", version passée de la version en cours de l'idée"
 
-#: novaideo/views/idea_management/templates/see_idea.pt:42
-#: novaideo/views/proposal_management/templates/see_proposal.pt:157
+#: novaideo/views/idea_management/templates/see_idea.pt:85
+#: novaideo/views/proposal_management/templates/see_proposal.pt:202
 msgid "Attachments:"
 msgstr "Pièces jointes :"
 
-#: novaideo/views/idea_management/templates/see_idea.pt:43
-#: novaideo/views/proposal_management/templates/see_proposal.pt:158
+#: novaideo/views/idea_management/templates/see_idea.pt:86
+#: novaideo/views/proposal_management/templates/see_proposal.pt:203
 msgid "Attachment:"
 msgstr "Pièce jointe :"
 
@@ -1364,7 +1362,7 @@ msgstr "Inscriptions"
 #: novaideo/views/user_management/reset_password.py:144
 #: novaideo/content/processes/idea_management/behaviors.py:666
 #: novaideo/content/processes/invitation_management/behaviors.py:114
-#: novaideo/content/processes/novaideo_view_manager/behaviors.py:291
+#: novaideo/content/processes/novaideo_view_manager/behaviors.py:295
 msgid "Send"
 msgstr "Envoyer"
 
@@ -1738,16 +1736,10 @@ msgid "Amendment duration"
 msgstr "Durée du cycle d'amélioration"
 
 #: novaideo/views/proposal_management/present_proposal.py:78
-#: novaideo/views/proposal_management/present_proposal.py:106
-#: novaideo/views/proposal_management/present_proposal.py:107
-#: novaideo/content/processes/proposal_management/definition.py:342
+#: novaideo/views/proposal_management/present_proposal.py:108
+#: novaideo/views/proposal_management/present_proposal.py:109
 msgid "Submit the proposal to others"
 msgstr "Communiquer la proposition à des tiers"
-
-#: novaideo/views/proposal_management/present_proposal.py:90
-#: novaideo/views/amendment_management/present_amendment.py:91
-msgid "Present"
-msgstr "Communiquer"
 
 #: novaideo/views/proposal_management/compare_proposal.py:29
 msgid "Compare proposal form"
@@ -1913,7 +1905,6 @@ msgstr "Soumettre la proposition en l'état"
 #: novaideo/views/proposal_management/comment_proposal.py:28
 #: novaideo/views/proposal_management/comment_proposal.py:51
 #: novaideo/views/proposal_management/comment_proposal.py:52
-#: novaideo/content/processes/proposal_management/definition.py:346
 msgid "Discuss the proposal"
 msgstr "Discuter la proposition"
 
@@ -2028,7 +2019,7 @@ msgid "Abstract"
 msgstr "Résumé"
 
 #: novaideo/views/proposal_management/templates/see_proposal.pt:74
-#: novaideo/views/templates/proposal_result.pt:45
+#: novaideo/views/templates/proposal_result.pt:90
 msgid "Working group"
 msgstr "Groupe de travail"
 
@@ -2047,7 +2038,7 @@ msgstr "Le nombre maximum de participants a été atteint"
 msgid "Workspace"
 msgstr "Espace de travail"
 
-#: novaideo/views/proposal_management/templates/see_proposal.pt:132
+#: novaideo/views/proposal_management/templates/see_proposal.pt:177
 msgid "Votes"
 msgstr "Votes"
 
@@ -2091,11 +2082,11 @@ msgstr "dupliquée à partir de la version amendée"
 msgid "The proposal has been sent:"
 msgstr "La proposition a été envoyée à:"
 
-#: novaideo/views/proposal_management/templates/sent_to.pt:26
+#: novaideo/views/proposal_management/templates/sent_to.pt:36
 msgid "The proposal has been sent to ${external_len} external person."
 msgstr "La proposition a été envoyée à ${external_len} personne externe"
 
-#: novaideo/views/proposal_management/templates/sent_to.pt:27
+#: novaideo/views/proposal_management/templates/sent_to.pt:37
 msgid "The proposal has been sent to ${external_len} external persons."
 msgstr "La proposition a été envoyée à ${external_len} personnes externes"
 
@@ -2187,8 +2178,8 @@ msgid ""
 "travailler sur votre idée, vous pouvez transformer l'idée en proposition."
 msgstr ""
 
-#: novaideo/views/templates/idea_result.pt:19
-#: novaideo/views/templates/proposal_result.pt:19
+#: novaideo/views/templates/idea_result.pt:22
+#: novaideo/views/templates/proposal_result.pt:22
 msgid "Submitted by"
 msgstr "Initiée par"
 
@@ -2227,6 +2218,9 @@ msgid "by"
 msgstr "par"
 
 #: novaideo/views/templates/panels/social_share_toggle.pt:10
+#: novaideo/content/processes/idea_management/definition.py:107
+#: novaideo/content/processes/proposal_management/definition.py:343
+#: novaideo/content/processes/amendment_management/definition.py:77
 msgid "Share"
 msgstr "Partager"
 
@@ -3539,7 +3533,7 @@ msgid "Associate the amendment to an other content"
 msgstr "Associer l'amendement à un autre contenu"
 
 #: novaideo/views/amendment_management/present_amendment.py:78
-#: novaideo/views/amendment_management/present_amendment.py:107
+#: novaideo/views/amendment_management/present_amendment.py:108
 msgid "Submit the amended version to others"
 msgstr "Communiquer la version amendée à des tiers"
 
@@ -3622,11 +3616,11 @@ msgstr ""
 msgid "The amended version has been sent:"
 msgstr "La version amendée a été envoyée à :"
 
-#: novaideo/views/amendment_management/templates/sent_to.pt:26
+#: novaideo/views/amendment_management/templates/sent_to.pt:36
 msgid "The amendement has been sent to ${external_len} external person."
 msgstr "L'amendement a été envoyé à ${external_len} personne externe"
 
-#: novaideo/views/amendment_management/templates/sent_to.pt:27
+#: novaideo/views/amendment_management/templates/sent_to.pt:37
 msgid "The amendement has been sent to ${external_len} external persons."
 msgstr "L'amendement a été envoyé à ${external_len} personnes externes"
 
@@ -3950,7 +3944,7 @@ msgstr "Mes appréciations"
 #: novaideo/views/novaideo_view_manager/see_history.py:29
 #: novaideo/views/novaideo_view_manager/see_alerts.py:38
 #: novaideo/content/processes/novaideo_view_manager/definition.py:94
-#: novaideo/content/processes/novaideo_view_manager/behaviors.py:266
+#: novaideo/content/processes/novaideo_view_manager/behaviors.py:270
 msgid "Processes history"
 msgstr "Historique des processus"
 
@@ -4166,10 +4160,13 @@ msgid "Comment form"
 msgstr "Formulaire des commentaires"
 
 #: novaideo/views/correlation_management/comment_correlation.py:56
+#: novaideo/content/processes/idea_management/definition.py:111
+#: novaideo/content/processes/proposal_management/definition.py:347
+#: novaideo/content/processes/amendment_management/definition.py:81
 #: novaideo/content/processes/correlation_management/definition.py:42
 #: novaideo/content/processes/correlation_management/definition.py:43
 msgid "Comment"
-msgstr "Commentaire"
+msgstr "Commenter"
 
 #: novaideo/views/correlation_management/see_correlation.py:46
 #: novaideo/content/processes/correlation_management/definition.py:46
@@ -4419,6 +4416,10 @@ msgstr "Note de modification"
 #: novaideo/content/idea.py:94 novaideo/content/workspace.py:50
 msgid "Attached files"
 msgstr "Pièces jointes"
+
+#: novaideo/content/idea.py:69
+msgid "An idea?"
+msgstr "Une idée ?"
 
 #: novaideo/content/invitation.py:57
 msgid "Is the manager"
@@ -4934,17 +4935,13 @@ msgstr "Soumettre l'idée"
 msgid "Recuperate the idea"
 msgstr "Rétablir l'idée"
 
-#: novaideo/content/processes/idea_management/definition.py:107
-#: novaideo/content/processes/proposal_management/definition.py:343
-#: novaideo/content/processes/amendment_management/definition.py:77
-msgid "Submit to others"
-msgstr "Communiquer"
+#: novaideo/content/processes/idea_management/definition.py:106
+msgid "Share the idea to others"
+msgstr "Partager l'idée à des tiers"
 
-#: novaideo/content/processes/idea_management/definition.py:111
-#: novaideo/content/processes/proposal_management/definition.py:347
-#: novaideo/content/processes/amendment_management/definition.py:81
-msgid "Discuss"
-msgstr "Discuter"
+#: novaideo/content/processes/idea_management/definition.py:110
+msgid "Comment the idea"
+msgstr "Commenter l'idée"
 
 #: novaideo/content/processes/idea_management/definition.py:115
 #: novaideo/content/processes/proposal_management/definition.py:355
@@ -5243,6 +5240,14 @@ msgstr "S'opposer à la proposition"
 msgid "Withdraw token from proposal"
 msgstr "Retirer son jeton de la proposition"
 
+#: novaideo/content/processes/proposal_management/definition.py:342
+msgid "Share the proposal to others"
+msgstr "Partager la proposition à des tiers"
+
+#: novaideo/content/processes/proposal_management/definition.py:346
+msgid "Comment the proposal"
+msgstr "Commenter la proposition"
+
 #: novaideo/content/processes/proposal_management/definition.py:350
 #: novaideo/content/processes/proposal_management/definition.py:351
 msgid "Amendments"
@@ -5362,7 +5367,7 @@ msgstr "Voir les annonces"
 msgid "Comment management"
 msgstr ""
 
-#: novaideo/content/processes/comment_management/behaviors.py:69
+#: novaideo/content/processes/comment_management/behaviors.py:70
 msgid "Replay"
 msgstr "Répondre"
 
@@ -5393,12 +5398,12 @@ msgid "Submit the amendment"
 msgstr "Soumettre l'amendment"
 
 #: novaideo/content/processes/amendment_management/definition.py:76
-msgid "Submit the amendment to others"
-msgstr "Communiquer l'amendement à des tiers"
+msgid "Share the amendment to others"
+msgstr "Partager l'amendement à des tiers"
 
 #: novaideo/content/processes/amendment_management/definition.py:80
-msgid "Discuss the amendment"
-msgstr "Discuter l'amendement"
+msgid "Comment the amendment"
+msgstr "Commenter l'amendment"
 
 #: novaideo/content/processes/amendment_management/behaviors.py:344
 msgid "Submit amendments"
@@ -5523,6 +5528,18 @@ msgstr ""
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:52
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
+
+#~ msgid "Share to others"
+#~ msgstr "Partager"
+
+#~ msgid "Present"
+#~ msgstr "Communiquer"
+
+#~ msgid "Discuss"
+#~ msgstr "Discuter"
+
+#~ msgid "Discuss the amendment"
+#~ msgstr "Discuter l'amendement"
 
 #~ msgid "Dashboard"
 #~ msgstr "Tableau de bord"
