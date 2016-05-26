@@ -9,9 +9,11 @@ from pyramid.view import view_config
 from substanced.util import Batch
 
 from dace.util import getSite
+from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
+from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.user_management.behaviors import (
     SeeRegistrations)
 from novaideo.content.novaideo_application import (
@@ -38,6 +40,9 @@ class SeeRegistrationsView(BasicView):
     behaviors = [SeeRegistrations]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seeregistrations'
+    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
 
     def update(self):
         self.execute(None)
@@ -53,14 +58,10 @@ class SeeRegistrationsView(BasicView):
 
         self.title = _(CONTENTS_MESSAGES[index],
                        mapping={'nember': len_result})
-        result_body = []
-        for obj in batch:
-            object_values = {'object': obj}
-            body = self.content(args=object_values,
-                                template=obj.templates['default'])['body']
-            result_body.append(body)
+        user = get_current()
+        result_body, result = render_listing_objs(
+            self.request, batch, user)
 
-        result = {}
         values = {
             'bodies': result_body,
             'length': len_result,

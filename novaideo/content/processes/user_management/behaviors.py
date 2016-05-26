@@ -327,14 +327,6 @@ class Registration(InfiniteCardinality):
         preregistration.__name__ = gen_random_token()
         root = getSite()
         root.addtoproperty('preregistrations', preregistration)
-        if getattr(preregistration, 'is_cultural_animator', False) and \
-           appstruct.get('structures', None):
-            structure = appstruct['structures'][0]['_object_data']
-            if structure:
-                preregistration.setproperty('structure', structure)
-        else:
-            preregistration.is_cultural_animator = False
-
         url = request.resource_url(preregistration, "")
         deadline = DEADLINE_PREREGISTRATION * 1000
         call_id = 'persistent_' + str(get_oid(preregistration))

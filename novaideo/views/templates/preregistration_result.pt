@@ -1,12 +1,18 @@
 <div class="thumbnail right-caption span4 search-item result-item" i18n:domain="creationculturelle"
   tal:define="icon getattr(object, 'icon', '')">
-  <div id="person-image" class="content-image">
-    <span  class="hidden-xs icon ${icon}"></span>
-  </div>
-  <div class="media-body">
-      <a tal:attributes="href request.resource_url(object, '@@index')"><h4><span class="visible-xs-inline-block icon ${icon}"></span> ${getattr(object, 'title', object.__name__)} 
-      <small style="color: #d43f3a" tal:condition="object.is_expired" >(<span i18n:translate="">Expired</span>)</small></h4></a>
-        <dl class="dl-horizontal film-data">
+  <div class="media-body media-person">
+    <div class="object-title-block" >
+      <a tal:attributes="href url">
+        <h4>
+          <span class="icon ${icon}"></span> ${object.title}
+          <small style="color: #d43f3a" tal:condition="object.is_expired" >(<span i18n:translate="">Expired</span>)</small>
+        </h4>
+      </a>
+    </div>
+    <div class="object-menu pull-right" style="margin-top: 10px;">
+      <div tal:replace="structure menu_body"/>
+    </div>
+    <dl class="dl-horizontal film-data">
         <dt i18n:translate="">Email</dt>
         <dd tal:define="mail getattr(object, 'email', '')">
           <a href="mailto:${mail}">${mail}</a>
@@ -15,6 +21,6 @@
         <dd><span tal:replace="layout.to_localized_time(object.created_at)"/></dd>
         <dt i18n:translate="">Expire the</dt>
         <dd><span tal:replace="layout.to_localized_time(object.get_deadline_date())"/></dd>
-      </dl>
+    </dl>
   </div>
 </div>

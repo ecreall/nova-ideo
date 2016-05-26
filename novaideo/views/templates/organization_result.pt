@@ -1,16 +1,21 @@
 <div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="novaideo"
   tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
-                 picture object.logo;">
-  <a class="hidden-xs content-user-img" tal:condition="picture is not None" href="${url}">
-     <img class="img-thumbnail" tal:attributes="src picture.url"  width="100"/>
-  </a>
-
-  <div tal:condition="picture is None" id="person-image" class="content-image">
-    <a href="${url}"><span class="hidden-xs icon ${icon}"></span></a>
-  </div>
-  <div class="media-body">
-    <a tal:attributes="href request.resource_url(object, '@@index')"><h4><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title} </h4></a>
+                 picture object.logo;
+                 contacts getattr(object, 'contacts', [])">
+  <div class="media-body media-person">
+    <div class="object-title-block" >
+      <a tal:attributes="href url">
+        <h4>
+          <img class="img-circle" tal:condition="picture"
+               tal:attributes="src picture.url"  width="50"/>
+          <span tal:condition="not picture" class="icon ${icon}"></span> ${object.title}
+        </h4>
+      </a>
+    </div>
+    <div class="object-menu pull-right" style="margin-top: 10px;">
+      <div tal:replace="structure menu_body"/>
+    </div>
     <p class="text-muted" tal:condition="object.description">
              <small  >${object.description}</small>
     </p>
@@ -18,10 +23,36 @@
       <dt tal:condition="managers and len(managers)>1"  i18n:translate="">Managers</dt>
       <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
       <dd tal:condition="managers">
-        <tal:loop repeat="member managers">
-          <a tal:attributes="href request.resource_url(member, '@@index')">${member.title}</a><tal:separator condition="not: repeat['member'].end">, </tal:separator> 
-        </tal:loop>
+        <div class="working-group-section">
+          <tal:loop repeat="m managers">
+            <a tal:attributes="href request.resource_url(m, '@@index')"
+              tal:define="picture getattr(m, 'picture', None);
+                          profil_picture getattr(picture, 'profil', None)">
+              <img class="author-img img-circle" 
+                tal:condition="profil_picture is not None"
+                 tal:attributes="src profil_picture.url"  width="25"/>
+              <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+              ${getattr(m, 'title', m.name)}</a>
+              <tal:separator condition="not: repeat['m'].end">, </tal:separator> 
+          </tal:loop>
+      </div>
       </dd>
     </dl>
+    <div tal:condition="contacts" >
+      <blockquote tal:define="contact contacts[0]">
+           <h4><span class="md md-headset-mic"></span> ${contact.get('title', '')}</h4>
+           <small tal:condition="contact.get('address', None)"><span class="glyphicon glyphicon-map-marker"></span>  ${contact['address']}</small>
+           <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+             <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+             <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+           </small>
+           <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+           <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
+            <span class="glyphicon glyphicon-earphone"></span>  ${contact['phone']} 
+            <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
+           <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</small>
+      </blockquote>
+    </div>
   </div>
 </div>
+
