@@ -274,6 +274,10 @@ $(document).on('click', '.sidebar-nav li > a.primary', function(event){
     
 })
 
+$(document).on('click', '.sidebar-background.toggled', function(){
+  $(".menu-toggle.close").click()
+})
+
 function update_inline_action(url){
     var $this = $(this)
     var target = $($this.parents('.search-item, .content-view').find('.actions-footer-container').first())//closest('.dace-action-inline').data('target')+'-target';
