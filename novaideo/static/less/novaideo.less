@@ -119,7 +119,7 @@
 
 .home-add-idea{
     background-color: #fff;
-    border-color: #ddd #ddd #ddd #adcce7;
+    border-color: #ddd #ddd #ddd @idea-color;
     border-image: none;
     border-radius: 2px;
     border-style: solid;
@@ -484,7 +484,7 @@ button.navbar-toggle.collapsed,
 button.navbar-toggle
 {
     border: medium none;
-    color: #6080b4;
+    color: @novaideo-color;
     font-size: 17px;
     padding: 0;
     background-color: transparent !important
@@ -595,7 +595,7 @@ button.navbar-toggle
 }
 
 .navbar.navbar-inverse.navbar-bottom{
-    background-color: #6080b4;
+    background-color: @novaideo-color;
     background-image: none;
     border: 0 none;
     border-radius: 0;
@@ -919,7 +919,7 @@ a:hover, a:focus {
 }
 
 .replay-body .comment-data, .replay-body .img-thumbnail {
-   box-shadow: 0 3px 4px #adcce7;
+   box-shadow: 0 3px 4px gray;
 }
 
 .comment-data, .btn-xs, .btn-group-xs > .btn {
@@ -955,10 +955,9 @@ margin-bottom:5px !important;
 }
 
 del {
-    background-image: -webkit-linear-gradient(45deg, #6080b4 0%, #7a97c5 150%);
-    background-image:      -o-linear-gradient(45deg, #6080b4 0%, #7a97c5 150%);
-    background-image: linear-gradient(45deg, #6080b4 0%, #7a97c5 150%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6080b4', endColorstr='#7a97c5', GradientType=1);
+    background-image: -webkit-linear-gradient(45deg, @novaideo-color 0%, #7a97c5 150%);
+    background-image:      -o-linear-gradient(45deg, @novaideo-color 0%, #7a97c5 150%);
+    background-image: linear-gradient(45deg, @novaideo-color 0%, #7a97c5 150%);
     background-image: linear-gradient(45deg, #ef827d 46%, #ef3128 100%);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
@@ -1109,7 +1108,7 @@ ins {
 
 .working-group-toggle:hover
 {
-    color: #6080b4;
+    color: @novaideo-color;
 }
 
 .working-group-result{
@@ -1190,7 +1189,7 @@ ins {
 }
 
 .thumbnail.right-caption > .media-idea {
-    border-left: 10px solid #adcce7;
+    border-left: 10px solid @idea-color;
 }
 
 .thumbnail.right-caption > .media-person {
@@ -1653,7 +1652,7 @@ ins {
 }
 
 .menu-access-action.disabled{
-    background: none repeat scroll 0 0 #adcce7;
+    background: none repeat scroll 0 0 @novaideo-color;
     cursor: not-allowed;
 }
 
@@ -1690,7 +1689,7 @@ ins {
 }
 
 .nav.access-menu > li > a.disabled:hover, .nav > li > a.disabled:focus {
-    background: #adcce7;
+    background: @novaideo-color;
     color: white;
     text-decoration: none;
 }
@@ -2249,7 +2248,7 @@ ins {
 }
 
 .filter-btn.open{
-    color: #6080b4
+    color: @novaideo-color
 }
 
 .filter-form  .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -2604,12 +2603,12 @@ ins {
 
 .search-item  .search-item-footer a:hover,
 .content-footer a:hover{  
-  color: #6080b4;
+  color: @novaideo-color;
 }
 
 .search-item  .search-item-footer a.activated
 {
-  color: #6080b4;
+  color: @novaideo-color;
   font-weight: bold;
 }
 
