@@ -22,9 +22,9 @@
       var OneSignal = OneSignal || [];
       OneSignal.push(["init", {
         appId: "c8728964-4afb-4dc2-a46d-2c674d3ca923",
-        autoRegister: false,
+        autoRegister: true,
         notifyButton: {
-          enable: true /* Set to false to hide */
+          enable: false /* Set to false to hide */
         }
       }]);
     </script>
