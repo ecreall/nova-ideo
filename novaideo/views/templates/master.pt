@@ -16,6 +16,19 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0"/>
 
+     <link rel="manifest" href="${su('novaideo:static/manifest.json')}">
+      <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+    <script>
+      var OneSignal = OneSignal || [];
+      OneSignal.push(["init", {
+        appId: "c8728964-4afb-4dc2-a46d-2c674d3ca923",
+        autoRegister: false,
+        notifyButton: {
+          enable: true /* Set to false to hide */
+        }
+      }]);
+    </script>
+
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
       <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}"
