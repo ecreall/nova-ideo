@@ -16,16 +16,19 @@ _here = os.path.dirname(__file__)
 _robots = open(os.path.join(
                _here, 'OneSignalSDKUpdaterWorker.js')).read()
 _robots_response = Response(content_type='application/javascript',
+	                        charset='utf8',
                             body=_robots)
 
 _robots2 = open(os.path.join(
                _here, 'OneSignalSDKWorker.js')).read()
 _robots2_response = Response(content_type='application/javascript',
+	charset='utf8',
                             body=_robots2)
 
 _manifest = open(os.path.join(
                _here, 'manifest.json')).read()
 _manifest_response = Response(content_type='application/json',
+	charset='utf8',
                             body=_manifest)
 
 @view_config(name='manifest.json')
