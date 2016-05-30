@@ -83,22 +83,20 @@ def alert_internal(senders=[], recipients=[], **kwargs):
         sender.addtoproperty('alerts', alert)
         alert.init_alert(recipients, subjects)
 
-    players_ids = [getattr(user, 'notification_ids', [])
-                   for user in recipients]
-    players_ids = [item for sublist in players_ids for item in sublist]
-    header = {
-        "Content-Type": "application/json",
-        "Authorization": "Basic NGEwMGZmMjItY2NkNy0xMWUzLTk5ZDUtMDAwYzI5NDBlNjJj"}
+        players_ids = [getattr(user, 'notification_ids', [])
+                       for user in recipients]
+        players_ids = [item for sublist in players_ids for item in sublist]
+        if players_ids:
+            header = {
+                "Content-Type": "application/json"}
+            payload = {"app_id": "c8728964-4afb-4dc2-a46d-2c674d3ca923",
+                       "contents": {"en": "Notification Test"},
+                       "include_player_ids": players_ids
+                       }
 
-    payload = {"app_id": "c8728964-4afb-4dc2-a46d-2c674d3ca923",
-               "included_segments": ["All"],
-               "contents": {"en": "Notification Test"},
-               "include_player_ids": players_ids
-               }
-
-    requests.post(
-        "https://onesignal.com/api/v1/notifications",
-        headers=header, data=json.dumps(payload))
+            requests.post(
+                "https://onesignal.com/api/v1/notifications",
+                headers=header, data=json.dumps(payload))
 
 
 
