@@ -7,7 +7,9 @@
       tal:define="mp request.sdiapi.mgmt_path;
       su request.static_url;
       sdititle request.sdiapi.sdi_title();
-      notification_ids getattr(request.user, 'notification_ids', [])">
+      notification_ids getattr(request.user, 'notification_ids', []);
+      activate_push_notification getattr(request.root, 'activate_push_notification', False);
+      app_id getattr(request.root, 'app_id', None)">
   <head>
 
     <more tal:omit-tag="" metal:define-slot="head-first"></more>
@@ -17,13 +19,13 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0"/>
 
-    <div tal:omit-tag="" tal:condition="request.user">
+    <div tal:omit-tag="" tal:condition="request.user and activate_push_notification and app_id">
       <link rel="manifest" href="${request.resource_url(request.root, 'manifest.json')}">
       <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
       <script>
         var OneSignal = OneSignal || [];
         OneSignal.push(["init", {
-          appId: "c8728964-4afb-4dc2-a46d-2c674d3ca923",
+          appId: "${app_id}",
           autoRegister: true,
           notifyButton: {
             enable: false /* Set to false to hide */
@@ -116,7 +118,7 @@
           type="text/javascript"></script>
     ${panel('social_share')}
 
-    <script type="text/javascript">
+    <script type="text/javascript" tal:condition="activate_push_notification and app_id">
         var OneSignal = OneSignal || [];
         OneSignal.getIdsAvailable(function(ids) {
           <tal:block condition="notification_ids">

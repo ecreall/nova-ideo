@@ -9,11 +9,16 @@ import json
 import requests
 from urllib.request import urlopen
 
+from pyramid.threadlocal import get_current_request
+
+from dace.objectofcollaboration.principal.util import get_current
+
 from novaideo.ips.mailer import mailer_send
 # from novaideo.content.resources import (
 #     arango_server, create_collection)
 from novaideo.content.alert import INTERNAL_ALERTS
 from novaideo import log
+from .util import html_to_text
 
 
 SLACK_CHANNELS = {
@@ -82,22 +87,30 @@ def alert_internal(senders=[], recipients=[], **kwargs):
         alert = alert_class(**kwargs)
         sender.addtoproperty('alerts', alert)
         alert.init_alert(recipients, subjects)
-
-        players_ids = [getattr(user, 'notification_ids', [])
-                       for user in recipients]
-        players_ids = [item for sublist in players_ids for item in sublist]
-        if players_ids:
-            header = {
-                "Content-Type": "application/json"}
-            payload = {"app_id": "c8728964-4afb-4dc2-a46d-2c674d3ca923",
-                       "contents": {"en": "Notification Test"},
-                       "include_player_ids": players_ids
-                       }
-
-            requests.post(
-                "https://onesignal.com/api/v1/notifications",
-                headers=header, data=json.dumps(payload))
-
+        if getattr(sender, 'activate_push_notification', False):
+            app_id = getattr(sender, 'app_id')
+            players_ids = [getattr(user, 'notification_ids', [])
+                           for user in recipients]
+            players_ids = [item for sublist in players_ids for item in sublist]
+            if players_ids:
+                subject = subjects[0] if subjects else sender
+                request = get_current_request()
+                html_message = alert.render(
+                    'small', get_current(request), request)
+                message = html_to_text(html_message)
+                header = {
+                    "Content-Type": "application/json"}
+                payload = {"app_id": app_id,
+                           "headings": {"en": subject.title, "fr": subject.title},
+                           "contents": {"en": message, "fr": message},
+                           "include_player_ids": players_ids
+                           }
+                try:
+                    requests.post(
+                        "https://onesignal.com/api/v1/notifications",
+                        headers=header, data=json.dumps(payload), timeout=0.1)
+                except Exception:
+                    pass
 
 
 def alert(kind="", senders=[], recipients=[], **kwargs):

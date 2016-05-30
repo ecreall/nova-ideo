@@ -44,6 +44,7 @@ from novaideo.content.site_configuration import (
     UserParamsConfigurationSchema,
     KeywordsConfSchema,
     UserInterfaceConfigurationSchema,
+    NotificationConfigurationSchema,
     OtherSchema,
 )
 
@@ -132,6 +133,10 @@ class ObjectData(ObjectDataOrigine):
         if 'other_conf' in result:
             other_conf = result.pop('other_conf')
             result.update(other_conf)
+
+        if 'notif_conf' in result:
+            notif_conf = result.pop('notif_conf')
+            result.update(notif_conf)
 
         return result, appstruct, hasevalue
 
@@ -242,6 +247,14 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                 activator_title=_('Configure the ui'))),
                         ["_csrf_token_"])
 
+    notif_conf = omit(NotificationConfigurationSchema(widget=SimpleMappingtWidget(
+                                mapping_css_class='controled-form'
+                                                  ' object-well default-well hide-bloc',
+                                ajax=True,
+                                activator_icon="glyphicon glyphicon-bell",
+                                activator_title=_('Configure the push notification'))),
+                        ["_csrf_token_"])
+
 
 class NovaIdeoApplicationPropertySheet(PropertySheet):
     schema = select(NovaIdeoApplicationSchema(), ['title',
@@ -311,6 +324,11 @@ class NovaIdeoApplication(VisualisableElement, Application):
     @property
     def other_conf(self):
         return self.get_data(omit(OtherSchema(),
+                                  '_csrf_token_'))
+
+    @property
+    def notif_conf(self):
+        return self.get_data(omit(NotificationConfigurationSchema(),
                                   '_csrf_token_'))
 
     def initialization(self):

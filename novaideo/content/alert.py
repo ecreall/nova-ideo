@@ -6,6 +6,7 @@
 # author: Amen Souissi
 
 from zope.interface import implementer
+from pyramid import renderers
 
 from substanced.content import content
 
@@ -97,6 +98,16 @@ class Alert(VisualisableElement, Entity):
 
     def get_templates(self):
         return self.templates.get(self.kind, {})
+
+    def render(self, template, current_user, request):
+        render_dict = {
+            'object': self,
+            'current_user': current_user
+        }
+        return renderers.render(
+            self.get_templates()[template],
+            render_dict,
+            request)
 
 
 class _CommentAlert(object):

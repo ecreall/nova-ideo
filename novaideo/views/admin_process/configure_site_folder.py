@@ -45,6 +45,7 @@ class ConfigureSiteView(FormView):
                         # omit=('work_conf',)),
                     ['work_conf',
                      'user_conf',
+                     'notif_conf',
                      'keywords_conf',
                      'mail_conf',
                      'ui_conf',

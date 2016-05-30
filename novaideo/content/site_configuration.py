@@ -304,3 +304,21 @@ class OtherSchema(Schema):
         title=_('Analytics'),
         missing=''
         )
+
+
+class NotificationConfigurationSchema(Schema):
+    """Schema for site configuration."""
+
+    activate_push_notification = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Activate the push notification'),
+        title='',
+        missing=False
+    )
+
+    app_id = colander.SchemaNode(
+        colander.String(),
+        title=_('Application id'),
+        missing=""
+        )
