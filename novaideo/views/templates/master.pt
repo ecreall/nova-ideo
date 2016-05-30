@@ -128,7 +128,7 @@
           </tal:block>
           if($.inArray(ids.userId, current_ids) < 0){
              update_notification_id(ids.userId,
-                                    '${request.resource_url(request.root, 'novaideoapi', query={'op', 'update_notification_id'})}')
+                                    '${request.resource_url(request.root, 'novaideoapi', query={'op': 'update_notification_id'})}')
           }
         });
       </script>
