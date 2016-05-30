@@ -8,37 +8,39 @@ from pyramid.view import view_config
 
 _here = os.path.dirname(__file__)
 
-# _icon = /app/location/myapp/static/favicon.ico
 
-# _robots = /app/location/myapp/static/robots.txt
+_OneSignalSDKUpdaterWorker = open(os.path.join(
+    _here, 'OneSignalSDKUpdaterWorker.js')).read()
+_OneSignalSDKUpdaterWorker_response = Response(
+    content_type='application/javascript',
+    charset='utf8',
+    body=_OneSignalSDKUpdaterWorker)
 
-
-_robots = open(os.path.join(
-               _here, 'OneSignalSDKUpdaterWorker.js')).read()
-_robots_response = Response(content_type='application/javascript',
-	                        charset='utf8',
-                            body=_robots)
-
-_robots2 = open(os.path.join(
-               _here, 'OneSignalSDKWorker.js')).read()
-_robots2_response = Response(content_type='application/javascript',
-	charset='utf8',
-                            body=_robots2)
+_OneSignalSDKWorker = open(os.path.join(
+    _here, 'OneSignalSDKWorker.js')).read()
+_OneSignalSDKWorker_response = Response(
+    content_type='application/javascript',
+    charset='utf8',
+    body=_OneSignalSDKWorker)
 
 _manifest = open(os.path.join(
-               _here, 'manifest.json')).read()
-_manifest_response = Response(content_type='application/json',
-	charset='utf8',
-                            body=_manifest)
+    _here, 'manifest.json')).read()
+_manifest_response = Response(
+    content_type='application/json',
+    charset='utf8',
+    body=_manifest)
+
 
 @view_config(name='manifest.json')
 def favicon_view(context, request):
     return _manifest_response
 
+
 @view_config(name='OneSignalSDKUpdaterWorker.js')
-def robotstxt_view(context, request):
-    return _robots_response
+def OneSignalSDKUpdaterWorkerView(context, request):
+    return _OneSignalSDKUpdaterWorker_response
+
 
 @view_config(name='OneSignalSDKWorker.js')
-def robotstxt_view2(context, request):
-    return _robots2_response
+def OneSignalSDKWorkerView(context, request):
+    return _OneSignalSDKWorker_response

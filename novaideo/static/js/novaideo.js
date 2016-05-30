@@ -1,3 +1,10 @@
+function update_notification_id(id, url){
+   $.post(url, {id: id}, function(data) {
+     console.log(data)
+
+   });
+}
+
 function collapse_current_collpsein(){
   var current_btn = $(this);
   var btns = $('.navbar-toggle.collapsed');
