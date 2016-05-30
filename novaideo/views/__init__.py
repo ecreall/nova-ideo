@@ -384,7 +384,7 @@ class NovaideoAPI(IndexManagementJsonView):
     def update_notification_id(self):
         user = get_current()
         notif_id = self.params('id')
-        if hasattr(user, 'notification_ids'):
+        if not hasattr(user, 'notification_ids'):
             user.notification_ids = PersistentList([])
 
         user.notification_ids.append(notif_id)
