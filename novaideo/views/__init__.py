@@ -6,7 +6,7 @@
 import datetime
 import pytz
 from pyramid.view import view_config
-from persisten.list import PersistentList
+from persistent.list import PersistentList
 
 from substanced.util import get_oid
 
