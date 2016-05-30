@@ -27,6 +27,11 @@
           enable: false /* Set to false to hide */
         }
       }]);
+      OneSignal.getIdsAvailable(function(ids) {
+      console.log("getIdsAvailable:"
+              + "\nUserID: " + ids.userId
+              + "\nRegistration ID: " + ids.registrationId);
+      });
     </script>
 
     <!-- Styles -->
