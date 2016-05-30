@@ -8,9 +8,9 @@ CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
     'dogpile.cache',
-    'dace',
-    'pontus',
-    'daceui',
+    'ecreall_dace',
+    'ecreall_pontus',
+    'ecreall_daceui',
     'pyramid',
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
