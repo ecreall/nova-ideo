@@ -388,4 +388,4 @@ class NovaideoAPI(IndexManagementJsonView):
             user.notification_ids = PersistentList([])
 
         user.notification_ids.append(notif_id)
-        return {'ids': list(ser.notification_ids)}
+        return {'ids': list(user.notification_ids)}
