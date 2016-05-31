@@ -48,6 +48,12 @@ class SelectEntity(InfiniteCardinality):
     processsecurity_validation = select_processsecurity_validation
     state_validation = select_state_validation
 
+    def get_title(self, context, request):
+        len_selections = getattr(context, 'len_selections', 0)
+        return _("${title} (${nember})",
+                 mapping={'nember': len_selections,
+                          'title': request.localizer.translate(self.title)})
+
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         user.addtoproperty('selections', context)
@@ -83,6 +89,12 @@ class DeselectEntity(InfiniteCardinality):
     context = IEntity
     roles_validation = deselect_roles_validation
     processsecurity_validation = deselect_processsecurity_validation
+
+    def get_title(self, context, request):
+        len_selections = getattr(context, 'len_selections', 0)
+        return _("${title} (${nember})",
+                 mapping={'nember': len_selections,
+                          'title': request.localizer.translate(self.title)})
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()

@@ -572,6 +572,12 @@ class CommentIdea(InfiniteCardinality):
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
 
+    def get_title(self, context, request):
+        len_comments = context.len_comments
+        return _("${title} (${nember})",
+                 mapping={'nember': len_comments,
+                          'title': request.localizer.translate(self.title)})
+
     def _get_users_to_alerts(self, context, request):
         users = list(get_users_by_preferences(context))
         author = getattr(context, 'author', None)
@@ -669,6 +675,12 @@ class PresentIdea(InfiniteCardinality):
     processsecurity_validation = present_processsecurity_validation
     state_validation = present_state_validation
 
+    def get_title(self, context, request):
+        len_members = context.len_contacted
+        return _("${title} (${nember})",
+                 mapping={'nember': len_members,
+                          'title': request.localizer.translate(self.title)})
+
     def start(self, context, request, appstruct, **kw):
         send_to_me = appstruct['send_to_me']
         members = list(appstruct['members'])
@@ -720,7 +732,8 @@ class PresentIdea(InfiniteCardinality):
                 alert('email', [root.get_site_sender()], [member_email],
                       subject=subject, body=message)
 
-            if member is not user and member_email:
+            if member is not user and member_email \
+               and member_email not in context._email_persons_contacted:
                 context._email_persons_contacted.append(
                     member_email)
 

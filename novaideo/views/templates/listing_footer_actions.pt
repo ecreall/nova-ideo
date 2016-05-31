@@ -6,7 +6,7 @@
           <li tal:condition="hasattr(a, 'url')">
             <a tal:condition="a not in modal_actions"
                tal:attributes="href a.url(obj)">
-               <span class="${getattr(a,'style_picto','')}" ></span> ${a.title}
+               <span class="${getattr(a,'style_picto','')}" ></span> ${a.get_title(obj, request)}
             </a>
             <div tal:omit-tag="" 
              tal:condition="a in modal_actions"
@@ -20,7 +20,7 @@
                   data-updateurl="${item['actionurl_update']}"
                   data-toreplay="${'toreplay' in item}">
                  <span class="footer-icon ${getattr(a,'style_picto','')}" ></span> 
-                 <span class="hidden-xs">${item['action'].title}</span>
+                 <span class="hidden-xs">${item['action'].get_title(obj, request)}</span>
                </a>
                <script tal:condition="'toreplay' in item">       
                     $(document).ready(function(){

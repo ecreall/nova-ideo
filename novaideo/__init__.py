@@ -120,6 +120,43 @@ def evolve_wg(root, registry):
     log.info('Working groups evolved.')
 
 
+def update_len_comments(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import ICommentable
+    import transaction
+
+    contents = find_entities(interfaces=[ICommentable])
+    len_entities = str(len(contents))
+    for index, content in enumerate(contents):
+        content.update_len_comments()
+        if index % 1000 == 0:
+            log.info("**** Commit ****")
+            transaction.commit()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Len comments updated')
+
+
+def update_len_selections(root, registry):
+    from novaideo.views.filter import find_entities, get_users_by_preferences
+    from novaideo.content.interface import ISearchableEntity
+    import transaction
+
+    contents = find_entities(interfaces=[ISearchableEntity])
+    len_entities = str(len(contents))
+    for index, content in enumerate(contents):
+        result = get_users_by_preferences(content)
+        content.len_selections = len(result)
+        if index % 1000 == 0:
+            log.info("**** Commit ****")
+            transaction.commit()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Len comments updated')
+
+
 def evolve_states_ideas(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import Iidea
@@ -170,6 +207,8 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_wg)
     config.add_evolution_step(evolve_states_ideas)
     config.add_evolution_step(evolve_state_files)
+    config.add_evolution_step(update_len_comments)
+    config.add_evolution_step(update_len_selections)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

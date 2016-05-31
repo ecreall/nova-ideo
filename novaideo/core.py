@@ -190,6 +190,32 @@ class Commentable(VisualisableElement, Entity):
     name = renamer()
     comments = CompositeMultipleProperty('comments')
 
+    def __init__(self, **kwargs):
+        super(Commentable, self).__init__(**kwargs)
+        self.len_comments = 0
+
+    def update_len_comments(self):
+        result = len(self.comments)
+        result += sum([c.update_len_comments() for c in self.comments])
+        self.len_comments = result
+        return self.len_comments
+
+    def addtoproperty(self, name, value, moving=None):
+        super(Commentable, self).addtoproperty(name, value, moving)
+        if name == 'comments':
+            subject = getattr(self, 'subject', self)
+            subject.len_comments += 1
+            if self is not subject:
+                self.len_comments += 1
+
+    def delfromproperty(self, name, value, moving=None):
+        super(Commentable, self).delfromproperty(name, value, moving)
+        if name == 'comments':
+            subject = getattr(self, 'subject', self)
+            subject.len_comments -= 1
+            if self is not subject:
+                self.len_comments -= 1
+
 
 @implementer(IVersionableEntity)
 class VersionableEntity(Entity):
@@ -311,6 +337,10 @@ class PresentableEntity(Entity):
     def __init__(self, **kwargs):
         super(PresentableEntity, self).__init__(**kwargs)
         self._email_persons_contacted = PersistentList()
+
+    @property
+    def len_contacted(self):
+        return len(self._email_persons_contacted)
 
     @property
     def persons_contacted(self):

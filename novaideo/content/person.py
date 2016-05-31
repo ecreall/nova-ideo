@@ -295,6 +295,19 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
         self.set_title()
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
 
+    def addtoproperty(self, name, value, moving=None):
+        super(Person, self).addtoproperty(name, value, moving)
+        if name == 'selections':
+            value.len_selections = getattr(value, 'len_selections', 0)
+            value.len_selections += 1
+
+    def delfromproperty(self, name, value, moving=None):
+        super(Person, self).delfromproperty(name, value, moving)
+        if name == 'selections':
+            value.len_selections = getattr(value, 'len_selections', 0)
+            if value.len_selections > 0:
+                value.len_selections -= 1
+
     def set_title(self):
         self.title = getattr(self, 'first_name', '') + ' ' + \
                      getattr(self, 'last_name', '')
