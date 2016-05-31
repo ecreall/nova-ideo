@@ -15,12 +15,13 @@ from dace.processinstance.core import (
 
 from pontus.view import BasicView
 
-from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeAlerts)
 from novaideo import _
 
+
+BATCH_DEFAULT_SIZE = 30
 
 CONTENTS_MESSAGES = {
     '0': _(u"""You have no alert"""),
@@ -47,6 +48,7 @@ class SeeAlertsView(BasicView):
     def update(self):
         user = get_current()
         objects = getattr(user, 'alerts', [])
+        len_result = len(objects)
         objects.extend(getattr(user, 'old_alerts', []))
         now = datetime.datetime.now(tz=pytz.UTC)
         objects = sorted(
@@ -58,7 +60,6 @@ class SeeAlertsView(BasicView):
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_alerts"
-        len_result = batch.seqlen
         index = str(len_result)
         if len_result > 1:
             index = '*'
