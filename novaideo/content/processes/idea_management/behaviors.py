@@ -594,6 +594,7 @@ class CommentIdea(InfiniteCardinality):
             users.remove(user)
 
         mail_template = root.get_mail_template('alert_comment')
+        comment_oid = getattr(comment, '__oid__', 'None')
         localizer = request.localizer
         author_title = localizer.translate(
             _(getattr(user, 'user_title', '')))
@@ -603,7 +604,7 @@ class CommentIdea(InfiniteCardinality):
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[context],
-              comment_oid=getattr(comment, '__oid__', 'None'),
+              comment_oid=comment_oid,
               author_title=author_title,
               author_first_name=author_first_name,
               author_last_name=author_last_name)
@@ -620,7 +621,7 @@ class CommentIdea(InfiniteCardinality):
                     user_to_alert, 'first_name', user_to_alert.name),
                 recipient_last_name=getattr(user_to_alert, 'last_name', ''),
                 subject_title=context.title,
-                subject_url=request.resource_url(context, "@@index") + '#comment',
+                subject_url=request.resource_url(context, "@@index") + '#comment-' + str(comment_oid),
                 subject_type=subject_type,
                 author_title=author_title,
                 author_first_name=author_first_name,

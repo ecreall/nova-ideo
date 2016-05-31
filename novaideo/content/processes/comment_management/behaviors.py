@@ -91,6 +91,7 @@ class Respond(InfiniteCardinality):
             authors.remove(comment_author)
 
         root = getSite()
+        comment_oid = getattr(comment, '__oid__', 'None')
         localizer = request.localizer
         author_title = localizer.translate(
             _(getattr(comment_author, 'user_title', '')))
@@ -100,7 +101,7 @@ class Respond(InfiniteCardinality):
         alert('internal', [root], authors,
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[content],
-              comment_oid=getattr(comment, '__oid__', 'None'),
+              comment_oid=comment_oid,
               author_title=author_title,
               author_first_name=author_first_name,
               author_last_name=author_last_name)
@@ -118,7 +119,7 @@ class Respond(InfiniteCardinality):
                     user_to_alert, 'first_name', user_to_alert.name),
                 recipient_last_name=getattr(user_to_alert, 'last_name', ''),
                 subject_title=content.title,
-                subject_url=request.resource_url(content, "@@index") + '#comment',
+                subject_url=request.resource_url(content, "@@index") + '#comment-' + str(comment_oid),
                 subject_type=subject_type,
                 author_title=author_title,
                 author_first_name=author_first_name,
@@ -133,7 +134,7 @@ class Respond(InfiniteCardinality):
                   internal_kind=InternalAlertKind.comment_alert,
                   subjects=[content], is_respons=True,
                   author_title=author_title,
-                  comment_oid=getattr(comment, '__oid__', 'None'),
+                  comment_oid=comment_oid,
                   author_first_name=author_first_name,
                   author_last_name=author_last_name)
             if getattr(comment_author, 'email', ''):
@@ -149,7 +150,7 @@ class Respond(InfiniteCardinality):
                     recipient_last_name=getattr(
                         comment_author, 'last_name', ''),
                     subject_title=content.title,
-                    subject_url=request.resource_url(content, "@@index") + '#comment',
+                    subject_url=request.resource_url(content, "@@index") + '#comment-' + str(comment_oid),
                     subject_type=subject_type,
                     author_title=author_title,
                     author_first_name=author_first_name,
