@@ -567,6 +567,7 @@ class CommentIdea(InfiniteCardinality):
     style_interaction = 'modal-action'
     style_picto = 'ion-chatbubble'
     style_order = 0
+    style_activate = True
     context = Iidea
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
@@ -586,7 +587,7 @@ class CommentIdea(InfiniteCardinality):
         users.extend(context_authors)
         return list(set(users))
 
-    def _alert_users(self, context, request, user):
+    def _alert_users(self, context, request, user, comment):
         root = getSite()
         users = self._get_users_to_alerts(context, request)
         if user in users:
@@ -602,6 +603,7 @@ class CommentIdea(InfiniteCardinality):
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[context],
+              comment_oid=getattr(comment, '__oid__', 'None'),
               author_title=author_title,
               author_first_name=author_first_name,
               author_last_name=author_last_name)
@@ -644,7 +646,7 @@ class CommentIdea(InfiniteCardinality):
                 unique=True)
             comment.setproperty('related_correlation', correlation)
 
-        self._alert_users(context, request, user)
+        self._alert_users(context, request, user, comment)
         context.reindex()
         return {}
 

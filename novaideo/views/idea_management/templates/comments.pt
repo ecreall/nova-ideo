@@ -6,7 +6,7 @@
           data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" 
           tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context'];
                       picture getattr(comment.author, 'picture', None)">
-         <div class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}">
+         <div id="comment-${getattr(comment, '__oid__', 'None')}" class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}">
             <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
             <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
             <div class="media-body comment-content">

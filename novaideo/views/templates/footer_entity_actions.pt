@@ -15,7 +15,7 @@
                 data-toreplay="${'toreplay' in item}">
                <span class="${getattr(a,'style_picto','')}" ></span> ${item['action'].title}
              </a>
-             <script tal:condition="'toreplay' in item">       
+             <script tal:condition="getattr(a,'style_activate', False) or 'toreplay' in item">       
                   $(document).ready(function(){
                        $(${'\'#'+item['action_id']+'-btn\''}).click();
                   });

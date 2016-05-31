@@ -22,7 +22,7 @@
                  <span class="footer-icon ${getattr(a,'style_picto','')}" ></span> 
                  <span class="hidden-xs">${item['action'].get_title(obj, request)}</span>
                </a>
-               <script tal:condition="'toreplay' in item">       
+               <script tal:condition="(request.view_name in ('index', '@@index') and getattr(a,'style_activate', False)) or 'toreplay' in item">       
                     $(document).ready(function(){
                          $(${'\'#'+item['action_id']+'-btn\''}).click();
                     });

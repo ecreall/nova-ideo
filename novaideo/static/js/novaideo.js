@@ -302,6 +302,7 @@ function update_inline_action(url){
            $(target.find('.container-body')).html(action_body);
            target.slideDown();
            $this.addClass('activated')
+           init_comment_scroll(target)
            try {
                 deform.processCallbacks();
             }

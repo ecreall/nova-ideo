@@ -100,6 +100,7 @@ class Respond(InfiniteCardinality):
         alert('internal', [root], authors,
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[content],
+              comment_oid=getattr(comment, '__oid__', 'None'),
               author_title=author_title,
               author_first_name=author_first_name,
               author_last_name=author_last_name)
@@ -132,6 +133,7 @@ class Respond(InfiniteCardinality):
                   internal_kind=InternalAlertKind.comment_alert,
                   subjects=[content], is_respons=True,
                   author_title=author_title,
+                  comment_oid=getattr(comment, '__oid__', 'None'),
                   author_first_name=author_first_name,
                   author_last_name=author_last_name)
             if getattr(comment_author, 'email', ''):

@@ -56,15 +56,38 @@ function replays_show(element){
 };
 
 //TODO to remove
-function init_comment_scroll(){
-  var last_child = $('.comments-scroll ul.commentulorigin > .commentli:last-child');
+function init_comment_scroll(element){
+  var last_child = null
+  var comment_scroll = null
+  if (element){
+    comment_scroll = $(element.find('.comments-scroll').first())
+    last_child = $(comment_scroll.find('ul.commentulorigin > .commentli:last-child'))
+  }else{
+     comment_scroll = $('.comments-scroll')
+     last_child = $('.comments-scroll ul.commentulorigin > .commentli:last-child');
+  }
   if (last_child.length > 0){
-      var top = last_child.offset().top - $('.comments-scroll').offset().top  + last_child.height() + 10;
+      var top = last_child.offset().top - comment_scroll.offset().top  + last_child.height() + 10;
       if (top < 700){
-       $('.comments-scroll').height(top)
+       comment_scroll.height(top)
       }
   }else{
-       $('.comments-scroll').height(100)
+       comment_scroll.height(100)
+  }
+  var comment_id = '#comment-' + window.location.hash.replace('#comment-', '')
+  var elem = $(comment_id);
+  if(elem) {
+     var hide_comment = $(elem.parents('.commentli.hide-bloc'))
+     $(hide_comment.parents('.commentli:not(.hide-bloc)').children('.comment-data').find('#commentaction .comment-replay-nb.closed')).click() 
+     var parent = $(elem.parents('.actions-footer-container'))
+     $(parent.find('.comments-scroll')).animate({ scrollTop: $(elem).offset().top - $(parent).offset().top - 500 }, "slow");
+     $("html, body").animate({ scrollTop: $(parent).offset().top + 500 }, "slow");
+     elem.animate({
+        backgroundColor: "#bca"
+      }, 2000 );
+     elem.animate({
+        backgroundColor: "white"
+      }, 2000 );
   }
 };
 
@@ -104,7 +127,7 @@ function update_replay(url){
 };
 
 $(document).on('click', '.select-associations', function(){
-      var comments = $($(this).parents('.comments-scroll').first().find('ul.commentulorigin').first().children().filter("li[data-association='false']"));
+      var comments = $($(this).parents('div').first().find('.comments-scroll ul.commentulorigin').first().children().filter("li[data-association='false']"));
       if (this.checked) {
           comments.addClass('hide-bloc')            
       }else{
