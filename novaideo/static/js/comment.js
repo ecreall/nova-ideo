@@ -76,7 +76,7 @@ function init_comment_scroll(element){
   }
   var comment_id = '#comment-' + window.location.hash.replace('#comment-', '')
   var elem = $(comment_id);
-  if(elem) {
+  if(elem.length) {
      var hide_comment = $(elem.parents('.commentli.hide-bloc'))
      $(hide_comment.parents('.commentli:not(.hide-bloc)').children('.comment-data').find('#commentaction .comment-replay-nb.closed')).click() 
      var parent = $(elem.parents('.actions-footer-container'))
