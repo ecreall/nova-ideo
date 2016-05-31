@@ -21,7 +21,7 @@
 
     <div tal:omit-tag="" tal:condition="request.user and activate_push_notification and app_id">
       <link rel="manifest" href="${request.resource_url(request.root, 'manifest.json')}">
-      <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
+      <script src="${su('novaideo:static/js/OneSignalSDK.js')}" async></script>
       <script>
         var OneSignal = OneSignal || [];
         OneSignal.push(["init", {

@@ -92,6 +92,7 @@ def alert_internal(senders=[], recipients=[], **kwargs):
             players_ids = [getattr(user, 'notification_ids', [])
                            for user in recipients]
             players_ids = [item for sublist in players_ids for item in sublist]
+            # players_ids = ['rc72acc6f-ed75-4969-ae75-b8e78fa75b9dgh']
             if players_ids:
                 subject = subjects[0] if subjects else sender
                 request = get_current_request()
