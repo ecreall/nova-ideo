@@ -154,13 +154,15 @@
       </div>
       <!-- bar  -->
       ${panel('usernavbar')}
-      <div class="novaideo-info row"
-           tal:define="content panel('novaideo_contents');
-                       deadline panel('deadline')" >
-        <div tal:condition="content or deadline" class="col-md-7 col-md-offset-2">
-          ${content}
-          ${deadline}
-          <div class="separator"></div>
+      <div class="container-fluid">
+        <div class="novaideo-info row"
+             tal:define="content panel('novaideo_contents');
+                         deadline panel('deadline')" >
+          <div tal:condition="content or deadline" class="col-md-7 col-md-offset-2">
+            ${content}
+            ${deadline}
+            <div class="separator"></div>
+          </div>
         </div>
       </div>
       ${panel('steps')}
