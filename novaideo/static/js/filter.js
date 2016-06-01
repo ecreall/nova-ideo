@@ -16,8 +16,6 @@ function activate_filter(event){
 function filter(){
   var form = $($(this).parents('form').first());
   var filter_container = $(form.parents('.filter-container'));
-  var progress = filter_container.find('img.loading-indicator');
-  progress.removeClass('hide-bloc');
   var filter_btn = $(filter_container.find('.filter-btn').first());
   var data_get = $(form).serialize();
   data_get += '&'+'op=filter_result';
@@ -29,6 +27,7 @@ function filter(){
     data_get += '&'+'filter_source='+filter_source;
   }
   data_get += '&'+'filter_result=true';
+  loading_progress()
   //window.setTimeout(function(){
     $.post(url,data_get, function(data) {
         var selects = $(form.find('select'));
@@ -50,6 +49,7 @@ function filter(){
             initscroll();
             init_search_results()
         }
+        finish_progress()
     });
   //}, 5000);
  

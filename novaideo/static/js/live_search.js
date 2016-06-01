@@ -38,7 +38,7 @@ function add_search_container(input){
   var timeout = null;
   var $input = $(input);
   $input.bind('keyup', function(){
-    // loading_progress();
+     loading_progress();
     $(search_container.find('div.select2-results__options')).empty();
     init_params(oid);
     clearTimeout(timeout);
@@ -67,7 +67,7 @@ function find_items(input){
             if(data){
               append_results(data['body']);
             }
-          // finish_progress();
+           finish_progress();
         });
 }
 

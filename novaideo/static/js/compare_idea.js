@@ -5,7 +5,6 @@ $(document).ready(function(){
 
         var parent = $($(this).parents('.panel-body').first());
         var target = parent.find('.compare-result');
-        var progress = parent.find('#progress');
         //POST dict
         var dict_post = {};
         var inputs = $($(event.target).children().filter('fieldset')[0]).find('input[type|="radio"]');
@@ -16,7 +15,7 @@ $(document).ready(function(){
         dict_post['version'] = version;
         var url = $(event.target).data('url');
         if (version !=''){
-          progress.show();// TODO
+          loading_progress()
           $(button).addClass('disabled');
           $.get(url, dict_post, function(data) {
                  var content = $(data).find('.compare-result');
@@ -28,7 +27,7 @@ $(document).ready(function(){
                   };
                   $(button).removeClass('disabled');
               });
-              progress.hide();
+              finish_progress();
         }else{
            var errormessage = '';
            if (intention == ''){

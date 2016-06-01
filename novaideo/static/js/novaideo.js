@@ -1,3 +1,11 @@
+function loading_progress(){
+    $('img.lac-loading-indicator').removeClass('hide-bloc');
+}
+
+function finish_progress(){
+    $('img.lac-loading-indicator').addClass('hide-bloc');
+}
+
 function update_notification_id(id, url){
    $.post(url, {id: id}, function(data) {
      console.log(data)
@@ -62,7 +70,6 @@ function initscroll(){
        if (filter.length>0){
             var form = $($(filter).find('form').first());
             var filter_container = $(form.parents('.filter-container'));
-            var progress = filter_container.find('img.loading-indicator');
             var filter_btn = $(filter_container.find('.filter-btn').first());
             var data_get = $(form).serialize();
             data_get += '&'+'op=filter_result';

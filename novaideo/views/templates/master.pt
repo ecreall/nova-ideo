@@ -177,7 +177,9 @@
             </div>
 
             <div class="col-md-7 column ui-sortable novaideo-main">
-              <div class="above-content"></div>
+              <div class="above-content" style="text-align: center;">
+              <img class="lac-loading-indicator hide-bloc" src="${request.static_url('novaideo:static/images/progress.gif')}" style="position: fixed; z-index: 2000"/>
+            </div>
               <div id="messages"
                    tal:attributes="class request.is_xhr and 'ajax-replace' or None">
                 <div tal:repeat="queue ('', 'info', 'success', 'warning', 'danger')"
