@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import deform
+from deform.widget import default_resource_registry
 
 
 class SearchFormWidget(deform.widget.FormWidget):
@@ -13,3 +14,13 @@ class SearchFormWidget(deform.widget.FormWidget):
 
 class SearchTextInputWidget(deform.widget.TextInputWidget):
     template = 'novaideo:views/novaideo_view_manager/templates/search_textinput.pt'
+    requirements = (('live_search', None),)
+
+
+default_resource_registry.set_js_resources(
+    'live_search', None,
+    'novaideo:static/js/live_search.js')
+
+default_resource_registry.set_css_resources(
+    'live_search', None,
+    'pontus:static/select2/dist/css/select2.min.css')

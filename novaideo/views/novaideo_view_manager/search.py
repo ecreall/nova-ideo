@@ -109,6 +109,7 @@ def default_content_types_choices(node, kw):
 @colander.deferred
 def text_to_search_widget(node, kw):
     request = node.bindings['request']
+    context = node.bindings['context']
     choices = [{'id': 'search-choice-'+k[0],
                'title': k[1].type_title,
                'icon': k[1].icon,
@@ -118,11 +119,16 @@ def text_to_search_widget(node, kw):
         choices, key=lambda v: v['order'])
     advanced_search_url = request.resource_url(
         request.root, '@@advanced_search')
+    live_search_url = request.resource_url(
+        context, '@@novaideoapi',
+        query={'op': 'find_entities'})
+
     return SearchTextInputWidget(
         button_type='submit',
         description=_("The keyword search is done using"
                       " commas between keywords."),
         advanced_search_url=advanced_search_url,
+        live_search_url=live_search_url,
         placeholder=_("Search"),
         choices=choices)
 

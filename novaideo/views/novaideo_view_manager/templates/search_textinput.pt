@@ -7,16 +7,18 @@
                   mask_placeholder mask_placeholder|field.widget.mask_placeholder;
                   style style|field.widget.style;
                   url url|getattr(field.widget, 'url', '');
+                  live_search_url live_search_url|getattr(field.widget, 'live_search_url', '');
                   placeholder placeholder|getattr(field.widget, 'placeholder', '');
                   choices choices|getattr(field.widget, 'choices', []);
                   advanced_search_url advanced_search_url|getattr(field.widget, 'advanced_search_url', '');"
       tal:omit-tag="">
       <div id="searchsection" class="input-group input-group-sm" i18n:domain="novaideo">
        <input type="text" name="${name}" value="${cstruct}" 
-           tal:attributes="class string: form-control ${css_class};
+           tal:attributes="class string: form-control search-text-input ${css_class};
                            style style"
            id="${oid}" placeholder="${placeholder}"
-           title="${description}">
+           title="${description}"
+           data-url="${live_search_url}">
         <span class="input-group-btn">
             <div tal:condition="choices" class="btn-group">
               <button type="button" class="hidden-xs btn btn-default dropdown-toggle"
@@ -35,7 +37,7 @@
                 </li>
               </ul>
             </div>
-           <button class="btn btn-default" type="${button_type}" data-url="${url}" i18n:translate=""><span class="glyphicon glyphicon-search"></span></button>
+           <button class="btn btn-default search-primary-btn" type="${button_type}" data-url="${url}" i18n:translate=""><span class="glyphicon glyphicon-search"></span></button>
            <a class="btn btn-default" href="${advanced_search_url}" i18n:translate=""><span class="glyphicon glyphicon-zoom-in"></span> <span class="hidden-sm hidden-xs" i18n:translate="">Advanced search</span></a>
         </span>
       </div>

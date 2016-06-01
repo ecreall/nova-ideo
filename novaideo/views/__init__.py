@@ -6,12 +6,15 @@
 import datetime
 import pytz
 from pyramid.view import view_config
+from pyramid import renderers
 from persistent.list import PersistentList
 
 from substanced.util import get_oid
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import find_catalog, getAllBusinessAction, getBusinessAction
+from dace.util import (
+    find_catalog, getAllBusinessAction, getBusinessAction,
+    getSite)
 from dace.objectofcollaboration.principal.util import get_current
 from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView
@@ -20,6 +23,8 @@ from novaideo.views.idea_management.comment_idea import (
     CommentsView)
 from novaideo.views.idea_management.present_idea import (
     SentToView)
+from novaideo.views.novaideo_view_manager.search import (
+    get_default_searchable_content)
 from novaideo.content.interface import (
     IPerson,
     ICorrelableEntity,
@@ -28,6 +33,8 @@ from novaideo.views.filter import find_entities, FILTER_SOURCES
 
 
 ALL_VALUES_KEY = "*"
+
+NBRESULT = 20
 
 
 def is_all_values_key(key):
@@ -70,6 +77,7 @@ class IndexManagementJsonView(BasicView):
              renderer='json')
 class NovaideoAPI(IndexManagementJsonView):
     alert_template = 'novaideo:views/templates/alerts/alerts.pt'
+    search_template = 'novaideo:views/templates/live_search_result.pt'
 
     def find_user(self):
         name = self.params('q')
@@ -129,6 +137,62 @@ class NovaideoAPI(IndexManagementJsonView):
             return result
 
         return {'items': [], 'total_count': 0}
+
+    def find_entities(self):
+        name = self.params('text_to_search')
+        contents = self.params('checkbox')
+        if contents and not isinstance(contents, (list, tuple)):
+            contents = [contents]
+
+        if not contents:
+            contents = get_default_searchable_content(
+                self.request)
+            contents = [c[0] for c in contents]
+
+        if name:
+            states = ['published', 'active']
+            user = get_current()
+            root = getSite()
+            result = []
+            if is_all_values_key(name):
+                result = find_entities(
+                    metadata_filter={
+                        'content_types': contents,
+                        'states': states},
+                    user=user)
+            else:
+                result = find_entities(
+                    metadata_filter={
+                        'content_types': contents,
+                        'states': states},
+                    user=user,
+                    text_filter={'text_to_search': name})
+
+            result_body = []
+            for obj in result:
+                object_values = {
+                    'object': obj,
+                    'current_user': user}
+                body = renderers.render(
+                    obj.templates.get('small'),
+                    object_values,
+                    self.request)
+                result_body.append(body)
+                if len(result_body) == NBRESULT:
+                    break
+
+            values = {'entities': result_body,
+                      'all_url': self.request.resource_url(
+                          root, '@@search_result',
+                          query={'text_to_search': name,
+                                 'content_types': contents}),
+                      'advenced_search_url': self.request.resource_url(
+                          root, '@@advanced_search')}
+            body = self.content(args=values,
+                                template=self.search_template)['body']
+            return {'body': body}
+
+        return {'body': ''}
 
     def find_entity(self, interfaces=[], states=['published', 'active'], query=None):
         name = self.params('q')

@@ -177,7 +177,8 @@ class Proposal(Commentable,
 
     type_title = _('Proposal')
     icon = 'icon novaideo-icon icon-proposal'
-    templates = {'default': 'novaideo:views/templates/proposal_result.pt'}
+    templates = {'default': 'novaideo:views/templates/proposal_result.pt',
+                 'small': 'novaideo:views/templates/small_proposal_result.pt'}
     template = 'novaideo:views/templates/proposal_list_element.pt'
     name = renamer()
     author = SharedUniqueProperty('author')

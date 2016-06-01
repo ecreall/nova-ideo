@@ -14,6 +14,12 @@
                   progress_url request.static_url('novaideo:static/images/progress.gif');
                   picture getattr(request.user, 'picture', None);
                   profil_picture getattr(picture, 'profil', None)">
+    <tal:block tal:repeat="jslink js_links">
+      <script src="${request.static_url(jslink)}"></script>
+  </tal:block>
+  <tal:block tal:repeat="csslink css_links">
+      <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+  </tal:block>
   <div class="navbar-header" >
       <button data-target=".navbar-user-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
          <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>

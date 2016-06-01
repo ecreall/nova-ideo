@@ -1,0 +1,16 @@
+<div tal:omit-tag="" i18n:domain="novaideo">
+  <div tal:condition="entities" class="search-items-container">
+      <div tal:repeat="object entities">
+          <div tal:replace="structure object"/>
+      </div>
+  </div>
+  <div tal:condition="not entities" style="text-align: center; margin-bottom: 10px" i18n:translate="">No result found!</div>
+  <div>
+    <div style="display: inline;">
+      <a class="btn btn-primary btn-xs" onclick="submit_live_serach_form(this); return false;" ><span class="glyphicon glyphicon-th-list"></span> <span i18n:translate="">All results</span></a>
+    </div>
+    <div class="pull-right">
+      <a class="btn btn-primary btn-xs" href="${advenced_search_url}" i18n:translate=""><span class="glyphicon glyphicon-zoom-in"></span> <span i18n:translate="">Advanced search</span></a>
+    </div>
+  </div>
+</div>

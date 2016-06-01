@@ -118,7 +118,7 @@
           type="text/javascript"></script>
     ${panel('social_share')}
 
-    <script type="text/javascript" tal:condition="activate_push_notification and app_id">
+    <script type="text/javascript" tal:condition="request.user and activate_push_notification and app_id">
         var OneSignal = OneSignal || [];
         OneSignal.getIdsAvailable(function(ids) {
           <tal:block condition="notification_ids">

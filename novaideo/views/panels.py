@@ -85,6 +85,8 @@ class Usermenu_panel(object):
 
     def __call__(self):
         root = getSite()
+        resources = deepcopy(getattr(
+            self.request, 'resources', {'js_links': [], 'css_links': []}))
         search_action, search_view = _getaction(self,
                                                 'novaideoviewmanager',
                                                 'search')
@@ -102,16 +104,22 @@ class Usermenu_panel(object):
 
         search_view_result = search_view_instance()
         search_body = ''
+        result = {'css_links': [], 'js_links': []}
         if isinstance(search_view_result, dict) and \
-          'coordinates' in search_view_result:
+           'coordinates' in search_view_result:
+            search_render = search_view_result['coordinates'][search_view_instance.coordinates][0]
+            result['css_links'] = [c for c in search_view_result['css_links']
+                                   if c not in resources['css_links']]
+            result['js_links'] = [c for c in search_view_result['js_links']
+                                  if c not in resources['js_links']]
             search_body = search_view_instance.render_item(
-                    search_view_result['coordinates'][search_view_instance.coordinates][0],
-                    search_view_instance.coordinates,
-                    None)
+                search_render,
+                search_view_instance.coordinates,
+                None)
 
-        result = {}
         result['search_body'] = search_body
         result['view'] = self
+        update_resources(self.request, result)
         return result
 
 
