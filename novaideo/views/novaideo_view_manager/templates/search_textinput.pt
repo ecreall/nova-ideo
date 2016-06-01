@@ -18,7 +18,8 @@
                            style style"
            id="${oid}" placeholder="${placeholder}"
            title="${description}"
-           data-url="${live_search_url}">
+           data-url="${live_search_url}"
+           autocomplete="off">
         <span class="input-group-btn">
             <div tal:condition="choices" class="btn-group">
               <button type="button" class="hidden-xs btn btn-default dropdown-toggle"
