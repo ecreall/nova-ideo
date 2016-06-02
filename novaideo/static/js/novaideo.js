@@ -45,7 +45,7 @@ function set_visited(){
 function initscroll(){
    $(".result-scroll").mCustomScrollbar({
     theme:"minimal-dark",
-    scrollInertia: 200,
+    scrollInertia: 100,
     callbacks:{
       onTotalScroll:function(){
         $(this).trigger('scroll');
