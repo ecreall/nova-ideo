@@ -9,8 +9,9 @@
       sdititle request.sdiapi.sdi_title();
       notification_ids getattr(request.user, 'notification_ids', []);
       activate_push_notification getattr(request.root, 'activate_push_notification', False);
-      app_id getattr(request.root, 'app_id', None)">
-  <head>
+      app_id getattr(request.root, 'app_id', None);
+      view_only 'view_only' in request.POST or 'view_only' in  request.GET">
+  <head tal:condition="not view_only">
 
     <more tal:omit-tag="" metal:define-slot="head-first"></more>
 
@@ -138,39 +139,36 @@
   </head>
   <body tal:define="adminnavbar panel('adminnavbar')">
     
-    <img class="loading-indicator"
-         id="sdi-loading-img"
-         src="${su('substanced.sdi:static/img/progress_bar.gif')}"
-         style="display:none;"
-         alt="Loading indicator"/>
     <div tal:omit-tag="" tal:condition="request.accessible_to_anonymous">
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div tal:condition="adminnavbar" class="menu-toggle top">
-          <span class="glyphicon glyphicon-menu-hamburger" style=""></span>
-        </div>
-        <div class="container">
-          ${panel('usermenu')}
-        </div>
-      </div>
-      <!-- bar  -->
-      ${panel('usernavbar')}
-      <div class="container-fluid">
-        <div class="novaideo-info row"
-             tal:define="content panel('novaideo_contents');
-                         deadline panel('deadline')" >
-          <div tal:condition="content or deadline" class="col-md-7 col-md-offset-2">
-            ${content}
-            ${deadline}
-            <div class="separator"></div>
+      <div tal:omit-tag="" tal:condition="not view_only">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+          <div tal:condition="adminnavbar" class="menu-toggle top">
+            <span class="glyphicon glyphicon-menu-hamburger" style=""></span>
+          </div>
+          <div class="container">
+            ${panel('usermenu')}
           </div>
         </div>
+        <!-- bar  -->
+        ${panel('usernavbar')}
+        <div class="container-fluid">
+          <div class="novaideo-info row"
+               tal:define="content panel('novaideo_contents');
+                           deadline panel('deadline')" >
+            <div tal:condition="content or deadline" class="col-md-7 col-md-offset-2">
+              ${content}
+              ${deadline}
+              <div class="separator"></div>
+            </div>
+          </div>
+        </div>
+        ${panel('steps')}
       </div>
-      ${panel('steps')}
         <metal:slot metal:define-slot="outer-content">
           <div class="container-fluid">
-          <div tal:define="more_panel panel('more_contents')" class="row clearfix novaideo-content">
+          <div tal:define="more_panel panel('more_contents') if not view_only else None" class="row clearfix novaideo-content">
 
-            <div class="col-md-2 column ui-sortable novaideo-left">
+            <div tal:condition="not view_only" class="col-md-2 column ui-sortable novaideo-left">
               ${adminnavbar}
               <div class="visible-lg-inline-block"  style="width: 100%">
                 ${more_panel}
@@ -197,14 +195,16 @@
               </div>
 
               <div class="inner-content ${(context.__class__.__name__ == 'Person' and request.view_name in ('index', '@@index')) and 'user-view-index'}">
+                <div tal:omit-tag="" tal:condition="not view_only">
                  ${panel('addideaform')}
-                 <div metal:define-slot="main"></div>
+                </div>
+                <div metal:define-slot="main"></div>
               </div>
 
               <div class="below-content"></div>
             </div>
 
-            <div class="col-md-3 column ui-sortable novaideo-right">
+            <div tal:condition="not view_only" class="col-md-3 column ui-sortable novaideo-right">
                  ${panel('lateral_menu')}
                  ${panel('advertisting_right_1')}
                  ${panel('advertisting_right_2')}

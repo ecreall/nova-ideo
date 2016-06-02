@@ -38,7 +38,6 @@ class WikiWorkModeProcess(ProcessDefinition, VisualisableElement):
     isControlled = True
     isSubProcess = True
     isVolatile = True
-    discriminator = 'Work mode process'
 
     def __init__(self, **kwargs):
         super(WikiWorkModeProcess, self).__init__(**kwargs)

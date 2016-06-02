@@ -44,6 +44,7 @@ from .behaviors import (
     )
 from novaideo import _
 from novaideo.content.ballot import Ballot
+from novaideo.content.interface import IProposal
 
 
 def eg4_votingamendments_condition(process):
@@ -143,7 +144,7 @@ class AmendmentWorkModeProcess(ProcessDefinition, VisualisableElement):
     isControlled = True
     isSubProcess = True
     isVolatile = True
-    discriminator = 'Work mode process'
+    contexts = [IProposal]
 
     def __init__(self, **kwargs):
         super(AmendmentWorkModeProcess, self).__init__(**kwargs)

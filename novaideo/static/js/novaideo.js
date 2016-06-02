@@ -82,6 +82,7 @@ function initscroll(){
             }
             data_get += '&'+'filter_result=true';
             data_get += '&'+'scroll=true';
+            data_get += '&'+'view_only=1';
             new_path += '&'+ data_get;
       };
       // var parts = new_path.match(/^(.*?batch_num=)1(.*|$)/).slice(1);

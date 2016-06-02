@@ -13,7 +13,6 @@ from persistent.list import PersistentList
 from dace.objectofcollaboration.principal.util import (
     has_role,
     get_current)
-from dace.interfaces import IEntity
 from dace.processinstance.activity import InfiniteCardinality
 
 from ..user_management.behaviors import global_user_processsecurity
@@ -86,7 +85,7 @@ class DeselectEntity(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-star'
     style_order = 101
     isSequential = False
-    context = IEntity
+    context = ISearchableEntity
     roles_validation = deselect_roles_validation
     processsecurity_validation = deselect_processsecurity_validation
 

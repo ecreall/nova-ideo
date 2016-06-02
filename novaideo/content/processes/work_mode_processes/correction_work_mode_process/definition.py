@@ -40,7 +40,6 @@ class CorrectionWorkModeProcess(ProcessDefinition, VisualisableElement):
     isControlled = True
     isSubProcess = True
     isVolatile = True
-    discriminator = 'Work mode process'
 
     def __init__(self, **kwargs):
         super(CorrectionWorkModeProcess, self).__init__(**kwargs)

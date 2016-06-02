@@ -420,8 +420,8 @@ class ObjectRemovedException(Exception):
 
 def generate_navbars(request, context, **args):
     def actions_getter():
-        return [a for a in getAllBusinessAction(context)
-                if a.actionType != ActionType.automatic]
+        return getAllBusinessAction(
+                context, process_discriminator='Application')
 
     actions_navbar = get_actions_navbar(
         actions_getter, context, request, list(ALL_DESCRIMINATORS))
@@ -466,8 +466,8 @@ def generate_navbars(request, context, **args):
 
 def generate_listing_menu(request, context, **args):
     def actions_getter():
-        return [a for a in getAllBusinessAction(context)
-                if a.actionType != ActionType.automatic]
+        return getAllBusinessAction(
+            context, process_discriminator='Application')
 
     descriminators = args.get(
         'descriminators',

@@ -455,7 +455,8 @@ class NovaideoFooter(object):
     def __call__(self):
         root = getSite()
         def actions_getter():
-            return [a for a in getAllBusinessAction(root)
+            return [a for a in getAllBusinessAction(
+                      root, process_discriminator='Application')
                     if getattr(a, 'style', '') == 'button']
 
         actions_navbar = get_actions_navbar(

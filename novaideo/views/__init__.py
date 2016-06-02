@@ -253,7 +253,8 @@ class NovaideoAPI(IndexManagementJsonView):
 
     def present_entity(self):
         present_actions = getAllBusinessAction(
-            self.context, self.request, node_id='present')
+            self.context, self.request, node_id='present',
+            process_discriminator='Application')
         if present_actions:
             action = present_actions[0]
             present_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
@@ -269,7 +270,8 @@ class NovaideoAPI(IndexManagementJsonView):
 
     def comment_entity(self):
         comment_actions = getAllBusinessAction(
-            self.context, self.request, node_id='comment')
+            self.context, self.request, node_id='comment',
+            process_discriminator='Application')
         if comment_actions:
             action = comment_actions[0]
             comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
@@ -285,7 +287,8 @@ class NovaideoAPI(IndexManagementJsonView):
 
     def respond_comment(self):
         comment_actions = getAllBusinessAction(
-            self.context, self.request, node_id='respond')
+            self.context, self.request, node_id='respond',
+            process_discriminator='Application')
         if comment_actions:
             action = comment_actions[0]
             comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]

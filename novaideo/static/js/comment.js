@@ -170,6 +170,7 @@ $(document).ready(function(){
                    textarea.val('');
                    $(select_related_contents.parents('.ajax-form:has(.controled-form.associate-form:not(.hide-bloc))').first().find('.control-form-button')).click();
                    select_related_contents.select2('val', []);
+                   init_comment_scroll(parent)
 
                    }else{
                      location.reload();
@@ -235,6 +236,7 @@ $(document).ready(function(){
               var content = $(data.body).find('.commentulorigin');
               if (content){
                  $(target).html($(content).html());
+                 init_comment_scroll(parent)
               }else{
                  location.reload();
                  return false
