@@ -15,7 +15,7 @@ from pyramid.session import SignedCookieSessionFactory
 
 from substanced.db import root_factory
 
-from dace.util import getSite
+from dace.util import getSite, find_service
 
 
 log = logging.getLogger('novaideo')
@@ -193,6 +193,14 @@ def evolve_state_files(root, registry):
     log.info('Working groups evolved.')
 
 
+def evolve_process_def(root, registry):
+    def_container = find_service('process_definition_container')
+    for pd in def_container.definitions:
+        pd.contexts = PersistentList([])
+
+    log.info('Process def evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -209,6 +217,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_state_files)
     config.add_evolution_step(update_len_comments)
     config.add_evolution_step(update_len_selections)
+    config.add_evolution_step(evolve_process_def)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
