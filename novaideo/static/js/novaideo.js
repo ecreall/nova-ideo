@@ -345,6 +345,7 @@ function update_inline_sidebar_action(url){
     var title = $($this.parents('.search-item').first().find('.object-title-block')).clone()
     actions.removeClass('activated')
     var url = $this.closest('.dace-action-inline').data('updateurl');
+    loading_progress()
     $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
        var action_body = data['body'];
        if (action_body){
@@ -361,6 +362,7 @@ function update_inline_sidebar_action(url){
               toggle.click()
            }
            init_comment_scroll(target)
+           finish_progress()
         }else{
            location.reload();
            return false
