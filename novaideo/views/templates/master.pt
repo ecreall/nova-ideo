@@ -221,7 +221,7 @@
                                 <span class="ion-chevron-right"></span>
                               </div>
                               <div class="entity-title">
-                                <div class="object-title-block" >
+                                <div class="object-title-block" tal:condition="hasattr(context, '__name__')">
                                   <a tal:attributes="href request.resource_url(context, '@@index')">
                                     <h4>
                                       <span class="icon ${getattr(context, 'icon', '')}"></span>  ${context.title}
