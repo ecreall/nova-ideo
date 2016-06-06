@@ -17,6 +17,7 @@ from pontus.core import VisualisableElement
 from novaideo.content.processes import get_states_mapping
 from .interface import(
     IAlert)
+from novaideo.layout import GlobalLayout
 
 
 class InternalAlertKind(object):
@@ -100,9 +101,13 @@ class Alert(VisualisableElement, Entity):
         return self.templates.get(self.kind, {})
 
     def render(self, template, current_user, request):
+        layout_manager = getattr(request, 'layout_manager', None)
+        layout = layout_manager.layout if layout_manager \
+            else GlobalLayout(None, request)
         render_dict = {
             'object': self,
-            'current_user': current_user
+            'current_user': current_user,
+            'layout': layout
         }
         return renderers.render(
             self.get_templates()[template],
