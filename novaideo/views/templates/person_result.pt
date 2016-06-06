@@ -52,9 +52,5 @@
         <div tal:replace="structure footer_body"/>
       </div>
     </div>
-    <div class="actions-footer-container" style="display: none;">
-      <div class="container-body">
-      </div>
-    </div>
   </div>
 </div>
