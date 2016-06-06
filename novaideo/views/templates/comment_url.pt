@@ -1,0 +1,8 @@
+<blockquote class="url-block">
+	<div class="url-title">
+		<a href="${url}" target="_blank">${title}</a>
+	</div>
+	<div class="url-description">${description}</div>
+	<img class="url-img" src="${image}"></img>
+	<div class="url-site" style="color: gray">${site_name}</div>
+</blockquote>

@@ -634,10 +634,11 @@ class CommentIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
+        comment.format(request)
         user = get_current()
         comment.setproperty('author', user)
-        if appstruct['related_contents']['associate']:
-            related_contents = appstruct['related_contents']['related_contents']
+        if appstruct['related_contents']:
+            related_contents = appstruct['related_contents']
             correlation = connect(
                 context,
                 list(related_contents),

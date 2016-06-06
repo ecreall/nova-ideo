@@ -8,7 +8,7 @@
 
 @novaideo-sidebar-color: darken(@novaideo-color, 15%);
 
-#wrapper {
+.bar-wrapper {
     padding-left: 250px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -16,11 +16,11 @@
     transition: all 0.5s ease;
 }
 
-#wrapper.toggled {
+.bar-wrapper.toggled {
     padding-left: 0px;
 }
 
-#sidebar-wrapper {
+.sidebar-wrapper {
     background-color: @novaideo-sidebar-color;
     box-shadow: -3px 0 10px black;
     height: 100%;
@@ -37,7 +37,7 @@
     transition: all 0.5s ease;
 }
 
-#wrapper.toggled #sidebar-wrapper {
+.bar-wrapper.toggled .sidebar-wrapper {
     width: 0px;
 }
 
@@ -47,7 +47,7 @@
     padding: 15px;
 }
 
-#wrapper.toggled #page-content-wrapper {
+.bar-wrapper.toggled #page-content-wrapper {
     position: absolute;
     margin-right: -250px;
 }

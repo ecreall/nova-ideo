@@ -291,6 +291,14 @@ $(document).on('click', '.sidebar-nav li > a.primary', function(event){
 
 $(document).on('click', '.sidebar-background.toggled', function(){
   $(".menu-toggle.close").click()
+  $($(this).find(".comment-form-group.active")).removeClass('active')
+})
+
+$(document).on('click', '.sidebar-right-background.toggled', function(){
+  $(".menu-right-toggle.close").click()
+  $('.dace-action-inline.activated').click()
+  $('body').removeClass('modal-open')
+
 })
 
 function update_inline_action(url){
@@ -307,14 +315,52 @@ function update_inline_action(url){
     $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
        var action_body = data['body'];
        if (action_body){
-           $(target.find('.container-body')).html(action_body);
            target.slideDown();
+           $(target.find('.container-body')).html(action_body);
            $this.addClass('activated')
            init_comment_scroll(target)
            try {
                 deform.processCallbacks();
             }
            catch(err) {};
+        }else{
+           location.reload();
+           return false
+        }
+    });
+    return false;
+};
+
+function update_inline_sidebar_action(url){
+    var $this = $(this)
+    var actions = $($this.parents('.actions-block').find('.dace-action-inline'));
+    if($this.hasClass('activated')){
+       actions.removeClass('activated')
+       return
+    }
+    var sidebar = $('.sidebar-right-nav')
+    var target = $(sidebar.find('.actions-footer-container'))//closest('.dace-action-inline').data('target')+'-target';
+    var toggle = $('.menu-right-toggle:not(.close)')
+    var toggle = $('.menu-right-toggle:not(.close)')
+    var title = $($this.parents('.search-item').first().find('.object-title-block')).clone()
+    actions.removeClass('activated')
+    var url = $this.closest('.dace-action-inline').data('updateurl');
+    $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
+       var action_body = data['body'];
+       if (action_body){
+           $(target.find('.container-body')).html(action_body);
+           if(title.length > 0){
+               $(sidebar.find('.sidebar-title .entity-title')).html(title)
+           }
+           $this.addClass('activated')
+           try {
+                deform.processCallbacks();
+            }
+           catch(err) {};
+           if(toggle.length>0){
+              toggle.click()
+           }
+           init_comment_scroll(target)
         }else{
            location.reload();
            return false
@@ -351,7 +397,8 @@ $(document).mouseup(function (e)
     }
 });
 
-$(document).on('click', '.dace-action-inline', update_inline_action);
+$(document).on('click', '.search-item-footer .dace-action-inline', update_inline_sidebar_action);
+$(document).on('click', '.content-footer .dace-action-inline', update_inline_sidebar_action);
 
 $(document).ready(function(){
   $('.hidden-js').css('display', 'none');
@@ -434,9 +481,24 @@ $(document).ready(function(){
 
   $(".menu-toggle").click(function(e) {
         e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
+        $(".bar-wrapper").toggleClass("toggled");
         $('.sidebar-background').toggleClass("toggled");
     });
+
+   $(".menu-right-toggle").click(function(e) {
+        e.preventDefault();
+        var bar = $(".bar-right-wrapper")
+        var open = bar.hasClass('toggled')
+        bar.toggleClass("toggled");
+        $('.sidebar-right-background').toggleClass("toggled");
+        $('body').toggleClass('modal-open')
+        if(!open){
+          $('.dace-action-inline.activated').click()
+          $(bar.find(".comment-form-group.active")).removeClass('active')
+
+        }
+    });
+
 
 $(".malihu-scroll").mCustomScrollbar({
     theme:"minimal-dark",

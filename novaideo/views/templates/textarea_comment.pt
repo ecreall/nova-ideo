@@ -1,0 +1,27 @@
+<div class="comment-textarea-container" i18n:domain="novaideo">
+  <div class="message-alert">
+    <span id="messageinfo" class="label label-info"></span>
+    <span id="messagesuccess" class="label label-success"></span>
+    <span id="messagedanger" class="label  label-danger"></span>
+  </div>
+  <div class="comment-textarea-actions">
+    <span class="comment-intention glyphicon glyphicon-question-sign" i18n:attributes="title" title="Intention"></span>
+    <span class="comment-add-file glyphicon glyphicon-paperclip" i18n:attributes="title" title="Attach files"></span>
+    <span class="comment-related glyphicon glyphicon-link" i18n:attributes="title" title="Associate contents"></span>
+    <span class="btn btn-default comment-submit glyphicon glyphicon-send" i18n:attributes="title" title="Submit"></span>
+  </div>
+  <textarea tal:define="rows rows|field.widget.rows;
+                        cols cols|field.widget.cols;
+                        css_class css_class|field.widget.css_class;
+                        oid oid|field.oid;
+                        name name|field.name;
+                        style style|field.widget.style;
+                        placeholder placeholder|getattr(field.widget, 'placeholder', '');"
+            tal:attributes="rows rows;
+                            cols cols;
+                            class string: form-control ${css_class or ''};
+                            style style;
+                            placeholder placeholder"
+            id="${oid}"
+            name="${name}">${cstruct}</textarea>
+</div>

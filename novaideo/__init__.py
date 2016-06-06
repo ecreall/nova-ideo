@@ -12,6 +12,7 @@ from pyramid.config import Configurator
 from pyramid.exceptions import ConfigurationError
 from pyramid.i18n import TranslationStringFactory
 from pyramid.session import SignedCookieSessionFactory
+from pyramid.threadlocal import get_current_request
 
 from substanced.db import root_factory
 
@@ -201,6 +202,17 @@ def evolve_process_def(root, registry):
     log.info('Process def evolved.')
 
 
+def evolve_comments(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IComment
+    request = get_current_request()
+    contents = find_entities(interfaces=[IComment])
+    for comment in contents:
+        comment.format(request)
+
+    log.info('Comments evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -218,6 +230,7 @@ def main(global_config, **settings):
     config.add_evolution_step(update_len_comments)
     config.add_evolution_step(update_len_selections)
     config.add_evolution_step(evolve_process_def)
+    config.add_evolution_step(evolve_comments)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

@@ -9,6 +9,7 @@ import pytz
 import string
 import random
 import unicodedata
+import re
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 from pyramid import renderers

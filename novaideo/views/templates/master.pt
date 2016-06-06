@@ -205,6 +205,46 @@
             </div>
 
             <div tal:condition="not view_only" class="col-md-3 column ui-sortable novaideo-right">
+                 <div class="menu-right-toggle top hide-bloc">
+                  <span class="glyphicon glyphicon-menu-hamburger" style=""></span>
+                </div>
+                
+                <div class="bar-right-wrapper toggled">
+                  <!-- Sidebar -->
+                  <div class="sidebar-right-background"></div>
+                  <div class="sidebar-right-wrapper">
+                    <nav>
+                      <ul class="sidebar-right-nav nav">
+                        <li class="sidebar-right-brand">
+                            <div class="sidebar-title">
+                              <div class="menu-right-toggle close pull-right">
+                                <span class="ion-chevron-right"></span>
+                              </div>
+                              <div class="entity-title">
+                                <div class="object-title-block" >
+                                  <a tal:attributes="href request.resource_url(context, '@@index')">
+                                    <h4>
+                                      <span class="icon ${getattr(context, 'icon', '')}"></span>  ${context.title}
+                                    </h4>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                        </li>
+                            <div class="actions-footer-container">
+                              <div class="container-body">
+                              </div>
+                            </div>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+  
+
+
+
+
+
                  ${panel('lateral_menu')}
                  ${panel('advertisting_right_1')}
                  ${panel('advertisting_right_2')}

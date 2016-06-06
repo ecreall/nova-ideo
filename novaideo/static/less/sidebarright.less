@@ -1,0 +1,168 @@
+/*!
+ * Start Bootstrap - Simple Sidebar-right HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+/* Toggle Styles */
+
+@novaideo-sidebar-right-color: darken(@novaideo-color, 15%);
+
+.bar-right-wrapper {
+    padding-right: 290px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.bar-right-wrapper.toggled {
+    padding-right: 0px;
+}
+
+.sidebar-right-wrapper {
+    background-color: white;
+    box-shadow: 2px 0 10px black;
+    height: 100%;
+    right: 290px;
+    margin-right: -290px;
+    overflow-y: auto;
+    position: fixed;
+    top: 0;
+    width: 40%;
+    z-index: 1048;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.bar-right-wrapper.toggled .sidebar-right-wrapper {
+    width: 0px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+.bar-right-wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -290px;
+}
+
+/* Sidebar-right Styles */
+
+
+.sidebar-right-background.toggled{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    right: 0px;
+    opacity: 1;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    will-change: opacity;
+    transform: translateZ(0px);
+    transition: right 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    z-index: 1047;
+    pointer-events: auto;
+    background-color: rgba(0, 0, 0, 0.541176);
+}
+
+.menu-right-toggle{
+    cursor: pointer;
+}
+
+.menu-right-toggle.close{
+    margin: 5px 10px;
+    color: white;
+    float: left !important
+}
+
+.menu-right-toggle.top{
+    color: @novaideo-sidebar-right-color;
+    float: right;
+    font-size: 24px;
+    height: 100%;
+    padding: 6px 10px;
+}
+
+.sidebar-right-nav {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    margin: 0;
+    padding: 10px;
+    list-style: none;
+}
+
+.sidebar-right-nav > .sidebar-right-brand {
+    height: 35px;
+    font-size: 18px;
+}
+
+
+.sidebar-title{
+    position: fixed;
+    background-color: @novaideo-color;
+    margin-left: -10px;
+    margin-top: -10px;
+    padding: 0px 10px;
+    box-shadow: 2 0 4px #000;
+    width: 40%;
+    text-align: center;
+    z-index: 2000;
+}
+
+.sidebar-title .object-title-block a{
+    color: white;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+}
+
+.sidebar-title .object-title-block{
+    width: 100%;
+     display: inline;
+}
+
+
+.sidebar-right-nav .actions-footer-container>.container-body:first-child{
+    padding: 10px 15px;
+    border-top: none;
+    box-shadow: none;
+    margin: 0px -6px -5px -10px;
+}
+
+
+.sidebar-title .object-title-block a h4{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 90%;
+}
+
+.sidebar-title .menu-right-toggle,
+.sidebar-title .entity-title{
+    display: inline
+}
+
+@media (max-width: 767px) {
+    .sidebar-right-wrapper,
+    .sidebar-title{
+      width: 90% ;
+    }
+
+    .sidebar-title .object-title-block a h4{
+      width: 87% ;
+    }
+   
+}
+
+@media (max-width: 1400px) and (min-width: 768px){
+    .sidebar-right-wrapper,
+    .sidebar-title
+     {
+       width: 60%;
+    }
+}

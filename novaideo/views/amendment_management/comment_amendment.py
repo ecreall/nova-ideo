@@ -47,7 +47,7 @@ class CommentAmendmentView(CommentIdeaView):
     title = _('Discuss the amended version')
     description = _('Discuss the amended version')
     name = 'comment'
-    views = (CommentAmendmentFormView, CommentsView)
+    views = (CommentsView, CommentAmendmentFormView)
 
     def before_update(self):
         self.viewid = 'comment'

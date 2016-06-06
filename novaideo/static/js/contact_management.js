@@ -30,7 +30,7 @@ $(document).ready(function(){
 
    init_contact_phone($('.contact-phone'));
 
-   $('form.deform').on('item_added', function(event){
+   $('form').on('item_added', function(event){
          var item_added = $(event.element);
          init_contact_phone($(item_added.find('.contact-phone')));
       });

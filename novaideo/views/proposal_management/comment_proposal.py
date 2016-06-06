@@ -46,7 +46,7 @@ class CommentProposalView(CommentIdeaView):
     title = _('Discuss the proposal')
     description = _('Discuss the proposal')
     name = 'comment'
-    views = (CommentProposalFormView, CommentsView)
+    views = (CommentsView, CommentProposalFormView)
 
     def before_update(self):
         self.viewid = 'comment'

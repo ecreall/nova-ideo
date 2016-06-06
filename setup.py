@@ -28,7 +28,8 @@ requires = [
     'Genshi',
     'beautifulsoup4',
     'pyramid_robot',
-    'profilehooks'
+    'profilehooks',
+    'metadata_parser'
     ]
 
 setup(name='novaideo',

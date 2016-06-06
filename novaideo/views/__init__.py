@@ -279,7 +279,9 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, self.request,
                 behaviors=[action])
             comment_view_instance.update()
+            comments = [self.context.comments[-1]]
             result_view = CommentsView(self.context, self.request)
+            result_view.comments = comments
             body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
             return {'body': body}
 
@@ -296,8 +298,10 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, self.request,
                 behaviors=[action])
             comment_view_instance.update()
+            comments = [self.context.comments[-1]]
             self.request.POST.clear()
             result_view = CommentsView(self.context.subject, self.request)
+            result_view.comments = comments
             body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
             return {'body': body}
 

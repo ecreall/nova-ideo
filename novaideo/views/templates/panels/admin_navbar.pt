@@ -1,7 +1,7 @@
-<div tal:condition="not error and groups" id="wrapper" class="toggled malihu-scroll">
+<div tal:condition="not error and groups" class="bar-wrapper toggled malihu-scroll">
   <!-- Sidebar -->
   <div class="sidebar-background"></div>
-  <div id="sidebar-wrapper">
+  <div class="sidebar-wrapper">
     <nav>
       <ul class="sidebar-nav nav">
         <li class="sidebar-brand">

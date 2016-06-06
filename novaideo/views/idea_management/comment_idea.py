@@ -10,6 +10,7 @@ import deform
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
+from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.schema import select
@@ -55,7 +56,7 @@ class CommentsView(BasicView):
 
         return result
 
-    def _rendre_comments(self, comments, origin=False):
+    def _rendre_comments(self, comments, current_user, origin=False):
         all_comments = []
         dace_ui_api = get_current_registry().getUtility(
             IDaceUIAPI,'dace_ui_api')
@@ -70,6 +71,7 @@ class CommentsView(BasicView):
                               key=lambda e: e['context'].created_at)
         values = {
             'comments': all_comments,
+            'current_user': current_user,
             'view': self,
             'origin': origin,
             'level': COMMENT_LEVEL
@@ -78,9 +80,10 @@ class CommentsView(BasicView):
         return body, resources, messages, action_updated
 
     def update(self):
+        current_user = get_current()
         result = {}
         body, resources, messages, isactive = self._rendre_comments(
-            self.context.comments, True)
+            getattr(self, 'comments', self.context.comments), current_user, True)
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive
@@ -96,7 +99,7 @@ class CommentIdeaFormView(FormView):
     schema = select(CommentSchema(factory=Comment,
                                   editable=True,
                                   omit=('related_contents',)),
-                    ['intention', 'comment', 'related_contents'])
+                    ['comment', 'intention', 'files', 'related_contents'])
     behaviors = [CommentIdea]
     formid = 'formcommentidea'
     name = 'commentideaform'
@@ -104,7 +107,7 @@ class CommentIdeaFormView(FormView):
     def before_update(self):
         self.action = self.request.resource_url(
             self.context, 'novaideoapi', query={'op': 'comment_entity'})
-        formwidget = deform.widget.FormWidget(css_class='commentform')
+        formwidget = deform.widget.FormWidget(css_class='commentform deform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 
@@ -125,7 +128,7 @@ class CommentIdeaView(MultipleView):
     name = 'comment'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
-    views = (CommentIdeaFormView, CommentsView)
+    views = (CommentsView, CommentIdeaFormView)
     contextual_help = 'comment-help'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}

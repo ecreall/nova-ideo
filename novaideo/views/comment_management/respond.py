@@ -24,9 +24,10 @@ from novaideo import _
 class RespondView(FormView):
 
     title = _('Respond')
-    schema = select(CommentSchema(factory=Comment, 
-                                  editable=True),
-                    ['intention', 'comment'])
+    schema = select(CommentSchema(factory=Comment,
+                                  editable=True,
+                                  omit=('related_contents',)),
+                    ['comment', 'intention', 'files', 'related_contents'])
     behaviors = [Respond]
     formid = 'formrespond'
     name = 'respond'
@@ -36,7 +37,7 @@ class RespondView(FormView):
     def before_update(self):
         self.action = self.request.resource_url(
             self.context, 'novaideoapi', query={'op': 'respond_comment'})
-        formwidget = deform.widget.FormWidget(css_class='respondform')
+        formwidget = deform.widget.FormWidget(css_class='commentform respondform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 

@@ -17,6 +17,7 @@ from dace.processinstance.activity import InfiniteCardinality
 
 from novaideo.content.interface import IComment
 from novaideo import _
+from novaideo.utilities.util import connect
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.alert import InternalAlertKind
 
@@ -78,9 +79,21 @@ class Respond(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
+        comment.format(request)
         user = get_current()
         comment.setproperty('author', user)
         content = comment.subject
+        if appstruct['related_contents']:
+            related_contents = appstruct['related_contents']
+            correlation = connect(
+                content,
+                list(related_contents),
+                {'comment': comment.comment,
+                 'type': comment.intention},
+                user,
+                unique=True)
+            comment.setproperty('related_correlation', correlation)
+
         author = getattr(content, 'author', None)
         authors = getattr(content, 'authors', [author] if author else [])
         comment_author = getattr(context, 'author', None)
