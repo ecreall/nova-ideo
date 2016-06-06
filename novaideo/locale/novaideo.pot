@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-06-01 12:45+0200\n"
+"POT-Creation-Date: 2016-06-06 15:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,19 +24,19 @@ msgstr ""
 msgid "The idea"
 msgstr ""
 
-#: ./novaideo/__init__.py:238
+#: ./novaideo/__init__.py:260
 msgid "Legal notices"
 msgstr ""
 
-#: ./novaideo/__init__.py:239
+#: ./novaideo/__init__.py:261
 msgid "The legal notices"
 msgstr ""
 
-#: ./novaideo/__init__.py:242
+#: ./novaideo/__init__.py:264
 msgid "Terms of use"
 msgstr ""
 
-#: ./novaideo/__init__.py:243
+#: ./novaideo/__init__.py:265
 msgid "The terms of use"
 msgstr ""
 
@@ -107,6 +107,7 @@ msgstr ""
 
 #: ./novaideo/core.py:408 ./novaideo/content/idea.py:88
 #: ./novaideo/content/workspace.py:44 ./novaideo/content/proposal.py:111
+#: ./novaideo/content/comment.py:125
 msgid "File"
 msgstr ""
 
@@ -260,176 +261,176 @@ msgstr ""
 msgid "Alert respons"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:38
+#: ./novaideo/utilities/util.py:39
 #, python-format
 msgid "On ${month} ${day} ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:39
+#: ./novaideo/utilities/util.py:40
 #, python-format
 msgid "On ${month} ${day}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:40
+#: ./novaideo/utilities/util.py:41
 #, python-format
 msgid "On ${month} ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:41
+#: ./novaideo/utilities/util.py:42
 #, python-format
 msgid "On ${month}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:42
+#: ./novaideo/utilities/util.py:43
 #, python-format
 msgid "On ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:43
+#: ./novaideo/utilities/util.py:44
 #, python-format
 msgid "On ${day}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:44
+#: ./novaideo/utilities/util.py:45
 #, python-format
 msgid "On ${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:45
+#: ./novaideo/utilities/util.py:46
 #, python-format
 msgid "On ${month} ${day} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:46
+#: ./novaideo/utilities/util.py:47
 #, python-format
 msgid "On ${day} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:47
+#: ./novaideo/utilities/util.py:48
 #, python-format
 msgid "On ${month} ${day} ${year} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:48
+#: ./novaideo/utilities/util.py:49
 #, python-format
 msgid "On ${month} ${day} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:49
+#: ./novaideo/utilities/util.py:50
 #, python-format
 msgid "On ${day} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:52
+#: ./novaideo/utilities/util.py:53
 #, python-format
 msgid "${month} ${day} ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:53
+#: ./novaideo/utilities/util.py:54
 #, python-format
 msgid "${month} ${day}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:54
+#: ./novaideo/utilities/util.py:55
 #, python-format
 msgid "${month} ${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:55 ./novaideo/utilities/util.py:69
+#: ./novaideo/utilities/util.py:56 ./novaideo/utilities/util.py:70
 #, python-format
 msgid "${month}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:56 ./novaideo/utilities/util.py:70
+#: ./novaideo/utilities/util.py:57 ./novaideo/utilities/util.py:71
 #, python-format
 msgid "${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:57 ./novaideo/utilities/util.py:71
+#: ./novaideo/utilities/util.py:58 ./novaideo/utilities/util.py:72
 #, python-format
 msgid "${day}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:58
+#: ./novaideo/utilities/util.py:59
 #, python-format
 msgid "${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:59
+#: ./novaideo/utilities/util.py:60
 #, python-format
 msgid "${month} ${day} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:60
+#: ./novaideo/utilities/util.py:61
 #, python-format
 msgid "${day} at ${hour} o'clock and ${minute} minutes"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:61
+#: ./novaideo/utilities/util.py:62
 #, python-format
 msgid "${month} ${day} ${year} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:62
+#: ./novaideo/utilities/util.py:63
 #, python-format
 msgid "${month} ${day} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:63
+#: ./novaideo/utilities/util.py:64
 #, python-format
 msgid "${day} at ${hour} o'clock"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:66
+#: ./novaideo/utilities/util.py:67
 #, python-format
 msgid "${month}/${day}/${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:67
+#: ./novaideo/utilities/util.py:68
 #, python-format
 msgid "${month}/${day}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:68
+#: ./novaideo/utilities/util.py:69
 #, python-format
 msgid "${month}/${year}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:72
+#: ./novaideo/utilities/util.py:73
 #, python-format
 msgid "${month}/${day}/${year} ${hour}:${minute}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:73
+#: ./novaideo/utilities/util.py:74
 #, python-format
 msgid "${month}/${day} ${hour}:${minute}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:74
+#: ./novaideo/utilities/util.py:75
 #, python-format
 msgid "${day} ${hour}:${minute}"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:75
+#: ./novaideo/utilities/util.py:76
 #, python-format
 msgid "${month}/${day}/${year} ${hour}:00"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:76
+#: ./novaideo/utilities/util.py:77
 #, python-format
 msgid "${month}/${day} ${hour}:00"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:77
+#: ./novaideo/utilities/util.py:78
 #, python-format
 msgid "${day} ${hour}:00"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:135
+#: ./novaideo/utilities/util.py:136
 msgid "1st"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:141
+#: ./novaideo/utilities/util.py:142
 #, python-format
 msgid "${name} ${day}"
 msgstr ""
@@ -438,7 +439,7 @@ msgstr ""
 msgid "No more Information."
 msgstr ""
 
-#: ./novaideo/views/panels.py:530
+#: ./novaideo/views/panels.py:531
 #: ./novaideo/content/processes/admin_process/definition.py:44
 #: ./novaideo/content/processes/admin_process/definition.py:48
 #: ./novaideo/content/processes/novaideo_process_management/definition.py:42
@@ -698,7 +699,7 @@ msgstr ""
 #: ./novaideo/content/processes/novaideo_file_management/behaviors.py:53
 #: ./novaideo/content/processes/idea_management/definition.py:118
 #: ./novaideo/content/processes/idea_management/definition.py:119
-#: ./novaideo/content/processes/idea_management/behaviors.py:793
+#: ./novaideo/content/processes/idea_management/behaviors.py:794
 #: ./novaideo/content/processes/invitation_management/definition.py:56
 #: ./novaideo/content/processes/user_management/definition.py:75
 #: ./novaideo/content/processes/user_management/definition.py:76
@@ -826,9 +827,9 @@ msgstr ""
 #: ./novaideo/views/idea_management/associate.py:146
 #: ./novaideo/views/proposal_management/associate.py:26
 #: ./novaideo/views/proposal_management/associate.py:42
+#: ./novaideo/views/templates/textarea_comment.pt:10
 #: ./novaideo/views/amendment_management/associate.py:27
 #: ./novaideo/views/amendment_management/associate.py:41
-#: ./novaideo/content/comment.py:105
 msgid "Associate contents"
 msgstr ""
 
@@ -896,25 +897,25 @@ msgstr ""
 msgid "Withdraw my token"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:31
+#: ./novaideo/views/idea_management/comment_idea.py:32
 msgid "Messages"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:95
-#: ./novaideo/views/idea_management/comment_idea.py:123
-#: ./novaideo/views/idea_management/comment_idea.py:124
+#: ./novaideo/views/idea_management/comment_idea.py:98
+#: ./novaideo/views/idea_management/comment_idea.py:126
+#: ./novaideo/views/idea_management/comment_idea.py:127
 msgid "Discuss the idea"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:112
+#: ./novaideo/views/idea_management/comment_idea.py:115
 msgid "Pas de fils de discussion"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:113
+#: ./novaideo/views/idea_management/comment_idea.py:116
 msgid "Fil de discussion"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:114
+#: ./novaideo/views/idea_management/comment_idea.py:117
 msgid "Fils de discussion"
 msgstr ""
 
@@ -929,60 +930,82 @@ msgstr ""
 msgid "Duplicate the idea"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:16
+#: ./novaideo/views/idea_management/templates/comments.pt:31
 msgid "There is a"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:17
+#: ./novaideo/views/idea_management/templates/comments.pt:32
 #: ./novaideo/views/templates/panels/step3_1.pt:10
 #: ./novaideo/views/templates/panels/step3_3.pt:10
 #: ./novaideo/views/templates/panels/step3_2.pt:10
 msgid "day(s)"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:18
+#: ./novaideo/views/idea_management/templates/comments.pt:33
 #: ./novaideo/views/templates/panels/step3_1.pt:11
 #: ./novaideo/views/templates/panels/step3_3.pt:11
 #: ./novaideo/views/templates/panels/step3_2.pt:11
 msgid "hour(s)"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:19
+#: ./novaideo/views/idea_management/templates/comments.pt:34
 #: ./novaideo/views/templates/panels/step3_1.pt:12
 #: ./novaideo/views/templates/panels/step3_3.pt:12
 #: ./novaideo/views/templates/panels/step3_2.pt:12
 msgid "minute(s)"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:20
+#: ./novaideo/views/idea_management/templates/comments.pt:35
 #: ./novaideo/views/templates/panels/step3_1.pt:13
 #: ./novaideo/views/templates/panels/step3_3.pt:13
 #: ./novaideo/views/templates/panels/step3_2.pt:13
 msgid "second(s)"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:22
+#: ./novaideo/views/idea_management/templates/comments.pt:37
+#: ./novaideo/views/idea_management/templates/comments.pt:176
 msgid "Now"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:22
-msgid "- Her intention:"
+#: ./novaideo/views/idea_management/templates/comments.pt:37
+#: ./novaideo/views/idea_management/templates/comments.pt:176
+msgid "Her intention:"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:30
+#: ./novaideo/views/idea_management/templates/comments.pt:102
+#: ./novaideo/views/idea_management/templates/see_idea.pt:86
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:203
+msgid "Attachments:"
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/comments.pt:103
+#: ./novaideo/views/idea_management/templates/see_idea.pt:87
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:204
+msgid "Attachment:"
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/comments.pt:118
 msgid "Associated contents:"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:31
+#: ./novaideo/views/idea_management/templates/comments.pt:119
 msgid "Associated content:"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:47
+#: ./novaideo/views/idea_management/templates/comments.pt:135
 msgid "View all ${commentlen} responses"
 msgstr ""
 
-#: ./novaideo/views/idea_management/templates/comments.pt:48
+#: ./novaideo/views/idea_management/templates/comments.pt:136
 msgid "Hide responses"
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/comments.pt:142
+msgid "${commentlen} response"
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/comments.pt:143
+msgid "${commentlen} responses"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/related_contents.pt:12
@@ -1073,16 +1096,6 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:25
 msgid ", previous version of the current version of the idea"
-msgstr ""
-
-#: ./novaideo/views/idea_management/templates/see_idea.pt:86
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:203
-msgid "Attachments:"
-msgstr ""
-
-#: ./novaideo/views/idea_management/templates/see_idea.pt:87
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:204
-msgid "Attachment:"
 msgstr ""
 
 #: ./novaideo/views/invitation_management/invite_user.py:51
@@ -1361,7 +1374,7 @@ msgstr ""
 
 #: ./novaideo/views/user_management/reset_password.py:38
 #: ./novaideo/views/user_management/reset_password.py:144
-#: ./novaideo/content/processes/idea_management/behaviors.py:675
+#: ./novaideo/content/processes/idea_management/behaviors.py:676
 #: ./novaideo/content/processes/invitation_management/behaviors.py:114
 #: ./novaideo/content/processes/novaideo_view_manager/behaviors.py:295
 msgid "Send"
@@ -1834,7 +1847,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/create_proposal.py:48
 #: ./novaideo/views/amendment_management/explanation_amendment.py:26
 #: ./novaideo/views/work_mode_processes/wiki_work_mode_process/correct_proposal.py:45
-#: ./novaideo/content/correlation.py:65 ./novaideo/content/comment.py:31
+#: ./novaideo/content/correlation.py:65 ./novaideo/content/comment.py:46
 #: ./novaideo/content/person.py:67 ./novaideo/content/person.py:75
 msgid "- Select -"
 msgstr ""
@@ -2185,13 +2198,30 @@ msgstr ""
 #. 
 #: ./novaideo/views/templates/live_search_result.pt:13
 #: ./novaideo/views/novaideo_view_manager/search.py:66
-#: ./novaideo/views/novaideo_view_manager/templates/search_textinput.pt:41
+#: ./novaideo/views/novaideo_view_manager/templates/search_textinput.pt:42
 msgid "Advanced search"
 msgstr ""
 
 #: ./novaideo/views/templates/live_search_result.pt:13
-#: ./novaideo/views/novaideo_view_manager/templates/search_textinput.pt:41
+#: ./novaideo/views/novaideo_view_manager/templates/search_textinput.pt:42
 msgid "<dynamic element> <dynamic element>"
+msgstr ""
+
+#: ./novaideo/views/templates/textarea_comment.pt:8
+#: ./novaideo/views/amendment_management/explanation_amendment.py:31
+#: ./novaideo/content/correlation.py:83 ./novaideo/content/comment.py:107
+msgid "Intention"
+msgstr ""
+
+#: ./novaideo/views/templates/textarea_comment.pt:9
+msgid "Attach files"
+msgstr ""
+
+#: ./novaideo/views/templates/textarea_comment.pt:11
+#: ./novaideo/views/amendment_management/submit.py:159
+#: ./novaideo/content/processes/proposal_management/definition.py:456
+#: ./novaideo/content/processes/amendment_management/definition.py:73
+msgid "Submit"
 msgstr ""
 
 #: ./novaideo/views/templates/ajax_form.pt:42
@@ -3507,11 +3537,6 @@ msgstr ""
 msgid "Edit the amendment"
 msgstr ""
 
-#: ./novaideo/views/amendment_management/explanation_amendment.py:31
-#: ./novaideo/content/correlation.py:83 ./novaideo/content/comment.py:88
-msgid "Intention"
-msgstr ""
-
 #: ./novaideo/views/amendment_management/explanation_amendment.py:60
 msgid "Alert for justification"
 msgstr ""
@@ -3551,12 +3576,6 @@ msgstr ""
 #: ./novaideo/content/processes/amendment_management/definition.py:68
 #: ./novaideo/content/processes/amendment_management/definition.py:69
 msgid "Justification item"
-msgstr ""
-
-#: ./novaideo/views/amendment_management/submit.py:159
-#: ./novaideo/content/processes/proposal_management/definition.py:456
-#: ./novaideo/content/processes/amendment_management/definition.py:73
-msgid "Submit"
 msgstr ""
 
 #: ./novaideo/views/amendment_management/submit.py:187
@@ -3730,9 +3749,9 @@ msgstr ""
 #: ./novaideo/views/work_mode_processes/amendment_work_mode_process/improve_proposal.py:27
 #: ./novaideo/views/work_mode_processes/correction_work_mode_process/correct_proposal.py:28
 #: ./novaideo/views/work_mode_processes/wiki_work_mode_process/correct_proposal.py:210
-#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:173
-#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:57
-#: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:53
+#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:172
+#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:56
+#: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:52
 msgid "Improve the proposal"
 msgstr ""
 
@@ -3741,28 +3760,28 @@ msgid "Voting amendments"
 msgstr ""
 
 #: ./novaideo/views/work_mode_processes/amendment_work_mode_process/amendments_result.py:24
+#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:168
 #: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:169
-#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:170
 msgid "Amendments result"
 msgstr ""
 
 #: ./novaideo/views/work_mode_processes/amendment_work_mode_process/alert.py:23
+#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:163
 #: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:164
-#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:165
 msgid "Alert"
 msgstr ""
 
 #: ./novaideo/views/work_mode_processes/correction_work_mode_process/close_work.py:24
 #: ./novaideo/views/work_mode_processes/wiki_work_mode_process/close_work.py:24
+#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:64
 #: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:65
-#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:66
+#: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:56
 #: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:57
-#: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:58
 msgid "Close work"
 msgstr ""
 
 #: ./novaideo/views/work_mode_processes/correction_work_mode_process/correct_item.py:25
-#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:62
+#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:61
 msgid "Correct"
 msgstr ""
 
@@ -4030,7 +4049,7 @@ msgid "Please enter your email address"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/contact.py:70
-#: ./novaideo/content/correlation.py:90 ./novaideo/content/comment.py:96
+#: ./novaideo/content/correlation.py:90 ./novaideo/content/comment.py:142
 msgid "Message"
 msgstr ""
 
@@ -4120,7 +4139,7 @@ msgstr ""
 msgid "Ideas to examine"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/templates/search_textinput.pt:40
+#: ./novaideo/views/novaideo_view_manager/templates/search_textinput.pt:41
 msgid "<dynamic element>"
 msgstr ""
 
@@ -4167,7 +4186,7 @@ msgid "Detail"
 msgstr ""
 
 #: ./novaideo/views/correlation_management/templates/see_correlation.pt:9
-#: ./novaideo/content/comment.py:57
+#: ./novaideo/content/comment.py:76 ./novaideo/content/comment.py:115
 msgid "Associated contents"
 msgstr ""
 
@@ -4331,7 +4350,7 @@ msgstr ""
 #: ./novaideo/content/novaideo_application.py:64
 #: ./novaideo/content/novaideo_application.py:67
 #: ./novaideo/content/novaideo_application.py:71
-#: ./novaideo/content/comment.py:89
+#: ./novaideo/content/comment.py:109
 msgid "Remark"
 msgstr ""
 
@@ -4410,6 +4429,7 @@ msgid "Note"
 msgstr ""
 
 #: ./novaideo/content/idea.py:94 ./novaideo/content/workspace.py:50
+#: ./novaideo/content/comment.py:133
 msgid "Attached files"
 msgstr ""
 
@@ -4647,8 +4667,20 @@ msgstr ""
 msgid "Choose related ideas."
 msgstr ""
 
-#: ./novaideo/content/comment.py:58
+#: ./novaideo/content/comment.py:77
 msgid "Choose contents to associate."
+msgstr ""
+
+#: ./novaideo/content/comment.py:108
+msgid "Choose your intention"
+msgstr ""
+
+#: ./novaideo/content/comment.py:116
+msgid "Choose contents to associate"
+msgstr ""
+
+#: ./novaideo/content/comment.py:132
+msgid "Add files to your comment"
 msgstr ""
 
 #: ./novaideo/content/candidacy.py:36
@@ -4866,7 +4898,7 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/behaviors.py:72
 #: ./novaideo/content/processes/idea_management/behaviors.py:143
 #: ./novaideo/content/processes/idea_management/behaviors.py:227
-#: ./novaideo/content/processes/idea_management/behaviors.py:847
+#: ./novaideo/content/processes/idea_management/behaviors.py:848
 #: ./novaideo/content/processes/invitation_management/behaviors.py:235
 #: ./novaideo/content/processes/invitation_management/behaviors.py:263
 #: ./novaideo/content/processes/invitation_management/behaviors.py:289
@@ -4896,8 +4928,8 @@ msgstr ""
 #: ./novaideo/content/processes/organization_management/behaviors.py:77
 #: ./novaideo/content/processes/organization_management/behaviors.py:112
 #: ./novaideo/content/processes/organization_management/behaviors.py:197
-#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:125
-#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:153
+#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:124
+#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:152
 msgid "Save"
 msgstr ""
 
@@ -4954,7 +4986,7 @@ msgid "Associate"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:123
-#: ./novaideo/content/processes/idea_management/behaviors.py:814
+#: ./novaideo/content/processes/idea_management/behaviors.py:815
 #: ./novaideo/content/processes/proposal_management/definition.py:363
 #: ./novaideo/content/processes/proposal_management/behaviors.py:1293
 msgid "Compare"
@@ -4988,9 +5020,9 @@ msgid "Save and publish"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/behaviors.py:578
-#: ./novaideo/content/processes/idea_management/behaviors.py:683
-#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:53
-#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:95
+#: ./novaideo/content/processes/idea_management/behaviors.py:684
+#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:52
+#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:94
 #, python-format
 msgid "${title} (${nember})"
 msgstr ""
@@ -5367,7 +5399,7 @@ msgstr ""
 msgid "Comment management"
 msgstr ""
 
-#: ./novaideo/content/processes/comment_management/behaviors.py:70
+#: ./novaideo/content/processes/comment_management/behaviors.py:71
 msgid "Replay"
 msgstr ""
 
@@ -5414,8 +5446,8 @@ msgstr ""
 msgid "Amended version "
 msgstr ""
 
+#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:149
 #: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:150
-#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:151
 msgid "Change with amendments"
 msgstr ""
 
@@ -5424,14 +5456,14 @@ msgstr ""
 msgid "Vote for amendments (group ${nbi})"
 msgstr ""
 
+#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:159
 #: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:160
-#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:161
 msgid "Start voting for amendments"
 msgstr ""
 
-#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:174
-#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:58
-#: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:54
+#: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/definition.py:173
+#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:57
+#: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:53
 msgid "Improve"
 msgstr ""
 
@@ -5441,17 +5473,17 @@ msgstr ""
 msgid "New version"
 msgstr ""
 
+#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:46
 #: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:47
-#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:48
 msgid "Change with validation"
 msgstr ""
 
-#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:61
+#: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/definition.py:60
 msgid "Correct item"
 msgstr ""
 
+#: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:44
 #: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:45
-#: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/definition.py:46
 msgid "Change without validation"
 msgstr ""
 
