@@ -1,10 +1,10 @@
 <div>
-  <div class="study-view study-present" >
     <div class="message-alert">
       <span id="messageinfo" class="label label-info"></span>
       <span id="messagesuccess" class="label label-success"></span>
       <span id="messagedanger" class="label  label-danger"></span>
     </div>
+  <div class="study-view study-present" >
     <h4 tal:condition="message">
          <strong tal:condition="message[2]=='*' or message[2]=='1'">${message[1]}</strong>
          ${message[0]}

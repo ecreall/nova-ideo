@@ -403,6 +403,10 @@ $(document).on('click', '.search-item-footer .dace-action-inline', update_inline
 $(document).on('click', '.content-footer .dace-action-inline', update_inline_sidebar_action);
 
 $(document).ready(function(){
+  $('.home-add-idea.closed > span.icon-idea').on('click', function(){
+      $(this).siblings('form').find('.idea-text textarea').click().focus();
+  })
+  
   $('.hidden-js').css('display', 'none');
 
   $(document).on('click','.home-add-idea form .btn', function( event ) {

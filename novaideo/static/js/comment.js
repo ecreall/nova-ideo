@@ -342,7 +342,7 @@ $(document).ready(function(){
         if (subject !='' && textarea.val()!='' && members.val() != null){
           loading_progress();
           $(button).addClass('disabled');
-          $( commentmessageinfo).text( novaideo_translate("Message sent") ).show().fadeOut( 4000 );
+          $( commentmessageinfo).text( novaideo_translate("Message sent") ).show().fadeOut( 3000 );
           var values = $this.serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
                  var content = $(data.body).find('.study-view.study-present');
@@ -355,6 +355,9 @@ $(document).ready(function(){
                      location.reload();
                      return false
                   };
+                  $( commentmessagesuccess).text(
+                        novaideo_translate("Your message has been delivered to the following recipients") ).show().fadeOut( 6000 );
+
                   $(button).removeClass('disabled');
               });
               finish_progress();
