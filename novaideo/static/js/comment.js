@@ -24,14 +24,6 @@ try {
 catch(err) {
 }
 
-function get_data(selecteds){
-    var selecteds = jQuery.makeArray(selecteds);
-    var result= [];
-    for(i=0;i<selecteds.length; i++){
-       result[i] = selecteds[i].id
-    };
-    return result
-};
 
 function replays_show(element){
     var $element = $(element)
@@ -171,7 +163,34 @@ $(document).on('click', '.select-associations', function(){
 
 $(document).ready(function(){
 
+  $('.sidebar-right-wrapper').on( 'scroll', function(){
+      var $this = $(this);
+      if($($this.find('.comments-scroll')).length > 0 && $this.scrollTop() <= 0) {
+            var commentscontainer = $($this.find('.comments-scroll .comments-container').first())
+            var comment_ul = $(commentscontainer.find('.commentulorigin').first())
+            var next_path = comment_ul.data('nex_url')
+            var loading = $(comment_ul.siblings('.comment-loading').first())
+            loading.removeClass('hide-bloc')
+            $.post(next_path, {}, function(data) {
+                var new_comment_ul = $($(data).find('.comments-scroll .comments-container .commentulorigin').first())
+                if(new_comment_ul.length>0){
+                  loading.addClass('hide-bloc')
+                  new_comment_ul.insertBefore(comment_ul)
+                  $this.scrollTop(new_comment_ul.height());
+                }else{
+                  var comments = $(comment_ul.parents('div').first().find('.commentulorigin > li.commentli:not(.comment-preview)'))
+                  if(comments.length > 0){
+                    loading.html($('<span class="label label-warning">'+ novaideo_translate("No more item.")+"</span>"))
+                  }else{
+                    loading.addClass('hide-bloc')
+                  }
+                }
+            })
+        }
+  });
+
     $(document).on('click', '.replay-action', update_replay);
+
 
     $(document).on('submit','.commentform:not(.respondform)', function( event ) {
         var $this = $(this)

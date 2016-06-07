@@ -10,6 +10,8 @@ import deform
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
+from substanced.util import Batch
+
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
@@ -26,6 +28,8 @@ from novaideo import _
 
 
 COMMENT_LEVEL = 2
+
+BATCH_DEFAULT_SIZE = 20
 
 
 class CommentsView(BasicView):
@@ -56,10 +60,10 @@ class CommentsView(BasicView):
 
         return result
 
-    def _rendre_comments(self, comments, current_user, origin=False):
+    def _rendre_comments(self, comments, current_user, origin=False, batch=None):
         all_comments = []
         dace_ui_api = get_current_registry().getUtility(
-            IDaceUIAPI,'dace_ui_api')
+            IDaceUIAPI, 'dace_ui_api')
         comments_actions = dace_ui_api.get_actions(
             comments, self.request,
             'commentmanagement', 'respond')
@@ -74,6 +78,7 @@ class CommentsView(BasicView):
             'current_user': current_user,
             'view': self,
             'origin': origin,
+            'batch': batch,
             'level': COMMENT_LEVEL
         }
         body = self.content(args=values, template=self.template)['body']
@@ -82,8 +87,15 @@ class CommentsView(BasicView):
     def update(self):
         current_user = get_current()
         result = {}
+        url = self.request.resource_url(self.context, 'comment')
+        objects = getattr(self, 'comments', self.context.comments)
+        batch = Batch(objects,
+                      self.request,
+                      url=url,
+                      default_size=BATCH_DEFAULT_SIZE)
+        batch.target = "#comments_results"
         body, resources, messages, isactive = self._rendre_comments(
-            getattr(self, 'comments', self.context.comments), current_user, True)
+            batch, current_user, True, batch)
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive
