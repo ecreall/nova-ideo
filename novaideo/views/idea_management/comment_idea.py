@@ -68,8 +68,8 @@ class CommentsView(BasicView):
             comments, self.request,
             'commentmanagement', 'respond')
         action_updated, messages, \
-        resources, actions = dace_ui_api.update_actions(self.request,
-                                                        comments_actions)
+            resources, actions = dace_ui_api.update_actions(
+                self.request, comments_actions)
         actions = dict([(a['context'], a) for a in actions])
         all_comments = sorted(list(actions.values()),
                               key=lambda e: e['context'].created_at)
@@ -88,7 +88,8 @@ class CommentsView(BasicView):
         current_user = get_current()
         result = {}
         url = self.request.resource_url(self.context, 'comment')
-        objects = getattr(self, 'comments', self.context.comments)
+        objects = sorted(getattr(self, 'comments', self.context.comments),
+                         key=lambda e: e.created_at, reverse=True)
         batch = Batch(objects,
                       self.request,
                       url=url,
