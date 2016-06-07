@@ -9,7 +9,7 @@
                   <div id="portal-colophon">
                     <div class="colophonWrapper">
                       <span>
-                        <a id="logo" href="${request.resource_url(request.virtual_root, '')}"></a>
+                        <a id="logo" href="https://www.nova-ideo.com/"></a>
                         <a href="${request.resource_url(request.virtual_root.ml_file, '@@index')}">Mentions légales</a>
                         - 
                         <a href="http://www.pylonsproject.org/" title="">Réalisé avec Pyramid &amp; Python</a>
