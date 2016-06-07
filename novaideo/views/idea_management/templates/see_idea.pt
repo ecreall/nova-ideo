@@ -37,7 +37,7 @@
                     <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
               </tal:loop>
           </div>
-          <div class="object-text">${idea.text}</div>
+          <div class="object-text">${structure:text}</div>
         </div>
         <div class="col-xs-12 col-md-4" tal:condition="files">
             <div class="file-slider">

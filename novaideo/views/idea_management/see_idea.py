@@ -67,6 +67,7 @@ class DetailIdeaView(BasicView):
         result = {}
         values = {
             'idea': self.context,
+            'text': self.context.text.replace('\n', '<br/>'),
             'state': get_states_mapping(
                 user, self.context, self.context.state[0]),
             'current_user': user,

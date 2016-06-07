@@ -62,9 +62,9 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         widget=LimitedTextAreaWidget(
             rows=5,
             cols=30,
-            limit=600,
+            limit=2000,
             alert_template='novaideo:views/templates/idea_text_alert.pt',
-            alert_values={'limit': 600},
+            alert_values={'limit': 2000},
             item_css_class='idea-text',
             placeholder=_('An idea?')),
         title=_("Text")
