@@ -22,7 +22,7 @@ from novaideo.utilities.util import (
     generate_listing_menu, ObjectRemovedException,
     DEFAUL_LISTING_ACTIONS_TEMPLATE, DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE)
 from novaideo.content.processes.idea_management.behaviors import (
-    CreateIdea, CrateAndPublish)
+    CreateIdea, CrateAndPublish, CrateAndPublishAsProposal)
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
@@ -43,20 +43,20 @@ class CreateIdeaView(FormView):
                      'text',
                      'keywords',
                      'attached_files'])
-    behaviors = [CreateIdea, CrateAndPublish, Cancel]
+    behaviors = [CrateAndPublishAsProposal, CrateAndPublish, CreateIdea, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'
 
-    def default_data(self):
-        localizer = self.request.localizer
-        user = get_current()
-        time = to_localized_time(
-            datetime.datetime.now(tz=pytz.UTC), translate=True)
-        title = localizer.translate(_('Idea by'))+' '+\
-                getattr(user, 'title', user.name)+' '+\
-                localizer.translate(_('the'))+' '+\
-                time+' (UTC)'
-        return {'title': title}
+    # def default_data(self):
+    #     localizer = self.request.localizer
+    #     user = get_current()
+    #     time = to_localized_time(
+    #         datetime.datetime.now(tz=pytz.UTC), translate=True)
+    #     title = localizer.translate(_('Idea by'))+' '+\
+    #             getattr(user, 'title', user.name)+' '+\
+    #             localizer.translate(_('the'))+' '+\
+    #             time+' (UTC)'
+    #     return {'title': title}
 
 
 @view_config(name='ideasmanagement',
@@ -66,7 +66,7 @@ class CreateIdeaView(FormView):
 class CreateIdeaView_Json(BasicView):
 
     idea_template = 'novaideo:views/proposal_management/templates/idea_data.pt'
-    behaviors = [CreateIdea, CrateAndPublish]
+    behaviors = [CreateIdea, CrateAndPublishAsProposal, CrateAndPublish]
 
     def _get_new_title(self, user):
         localizer = self.request.localizer
@@ -98,9 +98,10 @@ class CreateIdeaView_Json(BasicView):
 
     def creat_home_idea(self):
         try:
-            add_idea_action = self.behaviors_instances[
-                'Create_an_idea' if 'Create_an_idea' in self.request.POST
-                else 'Create_and_publish']
+            button = 'Create_an_idea' if 'Create_an_idea' in self.request.POST \
+                else ('Create_and_publish' if 'Create_and_publish' in self.request.POST
+                      else 'Create_a_working_group')
+            add_idea_action = self.behaviors_instances[button]
             add_idea_view = DEFAULTMAPPING_ACTIONS_VIEWS[add_idea_action.__class__]
             add_idea_view_instance = add_idea_view(
                 self.context, self.request, behaviors=[add_idea_action])
@@ -108,10 +109,16 @@ class CreateIdeaView_Json(BasicView):
             add_idea_view_result = add_idea_view_instance()
             if add_idea_view_instance.finished_successfully:
                 user = get_current()
+                body = ''
+                if button == 'Create_a_working_group':
+                    proposal = user.working_groups[-1].proposal
+                    body = self._render_obj(proposal, user)
+
                 idea = user.ideas[-1]
+
                 return {'state': True,
-                        'body': self._render_obj(idea, user),
-                        'new_title': self._get_new_title(user)}
+                        'body': body+self._render_obj(idea, user),
+                        'new_title': ''}#self._get_new_title(user)}
 
         except Exception:
             return {'state': False}
@@ -131,7 +138,7 @@ class CreateIdeaView_Json(BasicView):
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
             user = get_current()
-            new_title = self._get_new_title(user)
+            new_title = ''#self._get_new_title(user)
             data = {'title': idea.title,
                     'oid': str(oid),
                     'body': renderers.render(self.idea_template,
@@ -174,3 +181,7 @@ DEFAULTMAPPING_ACTIONS_VIEWS.update(
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {CrateAndPublish: CreateIdeaView})
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CrateAndPublishAsProposal: CreateIdeaView})

@@ -1,7 +1,6 @@
-<div class="content-view">
+<div class="content-view" i18n:domain="novaideo">
   <div tal:replace="structure navbar_body"/>
-  <div class="media-body content-title-body"
-       i18n:domain="novaideo">
+  <div class="media-body content-title-body">
     <div tal:condition="cant_publish" role="alert" class="alert alert-info alert-dismissible">
        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
        <span class="glyphicon glyphicon-warning-sign pull-right"></span>
@@ -218,7 +217,9 @@
       </div>
 
       <div tal:condition="'proposal' in request.content_to_support and 'submitted_support' in proposal.state and 'examined' not in proposal.state" class="proposal-support pull-right" style="margin-top: -35px">
-        <span class="label success" 
+        <span class="label success"
+            title="Support"
+            i18n:attributes="title"
             tal:define="
                 support any(t.owner is current_user for t in proposal.tokens_support);
                 action 'withdraw_token_proposal' if support else 'support_proposal'">
@@ -230,6 +231,8 @@
               <span class="support-nb">${len(proposal.tokens_support)}</span>
         </span>
         <span class="label danger"
+            title="Oppose"
+            i18n:attributes="title"
             tal:define="
                 oppose any(t.owner is current_user for t in proposal.tokens_opposition);
                 action 'withdraw_token_proposal' if oppose else 'oppose_proposal'">

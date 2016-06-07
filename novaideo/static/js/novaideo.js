@@ -458,6 +458,7 @@ $(document).ready(function(){
           // progress.show();// TODO
           var buttons = $($this.find('button'))
         $(buttons).addClass('disabled');
+        loading_progress()
         $.ajax({
             url: url,
             type: 'POST',
@@ -473,6 +474,7 @@ $(document).ready(function(){
                 $(buttons).removeClass('disabled');
                 $(button).removeClass('active');
                 close_add_idea_form()
+                finish_progress()
               }
              }
         });

@@ -30,6 +30,8 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import InfiniteCardinality, ActionType
 from dace.processinstance.core import ActivityExecuted
 
+import html_diff_wrapper
+
 from novaideo.content.interface import INovaIdeoApplication, Iidea
 from ..user_management.behaviors import (
     global_user_processsecurity,
@@ -45,6 +47,11 @@ from novaideo.event import (
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.alert import InternalAlertKind
 from novaideo.views.filter import get_users_by_preferences
+from novaideo.content.proposal import Proposal
+from novaideo.content.working_group import WorkingGroup
+from novaideo.content.correlation import CorrelationType
+from novaideo.content.processes.proposal_management import (
+    init_proposal_ballots, add_attached_files)
 
 
 try:
@@ -93,7 +100,7 @@ class CreateIdea(InfiniteCardinality):
 
 class CrateAndPublish(InfiniteCardinality):
     style_picto = 'icon novaideo-icon icon-idea'
-    style_order = 0
+    style_order = 1
     title = _('Create and publish')
     submission_title = _('Save and publish')
     context = INovaIdeoApplication
@@ -118,9 +125,77 @@ class CrateAndPublish(InfiniteCardinality):
                 if publish_action:
                     publish_action.start(idea, request, {})
 
-            return {'newcontext': idea}
+            return {'newcontext': idea, 'state': True}
 
-        return {'newcontext': getSite()}
+        return {'newcontext': getSite(), 'state': False}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
+
+
+class CrateAndPublishAsProposal(CrateAndPublish):
+    style_picto = 'icon novaideo-icon icon-idea'
+    style_order = 2
+    title = _('Create a working group')
+    submission_title = _('Create a working group')
+
+    def start(self, context, request, appstruct, **kw):
+        result = super(CrateAndPublishAsProposal, self).start(context, request, appstruct, **kw)
+        root = getSite()
+        state = result.get('state', False)
+        if state:
+            idea = result.get('newcontext', None)
+            if idea:
+                user = get_current()
+                related_ideas = [idea]
+                localizer = request.localizer
+                title = idea.title + \
+                    localizer.translate(_(" (the proposal)"))
+                proposal = Proposal(
+                    title=title,
+                    description=idea.text,
+                    text='<p>'+idea.text.replace('\n', '<br/>')+'</p>',
+                    keywords=list(idea.keywords)
+                    )
+                proposal.text = html_diff_wrapper.normalize_text(proposal.text)
+                root.addtoproperty('proposals', proposal)
+                proposal.state.append('draft')
+                grant_roles(user=user, roles=(('Owner', proposal), ))
+                grant_roles(user=user, roles=(('Participant', proposal), ))
+                proposal.setproperty('author', user)
+                wg = WorkingGroup()
+                root.addtoproperty('working_groups', wg)
+                wg.init_workspace()
+                wg.setproperty('proposal', proposal)
+                wg.addtoproperty('members', user)
+                wg.state.append('deactivated')
+                if related_ideas:
+                    connect(proposal,
+                            related_ideas,
+                            {'comment': _('Add related ideas'),
+                             'type': _('Creation')},
+                            user,
+                            ['related_proposals', 'related_ideas'],
+                            CorrelationType.solid)
+                try:
+                    files = {
+                        'add_files': {
+                            'attached_files': [{'_object_data': f.copy()} for
+                                               f in idea.attached_files]
+                        }
+                    }
+                    add_attached_files(files, proposal)
+                except Exception:
+                    pass
+
+                proposal.reindex()
+                init_proposal_ballots(proposal)
+                wg.reindex()
+                request.registry.notify(
+                    ActivityExecuted(self, [idea, proposal, wg], user))
+                return {'newcontext': proposal}
+
+        return {'newcontext': root}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))

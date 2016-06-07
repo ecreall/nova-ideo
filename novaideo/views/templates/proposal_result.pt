@@ -43,7 +43,7 @@
             <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
       </tal:loop>
     </div>
-    <div class="row" tal:omit-tag="not files">
+    <div class="row object-row-content" tal:omit-tag="not files">
       <div class="col-xs-12 col-md-8" tal:omit-tag="not files">
         <div class="object-text">${object.presentation_text(500)}</div>
       </div>
@@ -113,7 +113,9 @@
         <div tal:replace="structure footer_body"/>
       </div>
       <div tal:condition="submitted" class="proposal-support pull-right">
-        <span class="label success" 
+        <span class="label success"
+            title="Support"
+            i18n:attributes="title" 
           tal:define="
               support any(t.owner is current_user for t in object.tokens_support);
               action 'withdraw_token_proposal' if support else 'support_proposal'">
@@ -125,6 +127,8 @@
             <span class="support-nb">${len(object.tokens_support)}</span>
         </span>
         <span class="label danger"
+            title="Oppose"
+            i18n:attributes="title"
           tal:define="
               oppose any(t.owner is current_user for t in object.tokens_opposition);
               action 'withdraw_token_proposal' if oppose else 'oppose_proposal'">
