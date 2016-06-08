@@ -1,4 +1,6 @@
-<div tal:omit-tag="" tal:define="batch_value batch|nothing;
+<div class="items-main-view-container" 
+	 id="items-main-view-container-${id}"
+	 tal:define="batch_value batch|nothing;
 	                             id (batch_value and batch_value.target.replace('#', '')) or 'results'">
 	<div tal:omit-tag="" tal:define="filterbody filter_body|nothing" i18n:domain="novaideo">
 		<div id="filter-${id}" tal:condition="filterbody">

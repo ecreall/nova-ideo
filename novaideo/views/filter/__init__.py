@@ -1023,7 +1023,8 @@ class FilterView(FormView):
 
 def get_filter(view, url, omit=(),
                select=(), source=None, **args):
-    filter_instance = FilterView(view.context, view.request)
+    formid = args.pop('filterid', '') + 'formfilter'
+    filter_instance = FilterView(view.context, view.request, formid=formid)
     view.filter_instance = filter_instance
     if omit:
         filter_instance.omit_filters(omit)

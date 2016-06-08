@@ -12,8 +12,5 @@
        <hr class="soften">
        ${structure: filterbody}
       </div>
-      <script>
-        init_filter()
-      </script>
     </div>
 </div>

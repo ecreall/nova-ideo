@@ -43,7 +43,11 @@ function set_visited(){
 
 
 function initscroll(){
-   $(".result-scroll").mCustomScrollbar({
+  var result_scrolls = $(".result-scroll")
+  for(var i = 0; i<= result_scrolls.length; i++){
+    var result_scroll = $(result_scrolls[i]);
+    var id = result_scroll.attr('id')
+    result_scroll.mCustomScrollbar({
     theme:"minimal-dark",
     scrollInertia: 100,
     callbacks:{
@@ -52,30 +56,28 @@ function initscroll(){
       }
     }
   });
-  $('.results .mCSB_container').infinitescroll('destroy');
-  $('.results .mCSB_container').infinitescroll({
+  $(result_scroll.find('.mCSB_container')).infinitescroll('destroy');
+  $(result_scroll.find('.mCSB_container')).infinitescroll({
     behavior: 'local',
     bufferPx: 0,
 
-    binder: $('.result-scroll'),
-    navSelector  : ".results .batch",
+    binder: result_scroll,
+    navSelector  : "#"+id+" .batch",
                    // selector for the paged navigation (it will be hidden)
-    nextSelector : ".results .pager .next",
+    nextSelector : "#"+id+" .pager .next",
                    // selector for the NEXT link (to page 2)
-    itemSelector : ".results .result-container",
+    itemSelector : "#"+id+" .result-container",
 
     pathParse: function(path, next_page) {
        var new_path = path;
-       var filter = $('#filter-'+$('.results').first().attr('id'));
+       var id = result_scroll.attr('id')
+       var filter = $('#filter-'+id);
        if (filter.length>0){
             var form = $($(filter).find('form').first());
             var filter_container = $(form.parents('.filter-container'));
             var filter_btn = $(filter_container.find('.filter-btn').first());
             var data_get = $(form).serialize();
             data_get += '&'+'op=filter_result';
-            var target = $($('.pontus-main .panel-body').first());
-            var target_title = $($('.pontus-main .panel-heading').first());
-            var url = filter_btn.data('url');
             var filter_source = filter_btn.data('filter_source');
             if (filter_source !== ''){
               data_get += '&'+'filter_source='+filter_source;
@@ -89,7 +91,7 @@ function initscroll(){
 // ["http://0.0.0.0:6543/@@seemyideas?batch_num=", "&batch_size=1&action_uid=-4657697968224339750"]
 // substanced Batch starts at 0, not 1
        var f = function(currPage) {
-          var next_path = $($('.results .result-container').parents('div').first().find('.result-container').last()).data('nex_url')
+          var next_path = $($('#'+id+' .result-container').parents('div').first().find('.result-container').last()).data('nex_url')
           return next_path +'&'+ data_get;
        };
        return f;
@@ -100,7 +102,7 @@ function initscroll(){
       msgText: "",
     }
   });
-
+}
 };
 
 
@@ -114,14 +116,17 @@ function init_content_text(){
 };
 
 function init_result_scroll(){
+  var default_top = 1600
   var result_scrolls = $('.result-scroll');
   for(var i = 0; i<= result_scrolls.length; i++){
     var result_scroll = $(result_scrolls[i]);
     var last_child = $(result_scroll.find('.result-item').last());
     if (last_child.length > 0){
         var top = last_child.offset().top - result_scroll.offset().top  + last_child.height() + 420
-        if (top < 1600){
+        if (top < default_top){
          result_scroll.height(top);
+        }else{
+          result_scroll.height(default_top);
         }
     }else{
          result_scroll.height(100);
@@ -671,5 +676,7 @@ $(function () {
     });
 
  scroll_to_panel()
+
+ $('.nav-tabs').on('shown.bs.tab', init_result_scroll)
 
 });

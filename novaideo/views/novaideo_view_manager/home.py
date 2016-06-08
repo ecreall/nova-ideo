@@ -14,6 +14,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
 from pontus.util import merge_dicts
 
+from pontus.view_operation import MultipleView
 from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_view_manager.behaviors import SeeHome
 from novaideo.content.novaideo_application import NovaIdeoApplication
@@ -32,32 +33,18 @@ CONTENTS_MESSAGES = {
 }
 
 
-@view_config(
-    name='index',
-    context=NovaIdeoApplication,
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
-@view_config(
-    name='',
-    context=NovaIdeoApplication,
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
-class HomeView(BasicView):
-    title = ''
-    name = ''
-    behaviors = [SeeHome]
-    template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
+class ContentView(BasicView):
+    template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
     anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    viewid = 'home'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    content_type = 'idea'
 
     def _add_filter(self, user):
         def source(**args):
-            default_content = [key[0] for key in
-                               get_default_searchable_content(self.request)]
-            default_content.remove("person")
+            # default_content = [key[0] for key in
+            #                    get_default_searchable_content(self.request)]
+            # default_content.remove("person")
+            default_content = [self.content_type]
             filter_ = {
                 'metadata_filter': {
                     'content_types': default_content,
@@ -68,7 +55,7 @@ class HomeView(BasicView):
 
         url = self.request.resource_url(
             self.context, '@@novaideoapi')
-        select = ['metadata_filter', 'geographic_filter',
+        select = [('metadata_filter', ['states', 'keywords']), 'geographic_filter',
                   'contribution_filter',
                   ('temporal_filter', ['negation', 'created_date']),
                   'text_filter', 'other_filter']
@@ -77,30 +64,21 @@ class HomeView(BasicView):
             url=url,
             source=source,
             select=select,
-            filter_source="home")
-
-    def update_anonymous(self):
-        values = {}
-        result = {}
-        body = self.content(
-            args=values, template=self.anonymous_template)['body']
-        item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates: [item]}
-        self.title = ''
-        self.wrapper_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view_wrapper.pt'
-        return result
+            filter_source="home",
+            filterid=self.content_type)
 
     def update(self):
-        user = get_current()
-        if not self.request.accessible_to_anonymous:
-            return self.update_anonymous()
+        if self.request.is_idea_box:
+            self.title = ''
 
+        user = get_current()
         filter_form, filter_data = self._add_filter(user)
-        default_content = [key[0] for key in
-                           get_default_searchable_content(self.request)]
-        default_content.remove("person")
+        # default_content = [key[0] for key in
+        #                    get_default_searchable_content(self.request)]
+        # default_content.remove("person")
+        default_content = [self.content_type]
         validated = {
-            'metadata_filter': 
+            'metadata_filter':
                 {'content_types': default_content,
                 'states': ['active', 'published']}
         }
@@ -117,7 +95,7 @@ class HomeView(BasicView):
                       self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results"
+        batch.target = "#results"+"-"+ self.content_type
         filter_instance = getattr(self, 'filter_instance', None)
         filter_body = None
         if filter_instance:
@@ -139,6 +117,71 @@ class HomeView(BasicView):
         result['coordinates'] = {self.coordinates: [item]}
 
         return result
+
+
+class IdeasView(ContentView):
+    title = _('Ideas')
+    content_type = 'idea'
+    viewid = 'home-ideas'
+    view_icon = 'icon novaideo-icon icon-idea'
+
+
+class ProposalsView(ContentView):
+    title = _('Working groups')
+    content_type = 'proposal'
+    viewid = 'home-proposals'
+    view_icon = 'icon icon novaideo-icon icon-proposal'
+
+
+# class PersonsView(ContentView):
+#     title = _('Persons')
+#     content_type = 'person'
+#     viewid = 'home-person'
+
+
+@view_config(
+    name='index',
+    context=NovaIdeoApplication,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+@view_config(
+    name='',
+    context=NovaIdeoApplication,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class HomeView(MultipleView):
+    title = ''
+    name = ''
+    behaviors = [SeeHome]
+    anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
+    # wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    viewid = 'home'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
+    views = (IdeasView, ProposalsView)#, PersonsView)
+
+    def _init_views(self, views, **kwargs):
+        if self.request.is_idea_box:
+            views = (IdeasView, )
+
+        super(HomeView, self)._init_views(views, **kwargs)
+
+    def update_anonymous(self):
+        values = {}
+        result = {}
+        body = self.content(
+            args=values, template=self.anonymous_template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        self.title = ''
+        self.wrapper_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view_wrapper.pt'
+        return result
+
+    def update(self):
+        if not self.request.accessible_to_anonymous:
+            return self.update_anonymous()
+
+        return super(HomeView, self).update()
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeHome: HomeView})
