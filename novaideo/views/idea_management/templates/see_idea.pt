@@ -98,31 +98,34 @@
     <div class="actions-block">
         <div tal:replace="structure footer_body"/>
     </div>
-    <div tal:condition="'idea' in request.content_to_support and 'published' in idea.state and 'examined' not in idea.state" class="proposal-support pull-right" style="margin-top: -35px">
+    <div tal:condition="'idea' in request.content_to_support and 'published' in idea.state and 'examined' not in idea.state"  style="margin-top: -35px"
+      tal:define="
+              support any(t.owner is current_user for t in idea.tokens_support);
+              oppose any(t.owner is current_user for t in idea.tokens_opposition);
+              active support or oppose or getattr(current_user, 'tokens', [])"
+      class="proposal-support pull-right ${(support or oppose) and 'my-support'}">
           <span class="label success"
-            title="Support"
+            title="${support and 'Withdraw my token' or 'Support'}"
             i18n:attributes="title"
             tal:define="
-                support any(t.owner is current_user for t in idea.tokens_support);
                 action 'withdraw_token_idea' if support else 'support_idea'">
               <span class="${not support and 'hide-bloc' or ''} hidden-xs glyphicon glyphicon-hand-down my-token my-token-success">
               </span>
               <span 
                 data-action="${request.resource_url(idea, 'novaideoapi', query={'op': action, 'action': 'support'})}"
-                class="token token-toggle token-success glyphicon glyphicon-thumbs-up"></span>
+                class="token token-toggle ${not active and 'disabled' or 'active'} token-success glyphicon glyphicon-thumbs-up"></span>
               <span class="support-nb">${len(idea.tokens_support)}</span>
           </span>
           <span class="label danger"
-            title="Oppose"
+            title="${oppose and 'Withdraw my token' or 'Oppose'}"
             i18n:attributes="title"
             tal:define="
-                oppose any(t.owner is current_user for t in idea.tokens_opposition);
                 action 'withdraw_token_idea' if oppose else 'oppose_idea'">
               <span class="${not oppose and 'hide-bloc' or ''} hidden-xs glyphicon glyphicon-hand-down my-token my-token-danger"> 
               </span>
               <span 
                 data-action="${request.resource_url(idea, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
-                class="token token-toggle token-danger glyphicon glyphicon-thumbs-down"></span>
+                class="token token-toggle ${not active and 'disabled' or 'active'} token-danger glyphicon glyphicon-thumbs-down"></span>
               <span class="support-nb">${len(idea.tokens_opposition)}</span>
           </span>
     </div>

@@ -228,10 +228,11 @@ function scroll_to_panel(){
 }
 
 
-$(document).on('click', '.proposal-support .token', function(){
+$(document).on('click', '.proposal-support .token:not(.disabled)', function(){
    var $this = $(this)
    var opposit_class = $this.hasClass('token-success')? '.danger': '.success';
-   var opposit = $($this.parents('.proposal-support').first().find('.label'+opposit_class).first())
+   var supportbloc = $($this.parents('.proposal-support').first())
+   var opposit = $(supportbloc.find('.label'+opposit_class).first())
    var opposit_token = $(opposit.find('.token').first())
    var parent = $($this.parents('.label').first())
    var action_url = $this.data('action')
@@ -240,9 +241,18 @@ $(document).on('click', '.proposal-support .token', function(){
    var opposit_mytoken = $(opposit.find('.my-token').first())
    var opposit_support_nb = $(opposit.find('.support-nb').first())
    if(action_url){
+     loading_progress()
      $.getJSON(action_url,{}, function(data) {
+          finish_progress()
           if(data['state']){
+             if (data.title){
+                parent.attr('title', data.title)
+             }
+             if (data.opposit_title){
+                opposit.attr('title', data.opposit_title)
+             }
             if(!data.withdraw){
+             supportbloc.addClass('my-support')
              mytoken.removeClass('hide-bloc')
              var new_nb = parseInt(support_nb.text()) + 1
              support_nb.text(new_nb)
@@ -253,11 +263,19 @@ $(document).on('click', '.proposal-support .token', function(){
                opposit_token.data('action', data.opposit_action)
              }
             }else{
+              supportbloc.removeClass('my-support')
               mytoken.addClass('hide-bloc')
               var new_nb = parseInt(support_nb.text()) - 1
               support_nb.text(new_nb)
             }
             $this.data('action', data.action)
+          }
+          if(data.hastoken != undefined){
+            if(data.hastoken){
+              $('.token.disabled').removeClass('disabled').addClass('active')
+            }else{
+              $('.proposal-support:not(.my-support) .token.active').removeClass('active').addClass('disabled')
+            }
           }
         });
    }

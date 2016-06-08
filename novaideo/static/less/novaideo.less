@@ -1467,18 +1467,22 @@ ins {
     top: 1px;
 }
 
-.token.token-toggle{
+.token.token-toggle.active{
     cursor: pointer;
 }
 
-.token-success.token-toggle:hover{
+.token.token-toggle.disabled{
+  cursor: default
+}
+
+.token-success.token-toggle.active:hover{
     background-image: -webkit-linear-gradient(50deg, #76c176 28%, #398139 99%);
     background-image:      -o-linear-gradient(50deg, #76c176 28%, #398139 99%);
     background-image: linear-gradient(50deg, #76c176 28%, #398139 99%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#76c176', endColorstr='#398139', GradientType=1);
 }
 
-.token-danger.token-toggle:hover{
+.token-danger.token-toggle.active:hover{
     background-image: -webkit-linear-gradient(50deg, #de534d 28%, #ab1c15 99%);
     background-image:      -o-linear-gradient(50deg, #de534d 28%, #ab1c15 99%);
     background-image: linear-gradient(50deg, #de534d 28%, #ab1c15 99%);
