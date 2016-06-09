@@ -114,8 +114,10 @@ function init_content_text(){
      }
 };
 
-function init_result_scroll(){
-  var default_top = 1600
+function init_result_scroll(event, default_top){
+  if(default_top == undefined){
+    default_top = 1600
+  }
   var result_scrolls = $('.result-scroll');
   for(var i = 0; i<= result_scrolls.length; i++){
     var result_scroll = $(result_scrolls[i]);
@@ -529,13 +531,10 @@ $(document).ready(function(){
     });
 
 
-$(".malihu-scroll").mCustomScrollbar({
+  $(".malihu-scroll").mCustomScrollbar({
     theme:"minimal-dark",
     scrollInertia: 200
   });
-
-
-   
 
   $(".navbar-toggle.collapsed").on('click', collapse_current_collpsein);
 
@@ -551,17 +550,6 @@ $(".malihu-scroll").mCustomScrollbar({
 
   initscroll();
 
-  $('.panel-collapse.collapse .results').attr('class', 'results-collapse');
-
-  $('.panel-collapse').on('hidden.bs.collapse', function () {
-      $(this).find('.result-collapse').attr('class', 'results-collapse');
-      $('.results').attr('infinitescroll', null)
-  });
-
-  $('.panel-collapse').on('shown.bs.collapse', function () {
-      $(this).find('.results-collapse').attr('class', 'results');
-      initscroll()
-  });
 
   $('nav a nav-control').on('click', function(){
       $(".navbar-toggle").click();
@@ -573,6 +561,10 @@ $(".malihu-scroll").mCustomScrollbar({
 
   $('.panel-collapse').on('show.bs.collapse', function () {
     $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-minus');
+  });
+
+  $('.panel-collapse').on('shown.bs.collapse', function () {
+    init_result_scroll(undefined, 1000);
   });
 
   // $('.scroll-able.result-scroll').endlessScroll({

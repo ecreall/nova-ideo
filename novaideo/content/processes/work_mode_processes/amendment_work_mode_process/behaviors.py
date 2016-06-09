@@ -154,8 +154,8 @@ class ImproveProposal(InfiniteCardinality):
         data['title'] = localizer.translate(_('Amended version ')) + \
                         str(getattr(context, '_amendments_counter', 1))
         data['text'] = html_diff_wrapper.normalize_text(appstruct['text'])
-        data['description'] = appstruct['description']
-        data['keywords'] = appstruct['keywords']
+        # data['description'] = appstruct['description']
+        # data['keywords'] = appstruct['keywords']
         amendment = Amendment()
         amendment.set_data(data)
         context.addtoproperty('amendments', amendment)
@@ -279,7 +279,7 @@ class AmendmentsResult(ElementaryAction):
         copy_of_proposal.setproperty('version', context)
         copy_of_proposal.setproperty('originalentity', context.originalentity)
         root.rename(copy_of_proposal.__name__, contextname)
-        copy_of_proposal.state = PersistentList(['amendable'])
+        copy_of_proposal.state = PersistentList(['amendable', 'published'])
         copy_of_proposal.setproperty('author', context.author)
         copy_of_proposal.setproperty('comments', context.comments)
         self.process.attachedTo.process.execution_context.add_created_entity(

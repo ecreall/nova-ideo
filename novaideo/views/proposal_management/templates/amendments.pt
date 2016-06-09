@@ -3,17 +3,18 @@
        ${message[0]}
 </h4>
 
-<ul  i18n:domain="novaideo">
-  <tal:loop repeat="amendment amendments">
-    <li >
-      <div>
-        <h4 class="content-title content-title-sm"><a tal:attributes="href request.resource_url(amendment, '@@index')">${amendment.title}</a> (<span i18n:translate="" tal:content="get_states_mapping(current_user, amendment, amendment.state[0])"/>)</h4>
-        <div class="object-description object-description-sm">
-          <small ><span i18n:translate="">(Amended version by</span> <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(amendment.created_at)"/> (UTC) <span tal:omit-tag="" tal:condition="amendment.originalentity is not None">, <span i18n:translate="">duplicated from the amended version</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
-          </small>
-         </div>
+ <div class="items-main-view-container"
+     id="items-main-view-container-${id}"
+   tal:define="batch_value batch|nothing;
+               id (batch_value and batch_value.target.replace('#', '')) or 'results';"
+   i18n:domain="novaideo">
+  <div class="row">
+    <div  id="${id}" class="panel-result result-scroll scroll-able results">
+      <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
+      <div class="col-md-12 result-container " data-nex_url="${batch.next_url}">
+        <div tal:condition="bodies" tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
       </div>
-    </li>
-  </tal:loop>
-</ul>
+    </div>
+  </div>
+</div>
 

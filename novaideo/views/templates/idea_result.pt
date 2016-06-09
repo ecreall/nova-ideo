@@ -3,7 +3,6 @@
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
                  author object.author;
-                 comments_len len(object.comments);
                  files object.get_attached_files_data();
                  len_files len(files);
                  oid object.__oid__">

@@ -39,6 +39,7 @@ from novaideo.views.widget import (
     SimpleMappingtWidget)
 from novaideo.content.idea import Idea, IdeaSchema
 from novaideo.content.proposal import AddFilesSchemaSchema
+from novaideo.utilities.util import html_to_text
 
 
 @colander.deferred
@@ -280,6 +281,24 @@ class Amendment(Commentable,
     @property
     def authors(self):
         return [self.author]
+
+    def _init_presentation_text(self):
+        self._presentation_text = html_to_text(
+            getattr(self, 'text', ''))
+
+    def __setattr__(self, name, value):
+        super(Amendment, self).__setattr__(name, value)
+        if name == 'text':
+            self._init_presentation_text()
+
+    def presentation_text(self, nb_characters=400):
+        text = getattr(self, '_presentation_text', None)
+        if text is None:
+            self._init_presentation_text()
+            text = getattr(self, '_presentation_text', '')
+
+        return text[:nb_characters]+'...'
+
 
    # @region.cache_on_arguments() 
     def get_used_ideas(self):

@@ -30,9 +30,7 @@ class ImproveProposalView(FormView):
     formid = 'formimproveproposal'
     behaviors = [ImproveProposal, Cancel]
     schema = select(AmendmentSchema(),
-                    ['description',
-                     'keywords', 
-                     'text'])
+                    ['text'])
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/proposal_management.js']}
 

@@ -20,20 +20,27 @@ from novaideo.content.processes.amendment_management.behaviors import (
 from novaideo.content.amendment import Amendment
 from novaideo.content.processes import get_states_mapping
 from novaideo.utilities.util import generate_navbars, ObjectRemovedException
+# from .present_amendment import PresentAmendmentView
+# from .comment_amendment import CommentAmendmentView
 from novaideo import _
-from .present_amendment import PresentAmendmentView
-from .comment_amendment import CommentAmendmentView
 from .explanation_amendment import IntentionFormView
 
 
+@view_config(
+    name='seeamendment',
+    context=Amendment,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
 class DetailAmendmentView(BasicView):
-    title = _('Details')
-    name = 'seeAmendment'
+    title = ''
+    name = 'seeamendment'
     behaviors = [SeeAmendment]
     template = 'novaideo:views/amendment_management/templates/see_amendment.pt'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    # wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     viewid = 'seeamendment'
-    validate_behaviors = False
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/comment.js',
+                                 'novaideo:static/js/explanation_amendment.js']}
 
     def _add_requirements(self, user):
         is_owner = has_role(user=user, role=('Owner', self.context))
@@ -63,21 +70,21 @@ class DetailAmendmentView(BasicView):
         user = get_current()
         result = {}
         textdiff = ''
-        descriptiondiff = ''
-        keywordsdiff = []
+        # descriptiondiff = ''
+        # keywordsdiff = []
         proposal = self.context.proposal
         textdiff = self.context.text_diff
-        soup, descriptiondiff = html_diff_wrapper.render_html_diff(
-            '<div>'+getattr(proposal, 'description', '')+'</div>',
-            '<div>'+getattr(self.context, 'description', '')+'</div>')
-        for k in proposal.keywords:
-            if k in self.context.keywords:
-                keywordsdiff.append({'title': k, 'state': 'nothing'})
-            else:
-                keywordsdiff.append({'title': k, 'state': 'del'})
+        # soup, descriptiondiff = html_diff_wrapper.render_html_diff(
+        #     '<div>'+getattr(proposal, 'description', '')+'</div>',
+        #     '<div>'+getattr(self.context, 'description', '')+'</div>')
+        # for k in proposal.keywords:
+        #     if k in self.context.keywords:
+        #         keywordsdiff.append({'title': k, 'state': 'nothing'})
+        #     else:
+        #         keywordsdiff.append({'title': k, 'state': 'del'})
 
-        [keywordsdiff.append({'title': k, 'state': 'ins'})
-         for k in self.context.keywords if k not in proposal.keywords]
+        # [keywordsdiff.append({'title': k, 'state': 'ins'})
+        #  for k in self.context.keywords if k not in proposal.keywords]
 
         related_ideas = list(self.context.get_used_ideas())
         not_published_ideas = [i for i in related_ideas
@@ -96,8 +103,8 @@ class DetailAmendmentView(BasicView):
             'state': get_states_mapping(
                 user, self.context, self.context.state[0]),
             'textdiff': textdiff,
-            'descriptiondiff': descriptiondiff,
-            'keywordsdiff': keywordsdiff,
+            # 'descriptiondiff': descriptiondiff,
+            # 'keywordsdiff': keywordsdiff,
             'current_user': user,
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
@@ -118,31 +125,31 @@ class DetailAmendmentView(BasicView):
         return result
 
 
-class SeeAmendmentActionsView(MultipleView):
-    title = _('actions')
-    name = 'seeiactionsamendment'
-    template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (PresentAmendmentView, CommentAmendmentView)
+# class SeeAmendmentActionsView(MultipleView):
+#     title = _('actions')
+#     name = 'seeiactionsamendment'
+#     template = 'novaideo:views/idea_management/templates/panel_group.pt'
+#     views = (PresentAmendmentView, CommentAmendmentView)
 
-    def _activate(self, items):
-        pass
+#     def _activate(self, items):
+#         pass
 
 
-@view_config(
-    name='seeamendment',
-    context=Amendment,
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
-class SeeAmendmentView(MultipleView):
-    title = ''
-    name = 'seeamendment'
-    template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
-    views = (DetailAmendmentView, SeeAmendmentActionsView)
-    requirements = {'css_links': [],
-                    'js_links': ['novaideo:static/js/comment.js',
-                                 'novaideo:static/js/explanation_amendment.js']}
-    validators = [SeeAmendment.get_validator()]
+# @view_config(
+#     name='seeamendment',
+#     context=Amendment,
+#     renderer='pontus:templates/views_templates/grid.pt',
+#     )
+# class SeeAmendmentView(MultipleView):
+#     title = ''
+#     name = 'seeamendment'
+#     template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
+#     views = (DetailAmendmentView,)
+#     requirements = {'css_links': [],
+#                     'js_links': ['novaideo:static/js/comment.js',
+#                                  'novaideo:static/js/explanation_amendment.js']}
+#     validators = [SeeAmendment.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
-    {SeeAmendment: SeeAmendmentView})
+    {SeeAmendment: DetailAmendmentView})

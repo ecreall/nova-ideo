@@ -24,11 +24,9 @@ from novaideo import _
     )
 class EditAmendmentView(FormView):
     title = _('Edit the amendment')
-    schema = select(AmendmentSchema(factory=Amendment, 
+    schema = select(AmendmentSchema(factory=Amendment,
                                     editable=True),
                     ['title',
-                     'description',
-                     'keywords', 
                      'text'])
     behaviors = [EditAmendment, Cancel]
     formid = 'formeditamendment'
@@ -36,6 +34,7 @@ class EditAmendmentView(FormView):
 
     def default_data(self):
         return self.context
- 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({EditAmendment:EditAmendmentView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {EditAmendment: EditAmendmentView})

@@ -114,7 +114,7 @@ class DuplicateAmendment(InfiniteCardinality):
                                  omit=('created_at',
                                        'modified_at',
                                        'explanations'))
-        root.merge_keywords(appstruct['keywords'])
+        # root.merge_keywords(appstruct['keywords'])
         copy_of_amendment.set_data(appstruct)
         copy_of_amendment.text = html_diff_wrapper.normalize_text(
             copy_of_amendment.text)
@@ -199,7 +199,7 @@ class EditAmendment(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        root.merge_keywords(context.keywords)
+        # root.merge_keywords(context.keywords)
         context.set_data(appstruct)
         context.text = html_diff_wrapper.normalize_text(context.text)
         context.text_diff = get_text_amendment_diff(
@@ -374,9 +374,9 @@ class SubmitAmendment(InfiniteCardinality):
         data = {
             'title': group['title'],
             'text': self._get_amendment_text(context, group['explanations']),
-            'description': context.description,
+            # 'description': context.description,
             'justification': group.get('justification', ''),
-            'keywords': context.keywords
+            # 'keywords': context.keywords
         }
         return data
 
@@ -426,7 +426,7 @@ class SubmitAmendment(InfiniteCardinality):
         if len(groups) == 1:
             group = groups[0]
             data = self._get_explanation_data(context, group)
-            data.pop('description')
+            # data.pop('description')
             data.pop('text')
             context.set_data(data)
             context.state.append('submitted')
