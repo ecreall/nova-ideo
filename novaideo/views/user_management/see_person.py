@@ -55,7 +55,9 @@ class ContentView(BasicView):
         result_body, result = render_listing_objs(
             self.request, batch, user)
         values = {'bodies': result_body,
-                  'batch': batch}
+                  'batch': batch,
+                  'empty_message': self.empty_message,
+                  'empty_icon': self.empty_icon}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
@@ -67,6 +69,8 @@ class IdeasView(ContentView):
     content_attr = 'ideas'
     viewid = 'person-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
+    empty_message = _("No registered ideas")
+    empty_icon = 'icon novaideo-icon icon-idea'
 
 
 class ProposalsView(ContentView):
@@ -74,6 +78,8 @@ class ProposalsView(ContentView):
     content_attr = 'proposals'
     viewid = 'person-proposals'
     view_icon = 'icon icon novaideo-icon icon-proposal'
+    empty_message = _("Not belong to any working group")
+    empty_icon = 'icon icon novaideo-icon icon-proposal'
 
 
 class PersonContentsView(MultipleView):

@@ -105,6 +105,8 @@ class ContentView(BasicView):
             self.request, batch, user)
         values = {'bodies': result_body,
                   'batch': batch,
+                  'empty_message': self.empty_message,
+                  'empty_icon': self.empty_icon,
                   'filter_body': filter_body}
         if filter_form:
             result = merge_dicts(
@@ -124,6 +126,8 @@ class IdeasView(ContentView):
     content_type = 'idea'
     viewid = 'home-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
+    empty_message = _("No registered ideas")
+    empty_icon = 'icon novaideo-icon icon-idea'
 
 
 class ProposalsView(ContentView):
@@ -131,6 +135,8 @@ class ProposalsView(ContentView):
     content_type = 'proposal'
     viewid = 'home-proposals'
     view_icon = 'icon icon novaideo-icon icon-proposal'
+    empty_message = _("No working groups created")
+    empty_icon = 'icon icon novaideo-icon icon-proposal'
 
 
 # class PersonsView(ContentView):
