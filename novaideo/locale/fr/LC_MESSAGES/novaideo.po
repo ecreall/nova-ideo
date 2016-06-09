@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-06-09 12:01+0200\n"
+"POT-Creation-Date: 2016-06-09 13:38+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1370,13 +1370,22 @@ msgstr "Activer le compte"
 msgid "Remove the registration"
 msgstr "Supprimer l'inscription"
 
-#: novaideo/views/user_management/see_person.py:66
+#: novaideo/views/user_management/see_person.py:68
 msgid "Her ideas"
 msgstr "Ses idées"
 
-#: novaideo/views/user_management/see_person.py:73
+#: novaideo/views/user_management/see_person.py:72
+#: novaideo/views/novaideo_view_manager/home.py:129
+msgid "No registered ideas"
+msgstr "Pas d'idées enregistrées"
+
+#: novaideo/views/user_management/see_person.py:77
 msgid "Her working groups"
 msgstr "Ses groupes de travail"
+
+#: novaideo/views/user_management/see_person.py:81
+msgid "Not belong to any working group"
+msgstr "N'appartiens à aucun groupe de travail"
 
 #: novaideo/views/user_management/see_registrations.py:26
 msgid "No registration found"
@@ -4089,13 +4098,17 @@ msgstr "Message"
 msgid "Please enter the message you want to send."
 msgstr "Veuillez saisir le message que vous voulez envoyer."
 
-#: novaideo/views/novaideo_view_manager/home.py:123
+#: novaideo/views/novaideo_view_manager/home.py:125
 msgid "Ideas"
 msgstr "Les idées"
 
-#: novaideo/views/novaideo_view_manager/home.py:130
+#: novaideo/views/novaideo_view_manager/home.py:134
 msgid "Working groups"
 msgstr "Les groupes de travail"
+
+#: novaideo/views/novaideo_view_manager/home.py:138
+msgid "No working groups created"
+msgstr "Pas de groupes de travail créés"
 
 #: novaideo/views/novaideo_view_manager/doc_anonymous.py:32
 msgid "Contribute"
@@ -5623,6 +5636,10 @@ msgstr ""
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:52
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
+
+#, fuzzy
+#~ msgid "Has not add ideas"
+#~ msgstr "N'a pas ajouté des idées"
 
 #~ msgid "Contribution"
 #~ msgstr "Contribution"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-06-09 12:01+0200\n"
+"POT-Creation-Date: 2016-06-09 13:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1370,12 +1370,21 @@ msgstr ""
 msgid "Remove the registration"
 msgstr ""
 
-#: ./novaideo/views/user_management/see_person.py:66
+#: ./novaideo/views/user_management/see_person.py:68
 msgid "Her ideas"
 msgstr ""
 
-#: ./novaideo/views/user_management/see_person.py:73
+#: ./novaideo/views/user_management/see_person.py:72
+#: ./novaideo/views/novaideo_view_manager/home.py:129
+msgid "No registered ideas"
+msgstr ""
+
+#: ./novaideo/views/user_management/see_person.py:77
 msgid "Her working groups"
+msgstr ""
+
+#: ./novaideo/views/user_management/see_person.py:81
+msgid "Not belong to any working group"
 msgstr ""
 
 #: ./novaideo/views/user_management/see_registrations.py:26
@@ -4070,12 +4079,16 @@ msgstr ""
 msgid "Please enter the message you want to send."
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/home.py:123
+#: ./novaideo/views/novaideo_view_manager/home.py:125
 msgid "Ideas"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/home.py:130
+#: ./novaideo/views/novaideo_view_manager/home.py:134
 msgid "Working groups"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/home.py:138
+msgid "No working groups created"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/doc_anonymous.py:32
