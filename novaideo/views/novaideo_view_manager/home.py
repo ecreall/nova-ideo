@@ -13,8 +13,8 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
 from pontus.util import merge_dicts
-
 from pontus.view_operation import MultipleView
+
 from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_view_manager.behaviors import SeeHome
 from novaideo.content.novaideo_application import NovaIdeoApplication

@@ -66,15 +66,7 @@
       </div>
   </div>
 </div>
-<h4 tal:condition="len_contents" id="contents" class="section-title" i18n:domain="novaideo">
-  <span class="icon glyphicon glyphicon-th"></span> 
-  <span i18n:translate="">Contribution</span> 
-  <span class="pull-right badge hidden-xs">${len_contents} 
-    <span tal:condition="len_contents > 1" i18n:translate="">contents</span>
-    <span tal:condition="len_contents == 1" i18n:translate="">content</span>
-  </span>
-</h4>
-<div tal:condition="len_contents">
+<div>
   ${structure:contents}
 </div>
 </div>

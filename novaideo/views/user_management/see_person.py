@@ -14,15 +14,81 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import has_role, get_current
 from pontus.view import BasicView
 from pontus.util import merge_dicts
+from pontus.view_operation import MultipleView
 
 from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.user_management.behaviors import SeePerson
 from novaideo.content.person import Person
-from novaideo.views.novaideo_view_manager.search import SearchResultView
 from novaideo.core import BATCH_DEFAULT_SIZE, can_access
 from novaideo.content.processes import get_states_mapping
 from novaideo.utilities.util import (
     generate_navbars, ObjectRemovedException)
+from novaideo import _
+
+
+class ContentView(BasicView):
+    template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
+    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    content_attr = 'ideas'
+
+    def update(self):
+        if self.request.is_idea_box:
+            self.title = ''
+
+        user = self.context
+        current_user = get_current()
+        objects = []
+        if current_user is user:
+            objects = list(filter(lambda o: 'archived' not in o.state,
+                             getattr(user, self.content_attr, [])))
+        else:
+            objects = list(filter(lambda o: can_access(current_user, o) and
+                                       'archived' not in o.state,
+                             getattr(user, self.content_attr, [])))
+
+        url = self.request.resource_url(self.context, '@@seeperson')
+        batch = Batch(objects,
+                      self.request,
+                      url=url,
+                      default_size=BATCH_DEFAULT_SIZE)
+        batch.target = "#results"+"-"+ self.content_attr
+        result_body, result = render_listing_objs(
+            self.request, batch, user)
+        values = {'bodies': result_body,
+                  'batch': batch}
+        body = self.content(args=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        return result
+
+
+class IdeasView(ContentView):
+    title = _('Her ideas')
+    content_attr = 'ideas'
+    viewid = 'person-ideas'
+    view_icon = 'icon novaideo-icon icon-idea'
+
+
+class ProposalsView(ContentView):
+    title = _('Her working groups')
+    content_attr = 'proposals'
+    viewid = 'person-proposals'
+    view_icon = 'icon icon novaideo-icon icon-proposal'
+
+
+class PersonContentsView(MultipleView):
+    title = 'person-contents'
+    name = 'see-person-contents'
+    viewid = 'person-contents'
+    css_class = 'simple-bloc'
+    container_css_class = 'person-view'
+    views = (IdeasView, ProposalsView)
+
+    def _init_views(self, views, **kwargs):
+        if self.request.is_idea_box:
+            views = (IdeasView, )
+
+        super(PersonContentsView, self)._init_views(views, **kwargs)
 
 
 @view_config(
@@ -48,31 +114,11 @@ class SeePersonView(BasicView):
 
         user = self.context
         current_user = get_current()
-        objects = []
-        if current_user is user:
-            objects = list(filter(lambda o: 'archived' not in o.state,
-                             getattr(user, 'contents', [])))
-        else:
-            objects = list(filter(lambda o: can_access(current_user, o) and
-                                       'archived' not in o.state,
-                             getattr(user, 'contents', [])))
-        batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results_contents"
-        len_result = batch.seqlen
-        result_body, resources = render_listing_objs(
-            self.request, batch, current_user)
-        values = {
-            'bodies': result_body,
-            'length': len_result,
-            'batch': batch
-        }
-        contents_body = self.content(
-            args=values,
-            template=SearchResultView.template)['body']
+        contents = PersonContentsView(self.context, self.request).update()
+        contents_body = contents['coordinates'][PersonContentsView.coordinates][0]['body']
         values = {
             'user': user,
-            'len_contents': len_result,
-            'contents': (result_body and contents_body) or None,
+            'contents': contents_body,
             'proposals': None,
             'state': get_states_mapping(
                 current_user, user,
@@ -82,8 +128,8 @@ class SeePersonView(BasicView):
             'footer_body': navbars['footer_body'],
             'is_portal_manager': has_role(role=('PortalManager',))
         }
-        resources = merge_dicts(navbars['resources'], resources)
-        result = resources
+        result = {}
+        result = merge_dicts(contents, result, ('css_links', 'js_links'))
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = navbars['messages']
