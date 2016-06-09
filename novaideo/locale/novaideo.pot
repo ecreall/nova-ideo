@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-06-07 16:12+0200\n"
+"POT-Creation-Date: 2016-06-09 12:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,7 +114,7 @@ msgstr ""
 #: ./novaideo/core.py:283
 #: ./novaideo/views/idea_management/templates/diff_result.pt:6
 #: ./novaideo/views/admin_process/manage_keywords.py:44
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:65
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:64
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:7
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:56
 #: ./novaideo/views/novaideo_view_manager/analytics.py:226
@@ -435,6 +435,31 @@ msgstr ""
 msgid "${name} ${day}"
 msgstr ""
 
+#: ./novaideo/views/__init__.py:364 ./novaideo/views/__init__.py:390
+#: ./novaideo/views/__init__.py:416 ./novaideo/views/__init__.py:442
+#: ./novaideo/views/idea_management/withdraw_token.py:24
+#: ./novaideo/views/proposal_management/withdraw_token.py:24
+#: ./novaideo/content/processes/idea_management/definition.py:140
+#: ./novaideo/content/processes/proposal_management/definition.py:339
+msgid "Withdraw my token"
+msgstr ""
+
+#: ./novaideo/views/__init__.py:369 ./novaideo/views/__init__.py:395
+#: ./novaideo/views/idea_management/support_proposal.py:24
+#: ./novaideo/views/proposal_management/support_proposal.py:24
+#: ./novaideo/content/processes/idea_management/definition.py:132
+#: ./novaideo/content/processes/proposal_management/definition.py:327
+msgid "Support"
+msgstr ""
+
+#: ./novaideo/views/__init__.py:421 ./novaideo/views/__init__.py:447
+#: ./novaideo/views/idea_management/oppose_proposal.py:24
+#: ./novaideo/views/proposal_management/oppose_proposal.py:24
+#: ./novaideo/content/processes/idea_management/definition.py:136
+#: ./novaideo/content/processes/proposal_management/definition.py:335
+msgid "Oppose"
+msgstr ""
+
 #: ./novaideo/views/panels.py:379
 msgid "No more Information."
 msgstr ""
@@ -641,13 +666,6 @@ msgstr ""
 msgid "Edit the idea"
 msgstr ""
 
-#: ./novaideo/views/idea_management/support_proposal.py:24
-#: ./novaideo/views/proposal_management/support_proposal.py:24
-#: ./novaideo/content/processes/idea_management/definition.py:132
-#: ./novaideo/content/processes/proposal_management/definition.py:327
-msgid "Support"
-msgstr ""
-
 #: ./novaideo/views/idea_management/create_idea.py:40
 #: ./novaideo/views/templates/add_idea_widget.pt:10
 #: ./novaideo/content/processes/idea_management/definition.py:63
@@ -661,7 +679,7 @@ msgstr ""
 #: ./novaideo/views/idea_management/create_idea.py:77
 #: ./novaideo/views/idea_management/templates/see_idea.pt:24
 #: ./novaideo/views/proposal_management/create_proposal.py:124
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:52
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:51
 #: ./novaideo/views/proposal_management/templates/amendments.pt:12
 #: ./novaideo/views/templates/idea_result.pt:26
 #: ./novaideo/views/templates/small_idea_result.pt:25
@@ -888,40 +906,26 @@ msgstr ""
 msgid "Opinion"
 msgstr ""
 
-#: ./novaideo/views/idea_management/withdraw_token.py:24
-#: ./novaideo/views/proposal_management/withdraw_token.py:24
-#: ./novaideo/content/processes/idea_management/definition.py:140
-#: ./novaideo/content/processes/proposal_management/definition.py:339
-msgid "Withdraw my token"
-msgstr ""
-
 #: ./novaideo/views/idea_management/comment_idea.py:36
 msgid "Messages"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:110
-#: ./novaideo/views/idea_management/comment_idea.py:138
+#: ./novaideo/views/idea_management/comment_idea.py:111
 #: ./novaideo/views/idea_management/comment_idea.py:139
+#: ./novaideo/views/idea_management/comment_idea.py:140
 msgid "Discuss the idea"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:127
+#: ./novaideo/views/idea_management/comment_idea.py:128
 msgid "Pas de fils de discussion"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:128
+#: ./novaideo/views/idea_management/comment_idea.py:129
 msgid "Fil de discussion"
 msgstr ""
 
-#: ./novaideo/views/idea_management/comment_idea.py:129
+#: ./novaideo/views/idea_management/comment_idea.py:130
 msgid "Fils de discussion"
-msgstr ""
-
-#: ./novaideo/views/idea_management/oppose_proposal.py:24
-#: ./novaideo/views/proposal_management/oppose_proposal.py:24
-#: ./novaideo/content/processes/idea_management/definition.py:136
-#: ./novaideo/content/processes/proposal_management/definition.py:335
-msgid "Oppose"
 msgstr ""
 
 #: ./novaideo/views/idea_management/duplicate_idea.py:31
@@ -972,13 +976,13 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:107
 #: ./novaideo/views/idea_management/templates/see_idea.pt:86
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:203
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:202
 msgid "Attachments:"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:108
 #: ./novaideo/views/idea_management/templates/see_idea.pt:87
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:204
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:203
 msgid "Attachment:"
 msgstr ""
 
@@ -1084,7 +1088,7 @@ msgid ""
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:24
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:52
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:51
 msgid "(Submitted by"
 msgstr ""
 
@@ -1094,6 +1098,20 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:25
 msgid ", previous version of the current version of the idea"
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/see_idea.pt:108
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:226
+#: ./novaideo/views/templates/idea_result.pt:101
+#: ./novaideo/views/templates/proposal_result.pt:123
+msgid "${support and 'Withdraw my token' or 'Support'}"
+msgstr ""
+
+#: ./novaideo/views/idea_management/templates/see_idea.pt:120
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:238
+#: ./novaideo/views/templates/idea_result.pt:113
+#: ./novaideo/views/templates/proposal_result.pt:135
+msgid "${oppose and 'Withdraw my token' or 'Oppose'}"
 msgstr ""
 
 #: ./novaideo/views/invitation_management/invite_user.py:51
@@ -1352,6 +1370,14 @@ msgstr ""
 msgid "Remove the registration"
 msgstr ""
 
+#: ./novaideo/views/user_management/see_person.py:66
+msgid "Her ideas"
+msgstr ""
+
+#: ./novaideo/views/user_management/see_person.py:73
+msgid "Her working groups"
+msgstr ""
+
 #: ./novaideo/views/user_management/see_registrations.py:26
 msgid "No registration found"
 msgstr ""
@@ -1502,18 +1528,6 @@ msgstr ""
 #: ./novaideo/views/templates/small_person_result.pt:17
 #: ./novaideo/views/templates/person_result.pt:21
 msgid "Member since"
-msgstr ""
-
-#: ./novaideo/views/user_management/templates/see_person.pt:71
-msgid "Contribution"
-msgstr ""
-
-#: ./novaideo/views/user_management/templates/see_person.pt:73
-msgid "contents"
-msgstr ""
-
-#: ./novaideo/views/user_management/templates/see_person.pt:74
-msgid "content"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_remove_registration.pt:1
@@ -1942,78 +1956,78 @@ msgstr ""
 msgid "Remove file"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:9
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:8
 msgid ""
 "Vous avez atteint la limite de participations autorisées. Afin de pouvoir "
 "soumettre votre proposition, veuillez démissionner de l'un de"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:9
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:8
 msgid "vos groupes de travail actuels"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:12
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:23
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:11
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:22
 msgid ""
 "Pour que vous puissiez publier votre proposition, il faut que l'ensemble de "
 "ses idées liées soit préalablement examiné favorablement par un Examinateur."
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:14
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:13
 msgid ""
 "Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont pas"
 " été examinée favorablement, du moment que ces idées ont été préalablement "
 "publiées par les modérateurs."
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:25
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:24
 msgid ""
 "Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont pas"
 " été examinée favorablement."
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:38
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:37
 msgid "Display all differences"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:38
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:37
 msgid "Display"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:39
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:38
 msgid "Hide all differences"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:39
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:38
 msgid "Hide"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:40
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:39
 msgid "Accept all improvements"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:40
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:39
 msgid "Accept all"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:41
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:40
 msgid "Reject all improvements"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:41
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:40
 msgid "Reject all"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:52
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:51
 #: ./novaideo/views/amendment_management/templates/description_amendments.pt:16
 msgid ", duplicated from the proposal"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:53
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:52
 msgid ", previous version of the current version of the proposal"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:61
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:60
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:5
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:51
 #: ./novaideo/content/correction.py:45 ./novaideo/content/proposal.py:138
@@ -2021,27 +2035,27 @@ msgstr ""
 msgid "Abstract"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:75
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:74
 #: ./novaideo/views/templates/proposal_result.pt:90
 msgid "Working group"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:94
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:93
 msgid "The working group is closed"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:95
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:94
 msgid "Le nombre maximum de participants a été atteint"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:110
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:109
 #: ./novaideo/content/workspace.py:63
 #: ./novaideo/content/processes/proposal_management/definition.py:492
 #: ./novaideo/content/processes/proposal_management/definition.py:493
 msgid "Workspace"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:178
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:177
 msgid "Votes"
 msgstr ""
 
@@ -3976,17 +3990,17 @@ msgid "Processes history"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/search.py:39
-#: ./novaideo/views/novaideo_view_manager/home.py:29
+#: ./novaideo/views/novaideo_view_manager/home.py:30
 msgid "No element found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/search.py:40
-#: ./novaideo/views/novaideo_view_manager/home.py:30
+#: ./novaideo/views/novaideo_view_manager/home.py:31
 msgid "One element found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/search.py:41
-#: ./novaideo/views/novaideo_view_manager/home.py:31
+#: ./novaideo/views/novaideo_view_manager/home.py:32
 #, python-format
 msgid "${nember} elements found"
 msgstr ""
@@ -4054,6 +4068,14 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/contact.py:71
 msgid "Please enter the message you want to send."
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/home.py:123
+msgid "Ideas"
+msgstr ""
+
+#: ./novaideo/views/novaideo_view_manager/home.py:130
+msgid "Working groups"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/doc_anonymous.py:32
