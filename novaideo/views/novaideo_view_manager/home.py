@@ -90,7 +90,9 @@ class ContentView(BasicView):
             sort_on='release_date', reverse=True,
             filters=[validated],
             **args)
-        url = self.request.resource_url(self.context, '')
+        url = self.request.resource_url(
+            self.context, '',
+            query={'view_content_type': self.content_type})
         batch = Batch(objects,
                       self.request,
                       url=url,
@@ -169,6 +171,12 @@ class HomeView(MultipleView):
     def _init_views(self, views, **kwargs):
         if self.request.is_idea_box:
             views = (IdeasView, )
+
+        if self.params('view_content_type') == 'idea':
+            views = (IdeasView, )
+
+        if self.params('view_content_type') == 'proposal':
+            views = (ProposalsView, )
 
         super(HomeView, self)._init_views(views, **kwargs)
 

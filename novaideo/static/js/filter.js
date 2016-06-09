@@ -51,7 +51,6 @@ function filter(){
             }
             catch(err) {};
             initscroll();
-            init_search_results()
         }
         finish_progress()
     });

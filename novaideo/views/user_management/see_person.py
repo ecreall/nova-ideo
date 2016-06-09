@@ -46,7 +46,9 @@ class ContentView(BasicView):
                                        'archived' not in o.state,
                              getattr(user, self.content_attr, [])))
 
-        url = self.request.resource_url(self.context, '@@seeperson')
+        url = self.request.resource_url(
+            self.context, '@@seeperson',
+            query={'view_content_attr': self.content_attr})
         batch = Batch(objects,
                       self.request,
                       url=url,
@@ -93,6 +95,12 @@ class PersonContentsView(MultipleView):
     def _init_views(self, views, **kwargs):
         if self.request.is_idea_box:
             views = (IdeasView, )
+
+        if self.params('view_content_attr') == 'ideas':
+            views = (IdeasView, )
+
+        if self.params('view_content_attr') == 'proposals':
+            views = (ProposalsView, )
 
         super(PersonContentsView, self)._init_views(views, **kwargs)
 
