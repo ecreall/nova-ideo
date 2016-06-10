@@ -102,10 +102,18 @@ class CrateAndPublish(InfiniteCardinality):
     style_picto = 'icon novaideo-icon icon-idea'
     style_order = 1
     title = _('Create and publish')
-    submission_title = _('Save and publish')
+    # submission_title = _('Save and publish')
     context = INovaIdeoApplication
     roles_validation = createidea_roles_validation
     processsecurity_validation = createidea_processsecurity_validation
+
+    @property
+    def submission_title(self):
+        request = get_current_request()
+        if getattr(request, 'moderate_ideas', False):
+            return _('Save and submit')
+
+        return _('Save and publish')
 
     def start(self, context, request, appstruct, **kw):
         create_actions = self.process.get_actions('creat')

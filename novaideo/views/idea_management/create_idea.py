@@ -68,14 +68,14 @@ class CreateIdeaView_Json(BasicView):
     idea_template = 'novaideo:views/proposal_management/templates/idea_data.pt'
     behaviors = [CreateIdea, CrateAndPublishAsProposal, CrateAndPublish]
 
-    def _get_new_title(self, user):
-        localizer = self.request.localizer
-        time = to_localized_time(
-            datetime.datetime.now(tz=pytz.UTC), translate=True)
-        return localizer.translate(_('Idea by'))+' '+\
-                getattr(user, 'title', user.name)+' '+\
-                localizer.translate(_('the'))+' '+\
-                time+' (UTC)'
+    # def _get_new_title(self, user):
+    #     localizer = self.request.localizer
+    #     time = to_localized_time(
+    #         datetime.datetime.now(tz=pytz.UTC), translate=True)
+    #     return localizer.translate(_('Idea by'))+' '+\
+    #             getattr(user, 'title', user.name)+' '+\
+    #             localizer.translate(_('the'))+' '+\
+    #             time+' (UTC)'
 
     def _render_obj(self, obj, user):
         try:

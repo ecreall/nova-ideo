@@ -4,6 +4,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import datetime
+import pytz
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
@@ -46,6 +48,11 @@ class ContentView(BasicView):
                                        'archived' not in o.state,
                              getattr(user, self.content_attr, [])))
 
+        now = datetime.datetime.now(tz=pytz.UTC)
+        objects = sorted(
+            objects,
+            key=lambda e: getattr(e, 'modified_at', now),
+            reverse=True)
         url = self.request.resource_url(
             self.context, '@@seeperson',
             query={'view_content_attr': self.content_attr})
