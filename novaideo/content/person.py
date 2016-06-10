@@ -264,7 +264,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
 @content(
     'person',
-    icon='icon novaideo-icon icon-user',
+    icon='icon glyphicon glyphicon-user',
     )
 @implementer(IPerson)
 class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
