@@ -1829,7 +1829,6 @@ msgstr "Un membre"
 
 # python-format
 #: novaideo/views/proposal_management/see_members.py:30
-#,python-format
 msgid "${nember} members"
 msgstr "${nember} membres"
 
@@ -2279,7 +2278,7 @@ msgstr "Groupe de travail ${wg_state} avec 1 membre"
 
 #: novaideo/views/templates/proposal_result.pt:26
 msgid "${wg_state} working group with ${len_members} members"
-msgstr "Groupe de travail ${wg_state} avec ${len_members} membre"
+msgstr "Groupe de travail ${wg_state} avec ${len_members} membres"
 
 #: novaideo/views/templates/person_result.pt:40 novaideo/content/person.py:196
 msgid "Preferences"
