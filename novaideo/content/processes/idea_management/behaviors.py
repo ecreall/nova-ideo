@@ -161,7 +161,7 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                     localizer.translate(_(" (the proposal)"))
                 proposal = Proposal(
                     title=title,
-                    description=idea.text,
+                    description=idea.text[:600],
                     text='<p>'+idea.text.replace('\n', '<br/>')+'</p>',
                     keywords=list(idea.keywords)
                     )

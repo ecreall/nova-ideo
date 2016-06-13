@@ -136,9 +136,9 @@ class ProposalsView(ContentView):
     title = _('Working groups')
     content_type = 'proposal'
     viewid = 'home-proposals'
-    view_icon = 'icon icon novaideo-icon icon-proposal'
+    view_icon = 'icon icon novaideo-icon icon-wg'
     empty_message = _("No working groups created")
-    empty_icon = 'icon icon novaideo-icon icon-proposal'
+    empty_icon = 'icon icon novaideo-icon icon-wg'
 
 
 # class PersonsView(ContentView):

@@ -64,8 +64,9 @@ STATES_PARTICIPANT_MAPPING = {
 	},
 	'workinggroup': {
 		'active': _('Active'),
-	    'deactivated': _('Deactivated'),
-	    'closed': _('Closed')
+	    'deactivated': _('Inactive'),
+	    'closed': _('Closed'),
+        'archived': _('Archived', context='workinggroup')
 	}
 }
 
@@ -122,8 +123,9 @@ STATES_MEMBER_MAPPING = {
 	},
 	'workinggroup': {
 		'active': _('Active'),
-	    'deactivated': _('Deactivated'),
-	    'closed': _('Closed')
+	    'deactivated': _('Inactive'),
+	    'closed': _('Closed'),
+        'archived': _('Archived', context='workinggroup')
 	}
 }
 

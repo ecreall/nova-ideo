@@ -103,8 +103,6 @@ VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
                            " group will be useful")
 
 
-
-
 def publish_ideas(ideas, request):
     for idea in ideas:
         idea.state = PersistentList(['published'])
@@ -298,8 +296,8 @@ class PublishAsProposal(CreateProposal):
     context = Iidea
     submission_title = _('Save')
     style_order = 0
-    style_descriminator = 'global-action'
-    style_picto = 'glyphicon glyphicon-file'
+    style_descriminator = 'primary-action'
+    style_picto = 'novaideo-icon icon-wg'
     processsecurity_validation = pap_processsecurity_validation
     roles_validation = NotImplemented
 
@@ -844,6 +842,25 @@ class SeeAmendments(InfiniteCardinality):
     context = IProposal
     roles_validation = seea_roles_validation
     processsecurity_validation = seea_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def seem_processsecurity_validation(process, context):
+    return global_user_processsecurity(process, context)
+
+
+class SeeMembers(InfiniteCardinality):
+    style_descriminator = 'wg-action'
+    style_interaction = 'modal-action'
+    style_picto = 'fa fa-users'
+    isSequential = False
+    context = IProposal
+    processsecurity_validation = seem_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return {}

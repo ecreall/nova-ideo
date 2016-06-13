@@ -131,10 +131,10 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     description = colander.SchemaNode(
         colander.String(),
-        validator=colander.Length(max=300),
+        validator=colander.Length(max=600),
         widget=LimitedTextAreaWidget(rows=5,
                                      cols=30,
-                                     limit=300),
+                                     limit=600),
         title=_("Abstract")
         )
 

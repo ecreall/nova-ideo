@@ -86,9 +86,9 @@ class ProposalsView(ContentView):
     title = _('Her working groups')
     content_attr = 'proposals'
     viewid = 'person-proposals'
-    view_icon = 'icon icon novaideo-icon icon-proposal'
+    view_icon = 'icon icon novaideo-icon icon-wg'
     empty_message = _("Not belong to any working group")
-    empty_icon = 'icon icon novaideo-icon icon-proposal'
+    empty_icon = 'icon icon novaideo-icon icon-wg'
 
 
 class PersonContentsView(MultipleView):

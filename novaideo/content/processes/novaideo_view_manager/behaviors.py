@@ -134,7 +134,7 @@ def seemypa_processsecurity_validation(process, context):
 
 
 class SeeMyParticipations(InfiniteCardinality):
-    style_picto = 'md md-group'
+    style_picto = 'novaideo-icon icon-wg'
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seemy_roles_validation

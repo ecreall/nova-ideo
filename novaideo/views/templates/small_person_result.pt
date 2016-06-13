@@ -18,6 +18,7 @@
           </small>
         </h5>
       </a>
+      <div class="user-function" tal:condition="getattr(object, 'function', '')">${object.function}</div>
     </div>
   </div>
 </div>

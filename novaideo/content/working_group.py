@@ -21,7 +21,7 @@ from pontus.core import VisualisableElement, VisualisableElementSchema
 from .interface import IWorkingGroup
 from .workspace import Workspace
 from novaideo.content.processes.proposal_management import WORK_MODES
-
+from novaideo.content.processes import get_states_mapping
 
 def context_is_a_workinggroup(context, request):
     return request.registry.content.istype(context, 'workinggroup')
@@ -66,3 +66,8 @@ class WorkingGroup(VisualisableElement, Entity):
             return root.get_default_work_mode()
 
         return None
+
+    def get_state(self, request, user):
+        return get_states_mapping(
+            user, self,
+            getattr(self, 'state_or_none', [None])[0])

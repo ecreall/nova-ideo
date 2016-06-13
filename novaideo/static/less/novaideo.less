@@ -1,6 +1,77 @@
+.waves-effect {
+    -moz-user-select: none;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease-out 0s;
+    vertical-align: middle;
+    will-change: opacity, transform;
+    z-index: 1;
+}
+.mui-btn, .mui-btn-large {
+    background-color: #26a69a;
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease-out 0s;
+}
+.mui-btn, .mui-btn-large, .mui-btn-flat {
+    border: medium none;
+    border-radius: 2px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    outline: 0 none;
+    padding: 0 2rem;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+.mui-btn, .mui-btn-large, .mui-btn-floating{
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+
+.listing-object-menu > ul.list-inline{
+    display: inline;
+    margin-left: 0px;
+}
+
+.listing-object-menu > .dropdown-toggle{
+      display: inline;
+}
+
+
+.wg-block{
+  color: #555459;
+  padding: 0px 10px;
+  margin-left: -10px;
+  margin-right: -6px;  
+}
+
+.wg-actions>.list-inline{
+  margin-bottom: 0px;
+}
+
+.working-group-container{
+    margin-right: -6px;
+    margin-left: -10px;
+    padding: 4px;
+    box-shadow: 0 1px 1px gray;
+    padding-left: 10px;
+}
+
 .search-item .object-description{
   margin-top: -11px !important;
 }
+
+
+.media-proposal .separator{
+  width: 100%
+} 
+
 
 .panel-result {
     margin-left: 15px !important;
@@ -39,7 +110,8 @@
 
 .home .tab-content .result-container,
 .user-view-index .tab-content .result-container,
-.user-view-index .result-container{
+.user-view-index .result-container,
+.modal-body .result-container{
   padding-right: 15px;
   padding-left: 15px;
 }
@@ -57,7 +129,7 @@
 .user-view-index .nav>li>a:focus{
     text-transform: uppercase;
     color: @novaideo-menu-color!important;
-    background-color: white!important;
+    background-color: transparent !important;
     border: none;
     border-bottom: solid 3px;
 }
@@ -80,6 +152,7 @@
 
 .object-row-content{
   margin-bottom: 10px;
+  margin-top: 25px;
 }
 
 .search-items-container{
@@ -166,6 +239,13 @@
 .plus-menu{
   margin-right: 10px;
   margin-left: 10px;
+}
+
+
+.object-menu .listing-object-menu{
+    float: right;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .plus-menu .listing-object-menu .dropdown-toggle {
@@ -324,7 +404,7 @@
     left: auto;
     margin-right: 5px;
     right: 0;
-    top: -15px;
+    top: 40px;
 }
 
 #infscr-loading{
@@ -1178,7 +1258,7 @@ ins {
 
 .working-group-toggle:hover
 {
-    color: @novaideo-color;
+    color: @novaideo-hover-actions;
 }
 
 .working-group-result{
@@ -1240,13 +1320,25 @@ ins {
 }
 
 .user-function{
-    color: white;
+    color: gray;
     margin-top: -5px;
     margin-bottom: 5px;
 }
 
+
+.small-result .user-function
+{
+   font-size: 13px;
+}
+
+
+.user-panel-container .user-function{
+    color: white;
+}
+
 .author-block{
     color: gray;
+    margin-top: 5px;
 }
 
 .author-block a{
@@ -1775,7 +1867,7 @@ ins {
 }
 
 .nav.access-menu > li > a.disabled:hover, .nav > li > a.disabled:focus {
-    background: @novaideo-color;
+    background: @novaideo-hover-actions;
     color: white;
     text-decoration: none;
 }
@@ -2133,7 +2225,7 @@ ins {
 }
 
 .search-item .proposal-opinion{
-    margin-top: -15px;
+    margin-top: -10px;
     margin-right: 20px;
 }
 
@@ -2308,6 +2400,7 @@ ins {
     cursor: pointer;
     float: right;
     margin-top: -25px;
+    margin-right: 10px;
     padding: 2px 0px;
 }
 
@@ -2316,7 +2409,7 @@ ins {
 }
 
 .filter-btn.open{
-    color: @novaideo-color
+    color: @novaideo-hover-actions
 }
 
 .filter-form  .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -2521,6 +2614,11 @@ ins {
         padding-left: 0px !important;
         padding-right: 0px !important;
     }
+    .home .tab-content .result-container, .modal-body .result-container, .user-view-index .result-container, .user-view-index .tab-content .result-container
+    {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
     .novaideo-left,
     .novaideo-alert-container .col-md-7{
      padding-right: 0px;
@@ -2670,20 +2768,33 @@ ins {
      font-size: 14px;
 }
 
-.search-item  .search-item-footer a,
+.search-item .search-item-footer a,
+.primary-actions a,
+.search-item .wg-block .wg-actions ul a,
 .content-footer a{
-  color: gray
+  color: #555459
+}
+
+
+.wg-actions > ul.list-inline a span:first-child,
+.listing-object-menu > ul.list-inline a span:first-child{
+  font-size: 15px
+}
+
+.search-item .wg-block .wg-actions ul a:hover{
+  color: @novaideo-hover-actions;
 }
 
 .search-item  .search-item-footer a:hover,
+.primary-actions a:hover,
 .content-footer a:hover{  
-  color: @novaideo-color;
+  color: @novaideo-hover-actions;
 }
 
 .search-item  .search-item-footer a.activated,
 .content-footer .actions-block a.activated
 {
-  color: @novaideo-color;
+  color: @novaideo-hover-actions;
   font-weight: bold;
 }
 
@@ -2729,9 +2840,11 @@ ins {
 .icon-amendment:before {
     content: "\e600";
 }
+
 .icon-proposal:before {
     content: "\e601";
 }
+
 .icon-idea:before {
     content: "\e602";
 }

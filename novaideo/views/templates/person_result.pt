@@ -5,9 +5,12 @@
                  picture object.picture;
                  profil_picture getattr(picture, 'profil', picture)">
   <div class="media-body media-person">
-    <h4 tal:condition="state">
-      <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
-    </h4>
+    <div class="object-menu pull-right">
+      <h4 tal:condition="state">
+        <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
+      </h4>
+      <div tal:replace="structure menu_body"/>
+    </div>
     <div class="object-title-block" >
       <a tal:attributes="href url">
         <h4>
@@ -22,9 +25,6 @@
           </small>
         </h4>
       </a>
-    </div>
-    <div class="object-menu pull-right">
-      <div tal:replace="structure menu_body"/>
     </div>
     <div class="user-function" tal:condition="getattr(object, 'function', '')">${object.function}</div>
     <div>${object.presentation_text(300)}</div>

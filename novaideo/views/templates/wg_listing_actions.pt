@@ -1,0 +1,68 @@
+	<ul class="list-inline" tal:condition="wg_action">
+        <tal:loop repeat="a wg_action">
+          <li tal:condition="not hasattr(a, 'url')">
+            <a class="${a.get('class_css','')}"><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>
+          </li>
+          <li tal:condition="hasattr(a, 'url')">
+            <a tal:condition="a not in modal_actions"
+               tal:attributes="href a.url(obj)"
+               title="${a.title}">
+               <span class="${getattr(a,'style_picto','')}" ></span> ${a.title}
+            </a>
+            <div tal:omit-tag="" 
+             tal:condition="a in modal_actions"
+             tal:define="item modal_actions.get(a, None)">
+                <a id="${item['action_id']}-btn" 
+                  class="dace-action"
+                  href="${item['action'].url(item['context'])}"   
+                  data-toggle="modal"
+                  data-actionid ="${item['action_id']}" 
+                  data-target="#${item['action_id']}"
+                  data-updateurl="${item['actionurl_update']}"
+                  data-toreplay="${'toreplay' in item}"
+                  title="${item['action'].title}">
+                 <span class="footer-icon ${getattr(a,'style_picto','')}" ></span> 
+                 <span class="hidden-xs">${item['action'].title}</span>
+               </a>
+               <script tal:condition="'toreplay' in item">       
+                    $(document).ready(function(){
+                         $(${'\'#'+item['action_id']+'-btn\''}).click();
+                    });
+               </script>
+               <script tal:condition="('toreplay' not in item) and (request.view_name in ('index', '@@index') and getattr(a,'style_activate', False))">       
+                    $(document).ready(function(){
+                          if(window.location.hash.replace('#comment-', '')) {
+                              $(${'\'.content-footer #'+item['action_id']+'-btn\''}).click();
+                          }
+                    });
+               </script>
+               
+            </div>
+          </li>
+        </tal:loop>
+	</ul>
+
+  <tal:loop repeat="a wg_action">
+    <div tal:omit-tag="" 
+     tal:condition="a in modal_actions"
+     tal:define="item modal_actions.get(a, None)">
+    <!-- Modal -->
+       <div class="modal fad" 
+           id="${item['action_id']}-modal" 
+           role="dialog" 
+           aria-labelledby="myModalLabel" 
+           aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content container-body">
+               <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                   <h4 class="modal-title" id="myModalLabel"> ${item['view_title']}</h4>
+               </div>
+               <div class="modal-body" style="padding: 15px 15px 30px 15px;">
+                  ${structure:item['body']}
+               </div>
+             </div>
+          </div>
+       </div>
+    </div>
+</tal:loop>

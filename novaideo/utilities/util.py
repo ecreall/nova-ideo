@@ -307,6 +307,7 @@ def html_article_to_text(html):
 
 ALL_DESCRIMINATORS = ['global-action',
                       'text-action',
+                      'primary-action',
                       'admin-action',
                       'wg-action',
                       'plus-action',
@@ -315,6 +316,8 @@ ALL_DESCRIMINATORS = ['global-action',
                       'communication-action']
 
 DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_footer_actions.pt'
+
+DEFAUL_WG_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/wg_listing_actions.pt'
 
 DEFAUL_LISTING_ACTIONS_TEMPLATE= 'novaideo:views/templates/listing_object_actions.pt'
 
@@ -335,7 +338,8 @@ def render_listing_objs(request, objs, user, **kw):
             navbars = generate_listing_menu(
                 request, obj,
                 template=DEFAUL_LISTING_ACTIONS_TEMPLATE,
-                footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE)
+                footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
+                wg_template=DEFAUL_WG_LISTING_ACTIONS_TEMPLATE)
         except ObjectRemovedException:
             continue
 
@@ -345,6 +349,8 @@ def render_listing_objs(request, objs, user, **kw):
             'current_user': user,
             'menu_body': navbars['menu_body'],
             'footer_body': navbars['footer_body'],
+            'wg_body': navbars['wg_body'],
+            # 'primary_body': navbars['primary_body'],
             'state': get_states_mapping(user, obj,
                 getattr(obj, 'state_or_none', [None])[0])}
         object_values.update(kw)
@@ -365,6 +371,21 @@ def update_modal_actions(actions, context, request):
     resources, actions = dace_ui_api.update_actions(
         request, actions)
     return action_updated, messages, resources, actions
+
+
+def update_modal_action(
+    context, request,
+    process_id, node_id):
+    seemembers_actions = getBusinessAction(
+        context, request,
+        process_id, node_id)
+    if seemembers_actions:
+        isactive, messages, \
+        resources, modal_actions = update_modal_actions(
+            seemembers_actions, context, request)
+        return modal_actions, resources
+
+    return [], {}
 
 
 def get_actions_navbar(
@@ -485,7 +506,11 @@ def generate_listing_menu(request, context, **args):
        'text-comm-action' in tomerge:
         actions_navbar['communication-action'].extend(
             actions_navbar.pop('text-comm-action'))
-        tomerge.remove('communication-action')
+
+    tounmerge = ['communication-action', 'wg-action', 'primary-action']
+    for unmerge in tounmerge:
+        if unmerge in tomerge:
+            tomerge.remove(unmerge)
 
     for descriminator in tomerge:
         if descriminator in actions_navbar:
@@ -500,9 +525,13 @@ def generate_listing_menu(request, context, **args):
             'resources': resources,
             'menu_body': render_navbar_body(
                 request, context, actions_navbar,
-                args.get('template', None), ['actions']),
+                args.get('template', None), ['actions', 'primary-action']),
             'footer_body':  render_navbar_body(
                 request, context, actions_navbar,
                 args.get('footer_template', None), ['communication-action'])
-            if 'communication-action' in actions_navbar else None
+            if 'communication-action' in actions_navbar else None,
+            'wg_body':  render_navbar_body(
+                request, context, actions_navbar,
+                args.get('wg_template', None), ['wg-action'])
+            if 'wg-action' in actions_navbar else None
             }

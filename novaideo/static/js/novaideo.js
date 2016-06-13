@@ -114,14 +114,14 @@ function init_content_text(){
      }
 };
 
-function init_result_scroll(event, default_top){
+function init_result_scroll(event, default_top, element){
   if(default_top == undefined){
     default_top = 1600
   }
-  var result_scrolls = $('.result-scroll');
+  var result_scrolls = element? $(element.find('.result-scroll')): $('.result-scroll');
   for(var i = 0; i<= result_scrolls.length; i++){
     var result_scroll = $(result_scrolls[i]);
-    var last_child = $(result_scroll.find('.result-item').last());
+    var last_child = $(result_scroll.find('.result-item, .small-result').last());
     if (last_child.length > 0){
         var top = last_child.offset().top - result_scroll.offset().top  + last_child.height() + 420
         if (top < default_top){
@@ -250,7 +250,7 @@ function update_inline_sidebar_action(url){
     var target = $(sidebar.find('.actions-footer-container'))//closest('.dace-action-inline').data('target')+'-target';
     var toggle = $('.menu-right-toggle:not(.close)')
     var toggle = $('.menu-right-toggle:not(.close)')
-    var title = $($this.parents('.search-item').first().find('.object-title-block')).clone()
+    var title = $($this.parents('.search-item').first().find('>.media-body>.object-title-block')).clone()
     actions.removeClass('activated')
     var url = $this.closest('.dace-action-inline').data('updateurl');
     loading_progress()
@@ -423,7 +423,12 @@ $(document).mouseup(function (e)
 });
 
 $(document).on('click', '.search-item-footer .dace-action-inline', update_inline_sidebar_action);
+
 $(document).on('click', '.content-footer .dace-action-inline', update_inline_sidebar_action);
+
+$(document).on('shown.bs.modal', '.modal', function () {
+    init_result_scroll(undefined, 1000, $(this));
+  });
 
 $(document).ready(function(){
   $('.home-add-idea.closed > span.icon-idea').on('click', function(){
@@ -564,7 +569,7 @@ $(document).ready(function(){
   });
 
   $('.panel-collapse').on('shown.bs.collapse', function () {
-    init_result_scroll(undefined, 1000);
+    init_result_scroll(undefined, 1000, $(this));
   });
 
   // $('.scroll-able.result-scroll').endlessScroll({
