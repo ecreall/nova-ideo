@@ -4805,7 +4805,7 @@ msgstr "Fonction"
 
 #: novaideo/content/person.py:189
 msgid "Description"
-msgstr "Déscription"
+msgstr "Description"
 
 #: novaideo/content/person.py:213
 msgid "Picture"
