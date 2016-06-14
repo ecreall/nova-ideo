@@ -14,6 +14,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
 
+from novaideo.core import can_access
 from novaideo.content.processes.idea_management.behaviors import (
     SeeRelatedWorkingGroups)
 from novaideo.content.idea import Idea
@@ -47,7 +48,8 @@ class SeeRelatedWorkingGroupsView(BasicView):
         user = get_current()
         objects = [proposal for proposal
                    in dict(self.context.related_proposals).keys()
-                   if proposal.working_group]
+                   if proposal.working_group and 'archived' not in proposal.state
+                   and can_access(user, proposal)]
         url = self.request.resource_url(self.context, self.name)
         batch = Batch(objects, self.request,
                       url=url,

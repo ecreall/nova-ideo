@@ -14,6 +14,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.view import BasicView
 
+from novaideo.core import can_access
 from novaideo.content.processes.proposal_management.behaviors import (
     SeeRelatedIdeas)
 from novaideo.content.proposal import Proposal
@@ -47,7 +48,8 @@ class SeeRelatedIdeasView(BasicView):
         self.execute(None)
         user = get_current()
         objects = [content for content, correlation in
-                   self.context.related_ideas.items()]
+                   self.context.related_ideas.items()
+                   if can_access(user, content)]
         url = self.request.resource_url(self.context, self.name)
         batch = Batch(objects, self.request,
                       url=url,
