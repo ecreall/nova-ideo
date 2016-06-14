@@ -927,8 +927,9 @@ def withdraw_roles_validation(process, context):
 
 def withdraw_processsecurity_validation(process, context):
     user = get_current()
-    return context.working_group and\
-           user in context.working_group.wating_list and \
+    wg = context.working_group
+    return wg and\
+           user in wg.wating_list and \
            global_user_processsecurity(process, context)
 
 
@@ -1322,7 +1323,8 @@ def decision_roles_validation(process, context):
 
 
 def decision_state_validation(process, context):
-    return 'active' in context.working_group.state and \
+    wg = context.working_group
+    return wg and 'active' in wg.state and \
            'amendable' in context.state
 
 
@@ -1497,7 +1499,8 @@ def submit_roles_validation(process, context):
 
 
 def submit_state_validation(process, context):
-    return 'active' in context.working_group.state and \
+    wg = context.working_group
+    return wg and 'active' in context.working_group.state and \
            'votes for publishing' in context.state
 
 

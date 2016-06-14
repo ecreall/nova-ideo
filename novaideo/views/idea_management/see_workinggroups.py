@@ -45,7 +45,9 @@ class SeeRelatedWorkingGroupsView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        objects = list(dict(self.context.related_proposals).keys())
+        objects = [proposal for proposal
+                   in dict(self.context.related_proposals).keys()
+                   if proposal.working_group]
         url = self.request.resource_url(self.context, self.name)
         batch = Batch(objects, self.request,
                       url=url,
