@@ -486,7 +486,7 @@ class LateralMenu(object):
         try:
             navbars = generate_listing_menu(
                 self.request, root,
-                descriminators=['primary-action'],
+                descriminators=['lateral-action'],
                 template='novaideo:views/templates/lateral_menu.pt')
         except ObjectRemovedException:
             return {'menu_body': None}
