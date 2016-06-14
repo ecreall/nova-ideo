@@ -29,6 +29,7 @@ from novaideo.content.interface import (
     IPerson,
     ICorrelableEntity,
     Iidea)
+from novaideo.utilities.util import render_small_listing_objs
 from novaideo.views.filter import find_entities, FILTER_SOURCES
 from novaideo import _
 
@@ -169,19 +170,8 @@ class NovaideoAPI(IndexManagementJsonView):
                     user=user,
                     text_filter={'text_to_search': name})
 
-            result_body = []
-            for obj in result:
-                object_values = {
-                    'object': obj,
-                    'current_user': user}
-                body = renderers.render(
-                    obj.templates.get('small'),
-                    object_values,
-                    self.request)
-                result_body.append(body)
-                if len(result_body) == NBRESULT:
-                    break
-
+            result_body = render_small_listing_objs(
+                self.request, list(result)[:NBRESULT], user)
             values = {'entities': result_body,
                       'all_url': self.request.resource_url(
                           root, '@@search_result',

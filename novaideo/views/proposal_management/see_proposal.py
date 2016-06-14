@@ -109,7 +109,8 @@ class DetailProposalView(BasicView):
         is_participant = has_role(user=user, role=('Participant', self.context))
         root = getSite()
         working_group = self.context.working_group
-        wg_actions = navbars['all_actions']['wg-action']
+        wg_actions = [a for a in navbars['all_actions']['wg-action']
+                      if a.node_id != "seemembers"]
         resources = merge_dicts(navbars['resources'], resources,
                                 ('js_links', 'css_links'))
         resources['js_links'] = list(set(resources['js_links']))

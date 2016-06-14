@@ -3,15 +3,12 @@
    url request.resource_url(object, '@@index')">
   <div class="media-body media-file">
     <div class="object-menu pull-right">
-      <a tal:condition="state" href="${url}">
-        <h4><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-      </a>
       <div tal:replace="structure menu_body"/>
     </div>
     <div class="object-title-block" >
       <a tal:attributes="href url">
         <h4>
-          <span class="icon ${icon}"></span>  ${object.title}
+          <span class="icon ${icon}"></span>  ${object.title} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
         </h4>
       </a>
     </div>

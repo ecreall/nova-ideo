@@ -330,6 +330,23 @@ DEFAULT_MENU_TEMPLATE = 'novaideo:views/templates/navbar_actions.pt'
 FOOTER_BLOCK_TEMPLATE = 'novaideo:views/templates/footer_entity_actions.pt'
 
 
+def render_small_listing_objs(request, objs, user, **kw):
+    result_body = []
+    for obj in objs:
+        object_values = {
+            'object': obj,
+            'current_user': user,
+            'state': get_states_mapping(user, obj,
+                getattr(obj, 'state_or_none', [None])[0])}
+        body = renderers.render(
+            obj.templates.get('small'),
+            object_values,
+            request)
+        result_body.append(body)
+
+    return result_body
+
+
 def render_listing_objs(request, objs, user, **kw):
     result_body = []
     resources = {'css_links': [], 'js_links': []}

@@ -29,17 +29,12 @@
     </div>
     <div class="separator"></div>
     <div class="object-menu pull-right">
-      <a href="${url}">
-        <h4 tal:condition="state">
-          <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
-        </h4>
-      </a>
       <div tal:replace="structure menu_body"/>
     </div>
     <div class="object-title-block" >
         <a tal:attributes="href url">
           <h4>
-            <span class="icon ${icon}"></span> ${object.title}
+            <span class="icon ${icon}"></span> ${object.title} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
           </h4>
         </a>
     </div>

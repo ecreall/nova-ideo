@@ -906,6 +906,9 @@ def seeideas_state_validation(process, context):
 
 
 class SeeRelatedIdeas(InfiniteCardinality):
+    style_descriminator = 'primary-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-link'
     context = IProposal
     #processsecurity_validation = seeideas_processsecurity_validation
     #roles_validation = seeideas_roles_validation

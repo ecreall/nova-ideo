@@ -131,7 +131,7 @@ def improve_processsecurity_validation(process, context):
 
 def improve_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and 'amendable' in context.state
+    return wg and 'active' in wg.state and 'amendable' in context.state
 
 
 class ImproveProposal(InfiniteCardinality):

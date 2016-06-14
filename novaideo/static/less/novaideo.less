@@ -111,7 +111,8 @@
 .home .tab-content .result-container,
 .user-view-index .tab-content .result-container,
 .user-view-index .result-container,
-.modal-body .result-container{
+.modal-body .result-container,
+#panel-actions-content .result-container{
   padding-right: 15px;
   padding-left: 15px;
 }
@@ -244,8 +245,8 @@
 
 .object-menu .listing-object-menu{
     float: right;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
+    /*margin-top: 10px;*/
 }
 
 .plus-menu .listing-object-menu .dropdown-toggle {
@@ -404,7 +405,7 @@
     left: auto;
     margin-right: 5px;
     right: 0;
-    top: 40px;
+    top: 5px;
 }
 
 #infscr-loading{
@@ -1790,7 +1791,13 @@ ins {
     border: 1px solid #cfcfcf;
     color: #979797;
     background-color: white;
-    font-size: 65%;
+    margin-top: 3px;
+    margin-left: 5px;
+}
+
+.object-title-block .label-basic{
+  margin-left: 10px;
+  font-size: 11px;
 }
 
 .panel-heading .label-basic{
@@ -2631,6 +2638,10 @@ ins {
     .file-item>span{
         font-size: 9vw;
     }
+
+    .object-title-block .label-basic{
+      margin-left: 19px;
+    }
 }
 
 @media (max-width: 675px) {
@@ -2768,9 +2779,29 @@ ins {
      font-size: 14px;
 }
 
-.search-item .search-item-footer a,
+.wg-actions{
+  margin-left: 8px
+}
+
+
 .primary-actions a,
-.search-item .wg-block .wg-actions ul a,
+.wg-block .wg-actions ul a{
+  color: #d0d0d0 //#b6b8b6
+}
+
+.search-item:hover{
+  .primary-actions a,
+  .wg-block .wg-actions ul a{
+    color: #555459
+  }
+}
+
+.search-item .wg-block .wg-actions ul a:hover,
+.primary-actions a:hover,{
+  color: @novaideo-hover-actions;
+}
+
+.search-item .search-item-footer a,
 .content-footer a{
   color: #555459
 }
@@ -2781,12 +2812,8 @@ ins {
   font-size: 15px
 }
 
-.search-item .wg-block .wg-actions ul a:hover{
-  color: @novaideo-hover-actions;
-}
 
 .search-item  .search-item-footer a:hover,
-.primary-actions a:hover,
 .content-footer a:hover{  
   color: @novaideo-hover-actions;
 }

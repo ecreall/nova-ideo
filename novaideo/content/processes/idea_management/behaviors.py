@@ -1100,6 +1100,37 @@ class WithdrawToken(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def seewgs_state_validation(process, context):
+    request = get_current_request()
+    if getattr(request, 'is_idea_box', False):
+        return False
+
+    condition = False
+    if 'idea' in request.content_to_examine:
+        condition = 'favorable' in context.state
+    else:
+        condition = 'published' in context.state
+
+    return condition and has_role(role=('Member',))
+
+
+class SeeRelatedWorkingGroups(InfiniteCardinality):
+    style_descriminator = 'primary-action'
+    style_interaction = 'modal-action'
+    style_picto = 'glyphicon glyphicon-link'
+    style_order = 2
+    context = Iidea
+    #processsecurity_validation = seeideas_processsecurity_validation
+    #roles_validation = seeideas_roles_validation
+    state_validation = seewgs_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 #TODO behaviors
 
 VALIDATOR_BY_CONTEXT[Idea] = CommentIdea
