@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-06-14 13:04+0200\n"
+"POT-Creation-Date: 2016-06-14 17:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -665,7 +665,7 @@ msgstr ""
 msgid "Edit the idea"
 msgstr ""
 
-#: ./novaideo/views/idea_management/create_idea.py:40
+#: ./novaideo/views/idea_management/create_idea.py:41
 #: ./novaideo/views/templates/add_idea_widget.pt:10
 #: ./novaideo/content/processes/idea_management/definition.py:64
 #: ./novaideo/content/processes/idea_management/definition.py:65
@@ -701,8 +701,8 @@ msgstr ""
 #: ./novaideo/content/processes/user_management/behaviors.py:496
 #: ./novaideo/content/processes/proposal_management/definition.py:371
 #: ./novaideo/content/processes/proposal_management/definition.py:372
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1301
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1641
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1302
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1644
 #: ./novaideo/content/processes/advertising_management/definition.py:55
 #: ./novaideo/content/processes/advertising_management/definition.py:56
 #: ./novaideo/content/processes/advertising_management/behaviors.py:53
@@ -903,30 +903,30 @@ msgstr ""
 msgid "Fils de discussion"
 msgstr ""
 
-#: ./novaideo/views/idea_management/see_workinggroups.py:25
+#: ./novaideo/views/idea_management/see_workinggroups.py:26
 msgid "Pas de groupes de travail liés"
 msgstr ""
 
-#: ./novaideo/views/idea_management/see_workinggroups.py:26
+#: ./novaideo/views/idea_management/see_workinggroups.py:27
 msgid "Groupe de travail lié"
 msgstr ""
 
-#: ./novaideo/views/idea_management/see_workinggroups.py:27
+#: ./novaideo/views/idea_management/see_workinggroups.py:28
 msgid "Groupes de travail liés"
 msgstr ""
 
-#: ./novaideo/views/idea_management/see_workinggroups.py:36
+#: ./novaideo/views/idea_management/see_workinggroups.py:37
 #: ./novaideo/views/novaideo_view_manager/home.py:136
 #: ./novaideo/content/processes/idea_management/definition.py:149
 msgid "Working groups"
 msgstr ""
 
-#: ./novaideo/views/idea_management/see_workinggroups.py:37
+#: ./novaideo/views/idea_management/see_workinggroups.py:38
 #: ./novaideo/content/processes/idea_management/definition.py:148
 msgid "See related working groups"
 msgstr ""
 
-#: ./novaideo/views/idea_management/see_workinggroups.py:71
+#: ./novaideo/views/idea_management/see_workinggroups.py:79
 #: ./novaideo/views/novaideo_view_manager/home.py:140
 msgid "No working groups created"
 msgstr ""
@@ -1181,12 +1181,12 @@ msgstr ""
 
 #: ./novaideo/views/invitation_management/accept_invitation.py:35
 #: ./novaideo/views/user_management/templates/login.pt:16
-#: ./novaideo/content/person.py:246
+#: ./novaideo/content/person.py:249
 msgid "Password"
 msgstr ""
 
 #: ./novaideo/views/invitation_management/accept_invitation.py:41
-#: ./novaideo/content/person.py:259
+#: ./novaideo/content/person.py:262
 msgid "I have read and accept the terms and conditions"
 msgstr ""
 
@@ -1214,7 +1214,7 @@ msgstr ""
 #: ./novaideo/views/invitation_management/templates/see_invitation.pt:8
 #: ./novaideo/views/invitation_management/templates/see_invitations.pt:9
 #: ./novaideo/views/templates/person_result.pt:32
-#: ./novaideo/content/person.py:253
+#: ./novaideo/content/person.py:256
 msgid "Organization"
 msgstr ""
 
@@ -1989,20 +1989,20 @@ msgstr ""
 msgid "Discuss the proposal"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/see_related_ideas.py:25
+#: ./novaideo/views/proposal_management/see_related_ideas.py:26
 msgid "Pas d'idées liées"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/see_related_ideas.py:26
+#: ./novaideo/views/proposal_management/see_related_ideas.py:27
 msgid "Idée liée"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/see_related_ideas.py:27
+#: ./novaideo/views/proposal_management/see_related_ideas.py:28
 msgid "Idées liées"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/see_related_ideas.py:36
 #: ./novaideo/views/proposal_management/see_related_ideas.py:37
+#: ./novaideo/views/proposal_management/see_related_ideas.py:38
 msgid "See related ideas"
 msgstr ""
 
@@ -4763,7 +4763,7 @@ msgstr ""
 msgid "Candidacy"
 msgstr ""
 
-#: ./novaideo/content/person.py:273
+#: ./novaideo/content/person.py:276
 msgid "Person"
 msgstr ""
 
@@ -4788,20 +4788,27 @@ msgstr ""
 msgid "Picture"
 msgstr ""
 
-#: ./novaideo/content/person.py:220
+#: ./novaideo/content/person.py:214
+msgid ""
+"You see a square on the top left of the image if it exceeds the maximum size "
+"allowed. Move and enlarge it if necessary, to determine an area of interest. "
+"Several images will be generated from this area."
+msgstr ""
+
+#: ./novaideo/content/person.py:223
 msgid "First name"
 msgstr ""
 
-#: ./novaideo/content/person.py:225
+#: ./novaideo/content/person.py:228
 msgid "Last name"
 msgstr ""
 
-#: ./novaideo/content/person.py:231
+#: ./novaideo/content/person.py:234
 msgctxt "user"
 msgid "Title"
 msgstr ""
 
-#: ./novaideo/content/person.py:236
+#: ./novaideo/content/person.py:239
 msgid "Locale"
 msgstr ""
 
@@ -4999,9 +5006,9 @@ msgstr ""
 #: ./novaideo/content/processes/proposal_management/behaviors.py:485
 #: ./novaideo/content/processes/proposal_management/behaviors.py:550
 #: ./novaideo/content/processes/proposal_management/behaviors.py:705
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1129
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1267
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1658
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1130
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1268
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1661
 #: ./novaideo/content/processes/advertising_management/behaviors.py:74
 #: ./novaideo/content/processes/advertising_management/behaviors.py:113
 #: ./novaideo/content/processes/amendment_management/behaviors.py:103
@@ -5081,7 +5088,7 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/definition.py:129
 #: ./novaideo/content/processes/idea_management/behaviors.py:898
 #: ./novaideo/content/processes/proposal_management/definition.py:368
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1237
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1238
 msgid "Compare"
 msgstr ""
 
@@ -5472,11 +5479,11 @@ msgid ""
 "proposal, your vote for reopening working group will be useful"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1442
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1444
 msgid "open"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1442
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1444
 msgid "closed"
 msgstr ""
 
