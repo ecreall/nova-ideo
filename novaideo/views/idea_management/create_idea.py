@@ -20,7 +20,8 @@ from pontus.view import BasicView
 
 from novaideo.utilities.util import (
     generate_listing_menu, ObjectRemovedException,
-    DEFAUL_LISTING_ACTIONS_TEMPLATE, DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE)
+    DEFAUL_LISTING_ACTIONS_TEMPLATE, DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
+    DEFAUL_WG_LISTING_ACTIONS_TEMPLATE)
 from novaideo.content.processes.idea_management.behaviors import (
     CreateIdea, CrateAndPublish, CrateAndPublishAsProposal)
 from novaideo.content.idea import IdeaSchema, Idea
@@ -82,7 +83,8 @@ class CreateIdeaView_Json(BasicView):
             navbars = generate_listing_menu(
                 self.request, obj,
                 template=DEFAUL_LISTING_ACTIONS_TEMPLATE,
-                footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE
+                footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
+                wg_template=DEFAUL_WG_LISTING_ACTIONS_TEMPLATE
                 )
         except ObjectRemovedException:
             return None
@@ -91,6 +93,7 @@ class CreateIdeaView_Json(BasicView):
                        'current_user': user,
                        'menu_body': navbars['menu_body'],
                        'footer_body': navbars['footer_body'],
+                       'wg_body': navbars['wg_body'],
                        'state': get_states_mapping(user, obj,
                                getattr(obj, 'state_or_none', [None])[0])}
         return self.content(args=render_dict,
@@ -115,7 +118,6 @@ class CreateIdeaView_Json(BasicView):
                     body = self._render_obj(proposal, user)
 
                 idea = user.ideas[-1]
-
                 return {'state': True,
                         'body': body+self._render_obj(idea, user),
                         'new_title': ''}#self._get_new_title(user)}
