@@ -50,6 +50,10 @@ class SeeRelatedWorkingGroupsView(BasicView):
                    in dict(self.context.related_proposals).keys()
                    if proposal.working_group and 'archived' not in proposal.state
                    and can_access(user, proposal)]
+        objects = sorted(
+            objects,
+            key=lambda e: getattr(e, 'modified_at'),
+            reverse=True)
         url = self.request.resource_url(self.context, self.name)
         batch = Batch(objects, self.request,
                       url=url,

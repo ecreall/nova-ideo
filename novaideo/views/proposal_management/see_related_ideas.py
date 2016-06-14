@@ -50,6 +50,10 @@ class SeeRelatedIdeasView(BasicView):
         objects = [content for content, correlation in
                    self.context.related_ideas.items()
                    if can_access(user, content)]
+        objects = sorted(
+            objects,
+            key=lambda e: getattr(e, 'modified_at'),
+            reverse=True)
         url = self.request.resource_url(self.context, self.name)
         batch = Batch(objects, self.request,
                       url=url,
