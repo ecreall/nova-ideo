@@ -67,7 +67,9 @@ class SeeRelatedWorkingGroupsView(BasicView):
         values = {
             'bodies': result_body,
             'batch': batch,
-            'message': message
+            'message': message,
+            'empty_message': _("No working groups created"),
+            'empty_icon': 'novaideo-icon icon-wg'
         }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

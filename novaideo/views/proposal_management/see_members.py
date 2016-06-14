@@ -65,7 +65,9 @@ class SeeMembersView(BasicView):
         self.title = _(MEMBERS_MESSAGES[index], mapping={'nember': len_result})
         values = {
             'bodies': result_body,
-            'batch': batch
+            'batch': batch,
+            'empty_message': _("No members"),
+            'empty_icon': 'glyphicon glyphicon-user'
         }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
