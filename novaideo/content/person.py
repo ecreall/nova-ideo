@@ -154,8 +154,8 @@ def picture_widget(node, kw):
 
     return ImageWidget(
         tmpstore=tmpstore,
-        max_height=500,
-        max_width=400,
+        # max_height=500,
+        # max_width=400,
         source=source,
         selection_message=_("Upload image.")
         )
@@ -211,6 +211,9 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         ObjectData(Image),
         widget=picture_widget,
         title=_('Picture'),
+        description=_('You see a square on the top left of the image if it exceeds the maximum'
+                      ' size allowed. Move and enlarge it if necessary, to determine an area of'
+                      ' interest. Several images will be generated from this area.'),
         required=False,
         missing=None,
         )
