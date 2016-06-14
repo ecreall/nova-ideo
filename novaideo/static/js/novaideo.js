@@ -123,7 +123,7 @@ function init_result_scroll(event, default_top, element){
     var result_scroll = $(result_scrolls[i]);
     var last_child = $(result_scroll.find('.result-item, .small-result').last());
     if (last_child.length > 0){
-        var top = last_child.offset().top - result_scroll.offset().top  + last_child.height() + 50
+        var top = last_child.offset().top - result_scroll.offset().top  + last_child.height() + 10
         if (top < default_top){
          result_scroll.height(top);
         }else{
