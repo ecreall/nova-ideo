@@ -3602,7 +3602,7 @@ msgstr ""
 
 #: novaideo/views/templates/alerts/alerts.pt:8
 msgid "See all alerts"
-msgstr "Vour toutes les alertes"
+msgstr "Voir toutes les alertes"
 
 #: novaideo/views/comment_management/respond.py:26
 #: novaideo/content/processes/comment_management/definition.py:42
