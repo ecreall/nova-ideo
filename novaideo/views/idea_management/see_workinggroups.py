@@ -52,7 +52,7 @@ class SeeRelatedWorkingGroupsView(BasicView):
         batch = Batch(objects, self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results_proposal_members"
+        batch.target = "#results_idea_working_groups"
         len_result = batch.seqlen
         index = str(len_result)
         if len_result > 1:

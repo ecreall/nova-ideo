@@ -90,7 +90,7 @@ function initscroll(){
 // ["http://0.0.0.0:6543/@@seemyideas?batch_num=", "&batch_size=1&action_uid=-4657697968224339750"]
 // substanced Batch starts at 0, not 1
        var f = function(currPage) {
-          var next_path = $($('#'+id+' .result-container').parents('div').first().find('.result-container').last()).data('nex_url')
+          var next_path = $($('#'+id+' .result-container').first().parents('div').first().find('>.result-container').last()).data('nex_url')
           return next_path +'&'+ data_get;
        };
        return f;
