@@ -31,7 +31,8 @@ from .behaviors import (
     SeeAlerts,
     SeeUsers,
     SeeAnalytics,
-    SeeHome
+    SeeHome,
+    SeeGraph
     )
 from novaideo import _
 
@@ -97,6 +98,10 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                                        description=_("See alerts"),
                                        title=_("Alerts"),
                                        groups=[]),
+                seegraph = ActivityDefinition(contexts=[SeeGraph],
+                                       description=_("See the graph of dependences"),
+                                       title=_("View dependencies"),
+                                       groups=[]),
                 seeanalytics = ActivityDefinition(contexts=[SeeAnalytics],
                                        description=_("See analytics"),
                                        title=_("Analytics"),
@@ -112,6 +117,8 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'search'),
                 TransitionDefinition('search', 'eg'),
+                TransitionDefinition('pg', 'seegraph'),
+                TransitionDefinition('seegraph', 'eg'),
                 TransitionDefinition('pg', 'home'),
                 TransitionDefinition('home', 'eg'),
                 TransitionDefinition('pg', 'mycontents'),

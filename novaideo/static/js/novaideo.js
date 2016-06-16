@@ -298,6 +298,7 @@ function close_add_idea_form(){
      ".home-add-idea .form-group label,"+
      ".home-add-idea .form-group.idea-text #desc").slideUp();
     $(".home-add-idea").addClass('closed').removeClass('opened')
+    $(".similar-ideas.modal").modal('hide')
   }
 
 $(document).on('click', '.proposal-opinion', activate_explanation);
@@ -447,6 +448,29 @@ $(document).ready(function(){
   $(document).on('click','.home-add-idea form .btn', function( event ) {
     $(this).addClass('active')
   })
+
+  $(document).on('change','.home-add-idea form input[name="title"], .home-add-idea form select[name="keywords"]', function( event ) {
+        var $this = $(this)
+        var form = $($this.parents('form').first())
+        var title = form.find('input[name="title"]').val();
+        var keywords = $(form.find('select[name="keywords"]')).val();
+        if ((!title || title == '') && (!keywords || keywords.length == 0)){
+          event.preventDefault();
+          return
+        }
+        var parent = $(form.parents('.home-add-idea').first());
+        var target = $(parent.find('.similar-ideas'));
+        var url = parent.data('url_search')
+        $.getJSON(url,{title: title, keywords: keywords}, function(data) {
+              if(data.body){
+                $(target.find('.similar-ideas-container').first()).html(data.body)
+                target.modal('show')
+              }else{
+                target.modal('hide')
+              }
+        });
+       event.preventDefault();
+   });
 
   $(document).on('submit','.home-add-idea form', function( event ) {
         var $this = $(this)
@@ -675,8 +699,14 @@ $(function () {
         $this.find('.alerts-content').addClass('hide-bloc')
     });
 
- scroll_to_panel()
+  scroll_to_panel()
 
- $('.nav-tabs').on('shown.bs.tab', init_result_scroll)
+  $('.nav-tabs').on('shown.bs.tab', init_result_scroll)
 
+  $(document).on('show.bs.modal', '.similar-ideas', function(){
+      $('body').addClass('similar-ideas-modal-open')
+  })
+  $(document).on('hidden.bs.modal', '.similar-ideas', function(){
+      $('body').removeClass('similar-ideas-modal-open')
+  })
 });

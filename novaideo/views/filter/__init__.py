@@ -36,7 +36,7 @@ from novaideo.content.processes import (
     FLATTENED_STATES_MEMBER_MAPPING,
     get_content_types_states)
 from novaideo.utilities.util import (
-    normalize_title)
+    normalize_title, combinaisons)
 from novaideo.views.filter.util import (
     match_in, get_zipcodes, get_zipcodes_from_cities,
     deepcopy, get_node_query,
@@ -199,9 +199,19 @@ def text_to_search_query(node, **args):
         if args.get('defined_search', False):
             text = text.replace('(', '').replace(')', '').lower()
             list_text = [t + '*' for t in re.split(', *', text)]
-            text = ' AND '.join(list_text)
+            if not args.get('generate_text_search', False):
+                operator = args.get('text_operator', 'AND')
+                text = (' ' + operator + ' ').join(list_text)
+            else:
+                percentage = args.get('percentage', 80)
+                text_nb = int((len(list_text) * percentage) / 100)
+                result = combinaisons(list_text, text_nb, 1)
+                text = ' OR '.join(['('+' AND '.join(
+                                   [a+'*' for a in key.split('*') if a]) + ')'
+                                     for key in result])
         else:
             text += '*'
+
     else:
         return None
 

@@ -213,6 +213,27 @@ def evolve_comments(root, registry):
     log.info('Comments evolved.')
 
 
+def evolve_nodes(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import INode
+
+    contents = find_entities(
+        interfaces=[INode],
+        include_archived=True,
+        )
+    len_entities = str(len(contents))
+    newcalculated = []
+    for index, node in enumerate(contents):
+        oid = str(node.__oid__).replace('-', '_')
+        if oid not in newcalculated:
+            graph, newcalculated = node.init_graph(
+                newcalculated)
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Nodes evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -231,6 +252,7 @@ def main(global_config, **settings):
     config.add_evolution_step(update_len_selections)
     config.add_evolution_step(evolve_process_def)
     config.add_evolution_step(evolve_comments)
+    config.add_evolution_step(evolve_nodes)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

@@ -29,7 +29,8 @@ from novaideo.content.interface import (
     IPerson,
     ICorrelableEntity,
     Iidea)
-from novaideo.utilities.util import render_small_listing_objs
+from novaideo.utilities.util import (
+    render_small_listing_objs, extract_keywords)
 from novaideo.views.filter import find_entities, FILTER_SOURCES
 from novaideo import _
 
@@ -80,6 +81,7 @@ class IndexManagementJsonView(BasicView):
 class NovaideoAPI(IndexManagementJsonView):
     alert_template = 'novaideo:views/templates/alerts/alerts.pt'
     search_template = 'novaideo:views/templates/live_search_result.pt'
+    search_idea_template = 'novaideo:views/templates/live_search_idea_result.pt'
 
     def find_user(self):
         name = self.params('q')
@@ -319,6 +321,38 @@ class NovaideoAPI(IndexManagementJsonView):
         values = {'bodies': result_body}
         body = self.content(args=values, template=self.alert_template)['body']
         return {'body': body}
+
+    def get_similar_ideas(self):
+        user = get_current()
+        # text = self.params('text')
+        title = self.params('title')
+        keywords = self.params('keywords')
+        # text = text if text else ''
+        title = title if title else ''
+        keywords = keywords if keywords else []
+        if not isinstance(keywords, list):
+            keywords = [keywords]
+
+        if not keywords and not title:# and not text:
+            return {'body': ''}
+
+        title_keywords = extract_keywords(title)
+        # text_keywords = extract_keywords(text)
+        # keywords.extend(text_keywords[:5])
+        keywords.extend(title_keywords)
+        result = find_entities(
+            interfaces=[Iidea],
+            user=user,
+            text_filter={'text_to_search': ', '.join(keywords)},
+            defined_search=True,
+            generate_text_search=True)
+        result_body = render_small_listing_objs(
+            self.request, list(result)[:30], user)
+        values = {'entities': result_body}
+        body = self.content(args=values,
+                            template=self.search_idea_template)['body']
+        return {'body': body}
+
 
     def _execute_action(self, process_id, node_id, appstruct):
         actions = getBusinessAction(

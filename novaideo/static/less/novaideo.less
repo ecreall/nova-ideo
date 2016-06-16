@@ -1,3 +1,108 @@
+.modal-xl .modal-dialog{
+      width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.modal-xl .modal-content,
+.modal-xl .modal-body,
+.modal-xl .views-container{
+    height: 100%;
+}
+
+.modal-xl .modal-body{
+    padding: 15px 15px 57px 15px !important
+}
+
+
+.graph-canvas .current.node-shape{
+    stroke: #37a02f !important;
+    stroke-width: 5 !important;
+}
+
+.graph-canvas{
+  background: white;
+  height: 100%;
+  margin: auto;
+  z-index: 1400;
+  overflow: hidden;
+      width: 100%;
+
+}
+.graph-canvas g.node text{
+    fill: rgb(0, 0, 0) !important;
+    font-size: 13px;
+    font-weight: bold;
+}
+.graph-canvas .jsnx{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.graph-legend{
+    text-align: center;
+}
+
+.graph-legend div{
+  display: inline;
+  margin-right: 15px;
+}
+
+.graph-legend div .circle{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 0px;
+  box
+}
+
+.graph-legend div.graph-legend-idea .circle{
+  background-color: @idea-color;
+}
+
+.graph-legend div.graph-legend-wg .circle{
+  background-color: @proposal-color;
+}
+
+.graph-legend div.graph-legend-current .circle{
+  border: solid 3px #37a02f;
+}
+
+.similar-ideas .modal-title{
+    text-align: center;
+    font-weight: 100;
+    font-size: 14px;
+}
+
+.similar-ideas-modal-open.modal-open{
+  overflow: auto !important;
+  padding-right: 0px !important
+}
+
+.similar-ideas{
+    bottom: inherit;
+}
+
+.similar-ideas .modal-dialog{
+  margin-top: -5px;
+  margin-bottom: 15px !important
+}
+
+.similar-ideas .modal-header{
+  padding: 5px 5px 2px;
+  background-color: #ec971f;
+  color: white;
+}
+
+.similar-ideas-container{
+    overflow: auto;
+    height: 150px
+}
+
 .waves-effect {
     -moz-user-select: none;
     cursor: pointer;
@@ -293,7 +398,7 @@
     height: 35px;
 }
 
-.home-add-idea .icon-idea{
+.home-add-idea .form-icon.icon-idea{
   float: left;
   font-size: 30px;
   margin-right: 15px;
@@ -306,7 +411,7 @@
   cursor: pointer;
 }
 
-.home-add-idea.opened .icon-idea{
+.home-add-idea.opened .form-icon.icon-idea{
     display: none
 }
 
@@ -1360,7 +1465,7 @@ ins {
 }
 
 .thumbnail.right-caption > .media-proposal {
-    border-left: 10px solid #959595;
+    border-left: 10px solid  @proposal-color;
 }
 
 .thumbnail.right-caption > .media-amendment {

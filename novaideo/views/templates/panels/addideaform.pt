@@ -1,15 +1,31 @@
-<div tal:condition="form" class="home-add-idea closed" data-url="${action_url}">
+<div i18n:domain="novaideo" tal:condition="form" class="home-add-idea closed" data-url="${action_url}" data-url_search="${search_url}">
   <tal:block tal:repeat="jslink js_links">
             <script src="${request.static_url(jslink)}"></script>
   </tal:block>
   <tal:block tal:repeat="csslink css_links">
       <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
   </tal:block>
+  <div class="similar-ideas modal fade" role="dialog"
+       aria-hidden="true"
+       data-backdrop="false">
+  <div class="modal-dialog  modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" i18n:translate="">Please ensure that the idea has not already been added!</h4>
+      </div>
+      <div class="modal-body">
+        <div class="similar-ideas-container">
+         </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
   <div id="controllable-items-messages" class="message-alert">
        <span id="messageinfo" class="label label-info"></span>
        <span id="messagesuccess" class="label label-success"></span>
        <span id="messagedanger" class="label  label-danger"></span>
    </div>
-   <span class="icon novaideo-icon icon-idea"></span>
+   <span class="form-icon icon novaideo-icon icon-idea"></span>
 	<div tal:replace="structure form"/>
 </div>

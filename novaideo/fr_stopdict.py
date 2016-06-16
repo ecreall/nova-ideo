@@ -30,7 +30,7 @@ _words = [
     "ses", "seulement", "si", "sien", "son", "sont", "sous", "soyez", "sujet",
     "sur", "ta", "tandis", "tellement", "tels", "tes", "ton", "tous", "tout",
     "trop", "très", "tu", "voient", "vont", "votre", "vous", "vu", "ça", "étaient",
-    "état", "étions", "été", "être"
+    "état", "étions", "été", "être", "soit", "un", "une", "d'un", "d'une", "de", "à"
 ]
 
 

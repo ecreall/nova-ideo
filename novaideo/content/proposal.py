@@ -39,7 +39,8 @@ from novaideo.core import (
     CorrelableEntity,
     DuplicableEntity,
     VersionableEntity,
-    PresentableEntity)
+    PresentableEntity,
+    Node)
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.content import get_file_widget
 
@@ -172,7 +173,8 @@ class Proposal(Commentable,
                SearchableEntity,
                DuplicableEntity,
                CorrelableEntity,
-               PresentableEntity):
+               PresentableEntity,
+               Node):
     """Proposal class"""
 
     type_title = _('Proposal')
@@ -221,7 +223,6 @@ class Proposal(Commentable,
     def authors(self):
         return self.working_group.members
 
-
     def init_published_at(self):
         setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
 
@@ -268,3 +269,25 @@ class Proposal(Commentable,
                         'type': 'html'})
 
         return result
+
+    def get_nodes_data(self, calculated=[]):
+        oid = self.get_node_id()
+        newcalculated = list(calculated)
+        if oid in calculated:
+            return {}, newcalculated
+
+        related_ideas = self.related_ideas
+        result = {oid: {
+            'oid': self.__oid__,
+            'title': self.title,
+            'descriminator': 'proposal',
+            'targets': [t.get_node_id()
+                        for t in related_ideas]
+        }}
+
+        newcalculated.append(oid)
+        for idea in related_ideas:
+            sub_result, newcalculated = idea.get_nodes_data(newcalculated)
+            result.update(sub_result)
+
+        return result, newcalculated

@@ -10,6 +10,7 @@ import string
 import random
 import unicodedata
 import re
+from itertools import groupby
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 from pyramid import renderers
@@ -27,6 +28,9 @@ from .ical_date_utility import getDatesFromString, set_recurrence
 from novaideo.content.correlation import Correlation, CorrelationType
 from novaideo.content.processes import get_states_mapping
 from novaideo.core import _
+from novaideo.fr_stopdict import _words
+from novaideo.core import Node
+
 
 try:
     _LETTERS = string.letters
@@ -194,6 +198,101 @@ def dates(propertyname):
     return property(_get, _set)
 
 
+#source: http://dinoblog.tuxfamily.org/?p=40
+
+def factorielle(x):
+    if x < 2:
+        return 1
+    else:
+        return x * factorielle(x - 1)
+
+
+def combinaisons(L, N, k):
+    h = 0
+    i = 0
+    j = 0
+
+    n = [0] * (N - 1)
+
+    G = []
+    s = ""
+
+    if len(L) < N:
+        return G
+    elif N == 1:
+        return L
+    elif len(L) == N:
+        while i < len(L):
+            s = s + L[i]
+            i = i + 1
+
+        G.append(s)
+    elif len(L) > N:
+        l = factorielle(len(L) - 1)/(factorielle(N - 1)
+             * factorielle((len(L) - 1) - (N - 1)));
+
+        while i < l:
+            s = L[len(L) - 1]
+
+            while h < len(n):
+                if j > 0 and j < len(n):
+                    n[j] = n[j - 1] + 1
+
+                s = s + L[n[h]]
+                h = h + 1
+                j = j + 1
+
+            G.append(s)
+
+            h = 0
+            j = 0
+
+            while j < len(n) and n[j] != j + k:
+                j = j + 1
+
+            if j > 0:
+                n[j - 1] = n[j - 1] + 1
+
+            i = i + 1
+
+        L.pop()
+        G = G + combinaisons(L, N, k - 1)
+
+    return G
+
+# end source: http://dinoblog.tuxfamily.org/?p=40
+
+
+def word_frequencies(content, blacklist):
+    """
+    Count the number of words in a content, excluding blacklisted terms.
+    Return a generator of tuples (count, word) sorted by descending frequency.
+
+    Example::
+
+        >>> song = 'Ob la di ob la da "rla di da" da "da"'
+        >>> for count, word in word_frequencies(song, ['di']):
+        ...     print "%s %s" % (count, word)
+        ...
+        4 da
+        2 la
+        2 ob
+        1 rla
+    """
+    sorted_words = sorted(
+        [word for word in content.lower().replace('"', '').split()
+         if word not in blacklist])
+    return ((len(list(group)), word) for word, group in groupby(sorted_words))
+
+
+def extract_keywords(text):
+    "TODO"
+    result = sorted(
+        word_frequencies(text, _words),
+        key=lambda e: e[0], reverse=True)
+    return [e[1] for e in result]
+
+
 def deepcopy(obj):
     result = None
     if isinstance(obj, (dict, PersistentDict)):
@@ -239,6 +338,7 @@ def connect(source,
              'source': source,
              'comment': intention['comment'],
              'intention': intention['type']}
+    correlations = []
     if unique:
         datas['targets'] = targets
         correlation = Correlation()
@@ -246,9 +346,8 @@ def connect(source,
         correlation.tags.extend(tags)
         correlation.type = correlation_type
         root.addtoproperty('correlations', correlation)
-        return correlation
+        correlations = [correlation]
     else:
-        correlations = []
         for content in targets:
             correlation = Correlation()
             datas['targets'] = [content]
@@ -258,22 +357,31 @@ def connect(source,
             root.addtoproperty('correlations', correlation)
             correlations.append(correlation)
 
-        return correlations
+    objects = [source]
+    objects.extend(targets)
+    for obj in objects:
+        if isinstance(obj, Node):
+            obj.init_graph()
+            break
+
+    return correlations
 
 
-def disconnect(source, 
-            targets,
-            tag=None,
-            correlation_type=CorrelationType.weak):
+def disconnect(
+    source,
+    targets,
+    tag=None,
+    correlation_type=CorrelationType.weak):
     """Disconnect targets from the source"""
     root = getSite()
     correlations = []
     if tag:
-        correlations = [c for c in source.source_correlations \
-                      if ((c.type==correlation_type) and (tag in c.tags))]
+        correlations = [c for c in source.source_correlations
+                        if ((c.type == correlation_type) and
+                            (tag in c.tags))]
     else:
-        correlations = [c for c in source.source_correlations \
-                      if (c.type==correlation_type)]
+        correlations = [c for c in source.source_correlations
+                        if c.type == correlation_type]
 
     for content in targets:
         for correlation in correlations:
@@ -283,6 +391,14 @@ def disconnect(source,
                     correlation.delfromproperty('source', source)
 
                 correlation.delfromproperty('targets', content)
+
+    objects = [source]
+    objects.extend(targets)
+    calculated = []
+    for obj in objects:
+        oid = obj.get_node_id()
+        if isinstance(obj, Node) and oid not in calculated:
+            graph, calculated = obj.init_graph(calculated)
 
 
 def html_to_text(html):
@@ -320,7 +436,7 @@ DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_foote
 
 DEFAUL_WG_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/wg_listing_actions.pt'
 
-DEFAUL_LISTING_ACTIONS_TEMPLATE= 'novaideo:views/templates/listing_object_actions.pt'
+DEFAUL_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_object_actions.pt'
 
 DEFAUL_NAVBAR_TEMPLATE = 'novaideo:views/templates/navbar_actions.pt'
 

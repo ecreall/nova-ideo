@@ -1,0 +1,49 @@
+    <div i18n:domain="novaideo" tal:omit-tag="" tal:condition="nodes" tal:define="canvas_id 'canvas_'+node_id">
+      <div class="graph-legend">
+        <div class="graph-legend-idea"><span class="circle"></span> <span i18n:translate="">Idea</span></div> 
+        <div class="graph-legend-wg"><span class="circle"></span> <span i18n:translate="">Working group</span></div>
+        <div class="graph-legend-current"><span class="circle"></span> <span i18n:translate="">Current entity</span></div>
+      </div>
+      <div class="graph-canvas" id="${canvas_id}"></div>
+      <script>
+          $(document).on('dblclick', 'g.node .node-shape, g.node text', function(){
+              window.open($($(this).parents('.node').first().find('.node-shape').first()).attr('url'))
+          })
+          deform.addCallback(
+             '${canvas_id}',
+             function(oid) {
+                  var G = new jsnx.Graph();
+                  <div tal:omit-tag="" tal:repeat="node nodes">
+                    var node${node} = {toString: function() { return "${nodes[node]['title']}"; }};
+                  </div>
+                  G.addNodesFrom([${','.join(['[node'+node+', {url:"'+request.resource_url(get_obj(nodes[node]['oid']), '@@index')+'", entityid: "node'+node+'", descriminator:"'+nodes[node]['descriminator']+'"}]' for node in nodes])}]);
+                  <div tal:omit-tag="" tal:repeat="node nodes">
+                    G.addEdgesFrom([${','.join(['[node'+node+', node'+target+']' for target in nodes[node]['targets']])}]);
+                  </div>
+                  var color = d3.scale.category20();
+                  jsnx.draw(G, {
+                      element: '#'+oid,
+                      layoutAttr: {
+                          charge: -120,
+                          linkDistance: 320
+                      },
+                      withLabels: true,
+                      nodeAttr: {
+                          r:  25,
+                          url: function(d) { return d.data.url;},
+                          descriminator: function(d) { return d.data.descriminator;},
+                          entityid: function(d) { return d.data.entityid;},
+                          class: function(d) { return d.data.entityid == '${'node'+node_id}'? "current"+" node-shape": "node-shape";}, 
+                      },
+                      nodeStyle: {
+                          fill: function(d) { return d.data.descriminator == 'idea'? "#98b498": "#959595";},
+                          stroke: 'none'
+                      },
+                      edgeStyle: {
+                          fill: '#999'
+                      }
+                  });
+                }
+              );
+      </script>
+    </div>

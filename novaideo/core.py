@@ -7,6 +7,7 @@
 import colander
 import venusian
 from persistent.list import PersistentList
+from persistent.dict import PersistentDict
 from zope.interface import implementer
 from pyramid.threadlocal import get_current_request
 
@@ -24,7 +25,7 @@ from dace.descriptors import (
     CompositeUniqueProperty,
     SharedMultipleProperty,
     CompositeMultipleProperty)
-from dace.util import getSite
+from dace.util import getSite, get_obj
 from pontus.schema import Schema
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
@@ -38,7 +39,8 @@ from novaideo.content.interface import (
     ICommentable,
     ICorrelableEntity,
     IPresentableEntity,
-    IFile)
+    IFile,
+    INode)
 
 
 BATCH_DEFAULT_SIZE = 8
@@ -384,6 +386,35 @@ class CorrelableEntity(Entity):
         result = [c.target for c in self.source_correlations]
         result.extend([c.source for c in self.target_correlations])
         return list(set(result))
+
+
+@implementer(INode)
+class Node(Entity):
+
+    def __init__(self, **kwargs):
+        super(Node, self).__init__(**kwargs)
+        self.graph = PersistentDict()
+
+    def get_node_id(self):
+        return str(self.__oid__).replace('-', '_')
+
+    def init_graph(self, calculated=[]):
+        result = self.get_nodes_data()
+        self.graph = PersistentDict(result[0])
+        oid = self.get_node_id()
+        newcalculated = list(calculated)
+        newcalculated.append(oid)
+        for node in self.graph:
+            if node not in newcalculated:
+                node_obj = get_obj(self.graph[node]['oid'])
+                if node_obj:
+                    graph, newcalculated = node_obj.init_graph(
+                        newcalculated)
+
+        return self.graph, newcalculated
+
+    def get_nodes_data(self, calculated=[]):
+        pass
 
 
 class FileSchema(VisualisableElementSchema, SearchableEntitySchema):

@@ -22,6 +22,10 @@ class IEntity(IEntityO):
     pass
 
 
+class INode(IEntity):
+    pass
+
+
 class ICorrection(IEntity):
     pass
 
@@ -74,7 +78,7 @@ class IComment(ICommentable):
     pass
 
 
-class IAmendment(ICommentable, 
+class IAmendment(ICommentable,
                  ICorrelableEntity,
                  IPresentableEntity,
                  IDuplicableEntity,
@@ -87,7 +91,8 @@ class Iidea(ICommentable,
             IVersionableEntity,
             ISearchableEntity,
             ICorrelableEntity,
-            IPresentableEntity):
+            IPresentableEntity,
+            INode):
     pass
 
 
@@ -147,7 +152,8 @@ class IProposal(ICommentable,
                 ISearchableEntity,
                 ICorrelableEntity,
                 IDuplicableEntity,
-                IPresentableEntity):
+                IPresentableEntity,
+                INode):
     pass
 
 

@@ -35,7 +35,8 @@ from novaideo.core import (
     SearchableEntity,
     SearchableEntitySchema,
     CorrelableEntity,
-    PresentableEntity)
+    PresentableEntity,
+    Node)
 from novaideo.content import get_file_widget
 
 
@@ -101,7 +102,8 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
     )
 @implementer(Iidea)
 class Idea(Commentable, VersionableEntity, DuplicableEntity,
-           SearchableEntity, CorrelableEntity, PresentableEntity):
+           SearchableEntity, CorrelableEntity, PresentableEntity,
+           Node):
     """Idea class"""
 
     type_title = _('Idea')
@@ -151,6 +153,12 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     def authors(self):
         return [self.author]
 
+    @property
+    def relevant_data(self):
+        return [getattr(self, 'title', ''),
+                getattr(self, 'text', ''),
+                ', '.join(self.keywords)]
+
     def init_published_at(self):
         setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
 
@@ -199,3 +207,24 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
                         'type': 'html'})
 
         return result
+
+    def get_nodes_data(self, calculated=[]):
+        oid = self.get_node_id()
+        newcalculated = list(calculated)
+        if oid in calculated:
+            return {}, newcalculated
+
+        related_proposals = self.related_proposals
+        result = {oid: {
+            'oid': self.__oid__,
+            'title': self.title,
+            'descriminator': 'idea',
+            'targets': [t.get_node_id()
+                        for t in related_proposals]
+        }}
+        newcalculated.append(oid)
+        for proposal in related_proposals:
+            sub_result, newcalculated = proposal.get_nodes_data(newcalculated)
+            result.update(sub_result)
+
+        return result, newcalculated

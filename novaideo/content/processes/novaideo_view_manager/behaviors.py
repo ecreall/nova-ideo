@@ -16,7 +16,9 @@ from dace.processinstance.activity import (
     ActionType)
 from dace.processinstance.core import PROCESS_HISTORY_KEY
 
-from novaideo.content.interface import INovaIdeoApplication
+from novaideo.content.interface import (
+    INovaIdeoApplication,
+    INode)
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from ..user_management.behaviors import (
@@ -380,5 +382,30 @@ class SeeAnalytics(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context))
+
+
+def seegraph_roles_validation(process, context):
+    return has_role(role=('Member',))
+
+
+def seegraph_processsecurity_validation(process, context):
+    graph = getattr(context, 'graph', {})
+    return len(graph) > 1 and \
+        global_user_processsecurity(process, context)
+
+
+class SeeGraph(InfiniteCardinality):
+    style_descriminator = 'plus-action'
+    style_interaction = 'modal-action'
+    style_modal = 'modal-xl'
+    style_picto = 'ion-android-share'
+    style_order = 1
+    isSequential = False
+    context = INode
+    processsecurity_validation = seegraph_processsecurity_validation
+    roles_validation = seegraph_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 #TODO behaviors

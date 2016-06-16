@@ -166,6 +166,8 @@ class AddIdea(object):
             result['view'] = self
             result['action_url'] = self.request.resource_url(
                 root, '@@ideasmanagement', query={'op': 'creat_home_idea'})
+            result['search_url'] = self.request.resource_url(
+                root, '@@novaideoapi', query={'op': 'get_similar_ideas'})
 
         return result
 

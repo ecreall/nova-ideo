@@ -91,7 +91,7 @@
          tal:condition="a in modal_actions"
          tal:define="item modal_actions.get(a, None)">
         <!-- Modal -->
-           <div class="modal fad" 
+           <div class="modal fad ${getattr(item['action'], 'style_modal', '')}" 
                id="${item['action_id']}-modal" 
                role="dialog" 
                aria-labelledby="myModalLabel" 
@@ -115,7 +115,7 @@
      tal:condition="a in modal_actions"
      tal:define="item modal_actions.get(a, None)">
     <!-- Modal -->
-       <div class="modal fad" 
+       <div class="modal fad ${getattr(item['action'], 'style_modal', '')}" 
            id="${item['action_id']}-modal" 
            role="dialog" 
            aria-labelledby="myModalLabel" 
