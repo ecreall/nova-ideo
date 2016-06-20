@@ -10,4 +10,8 @@
     </div>
   </div>
 </div>
-<div tal:replace="structure footer_body"/>
+ <div class="content-footer">
+    <div class="actions-block">
+        <div tal:replace="structure footer_body"/>
+    </div>
+ </div>

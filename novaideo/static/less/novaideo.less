@@ -1,3 +1,33 @@
+.img-carousel-container{
+  width: 40%;
+  margin-left: 10px;
+}
+
+.full-screen{
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1050;
+    overflow: auto;
+}
+
+.full-screen.full .col-md-4{
+  width: 20% !important
+}
+
+.full-screen-btn{
+  padding: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  color: gray;
+}
+
+.progress {
+    height: 10px !important
+}
+
 .modal-xl .modal-dialog{
       width: 100%;
     height: 100%;
@@ -231,7 +261,12 @@
 .user-view-index .nav-tabs>li.active>a:focus, 
 .user-view-index .nav-tabs>li.active>a:hover,
 .user-view-index .nav.access-menu>li>a:hover, 
-.user-view-index .nav>li>a:focus{
+.user-view-index .nav>li>a:focus,
+.analytics-nav>li.active>a,
+.analytics-nav>li.active>a:focus, 
+.analytics-nav>li.active>a:hover,
+.analytics-nav>li>a:hover, 
+.analytics-nav>li>a:focus,{
     text-transform: uppercase;
     color: @novaideo-menu-color!important;
     background-color: transparent !important;
@@ -241,7 +276,8 @@
 
 
 .home .nav-tabs>li>a,
-.user-view-index .nav-tabs>li>a{
+.user-view-index .nav-tabs>li>a,
+.analytics-nav>li>a{
     border-radius: 0;
     padding: 5px 15px;
     color: gray;
@@ -252,6 +288,10 @@
 .home .nav-tabs>li,
 .user-view-index .nav-tabs>li{
     width: 50%;
+    text-align: center;
+}
+
+.analytics-nav>li{
     text-align: center;
 }
 
@@ -1485,7 +1525,7 @@ ins {
 }
 
 .thumbnail.small-result > .media-proposal {
-    border-left: 5px solid #959595;
+    border-left: 5px solid @proposal-color;
 }
 
 
@@ -1607,6 +1647,7 @@ ins {
 
 .navbar-entity{
    margin-top: -17px;
+   margin-bottom: 0px;
 }
 
 .navbar-entity .navbar-entity-content{
@@ -2596,6 +2637,24 @@ ins {
 
 
 @media (max-width: 767px) {
+    .img-carousel-container{
+      text-align: center;
+      float:none !important;
+       margin: 0;
+       margin-bottom: 10px;
+      text-align: center;
+      width: 100%;
+    }
+    .img-carousel-container .file-slider {
+      margin-left: auto;
+      margin-right: auto;
+      width: 80%;
+    }
+
+    .content-text{
+      margin-left: 0px; 
+      margin-right: 0px;
+    }
     .user-data-container>h3>span{
         display: block !important;
     }

@@ -503,6 +503,7 @@ class AnalyticsView(MultipleView):
     title = _('Analytics')
     name = 'analytics'
     validators = [SeeAnalytics.get_validator()]
+    template = 'novaideo:views/templates/resizable_multipleview.pt'
     views = (ContentsByStatesView, ContentsByKeywordsView, ContentsByDatesView)
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/chartjs/Chart.js',
@@ -719,6 +720,7 @@ class AnalyticsAPIJsonView(BasicView):
                 date_str, date_format)
             return to_localized_time(
                 date, self.request,
+                date_only=True,
                 ignore_month=ignore_month, ignore_day=ignore_day,
                 force_ignore=True, translate=True)
 

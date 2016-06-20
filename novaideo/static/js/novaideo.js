@@ -301,6 +301,24 @@ function close_add_idea_form(){
     $(".similar-ideas.modal").modal('hide')
   }
 
+$(document).on('click', '.full-screen-btn.small', function(){
+    var $this = $(this)
+    $('.pontus-main').addClass('full-screen');
+    $this.removeClass('glyphicon glyphicon-resize-full').addClass('glyphicon glyphicon-resize-small')
+    $this.removeClass('small').addClass('full')
+    $('.pontus-main').removeClass('small').addClass('full')
+
+});
+
+$(document).on('click', '.full-screen-btn.full', function(){
+    var $this = $(this)
+    $('.pontus-main').removeClass('full-screen');
+    $this.removeClass('glyphicon glyphicon-resize-small').addClass('glyphicon glyphicon-resize-full')
+    $this.removeClass('full').addClass('small')
+    $('.pontus-main').removeClass('full').addClass('small')
+
+});
+
 $(document).on('click', '.proposal-opinion', activate_explanation);
 
 $(document).on('click', '.proposal-opinion button.close', close_explanation);

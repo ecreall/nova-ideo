@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
+    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
     <h3 class="content-title"><span class="icon novaideo-icon icon-amendment"></span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a> / ${amendment.title}</h3>
     <div class="object-description"
       tal:define="author amendment.author">

@@ -1,0 +1,23 @@
+<div tal:omit-tag="" tal:define=" items subitem['items'];
+                                  itemslen len(items)|0">
+  <div tal:omit-tag="" tal:condition="items and itemslen == 1">
+           <div tal:define="item items[0]" tal:replace="item['view'].render_item(item, coordinates, None)" />
+  </div>
+  <span class="full-screen-btn glyphicon glyphicon-resize-full pull-right small"></span>
+  <div tal:omit-tag="" tal:condition="items and itemslen > 1">
+      <ul tal:attributes="id (subitem['view'].viewid+'_multipleform_'+coordinates)" class="analytics-nav nav nav-tabs">
+          <li tal:repeat="item items" tal:attributes="class item['isactive'] and 'active' or ''">
+             <a data-toggle="tab" tal:attributes="href '#'+item['id']+coordinates"
+                tal:define="icon getattr(item['view'], 'view_icon', None)">
+              <span tal:condition="icon" class="${icon}"></span> ${item['view'].title}</a>
+          </li>
+      </ul>
+      <div tal:attributes="id (subitem['id']+'_multipleform'+coordinates)" class="tab-content">
+          <div tal:repeat="item items" tal:attributes="id item['id']+coordinates;
+                                                       class 'tab-pane fade'+(item['isactive'] and ' in active' or '')">
+              <div tal:replace="item['view'].render_item(item, coordinates, subitem['view'])" />   
+          </div>
+      </div>
+  </div>
+</div>
+
