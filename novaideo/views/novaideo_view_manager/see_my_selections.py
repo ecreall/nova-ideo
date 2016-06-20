@@ -21,9 +21,9 @@ from .see_my_contents import SeeMyContentsView
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""Aucune éléments en favori"""),
-    '1': _(u"""Un élément en favori"""),
-    '*': _(u"""${nember} éléments en favori""")}
+    '0': _(u"""Aucun éléments suivi"""),
+    '1': _(u"""Un élément suivi"""),
+    '*': _(u"""${nember} éléments suivis""")}
 
 
 @view_config(
@@ -32,7 +32,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeMySelectionsView(SeeMyContentsView):
-    title = _('My favorites')
+    title = _('My following')
     name = 'seemyselections'
     behaviors = [SeeMySelections]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
