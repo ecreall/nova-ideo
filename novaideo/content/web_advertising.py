@@ -27,7 +27,6 @@ from novaideo import _
 from novaideo.core import (
     SearchableEntitySchema,
     VisualisableElementSchema,
-    VisualisableElement,
     SearchableEntity,
     ADVERTISING_CONTAINERS)
 from novaideo.utilities import french_dates_parser as Parser
@@ -60,7 +59,7 @@ class AdvertisingSchema(VisualisableElementSchema, SearchableEntitySchema):
 
 
 @implementer(IAdvertising)
-class Advertising(VisualisableElement, SearchableEntity):
+class Advertising(SearchableEntity):
     """Advertising class"""
 
     picture = CompositeUniqueProperty('picture')

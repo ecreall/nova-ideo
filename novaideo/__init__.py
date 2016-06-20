@@ -234,6 +234,23 @@ def evolve_nodes(root, registry):
     log.info('Nodes evolved.')
 
 
+def evolve_channels(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import (
+        Iidea, IAmendment, IProposal, ICorrelation)
+    from novaideo.core import Channel
+
+    contents = find_entities(
+        interfaces=[Iidea, IAmendment, IProposal, ICorrelation])
+    for entity in contents:
+        entity.addtoproperty('channels', Channel())
+        channel = entity.channel
+        for comment in entity.comments:
+            channel.addtoproperty('comments', comment)
+
+    log.info('Comments evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -253,6 +270,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_process_def)
     config.add_evolution_step(evolve_comments)
     config.add_evolution_step(evolve_nodes)
+    config.add_evolution_step(evolve_channels)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

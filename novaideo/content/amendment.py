@@ -29,7 +29,7 @@ from novaideo.core import (
     SearchableEntity,
     SearchableEntitySchema,
     CorrelableEntity,
-    Commentable,
+    Channel,
     PresentableEntity,
     DuplicableEntity)
 from novaideo import _
@@ -248,8 +248,7 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='icon novaideo-icon icon-amendment',
     )
 @implementer(IAmendment)
-class Amendment(Commentable,
-                CorrelableEntity,
+class Amendment(CorrelableEntity,
                 SearchableEntity,
                 DuplicableEntity,
                 PresentableEntity):
@@ -269,6 +268,7 @@ class Amendment(Commentable,
         super(Amendment, self).__init__(**kwargs)
         self.explanations = PersistentDict()
         self.set_data(kwargs)
+        self.addtoproperty('channels', Channel())
 
     @property
     def is_published(self):

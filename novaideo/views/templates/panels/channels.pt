@@ -1,0 +1,30 @@
+<div tal:condition="users_channels or others_channels">
+	<span class="all-channels-toggle ion-chatbubbles"></span>
+	<div class="all-channels ${(request.cookies.get('channels', 'off') == 'off') and 'toggled'}">
+		<div class="all-blocks">
+			<div class="all-channels-toggle close pull-right">
+		      <span class="ion-chevron-left"></span>
+		    </div>
+			<div tal:condition="others_channels" class="channels-block">
+				<div class="channel-title">
+					<span>Channels</span>
+					<span class="channel-len">(${len(others_channels)})</span>
+				</div>
+				<div class="channels-container">
+					<div tal:omit-tag=""
+						 tal:repeat="body others_channels"> ${structure:body}</div>
+				</div>
+			</div>
+			<div tal:condition="users_channels" class="channels-block">
+				<div class="channel-title">
+					<span>Users</span>
+					<span class="channel-len">(${len(users_channels)})</span>
+				</div>
+				<div class="channels-container">
+					<div tal:omit-tag=""
+						 tal:repeat="body users_channels"> ${structure:body}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

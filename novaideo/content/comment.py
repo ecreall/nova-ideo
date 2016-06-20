@@ -29,14 +29,12 @@ from pontus.schema import Schema
 from pontus.file import ObjectData, File
 
 from .interface import IComment
-from novaideo.core import Commentable
+from novaideo.core import Commentable, Channel
 from novaideo import _
-from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.content import get_file_widget
 from novaideo.file import Image
 from novaideo.utilities.url_extractor import extract_urls
 from novaideo.utilities.util import html_to_text
-
 
 
 @colander.deferred
@@ -162,13 +160,18 @@ class Comment(Commentable):
         self.urls = PersistentDict({})
 
     @property
-    def subject(self):
-        """Return the commented entity"""
+    def channel(self):
+        """Return the channel of th commented entity"""
 
         if not isinstance(self.__parent__, Comment):
             return self.__parent__
         else:
-            return self.__parent__.subject
+            return self.__parent__.channel
+
+    @property
+    def subject(self):
+        """Return the commented entity"""
+        return self.channel.subject
 
     def init_urls(self):
         self.urls = PersistentDict({})

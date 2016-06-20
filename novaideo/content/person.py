@@ -270,7 +270,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     icon='icon glyphicon glyphicon-user',
     )
 @implementer(IPerson)
-class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
+class Person(User, SearchableEntity, CorrelableEntity):
     """Person class"""
 
     type_title = _('Person')
@@ -288,6 +288,7 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
     working_groups = SharedMultipleProperty('working_groups', 'members')
     alerts = SharedMultipleProperty('alerts', 'users_to_alert')
     old_alerts = SharedMultipleProperty('old_alerts', 'alerted_users')
+    following_channels = SharedMultipleProperty('following_channels', 'members')
 
     def __init__(self, **kwargs):
         if 'locale' not in kwargs:
@@ -298,6 +299,13 @@ class Person(VisualisableElement, User, SearchableEntity, CorrelableEntity):
         self.set_data(kwargs)
         self.set_title()
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
+
+    def get_channel(self, user):
+        for channel in self.channels:
+            if user in channel.members:
+                return channel
+
+        return None
 
     def addtoproperty(self, name, value, moving=None):
         super(Person, self).addtoproperty(name, value, moving)

@@ -35,15 +35,17 @@ from dace.processinstance.activity import (
     ActionType)
 from dace.processinstance.core import ActivityExecuted, PROCESS_HISTORY_KEY
 
+from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
 from novaideo.content.interface import (
     INovaIdeoApplication, IPerson, IPreregistration)
 from novaideo.content.token import Token
 from novaideo.content.person import (
     Person, PersonSchema, DEADLINE_PREREGISTRATION)
 from novaideo.utilities.util import (
-    to_localized_time, gen_random_token)
+    to_localized_time, gen_random_token, connect)
 from novaideo import _
-from novaideo.core import access_action, serialize_roles
+from novaideo.core import (
+    access_action, serialize_roles, Channel)
 from novaideo.views.filter import get_users_by_preferences
 from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import alert
@@ -539,4 +541,124 @@ class RemoveRegistration(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['root'], ""))
 
+
+def discuss_roles_validation(process, context):
+    return has_role(role=('Member',))
+
+
+def discuss_processsecurity_validation(process, context):
+    user = get_current()
+    return context is not user and \
+        global_user_processsecurity(process, context)
+
+
+def discuss_state_validation(process, context):
+    return 'active' in context.state
+
+
+class Discuss(InfiniteCardinality):
+    isSequential = False
+    style_descriminator = 'communication-action'
+    style_interaction = 'modal-action'
+    style_picto = 'ion-chatbubble'
+    style_order = 0
+    style_activate = True
+    context = IPerson
+    roles_validation = discuss_roles_validation
+    processsecurity_validation = discuss_processsecurity_validation
+    state_validation = discuss_state_validation
+
+    def get_title(self, context, request):
+        user = get_current()
+        channel = context.get_channel(user)
+        len_comments = channel.len_comments if channel else 0
+        return _("${title} (${nember})",
+                 mapping={'nember': len_comments,
+                          'title': request.localizer.translate(self.title)})
+
+    def _get_users_to_alerts(self, context, request, user, channel):
+        users = list(channel.members)
+        if user in users:
+            users.remove(user)
+        return users
+
+    def _alert_users(self, context, request, user, comment, channel):
+        root = getSite()
+        users = self._get_users_to_alerts(context, request, user, channel)
+        if user in users:
+            users.remove(user)
+
+        mail_template = root.get_mail_template('alert_discuss')
+        comment_oid = getattr(comment, '__oid__', 'None')
+        localizer = request.localizer
+        author_title = localizer.translate(
+            _(getattr(user, 'user_title', '')))
+        author_first_name = getattr(
+            user, 'first_name', user.name)
+        author_last_name = getattr(user, 'last_name', '')
+        alert('internal', [root], users,
+              internal_kind=InternalAlertKind.comment_alert,
+              subjects=[context],
+              comment_oid=comment_oid,
+              author_title=author_title,
+              author_first_name=author_first_name,
+              author_last_name=author_last_name)
+        subject_type = localizer.translate(
+            _("The " + context.__class__.__name__.lower()))
+        subject = mail_template['subject'].format(
+            subject_title=context.title,
+            subject_type=subject_type)
+        for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
+            message = mail_template['template'].format(
+                recipient_title=localizer.translate(
+                    _(getattr(user_to_alert, 'user_title', ''))),
+                recipient_first_name=getattr(
+                    user_to_alert, 'first_name', user_to_alert.name),
+                recipient_last_name=getattr(user_to_alert, 'last_name', ''),
+                subject_title=context.title,
+                subject_url=request.resource_url(context, "@@index") + '#comment-' + str(comment_oid),
+                subject_type=subject_type,
+                author_title=author_title,
+                author_first_name=author_first_name,
+                author_last_name=author_last_name,
+                novaideo_title=root.title
+            )
+            alert('email', [root.get_site_sender()], [user_to_alert.email],
+                  subject=subject, body=message)
+
+    def start(self, context, request, appstruct, **kw):
+        comment = appstruct['_object_data']
+        user = get_current()
+        channel = context.get_channel(user)
+        if not channel:
+            channel = Channel()
+            context.addtoproperty('channels', channel)
+            channel.addtoproperty('members', user)
+            channel.addtoproperty('members', context)
+
+        if channel:
+            channel.addtoproperty('comments', comment)
+            comment.format(request)
+            user = get_current()
+            comment.setproperty('author', user)
+            if appstruct['related_contents']:
+                related_contents = appstruct['related_contents']
+                correlation = connect(
+                    context,
+                    list(related_contents),
+                    {'comment': comment.comment,
+                     'type': comment.intention},
+                    user,
+                    unique=True)
+                comment.setproperty('related_correlation', correlation[0])
+
+            self._alert_users(context, request, user, comment, channel)
+            context.reindex()
+
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 #TODO behaviors
+
+VALIDATOR_BY_CONTEXT[Person] = Discuss

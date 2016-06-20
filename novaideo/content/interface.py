@@ -78,16 +78,18 @@ class IComment(ICommentable):
     pass
 
 
-class IAmendment(ICommentable,
-                 ICorrelableEntity,
+class IChannel(ICommentable):
+    pass
+
+
+class IAmendment(ICorrelableEntity,
                  IPresentableEntity,
                  IDuplicableEntity,
                  ISearchableEntity):
     pass
 
 
-class Iidea(ICommentable,
-            IDuplicableEntity,
+class Iidea(IDuplicableEntity,
             IVersionableEntity,
             ISearchableEntity,
             ICorrelableEntity,
@@ -100,7 +102,7 @@ class IFile(ISearchableEntity):
     pass
 
 
-class ICorrelation(ICommentable):
+class ICorrelation(IEntity):
     pass
 
 
@@ -148,8 +150,7 @@ class IPreregistration(IBaseUser):
     pass
 
 
-class IProposal(ICommentable,
-                ISearchableEntity,
+class IProposal(ISearchableEntity,
                 ICorrelableEntity,
                 IDuplicableEntity,
                 IPresentableEntity,

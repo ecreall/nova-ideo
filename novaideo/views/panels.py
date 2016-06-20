@@ -32,6 +32,7 @@ from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.proposal import Proposal
 from novaideo.content.workspace import Workspace
 from novaideo.content.idea import Idea
+from novaideo.content.person import Person
 from novaideo.content.interface import IPerson, Iidea, IProposal
 from novaideo.content.amendment import Amendment
 from novaideo.content.novaideo_application import NovaIdeoApplication
@@ -43,7 +44,8 @@ from novaideo.utilities.util import (
     get_actions_navbar,
     render_navbar_body,
     deepcopy,
-    FOOTER_NAVBAR_TEMPLATE)
+    FOOTER_NAVBAR_TEMPLATE,
+    update_all_modal_action)
 from novaideo.views.filter import find_entities, find_more_contents
 
 
@@ -750,3 +752,70 @@ class MoreContents(object):
         return {'contents': objects,
                 'is_root': is_root,
                 'request': self.request}
+
+
+@panel_config(
+    name='channels',
+    context=Entity,
+    renderer='templates/panels/channels.pt'
+    )
+class Channels(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def _get_channels_bodies(self, user, channels, action_id):
+        result_body = []
+        resources = {'css_links': [], 'js_links': []}
+        for channel in channels:
+            actions_call, action_resources = update_all_modal_action(
+                channel.subject, self.request, action_id)
+            resources = merge_dicts(action_resources, resources)
+            if actions_call:
+                object_values = {
+                    'object': channel,
+                    'current_user': user,
+                    'action_call': actions_call[0]}
+                body = renderers.render(
+                    channel.templates.get('default'),
+                    object_values,
+                    self.request)
+                result_body.append(body)
+
+        return result_body, resources
+
+    def __call__(self):
+        root = getSite()
+        user = get_current(self.request)
+        result = {
+            'css_links': [],
+            'js_links': []}
+        users_result_body = []
+        others_result_body = []
+        if self.request.user:
+            channels = user.following_channels
+            user_channel = [c for c in channels
+                            if isinstance(c.__parent__, Person)]
+            others = [c for c in channels if c not in user_channel]
+            resources = deepcopy(getattr(
+                self.request, 'resources', {'js_links': [], 'css_links': []}))
+            users_result_body, users_resources = self._get_channels_bodies(
+                user, user_channel, 'discuss')
+            others_result_body, others_resources = self._get_channels_bodies(
+                user, others, 'comment')
+            result['css_links'] = [c for c in users_resources['css_links']
+                                   if c not in resources['css_links']]
+            result['js_links'] = [c for c in users_resources['js_links']
+                                  if c not in resources['js_links']]
+            result['css_links'] = [c for c in others_resources['css_links']
+                                   if c not in resources['css_links']]
+            result['js_links'] = [c for c in others_resources['js_links']
+                                  if c not in resources['js_links']]
+            update_resources(self.request, result)
+
+        result.update({
+            'users_channels': users_result_body,
+            'others_channels': others_result_body,
+        })
+        return result

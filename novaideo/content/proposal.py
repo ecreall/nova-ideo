@@ -30,11 +30,11 @@ from pontus.schema import omit, Schema
 
 from .interface import IProposal
 from novaideo.content.correlation import CorrelationType
-from novaideo.core import Commentable
 from novaideo import _, log
 from novaideo.views.widget import LimitedTextAreaWidget
 from novaideo.core import (
     SearchableEntity,
+    Channel,
     SearchableEntitySchema,
     CorrelableEntity,
     DuplicableEntity,
@@ -168,8 +168,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='icon novaideo-icon icon-proposal',
     )
 @implementer(IProposal)
-class Proposal(Commentable,
-               VersionableEntity,
+class Proposal(VersionableEntity,
                SearchableEntity,
                DuplicableEntity,
                CorrelableEntity,
@@ -195,6 +194,7 @@ class Proposal(Commentable,
         super(Proposal, self).__init__(**kwargs)
         self.set_data(kwargs)
         self._amendments_counter = 1
+        self.addtoproperty('channels', Channel())
 
     @property
     def related_ideas(self):

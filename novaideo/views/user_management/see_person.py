@@ -151,6 +151,7 @@ class SeePersonView(BasicView):
         }
         result = {}
         result = merge_dicts(contents, result, ('css_links', 'js_links'))
+        result = merge_dicts(navbars['resources'], result, ('css_links', 'js_links'))
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = navbars['messages']

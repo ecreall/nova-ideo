@@ -173,10 +173,9 @@
           <div tal:define="more_panel panel('more_contents') if not view_only else None" class="row clearfix novaideo-content">
 
             <div tal:condition="not view_only" class="col-md-2 column ui-sortable novaideo-left">
+              ${panel('channels')}
               ${adminnavbar}
-              <div class="visible-lg-inline-block"  style="width: 100%">
-                ${more_panel}
-              </div>
+             
                <div metal:define-slot="left"></div>
             </div>
 

@@ -657,7 +657,7 @@ class CommentIdea(InfiniteCardinality):
     state_validation = comm_state_validation
 
     def get_title(self, context, request):
-        len_comments = context.len_comments
+        len_comments = context.channel.len_comments
         return _("${title} (${nember})",
                  mapping={'nember': len_comments,
                           'title': request.localizer.translate(self.title)})
@@ -716,23 +716,26 @@ class CommentIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         comment = appstruct['_object_data']
-        context.addtoproperty('comments', comment)
-        comment.format(request)
-        user = get_current()
-        comment.setproperty('author', user)
-        if appstruct['related_contents']:
-            related_contents = appstruct['related_contents']
-            correlation = connect(
-                context,
-                list(related_contents),
-                {'comment': comment.comment,
-                 'type': comment.intention},
-                user,
-                unique=True)
-            comment.setproperty('related_correlation', correlation)
+        channel = context.channel
+        if channel:
+            channel.addtoproperty('comments', comment)
+            comment.format(request)
+            user = get_current()
+            comment.setproperty('author', user)
+            if appstruct['related_contents']:
+                related_contents = appstruct['related_contents']
+                correlation = connect(
+                    context,
+                    list(related_contents),
+                    {'comment': comment.comment,
+                     'type': comment.intention},
+                    user,
+                    unique=True)
+                comment.setproperty('related_correlation', correlation[0])
 
-        self._alert_users(context, request, user, comment)
-        context.reindex()
+            self._alert_users(context, request, user, comment)
+            context.reindex()
+
         return {}
 
     def redirect(self, context, request, **kw):

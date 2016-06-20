@@ -36,6 +36,7 @@ from novaideo.core import (
     SearchableEntitySchema,
     CorrelableEntity,
     PresentableEntity,
+    Channel,
     Node)
 from novaideo.content import get_file_widget
 
@@ -121,6 +122,7 @@ class Idea(Commentable, VersionableEntity, DuplicableEntity,
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)
         self.set_data(kwargs)
+        self.addtoproperty('channels', Channel())
 
     @property
     def is_workable(self):

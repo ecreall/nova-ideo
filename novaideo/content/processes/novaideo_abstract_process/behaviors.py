@@ -10,6 +10,7 @@ import datetime
 from pyramid.httpexceptions import HTTPFound
 from persistent.list import PersistentList
 
+from dace.objectofcollaboration.principal import User
 from dace.objectofcollaboration.principal.util import (
     has_role,
     get_current)
@@ -56,6 +57,11 @@ class SelectEntity(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         user.addtoproperty('selections', context)
+        if not isinstance(context, User):
+            channel = getattr(context, 'channel', None)
+            if channel:
+                channel.addtoproperty('members', user)
+
         user.reindex()
         context.reindex()
         return {}
@@ -98,6 +104,11 @@ class DeselectEntity(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         user.delfromproperty('selections', context)
+        if not isinstance(context, User):
+            channel = getattr(context, 'channel', None)
+            if channel:
+                channel.delfromproperty('members', user)
+
         user.reindex()
         context.reindex()
         return {}

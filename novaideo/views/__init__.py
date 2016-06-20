@@ -261,6 +261,27 @@ class NovaideoAPI(IndexManagementJsonView):
 
         return {'body': ''}
 
+    def discuss_person(self):
+        discuss_actions = getAllBusinessAction(
+            self.context, self.request, node_id='discuss',
+            process_discriminator='Application')
+        if discuss_actions:
+            action = discuss_actions[0]
+            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+            comment_view_instance = comment_view(
+                self.context, self.request,
+                behaviors=[action])
+            comment_view_instance.update()
+            user = get_current()
+            channel = self.context.get_channel(user)
+            comments = [channel.comments[-1]]
+            result_view = CommentsView(self.context, self.request)
+            result_view.comments = comments
+            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+            return {'body': body}
+
+        return {'body': ''}
+
     def comment_entity(self):
         comment_actions = getAllBusinessAction(
             self.context, self.request, node_id='comment',
@@ -272,7 +293,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, self.request,
                 behaviors=[action])
             comment_view_instance.update()
-            comments = [self.context.comments[-1]]
+            comments = [self.context.channel.comments[-1]]
             result_view = CommentsView(self.context, self.request)
             result_view.comments = comments
             body = result_view.update()['coordinates'][result_view.coordinates][0]['body']

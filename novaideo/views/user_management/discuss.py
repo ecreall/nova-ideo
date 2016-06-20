@@ -21,9 +21,9 @@ from pontus.view import BasicView
 from pontus.util import merge_dicts
 from daceui.interfaces import IDaceUIAPI
 
-from novaideo.content.processes.idea_management.behaviors import CommentIdea
+from novaideo.content.processes.user_management.behaviors import Discuss
 from novaideo.content.comment import CommentSchema, Comment
-from novaideo.content.idea import Idea
+from novaideo.content.person import IPerson
 from novaideo import _
 
 
@@ -35,7 +35,7 @@ BATCH_DEFAULT_SIZE = 20
 class CommentsView(BasicView):
     title = _('Messages')
     name = 'comments'
-    validators = [CommentIdea.get_validator()]
+    validators = [Discuss.get_validator()]
     template = 'novaideo:views/idea_management/templates/comments.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/comments_scroll.pt'
     viewid = 'comments'
@@ -71,6 +71,7 @@ class CommentsView(BasicView):
             resources, actions = dace_ui_api.update_actions(
                 self.request, comments_actions)
         actions = dict([(a['context'], a) for a in actions])
+        #TODO include all comments
         all_comments = sorted(list(actions.values()),
                               key=lambda e: e['context'].created_at)
         values = {
@@ -87,14 +88,18 @@ class CommentsView(BasicView):
     def update(self):
         current_user = get_current()
         result = {}
-        url = self.request.resource_url(self.context, 'comment')
-        objects = sorted(getattr(self, 'comments', self.context.channel.comments),
-                         key=lambda e: e.created_at, reverse=True)
+        url = self.request.resource_url(self.context, 'discuss')
+        channel = self.context.get_channel(current_user)
+        objects = []
+        if channel:
+            objects = sorted(getattr(self, 'comments', channel.comments),
+                             key=lambda e: e.created_at, reverse=True)
+
         batch = Batch(objects,
                       self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#comments_results"
+        batch.target = "#discuss_results"
         body, resources, messages, isactive = self._rendre_comments(
             batch, current_user, True, batch)
         item = self.adapt_item(body, self.viewid)
@@ -106,20 +111,20 @@ class CommentsView(BasicView):
         return result
 
 
-class CommentIdeaFormView(FormView):
+class DiscussFormView(FormView):
 
     title = _('Discuss the idea')
     schema = select(CommentSchema(factory=Comment,
                                   editable=True,
                                   omit=('related_contents',)),
                     ['comment', 'intention', 'files', 'related_contents'])
-    behaviors = [CommentIdea]
-    formid = 'formcommentidea'
-    name = 'commentideaform'
+    behaviors = [Discuss]
+    formid = 'formdiscuss'
+    name = 'discussform'
 
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'comment_entity'})
+            self.context, 'novaideoapi', query={'op': 'discuss_person'})
         formwidget = deform.widget.FormWidget(css_class='commentform deform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
@@ -131,36 +136,25 @@ COMMENT_MESSAGE = {'0': _(u"""Pas de fils de discussion"""),
 
 
 @view_config(
-    name='comment',
-    context=Idea,
+    name='discuss',
+    context=IPerson,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class CommentIdeaView(MultipleView):
+class DiscussView(MultipleView):
     title = _('Discuss the idea')
     description = _('Discuss the idea')
-    name = 'comment'
+    name = 'discuss'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
-    views = (CommentsView, CommentIdeaFormView)
+    views = (CommentsView, DiscussFormView)
     contextual_help = 'comment-help'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}
 
-    def get_message(self):
-        lencomments = len(self.context.channel.comments)
-        index = str(lencomments)
-        if lencomments > 1:
-            index = '*'
-
-        message = (_(COMMENT_MESSAGE[index]),
-                   lencomments,
-                   index)
-        return message
-
     def before_update(self):
-        self.viewid = 'comment'
-        super(CommentIdeaView, self).before_update()
+        self.viewid = 'discuss'
+        super(DiscussView, self).before_update()
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
-    {CommentIdea: CommentIdeaView})
+    {Discuss: DiscussView})

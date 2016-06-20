@@ -30,7 +30,7 @@ from pontus.file import ObjectData as ObjectDataOrigine, OBJECT_DATA
 from pontus.schema import omit, select
 
 from novaideo import _, DEFAULT_FILES
-from novaideo.core import FileEntity
+from novaideo.core import FileEntity, Channel
 from .organization import OrganizationSchema, Organization
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
@@ -336,6 +336,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.deadlines = PersistentList([datetime.datetime.now(tz=pytz.UTC)])
         self.work_modes = list(WORK_MODES.keys())
         self.colors_mapping = PersistentDict(DEFAULT_COLORS)
+        self.addtoproperty('channels', Channel(title=_("General")))
 
     def reset_default_values(self):
         self.participants_mini = 3

@@ -522,6 +522,22 @@ def update_modal_action(
     return [], {}
 
 
+def update_all_modal_action(
+    context, request,
+    node_id, process_id=None):
+    seemembers_actions = getAllBusinessAction(
+        context, request, node_id=node_id,
+        process_id=process_id,
+        process_discriminator='Application')
+    if seemembers_actions:
+        isactive, messages, \
+        resources, modal_actions = update_modal_actions(
+            seemembers_actions, context, request)
+        return modal_actions, resources
+
+    return [], {}
+
+
 def get_actions_navbar(
     actions_getter, context, request, descriminators):
     result = {}

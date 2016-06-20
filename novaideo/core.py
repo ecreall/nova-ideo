@@ -37,6 +37,7 @@ from novaideo.content.interface import (
     IDuplicableEntity,
     ISearchableEntity,
     ICommentable,
+    IChannel,
     ICorrelableEntity,
     IPresentableEntity,
     IFile,
@@ -205,18 +206,38 @@ class Commentable(VisualisableElement, Entity):
     def addtoproperty(self, name, value, moving=None):
         super(Commentable, self).addtoproperty(name, value, moving)
         if name == 'comments':
-            subject = getattr(self, 'subject', self)
-            subject.len_comments += 1
-            if self is not subject:
+            channel = getattr(self, 'channel', self)
+            channel.len_comments += 1
+            if self is not channel:
                 self.len_comments += 1
 
     def delfromproperty(self, name, value, moving=None):
         super(Commentable, self).delfromproperty(name, value, moving)
         if name == 'comments':
-            subject = getattr(self, 'subject', self)
-            subject.len_comments -= 1
-            if self is not subject:
+            channel = getattr(self, 'channel', self)
+            channel.len_comments -= 1
+            if self is not channel:
                 self.len_comments -= 1
+
+
+@content(
+    'channel',
+    icon='icon novaideo-icon icon-idea',
+    )
+@implementer(IChannel)
+class Channel(Commentable):
+    """Channel class"""
+
+    type_title = _('Channel')
+    icon = 'icon novaideo-icon icon-idea'
+    templates = {'default': 'novaideo:views/templates/channel_result.pt'}
+    name = renamer()
+    members = SharedMultipleProperty('members', 'following_channels')
+    subject = SharedUniqueProperty('subject', 'channels')
+
+    def __init__(self, **kwargs):
+        super(Channel, self).__init__(**kwargs)
+        self.set_data(kwargs)
 
 
 @implementer(IVersionableEntity)
@@ -289,11 +310,13 @@ class SearchableEntitySchema(Schema):
 
 
 @implementer(ISearchableEntity)
-class SearchableEntity(Entity):
+class SearchableEntity(VisualisableElement, Entity):
     """ A Searchable entity is an entity that can be searched"""
 
     templates = {'default': 'novaideo:templates/views/default_result.pt',
                  'bloc': 'novaideo:templates/views/default_result.pt'}
+    channels = CompositeMultipleProperty('channels', 'subject')
+    comments = CompositeMultipleProperty('comments')
 
     def __init__(self, **kwargs):
         super(SearchableEntity, self).__init__(**kwargs)
@@ -312,6 +335,11 @@ class SearchableEntity(Entity):
         return [getattr(self, 'title', ''),
                 getattr(self, 'description', ''),
                 ', '.join(self.keywords)]
+
+    @property
+    def channel(self):
+        channels = getattr(self, 'channels', [])
+        return channels[0] if channels else None
 
     def _init_presentation_text(self):
         pass

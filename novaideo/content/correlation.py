@@ -13,14 +13,17 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
+from dace.objectofcollaboration.entity import Entity
 from dace.util import get_obj, getSite
-from dace.descriptors import SharedUniqueProperty, SharedMultipleProperty
-from pontus.core import VisualisableElementSchema
+from dace.descriptors import (
+    SharedUniqueProperty, SharedMultipleProperty,
+    CompositeMultipleProperty)
+from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import Select2Widget, AjaxSelect2Widget
 from pontus.file import Object as ObjectType
 
 from .interface import ICorrelation
-from novaideo.core import Commentable
+from novaideo.core import Channel
 from novaideo import _, log
 
 
@@ -103,18 +106,21 @@ class CorrelationSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(ICorrelation)
-class Correlation(Commentable):
+class Correlation(VisualisableElement, Entity):
     """Correlation class"""
     name = renamer()
     source = SharedUniqueProperty('source', 'source_correlations')
     targets = SharedMultipleProperty('targets', 'target_correlations')
     author = SharedUniqueProperty('author')
+    channels = CompositeMultipleProperty('channels', 'subject')
+    comments = CompositeMultipleProperty('comments')
 
     def __init__(self, **kwargs):
         super(Correlation, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.type = CorrelationType.weak
         self.tags = PersistentList()
+        self.addtoproperty('channels', Channel(title=_("General")))
 
     @property
     def ends(self):
@@ -122,3 +128,8 @@ class Correlation(Commentable):
         result = list(self.targets)
         result .append(self.source)
         return result
+
+    @property
+    def channel(self):
+        channels = getattr(self, 'channels', [])
+        return channels[0] if channels else None

@@ -522,6 +522,11 @@ DEFAULT_SITE_MAILS = {
               'subject': ALERTCOMMENT_SUBJECT,
               'template': ALERTCOMMENT_MESSAGE
     },
+    'alert_discuss': {
+              'title': _("Alert discuss"),
+              'subject': ALERTCOMMENT_SUBJECT,
+              'template': ALERTCOMMENT_MESSAGE
+    },
     'alert_respons': {
               'title': _("Alert respons"),
               'subject': ALERTRESPONS_SUBJECT,
