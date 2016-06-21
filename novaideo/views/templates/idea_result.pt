@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item result-item" 
+<div class="thumbnail right-caption span4 search-item result-item view-item" 
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
@@ -25,7 +25,7 @@
     <div class="object-menu pull-right">
       <div tal:replace="structure menu_body"/>
     </div>
-    <div class="object-title-block" >
+    <div class="object-title-block view-item-title" >
       <a tal:attributes="href url">
         <h4>
           <span class="icon ${icon}"></span>  ${object.title} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>

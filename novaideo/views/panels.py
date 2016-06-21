@@ -765,12 +765,13 @@ class Channels(object):
         self.context = context
         self.request = request
 
-    def _get_channels_bodies(self, user, channels, action_id):
+    def _get_channels_bodies(self, root, user, channels, action_id):
         result_body = []
         resources = {'css_links': [], 'js_links': []}
         for channel in channels:
+            subject = channel.get_subject(user)
             actions_call, action_resources = update_all_modal_action(
-                channel.subject, self.request, action_id)
+                subject, self.request, action_id)
             resources = merge_dicts(action_resources, resources)
             if actions_call:
                 object_values = {
@@ -786,24 +787,30 @@ class Channels(object):
         return result_body, resources
 
     def __call__(self):
-        root = getSite()
         user = get_current(self.request)
         result = {
             'css_links': [],
             'js_links': []}
         users_result_body = []
         others_result_body = []
+        general_result_body = []
         if self.request.user:
-            channels = user.following_channels
+            root = getSite()
+            general_channel = root.channel
+            channels = getattr(user, 'following_channels', [])
             user_channel = [c for c in channels
                             if isinstance(c.__parent__, Person)]
+            generals = [general_channel]
             others = [c for c in channels if c not in user_channel]
             resources = deepcopy(getattr(
                 self.request, 'resources', {'js_links': [], 'css_links': []}))
             users_result_body, users_resources = self._get_channels_bodies(
-                user, user_channel, 'discuss')
+                root, user, user_channel, 'discuss')
             others_result_body, others_resources = self._get_channels_bodies(
-                user, others, 'comment')
+                root, user, others, 'comment')
+            general_result_body, general_resources = self._get_channels_bodies(
+                root, user, generals, 'general_discuss')
+            general_result_body.extend(others_result_body)
             result['css_links'] = [c for c in users_resources['css_links']
                                    if c not in resources['css_links']]
             result['js_links'] = [c for c in users_resources['js_links']
@@ -812,10 +819,14 @@ class Channels(object):
                                    if c not in resources['css_links']]
             result['js_links'] = [c for c in others_resources['js_links']
                                   if c not in resources['js_links']]
+            result['css_links'] = [c for c in general_resources['css_links']
+                                   if c not in resources['css_links']]
+            result['js_links'] = [c for c in general_resources['js_links']
+                                  if c not in resources['js_links']]
             update_resources(self.request, result)
 
         result.update({
             'users_channels': users_result_body,
-            'others_channels': others_result_body,
+            'others_channels': general_result_body,
         })
         return result

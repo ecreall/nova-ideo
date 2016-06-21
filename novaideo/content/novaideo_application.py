@@ -21,7 +21,7 @@ from substanced.property import PropertySheet
 from dace.objectofcollaboration.application import Application
 from dace.descriptors import (
     CompositeMultipleProperty, CompositeUniqueProperty,
-    SharedMultipleProperty)
+    SharedMultipleProperty, SharedUniqueProperty)
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
     SequenceWidget,
@@ -72,12 +72,12 @@ DEFAULT_AMENDMENT_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
 
 DEFAULT_COLORS = {
     'idea': {
-        'background': '#adcce7',
-        'hover': hover_color('#adcce7')
+        'background': '#54902a',
+        'hover': hover_color('#54902a')
     },
     'proposal': {
-        'background': '#959595',
-        'hover': hover_color('#959595')
+        'background': '#3f6da6',
+        'hover': hover_color('#3f6da6')
     }
 }
 
@@ -289,6 +289,8 @@ class NovaIdeoApplication(VisualisableElement, Application):
     theme = CompositeUniqueProperty('theme')
     advertisings = CompositeMultipleProperty('advertisings')
     news_letter_members = SharedMultipleProperty('news_letter_members')
+    channels = CompositeMultipleProperty('channels', 'subject')
+    general_chanel = SharedUniqueProperty('general_chanel')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
@@ -363,6 +365,10 @@ class NovaIdeoApplication(VisualisableElement, Application):
     @property
     def amendment_intentions(self):
         return DEFAULT_AMENDMENT_INTENTIONS
+
+    @property
+    def channel(self):
+        return getattr(self, 'general_chanel', None)
 
     def init_files(self):
         for information in DEFAULT_FILES:

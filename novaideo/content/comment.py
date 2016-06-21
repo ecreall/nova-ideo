@@ -171,7 +171,7 @@ class Comment(Commentable):
     @property
     def subject(self):
         """Return the commented entity"""
-        return self.channel.subject
+        return self.channel.get_subject()
 
     def init_urls(self):
         self.urls = PersistentDict({})

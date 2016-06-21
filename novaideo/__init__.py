@@ -237,16 +237,30 @@ def evolve_nodes(root, registry):
 def evolve_channels(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import (
-        Iidea, IAmendment, IProposal, ICorrelation)
+        Iidea, IAmendment, IProposal, ICorrelation,
+        IPerson)
     from novaideo.core import Channel
-
+    root = getSite()
+    general = root.channels[0] if root.channels else Channel(title=_("General"))
+    root.addtoproperty('channels', general)
+    root.setproperty('general_chanel', general)
     contents = find_entities(
         interfaces=[Iidea, IAmendment, IProposal, ICorrelation])
     for entity in contents:
-        entity.addtoproperty('channels', Channel())
-        channel = entity.channel
-        for comment in entity.comments:
-            channel.addtoproperty('comments', comment)
+        if not entity.channel:
+            entity.addtoproperty('channels', Channel())
+            channel = entity.channel
+            for comment in entity.comments:
+                channel.addtoproperty('comments', comment)
+
+    users = find_entities(
+        interfaces=[IPerson])
+    for member in users:
+        selections = getattr(member, 'selections', [])
+        for selection in selections:
+            channel = getattr(selection, 'channel', None)
+            if channel and member not in channel.members:
+                channel.addtoproperty('members', member)
 
     log.info('Comments evolved.')
 

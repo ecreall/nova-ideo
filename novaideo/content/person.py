@@ -301,8 +301,10 @@ class Person(User, SearchableEntity, CorrelableEntity):
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
 
     def get_channel(self, user):
-        for channel in self.channels:
-            if user in channel.members:
+        all_channels = list(self.channels)
+        all_channels.extend(list(user.channels))
+        for channel in all_channels:
+            if user in channel.members and self in channel.members:
                 return channel
 
         return None

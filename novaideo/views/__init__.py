@@ -21,6 +21,9 @@ from pontus.view import BasicView
 
 from novaideo.views.idea_management.comment_idea import (
     CommentsView)
+from novaideo.views.user_management.discuss import (
+    DiscussCommentsView,
+    GeneralCommentsView)
 from novaideo.views.idea_management.present_idea import (
     SentToView)
 from novaideo.views.novaideo_view_manager.search import (
@@ -275,7 +278,27 @@ class NovaideoAPI(IndexManagementJsonView):
             user = get_current()
             channel = self.context.get_channel(user)
             comments = [channel.comments[-1]]
-            result_view = CommentsView(self.context, self.request)
+            result_view = DiscussCommentsView(self.context, self.request)
+            result_view.comments = comments
+            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+            return {'body': body}
+
+        return {'body': ''}
+
+    def general_discuss(self):
+        discuss_actions = getAllBusinessAction(
+            self.context, self.request, node_id='general_discuss',
+            process_discriminator='Application')
+        if discuss_actions:
+            action = discuss_actions[0]
+            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+            comment_view_instance = comment_view(
+                self.context, self.request,
+                behaviors=[action])
+            comment_view_instance.update()
+            channel = self.context.channel
+            comments = [channel.comments[-1]]
+            result_view = GeneralCommentsView(self.context, self.request)
             result_view.comments = comments
             body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
             return {'body': body}
@@ -373,7 +396,6 @@ class NovaideoAPI(IndexManagementJsonView):
         body = self.content(args=values,
                             template=self.search_idea_template)['body']
         return {'body': body}
-
 
     def _execute_action(self, process_id, node_id, appstruct):
         actions = getBusinessAction(

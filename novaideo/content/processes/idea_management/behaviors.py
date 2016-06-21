@@ -656,6 +656,9 @@ class CommentIdea(InfiniteCardinality):
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
 
+    def get_nb(self, context, request):
+        return context.channel.len_comments
+
     def get_title(self, context, request):
         len_comments = context.channel.len_comments
         return _("${title} (${nember})",

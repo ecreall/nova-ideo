@@ -82,6 +82,10 @@ class IChannel(ICommentable):
     pass
 
 
+class IPrivateChannel(IChannel):
+    pass
+
+
 class IAmendment(ICorrelableEntity,
                  IPresentableEntity,
                  IDuplicableEntity,

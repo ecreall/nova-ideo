@@ -36,7 +36,7 @@
                           class: function(d) { return d.data.entityid == '${'node'+node_id}'? "current"+" node-shape": "node-shape";}, 
                       },
                       nodeStyle: {
-                          fill: function(d) { return d.data.descriminator == 'idea'? "#98b498": "#959595";},
+                          fill: function(d) { return d.data.descriminator == 'idea'? "#54902a": "#3f6da6";},
                           stroke: 'none'
                       },
                       edgeStyle: {

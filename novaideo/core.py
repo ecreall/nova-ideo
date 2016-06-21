@@ -37,6 +37,7 @@ from novaideo.content.interface import (
     IDuplicableEntity,
     ISearchableEntity,
     ICommentable,
+    IPrivateChannel,
     IChannel,
     ICorrelableEntity,
     IPresentableEntity,
@@ -238,6 +239,53 @@ class Channel(Commentable):
     def __init__(self, **kwargs):
         super(Channel, self).__init__(**kwargs)
         self.set_data(kwargs)
+
+    def get_subject(self, user=None):
+        subject = self.subject
+        return subject if subject else getattr(self, '__parent__', None)
+
+    def get_title(self, user=None):
+        title = getattr(self, 'title', '')
+        if not title:
+            return getattr(self.get_subject(user), 'title', None)
+
+        return title
+
+
+@content(
+    'privatechannel',
+    icon='icon novaideo-icon icon-idea',
+    )
+@implementer(IPrivateChannel)
+class PrivateChannel(Commentable):
+    """Channel class"""
+
+    type_title = _('Channel')
+    icon = 'icon novaideo-icon icon-idea'
+    templates = {'default': 'novaideo:views/templates/channel_result.pt'}
+    name = renamer()
+    members = SharedMultipleProperty('members', 'following_channels')
+    subject = SharedUniqueProperty('subject', 'channels')
+
+    def __init__(self, **kwargs):
+        super(PrivateChannel, self).__init__(**kwargs)
+        self.set_data(kwargs)
+
+    def get_subject(self, user=None):
+        subject = None
+        for member in self.members:
+            if member is not user:
+                subject = member
+                break
+
+        return subject if subject else getattr(self, '__parent__', None)
+
+    def get_title(self, user=None):
+        title = getattr(self, 'title', '')
+        if not title:
+            return getattr(self.get_subject(user), 'title', None)
+
+        return title
 
 
 @implementer(IVersionableEntity)

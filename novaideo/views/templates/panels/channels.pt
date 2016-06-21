@@ -1,4 +1,4 @@
-<div tal:condition="users_channels or others_channels">
+<div tal:condition="users_channels or others_channels" i18n:domain="novaideo">
 	<span class="all-channels-toggle ion-chatbubbles"></span>
 	<div class="all-channels ${(request.cookies.get('channels', 'off') == 'off') and 'toggled'}">
 		<div class="all-blocks">
@@ -7,7 +7,7 @@
 		    </div>
 			<div tal:condition="others_channels" class="channels-block">
 				<div class="channel-title">
-					<span>Channels</span>
+					<span i18n:translate="">Channels</span>
 					<span class="channel-len">(${len(others_channels)})</span>
 				</div>
 				<div class="channels-container">
@@ -17,7 +17,7 @@
 			</div>
 			<div tal:condition="users_channels" class="channels-block">
 				<div class="channel-title">
-					<span>Users</span>
+					<span i18n:translate="">Private discussions</span>
 					<span class="channel-len">(${len(users_channels)})</span>
 				</div>
 				<div class="channels-container">
