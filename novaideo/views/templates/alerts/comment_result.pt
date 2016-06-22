@@ -47,5 +47,5 @@
 		  </div>
 		  <span tal:condition="current_user in object.users_to_alert" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 		</div>
-	<div>
+	</div>
 </div>
