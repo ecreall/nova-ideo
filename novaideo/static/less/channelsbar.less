@@ -5,13 +5,19 @@
     bottom: 0;
     left: 250px;
     margin-left: -250px;
-    width: 220px;
+    width: 235px;
     float: left;
     color: #565656;
     box-shadow: -2px 0px 7px #000;
     z-index: 1028;
-    overflow-y: auto;
     transition: all .5s ease;
+}
+
+.all-channels-container{
+    height: 80vh;
+    position: absolute;
+    width: 220px;
+    margin-top: 21px;
 }
 
 .all-channels.toggled{
@@ -45,21 +51,20 @@ all-channels-toggle.close {
 
 .channels-container{
     padding-left: 5px;
-    max-height: 300px;
+    padding-right: 10px;
+    max-height: 35vh;
     overflow: auto;    
 }
 
 .channels-block{
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     position: relative;
-    margin-top: 25px;
 }
 
 .all-blocks{
     margin-top: 50px;
     padding: 10px;
     max-height: 100%;
-    overflow: auto;
 }
 
 .channels-block .channel-title{
@@ -79,8 +84,6 @@ all-channels-toggle.close {
     text-decoration: none !important;
     font-size: 12px;
     margin-bottom: 15px;
-    text-overflow: ellipsis;
-    overflow: hidden;
     white-space: nowrap;
     display: inline-block;
     vertical-align: top;
@@ -103,4 +106,9 @@ all-channels-toggle.close {
 .channel-icon{
     font-size: 16px;
     font-weight: bold;
+}
+
+.channel-item-title{
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

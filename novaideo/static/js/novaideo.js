@@ -51,6 +51,12 @@ function reset_cookie_channels_bar(){
   }
 }
 
+function init_channels_scroll(){
+$('.channels-container').mCustomScrollbar({
+    theme:"minimal-dark",
+    scrollInertia: 100,
+  });
+}
 
 function initscroll(){
   var result_scrolls = $(".result-scroll")
@@ -621,6 +627,8 @@ $(document).ready(function(){
   init_morecontent_scroll();
 
   initscroll();
+
+  init_channels_scroll();
 
 
   $('nav a nav-control').on('click', function(){
