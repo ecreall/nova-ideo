@@ -251,21 +251,17 @@ class Channel(Commentable):
 
         return title
 
+    def is_discuss(self):
+        return self.subject.__class__.__name__.lower() == 'person'
+
 
 @content(
     'privatechannel',
     icon='icon novaideo-icon icon-idea',
     )
 @implementer(IPrivateChannel)
-class PrivateChannel(Commentable):
+class PrivateChannel(Channel):
     """Channel class"""
-
-    type_title = _('Channel')
-    icon = 'icon novaideo-icon icon-idea'
-    templates = {'default': 'novaideo:views/templates/channel_result.pt'}
-    name = renamer()
-    members = SharedMultipleProperty('members', 'following_channels')
-    subject = SharedUniqueProperty('subject', 'channels')
 
     def __init__(self, **kwargs):
         super(PrivateChannel, self).__init__(**kwargs)

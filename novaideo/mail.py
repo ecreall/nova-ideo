@@ -358,6 +358,15 @@ Un nouveau commentaire a été fait sur {subject_type} « {subject_title} ». Vo
 
 """+ PORTAL_SIGNATURE
 
+ALERTDISCUSS_SUBJECT = u"""Nouveau message ajouté à votre discussion avec « {subject_title} »"""
+
+
+ALERTDISCUSS_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+Un nouveau message a été ajouté à votre discussion avec « {subject_title} ». Vous pouvez le retrouver sous {subject_url} et lui apporter une réponse.
+
+"""+ PORTAL_SIGNATURE
 
 ALERTRESPONS_SUBJECT = u"""Une personne a donné une réponse à un commentaire sur {subject_type} « {subject_title} »"""
 
@@ -524,8 +533,8 @@ DEFAULT_SITE_MAILS = {
     },
     'alert_discuss': {
               'title': _("Alert discuss"),
-              'subject': ALERTCOMMENT_SUBJECT,
-              'template': ALERTCOMMENT_MESSAGE
+              'subject': ALERTDISCUSS_SUBJECT,
+              'template': ALERTDISCUSS_MESSAGE
     },
     'alert_respons': {
               'title': _("Alert respons"),

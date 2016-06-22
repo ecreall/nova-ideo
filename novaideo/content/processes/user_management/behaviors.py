@@ -607,7 +607,8 @@ class Discuss(InfiniteCardinality):
               comment_oid=comment_oid,
               author_title=author_title,
               author_first_name=author_first_name,
-              author_last_name=author_last_name)
+              author_last_name=author_last_name,
+              comment_kind='discuss')
         subject_type = localizer.translate(
             _("The " + context.__class__.__name__.lower()))
         subject = mail_template['subject'].format(

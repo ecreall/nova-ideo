@@ -83,6 +83,8 @@ class Respond(InfiniteCardinality):
         user = get_current()
         comment.setproperty('author', user)
         content = comment.subject
+        channel = comment.channel
+        is_discuss = channel.is_discuss()
         if appstruct['related_contents']:
             related_contents = appstruct['related_contents']
             correlation = connect(
@@ -97,6 +99,7 @@ class Respond(InfiniteCardinality):
         author = getattr(content, 'author', None)
         authors = getattr(content, 'authors', [author] if author else [])
         comment_author = getattr(context, 'author', None)
+
         if user in authors:
             authors.remove(user)
 
@@ -111,14 +114,17 @@ class Respond(InfiniteCardinality):
         author_first_name = getattr(
             comment_author, 'first_name', comment_author.name)
         author_last_name = getattr(comment_author, 'last_name', '')
+        comment_kind = 'discuss' if is_discuss else 'comment'
         alert('internal', [root], authors,
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[content],
               comment_oid=comment_oid,
               author_title=author_title,
               author_first_name=author_first_name,
-              author_last_name=author_last_name)
-        mail_template = root.get_mail_template('alert_comment')
+              author_last_name=author_last_name,
+              comment_kind=comment_kind)
+        mail_template = root.get_mail_template(
+            'alert_discuss' if is_discuss else 'alert_comment')
         subject_type = localizer.translate(
             _("The " + content.__class__.__name__.lower()))
         subject = mail_template['subject'].format(
@@ -149,9 +155,12 @@ class Respond(InfiniteCardinality):
                   author_title=author_title,
                   comment_oid=comment_oid,
                   author_first_name=author_first_name,
-                  author_last_name=author_last_name)
+                  author_last_name=author_last_name,
+                  comment_kind=comment_kind
+                  )
             if getattr(comment_author, 'email', ''):
-                mail_template = root.get_mail_template('alert_respons')
+                mail_template = root.get_mail_template(
+                    'alert_discuss' if is_discuss else 'alert_respons')
                 subject = mail_template['subject'].format(
                     subject_title=content.title,
                     subject_type=subject_type)

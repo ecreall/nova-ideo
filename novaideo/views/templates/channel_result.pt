@@ -5,7 +5,7 @@
                title object.get_title(current_user);
                subject object.get_subject(current_user);
                subjectclassname subject.__class__.__name__.lower(); 
-               is_user subjectclassname == 'person'">
+               is_discuss object.is_discuss()">
       <a id="${item['action_id']}-btn" 
         class="dace-action-inline media-${subjectclassname}"
         href="${item['action'].url(item['context'])}"   
@@ -17,9 +17,9 @@
         i18n:attributes="title"
         title="${title}">
           <div class="view-item-title channel-item-title">
-             <span tal:condition="not is_user" class="channel-icon" >#</span>
-             <span tal:condition="not is_user" class="${getattr(subject, 'icon', '')}" ></span>
-             <div tal:omit-tag="" tal:condition="is_user" tal:define="
+             <span tal:condition="not is_discuss" class="channel-icon" >#</span>
+             <span tal:condition="not is_discuss" class="${getattr(subject, 'icon', '')}" ></span>
+             <div tal:omit-tag="" tal:condition="is_discuss" tal:define="
                   picture getattr(subject, 'picture', None);
                   profil_picture getattr(picture, 'profil', None)">
                <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
