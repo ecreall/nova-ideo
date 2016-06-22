@@ -553,6 +553,7 @@ def get_actions_navbar(
         resources, modal_actions = update_modal_actions(
             modal_actions, context, request)
         update_nb += 1
+        request.invalidate_cache = True
 
     modal_actions = [(a['action'], a) for a in modal_actions]
     result['modal-action'] = {'isactive': isactive,
