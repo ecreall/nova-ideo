@@ -553,7 +553,8 @@ def get_actions_navbar(
         resources, modal_actions = update_modal_actions(
             modal_actions, context, request)
         update_nb += 1
-        request.invalidate_cache = True
+        if isactive:
+            request.invalidate_cache = True
 
     modal_actions = [(a['action'], a) for a in modal_actions]
     result['modal-action'] = {'isactive': isactive,
@@ -594,7 +595,7 @@ class ObjectRemovedException(Exception):
 def generate_navbars(request, context, **args):
     def actions_getter():
         return getAllBusinessAction(
-                context, process_discriminator='Application')
+            context, request, process_discriminator='Application')
 
     actions_navbar = get_actions_navbar(
         actions_getter, context, request, list(ALL_DESCRIMINATORS))
@@ -640,7 +641,7 @@ def generate_navbars(request, context, **args):
 def generate_listing_menu(request, context, **args):
     def actions_getter():
         return getAllBusinessAction(
-            context, process_discriminator='Application')
+            context, request, process_discriminator='Application')
 
     descriminators = args.get(
         'descriminators',
