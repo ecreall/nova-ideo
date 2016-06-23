@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-06-21 16:28+0200\n"
+"POT-Creation-Date: 2016-06-23 14:42+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -19,21 +19,26 @@ msgstr "La proposition"
 msgid "The idea"
 msgstr "L'idée"
 
-#: novaideo/__init__.py:300
+#: novaideo/__init__.py:314
 msgid "Legal notices"
 msgstr "Mentions légales"
 
-#: novaideo/__init__.py:301
+#: novaideo/__init__.py:315
 msgid "The legal notices"
 msgstr "Les mentions légales"
 
-#: novaideo/__init__.py:304
+#: novaideo/__init__.py:318
 msgid "Terms of use"
 msgstr "Conditions d'utilisation"
 
-#: novaideo/__init__.py:305
+#: novaideo/__init__.py:319
 msgid "The terms of use"
 msgstr "Les conditions d'utilisation"
+
+#: novaideo/__init__.py:244 novaideo/content/correlation.py:123
+#: novaideo/content/novaideo_application.py:341
+msgid "General"
+msgstr "Générale"
 
 #: novaideo/core_schema.py:35
 msgid "Administration service"
@@ -99,17 +104,17 @@ msgstr "Modérateur"
 msgid "Examiner"
 msgstr "Examinateur"
 
-#: novaideo/core.py:232 novaideo/core.py:263
+#: novaideo/core.py:232
 msgid "Channel"
 msgstr "Channel"
 
-#: novaideo/core.py:515 novaideo/content/idea.py:90
+#: novaideo/core.py:511 novaideo/content/idea.py:90
 #: novaideo/content/workspace.py:44 novaideo/content/proposal.py:112
 #: novaideo/content/comment.py:123
 msgid "File"
 msgstr "Fichier"
 
-#: novaideo/core.py:354
+#: novaideo/core.py:350
 #: novaideo/views/idea_management/templates/diff_result.pt:6
 #: novaideo/views/admin_process/manage_keywords.py:44
 #: novaideo/views/proposal_management/templates/see_proposal.pt:78
@@ -118,7 +123,7 @@ msgstr "Fichier"
 msgid "Keywords"
 msgstr "Mots clés"
 
-#: novaideo/core.py:355
+#: novaideo/core.py:351
 msgid ""
 "To add keywords, you need to tap the « Enter » key after each keyword or "
 "separate them with commas."
@@ -126,7 +131,7 @@ msgstr ""
 "Pour ajouter des mots clés, vous devez taper sur la touche « Entrée » après "
 "chaque mot clé ou les séparer par des virgules."
 
-#: novaideo/core.py:501 novaideo/views/filter/__init__.py:886
+#: novaideo/core.py:497 novaideo/views/filter/__init__.py:886
 #: novaideo/views/proposal_management/templates/idea_data.pt:3
 #: novaideo/views/correlation_management/templates/see_correlation.pt:7
 #: novaideo/content/idea.py:72 novaideo/content/correction.py:51
@@ -134,79 +139,79 @@ msgstr ""
 msgid "Text"
 msgstr "Texte"
 
-#: novaideo/mail.py:374
+#: novaideo/mail.py:383
 msgid "Invitation"
 msgstr "Invitation"
 
-#: novaideo/mail.py:379
+#: novaideo/mail.py:388
 #: novaideo/content/processes/invitation_management/definition.py:75
 #: novaideo/content/processes/invitation_management/definition.py:76
 msgid "Refuse the invitation"
 msgstr "Refuser"
 
-#: novaideo/mail.py:384
+#: novaideo/mail.py:393
 #: novaideo/content/processes/invitation_management/definition.py:71
 #: novaideo/content/processes/invitation_management/definition.py:72
 msgid "Accept the invitation"
 msgstr "Accepter"
 
-#: novaideo/mail.py:389
+#: novaideo/mail.py:398
 msgid "Reset the password"
 msgstr "Réinitialiser le mot de passe"
 
-#: novaideo/mail.py:394
+#: novaideo/mail.py:403
 msgid "Registration confiramtion"
 msgstr "Confirmation de l'enregistrement"
 
-#: novaideo/mail.py:399
+#: novaideo/mail.py:408
 msgid "Users preregistration"
 msgstr "Préinscription des utilisateurs"
 
-#: novaideo/mail.py:405
+#: novaideo/mail.py:414
 msgid "Presentation of an idea"
 msgstr "Présentation d'une idée"
 
-#: novaideo/mail.py:411
+#: novaideo/mail.py:420
 msgid "Presentation of a proposal"
 msgstr "Présentation d'une proposition"
 
-#: novaideo/mail.py:416
+#: novaideo/mail.py:425
 msgid "Presentation of an amendment"
 msgstr "Présentaation d'un amendement"
 
-#: novaideo/mail.py:421 novaideo/mail.py:426
+#: novaideo/mail.py:430 novaideo/mail.py:435
 msgid "Beginning of the improvement cycle"
 msgstr "Début du cycle d'amélioration"
 
-#: novaideo/mail.py:431
+#: novaideo/mail.py:440
 msgid "Inactivity alert"
 msgstr "Alerte d'inactivité"
 
-#: novaideo/mail.py:436
+#: novaideo/mail.py:445
 msgid "End of the improvement cycle alert"
 msgstr "Fin du cycle d'amélioration"
 
-#: novaideo/mail.py:441
+#: novaideo/mail.py:450
 msgid "Vote result (amendments)"
 msgstr "Résultats des votes (amendements)"
 
-#: novaideo/mail.py:446
+#: novaideo/mail.py:455
 msgid "Proposal publishing"
 msgstr "Publication de la proposition"
 
-#: novaideo/mail.py:451
+#: novaideo/mail.py:460
 msgid "Start votes (publishing proposal)"
 msgstr "Debut des votes (publication de la proposition)"
 
-#: novaideo/mail.py:456
+#: novaideo/mail.py:465
 msgid "Start votes (amendments)"
 msgstr "Debut des votes (amendements)"
 
-#: novaideo/mail.py:461
+#: novaideo/mail.py:470
 msgid "Withdeaw"
 msgstr "Retirer"
 
-#: novaideo/mail.py:466
+#: novaideo/mail.py:475
 msgid ""
 "Automatic addition of a participant in the working group that was on the "
 "waiting list"
@@ -214,56 +219,56 @@ msgstr ""
 "Ajout automatique d'un participant au groupe de travail qui était sur liste "
 "d'attente"
 
-#: novaideo/mail.py:471
+#: novaideo/mail.py:480
 msgid "Participation to the working group"
 msgstr "Participation au groupe de travail"
 
-#: novaideo/mail.py:476
+#: novaideo/mail.py:485
 msgid "Resignation of the working group"
 msgstr "Démission du groupe de travail"
 
-#: novaideo/mail.py:481
+#: novaideo/mail.py:490
 msgid "Registration on the waiting list"
 msgstr "Inscription sur la liste d'attente"
 
-#: novaideo/mail.py:486
+#: novaideo/mail.py:495
 msgid "Alert (new content)"
 msgstr "Alerte (contenu ajouté)"
 
-#: novaideo/mail.py:491
+#: novaideo/mail.py:500
 msgid "Alert (content modified)"
 msgstr "Alerte (contenu modifié)"
 
-#: novaideo/mail.py:496
+#: novaideo/mail.py:505
 msgid "Moderation: Archive the idea"
 msgstr "Modération: Archiver l'idée"
 
-#: novaideo/mail.py:501
+#: novaideo/mail.py:510
 msgid "Moderation: Opinion on the proposal"
 msgstr "Modération: Opinion sur la proposition"
 
-#: novaideo/mail.py:506
+#: novaideo/mail.py:515
 msgid "Moderation: Opinion on the idea"
 msgstr "Modération: Opinion sur l'idée"
 
-#: novaideo/mail.py:511
+#: novaideo/mail.py:520
 msgid "Moderation: Publish the idea"
 msgstr "Modération: Publier l'idée"
 
-#: novaideo/mail.py:516
+#: novaideo/mail.py:525
 msgid "Moderation: Delete the proposal"
 msgstr "Modération: Supprimer la proposition"
 
-#: novaideo/mail.py:521
+#: novaideo/mail.py:530
 msgid "Alert comment"
 msgstr "Alerte commentaire"
 
-#: novaideo/mail.py:526
+#: novaideo/mail.py:535
 #, fuzzy
 msgid "Alert discuss"
 msgstr "Les alertes"
 
-#: novaideo/mail.py:531
+#: novaideo/mail.py:540
 msgid "Alert respons"
 msgstr "Alerte réponse"
 
@@ -875,7 +880,7 @@ msgstr "À"
 #: novaideo/views/proposal_management/present_proposal.py:65
 #: novaideo/views/amendment_management/present_amendment.py:65
 #: novaideo/views/novaideo_view_manager/contact.py:64
-#: novaideo/content/site_configuration.py:187
+#: novaideo/content/site_configuration.py:188
 msgid "Subject"
 msgstr "Sujet"
 
@@ -2277,7 +2282,7 @@ msgstr "Le responsable"
 msgid "Filter results"
 msgstr "Filtrer les résultats"
 
-#: novaideo/views/templates/channel_result.pt:17
+#: novaideo/views/templates/channel_result.pt:18
 #, fuzzy
 msgid "${title}"
 msgstr "Titre"
@@ -2405,11 +2410,11 @@ msgstr "membre(s)"
 msgid "minimum)"
 msgstr "minimum)"
 
-#: novaideo/views/templates/panels/channels.pt:10
+#: novaideo/views/templates/panels/channels.pt:17
 msgid "Channels"
 msgstr ""
 
-#: novaideo/views/templates/panels/channels.pt:20
+#: novaideo/views/templates/panels/channels.pt:27
 msgid "Private discussions"
 msgstr "Discussions privées"
 
@@ -3937,7 +3942,7 @@ msgid "Contents by dates"
 msgstr "Contenus par dates"
 
 #: novaideo/views/novaideo_view_manager/analytics.py:503
-#: novaideo/content/site_configuration.py:304
+#: novaideo/content/site_configuration.py:305
 #: novaideo/content/processes/novaideo_view_manager/definition.py:107
 msgid "Analytics"
 msgstr "Statistiques"
@@ -4434,23 +4439,18 @@ msgid "Remove from my favorites"
 msgstr "Retirer de mes favoris"
 
 #: novaideo/content/organization.py:113
-#: novaideo/content/site_configuration.py:140
+#: novaideo/content/site_configuration.py:141
 msgid "Logo"
 msgstr "Logo"
 
 #: novaideo/content/organization.py:125
-#: novaideo/content/site_configuration.py:285
+#: novaideo/content/site_configuration.py:286
 msgid "Add a new contact"
 msgstr "Ajouter un contact"
 
 #: novaideo/content/correlation.py:100
 msgid "Targets"
 msgstr ""
-
-#: novaideo/content/correlation.py:123
-#: novaideo/content/novaideo_application.py:340
-msgid "General"
-msgstr "Générale"
 
 #: novaideo/content/novaideo_application.py:52
 msgid "Mr"
@@ -4624,137 +4624,137 @@ msgstr "Insuffisant"
 msgid "Reject"
 msgstr "À rejeter"
 
-#: novaideo/content/site_configuration.py:50
+#: novaideo/content/site_configuration.py:51
 msgid "Is a suggestion box"
 msgstr "Est une boite à idée"
 
-#: novaideo/content/site_configuration.py:51
+#: novaideo/content/site_configuration.py:52
 msgid "In a suggestion box, only the ideas are managed."
 msgstr "Dans une boite à idées, seules les idées sont gérées"
 
-#: novaideo/content/site_configuration.py:59
+#: novaideo/content/site_configuration.py:60
 msgid "Moderate ideas"
 msgstr "Modérer les idées"
 
-#: novaideo/content/site_configuration.py:60
+#: novaideo/content/site_configuration.py:61
 msgid "Ideas will be published after moderation."
 msgstr "Les idées seront publiées après leurs modérations."
 
-#: novaideo/content/site_configuration.py:68
+#: novaideo/content/site_configuration.py:69
 msgid "Contents to support"
 msgstr "Contenus à soutenir"
 
-#: novaideo/content/site_configuration.py:69
+#: novaideo/content/site_configuration.py:70
 msgid "Contents can be supported by users."
 msgstr "Les contenus peuvent être soutenus par les utilisateurs"
 
-#: novaideo/content/site_configuration.py:76
+#: novaideo/content/site_configuration.py:77
 msgid "Contents to examine"
 msgstr "Contenus à examiner"
 
-#: novaideo/content/site_configuration.py:77
+#: novaideo/content/site_configuration.py:78
 msgid "Contents must be examined by a review committee."
 msgstr "Les contenus doivent être examinés par le comité d'examen"
 
-#: novaideo/content/site_configuration.py:83
+#: novaideo/content/site_configuration.py:84
 #: novaideo/content/processes/proposal_management/definition.py:199
 msgid "Work modes"
 msgstr "Les modes de travail"
 
-#: novaideo/content/site_configuration.py:84
+#: novaideo/content/site_configuration.py:85
 msgid "Work modes of the working group (for proposals)."
 msgstr "Mode de travail des groupes de travail (pour les propositions)"
 
-#: novaideo/content/site_configuration.py:95
+#: novaideo/content/site_configuration.py:96
 msgid "Invitation only"
 msgstr "Seulement sous invitation"
 
-#: novaideo/content/site_configuration.py:96
+#: novaideo/content/site_configuration.py:97
 msgid "Users can register by invitation only."
 msgstr "Les utilisateurs peuvent s'enregistrer seulement sous invitation"
 
-#: novaideo/content/site_configuration.py:104
+#: novaideo/content/site_configuration.py:105
 msgid "Accessible only by members"
 msgstr "Accessible, seulement, par les membres."
 
-#: novaideo/content/site_configuration.py:105
+#: novaideo/content/site_configuration.py:106
 msgid "Contents can be displayed only by members."
 msgstr "Les contenus peuvent être affichés, seulement, par les membres."
 
-#: novaideo/content/site_configuration.py:112
+#: novaideo/content/site_configuration.py:113
 msgid "Minimum number of participants for a working group"
 msgstr "Nombre minimum de participants pour un groupe de travail"
 
-#: novaideo/content/site_configuration.py:118
+#: novaideo/content/site_configuration.py:119
 msgid "Maximum number of participants for a working group"
 msgstr "Nombre maximum de participants pour un groupe de travail"
 
-#: novaideo/content/site_configuration.py:124
+#: novaideo/content/site_configuration.py:125
 msgid "Maximum number of working group by member"
 msgstr "Le nombre maximum de groupe de travail par membre"
 
-#: novaideo/content/site_configuration.py:130
+#: novaideo/content/site_configuration.py:131
 msgid "Minimum number of tokens by member"
 msgstr "Le nombre minimum de jetons par membre"
 
-#: novaideo/content/site_configuration.py:142
+#: novaideo/content/site_configuration.py:143
 msgid "Only PNG and SVG files are supported."
 msgstr "Seuls les fichiers PNG et SVG sont supportés."
 
-#: novaideo/content/site_configuration.py:148
+#: novaideo/content/site_configuration.py:149
 msgid "Favicon"
 msgstr ""
 
-#: novaideo/content/site_configuration.py:150
+#: novaideo/content/site_configuration.py:151
 msgid "Only ICO file is supported."
 msgstr "Seuls les fichiers ICO sont pris en charge."
 
-#: novaideo/content/site_configuration.py:156
+#: novaideo/content/site_configuration.py:157
 msgid "Theme"
 msgstr "Thème"
 
-#: novaideo/content/site_configuration.py:158
+#: novaideo/content/site_configuration.py:159
 msgid "Only CSS files are supported."
 msgstr "Seuls les fichiers CSS sont supportés."
 
-#: novaideo/content/site_configuration.py:164
+#: novaideo/content/site_configuration.py:165
 msgid "Activate the social share"
 msgstr "Activer le partage avec les réseaux sociaux"
 
-#: novaideo/content/site_configuration.py:175
+#: novaideo/content/site_configuration.py:176
 msgid "Mail id"
 msgstr ""
 
-#: novaideo/content/site_configuration.py:181
-#: novaideo/content/site_configuration.py:272
+#: novaideo/content/site_configuration.py:182
+#: novaideo/content/site_configuration.py:273
 msgid "Title"
 msgstr "Titre"
 
-#: novaideo/content/site_configuration.py:193
+#: novaideo/content/site_configuration.py:194
 msgid "Template"
 msgstr "Modèle"
 
-#: novaideo/content/site_configuration.py:231
+#: novaideo/content/site_configuration.py:232
 msgid "Mail templates"
 msgstr "Modèles des courriels"
 
-#: novaideo/content/site_configuration.py:255
+#: novaideo/content/site_configuration.py:256
 msgid "Authorize the addition of keywords"
 msgstr "Autoriser l'ajout des mots clés"
 
-#: novaideo/content/site_configuration.py:298
+#: novaideo/content/site_configuration.py:299
 msgid "Site sender"
 msgstr "Courriel d'envoi du site"
 
-#: novaideo/content/site_configuration.py:315
+#: novaideo/content/site_configuration.py:316
 msgid "Activate the push notification"
 msgstr "Activer les notifications"
 
-#: novaideo/content/site_configuration.py:322
+#: novaideo/content/site_configuration.py:323
 msgid "Application id"
 msgstr "L'identifiant de l'application"
 
-#: novaideo/content/site_configuration.py:223
+#: novaideo/content/site_configuration.py:224
 msgid "Mail template"
 msgstr "Modèle du courriel"
 
@@ -5429,8 +5429,8 @@ msgid "Change without validation (At least one member)"
 msgstr "Modification sans validation (Au moins un membre)"
 
 #: novaideo/content/processes/proposal_management/__init__.py:103
-msgid "Change with validation (At least three members)"
-msgstr "Modification avec validation (Au moins trois membres)"
+msgid "Change with validation (At least two members)"
+msgstr "Modification avec validation (Au moins deux membres)"
 
 #: novaideo/content/processes/proposal_management/__init__.py:113
 msgid "Change with amendments (At least three members)"
