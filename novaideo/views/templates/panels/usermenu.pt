@@ -11,7 +11,7 @@
                   len_alerts len(alerts);
                   alerts_url request.resource_url(request.root, 'novaideoapi', query={'op': 'get_user_alerts'});
                   all_alerts_url request.resource_url(request.root, '@@seealerts');
-                  progress_url request.static_url('novaideo:static/images/progress.gif');
+                  progress_url request.static_url('novaideo:static/images/progress.svg');
                   picture getattr(request.user, 'picture', None);
                   profil_picture getattr(picture, 'profil', None)">
   <tal:block tal:repeat="jslink js_links">

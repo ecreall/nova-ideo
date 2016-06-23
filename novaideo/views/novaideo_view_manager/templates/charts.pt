@@ -1,6 +1,6 @@
 <div class="container-fluid analytics-container">
   <div style="width: 100%; text-align: center;">
-     <img class="loading-indicator hide-bloc" src="${request.static_url('novaideo:static/images/progress.gif')}"/>
+     <img class="loading-indicator hide-bloc" src="${request.static_url('novaideo:static/images/progress.svg')}" width="50"/>
   </div>
   <div class="analytics-study-${id}"></div>
   <div class="row clearfix" tal:repeat="row_index range(row_len)">
