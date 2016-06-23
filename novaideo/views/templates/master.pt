@@ -170,7 +170,7 @@
       </div>
         <metal:slot metal:define-slot="outer-content">
           <div class="container-fluid">
-          <div tal:define="more_panel panel('more_contents') if not view_only else None" class="row clearfix novaideo-content">
+          <div class="row clearfix novaideo-content">
 
             <div tal:condition="not view_only" class="col-md-2 column ui-sortable novaideo-left">
               ${panel('channels')}
@@ -242,12 +242,6 @@
                     </nav>
                   </div>
                 </div>
-  
-
-
-
-
-
                  ${panel('lateral_menu')}
                  ${panel('advertisting_right_1')}
                  ${panel('advertisting_right_2')}
@@ -260,9 +254,6 @@
                  ${panel('advertisting_right_10')}
                  ${panel('advertisting_right_11')}
                  ${panel('contextual_help')}
-               <div class="more-contents-panel-s visible-xs-inline-block visible-sm-inline-block">
-                     ${more_panel}
-                 </div>
                <div metal:define-slot="right"></div>
                
             </div>
