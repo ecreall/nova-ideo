@@ -25,15 +25,16 @@ from novaideo.content import get_file_widget
 
 @colander.deferred
 def modes_choice(node, kw):
+    request = node.bindings['request']
+    localizer = request.localizer
     modes = list(WORK_MODES.items())
     modes = sorted(modes, key=lambda e: e[1].order)
-    values = [(key, value.title) for key, value in modes]
+    values = [(key, localizer.translate(value.title)) for key, value in modes]
     return CheckboxChoiceWidget(values=values, multiple=True)
 
 
 @colander.deferred
 def content_types_choices(node, kw):
-    request = node.bindings['request']
     content_to_examine = ['idea', 'proposal']
     values = [(key, getattr(c, 'type_title', c.__class__.__name__))
               for key, c in list(core.SEARCHABLE_CONTENTS.items())
