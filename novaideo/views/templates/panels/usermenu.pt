@@ -14,7 +14,7 @@
                   progress_url request.static_url('novaideo:static/images/progress.gif');
                   picture getattr(request.user, 'picture', None);
                   profil_picture getattr(picture, 'profil', None)">
-    <tal:block tal:repeat="jslink js_links">
+  <tal:block tal:repeat="jslink js_links">
       <script src="${request.static_url(jslink)}"></script>
   </tal:block>
   <tal:block tal:repeat="csslink css_links">

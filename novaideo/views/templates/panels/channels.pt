@@ -1,4 +1,10 @@
 <div tal:condition="users_channels or others_channels" i18n:domain="novaideo">
+  <tal:block tal:repeat="jslink js_links">
+      <script src="${request.static_url(jslink)}"></script>
+  </tal:block>
+  <tal:block tal:repeat="csslink css_links">
+      <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+  </tal:block>
 	<span class="all-channels-toggle ion-chatbubbles"></span>
 	<div class="all-channels ${(request.cookies.get('channels', 'off') == 'off') and 'toggled'}">
 		<div class="all-blocks">
