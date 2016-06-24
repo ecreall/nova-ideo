@@ -22,6 +22,7 @@ function send_vote(event){
   formData.append(button.val(), button.val())
   var url = $this.attr('action')
   button.addClass('disabled');
+  loading_progress()
   $.ajax({
       url: url,
       type: 'POST',
@@ -33,6 +34,7 @@ function send_vote(event){
         var votes = $(group.find('.panel-title.collapsed'))
         if(votes.length>0){
           $(votes.first()).click()
+          finish_progress()
         }else{
            location.reload();
         }
