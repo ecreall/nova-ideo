@@ -67,7 +67,7 @@ class VoteFormView(FormView):
     title = _('Vote')
     name = 'voteform'
     formid = 'formvote'
-    behaviors = [Vote, Cancel]
+    behaviors = [Vote]
     schema = VoteSchema()
     validate_behaviors = False
 
@@ -83,6 +83,8 @@ class VoteFormView(FormView):
         self.schema.get('vote').widget = vote_widget
         self.schema.view = self
         formwidget = deform.widget.FormWidget(css_class='vote-form')
+        self.action = self.request.resource_url(
+            self.context, 'referendumvote')
         self.schema.widget = formwidget
 
 

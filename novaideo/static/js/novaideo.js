@@ -13,6 +13,34 @@ function update_notification_id(id, url){
    });
 }
 
+function send_vote(event){
+  var $this = $(this)
+  var panel = $($this.parents('.panel').first())
+  var group = $($this.parents('.panel-group'))
+  var button = $($this.find('button').first())
+  var formData = new FormData($this[0]);
+  formData.append(button.val(), button.val())
+  var url = $this.attr('action')
+  button.addClass('disabled');
+  $.ajax({
+      url: url,
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(data) {
+        panel.remove()
+        var votes = $(group.find('.panel-title.collapsed'))
+        if(votes.length>0){
+          $(votes.first()).click()
+        }else{
+           location.reload();
+        }
+       }
+  });
+  event.preventDefault();
+}
+
 function collapse_current_collpsein(){
   var current_btn = $(this);
   var btns = $('.navbar-toggle.collapsed');
@@ -508,6 +536,8 @@ $(document).ready(function(){
        event.preventDefault();
    });
 
+  $(document).on('submit','form.vote-form', send_vote)
+  
   $(document).on('submit','.home-add-idea form', function( event ) {
         var $this = $(this)
         var button = $($this.find('button.active').first())

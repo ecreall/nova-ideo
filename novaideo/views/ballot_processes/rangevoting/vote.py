@@ -67,7 +67,7 @@ class VoteFormView(FormView):
     title =  _('Vote')
     name = 'voteform'
     formid = 'formvote'
-    behaviors = [Vote, Cancel]
+    behaviors = [Vote]
     schema = VoteSchema()
     validate_behaviors = False
 
@@ -86,8 +86,10 @@ class VoteFormView(FormView):
             define_node_op(self.schema)
 
         formwidget = deform.widget.FormWidget(css_class='vote-form')
+        self.action = self.request.resource_url(
+            self.context, 'rangevotingvote')
         self.schema.widget = formwidget
-            
+     
 
 @view_config(
     name='rangevotingvote',
