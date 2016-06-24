@@ -168,23 +168,8 @@ def serialize_roles(roles, root=None):
 
 
 def generate_access_keys(user, root):
-    root_oid = str(get_oid(root))
-    access_keys = get_access_keys(
+    return get_access_keys(
         user, root=root)
-    root_keys = [a for a in access_keys if a.endswith(root_oid)]
-    root_roles = [(a, a.replace('_'+root_oid, '')) for a in root_keys]
-    local_keys = list(set(access_keys) - set(root_keys))
-
-    def is_valid(role, local_keys):
-        return role == 'admin' or\
-            any(a.startswith(role)
-                for a in local_keys)
-
-    valid_root_keys = [a for a, role in root_roles
-                       if is_valid(role, local_keys)]
-    valid_access_keys = local_keys
-    valid_access_keys.extend(valid_root_keys)
-    return valid_access_keys
 
 
 @implementer(ICommentable)

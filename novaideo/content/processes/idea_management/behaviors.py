@@ -863,18 +863,22 @@ class Associate(InfiniteCardinality):
 
 
 def get_access_key(obj):
-    if 'published' in obj.state or 'examined' in obj.state:
+    if 'published' in obj.state:
         return ['always']
+    elif 'submitted' in obj.state:
+        return serialize_roles(
+            (('Owner', obj), 'Admin', 'Moderator'))
     else:
-        result = serialize_roles(
+        return serialize_roles(
             (('Owner', obj), 'Admin'))
-        return result
 
 
 def seeidea_processsecurity_validation(process, context):
     return access_user_processsecurity(process, context) and \
-           ('published' in context.state or 'examined' in context.state or\
-            has_any_roles(roles=(('Owner', context), 'Admin')))
+           ('published' in context.state or\
+            has_any_roles(roles=(('Owner', context), 'Admin')) or\
+            ('submitted' in context.state and has_role(role=('Moderator',)))
+            )
 
 
 @access_action(access_key=get_access_key)
