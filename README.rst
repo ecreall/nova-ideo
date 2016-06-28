@@ -32,7 +32,7 @@ The project is licensed under the GPLv3.
 Getting Started for development
 -------------------------------
 
-To run in development mode (without docker)::
+To run in development mode without docker::
 
     python3.4 bootstrap.py
     bin/buildout
@@ -41,37 +41,32 @@ To run in development mode (without docker)::
 
 The application is on http://localhost:6543
 
-To execute all processes with docker (almost same as production)::
 
-    sudo docker-compose -f docker-compose-dev.yml pull
-    sudo docker-compose -f docker-compose-dev.yml build --pull
-    sudo docker-compose -f docker-compose-dev.yml rm -f
-    sudo docker-compose -f docker-compose-dev.yml up -d
+To run in development mode with docker::
+
+    ./run.sh rebuild
+    ./run.sh
 
 The app is deployed on http://local.ecreall.com:8080
 
+To send emails, you need a mta agent on 172.17.0.1:9025.
+If you have a server with postfix, you can do a tunnel like so::
 
-With Dokku (for production)
----------------------------
+    ssh -L 172.17.0.1:9025:localhost:25 myserver.example.com
 
-Requirements:
 
-- a Dokku install on a server
-- a postfix container running on your server
-- a wildcard certificate in /home/dokku/tls/
-- you can push apps to your server
+Deployment with docker
+----------------------
 
 ::
 
-    APP=novaideo
-    git clone git@github.com:ecreall/nova-ideo.git $APP
-    cd $APP
-    ssh dokku@dokku.me apps:create $APP
-    ssh dokku@dokku.me config:set $APP BUILDOUT_CFG=heroku.cfg
-    ssh dokku@dokku.me config:set $APP SECRET=mybigsecret
-    ssh dokku@dokku.me config:set $APP APPLICATION_URL=https://$APP.dokku.me
-    ssh dokku@dokku.me config:set $APP MAIL_DEFAULT_SENDER=contact@example.com
-    ssh dokku@dokku.me link:create $APP postfix mail
-    ssh dokku@dokku.me docker-options:add $APP "-v /home/dokku/$APP/.volumes/var:/app/var"
-    git remote add deploy dokku@dokku.me:$APP
-    git push deploy master
+    sudo options="-f docker-compose.yml" ./run.sh rebuild
+    sudo docker-compose up -d
+
+
+Currently, you need an external container named postfix with internal port 25
+to send emails.
+docker-compose runs a nginx container on port 80 and 443.
+You need to create the nginx-app-prod.conf file (similar to nginx-app-dev.conf)
+and add certificates to the local tls directory.
+
