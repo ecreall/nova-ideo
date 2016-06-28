@@ -1,6 +1,38 @@
-# Getting Started for development
+=========
+Nova Ideo
+=========
 
-To run in development mode (without docker):
+Features
+--------
+
+See `nova-ideo.com <https://nova-ideo.com/>`__
+
+
+Translations
+------------
+
+This product has been translated into
+
+- French
+
+
+Contribute
+----------
+
+- Issue Tracker: https://github.com/ecreall/nova-ideo/issues
+- Source Code: https://github.com/ecreall/nova-ideo
+
+
+License
+-------
+
+The project is licensed under the GPLv3.
+
+
+Getting Started for development
+-------------------------------
+
+To run in development mode (without docker)::
 
     python3.4 bootstrap.py
     bin/buildout
@@ -9,7 +41,7 @@ To run in development mode (without docker):
 
 The application is on http://localhost:6543
 
-To execute all processes with docker (almost same as production):
+To execute all processes with docker (almost same as production)::
 
     sudo docker-compose -f docker-compose-dev.yml pull
     sudo docker-compose -f docker-compose-dev.yml build --pull
@@ -19,7 +51,8 @@ To execute all processes with docker (almost same as production):
 The app is deployed on http://local.ecreall.com:8080
 
 
-# With Dokku (for production)
+With Dokku (for production)
+---------------------------
 
 Requirements:
 
@@ -28,6 +61,7 @@ Requirements:
 - a wildcard certificate in /home/dokku/tls/
 - you can push apps to your server
 
+::
 
     APP=novaideo
     git clone git@github.com:ecreall/nova-ideo.git $APP
