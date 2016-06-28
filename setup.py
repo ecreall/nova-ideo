@@ -34,7 +34,7 @@ requires = [
 
 setup(name='novaideo',
       version='1.0',
-      description='novaideo',
+      description='The fusion of the best of the suggestion box and collaborative portal.',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
         "Programming Language :: Python",

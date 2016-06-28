@@ -1,2 +1,40 @@
 include *.txt *.ini *.cfg *.rst
 recursive-include novaideo *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml
+include *.bash
+include *.conf
+include *.js
+include *.json
+include *.py
+include *.sh
+include *.yml
+include CHECKS
+include Dockerfile
+include LICENSE
+include Procfile
+include codep
+include .dockerignore
+recursive-include etc *.conf
+recursive-include etc *.vcl
+recursive-include html *.txt
+recursive-include novaideo LICENSE
+recursive-include novaideo *.eot
+recursive-include novaideo *.gz
+recursive-include novaideo *.json
+recursive-include novaideo *.less
+recursive-include novaideo *.map
+recursive-include novaideo *.markdown
+recursive-include novaideo *.md
+recursive-include novaideo *.otf
+recursive-include novaideo *.po
+recursive-include novaideo *.pot
+recursive-include novaideo *.rb
+recursive-include novaideo *.robot
+recursive-include novaideo *.scss
+recursive-include novaideo *.sh
+recursive-include novaideo *.svg
+recursive-include novaideo *.ttf
+recursive-include novaideo *.woff
+recursive-include novaideo *.woff2
+recursive-include novaideo Makefile
+recursive-include tls *.crt
+recursive-include tls *.key
