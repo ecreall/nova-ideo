@@ -139,8 +139,7 @@
           }
         });
       </script>
-
-  </head>
+ </head>
   <body tal:define="adminnavbar panel('adminnavbar')">
     
     <div tal:omit-tag="" tal:condition="request.accessible_to_anonymous">

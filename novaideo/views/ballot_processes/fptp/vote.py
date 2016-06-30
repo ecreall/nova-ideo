@@ -85,7 +85,7 @@ class VoteFormView(FormView):
             ballot_report = vote_actions[0].process.ballot.report
         except Exception:
             return
-
+        
         subjects_widget = subjects_choice(ballot_report)
         elected_node = self.schema.get('elected')
         elected_node.title = getattr(ballot_report.ballottype,
@@ -98,7 +98,8 @@ class VoteFormView(FormView):
         self.schema.view = self
         formwidget = deform.widget.FormWidget(css_class='vote-form')
         self.action = self.request.resource_url(
-            self.context, 'votefptp')
+            self.context, 'votefptp',
+            query={'action_uid': getattr(vote_actions[0], '__oid__', '')})
         self.schema.widget = formwidget
 
 

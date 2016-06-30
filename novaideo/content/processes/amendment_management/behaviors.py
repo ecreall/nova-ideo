@@ -98,7 +98,7 @@ def duplicate_state_validation(process, context):
 class DuplicateAmendment(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_picto = 'glyphicon glyphicon-resize-full'
+    style_picto = 'octicon octicon-git-branch'
     style_order = 2
     submission_title = _('Save')
     context = IAmendment
@@ -368,7 +368,7 @@ class SubmitAmendment(InfiniteCardinality):
             modal.extract()
 
         text = html_diff_wrapper.soup_to_text(soup)
-        return text
+        return html_diff_wrapper.normalize_text(text)
 
     def _get_explanation_data(self, context, group):
         data = {

@@ -102,7 +102,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
     icon='icon novaideo-icon icon-idea',
     )
 @implementer(Iidea)
-class Idea(Commentable, VersionableEntity, DuplicableEntity,
+class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
            Node):
     """Idea class"""

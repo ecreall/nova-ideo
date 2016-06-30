@@ -30,7 +30,7 @@
         </ol>
        </div>
     </div>
-    <nav tal:condition="corrections" class="correction-navbar navbar navbar-inverse"  i18n:domain="novaideo">
+    <nav tal:condition="corrections and is_participant" class="correction-navbar navbar navbar-inverse"  i18n:domain="novaideo">
     <ul class="nav navbar-nav correction-nav-actions"
         tal:define="correction corrections[-1]"
         data-url="${request.resource_url(correction, '@@correctallitems')}">
@@ -219,7 +219,7 @@
 
   <div tal:condition="proposal.attached_files" class="attached-files" i18n:domain="novaideo">
   <small>
-   <blockquote class="attached_contents" tal:define="
+   <blockquote class="attached-contents" tal:define="
         files proposal.attached_files;
         file_len len(files)">
      <dl >

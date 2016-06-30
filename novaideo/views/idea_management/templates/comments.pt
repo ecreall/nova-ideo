@@ -5,6 +5,7 @@
   <ul class="${(origin and 'commentulorigin') or 'commentul'}"
       i18n:domain="novaideo"
       data-nex_url="${(origin and batch.next_url)}"
+      data-origin_url="${(origin and batch.origin_url)}"
       >
     <tal:loop repeat="(i, item) enumerate(comments)">
       <li class="commentli ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
@@ -13,7 +14,7 @@
                       picture getattr(comment.author, 'picture', None);
                       id 'comment-'+str(getattr(comment, '__oid__', 'None'));
                       attached_files comment.files">
-         <div id="${id}" class="thumbnail right-caption span4 comment-data ${(comment.related_correlation is not None) and 'comment-association'}">
+         <div id="${id}" class="thumbnail right-caption span4 comment-data">
             <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
             <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
             <div class="media-body comment-content">
@@ -31,7 +32,7 @@
                      </a>
                   </div>
               </div>
-              <small class="comment-author" tal:define="diff_len  len(diff.keys())">
+              <div title="${layout.to_localized_time(comment.created_at)}" class="comment-author" tal:define="diff_len  len(diff.keys())">
                 <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
                 <div  tal:omit-tag="" tal:condition="diff"><span i18n:translate="">There is a</span>  
                   <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
@@ -41,13 +42,13 @@
                 </div>
                 <span tal:condition="diff_len == 0" i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span> 
                 <span tal:condition="getattr(comment, 'intention', None)" i18n:translate="" tal:content="comment.intention"/>
-              </small>
+              </div>
 
               <div class="content-text"  i18n:domain="novaideo"
                 tal:define="files comment.get_attached_files_data();
                             len_files len(files)">
-                <div class="row" tal:omit-tag="not files">
-                    <div class="col-xs-12 col-md-8" tal:omit-tag="not files">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
                       <div class="object-text">
                         <div>${structure:getattr(comment, 'formated_comment', comment.comment)}</div>
                       </div>
@@ -96,42 +97,51 @@
                           </script>
                      </div>
                     </div>
+                    <div class="col-xs-12 col-md-12">
+                      <div class="object-text">
+                        <div>${structure:getattr(comment, 'formated_urls', '')}</div>
+                      </div>
+                    </div>
                 </div>
 
               </div>
-              <div tal:condition="attached_files" class="attached-files">
+              <div tal:condition="attached_files or comment.related_correlation is not None" class="attached-files">
                 <small>
-                 <blockquote class="attached_contents" tal:define="file_len len(attached_files)">
-                   <dl >
+                 <blockquote class="attached-contents">
+                    <dl >
+                      <div tal:omit-tag=""
+                           tal:condition="attached_files"
+                           tal:define="file_len len(attached_files)">
+                          <dt tal:condition="file_len>1"><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachments:</span></dt>
+                          <dt tal:condition="file_len==1" ><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachment:</span></dt>
+                          <dd>
+                              <tal:loop repeat="f attached_files">
+                                <a tal:attributes="href f.url">${f.title}</a>
+                                <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+                              </tal:loop>
+                          </dd>
+                      </div>
+                      <div tal:omit-tag=""
+                           tal:condition="comment.related_correlation is not None"
+                           >
+                        <div tal:omit-tag="" tal:define="
+                           contents comment.related_correlation.targets;
+                           contents_len len(contents)">
+                           <dt tal:condition="contents_len > 1"><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated contents:</span></dt>
+                           <dt tal:condition="contents_len == 1" ><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated content:</span></dt>
+                           <dd tal:condition="contents">
+                             <tal:loop repeat="f contents">
+                                 <a tal:attributes="href request.resource_url(f, '@@index')"><span class="${getattr(f, 'icon', '')}"></span> ${f.title}</a>
+                                 <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+                             </tal:loop>
+                           </dd>
+                        </div>
+                      </div>
 
-                     <dt tal:condition="file_len>1"><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachments:</span></dt>
-                     <dt tal:condition="file_len==1" ><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachment:</span></dt>
-                   <dd>
-                        <tal:loop repeat="f attached_files">
-                          <a tal:attributes="href f.url">${f.title}</a>
-                          <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
-                        </tal:loop>
-                   </dd>
                  </dl>
                  </blockquote>
                 </small>
-              </div>
-              <div tal:condition="comment.related_correlation is not None" id="related_contents">
-                 <small tal:define="contents comment.related_correlation.targets">
-                    <blockquote tal:define="contents_len len(contents)" class="attached_contents">
-                      <dl >
-                       <dt tal:condition="contents_len > 1"><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated contents:</span></dt>
-                       <dt tal:condition="contents_len == 1" ><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated content:</span></dt>
-                       <dd tal:condition="contents">
-                         <tal:loop repeat="f contents">
-                             <a tal:attributes="href request.resource_url(f, '@@index')"><span class="${getattr(f, 'icon', '')}"></span> ${f.title}</a>
-                             <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
-                         </tal:loop>
-                       </dd>
-                      </dl>
-                     </blockquote>
-                 </small>
-              </div>      
+              </div>     
              <div class="pull-right" tal:define="commentlen len(comment.comments)">
                   <span tal:condition="commentlen-level > 0" 
                         class="comment-replay-nb closed"

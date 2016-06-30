@@ -16,7 +16,7 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer, get_oid
 
-from dace.util import get_obj, getSite
+from dace.util import get_obj, getSite, copy
 from dace.descriptors import (
     CompositeMultipleProperty,
     SharedUniqueProperty,
@@ -43,6 +43,8 @@ from novaideo.core import (
     Node)
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.content import get_file_widget
+from novaideo.utilities.util import (
+    connect, disconnect)
 
 
 OPINIONS = OrderedDict([
@@ -223,6 +225,17 @@ class Proposal(VersionableEntity,
     def authors(self):
         return self.working_group.members
 
+    @property
+    def workspace(self):
+        working_group = self.working_group
+        if working_group:
+            return working_group.workspace
+
+        if self.current_version is not self:
+            return getattr(self.current_version, 'workspace', None)
+
+        return None
+
     def init_published_at(self):
         setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
 
@@ -291,3 +304,50 @@ class Proposal(VersionableEntity,
             result.update(sub_result)
 
         return result, newcalculated
+
+    def set_related_ideas(self, relatedideas, user):
+        current_related_ideas = list(self.related_ideas.keys())
+        related_ideas_to_add = [i for i in relatedideas
+                                if i not in current_related_ideas]
+        related_ideas_to_del = [i for i in current_related_ideas
+                                if i not in relatedideas and
+                                i not in related_ideas_to_add]
+        connect(self,
+                related_ideas_to_add,
+                {'comment': _('Add related ideas'),
+                 'type': _('Edit the proposal')},
+                user,
+                ['related_proposals', 'related_ideas'],
+                CorrelationType.solid,
+                True)
+        disconnect(self,
+                   related_ideas_to_del,
+                   'related_ideas',
+                   CorrelationType.solid)
+
+    def get_version(self, user, parent):
+        old_version = self.version
+        copy_of_proposal = copy(
+            self, parent,
+            omit=('len_selections', 'graph'),
+            roles=True)
+        if old_version:
+            copy_of_proposal.setproperty('version', old_version)
+
+        copy_of_proposal.init_graph()
+        copy_of_proposal.state = PersistentList(['version', 'archived'])
+        copy_of_proposal.setproperty('author', self.author)
+        copy_of_proposal.setproperty('originalentity', self.originalentity)
+        for amendment in self.amendments:
+            copy_of_proposal.addtoproperty('amendments', amendment)
+
+        for correction in self.corrections:
+            copy_of_proposal.addtoproperty('corrections', correction)
+
+        for file_ in self.attached_files:
+            copy_of_proposal.addtoproperty('attached_files', file_)
+
+        copy_of_proposal.set_related_ideas(
+            list(self.related_ideas.keys()), user)
+        copy_of_proposal.reindex()
+        return copy_of_proposal

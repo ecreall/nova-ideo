@@ -6,10 +6,6 @@
 
 import colander
 import deform.widget
-import re
-import urllib
-import io
-import metadata_parser
 from persistent.dict import PersistentDict
 from zope.interface import implementer
 from pyramid import renderers
@@ -29,12 +25,11 @@ from pontus.schema import Schema
 from pontus.file import ObjectData, File
 
 from .interface import IComment
-from novaideo.core import Commentable, Channel
+from novaideo.core import Commentable
 from novaideo import _
 from novaideo.content import get_file_widget
-from novaideo.file import Image
 from novaideo.utilities.url_extractor import extract_urls
-from novaideo.utilities.util import html_to_text
+from novaideo.utilities.util import html_to_text, extract_urls_metadata
 
 
 @colander.deferred
@@ -173,6 +168,12 @@ class Comment(Commentable):
         """Return the commented entity"""
         return self.channel.get_subject()
 
+    @property
+    def relevant_data(self):
+        return [getattr(self, 'comment', ''),
+                getattr(self.author, 'title',
+                        getattr(self.author, '__name__', ''))]
+
     def init_urls(self):
         self.urls = PersistentDict({})
 
@@ -183,46 +184,31 @@ class Comment(Commentable):
         self.setproperty('url_files', [])
         if comment:
             urls = extract_urls(comment)
-            for url in urls:
-                try:
-                    url_metadata = metadata_parser.MetadataParser(url=url, requests_timeout=1000)
-                except Exception:
-                    continue
+            for data_url in extract_urls_metadata(urls):
+                if data_url['image']:
+                    new_image = data_url.pop('image')
+                    self.addtoproperty('url_files', new_image)
+                    data_url['image_url'] = new_image.url
 
-                result = {
-                    'title': url_metadata.get_metadata('title'),
-                    'description': url_metadata.get_metadata('description'),
-                    'site_name': url_metadata.get_metadata('site_name'),
-                    'image': None
-                }
-                try:
-                    if url_metadata.get_metadata('image'):
-                        buf = io.BytesIO(urllib.request.urlopen(
-                            url_metadata.get_metadata('image')).read())
-                        buf.seek(0)
-                        newimg = Image(fp=buf)
-                        self.addtoproperty('url_files', newimg)
-                        result['image'] = newimg.url
-                except Exception:
-                    continue
-
-                self.urls[url] = result
-                result['url'] = url
+                self.urls[data_url['url']] = data_url
                 value = renderers.render(
                     'novaideo:views/templates/comment_url.pt',
-                    result, request)
+                    data_url, request)
                 url_results.append(value)
 
-        new_comment = '<p>' + ''.join(url_results) + '</p>'
-        urls = extract_urls(html_to_text(new_comment))
+        comment_urls = '<p>' + ''.join(url_results) + '</p>'
+        urls = extract_urls(html_to_text(comment_urls))
         for url in urls:
-            new_comment = new_comment.replace(url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
+            comment_urls = comment_urls.replace(
+                url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
 
         urls = extract_urls(comment)
         for url in urls:
-            comment = comment.replace(url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
+            comment = comment.replace(
+                url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
 
-        self.formated_comment = '<p>' + comment + '</p>' + new_comment
+        self.formated_comment = '<p>' + comment + '</p>'
+        self.formated_urls = comment_urls
 
     def get_attached_files_data(self):
         result = []

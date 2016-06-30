@@ -32,6 +32,7 @@ from pontus.form import FormView
 
 from novaideo import _
 from novaideo import core
+from novaideo.content.interface import IComment
 from novaideo.content.processes import (
     FLATTENED_STATES_MEMBER_MAPPING,
     get_content_types_states)
@@ -1369,3 +1370,33 @@ def get_contents_by_dates(
 
     result = dict([(k, v) for k, v in result if v != 0])
     return result, object_ids.__len__()
+
+
+def get_comments(channel, filters, text_to_search=''):
+    and_op = QUERY_OPERATORS.get('and', 'default')
+    or_op = QUERY_OPERATORS.get('or', 'default')
+    novaideo_index = find_catalog('novaideo')
+    dace_index = find_catalog('dace')
+    container_oid = dace_index['container_oid']
+    query = container_oid.eq(channel.__oid__)
+    filter_query = None
+    if 'associations' in filters:
+        has_related_contents = novaideo_index['has_related_contents']
+        filter_query = or_op(
+            filter_query, has_related_contents.eq(True))
+
+    if 'file' in filters:
+        has_file = novaideo_index['has_file']
+        filter_query = or_op(
+            filter_query, has_file.eq(True))
+
+    query = and_op(query, filter_query)
+
+    objects = find_entities(
+        interfaces=[IComment],
+        text_filter={
+            'text_to_search': text_to_search
+        },
+        add_query=query,
+        reverse=True)
+    return objects

@@ -84,7 +84,8 @@ class VoteFormView(FormView):
         self.schema.view = self
         formwidget = deform.widget.FormWidget(css_class='vote-form')
         self.action = self.request.resource_url(
-            self.context, 'referendumvote')
+            self.context, 'referendumvote',
+            query={'action_uid': getattr(vote_actions[0], '__oid__', '')})
         self.schema.widget = formwidget
 
 

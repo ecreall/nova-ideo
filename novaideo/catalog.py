@@ -25,7 +25,8 @@ from novaideo.content.interface import (
     IEntity,
     IPerson,
     IProposal,
-    Iidea)
+    Iidea,
+    IComment)
 from novaideo.dateindex import DateRecurring
 
 
@@ -98,6 +99,12 @@ class ISearchableObject(Interface):
         pass
 
     def related_contents():
+        pass
+    
+    def has_related_contents():
+        pass
+
+    def has_file():
         pass
 
 
@@ -382,6 +389,32 @@ class NovaideoCatalogViews(object):
 
         return examined_at_year_str
 
+    @indexview()
+    def has_related_contents(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        has_related_contents = adapter.has_related_contents()
+        if has_related_contents is None:
+            return default
+
+        return has_related_contents
+
+    @indexview()
+    def has_file(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        has_file = adapter.has_file()
+        if has_file is None:
+            return default
+
+        return has_file
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -411,6 +444,8 @@ class NovaideoIndexes(object):
     access_keys = Keyword()
     relevant_data = Text(
         lexicon=Lexicon(Splitter(), CaseNormalizer(), StopWordRemover()))
+    has_related_contents = Field()
+    has_file = Field()
 
 
 @adapter(context=IEntity)
@@ -533,6 +568,12 @@ class SearchableObject(Adapter):
 
         return None
 
+    def has_related_contents(self):
+        return False
+
+    def has_file(self):
+        return False
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
@@ -558,6 +599,12 @@ class ProposalSearch(SearchableObject):
 
         return ids
 
+    def has_related_contents(self):
+        return True if self.related_contents() else False
+
+    def has_file(self):
+        return True if self.context.attached_files else False
+
 
 @adapter(context=Iidea)
 @implementer(ISearchableObject)
@@ -570,3 +617,28 @@ class IdeaSearch(SearchableObject):
             ids.remove(None)
 
         return ids
+
+    def has_related_contents(self):
+        return True if self.related_contents() else False
+
+    def has_file(self):
+        return True if self.context.attached_files else False
+
+
+@adapter(context=IComment)
+@implementer(ISearchableObject)
+class CommentSearch(SearchableObject):
+
+    def related_contents(self):
+        related_contents = getattr(self.context.related_correlation, 'targets', [])
+        ids = list(set([get_oid(i, None) for i in related_contents]))
+        if None in ids:
+            ids.remove(None)
+
+        return ids
+
+    def has_related_contents(self):
+        return True if self.related_contents() else False
+
+    def has_file(self):
+        return True if self.context.files else False

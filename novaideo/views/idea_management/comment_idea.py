@@ -23,7 +23,9 @@ from daceui.interfaces import IDaceUIAPI
 
 from novaideo.content.processes.idea_management.behaviors import CommentIdea
 from novaideo.content.comment import CommentSchema, Comment
+from novaideo.views.filter import get_comments
 from novaideo.content.idea import Idea
+from novaideo.utilities.util import date_delta
 from novaideo import _
 
 
@@ -39,26 +41,10 @@ class CommentsView(BasicView):
     template = 'novaideo:views/idea_management/templates/comments.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/comments_scroll.pt'
     viewid = 'comments'
+    action_id = 'comment'
 
     def _datetimedelta(self, date):
-        now = datetime.datetime.now(tz=pytz.UTC)
-        delta = now - date
-        hours, remainder = divmod(delta.seconds, 3600)
-        minutes, seconds = divmod(remainder, 60)
-        result = {}
-        if delta.days > 0:
-            result['days'] = delta.days
-
-        if hours > 0:
-            result['hours'] = hours
-
-        if minutes > 0:
-            result['minutes'] = minutes
-
-        if seconds > 0:
-            result['seconds'] = seconds
-
-        return result
+        return date_delta(date)
 
     def _rendre_comments(self, comments, current_user, origin=False, batch=None):
         all_comments = []
@@ -84,19 +70,39 @@ class CommentsView(BasicView):
         body = self.content(args=values, template=self.template)['body']
         return body, resources, messages, action_updated
 
+    def _get_channel(self, user):
+        return self.context.channel
+
     def update(self):
         current_user = get_current()
         result = {}
-        url = self.request.resource_url(self.context, 'comment')
-        objects = sorted(getattr(self, 'comments', self.context.channel.comments),
-                         key=lambda e: e.created_at, reverse=True)
+        channel = self._get_channel(current_user)
+        is_selected = hasattr(self, 'comments')
+        text_to_search = self.params('text')
+        if not is_selected:
+            filters = self.params('filters')
+            filters = filters if filters else []
+            if not isinstance(filters, (list, tuple)):
+                filters = [filters]
+
+            objects = get_comments(
+                channel, filters, text_to_search)
+        else:
+            objects = sorted(
+                getattr(self, 'comments', []),
+                key=lambda e: e.created_at, reverse=True)
+
+        url = self.request.resource_url(self.context, self.action_id)
         batch = Batch(objects,
                       self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#comments_results"
+        batch.target = "#" + self.action_id + "_results"
+        batch.origin_url = url
         body, resources, messages, isactive = self._rendre_comments(
             batch, current_user, True, batch)
+        # if text_to_search:
+        #     texts = [t for t in text_to_search.split(' ') if t]
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
         item['isactive'] = isactive
@@ -125,11 +131,6 @@ class CommentIdeaFormView(FormView):
         self.schema.widget = formwidget
 
 
-COMMENT_MESSAGE = {'0': _(u"""Pas de fils de discussion"""),
-                   '1': _(u"""Fil de discussion"""),
-                   '*': _(u"""Fils de discussion""")}
-
-
 @view_config(
     name='comment',
     context=Idea,
@@ -140,22 +141,10 @@ class CommentIdeaView(MultipleView):
     description = _('Discuss the idea')
     name = 'comment'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
-    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (CommentsView, CommentIdeaFormView)
     contextual_help = 'comment-help'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}
-
-    def get_message(self):
-        lencomments = len(self.context.channel.comments)
-        index = str(lencomments)
-        if lencomments > 1:
-            index = '*'
-
-        message = (_(COMMENT_MESSAGE[index]),
-                   lencomments,
-                   index)
-        return message
 
     def before_update(self):
         self.viewid = 'comment'

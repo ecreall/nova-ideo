@@ -7,7 +7,7 @@
 /* Toggle Styles */
 
 .bar-right-wrapper {
-    padding-right: 290px;
+    padding-right: 800px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -22,12 +22,12 @@
     background-color: white;
     box-shadow: 2px 0 10px black;
     height: 100%;
-    right: 290px;
-    margin-right: -290px;
+    right: 800px;
+    margin-right: -800px;
     overflow-y: auto;
     position: fixed;
     top: 0;
-    width: 40%;
+    width: 70%;
     z-index: 1048;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -47,7 +47,7 @@
 
 .bar-right-wrapper.toggled #page-content-wrapper {
     position: absolute;
-    margin-right: -290px;
+    margin-right: -800px;
 }
 
 /* Sidebar-right Styles */
@@ -108,10 +108,12 @@
     margin-left: -10px;
     margin-top: -10px;
     padding: 0px 10px;
-    box-shadow: 2 0 4px #000;
-    width: 40%;
+    box-shadow: 2px 0 4px #000;
+    width: 70%;
     text-align: center;
     z-index: 2000;
+    max-height: 45px;
+    height: 45px;
 }
 
 .sidebar-title .object-title-block a{
@@ -152,17 +154,21 @@
 
 .sidebar-title .menu-right-toggle,
 .sidebar-title .entity-title{
-    display: inline
+    display: inline;
+}
+
+.sidebar-title .menu-right-toggle{
+     padding: 0px 10px;
 }
 
 @media (max-width: 767px) {
     .sidebar-right-wrapper,
     .sidebar-title{
-      width: 90% ;
+      width: 100% ;
     }
 
-    .sidebar-title .object-title-block a h4{
-      width: 87% ;
+    .sidebar-title .channel-item-title, .sidebar-title .object-title-block a h4{
+      width: 83% ;
     }
    
 }
@@ -171,6 +177,6 @@
     .sidebar-right-wrapper,
     .sidebar-title
      {
-       width: 60%;
+       width: 80%;
     }
 }

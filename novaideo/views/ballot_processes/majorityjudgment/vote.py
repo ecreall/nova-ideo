@@ -180,7 +180,8 @@ class VoteFormView(FormView):
         self.schema.view = self
         formwidget = deform.widget.FormWidget(css_class='vote-form')
         self.action = self.request.resource_url(
-            self.context, 'voteforamendments')
+            self.context, 'voteforamendments',
+            query={'action_uid': getattr(vote_action, '__oid__', '')})
         self.schema.widget = formwidget
 
     def default_data(self):

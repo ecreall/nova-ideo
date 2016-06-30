@@ -96,8 +96,11 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             for group in groups:
                 for amt in group:
                     related_ideas_a = list(amt.related_ideas)
-                    if html_diff_wrapper.has_conflict(amt.text,
-                                                  [amendment.text]) or \
+                    has_confl = html_diff_wrapper.has_conflict(
+                        proposal.text, [amt.text, amendment.text])
+                    has_confl = has_confl and html_diff_wrapper.has_conflict(
+                        proposal.text, [amendment.text, amt.text])
+                    if has_confl or \
                        (related_ideas_amendment and \
                         any(e in related_ideas_amendment
                             for e in related_ideas_a)):

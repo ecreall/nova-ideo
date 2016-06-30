@@ -31,11 +31,9 @@ from dace.processinstance.activity import (
 from novaideo.content.interface import IProposal
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _
-from novaideo.content.correlation import CorrelationType
 from novaideo.content.amendment import Amendment
 from novaideo.content.processes.amendment_management.behaviors import (
     get_text_amendment_diff)
-from novaideo.utilities.util import connect
 from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import alert
 
@@ -163,9 +161,10 @@ class ImproveProposal(InfiniteCardinality):
         grant_roles(roles=(('Owner', amendment), ))
         amendment.setproperty('author', get_current())
         amendment.text_diff = get_text_amendment_diff(
-                                context, amendment)
+            context, amendment)
         amendment.reindex()
-        context._amendments_counter = getattr(context, '_amendments_counter', 1) + 1
+        context._amendments_counter = getattr(
+            context, '_amendments_counter', 1) + 1
         return {'newcontext': amendment}
 
     def redirect(self, context, request, **kw):
@@ -252,7 +251,8 @@ def ar_roles_validation(process, context):
 
 
 def ar_state_validation(process, context):
-    return 'active' in context.working_group.state and \
+    working_group = context.working_group
+    return working_group and 'active' in working_group.state and \
            'votes for amendments' in context.state
 
 
@@ -267,25 +267,6 @@ class AmendmentsResult(ElementaryAction):
     relation_validation = va_relation_validation
     roles_validation = ar_roles_validation
     state_validation = ar_state_validation
-
-    def _get_newversion(self, context, root, working_group):
-        contextname = context.__name__
-        copy_of_proposal = copy(context,
-                                (root, 'proposals'),
-                                new_name=context.__name__,
-                                omit=('created_at', 'modified_at'),
-                                roles=True)
-        copy_of_proposal.keywords = context.keywords
-        copy_of_proposal.setproperty('version', context)
-        copy_of_proposal.setproperty('originalentity', context.originalentity)
-        root.rename(copy_of_proposal.__name__, contextname)
-        copy_of_proposal.state = PersistentList(['amendable', 'published'])
-        copy_of_proposal.setproperty('author', context.author)
-        copy_of_proposal.setproperty('comments', context.comments)
-        self.process.attachedTo.process.execution_context.add_created_entity(
-            'proposal', copy_of_proposal)
-        working_group.setproperty('proposal', copy_of_proposal)
-        return copy_of_proposal
 
     def _send_ballot_result(self, context, request, electeds, members):
         amendments_vote_result = []
@@ -325,7 +306,7 @@ class AmendmentsResult(ElementaryAction):
                     novaideo_title=root.title
                 )
                 alert('email', [root.get_site_sender()], [member.email],
-                      subject=subject, body=message)
+                      subject=subject, html=message)
 
     def start(self, context, request, appstruct, **kw):
         result = set()
@@ -339,35 +320,30 @@ class AmendmentsResult(ElementaryAction):
         members = working_group.members
         root = getSite()
         user = get_current()
-        newcontext = context
         if amendments:
             merged_text = html_diff_wrapper.merge(
                 context.text, [a.text for a in amendments])
             merged_text = html_diff_wrapper.normalize_text(merged_text)
             #TODO merged_keywords + merged_description
-            copy_of_proposal = self._get_newversion(context, root, working_group)
-            self._send_ballot_result(copy_of_proposal, request,
+            version = context.get_version(
+                user, (context, 'version'))
+            for amendment in version.amendments:
+                amendment.state = PersistentList(['archived'])
+                amendment.reindex()
+
+            self._send_ballot_result(context, request,
                                      result, members)
-            context.state = PersistentList(['version', 'archived'])
-            copy_of_proposal.text = merged_text
-            #correlation idea of replacement ideas... del replaced_idea
+            context.text = merged_text
             related_ideas = [a.related_ideas for a in amendments]
             related_ideas = [item for sublist in related_ideas
                              for item in sublist]
             related_ideas.extend(context.related_ideas)
             related_ideas = list(set(related_ideas))
-            connect(copy_of_proposal,
-                    related_ideas,
-                    {'comment': _('Add related ideas'),
-                     'type': _('New version')},
-                    user,
-                    ['related_proposals', 'related_ideas'],
-                    CorrelationType.solid)
-            newcontext = copy_of_proposal
-            copy_of_proposal.reindex()
+            context.set_related_ideas(related_ideas, user)
+            context.reindex()
             alert('internal', [root], members,
                   internal_kind=InternalAlertKind.working_group_alert,
-                  subjects=[copy_of_proposal], alert_kind='amendments_result')
+                  subjects=[context], alert_kind='amendments_result')
         else:
             context.state = PersistentList(['amendable', 'published'])
             alert('internal', [root], members,
@@ -378,7 +354,7 @@ class AmendmentsResult(ElementaryAction):
                 amendment.reindex()
 
         context.reindex()
-        return {'newcontext': newcontext}
+        return {'newcontext': context}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))

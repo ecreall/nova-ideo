@@ -270,6 +270,7 @@ class CreateProposal(InfiniteCardinality):
         proposal.reindex()
         init_proposal_ballots(proposal)
         wg.reindex()
+        proposal.subscribe_to_channel(user)
         request.registry.notify(ActivityExecuted(self, [proposal, wg], user))
         return {'newcontext': proposal}
 
@@ -480,7 +481,7 @@ def duplicate_processsecurity_validation(process, context):
 class DuplicateProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_picto = 'glyphicon glyphicon-resize-full'
+    style_picto = 'octicon octicon-git-branch'
     style_order = 7
     submission_title = _('Save')
     context = IProposal
@@ -489,14 +490,19 @@ class DuplicateProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        copy_of_proposal = copy(context, (root, 'proposals'),
-                             omit=('created_at', 'modified_at',
-                                   'examined_at', 'published_at',
-                                   'opinion', 'attached_files'))
         related_ideas = appstruct.pop('related_ideas')
         root.merge_keywords(appstruct['keywords'])
+        copy_of_proposal = copy(
+            context, (root, 'proposals'),
+            omit=('created_at', 'modified_at',
+                  'examined_at', 'published_at',
+                  'opinion', 'attached_files',
+                  'len_selections', 'graph'))
+        copy_of_proposal.opinion = PersistentDict({})
+        copy_of_proposal.init_graph()
         copy_of_proposal.set_data(appstruct)
-        copy_of_proposal.text = html_diff_wrapper.normalize_text(copy_of_proposal.text)
+        copy_of_proposal.text = html_diff_wrapper.normalize_text(
+            copy_of_proposal.text)
         copy_of_proposal.setproperty('originalentity', context)
         copy_of_proposal.state = PersistentList(['draft'])
         grant_roles(user=user, roles=(('Owner', copy_of_proposal), ))
@@ -524,6 +530,7 @@ class DuplicateProposal(InfiniteCardinality):
         context.reindex()
         request.registry.notify(ActivityExecuted(
             self, [copy_of_proposal, wg], user))
+        copy_of_proposal.subscribe_to_channel(user)
         return {'newcontext': copy_of_proposal}
 
     def redirect(self, context, request, **kw):
@@ -557,25 +564,8 @@ class EditProposal(InfiniteCardinality):
         root = getSite()
         user = get_current()
         if 'related_ideas' in appstruct:
-            relatedideas = appstruct['related_ideas']
-            current_related_ideas = list(context.related_ideas.keys())
-            related_ideas_to_add = [i for i in relatedideas
-                                    if i not in current_related_ideas]
-            related_ideas_to_del = [i for i in current_related_ideas
-                                    if i not in relatedideas and
-                                    i not in related_ideas_to_add]
-            connect(context,
-                    related_ideas_to_add,
-                    {'comment': _('Add related ideas'),
-                     'type': _('Edit the proposal')},
-                    user,
-                    ['related_proposals', 'related_ideas'],
-                    CorrelationType.solid,
-                    True)
-            disconnect(context,
-                       related_ideas_to_del,
-                       'related_ideas',
-                       CorrelationType.solid)
+            context.set_related_ideas(
+                appstruct['related_ideas'], user)
 
         add_attached_files(appstruct, context)
         context.text = html_diff_wrapper.normalize_text(context.text)
@@ -700,7 +690,7 @@ def opinion_state_validation(process, context):
 class MakeOpinion(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_picto = 'glyphicon glyphicon-pencil'
+    style_picto = 'octicon octicon-checklist'
     style_order = 10
     submission_title = _('Save')
     context = IProposal

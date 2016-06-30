@@ -1,25 +1,39 @@
+<div tal:omit-tag="" tal:define=" item subitem|nothing" i18n:domain="novaideo">
+  <div tal:omit-tag="" tal:condition="item">
+    <nav class="hidden-xs navbar navbar-entity navbar-channel" role="navigation">
+      <div class="container-fluid">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="navbar-entity-content">
+          <ul class="nav navbar-nav">
+              <li class="pull-right">
+                <a class="btn btn-sm comment-filter-action" data-name="associations">
+                     <span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associations</span>
+                </a>
+              </li>
+              <li class="pull-right">
+                <a class="btn btn-sm comment-filter-action" data-name="file">
+                     <span class="glyphicon glyphicon-paperclip"></span> <span i18n:translate="">Attached files</span>
+                </a>
+              </li>
+              <li class="comment-text-search-container">
+                <span class="glyphicon glyphicon-search"></span>
+                <input class="comments-text-search"
+                       type="text"
+                       name="text_to_search"
+                       value=""
+                       i18n:attributes="placeholder"
+                       placeholder="Search"
+                       title="" >
 
-<div tal:omit-tag="" tal:define=" item subitem|nothing">
-    <div tal:omit-tag="" tal:condition="item">
-            <div  tal:condition="'messages' in item" id="messages" class="ajax-replace">
-              <div tal:omit-tag="" tal:define="allmessages item['messages']" tal:repeat="queue allmessages.keys()">
-                <div class="alert alert-${queue or 'info'}"
-                     tal:define="messagesr allmessages[queue]"
-                     tal:condition="messagesr"
-                     tal:repeat="message messagesr">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  ${structure:message}
-                </div>
-              </div>
-            </div>
-            <label >
-              <input id="select_associations" type="checkbox" value="false" class="select-associations" i18n:domain="novaideo" i18n:translate="">
-              Associations
-            </label>
-            <div class=" comments-scroll">
-               <div tal:replace="structure item['body']" />
-            </div>
-        </div>
+              </li>
+          </ul>
+        </div><!-- /.navbar -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <div class=" comments-scroll">
+       <div tal:replace="structure item['body']" />
+    </div>
+  </div>
 </div>
 
 

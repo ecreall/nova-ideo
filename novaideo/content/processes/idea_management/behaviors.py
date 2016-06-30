@@ -90,6 +90,7 @@ class CreateIdea(InfiniteCardinality):
         idea.state.append('to work')
         grant_roles(user=user, roles=(('Owner', idea), ))
         idea.setproperty('author', user)
+        idea.subscribe_to_channel(user)
         idea.reindex()
         request.registry.notify(ActivityExecuted(self, [idea], user))
         return {'newcontext': idea}
@@ -122,6 +123,10 @@ class CrateAndPublish(InfiniteCardinality):
         if create_action:
             result = create_action.start(context, request, appstruct, **kw)
             idea = result.get('newcontext', None)
+            if idea:
+                user = get_current()
+                idea.subscribe_to_channel(user)
+
             if request.moderate_ideas:
                 submit_actions = self.process.get_actions('submit')
                 submit_action = submit_actions[0] if submit_actions else None
@@ -155,6 +160,7 @@ class CrateAndPublishAsProposal(CrateAndPublish):
             idea = result.get('newcontext', None)
             if idea:
                 user = get_current()
+                idea.subscribe_to_channel(user)
                 related_ideas = [idea]
                 localizer = request.localizer
                 title = idea.title + \
@@ -196,6 +202,7 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 except Exception:
                     pass
 
+                proposal.subscribe_to_channel(user)
                 proposal.reindex()
                 init_proposal_ballots(proposal)
                 wg.reindex()
@@ -221,7 +228,7 @@ class DuplicateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'modal-action'
-    style_picto = 'glyphicon glyphicon-resize-full'
+    style_picto = 'octicon octicon-git-branch'
     style_order = 2
     submission_title = _('Save')
     context = Iidea
@@ -230,20 +237,23 @@ class DuplicateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        copy_of_idea = copy(
-            context, (root, 'ideas'),
-            omit=('created_at', 'modified_at',
-                  'opinion', 'examined_at', 'published_at'))
-        copy_of_idea.opinion = {}
         root.merge_keywords(appstruct['keywords'])
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
+        copy_of_idea = copy(
+            context, (root, 'ideas'),
+            omit=('created_at', 'modified_at',
+                  'opinion', 'examined_at', 'published_at',
+                  'len_selections', 'graph'))
+        copy_of_idea.opinion = PersistentDict({})
+        copy_of_idea.init_graph()
         copy_of_idea.setproperty('originalentity', context)
         copy_of_idea.state = PersistentList(['to work'])
         copy_of_idea.setproperty('author', user)
         grant_roles(user=user, roles=(('Owner', copy_of_idea), ))
         copy_of_idea.set_data(appstruct)
         copy_of_idea.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        copy_of_idea.subscribe_to_channel(user)
         copy_of_idea.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
@@ -724,6 +734,7 @@ class CommentIdea(InfiniteCardinality):
             channel.addtoproperty('comments', comment)
             comment.format(request)
             user = get_current()
+            context.subscribe_to_channel(user)
             comment.setproperty('author', user)
             if appstruct['related_contents']:
                 related_contents = appstruct['related_contents']
@@ -936,7 +947,7 @@ def opinion_state_validation(process, context):
 class MakeOpinion(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_picto = 'glyphicon glyphicon-pencil'
+    style_picto = 'octicon octicon-checklist'
     style_order = 10
     submission_title = _('Save')
     context = Iidea

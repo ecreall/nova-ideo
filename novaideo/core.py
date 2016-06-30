@@ -370,8 +370,16 @@ class SearchableEntity(VisualisableElement, Entity):
         channels = getattr(self, 'channels', [])
         return channels[0] if channels else None
 
+    def subscribe_to_channel(self, user):
+        channel = getattr(self, 'channel', None)
+        if channel and (user not in channel.members):
+            channel.addtoproperty('members', user)
+
     def _init_presentation_text(self):
         pass
+
+    def add_new_channel(self):
+        self.addtoproperty('channels', Channel())
 
     def get_release_date(self):
         return getattr(self, 'release_date', self.modified_at)

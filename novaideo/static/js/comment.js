@@ -151,27 +151,55 @@ function update_replay(url){
     return false;
 };
 
-$(document).on('click', '.select-associations', function(){
-      var comments = $($(this).parents('div').first().find('.comments-scroll ul.commentulorigin').first().children().filter("li[data-association='false']"));
-      if (this.checked) {
-          comments.addClass('hide-bloc')            
-      }else{
-         comments.removeClass('hide-bloc')
-      }
-  });
 
+function search_comments(input){
+  var navchannel = $(input.parents('.navbar-channel'))
+  var text_to_search = $(navchannel.find('.comments-text-search').first()).val()
+  var filters = $(navchannel.find('.comment-filter-action.active')).map(function(){return $(this).data('name')})
+  var commentsscroll = $(navchannel.siblings('.comments-scroll').first())
+  var commentscontainer = $(commentsscroll.find('.comments-container').first())
+  var comment_ul = $(commentscontainer.find('.commentulorigin').first())
+  var next_path = comment_ul.data('origin_url')
+  var loading = $(comment_ul.siblings('.comment-loading').first())
+  loading_progress()
+  $.post(next_path, {filters: filters.toArray(), text: text_to_search}, function(data) {
+      var new_comment_ul = $($(data).find('.comments-scroll .comments-container .commentulorigin').first())
+      commentscontainer.find('.commentulorigin').remove()
+      if(new_comment_ul.length>0){
+        loading.addClass('hide-bloc')
+        commentscontainer.append(new_comment_ul)
+      }
+      finish_progress()
+  })
+}
+
+
+$(document).on('click', '.comment-filter-action', function(){
+      var $this = $(this);
+      $this.toggleClass('active')
+      search_comments($this)
+});
+
+
+$(document).on('change', '.comments-text-search', function(){
+      var $this = $(this);
+      search_comments($this)
+});
 
 $(document).ready(function(){
 
   $('.sidebar-right-wrapper').on( 'scroll', function(){
       var $this = $(this);
       if($($this.find('.comments-scroll')).length > 0 && $this.scrollTop() <= 0) {
+            var navchannel = $($this.find('.navbar-channel'))
+            var text_to_search = $(navchannel.find('.comments-text-search').first()).val()
+            var filters = $(navchannel.find('.comment-filter-action.active')).map(function(){return $(this).data('name')})
             var commentscontainer = $($this.find('.comments-scroll .comments-container').first())
             var comment_ul = $(commentscontainer.find('.commentulorigin').first())
             var next_path = comment_ul.data('nex_url')
             var loading = $(comment_ul.siblings('.comment-loading').first())
             loading.removeClass('hide-bloc')
-            $.post(next_path, {}, function(data) {
+            $.post(next_path, {filters: filters.toArray(), text: text_to_search}, function(data) {
                 var new_comment_ul = $($(data).find('.comments-scroll .comments-container .commentulorigin').first())
                 if(new_comment_ul.length>0){
                   loading.addClass('hide-bloc')
@@ -196,7 +224,7 @@ $(document).ready(function(){
         var $this = $(this)
         var button = $this.find('button').last();
         var select_itention = $($this.find("select[name=\'intention\']"))
-        var intention = select_itention.select2('val');
+        var intention = select_itention.val();
         var select_related_contents = $($this.find("select[name='related_contents']").first());
         var textarea = $this.find('textarea');
         var comment = textarea.val();
@@ -222,8 +250,8 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(data) {
-                 var content = $(data.body).find('.commentulorigin');
-                 if (content){
+                var content = $(data.body).find('.commentulorigin');
+                if (content){
                    $($(content).find('li.commentli').first()).insertBefore(preview);
                    preview.addClass('hide-bloc')
                    $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
@@ -236,11 +264,11 @@ $(document).ready(function(){
                      deform.processCallbacks();
                     }
                    catch(err) {};
-                   }else{
-                     location.reload();
-                     return false
-                  };
-                  $(button).removeClass('disabled');
+                }else{
+                 $(commentmessagedanger).text(
+                    novaideo_translate("Your comment is not integrated") ).show().fadeOut( 6000 );
+                };
+                $(button).removeClass('disabled');
               }});
               
         }else{
@@ -263,7 +291,7 @@ $(document).ready(function(){
         var formid = $this.attr('id');
         var button = $this.find('button')
         var select_itention = $($this.find("select[name=\'intention\']"))
-        var intention = select_itention.select2('val');
+        var intention = select_itention.val();
         var textarea = $this.find('textarea');
         var comment = textarea.val();
         var select_related_contents = $($this.find("select[name='related_contents']").first());
@@ -284,7 +312,6 @@ $(document).ready(function(){
           $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
           var formData = new FormData($(this)[0]);
           formData.append(button.val(), button.val())
-          $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
           $.ajax({
             url: url,
             type: 'POST',
@@ -294,6 +321,7 @@ $(document).ready(function(){
             success: function(data) {
               var content = $(data.body).find('.commentulorigin');
               if (content){
+                 $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
                  $($(content).find('li.commentli').first()).insertBefore(preview);
                  preview.addClass('hide-bloc')
                  textarea.val('');
@@ -307,10 +335,9 @@ $(document).ready(function(){
                     }
                  catch(err) {};
               }else{
-                 location.reload();
-                 return false
-               };
-    
+                $(commentmessagedanger).text(
+                  novaideo_translate("Your comment is not integrated") ).show().fadeOut( 6000 );
+              };
           }});
         }else{
            var errormessage = '';
@@ -351,13 +378,12 @@ $(document).ready(function(){
                    // $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
                    $(target).html($(content).html());
                    members.select2('val', []);
-                  }else{
-                     location.reload();
-                     return false
-                  };
-                  $( commentmessagesuccess).text(
+                  $(commentmessagesuccess).text(
                         novaideo_translate("Your message has been delivered to the following recipients") ).show().fadeOut( 6000 );
-
+                  }else{
+                    $(commentmessagedanger).text(
+                        novaideo_translate("Your message is not delivered") ).show().fadeOut( 6000 );
+                  };
                   $(button).removeClass('disabled');
               });
               finish_progress();

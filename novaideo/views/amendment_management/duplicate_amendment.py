@@ -17,7 +17,6 @@ from novaideo.content.amendment import Amendment, AmendmentSchema
 from novaideo import _
 
 
-
 @view_config(
     name='duplicateamendment',
     context=Amendment,
@@ -26,10 +25,8 @@ from novaideo import _
 class DuplicateAmendmentView(FormView):
     title = _('Duplicate the amendment')
     name = 'duplicateamendment'
-    schema = select(AmendmentSchema(), 
-                    ['description',
-                     'keywords',
-                     'text'])
+    schema = select(AmendmentSchema(),
+                    ['text'])
 
     behaviors = [DuplicateAmendment, Cancel]
     formid = 'formduplicateamendment'
@@ -38,4 +35,5 @@ class DuplicateAmendmentView(FormView):
         return self.context
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({DuplicateAmendment:DuplicateAmendmentView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {DuplicateAmendment: DuplicateAmendmentView})

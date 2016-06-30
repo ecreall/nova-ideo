@@ -92,9 +92,6 @@ all-channels-toggle.close {
     width: 87%;
 }
 
-.channels-block .dace-action-inline.activated{
-    border-bottom: solid 1px @novaideo-menu-color;
-}
 
 .channel-len{
     color: #a0a0a0;
@@ -111,4 +108,16 @@ all-channels-toggle.close {
 .channel-item-title{
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.channels-block .dace-action-inline.activated .channel-item-title,
+.channels-container .channel-item-title:hover{
+        background-color: #c3c3c3;
+    border-radius: 5px;
+}
+
+@media (max-width: 1400px) and (min-width: 768px){
+    .navbar-channel {
+        width: 78%;
+    }
 }

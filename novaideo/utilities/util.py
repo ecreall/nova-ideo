@@ -9,7 +9,10 @@ import pytz
 import string
 import random
 import unicodedata
+import urllib
+import io
 import re
+import metadata_parser
 from itertools import groupby
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
@@ -27,6 +30,7 @@ from daceui.interfaces import IDaceUIAPI
 from .ical_date_utility import getDatesFromString, set_recurrence
 from novaideo.content.correlation import Correlation, CorrelationType
 from novaideo.content.processes import get_states_mapping
+from novaideo.file import Image
 from novaideo.core import _
 from novaideo.fr_stopdict import _words
 from novaideo.core import Node
@@ -157,6 +161,27 @@ def to_localized_time(
     return _(format, mapping=date_dict)
 
 
+def date_delta(date, tz=pytz.UTC):
+    now = datetime.datetime.now(tz=tz)
+    delta = now - date
+    hours, remainder = divmod(delta.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    result = {}
+    if delta.days > 0:
+        result['days'] = delta.days
+
+    if hours > 0:
+        result['hours'] = hours
+
+    if minutes > 0:
+        result['minutes'] = minutes
+
+    if seconds > 0:
+        result['seconds'] = seconds
+
+    return result
+
+
 def dates(propertyname):
     """Return a dates property.
     """
@@ -196,6 +221,83 @@ def dates(propertyname):
                 set_recurrence(dates, dates_str))
 
     return property(_get, _set)
+
+
+def extract_twitter_metadata(page):
+    result = {}
+    soup = BeautifulSoup(page, "lxml")
+    twit = soup.find('div', attrs={'class': 'permalink-header'})
+    if twit:
+        img = twit.find('img', attrs={'class': 'avatar'})
+        if img:
+            result = {'author_avatar': img['src']}
+
+        username = twit.find('span', attrs={'class': 'username'})
+        if username:
+            name = username.find('b')
+            if name:
+                result['author_name'] = '@'+name.text
+
+    return result
+
+
+def extract_favicon(page):
+    result = {}
+    soup = BeautifulSoup(page, "lxml")
+    favicon = soup.head.find('link', href=re.compile("\.ico"))
+    if favicon:
+        result = {'favicon': favicon['href']}
+
+    return result
+
+
+DATA_EXTRACTORS = {
+    'twitter': extract_twitter_metadata
+}
+
+
+def extract_urls_metadata(urls, save_images=False):
+    results = []
+    for url in urls:
+        page = ''
+        try:
+            page = urllib.request.urlopen(url).read()
+            url_metadata = metadata_parser.MetadataParser(
+                html=page, requests_timeout=100)
+        except Exception:
+            continue
+        result = {
+            'url': url,
+            'title': url_metadata.get_metadata('title'),
+            'description': url_metadata.get_metadata('description'),
+            'site_name': url_metadata.get_metadata('site_name'),
+            'image_url': None,
+            'image': None
+        }
+
+        if result['site_name']:
+            extractor = DATA_EXTRACTORS.get(result['site_name'].lower(), None)
+            if extractor:
+                result.update(extractor(page))
+
+        result.update(extract_favicon(page))
+        try:
+            image = url_metadata.get_metadata('image')
+            if save_images and image:
+                buf = io.BytesIO(urllib.request.urlopen(
+                    image).read())
+                buf.seek(0)
+                newimg = Image(fp=buf)
+                result['image'] = newimg
+            elif image:
+                result['image_url'] = image
+
+        except Exception:
+            continue
+
+        results.append(result)
+
+    return results
 
 
 #source: http://dinoblog.tuxfamily.org/?p=40

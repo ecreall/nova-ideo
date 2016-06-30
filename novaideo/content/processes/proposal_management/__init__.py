@@ -3,11 +3,11 @@
 
 # licence: AGPL
 # author: Amen Souissi
+
 import venusian
 import datetime
 
 from dace.objectofcollaboration.entity import Entity
-
 from dace.util import getSite
 
 from novaideo.content.ballot import Ballot
@@ -160,7 +160,7 @@ def add_attached_files(appstruct, proposal):
     if files is not None:
         attached_files = files.get('attached_files', [])
         if attached_files:
-            workspace = proposal.working_group.workspace
+            workspace = proposal.workspace
             files_to_add = add_files_to_workspace(attached_files, workspace)
 
         ws_files = files.get('ws_files', [])

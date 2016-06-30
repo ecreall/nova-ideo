@@ -16,6 +16,7 @@ function update_notification_id(id, url){
 function send_vote(event){
   var $this = $(this)
   var panel = $($this.parents('.panel').first())
+  var modal = $(panel.parents('.modal').first())
   var group = $($this.parents('.panel-group'))
   var button = $($this.find('button').first())
   var formData = new FormData($this[0]);
@@ -36,6 +37,7 @@ function send_vote(event){
           $(votes.first()).click()
           finish_progress()
         }else{
+           modal.modal('hide')
            location.reload();
         }
        }
@@ -345,6 +347,7 @@ function close_add_idea_form(){
      ".home-add-idea .form-group.idea-text #desc").slideUp();
     $(".home-add-idea").addClass('closed').removeClass('opened')
     $(".similar-ideas.modal").modal('hide')
+    $(".home-add-idea .btn").removeClass('active')
   }
 
 $(document).on('click', '.full-screen-btn.small', function(){
@@ -512,7 +515,9 @@ $(document).ready(function(){
   $('.hidden-js').css('display', 'none');
 
   $(document).on('click','.home-add-idea form .btn', function( event ) {
-    $(this).addClass('active')
+    var $this = $(this)
+    $this.parents('form').find('.btn').removeClass('active')
+    $this.addClass('active')
   })
 
   $(document).on('change','.home-add-idea form input[name="title"], .home-add-idea form select[name="keywords"]', function( event ) {
@@ -527,13 +532,13 @@ $(document).ready(function(){
         var parent = $(form.parents('.home-add-idea').first());
         var target = $(parent.find('.similar-ideas'));
         var url = parent.data('url_search')
-        $.getJSON(url,{title: title, keywords: keywords}, function(data) {
-              if(data.body){
-                $(target.find('.similar-ideas-container').first()).html(data.body)
-                target.modal('show')
-              }else{
-                target.modal('hide')
-              }
+        $.getJSON(url,{title: title, keywords: keywords}, function(data){
+            if(data.body){
+              $(target.find('.similar-ideas-container').first()).html(data.body)
+              target.modal('show')
+            }else{
+              target.modal('hide')
+            }
         });
        event.preventDefault();
    });
@@ -579,6 +584,7 @@ $(document).ready(function(){
         var formData = new FormData($(this)[0]);
         formData.append(button.val(), button.val())
         var url = parent.data('url')
+        formData.append('view_name', location.pathname)
         
         // var inputs = $($(event.target).children().filter('fieldset')[0]).find('input[type|="radio"]');
         // if (version !=''){
@@ -594,14 +600,18 @@ $(document).ready(function(){
             processData: false,
             success: function(data) {
               if(data.state){
-                $(data.body).hide().prependTo($('.result-container')).fadeIn(1500)
-                $this.find('input[name="title"]').val(data['new_title']);
-                $this.find('textarea[name="text"]').val('');
-                $this.find('.deform-close-button').click()
-                $(buttons).removeClass('disabled');
-                $(button).removeClass('active');
-                close_add_idea_form()
-                finish_progress()
+                 if(data.redirect){
+                    document.location.href = data.redirect_url
+                  }else{
+                    $(data.body).hide().prependTo($('.result-container')).fadeIn(1500)
+                    $this.find('input[name="title"]').val(data['new_title']);
+                    $this.find('textarea[name="text"]').val('');
+                    $this.find('.deform-close-button').click()
+                    $(buttons).removeClass('disabled');
+                    $(button).removeClass('active');
+                    close_add_idea_form()
+                    finish_progress()
+                  }
               }
              }
         });

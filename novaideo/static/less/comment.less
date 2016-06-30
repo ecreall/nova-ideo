@@ -10,7 +10,7 @@
 .sidebar-right-wrapper .commentform{
     position: fixed;
     bottom: 0;
-    width: 40%;
+    width: 70%;
     padding: 10px 40px 65px 0;
     background-color: white;
 }
@@ -29,6 +29,7 @@
 
 .commentli .content-text{
     margin-top: 10px;
+    margin-left: 2px
 }
 
 .commentform{
@@ -53,7 +54,7 @@
 }
 
 .comment-textarea-actions{
-    top: 25px;
+    top: 18px;
     right: 45px;
     position: absolute;
     font-size: 21px;
@@ -61,8 +62,8 @@
 
 
 .respondform .comment-textarea-actions{
-    top: 14px;
-    right: 5px;
+    top: 7px;
+    right: 4px;
     position: absolute;
     font-size: 21px;
     color: gray;
@@ -95,17 +96,23 @@
 }
 
 .comment-textarea-container .comment-textarea-actions span.comment-submit{
-	height: 54px;
+    height: 54px;
     vertical-align: middle;
-    margin-top: -16px;
+    margin-top: -9px;
     margin-right: -6px;
-    padding: 15px 10px 0px 5px;
+    padding: 9px 10px 0 5px;
     font-size: 20px;
-    border-radius: 0px;
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid #ccc !important;
 }
 
 .comment-textarea-container .comment-textarea-actions > span:hover{
-    color: @novaideo-hover-actions 
+    color: @brand-primary
+}
+
+.comment-textarea-container .comment-textarea-actions > span{
+    z-index: 0;
 }
 
 .commentform .comment-form-group:not(.comment-textarea),
@@ -170,6 +177,29 @@
   margin-top: 10px;
 }
 
+
+.url-block .url-author-icon img{
+    width: 25px;
+    border-radius: 3px;
+}
+
+.url-block .url-title a{
+    color: #333;
+}
+
+.url-block .url-author-name{
+    color: #aaa;
+    font-size: 14px;
+}
+
+.url-block .url-favicon{
+    width: 20px
+}
+
+.url-block .url-title-container .url-title-site{
+    color: gray;
+    font-size: 15px;
+}
 
 .comments-scroll {
    /* background-color: #dee9f4;
@@ -266,20 +296,24 @@
     color: #4ca44c;
 }
 
+.comments-container{
+    margin-top: 30px;
+}
+
 
 @media (max-width: 767px) {
     .sidebar-right-wrapper .commentform{
-       width: 87% ;
+       width: 97% ;
     }
 }
 
 @media (max-width: 1400px) and (min-width: 768px){
     .sidebar-right-wrapper .commentform,
      {
-       width: 60%;
+       width: 80%;
     }
 
     .commentform .comment-form-group.active{
-        width: 55%;
+        width: 75%;
     }
 }

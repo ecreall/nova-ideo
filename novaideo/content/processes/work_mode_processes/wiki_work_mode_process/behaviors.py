@@ -52,7 +52,8 @@ def correct_processsecurity_validation(process, context):
 
 
 def correct_state_validation(process, context):
-    return 'active' in context.working_group.state and\
+    working_group = context.working_group
+    return working_group and 'active' in working_group.state and\
            'amendable' in context.state
 
 
@@ -69,49 +70,21 @@ class CorrectProposal(InfiniteCardinality):
     processsecurity_validation = correct_processsecurity_validation
     state_validation = correct_state_validation
 
-    def _get_newversion(self, context, root, wg):
-        contextname = context.__name__
-        copy_of_proposal = copy(context,
-                                (root, 'proposals'),
-                                new_name=context.__name__,
-                                omit=('created_at', 'modified_at'),
-                                roles=True)
-        copy_of_proposal.setproperty('version', context)
-        copy_of_proposal.setproperty('originalentity', context.originalentity)
-        root.rename(copy_of_proposal.__name__, contextname)
-        copy_of_proposal.state = PersistentList(['amendable', 'published'])
-        copy_of_proposal.setproperty('author', context.author)
-        copy_of_proposal.setproperty('comments', context.comments)
-        self.process.attachedTo.process.execution_context.add_created_entity(
-            'proposal', copy_of_proposal)
-        wg.setproperty('proposal', copy_of_proposal)
-        self.process.reindex()
-        return copy_of_proposal
-
     def start(self, context, request, appstruct, **kw):
-        root = getSite()
         user = get_current()
-        wg = context.working_group
         related_ideas = appstruct.pop('related_ideas')
         add_files = appstruct.pop('add_files')
-        copy_of_proposal = self._get_newversion(context, root, wg)
-        context.state = PersistentList(['version', 'archived'])
-        copy_of_proposal.set_data(appstruct)
-        copy_of_proposal.text = html_diff_wrapper.normalize_text(
-            copy_of_proposal.text)
-        copy_of_proposal.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        #correlation idea of replacement ideas... del replaced_idea
-        connect(copy_of_proposal,
-                related_ideas,
-                {'comment': _('Add related ideas'),
-                 'type': _('New version')},
-                user,
-                ['related_proposals', 'related_ideas'],
-                CorrelationType.solid)
-        add_attached_files({'add_files': add_files}, copy_of_proposal)
-        copy_of_proposal.reindex()
+        copy_of_proposal = context.get_version(user, (context, 'version'))
+        context.state = PersistentList(['amendable', 'published'])
+        context.set_data(appstruct)
+        context.text = html_diff_wrapper.normalize_text(
+            context.text)
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        context.set_related_ideas(
+            related_ideas, user)
+        add_attached_files({'add_files': add_files}, context)
         context.reindex()
-        return {'newcontext': copy_of_proposal}
+        return {'newcontext': context}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
@@ -127,7 +100,7 @@ def close_roles_validation(process, context):
 
 def close_state_validation(process, context):
     wg = context.working_group
-    return 'active' in wg.state and 'amendable' in context.state
+    return wg and 'active' in wg.state and 'amendable' in context.state
 
 
 class CloseWork(ElementaryAction):

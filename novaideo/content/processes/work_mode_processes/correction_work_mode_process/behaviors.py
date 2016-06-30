@@ -46,43 +46,17 @@ except NameError:
 DEFAULT_NB_CORRECTORS = 1
 
 
-def valid_correction(process, correction, current_version, user):
+def valid_correction(process, correction, proposal):
     correction.state.remove('in process')
     correction.state.append('processed')
-    proposal = correction.proposal
-    wg = proposal.working_group
-    root = getSite()
-    contextname = current_version.__name__
-    root.addtoproperty('proposals', current_version, moving=current_version)
-    current_version.setproperty('version', proposal)
-    root.rename(current_version.__name__, contextname)
-    current_version.state = PersistentList(['amendable', 'published'])
-    current_version.setproperty('author', proposal.author)
-    current_version.setproperty('comments', proposal.comments)
-    current_version.keywords = proposal.keywords
-    current_version.setproperty('attached_files', proposal.attached_files)
-    related_ideas = proposal.related_ideas
-    connect(current_version,
-        related_ideas,
-        {'comment': _('Add related ideas'),
-         'type': _('New version')},
-        user,
-        ['related_proposals', 'related_ideas'],
-        CorrelationType.solid)
-    proposal.state = PersistentList(['version', 'archived'])
-    process.attachedTo.process.execution_context.add_created_entity(
-        'proposal', current_version)
-    wg.setproperty('proposal', current_version)
-    for member in wg.members:
-        grant_roles(member, (('Participant', current_version),))
+    current_version = correction.current_version
+    old_version = proposal.version
+    if old_version:
+        current_version.setproperty('version', old_version)
 
-    current_version.reindex()
+    proposal.setproperty('version', current_version)
     proposal.reindex()
-    process.attachedTo.process.reindex()
-    process.reindex()
-    alert('internal', [root], wg.members,
-          internal_kind=InternalAlertKind.working_group_alert,
-          subjects=[current_version], alert_kind='correction_validated')
+    current_version.reindex()
 
 
 def correctitem_relation_validation(process, context):
@@ -111,7 +85,9 @@ class CorrectItem(InfiniteCardinality):
     processsecurity_validation = correctitem_processsecurity_validation
     state_validation = correctitem_state_validation
 
-    def _include_to_proposal(self, context, proposal, text_to_correct, request, content):
+    def _include_to_proposal(
+        self, context, proposal,
+        text_to_correct, request, content):
         corrections = [item for item in context.corrections.keys()
                        if 'included' not in context.corrections[item]]
         text = self._include_items(text_to_correct, request, corrections)
@@ -140,7 +116,6 @@ class CorrectItem(InfiniteCardinality):
 
     def _include_vote(self, context, request, item,
                       content, vote, user_oid, user):
-
         item_data = context.corrections[item]
         text_to_correct = getattr(context, content, '')
         item_data[vote].append(user_oid)
@@ -156,12 +131,12 @@ class CorrectItem(InfiniteCardinality):
             setattr(context, content, text)
             text_to_correct = getattr(context, content, '')
             item_data['included'] = True
-            current_version = context.current_version
+            proposal = context.proposal
             if not any('included' not in context.corrections[c]
                        for c in context.corrections.keys()):
-                valid_correction(self.process, context, current_version, user)
+                valid_correction(self.process, context, proposal)
 
-            self._include_to_proposal(context, current_version, text_to_correct,
+            self._include_to_proposal(context, proposal, text_to_correct,
                                       request, content)
 
     def start(self, context, request, appstruct, **kw):
@@ -207,7 +182,8 @@ def correct_processsecurity_validation(process, context):
 
 
 def correct_state_validation(process, context):
-    return 'active' in context.working_group.state and\
+    working_group = context.working_group
+    return working_group and 'active' in context.working_group.state and\
            'amendable' in context.state
 
 
@@ -287,20 +263,22 @@ class CorrectProposal(InfiniteCardinality):
         correction.text = html_diff_wrapper.normalize_text(correction.text)
         old_text = correction.text
         correction.setproperty('author', user)
+        version = context.get_version(user, (context, 'version'))
         context.addtoproperty('corrections', correction)
-        self._get_newversion(context, correction)
+        correction.setproperty('current_version', version)
+        context.setproperty('version', version.version)
         souptextdiff, textdiff = html_diff_wrapper.render_html_diff(
-                                       getattr(context, 'text', ''),
-                                       getattr(correction, 'text', ''),
-                                       "correction")
+            getattr(context, 'text', ''),
+            getattr(correction, 'text', ''),
+            "correction")
         soupdescriptiondiff, descriptiondiff = html_diff_wrapper.render_html_diff(
-                                        getattr(context, 'description', ''),
-                                        getattr(correction, 'description', ''),
-                                        "correction")
+            getattr(context, 'description', ''),
+            getattr(correction, 'description', ''),
+            "correction")
         souptitlediff, titlediff = html_diff_wrapper.render_html_diff(
-                                        getattr(context, 'title', ''),
-                                        getattr(correction, 'title', ''),
-                                        "correction")
+            getattr(context, 'title', ''),
+            getattr(correction, 'title', ''),
+            "correction")
         descriminator = 0
         descriminator = self._identify_corrections(souptitlediff,
                                                    correction,
@@ -362,10 +340,8 @@ class CloseWork(ElementaryAction):
         if context.corrections:
             last_correction = context.corrections[-1]
             if 'in process' in last_correction.state:
-                current_version = last_correction.current_version
                 valid_correction(self.process, last_correction,
-                                 current_version, get_current())
-                last_correction.state = PersistentList(['processed'])
+                                 last_correction.proposal)
 
         return {}
 

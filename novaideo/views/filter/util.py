@@ -19,7 +19,7 @@ def _and_operator(query1, query2):
     if not query2:
         return query1
 
-    return query1 & query2
+    return (query1 & query2)
 
 
 def _or_operator(query1, query2):
@@ -29,7 +29,7 @@ def _or_operator(query1, query2):
     if not query2:
         return query1
 
-    return query1 | query2
+    return (query1 | query2)
 
 
 QUERY_OPERATORS = {

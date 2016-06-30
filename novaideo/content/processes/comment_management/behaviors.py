@@ -94,7 +94,7 @@ class Respond(InfiniteCardinality):
                  'type': comment.intention},
                 user,
                 unique=True)
-            comment.setproperty('related_correlation', correlation)
+            comment.setproperty('related_correlation', correlation[0])
 
         author = getattr(content, 'author', None)
         authors = getattr(content, 'authors', [author] if author else [])

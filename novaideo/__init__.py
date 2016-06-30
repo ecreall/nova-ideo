@@ -38,7 +38,10 @@ def get_access_keys(context):
     if declared:
         for data in ACCESS_ACTIONS.get(declared[0], []):
             if data['access_key']:
-                return data['access_key'](context)
+                try:
+                    return data['access_key'](context)
+                except:
+                    continue
 
     return ['always']
 

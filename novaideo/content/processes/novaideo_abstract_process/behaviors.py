@@ -59,7 +59,7 @@ class SelectEntity(InfiniteCardinality):
         user.addtoproperty('selections', context)
         if not isinstance(context, User):
             channel = getattr(context, 'channel', None)
-            if channel:
+            if channel and user not in channel.members:
                 channel.addtoproperty('members', user)
 
         user.reindex()

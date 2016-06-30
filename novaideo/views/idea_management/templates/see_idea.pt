@@ -96,7 +96,7 @@
 
   <div tal:condition="files" id="idea_files" class="attached-files" i18n:domain="novaideo">
   <small>
-   <blockquote class="attached_contents" tal:define="file_len len(files)">
+   <blockquote class="attached-contents" tal:define="file_len len(files)">
      <dl >
      <dt tal:condition="file_len>1" i18n:translate="">Attachments:</dt>
      <dt tal:condition="file_len==1" i18n:translate="">Attachment:</dt>

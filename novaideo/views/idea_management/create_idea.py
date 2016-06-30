@@ -6,6 +6,7 @@
 
 import pytz
 import datetime
+import deform
 from pyramid.view import view_config
 from substanced.util import get_oid
 from pyramid import renderers
@@ -47,6 +48,10 @@ class CreateIdeaView(FormView):
     behaviors = [CrateAndPublishAsProposal, CrateAndPublish, CreateIdea, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'
+
+    def before_update(self):
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='material-form deform')
 
     # def default_data(self):
     #     localizer = self.request.localizer
@@ -101,6 +106,9 @@ class CreateIdeaView_Json(BasicView):
 
     def creat_home_idea(self):
         try:
+            view_name = self.params('view_name')
+            view_name = view_name if view_name else ''
+            redirect = not view_name.endswith('seemycontents') #TODO
             button = 'Create_an_idea' if 'Create_an_idea' in self.request.POST \
                 else ('Create_and_publish' if 'Create_and_publish' in self.request.POST
                       else 'Create_a_working_group')
@@ -113,14 +121,20 @@ class CreateIdeaView_Json(BasicView):
             if add_idea_view_instance.finished_successfully:
                 user = get_current()
                 body = ''
-                if button == 'Create_a_working_group':
-                    proposal = user.working_groups[-1].proposal
-                    body = self._render_obj(proposal, user)
+                if not redirect:
+                    if button == 'Create_a_working_group':
+                        proposal = user.working_groups[-1].proposal
+                        body = self._render_obj(proposal, user)
 
-                idea = user.ideas[-1]
+                    idea = user.ideas[-1]
+                    body = body + self._render_obj(idea, user)
+
                 return {'state': True,
-                        'body': body+self._render_obj(idea, user),
-                        'new_title': ''}#self._get_new_title(user)}
+                        'body': body,
+                        'new_title': '', #self._get_new_title(user)
+                        'redirect': redirect,
+                        'redirect_url': self.request.resource_url(
+                            self.request.root, '@@seemycontents')}
 
         except Exception:
             return {'state': False}
