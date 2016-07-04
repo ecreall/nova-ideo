@@ -1,7 +1,7 @@
 <div tal:replace="structure navbar_body"/>
 <div class="right-caption span4"  i18n:domain="novaideo">
   <div class="caption">
-    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3> 
+    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4> 
     <h2 class="content-title"><span class="glyphicon glyphicon-picture"></span> ${object.title}</h2>
           <div tal:omit-tag=""
         tal:define="dates object.visibility_dates;
