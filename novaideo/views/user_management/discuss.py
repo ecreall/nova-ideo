@@ -70,6 +70,12 @@ class DiscussView(MultipleView):
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}
 
+    def _init_views(self, views, **kwargs):
+        if kwargs.get('only_form', False):
+            views = (DiscussFormView, )
+
+        super(DiscussView, self)._init_views(views, **kwargs)
+
     def before_update(self):
         self.viewid = 'discuss'
         super(DiscussView, self).before_update()
@@ -108,6 +114,12 @@ class GeneralDiscussView(DiscussView):
     title = _('General discuss')
     description = _('General discuss')
     views = (GeneralCommentsView, GeneralDiscussFormView)
+
+    def _init_views(self, views, **kwargs):
+        if kwargs.get('only_form', False):
+            views = (GeneralDiscussFormView, )
+
+        super(DiscussView, self)._init_views(views, **kwargs)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

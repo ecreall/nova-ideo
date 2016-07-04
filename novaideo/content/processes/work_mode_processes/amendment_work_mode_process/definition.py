@@ -98,7 +98,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
                     related_ideas_a = list(amt.related_ideas)
                     has_confl = html_diff_wrapper.has_conflict(
                         proposal.text, [amt.text, amendment.text])
-                    has_confl = has_confl and html_diff_wrapper.has_conflict(
+                    has_confl = has_confl or html_diff_wrapper.has_conflict(
                         proposal.text, [amendment.text, amt.text])
                     if has_confl or \
                        (related_ideas_amendment and \

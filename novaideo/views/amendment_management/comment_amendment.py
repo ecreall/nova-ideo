@@ -49,9 +49,11 @@ class CommentAmendmentView(CommentIdeaView):
     name = 'comment'
     views = (CommentsView, CommentAmendmentFormView)
 
-    def before_update(self):
-        self.viewid = 'comment'
-        super(CommentAmendmentView, self).before_update()
+    def _init_views(self, views, **kwargs):
+        if kwargs.get('only_form', False):
+            views = (CommentAmendmentFormView, )
+
+        super(CommentIdeaView, self)._init_views(views, **kwargs)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

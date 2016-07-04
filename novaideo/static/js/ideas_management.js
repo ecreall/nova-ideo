@@ -57,9 +57,9 @@ function get_tag(oid, title, body, disabled){
     return "<div class=\"panel controllable-item\">"+
         "<div class=\"panel-heading\">"+
         "<a  href=\"#panel-element-"+oid+"\" data-parent=\"#panel-controllableitems\" data-toggle=\"collapse\" class=\"panel-title\">"+
-        "<span class=\"glyphicon glyphicon-plus\"> </span>  "+title+"</a>"+
+        "<span class=\"novaideo-icon icon-idea\"> </span>  "+title+"</a>"+
         "<span class=\"actions pull-right\" data-id=\""+oid+"\">"+
-        "<span title=\"Retirer de la liste\" class=\""+disabled+"del-item\"></span></span></div>"+
+        "<span title=\"Retirer de la liste\" class=\"glyphicon glyphicon-minus-sign "+disabled+"del-item\"></span></span></div>"+
         "<div class=\"panel-collapse collapse\" id=\"panel-element-"+oid+"\" style=\"height: auto;\">"+
         "<div class=\"panel-body\">"+body+"</div></div></div>"
 }

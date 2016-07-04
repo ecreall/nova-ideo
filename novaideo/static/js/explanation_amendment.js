@@ -129,9 +129,29 @@ $(document).ready(function(){
 
   $(document).on('click', '.explanation-action', get_explanation_form);
   $(document).on('click', '.explanation-comment', init_explanation);
-
+  $(document).on('click', '.amendment-toggle', function(){
+        var $this = $(this)
+        var parent = $($this.parents('.media-body').first())
+        parent.toggleClass('small-amendment')
+        if($this.hasClass('glyphicon-minus')){
+          $this.addClass('glyphicon-plus')
+          $this.removeClass('glyphicon-minus')
+          $(parent.find("ul.judgment-radio input[type=radio]:not(:checked) ~ .check,"+
+            "ul.judgment-radio input[type=radio]:not(:checked) ~ label,"+
+            "ul.judgment-radio input[type=radio]:not(:checked)")).hide()
+          $(parent.find(".author-block,"+
+            ".object-text,"+
+            ".majorityjudgment-choices>label")).slideUp()
+        }else{
+          $this.addClass('glyphicon-minus')
+          $this.removeClass('glyphicon-plus')
+          $(parent.find("ul.judgment-radio input[type=radio]:not(:checked) ~ .check,"+
+            "ul.judgment-radio input[type=radio]:not(:checked) ~ label,"+
+            "ul.judgment-radio input[type=radio]:not(:checked)")).show()
+          $(parent.find(".author-block,"+
+            ".object-text,"+
+            ".majorityjudgment-choices>label")).slideDown()
+        }
+  });
 });
-
-//TODO on change pour les selects : supprimer ce qu'il faut.
-//TODO ajout nouvel idee: il faut l'ajouter aux selects
 

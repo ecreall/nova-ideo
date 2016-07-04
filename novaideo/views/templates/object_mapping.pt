@@ -4,8 +4,8 @@
                      item_template item_template|field.widget.item_template"
          i18n:domain="novaideo">
   
-  <div class="panel panel-default" title="${description}">
-    <div class="panel-body amendment-body">
+  <div title="${description}">
+    <div class="amendment-body">
       <div tal:condition="errormsg" 
            class="clearfix alert alert-message error">
         <p i18n:translate="">
@@ -20,12 +20,6 @@
       <div tal:omit-tag="" tal:define="object_description field.get_root().schema.view.get_description(field, cstruct)">
                 ${structure:object_description}
       </div>
-      ${field.start_mapping()}
-      <div tal:repeat="child field.children"
-           tal:replace="structure child.render_template(item_template)" >
-      </div>     
-      ${field.end_mapping()}
-
     </div>
   </div>
 

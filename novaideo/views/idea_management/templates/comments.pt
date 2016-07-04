@@ -33,17 +33,19 @@
                   </div>
               </div>
               <div title="${layout.to_localized_time(comment.created_at)}" class="comment-author" tal:define="diff_len  len(diff.keys())">
-                <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a> - 
-                <div  tal:omit-tag="" tal:condition="diff"><span i18n:translate="">There is a</span>  
-                  <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
-                  <span tal:condition="'hours' in diff">${diff['hours']} <span i18n:translate="">hour(s)</span></span> 
-                  <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>
-                  <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">second(s)</span></span>
+                <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a>
+                <div class="comment-detail-container">
+                  <div  tal:omit-tag="" tal:condition="diff">
+                    <span i18n:translate="">There is a</span>  
+                    <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
+                    <span tal:condition="'hours' in diff">${diff['hours']} <span i18n:translate="">hour(s)</span></span> 
+                    <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>
+                    <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">second(s)</span></span>
+                  </div>
+                  <span tal:condition="diff_len == 0" i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span> 
+                  <span tal:condition="getattr(comment, 'intention', None)" i18n:translate="" tal:content="comment.intention"/>
                 </div>
-                <span tal:condition="diff_len == 0" i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span> 
-                <span tal:condition="getattr(comment, 'intention', None)" i18n:translate="" tal:content="comment.intention"/>
-              </div>
-
+                </div>
               <div class="content-text"  i18n:domain="novaideo"
                 tal:define="files comment.get_attached_files_data();
                             len_files len(files)">
@@ -187,8 +189,10 @@
             <img tal:condition="current_picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
             <div class="media-body comment-content">
               <small class="comment-author">
-                <a tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a> -
-                <span i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span>
+                <a tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a>
+                <div class="comment-detail-container">
+                  <span i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span>
+                </div>
               </small>
               <div class="comment-preview-text"></div>     
             </div>

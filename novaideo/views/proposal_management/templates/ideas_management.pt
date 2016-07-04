@@ -2,10 +2,10 @@
    <div tal:repeat="item items" class="panel controllable-item">
 	 <div class="panel-heading">
 	   <a  href="#panel-element-${item['id']}" data-parent="#panel-controllableitems" data-toggle="collapse" class="panel-title">
-              <span class="glyphicon glyphicon-plus"> </span>  ${item['title']}
+        <span class="novaideo-icon icon-idea"> </span> ${item['title']}
 	   </a>
            <span class="actions pull-right" data-id="${item['id']}" data-title="${item['title']}">
-              <span title="Retirer de la liste" class="${(len(items)==1) and 'disabled-'}del-item"></span>
+              <span title="Retirer de la liste" class="glyphicon glyphicon-minus-sign ${(len(items)==1) and 'disabled-'}del-item"></span>
            </span>
 	 </div>
 	 <div class="panel-collapse collapse" id="panel-element-${item['id']}" style="height: auto;">

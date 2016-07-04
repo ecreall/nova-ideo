@@ -1,24 +1,70 @@
-<div tal:condition="amendment is not None" i18n:domain="novaideo">
-    <h3 class="content-title"><a tal:attributes="href request.resource_url(amendment, '@@index')">${amendment.title}</a> 
-     <span tal:condition="is_proposal" style="color: #ef3128" i18n:translate="">(original version)</span>
-    </h3>
-  <div tal:condition="not is_proposal" class="object-description">
-     <small><span  i18n:translate="">(Amended version by</span> <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> <span  i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(amendment.created_at)"/> (UTC) <span  i18n:translate="">of the proposal</span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the amended version</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
-     </small>
-     <div class="amendment-vote-justification">
-       <dl tal:define="justification getattr(amendment, 'justification', '')">
-        <dt tal:condition="justification" i18n:translate="">Justification</dt>
-        <dd tal:condition="justification">${justification}</dd>
-       </dl>
-     </div>
-  </div>
-  <div tal:condition="is_proposal" class="object-description">
-   <small><span  i18n:translate="">(Original version by</span> <a tal:attributes="href request.resource_url(amendment.author, '@@index')">${((amendment.author is current_user) and 'Vous') or amendment.author.name}</a> <span  i18n:translate="">proposed the</span> <span tal:replace="layout.to_localized_time(amendment.created_at)"/> (UTC) <span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the proposal</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
-   </small>
-  </div>
+<div tal:condition="not is_proposal" class="thumbnail right-caption span4 search-item result-item view-item"
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(amendment, '@@index');
+                 icon getattr(amendment, 'icon');
+                 author amendment.author;
+                 item_template item_template|field.widget.item_template">
+  <div class="media-body media-amendment" tal:define="author_picture getattr(author, 'picture', None)">
+    <span class="amendment-toggle glyphicon glyphicon-minus pull-right"></span>
+    <div class="author-block">
+      <img class="author-img img-circle" 
+         tal:condition="author_picture is not None" 
+         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+      <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
+      <small>
+        <span i18n:translate="">Amended version by</span>
+        <a tal:attributes="href request.resource_url(author, '@@index')">
+          ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+        </a>
+        <span i18n:translate="">the</span>
+        <span tal:replace="layout.to_localized_time(amendment.created_at)"/> (UTC)
+      </small>
+    </div>
 
-   <div class="scroll-able trimmed-text ${is_proposal and 'proposal-trimmed-text' or 'amendment-trimmed-text'}">
-    ${structure:text}
-   </div>
+    <div class="object-title-block view-item-title" >
+      <a tal:attributes="href url">
+        <h4>
+          <span class="icon ${icon}"></span> ${amendment.title}
+        </h4>
+      </a>
+    </div>
+    <div class="object-text">
+      <div class="scroll-able trimmed-text amendment-trimmed-text">
+        ${structure:text}
+      </div>
+    </div>
+    ${field.start_mapping()}
+      <div tal:repeat="child field.children"
+           tal:replace="structure child.render_template(item_template)" >
+      </div>     
+    ${field.end_mapping()}
+  </div>
 </div>
 
+
+<div tal:condition="is_proposal" class="thumbnail right-caption span4 search-item result-item view-item"  
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(amendment, '@@index');
+                 icon getattr(amendment, 'icon');
+                 author amendment.author;
+                 item_template item_template|field.widget.item_template">
+  <div class="media-body media-proposal" tal:define="author_picture getattr(author, 'picture', None)">
+    <div class="object-title-block view-item-title" >
+        <a tal:attributes="href url">
+          <h4>
+            <span class="icon ${icon}"></span> ${amendment.title} <span style="color: #ef3128" i18n:translate="">(original version)</span>
+          </h4>
+        </a>
+    </div>
+    <div class="object-text">
+      <div class="scroll-able trimmed-text proposal-trimmed-text">
+        ${structure:text}
+      </div>
+    </div>
+    ${field.start_mapping()}
+      <div tal:repeat="child field.children"
+           tal:replace="structure child.render_template(item_template)" >
+      </div>     
+    ${field.end_mapping()}
+  </div>
+</div>

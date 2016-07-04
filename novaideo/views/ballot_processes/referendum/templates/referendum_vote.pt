@@ -1,8 +1,8 @@
-<div i18n:domain="novaideo"> 
+<div class="vote-subject" i18n:domain="novaideo"> 
   <dl >
      <dt  i18n:translate="">Subject of the vote</dt>
      <dd>
-      <div class="alert alert-info">
+      <div>
         <span class="glyphicon glyphicon-info-sign pull-right"></span>
         ${ballot_report.description}
       </div>

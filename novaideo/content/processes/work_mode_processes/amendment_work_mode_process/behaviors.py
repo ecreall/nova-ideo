@@ -43,8 +43,10 @@ except NameError:
     basestring = str
 
 
-VOTE_AMENDMENTS_MESSAGE = _("Vote for amendments")
-
+VOTE_AMENDMENTS_MESSAGE = _("Vous êtes invité à voter sur les amendements."
+                            " Chaque groupe d'amendements oppose différents "
+                            "amendements soumis et le texte original lorsqu'ils "
+                            "portent sur les mêmes parties de textes ou les mêmes idées.")
 
 AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(days=1)
 
@@ -210,7 +212,7 @@ class VotingAmendments(ElementaryAction):
         subject = mail_template['subject'].format(subject_title=context.title)
         alert('internal', [root], members,
               internal_kind=InternalAlertKind.working_group_alert,
-              subjects=[context])
+              subjects=[context], alert_kind='voting_amendment')
         for member in members:
             if getattr(member, 'email', ''):
                 message = mail_template['template'].format(

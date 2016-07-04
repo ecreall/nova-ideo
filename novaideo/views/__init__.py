@@ -273,7 +273,8 @@ class NovaideoAPI(IndexManagementJsonView):
             comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
             comment_view_instance = comment_view(
                 self.context, self.request,
-                behaviors=[action])
+                behaviors=[action],
+                only_form=True)
             comment_view_instance.update()
             user = get_current()
             channel = self.context.get_channel(user)
@@ -294,7 +295,8 @@ class NovaideoAPI(IndexManagementJsonView):
             comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
             comment_view_instance = comment_view(
                 self.context, self.request,
-                behaviors=[action])
+                behaviors=[action],
+                only_form=True)
             comment_view_instance.update()
             channel = self.context.channel
             comments = [channel.comments[-1]]
@@ -314,7 +316,8 @@ class NovaideoAPI(IndexManagementJsonView):
             comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
             comment_view_instance = comment_view(
                 self.context, self.request,
-                behaviors=[action])
+                behaviors=[action],
+                only_form=True)
             comment_view_instance.update()
             comments = [self.context.channel.comments[-1]]
             result_view = CommentsView(self.context, self.request)
@@ -333,7 +336,8 @@ class NovaideoAPI(IndexManagementJsonView):
             comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
             comment_view_instance = comment_view(
                 self.context, self.request,
-                behaviors=[action])
+                behaviors=[action],
+                only_form=True)
             comment_view_instance.update()
             comments = [self.context.comments[-1]]
             self.request.POST.clear()

@@ -1373,6 +1373,9 @@ def get_contents_by_dates(
 
 
 def get_comments(channel, filters, text_to_search=''):
+    if not channel:
+        return []
+
     and_op = QUERY_OPERATORS.get('and', 'default')
     or_op = QUERY_OPERATORS.get('or', 'default')
     novaideo_index = find_catalog('novaideo')

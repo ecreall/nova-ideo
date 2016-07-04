@@ -2,7 +2,7 @@
 	 tal:define="author_name author_name|nothing;
 	             author_avatar author_avatar|nothing;
 	             favicon favicon|nothing;">
-	<div tal:condition="author_avatar or author_name" class="url-title-container">
+	<div tal:condition="author_avatar or author_name" class="author-url url-title-container">
         <span tal:condition="author_avatar " class="url-author-icon">
         	<img  src="${author_avatar}" ></img>
         </span>
@@ -12,7 +12,7 @@
 		<span class="url-author-name" tal:condition="author_name">${author_name}</span>
 	</div>
 
-	<div tal:condition="not (author_avatar or author_name)" class="url-title-container">
+	<div tal:condition="not (author_avatar or author_name)" class="site-url url-title-container">
         <div>
 	        <span tal:condition="favicon" class="url-favicon">
 	        	<img  src="${favicon}" ></img>

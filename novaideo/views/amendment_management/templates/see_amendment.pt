@@ -33,9 +33,22 @@
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
     <h3 class="content-title"><span class="icon novaideo-icon icon-amendment"></span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a> / ${amendment.title}</h3>
     <div class="object-description"
-      tal:define="author amendment.author">
-     <small><span  i18n:translate="">(Amended version by</span> <a tal:attributes="href request.resource_url(author, '@@index')">${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}</a> <span  i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(amendment.created_at)"/> (UTC) <span  i18n:translate="">of the proposal</span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the amended version</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>)
-     </small>
+      tal:define="author amendment.author;
+                  author_picture getattr(author, 'picture', None)">
+      <small>
+        <div class="author-block">
+          <img class="author-img img-circle" 
+             tal:condition="author_picture is not None" 
+             tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+          <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
+            <span i18n:translate="">Amended version by</span>
+            <a tal:attributes="href request.resource_url(author, '@@index')">
+              ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+            </a>
+            <span i18n:translate="">the</span>
+        </div>
+        <span tal:replace="layout.to_localized_time(amendment.created_at)"/> (UTC) <span  i18n:translate="">of the proposal</span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the amended version</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>
+      </small>
     </div>
   </div>
   <div class="amendment-diff" i18n:domain="novaideo">

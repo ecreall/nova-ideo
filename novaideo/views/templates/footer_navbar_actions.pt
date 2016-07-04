@@ -6,7 +6,7 @@
            tal:condition="a in modal_actions"
            tal:define="item modal_actions.get(a, None)">
            <a id="${item['action_id']}-btn" 
-                class="btn btn-sm dace-action"
+                class="btn-sm dace-action"
                 href="${item['action'].url(item['context'])}"   
                 data-toggle="modal"
                 data-actionid ="${item['action_id']}" 

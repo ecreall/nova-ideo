@@ -1,0 +1,27 @@
+<div tal:define="oid oid|field.oid;
+                 css_class css_class|field.widget.css_class;
+                 style style|field.widget.style;
+                 inline getattr(field.widget, 'inline', False);"
+     tal:omit-tag="not inline">
+    ${field.start_rename()}
+    <ul class="judgment-radio list-inline">
+	  <li tal:repeat="choice values | field.widget.values"
+	       class="radio ${choice[0].lower().replace(' ', '-')}">
+	       <div tal:omit-tag="" tal:define="(value, title) choice">
+		        <input tal:attributes="checked value == cstruct;
+		                               style style;"
+		             class="${value.lower().replace(' ', '-')}"
+		             type="radio"
+		             name="${oid}"
+		             value="${value}"
+		             id="${oid}-${repeat.choice.index}"/>
+		        <label for="${oid}-${repeat.choice.index}"
+		           >
+			      ${title}
+			    </label>
+		       <div class="check glyphicon"><div class="inside"></div></div>
+	       </div>
+	  </li>
+    </ul>
+  ${field.end_rename()}
+</div>

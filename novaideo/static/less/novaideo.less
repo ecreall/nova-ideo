@@ -1,27 +1,242 @@
-li.comment-text-search-container {
-    width: 30%;
-    margin-left: 20px;
+.user-access-actions{
+   height: 40px;
+   padding-top: 8px;
 }
 
-.comments-text-search{
-    width: 91%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    margin-top: 3px;
-    padding-left: 25px;
+.user-access-action{
+  color: #54902a;
 }
 
- .comment-text-search-container>span{
-    color: gray;
-    font-size: 18px;
-    vertical-align: text-top;
-    margin-right: -26px;
-    margin-top: -2px;
- }
+.user-access-action:hover,
+.user-access-action:focus,
+.user-access-action:active{
+  color: #373a35 !important;
+}
+
+.amendment-toggle{
+  padding: 5px;
+  color: #b6b6b6;
+  cursor: pointer;
+}
+
+.small-amendment .majorityjudgment-choices{
+  float: right;
+  margin-bottom: -15px;
+  margin-top: 5px;
+}
 
 
-form .btn {
+ul.judgment-radio{
+    margin-top: -25px;
+}
+
+
+ul.judgment-radio li input[type=radio]{
+  position: absolute;
+  visibility: hidden;
+}
+
+ul.judgment-radio li{
+    padding: 0px !important;
+    margin: 0px !important   
+}
+
+ul.judgment-radio li label{
+    display: block;
+    position: relative;
+    padding: 23px 10px 0px 55px;
+    margin: 10px auto;
+    z-index: 9;
+    cursor: pointer;
+    -webkit-transition: all .25s linear;
+}
+
+
+ul.judgment-radio li .check{
+    display: block;
+    position: absolute;
+    border: 3px solid #737373;
+    border-radius: 20%;
+    height: 25px;
+    width: 25px;
+    top: 30px;
+    left: 20px;
+    -o-transition: border .25s linear;
+    transition: border .25s linear;
+    -webkit-transition: border .25s linear;
+}
+
+ul.judgment-radio li .check::before {
+    display: block;
+    position: absolute;
+    content: '';
+    border-radius: 100%;
+    height: 12px;
+    width: 12px;
+    top: 3px;
+    left: 2px;
+    margin: auto;
+    -o-transition: background .25s linear;
+    transition: background .25s linear;
+    -webkit-transition: background .25s linear;
+    font-size: 16px;
+}
+
+ul.judgment-radio input[type=radio].reject:checked ~ .check {
+  border: 3px solid #e02f2f;
+}
+
+ul.judgment-radio input[type=radio].reject:checked ~ .check::before{
+  color: #e02f2f;
+  content: ""
+}
+
+ul.judgment-radio input[type=radio].reject:checked ~ label{
+  color: #e02f2f;
+}
+
+ul.judgment-radio li.reject:hover label{
+  color: #e02f2f;
+}
+ul.judgment-radio li.reject:hover .check {
+  border: 3px solid #e02f2f;
+}
+
+
+
+ul.judgment-radio input[type=radio].insufficient:checked ~ .check {
+  border: 3px solid #e0542f;
+}
+
+ul.judgment-radio input[type=radio].insufficient:checked ~ .check::before{
+  color: #e0542f;
+  content: ""
+}
+
+ul.judgment-radio input[type=radio].insufficient:checked ~ label{
+  color: #e0542f;
+}
+
+ul.judgment-radio li.insufficient:hover label{
+  color: #e0542f;
+}
+ul.judgment-radio li.insufficient:hover .check {
+  border: 3px solid #e0542f;
+}
+
+
+
+
+ul.judgment-radio input[type=radio].passable:checked ~ .check {
+  border: 3px solid #e0872f;
+}
+
+ul.judgment-radio input[type=radio].passable:checked ~ .check::before{
+  color: #e0872f;
+  content: ""
+}
+
+ul.judgment-radio input[type=radio].passable:checked ~ label{
+  color: #e0872f;
+}
+
+ul.judgment-radio li.passable:hover label{
+  color: #e0872f;
+}
+ul.judgment-radio li.passable:hover .check {
+  border: 3px solid #e0872f;
+}
+
+
+ul.judgment-radio input[type=radio].fairly-well:checked ~ .check {
+  border: 3px solid #5277ff;
+}
+
+ul.judgment-radio input[type=radio].fairly-well:checked ~ .check::before{
+  color: #5277ff;
+  content: ""
+}
+
+ul.judgment-radio input[type=radio].fairly-well:checked ~ label{
+  color: #5277ff;
+}
+ul.judgment-radio li.fairly-well:hover label{
+  color: #5277ff;
+}
+ul.judgment-radio li.fairly-well:hover .check {
+  border: 3px solid #5277ff;
+}
+
+
+ul.judgment-radio input[type=radio].good:checked ~ .check {
+  border: 3px solid #2a3cc1;
+}
+
+ul.judgment-radio input[type=radio].good:checked ~ .check::before{
+  color: #2a3cc1;
+  content: ""
+}
+
+ul.judgment-radio input[type=radio].good:checked ~ label{
+  color: #2a3cc1;
+}
+
+ul.judgment-radio li.good:hover label{
+  color: #2a3cc1;
+}
+ul.judgment-radio li.good:hover .check {
+  border: 3px solid #2a3cc1;
+}
+
+
+ul.judgment-radio input[type=radio].very-good:checked ~ .check {
+  border: 3px solid #10835d;
+}
+
+ul.judgment-radio input[type=radio].very-good:checked ~ .check::before{
+  color: #10835d;
+  content: ""
+}
+
+ul.judgment-radio input[type=radio].very-good:checked ~ label{
+  color: #10835d;
+}
+
+ul.judgment-radio li.very-good:hover label{
+  color: #10835d;
+}
+ul.judgment-radio li.very-good:hover .check {
+  border: 3px solid #10835d;
+}
+
+
+ul.judgment-radio input[type=radio].excellent:checked ~ .check {
+  border: 3px solid #108300;
+}
+
+ul.judgment-radio input[type=radio].excellent:checked ~ .check::before{
+  color: #108300;
+  content: ""
+}
+
+ul.judgment-radio input[type=radio].excellent:checked ~ label{
+  color: #108300;
+}
+ul.judgment-radio li.excellent:hover label{
+  color: #108300;
+}
+ul.judgment-radio li.excellent:hover .check {
+  border: 3px solid #108300;
+}
+
+.btn.btn-xs{
+    height: 31px;
+    line-height: 32px;
+    padding: 0 1rem;
+    border-radius: 2px;
+}
+
+.btn {
     position: relative;
     cursor: pointer;
     display: inline-block;
@@ -35,15 +250,19 @@ form .btn {
     z-index: 1;
     will-change: opacity, transform;
     transition: all .3s ease-out;
-    margin-bottom: 10px;
     text-shadow: none !important;
 }
 
-form .btn.btn-file{
+form .btn{
+    margin-bottom: 10px;
+}
+
+
+.btn.btn-file{
   height: 34px; 
 }
 
-form .btn, form .btn-large {
+.btn, .btn-large {
     text-decoration: none;
     color: #fff;
     text-align: center;
@@ -51,7 +270,7 @@ form .btn, form .btn-large {
     transition: .2s ease-out;
     cursor: pointer;
 }
-form .btn, form .btn-large, form .btn-flat {
+.btn,.btn-large, .btn-flat {
     border: none;
     border-radius: 2px;
     display: inline-block;
@@ -62,30 +281,30 @@ form .btn, form .btn-large, form .btn-flat {
     vertical-align: middle;
     -webkit-tap-highlight-color: transparent;
 }
-form .btn, form .btn-large, form .btn-floating{
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+.btn, form .btn-large, form .btn-floating{
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 1px 3px 0 rgba(0,0,0,0.12);
 }
 
-form .btn{
+.btn{
   background-image: none !important
 }
 
-form .btn-default{
+.btn-default{
   color: #333;
   background-color: #ededed
 }
 
-form .btn:active,
-form .btn:focus,
-form .btn:hover,
-form .btn.active,
-form .btn.focus{
+.btn:active,
+.btn:focus,
+.btn:hover,
+.btn.active,
+.btn.focus{
   border: none !important;
   outline: none !important;
   text-shadow: none !important;
 }
 
-form .btn .waves-ripple {
+.btn .waves-ripple {
     position: absolute;
     border-radius: 50%;
     width: 20px;
@@ -675,8 +894,9 @@ form .btn .waves-ripple {
     margin-bottom: 10px    
 }
 
-.commentli .object-text{
-    margin-top: -15px;
+.content-view .text-container .object-text,
+.content-view .text-container .content-text{
+  min-height: 150px;
 }
 
 .object-menu{
@@ -836,7 +1056,7 @@ ins.hide-correction{
     border: 1px solid #dedede !important;
     background-color: #fff;
     margin-bottom: 0px;
-    line-height: 33px;
+    line-height: 29px;
     padding: 5px 10px;
     letter-spacing: .1px;
 }
@@ -889,9 +1109,6 @@ ins.hide-correction{
    margin-top: 40px   
 }
 
-.commentli .attached-files{
-  margin-top: 0px 
-}
 
 .more-contents-panel-s{
     margin-right: -15px;
@@ -1506,7 +1723,7 @@ ins {
 
 .legend-carre-del{
     width:30px;
-    height:20px;
+    height:15px;
     background-image: -webkit-linear-gradient(45deg, #ef827d 46%, #ef3128 100%);
     background-image:      -o-linear-gradient(45deg, #ef827d 46%, #ef3128 100%);
     background-image: linear-gradient(45deg, #ef827d 46%, #ef3128 100%);
@@ -1517,7 +1734,7 @@ ins {
 
 .legend-carre-ins{
     width:30px;
-    height:20px;
+    height:15px;
     background-image: -webkit-linear-gradient(45deg, #89e189 46%, #4eaf4e 100%);
     background-image:      -o-linear-gradient(45deg, #89e189 46%, #4eaf4e 100%);
     background-image: linear-gradient(45deg, #89e189 46%, #4eaf4e 100%);
@@ -1553,6 +1770,10 @@ ins {
 
 .vote-well {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(76, 164, 76, 0.16);
+}
+
+.vote-subject{
+  padding: 10px;
 }
 
 
@@ -1658,6 +1879,10 @@ ins {
     font-weight: bold
 }
 
+.object-description .author-block{
+  display: inline;
+}
+
 .media-advertisting {
     border-left: 10px solid @advertising-color !important;
 }
@@ -1675,7 +1900,7 @@ ins {
 }
 
 .media-amendment {
-    border-left: 10px solid #8aba4b !important;
+    border-left: 10px solid #0a7cc8 !important;
 }
 
 
@@ -1730,7 +1955,7 @@ ins {
 
 .amendment-body {
     padding: 6px;
-    margin: -20px 0;
+    margin-bottom: -15px;
 }
 
 .amendment-body h3.content-title{
@@ -1741,7 +1966,7 @@ ins {
     height: 160px;
     background-color: white;
     border-radius: 5px;
-    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.28) inset;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.28) inset;
     padding: 12px;
 }
 
@@ -1795,6 +2020,10 @@ ins {
 
 #amendments-legend .text-added{
    margin: -1px 4px 3px;
+}
+
+#amendments-legend  dd{
+    margin-bottom: 0px;
 }
 
 .amendment-vote-justification{
@@ -1866,10 +2095,6 @@ ins {
     font-weight: bold;
     height: 30px;
     padding: 4px 10px;
-}
-
-.navbar-entity .nav > li > a.active {
-    background-color: #039be5 !important;
 }
 
 .user-global-actions {
@@ -2021,45 +2246,12 @@ ins {
     display: none;
 }
 
-
-
-.item-closed {
-    background: transparent url(../images/open_button.png) center right no-repeat;
-        padding-bottom: 12px;
-        padding-right: 32px;
-        padding-top: 4px;
-}
-
-.del-item {
-    background: transparent url(../images/del_button.png) center right no-repeat;
-    margin-right: -3px;
-    padding-bottom: 10.5px;
-    padding-right: 39px;
-    padding-top: 5px;
-    cursor: pointer;
-
-}
-
-.disabled-del-item {
-    background: transparent url(../images/del_button_disabled.png) center right no-repeat;
-    margin-right: -3px;
-    padding-bottom: 10.5px;
-    padding-right: 39px;
-    padding-top: 5px;
-    cursor: no-drop;
-}
-
-.item-closed:hover { background: transparent url(../images/open_button_over.png) center right no-repeat; }
-
-.del-item:hover { background: transparent url(../images/del_button_over.png) center right no-repeat; }
-
 .panel-group .panel.controllable-item{
-    border-bottom-right-radius: 15px;
-    border-top-right-radius: 15px;
    border: 1px solid #c0c0c0;
 }
+
 .controllable-items .panel-heading {
-   padding: 3px 1px 6px 3px;
+   padding: 3px;
 }
 
 .controllable-items {
@@ -2070,6 +2262,13 @@ ins {
     padding: 5px;
 }
 
+.del-item{
+    color: @brand-danger !important;
+}
+
+.disabled-del-item{
+    color: gray !important;
+}
 
 .panel.controllable-item .panel-title {
     font-size: 15px;
@@ -2099,8 +2298,8 @@ ins {
 }
 
 .label-basic {
-    border: 1px solid #cfcfcf;
-    color: #979797;
+    border: 1px solid #5595b6;
+    color: #156e9d;
     background-color: white;
     margin-top: 3px;
     margin-left: 5px;
@@ -2248,7 +2447,8 @@ ins {
     background-color: #e4e4e4;
     border-color: #b5b3b0 !important;
     color: #585d52 !important;
-    padding: 6px;
+    line-height: 1.42857 !important;
+    padding: 6px !important;
 }
 
 .btn-white:hover, .btn-white:focus, .btn-white:active {
@@ -3113,13 +3313,13 @@ ins {
 .search-item:hover{
   .primary-actions a,
   .wg-block .wg-actions ul a{
-    color: #555459
+    color: #2297bf
   }
 }
 
 .search-item .wg-block .wg-actions ul a:hover,
 .primary-actions a:hover,{
-  color: @novaideo-hover-actions;
+  color: @novaideo-hover-actions !important;
 }
 
 .search-item .search-item-footer a,

@@ -97,12 +97,12 @@
         </ul>
       </li>
     </ul>
-    <div tal:condition="request.user is None" class="btn-group navbar-right">
-       <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary " id="log-in">
+    <div tal:condition="request.user is None" class="user-access-actions navbar-right">
+       <a href="${request.resource_url(request.root, '@@login')}" class="user-access-action" id="log-in">
           <i class="glyphicon glyphicon-log-in"> </i> <span i18n:translate="">Log In</span>
        </a>
        <a tal:condition="not getattr(request.root, 'only_invitation', False)"
-          href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary " id="registration" >
+          href="${request.resource_url(request.root, '@@registration')}" class="user-access-action " id="registration" >
           <i class="glyphicon glyphicon-pencil"> </i> <span  i18n:translate="">Registration</span>
        </a>
     </div>

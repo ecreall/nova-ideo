@@ -31,14 +31,20 @@ function send_vote(event){
       contentType: false,
       processData: false,
       success: function(data) {
-        panel.remove()
-        var votes = $(group.find('.panel-title.collapsed'))
-        if(votes.length>0){
-          $(votes.first()).click()
-          finish_progress()
+        var has_error = $(data).find('.amendment-body .has-error').length > 0
+        if(!has_error){
+          panel.remove()
+          var votes = $(group.find('.panel-title.collapsed'))
+          if(votes.length>0){
+            $(votes.first()).click()
+            finish_progress()
+          }else{
+             modal.modal('hide')
+             location.reload();
+          }
         }else{
-           modal.modal('hide')
-           location.reload();
+          button.removeClass('disabled');
+          finish_progress()
         }
        }
   });
@@ -677,12 +683,12 @@ $(document).ready(function(){
       $(".navbar-toggle").click();
   });
 
-  $('.panel-collapse').on('hide.bs.collapse', function () {
-    $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-plus');
+  $(document).on('hide.bs.collapse', '.panel-collapse', function () {
+    $(this).siblings().find('a span.glyphicon-minus').attr('class', 'glyphicon glyphicon-plus');
   });
 
-  $('.panel-collapse').on('show.bs.collapse', function () {
-    $(this).siblings().find('a span').attr('class', 'glyphicon glyphicon-minus');
+  $(document).on('show.bs.collapse', '.panel-collapse', function () {
+    $(this).siblings().find('a span.glyphicon-plus').attr('class', 'glyphicon glyphicon-minus');
   });
 
   $('.panel-collapse').on('shown.bs.collapse', function () {
@@ -794,5 +800,9 @@ $(function () {
   })
   $(document).on('hidden.bs.modal', '.similar-ideas', function(){
       $('body').removeClass('similar-ideas-modal-open')
+  })
+
+  $(document).on('click', 'ul.judgment-radio .radio', function(){
+      $($(this).find('input')).prop( "checked", true );
   })
 });

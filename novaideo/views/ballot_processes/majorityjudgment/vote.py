@@ -8,6 +8,7 @@ import colander
 import deform
 from pyramid.view import view_config
 from bs4 import BeautifulSoup
+import json
 
 import html_diff_wrapper
 from dace.util import get_obj
@@ -24,7 +25,7 @@ from pontus.default_behavior import Cancel
 from novaideo.content.processes.ballot_processes.majorityjudgment.behaviors import (
     Vote)
 from novaideo.content.proposal import Proposal
-from novaideo import _
+from novaideo import _, log
 from novaideo.views.widget import InLineWidget, ObjectWidget
 
 
@@ -79,9 +80,9 @@ def _prune_text(text, tag_descriminator, attributes_descriminator):
 
 
 def get_trimed_amendment_text(text):
-    soup, source_tags = _prune_text(text, 'span', {'id':'explanation'})
-    explanations_inline_tags = soup.find_all('span', 
-                                             {'class':'explanation-inline'})
+    soup, source_tags = _prune_text(text, 'span', {'id': 'explanation'})
+    explanations_inline_tags = soup.find_all('span',
+                                             {'class': 'explanation-inline'})
     source_tags.extend(explanations_inline_tags)
     soup.body.clear()
     for tag in source_tags:
@@ -92,14 +93,14 @@ def get_trimed_amendment_text(text):
 
 def get_trimed_proposal_text(text, amendments):
     merged_text = html_diff_wrapper.get_merged_diffs(
-                    text,
-                    amendments,
-                    {'id': 'modification', 
-                     'class': 'text-removed'},
-                    {'id': 'modification', 
-                     'class': 'glyphicon glyphicon-plus text-added'})
-    soup, source_tags = _prune_text(merged_text, 
-                                 'span', {'id':'modification'})
+        text,
+        amendments,
+        {'id': 'modification',
+         'class': 'text-removed'},
+        {'id': 'modification',
+         'class': 'glyphicon glyphicon-plus text-added'})
+    soup, source_tags = _prune_text(
+        merged_text, 'span', {'id': 'modification'})
     soup.body.clear()
     for tag in source_tags:
         soup.body.append(tag)
@@ -125,17 +126,20 @@ class VoteViewStudyReport(BasicView):
         values = {'context': self.context, 'ballot_report': ballot_report}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
 def judgments_choice(report):
     judgments = report.ballottype.judgments
-    judgments = sorted(judgments.keys(), 
-                       key=lambda o: judgments[o], 
-                       reverse=True )
+    judgments = sorted(judgments.keys(),
+                       key=lambda o: judgments[o],
+                       reverse=True)
     values = [(i, _(i)) for i in judgments]
-    widget = RadioChoiceWidget(values=values, inline=True)
+    widget = RadioChoiceWidget(
+        values=values, inline=True,
+        template='novaideo:views/ballot_processes/majorityjudgment/templates/radio_choice.pt',
+        item_css_class="majorityjudgment-choices")
     return widget
 
 
@@ -145,20 +149,22 @@ class CandidateSchema(Schema):
         colander.String(),
         title=_('Judgment')
         )
-    
+
+
 class CandidatesSchema(Schema):
-    candidates =  colander.SchemaNode(
+    candidates = colander.SchemaNode(
         colander.Sequence(),
-        omit(CandidateSchema(widget=ObjectWidget(), 
-                             editable=True, 
-                             name='candidate', 
-                             omit=['judgment']),['_csrf_token_']),
+        omit(CandidateSchema(widget=ObjectWidget(),
+                             editable=True,
+                             name='candidate',
+                             omit=['judgment']), ['_csrf_token_']),
         widget=InLineWidget(),
         title=_('Candidates')
         )
 
+
 class VoteFormView(FormView):
-    title =  _('Vote')
+    title = _('Vote')
     name = 'voteform'
     formid = 'formvote'
     behaviors = [Vote]
@@ -195,30 +201,32 @@ class VoteFormView(FormView):
         self.subjects = ballot_report.subjects
         return {'candidates': ballot_report.subjects}
 
-    def get_description(self, field, cstruct): 
+    def get_description(self, field, cstruct):
         description_template = 'novaideo:views/amendment_management/templates/description_amendments.pt'
         oid = cstruct[OBJECT_OID]
         current_user = get_current()
         try:
             subject = get_obj(int(oid))
-            values = {'amendment': subject, 
-                      'is_proposal': False, 
-                      'current_user': current_user}
+            values = {'amendment': subject,
+                      'is_proposal': False,
+                      'current_user': current_user,
+                      'field': field}
             if isinstance(subject, Proposal):
-                amendments = [a.text for a in self.subjects \
+                amendments = [a.text for a in self.subjects
                               if not isinstance(a, Proposal)]
-                values['text'] = get_trimed_proposal_text(subject.text,
-                                                           amendments)
+                values['text'] = get_trimed_proposal_text(
+                    subject.text, amendments)
                 values['is_proposal'] = True
             else:
                 values['text'] = get_trimed_amendment_text(
-                                getattr(subject, 'text_diff', ''))
+                    getattr(subject, 'text_diff', ''))
 
-            body = self.content(args=values, 
+            body = self.content(args=values,
                                 template=description_template)['body']
             return body
-        except Exception:
-            return {'amendment': None}
+        except Exception as e:
+            log.exception(e)
+            return '<dic class="has-error"></div>'
 
 
 @view_config(
@@ -234,8 +242,9 @@ class VoteViewMultipleView(MultipleView):
     wrapper_template = 'novaideo:views/ballot_processes/templates/panel_item.pt'
     views = (VoteViewStudyReport, VoteFormView)
     validators = [Vote.get_validator()]
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/explanation_amendment.js']}
+    requirements = {'css_links': ['novaideo:static/bootstrap-slider/dist/css/bootstrap-slider.min.css'],
+                    'js_links': ['novaideo:static/js/explanation_amendment.js',
+                                 'novaideo:static/bootstrap-slider/dist/bootstrap-slider.min.js']}
 
     def get_message(self):
         ballot_report = None
@@ -249,4 +258,4 @@ class VoteViewMultipleView(MultipleView):
         return ballot_report.ballot.title
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({Vote:VoteViewMultipleView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({Vote: VoteViewMultipleView})

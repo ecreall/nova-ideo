@@ -112,7 +112,7 @@ $(document).ready(function(){
 
   $('.select-item').on('droped', init_justification);
 
-  $('.btn.deform-seq-add').on('itemadded', init_select); 
+  $('.add-amendment-item.deform-seq-add').on('itemadded', init_select); 
 
   $('.select-item').on('click', scrollto);
 

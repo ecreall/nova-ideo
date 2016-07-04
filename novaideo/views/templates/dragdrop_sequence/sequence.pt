@@ -64,9 +64,10 @@
 
     <div >
       <a href="#"
-         class="btn deform-seq-add sequence-add-item"
+         class="add-amendment-item deform-seq-add sequence-add-item pull-right"
          id="${field.oid}-seqAdd"
          onclick="javascript: deform.appendSequenceItem(this); $(this).trigger( jQuery.Event( 'itemadded' ) ); return false;">
+         <small id="${field.oid}-addtext" class="glyphicon glyphicon-plus-sign"></small>
       </a>
 
       <script type="text/javascript">

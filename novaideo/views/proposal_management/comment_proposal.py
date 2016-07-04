@@ -48,9 +48,11 @@ class CommentProposalView(CommentIdeaView):
     name = 'comment'
     views = (CommentsView, CommentProposalFormView)
 
-    def before_update(self):
-        self.viewid = 'comment'
-        super(CommentProposalView, self).before_update()
+    def _init_views(self, views, **kwargs):
+        if kwargs.get('only_form', False):
+            views = (CommentProposalFormView, )
+
+        super(CommentIdeaView, self)._init_views(views, **kwargs)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CommentProposal: CommentProposalView})

@@ -146,6 +146,12 @@ class CommentIdeaView(MultipleView):
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}
 
+    def _init_views(self, views, **kwargs):
+        if kwargs.get('only_form', False):
+            views = (CommentIdeaFormView, )
+
+        super(CommentIdeaView, self)._init_views(views, **kwargs)
+
     def before_update(self):
         self.viewid = 'comment'
         super(CommentIdeaView, self).before_update()
