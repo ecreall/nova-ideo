@@ -310,7 +310,7 @@ function update_inline_sidebar_action(url){
     var target = $(sidebar.find('.actions-footer-container'))//closest('.dace-action-inline').data('target')+'-target';
     var toggle = $('.menu-right-toggle:not(.close)')
     var toggle = $('.menu-right-toggle:not(.close)')
-    var title = $($this.parents('.view-item').first().find('.view-item-title')).clone()
+    var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title')).clone()
     title.find('.label-basic').remove()
     actions.removeClass('activated')
     var url = $this.closest('.dace-action-inline').data('updateurl');

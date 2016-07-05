@@ -1,4 +1,4 @@
-<div id="popover-${oid}" class="popover right popover-person"
+<div id="popover-${oid}" class="popover right popover-person view-item"
 	  role="tooltip"
 	  tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
@@ -6,7 +6,7 @@
                  profil_picture getattr(picture, 'profil', picture)">
 	<div style="top: 50%;" class="arrow">
 	</div>
-    <h4 class="popover-title">
+    <h4 class="popover-title view-item-title">
     	<img class="img-circle" tal:condition="profil_picture is not None"
                tal:attributes="src profil_picture.url"  width="25"/>
 	    <img class="img-circle"
