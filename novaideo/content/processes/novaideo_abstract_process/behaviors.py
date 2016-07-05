@@ -27,7 +27,8 @@ def select_roles_validation(process, context):
 
 def select_processsecurity_validation(process, context):
     user = get_current()
-    return not (context in getattr(user, 'selections', [])) and \
+    return user is not context and \
+           context not in getattr(user, 'selections', []) and \
            global_user_processsecurity(process, context)
 
 

@@ -805,4 +805,32 @@ $(function () {
   $(document).on('click', 'ul.judgment-radio .radio', function(){
       $($(this).find('input')).prop( "checked", true );
   })
+
+   $(document).on('mouseover', '.toggle-popover:not(.active)', function(){
+        var $this = $(this);
+         $('.popover').remove()
+        $this.addClass('active')
+        var body = $(document.body)
+        var url = body.data('api_url')
+        var oid = $this.data('oid');
+        $.getJSON(url,{oid: oid, op: 'get_entity_popover'}, function(data) {
+          if(data['body']){
+            var popover = $(data['body'])
+            $this.append(popover);
+            var position = $this.offset()
+            popover.css('top', position.top-$(document).scrollTop()-(popover.height()/2)+'px')
+            popover.css('left', position.left+$this.width()-2+'px')
+            popover.css('display', 'block')
+          }
+        });
+
+    });
+
+   // $(document).on('mouseleave', '.toggle-popover.active', function(){
+   //      var $this = $(this);
+   //      var oid = $this.data('oid');
+   //      $this.removeClass('active')
+   //      $('.popover').remove()
+   //  });
+
 });

@@ -14,7 +14,9 @@
       <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
       <small>
         <span i18n:translate="">Submitted by</span>
-        <a tal:attributes="href request.resource_url(author, '@@index')">
+        <a tal:attributes="href request.resource_url(author, '@@index')"
+          data-oid="${getattr(author, '__oid__', '')}"
+          class="toggle-popover">
           ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
         </a>
         <span i18n:translate="">the</span>

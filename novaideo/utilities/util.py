@@ -682,12 +682,15 @@ def render_navbar_body(
     template=None,
     keys=['global-action', 'text-action', 'plus-action']):
     actions = {key.replace('-', '_'): actions_navbar.get(key, [])
-               for key in keys}
-    modal_actions = actions_navbar['modal-action']['actions']
-    template = template if template else DEFAUL_NAVBAR_TEMPLATE
-    actions['modal_actions'] = dict(modal_actions)
-    actions['obj'] = context
-    return renderers.render(template, actions, request)
+               for key in keys if actions_navbar.get(key, [])}
+    if actions:
+        modal_actions = actions_navbar['modal-action']['actions']
+        template = template if template else DEFAUL_NAVBAR_TEMPLATE
+        actions['modal_actions'] = dict(modal_actions)
+        actions['obj'] = context
+        return renderers.render(template, actions, request)
+
+    return None
 
 
 class ObjectRemovedException(Exception):

@@ -101,6 +101,8 @@
                 <div class="working-group-section">
                   <tal:loop repeat="m proposal.working_group.members">
                     <a tal:attributes="href request.resource_url(m, '@@index')"
+                      data-oid="${getattr(m, '__oid__', '')}"
+                      class="toggle-popover"
                       tal:define="picture getattr(m, 'picture', None);
                                   profil_picture getattr(picture, 'profil', None)">
                       <img class="author-img img-circle" 

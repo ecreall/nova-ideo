@@ -1,5 +1,4 @@
-<div style="left: 232px; display: block; top: 243px;"
-	  id="popover-${getattr(object, '__oid__', 'user')}" class="popover fade right"
+<div id="popover-${oid}" class="popover right popover-person"
 	  role="tooltip"
 	  tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
@@ -7,20 +6,20 @@
                  profil_picture getattr(picture, 'profil', picture)">
 	<div style="top: 50%;" class="arrow">
 	</div>
-    <h3 class="popover-title">
+    <h4 class="popover-title">
     	<img class="img-circle" tal:condition="profil_picture is not None"
-               tal:attributes="src profil_picture.url"  width="50"/>
+               tal:attributes="src profil_picture.url"  width="25"/>
 	    <img class="img-circle"
 	           tal:condition="profil_picture is None"
-	           src="${request.static_url('novaideo:static/images/user.png')}" width="50"/>
+	           src="${request.static_url('novaideo:static/images/user.png')}" width="25"/>
 	      ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
 	      <small class="date" tal:condition="getattr(object, 'function', '')">
             ${object.function}
           </small>
-    </h3>
+    </h4>
     <div class="popover-content">
       <div>${object.presentation_text(100)}</div>
-      <div class="search-item-footer">
+      <div class="popover-footer">
 	      <div class="actions-block">
 	        <div tal:replace="structure footer_body"/>
 	      </div>

@@ -14,8 +14,9 @@ from substanced.util import get_oid
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import (
     find_catalog, getAllBusinessAction, getBusinessAction,
-    getSite)
-from dace.objectofcollaboration.principal.util import get_current
+    getSite, get_obj)
+from dace.objectofcollaboration.principal.util import (
+    get_current)
 from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView
 
@@ -562,3 +563,37 @@ class NovaideoAPI(IndexManagementJsonView):
 
         user.notification_ids.append(notif_id)
         return {'ids': list(user.notification_ids)}
+
+    def get_entity_popover(self):
+        oid_str = self.params('oid')
+        from novaideo.utilities.util import (
+            generate_listing_menu,
+            DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
+            ObjectRemovedException)
+        if oid_str:
+            try:
+                obj = get_obj(int(oid_str))
+                if obj:
+                    try:
+                        navbars = generate_listing_menu(
+                            self.request, obj,
+                            descriminators=['communication-action'],
+                            footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE)
+                    except ObjectRemovedException:
+                        return {'body': ''}
+
+                    user = get_current()
+                    render_dict = {
+                        'object': obj,
+                        'oid': oid_str,
+                        'current_user': user,
+                        'footer_body': navbars['footer_body']
+                    }
+                    body = self.content(
+                        args=render_dict,
+                        template=obj.templates.get('popover'))['body']
+                    return {'body': body}
+            except:
+                pass
+
+        return {'body': ''}

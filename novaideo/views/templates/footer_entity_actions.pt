@@ -1,4 +1,5 @@
-<ul class="list-inline footer-entity-actions" style="z-index: 1300">
+<ul tal:define="footer_entity_action footer_entity_action|nothing"
+     class="list-inline footer-entity-actions" style="z-index: 1300">
   <tal:loop repeat="a footer_entity_action">
     <li>
       <a tal:condition="a not in modal_actions" tal:attributes="href a.url(obj)" class="btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span> ${a.title}</a>

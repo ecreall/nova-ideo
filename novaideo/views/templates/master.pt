@@ -140,7 +140,7 @@
         });
       </script>
  </head>
-  <body tal:define="adminnavbar panel('adminnavbar')">
+  <body tal:define="adminnavbar panel('adminnavbar')" data-api_url="${request.resource_url(request.root, 'novaideoapi')}">
     
     <div tal:omit-tag="" tal:condition="request.accessible_to_anonymous">
       <div tal:omit-tag="" tal:condition="not view_only">

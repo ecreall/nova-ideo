@@ -111,7 +111,8 @@ class Idea(VersionableEntity, DuplicableEntity,
     icon = 'icon novaideo-icon icon-idea'
     templates = {'default': 'novaideo:views/templates/idea_result.pt',
                  'bloc': 'novaideo:views/templates/idea_result.pt',
-                 'small': 'novaideo:views/templates/small_idea_result.pt'}
+                 'small': 'novaideo:views/templates/small_idea_result.pt',
+                 'popover': 'novaideo:views/templates/idea_popover.pt'}
     template = 'novaideo:views/templates/idea_list_element.pt'
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')

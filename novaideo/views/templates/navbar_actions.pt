@@ -1,4 +1,7 @@
-<nav tal:condition="text_action or global_action" class="navbar navbar-entity" role="navigation">
+<nav tal:define="text_action text_action|nothing;
+                 global_action global_action|nothing;
+                 plus_action plus_action|nothing"
+   tal:condition="text_action or global_action" class="navbar navbar-entity" role="navigation">
   <div class="container-fluid">
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="navbar-entity-content" >

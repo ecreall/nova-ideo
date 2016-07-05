@@ -1,4 +1,7 @@
-<div class="clearfix listing-object-menu" tal:condition="actions">
+<div tal:omit-tag="" tal:define="
+  primary_action primary_action|nothing;
+  actions actions|nothing">
+ <div class="clearfix listing-object-menu" tal:condition="actions">
     <ul class="list-inline primary-actions" tal:condition="primary_action">
         <tal:loop repeat="a primary_action">
           <li tal:condition="not hasattr(a, 'url')">
@@ -134,4 +137,5 @@
        </div>
     </div>
 </tal:loop>
+</div>
 </div>

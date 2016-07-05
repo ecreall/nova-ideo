@@ -181,7 +181,8 @@ class Proposal(VersionableEntity,
     type_title = _('Proposal')
     icon = 'icon novaideo-icon icon-proposal'
     templates = {'default': 'novaideo:views/templates/proposal_result.pt',
-                 'small': 'novaideo:views/templates/small_proposal_result.pt'}
+                 'small': 'novaideo:views/templates/small_proposal_result.pt',
+                 'popover': 'novaideo:views/templates/proposal_popover.pt'}
     template = 'novaideo:views/templates/proposal_list_element.pt'
     name = renamer()
     author = SharedUniqueProperty('author')

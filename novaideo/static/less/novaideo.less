@@ -1,3 +1,45 @@
+
+.popover .popover-title{
+  color: #333;
+  line-height: 1.5;
+}
+.popover-person .popover-title{
+  border-bottom: 3px solid #d9534f !important;
+}
+
+.popover-idea .popover-title{
+  border-bottom: 3px solid @idea-color !important;
+}
+
+.popover-proposal .popover-title{
+  border-bottom: 3px solid @proposal-color !important;
+}
+
+.popover{
+  position: fixed !important;
+  min-width: 300px;
+}
+
+.popover .popover-content {
+    padding: 9px 9px 5px 12px;
+    font-size: 13px !important;
+}
+
+.popover-footer{
+    color: #8b93a3;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.popover-footer ul li a .hidden-xs{
+  display: none !important;
+}
+
+.popover-footer a{
+    font-weight: 100 !important; 
+}
+
 .user-access-actions{
    height: 40px;
    padding-top: 8px;
@@ -3323,7 +3365,8 @@ ins {
 }
 
 .search-item .search-item-footer a,
-.content-footer a{
+.content-footer a,
+.popover .actions-block a{
   color: #555459
 }
 
@@ -3335,12 +3378,14 @@ ins {
 
 
 .search-item  .search-item-footer a:hover,
-.content-footer a:hover{  
+.content-footer a:hover,
+.popover .actions-block a:hover{  
   color: @novaideo-hover-actions;
 }
 
 .search-item  .search-item-footer a.activated,
-.content-footer .actions-block a.activated
+.content-footer .actions-block a.activated,
+.popover .actions-block a.activated
 {
   color: @novaideo-hover-actions;
   font-weight: bold;

@@ -7,15 +7,14 @@
                subjectclassname subject.__class__.__name__.lower(); 
                is_discuss object.is_discuss()">
       <a id="${item['action_id']}-btn" 
-        class="dace-action-inline media-${subjectclassname}"
+        class="toggle-popover channel-action dace-action-inline media-${subjectclassname}"
+        data-oid="${getattr(subject, '__oid__', '')}"
         href="${item['action'].url(item['context'])}"   
         data-toggle="modal"
         data-actionid ="${item['action_id']}" 
         data-target="#${item['action_id']}"
         data-updateurl="${item['actionurl_update']}"
-        data-toreplay="${'toreplay' in item}"
-        i18n:attributes="title"
-        title="${title}">
+        data-toreplay="${'toreplay' in item}">
           <div class="view-item-title channel-item-title">
              <span tal:condition="not is_discuss" class="channel-icon" >#</span>
              <span tal:condition="not is_discuss" class="${getattr(subject, 'icon', '')}" ></span>

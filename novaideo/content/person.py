@@ -277,7 +277,8 @@ class Person(User, SearchableEntity, CorrelableEntity):
     icon = 'icon glyphicon glyphicon-user' #'icon novaideo-icon icon-user'
     templates = {'default': 'novaideo:views/templates/person_result.pt',
                  'bloc': 'novaideo:views/templates/person_result.pt',
-                 'small': 'novaideo:views/templates/small_person_result.pt'}
+                 'small': 'novaideo:views/templates/small_person_result.pt',
+                 'popover': 'novaideo:views/templates/person_popover.pt'}
     name = renamer()
     tokens = CompositeMultipleProperty('tokens')
     tokens_ref = SharedMultipleProperty('tokens_ref')
