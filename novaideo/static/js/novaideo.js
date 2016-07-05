@@ -310,7 +310,7 @@ function update_inline_sidebar_action(url){
     var target = $(sidebar.find('.actions-footer-container'))//closest('.dace-action-inline').data('target')+'-target';
     var toggle = $('.menu-right-toggle:not(.close)')
     var toggle = $('.menu-right-toggle:not(.close)')
-    var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title')).clone()
+    var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
     title.find('.label-basic').remove()
     actions.removeClass('activated')
     var url = $this.closest('.dace-action-inline').data('updateurl');
@@ -320,7 +320,7 @@ function update_inline_sidebar_action(url){
        if (action_body){
            $(target.find('.container-body')).html(action_body);
            if(title.length > 0){
-               $(sidebar.find('.sidebar-title .entity-title')).html(title)
+               $(sidebar.find('.sidebar-title .entity-title').first()).html(title)
            }
            $this.addClass('activated')
            try {
