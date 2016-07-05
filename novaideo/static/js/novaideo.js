@@ -826,11 +826,11 @@ $(function () {
 
     });
 
-   // $(document).on('mouseleave', '.toggle-popover.active', function(){
-   //      var $this = $(this);
-   //      var oid = $this.data('oid');
-   //      $this.removeClass('active')
-   //      $('.popover').remove()
-   //  });
+   $(document).on('mouseleave', '.toggle-popover.active', function(){
+        var $this = $(this);
+        var oid = $this.data('oid');
+        $this.removeClass('active')
+        $('.popover').remove()
+    });
 
 });
