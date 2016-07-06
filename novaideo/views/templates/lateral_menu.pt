@@ -59,7 +59,7 @@
     <div class="btn-sub-menu-container" tal:condition="len(actions) > 1">
       <div  class="fixed-action-btn">
         <a class="btn-floating btn-large btn-sub-menu-control">
-             <i class="ion-plus-round" ></i>
+             <i class="glyphicon glyphicon-plus" ></i>
         </a>
       </div>
       <ul class="list-unstyled btn-sub-menu">    
