@@ -836,9 +836,9 @@ $(function () {
 
   $('.btn-sub-menu-container').hover(function(){
     var $this = $(this)
-    $($this.find('ul.btn-sub-menu li')).fadeIn( "slow" )
+    $($this.find('ul.btn-sub-menu li')).fadeIn( "fast" )
     }, function(){
       var $this = $(this)
-      $($this.find('ul.btn-sub-menu li')).fadeOut( "slow" )
+      $($this.find('ul.btn-sub-menu li')).fadeOut( "fast" )
     })
 });
