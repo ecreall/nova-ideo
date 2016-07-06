@@ -326,8 +326,12 @@ form .btn{
     vertical-align: middle;
     -webkit-tap-highlight-color: transparent;
 }
-.btn, form .btn-large, form .btn-floating{
+.btn, .btn-large, .btn-floating{
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 1px 3px 0 rgba(0,0,0,0.12);
+}
+
+.btn-floating:hover{
+    box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
 }
 
 .btn{
@@ -892,12 +896,41 @@ form .btn{
 }
 
 .fixed-action-btn {
-  bottom: 23px;
-  margin-bottom: 0;
-  padding-top: 15px;
-  position: fixed;
-  right: 23px;
-  z-index: 1041;
+    float: right;
+    margin-right: 15px;
+    z-index: 1041;
+}
+
+ul.btn-sub-menu,
+.btn-sub-menu-container{
+    float: right;
+    margin: 0px !important;
+}
+
+ul.btn-sub-menu{
+    padding-top: 18px;
+}
+
+ul.btn-sub-menu li{
+    display:none
+}
+
+.btn-sub-menu .btn-floating i:before{
+  margin-right: -4px
+}
+
+.btn-sub-menu .btn-floating i.novaideo-icon{
+    font-size: 2.3rem !important;
+}
+
+.btn-sub-menu .btn-floating{
+  line-height: 46px;
+  background-color: #2196F3;
+}
+
+.btn-sub-menu-control{
+  background-color: #F44336 !important;
+  line-height: 32px !important;
 }
 
 .btn-floating {
@@ -1213,7 +1246,9 @@ ins.hide-correction{
 }
 
 .lateral-menu {
-    width: 100%;
+    position: fixed;
+    bottom: 45px;
+    right: 24px;
 }
 
 .lateral-menu-item {
@@ -1284,7 +1319,7 @@ button.navbar-toggle
 
 .navbar-right.btn-group .btn {
   margin-top: 5px;
-  padding: 1px 8px;
+  padding: 0px 8px;
 }
 
 .navbar-bottom .nav > li > a{
@@ -3446,6 +3481,14 @@ ins {
 }
 .icon-user:before {
     content: "\e61f";
+}
+
+.icon-proposal-ex:before {
+    content: "\e902";
+}
+
+.icon-idea-ex:before {
+    content: "\e901";
 }
 
 

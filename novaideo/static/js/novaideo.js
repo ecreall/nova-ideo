@@ -833,4 +833,12 @@ $(function () {
         $('.popover').remove()
     });
 
+
+  $('.btn-sub-menu-container').hover(function(){
+    var $this = $(this)
+    $($this.find('ul.btn-sub-menu li')).fadeIn( "slow" )
+    }, function(){
+      var $this = $(this)
+      $($this.find('ul.btn-sub-menu li')).fadeOut( "slow" )
+    })
 });

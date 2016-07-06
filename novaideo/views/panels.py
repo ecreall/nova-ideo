@@ -216,7 +216,7 @@ class UserNavBarPanel(object):
 
 
 @panel_config(
-    name = 'novaideo_contents',
+    name='novaideo_contents',
     context=NovaIdeoApplication,
     renderer='templates/panels/novaideo_contents.pt'
     )
@@ -570,8 +570,8 @@ class Adminnavbar_panel(object):
                                                         'dace_ui_api')
         actions = dace_ui_api.get_actions([root], self.request)
         admin_actions = [a for a in actions
-                         if getattr(a[1], 'style_descriminator', '') ==
-                         'admin-action']
+                         if getattr(a[1], 'style_descriminator', '') in
+                         ('admin-action', 'lateral-action')]
         return {'groups': group_actions(admin_actions),
                 'pictos': {g: v[1] for g, v in GROUPS_PICTO.items()},
                 'error': False}
@@ -619,6 +619,7 @@ class Deadline_panel(object):
                 'condition': True}
 
 from novaideo.contextual_help_messages import CONTEXTUAL_HELP_MESSAGES
+
 
 @panel_config(
     name='contextual_help',
