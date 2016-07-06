@@ -40,6 +40,7 @@ class DiffView(BasicView):
     #TODO current version
     def update(self):
         version = self.params('version')
+        titlediff = ''
         textdiff = ''
         descriptiondiff = ''
         keywordsdiff = []
@@ -52,6 +53,9 @@ class DiffView(BasicView):
             soupd, descriptiondiff = html_diff_wrapper.render_html_diff(
                 '<div>'+getattr(versionobj, 'description', '')+'</div>',
                 '<div>'+getattr(self.context, 'description', '')+'</div>')
+            soupt, titlediff = html_diff_wrapper.render_html_diff(
+                getattr(versionobj, 'title', ''),
+                getattr(self.context, 'title', ''))
             for k in versionobj.keywords:
                 if k in self.context.keywords:
                     keywordsdiff.append({'title': k, 'state': 'nothing'})
@@ -66,6 +70,7 @@ class DiffView(BasicView):
             'version': versionobj,
             'idee': self.context,
             'textdiff': textdiff,
+            'titlediff': titlediff,
             'descriptiondiff': descriptiondiff,
             'keywordsdiff': keywordsdiff
         }

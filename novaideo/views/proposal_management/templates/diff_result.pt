@@ -1,5 +1,6 @@
 <div class="compare-result" i18n:domain="novaideo">
  <div tal:omit-tag="" tal:condition="version">
+ <h4 class="content-title">${structure:titlediff}</h4>
   <div class="object-well proposal-well">
     <dl >
       <dt  i18n:translate="">Abstract</dt>
