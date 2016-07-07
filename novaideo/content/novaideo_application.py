@@ -339,6 +339,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.work_modes = list(WORK_MODES.keys())
         self.colors_mapping = PersistentDict(DEFAULT_COLORS)
         self.addtoproperty('channels', Channel(title=_("General")))
+        self.setproperty('general_chanel', self.channels[0])
 
     def reset_default_values(self):
         self.participants_mini = 3
