@@ -39,7 +39,6 @@ def mysubscriber(event):
     novaideo_title = settings.get('novaideo.title')
     root.title = novaideo_title
     root.init_files()
-    root.initialization()
     catalogs = find_service(root, 'catalogs')
     catalogs.add_catalog('novaideo')
 
@@ -190,6 +189,7 @@ def init_application(event):
     root = app.root_factory(request)
     request.root = root
     root.init_files()
+    root.init_channels()
     # other init functions
     init_contents(registry)
 

@@ -338,6 +338,8 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.deadlines = PersistentList([datetime.datetime.now(tz=pytz.UTC)])
         self.work_modes = list(WORK_MODES.keys())
         self.colors_mapping = PersistentDict(DEFAULT_COLORS)
+
+    def init_channels(self):
         self.addtoproperty('channels', Channel(title=_("General")))
         self.setproperty('general_chanel', self.channels[0])
 
