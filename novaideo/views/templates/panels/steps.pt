@@ -1,5 +1,5 @@
 <div tal:omit-tag="" tal:condition="condition" i18n:domain="novaideo">
-  <div  id="steps-messages">
+  <div  class="hidden-xs" id="steps-messages">
       <div id="messages">
           <div tal:condition="step1_message != ''" id="message-step-1" role="tooltip" class="popover fade bottom">
               <div class="arrow"></div>
@@ -33,7 +33,7 @@
           </div>
       </div>
   </div>
-  <div class="container-fluid">
+  <div class="hidden-xs container-fluid">
   <div class="steps-container row">
     <div class="col-md-2"></div>
 	  <div class="steps col-md-10">

@@ -68,7 +68,6 @@ class AdvancedSearchView(FilterView):
     behaviors = [Search]
     formid = 'formadvanced_search'
     wrapper_template = 'pontus:templates/views_templates/view_wrapper.pt'
-    css_class = 'simple-bloc'
     container_css_class = 'home'
 
     def update(self):
