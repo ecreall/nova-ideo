@@ -8,7 +8,7 @@
     	<span class="icon ${icon}"></span> ${getattr(object, 'title', object.name)}
     </h4>
     <div class="popover-content">
-      <div>${object.presentation_text(100)}</div>
+      <div>${object.presentation_text(200)}</div>
       <div class="popover-footer">
 	      <div class="actions-block">
 	        <div tal:replace="structure footer_body"/>

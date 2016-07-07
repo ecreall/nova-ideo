@@ -133,7 +133,10 @@
                            <dt tal:condition="contents_len == 1" ><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated content:</span></dt>
                            <dd tal:condition="contents">
                              <tal:loop repeat="f contents">
-                                 <a tal:attributes="href request.resource_url(f, '@@index')"><span class="${getattr(f, 'icon', '')}"></span> ${f.title}</a>
+                                 <a 
+                                  data-oid="${getattr(f, '__oid__', '')}"
+                                  class="toggle-popover"
+                                  tal:attributes="href request.resource_url(f, '@@index')"><span class="${getattr(f, 'icon', '')}"></span> ${f.title}</a>
                                  <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
                              </tal:loop>
                            </dd>

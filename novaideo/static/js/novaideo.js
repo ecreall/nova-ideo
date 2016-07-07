@@ -307,8 +307,10 @@ function update_inline_sidebar_action(url){
        return
     }
     var sidebar = $('.sidebar-right-nav')
+    var bar = $(".bar-right-wrapper")
+    var closed = bar.hasClass('toggled')
+    
     var target = $(sidebar.find('.actions-footer-container'))//closest('.dace-action-inline').data('target')+'-target';
-    var toggle = $('.menu-right-toggle:not(.close)')
     var toggle = $('.menu-right-toggle:not(.close)')
     var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
     title.find('.label-basic').remove()
@@ -327,7 +329,7 @@ function update_inline_sidebar_action(url){
                 deform.processCallbacks();
             }
            catch(err) {};
-           if(toggle.length>0){
+           if(toggle.length>0 && closed){
               toggle.click()
            }
            init_comment_scroll(target)
