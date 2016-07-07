@@ -32,9 +32,12 @@
                      </a>
                   </div>
               </div>
-              <div title="${layout.to_localized_time(comment.created_at)}" class="comment-author" tal:define="diff_len  len(diff.keys())">
-                <a tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a>
-                <div class="comment-detail-container">
+              <div class="comment-author" tal:define="diff_len  len(diff.keys())">
+                <a 
+                  data-oid="${getattr(comment.author, '__oid__', '')}"
+                  class="toggle-popover"
+                  tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a>
+                <div title="${layout.to_localized_time(comment.created_at)}" class="comment-detail-container">
                   <div  tal:omit-tag="" tal:condition="diff">
                     <span i18n:translate="">There is a</span>  
                     <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
