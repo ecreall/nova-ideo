@@ -340,8 +340,9 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.colors_mapping = PersistentDict(DEFAULT_COLORS)
 
     def init_channels(self):
-        self.addtoproperty('channels', Channel(title=_("General")))
-        self.setproperty('general_chanel', self.channels[0])
+        if not self.general_chanel:
+            self.addtoproperty('channels', Channel(title=_("General")))
+            self.setproperty('general_chanel', self.channels[0])
 
     def reset_default_values(self):
         self.participants_mini = 3
