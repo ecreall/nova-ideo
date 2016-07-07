@@ -813,16 +813,22 @@ $(function () {
         var body = $(document.body)
         var url = body.data('api_url')
         var oid = $this.data('oid');
-        $.getJSON(url,{oid: oid, op: 'get_entity_popover'}, function(data) {
-          if(data['body']){
-            var popover = $(data['body'])
-            $this.append(popover);
-            var position = $this.offset()
-            popover.css('top', position.top-$(document).scrollTop()-(popover.height()/2)+'px')
-            popover.css('left', position.left+$this.width()-2+'px')
-            popover.css('display', 'block')
+        setTimeout(function(){
+          var has_popover = $this.find('.popover').length > 0
+          if($this.hasClass('active') && !has_popover){
+            $.getJSON(url,{oid: oid, op: 'get_entity_popover'}, function(data) {
+              if(data['body']){
+                var popover = $(data['body'])
+                $this.append(popover);
+                var position = $this.offset()
+                popover.css('top', position.top-$(document).scrollTop()-(popover.height()/2)+'px')
+                popover.css('left', position.left+$this.width()-2+'px')
+                popover.css('display', 'block')
+              }
+            });
           }
-        });
+        }, 900);
+        
 
     });
 
