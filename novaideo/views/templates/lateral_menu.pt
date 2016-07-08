@@ -1,5 +1,70 @@
 <div tal:condition="actions" class="btn-group-vertical lateral-menu" role="group">
     <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="btn-sub-menu-container" tal:condition="len(actions) > 1">
+        <ul class="list-unstyled btn-sub-menu">    
+        <tal:loop repeat="a actions[1:]">
+            <li title="${a.title}"
+               class="fixed-action-btn"
+               tal:condition="a not in modal_actions" >
+                <a tal:attributes="href a.url(obj)"
+                   class="btn-floating">
+                     <i class="${getattr(a,'style_picto','')}" ></i>
+                </a>
+            </li>
+            <li tal:condition="a in modal_actions"
+                 tal:define="item modal_actions.get(a, None)"
+                 title="${item['action'].title}"
+                 class="fixed-action-btn">
+
+                 <a id="${item['action_id']}-btn" 
+                      class="btn-floating  dace-action"
+                      href="${item['action'].url(item['context'])}"   
+                      data-toggle="modal"
+                      data-actionid ="${item['action_id']}" 
+                      data-target="#${item['action_id']}"
+                      data-updateurl="${item['actionurl_update']}"
+                      data-toreplay="${'toreplay' in item}">
+                     <i class="${getattr(a,'style_picto','')}" ></i> 
+                   </a>
+                   <script tal:condition="'toreplay' in item">       
+                        $(document).ready(function(){
+                             $(${'\'#'+item['action_id']+'-btn\''}).click();
+                        });
+                   </script>  
+                   <script>
+                        $(document).ready(function(){
+                            $(${'\'#'+item['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
+                               //after_execution(${'\"'+item['actionurl_after']+'\"'})
+                              })
+                        });
+                   </script>
+                <!-- Modal -->
+                   <div class="modal fade" 
+                       id="${item['action_id']}-modal" 
+                       role="dialog" 
+                       aria-labelledby="myModalLabel" 
+                       aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                               <h4 class="modal-title" id="myModalLabel"> ${item['view_title']}</h4>
+                           </div>
+                           <div class="modal-body">
+                              ${structure:item['body']}
+                           </div>
+                         </div>
+                      </div>
+                   </div>
+            </li>
+        </tal:loop>
+      </ul>
+      <div  class="fixed-action-btn">
+        <a class="btn-sub-menu-control">
+            <i class="octicon octicon-checklist" ></i>
+        </a>
+      </div>
+    </div>
     <div tal:omit-tag="" tal:define="a actions[0]">
           <div title="${a.title}"
              class="fixed-action-btn"
@@ -55,70 +120,5 @@
                     </div>
                  </div>
           </div>
-    </div>
-    <div class="btn-sub-menu-container" tal:condition="len(actions) > 1">
-      <div  class="fixed-action-btn">
-        <a class="btn-floating btn-large btn-sub-menu-control">
-             <i class="octicon octicon-plus" ></i>
-        </a>
-      </div>
-      <ul class="list-unstyled btn-sub-menu">    
-      <tal:loop repeat="a actions[1:]">
-          <li title="${a.title}"
-             class="fixed-action-btn"
-             tal:condition="a not in modal_actions" >
-              <a tal:attributes="href a.url(obj)"
-                 class="btn-floating">
-                   <i class="${getattr(a,'style_picto','')}" ></i>
-              </a>
-          </li>
-          <li tal:condition="a in modal_actions"
-               tal:define="item modal_actions.get(a, None)"
-               title="${item['action'].title}"
-               class="fixed-action-btn">
-
-               <a id="${item['action_id']}-btn" 
-                    class="btn-floating  dace-action"
-                    href="${item['action'].url(item['context'])}"   
-                    data-toggle="modal"
-                    data-actionid ="${item['action_id']}" 
-                    data-target="#${item['action_id']}"
-                    data-updateurl="${item['actionurl_update']}"
-                    data-toreplay="${'toreplay' in item}">
-                   <i class="${getattr(a,'style_picto','')}" ></i> 
-                 </a>
-                 <script tal:condition="'toreplay' in item">       
-                      $(document).ready(function(){
-                           $(${'\'#'+item['action_id']+'-btn\''}).click();
-                      });
-                 </script>  
-                 <script>
-                      $(document).ready(function(){
-                          $(${'\'#'+item['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
-                             //after_execution(${'\"'+item['actionurl_after']+'\"'})
-                            })
-                      });
-                 </script>
-              <!-- Modal -->
-                 <div class="modal fade" 
-                     id="${item['action_id']}-modal" 
-                     role="dialog" 
-                     aria-labelledby="myModalLabel" 
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                         <div class="modal-header">
-                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                             <h4 class="modal-title" id="myModalLabel"> ${item['view_title']}</h4>
-                         </div>
-                         <div class="modal-body">
-                            ${structure:item['body']}
-                         </div>
-                       </div>
-                    </div>
-                 </div>
-          </li>
-      </tal:loop>
-    </ul>
     </div>
 </div><!-- /.container-fluid -->

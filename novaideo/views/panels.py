@@ -188,7 +188,7 @@ class UserNavBarPanel(object):
         self.context = context
         self.request = request
 
-    def __call__(self):
+    def __call__(self, has_contextual_help=False):
         root = getSite()
         if getattr(self.request, 'is_idea_box', False):
             self.navbar_actions = [SeeMyContents, SeeMySelections]
@@ -212,6 +212,7 @@ class UserNavBarPanel(object):
         result = {}
         result['actions'] = actions_url
         result['view'] = self
+        result['has_contextual_help'] = has_contextual_help
         return result
 
 

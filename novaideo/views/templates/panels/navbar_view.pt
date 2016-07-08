@@ -1,8 +1,8 @@
 <nav class="navbar navbar-inverse navbar-bottom" >
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-2"></div>
-      <div class="access-menu col-md-10">
+      <div class="col-md-3"></div>
+      <div class="access-menu col-md-9">
         <div class="container-fluid">
           <div class="navbar-collapse">
             <ul tal:condition="actions"  class="nav navbar-nav">
@@ -12,6 +12,9 @@
                      <span class="visible-xs-inline-block action-icon ${actions[k]['icon']}"></span>
                   </a>
                </li>
+               <li tal:condition="has_contextual_help" class="contextual-help-toggle-container">
+                 <div class="contextual-help-toggle typcn typcn-info-large"></div>
+               </li> 
             </ul>
           </div>
         </div>

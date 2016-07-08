@@ -673,7 +673,7 @@ form .btn{
 .analytics-nav>li>a:hover, 
 .analytics-nav>li>a:focus,{
     text-transform: uppercase;
-    color: @novaideo-menu-color!important;
+    color: @novaideo-menu-color !important;
     background-color: transparent !important;
     border: none;
     border-bottom: solid 3px;
@@ -892,19 +892,17 @@ form .btn{
 }
 
 .fixed-action-btn {
-    float: right;
-    margin-left: 15px;
+    margin-top: 5px;
     z-index: 1041;
 }
 
 ul.btn-sub-menu,
 .btn-sub-menu-container{
-    float: right;
     margin: 0px !important;
 }
 
 ul.btn-sub-menu{
-    padding-top: 18px;
+    padding-left: 5px;
 }
 
 ul.btn-sub-menu li{
@@ -925,12 +923,18 @@ ul.btn-sub-menu li{
 }
 
 .btn-sub-menu-control{
-  background-color: #F44336 !important;
-  line-height: 32px !important;
+  padding-left: 17px;
+  color: #3f6da6
+}
+
+.btn-sub-menu-container:hover .btn-sub-menu-control,
+.btn-sub-menu-container.active .btn-sub-menu-control,
+{
+   color:white 
 }
 
 .btn-sub-menu-control i{
-  font-size: 30px !important;
+  font-size: 40px !important;
 }
 
 .btn-floating {
@@ -1258,8 +1262,8 @@ ins.hide-correction{
 
 .lateral-menu {
     position: fixed;
-    bottom: 45px;
-    right: 24px;
+    bottom: 25px;
+    right: 20px;
     z-index: 1046
 }
 
@@ -1513,9 +1517,61 @@ body{
 }
 
 
-.contextual-help>span.glyphicon{
-    font-size: 30px;
-    margin-left: 25px;
+.contextual-help-toggle{
+    cursor: pointer;
+}
+
+
+.contextual-help-toggle-container{
+    float: right !important;
+    margin-right: 0 !important;
+    position: absolute !important;
+    right: 25px;
+    z-index: 1041;
+}
+
+.contextual-help-toggle:not(.close){
+    color: #ebaa4c;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.contextual-help-toggle.toggled {
+    color: gray;
+}
+
+.contextual-help-toggle {
+    cursor: pointer;
+}
+
+button.contextual-help-toggle-close{
+    margin-top: -15px;
+    margin-right: -10px;  
+}
+
+.contextual-help{
+    box-shadow: 0 27px 24px 0 rgba(0,0,0,0.2),0 40px 77px 0 rgba(0,0,0,0.22);
+    margin-right: 15px;
+    display: none;
+    position: fixed;
+    top: 115px;
+    z-index: 2000;
+    height: 75%;
+    padding: 20px;
+    background-color: #f8f1c8;
+    transition: box-shadow .25s;
+    border-radius: 2px;
+}
+
+.contextual-help > ul{
+    overflow: auto;
+    height: 100%;
+    padding-right: 10px;
+    margin-left: 0;
+}
+
+.contextual-help.toggled{
+  display: block
 }
 
 .post-it {
@@ -3092,6 +3148,13 @@ ins {
 
 
 @media (max-width: 767px) {
+    .content-view .label.label-basic{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .contextual-help-toggle-container {
+        margin-top: -6px;
+    }
     .img-carousel-container{
       text-align: center;
       float:none !important;

@@ -140,7 +140,9 @@
         });
       </script>
  </head>
-  <body tal:define="adminnavbar panel('adminnavbar')" data-api_url="${request.resource_url(request.root, 'novaideoapi')}">
+  <body tal:define="
+    adminnavbar panel('adminnavbar');
+    contextual_help panel('contextual_help')" data-api_url="${request.resource_url(request.root, 'novaideoapi')}">
     
     <div tal:omit-tag="" tal:condition="request.accessible_to_anonymous">
       <div tal:omit-tag="" tal:condition="not view_only">
@@ -153,7 +155,7 @@
           </div>
         </div>
         <!-- bar  -->
-        ${panel('usernavbar')}
+        ${panel('usernavbar', True if contextual_help else False)}
         <div class="container-fluid">
           <div class="novaideo-info row"
                tal:define="content panel('novaideo_contents');
@@ -249,7 +251,7 @@
                  ${panel('advertisting_right_9')}
                  ${panel('advertisting_right_10')}
                  ${panel('advertisting_right_11')}
-                 ${panel('contextual_help')}
+                 ${contextual_help}
                <div metal:define-slot="right"></div>
                
             </div>
