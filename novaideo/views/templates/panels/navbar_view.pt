@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-bottom" >
+<nav class="navbar navbar-inverse navbar-bottom" i18n:domain="novaideo">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-3"></div>
@@ -12,7 +12,7 @@
                      <span class="visible-xs-inline-block action-icon ${actions[k]['icon']}"></span>
                   </a>
                </li>
-               <li tal:condition="has_contextual_help" class="contextual-help-toggle-container">
+               <li i18n:attributes="title" title="Activate the contextual help" tal:condition="has_contextual_help" class="contextual-help-toggle-container">
                  <div class="contextual-help-toggle typcn typcn-info-large"></div>
                </li> 
             </ul>
