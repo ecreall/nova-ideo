@@ -113,18 +113,19 @@ def publish_ideas(ideas, request):
 
 def publish_condition(process):
     proposal = process.execution_context.created_entity('proposal')
-    working_group = proposal.working_group
-    report = working_group.vp_ballot.report
-    if not getattr(working_group, 'first_vote', True):
-        electeds = report.get_electeds()
-        if electeds is None:
-            return False
-        else:
-            return True
+    if proposal:
+        working_group = proposal.working_group
+        report = working_group.vp_ballot.report
+        if not getattr(working_group, 'first_vote', True):
+            electeds = report.get_electeds()
+            if electeds is None:
+                return False
+            else:
+                return True
 
-    report.calculate_votes()
-    if report.result['False'] != 0:
-        return False
+        report.calculate_votes()
+        if report.result['False'] != 0:
+            return False
 
     return True
 
@@ -1368,7 +1369,8 @@ class VotingPublication(ElementaryAction):
         return {}
 
     def after_execution(self, context, request, **kw):
-        proposal = self.process.execution_context.created_entity('proposal')
+        proposal = self.process.execution_context.created_entity(
+            'proposal')
         if self.sub_process:
             exec_ctx = self.sub_process.execution_context
             vote_processes = exec_ctx.get_involved_collection('vote_processes')
