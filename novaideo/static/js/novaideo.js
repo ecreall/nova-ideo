@@ -99,16 +99,20 @@ function init_channels_scroll(){
 }
 
 function init_channels_top(){
+    var navbar_top_h = $('.navbar.navbar-fixed-top').height()
+    navbar_top_h = navbar_top_h == undefined? 0 : navbar_top_h 
     var navbar_h = $('nav.navbar.navbar-bottom').height()
+    navbar_h = navbar_h == undefined? 0 : navbar_h
+    var default_top = navbar_h + navbar_top_h - 3
     var scrolltop = $(window).scrollTop();
     var btn = $('.all-channels-toggle:not(.close)')
     var blocks = $('.all-blocks')
     if (scrolltop <= navbar_h){
-      btn.css('top', 96 - scrolltop+"px")
-      blocks.css('margin-top', 50 - scrolltop+"px")
+      btn.css('top', default_top - scrolltop+"px")
+      blocks.css('margin-top', default_top - scrolltop+"px")
     }else{
-      btn.css('top', 96 - navbar_h+"px")
-      blocks.css('margin-top', 50 - navbar_h+"px")
+      btn.css('top', default_top - navbar_h+"px")
+      blocks.css('margin-top', default_top - navbar_h+"px")
     }
   }
 

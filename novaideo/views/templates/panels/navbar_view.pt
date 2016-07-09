@@ -13,7 +13,7 @@
                   </a>
                </li>
                <li i18n:attributes="title" title="Activate the contextual help" tal:condition="has_contextual_help" class="contextual-help-toggle-container">
-                 <div class="contextual-help-toggle typcn typcn-info-large"></div>
+                 <div class="contextual-help-toggle glyphicon glyphicon-info-sign"></div>
                </li> 
             </ul>
           </div>
