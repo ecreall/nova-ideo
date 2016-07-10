@@ -13,6 +13,7 @@ import urllib
 import io
 import re
 import metadata_parser
+from urllib.parse import urlparse
 from itertools import groupby
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
@@ -223,6 +224,15 @@ def dates(propertyname):
     return property(_get, _set)
 
 
+def get_url_domain(url, name_only=False):
+    parsed_uri = urlparse(url)
+    if not name_only:
+        return '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+    
+    return '{uri.netloc}'.format(uri=parsed_uri)
+
+
+
 def extract_twitter_metadata(page):
     result = {}
     soup = BeautifulSoup(page, "lxml")
@@ -244,7 +254,17 @@ def extract_twitter_metadata(page):
 def extract_favicon(page):
     result = {}
     soup = BeautifulSoup(page, "lxml")
-    favicon = soup.head.find('link', href=re.compile("\.ico"))
+    links = {
+        'href': re.compile("\.ico"),
+        'rel': "icon",
+        'type': "image/x-icon"
+    }
+    for link, value in links.items():
+        favicon = soup.head.find(
+            'link', **{link: value})
+        if favicon:
+            break
+
     if favicon:
         result = {'favicon': favicon['href']}
 
@@ -274,6 +294,9 @@ def extract_urls_metadata(urls, save_images=False):
             'image_url': None,
             'image': None
         }
+        if not result.get('site_name'):
+            result['site_name'] = get_url_domain(
+                url, True).replace('www.', '').replace('.', '-')
 
         if result['site_name']:
             extractor = DATA_EXTRACTORS.get(result['site_name'].lower(), None)
