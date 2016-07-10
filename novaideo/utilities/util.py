@@ -232,7 +232,6 @@ def get_url_domain(url, name_only=False):
     return '{uri.netloc}'.format(uri=parsed_uri)
 
 
-
 def extract_twitter_metadata(page):
     result = {}
     soup = BeautifulSoup(page, "lxml")
@@ -251,7 +250,7 @@ def extract_twitter_metadata(page):
     return result
 
 
-def extract_favicon(page):
+def extract_favicon(page, domain):
     result = {}
     soup = BeautifulSoup(page, "lxml")
     links = {
@@ -266,7 +265,12 @@ def extract_favicon(page):
             break
 
     if favicon:
-        result = {'favicon': favicon['href']}
+        href = favicon['href']
+        domain_href = get_url_domain(href, True)
+        if not domain_href:
+            href = domain + href
+
+        result = {'favicon': href}
 
     return result
 
@@ -303,7 +307,7 @@ def extract_urls_metadata(urls, save_images=False):
             if extractor:
                 result.update(extractor(page))
 
-        result.update(extract_favicon(page))
+        result.update(extract_favicon(page, get_url_domain(url)))
         try:
             image = url_metadata.get_metadata('image')
             if save_images and image:
