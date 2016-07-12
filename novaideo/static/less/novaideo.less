@@ -1,3 +1,8 @@
+.emoji {
+    width: 30px;
+    vertical-align: middle;
+}
+
 .popover .popover-title{
   color: #333;
   line-height: 1.5;
@@ -2328,7 +2333,7 @@ ins {
     border-radius: 50%;
     box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.314);
     display: inline-block;
-    padding: 4px;
+    padding: 7px 6px 4px 6px;
     position: relative;
     top: 1px;
 }
@@ -2346,6 +2351,8 @@ ins {
     background-image:      -o-linear-gradient(50deg, #76c176 28%, #398139 99%);
     background-image: linear-gradient(50deg, #76c176 28%, #398139 99%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#76c176', endColorstr='#398139', GradientType=1);
+
+    color: white !important;
 }
 
 .token-danger.token-toggle.active:hover{
@@ -2353,6 +2360,7 @@ ins {
     background-image:      -o-linear-gradient(50deg, #de534d 28%, #ab1c15 99%);
     background-image: linear-gradient(50deg, #de534d 28%, #ab1c15 99%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#de534d', endColorstr='#ab1c15', GradientType=1);
+    color: white !important;
 }
 
 .token-success{
@@ -2362,11 +2370,27 @@ ins {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#89e189', endColorstr='#4eaf4e', GradientType=1);
 }
 
+.my-token.token-success{
+  background-image: none;
+  background-color: white;
+  color: #4eaf4e;
+  border: solid 1px #4eaf4e;
+  box-shadow: 0px 0px 5px #4eaf4e;
+}
+
 .token-danger{
     background-image: -webkit-linear-gradient(50deg, #ef827d 28%, #ef3128 99%);
     background-image:      -o-linear-gradient(50deg, #ef827d 28%, #ef3128 99%);
     background-image: linear-gradient(50deg, #ef827d 28%, #ef3128 99%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ef827d', endColorstr='#ef3128', GradientType=1);
+}
+
+.my-token.token-danger{
+  background-image: none;
+  background-color: white;
+  color: #ef3128;
+  border: solid 1px #ef3128;
+  box-shadow: 0px 0px 5px #ef3128;
 }
 
 .my-token-success{
@@ -2383,7 +2407,7 @@ ins {
 
 
 .proposal-support .danger {
-    margin-left: -5px
+    margin-left: 2px
 }
 
 .proposal-support .danger .support-nb{

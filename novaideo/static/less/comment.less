@@ -117,7 +117,8 @@
 
 .commentform .comment-form-group:not(.comment-textarea),
 .commentform .comment-form-group > label,
-.commentform fieldset .form-group:last-child
+.commentform fieldset .form-group:last-child,
+.emoji-container-input
 {
     display: none
 }
@@ -130,7 +131,8 @@
 }
 
 
-.commentform .comment-form-group.active{
+.commentform .comment-form-group.active,
+.emoji-container-input.active{
     position: fixed;
     display: block!important;
     right: 40px;
@@ -141,11 +143,22 @@
     box-shadow: 0 5px 25px rgba(0,0,0,.6);
     padding: 11px;
     border-radius: 6px;
-    max-height: 400px;
+    max-height:300px;
     overflow: auto;
     z-index: 1300;
 }
 
+.emoji-container-input span.emoji-sizer{
+    padding: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 3rem;
+    margin: 0px
+}
+
+.emoji-container-input span.emoji-sizer:hover{
+    background-color: gray;
+}
 .url-block{
     margin: .4rem 0;
     max-width: 510px;
@@ -344,6 +357,12 @@ li.comment-text-search-container {
     .comment-content .content-text .row{
        margin-left: 0px;
        margin-right: 0px;
+    }
+
+    .commentform .comment-form-group.active, .emoji-container-input.active {
+        max-height: 250px;
+        right: 10px;
+        width: 94%;
     }
 }
 

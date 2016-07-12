@@ -1401,5 +1401,6 @@ def get_comments(channel, filters, text_to_search=''):
             'text_to_search': text_to_search
         },
         add_query=query,
+        sort_on='created_at',
         reverse=True)
     return objects

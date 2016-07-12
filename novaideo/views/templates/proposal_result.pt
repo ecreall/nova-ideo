@@ -104,11 +104,9 @@
             i18n:attributes="title" 
           tal:define="
               action 'withdraw_token_proposal' if support else 'support_proposal'">
-            <span class="${not support and 'hide-bloc'} hidden-xs glyphicon glyphicon-hand-down my-token my-token-success">
-            </span>
             <span 
               data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'support'})}" 
-              class="token token-toggle ${not active and 'disabled' or 'active'} token-success glyphicon glyphicon-thumbs-up"></span>
+              class="token token-toggle ${not active and 'disabled' or 'active'} token-success glyphicon glyphicon-triangle-top ${support and 'my-token'}"></span>
             <span class="support-nb">${len(object.tokens_support)}</span>
         </span>
         <span class="label danger"
@@ -116,11 +114,9 @@
             i18n:attributes="title"
           tal:define="
               action 'withdraw_token_proposal' if oppose else 'oppose_proposal'">
-            <span class=" ${not oppose and 'hide-bloc'} hidden-xs glyphicon glyphicon-hand-down my-token my-token-danger"> 
-            </span>
             <span 
               data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
-              class="token token-toggle ${not active and 'disabled' or 'active'} token-danger glyphicon glyphicon-thumbs-down"></span>
+              class="token token-toggle ${not active and 'disabled' or 'active'} token-danger glyphicon glyphicon-triangle-bottom ${oppose and 'my-token'}"></span>
             <span class="support-nb">${len(object.tokens_opposition)}</span>
         </span>
       </div>

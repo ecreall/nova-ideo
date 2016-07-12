@@ -3,12 +3,12 @@
        <dt  i18n:translate="">My appreciation</dt>
        <dd tal:condition="support == 1">
             <span class="label success">
-                <span class="token token-success glyphicon glyphicon-thumbs-up"></span>
+                <span class="token token-success glyphicon glyphicon-triangle-top"></span>
            </span>
        </dd>
         <dd tal:condition="support == -1">
             <span class="label danger">
-                <span class="token token-danger glyphicon glyphicon-thumbs-down"></span>
+                <span class="token token-danger glyphicon glyphicon-triangle-bottom"></span>
            </span>
        </dd>
         <dd tal:condition="support == 0" i18n:translate="">
@@ -19,11 +19,11 @@
         <small>
            <div tal:condition="'published' in context.state" class="proposal-support">
              <span class="label success">
-                <span class="token token-success glyphicon glyphicon-thumbs-up"></span>
+                <span class="token token-success glyphicon glyphicon-triangle-top"></span>
                 <span class="support-nb">${len(context.tokens_support)}</span>
              </span>
              <span class="label danger">
-                <span class="token token-danger glyphicon glyphicon-thumbs-down"></span>
+                <span class="token token-danger glyphicon glyphicon-triangle-bottom"></span>
                 <span class="support-nb">${len(context.tokens_opposition)}</span>
              </span>
             </div>
