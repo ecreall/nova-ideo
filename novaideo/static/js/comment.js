@@ -110,7 +110,8 @@ function init_comment_scroll(element){
      setTimeout(function(){comment_scroll_to($(elem.parents('.commentli').first()), true)}, 1000)
   }else{
    // if (comment_scroll.length>0){
-     comment_scroll.animate({ scrollTop: comment_scroll.prop("scrollHeight")}, 1000);
+     // comment_scroll.animate({ scrollTop: comment_scroll.prop("scrollHeight")}, 1000);
+     comment_scroll.scrollTop(comment_scroll.prop("scrollHeight"));
    }
 };
 
@@ -133,6 +134,7 @@ function update_replay(url){
            $($(target).find('.media-body').first()).html(get_form_replay_container());
            var container = $($(target).find('.replay-form-container').first());
            container.append($(action_body));
+           init_emoji($(container.find('.emoji-container:not(.emojified)')));
            var replay_bloc = $($(target).parents('ul.replay-bloc').first());
            $(container.find('button.close').first()).on('click', function(){
               replay_bloc.css('display', 'none');
@@ -202,6 +204,7 @@ $(document).ready(function(){
             $.post(next_path, {filters: filters.toArray(), text: text_to_search}, function(data) {
                 var new_comment_ul = $($(data).find('.comments-scroll .comments-container .commentulorigin').first())
                 if(new_comment_ul.length>0){
+                  init_emoji($(new_comment_ul.find('.emoji-container:not(.emojified)')));
                   loading.addClass('hide-bloc')
                   new_comment_ul.insertBefore(comment_ul)
                   $this.scrollTop(new_comment_ul.height());
@@ -237,6 +240,7 @@ $(document).ready(function(){
         if (comment !='' && intention!=''){
           var preview = $(target.find('> .commentli.comment-preview').last());
           $(preview.find('.comment-preview-text')).text(comment)
+          init_emoji($(preview.find('.comment-preview-text')));
           preview.removeClass('hide-bloc')
           init_comment_scroll(parent)
           $(button).addClass('disabled');
@@ -252,6 +256,7 @@ $(document).ready(function(){
             success: function(data) {
                 var content = $(data.body).find('.commentulorigin');
                 if (content){
+                   init_emoji($(content.find('.emoji-container:not(.emojified)')));
                    $($(content).find('li.commentli').first()).insertBefore(preview);
                    preview.addClass('hide-bloc')
                    $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
@@ -306,6 +311,7 @@ $(document).ready(function(){
         if (comment !='' && intention!=''){
           var preview = $(target.find('> .commentli.comment-preview').last());
           $(preview.find('.comment-preview-text')).text(comment)
+          init_emoji($(preview.find('.comment-preview-text')));
           preview.removeClass('hide-bloc')
           comment_scroll_to(preview, true)
           $(button).addClass('disabled');
@@ -321,6 +327,7 @@ $(document).ready(function(){
             success: function(data) {
               var content = $(data.body).find('.commentulorigin');
               if (content){
+                 init_emoji($(content.find('.emoji-container:not(.emojified)')));
                  $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
                  $($(content).find('li.commentli').first()).insertBefore(preview);
                  preview.addClass('hide-bloc')
@@ -447,7 +454,24 @@ $(document).ready(function(){
         $((".comment-form-group")).removeClass('active')
       });
 
+      $(document).on('click','.commentform .comment-textarea-actions .comment-emoji', function(event){
+        var $this = $(this)
+        var form = $($this.parents('form').first())
+        $((".comment-form-group")).removeClass('active')
+        var button = $(form.find(".comment-form-group.emoji-container-input").first());
+        button.addClass('active')
+        // button.css('bottom', $this.parents('form').offset().top+'px')
+      });
 
+  $(document).on('click', '.emoji-container-input span.emoji-sizer', function(){
+        var $this = $(this)
+        var value = ':'+$($this.find('.emoji-inner').first()).attr('title')+':'
+        var container = $($this.parents('.emoji-container-input'))
+        var text = $(container.siblings('textarea'))
+        text.val(text.val()+' '+value+' ')
+        container.removeClass('active')
+
+  })
       
 
 });

@@ -7,9 +7,9 @@
         	<img  src="${author_avatar}" ></img>
         </span>
         <span class="url-title">
-			<a href="${url}" target="_blank">${title}</a>
+			<a href="${url}" target="_blank" class="emoji-container">${title}</a>
 		</span>
-		<span class="url-author-name" tal:condition="author_name">${author_name}</span>
+		<span class="url-author-name emoji-container" tal:condition="author_name" >${author_name}</span>
 	</div>
 
 	<div tal:condition="not (author_avatar or author_name)" class="site-url url-title-container">
@@ -17,19 +17,19 @@
 	        <span tal:condition="favicon" class="url-favicon">
 	        	<img  src="${favicon}" ></img>
 	        </span>
-	        <span class="url-title-site">${site_name}</span>
+	        <span class="url-title-site emoji-container">${site_name}</span>
 	    </div>
 		<span class="url-title">
-			<a href="${url}" target="_blank">${title}</a>
+			<a href="${url}" target="_blank" class="emoji-container">${title}</a>
 		</span>
 	</div>
 
-	<div class="url-description">${description}</div>
+	<div class="url-description emoji-container">${description}</div>
 	<img class="url-img" src="${image_url}"></img>
 	<div tal:condition="author_avatar or author_name">
 		<span tal:condition="favicon" class="url-favicon">
 	        <img  src="${favicon}" ></img>
 	    </span>
-	    <span tal:condition="author_avatar" class="url-site">${site_name}</span>
+	    <span tal:condition="author_avatar" class="url-site emoji-container">${site_name}</span>
     </div>
 </blockquote>

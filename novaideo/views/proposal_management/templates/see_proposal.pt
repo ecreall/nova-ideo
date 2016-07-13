@@ -242,7 +242,7 @@
           <div tal:replace="structure footer_body"/>
       </div>
 
-      <div tal:condition="'proposal' in request.content_to_support and 'submitted_support' in proposal.state and 'examined' not in proposal.state"  style="margin-top: -35px"
+      <div tal:condition="'proposal' in request.content_to_support and 'submitted_support' in proposal.state and 'examined' not in proposal.state"  style="margin-top: -25px"
         tal:define="
               support any(t.owner is current_user for t in proposal.tokens_support);
               oppose any(t.owner is current_user for t in proposal.tokens_opposition);
@@ -255,7 +255,7 @@
                 action 'withdraw_token_proposal' if support else 'support_proposal'">
               <span 
                 data-action="${request.resource_url(proposal, 'novaideoapi', query={'op': action, 'action': 'support'})}" 
-                class="token token-toggle ${not active and 'disabled' or 'active'} token-success glyphicon glyphicon-triangle-top ${support and 'my-token'}"></span>
+                class="token token-toggle ${not active and 'disabled' or 'active'} token-success octicon octicon-triangle-up ${support and 'my-token'}"></span>
               <span class="support-nb">${len(proposal.tokens_support)}</span>
         </span>
         <span class="label danger"
@@ -265,7 +265,7 @@
                 action 'withdraw_token_proposal' if oppose else 'oppose_proposal'">
               <span 
                 data-action="${request.resource_url(proposal, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
-                class="token token-toggle ${not active and 'disabled' or 'active'} token-danger glyphicon glyphicon-triangle-bottom ${oppose and 'my-token'}"></span>
+                class="token token-toggle ${not active and 'disabled' or 'active'} token-danger octicon octicon-triangle-down ${oppose and 'my-token'}"></span>
               <span class="support-nb">${len(proposal.tokens_opposition)}</span>
           </span>
       </div>

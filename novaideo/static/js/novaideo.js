@@ -6,6 +6,46 @@ function finish_progress(){
     $('img.lac-loading-indicator').addClass('hide-bloc');
 }
 
+
+var emoji = undefined
+
+function get_new_emoji(){
+    emoji = new EmojiConvertor();
+    var emoji_url = $(document.body).data('emoji_url')
+    emoji.img_sets = {
+      'apple' : {'path' : emoji_url,
+                 'sheet' : emoji_url,
+                 'mask' : 1 }
+    };
+    emoji.use_sheet = true;
+    emoji.init_env();
+    return emoji
+}
+
+
+function init_emoji(nodes){
+    // emojify.setConfig(
+    //   {emojify_tag_type : 'span',
+    //    img_dir          : 'http://0.0.0.0:6543/novaideostatic/emoji/image/sprites/'});
+    // emojify.defaultConfig['mode'] = 'sprite'
+    // emojify.run();
+
+  if(emoji == undefined){
+      emoji = get_new_emoji();
+  }
+  emoji.img_set = 'apple';
+  emoji.text_mode = false;
+  emoji.include_title = true;
+  emoji.addAliases({
+      '🤔' : '1f415'
+  });
+  for(var i=0; i< nodes.length; i++){
+    var node = $(nodes[i])
+    node.html(emoji.replace_colons(node.html()));
+    node.addClass('emojified')
+  }
+}
+
 function update_notification_id(id, url){
    $.post(url, {id: id}, function(data) {
      console.log(data)
@@ -292,6 +332,19 @@ function scroll_to_panel(){
   }
 }
 
+function rebuild_scrolls(scrolls){
+  if (!window.matchMedia("(max-width: 767px)").matches) {
+    if(scrolls == undefined){
+      scrolls = $(".malihu-scroll")
+    }
+    if(scrolls.length>0){
+      scrolls.mCustomScrollbar({
+        theme:"minimal-dark",
+        scrollInertia: 200
+      });
+    }
+  }
+}
 
 function update_inline_action(url){
     var $this = $(this)
@@ -344,7 +397,10 @@ function update_inline_sidebar_action(url){
     $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
        var action_body = data['body'];
        if (action_body){
-           $(target.find('.container-body')).html(action_body);
+          var container_bodu = $(target.find('.container-body'))
+           container_bodu.html(action_body);
+           init_emoji($(target.find('.emoji-container:not(.emojified)')));
+           rebuild_scrolls($(target.find('.malihu-scroll')))
            if(title.length > 0){
                $(sidebar.find('.sidebar-title .entity-title').first()).html(title)
            }
@@ -432,9 +488,7 @@ $(document).on('click', '.proposal-support .token:not(.disabled)', function(){
    var opposit_token = $(opposit.find('.token').first())
    var parent = $($this.parents('.label').first())
    var action_url = $this.data('action')
-   var mytoken = $(parent.find('.my-token').first())
    var support_nb = $(parent.find('.support-nb').first())
-   var opposit_mytoken = $(opposit.find('.my-token').first())
    var opposit_support_nb = $(opposit.find('.support-nb').first())
    if(action_url){
      loading_progress()
@@ -448,19 +502,18 @@ $(document).on('click', '.proposal-support .token:not(.disabled)', function(){
                 opposit.attr('title', data.opposit_title)
              }
             if(!data.withdraw){
-             supportbloc.addClass('my-support')
-             mytoken.removeClass('hide-bloc')
+             $this.addClass('my-token')
              var new_nb = parseInt(support_nb.text()) + 1
              support_nb.text(new_nb)
              if (data.change){
-               opposit_mytoken.addClass('hide-bloc')
+               opposit_token.removeClass('my-token')
                var opposit_new_nb = parseInt(opposit_support_nb.text()) - 1
                opposit_support_nb.text(opposit_new_nb)
                opposit_token.data('action', data.opposit_action)
              }
             }else{
               supportbloc.removeClass('my-support')
-              mytoken.addClass('hide-bloc')
+              $this.removeClass('my-token')
               var new_nb = parseInt(support_nb.text()) - 1
               support_nb.text(new_nb)
             }
@@ -540,6 +593,9 @@ $(document).on('shown.bs.modal', '.modal', function () {
   });
 
 $(document).ready(function(){
+
+  init_emoji($('.emoji-container:not(.emojified)'));
+
   $('.home-add-idea.closed > span.icon-idea').on('click', function(){
       $(this).siblings('form').find('.idea-text textarea').click().focus();
   })
@@ -694,13 +750,7 @@ $(document).ready(function(){
         }
     });
 
-  if (!window.matchMedia("(max-width: 767px)").matches) {
-    $(".malihu-scroll").mCustomScrollbar({
-      theme:"minimal-dark",
-      scrollInertia: 200
-    });
-  }
-
+  rebuild_scrolls()
   
   $(window).scroll(function(){
     init_channels_top()
@@ -896,4 +946,40 @@ $(function () {
       $('.modal-sub-menu').remove()
       $($this.find('ul.btn-sub-menu li')).fadeOut( "fast" )
     })
+
+  $(document).on('click', 'a.emoji-group-tab', function(){
+      var $this = $(this);
+      var group_id = $this.data('group_id')
+      var container = $($this.parents('.emoji-anchors').siblings('.emoji-groups').first())
+      var group = $(container.find('#'+group_id).first())
+      var mCSB_container = $(container.find('.mCSB_container').first())
+      if(mCSB_container.length>0){
+        container.mCustomScrollbar('scrollTo',group.position().top);
+      }else{
+        var top = container.scrollTop()+group.position().top -20;       
+        container.animate({ scrollTop: top}, 800);
+      }
+  })
+
+  $(document).on('mouseover', '.emoji-groups .emoji-outer', function(){
+      var $this = $(this);
+      var groups = $($this.parents('.emoji-groups').first());
+      var preview = $(groups.siblings('.emoji-preview').first())
+      var img = $($this.find('.emoji-inner').first())
+      preview.find('.emoji-preview-img').html(img.clone())
+      preview.find('.emoji-preview-title').html(img.attr('title').replace(/-|_/g, ' '))
+      preview.find('.emoji-preview-symbol').html(':'+img.attr('title')+':')
+
+    });
+
+   $(document).on('mouseleave', '.emoji-groups .emoji-outer', function(){
+      var $this = $(this);
+      var groups = $($this.parents('.emoji-groups').first());
+      var preview = $(groups.siblings('.emoji-preview').first())
+      preview.find('.emoji-preview-img').html('')
+      preview.find('.emoji-preview-title').html('Emoji')
+      preview.find('.emoji-preview-symbol').html('')
+
+    });
+
 });

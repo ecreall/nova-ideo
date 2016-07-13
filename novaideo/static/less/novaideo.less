@@ -3,6 +3,76 @@
     vertical-align: middle;
 }
 
+.emoji-anchors{
+    background-color: #f7f7f7;
+    width: 111%;
+    margin-top: -11px;
+    margin-left: -11px;
+    padding: 10px;
+    box-shadow: 0 0px 6px gray;
+}
+
+a.emoji-group-tab{
+    cursor: pointer;
+    margin-right: 10px;
+    padding: 5px;
+    color: #9e9ea6;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+a.emoji-group-tab>.md{
+  font-size: 23px;
+}
+
+a.emoji-group-tab:hover{
+    background-color: #ffffff;
+    color: #616166;
+}
+
+.comment-form-group.emoji-container-input{
+  overflow: hidden !important;
+}
+
+.emoji-container-input .emoji-groups{
+    overflow: auto;
+    max-height: 300px;
+    width: 101%;
+    padding-bottom: 106px;
+}
+
+.emoji-preview{
+    background-color: #f7f7f7;
+    width: 111%;
+    margin-top: -11px;
+    margin-left: -11px;
+    padding: 10px;
+    -webkit-box-shadow: 0 0 6px gray;
+    box-shadow: 0 0 6px gray;
+    position: absolute;
+    bottom: 0px;
+    z-index: 1;
+}
+
+.emoji-preview-img{
+  font-size: 40px !important;
+}
+
+.emoji-preview-title-container{
+  display: inline-block;
+}
+
+.emoji-preview-title{
+    font-size: 17px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.emoji-preview-symbol{
+    display: block;
+}
+
 .popover .popover-title{
   color: #333;
   line-height: 1.5;
@@ -309,7 +379,8 @@ form .btn{
 }
 
 
-.btn.btn-file{
+.btn.btn-file,
+.btn.fileinput-remove-button{
   height: 34px; 
 }
 
@@ -708,6 +779,24 @@ form .btn{
 .object-row-content{
   margin-bottom: 10px;
   margin-top: 25px;
+}
+
+.object-row-content .col{
+    padding-left: 15px !important  
+}
+
+.search-item .object-row-content.row-md{
+  float:left;
+  width: 93%
+}
+
+.search-item .object-row-content{
+  margin-top: 0px;
+  margin-left: 0px;
+}
+
+.search-item .object-row-content .col{
+  padding-right: 0px !important;
 }
 
 .search-items-container{
@@ -1987,6 +2076,10 @@ ins {
     color: #333;
 }
 
+.search-item .object-title-block{
+  width: 95%
+}
+
 .content-user-img > img{
     max-width: none !important;  
 }
@@ -2307,9 +2400,13 @@ ins {
     margin-right: 10px;
 }
 
+
 .search-item .proposal-support{
-    margin-top: 15px;
-    margin-right: 15px;
+    float: left;
+    width: 30px;
+    margin-left: -3px;
+    margin-top: 0px !important;
+    margin-right: 0px;
 }
 
 .proposal-members-nb {
@@ -2318,6 +2415,7 @@ ins {
     margin-top: 5px;
 }
 
+
 .proposal-support .label .glyphicon {
     vertical-align:middle;
     font-size: 16px
@@ -2325,17 +2423,24 @@ ins {
 
 .proposal-support .label .support-nb {
     vertical-align:middle;
-    font-size: 16px
+    font-size: 16px;
+    display: inline-block;
+}
+
+.search-item .proposal-support .label .support-nb,
+.search-item .token{
+    display: block
+
 }
 
 .token{
     border: 1px solid;
     border-radius: 50%;
-    box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.314);
+    box-shadow: -1px 1px 2px rgba(0,0,0,.314);
     display: inline-block;
-    padding: 7px 6px 4px 6px;
+    padding: 3px 1px 1px;
     position: relative;
-    top: 1px;
+    font-size: 25px
 }
 
 .token.token-toggle.active{
@@ -2405,6 +2510,10 @@ ins {
     color: #ef3128;
 }
 
+.search-item .proposal-support .label{
+    padding: 0px !important;
+
+}
 
 .proposal-support .danger {
     margin-left: 2px
@@ -2415,7 +2524,16 @@ ins {
 }
 
 .proposal-support .success .support-nb{
-    color: #4eaf4e
+    color: #4eaf4e;
+}
+
+.search-item .proposal-support .danger .support-nb{
+    margin-top: -15px;
+    margin-bottom: 3px;
+}
+
+.search-item .proposal-support .success .support-nb{
+    margin-top: 5px;
 }
 
 .form-proposal-confirmation{
@@ -2911,7 +3029,7 @@ ins {
 }
 
 .search-item .proposal-opinion{
-    margin-top: -10px;
+    margin-top: -15px;
     margin-right: 20px;
 }
 
@@ -3171,6 +3289,11 @@ ins {
 
 
 @media (max-width: 767px) {
+
+    .search-item .object-row-content.row-md{
+        width: 88%
+    }
+
     .content-view .label.label-basic{
         width: 100%;
         margin-bottom: 10px;
@@ -3447,6 +3570,8 @@ ins {
 
 .search-item  .search-item-footer{
     height: 40px;
+    float: left;
+
 }
 
 .search-item  .search-item-footer .actions-block

@@ -207,7 +207,7 @@ class Comment(Commentable):
             comment = comment.replace(
                 url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
 
-        self.formated_comment = '<p>' + comment + '</p>'
+        self.formated_comment = '<p class="emoji-container">' + comment + '</p>'
         self.formated_urls = comment_urls
 
     def get_attached_files_data(self):

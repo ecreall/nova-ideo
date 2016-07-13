@@ -161,7 +161,7 @@ def seemysu_processsecurity_validation(process, context):
 
 
 class SeeMySupports(InfiniteCardinality):
-    style_picto = 'glyphicon glyphicon-hand-down'
+    style_picto = 'ion-ios7-circle-filled'
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seemy_roles_validation

@@ -5,7 +5,8 @@
                  author object.author;
                  files object.get_attached_files_data();
                  len_files len(files);
-                 oid object.__oid__">
+                 oid object.__oid__;
+                 support_condition 'idea' in getattr(request, 'content_to_support', []) and 'published' in object.state and 'examined' not in object.state">
   <div class="media-body media-idea" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="author-block">
       <img class="author-img img-circle" 
@@ -24,6 +25,8 @@
       </small>
     </div>
     <div class="separator"></div>
+    
+    <div class="content-col">
     <div class="object-menu pull-right">
       <div tal:replace="structure menu_body"/>
     </div>
@@ -41,11 +44,41 @@
             <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
       </tal:loop>
     </div>
-    <div class="row object-row-content" tal:omit-tag="not files">
-      <div class="col-xs-12 col-md-8" tal:omit-tag="not files">
+
+<div tal:condition="support_condition" 
+        tal:define="
+              support any(t.owner is current_user for t in object.tokens_support);
+              oppose any(t.owner is current_user for t in object.tokens_opposition);
+              active support or oppose or getattr(current_user, 'tokens', [])"
+        class="proposal-support ${(support or oppose) and 'my-support'}">
+        <span class="label success"
+            title="${support and 'Withdraw my token' or 'Support'}"
+            i18n:attributes="title"
+          tal:define="
+              action 'withdraw_token_idea' if support else 'support_idea'">
+            <span 
+              data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'support'})}" 
+              class="token token-toggle ${not active and 'disabled' or 'active'} token-success octicon octicon-triangle-up ${support and 'my-token'}"></span>
+            <span class="support-nb">${len(object.tokens_support)}</span>
+        </span>
+        <span class="label danger"
+            title="${oppose and 'Withdraw my token' or 'Oppose'}"
+            i18n:attributes="title"
+          tal:define="
+              action 'withdraw_token_idea' if oppose else 'oppose_idea'">
+            <span class="support-nb">${len(object.tokens_opposition)}</span>
+            <span 
+              data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
+              class="token token-toggle ${not active and 'disabled' or 'active'} token-danger octicon octicon-triangle-down ${oppose and 'my-token'}"></span>
+        </span>
+        </div>
+
+
+    <div class="row object-row-content ${support_condition and 'row-md'}">
+      <div class="col col-xs-12 ${files and 'col-md-8' or 'col-md-12'}">
         <div class="object-text">${object.presentation_text(500)}</div>
       </div>
-      <div class="col-xs-12 col-md-4" tal:condition="files">
+      <div class="col col-xs-12 col-md-4" tal:condition="files">
           <div class="file-slider">
             <div id="filecarousel${oid}" data-ride="carousel" data-interval="3000" class="carousel slide"> 
               <div role="listbox" class="carousel-inner">
@@ -82,39 +115,12 @@
        </div>
       </div>
     </div>
+    </div>
 
     <div class="search-item-footer">
       <div class="actions-block">
         <div tal:replace="structure footer_body"/>
       </div>
-      <div tal:condition="'idea' in getattr(request, 'content_to_support', []) and 'published' in object.state and 'examined' not in object.state" 
-        tal:define="
-              support any(t.owner is current_user for t in object.tokens_support);
-              oppose any(t.owner is current_user for t in object.tokens_opposition);
-              active support or oppose or getattr(current_user, 'tokens', [])"
-        class="proposal-support pull-right ${(support or oppose) and 'my-support'}">
-        <span class="label success"
-            title="${support and 'Withdraw my token' or 'Support'}"
-            i18n:attributes="title"
-          tal:define="
-              action 'withdraw_token_idea' if support else 'support_idea'">
-            <span 
-              data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'support'})}" 
-              class="token token-toggle ${not active and 'disabled' or 'active'} token-success glyphicon glyphicon-triangle-top ${support and 'my-token'}"></span>
-            <span class="support-nb">${len(object.tokens_support)}</span>
-        </span>
-        <span class="label danger"
-            title="${oppose and 'Withdraw my token' or 'Oppose'}"
-            i18n:attributes="title"
-          tal:define="
-              action 'withdraw_token_idea' if oppose else 'oppose_idea'">
-            <span 
-              data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
-              class="token token-toggle ${not active and 'disabled' or 'active'} token-danger glyphicon glyphicon-triangle-bottom ${oppose and 'my-token'}"></span>
-            <span class="support-nb">${len(object.tokens_opposition)}</span>
-        </span>
-        </div>
-
       <div tal:condition="'idea' in getattr(request, 'content_to_examine', []) and  'examined' in object.state" class="proposal-opinion pull-right"  title="${object.opinion_value}" >
         <div class="proposal-explanation hide-bloc">
           <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

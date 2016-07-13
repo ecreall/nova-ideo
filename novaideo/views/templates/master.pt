@@ -115,6 +115,9 @@
     <script src="${request.static_url('novaideo:static/jsnetworkx/jsnetworkx.js')}"
         type="text/javascript"></script>
 
+    <script src="${request.static_url('novaideo:static/emoji/emoji.js')}" type="text/javascript"></script>
+    <script src="${request.static_url('novaideo:static/emoji/jquery.emoji.js')}" type="text/javascript"></script>
+
     <more tal:omit-tag="" metal:define-slot="head-more"></more>
     <script tal:condition="request.locale_name == 'fr'"
             src="${request.static_url('deform:static/pickadate/translations/fr_FR.js')}"
@@ -142,7 +145,8 @@
  </head>
   <body tal:define="
     adminnavbar panel('adminnavbar');
-    contextual_help panel('contextual_help')" data-api_url="${request.resource_url(request.root, 'novaideoapi')}">
+    contextual_help panel('contextual_help')" data-api_url="${request.resource_url(request.root, 'novaideoapi')}"
+    data-emoji_url="${request.static_url('novaideo:static/emoji/images/sheet_apple_64_indexed_256colors.png')}">
     
     <div tal:omit-tag="" tal:condition="request.accessible_to_anonymous">
       <div tal:omit-tag="" tal:condition="not view_only">
