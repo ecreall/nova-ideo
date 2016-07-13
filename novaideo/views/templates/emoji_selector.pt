@@ -15,7 +15,7 @@
         </p>
       </div>
     </div>
-    <div tal:condition="is_grouped" class="emoji-preview">
+    <div class="emoji-preview">
       <span class="emoji-outer emoji-sizer emoji-preview-img"></span>
       <span class="emoji-preview-title-container">
         <span class="emoji-preview-title"></span>
