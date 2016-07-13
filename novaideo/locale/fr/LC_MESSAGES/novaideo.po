@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-07-13 11:34+0200\n"
+"POT-Creation-Date: 2016-07-13 15:58+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -10,6 +10,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
+
+#: novaideo/emojis.py:12
+msgid "People"
+msgstr "Personne"
+
+#: novaideo/emojis.py:195
+msgid "Nature"
+msgstr "Nature"
+
+#: novaideo/emojis.py:314
+msgid "Food & Drink"
+msgstr "Nourriture & Boisson"
+
+#: novaideo/emojis.py:379
+msgid "Activity"
+msgstr "Activité"
+
+#: novaideo/emojis.py:424
+msgid "Objects"
+msgstr "Objets"
+
+#: novaideo/emojis.py:591
+msgid "Travel & Places"
+msgstr "Voyage & Places"
+
+#: novaideo/emojis.py:692
+msgid "Flags"
+msgstr "Drapeaux"
+
+#: novaideo/emojis.py:709
+msgid "Symbols"
+msgstr "Symboles"
 
 #: novaideo/subscribers.py:29
 msgid "The proposal"
@@ -110,7 +142,7 @@ msgstr "Channel"
 
 #: novaideo/core.py:504 novaideo/content/idea.py:90
 #: novaideo/content/workspace.py:44 novaideo/content/proposal.py:114
-#: novaideo/content/comment.py:118
+#: novaideo/content/comment.py:130
 msgid "File"
 msgstr "Fichier"
 
@@ -272,176 +304,176 @@ msgstr "Les alertes"
 msgid "Alert respons"
 msgstr "Alerte réponse"
 
-#: novaideo/utilities/util.py:48
+#: novaideo/utilities/util.py:49
 #, python-format
 msgid "On ${month} ${day} ${year}"
 msgstr "Le ${day} ${month} ${year}"
 
-#: novaideo/utilities/util.py:49
+#: novaideo/utilities/util.py:50
 #, python-format
 msgid "On ${month} ${day}"
 msgstr "Le ${day} ${month}"
 
-#: novaideo/utilities/util.py:50
+#: novaideo/utilities/util.py:51
 #, python-format
 msgid "On ${month} ${year}"
 msgstr "Le ${month} ${year}"
 
-#: novaideo/utilities/util.py:51
+#: novaideo/utilities/util.py:52
 #, python-format
 msgid "On ${month}"
 msgstr "Le ${month}"
 
-#: novaideo/utilities/util.py:52
+#: novaideo/utilities/util.py:53
 #, python-format
 msgid "On ${year}"
 msgstr "Le ${year}"
 
-#: novaideo/utilities/util.py:53
+#: novaideo/utilities/util.py:54
 #, python-format
 msgid "On ${day}"
 msgstr "Le ${day}"
 
-#: novaideo/utilities/util.py:54
+#: novaideo/utilities/util.py:55
 #, python-format
 msgid "On ${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"
 msgstr "Le ${day} ${month} ${year} à ${hour}h${minute}"
 
-#: novaideo/utilities/util.py:55
+#: novaideo/utilities/util.py:56
 #, python-format
 msgid "On ${month} ${day} at ${hour} o'clock and ${minute} minutes"
 msgstr "Le ${day} ${month} à ${hour}h${minute}"
 
-#: novaideo/utilities/util.py:56
+#: novaideo/utilities/util.py:57
 #, python-format
 msgid "On ${day} at ${hour} o'clock and ${minute} minutes"
 msgstr "Le ${day} à ${hour}h${minute}"
 
-#: novaideo/utilities/util.py:57
+#: novaideo/utilities/util.py:58
 #, python-format
 msgid "On ${month} ${day} ${year} at ${hour} o'clock"
 msgstr "Le ${day} ${month} ${year} à ${hour}h"
 
-#: novaideo/utilities/util.py:58
+#: novaideo/utilities/util.py:59
 #, python-format
 msgid "On ${month} ${day} at ${hour} o'clock"
 msgstr "Le ${day} ${month} à ${hour}h"
 
-#: novaideo/utilities/util.py:59
+#: novaideo/utilities/util.py:60
 #, python-format
 msgid "On ${day} at ${hour} o'clock"
 msgstr "Le ${day} à ${hour}h"
 
-#: novaideo/utilities/util.py:62
+#: novaideo/utilities/util.py:63
 #, python-format
 msgid "${month} ${day} ${year}"
 msgstr "${day} ${month} ${year}"
 
-#: novaideo/utilities/util.py:63
+#: novaideo/utilities/util.py:64
 #, python-format
 msgid "${month} ${day}"
 msgstr "${day} ${month}"
 
-#: novaideo/utilities/util.py:64
+#: novaideo/utilities/util.py:65
 #, python-format
 msgid "${month} ${year}"
 msgstr "${month} ${year}"
 
-#: novaideo/utilities/util.py:65 novaideo/utilities/util.py:79
+#: novaideo/utilities/util.py:66 novaideo/utilities/util.py:80
 #, python-format
 msgid "${month}"
 msgstr "${month}"
 
-#: novaideo/utilities/util.py:66 novaideo/utilities/util.py:80
+#: novaideo/utilities/util.py:67 novaideo/utilities/util.py:81
 #, python-format
 msgid "${year}"
 msgstr ""
 
-#: novaideo/utilities/util.py:67 novaideo/utilities/util.py:81
+#: novaideo/utilities/util.py:68 novaideo/utilities/util.py:82
 #, python-format
 msgid "${day}"
 msgstr "${day}"
 
-#: novaideo/utilities/util.py:68
+#: novaideo/utilities/util.py:69
 #, python-format
 msgid "${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"
 msgstr "${day} ${month} ${year} à ${hour}h${minute}"
 
-#: novaideo/utilities/util.py:69
+#: novaideo/utilities/util.py:70
 #, python-format
 msgid "${month} ${day} at ${hour} o'clock and ${minute} minutes"
 msgstr "${day} ${month} à ${hour}h${minute}"
 
-#: novaideo/utilities/util.py:70
+#: novaideo/utilities/util.py:71
 #, python-format
 msgid "${day} at ${hour} o'clock and ${minute} minutes"
 msgstr "${day} à ${hour}h${minute}"
 
-#: novaideo/utilities/util.py:71
+#: novaideo/utilities/util.py:72
 #, python-format
 msgid "${month} ${day} ${year} at ${hour} o'clock"
 msgstr "${day} ${month} ${year} à ${hour}h"
 
-#: novaideo/utilities/util.py:72
+#: novaideo/utilities/util.py:73
 #, python-format
 msgid "${month} ${day} at ${hour} o'clock"
 msgstr "${day} ${month} à ${hour}h"
 
-#: novaideo/utilities/util.py:73
+#: novaideo/utilities/util.py:74
 #, python-format
 msgid "${day} at ${hour} o'clock"
 msgstr "${day} à ${hour}h"
 
-#: novaideo/utilities/util.py:76
+#: novaideo/utilities/util.py:77
 #, python-format
 msgid "${month}/${day}/${year}"
 msgstr "${day}/${month}/${year}"
 
-#: novaideo/utilities/util.py:77
+#: novaideo/utilities/util.py:78
 #, python-format
 msgid "${month}/${day}"
 msgstr "${day}/${month}"
 
-#: novaideo/utilities/util.py:78
+#: novaideo/utilities/util.py:79
 #, python-format
 msgid "${month}/${year}"
 msgstr "${month}/${year}"
 
-#: novaideo/utilities/util.py:82
+#: novaideo/utilities/util.py:83
 #, python-format
 msgid "${month}/${day}/${year} ${hour}:${minute}"
 msgstr "${day}/${month}/${year} ${hour}:${minute}"
 
-#: novaideo/utilities/util.py:83
+#: novaideo/utilities/util.py:84
 #, python-format
 msgid "${month}/${day} ${hour}:${minute}"
 msgstr "${day}/${month} ${hour}:${minute}"
 
-#: novaideo/utilities/util.py:84
+#: novaideo/utilities/util.py:85
 #, python-format
 msgid "${day} ${hour}:${minute}"
 msgstr "${day} ${hour}:${minute}"
 
-#: novaideo/utilities/util.py:85
+#: novaideo/utilities/util.py:86
 #, python-format
 msgid "${month}/${day}/${year} ${hour}:00"
 msgstr "${day}/${month}/${year} ${hour}:00"
 
-#: novaideo/utilities/util.py:86
+#: novaideo/utilities/util.py:87
 #, python-format
 msgid "${month}/${day} ${hour}:00"
 msgstr "${day}/${month} ${hour}:00"
 
-#: novaideo/utilities/util.py:87
+#: novaideo/utilities/util.py:88
 #, python-format
 msgid "${day} ${hour}:00"
 msgstr "${day} ${hour}:00"
 
-#: novaideo/utilities/util.py:145
+#: novaideo/utilities/util.py:146
 msgid "1st"
 msgstr "1er"
 
-#: novaideo/utilities/util.py:151
+#: novaideo/utilities/util.py:152
 #, python-format
 msgid "${name} ${day}"
 msgstr "${name} ${day}"
@@ -835,7 +867,7 @@ msgstr "Contenus liés"
 #: novaideo/views/idea_management/associate.py:146
 #: novaideo/views/proposal_management/associate.py:26
 #: novaideo/views/proposal_management/associate.py:42
-#: novaideo/views/templates/textarea_comment.pt:11
+#: novaideo/views/templates/textarea_comment.pt:12
 #: novaideo/views/amendment_management/associate.py:27
 #: novaideo/views/amendment_management/associate.py:41
 msgid "Associate contents"
@@ -1091,7 +1123,7 @@ msgstr "Associations"
 
 #: novaideo/views/idea_management/templates/comments_scroll.pt:15
 #: novaideo/content/idea.py:96 novaideo/content/workspace.py:50
-#: novaideo/content/comment.py:126
+#: novaideo/content/comment.py:138
 msgid "Attached files"
 msgstr "Pièces jointes"
 
@@ -1960,7 +1992,7 @@ msgstr "Rédiger une proposition"
 #: novaideo/views/proposal_management/create_proposal.py:48
 #: novaideo/views/amendment_management/explanation_amendment.py:26
 #: novaideo/views/work_mode_processes/wiki_work_mode_process/correct_proposal.py:45
-#: novaideo/content/correlation.py:68 novaideo/content/comment.py:39
+#: novaideo/content/correlation.py:68 novaideo/content/comment.py:40
 #: novaideo/content/person.py:67 novaideo/content/person.py:75
 msgid "- Select -"
 msgstr "- Sélectionner -"
@@ -2283,6 +2315,11 @@ msgstr "Le responsable"
 msgid "Filter results"
 msgstr "Filtrer les résultats"
 
+#: novaideo/views/templates/emoji_selector.pt:4
+#, fuzzy
+msgid "${group['title']}"
+msgstr "Titre"
+
 #: novaideo/views/templates/web_advertisting_result.pt:12
 msgid "click(s)"
 msgstr "clic(s)"
@@ -2320,66 +2357,26 @@ msgstr "Recherche avancée"
 msgid "<dynamic element> <dynamic element>"
 msgstr ""
 
-#: novaideo/views/templates/textarea_comment.pt:8
+#: novaideo/views/templates/textarea_comment.pt:9
 msgid "Add Emoji"
 msgstr "Ajouyter un Emoji"
 
-#: novaideo/views/templates/textarea_comment.pt:9
+#: novaideo/views/templates/textarea_comment.pt:10
 #: novaideo/views/amendment_management/explanation_amendment.py:31
-#: novaideo/content/correlation.py:86 novaideo/content/comment.py:100
+#: novaideo/content/correlation.py:86 novaideo/content/comment.py:112
 msgid "Intention"
 msgstr "Intention"
 
-#: novaideo/views/templates/textarea_comment.pt:10
+#: novaideo/views/templates/textarea_comment.pt:11
 msgid "Attach files"
 msgstr "Attacher des fichiers"
 
-#: novaideo/views/templates/textarea_comment.pt:12
+#: novaideo/views/templates/textarea_comment.pt:13
 #: novaideo/views/amendment_management/submit.py:159
 #: novaideo/content/processes/proposal_management/definition.py:464
 #: novaideo/content/processes/amendment_management/definition.py:73
 msgid "Submit"
 msgstr "Soumettre"
-
-#: novaideo/views/templates/textarea_comment.pt:31
-#: novaideo/views/templates/textarea_comment.pt:72
-msgid "People"
-msgstr "Personne"
-
-#: novaideo/views/templates/textarea_comment.pt:35
-#: novaideo/views/templates/textarea_comment.pt:252
-msgid "Nature"
-msgstr "Nature"
-
-#: novaideo/views/templates/textarea_comment.pt:41
-#: novaideo/views/templates/textarea_comment.pt:368
-msgid "Food & Drink"
-msgstr "Nourriture & Boisson"
-
-#: novaideo/views/templates/textarea_comment.pt:46
-#: novaideo/views/templates/textarea_comment.pt:430
-msgid "Activity"
-msgstr "Activité"
-
-#: novaideo/views/templates/textarea_comment.pt:51
-#: novaideo/views/templates/textarea_comment.pt:472
-msgid "Objects"
-msgstr "Objets"
-
-#: novaideo/views/templates/textarea_comment.pt:56
-#: novaideo/views/templates/textarea_comment.pt:636
-msgid "Travel & Places"
-msgstr "Voyage & Places"
-
-#: novaideo/views/templates/textarea_comment.pt:62
-#: novaideo/views/templates/textarea_comment.pt:735
-msgid "Flags"
-msgstr "Drapeaux"
-
-#: novaideo/views/templates/textarea_comment.pt:68
-#: novaideo/views/templates/textarea_comment.pt:749
-msgid "Symbols"
-msgstr "Symboles"
 
 #: novaideo/views/templates/ajax_form.pt:42
 #: novaideo/views/novaideo_view_manager/templates/search_form.pt:35
@@ -2428,10 +2425,6 @@ msgid "Share"
 msgstr "Partager"
 
 #: novaideo/views/templates/panels/step4.pt:3
-msgid "My appreciation"
-msgstr "Mon appréciation"
-
-#: novaideo/views/templates/panels/step4.pt:17
 msgid "Total appreciations"
 msgstr "Total des appréciations"
 
@@ -4212,7 +4205,7 @@ msgid "Please enter your email address"
 msgstr "Veuillez saisir votre adresse courriel"
 
 #: novaideo/views/novaideo_view_manager/contact.py:70
-#: novaideo/content/correlation.py:93 novaideo/content/comment.py:135
+#: novaideo/content/correlation.py:93 novaideo/content/comment.py:145
 msgid "Message"
 msgstr "Message"
 
@@ -4368,7 +4361,7 @@ msgid "Detail"
 msgstr "Détail"
 
 #: novaideo/views/correlation_management/templates/see_correlation.pt:9
-#: novaideo/content/comment.py:69 novaideo/content/comment.py:108
+#: novaideo/content/comment.py:70 novaideo/content/comment.py:120
 msgid "Associated contents"
 msgstr "Contenus associés"
 
@@ -4528,7 +4521,7 @@ msgstr "Faire de l'humour"
 
 #: novaideo/content/novaideo_application.py:64
 #: novaideo/content/novaideo_application.py:67
-#: novaideo/content/novaideo_application.py:71 novaideo/content/comment.py:102
+#: novaideo/content/novaideo_application.py:71 novaideo/content/comment.py:114
 msgid "Remark"
 msgstr "Remarque"
 
@@ -4843,19 +4836,19 @@ msgstr "Donner une explication spécifique"
 msgid "Choose related ideas."
 msgstr "Sélectionner les idées liées"
 
-#: novaideo/content/comment.py:70
+#: novaideo/content/comment.py:71
 msgid "Choose contents to associate."
 msgstr "Choisissez le contenu à associer"
 
-#: novaideo/content/comment.py:101
+#: novaideo/content/comment.py:113
 msgid "Choose your intention"
 msgstr "Choisissez votre intention"
 
-#: novaideo/content/comment.py:109
+#: novaideo/content/comment.py:121
 msgid "Choose contents to associate"
 msgstr "Choisissez le contenu à associer"
 
-#: novaideo/content/comment.py:125
+#: novaideo/content/comment.py:137
 msgid "Add files to your comment"
 msgstr "Joindre des fichiers à votre commentaire"
 
@@ -5796,6 +5789,9 @@ msgstr "Ne plus suivre"
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
 
+#~ msgid "My appreciation"
+#~ msgstr "Mon appréciation"
+
 #, fuzzy
 #~ msgid "Add reaction"
 #~ msgstr "actions"
@@ -5805,10 +5801,6 @@ msgstr "Ajouter une nouvelle échéance"
 
 #~ msgid "Contextual help"
 #~ msgstr "Aide contextuelle"
-
-#, fuzzy
-#~ msgid "${title}"
-#~ msgstr "Titre"
 
 #~ msgid "(Amended version by"
 #~ msgstr "(Version amendée par"
