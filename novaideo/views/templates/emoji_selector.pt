@@ -1,0 +1,25 @@
+<div class="${is_grouped and 'emoji-container-input-grouped'} ${emoji_class} emoji-container-input">
+    <div tal:condition="is_grouped" class="emoji-anchors">
+      <a tal:repeat="group groups" class="emoji-group-tab" data-group_id="emoji-${group['id']}"
+          i18n:attributes="title" title="${group['title']}">
+        <span class="${group['icon']}"></span>
+      </a>
+    </div>
+    <div class="emoji-groups malihu-scroll">
+      <div tal:omit-tag="" tal:repeat="group groups" >
+        <h3 tal:condition="is_grouped"
+            id="emoji-${group['id']}"
+            i18n:translate="">${group['title']}</h3>
+        <p class="emoji-container">
+          <span tal:omit-tag="" tal:repeat="item group['items']" >${item+'\n'}</span>
+        </p>
+      </div>
+    </div>
+    <div tal:condition="is_grouped" class="emoji-preview">
+      <span class="emoji-outer emoji-sizer emoji-preview-img"></span>
+      <span class="emoji-preview-title-container">
+        <span class="emoji-preview-title"></span>
+        <span class="emoji-preview-symbol"></span>
+      </span>
+    </div>
+</div>  

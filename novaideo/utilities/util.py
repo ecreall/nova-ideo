@@ -35,6 +35,7 @@ from novaideo.file import Image
 from novaideo.core import _
 from novaideo.fr_stopdict import _words
 from novaideo.core import Node
+from novaideo.emojis import DEFAULT_EMOJIS
 
 
 try:
@@ -575,6 +576,8 @@ DEFAULT_MENU_TEMPLATE = 'novaideo:views/templates/navbar_actions.pt'
 
 FOOTER_BLOCK_TEMPLATE = 'novaideo:views/templates/footer_entity_actions.pt'
 
+EMOJI_TEMPLATE = 'novaideo:views/templates/emoji_selector.pt'
+
 
 def render_small_listing_objs(request, objs, user, **kw):
     result_body = []
@@ -819,3 +822,14 @@ def generate_listing_menu(request, context, **args):
                 args.get('wg_template', None), ['wg-action'])
             if 'wg-action' in actions_navbar else None
             }
+
+
+def get_emoji_form(
+    request, template=EMOJI_TEMPLATE, emoji_class='',
+    groups=DEFAULT_EMOJIS, is_grouped=True):
+    return renderers.render(
+        template,
+        {'is_grouped': is_grouped,
+         'emoji_class': emoji_class,
+         'groups': groups},
+        request)

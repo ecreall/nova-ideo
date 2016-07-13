@@ -29,7 +29,8 @@ from novaideo.core import Commentable
 from novaideo import _
 from novaideo.content import get_file_widget
 from novaideo.utilities.url_extractor import extract_urls
-from novaideo.utilities.util import html_to_text, extract_urls_metadata
+from novaideo.utilities.util import (
+    html_to_text, extract_urls_metadata, get_emoji_form)
 
 
 @colander.deferred
@@ -83,6 +84,17 @@ class RelatedContentsSchema(Schema):
         )
 
 
+@colander.deferred
+def comment_textarea(node, kw):
+    request = node.bindings['request']
+    emoji_form = get_emoji_form(
+        request, emoji_class='comment-form-group')
+    return deform.widget.TextAreaWidget(
+        rows=2, cols=60, item_css_class="comment-form-group comment-textarea",
+        emoji_form=emoji_form,
+        template='novaideo:views/templates/textarea_comment.pt')
+
+
 def context_is_a_comment(context, request):
     return request.registry.content.istype(context, 'comment')
 
@@ -129,9 +141,7 @@ class CommentSchema(VisualisableElementSchema):
     comment = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=2000),
-        widget=deform.widget.TextAreaWidget(
-            rows=2, cols=60, item_css_class="comment-form-group comment-textarea",
-            template='novaideo:views/templates/textarea_comment.pt'),
+        widget=comment_textarea,
         title=_("Message")
         )
 

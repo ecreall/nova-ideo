@@ -7,11 +7,15 @@
 
 from pyramid_layout.layout import layout_config
 
-from novaideo.utilities.util import to_localized_time
+from novaideo.utilities.util import (
+    to_localized_time, get_emoji_form, EMOJI_TEMPLATE)
+from novaideo.emojis import DEFAULT_EMOJIS
 
 
 @layout_config(template='views/templates/master.pt')
 class GlobalLayout(object):
+
+    emoji_template = 'novaideo:views/templates/emoji_selector.pt'
 
     def __init__(self, context, request):
         self.context = context
@@ -27,3 +31,13 @@ class GlobalLayout(object):
             date_only=date_only, format_id=format_id,
             ignore_month=ignore_month, ignore_year=ignore_year,
             add_day_name=add_day_name, translate=True)
+
+    def get_emoji_form(
+        self, template=EMOJI_TEMPLATE, emoji_class='',
+        groups=DEFAULT_EMOJIS, is_grouped=True):
+        return get_emoji_form(
+            self.request,
+            template=template,
+            emoji_class=emoji_class,
+            groups=groups,
+            is_grouped=is_grouped)
