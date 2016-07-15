@@ -19,18 +19,7 @@
             <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
             <div class="media-body comment-content">
               <div id="commentaction" class="pull-right">
-                  <div tal:omit-tag="" tal:condition="'action' in item"  >
-                   <a id="${item['action_id']}-btn" 
-                      class="replay-action"
-                      style="max-width: 300px;"
-                      href="${item['action'].url(item['context'])}"
-                      data-actionid ="${item['action_id']}" 
-                      data-target="#${item['action_id']}"
-                      data-updateurl="${item['actionurl_update']}"
-                      data-toreplay="${'toreplay' in item}">
-                       <span class="ion-chatbubbles"></span> ${item['action'].title}
-                     </a>
-                  </div>
+                  <div tal:replace="structure item['menu_body']"/>
               </div>
               <div class="comment-author" tal:define="diff_len  len(diff.keys())">
                 <a 
@@ -167,26 +156,26 @@
                         </small>
                     </span>
               </div>
+
+
+            <div class="footer-actions-bodies">
+              <div tal:repeat="a item['footer_actions_body']" >
+                <div tal:replace="structure a"/>
+              </div>
+            </div>
             </div>
          </div>
          <ul  class="commentul replay-bloc hide-bloc">
           <li>
-            <div id="${item['action_id']}-replay" class="replay-body">
+            <div id="action-comment-replay-container-${getattr(item['context'], '__oid__', '')}" class="replay-body">
               <div class="comment-data ">
                  <div class="media-body">
                  </div>
-              </div>  
-              <script>
-                  $(document).ready(function(){
-                      $(${'\'#'+item['action_id']+'-replay\''}).on('hidden.replay', function (e) {
-                         after_execution(${'\"'+item['actionurl_after']+'\"'})
-                        })
-                  });
-             </script>    
+              </div>     
             </div>
           </li>
          </ul>
-        <div tal:define="(body, r, m, a) view._rendre_comments(comment.comments, current_user)" tal:replace="structure body" />
+        <div tal:define="(body, r) view._rendre_comments(comment.comments, current_user)" tal:replace="structure body" />
       </li>
     </tal:loop>
       <li class="commentli comment-preview hide-bloc" tal:define="current_picture getattr(current_user, 'picture', None)">

@@ -26,7 +26,6 @@ from pontus.file import ObjectData, File
 
 from .interface import Iidea
 from novaideo.content.correlation import CorrelationType
-from novaideo.core import Commentable
 from novaideo import _
 from novaideo.views.widget import LimitedTextAreaWidget
 from novaideo.core import (
@@ -37,7 +36,8 @@ from novaideo.core import (
     CorrelableEntity,
     PresentableEntity,
     Channel,
-    Node)
+    Node,
+    Emojiable)
 from novaideo.content import get_file_widget
 
 
@@ -104,7 +104,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(Iidea)
 class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
-           Node):
+           Node, Emojiable):
     """Idea class"""
 
     type_title = _('Idea')

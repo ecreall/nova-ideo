@@ -1,0 +1,15 @@
+<span tal:define="name name|field.name;
+                  css_class css_class|field.widget.css_class;
+                  oid oid|field.oid;
+                  mask mask|field.widget.mask;
+                  mask_placeholder mask_placeholder|field.widget.mask_placeholder;
+                  style style|field.widget.style;
+                  emoji_form emoji_form|field.widget.emoji_form;
+"
+      tal:omit-tag="">
+    <input type="hidden" name="${name}" value="${cstruct}" 
+           tal:attributes="class string: form-control ${css_class or ''};
+                           style style"
+           id="${oid}"/>
+    <div tal:replace="structure emoji_form" />
+</span>

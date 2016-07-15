@@ -45,7 +45,7 @@ from novaideo.utilities.util import (
     render_navbar_body,
     deepcopy,
     FOOTER_NAVBAR_TEMPLATE,
-    update_all_modal_action)
+    update_all_ajax_action)
 from novaideo.views.filter import find_entities, find_more_contents
 
 
@@ -772,7 +772,7 @@ class Channels(object):
         resources = {'css_links': [], 'js_links': []}
         for channel in channels:
             subject = channel.get_subject(user)
-            actions_call, action_resources = update_all_modal_action(
+            actions_call, action_resources = update_all_ajax_action(
                 subject, self.request, action_id)
             resources = merge_dicts(action_resources, resources)
             if actions_call:

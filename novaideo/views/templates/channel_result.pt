@@ -5,16 +5,23 @@
                title object.get_title(current_user);
                subject object.get_subject(current_user);
                subjectclassname subject.__class__.__name__.lower(); 
-               is_discuss object.is_discuss()">
-      <a id="${item['action_id']}-btn" 
-        class="toggle-popover channel-action dace-action-inline media-${subjectclassname}"
-        data-oid="${getattr(subject, '__oid__', '')}"
-        href="${item['action'].url(item['context'])}"   
-        data-toggle="modal"
-        data-actionid ="${item['action_id']}" 
-        data-target="#${item['action_id']}"
-        data-updateurl="${item['actionurl_update']}"
-        data-toreplay="${'toreplay' in item}">
+               is_discuss object.is_discuss();
+               icon getattr(item['action'],'style_picto','');
+               interaction_type getattr(item['action'],'style_interaction_type','modal')">
+       <a id="${item['action_id']}-btn" 
+            class="toggle-popover channel-action ajax-action dace-action-${interaction_type} media-${subjectclassname}"
+            data-oid="${getattr(subject, '__oid__', '')}"
+            data-toggle="${interaction_type}"
+            data-target="#action-${interaction_type}-container"
+            data-actionid ="${item['action_id']}" 
+            data-updateurl="${item['actionurl_update']}"
+            data-after_exe_url="${item['actionurl_after']}"
+            data-toreplay="${'toreplay' in item}"
+            data-title="${title}"
+            data-view_title="${item['view_title']}"
+            data-body="${item['body']}"
+            data-icon="${icon}"
+            data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
           <div class="view-item-title channel-item-title">
              <span tal:condition="not is_discuss" class="channel-icon" >#</span>
              <span tal:condition="not is_discuss" class="${getattr(subject, 'icon', '')}" ></span>

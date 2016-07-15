@@ -267,7 +267,7 @@ def history_processsecurity_validation(process, context):
 class SeeEntityHistory(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'plus-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-time'
     title = _('Processes history')
     style_order = 2
@@ -292,7 +292,7 @@ def contact_processsecurity_validation(process, context):
 class Contact(InfiniteCardinality):
     style = 'button'
     style_descriminator = 'footer-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-send'
     submission_title = _('Send')
     style_order = 1
@@ -396,8 +396,8 @@ def seegraph_processsecurity_validation(process, context):
 
 class SeeGraph(InfiniteCardinality):
     style_descriminator = 'plus-action'
-    style_interaction = 'modal-action'
-    style_modal = 'modal-xl'
+    style_interaction = 'ajax-action'
+    style_interaction_container = 'modal-xl'
     style_picto = 'ion-android-share'
     style_order = 1
     isSequential = False

@@ -143,7 +143,7 @@ def publish_state_validation(process, context):
 class PublishAdvertising(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-ok'
     style_order = 5
     submission_title = _('Continue')
@@ -177,7 +177,7 @@ def archive_state_validation(process, context):
 class ArchiveAdvertising(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-folder-close'
     style_order = 6
     submission_title = _('Continue')
@@ -207,7 +207,7 @@ def remove_processsecurity_validation(process, context):
 class RemoveAdvertising(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
     style_order = 7
     submission_title = _('Continue')

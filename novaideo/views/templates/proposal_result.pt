@@ -132,7 +132,11 @@
           <div class="circle orange ${(object.opinion['opinion'] != 'to_study') and 'off' or 'on' }"></div>
           <div class="circle green ${(object.opinion['opinion'] != 'favorable') and 'off' or 'on'}"></div>
       </div>
-
+     <div class="footer-actions-bodies">
+        <div tal:repeat="a footer_actions_body" >
+          <div tal:replace="structure a"/>
+        </div>
+      </div>
     </div>
   </div>
 </div>

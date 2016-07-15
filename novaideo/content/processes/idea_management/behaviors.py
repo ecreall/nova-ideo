@@ -71,7 +71,7 @@ def createidea_processsecurity_validation(process, context):
 class CreateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'lateral-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'icon novaideo-icon icon-idea'
     style_order = 0
     title = _('Create an idea')
@@ -227,7 +227,7 @@ def duplicate_processsecurity_validation(process, context):
 class DuplicateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'octicon octicon-git-branch'
     style_order = 2
     submission_title = _('Save')
@@ -314,7 +314,7 @@ def edit_state_validation(process, context):
 class EditIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
     submission_title = _('Save')
@@ -390,7 +390,7 @@ def submit_state_validation(process, context):
 class SubmitIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 6
     submission_title = _('Continue')
@@ -427,7 +427,7 @@ def decision_state_validation(process, context):
 class ArchiveIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-inbox'
     style_order = 4
     submission_title = _('Continue')
@@ -472,7 +472,7 @@ class ArchiveIdea(InfiniteCardinality):
 class PublishIdeaModeration(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 5
     submission_title = _('Continue')
@@ -544,7 +544,7 @@ def pub_state_validation(process, context):
 class PublishIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 5
     submission_title = _('Continue')
@@ -586,7 +586,7 @@ def ab_state_validation(process, context):
 class AbandonIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-stop'
     style_order = 4
     context = Iidea
@@ -622,7 +622,7 @@ def re_state_validation(process, context):
 class RecuperateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-play'
     style_order = 8
     context = Iidea
@@ -657,7 +657,8 @@ def comm_state_validation(process, context):
 class CommentIdea(InfiniteCardinality):
     isSequential = False
     style_descriminator = 'communication-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'sidebar'
     style_picto = 'ion-chatbubble'
     style_order = 0
     style_activate = True
@@ -770,7 +771,8 @@ def present_state_validation(process, context):
 
 class PresentIdea(InfiniteCardinality):
     style_descriminator = 'communication-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'sidebar'
     style_picto = 'glyphicon glyphicon-share-alt'
     style_order = 1
     submission_title = _('Send')
@@ -1139,7 +1141,7 @@ def seewgs_state_validation(process, context):
 
 class SeeRelatedWorkingGroups(InfiniteCardinality):
     style_descriminator = 'primary-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-link'
     style_order = 2
     context = Iidea

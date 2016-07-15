@@ -443,7 +443,7 @@ def remind_processsecurity_validation(process, context):
 class Remind(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-refresh'
     style_order = 1
     context = IPreregistration
@@ -527,7 +527,7 @@ class SeeRegistrations(InfiniteCardinality):
 class RemoveRegistration(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
     style_order = 1
     submission_title = _('Remove')
@@ -560,7 +560,8 @@ def discuss_state_validation(process, context):
 class Discuss(InfiniteCardinality):
     isSequential = False
     style_descriminator = 'communication-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'sidebar'
     style_picto = 'ion-chatbubble'
     style_order = 0
     style_activate = True
@@ -672,7 +673,8 @@ def gdiscuss_processsecurity_validation(process, context):
 
 class GeneralDiscuss(InfiniteCardinality):
     isSequential = False
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'sidebar'
     style_picto = 'ion-chatbubble'
     style_order = 0
     style_activate = True

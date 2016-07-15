@@ -125,7 +125,7 @@ function update_replay(url){
     var $this = $(this)
     $this.parents('.comments-scroll').find('.replay-form-container button.close').click()
     var toreplay = $this.closest('.replay-action').data('toreplay');
-    var target = $this.closest('.replay-action').data('target')+'-replay';
+    var target = $this.closest('.replay-action').data('target');
     if (Boolean(toreplay)){$(target).parent('ul.replay-bloc').removeClass('hide-bloc'); return false}
     var url = $this.closest('.replay-action').data('updateurl');
     $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {

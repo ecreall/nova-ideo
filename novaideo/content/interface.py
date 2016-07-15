@@ -26,6 +26,10 @@ class INode(IEntity):
     pass
 
 
+class IEmojiable(IEntity):
+    pass
+
+
 class ICorrection(IEntity):
     pass
 

@@ -42,7 +42,8 @@ from novaideo.content.interface import (
     ICorrelableEntity,
     IPresentableEntity,
     IFile,
-    INode)
+    INode,
+    IEmojiable)
 
 
 BATCH_DEFAULT_SIZE = 8
@@ -240,6 +241,25 @@ class Channel(Commentable):
         return self.subject.__class__.__name__.lower() == 'person'
 
 
+@implementer(IEmojiable)
+class Emojiable(Entity):
+
+    def __init__(self, **kwargs):
+        super(Emojiable, self).__init__(**kwargs)
+        self.set_data(kwargs)
+        self.emojis = PersistentDict()
+
+    def add_emoji(self, emoji, user):
+        self.emojis.setdefault(emoji, [])
+        self.emojis[emoji].append(get_oid(user))
+
+    def remove_emoji(self, emoji, user):
+        user_oid = get_oid(user)
+        if emoji in self.emojis and \
+           user_oid in self.emojis[emoji]:
+            self.emojis.remove(user_oid)
+
+
 @content(
     'privatechannel',
     icon='icon novaideo-icon icon-idea',
@@ -346,6 +366,7 @@ class SearchableEntity(VisualisableElement, Entity):
                  'bloc': 'novaideo:templates/views/default_result.pt'}
     channels = CompositeMultipleProperty('channels', 'subject')
     comments = CompositeMultipleProperty('comments')
+
 
     def __init__(self, **kwargs):
         super(SearchableEntity, self).__init__(**kwargs)

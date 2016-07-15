@@ -1,51 +1,33 @@
 <ul tal:define="footer_action footer_action|nothing" class="list-inline" style="z-index: 1300">
   <tal:loop repeat="a footer_action">
     <li>
-      <a tal:condition="a not in modal_actions" tal:attributes="href a.url(obj)" class="btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span> ${a.title}</a>
+      <a tal:condition="a not in ajax_actions" tal:attributes="href a.url(obj)" class="btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span> ${a.title}</a>
         <div tal:omit-tag="" 
-           tal:condition="a in modal_actions"
-           tal:define="item modal_actions.get(a, None)">
+           tal:condition="a in ajax_actions"
+           tal:define="item ajax_actions.get(a, None);
+                       icon getattr(a,'style_picto','');
+                       interaction_type getattr(a,'style_interaction_type','modal')">
            <a id="${item['action_id']}-btn" 
-                class="btn-sm dace-action"
-                href="${item['action'].url(item['context'])}"   
-                data-toggle="modal"
+                class="ajax-action dace-action-${interaction_type}"
+                data-toggle="${interaction_type}"
+                data-target="#action-${interaction_type}-container"
                 data-actionid ="${item['action_id']}" 
-                data-target="#${item['action_id']}"
                 data-updateurl="${item['actionurl_update']}"
-                data-toreplay="${'toreplay' in item}">
-               <span class="${getattr(a,'style_picto','')}" ></span> ${item['action'].title}
+                data-after_exe_url="${item['actionurl_after']}"
+                data-toreplay="${'toreplay' in item}"
+                data-title="${item['action'].title}"
+                data-view_title="${item['view_title']}"
+                data-body="${item['body']}"
+                data-icon="${icon}"
+                data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
+               <span class="${icon}" ></span> ${item['action'].title}
              </a>
              <script tal:condition="'toreplay' in item">       
                   $(document).ready(function(){
                        $(${'\'#'+item['action_id']+'-btn\''}).click();
                   });
              </script>  
-             <script>
-                  $(document).ready(function(){
-                      $(${'\'#'+item['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
-                         //after_execution(${'\"'+item['actionurl_after']+'\"'})
-                        })
-                  });
-             </script>
-          <!-- Modal -->
-             <div class="modal fade" 
-                 id="${item['action_id']}-modal" 
-                 role="dialog" 
-                 aria-labelledby="myModalLabel" 
-                 aria-hidden="true" style="text-align: justify;color: #333;">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                     <div class="modal-header">
-                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                         <h4 class="modal-title" id="myModalLabel"> ${item['view_title']}</h4>
-                     </div>
-                     <div class="modal-body">
-                        ${structure:item['body']}
-                     </div>
-                   </div>
-                </div>
-             </div>
-      </div>
-    </li>
+          </div>
+       </li>
   </tal:loop>
 </ul>

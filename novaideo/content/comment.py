@@ -25,7 +25,7 @@ from pontus.schema import Schema
 from pontus.file import ObjectData, File
 
 from .interface import IComment
-from novaideo.core import Commentable
+from novaideo.core import Commentable, Emojiable
 from novaideo import _
 from novaideo.content import get_file_widget
 from novaideo.utilities.url_extractor import extract_urls
@@ -151,7 +151,7 @@ class CommentSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IComment)
-class Comment(Commentable):
+class Comment(Commentable, Emojiable):
     """Comment class"""
     name = renamer()
     author = SharedUniqueProperty('author')
@@ -246,3 +246,6 @@ class Comment(Commentable):
                         'type': 'html'})
 
         return result
+
+    def can_add_reaction(self, process):
+        return True

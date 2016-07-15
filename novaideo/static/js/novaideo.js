@@ -180,9 +180,9 @@ function initscroll(){
 
     binder: result_scroll,
     navSelector  : "#"+id+" .batch",
-                   // selector for the paged navigation (it will be hidden)
+    // selector for the paged navigation (it will be hidden)
     nextSelector : "#"+id+" .pager .next",
-                   // selector for the NEXT link (to page 2)
+    // selector for the NEXT link (to page 2)
     itemSelector : "#"+id+" .result-container",
 
     pathParse: function(path, next_page) {
@@ -204,9 +204,6 @@ function initscroll(){
             data_get += '&'+'view_only=1';
             new_path += '&'+ data_get;
       };
-      // var parts = new_path.match(/^(.*?batch_num=)1(.*|$)/).slice(1);
-// ["http://0.0.0.0:6543/@@seemyideas?batch_num=", "&batch_size=1&action_uid=-4657697968224339750"]
-// substanced Batch starts at 0, not 1
        var f = function(currPage) {
           var next_path = $($('#'+id+' .result-container').first().parents('div').first().find('>.result-container').last()).data('nex_url')
           return next_path +'&'+ data_get;
@@ -218,8 +215,11 @@ function initscroll(){
       img: window.location.protocol + "//" + window.location.host + "/novaideostatic/images/progress_bar.gif",
       msgText: "",
     }
+  },
+  function(arrayOfNewElems){
+    init_emoji($('.emoji-container:not(.emojified)'));
   });
-}
+ }
 };
 
 
@@ -346,81 +346,6 @@ function rebuild_scrolls(scrolls){
   }
 }
 
-function update_inline_action(url){
-    var $this = $(this)
-    var target = $($this.parents('.search-item, .content-view').find('.actions-footer-container').first())//closest('.dace-action-inline').data('target')+'-target';
-    var actions = $($this.parents('.actions-block').find('.dace-action-inline'));
-    if($this.hasClass('activated')){
-       target.slideUp();
-       actions.removeClass('activated')
-       return
-    }
-    actions.removeClass('activated')
-    var url = $this.closest('.dace-action-inline').data('updateurl');
-    $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
-       var action_body = data['body'];
-       if (action_body){
-           target.slideDown();
-           $(target.find('.container-body')).html(action_body);
-           $this.addClass('activated')
-           init_comment_scroll(target)
-           try {
-                deform.processCallbacks();
-            }
-           catch(err) {};
-        }else{
-           location.reload();
-           return false
-        }
-    });
-    return false;
-};
-
-function update_inline_sidebar_action(url){
-    var $this = $(this)
-    var actions = $('.dace-action-inline');
-    if($this.hasClass('activated')){
-       actions.removeClass('activated')
-       return
-    }
-    var sidebar = $('.sidebar-right-nav')
-    var bar = $(".bar-right-wrapper")
-    var closed = bar.hasClass('toggled')
-    
-    var target = $(sidebar.find('.actions-footer-container'))//closest('.dace-action-inline').data('target')+'-target';
-    var toggle = $('.menu-right-toggle:not(.close)')
-    var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
-    title.find('.label-basic').remove()
-    actions.removeClass('activated')
-    var url = $this.closest('.dace-action-inline').data('updateurl');
-    loading_progress()
-    $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
-       var action_body = data['body'];
-       if (action_body){
-          var container_bodu = $(target.find('.container-body'))
-           container_bodu.html(action_body);
-           init_emoji($(target.find('.emoji-container:not(.emojified)')));
-           rebuild_scrolls($(target.find('.malihu-scroll')))
-           if(title.length > 0){
-               $(sidebar.find('.sidebar-title .entity-title').first()).html(title)
-           }
-           $this.addClass('activated')
-           try {
-                deform.processCallbacks();
-            }
-           catch(err) {};
-           if(toggle.length>0 && closed){
-              toggle.click()
-           }
-           init_comment_scroll(target)
-           finish_progress()
-        }else{
-           location.reload();
-           return false
-        }
-    });
-    return false;
-};
 
 function open_add_idea_form(){
 $(".home-add-idea .form-group:not(.idea-text),"+
@@ -437,6 +362,8 @@ function close_add_idea_form(){
     $(".similar-ideas.modal").modal('hide')
     $(".home-add-idea .btn").removeClass('active')
   }
+
+
 
 $(document).on('click', '.full-screen-btn.small', function(){
     var $this = $(this)
@@ -563,15 +490,15 @@ $(document).on('click', '.sidebar-background.toggled', function(){
 
 $(document).on('click', '.sidebar-right-background.toggled', function(){
   $(".menu-right-toggle.close").click()
-  $('.dace-action-inline.activated').click()
+  $('.dace-action-sidebar.activated').click()
   $('body').removeClass('modal-open')
 
 })
 
+
 $(document).mouseup(function (e)
 {
     var container = $(".home-add-idea, .select2-results");
-
     if (!container.is(e.target) // if the target of the click isn't the container...
         && container.has(e.target).length === 0
         && $(e.target).parents('body').length != 0) // ... nor a descendant of the container
@@ -582,19 +509,15 @@ $(document).mouseup(function (e)
     }
 });
 
-// $(document).on('click', '.search-item-footer .dace-action-inline', update_inline_sidebar_action);
-
-// $(document).on('click', '.content-footer .dace-action-inline', update_inline_sidebar_action);
-
-$(document).on('click', '.dace-action-inline', update_inline_sidebar_action);
 
 $(document).on('shown.bs.modal', '.modal', function () {
     init_result_scroll(undefined, 1000, $(this));
-  });
+});
 
 $(document).ready(function(){
 
   init_emoji($('.emoji-container:not(.emojified)'));
+  
 
   $('.home-add-idea.closed > span.icon-idea').on('click', function(){
       $(this).siblings('form').find('.idea-text textarea').click().focus();
@@ -674,10 +597,7 @@ $(document).ready(function(){
         var url = parent.data('url')
         formData.append('view_name', location.pathname)
         
-        // var inputs = $($(event.target).children().filter('fieldset')[0]).find('input[type|="radio"]');
-        // if (version !=''){
-          // progress.show();// TODO
-          var buttons = $($this.find('button'))
+        var buttons = $($this.find('button'))
         $(buttons).addClass('disabled');
         loading_progress()
         $.ajax({
@@ -744,21 +664,21 @@ $(document).ready(function(){
         $('.sidebar-right-background').toggleClass("toggled");
         $('body').toggleClass('modal-open')
         if(!open){
-          $('.dace-action-inline.activated').click()
+          $('.dace-action-sidebar.activated').click()
           $(bar.find(".comment-form-group.active")).removeClass('active')
 
         }
     });
+
+  $(".navbar-toggle.collapsed").on('click', collapse_current_collpsein);
+
+  $('input, textarea').placeholder();
 
   rebuild_scrolls()
   
   $(window).scroll(function(){
     init_channels_top()
   })
-
-  $(".navbar-toggle.collapsed").on('click', collapse_current_collpsein);
-
-  $('input, textarea').placeholder();
 
   set_visited();
 
@@ -790,12 +710,6 @@ $(document).ready(function(){
     init_result_scroll(undefined, 1000, $(this));
   });
 
-  // $('.scroll-able.result-scroll').endlessScroll({
-  //     fireOnce: false,
-  //     callback: function(i, n, p) {
-  //       $(window).scroll()
-  //     }
-  //   });
 
 //code adapted from http://bootsnipp.com/snippets/featured/jquery-checkbox-buttons
 $(function () {
@@ -903,7 +817,7 @@ $(function () {
 
    $(document).on('mouseover', '.toggle-popover:not(.active)', function(){
         var $this = $(this);
-         $('.popover').remove()
+         $('.comme-popover').remove()
         $this.addClass('active')
         var body = $(document.body)
         var url = body.data('api_url')
@@ -931,7 +845,7 @@ $(function () {
         var $this = $(this);
         var oid = $this.data('oid');
         $this.removeClass('active')
-        $('.popover').remove()
+        $('.comme-popover').remove()
     });
 
 

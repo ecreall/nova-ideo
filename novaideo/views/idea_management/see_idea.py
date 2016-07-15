@@ -75,6 +75,7 @@ class DetailIdeaView(BasicView):
             'cant_publish': self._cant_publish_alert(navbars['all_actions'], user),
             'cant_submit': self._cant_submit_alert(navbars['all_actions'], user),
             'navbar_body': navbars['navbar_body'],
+            'footer_actions_body': navbars['footer_actions_body'],
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body']
         }

@@ -17,7 +17,9 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import InfiniteCardinality
 
 from ..user_management.behaviors import global_user_processsecurity
-from novaideo.content.interface import INovaIdeoApplication, ISearchableEntity
+from novaideo.content.interface import (
+    INovaIdeoApplication, ISearchableEntity,
+    IEmojiable)
 from novaideo import _
 
 
@@ -40,7 +42,7 @@ def select_state_validation(process, context):
 class SelectEntity(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'communication-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-star-empty'
     style_order = 100
     isSequential = False
@@ -88,7 +90,7 @@ def deselect_state_validation(process, context):
 class DeselectEntity(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'communication-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-star'
     style_order = 101
     isSequential = False
@@ -116,6 +118,36 @@ class DeselectEntity(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@index'))
+
+
+def addr_roles_validation(process, context):
+    return has_role(role=('Member',))
+
+
+def addr_state_validation(process, context):
+    return False
+    if hasattr(context, 'can_add_reaction'):
+        return context.can_add_reaction(process)
+
+    return 'published' in context.state
+
+
+class AddReaction(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'communication-body-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+    style_picto = 'novaideo-icon icon-add-emoji'
+    template = 'novaideo:views/templates/actions/add_reaction_idea.pt'
+    context = IEmojiable
+    roles_validation = addr_roles_validation
+    state_validation = addr_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 def deadline_roles_validation(process, context):

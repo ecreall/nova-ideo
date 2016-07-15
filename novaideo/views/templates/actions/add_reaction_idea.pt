@@ -1,0 +1,30 @@
+<div tal:define="a action">
+	<a tal:condition="a not in ajax_actions"
+	   tal:attributes="href a.url(context)">
+	   <span class="${getattr(a,'style_picto','')}" ></span> ${a.title}
+	</a>
+	<div tal:omit-tag="" 
+	 tal:condition="a in ajax_actions"
+	 tal:define="item ajax_actions.get(a, None);
+	             emojis getattr(item['context'], 'emojis', {});
+	             user_oid getattr(request.user, '__oid__', 'None')">
+	    <div class="assigned-emojis emoji-container">
+            <span tal:repeat="emoji emojis"
+            	  class="assigned-emoji ${user_oid in emojis[emoji] and 'my-emoji'}" >${emoji}
+            	<span class="emoji-nb">${len(emojis[emoji])}</span>
+            </span>
+	    </div>
+	    <a id="${item['action_id']}-btn" 
+	      class="dace-action-popover"
+	      href="${item['action'].url(item['context'])}"   
+	      data-toggle="modal"
+	      data-actionid ="${item['action_id']}" 
+	      data-target="#${item['action_id']}"
+	      data-updateurl="${item['actionurl_update']}"
+	      data-toreplay="${'toreplay' in item}"
+	      title="${item['action'].title}"
+	      style="vertical-align: sub;">
+	     <span class="footer-icon ${getattr(a,'style_picto','')}" ></span>
+	   </a>
+	</div>   
+</div>

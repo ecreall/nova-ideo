@@ -25,13 +25,15 @@ from novaideo.content.processes.idea_management.behaviors import CommentIdea
 from novaideo.content.comment import CommentSchema, Comment
 from novaideo.views.filter import get_comments
 from novaideo.content.idea import Idea
-from novaideo.utilities.util import date_delta
+from novaideo.utilities.util import (
+    date_delta, generate_listing_menu, ObjectRemovedException,
+    DEFAUL_LISTING_ACTIONS_TEMPLATE)
 from novaideo import _
 
 
 COMMENT_LEVEL = 2
 
-BATCH_DEFAULT_SIZE = 20
+BATCH_DEFAULT_SIZE = 10
 
 
 class CommentsView(BasicView):
@@ -48,16 +50,33 @@ class CommentsView(BasicView):
 
     def _rendre_comments(self, comments, current_user, origin=False, batch=None):
         all_comments = []
-        dace_ui_api = get_current_registry().getUtility(
-            IDaceUIAPI, 'dace_ui_api')
-        comments_actions = dace_ui_api.get_actions(
-            comments, self.request,
-            'commentmanagement', 'respond')
-        action_updated, messages, \
-            resources, actions = dace_ui_api.update_actions(
-                self.request, comments_actions)
-        actions = dict([(a['context'], a) for a in actions])
-        all_comments = sorted(list(actions.values()),
+        resources = {'css_links': [], 'js_links': []}
+        for obj in comments:
+            try:
+                navbars = generate_listing_menu(
+                    self.request, obj,
+                    template='novaideo:views/templates/comment_menu.pt')
+            except ObjectRemovedException:
+                continue
+
+            resources = merge_dicts(navbars['resources'], resources)
+            object_values = {
+                'context': obj,
+                'menu_body': navbars['menu_body'],
+                'footer_actions_body': navbars['footer_actions_body']}
+            all_comments.append(object_values)
+
+        # all_comments = []
+        # dace_ui_api = get_current_registry().getUtility(
+        #     IDaceUIAPI, 'dace_ui_api')
+        # comments_actions = dace_ui_api.get_actions(
+        #     comments, self.request,
+        #     'commentmanagement', 'respond')
+        # action_updated, messages, \
+        #     resources, actions = dace_ui_api.update_actions(
+        #         self.request, comments_actions)
+        # # actions = dict([(a['context'], a) for a in actions])
+        all_comments = sorted(all_comments,
                               key=lambda e: e['context'].created_at)
         values = {
             'comments': all_comments,
@@ -68,7 +87,7 @@ class CommentsView(BasicView):
             'level': COMMENT_LEVEL
         }
         body = self.content(args=values, template=self.template)['body']
-        return body, resources, messages, action_updated
+        return body, resources
 
     def _get_channel(self, user):
         return self.context.channel
@@ -99,13 +118,11 @@ class CommentsView(BasicView):
                       default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#" + self.action_id + "_results"
         batch.origin_url = url
-        body, resources, messages, isactive = self._rendre_comments(
+        body, resources = self._rendre_comments(
             batch, current_user, True, batch)
         # if text_to_search:
         #     texts = [t for t in text_to_search.split(' ') if t]
         item = self.adapt_item(body, self.viewid)
-        item['messages'] = messages
-        item['isactive'] = isactive
         result['coordinates'] = {self.coordinates: [item]}
         result.update(resources)
         result = merge_dicts(self.requirements_copy, result)

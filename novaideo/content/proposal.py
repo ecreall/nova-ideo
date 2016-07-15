@@ -40,7 +40,8 @@ from novaideo.core import (
     DuplicableEntity,
     VersionableEntity,
     PresentableEntity,
-    Node)
+    Node,
+    Emojiable)
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
@@ -175,7 +176,8 @@ class Proposal(VersionableEntity,
                DuplicableEntity,
                CorrelableEntity,
                PresentableEntity,
-               Node):
+               Node,
+               Emojiable):
     """Proposal class"""
 
     type_title = _('Proposal')

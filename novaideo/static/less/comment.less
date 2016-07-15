@@ -70,6 +70,20 @@
     margin-top: -6px;
 }
 
+.commentform .emoji-container-input .emoji-groups{
+    padding-bottom: 106px;
+}
+
+.commentform .emoji-preview{
+    width: 111%;
+    margin-top: -11px;
+    margin-left: -11px;
+    padding: 10px;
+    position: absolute;
+    bottom: 0px;
+    z-index: 1;
+}
+
 .respondform .comment-textarea-actions{
     top: 7px;
     right: 4px;
@@ -127,7 +141,7 @@
 .commentform .comment-form-group:not(.comment-textarea),
 .commentform .comment-form-group > label,
 .commentform fieldset .form-group:last-child,
-.emoji-container-input
+.commentform .emoji-container-input
 {
     display: none
 }
@@ -137,6 +151,20 @@
     margin-top: 0px;
     margin-bottom: 10px;
     font-weight: bold;
+}
+
+
+.comment-data .footer-actions-bodies{
+    float: none;
+    margin-top: 0px;
+}
+
+.comment-data .footer-actions-bodies a{
+    color: #d0d0d0;
+}
+
+.comment-data .footer-actions-bodies a:hover{
+    color: @novaideo-hover-actions !important;
 }
 
 
@@ -357,6 +385,10 @@ li.comment-text-search-container {
 
 .comment-data:hover{
     background-color: #f4f4f4;
+    .footer-actions-bodies a,
+    .primary-actions a{
+        color: @novaideo-hover-actions !important;
+    }
 }
 
 @media (max-width: 767px) {

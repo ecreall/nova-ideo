@@ -1,12 +1,17 @@
-  <ul tal:define="communication_action communication_action|nothing" class="list-inline" tal:condition="communication_action">
-        <tal:loop repeat="a communication_action">
+<div tal:omit-tag="" tal:define="
+  actions actions|nothing">
+ <div class="clearfix listing-object-menu" tal:condition="actions">
+    <ul class="list-inline primary-actions" >
+        <tal:loop repeat="a actions">
           <li tal:condition="not hasattr(a, 'url')">
             <a class="${a.get('class_css','')}"><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>
           </li>
           <li tal:condition="hasattr(a, 'url')">
             <a tal:condition="a not in ajax_actions"
-               tal:attributes="href a.url(obj)">
-               <span class="${getattr(a,'style_picto','')}" ></span> ${a.get_title(obj, request)}
+               tal:attributes="href a.url(obj)"
+               title="${a.title}"
+               >
+               <span class="icon ${getattr(a,'style_picto','')}" ></span> <span class="hidden-xs"> ${a.title}</span>
             </a>
             <div tal:omit-tag="" 
              tal:condition="a in ajax_actions"
@@ -14,9 +19,9 @@
                        icon getattr(a,'style_picto','');
                        interaction_type getattr(a,'style_interaction_type','modal')">
               <a id="${item['action_id']}-btn" 
-                class="ajax-action dace-action-${interaction_type}"
+                class="replay-action ajax-action dace-action-${interaction_type}"
                 data-toggle="${interaction_type}"
-                data-target="#action-${interaction_type}-container"
+                data-target="#action-${interaction_type}-container-${getattr(item['context'], '__oid__', '')}"
                 data-actionid ="${item['action_id']}" 
                 data-updateurl="${item['actionurl_update']}"
                 data-after_exe_url="${item['actionurl_after']}"
@@ -27,21 +32,11 @@
                 data-icon="${icon}"
                 data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
                  <span class="footer-icon ${icon}" ></span> 
-                 <span class="hidden-xs">${item['action'].get_title(obj, request)}</span>
+                 <span class="hidden-xs">${item['action'].title}</span>
                </a>
-               <script tal:condition="'toreplay' in item">       
-                    $(document).ready(function(){
-                         $(${'\'#'+item['action_id']+'-btn\''}).click();
-                    });
-               </script>
-               <script tal:condition="('toreplay' not in item) and (request.view_name in ('index', '@@index') and getattr(a,'style_activate', False))">       
-                    $(document).ready(function(){
-                        if(window.location.hash.replace('#comment-', '')) {
-                              $(${'\'.content-footer #'+item['action_id']+'-btn\''}).click();
-                          }
-                    });
-               </script>
             </div>
           </li>
-        </tal:loop>
+      </tal:loop>
   </ul>
+ </div>
+</div>

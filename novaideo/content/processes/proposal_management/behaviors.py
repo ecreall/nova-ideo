@@ -313,7 +313,7 @@ def del_processsecurity_validation(process, context):
 class DeleteProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
     style_order = 12
     submission_title = _('Continue')
@@ -847,7 +847,7 @@ def seem_processsecurity_validation(process, context):
 
 class SeeMembers(InfiniteCardinality):
     style_descriminator = 'wg-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'fa fa-users'
     isSequential = False
     context = IProposal
@@ -898,7 +898,7 @@ def seeideas_state_validation(process, context):
 
 class SeeRelatedIdeas(InfiniteCardinality):
     style_descriminator = 'primary-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-link'
     context = IProposal
     #processsecurity_validation = seeideas_processsecurity_validation
@@ -1253,7 +1253,7 @@ def attach_state_validation(process, context):
 class AttachFiles(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
-    style_interaction = 'modal-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-paperclip'
     style_order = 3
     submission_title = _('Save')

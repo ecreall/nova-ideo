@@ -1,4 +1,4 @@
-<div id="popover-${oid}" class="popover right popover-person view-item"
+<div id="popover-${oid}" class="comme-popover popover right popover-person view-item"
 	  role="tooltip"
 	  tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');

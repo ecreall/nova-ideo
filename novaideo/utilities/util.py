@@ -558,9 +558,9 @@ ALL_DESCRIMINATORS = ['global-action',
                       'admin-action',
                       'wg-action',
                       'plus-action',
-                      'text-comm-action',
                       'body-action',
-                      'communication-action']
+                      'communication-action',
+                      'communication-body-action']
 
 DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_footer_actions.pt'
 
@@ -616,7 +616,7 @@ def render_listing_objs(request, objs, user, **kw):
             'menu_body': navbars['menu_body'],
             'footer_body': navbars['footer_body'],
             'wg_body': navbars['wg_body'],
-            # 'primary_body': navbars['primary_body'],
+            'footer_actions_body': navbars['footer_actions_body'],
             'state': get_states_mapping(user, obj,
                 getattr(obj, 'state_or_none', [None])[0])}
         object_values.update(kw)
@@ -629,7 +629,7 @@ def render_listing_objs(request, objs, user, **kw):
     return result_body, resources
 
 
-def update_modal_actions(actions, context, request):
+def update_ajax_actions(actions, context, request):
     dace_ui_api = get_current_registry().getUtility(
         IDaceUIAPI, 'dace_ui_api')
     actions = [(context, a) for a in actions]
@@ -639,7 +639,7 @@ def update_modal_actions(actions, context, request):
     return action_updated, messages, resources, actions
 
 
-def update_modal_action(
+def update_ajax_action(
     context, request,
     process_id, node_id):
     seemembers_actions = getBusinessAction(
@@ -647,14 +647,14 @@ def update_modal_action(
         process_id, node_id)
     if seemembers_actions:
         isactive, messages, \
-        resources, modal_actions = update_modal_actions(
+        resources, ajax_actions = update_ajax_actions(
             seemembers_actions, context, request)
-        return modal_actions, resources
+        return ajax_actions, resources
 
     return [], {}
 
 
-def update_all_modal_action(
+def update_all_ajax_action(
     context, request,
     node_id, process_id=None):
     seemembers_actions = getAllBusinessAction(
@@ -663,9 +663,9 @@ def update_all_modal_action(
         process_discriminator='Application')
     if seemembers_actions:
         isactive, messages, \
-        resources, modal_actions = update_modal_actions(
+        resources, ajax_actions = update_ajax_actions(
             seemembers_actions, context, request)
-        return modal_actions, resources
+        return ajax_actions, resources
 
     return [], {}
 
@@ -678,21 +678,21 @@ def get_actions_navbar(
     update_nb = 0
     while isactive and update_nb < 2:
         actions = actions_getter()
-        modal_actions = [a for a in actions
+        ajax_actions = [a for a in actions
                          if getattr(a, 'style_interaction', '') ==
-                         'modal-action']
+                         'ajax-action']
         isactive, messages, \
-        resources, modal_actions = update_modal_actions(
-            modal_actions, context, request)
+        resources, ajax_actions = update_ajax_actions(
+            ajax_actions, context, request)
         update_nb += 1
         if isactive:
             request.invalidate_cache = True
 
-    modal_actions = [(a['action'], a) for a in modal_actions]
-    result['modal-action'] = {'isactive': isactive,
+    ajax_actions = [(a['action'], a) for a in ajax_actions]
+    result['ajax-action'] = {'isactive': isactive,
                               'messages': messages,
                               'resources': resources,
-                              'actions': modal_actions
+                              'actions': ajax_actions
                               }
     actions = sorted(
         actions, key=lambda a: getattr(a, 'style_order', 0))
@@ -714,9 +714,9 @@ def render_navbar_body(
     actions = {key.replace('-', '_'): actions_navbar.get(key, [])
                for key in keys if actions_navbar.get(key, [])}
     if actions:
-        modal_actions = actions_navbar['modal-action']['actions']
+        ajax_actions = actions_navbar['ajax-action']['actions']
         template = template if template else DEFAUL_NAVBAR_TEMPLATE
-        actions['modal_actions'] = dict(modal_actions)
+        actions['ajax_actions'] = dict(ajax_actions)
         actions['obj'] = context
         return renderers.render(template, actions, request)
 
@@ -742,35 +742,53 @@ def generate_navbars(request, context, **args):
     actions_navbar['global-action'].extend(
         args.get('global_action', []))
     actions_navbar['text-action'].extend(
-        actions_navbar.pop('text-comm-action'))
-    actions_navbar['text-action'].extend(
         args.get('text_action', []))
     actions_navbar['plus-action'].extend(
         args.get('plus_action', []))
     actions_navbar['body-action'].extend(
         args.get('body_action', []))
+    actions_navbar['communication-body-action'].extend(
+        args.get('communication-body-action', []))
 
     actions_bodies = []
     for action in actions_navbar['body-action']:
-        object_values = {'action': action}
+        object_values = {
+            'action': action,
+            'context': context,
+            'request': request,
+            'ajax_actions': dict(actions_navbar['ajax-action']['actions'])}
         body = renderers.render(
-            action.action.template, object_values, request)
+            action.template, object_values, request)
         actions_bodies.append(body)
 
-    isactive = actions_navbar['modal-action']['isactive']
-    messages = actions_navbar['modal-action']['messages']
-    resources = actions_navbar['modal-action']['resources']
+    communication_actions_bodies = []
+    for action in actions_navbar.get(
+        'communication-body-action', []):
+        object_values = {
+            'action': action,
+            'context': context,
+            'request': request,
+            'ajax_actions': dict(actions_navbar['ajax-action']['actions'])}
+        body = renderers.render(
+            action.template, object_values, request)
+        communication_actions_bodies.append(body)
+
+    isactive = actions_navbar['ajax-action']['isactive']
+    messages = actions_navbar['ajax-action']['messages']
+    resources = actions_navbar['ajax-action']['resources']
     return {'isactive': isactive,
             'messages': messages,
             'resources': resources,
             'all_actions': actions_navbar,
+            'body_actions': actions_bodies,
+            'footer_actions_body': communication_actions_bodies,
             'navbar_body': render_navbar_body(
                 request, context, actions_navbar, args.get('template', None)),
             'footer_body': render_navbar_body(
                 request, context, actions_navbar,
                 DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE, ['communication-action'])
                 if 'communication-action' in actions_navbar else None,
-            'body_actions': actions_bodies}
+            }
 
 
 def generate_listing_menu(request, context, **args):
@@ -778,6 +796,7 @@ def generate_listing_menu(request, context, **args):
         return getAllBusinessAction(
             context, request, process_discriminator='Application')
 
+    #find actions descriminated by descriminators
     descriminators = args.get(
         'descriminators',
         list(ALL_DESCRIMINATORS))
@@ -787,29 +806,33 @@ def generate_listing_menu(request, context, **args):
        context is not request.root:
         raise ObjectRemovedException("Object removed")
 
+    #for listing navbars merge actions (not actions to unmerge) 
     actions_navbar['actions'] = []
-    tomerge = descriminators
-    if 'communication-action' in tomerge and \
-       'text-comm-action' in tomerge:
-        actions_navbar['communication-action'].extend(
-            actions_navbar.pop('text-comm-action'))
-
-    tounmerge = ['communication-action', 'wg-action', 'primary-action']
-    for unmerge in tounmerge:
-        if unmerge in tomerge:
-            tomerge.remove(unmerge)
-
+    tounmerge = [
+        'communication-action', 'wg-action', 'primary-action',
+        'communication-body-action']
+    tomerge = [d for d in descriminators
+               if d not in tounmerge and d in actions_navbar]
     for descriminator in tomerge:
-        if descriminator in actions_navbar:
-            actions_navbar['actions'].extend(
-                actions_navbar.pop(descriminator))
+        actions_navbar['actions'].extend(
+            actions_navbar.pop(descriminator))
 
-    isactive = actions_navbar['modal-action']['isactive']
-    messages = actions_navbar['modal-action']['messages']
-    resources = actions_navbar['modal-action']['resources']
-    return {'isactive': isactive,
-            'messages': messages,
-            'resources': resources,
+    communication_actions_bodies = []
+    for action in actions_navbar.get(
+        'communication-body-action', []):
+        object_values = {
+            'action': action,
+            'context': context,
+            'request': request,
+            'ajax_actions': dict(actions_navbar['ajax-action']['actions'])}
+        body = renderers.render(
+            action.template, object_values, request)
+        communication_actions_bodies.append(body)
+
+    return {'isactive': actions_navbar['ajax-action']['isactive'],
+            'messages': actions_navbar['ajax-action']['messages'],
+            'resources': actions_navbar['ajax-action']['resources'],
+            'footer_actions_body': communication_actions_bodies,
             'menu_body': render_navbar_body(
                 request, context, actions_navbar,
                 args.get('template', None), ['actions', 'primary-action']),
@@ -826,10 +849,12 @@ def generate_listing_menu(request, context, **args):
 
 def get_emoji_form(
     request, template=EMOJI_TEMPLATE, emoji_class='',
-    groups=DEFAULT_EMOJIS, is_grouped=True):
+    groups=DEFAULT_EMOJIS, items=[], is_grouped=True, add_preview=True):
     return renderers.render(
         template,
         {'is_grouped': is_grouped,
+         'add_preview': add_preview,
          'emoji_class': emoji_class,
-         'groups': groups},
+         'groups': groups,
+         'items': items},
         request)
