@@ -26,7 +26,7 @@ Contribute
 License
 -------
 
-The project is licensed under the GPLv3.
+The project is licensed under the AGPLv3+.
 
 
 Getting Started for development
