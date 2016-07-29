@@ -225,7 +225,7 @@ $(document).ready(function(){
 
     $(document).on('submit','.commentform:not(.respondform)', function( event ) {
         var $this = $(this)
-        var button = $this.find('button').last();
+        var button = $this.find('button[type="submit"]').last();
         var select_itention = $($this.find("select[name=\'intention\']"))
         var intention = select_itention.val();
         var select_related_contents = $($this.find("select[name='related_contents']").first());
@@ -294,7 +294,7 @@ $(document).ready(function(){
     $(document).on('submit','.respondform', function( event ) {
         var $this = $(this)
         var formid = $this.attr('id');
-        var button = $this.find('button')
+        var button = $this.find('button[type="submit"]').last();
         var select_itention = $($this.find("select[name=\'intention\']"))
         var intention = select_itention.val();
         var textarea = $this.find('textarea');
