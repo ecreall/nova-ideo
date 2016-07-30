@@ -140,7 +140,7 @@
       files proposal.get_attached_files_data();
       len_files len(files);
       oid proposal.__oid__">
-    <div tal:omit-tag="not files">
+    <div class="content-text">
         <div class="img-carousel-container pull-right" tal:condition="files">
             <div class="file-slider">
               <div id="filecarousel${oid}" data-ride="carousel" data-interval="3000" class="carousel slide"> 
@@ -178,7 +178,7 @@
          </div>
         </div>
         <div class="text-container" tal:omit-tag="not files">
-          <div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} content-text correction-container correction-container-text">
+          <div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} correction-container correction-container-text">
             ${structure:text}
           </div>
         </div>
