@@ -436,7 +436,8 @@ class SubmitAmendment(InfiniteCardinality):
             context.text_diff = text_diff
         else:
             for group in groups:
-                self._add_sub_amendment(context, request, group)
+                if group['explanations']:
+                    self._add_sub_amendment(context, request, group)
 
             context.state.append('archived')
 

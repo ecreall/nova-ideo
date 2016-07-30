@@ -131,7 +131,7 @@ $(document).ready(function(){
                  var values = $($(selected).find("option:selected")).map(function(){ return this.value }).get().join(", ");
                  var justification = $(item.find('textarea.justification-select-item').first());
                  var justification_val = justification.val();
-                 if (values.length==0 || justification_val == "" ){
+                 if (justification_val == "" ){
                      item.addClass('sequence-item-error');
                      item.addClass('has-error');
                      $(commentmessagedanger).removeClass('hide-bloc');
