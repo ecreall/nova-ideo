@@ -9,6 +9,8 @@
 This module represent all of behaviors used in the
 Comment management process definition.
 """
+import datetime
+import pytz
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
@@ -88,6 +90,7 @@ class Respond(InfiniteCardinality):
         content = comment.subject
         channel = comment.channel
         is_discuss = channel.is_discuss()
+        channel.add_comment(comment, comment.created_at)
         if appstruct['related_contents']:
             related_contents = appstruct['related_contents']
             correlation = connect(
@@ -185,6 +188,7 @@ class Respond(InfiniteCardinality):
                 alert('email', [root.get_site_sender()], [comment_author.email],
                       subject=subject, body=message)
 
+        user.set_readed_date(channel, datetime.datetime.now(tz=pytz.UTC))
         return {'newcontext': comment.subject}
 
     def redirect(self, context, request, **kw):

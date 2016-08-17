@@ -48,7 +48,9 @@ class CommentsView(BasicView):
     def _datetimedelta(self, date):
         return date_delta(date)
 
-    def _rendre_comments(self, comments, current_user, origin=False, batch=None):
+    def _rendre_comments(
+        self, comments, current_user,
+        origin=False, batch=None):
         all_comments = []
         resources = {'css_links': [], 'js_links': []}
         for obj in comments:
@@ -66,16 +68,6 @@ class CommentsView(BasicView):
                 'footer_actions_body': navbars['footer_actions_body']}
             all_comments.append(object_values)
 
-        # all_comments = []
-        # dace_ui_api = get_current_registry().getUtility(
-        #     IDaceUIAPI, 'dace_ui_api')
-        # comments_actions = dace_ui_api.get_actions(
-        #     comments, self.request,
-        #     'commentmanagement', 'respond')
-        # action_updated, messages, \
-        #     resources, actions = dace_ui_api.update_actions(
-        #         self.request, comments_actions)
-        # # actions = dict([(a['context'], a) for a in actions])
         all_comments = sorted(all_comments,
                               key=lambda e: e['context'].created_at)
         values = {
@@ -111,6 +103,10 @@ class CommentsView(BasicView):
                 getattr(self, 'comments', []),
                 key=lambda e: e.created_at, reverse=True)
 
+        if channel:
+            current_user.set_readed_date(
+                channel, datetime.datetime.now(tz=pytz.UTC))
+
         url = self.request.resource_url(self.context, self.action_id)
         batch = Batch(objects,
                       self.request,
@@ -120,8 +116,6 @@ class CommentsView(BasicView):
         batch.origin_url = url
         body, resources = self._rendre_comments(
             batch, current_user, True, batch)
-        # if text_to_search:
-        #     texts = [t for t in text_to_search.split(' ') if t]
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         result.update(resources)

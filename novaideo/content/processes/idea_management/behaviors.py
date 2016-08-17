@@ -668,7 +668,13 @@ class CommentIdea(InfiniteCardinality):
     state_validation = comm_state_validation
 
     def get_nb(self, context, request):
-        return context.channel.len_comments
+        user = get_current()
+        channel = context.channel
+        unreaded_comments = channel.get_comments_between(
+            user.get_readed_date(channel),
+            datetime.datetime.now(tz=pytz.UTC))
+        return len(unreaded_comments)
+        # return context.channel.len_comments
 
     def get_title(self, context, request):
         len_comments = context.channel.len_comments
@@ -733,6 +739,7 @@ class CommentIdea(InfiniteCardinality):
         channel = context.channel
         if channel:
             channel.addtoproperty('comments', comment)
+            channel.add_comment(comment, comment.created_at)
             comment.format(request)
             user = get_current()
             context.subscribe_to_channel(user)
@@ -750,6 +757,7 @@ class CommentIdea(InfiniteCardinality):
 
             self._alert_users(context, request, user, comment)
             context.reindex()
+            user.set_readed_date(channel, datetime.datetime.now(tz=pytz.UTC))
 
         return {}
 

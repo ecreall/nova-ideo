@@ -573,11 +573,18 @@ class Discuss(InfiniteCardinality):
     def get_nb(self, context, request):
         user = get_current()
         channel = context.get_channel(user)
-        len_comments = channel.len_comments if channel else 0
-        return len_comments
+        if channel:
+            unreaded_comments = channel.get_comments_between(
+                user.get_readed_date(channel),
+                datetime.datetime.now(tz=pytz.UTC))
+            return len(unreaded_comments)
+
+        return 0
 
     def get_title(self, context, request):
-        len_comments = self.get_nb(context, request)
+        user = get_current()
+        channel = context.get_channel(user)
+        len_comments = channel.len_comments if channel else 0
         return _("${title} (${nember})",
                  mapping={'nember': len_comments,
                           'title': request.localizer.translate(self.title)})
@@ -642,9 +649,11 @@ class Discuss(InfiniteCardinality):
             context.addtoproperty('channels', channel)
             channel.addtoproperty('members', user)
             channel.addtoproperty('members', context)
+            context.set_readed_date(channel, comment.created_at)
 
         if channel:
             channel.addtoproperty('comments', comment)
+            channel.add_comment(comment, comment.created_at)
             comment.format(request)
             comment.setproperty('author', user)
             if appstruct['related_contents']:
@@ -660,6 +669,7 @@ class Discuss(InfiniteCardinality):
 
             self._alert_users(context, request, user, comment, channel)
             context.reindex()
+            user.set_readed_date(channel, datetime.datetime.now(tz=pytz.UTC))
 
         return {}
 
@@ -684,8 +694,14 @@ class GeneralDiscuss(InfiniteCardinality):
 
     def get_nb(self, context, request):
         channel = context.channel
-        len_comments = channel.len_comments if channel else 0
-        return len_comments
+        if channel:
+            user = get_current()
+            unreaded_comments = channel.get_comments_between(
+                user.get_readed_date(channel),
+                datetime.datetime.now(tz=pytz.UTC))
+            return len(unreaded_comments)
+
+        return 0
 
     def _get_users_to_alerts(self, context, request, user, channel):
         users = list(channel.members)
@@ -745,6 +761,7 @@ class GeneralDiscuss(InfiniteCardinality):
         #TODO get
         if channel:
             channel.addtoproperty('comments', comment)
+            channel.add_comment(comment, comment.created_at)
             comment.format(request)
             comment.setproperty('author', user)
             if appstruct['related_contents']:
@@ -760,6 +777,7 @@ class GeneralDiscuss(InfiniteCardinality):
 
             # self._alert_users(context, request, user, comment, channel)
             context.reindex()
+            user.set_readed_date(channel, datetime.datetime.now(tz=pytz.UTC))
 
         return {}
 

@@ -6,6 +6,7 @@
 
 import colander
 import venusian
+from BTrees.OOBTree import OOBTree
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
 from zope.interface import implementer
@@ -225,6 +226,14 @@ class Channel(Commentable):
     def __init__(self, **kwargs):
         super(Channel, self).__init__(**kwargs)
         self.set_data(kwargs)
+        self._comments_at = OOBTree()
+
+    def add_comment(self, comment, date):
+        self._comments_at[date] = get_oid(comment)
+
+    def get_comments_between(self, start, end):
+        return list(self._comments_at.values(
+            min=start, max=end))
 
     def get_subject(self, user=None):
         subject = self.subject

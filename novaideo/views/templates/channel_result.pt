@@ -7,7 +7,8 @@
                subjectclassname subject.__class__.__name__.lower(); 
                is_discuss object.is_discuss();
                icon getattr(item['action'],'style_picto','');
-               interaction_type getattr(item['action'],'style_interaction_type','modal')">
+               interaction_type getattr(item['action'],'style_interaction_type','modal');
+               channel_nb item['action'].get_nb(item['context'], request)">
        <a id="${item['action_id']}-btn" 
             class="toggle-popover channel-action ajax-action dace-action-${interaction_type} media-${subjectclassname}"
             data-oid="${getattr(subject, '__oid__', '')}"
@@ -35,5 +36,5 @@
              <span>${title}</span>
           </div>
       </a>
-     <span class="channel-len pull-right">(${item['action'].get_nb(item['context'], request)})</span>
+     <span tal:condition="channel_nb" class="ureaded-comments-len pull-right">${channel_nb}</span>
   </div>

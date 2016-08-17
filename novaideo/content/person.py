@@ -7,6 +7,7 @@
 import os
 import datetime
 import pytz
+from BTrees.OOBTree import OOBTree
 import colander
 import deform.widget
 from persistent.list import PersistentList
@@ -14,7 +15,7 @@ from zope.interface import implementer
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
-from substanced.util import renamer
+from substanced.util import renamer, get_oid
 from substanced.principal import UserSchema
 from substanced.interfaces import IUserLocator
 from substanced.principal import DefaultUserLocator
@@ -300,6 +301,14 @@ class Person(User, SearchableEntity, CorrelableEntity):
         self.set_data(kwargs)
         self.set_title()
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
+        self._readed_at = OOBTree()
+
+    def set_readed_date(self, channel, date):
+        self._readed_at[get_oid(channel)] = date
+
+    def get_readed_date(self, channel):
+        return self._readed_at.get(
+            get_oid(channel), datetime.datetime.now(tz=pytz.UTC))
 
     def get_channel(self, user):
         all_channels = list(self.channels)

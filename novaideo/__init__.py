@@ -271,16 +271,33 @@ def evolve_channels(root, registry):
 def evolve_person(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
+    from BTrees.OOBTree import OOBTree
 
     contents = find_entities(
         interfaces=[IPerson]
         )
     len_entities = str(len(contents))
     for index, node in enumerate(contents):
-        node.reindex()
+        node._readed_at = OOBTree()
         log.info(str(index) + "/" + len_entities)
 
     log.info('Persons evolved.')
+
+
+def evolve_channel_comments_at(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IChannel
+    from BTrees.OOBTree import OOBTree
+
+    contents = find_entities(
+        interfaces=[IChannel]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        node._comments_at = OOBTree()
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Channels evolved.')
 
 
 def main(global_config, **settings):
@@ -304,6 +321,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_nodes)
     config.add_evolution_step(evolve_channels)
     config.add_evolution_step(evolve_person)
+    config.add_evolution_step(evolve_channel_comments_at)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
