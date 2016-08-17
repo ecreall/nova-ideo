@@ -169,6 +169,7 @@ function search_comments(input){
       commentscontainer.find('.commentulorigin').remove()
       if(new_comment_ul.length>0){
         loading.addClass('hide-bloc')
+        init_emoji($(new_comment_ul.find('.emoji-container:not(.emojified)')));
         commentscontainer.append(new_comment_ul)
       }
       finish_progress()
