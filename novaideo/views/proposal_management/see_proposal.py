@@ -106,7 +106,8 @@ class DetailProposalView(BasicView):
         ct_participate_closed = False
         ct_participate = False
         user = get_current()
-        is_participant = has_role(user=user, role=('Participant', self.context))
+        is_participant = has_role(
+            user=user, role=('Participant', self.context))
         root = getSite()
         working_group = self.context.working_group
         wg_actions = [a for a in navbars['all_actions']['wg-action']
@@ -135,6 +136,11 @@ class DetailProposalView(BasicView):
                        if 'in process' in c.state]
         title, description, text, add_filigrane = self._get_adapted_text(
             user, is_participant, corrections)
+        tinymce_js = 'deform:static/tinymce/tinymce.min.js'
+        if corrections and is_participant and\
+           tinymce_js not in resources['js_links']:
+            resources['js_links'].append(tinymce_js)
+
         related_ideas = list(self.context.related_ideas.keys())
         not_published_ideas = [i for i in related_ideas
                                if 'published' not in i.state]

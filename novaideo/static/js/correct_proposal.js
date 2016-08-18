@@ -1,10 +1,61 @@
+function show_edit_item_form(event){
+    var parent = $($(this).parents('#correction').first())
+    var correction = $(parent.find('ins').first());
+    var modal = $('.edit-item-modal-container')
+    var oid = modal.data('oid')
+    tinyMCE.get(oid).setContent(correction.html());
+    modal.modal('show')
+    parent.addClass('active-correction')
+
+}
+
+function edit_item(form){
+  var modal = $(form.parents('.edit-item-modal-container').first())
+  var oid = modal.data('oid')
+  var text = tinyMCE.get(oid).getContent();
+  var correction = $($('#correction.active-correction').first())
+  var correction_attr = correction.data('content');
+  var btn = $(correction.find('.edit-item-action').first())
+  var target = $(btn.parents('.correction-container-'+correction_attr).first());
+  var url = btn.data('url');
+  dict_post = {};
+  dict_post['vote'] = Boolean(btn.data('favour'));
+  dict_post['item'] = parseInt(correction.data('item'));
+  dict_post['content'] = correction_attr;
+  dict_post['correction_id'] = parseInt(correction.data('correction'));
+  dict_post['edited'] = true
+  dict_post['new_text'] = text
+  modal.modal('hide')
+  $.get(url, dict_post, function(data) {
+    if (data){
+      var content = $(data['body']).find('#correction_'+correction_attr);
+      if (content){
+           $(target).html($(content).html());
+           var corrections = $(target).find('.correction-action');
+           if (corrections.length>0){
+               corrections.on('click', correct_handler)
+           }else{
+               location.reload();
+           }
+      }else{
+         location.reload();
+         return false
+       };
+    }else{
+         location.reload();
+         return false
+       };
+    });
+}
+
+
 function correct_handler(event){
     var correction = $($(this).parents('#correction').first());
     var correction_attr = correction.data('content');
     var target = $($(this).parents('.correction-container-'+correction_attr).first());
     var url = $(this).data('url');
     dict_post = {};
-    dict_post['vote'] = Boolean($(this).data('favour'));;
+    dict_post['vote'] = Boolean($(this).data('favour'));
     dict_post['item'] = parseInt(correction.data('item'));
     dict_post['content'] = correction_attr;
     dict_post['correction_id'] = parseInt(correction.data('correction'));
@@ -83,6 +134,21 @@ function init_correction_navbar(){
 
 
 $(document).ready(function(){
-  $('.correction-action').on('click', correct_handler);
+  $('.correction-action:not(.edit-item-action)').on('click', correct_handler);
+  $('.edit-item-action').on('click', show_edit_item_form);
+  $('.edit-item-modal-container button').on('click', function(){
+       $(this).addClass('active')
+  });
+  $(document).on('submit','.edit-item-form', function( event ) {
+    var form = $(this)
+    var button = $(form.find('button.active').first())
+    if (button.attr('name') == 'cancel'){
+      $(form.parents('.edit-item-modal-container').first()).modal('hide')
+      $('#correction.active-correction').removeClass('active-correction')
+    }else{
+      edit_item(form)
+    }
+    event.preventDefault();
+  })
   init_correction_navbar()
 });

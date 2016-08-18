@@ -31,8 +31,15 @@ class CorrectItemView(BasicView):
     def update(self):
         item = self.params('item')
         vote = self.params('vote')
+        edited = self.params('edited')
+        new_text = self.params('new_text')
         content = self.params('content')
-        self.execute({'item': item, 'vote': vote, 'content': content})
+        self.execute({
+            'item': item,
+            'vote': vote,
+            'content': content,
+            'edited': edited,
+            'new_text': new_text})
         result = {}
         user = get_current()
         values = {

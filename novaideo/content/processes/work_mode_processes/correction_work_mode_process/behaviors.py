@@ -139,11 +139,31 @@ class CorrectItem(InfiniteCardinality):
             self._include_to_proposal(context, proposal, text_to_correct,
                                       request, content)
 
+    def _edit_item(self, context, content, appstruct):
+        soup = BeautifulSoup(getattr(context, content))
+        items_to_edit = soup.find_all(
+            'span',
+            {'id': 'correction', 'data-item': appstruct['item']})
+        ins_to_edit = items_to_edit[0].find_all('ins')[0]
+        soup_to_add = BeautifulSoup(appstruct['new_text'])
+        new_ins = soup.new_tag("ins")
+        soup_to_add.p.wrap(new_ins)
+        soup_to_add.p.unwrap()
+        new_ins = soup_to_add.ins
+        ins_to_edit.replace_with(new_ins)
+        setattr(context, content, html_diff_wrapper.soup_to_text(soup))
+
     def start(self, context, request, appstruct, **kw):
         item = appstruct['item']
         content = appstruct['content']
         item_data = context.corrections[item]
         if item_data.get('content', '#') == content:
+            if appstruct.get('edited', False) and \
+               appstruct.get('new_text', None):
+                self._edit_item(context, content, appstruct)
+                item_data['favour'] = []
+                item_data['against'] = []
+
             vote = (appstruct['vote'].lower() == 'true')
             user = get_current()
             user_oid = get_oid(user)
@@ -230,6 +250,8 @@ class CorrectProposal(InfiniteCardinality):
                 action_uid=str(get_oid(self._correctitemaction)),
                 context_uid=str(get_oid(correction)))
             values = {'favour_action_url': actionurl_update,
+                      'edit_action_url': tag.find_all('ins') and \
+                                         actionurl_update or None,
                       'against_action_url': actionurl_update}
             body = renderers.render(
                 self.correction_item_template, values, request)

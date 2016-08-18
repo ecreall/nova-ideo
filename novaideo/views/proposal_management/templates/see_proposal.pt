@@ -1,5 +1,6 @@
 <div class="content-view" i18n:domain="novaideo"
-  tal:define="submitted 'proposal' in getattr(request, 'content_to_support', []) and 'submitted_support' in proposal.state;">
+  tal:define="submitted 'proposal' in getattr(request, 'content_to_support', []) and 'submitted_support' in proposal.state;
+  oid 'edit_item_text_area'">
   <div tal:replace="structure navbar_body"/>
   <div class="media-body content-title-body">
     <div tal:condition="cant_publish" role="alert" class="alert alert-info alert-dismissible">
@@ -32,15 +33,79 @@
        </div>
     </div>
     <nav tal:condition="corrections and is_participant" class="correction-navbar navbar navbar-inverse"  i18n:domain="novaideo">
-    <ul class="nav navbar-nav correction-nav-actions"
-        tal:define="correction corrections[-1]"
-        data-url="${request.resource_url(correction, '@@correctallitems')}">
-          <li class="active"><a id="see-all" title="Display all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Display</span></a></li>
-          <li><a id="hide-all" title="Hide all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-close"></span> <span i18n:translate="">Hide</span></a></li>
-          <li><a id="accept-all" title="Accept all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-ok"></span> <span i18n:translate="">Accept all</span></a></li>
-          <li><a id="refuse-all" title="Reject all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-remove"></span> <span i18n:translate="">Reject all</span></a></li>
-    </ul>
-  </nav>
+      <ul class="nav navbar-nav correction-nav-actions"
+          tal:define="correction corrections[-1]"
+          data-url="${request.resource_url(correction, '@@correctallitems')}">
+            <li class="active"><a id="see-all" title="Display all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Display</span></a></li>
+            <li><a id="hide-all" title="Hide all differences" i18n:attributes="title"><span class="glyphicon glyphicon-eye-close"></span> <span i18n:translate="">Hide</span></a></li>
+            <li><a id="accept-all" title="Accept all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-ok"></span> <span i18n:translate="">Accept all</span></a></li>
+            <li><a id="refuse-all" title="Reject all improvements" i18n:attributes="title"><span class="glyphicon glyphicon-remove"></span> <span i18n:translate="">Reject all</span></a></li>
+      </ul>
+      <div data-oid="${oid}" aria-hidden="true" role="dialog" class="edit-item-modal-container modal fade">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <form class="deform edit-item-form">
+                    <fieldset class="deform-form-fieldset">
+                      <div title="" class="form-group  ">
+                        <label class="control-label required" >
+                          Title
+                        </label>
+                        <textarea id="${oid}"
+                                class='tinymce form-control'></textarea>
+                        <span id="${oid}-preload" class="tinymce-preload"></span>
+                        <script type="text/javascript">
+                          (function($){
+                            deform.addCallback('${oid}', function(oid) {
+                              var jqoid = $('#' + oid);
+                              var jqoid_preload = $('#' + oid + '-preload');
+                              jqoid.hide();
+                              jqoid_preload.click(function(){
+                                jqoid.show();
+                                jqoid_preload.remove();
+                                tinyMCE.init({
+                                  language: '<tal:block i18n:translate="language-code">en</tal:block>',
+                                  body_class: 'form-control',
+                                  plugins: ["textcolor"],
+                                 "theme_advanced_resizing_advanced_toolbar_location": "top",
+                                 "toolbar": "undo redo | fontselect fontsizeselect | forecolor backcolor | bold italic",
+                                 "height": 100,
+                                 "theme_advanced_resizing": true,
+                                 "fontsize_formats": "8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 26pt 36pt", "skin": "lightgray",
+                                 "strict_loading_mode": true,
+                                 "remove_linebreaks": false,
+                                 "width": 0,
+                                 "theme": "modern",
+                                 "mode": "exact",
+                                  forced_root_block : '',
+                                  invalid_elements : 'p',
+                                  elements: oid
+                                });
+                                jqoid_preload.unbind('click');
+                              });
+                              jqoid_preload.click();
+                            });
+                            $().bind('form.pre.serialize', function(event, $form, options) {
+                              tinyMCE.triggerSave();
+                            });
+                          })(jQuery);
+                        </script>
+                      </div>
+                      <div class="form-group">
+                          <button value="edit_item" class="btn btn-primary " name="edit_item" >
+                            Enregistrer
+                          </button>
+                          <button value="Cancel" class="btn btn-default " name="cancel">
+                            Cancel
+                          </button>
+                      </div>
+                    </fieldset>
+                  </form>
+                </div>
+              </div>
+          </div>
+      </div>
+    </nav>
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
     <h3 class="content-title"><span class="icon novaideo-icon icon-proposal"></span> <span class="correction-container correction-container-title">${structure:title}</span></h3>
     <div class="object-description" 

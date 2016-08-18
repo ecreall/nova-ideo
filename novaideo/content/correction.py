@@ -81,30 +81,29 @@ class Correction(VisualisableElement, Entity):
             vote_class = 'correction-against-vote'
 
         correction_tag['class'] = vote_class
- 
+
     def _get_adapted_content(self, user, text):
         """Return the appropriate text to the user"""
 
         soup = BeautifulSoup(text)
         corrections = soup.find_all("span", id='correction')
-        if user is self.author:
-            for correction in corrections:
+        # if user is self.author:
+        #     for correction in corrections:
+        #         self._adapt_correction(correction, True)
+        # else:    
+        for correction in corrections:
+            correction_data = self.corrections[correction["data-item"]]
+            voters_favour = any((get_obj(v) is user
+                                for v in correction_data['favour']))
+            if voters_favour:
                 self._adapt_correction(correction, True)
-        else:    
-            for correction in corrections:
-                correction_data = self.corrections[correction["data-item"]]
-                voters_favour =  any((get_obj(v) is user \
-                                     for v in correction_data['favour']))
-                if voters_favour:
-                    self._adapt_correction(correction, True)
-                    continue
+                continue
 
-                voters_against =  any((get_obj(v) is user \
-                                       for v in correction_data['against']))
-                if voters_against:
-                    self._adapt_correction(correction, False)
-       
-        registry = get_current_registry()
+            voters_against = any((get_obj(v) is user
+                                 for v in correction_data['against']))
+            if voters_against:
+                self._adapt_correction(correction, False)
+
         return html_diff_wrapper.soup_to_text(soup)
 
     def get_adapted_description(self, user):
