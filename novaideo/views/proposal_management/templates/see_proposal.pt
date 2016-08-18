@@ -48,8 +48,8 @@
                   <form class="deform edit-item-form">
                     <fieldset class="deform-form-fieldset">
                       <div title="" class="form-group  ">
-                        <label class="control-label required" >
-                          Title
+                        <label i18n:translate="" class="control-label required" >
+                          Text
                         </label>
                         <textarea id="${oid}"
                                 class='tinymce form-control'></textarea>
@@ -92,10 +92,10 @@
                         </script>
                       </div>
                       <div class="form-group">
-                          <button value="edit_item" class="btn btn-primary " name="edit_item" >
-                            Enregistrer
+                          <button i18n:translate="" value="edit_item" class="btn btn-primary " name="edit_item" >
+                            Save
                           </button>
-                          <button value="Cancel" class="btn btn-default " name="cancel">
+                          <button i18n:translate="" value="Cancel" class="btn btn-default " name="cancel">
                             Cancel
                           </button>
                       </div>
