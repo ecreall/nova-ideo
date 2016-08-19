@@ -10,9 +10,11 @@
     <tal:loop repeat="(i, item) enumerate(comments)">
       <li class="commentli ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
           data-association="${((comment.related_correlation is not None) and 'true') or 'false'}" 
-          tal:define="diff view._datetimedelta(item['context'].created_at); comment item['context'];
+          tal:define="diff view._datetimedelta(item['context'].created_at);
+                      comment item['context'];
                       picture getattr(comment.author, 'picture', None);
-                      id 'comment-'+str(getattr(comment, '__oid__', 'None'));
+                      oid getattr(comment, '__oid__', 'None');
+                      id 'comment-'+str(oid);
                       attached_files comment.files">
          <div id="${id}" class="thumbnail right-caption span4 comment-data">
             <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
@@ -21,12 +23,16 @@
               <div id="commentaction" class="pull-right">
                   <div tal:replace="structure item['menu_body']"/>
               </div>
-              <div class="comment-author" tal:define="diff_len  len(diff.keys())">
+              <div class="comment-author" tal:define="
+                diff_len  len(diff.keys());
+                is_unreaded_comment oid in unreaded_comments
+                ">
                 <a 
                   data-oid="${getattr(comment.author, '__oid__', '')}"
                   class="toggle-popover"
                   tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a>
-                <div title="${layout.to_localized_time(comment.created_at)}" class="comment-detail-container">
+                <div title="${layout.to_localized_time(comment.created_at)}" class="${is_unreaded_comment and 'unreaded-comment' or ''} comment-detail-container">
+                  <span tal:condition="is_unreaded_comment" class="unreaded-comment-tag" i18n:translate="">New comment</span>
                   <div  tal:omit-tag="" tal:condition="diff">
                     <span i18n:translate="">There is a</span>  
                     <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
@@ -175,7 +181,7 @@
             </div>
           </li>
          </ul>
-        <div tal:define="(body, r) view._rendre_comments(comment.comments, current_user)" tal:replace="structure body" />
+        <div tal:define="(body, r) view._rendre_comments(comment.comments, current_user, unreaded_comments=unreaded_comments)" tal:replace="structure body" />
       </li>
     </tal:loop>
       <li class="commentli comment-preview hide-bloc" tal:define="current_picture getattr(current_user, 'picture', None)">

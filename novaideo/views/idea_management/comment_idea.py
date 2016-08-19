@@ -50,7 +50,7 @@ class CommentsView(BasicView):
 
     def _rendre_comments(
         self, comments, current_user,
-        origin=False, batch=None):
+        origin=False, batch=None, unreaded_comments=[]):
         all_comments = []
         resources = {'css_links': [], 'js_links': []}
         for obj in comments:
@@ -72,6 +72,7 @@ class CommentsView(BasicView):
                               key=lambda e: e['context'].created_at)
         values = {
             'comments': all_comments,
+            'unreaded_comments': unreaded_comments,
             'current_user': current_user,
             'view': self,
             'origin': origin,
@@ -103,9 +104,14 @@ class CommentsView(BasicView):
                 getattr(self, 'comments', []),
                 key=lambda e: e.created_at, reverse=True)
 
+        unreaded_comments = []
         if channel:
+            now = datetime.datetime.now(tz=pytz.UTC)
+            unreaded_comments = channel.get_comments_between(
+                current_user.get_readed_date(channel),
+                now)
             current_user.set_readed_date(
-                channel, datetime.datetime.now(tz=pytz.UTC))
+                channel, now)
 
         url = self.request.resource_url(self.context, self.action_id)
         batch = Batch(objects,
@@ -115,7 +121,8 @@ class CommentsView(BasicView):
         batch.target = "#" + self.action_id + "_results"
         batch.origin_url = url
         body, resources = self._rendre_comments(
-            batch, current_user, True, batch)
+            batch, current_user, True, batch,
+            unreaded_comments)
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         result.update(resources)

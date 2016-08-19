@@ -918,4 +918,9 @@ $(function () {
     $($(this).parents('form').first().find('.deform-seq-item:not(.uploaded)').find('.deform-close-button')).click();
 
   })
+
+  $(document).on('click', 'a.channel-action', function(){
+    $($(this).parents('div.channel-action').first().find('.ureaded-comments-len')).remove()
+  });
+
 });
