@@ -6,6 +6,7 @@
                  profil_picture getattr(picture, 'profil', picture)">
 	<div style="top: 50%;" class="arrow">
 	</div>
+  <a class="popover-title-link" href="${request.resource_url(object, '@@index')}">
     <h4 class="popover-title view-item-title">
     	<img class="img-circle" tal:condition="profil_picture is not None"
                tal:attributes="src profil_picture.url"  width="25"/>
@@ -17,6 +18,7 @@
             ${object.function}
           </small>
     </h4>
+  </a>
     <div class="popover-content">
       <div>${object.presentation_text(200)}</div>
       <div class="popover-footer">

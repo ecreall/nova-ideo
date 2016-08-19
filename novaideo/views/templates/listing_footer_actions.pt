@@ -25,7 +25,8 @@
                 data-view_title="${item['view_title']}"
                 data-body="${item['body']}"
                 data-icon="${icon}"
-                data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
+                data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" 
+                title="${item['action'].title}">
                  <span class="footer-icon ${icon}" ></span> 
                  <span class="hidden-xs">${item['action'].get_title(obj, request)}</span>
                </a>

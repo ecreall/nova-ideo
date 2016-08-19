@@ -351,6 +351,7 @@ function open_add_idea_form(){
   if($('.modal-home-add-idea').length == 0){
     $(document.body).append('<div class="modal-backdrop fade in modal-home-add-idea"></div>')
   }
+  $(".home-add-idea").css("position","relative");
   $(".home-add-idea .form-group:not(.idea-text),"+
      ".home-add-idea .form-group label,"+
      ".home-add-idea .form-group.idea-text #desc").slideDown();
@@ -358,6 +359,7 @@ function open_add_idea_form(){
 }
 
 function close_add_idea_form(){
+  $(".home-add-idea").css("position","inherit");
   $('.modal-home-add-idea').remove()
    $(".home-add-idea .form-group:not(.idea-text),"+
      ".home-add-idea .form-group label,"+
@@ -852,6 +854,10 @@ $(function () {
         $('.comme-popover').remove()
     });
 
+  $(document).on('click', 'a.popover-title-link', function(event){
+      event.stopPropagation()
+      window.location.replace($(this).attr('href'))
+  })
 
   $('.btn-sub-menu-container').hover(function(){
     var $this = $(this)
