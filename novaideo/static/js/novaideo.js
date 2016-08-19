@@ -348,13 +348,17 @@ function rebuild_scrolls(scrolls){
 
 
 function open_add_idea_form(){
-$(".home-add-idea .form-group:not(.idea-text),"+
+  if($('.modal-home-add-idea').length == 0){
+    $(document.body).append('<div class="modal-backdrop fade in modal-home-add-idea"></div>')
+  }
+  $(".home-add-idea .form-group:not(.idea-text),"+
      ".home-add-idea .form-group label,"+
      ".home-add-idea .form-group.idea-text #desc").slideDown();
     $(".home-add-idea").addClass('opened').removeClass('closed')
 }
 
 function close_add_idea_form(){
+  $('.modal-home-add-idea').remove()
    $(".home-add-idea .form-group:not(.idea-text),"+
      ".home-add-idea .form-group label,"+
      ".home-add-idea .form-group.idea-text #desc").slideUp();
