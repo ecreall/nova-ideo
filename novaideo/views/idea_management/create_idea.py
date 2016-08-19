@@ -98,6 +98,7 @@ class CreateIdeaView_Json(BasicView):
                        'current_user': user,
                        'menu_body': navbars['menu_body'],
                        'footer_body': navbars['footer_body'],
+                       'footer_actions_body': navbars['footer_actions_body'],
                        'wg_body': navbars['wg_body'],
                        'state': get_states_mapping(user, obj,
                                getattr(obj, 'state_or_none', [None])[0])}

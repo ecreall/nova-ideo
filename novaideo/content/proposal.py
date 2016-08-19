@@ -116,7 +116,8 @@ class AddFilesSchemaSchema(Schema):
             widget=get_file_widget()
             ),
         widget=SequenceWidget(
-            add_subitem_text_template=_('Upload a new file')),
+            add_subitem_text_template=_('Upload a new file'),
+            item_css_class='files-block'),
         missing=[],
         title=_('Upload new files'),
         )

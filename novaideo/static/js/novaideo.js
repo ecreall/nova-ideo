@@ -896,4 +896,16 @@ $(function () {
 
     });
 
+  $(document).on('click', '.files-block .deform-seq-add', function(){
+    $($(this).parents('.files-block').first().find('input[type="file"]').last()).click()
+  })
+
+  $(document).on('change', '.files-block input[type="file"]', function(){
+    $($(this).parents('.deform-seq-item').first()).addClass('uploaded')
+   })
+
+  $(document).on('click', 'form button[type="submit"]', function(){
+    $($(this).parents('form').first().find('.deform-seq-item:not(.uploaded)').find('.deform-close-button')).click();
+
+  })
 });

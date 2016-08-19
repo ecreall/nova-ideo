@@ -91,7 +91,8 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             widget=get_file_widget()
             ),
         widget=SequenceWidget(
-            add_subitem_text_template=''),
+            add_subitem_text_template='',
+            item_css_class='files-block'),
         missing=[],
         title=_('Attached files'),
         )

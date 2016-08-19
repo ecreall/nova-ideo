@@ -45,7 +45,8 @@ class WorkspaceSchema(VisualisableElementSchema):
             widget=get_file_widget()
             ),
         widget=SequenceWidget(
-            add_subitem_text_template=_('Add file')),
+            add_subitem_text_template=_('Add file'),
+            item_css_class='files-block'),
         missing=[],
         title=_('Attached files'),
         )

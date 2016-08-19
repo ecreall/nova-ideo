@@ -132,7 +132,7 @@ class CommentSchema(VisualisableElementSchema):
             ),
         widget=SequenceWidget(
             add_subitem_text_template='',
-            item_css_class="comment-form-group comment-files"),
+            item_css_class="files-block comment-form-group comment-files"),
         missing=[],
         description=_('Add files to your comment'),
         title=_('Attached files'),
