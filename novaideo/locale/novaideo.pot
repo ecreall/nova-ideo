@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-08-19 15:53+0200\n"
+"POT-Creation-Date: 2016-08-20 10:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4272,16 +4272,16 @@ msgid "My contents"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:27
-msgid "You have no alert"
+msgid "You have no new alert"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:28
-msgid "You have an alert"
+msgid "You have an new alert"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:29
 #, python-format
-msgid "You have ${nember} alerts"
+msgid "You have ${nember} new alerts"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_my_participations.py:24

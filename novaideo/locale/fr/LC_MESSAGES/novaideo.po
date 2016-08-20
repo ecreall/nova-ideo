@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-08-19 15:53+0200\n"
+"POT-Creation-Date: 2016-08-20 10:57+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -4295,18 +4295,18 @@ msgid "My contents"
 msgstr "Mes contenus"
 
 #: novaideo/views/novaideo_view_manager/see_alerts.py:27
-msgid "You have no alert"
-msgstr "Vous n'avez pas d'alerte"
+msgid "You have no new alert"
+msgstr "Vous n'avez pas de nouvelle alerte"
 
 #: novaideo/views/novaideo_view_manager/see_alerts.py:28
-msgid "You have an alert"
-msgstr "Vous avez une alerte"
+msgid "You have an new alert"
+msgstr "Vous avez une nouvelle alerte"
 
 # python-format
 #: novaideo/views/novaideo_view_manager/see_alerts.py:29
 #, python-format
-msgid "You have ${nember} alerts"
-msgstr "Vous avez ${nember} alertes"
+msgid "You have ${nember} new alerts"
+msgstr "Vous avez ${nember} nouvelles alertes"
 
 #: novaideo/views/novaideo_view_manager/see_my_participations.py:24
 msgid "Aucune participations"
