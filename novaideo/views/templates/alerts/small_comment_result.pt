@@ -23,7 +23,7 @@
 		  <div 
 		     tal:condition="is_respons"
 		  	 tal:define="subject object.subjects[0];
-		  	             icon 'glyphicon glyphicon-share-alt'">
+		  	             icon 'glyphicon glyphicon-comment'">
 		    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
 		    <span>${author or 'Une personne'} a répondu à votre commentaire concernant la contribution <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 		  </div>
@@ -41,7 +41,7 @@
 		  <div 
 		     tal:condition="is_respons"
 		  	 tal:define="subject object.subjects[0];
-		  	             icon 'glyphicon glyphicon-share-alt'">
+		  	             icon 'glyphicon glyphicon-comment'">
 		    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
 		    <span><a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a répondu à votre message.</span>
 		  </div>

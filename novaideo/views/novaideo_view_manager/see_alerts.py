@@ -24,9 +24,9 @@ from novaideo import _
 BATCH_DEFAULT_SIZE = 30
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""You have no alert"""),
-    '1': _(u"""You have an alert"""),
-    '*': _(u"""You have ${nember} alerts""")
+    '0': _(u"""You have no new alert"""),
+    '1': _(u"""You have an new alert"""),
+    '*': _(u"""You have ${nember} new alerts""")
     }
 
 

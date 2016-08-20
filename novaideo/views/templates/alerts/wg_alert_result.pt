@@ -1,7 +1,7 @@
 <div class="thumbnail right-caption span4 search-item result-item" 
      i18n:domain="novaideo"
      tal:condition="object.subjects"
-     tal:define="icon 'md md-group';
+     tal:define="icon 'novaideo-icon icon-wg';
                  alert_kind getattr(object, 'alert_kind', '')">
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>

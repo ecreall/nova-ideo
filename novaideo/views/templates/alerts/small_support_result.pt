@@ -1,12 +1,11 @@
 <div i18n:domain="novaideo"
      tal:condition="object.subjects"
-     tal:define="icon 'glyphicon glyphicon-hand-down';
-                 support_kind getattr(object, 'support_kind', '')">
+     tal:define="support_kind getattr(object, 'support_kind', '')">
   <div tal:define="subject object.subjects[0]">
     <h4>
-    	<span tal:condition="support_kind == 'support'" class="icon glyphicon glyphicon-thumbs-up"></span> 
-    	<span tal:condition="support_kind == 'oppose'" class="icon glyphicon glyphicon-thumbs-down"></span> 
-    	<span tal:condition="support_kind == 'withdraw'" class="icon glyphicon glyphicon-hand-up"></span> 
+    	<span tal:condition="support_kind == 'support'" class="alert-token token octicon octicon-triangle-up"></span> 
+      <span tal:condition="support_kind == 'oppose'" class="alert-token token octicon octicon-triangle-down"></span> 
+      <span tal:condition="support_kind == 'withdraw'" class="alert-token token glyphicon glyphicon-remove"></span>  
         <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)
     </h4>
     <span>
