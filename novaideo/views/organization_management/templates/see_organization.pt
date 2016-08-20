@@ -1,27 +1,38 @@
 <div tal:replace="structure navbar_body"/>
 <div class="media user-media"  i18n:domain="novaideo">
-  <div class="media-left">
-    <img class="img-thumbnail" tal:condition="object.logo" tal:attributes="src object.logo.url"  width="150"/>
-  </div>
   <div class="media-body">
+    <img class="pull-right" tal:condition="object.logo" tal:attributes="src object.logo.url"  width="100"/>
     <h3 class="media-heading">
       <strong>
-          <span class="${getattr(object, 'icon', '')}" ></span> ${object.title}
+          <span class="${getattr(object, 'icon', '')}" ></span> ${object.title} 
+          <small class="organization-member-len" i18n:translate="">${members_len}</small>
       </strong>
     </h3>
-    <p class="text-muted" tal:condition="object.description">
-             <small  >${object.description}</small>
-    </p>
-    <dl tal:define="managers object.managers">
-      <dt tal:condition="managers and len(managers)>1"  i18n:translate="">Managers</dt>
-      <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
-      <dd tal:condition="managers">
-        <tal:loop repeat="member managers">
-          <a tal:attributes="href request.resource_url(member, '@@index')">${member.title}</a>
-            <tal:separator condition="not: repeat['member'].end">, </tal:separator> 
-        </tal:loop>
-      </dd>
-    </dl>
+    <div style="margin-left: 30px;">
+      <p class="text-muted" tal:condition="object.description">
+               <small  >${object.description}</small>
+      </p>
+      <dl tal:define="managers object.managers">
+        <dt tal:condition="managers and len(managers)>1"  i18n:translate="">Managers</dt>
+        <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
+        <dd tal:condition="managers">
+          <div class="working-group-section">
+              <tal:loop repeat="m managers">
+                <a tal:attributes="href request.resource_url(m, '@@index')"
+                  data-oid="${getattr(m, '__oid__', '')}"
+                  class="toggle-popover"
+                  tal:define="picture getattr(m, 'picture', None);
+                              profil_picture getattr(picture, 'profil', None)">
+                  <img class="author-img img-circle" 
+                    tal:condition="profil_picture is not None"
+                     tal:attributes="src profil_picture.url"  width="25"/>
+                  <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+                  ${getattr(m, 'title', m.name)}</a>
+             </tal:loop>
+            </div>
+        </dd>
+      </dl>
+    </div>
     <div tal:repeat="contact getattr(object, 'contacts', [])">
         <blockquote >
              <h4><span class="md md-headset-mic"></span> ${contact.get('title', '')}</h4>
@@ -36,17 +47,11 @@
               <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
              <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</small>
         </blockquote>
-  </div>
-    <dl>
-      <dt tal:condition="object.members"  i18n:translate="">Members</dt>
-      <dd tal:condition="object.members">
-        <tal:loop repeat="member object.members">
-          <a tal:attributes="href request.resource_url(member, '@@index')">${member.title}</a>
-            <tal:separator condition="not: repeat['member'].end">, </tal:separator> 
-        </tal:loop>
-      </dd>
-    </dl>
-
+    </div>
+    <h4 tal:condition="object.members"><span class="ion-person-stalker"></span> <span i18n:translate="">Members</span></h4>
+    <div tal:condition="object.members">
+      ${structure:members_body}
+    </div>
   </div>
 </div>
 <div tal:replace="structure footer_body"/>

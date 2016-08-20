@@ -7,9 +7,9 @@
     <div class="object-title-block" >
       <a tal:attributes="href url">
         <h4>
-          <img class="img-circle" tal:condition="picture"
-               tal:attributes="src picture.url"  width="50"/>
-          <span tal:condition="not picture" class="icon ${icon}"></span> ${object.title}
+          <img class="pull-right" tal:condition="picture"
+               tal:attributes="src picture.url"  width="65"/>
+          <span class="icon ${icon}"></span> ${object.title}
         </h4>
       </a>
     </div>
@@ -27,7 +27,9 @@
           <tal:loop repeat="m managers">
             <a tal:attributes="href request.resource_url(m, '@@index')"
               tal:define="picture getattr(m, 'picture', None);
-                          profil_picture getattr(picture, 'profil', None)">
+                          profil_picture getattr(picture, 'profil', None)"
+              data-oid="${getattr(m, '__oid__', '')}"
+              class="toggle-popover">
               <img class="author-img img-circle" 
                 tal:condition="profil_picture is not None"
                  tal:attributes="src profil_picture.url"  width="25"/>
