@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-08-20 10:57+0200\n"
+"POT-Creation-Date: 2016-08-20 13:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,8 +100,8 @@ msgid "Phone"
 msgstr ""
 
 #: ./novaideo/core_schema.py:76
-#: ./novaideo/views/templates/organization_result.pt:52
-#: ./novaideo/views/organization_management/templates/see_organization.pt:36
+#: ./novaideo/views/templates/organization_result.pt:54
+#: ./novaideo/views/organization_management/templates/see_organization.pt:47
 msgid "Surtax"
 msgstr ""
 
@@ -1274,7 +1274,7 @@ msgstr ""
 
 #: ./novaideo/views/invitation_management/templates/see_invitation.pt:8
 #: ./novaideo/views/invitation_management/templates/see_invitations.pt:9
-#: ./novaideo/views/templates/person_result.pt:32
+#: ./novaideo/views/templates/person_result.pt:31
 #: ./novaideo/content/person.py:257
 msgid "Organization"
 msgstr ""
@@ -1623,7 +1623,7 @@ msgstr ""
 
 #: ./novaideo/views/user_management/templates/see_person.pt:43
 #: ./novaideo/views/templates/small_person_result.pt:18
-#: ./novaideo/views/templates/person_result.pt:21
+#: ./novaideo/views/templates/person_result.pt:22
 msgid "Member since"
 msgstr ""
 
@@ -1920,6 +1920,7 @@ msgid "One member"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/see_members.py:31
+#: ./novaideo/views/organization_management/see_organization.py:31
 #, python-format
 msgid "${nember} members"
 msgstr ""
@@ -1927,7 +1928,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/see_members.py:41
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:6
 #: ./novaideo/views/novaideo_view_manager/see_users.py:46
-#: ./novaideo/views/organization_management/templates/see_organization.pt:41
+#: ./novaideo/views/organization_management/templates/see_organization.pt:51
 #: ./novaideo/content/organization.py:133
 #: ./novaideo/content/processes/proposal_management/definition.py:356
 #: ./novaideo/content/processes/proposal_management/definition.py:357
@@ -1941,6 +1942,7 @@ msgid "See members"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/see_members.py:69
+#: ./novaideo/views/organization_management/see_organization.py:38
 msgid "No members"
 msgstr ""
 
@@ -2426,7 +2428,7 @@ msgstr ""
 msgid "There was a problem with your submission"
 msgstr ""
 
-#: ./novaideo/views/templates/person_result.pt:38
+#: ./novaideo/views/templates/person_result.pt:35
 #: ./novaideo/content/person.py:197
 msgid "Preferences"
 msgstr ""
@@ -4276,7 +4278,7 @@ msgid "You have no new alert"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:28
-msgid "You have an new alert"
+msgid "You have a new alert"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:29
@@ -4393,6 +4395,14 @@ msgstr ""
 
 #: ./novaideo/views/correlation_management/templates/see_correlation.pt:16
 msgid "Associated by"
+msgstr ""
+
+#: ./novaideo/views/organization_management/see_organization.py:29
+msgid "no member"
+msgstr ""
+
+#: ./novaideo/views/organization_management/see_organization.py:30
+msgid "one member"
 msgstr ""
 
 #: ./novaideo/views/organization_management/edit_organization.py:27
