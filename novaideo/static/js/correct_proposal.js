@@ -32,9 +32,7 @@ function edit_item(form){
       if (content){
            $(target).html($(content).html());
            var corrections = $(target).find('.correction-action');
-           if (corrections.length>0){
-               corrections.on('click', correct_handler)
-           }else{
+           if (corrections.length==0){
                location.reload();
            }
       }else{
@@ -65,9 +63,7 @@ function correct_handler(event){
         if (content){
              $(target).html($(content).html());
              var corrections = $(target).find('.correction-action');
-             if (corrections.length>0){
-                 corrections.on('click', correct_handler)
-             }else{
+             if (corrections.length==0){
                  location.reload();
              }
         }else{
@@ -134,9 +130,9 @@ function init_correction_navbar(){
 
 
 $(document).ready(function(){
-  $('.correction-action:not(.edit-item-action)').on('click', correct_handler);
-  $('.edit-item-action').on('click', show_edit_item_form);
-  $('.edit-item-modal-container button').on('click', function(){
+  $(document).on('click', '.correction-action:not(.edit-item-action)', correct_handler);
+  $(document).on('click', '.edit-item-action', show_edit_item_form);
+  $(document).on('click', '.edit-item-modal-container button', function(){
        $(this).addClass('active')
   });
   $(document).on('submit','.edit-item-form', function( event ) {
