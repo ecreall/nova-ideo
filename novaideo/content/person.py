@@ -17,10 +17,8 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer, get_oid
 from substanced.principal import UserSchema
-from substanced.interfaces import IUserLocator
-from substanced.principal import DefaultUserLocator
 
-from dace.util import getSite
+from dace.util import getSite, find_catalog
 from dace.objectofcollaboration.entity import Entity
 from dace.objectofcollaboration.principal import User
 from dace.descriptors import (
@@ -47,7 +45,8 @@ from novaideo.core import (
 from .interface import IPerson, IPreregistration
 from novaideo import _
 from novaideo.file import Image
-from novaideo.views.widget import TOUCheckboxWidget, LimitedTextAreaWidget
+from novaideo.views.widget import (
+    TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
 
 
 DEADLINE_PREREGISTRATION = 86400*2  # 2 days
@@ -80,25 +79,14 @@ def titles_choice(node, kw):
 @colander.deferred
 def email_validator(node, kw):
     context = node.bindings['context']
-    request = node.bindings['request']
-    root = getSite()
-    adapter = request.registry.queryMultiAdapter(
-        (context, request),
-        IUserLocator
-        )
-    if adapter is None:
-        adapter = DefaultUserLocator(context, request)
-    user = adapter.get_user_by_email(kw)
-    if user is context:
-        user = None
+    novaideo_catalog = find_catalog('novaideo')
+    identifier_index = novaideo_catalog['identifier']
+    query = identifier_index.any([kw])
+    users = list(query.execute().all())
+    if context in users:
+        users.remove(context)
 
-    invitation = None
-    for invit in root.invitations:
-        if invit.email == kw and not (context is invit):
-            invitation = invit
-            break
-
-    if user is not None or invitation is not None:
+    if users:
         raise colander.Invalid(node,
                 _('${email} email address already in use',
                   mapping={'email': kw}))

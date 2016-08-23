@@ -9,10 +9,10 @@ import deform
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
-from substanced.interfaces import IUserLocator, IPasswordReset
-from substanced.principal import DefaultUserLocator
+from substanced.interfaces import IPasswordReset
 from substanced.util import find_service
 
+from dace.util import find_catalog
 from dace.processinstance.core import Behavior
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
@@ -20,6 +20,7 @@ from pontus.view import BasicView
 from pontus.schema import Schema
 from pontus.default_behavior import Cancel as DefaultCancel
 
+from novaideo.content.interface import IPerson
 from novaideo import _
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.novaideo_application import NovaIdeoApplication
@@ -40,14 +41,14 @@ class Send(Behavior):
 
     def start(self, context, request, appstruct, **kw):
         login = appstruct['email']
-        adapter = request.registry.queryMultiAdapter(
-                    (context, request),
-                    IUserLocator
-                    )
-        if adapter is None:
-            adapter = DefaultUserLocator(context, request)
-
-        user = adapter.get_user_by_email(login)
+        dace_catalog = find_catalog('dace')
+        novaideo_catalog = find_catalog('novaideo')
+        identifier_index = novaideo_catalog['identifier']
+        object_provides_index = dace_catalog['object_provides']
+        query = object_provides_index.any([IPerson.__identifier__]) &\
+                identifier_index.any([login])
+        users = list(query.execute().all())
+        user = users[0] if users else None
         if user is not None:
             principals = find_service(user, 'principals')
             reset = principals.add_reset(user)
@@ -57,10 +58,12 @@ class Send(Behavior):
 
             root = request.root
             mail_template = root.get_mail_template('reset_password')
-            subject = mail_template['subject'].format(novaideo_title=request.root.title)
+            subject = mail_template['subject'].format(
+                novaideo_title=request.root.title)
             localizer = request.localizer
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(_(getattr(user, 'user_title', ''))),
+                recipient_title=localizer.translate(
+                    _(getattr(user, 'user_title', ''))),
                 recipient_first_name=getattr(user, 'first_name', user.name),
                 recipient_last_name=getattr(user, 'last_name', ''),
                 reseturl=reseturl,
@@ -77,18 +80,15 @@ class Send(Behavior):
 
 @colander.deferred
 def login_validator(node, kw):
-    context = kw['context']
-    request = kw['request']
-
     def _login_validator(node, value):
-        adapter = request.registry.queryMultiAdapter(
-                    (context, request),
-                    IUserLocator
-                    )
-        if adapter is None:
-            adapter = DefaultUserLocator(context, request)
-
-        user = adapter.get_user_by_email(value)
+        dace_catalog = find_catalog('dace')
+        novaideo_catalog = find_catalog('novaideo')
+        identifier_index = novaideo_catalog['identifier']
+        object_provides_index = dace_catalog['object_provides']
+        query = object_provides_index.any([IPerson.__identifier__]) &\
+                identifier_index.any([value])
+        users = list(query.execute().all())
+        user = users[0] if users else None
         if user is None:
             raise colander.Invalid(node, _('No such user ${member}',
                                             mapping={'member': value}))

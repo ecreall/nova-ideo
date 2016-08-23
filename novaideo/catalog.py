@@ -26,7 +26,9 @@ from novaideo.content.interface import (
     IPerson,
     IProposal,
     Iidea,
-    IComment)
+    IComment,
+    IPreregistration,
+    IInvitation)
 from novaideo.dateindex import DateRecurring
 
 
@@ -100,11 +102,14 @@ class ISearchableObject(Interface):
 
     def related_contents():
         pass
-    
+
     def has_related_contents():
         pass
 
     def has_file():
+        pass
+
+    def identifier():
         pass
 
 
@@ -415,6 +420,19 @@ class NovaideoCatalogViews(object):
 
         return has_file
 
+    @indexview()
+    def identifier(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        identifier = adapter.identifier()
+        if identifier is None:
+            return default
+
+        return identifier
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -446,6 +464,7 @@ class NovaideoIndexes(object):
         lexicon=Lexicon(Splitter(), CaseNormalizer(), StopWordRemover()))
     has_related_contents = Field()
     has_file = Field()
+    identifier = Keyword()
 
 
 @adapter(context=IEntity)
@@ -574,10 +593,13 @@ class SearchableObject(Adapter):
     def has_file(self):
         return False
 
+    def identifier(self):
+        return []
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
-class ArtistSearch(SearchableObject):
+class PersonSearch(SearchableObject):
 
     def favorites(self):
         selections = getattr(self.context, 'selections', [])
@@ -585,6 +607,29 @@ class ArtistSearch(SearchableObject):
 
     def last_connection(self):
         return getattr(self.context, 'last_connection', None)
+
+    def identifier(self):
+        identifiers = [getattr(self.context, 'identifier', None),
+                       getattr(self.context, 'email', None)]
+        return [i for i in identifiers if i]
+
+
+@adapter(context=IPreregistration)
+@implementer(ISearchableObject)
+class PreregistrationSearch(SearchableObject):
+
+    def identifier(self):
+        identifiers = [getattr(self.context, 'identifier', None),
+                       getattr(self.context, 'email', None)]
+        return [i for i in identifiers if i]
+
+
+@adapter(context=IInvitation)
+@implementer(ISearchableObject)
+class InvitationSearch(SearchableObject):
+
+    def identifier(self):
+        return [getattr(self.context, 'email', None)]
 
 
 @adapter(context=IProposal)

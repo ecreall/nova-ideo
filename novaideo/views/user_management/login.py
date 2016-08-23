@@ -17,15 +17,14 @@ from pyramid.session import check_csrf_token
 from pyramid.security import remember
 
 from substanced.util import get_oid
-
-from substanced.interfaces import IUserLocator
-from substanced.principal import DefaultUserLocator
 from substanced.event import LoggedIn
 
+from dace.util import find_catalog
 from dace.objectofcollaboration.principal.util import has_role
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView, ViewError
 
+from novaideo.content.interface import IPerson
 from novaideo import _
 from novaideo.content.processes.user_management.behaviors import LogIn
 from novaideo.content.novaideo_application import NovaIdeoApplication
@@ -80,13 +79,14 @@ class LoginView(BasicView):
                 self.execute(None)
                 login = request.params['email']
                 password = request.params['password']
-                adapter = request.registry.queryMultiAdapter(
-                    (context, request),
-                    IUserLocator
-                    )
-                if adapter is None:
-                    adapter = DefaultUserLocator(context, request)
-                user = adapter.get_user_by_email(login)
+                novaideo_catalog = find_catalog('novaideo')
+                dace_catalog = find_catalog('dace')
+                identifier_index = novaideo_catalog['identifier']
+                object_provides_index = dace_catalog['object_provides']
+                query = object_provides_index.any([IPerson.__identifier__]) &\
+                        identifier_index.any([login])
+                users = list(query.execute().all())
+                user = users[0] if users else None
                 valid_check = user and user.check_password(password)
                 if valid_check and \
                    (has_role(user=user, role=('Admin', )) or \

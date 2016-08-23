@@ -13,8 +13,6 @@ from zope.interface import implementer
 from pyramid.threadlocal import get_current_request
 
 from substanced.util import get_oid
-from substanced.interfaces import IUserLocator
-from substanced.principal import DefaultUserLocator
 from substanced.util import renamer
 from substanced.content import content
 
@@ -26,7 +24,7 @@ from dace.descriptors import (
     CompositeUniqueProperty,
     SharedMultipleProperty,
     CompositeMultipleProperty)
-from dace.util import getSite, get_obj
+from dace.util import getSite, get_obj, find_catalog
 from pontus.schema import Schema
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
@@ -44,7 +42,8 @@ from novaideo.content.interface import (
     IPresentableEntity,
     IFile,
     INode,
-    IEmojiable)
+    IEmojiable,
+    IPerson)
 
 
 BATCH_DEFAULT_SIZE = 8
@@ -443,17 +442,16 @@ class PresentableEntity(Entity):
     def persons_contacted(self):
         """ Return all contacted persons"""
 
-        request = get_current_request()
-        adapter = request.registry.queryMultiAdapter(
-                (self, request),
-                IUserLocator
-                )
-        if adapter is None:
-            adapter = DefaultUserLocator(self, request)
-
+        dace_catalog = find_catalog('dace')
+        novaideo_catalog = find_catalog('novaideo')
+        identifier_index = novaideo_catalog['identifier']
+        object_provides_index = dace_catalog['object_provides']
         result = []
         for email in self._email_persons_contacted:
-            user = adapter.get_user_by_email(email)
+            query = object_provides_index.any([IPerson.__identifier__]) &\
+                    identifier_index.any([email])
+            users = list(query.execute().all())
+            user = users[0] if users else None
             if user is not None:
                 result.append(user)
             else:
