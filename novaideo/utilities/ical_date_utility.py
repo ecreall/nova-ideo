@@ -176,7 +176,7 @@ def occurences_start(obj, propertyname, from_=None, until=None,
                      hours=None, minutes=None):
     oid = get_oid(obj, None)
     if oid is not None:
-        index = find_catalog('creationculturelle')[
+        index = find_catalog('novaideo')[
             dates_mapping.get(
                 propertyname + '_start_date',
                 propertyname + '_start_date')]

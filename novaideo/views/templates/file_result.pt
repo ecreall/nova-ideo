@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="creationculturelle"
+<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="novaideo"
   tal:define="icon getattr(object, 'icon', '');
    url request.resource_url(object, '@@index')">
   <div class="media-body media-file">
