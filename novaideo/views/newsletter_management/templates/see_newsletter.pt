@@ -1,9 +1,12 @@
 <div tal:replace="structure navbar_body"/>
 <div class="right-caption span4"  i18n:domain="novaideo">
-  <div class="caption" tal:define="recurrence getattr(object, 'recurrence', False);
-  sending_date getattr(object, 'sending_date', None);
-  last_sending_date getattr(object, 'last_sending_date', None)">
-    <div tal:condition="not object.validate_content()" class="alert alert-danger">
+  <div class="caption" tal:define="
+    recurrence getattr(object, 'recurrence', False);
+    sending_date getattr(object, 'sending_date', None);
+    last_sending_date getattr(object, 'last_sending_date', None);
+    validate_content object.validate_content();
+    content getattr(object, 'content', '')">
+    <div tal:condition="not validate_content and content" class="alert alert-danger">
       Selon la configuration de la newsletter, la désinscription des abonnées n'est pas autorisée. Afin de garder la cohérence du contenu et pour pouvoir envoyer la newsletter, il faut supprimer la variable "unsubscribeurl" du contenu de la newsletter.
     </div>
     <h3 class="content-title"><span class="${object.icon}"></span> ${object.title} 
@@ -18,7 +21,7 @@
 		</small>
 	</div>
 
-  <dl class="dl-horizontal well well-sm">
+  <dl tal:condition="recurrence or last_sending_date or sending_date" class="dl-horizontal well well-sm">
     <dt tal:condition="recurrence">
       <span class="glyphicon glyphicon-repeat"></span> 
       <span i18n:translate="">Recurrence</span>
@@ -48,8 +51,8 @@
     </dd>
     </dl>
 
-    <div tal:condition="getattr(object, 'content', '')">
-      <div>${structure:object.content}</div>
+    <div tal:condition="content">
+      <div>${structure:content}</div>
     </div>
   </div>
   <div tal:replace="structure footer_body"/>
