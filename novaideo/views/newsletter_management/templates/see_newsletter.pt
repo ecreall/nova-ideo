@@ -1,0 +1,56 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="novaideo">
+  <div class="caption" tal:define="recurrence getattr(object, 'recurrence', False);
+  sending_date getattr(object, 'sending_date', None);
+  last_sending_date getattr(object, 'last_sending_date', None)">
+    <div tal:condition="not object.validate_content()" class="alert alert-danger">
+      Selon la configuration de la newsletter, la désinscription des abonnées n'est pas autorisée. Afin de garder la cohérence du contenu et pour pouvoir envoyer la newsletter, il faut supprimer la variable "unsubscribeurl" du contenu de la newsletter.
+    </div>
+    <h3 class="content-title"><span class="${object.icon}"></span> ${object.title} 
+      <small style="color:gray" tal:condition="len_subscribed">(${len_subscribed} 
+        <span tal:condition="len_subscribed > 1" i18n:translate="">registrations</span>
+        <span tal:condition="len_subscribed == 1" i18n:translate="">registration</span>)
+      </small>
+    </h3>
+	<div class="object-description">
+		<small>
+			${structure:getattr(object, 'description', '')}
+		</small>
+	</div>
+
+  <dl class="dl-horizontal well well-sm">
+    <dt tal:condition="recurrence">
+      <span class="glyphicon glyphicon-repeat"></span> 
+      <span i18n:translate="">Recurrence</span>
+    </dt>
+    <dd class="nl-sinding" tal:condition="recurrence" i18n:translate="">
+      <span>
+        <span i18n:translate="">Every</span> ${object.recurrence_nb} <span i18n:translate="">days</span>
+      </span>
+    </dd>
+    <dt tal:condition="last_sending_date">
+      <span class="glyphicon glyphicon-send"></span> 
+      <span i18n:translate="">Last sending</span>
+    </dt>
+    <dd  class="nl-last-sinding" tal:condition="last_sending_date" i18n:translate="">
+      <span>
+        <span tal:replace="layout.to_localized_time(last_sending_date)"/>
+      </span>
+    </dd>
+    <dt  tal:condition="sending_date">
+      <span class="glyphicon glyphicon-calendar"></span> 
+      <span i18n:translate="">Next sending</span>
+    </dt>
+    <dd class="nl-sinding"  tal:condition="sending_date" i18n:translate="">
+      <span>
+       <span tal:replace="layout.to_localized_time(sending_date)"/>
+      </span>
+    </dd>
+    </dl>
+
+    <div tal:condition="getattr(object, 'content', '')">
+      <div>${structure:object.content}</div>
+    </div>
+  </div>
+  <div tal:replace="structure footer_body"/>
+</div>

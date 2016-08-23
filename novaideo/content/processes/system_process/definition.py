@@ -25,14 +25,13 @@ from pontus.core import VisualisableElement
 from .behaviors import (
     SendNewsLetter,
     DeactivateUsers,
-    INACTIVITY_DURATION,
-    NEWSLETTER_DURATION
+    INACTIVITY_DURATION
     )
 from novaideo import _
 
 
 def calculate_next_date_newsletter(process):
-    next_date = datetime.timedelta(days=NEWSLETTER_DURATION) + \
+    next_date = datetime.timedelta(days=1) + \
         datetime.datetime.now(tz=pytz.UTC)
     return datetime.datetime.combine(
         next_date,

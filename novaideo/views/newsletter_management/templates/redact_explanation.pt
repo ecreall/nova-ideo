@@ -1,0 +1,18 @@
+<div class="alert alert-info">
+   <p>
+     Le système de rédaction se base sur les variables pour permettre l'adaptation du message à envoyer aux abonnées de la newsletter. Les variables sont:
+   </p>
+   <ul>
+   	<li><strong>{first_name}:</strong> Le prénom de l'abonné,</li>
+   	<li><strong>{last_name}:</strong> Le nom de l'abonné</li>
+   	<li><strong>{application_title}:</strong> Le titre de l'application,</li>
+   	<li><strong>{application_url}:</strong> L'url de l'application,</li>
+   	<li><strong>{logo}:</strong> L'url du logo de l'application,</li>
+   	<li><strong>{newsletter_title}:</strong> Le titre de la newsletter,</li>
+   	<li><strong>{unsubscribeurl}:</strong> L'url de désabonnement de l'abonné,</li>
+   	<li><strong>{content}:</strong> Un contenu générer automatiquement selon les préférences des abonnés. Le texte générer contient les idées et propositions récemment publiées.</li>
+   </ul>
+   <p>
+     Vous pouvez utiliser ces variables pour le sujet ou le corps de votre newsletter. 
+   </p>
+</div>

@@ -1,0 +1,53 @@
+<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="novaideo"
+  tal:define="icon getattr(object, 'icon', '');
+   url request.resource_url(object, '@@index');
+   recurrence getattr(object, 'recurrence', False);
+  sending_date getattr(object, 'sending_date', None);
+  last_sending_date getattr(object, 'last_sending_date', None)"
+  >
+  <div class="media-body media-file">
+    <div class="object-menu pull-right">
+      <div tal:replace="structure menu_body"/>
+    </div>
+    <div class="object-title-block" >
+      <a tal:attributes="href url">
+        <h4>
+          <span class="icon ${icon}"></span>  ${object.title}
+        </h4>
+      </a>
+    </div>
+    <div class="object-text">
+      ${object.description}
+    </div>
+
+    <dl class="dl-horizontal">
+        <dt tal:condition="recurrence">
+          <span class="glyphicon glyphicon-repeat"></span> 
+          <span i18n:translate="">Recurrence</span>
+        </dt>
+        <dd class="nl-sinding" tal:condition="recurrence" i18n:translate="">
+          <span>
+            <span i18n:translate="">Every</span> ${object.recurrence_nb} <span i18n:translate="">days</span>
+          </span>
+        </dd>
+        <dt tal:condition="last_sending_date">
+          <span class="glyphicon glyphicon-send"></span> 
+          <span i18n:translate="">Last sending</span>
+        </dt>
+        <dd  class="nl-last-sinding" tal:condition="last_sending_date" i18n:translate="">
+          <span>
+            <span tal:replace="layout.to_localized_time(last_sending_date)"/>
+          </span>
+        </dd>
+        <dt  tal:condition="sending_date">
+          <span class="glyphicon glyphicon-calendar"></span> 
+          <span i18n:translate="">Next sending</span>
+        </dt>
+        <dd class="nl-sinding"  tal:condition="sending_date" i18n:translate="">
+          <span>
+           <span tal:replace="layout.to_localized_time(sending_date)"/>
+          </span>
+        </dd>
+    </dl>
+  </div>
+</div>

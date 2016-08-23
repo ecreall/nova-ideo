@@ -1,0 +1,10 @@
+<div tal:repeat="object entities">
+    <a style="text-decoration: none;" tal:attributes="href request.resource_url(object, '@@index')" target="_blank">
+    	<h5 style="font-weight: bold">${object.title} </h5>
+    </a>
+    <div style="color: #333333;
+				font-size: 13px;
+				padding: 0 10px 5px;">
+		${object.presentation_text(200)}
+	</div>
+</div>

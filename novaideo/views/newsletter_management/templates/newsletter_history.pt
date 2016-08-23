@@ -1,0 +1,24 @@
+<div  class="panel-group" id="newsletter_content_history_accordion" role="tablist" aria-multiselectable="true">
+  <div tal:repeat="(index, item) enumerate(history)"
+    class="panel panel-primary"
+    i18n:domain="novaideo">
+    <div tal:omit-tag="" 
+         tal:define="
+                  subject item['subject'];
+                  content item['content'];
+                  date item['date']">
+    <div class="panel-heading" role="tab" id="content_history${index}">
+      <div class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#newsletter_content_history_accordion" href="#newsletter_content_history_item${index}" aria-expanded="true" aria-controls="newsletter_content_history_item${index}">
+           <span style="font-weight: bold; font-size: 16px">${subject}</span> <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(date)"/>
+        </a>
+     </div>
+    </div>
+    <div id="newsletter_content_history_item${index}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="content_history${index}">
+      <div class="panel-body">
+        ${structure:content}
+      </div>
+    </div>
+  </div>
+  </div>
+</div>

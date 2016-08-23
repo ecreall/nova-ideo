@@ -291,6 +291,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     news_letter_members = SharedMultipleProperty('news_letter_members')
     channels = CompositeMultipleProperty('channels', 'subject')
     general_chanel = SharedUniqueProperty('general_chanel')
+    newsletters = CompositeMultipleProperty('newsletters')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
@@ -332,6 +333,15 @@ class NovaIdeoApplication(VisualisableElement, Application):
     def notif_conf(self):
         return self.get_data(omit(NotificationConfigurationSchema(),
                                   '_csrf_token_'))
+
+    def get_newsletters_for_registration(self):
+        return [nl for nl in self.newsletters
+                if getattr(nl, 'propose_to_registration', True)]
+
+    def get_newsletters_automatic_registration(self):
+        """Get newsletters with automatic registration"""
+        return [nl for nl in self.newsletters
+                if getattr(nl, 'automatic_registration', True)]
 
     def initialization(self):
         self.reset_default_values()

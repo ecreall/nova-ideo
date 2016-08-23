@@ -20,15 +20,7 @@ from novaideo.content.novaideo_application import (
     NovaIdeoApplication, NovaIdeoApplicationSchema)
 from novaideo import _
 from novaideo.mail import DEFAULT_SITE_MAILS
-
-
-def add_file_data(container, attr):
-    file_ = container.get(attr, None)
-    if file_ and hasattr(file_, 'get_data'):
-        container[attr] = file_.get_data(None)
-        container[attr][OBJECT_OID] = str(get_oid(file_))
-
-    return container
+from novaideo.utilities.util import add_file_data
 
 
 @view_config(

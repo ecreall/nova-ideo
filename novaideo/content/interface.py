@@ -22,6 +22,10 @@ class IEntity(IEntityO):
     pass
 
 
+class INewsletter(IVisualisableElement, IEntity):
+    pass
+
+
 class INode(IEntity):
     pass
 

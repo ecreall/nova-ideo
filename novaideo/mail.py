@@ -378,6 +378,26 @@ Une personne a donné une réponse à un commentaire sur {subject_type} « {subj
 
 """+ PORTAL_SIGNATURE
 
+
+NEWSLETTER_SUBSCRIPTION_SUBJECT = u"""Inscription newsletter"""
+
+NEWSLETTER_SUBSCRIPTION_MESSAGE = u"""
+Bonjour {first_name} {last_name},
+
+Vous êtes maintenant abonné à la newsletter {newsletter_title}.
+
+""" + PORTAL_SIGNATURE
+
+NEWSLETTER_UNSUBSCRIPTION_SUBJECT = u"""Désinscription de la newsletter"""
+
+NEWSLETTER_UNSUBSCRIPTION_MESSAGE = u"""
+Bonjour {first_name} {last_name},
+
+Vous êtes maintenant désabonné de la newsletter {newsletter_title}.
+
+""" + PORTAL_SIGNATURE
+
+
 DEFAULT_SITE_MAILS = {
     'invitation': {
               'title': _("Invitation"),
@@ -540,5 +560,15 @@ DEFAULT_SITE_MAILS = {
               'title': _("Alert respons"),
               'subject': ALERTRESPONS_SUBJECT,
               'template': ALERTRESPONS_MESSAGE
+    },
+    'newsletter_subscription': {
+              'title': _("Newsletter subscription"),
+              'subject': NEWSLETTER_SUBSCRIPTION_SUBJECT,
+              'template': NEWSLETTER_SUBSCRIPTION_MESSAGE
+    },
+    'newsletter_unsubscription': {
+              'title': _("Newsletter unsubscription"),
+              'subject': NEWSLETTER_UNSUBSCRIPTION_SUBJECT,
+              'template': NEWSLETTER_UNSUBSCRIPTION_MESSAGE
     }
 }

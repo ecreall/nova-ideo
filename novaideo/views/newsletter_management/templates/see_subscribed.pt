@@ -1,0 +1,8 @@
+<dl>
+	<div tal:omit-tag="" tal:repeat="(key, user) subscribed.items()">
+        <dt>${user.get('title', '')}</dt>
+	    <dd>
+	    	${user.get('email', '')}
+	    </dd>
+    </div>
+</dl>

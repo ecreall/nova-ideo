@@ -300,6 +300,26 @@ def evolve_channel_comments_at(root, registry):
     log.info('Channels evolved.')
 
 
+def subscribe_users_newsletter(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+
+    if root.newsletters:
+        contents = find_entities(
+            interfaces=[IPerson]
+            )
+        newsletter = root.newsletters[0]
+        len_entities = str(len(contents))
+        for index, node in enumerate(contents):
+            if getattr(node, 'email', '') and not newsletter.is_subscribed(node):
+                newsletter.subscribe(
+                    node.first_name, node.last_name, node.email)
+
+            log.info(str(index) + "/" + len_entities)
+
+        log.info('Channels evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -322,6 +342,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_channels)
     config.add_evolution_step(evolve_person)
     config.add_evolution_step(evolve_channel_comments_at)
+    config.add_evolution_step(subscribe_users_newsletter)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

@@ -22,6 +22,9 @@ from babel.core import Locale
 from bs4 import BeautifulSoup
 from pyramid.threadlocal import get_current_registry, get_current_request
 
+from substanced.util import get_oid
+
+from pontus.file import OBJECT_OID
 from pontus.util import merge_dicts
 from dace.processinstance.activity import ActionType
 from dace.objectofcollaboration.principal.util import get_current
@@ -529,6 +532,15 @@ def disconnect(
         oid = obj.get_node_id()
         if isinstance(obj, Node) and oid not in calculated:
             graph, calculated = obj.init_graph(calculated)
+
+
+def add_file_data(container, attr):
+    file_ = container.get(attr, None)
+    if file_ and hasattr(file_, 'get_data'):
+        container[attr] = file_.get_data(None)
+        container[attr][OBJECT_OID] = str(get_oid(file_))
+
+    return container
 
 
 def html_to_text(html):

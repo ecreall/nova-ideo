@@ -405,8 +405,14 @@ class ConfirmRegistration(InfiniteCardinality):
         person.reindex()
         request.registry.notify(ActivityExecuted(self, [person], person))
         root.addtoproperty('news_letter_members', person)
+        newsletters = root.get_newsletters_automatic_registration()
+        email = getattr(person, 'email', '')
+        for newsletter in newsletters and email:
+            newsletter.subscribe(
+                person.first_name, person.last_name, email)
+
         transaction.commit()
-        if getattr(person, 'email', ''):
+        if email:
             localizer = request.localizer
             mail_template = root.get_mail_template('registration_confiramtion')
             subject = mail_template['subject'].format(
@@ -417,7 +423,7 @@ class ConfirmRegistration(InfiniteCardinality):
                     _(getattr(person, 'user_title', ''))),
                 login_url=request.resource_url(root, '@@login'),
                 novaideo_title=root.title)
-            alert('email', [root.get_site_sender()], [person.email],
+            alert('email', [root.get_site_sender()], [email],
                   subject=subject, body=message)
 
         return {'person': person}
@@ -696,10 +702,11 @@ class GeneralDiscuss(InfiniteCardinality):
         channel = context.channel
         if channel:
             user = get_current()
-            unreaded_comments = channel.get_comments_between(
-                user.get_readed_date(channel),
-                datetime.datetime.now(tz=pytz.UTC))
-            return len(unreaded_comments)
+            if hasattr(user, 'get_readed_date'):
+                unreaded_comments = channel.get_comments_between(
+                    user.get_readed_date(channel),
+                    datetime.datetime.now(tz=pytz.UTC))
+                return len(unreaded_comments)
 
         return 0
 

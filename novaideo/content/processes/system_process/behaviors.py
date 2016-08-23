@@ -19,21 +19,20 @@ from dace.processinstance.activity import (
     ActionType)
 from dace.processinstance.core import ActivityExecuted
 
+from novaideo.content.processes.\
+    newsletter_management.behaviors import send_newsletter_content
 from novaideo.content.interface import (
     INovaIdeoApplication,
-    IPerson,
-    IProposal,
-    Iidea)
+    IPerson)
+    # IProposal,
+    # Iidea)
 from novaideo.views.filter import find_entities
-from novaideo import _
-from novaideo.utilities.util import to_localized_time
-from novaideo.utilities.alerts_utility import alert
+from novaideo import log
+# from novaideo.utilities.util import to_localized_time
+# from novaideo.utilities.alerts_utility import alert
 
 
 INACTIVITY_DURATION = 90
-
-
-NEWSLETTER_DURATION = 15
 
 
 def find_users(last_connection_index, current_date, alert):
@@ -87,53 +86,18 @@ class SendNewsLetter(ElementaryAction):
     context = INovaIdeoApplication
     actionType = ActionType.system
     roles_validation = system_roles_validation
-    mail_template = 'novaideo:views/templates/newsletter_template.pt'
 
     def start(self, context, request, appstruct, **kw):
-        root = request.root
-        previous_date = getattr(root, 'newsletter_date', None)
-        now = datetime.datetime.now(tz=pytz.UTC)
-        if previous_date:
-            previous_date = datetime.datetime.combine(
-                (previous_date + datetime.timedelta(
-                    days=NEWSLETTER_DURATION)),
-                datetime.time(0, 0, 0, tzinfo=pytz.UTC))
-
-        to_send = previous_date is None or \
-            previous_date <= now
-        if to_send:
-            localizer = request.localizer
-            mail_template = {
-                'subject': _('${name}, voici des idées qui pourraient vous intéresser!'),
-                'template': self.mail_template
-            }
-            members = context.news_letter_members
-            for member in [m for m in members if getattr(m, 'email', '')]:
-                name = getattr(
-                    member, 'first_name', member.title)
-                subject = localizer.translate(
-                    _(mail_template['subject'],
-                      mapping={'name': name}))
-                entities = find_entities(
-                    interfaces=[IProposal, Iidea],
-                    metadata_filter={
-                        'content_types': ['idea', 'proposal'],
-                        'states': ['published'],
-                        'keywords': getattr(member, 'keywords', [])})
-
-                result = []
-                for obj in entities:
-                    result.append(obj)
-                    if len(result) == 5:
-                        break
-                if result:
-                    body = renderers.render(
-                        mail_template['template'], {'entities': result,
-                                                    'name': name}, request)
-                    alert('email', [context.get_site_sender()], [member.email],
-                          subject=subject, html=body)
-
-            root.newsletter_date = now
+        now = datetime.datetime.combine(
+            datetime.datetime.utcnow(),
+            datetime.time(23, 59, 59, tzinfo=pytz.UTC))
+        automatic_newsletters = [n for n in context.newsletters
+                                 if getattr(n, 'recurrence', False) and
+                                 now >= n.get_sending_date() and
+                                 n.validate_content()]
+        for newsletter in automatic_newsletters:
+            send_newsletter_content(newsletter, request)
+            log.info('Send: '+newsletter.title)
 
         return {}
 
