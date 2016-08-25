@@ -1,48 +1,25 @@
-<div class="comments-container">
-  <div class="comment-loading hide-bloc"
-    tal:condition="origin">
-    <img src="${request.static_url('novaideo:static/images/progress_bar.gif')}" width="30" alt="loading"/></div>
-  <ul class="${(origin and 'commentulorigin') or 'commentul'}"
-      i18n:domain="novaideo"
-      data-nex_url="${(origin and batch.next_url)}"
-      data-origin_url="${(origin and batch.origin_url)}"
-      >
-    <tal:loop repeat="(i, item) enumerate(comments)">
-      <li class="commentli ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
-          data-association="${(contents and 'true') or 'false'}"
-          data-comment_id="${oid}"
-          tal:define="diff view._datetimedelta(item['context'].created_at);
-                      comment item['context'];
-                      contents comment.get_related_contents();
-                      picture getattr(comment.author, 'picture', None);
-                      oid getattr(comment, '__oid__', 'None');
-                      id 'comment-'+str(oid);
-                      attached_files comment.files">
-         <div id="${id}" class="thumbnail right-caption span4 comment-data">
+<div i18n:domain="novaideo">
+<div i18n:translate="" class="alert alert-danger">
+    Are you sure you want to remove this comment? This cannot be undone.
+</div>
+<div 
+  tal:define="
+  oid getattr(comment, '__oid__', 'none');
+  id 'comment-'+str(oid);
+  picture getattr(comment.author, 'picture', None);
+  attached_files comment.files;
+  contents comment.get_related_contents();">
+         <div class="thumbnail right-caption span4 comment-data">
             <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
             <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
             <div class="media-body comment-content">
-              <div id="commentaction" class="pull-right">
-                  <div tal:replace="structure item['menu_body']"/>
-              </div>
-              <div class="comment-author" tal:define="
-                diff_len  len(diff.keys());
-                is_unreaded_comment oid in unreaded_comments
-                ">
+              <div class="comment-author">
                 <a 
                   data-oid="${getattr(comment.author, '__oid__', '')}"
                   class="toggle-popover"
                   tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a>
-                <div title="${layout.to_localized_time(comment.created_at)}" class="${is_unreaded_comment and 'unreaded-comment' or ''} comment-detail-container">
-                  <span tal:condition="is_unreaded_comment" class="unreaded-comment-tag" i18n:translate="">New comment</span>
-                  <div  tal:omit-tag="" tal:condition="diff">
-                    <span i18n:translate="">There is a</span>  
-                    <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
-                    <span tal:condition="'hours' in diff">${diff['hours']} <span i18n:translate="">hour(s)</span></span> 
-                    <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>
-                    <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">second(s)</span></span>
-                  </div>
-                  <span tal:condition="diff_len == 0" i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span> 
+                <div title="${layout.to_localized_time(comment.created_at)}" class="comment-detail-container">
+                  <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span> 
                   <span tal:condition="getattr(comment, 'intention', None)" i18n:translate="" tal:content="comment.intention"/>
                 </div>
                 </div>
@@ -53,7 +30,6 @@
                     <div class="col-xs-12 col-md-12">
                       <div class="object-text">
                         <div>${structure:getattr(comment, 'formated_comment', comment.comment)}</div>
-                        <div tal:condition="getattr(comment, 'edited', False)" i18n:translate="" style="color: gray">(edited)</div>
                       </div>
                     </div>
                     <div class="col-xs-12 col-md-4" tal:condition="files">
@@ -147,61 +123,7 @@
                  </blockquote>
                 </small>
               </div>     
-             <div class="pull-right" tal:define="commentlen len(comment.comments)">
-                  <span tal:condition="commentlen-level > 0" 
-                        class="comment-replay-nb closed"
-                        onclick="javascript:replays_show(this);">
-                      <small><span class="glyphicon glyphicon-chevron-down"></span> 
-                      <span class="comment-replay-message-opened" i18n:translate="">View all <span i18n:name="commentlen">${commentlen}</span> responses</span>
-                      <span class="comment-replay-message-closed hide-bloc" i18n:translate="">Hide responses</span>
-                    </small>
-                  </span>
-                    <span tal:condition="commentlen-level <= 0 and commentlen > 0" 
-                        class="comment-replay-nb disabled">
-                        <small>
-                            <span tal:condition="commentlen==1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> response</span>
-                            <span tal:condition="commentlen>1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> responses</span>
-                        </small>
-                    </span>
-              </div>
-
-
-            <div class="footer-actions-bodies">
-              <div tal:repeat="a item['footer_actions_body']" >
-                <div tal:replace="structure a"/>
-              </div>
-            </div>
             </div>
          </div>
-         <ul  class="commentul replay-bloc hide-bloc">
-          <li>
-            <div id="action-comment-replay-container-${getattr(item['context'], '__oid__', '')}" class="replay-body">
-              <div class="comment-data ">
-                 <div class="media-body">
-                 </div>
-              </div>     
-            </div>
-          </li>
-         </ul>
-        <div tal:define="(body, r) view._rendre_comments(comment.comments, current_user, unreaded_comments=unreaded_comments)" tal:replace="structure body" />
-      </li>
-    </tal:loop>
-      <li class="commentli comment-preview hide-bloc" tal:define="current_picture getattr(current_user, 'picture', None)">
-        <div class="thumbnail right-caption span4 comment-data">
-            <img tal:condition="current_picture is not None" class="img-circle" tal:attributes="src getattr(current_picture, 'profil', current_picture).url"  width="30"/>
-            <img tal:condition="current_picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
-            <div class="media-body comment-content">
-              <small class="comment-author">
-                <a tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a>
-                <div class="comment-detail-container">
-                  <span i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span>
-                </div>
-              </small>
-              <div class="comment-preview-text"></div>     
-            </div>
-         </div>
-      </li>
-  </ul>
+      </div>
 </div>
-
-

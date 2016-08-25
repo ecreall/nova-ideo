@@ -27,7 +27,7 @@ catch(err) {
 
 function replays_show(element){
     var $element = $(element)
-    var replays = $($element.parents('li').first().find('ul:not(.replay-bloc)').first().children('li:not(.comment-preview)'));
+    var replays = $($element.parents('li').first().find('ul.commentul:not(.replay-bloc)').first().children('li:not(.comment-preview)'));
     if($(element).hasClass('closed')){
        replays.slideDown( );
        $($element.find('span').first()).attr('class', 'glyphicon glyphicon-chevron-up');
@@ -124,10 +124,10 @@ function get_form_replay_container(){
 function update_replay(url){
     var $this = $(this)
     $this.parents('.comments-scroll').find('.replay-form-container button.close').click()
-    var toreplay = $this.closest('.replay-action').data('toreplay');
-    var target = $this.closest('.replay-action').data('target');
+    var toreplay = $this.closest('.comment-inline-toggle').data('toreplay');
+    var target = $this.closest('.comment-inline-toggle').data('target');
     if (Boolean(toreplay)){$(target).parent('ul.replay-bloc').removeClass('hide-bloc'); return false}
-    var url = $this.closest('.replay-action').data('updateurl');
+    var url = $this.closest('.comment-inline-toggle').data('updateurl');
     $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
        var action_body = data['body'];
        if (action_body){
@@ -144,7 +144,9 @@ function update_replay(url){
            try {
                 deform.processCallbacks();
             }
-           catch(err) {};
+           catch(err) {
+            alert(err)
+           };
         }else{
            location.reload();
            return false
@@ -176,6 +178,19 @@ function search_comments(input){
   })
 }
 
+
+function update_comment(element){
+  var url = $('body').data('api_url')
+  $.post(url, {op: 'update_comment',
+              comment_id: element.data('comment_id')}, function(data){
+    var content = $(data.body).find('.commentulorigin');
+    if (content){
+       init_emoji($(content.find('.emoji-container:not(.emojified)')));
+       element.replaceWith($($(content).find('li.commentli').first()))
+      }        
+  })
+
+}
 
 $(document).on('click', '.comment-filter-action', function(){
       var $this = $(this);
@@ -221,10 +236,10 @@ $(document).ready(function(){
         }
   });
 
-    $(document).on('click', '.replay-action', update_replay);
+    $(document).on('click', '.comment-inline-toggle', update_replay);
 
 
-    $(document).on('submit','.commentform:not(.respondform)', function( event ) {
+    $(document).on('submit','.commentform:not(.comment-inline-form)', function( event ) {
         var $this = $(this)
         var button = $this.find('button[type="submit"]').last();
         var select_itention = $($this.find("select[name=\'intention\']"))
@@ -361,6 +376,68 @@ $(document).ready(function(){
       event.preventDefault();
    });
 
+    $(document).on('submit','.edit-comment-form', function( event ) {
+        var $this = $(this)
+        var formid = $this.attr('id');
+        var button = $this.find('button[type="submit"]').last();
+        var select_itention = $($this.find("select[name=\'intention\']"))
+        var intention = select_itention.val();
+        var textarea = $this.find('textarea');
+        var comment = textarea.val();
+        var select_related_contents = $($this.find("select[name='related_contents']").first());
+        var parent = $($this.parents('.views-container').get(1));
+        var parentform = parent.find('.commentform');
+        
+        var target = $($this.parents('.commentli').first().find('.comments-container').first().find('.commentul').first());
+        var commentmessageinfo = $this.find('#messageinfo');
+        var commentmessagesuccess = $this.find('#messagesuccess');
+        var commentmessagedanger = $this.find('#messagedanger');
+        var url = $(event.target).attr('action');
+        if (comment !='' && intention!=''){
+          $(button).addClass('disabled');
+          $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
+          var formData = new FormData($(this)[0]);
+          formData.append(button.val(), button.val())
+          $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+              var content = $(data.body).find('.commentulorigin');
+              if (content){
+                 init_emoji($(content.find('.emoji-container:not(.emojified)')));
+                 $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
+                 $this.parents('.commentli').replaceWith($($(content).find('li.commentli').first()))
+                 textarea.val('');
+                 select_related_contents.select2('val', []);
+                 $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
+                 select_itention.select2('val', 'Remark')
+                 $this.parents('.replay-form-container').first().find('button.close').first().click()
+                 try {
+                     deform.processCallbacks();
+                    }
+                 catch(err) {};
+              }else{
+                $(commentmessagedanger).text(
+                  novaideo_translate("Your comment is not integrated") ).show().fadeOut( 6000 );
+              };
+          }});
+        }else{
+           var errormessage = '';
+           if (intention == ''){
+               errormessage =  "intention";
+           };
+           if (comment == ''){
+              if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
+           };
+           $( commentmessagedanger).text( "Your "+errormessage+" cannot be empty!" ).show().fadeOut( 4000 );
+
+       };
+      event.preventDefault();
+   });
+
 
     $(document).on('submit','.presentform', function( event ) {
         var $this = $(this)
@@ -473,6 +550,71 @@ $(document).ready(function(){
         container.removeClass('active')
 
   })
+
+  $(document).on('click', '.emoji-container-input span.emoji-sizer', function(){
+        var $this = $(this)
+        var value = ':'+$($this.find('.emoji-inner').first()).attr('title')+':'
+        var container = $($this.parents('.emoji-container-input'))
+        var text = $(container.siblings('textarea'))
+        text.val(text.val()+' '+value+' ')
+        container.removeClass('active')
+
+  })
+
+  $(document).on('click', '.comment-ajax-action', function(){
+      $('.comment-ajax-action').removeClass('active')
+      $(this).addClass('active')
+  })
+
+  $(document).on('submit', '.comment-remove-form', function(event){
+        var $this = $(this)
+        var action = $($('.comment-remove-action.active').first())
+        var button = $this.find('button[type="submit"]').first();
+        var url = $(event.target).attr('action');
+        $(button).addClass('disabled');
+        var formData = new FormData($(this)[0]);
+        formData.append(button.val(), button.val())
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data:formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+              update_comment($(action.parents('li.commentli').last()))
+              $($this.parents('.modal').first()).modal('hide')
+          }})
+
+        event.preventDefault();
+  })
+
+  $(document).on('submit', '.comment-un-pin-form', function(event){
+        var $this = $(this)
+        var action = $($('.comment-un-pin-action.active').first())
+        var button = $this.find('button[type="submit"]').first();
+        var url = $(event.target).attr('action');
+        $(button).addClass('disabled');
+        var formData = new FormData($(this)[0]);
+        formData.append(button.val(), button.val())
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data:formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+              update_comment($(action.parents('li.commentli').first()))
+              $($this.parents('.modal').first()).modal('hide')
+          }})
+
+        event.preventDefault();
+  })
+
+ $(document).on('hidden.bs.modal', '.modal', function(){
+      if($('.sidebar-right-background.toggled').length > 0){
+        $('body').addClass('modal-open')
+      }
+ })
       
 
 });

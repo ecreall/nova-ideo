@@ -12,11 +12,11 @@ from pyramid import renderers
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
-from substanced.util import renamer
+from substanced.util import renamer, get_oid
 
 from dace.descriptors import (
     SharedUniqueProperty, CompositeMultipleProperty)
-from dace.util import getSite
+from dace.util import getSite, get_obj
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
     Select2Widget, AjaxSelect2Widget,
@@ -26,7 +26,7 @@ from pontus.file import ObjectData, File
 
 from .interface import IComment
 from novaideo.core import Commentable, Emojiable
-from novaideo import _
+from novaideo import _, log
 from novaideo.content import get_file_widget
 from novaideo.utilities.url_extractor import extract_urls
 from novaideo.utilities.util import (
@@ -46,16 +46,34 @@ def intention_choice(node, kw):
 @colander.deferred
 def relatedcontents_choice(node, kw):
     request = node.bindings['request']
+    context = node.bindings['context']
     root = getSite()
     values = []
-    ajax_url = request.resource_url(root, '@@novaideoapi',
-                                    query={'op': 'find_correlable_entity'}
-                               )
+    if isinstance(context, Comment) and\
+       context.related_correlation:
+        values = [(get_oid(t), t.title) for
+                  t in context.get_related_contents()]
+
+    def title_getter(id):
+        try:
+            obj = get_obj(int(id), None)
+            if obj:
+                return obj.title
+            else:
+                return id
+        except Exception as e:
+            log.warning(e)
+            return id
+
+    ajax_url = request.resource_url(
+        root, '@@novaideoapi',
+        query={'op': 'find_correlable_entity'})
     return AjaxSelect2Widget(
         values=values,
         ajax_url=ajax_url,
         ajax_item_template="related_item_template",
         css_class="search-idea-form",
+        title_getter=title_getter,
         multiple=True,
         page_limit=50,
         item_css_class="comment-form-group comment-related-form")
@@ -163,6 +181,8 @@ class Comment(Commentable, Emojiable):
         super(Comment, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.urls = PersistentDict({})
+        self.edited = False
+        self.pinned = False
 
     @property
     def channel(self):
@@ -183,6 +203,21 @@ class Comment(Commentable, Emojiable):
         return [getattr(self, 'comment', ''),
                 getattr(self.author, 'title',
                         getattr(self.author, '__name__', ''))]
+
+    @property
+    def related_contents(self):
+        if self.related_correlation:
+            return [t for t
+                    in self.related_correlation.targets
+                    if not isinstance(t, Comment)]
+        return []
+
+    def get_related_contents(self):
+        if self.related_correlation:
+            return [t for t
+                    in self.related_correlation.targets
+                    if not isinstance(t, Comment)]
+        return []
 
     def init_urls(self):
         self.urls = PersistentDict({})

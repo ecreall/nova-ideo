@@ -6,7 +6,8 @@
 from webob.multidict import MultiDict
 from pyramid.threadlocal import get_current_registry, get_current_request
 
-from dace.objectofcollaboration.principal.util import has_role
+from dace.objectofcollaboration.principal.util import(
+    has_role, get_current)
 
 from novaideo.core import _
 
@@ -194,3 +195,11 @@ def get_states_mapping(user, context, state):
     result = STATES_PARTICIPANT_MAPPING.get(
         content_type, STATES_PARTICIPANT_MAPPING.get('default'))
     return result.get(state, None)
+
+
+def global_user_processsecurity(process, context):
+    if has_role(role=('Admin',)):
+        return True
+
+    user = get_current()
+    return 'active' in list(getattr(user, 'state', []))

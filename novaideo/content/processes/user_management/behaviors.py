@@ -50,6 +50,7 @@ from novaideo.views.filter import get_users_by_preferences
 from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.content.processes import global_user_processsecurity
 
 
 def initialize_tokens(person, tokens_nb):
@@ -58,14 +59,6 @@ def initialize_tokens(person, tokens_nb):
         person.addtoproperty('tokens_ref', token)
         person.addtoproperty('tokens', token)
         token.setproperty('owner', person)
-
-
-def global_user_processsecurity(process, context):
-    if has_role(role=('Admin',)):
-        return True
-
-    user = get_current()
-    return 'active' in list(getattr(user, 'state', []))
 
 
 def access_user_processsecurity(process, context):
@@ -662,6 +655,7 @@ class Discuss(InfiniteCardinality):
             channel.add_comment(comment, comment.created_at)
             comment.format(request)
             comment.setproperty('author', user)
+            grant_roles(user=user, roles=(('Owner', comment), ))
             if appstruct['related_contents']:
                 related_contents = appstruct['related_contents']
                 correlation = connect(
@@ -771,6 +765,7 @@ class GeneralDiscuss(InfiniteCardinality):
             channel.add_comment(comment, comment.created_at)
             comment.format(request)
             comment.setproperty('author', user)
+            grant_roles(user=user, roles=(('Owner', comment), ))
             if appstruct['related_contents']:
                 related_contents = appstruct['related_contents']
                 correlation = connect(

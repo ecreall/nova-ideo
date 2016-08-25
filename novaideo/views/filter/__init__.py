@@ -1377,7 +1377,6 @@ def get_comments(channel, filters, text_to_search=''):
         return []
 
     and_op = QUERY_OPERATORS.get('and', 'default')
-    or_op = QUERY_OPERATORS.get('or', 'default')
     novaideo_index = find_catalog('novaideo')
     dace_index = find_catalog('dace')
     container_oid = dace_index['container_oid']
@@ -1385,13 +1384,18 @@ def get_comments(channel, filters, text_to_search=''):
     filter_query = None
     if 'associations' in filters:
         has_related_contents = novaideo_index['has_related_contents']
-        filter_query = or_op(
+        filter_query = and_op(
             filter_query, has_related_contents.eq(True))
 
     if 'file' in filters:
         has_file = novaideo_index['has_file']
-        filter_query = or_op(
+        filter_query = and_op(
             filter_query, has_file.eq(True))
+
+    if 'pinned' in filters:
+        is_pinned = novaideo_index['is_pinned']
+        filter_query = and_op(
+            filter_query, is_pinned.eq(True))
 
     query = and_op(query, filter_query)
 

@@ -15,6 +15,11 @@
                      <span class="glyphicon glyphicon-paperclip"></span> <span i18n:translate="">Attached files</span>
                 </a>
               </li>
+              <li class="pull-right">
+                <a class="btn btn-sm comment-filter-action" data-name="pinned">
+                     <span class="typcn typcn-pin"></span> <span i18n:translate="">Pinned</span>
+                </a>
+              </li>
               <li class="comment-text-search-container">
                 <span class="glyphicon glyphicon-search"></span>
                 <input class="comments-text-search"

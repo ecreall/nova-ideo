@@ -328,6 +328,65 @@ class NovaideoAPI(IndexManagementJsonView):
 
         return {'body': ''}
 
+    def edit_comment(self):
+        comment_actions = getAllBusinessAction(
+            self.context, self.request, node_id='edit',
+            process_discriminator='Application')
+        if comment_actions:
+            action = comment_actions[0]
+            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+            comment_view_instance = comment_view(
+                self.context, self.request,
+                behaviors=[action],
+                only_form=True)
+            comment_view_instance.update()
+            comments = [self.context]
+            result_view = CommentsView(self.context, self.request)
+            result_view.comments = comments
+            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+            return {'body': body}
+
+        return {'body': ''}
+
+    def execute_action(self, action_id):
+        node_actions = getAllBusinessAction(
+            self.context, self.request, node_id=action_id,
+            process_discriminator='Application')
+        if node_actions:
+            action = node_actions[0]
+            node_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+            node_view_instance = node_view(
+                self.context, self.request,
+                behaviors=[action],
+                only_form=True)
+            node_view_instance.update()
+            return {'status': True}
+
+        return {'status': False}
+
+    def pin_comment(self):
+        return self.execute_action('pin')
+
+    def unpin_comment(self):
+        return self.execute_action('unpin')
+
+    def remove_comment(self):
+        return self.execute_action('remove')
+
+    def update_comment(self):
+        comment_id = self.params('comment_id')
+        if comment_id:
+            try:
+                comment = get_obj(int(comment_id))
+                result_view = CommentsView(self.context, self.request)
+                result_view.comments = [comment]
+                body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+                return {'body': body}
+            except Exception as error:
+                log.warning(error)
+
+        return {'body': ''}
+
     def respond_comment(self):
         comment_actions = getAllBusinessAction(
             self.context, self.request, node_id='respond',

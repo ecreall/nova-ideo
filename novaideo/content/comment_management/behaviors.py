@@ -278,7 +278,7 @@ class Pin(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_action_class = 'comment-ajax-action comment-un-pin-action'
-    style_picto = 'typcn typcn-pin'
+    style_picto = 'glyphicon glyphicon-pushpin'
     style_order = 2
     submission_title = _('Continue')
     context = IComment
@@ -304,7 +304,7 @@ class Unpin(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_action_class = 'comment-ajax-action comment-un-pin-action'
-    style_picto = 'typcn typcn-pin-outline'
+    style_picto = 'glyphicon glyphicon-pushpin'
     style_order = 2
     submission_title = _('Continue')
     context = IComment

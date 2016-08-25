@@ -11,35 +11,38 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.schema import select
 
-from novaideo.content.processes.comment_management.behaviors import  Respond
+from novaideo.content.processes.comment_management.behaviors import Edit
 from novaideo.content.comment import CommentSchema, Comment
 from novaideo import _
 
 
 @view_config(
-    name='respond',
+    name='edit',
     context=Comment,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class RespondView(FormView):
+class EditView(FormView):
 
-    title = _('Respond')
+    title = _('Edit')
     schema = select(CommentSchema(factory=Comment,
                                   editable=True,
                                   omit=('related_contents',)),
                     ['comment', 'intention', 'files', 'related_contents'])
-    behaviors = [Respond]
-    formid = 'formrespond'
-    name = 'respond'
+    behaviors = [Edit]
+    formid = 'formedit'
+    name = 'edit'
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/comment.js']}
 
+    def default_data(self):
+        return self.context
+
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'respond_comment'})
-        formwidget = deform.widget.FormWidget(css_class='commentform comment-inline-form respondform deform')
+            self.context, 'novaideoapi', query={'op': 'edit_comment'})
+        formwidget = deform.widget.FormWidget(css_class='commentform comment-inline-form edit-comment-form deform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({Respond: RespondView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({Edit: EditView})

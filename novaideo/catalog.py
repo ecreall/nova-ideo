@@ -112,6 +112,12 @@ class ISearchableObject(Interface):
     def identifier():
         pass
 
+    def is_pinned():
+        pass
+
+    def is_edited():
+        pass
+
 
 @indexview_defaults(catalog_name='novaideo')
 class NovaideoCatalogViews(object):
@@ -433,6 +439,32 @@ class NovaideoCatalogViews(object):
 
         return identifier
 
+    @indexview()
+    def is_pinned(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        is_pinned = adapter.is_pinned()
+        if is_pinned is None:
+            return default
+
+        return is_pinned
+
+    @indexview()
+    def is_edited(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        is_edited = adapter.is_edited()
+        if is_edited is None:
+            return default
+
+        return is_edited
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -465,6 +497,8 @@ class NovaideoIndexes(object):
     has_related_contents = Field()
     has_file = Field()
     identifier = Keyword()
+    is_pinned = Field()
+    is_edited = Field()
 
 
 @adapter(context=IEntity)
@@ -596,6 +630,12 @@ class SearchableObject(Adapter):
     def identifier(self):
         return []
 
+    def is_pinned(self):
+        return False
+
+    def is_edited(self):
+        return False
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
@@ -687,3 +727,9 @@ class CommentSearch(SearchableObject):
 
     def has_file(self):
         return True if self.context.files else False
+
+    def is_pinned(self):
+        return getattr(self.context, 'pinned', False)
+
+    def is_edited(self):
+        return getattr(self.context, 'edited', False)

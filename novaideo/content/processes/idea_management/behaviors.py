@@ -742,6 +742,7 @@ class CommentIdea(InfiniteCardinality):
             channel.add_comment(comment, comment.created_at)
             comment.format(request)
             user = get_current()
+            grant_roles(user=user, roles=(('Owner', comment), ))
             context.subscribe_to_channel(user)
             comment.setproperty('author', user)
             if appstruct['related_contents']:
