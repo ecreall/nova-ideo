@@ -7,17 +7,19 @@
       data-nex_url="${(origin and batch.next_url)}"
       data-origin_url="${(origin and batch.origin_url)}"
       >
-    <tal:loop repeat="(i, item) enumerate(comments)">
-      <li class="commentli ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
+    <tal:loop repeat="comment_data enumerate(comments)">
+      <li class="commentli ${repeat['comment_data'].end>0 and 'last' or ''} ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
           data-association="${(contents and 'true') or 'false'}"
           data-comment_id="${oid}"
-          tal:define="diff view._datetimedelta(item['context'].created_at);
-                      comment item['context'];
-                      contents comment.get_related_contents();
-                      picture getattr(comment.author, 'picture', None);
-                      oid getattr(comment, '__oid__', 'None');
-                      id 'comment-'+str(oid);
-                      attached_files comment.files">
+          tal:define="
+              (i, item) comment_data;
+              diff view._datetimedelta(item['context'].created_at);
+              comment item['context'];
+              contents comment.get_related_contents();
+              picture getattr(comment.author, 'picture', None);
+              oid getattr(comment, '__oid__', 'None');
+              id 'comment-'+str(oid);
+              attached_files comment.files">
          <div id="${id}" class="thumbnail right-caption span4 comment-data">
             <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
             <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>

@@ -262,11 +262,15 @@ def extract_favicon(page, domain):
         'rel': "icon",
         'type': "image/x-icon"
     }
+    favicon = None
     for link, value in links.items():
-        favicon = soup.head.find(
-            'link', **{link: value})
-        if favicon:
-            break
+        try:
+            favicon = soup.head.find(
+                'link', **{link: value})
+            if favicon:
+                break
+        except Exception as error:
+            pass
 
     if favicon:
         href = favicon['href']
