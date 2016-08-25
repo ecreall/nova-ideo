@@ -1224,7 +1224,7 @@ msgstr "Son intention:"
 
 #: novaideo/views/idea_management/templates/comments.pt:56
 msgid "(edited)"
-msgstr ""
+msgstr "(édité)"
 
 #: novaideo/views/idea_management/templates/comments.pt:118
 #: novaideo/views/idea_management/templates/see_idea.pt:132
