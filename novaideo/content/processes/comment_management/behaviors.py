@@ -123,10 +123,10 @@ class Respond(InfiniteCardinality):
         comment_oid = getattr(comment, '__oid__', 'None')
         localizer = request.localizer
         author_title = localizer.translate(
-            _(getattr(comment_author, 'user_title', '')))
+            _(getattr(user, 'user_title', '')))
         author_first_name = getattr(
-            comment_author, 'first_name', comment_author.name)
-        author_last_name = getattr(comment_author, 'last_name', '')
+            user, 'first_name', user.name)
+        author_last_name = getattr(user, 'last_name', '')
         comment_kind = 'discuss' if is_discuss else 'comment'
         alert('internal', [root], authors,
               internal_kind=InternalAlertKind.comment_alert,
