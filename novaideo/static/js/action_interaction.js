@@ -33,6 +33,7 @@ function update_modal_action(event){
             }
            catch(err) {};
            finish_progress()
+           focus_on_form(modal_container)
            return false
         }else{
            location.reload();
@@ -64,6 +65,7 @@ function update_inline_action(){
                 deform.processCallbacks();
             }
            catch(err) {};
+           focus_on_form(target)
         }else{
            location.reload();
            return false
@@ -110,6 +112,7 @@ function update_sidebar_action(){
            rebuild_scrolls($(target.find('.malihu-scroll')))
            init_comment_scroll(target)
            finish_progress()
+           focus_on_form(target)
         }else{
            location.reload();
            return false
@@ -148,6 +151,7 @@ function update_popover_action(){
            catch(err) {};
            init_comment_scroll(target)
            finish_progress()
+           focus_on_form(target)
         }else{
            location.reload();
            return false

@@ -140,6 +140,8 @@ function update_replay(url){
               replay_bloc.css('display', 'none');
            });
            replay_bloc.slideDown()
+           var textareainput = $(replay_bloc.find('textarea').first())
+           textareainput.val(textareainput.val()).focus()
            comment_scroll_to(replay_bloc)
            try {
                 deform.processCallbacks();

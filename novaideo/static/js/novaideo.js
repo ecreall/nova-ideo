@@ -6,6 +6,14 @@ function finish_progress(){
     $('img.lac-loading-indicator').addClass('hide-bloc');
 }
 
+function focus_on_form(container){
+    setTimeout(function(){
+     var form = $(container.find('form')).first()
+     if (form.length > 0){
+        deform.focusFirstInput(form);
+     }
+   }, 100)
+}
 
 var emoji = undefined
 
@@ -922,5 +930,7 @@ $(function () {
   $(document).on('click', 'a.channel-action', function(){
     $($(this).parents('div.channel-action').first().find('.ureaded-comments-len')).remove()
   });
+
+  focus_on_form($('.pontus-main'))
 
 });
