@@ -409,7 +409,7 @@ $(document).ready(function(){
               if (content){
                  init_emoji($(content.find('.emoji-container:not(.emojified)')));
                  $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
-                 $this.parents('.commentli').replaceWith($($(content).find('li.commentli').first()))
+                 $this.parents('.commentli').first().replaceWith($($(content).find('li.commentli').first()))
                  textarea.val('');
                  select_related_contents.select2('val', []);
                  $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
