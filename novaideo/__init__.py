@@ -320,6 +320,21 @@ def subscribe_users_newsletter(root, registry):
         log.info('Channels evolved.')
 
 
+def evolve_roles_comments(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IComment
+    from dace.objectofcollaboration.principal.util import grant_roles
+    contents = find_entities(interfaces=[IComment])
+    for comment in contents:
+        author = comment.author
+        comment.edited = False
+        comment.pinned = False
+        grant_roles(user=author, roles=(('Owner', comment), ))
+        comment.reindex()
+
+    log.info('Comments evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -343,6 +358,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_person)
     config.add_evolution_step(evolve_channel_comments_at)
     config.add_evolution_step(subscribe_users_newsletter)
+    config.add_evolution_step(evolve_roles_comments)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

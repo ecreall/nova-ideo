@@ -1351,7 +1351,7 @@ msgstr "Pièces jointes"
 
 #: novaideo/views/idea_management/templates/comments_scroll.pt:20
 msgid "Pinned"
-msgstr "Épinglé"
+msgstr "Épinglés"
 
 #: novaideo/views/idea_management/templates/comments_scroll.pt:30
 #: novaideo/views/novaideo_view_manager/search.py:155
