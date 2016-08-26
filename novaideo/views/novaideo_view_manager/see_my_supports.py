@@ -21,11 +21,11 @@ from .see_my_contents import SeeMyContentsView
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""Aucune propositions appréciées """
+    '0': _(u"""Aucun contenus appréciées """
           u"""et ${tokens} jeton(s) d'appréciation restant(s)"""),
-    '1': _(u"""Une proposition appréciée """
+    '1': _(u"""Un contenu appréciée """
             u"""et ${tokens} jeton(s) d'appréciation restant(s)"""),
-    '*': _(u"""${nember} propositions appréciées """
+    '*': _(u"""${nember} contenus appréciées """
             u"""et ${tokens} jeton(s) d'appréciation restant(s)""")
 }
 
