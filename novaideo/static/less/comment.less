@@ -102,6 +102,11 @@
     color: gray;
 }
 
+
+.comment-inline-form.edit-comment-form{
+    bottom: 15px
+}
+
 .comment-textarea-container textarea{
     height: 50px;
     width: 80%;
@@ -137,10 +142,31 @@
     font-size: 20px;
     border-radius: 0;
     box-shadow: none;
+    color: white;
     border: 1px solid #ccc !important;
 }
 
-.comment-textarea-container .comment-textarea-actions > span:hover{
+.comment-textarea-container .comment-textarea-actions span.comment-cancel{
+    height: 54px;
+    vertical-align: middle;
+    margin-top: -9px;
+    margin-right: -10px;
+    padding: 9px 10px 0 5px;
+    font-size: 20px;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #ccc!important;
+    color: @brand-danger;
+    display:none;
+}
+
+
+.comment-inline-form .comment-textarea-container .comment-textarea-actions span.comment-cancel{
+    display: inline-block
+}
+
+.comment-textarea-container .comment-textarea-actions > span:not(.btn):hover{
     color: @brand-primary
 }
 
@@ -395,7 +421,7 @@ li.comment-text-search-container {
   color: #bcbbba;
 }
 
-.comment-data:hover{
+.commentli:not(.replay-active) .comment-data:hover{
     background-color: #f4f4f4;
     .footer-actions-bodies a,
     .primary-actions a,

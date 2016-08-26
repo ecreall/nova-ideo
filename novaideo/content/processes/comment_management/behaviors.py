@@ -22,6 +22,7 @@ from dace.processinstance.activity import InfiniteCardinality
 
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.content.interface import IComment
+from novaideo.content.comment import Comment
 from novaideo import _
 from novaideo.utilities.util import connect
 from novaideo.utilities.alerts_utility import alert
@@ -212,7 +213,7 @@ class Edit(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-pencil'
     style_interaction = 'ajax-action'
     style_interaction_type = 'comment-replay'
-    style_action_class = 'comment-inline-toggle'
+    style_action_class = 'comment-edit-action comment-inline-toggle'
     style_order = 4
     submission_title = _('Continue')
     context = IComment
@@ -269,7 +270,8 @@ class Remove(InfiniteCardinality):
 
 
 def pin_processsecurity_validation(process, context):
-    return not getattr(context, 'pinned',  False) and\
+    return not isinstance(getattr(context, '__parent__', None), Comment) and\
+        not getattr(context, 'pinned',  False) and\
         global_user_processsecurity(process, context)
 
 
@@ -295,7 +297,8 @@ class Pin(InfiniteCardinality):
 
 
 def unpin_processsecurity_validation(process, context):
-    return getattr(context, 'pinned',  False) and\
+    return not isinstance(getattr(context, '__parent__', None), Comment) and\
+        getattr(context, 'pinned',  False) and\
         global_user_processsecurity(process, context)
 
 

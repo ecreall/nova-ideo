@@ -136,10 +136,13 @@ function update_replay(url){
            container.append($(action_body));
            init_emoji($(container.find('.emoji-container:not(.emojified)')));
            var replay_bloc = $($(target).parents('ul.replay-bloc').first());
+           var commentli = $($(target).parents('.commentli').first());
            $(container.find('button.close').first()).on('click', function(){
               replay_bloc.css('display', 'none');
+              commentli.removeClass('replay-active')
            });
            replay_bloc.slideDown()
+           commentli.addClass('replay-active')
            var textareainput = $(replay_bloc.find('textarea').first())
            textareainput.val(textareainput.val()).focus()
            comment_scroll_to(replay_bloc)
@@ -500,6 +503,15 @@ $(document).ready(function(){
         button.click()
       });
 
+      $(document).on('click', '.comment-cancel', function(){
+        var $this = $(this)
+        var form = $($this.parents('form').first())
+        $((".comment-form-group")).removeClass('active')
+        $((".comment-data .comment-content.hide-bloc")).removeClass('hide-bloc');
+        var close_btn = $($(form).parents('.replay-form-container').first().find('button.close').first());
+        close_btn.click()
+      })
+      
       $(document).on('click','.commentform .comment-textarea-actions .comment-intention', function(event){
         var $this = $(this)
         var form = $($this.parents('form').first())
@@ -602,11 +614,14 @@ $(document).ready(function(){
         event.preventDefault();
   })
 
- $(document).on('hidden.bs.modal', '.modal', function(){
-      if($('.sidebar-right-background.toggled').length > 0){
-        $('body').addClass('modal-open')
-      }
- })
-      
+   $(document).on('hidden.bs.modal', '.modal', function(){
+        if($('.sidebar-right-background.toggled').length > 0){
+          $('body').addClass('modal-open')
+        }
+   })
+
+   $(document).on('click', '.comment-edit-action', function(){
+      $($(this).parents('.commentli').first().find('.comment-data .comment-content').first()).addClass('hide-bloc')
+   })  
 
 });

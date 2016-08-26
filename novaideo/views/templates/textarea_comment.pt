@@ -10,7 +10,8 @@
     <span class="comment-intention glyphicon glyphicon-question-sign" i18n:attributes="title" title="Intention"></span>
     <span class="comment-add-file glyphicon glyphicon-paperclip" i18n:attributes="title" title="Attach files"></span>
     <span class="comment-related glyphicon glyphicon-link" i18n:attributes="title" title="Associate contents"></span>
-    <span class="btn btn-default comment-submit glyphicon glyphicon-send" i18n:attributes="title" title="Submit"></span>
+    <span class="btn btn-default comment-cancel glyphicon glyphicon-remove-circle" i18n:attributes="title" title="Cancel"></span>
+    <span class="btn btn-success comment-submit glyphicon glyphicon-send" i18n:attributes="title" title="Submit"></span>
   </div>
   <textarea tal:define="rows rows|field.widget.rows;
                         cols cols|field.widget.cols;
