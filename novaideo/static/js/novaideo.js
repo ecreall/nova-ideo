@@ -12,7 +12,7 @@ function focus_on_form(container){
      if (form.length > 0){
         deform.focusFirstInput(form);
      }
-   }, 100)
+   }, 200)
 }
 
 var emoji = undefined
