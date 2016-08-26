@@ -608,8 +608,17 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(data) {
-              update_comment($(action.parents('li.commentli').first()))
+              var navchannel = $(action.parents('.comments-scroll').first().siblings('.navbar-channel').first())
+              var filters = $(navchannel.find('.comment-filter-action.active')).map(function(){return $(this).data('name')})
+              filters = filters.toArray()
+              if ($.inArray('pinned', filters)>=0){
+                //action is unpin with the 'pinned' filter => remove the comment
+                $(action.parents('li.commentli').first()).remove()
+              }else{
+                update_comment($(action.parents('li.commentli').first()))
+              }
               $($this.parents('.modal').first()).modal('hide')
+
           }})
 
         event.preventDefault();
