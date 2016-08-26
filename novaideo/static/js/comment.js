@@ -553,16 +553,6 @@ $(document).ready(function(){
 
   })
 
-  $(document).on('click', '.emoji-container-input span.emoji-sizer', function(){
-        var $this = $(this)
-        var value = ':'+$($this.find('.emoji-inner').first()).attr('title')+':'
-        var container = $($this.parents('.emoji-container-input'))
-        var text = $(container.siblings('textarea'))
-        text.val(text.val()+' '+value+' ')
-        container.removeClass('active')
-
-  })
-
   $(document).on('click', '.comment-ajax-action', function(){
       $('.comment-ajax-action').removeClass('active')
       $(this).addClass('active')
