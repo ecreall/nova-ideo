@@ -560,7 +560,8 @@ $(document).ready(function(){
         var value = ':'+$($this.find('.emoji-inner').first()).attr('title')+':'
         var container = $($this.parents('.emoji-container-input'))
         var text = $(container.siblings('textarea'))
-        text.val(text.val()+' '+value+' ')
+        text.insertAtCaret(value)
+        // text.val(text.val()+' '+value+' ')
         container.removeClass('active')
 
   })
