@@ -77,16 +77,16 @@ function footer_action_component(data){
 
 function view_title_component(data){
     var url = window.location.href; 
-	var is_mysupportsview = url.indexOf('/'+data.view_name+'') || url.indexOf('/@@'+data.view_name)  
-	if(data.view_title && is_mysupportsview>=0){
+	var concerned_view = url.indexOf('/'+data.view_name+'')>=0 || url.indexOf('/@@'+data.view_name)>=0  
+	if(data.view_title && concerned_view){
 		$($('.pontus-main .panel-title>h4').first()).text(data.view_title)
 	}
 }
 
 function list_items_component(data){
     var url = window.location.href; 
-	var is_mysupportsview = url.indexOf('/'+data.view_name+'') || url.indexOf('/@@'+data.view_name)   
-	if(data.removed && is_mysupportsview>=0){
+	var concerned_view = url.indexOf('/'+data.view_name+'')>=0 || url.indexOf('/@@'+data.view_name)>=0   
+	if(data.removed && concerned_view){
         data.search_item.remove()
 	}
 }
