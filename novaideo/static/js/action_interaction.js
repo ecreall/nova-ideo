@@ -36,9 +36,7 @@ function update_modal_action(event){
            focus_on_form(modal_container)
            return false
         }else{
-          data.search_item = $(action.parents('.result-item.search-item').first())
-          update_components(data)
-           // location.reload();
+           location.reload();
            return false
         }
     });
