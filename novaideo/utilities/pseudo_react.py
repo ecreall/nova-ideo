@@ -110,7 +110,7 @@ def get_selection_metadata(action, request, context, api, **kwargs):
 
         view_title = localizer.translate(
             _(SELECT_CONTENTS_MESSAGES[index],
-              mapping={'nember': len_selection}))
+              mapping={'nember': len_all_selection}))
         result.update({
             'footer_action_id': actionoid + '-' + contextoid,
             'navbr_action_id': 'myselections',
