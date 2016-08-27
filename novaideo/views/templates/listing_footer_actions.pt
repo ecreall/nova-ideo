@@ -27,8 +27,10 @@
                 data-icon="${icon}"
                 data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" 
                 title="${item['action'].title}">
-                 <span class="footer-icon ${icon}" ></span> 
-                 <span class="hidden-xs">${item['action'].get_title(obj, request)}</span>
+                 <span id="component-footer-action-${str(getattr(item['action'], '__oid__'))+'-'+str(getattr(item['context'], '__oid__'))}">
+                   <span class="footer-icon ${icon}" ></span> 
+                   <span class="hidden-xs">${item['action'].get_title(obj, request)}</span>
+                 <span>
                </a>
                <script tal:condition="'toreplay' in item">       
                     $(document).ready(function(){

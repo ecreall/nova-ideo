@@ -460,6 +460,7 @@ $(document).on('click', '.proposal-support .token:not(.disabled)', function(){
    var action_url = $this.data('action')
    var support_nb = $(parent.find('.support-nb').first())
    var opposit_support_nb = $(opposit.find('.support-nb').first())
+   var item = $($this.parents('.search-item').first())
    if(action_url){
      loading_progress()
      $.getJSON(action_url,{}, function(data) {
@@ -496,6 +497,8 @@ $(document).on('click', '.proposal-support .token:not(.disabled)', function(){
               $('.proposal-support:not(.my-support) .token.active').removeClass('active').addClass('disabled')
             }
           }
+          data.search_item = item
+          update_components(data)
         });
    }
 

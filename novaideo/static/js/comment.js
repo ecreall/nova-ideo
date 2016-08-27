@@ -295,6 +295,7 @@ $(document).ready(function(){
                     novaideo_translate("Your comment is not integrated") ).show().fadeOut( 6000 );
                 };
                 $(button).removeClass('disabled');
+                update_components(data)
               }});
               
         }else{
@@ -366,6 +367,7 @@ $(document).ready(function(){
                 $(commentmessagedanger).text(
                   novaideo_translate("Your comment is not integrated") ).show().fadeOut( 6000 );
               };
+              update_components(data)
           }});
         }else{
            var errormessage = '';
@@ -475,6 +477,7 @@ $(document).ready(function(){
                         novaideo_translate("Your message is not delivered") ).show().fadeOut( 6000 );
                   };
                   $(button).removeClass('disabled');
+                  update_components(data)
               });
               finish_progress();
         }else{

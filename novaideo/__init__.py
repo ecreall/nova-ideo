@@ -50,6 +50,10 @@ def get_novaideo_title():
     return getSite().title
 
 
+def ajax_api(request):
+    return 'novaideoapi'
+
+
 def my_locale_negotiator(request):
     return request.accept_language.best_match(('en', 'fr'), 'fr')
 
@@ -339,6 +343,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     config = Configurator(settings=settings, root_factory=root_factory)
+    config.add_request_method(ajax_api, reify=True)
     config.add_request_method(moderate_ideas, reify=True)
     config.add_request_method(content_to_examine, reify=True)
     config.add_request_method(content_to_support, reify=True)

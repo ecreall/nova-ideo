@@ -8,13 +8,15 @@ import pytz
 from pyramid.view import view_config
 from pyramid import renderers
 from persistent.list import PersistentList
+from pyramid.threadlocal import get_current_registry
 
 from substanced.util import get_oid
 
+from daceui.interfaces import IDaceUIAPI
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import (
     find_catalog, getAllBusinessAction, getBusinessAction,
-    getSite, get_obj)
+    getSite, get_obj, find_service)
 from dace.objectofcollaboration.principal.util import (
     get_current)
 from dace.objectofcollaboration.entity import Entity
@@ -35,6 +37,8 @@ from novaideo.content.interface import (
     Iidea)
 from novaideo.utilities.util import (
     render_small_listing_objs, extract_keywords)
+from novaideo.utilities.pseudo_react import (
+    get_components_data, get_all_updated_data)
 from novaideo.views.filter import find_entities, FILTER_SOURCES
 from novaideo import _
 
@@ -261,7 +265,11 @@ class NovaideoAPI(IndexManagementJsonView):
             present_view_instance.update()
             result_view = SentToView(self.context, self.request)
             body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            return {'body': body}
+            result = {'body': body}
+            result.update(get_components_data(
+                **get_all_updated_data(action, self.request,
+                    self.context, self)))
+            return result
 
         return {'body': ''}
 
@@ -283,7 +291,12 @@ class NovaideoAPI(IndexManagementJsonView):
             result_view = DiscussCommentsView(self.context, self.request)
             result_view.comments = comments
             body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            return {'body': body}
+            result = {'body': body}
+            result.update(get_components_data(
+                **get_all_updated_data(
+                    action, self.request, self.context,
+                    self, channel=channel)))
+            return result
 
         return {'body': ''}
 
@@ -324,7 +337,11 @@ class NovaideoAPI(IndexManagementJsonView):
             result_view = CommentsView(self.context, self.request)
             result_view.comments = comments
             body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            return {'body': body}
+            result = {'body': body}
+            result.update(get_components_data(
+                **get_all_updated_data(
+                    action, self.request, self.context, self)))
+            return result
 
         return {'body': ''}
 
@@ -404,7 +421,11 @@ class NovaideoAPI(IndexManagementJsonView):
             result_view = CommentsView(self.context, self.request)
             result_view.comments = comments
             body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            return {'body': body}
+            result = {'body': body}
+            result.update(get_components_data(
+                **get_all_updated_data(
+                    action, self.request, self.context, self)))
+            return result
 
         return {'body': ''}
 
@@ -471,7 +492,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 action.validate(self.context, self.request)
                 action.before_execution(self.context, self.request)
                 action.execute(self.context, self.request, appstruct)
-                return {'state': True}
+                return {'state': True, 'action_obj': action}
             except Exception:
                 return {'state': False}
 
@@ -498,9 +519,12 @@ class NovaideoAPI(IndexManagementJsonView):
                     self.context, 'novaideoapi',
                     query={'op': 'support_idea'})
                 result['opposit_title'] = localizer.translate(_('Support'))
-        
+
         user = get_current()
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result.update(get_components_data(
+            **get_all_updated_data(
+                result.pop('action_obj', None), self.request, self.context, self)))
         return result
 
     def oppose_proposal(self):
@@ -527,6 +551,10 @@ class NovaideoAPI(IndexManagementJsonView):
 
         user = get_current()
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result.update(get_components_data(
+            **get_all_updated_data(
+                result.pop('action_obj', None),
+                self.request, self.context, self)))
         return result
 
     def support_idea(self):
@@ -553,6 +581,10 @@ class NovaideoAPI(IndexManagementJsonView):
 
         user = get_current()
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result.update(get_components_data(
+            **get_all_updated_data(
+                result.pop('action_obj', None),
+                self.request, self.context, self)))
         return result
 
     def support_proposal(self):
@@ -579,6 +611,10 @@ class NovaideoAPI(IndexManagementJsonView):
 
         user = get_current()
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result.update(get_components_data(
+            **get_all_updated_data(
+                result.pop('action_obj', None),
+                self.request, self.context, self)))
         return result
 
     def withdraw_token_idea(self):
@@ -595,6 +631,10 @@ class NovaideoAPI(IndexManagementJsonView):
 
         user = get_current()
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result.update(get_components_data(
+            **get_all_updated_data(
+                result.pop('action_obj', None),
+                self.request, self.context, self)))
         return result
 
     def withdraw_token_proposal(self):
@@ -612,6 +652,10 @@ class NovaideoAPI(IndexManagementJsonView):
 
         user = get_current()
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result.update(get_components_data(
+            **get_all_updated_data(
+                result.pop('action_obj', None),
+                self.request, self.context, self)))
         return result
 
     def update_notification_id(self):
@@ -656,3 +700,72 @@ class NovaideoAPI(IndexManagementJsonView):
                 pass
 
         return {'body': ''}
+
+    def _get_start_action(self):
+        action = None
+        pd_id = self.params('pd_id')
+        action_id = self.params('action_id')
+        behavior_id = self.params('behavior_id')
+        def_container = find_service('process_definition_container')
+        pd = def_container.get_definition(pd_id)
+        start_wi = pd.start_process(action_id)[action_id]
+        for start_action in start_wi.actions:
+            if start_action.behavior_id == behavior_id:
+                action = start_action
+                break
+
+        return action
+
+    def update_action(self, action=None, context=None):
+        result = {}
+        action_uid = self.params('action_uid')
+        try:
+            if action_uid is not None:
+                action = get_obj(int(action_uid))
+            else:
+                action = self._get_start_action()
+        except Exception:
+            return {}#message erreur
+
+        context_uid = self.params('context_uid')
+        try:
+            if context_uid is not None:
+                context = get_obj(int(context_uid))
+        except Exception:
+            pass
+
+        dace_ui_api = get_current_registry().getUtility(
+            IDaceUIAPI, 'dace_ui_api')
+        body = dace_ui_api.get_action_body(
+            context, self.request, action)
+        result = {'body': body}
+        result.update(get_components_data(
+            **get_all_updated_data(
+                action, self.request, context, self)))
+        return result
+
+    def after_execution_action(self):
+        action_uid = self.params('action_uid')
+        context_uid = self.params('context_uid')
+        action = None
+        context = None
+        try:
+            if action_uid is not None:
+                action = get_obj(int(action_uid))
+            else:
+                action = self._get_start_action()
+
+        except Exception:
+            return {}#message erreur
+
+        try:
+            if context_uid is not None:
+                context = get_obj(int(context_uid))
+        except Exception:
+            pass
+
+        if action is not None and action.validate(context, self.request):
+            action.after_execution(context, self.request)
+
+        return {}#message erreur
+

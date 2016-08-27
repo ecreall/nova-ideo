@@ -43,6 +43,7 @@ class SelectEntity(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'communication-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-star-empty'
     style_order = 100
     isSequential = False
@@ -91,6 +92,7 @@ class DeselectEntity(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'communication-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-star'
     style_order = 101
     isSequential = False

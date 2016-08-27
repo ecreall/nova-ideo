@@ -117,6 +117,9 @@
     <script src="${request.static_url('novaideo:static/jsnetworkx/jsnetworkx.js')}"
         type="text/javascript"></script>
 
+    <script src="${su('novaideo:static/js/pseudo_react.js')}"
+          type="text/javascript"></script>
+
     <script src="${request.static_url('novaideo:static/emoji/emoji.js')}" type="text/javascript"></script>
     <script src="${request.static_url('novaideo:static/emoji/jquery.emoji.js')}" type="text/javascript"></script>
 

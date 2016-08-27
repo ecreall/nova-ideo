@@ -36,12 +36,30 @@ function update_modal_action(event){
            focus_on_form(modal_container)
            return false
         }else{
-           location.reload();
+          data.search_item = $(action.parents('.result-item.search-item').first())
+          update_components(data)
+           // location.reload();
            return false
         }
     });
     return false;
 };
+
+
+function update_direct_action(event){
+    var action = $(this).closest('.dace-action-direct')
+    var url = action.data('updateurl');
+    loading_progress()
+    $.getJSON(url,{}, function(data) {
+       finish_progress()
+       var id = action.attr('id')
+       data.search_item = $($('[id="'+id+'"]').parents('.result-item.search-item').first())
+       update_components(data)
+       return false
+    });
+    return false;
+};
+
 
 function update_inline_action(){
     var $this = $(this)
@@ -166,6 +184,8 @@ $(document).on('click', '.dace-action-sidebar', update_sidebar_action);
 $(document).on('click', '.dace-action-popover', update_popover_action);
 
 $(document).on('click', 'a.dace-action-modal', update_modal_action);
+
+$(document).on('click', '.dace-action-direct', update_direct_action);
 
 
 $(document).on('click', function(event){

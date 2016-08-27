@@ -571,6 +571,7 @@ ALL_DESCRIMINATORS = ['global-action',
                       'text-action',
                       'lateral-action',
                       'primary-action',
+                      'listing-primary-action',
                       'admin-action',
                       'wg-action',
                       'plus-action',
@@ -757,8 +758,12 @@ def generate_navbars(request, context, **args):
         actions_navbar.pop('admin-action'))
     actions_navbar['global-action'].extend(
         args.get('global_action', []))
+    actions_navbar['global-action'].extend(
+        actions_navbar.pop('primary-action'))
     actions_navbar['text-action'].extend(
         args.get('text_action', []))
+    actions_navbar['plus-action'].extend(
+        actions_navbar.pop('listing-primary-action'))
     actions_navbar['plus-action'].extend(
         args.get('plus_action', []))
     actions_navbar['body-action'].extend(
@@ -822,8 +827,12 @@ def generate_listing_menu(request, context, **args):
        context is not request.root:
         raise ObjectRemovedException("Object removed")
 
-    #for listing navbars merge actions (not actions to unmerge) 
+    #for listing navbars merge actions (not actions to unmerge)
     actions_navbar['actions'] = []
+    if 'primary-action' in actions_navbar:
+        actions_navbar['primary-action'].extend(
+            actions_navbar.pop('listing-primary-action'))
+
     tounmerge = [
         'communication-action', 'wg-action', 'primary-action',
         'communication-body-action']
