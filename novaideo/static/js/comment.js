@@ -136,12 +136,15 @@ function update_replay(url){
            container.append($(action_body));
            init_emoji($(container.find('.emoji-container:not(.emojified)')));
            var replay_bloc = $($(target).parents('ul.replay-bloc').first());
-           var commentli = $($(target).parents('.commentli').first());
+           var commentdata = $(replay_bloc.find('.comment-data').first());
+           var commentli = $(replay_bloc.parents('.commentli').first());
            $(container.find('button.close').first()).on('click', function(){
               replay_bloc.css('display', 'none');
+              commentdata.removeClass('replay-active')
               commentli.removeClass('replay-active')
            });
            replay_bloc.slideDown()
+           commentdata.addClass('replay-active')
            commentli.addClass('replay-active')
            var textareainput = $(replay_bloc.find('textarea').first())
            textareainput.val(textareainput.val()).focus()

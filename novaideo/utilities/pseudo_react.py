@@ -198,26 +198,28 @@ def get_discuss_metadata(action, request, context, api, **kwargs):
 
 def get_respond_metadata(action, request, context, api, **kwargs):
     channel = context.channel
-    comment_actions = getAllBusinessAction(
-        channel.subject, request, node_id='comment',
-        process_discriminator='Application')
-    comment_actions.extend(getAllBusinessAction(
-        channel.subject, request, node_id='discuss',
-        process_discriminator='Application'))
+    subject = channel.subject
     result = {
         'action': 'footer_action',
         'view': api}
-    if comment_actions:
-        action = comment_actions[0]
-        actionoid = str(getattr(action, '__oid__', 'commentacionid'))
-        contextoid = str(getattr(
-            channel.subject, '__oid__', 'commentcontextid'))
-        result.update({
-            'footer_action_id': actionoid + '-' + contextoid,
-            'action_item_nb': channel.len_comments,
-            'action_title': action.title,
-            'action_icon': getattr(action, 'style_picto', ''),
-        })
+    if subject:
+        comment_actions = getAllBusinessAction(
+            subject, request, node_id='comment',
+            process_discriminator='Application')
+        comment_actions.extend(getAllBusinessAction(
+            subject, request, node_id='discuss',
+            process_discriminator='Application'))
+        if comment_actions:
+            action = comment_actions[0]
+            actionoid = str(getattr(action, '__oid__', 'commentacionid'))
+            contextoid = str(getattr(
+                subject, '__oid__', 'commentcontextid'))
+            result.update({
+                'footer_action_id': actionoid + '-' + contextoid,
+                'action_item_nb': channel.len_comments,
+                'action_title': action.title,
+                'action_icon': getattr(action, 'style_picto', ''),
+            })
 
     return result
 

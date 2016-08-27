@@ -421,7 +421,12 @@ li.comment-text-search-container {
   color: #bcbbba;
 }
 
-.commentli:not(.replay-active) .comment-data:hover{
+.commentli.replay-active> .comment-data{
+    margin-bottom: 0px !important;
+    padding: 0px;
+}
+
+.comment-data:hover:not(.replay-active){
     background-color: #f4f4f4;
     .footer-actions-bodies a,
     .primary-actions a,
