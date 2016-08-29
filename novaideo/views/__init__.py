@@ -40,7 +40,7 @@ from novaideo.utilities.util import (
 from novaideo.utilities.pseudo_react import (
     get_components_data, get_all_updated_data)
 from novaideo.views.filter import find_entities, FILTER_SOURCES
-from novaideo import _
+from novaideo import _, log
 
 
 ALL_VALUES_KEY = "*"
@@ -377,24 +377,40 @@ class NovaideoAPI(IndexManagementJsonView):
                 behaviors=[action],
                 only_form=True)
             node_view_instance.update()
-            return {'status': True}
+            return {'status': True, 'action_obj': action}
 
-        return {'status': False}
+        return {'status': False, 'action_obj': None}
 
     def pin_comment(self):
-        return self.execute_action('pin')
+        result = self.execute_action('pin')
+        result.pop('action_obj')
+        return result
 
     def unpin_comment(self):
-        return self.execute_action('unpin')
+        result = self.execute_action('unpin')
+        result.pop('action_obj')
+        return result
 
     def remove_comment(self):
-        return self.execute_action('remove')
+        channel = self.context.channel
+        subject = channel.subject
+        result = self.execute_action('remove')
+        action = result.pop('action_obj')
+        if subject:
+            result.update(get_components_data(
+                **get_all_updated_data(
+                    action, self.request,
+                    subject, self, channel=channel)))
+        return result
 
     def update_comment(self):
         comment_id = self.params('comment_id')
         if comment_id:
             try:
                 comment = get_obj(int(comment_id))
+                if not comment:
+                    return {'body': '', 'removed': True}
+
                 result_view = CommentsView(self.context, self.request)
                 result_view.comments = [comment]
                 body = result_view.update()['coordinates'][result_view.coordinates][0]['body']

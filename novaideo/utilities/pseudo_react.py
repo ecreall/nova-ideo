@@ -259,6 +259,33 @@ def get_create_idea_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_remove_comment_metadata(action, request, context, api, **kwargs):
+    result = {
+        'action': 'footer_action',
+        'view': api}
+    channel = kwargs.get('channel')
+    if context:
+        comment_actions = getAllBusinessAction(
+            context, request, node_id='comment',
+            process_discriminator='Application')
+        comment_actions.extend(getAllBusinessAction(
+            context, request, node_id='discuss',
+            process_discriminator='Application'))
+        if comment_actions:
+            action = comment_actions[0]
+            actionoid = str(getattr(action, '__oid__', 'entityoid'))
+            contextoid = str(getattr(
+                context, '__oid__', 'entityoid'))
+            result.update({
+                'footer_action_id': actionoid + '-' + contextoid,
+                'action_item_nb': channel.len_comments,
+                'action_title': action.title,
+                'action_icon': getattr(action, 'style_picto', ''),
+            })
+
+    return result
+
+
 METADATA_GETTERS = {
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
@@ -278,6 +305,7 @@ METADATA_GETTERS = {
     'usermanagement.discuss': get_discuss_metadata,
 
     'commentmanagement.respond': get_respond_metadata,
+    'commentmanagement.remove': get_remove_comment_metadata,
 
     'proposalmanagement.present': get_present_metadata,
     'ideamanagement.present': get_present_metadata,

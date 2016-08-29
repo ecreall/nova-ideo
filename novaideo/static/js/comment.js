@@ -191,11 +191,16 @@ function update_comment(element){
   var url = $('body').data('api_url')
   $.post(url, {op: 'update_comment',
               comment_id: element.data('comment_id')}, function(data){
-    var content = $(data.body).find('.commentulorigin');
-    if (content){
-       init_emoji($(content.find('.emoji-container:not(.emojified)')));
-       element.replaceWith($($(content).find('li.commentli').first()))
-      }        
+    if(data.removed){
+      element.remove()
+      var component = $($('.dace-action-sidebar.activated>span').first())
+    }else{
+      var content = $(data.body).find('.commentulorigin');
+      if (content){
+         init_emoji($(content.find('.emoji-container:not(.emojified)')));
+         element.replaceWith($($(content).find('li.commentli').first()))
+        }
+    }     
   })
 
 }
@@ -594,6 +599,7 @@ $(document).ready(function(){
             success: function(data) {
               update_comment($(action.parents('li.commentli').last()))
               $($this.parents('.modal').first()).modal('hide')
+              update_components(data)
           }})
 
         event.preventDefault();
