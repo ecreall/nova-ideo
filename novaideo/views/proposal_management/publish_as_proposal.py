@@ -91,8 +91,9 @@ class PublishFormView(CreateProposalFormView):
     def default_data(self):
         localizer = self.request.localizer
         title = self.context.title + \
-                    localizer.translate(_(" (the proposal)"))
+            localizer.translate(_(" (the proposal)"))
         data = {'title': title,
+                'description': self.context.text,
                 'text': self.context.text,
                 'keywords': self.context.keywords,
                 'related_ideas': [self.context]}
