@@ -31,6 +31,10 @@ class EditIdeaFormView(FormView):
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
     name = 'editIdea'
 
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'editidea')
+
     def default_data(self):
         return self.context
 

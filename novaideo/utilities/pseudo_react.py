@@ -57,9 +57,20 @@ def get_footer_action_updated_data(view, **kwargs):
     return result
 
 
+def get_redirect_updated_data(view, **kwargs):
+    result = {}
+    action_id = kwargs.get('action_id', None)
+    if action_id:
+        result['action_id'] = action_id
+        result['redirect_url'] = [kwargs.get('redirect_url')]
+
+    return result
+
+
 DATA_GETTERS = {
     'support_action': [get_navbar_updated_data],
-    'footer_action': [get_footer_action_updated_data, get_navbar_updated_data]
+    'footer_action': [get_footer_action_updated_data, get_navbar_updated_data],
+    'redirect_action': [get_redirect_updated_data]
 }
 
 
@@ -97,11 +108,11 @@ def get_selection_metadata(action, request, context, api, **kwargs):
             IDaceUIAPI, 'dace_ui_api')
         opposit_action_inf = dace_ui_api.action_infomrations(
             opposit_action, context, request)
-        actionoid = str(getattr(action, '__oid__', 'commentacionid'))
+        actionoid = str(getattr(action, '__oid__', 'entityoid'))
         oppositactionoid = str(getattr(
-            opposit_action, '__oid__', 'commentacionid'))
+            opposit_action, '__oid__', 'entityoid'))
         contextoid = str(getattr(
-            context, '__oid__', 'commentcontextid'))
+            context, '__oid__', 'entityoid'))
         len_selection = getattr(context, 'len_selections', 0)
         len_all_selection = len(getattr(user, 'selections', 0))
         index = str(len_all_selection)
@@ -166,9 +177,9 @@ def get_support_metadata(action, request, context, api, **kwargs):
 
 
 def get_comment_metadata(action, request, context, api, **kwargs):
-    actionoid = str(getattr(action, '__oid__', 'commentacionid'))
+    actionoid = str(getattr(action, '__oid__', 'entityoid'))
     contextoid = str(getattr(
-        context, '__oid__', 'commentcontextid'))
+        context, '__oid__', 'entityoid'))
     result = {
         'action': 'footer_action',
         'view': api,
@@ -181,9 +192,9 @@ def get_comment_metadata(action, request, context, api, **kwargs):
 
 
 def get_discuss_metadata(action, request, context, api, **kwargs):
-    actionoid = str(getattr(action, '__oid__', 'commentacionid'))
+    actionoid = str(getattr(action, '__oid__', 'entityoid'))
     contextoid = str(getattr(
-        context, '__oid__', 'commentcontextid'))
+        context, '__oid__', 'entityoid'))
     channel = kwargs.get('channel', None)
     result = {
         'action': 'footer_action',
@@ -211,9 +222,9 @@ def get_respond_metadata(action, request, context, api, **kwargs):
             process_discriminator='Application'))
         if comment_actions:
             action = comment_actions[0]
-            actionoid = str(getattr(action, '__oid__', 'commentacionid'))
+            actionoid = str(getattr(action, '__oid__', 'entityoid'))
             contextoid = str(getattr(
-                subject, '__oid__', 'commentcontextid'))
+                subject, '__oid__', 'entityoid'))
             result.update({
                 'footer_action_id': actionoid + '-' + contextoid,
                 'action_item_nb': channel.len_comments,
@@ -225,9 +236,9 @@ def get_respond_metadata(action, request, context, api, **kwargs):
 
 
 def get_present_metadata(action, request, context, api, **kwargs):
-    actionoid = str(getattr(action, '__oid__', 'commentacionid'))
+    actionoid = str(getattr(action, '__oid__', 'entityoid'))
     contextoid = str(getattr(
-        context, '__oid__', 'commentcontextid'))
+        context, '__oid__', 'entityoid'))
     result = {
         'action': 'footer_action',
         'view': api,
@@ -235,6 +246,15 @@ def get_present_metadata(action, request, context, api, **kwargs):
         'action_item_nb': context.len_contacted,
         'action_title': action.title,
         'action_icon': getattr(action, 'style_picto', ''),
+    }
+    return result
+
+
+def get_create_idea_metadata(action, request, context, api, **kwargs):
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': request.resource_url(context, '@@index')
     }
     return result
 

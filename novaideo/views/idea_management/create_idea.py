@@ -50,6 +50,8 @@ class CreateIdeaView(FormView):
     name = 'createidea'
 
     def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'createidea')
         self.schema.widget = deform.widget.FormWidget(
             css_class='material-form deform')
 

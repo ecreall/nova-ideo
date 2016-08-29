@@ -39,6 +39,10 @@ class DuplicateIdeaView(FormView):
     formid = 'formduplicateidea'
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
 
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'duplicateidea')
+
     def default_data(self):
         data = self.context.get_data(self.schema)
         files = []

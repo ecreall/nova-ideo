@@ -91,10 +91,19 @@ function list_items_component(data){
 	}
 }
 
+
+function redirect_component(data){
+	if (data.redirect_url){
+		 window.location.replace(data.redirect_url)
+    }
+}
+
+
 var pseudo_react_components = {
 	'support_action': [nav_bar_component, view_title_component, list_items_component],
 	'footer_action': [nav_bar_component, footer_action_component,
-	                  view_title_component, list_items_component]
+	                  view_title_component, list_items_component],
+	'redirect_action': [redirect_component]
 }
 
 function update_components(data){
