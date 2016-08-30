@@ -469,6 +469,32 @@ class ArchiveIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def archive_roles_validation(process, context):
+    return has_role(role=('Moderator',))
+
+
+def archive_processsecurity_validation(process, context):
+    return not context.target_correlations and\
+        global_user_processsecurity(process, context)
+
+
+def archive_state_validation(process, context):
+    return 'published' in context.state
+
+
+class ModerationArchiveIdea(ArchiveIdea):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'plus-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-inbox'
+    style_order = 4
+    submission_title = _('Continue')
+    context = Iidea
+    roles_validation = archive_roles_validation
+    processsecurity_validation = archive_processsecurity_validation
+    state_validation = archive_state_validation
+
+
 class PublishIdeaModeration(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'

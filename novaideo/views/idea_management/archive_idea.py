@@ -15,7 +15,8 @@ from pontus.default_behavior import Cancel
 from pontus.schema import Schema
 
 from novaideo.views.widget import LimitedTextAreaWidget
-from novaideo.content.processes.idea_management.behaviors import ArchiveIdea
+from novaideo.content.processes.idea_management.behaviors import (
+    ArchiveIdea, ModerationArchiveIdea)
 from novaideo.content.idea import Idea
 from novaideo import _
 
@@ -67,6 +68,33 @@ class ArchiveIdeaViewMultipleView(MultipleView):
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (ArchiveIdeaViewStudyReport, ArchiveIdeaView)
     validators = [ArchiveIdea.get_validator()]
+
+
+class ModerationArchiveIdeaView(FormView):
+    title = _('Archive')
+    name = 'moderationarchiveideaform'
+    formid = 'formmoderationarchiveidea'
+    schema = ArchiveIdeaSchema()
+    behaviors = [ModerationArchiveIdea, Cancel]
+    validate_behaviors = False
+
+
+@view_config(
+    name='moderationarchiveidea',
+    context=Idea,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class ModerationArchiveIdeaViewMultipleView(MultipleView):
+    title = _('Archive the idea')
+    name = 'moderationarchiveidea'
+    viewid = 'moderationarchiveidea'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    views = (ArchiveIdeaViewStudyReport, ModerationArchiveIdeaView)
+    validators = [ModerationArchiveIdea.get_validator()]
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {ModerationArchiveIdea: ModerationArchiveIdeaViewMultipleView})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

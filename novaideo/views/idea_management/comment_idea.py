@@ -128,7 +128,7 @@ class CommentsView(BasicView):
         batch.origin_url = url
         body, resources = self._rendre_comments(
             batch, current_user, True, batch,
-            unreaded_comments)
+            unreaded_comments, filtered)
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         result.update(resources)
