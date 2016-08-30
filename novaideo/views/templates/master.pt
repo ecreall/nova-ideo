@@ -70,7 +70,7 @@
     <div tal:omit-tag=""
          tal:define="favicon getattr(request.root, 'favicon', None)">
         <link rel="shortcut icon"
-              href="${favicon.url if favicon else su('substanced.sdi:static/img/favicon.ico')}">
+              href="${favicon.url if favicon else su('novaideo:static/images/favicon-novaideo.ico')}">
     </div>
 
     <!-- Chart -->
