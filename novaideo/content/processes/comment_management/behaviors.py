@@ -226,7 +226,11 @@ class Edit(InfiniteCardinality):
         context.edited = True
         content = context.subject
         user = get_current()
-        if appstruct['related_contents']:
+        if context.related_correlation and\
+           not appstruct['related_contents']:
+            root = getSite()
+            root.delfromproperty('correlations', context.related_correlation)
+        elif appstruct['related_contents']:
             related_contents = appstruct['related_contents']
             correlation = connect(
                 content,
@@ -264,6 +268,11 @@ class Remove(InfiniteCardinality):
     processsecurity_validation = rm_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        if context.related_correlation:
+            root.delfromproperty(
+                'correlations', context.related_correlation)
+
         context.__parent__.delfromproperty('comments', context)
         return {}
 
