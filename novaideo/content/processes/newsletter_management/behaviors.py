@@ -69,7 +69,7 @@ def get_adapted_content(email, request):
 
 def send_newsletter_content(newsletter, request):
     root = newsletter.__parent__
-    subject = getattr(newsletter, 'subject', newsletter.title)
+    subject_base = getattr(newsletter, 'subject', newsletter.title)
     mail_template = newsletter.content
     include_adapted_content = mail_template.find("{content}") >= 0
     sender = root.get_site_sender()
@@ -89,7 +89,7 @@ def send_newsletter_content(newsletter, request):
             content = get_adapted_content(email, request) if \
                 include_adapted_content else ''
             logo = getattr(root, 'picture', None)
-            subject = subject.format(
+            subject = subject_base.format(
                 first_name=first_name,
                 last_name=last_name,
                 application_title=root.title,
@@ -111,7 +111,7 @@ def send_newsletter_content(newsletter, request):
     newsletter.annotations.setdefault(
         'newsletter_history', PersistentList()).append(
         {'date': now,
-         'subject': subject,
+         'subject': subject_base,
          'content': newsletter.content
         })
     newsletter.content = newsletter.get_content_template()
