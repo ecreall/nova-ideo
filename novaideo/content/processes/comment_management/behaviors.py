@@ -99,6 +99,9 @@ class Respond(InfiniteCardinality):
         channel = comment.channel
         is_discuss = channel.is_discuss()
         channel.add_comment(comment, comment.created_at)
+        if not is_discuss and content:
+            content.subscribe_to_channel(user)
+
         if appstruct['related_contents']:
             related_contents = appstruct['related_contents']
             correlation = connect(
