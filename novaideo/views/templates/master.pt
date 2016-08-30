@@ -16,7 +16,7 @@
     <more tal:omit-tag="" metal:define-slot="head-first"></more>
 
     <meta charset="utf-8"/>
-    <title metal:define-slot="page-title">${view.title | request.sdiapi.sdi_title()}</title>
+    <title metal:define-slot="page-title">${view.title if view.title else getattr(request.root, 'title', '')}</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0"/>
 
