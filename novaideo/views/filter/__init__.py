@@ -1372,32 +1372,36 @@ def get_contents_by_dates(
     return result, object_ids.__len__()
 
 
-def get_comments(channel, filters, text_to_search=''):
+def get_comments(channel, filters, text_to_search='', filtered=False):
     if not channel:
         return []
 
     and_op = QUERY_OPERATORS.get('and', 'default')
     novaideo_index = find_catalog('novaideo')
     dace_index = find_catalog('dace')
-    container_oid = dace_index['container_oid']
-    query = container_oid.eq(channel.__oid__)
-    filter_query = None
-    if 'associations' in filters:
-        has_related_contents = novaideo_index['has_related_contents']
-        filter_query = and_op(
-            filter_query, has_related_contents.eq(True))
+    if not filtered:
+        container_oid = dace_index['container_oid']
+        query = container_oid.eq(channel.__oid__)
+    else:
+        container_oid = dace_index['containers_oids']
+        query = container_oid.any([channel.__oid__])
+        filter_query = None
+        if 'associations' in filters:
+            has_related_contents = novaideo_index['has_related_contents']
+            filter_query = and_op(
+                filter_query, has_related_contents.eq(True))
 
-    if 'file' in filters:
-        has_file = novaideo_index['has_file']
-        filter_query = and_op(
-            filter_query, has_file.eq(True))
+        if 'file' in filters:
+            has_file = novaideo_index['has_file']
+            filter_query = and_op(
+                filter_query, has_file.eq(True))
 
-    if 'pinned' in filters:
-        is_pinned = novaideo_index['is_pinned']
-        filter_query = and_op(
-            filter_query, is_pinned.eq(True))
+        if 'pinned' in filters:
+            is_pinned = novaideo_index['is_pinned']
+            filter_query = and_op(
+                filter_query, is_pinned.eq(True))
 
-    query = and_op(query, filter_query)
+        query = and_op(query, filter_query)
 
     objects = find_entities(
         interfaces=[IComment],

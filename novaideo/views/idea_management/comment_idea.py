@@ -50,7 +50,8 @@ class CommentsView(BasicView):
 
     def _rendre_comments(
         self, comments, current_user,
-        origin=False, batch=None, unreaded_comments=[]):
+        origin=False, batch=None, unreaded_comments=[],
+        filtered=False):
         all_comments = []
         resources = {'css_links': [], 'js_links': []}
         for obj in comments:
@@ -73,6 +74,7 @@ class CommentsView(BasicView):
         values = {
             'comments': all_comments,
             'unreaded_comments': unreaded_comments,
+            'filtered': filtered,
             'current_user': current_user,
             'view': self,
             'origin': origin,
@@ -91,14 +93,18 @@ class CommentsView(BasicView):
         channel = self._get_channel(current_user)
         is_selected = hasattr(self, 'comments')
         text_to_search = self.params('text')
+        filtered = False
         if not is_selected:
             filters = self.params('filters')
             filters = filters if filters else []
             if not isinstance(filters, (list, tuple)):
                 filters = [filters]
 
+            filtered = text_to_search or\
+                any(f in filters for f in ['associations', 'file', 'pinned'])
+
             objects = get_comments(
-                channel, filters, text_to_search)
+                channel, filters, text_to_search, filtered)
         else:
             objects = sorted(
                 getattr(self, 'comments', []),

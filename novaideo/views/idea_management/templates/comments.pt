@@ -149,24 +149,24 @@
                  </blockquote>
                 </small>
               </div>     
-             <div class="pull-right" tal:define="commentlen len(comment.comments)">
-                  <span tal:condition="commentlen-level > 0" 
-                        class="comment-replay-nb closed"
-                        onclick="javascript:replays_show(this);">
-                      <small><span class="glyphicon glyphicon-chevron-down"></span> 
-                      <span class="comment-replay-message-opened" i18n:translate="">View all <span i18n:name="commentlen">${commentlen}</span> responses</span>
-                      <span class="comment-replay-message-closed hide-bloc" i18n:translate="">Hide responses</span>
-                    </small>
-                  </span>
-                    <span tal:condition="commentlen-level <= 0 and commentlen > 0" 
-                        class="comment-replay-nb disabled">
-                        <small>
-                            <span tal:condition="commentlen==1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> response</span>
-                            <span tal:condition="commentlen>1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> responses</span>
-                        </small>
-                    </span>
+              <div tal:condition="not filtered" class="pull-right" tal:define="commentlen len(comment.comments)">
+                <span tal:condition="commentlen-level > 0" 
+                      class="comment-replay-nb closed"
+                      onclick="javascript:replays_show(this);">
+                  <small>
+                    <span class="glyphicon glyphicon-chevron-down"></span> 
+                    <span class="comment-replay-message-opened" i18n:translate="">View all <span i18n:name="commentlen">${commentlen}</span> responses</span>
+                    <span class="comment-replay-message-closed hide-bloc" i18n:translate="">Hide responses</span>
+                  </small>
+                </span>
+                <span tal:condition="commentlen-level <= 0 and commentlen > 0" 
+                    class="comment-replay-nb disabled">
+                  <small>
+                    <span tal:condition="commentlen==1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> response</span>
+                    <span tal:condition="commentlen>1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> responses</span>
+                  </small>
+                </span>
               </div>
-
 
             <div class="footer-actions-bodies">
               <div tal:repeat="a item['footer_actions_body']" >
@@ -185,7 +185,7 @@
             </div>
           </li>
          </ul>
-        <div tal:define="(body, r) view._rendre_comments(comment.comments, current_user, unreaded_comments=unreaded_comments)" tal:replace="structure body" />
+        <div tal:condition="not filtered"  tal:define="(body, r) view._rendre_comments(comment.comments, current_user, unreaded_comments=unreaded_comments)" tal:replace="structure body" />
       </li>
     </tal:loop>
       <li class="commentli comment-preview hide-bloc" tal:define="current_picture getattr(current_user, 'picture', None)">

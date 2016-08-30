@@ -270,8 +270,7 @@ class Remove(InfiniteCardinality):
 
 
 def pin_processsecurity_validation(process, context):
-    return not isinstance(getattr(context, '__parent__', None), Comment) and\
-        not getattr(context, 'pinned',  False) and\
+    return not getattr(context, 'pinned',  False) and\
         global_user_processsecurity(process, context)
 
 
@@ -297,8 +296,7 @@ class Pin(InfiniteCardinality):
 
 
 def unpin_processsecurity_validation(process, context):
-    return not isinstance(getattr(context, '__parent__', None), Comment) and\
-        getattr(context, 'pinned',  False) and\
+    return getattr(context, 'pinned',  False) and\
         global_user_processsecurity(process, context)
 
 
