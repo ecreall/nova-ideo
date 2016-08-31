@@ -128,6 +128,7 @@ def get_subscribtion_metadata(action, request, context, api, **kwargs):
         'view': api,
     }
     subject = context.subject
+    user = get_current()
     new_channel = ''
     if subject:
         actions_call, action_resources = update_all_ajax_action(
@@ -135,7 +136,7 @@ def get_subscribtion_metadata(action, request, context, api, **kwargs):
         if actions_call:
             object_values = {
                 'object': context,
-                'current_user': get_current(),
+                'current_user': user,
                 'action_call': actions_call[0]}
             new_channel = renderers.render(
                 context.templates.get('default'),

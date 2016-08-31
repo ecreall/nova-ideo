@@ -134,10 +134,19 @@ function list_items_component(data){
 
 function list_channels_component(data){
 	if(data.removed && data.channel_item){
-        data.channel_item.remove()
+        var channel_len = $(data.channel_item.parents('.channels-block').find('.channel-title .channel-len').first())
+		var nb = parseInt(channel_len.text().replace('(', '').replace(')', ''))-1
+		channel_len.text('('+nb+')')
+		data.channel_item.remove()
 	}
 	if(!data.removed && data.new_components.length>0 && data.channels_target.length>0){
-	    data.channels_target.append(data.new_components)
+		var new_components = $(data.new_components[0])
+		$(new_components.find('a.channel-action')).addClass('activated')
+	    data.channels_target.append(new_components)
+		var channel_len = $(data.channels_target.parents('.channels-block').find('.channel-title .channel-len').first())
+		var nb = parseInt(channel_len.text().replace('(', '').replace(')', ''))+1
+		channel_len.text('('+nb+')')
+		
 	}
 }
 
