@@ -391,6 +391,24 @@ class NovaideoAPI(IndexManagementJsonView):
         result.pop('action_obj')
         return result
 
+    def unsubscribe_channel(self):
+        result = self.execute_action('unsubscribe')
+        action = result.pop('action_obj')
+        result.update(get_components_data(
+            **get_all_updated_data(
+                action, self.request,
+                self.context, self)))
+        return result
+
+    def subscribe_channel(self):
+        result = self.execute_action('subscribe')
+        action = result.pop('action_obj')
+        result.update(get_components_data(
+            **get_all_updated_data(
+                action, self.request,
+                self.context, self)))
+        return result
+
     def remove_comment(self):
         channel = self.context.channel
         subject = channel.subject

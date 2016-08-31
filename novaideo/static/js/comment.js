@@ -582,33 +582,15 @@ $(document).ready(function(){
       $(this).addClass('active')
   })
 
-  $(document).on('submit', '.comment-remove-form', function(event){
-        var $this = $(this)
-        var action = $($('.comment-remove-action.active').first())
-        var button = $this.find('button[type="submit"]').first();
-        var url = $(event.target).attr('action');
-        $(button).addClass('disabled');
-        var formData = new FormData($(this)[0]);
-        formData.append(button.val(), button.val())
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data:formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-              update_comment($(action.parents('li.commentli').last()))
-              $($this.parents('.modal').first()).modal('hide')
-              update_components(data)
-          }})
-
-        event.preventDefault();
-  })
-
   $(document).on('submit', '.comment-un-pin-form', function(event){
         var $this = $(this)
+        var button = $this.find('button.active[type="submit"]').first();
+        if(button.val() == 'Cancel'){
+          $($this.parents('.modal').first()).modal('hide');
+          event.preventDefault();
+          return
+        }
         var action = $($('.comment-un-pin-action.active').first())
-        var button = $this.find('button[type="submit"]').first();
         var url = $(event.target).attr('action');
         $(button).addClass('disabled');
         var formData = new FormData($(this)[0]);
@@ -636,7 +618,91 @@ $(document).ready(function(){
         event.preventDefault();
   })
 
-   $(document).on('hidden.bs.modal', '.modal', function(){
+  $(document).on('submit', '.comment-remove-form', function(event){
+        var $this = $(this)
+        var button = $this.find('button.active[type="submit"]').first();
+        if(button.val() == 'Cancel'){
+          $($this.parents('.modal').first()).modal('hide');
+          event.preventDefault();
+          return
+        }
+        var action = $($('.comment-remove-action.active').first())
+        var url = $(event.target).attr('action');
+        $(button).addClass('disabled');
+        var formData = new FormData($(this)[0]);
+        formData.append(button.val(), button.val())
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data:formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+              update_comment($(action.parents('li.commentli').last()))
+              $($this.parents('.modal').first()).modal('hide')
+              update_components(data)
+          }})
+
+        event.preventDefault();
+  })
+
+
+  $(document).on('submit', '.channel-unsubscribe-form', function(event){
+        var $this = $(this)
+        var button = $this.find('button.active[type="submit"]').first();
+        if(button.val() == 'Cancel'){
+          $($this.parents('.modal').first()).modal('hide');
+          event.preventDefault();
+          return
+        }
+        var url = $(event.target).attr('action');
+        $(button).addClass('disabled');
+        var formData = new FormData($(this)[0]);
+        formData.append(button.val(), button.val())
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data:formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+              $($this.parents('.modal').first()).modal('hide')
+              data.channel_item = $('.channel-action.ajax-action.activated')
+              data.removed = true
+              update_components(data)
+          }})
+
+        event.preventDefault();
+  })
+
+  $(document).on('submit', '.channel-subscribe-form', function(event){
+        var $this = $(this)
+        var button = $this.find('button.active[type="submit"]').first();
+        if(button.val() == 'Cancel'){
+          $($this.parents('.modal').first()).modal('hide');
+          event.preventDefault();
+          return
+        }
+        var url = $(event.target).attr('action');
+        $(button).addClass('disabled');
+        var formData = new FormData($(this)[0]);
+        formData.append(button.val(), button.val())
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data:formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+              $($this.parents('.modal').first()).modal('hide')
+              data.channels_target = $($('.channel-action.view-item').first().parents('div').first())
+              update_components(data)
+          }})
+        
+        event.preventDefault();
+  })
+
+  $(document).on('hidden.bs.modal', '.modal', function(){
         if($('.sidebar-right-background.toggled').length > 0){
           $('body').addClass('modal-open')
         }

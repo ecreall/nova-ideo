@@ -1,14 +1,28 @@
 <nav tal:define="text_action text_action|nothing;
                  global_action global_action|nothing;
                  plus_action plus_action|nothing"
-   tal:condition="text_action or global_action or plus_action" class="navbar navbar-entity" role="navigation">
+   tal:condition="text_action or global_action or plus_action" class="hidden-xs navbar navbar-entity navbar-channel" role="navigation" i18n:domain="novaideo">
   <div class="container-fluid">
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="navbar-entity-content" >
       <ul class="nav navbar-nav">
+        <li class="comment-text-search-container">
+                <span class="glyphicon glyphicon-search"></span>
+                <input class="comments-text-search"
+                       type="text"
+                       name="text_to_search"
+                       value=""
+                       i18n:attributes="placeholder"
+                       placeholder="Search"
+                       title="" >
+
+        </li>
         <tal:loop repeat="a text_action">
+
           <li tal:condition="not hasattr(a, 'url')">
-            <a class="${a.get('class_css','')} btn btn-sm"><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>
+            <a class="${a.get('class_css','')} btn btn-sm"
+               data-name="${a.get('name','')}"
+              ><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>
           </li>
           <li tal:condition="hasattr(a, 'url')">
             <a tal:condition="a not in ajax_actions" tal:attributes="href a.url(obj)" class="btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span> ${a.title}</a>
@@ -48,7 +62,8 @@
             <ul class="dropdown-menu">
                   <tal:loop repeat="a plus_action">
                     <li tal:condition="not hasattr(a, 'url')">
-                      <a class="${a.get('class_css','')}"><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>
+                      <a class="${a.get('class_css','')}"
+                      ><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>
                     </li>
                     <li tal:condition="hasattr(a, 'url')">
                       <a tal:condition="a not in ajax_actions"
@@ -73,7 +88,7 @@
                             data-body="${item['body']}"
                             data-icon="${icon}"
                             data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
-                            <span id="component-dropdown-action-${str(getattr(item['action'], '__oid__', 'actionoid'))+'-'+str(getattr(item['context'], '__oid__', 'contextoid' ))}">
+                           <span id="component-dropdown-action-${str(getattr(item['action'], '__oid__', 'actionoid'))+'-'+str(getattr(item['context'], '__oid__', 'contextoid' ))}">
                                <span class="${icon}" ></span> ${item['action'].title}
                             </span>
                          </a>
@@ -91,9 +106,11 @@
 
         <tal:loop repeat="a global_action">
           <li class="pull-right" tal:condition="not hasattr(a, 'url')">
-            <a class="${a.get('class_css','')} btn btn-sm"><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>
+            <a class="${a.get('class_css','')} btn btn-sm"
+               data-name="${a.get('name','')}"
+            ><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>
           </li>
-          <li class="pull-right">
+          <li tal:condition="hasattr(a, 'url')" class="pull-right">
             <a tal:condition="a not in ajax_actions" tal:attributes="href a.url(obj)" class="btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span> ${a.title}</a>
             <div tal:omit-tag="" 
                  tal:condition="a in ajax_actions"

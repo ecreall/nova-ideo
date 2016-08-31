@@ -27,8 +27,8 @@ from novaideo.views.filter import get_comments
 from novaideo.content.idea import Idea
 from novaideo.utilities.util import (
     date_delta, generate_listing_menu, ObjectRemovedException,
-    DEFAUL_LISTING_ACTIONS_TEMPLATE)
-from novaideo import _
+    DEFAUL_LISTING_ACTIONS_TEMPLATE, generate_navbars)
+from novaideo import _, log
 
 
 COMMENT_LEVEL = 2
@@ -42,6 +42,7 @@ class CommentsView(BasicView):
     validators = [CommentIdea.get_validator()]
     template = 'novaideo:views/idea_management/templates/comments.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/comments_scroll.pt'
+    channel_navbar_template = 'novaideo:views/channel_management/templates/channel_navbar_actions.pt'
     viewid = 'comments'
     action_id = 'comment'
 
@@ -130,6 +131,29 @@ class CommentsView(BasicView):
             batch, current_user, True, batch,
             unreaded_comments, filtered)
         item = self.adapt_item(body, self.viewid)
+        try:
+            filter_actions = [
+                {'title': _('Associations'),
+                 'class_css': 'comment-filter-action',
+                 'name': 'associations',
+                 'style_picto': 'glyphicon glyphicon-link'},
+                {'title': _('Attached files'),
+                 'class_css': 'comment-filter-action',
+                 'name': 'file',
+                 'style_picto': 'glyphicon glyphicon-paperclip'},
+                {'title': _('Pinned'),
+                 'class_css': 'comment-filter-action',
+                 'name': 'pinned',
+                 'style_picto': 'typcn typcn-pin'},
+            ]
+            navbars = generate_navbars(
+                self.request, channel,
+                template=self.channel_navbar_template,
+                global_action=filter_actions)
+            item['channel_navbar_body'] = navbars['navbar_body']
+        except Exception as error:
+            log.warning(error)
+
         result['coordinates'] = {self.coordinates: [item]}
         result.update(resources)
         result = merge_dicts(self.requirements_copy, result)

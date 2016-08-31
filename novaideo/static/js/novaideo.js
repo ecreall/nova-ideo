@@ -571,9 +571,9 @@ $(document).ready(function(){
   
   $('.hidden-js').css('display', 'none');
 
-  $(document).on('click','.home-add-idea form .btn', function( event ) {
+  $(document).on('click','form .btn[type="submit"]', function( event ) {
     var $this = $(this)
-    $this.parents('form').find('.btn').removeClass('active')
+    $this.parents('form').find('.btn[type="submit"]').removeClass('active')
     $this.addClass('active')
   })
 

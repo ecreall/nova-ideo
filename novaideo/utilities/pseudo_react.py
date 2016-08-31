@@ -4,8 +4,10 @@
 # licence: AGPL
 # author: Amen Souissi
 from pyramid.threadlocal import get_current_registry
+from pyramid import renderers
 
 from daceui.interfaces import IDaceUIAPI
+from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import (
     get_current)
 from dace.util import getAllBusinessAction
@@ -15,6 +17,7 @@ from novaideo.views.novaideo_view_manager.see_my_supports import (
     CONTENTS_MESSAGES)
 from novaideo.views.novaideo_view_manager.see_my_selections import (
     CONTENTS_MESSAGES as SELECT_CONTENTS_MESSAGES)
+from novaideo.utilities.util import update_all_ajax_action
 
 
 def get_navbar_updated_data(view, **kwargs):
@@ -46,6 +49,31 @@ def get_footer_action_updated_data(view, **kwargs):
         result['action_item_nb'] = kwargs.get('action_item_nb')
         result['action_title'] = localizer.translate(kwargs.get('action_title'))
         result['action_icon'] = kwargs.get('action_icon')
+        result['action_view_title'] = localizer.translate(
+            kwargs.get('action_view_title', result['action_title']))
+        result['has_opposit'] = kwargs.get('has_opposit', False)
+        result['new_component_id'] = kwargs.get('new_component_id', None)
+        result['opposit_action_id'] = kwargs.get('opposit_action_id', None)
+        result['opposit_actionurl_update'] = kwargs.get(
+            'opposit_actionurl_update', None)
+        result['opposit_actionurl_after'] = kwargs.get(
+            'opposit_actionurl_after', None)
+
+    return result
+
+
+def get_dropdown_action_updated_data(view, **kwargs):
+    result = {}
+    action_id = kwargs.get('action_id', None)
+    if action_id:
+        localizer = view.request.localizer
+        result['action_id'] = action_id
+        result['components'] = [kwargs.get('dropdown_action_id')]
+        result['action_title'] = localizer.translate(kwargs.get('action_title'))
+        result['action_icon'] = kwargs.get('action_icon')
+        result['new_components'] = [kwargs.get('new_channel')]
+        result['action_view_title'] = localizer.translate(
+            kwargs.get('action_view_title', result['action_title']))
         result['has_opposit'] = kwargs.get('has_opposit', False)
         result['new_component_id'] = kwargs.get('new_component_id', None)
         result['opposit_action_id'] = kwargs.get('opposit_action_id', None)
@@ -70,7 +98,8 @@ def get_redirect_updated_data(view, **kwargs):
 DATA_GETTERS = {
     'support_action': [get_navbar_updated_data],
     'footer_action': [get_footer_action_updated_data, get_navbar_updated_data],
-    'redirect_action': [get_redirect_updated_data]
+    'redirect_action': [get_redirect_updated_data],
+    'dropdown_action': [get_dropdown_action_updated_data]
 }
 
 
@@ -82,6 +111,64 @@ def get_components_data(action, view, **kwargs):
         res = getter(view, **kwargs)
         result['components'].extend(res.pop('components', []))
         result.update(res)
+
+    return result
+
+
+def get_subscribtion_metadata(action, request, context, api, **kwargs):
+    opposit_action = 'subscribe'
+    if action.node_id == 'subscribe':
+        opposit_action = 'unsubscribe'
+
+    opposit_actions = getAllBusinessAction(
+        context, request, node_id=opposit_action,
+        process_discriminator='Application')
+    result = {
+        'action': 'dropdown_action',
+        'view': api,
+    }
+    subject = context.subject
+    new_channel = ''
+    if subject:
+        actions_call, action_resources = update_all_ajax_action(
+            subject, request, 'comment')
+        if actions_call:
+            object_values = {
+                'object': context,
+                'current_user': get_current(),
+                'action_call': actions_call[0]}
+            new_channel = renderers.render(
+                context.templates.get('default'),
+                object_values,
+                request)
+
+    if opposit_actions:
+        opposit_action = opposit_actions[0]
+        dace_ui_api = get_current_registry().getUtility(
+            IDaceUIAPI, 'dace_ui_api')
+        opposit_action_inf = dace_ui_api.action_infomrations(
+            opposit_action, context, request)
+        actionoid = str(getattr(action, '__oid__', 'entityoid'))
+        oppositactionoid = str(getattr(
+            opposit_action, '__oid__', 'entityoid'))
+        contextoid = str(getattr(
+            context, '__oid__', 'entityoid'))
+        action_view = DEFAULTMAPPING_ACTIONS_VIEWS[opposit_action.__class__]
+        action_view_title = action_view.title
+
+        result.update({
+            'dropdown_action_id': actionoid + '-' + contextoid,
+            'action_title': opposit_action.title,
+            'action_icon': getattr(opposit_action, 'style_picto', ''),
+            'action_view_title': action_view_title,
+            'new_channel': new_channel,
+            'has_opposit': True,
+            'new_component_id': oppositactionoid + '-' + contextoid,
+            'opposit_action_id': opposit_action_inf.get('action_id'),
+            'opposit_actionurl_update': opposit_action_inf.get(
+                'actionurl_update'),
+            'opposit_actionurl_after': opposit_action_inf.get('after_url'),
+        })
 
     return result
 
@@ -122,6 +209,8 @@ def get_selection_metadata(action, request, context, api, **kwargs):
         view_title = localizer.translate(
             _(SELECT_CONTENTS_MESSAGES[index],
               mapping={'nember': len_all_selection}))
+        action_view = DEFAULTMAPPING_ACTIONS_VIEWS[opposit_action.__class__]
+        action_view_title = action_view.title
         result.update({
             'footer_action_id': actionoid + '-' + contextoid,
             'navbr_action_id': 'myselections',
@@ -129,6 +218,7 @@ def get_selection_metadata(action, request, context, api, **kwargs):
             'navbar_item_nb': len_all_selection,
             'action_title': opposit_action.title,
             'navbar_title': _('My following'),
+            'action_view_title': action_view_title,
             'view_title': view_title,
             'action_icon': getattr(opposit_action, 'style_picto', ''),
             'navbar_icon': 'glyphicon glyphicon-star-empty',
@@ -289,6 +379,9 @@ def get_remove_comment_metadata(action, request, context, api, **kwargs):
 METADATA_GETTERS = {
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
+
+    'channelmanagement.subscribe': get_subscribtion_metadata,
+    'channelmanagement.unsubscribe': get_subscribtion_metadata,
 
     'ideamanagement.support': get_support_metadata,
     'ideamanagement.oppose': get_support_metadata,

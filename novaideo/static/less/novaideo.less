@@ -2524,14 +2524,19 @@ ins {
 .navbar-entity .nav > li > a:focus,
 .navbar-entity .nav > li > a:active,
 .navbar-entity .nav > li > a.active {
-    background-color: #4b4f56;
+    background-color: #4b4f56 !important;
     background-repeat: repeat-x;
     border-color: #ddd;
     border-radius: 0;
     color: white;
     font-weight: bold;
     height: 30px;
-    padding: 4px 10px;
+    padding: 5px 10px;
+}
+
+.navbar-entity .nav > li > a.vote-action{
+  background-color: @brand-warning;
+  color: white;  
 }
 
 .user-global-actions {

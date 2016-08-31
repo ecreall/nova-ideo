@@ -1,0 +1,5 @@
+<div i18n:domain="novaideo">
+  <div i18n:translate="" class="alert alert-info">
+      Are you sure you want to unsubscribe from this discuss?
+  </div>
+</div>

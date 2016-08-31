@@ -1,40 +1,6 @@
 <div tal:omit-tag="" tal:define=" item subitem|nothing" i18n:domain="novaideo">
   <div tal:omit-tag="" tal:condition="item">
-    <nav class="hidden-xs navbar navbar-entity navbar-channel" role="navigation">
-      <div class="container-fluid">
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="navbar-entity-content">
-          <ul class="nav navbar-nav">
-              <li class="pull-right">
-                <a class="btn btn-sm comment-filter-action" data-name="associations">
-                     <span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associations</span>
-                </a>
-              </li>
-              <li class="pull-right">
-                <a class="btn btn-sm comment-filter-action" data-name="file">
-                     <span class="glyphicon glyphicon-paperclip"></span> <span i18n:translate="">Attached files</span>
-                </a>
-              </li>
-              <li class="pull-right">
-                <a class="btn btn-sm comment-filter-action" data-name="pinned">
-                     <span class="typcn typcn-pin"></span> <span i18n:translate="">Pinned</span>
-                </a>
-              </li>
-              <li class="comment-text-search-container">
-                <span class="glyphicon glyphicon-search"></span>
-                <input class="comments-text-search"
-                       type="text"
-                       name="text_to_search"
-                       value=""
-                       i18n:attributes="placeholder"
-                       placeholder="Search"
-                       title="" >
-
-              </li>
-          </ul>
-        </div><!-- /.navbar -->
-      </div><!-- /.container-fluid -->
-    </nav>
+    <div tal:replace="structure item.get('channel_navbar_body', '')"/>
     <div class=" comments-scroll">
        <div tal:replace="structure item['body']" />
     </div>

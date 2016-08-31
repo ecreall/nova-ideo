@@ -57,12 +57,52 @@ function footer_action_component(data){
                     	$(this).attr('data-updateurl', data.opposit_actionurl_update)
                     	$(this).attr('data-after_exe_url', data.opposit_actionurl_after)
                     	$(this).attr('data-title', data.action_title)
+                    	$(this).attr('data-view_title', data.action_view_title)
                     	$(this).attr('data-icon', data.action_icon)
 
                     	$(this).data('actionid', data.opposit_action_id)
                     	$(this).data('updateurl', data.opposit_actionurl_update)
                     	$(this).data('after_exe_url', data.opposit_actionurl_after)
                     	$(this).data('title', data.action_title)
+                    	$(this).data('view_title', data.action_view_title)
+                    	$(this).data('icon', data.action_icon)
+
+                    	$(this).attr('title', data.action_title)
+                    	$(this).attr('id', data.opposit_action_id+'-btn')
+                    })
+				}
+
+			}
+		})
+	})
+}
+
+function dropdown_action_component(data){
+	$.each(data.components, function(index){
+		var component_id = 'component-dropdown-action-'+data.components[index]
+		var original_components = $('[id="'+component_id+'"]')
+		var actionlinks = $(original_components.parents('a.ajax-action'))
+		$.each( original_components, function(index){
+			var original_component = $(original_components[index])
+			var new_component_id = data.has_opposit? 'component-dropdown-action-'+data.new_component_id:component_id
+			var new_component = '<span id="'+new_component_id+'"><span class="'+data.action_icon+'"></span> '+
+			                    data.action_title+'</span>'
+			if(new_component != null){
+				original_component.replaceWith($(new_component))
+				if (data.has_opposit){
+                    $.each(actionlinks, function(actionindex){
+                    	$(this).attr('data-actionid', data.opposit_action_id)
+                    	$(this).attr('data-updateurl', data.opposit_actionurl_update)
+                    	$(this).attr('data-after_exe_url', data.opposit_actionurl_after)
+                    	$(this).attr('data-title', data.action_title)
+                    	$(this).attr('data-view_title', data.action_view_title)
+                    	$(this).attr('data-icon', data.action_icon)
+
+                    	$(this).data('actionid', data.opposit_action_id)
+                    	$(this).data('updateurl', data.opposit_actionurl_update)
+                    	$(this).data('after_exe_url', data.opposit_actionurl_after)
+                    	$(this).data('title', data.action_title)
+                    	$(this).data('view_title', data.action_view_title)
                     	$(this).data('icon', data.action_icon)
 
                     	$(this).attr('title', data.action_title)
@@ -92,6 +132,15 @@ function list_items_component(data){
 }
 
 
+function list_channels_component(data){
+	if(data.removed && data.channel_item){
+        data.channel_item.remove()
+	}
+	if(!data.removed && data.new_components.length>0 && data.channels_target.length>0){
+	    data.channels_target.append(data.new_components)
+	}
+}
+
 function redirect_component(data){
 	if (data.redirect_url){
 		 window.location.replace(data.redirect_url)
@@ -103,7 +152,8 @@ var pseudo_react_components = {
 	'support_action': [nav_bar_component, view_title_component, list_items_component],
 	'footer_action': [nav_bar_component, footer_action_component,
 	                  view_title_component, list_items_component],
-	'redirect_action': [redirect_component]
+	'redirect_action': [redirect_component],
+	'dropdown_action': [dropdown_action_component, list_channels_component]
 }
 
 function update_components(data){
