@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-09-01 10:05+0200\n"
+"POT-Creation-Date: 2016-09-01 17:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2693,11 +2693,15 @@ msgstr ""
 msgid "My discussions"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/channels.pt:17
+#: ./novaideo/views/templates/panels/channels.pt:11
+msgid "You have unread messages!"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/channels.pt:22
 msgid "Channels"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/channels.pt:27
+#: ./novaideo/views/templates/panels/channels.pt:32
 msgid "Private discussions"
 msgstr ""
 

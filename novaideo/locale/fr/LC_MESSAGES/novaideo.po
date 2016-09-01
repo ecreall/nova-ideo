@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-09-01 10:05+0200\n"
+"POT-Creation-Date: 2016-09-01 17:34+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -2706,11 +2706,15 @@ msgstr "minimum)"
 msgid "My discussions"
 msgstr "Mes discussions"
 
-#: novaideo/views/templates/panels/channels.pt:17
+#: novaideo/views/templates/panels/channels.pt:11
+msgid "You have unread messages!"
+msgstr "Vous avez des messages non lus !"
+
+#: novaideo/views/templates/panels/channels.pt:22
 msgid "Channels"
 msgstr "Discussions"
 
-#: novaideo/views/templates/panels/channels.pt:27
+#: novaideo/views/templates/panels/channels.pt:32
 msgid "Private discussions"
 msgstr "Discussions privées"
 
