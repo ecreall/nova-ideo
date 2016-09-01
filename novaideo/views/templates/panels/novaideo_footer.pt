@@ -1,4 +1,4 @@
- <div class="container-fluid" tal:define="accessible_to_anonymous request.accessible_to_anonymous">
+<div class="container-fluid" tal:define="accessible_to_anonymous request.accessible_to_anonymous">
     <div class="row clearfix">
       <div class="${accessible_to_anonymous and 'col-md-2' or 'col-md-3'}">
       </div>

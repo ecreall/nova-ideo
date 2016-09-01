@@ -61,6 +61,7 @@ class ContentView(BasicView):
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results"+"-"+ self.content_attr
+        self.title = _(self.title, mapping={'nb': batch.seqlen})
         result_body, result = render_listing_objs(
             self.request, batch, user)
         values = {'bodies': result_body,
@@ -74,7 +75,7 @@ class ContentView(BasicView):
 
 
 class IdeasView(ContentView):
-    title = _('Her ideas')
+    title = _('Her ideas (${nb})')
     content_attr = 'ideas'
     viewid = 'person-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
@@ -83,7 +84,7 @@ class IdeasView(ContentView):
 
 
 class ProposalsView(ContentView):
-    title = _('Her working groups')
+    title = _('Her working groups (${nb})')
     content_attr = 'proposals'
     viewid = 'person-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'

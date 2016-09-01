@@ -97,6 +97,7 @@ class ContentView(BasicView):
                       self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
+        self.title = _(self.title, mapping={'nb': batch.seqlen})
         batch.target = "#results"+"-"+ self.content_type
         filter_instance = getattr(self, 'filter_instance', None)
         filter_body = None
@@ -124,7 +125,7 @@ class ContentView(BasicView):
 
 
 class IdeasView(ContentView):
-    title = _('Ideas')
+    title = _('Ideas (${nb})')
     content_type = 'idea'
     viewid = 'home-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
@@ -133,7 +134,7 @@ class IdeasView(ContentView):
 
 
 class ProposalsView(ContentView):
-    title = _('Working groups')
+    title = _('Working groups (${nb})')
     content_type = 'proposal'
     viewid = 'home-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'

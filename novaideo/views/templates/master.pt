@@ -348,6 +348,25 @@
       </div>
    </div>
 
+    <div class="carousel-img-modal-container modal fade" 
+       role="dialog"
+       id="carousel-img-modal-container"
+       aria-labelledby="ModalActionsContainer" 
+       aria-hidden="true" style="text-align: justify;color: #333;">
+      <div class="modal-dialog  modal-full">
+        <div class="modal-content">
+           <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h4 class="modal-title">
+                <span class="icon ${getattr(context, 'icon', '')}"></span>  ${context.title}
+               </h4>
+           </div>
+           <div class="modal-body">
+           </div>
+         </div>
+      </div>
+   </div>
+
   </body>
 
 </html>
