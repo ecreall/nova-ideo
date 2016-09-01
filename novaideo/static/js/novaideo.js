@@ -407,6 +407,56 @@ function close_add_idea_form(){
   }
 
 
+function display_carousel(){
+  var slider =  $($(this).parents('.file-slider').first())
+  var clone = slider.clone()
+  $(clone.find('div.img-content')).each(function(){
+     var imgurl = $($(this).parents('a').first()).attr('href')
+     $(this).replaceWith('<img class="img-content" src="'+imgurl+'"/>')
+  })
+
+  clone.addClass('full')
+  var car_id = $(clone.find('.carousel.slide')).attr('id')
+  var new_id = car_id+'-full'
+  var controls = clone.find('a.carousel-control[href="#'+car_id+'"]')
+  $(clone.find('.carousel.slide')).attr('id', new_id)
+  controls.attr('href', '#'+new_id)
+  var modal_container = $('#carousel-img-modal-container')
+  $(modal_container.find('.modal-body')).html(clone);
+  var title = get_comment_author_bloc($(this))
+  if(title.length == 0){
+    title = $($(this).parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
+    title.find('.label-basic').remove()
+    title = $(title.find(':header').first()).html()
+  }
+
+  $(modal_container.find('.modal-title')).html(title)  
+  modal_container.css('opacity', '1')
+  modal_container.modal('show');
+  $('#' + new_id).carousel({
+    interval: false
+  })
+  return false
+}
+
+
+function get_comment_author_bloc(element){
+  var comment_data = $(element.parents('.comment-data').first())
+  var clone = $(comment_data.clone())
+  clone.find('.comment-content>div').not('.comment-author').remove()
+  clone.removeClass('comment-data')
+  return clone
+}
+
+
+function alert_user_unreaded_messages(){
+  var is_unreaded = $('.all-channels .ureaded-comments-len').length > 0
+  if (is_unreaded){
+    var alert = $('.all-channels-toggle:not(.close) #alert-message')
+    setTimeout(function(){alert.show().fadeOut(4000)}, 1000);
+  }
+}
+
 
 $(document).on('click', '.full-screen-btn.small', function(){
     var $this = $(this)
@@ -967,45 +1017,8 @@ $(function () {
 
   $(document).on('click', '.file-slider:not(.full) .carousel-inner a', display_carousel)
 
+  alert_user_unreaded_messages()
+
 });
 
-function display_carousel(){
-  var slider =  $($(this).parents('.file-slider').first())
-  var clone = slider.clone()
-  $(clone.find('div.img-content')).each(function(){
-     var imgurl = $($(this).parents('a').first()).attr('href')
-     $(this).replaceWith('<img class="img-content" src="'+imgurl+'"/>')
-  })
 
-  clone.addClass('full')
-  var car_id = $(clone.find('.carousel.slide')).attr('id')
-  var new_id = car_id+'-full'
-  var controls = clone.find('a.carousel-control[href="#'+car_id+'"]')
-  $(clone.find('.carousel.slide')).attr('id', new_id)
-  controls.attr('href', '#'+new_id)
-  var modal_container = $('#carousel-img-modal-container')
-  $(modal_container.find('.modal-body')).html(clone);
-  var title = get_comment_author_bloc($(this))
-  if(title.length == 0){
-    title = $($(this).parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
-    title.find('.label-basic').remove()
-    title = $(title.find(':header').first()).html()
-  }
-
-  $(modal_container.find('.modal-title')).html(title)  
-  modal_container.css('opacity', '1')
-  modal_container.modal('show');
-  $('#' + new_id).carousel({
-    interval: false
-  })
-  return false
-}
-
-
-function get_comment_author_bloc(element){
-  var comment_data = $(element.parents('.comment-data').first())
-  var clone = $(comment_data.clone())
-  clone.find('.comment-content>div').not('.comment-author').remove()
-  clone.removeClass('comment-data')
-  return clone
-}
