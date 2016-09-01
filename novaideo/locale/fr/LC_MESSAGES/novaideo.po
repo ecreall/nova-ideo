@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-08-31 14:28+0200\n"
+"POT-Creation-Date: 2016-09-01 10:05+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -487,20 +487,20 @@ msgstr "1er"
 msgid "${name} ${day}"
 msgstr "${name} ${day}"
 
-#: novaideo/utilities/pseudo_react.py:165
+#: novaideo/utilities/pseudo_react.py:256
 #: novaideo/views/novaideo_view_manager/see_my_supports.py:39
 #: novaideo/content/processes/novaideo_view_manager/definition.py:75
 msgid "My supports"
 msgstr "Mes appréciations"
 
-#: novaideo/utilities/pseudo_react.py:131
+#: novaideo/utilities/pseudo_react.py:221
 #: novaideo/views/novaideo_view_manager/see_my_selections.py:35
 #: novaideo/content/processes/novaideo_view_manager/definition.py:67
 msgid "My following"
 msgstr "Mes suivis"
 
-#: novaideo/views/__init__.py:542 novaideo/views/__init__.py:571
-#: novaideo/views/__init__.py:601 novaideo/views/__init__.py:631
+#: novaideo/views/__init__.py:550 novaideo/views/__init__.py:579
+#: novaideo/views/__init__.py:609 novaideo/views/__init__.py:639
 #: novaideo/views/idea_management/withdraw_token.py:24
 #: novaideo/views/proposal_management/withdraw_token.py:24
 #: novaideo/content/processes/idea_management/definition.py:146
@@ -508,7 +508,7 @@ msgstr "Mes suivis"
 msgid "Withdraw my token"
 msgstr "Retirer son jeton"
 
-#: novaideo/views/__init__.py:547 novaideo/views/__init__.py:576
+#: novaideo/views/__init__.py:555 novaideo/views/__init__.py:584
 #: novaideo/views/idea_management/support_proposal.py:24
 #: novaideo/views/proposal_management/support_proposal.py:24
 #: novaideo/content/processes/idea_management/definition.py:138
@@ -516,7 +516,7 @@ msgstr "Retirer son jeton"
 msgid "Support"
 msgstr "Soutenir"
 
-#: novaideo/views/__init__.py:606 novaideo/views/__init__.py:636
+#: novaideo/views/__init__.py:614 novaideo/views/__init__.py:644
 #: novaideo/views/idea_management/oppose_proposal.py:24
 #: novaideo/views/proposal_management/oppose_proposal.py:24
 #: novaideo/content/processes/idea_management/definition.py:142
@@ -1185,7 +1185,6 @@ msgid "Groupes de travail liés"
 msgstr ""
 
 #: novaideo/views/idea_management/see_workinggroups.py:37
-#: novaideo/views/novaideo_view_manager/home.py:136
 #: novaideo/content/processes/idea_management/definition.py:154
 msgid "Working groups"
 msgstr "Les groupes de travail"
@@ -1196,7 +1195,7 @@ msgid "See related working groups"
 msgstr "Voir les groupes de travails liés"
 
 #: novaideo/views/idea_management/see_workinggroups.py:79
-#: novaideo/views/novaideo_view_manager/home.py:140
+#: novaideo/views/novaideo_view_manager/home.py:141
 msgid "No working groups created"
 msgstr "Pas de groupes de travail créés"
 
@@ -1654,20 +1653,22 @@ msgstr "Activer le compte"
 msgid "Remove the registration"
 msgstr "Supprimer l'inscription"
 
-#: novaideo/views/user_management/see_person.py:77
-msgid "Her ideas"
-msgstr "Ses idées"
+#: novaideo/views/user_management/see_person.py:78
+#, python-format
+msgid "Her ideas (${nb})"
+msgstr "Ses idées (${nb})"
 
-#: novaideo/views/user_management/see_person.py:81
-#: novaideo/views/novaideo_view_manager/home.py:131
+#: novaideo/views/user_management/see_person.py:82
+#: novaideo/views/novaideo_view_manager/home.py:132
 msgid "No registered ideas"
 msgstr "Pas d'idées enregistrées"
 
-#: novaideo/views/user_management/see_person.py:86
-msgid "Her working groups"
-msgstr "Ses groupes de travail"
+#: novaideo/views/user_management/see_person.py:87
+#, python-format
+msgid "Her working groups (${nb})"
+msgstr "Ses groupes de travail (${nb})"
 
-#: novaideo/views/user_management/see_person.py:90
+#: novaideo/views/user_management/see_person.py:91
 msgid "Not belong to any working group"
 msgstr "N'appartiens à aucun groupe de travail"
 
@@ -4522,9 +4523,15 @@ msgstr "Message"
 msgid "Please enter the message you want to send."
 msgstr "Veuillez saisir le message que vous voulez envoyer."
 
-#: novaideo/views/novaideo_view_manager/home.py:127
-msgid "Ideas"
-msgstr "Les idées"
+#: novaideo/views/novaideo_view_manager/home.py:128
+#, python-format
+msgid "Ideas (${nb})"
+msgstr "Les idées (${nb})"
+
+#: novaideo/views/novaideo_view_manager/home.py:137
+#, python-format
+msgid "Working groups (${nb})"
+msgstr "Les groupes de travail (${nb})"
 
 #: novaideo/views/novaideo_view_manager/doc_anonymous.py:32
 msgid "Contribute"
@@ -5507,7 +5514,7 @@ msgstr "Voir"
 #: novaideo/content/processes/comment_management/behaviors.py:322
 #: novaideo/content/processes/amendment_management/behaviors.py:237
 #: novaideo/content/processes/channel_management/behaviors.py:38
-#: novaideo/content/processes/channel_management/behaviors.py:67
+#: novaideo/content/processes/channel_management/behaviors.py:68
 #: novaideo/content/comment_management/behaviors.py:217
 #: novaideo/content/comment_management/behaviors.py:257
 #: novaideo/content/comment_management/behaviors.py:283
@@ -6228,6 +6235,9 @@ msgstr "Ajouter des réactions"
 #: novaideo/content/processes/novaideo_abstract_process/definition.py:57
 msgid "Add the next deadline"
 msgstr "Ajouter une nouvelle échéance"
+
+#~ msgid "Ideas"
+#~ msgstr "Les idées"
 
 #, fuzzy
 #~ msgid "Unsubscribe channel"
