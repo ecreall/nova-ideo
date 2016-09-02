@@ -225,7 +225,7 @@ def createproposal_processsecurity_validation(process, context):
     if getattr(request, 'is_idea_box', False):
         return False
 
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def include_ideas_texts(proposal, related_ideas):
@@ -305,7 +305,7 @@ class PublishAsProposal(CreateProposal):
 
 
 def del_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
+    return global_user_processsecurity() and \
            (has_role(role=('Owner', context)) and \
            'draft' in context.state)
 
@@ -391,7 +391,7 @@ def publish_processsecurity_validation(process, context):
 
     return not (not_published_ideas or not_favorable_ideas) and \
            len(user.active_working_groups) < root.participations_maxi and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 def publish_state_validation(process, context):
@@ -476,7 +476,7 @@ class PublishProposal(InfiniteCardinality):
 
 def duplicate_processsecurity_validation(process, context):
     return 'draft' not in context.state and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class DuplicateProposal(InfiniteCardinality):
@@ -543,7 +543,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def edit_state_validation(process, context):
@@ -592,7 +592,7 @@ def support_processsecurity_validation(process, context):
     user = get_current()
     return getattr(user, 'tokens', []) and  \
            not (user in [t.owner for t in context.tokens]) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 def support_state_validation(process, context):
@@ -681,7 +681,7 @@ def opinion_processsecurity_validation(process, context):
     if 'proposal' not in request.content_to_examine:
         return False
 
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def opinion_state_validation(process, context):
@@ -760,7 +760,7 @@ class MakeOpinion(InfiniteCardinality):
 def withdrawt_processsecurity_validation(process, context):
     user = get_current()
     return any((t.owner is user) for t in context.tokens) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class WithdrawToken(InfiniteCardinality):
@@ -804,7 +804,7 @@ def comm_roles_validation(process, context):
 
 
 def comm_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def comm_state_validation(process, context):
@@ -825,7 +825,7 @@ def seea_roles_validation(process, context):
 
 def seea_processsecurity_validation(process, context):
     return any(not('archived' in a.state) for a in context.amendments) and \
-          global_user_processsecurity(process, context)
+          global_user_processsecurity()
 
 
 class SeeAmendments(InfiniteCardinality):
@@ -842,7 +842,7 @@ class SeeAmendments(InfiniteCardinality):
 
 
 def seem_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class SeeMembers(InfiniteCardinality):
@@ -865,7 +865,7 @@ def present_roles_validation(process, context):
 
 
 def present_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def present_state_validation(process, context):
@@ -883,7 +883,7 @@ def associate_processsecurity_validation(process, context):
     return (has_role(role=('Owner', context)) or \
            (has_role(role=('Member',)) and \
             'draft' not in context.state)) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class Associate(AssociateIdea):
@@ -921,7 +921,7 @@ def withdraw_processsecurity_validation(process, context):
     wg = context.working_group
     return wg and\
            user in wg.wating_list and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 def withdraw_state_validation(process, context):
@@ -976,7 +976,7 @@ def resign_roles_validation(process, context):
 
 
 def resign_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def resign_state_validation(process, context):
@@ -1101,7 +1101,7 @@ def participate_processsecurity_validation(process, context):
     return working_group and \
        user not in working_group.wating_list and \
        len(wgs) < root.participations_maxi and \
-       global_user_processsecurity(process, context)
+       global_user_processsecurity()
 
 
 def participate_state_validation(process, context):
@@ -1222,7 +1222,7 @@ def compare_processsecurity_validation(process, context):
            (has_role(role=('Owner', context)) or \
            (has_role(role=('Member',)) and\
             'draft' not in context.state)) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class CompareProposal(InfiniteCardinality):
@@ -1242,7 +1242,7 @@ def attach_roles_validation(process, context):
 
 
 def attach_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def attach_state_validation(process, context):

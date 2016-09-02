@@ -25,7 +25,7 @@ def subscribe_processsecurity_validation(process, context):
     user = get_current()
     return context.subject and user not in context.members and\
         not context.is_discuss() and\
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 class Subscribe(InfiniteCardinality):
@@ -55,7 +55,7 @@ def unsubscribe_processsecurity_validation(process, context):
     user = get_current()
     return context.subject and user in context.members and\
         not context.is_discuss() and\
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 class Unsubscribe(InfiniteCardinality):

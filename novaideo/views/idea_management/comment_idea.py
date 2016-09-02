@@ -51,7 +51,7 @@ class CommentsView(BasicView):
 
     def _rendre_comments(
         self, comments, current_user,
-        origin=False, batch=None, unreaded_comments=[],
+        origin=False, batch=None, unread_comments=[],
         filtered=False):
         all_comments = []
         resources = {'css_links': [], 'js_links': []}
@@ -74,7 +74,7 @@ class CommentsView(BasicView):
                               key=lambda e: e['context'].created_at)
         values = {
             'comments': all_comments,
-            'unreaded_comments': unreaded_comments,
+            'unread_comments': unread_comments,
             'filtered': filtered,
             'current_user': current_user,
             'view': self,
@@ -111,13 +111,13 @@ class CommentsView(BasicView):
                 getattr(self, 'comments', []),
                 key=lambda e: e.created_at, reverse=True)
 
-        unreaded_comments = []
+        unread_comments = []
         if channel:
             now = datetime.datetime.now(tz=pytz.UTC)
-            unreaded_comments = channel.get_comments_between(
-                current_user.get_readed_date(channel),
+            unread_comments = channel.get_comments_between(
+                current_user.get_read_date(channel),
                 now)
-            current_user.set_readed_date(
+            current_user.set_read_date(
                 channel, now)
 
         url = self.request.resource_url(self.context, self.action_id)
@@ -129,7 +129,7 @@ class CommentsView(BasicView):
         batch.origin_url = url
         body, resources = self._rendre_comments(
             batch, current_user, True, batch,
-            unreaded_comments, filtered)
+            unread_comments, filtered)
         item = self.adapt_item(body, self.viewid)
         try:
             filter_actions = [

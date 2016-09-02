@@ -289,13 +289,13 @@ class Person(User, SearchableEntity, CorrelableEntity):
         self.set_data(kwargs)
         self.set_title()
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
-        self._readed_at = OOBTree()
+        self._read_at = OOBTree()
 
-    def set_readed_date(self, channel, date):
-        self._readed_at[get_oid(channel)] = date
+    def set_read_date(self, channel, date):
+        self._read_at[get_oid(channel)] = date
 
-    def get_readed_date(self, channel):
-        return self._readed_at.get(
+    def get_read_date(self, channel):
+        return self._read_at.get(
             get_oid(channel), datetime.datetime.now(tz=pytz.UTC))
 
     def get_channel(self, user):

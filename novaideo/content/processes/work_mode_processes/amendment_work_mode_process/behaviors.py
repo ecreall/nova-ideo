@@ -126,7 +126,7 @@ def improve_roles_validation(process, context):
 
 def improve_processsecurity_validation(process, context):
     #correction_in_process = any(('in process' in c.state for c in context.corrections))
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def improve_state_validation(process, context):

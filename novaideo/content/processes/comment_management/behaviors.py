@@ -199,7 +199,7 @@ class Respond(InfiniteCardinality):
                 alert('email', [root.get_site_sender()], [comment_author.email],
                       subject=subject, body=message)
 
-        user.set_readed_date(channel, datetime.datetime.now(tz=pytz.UTC))
+        user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
         return {'newcontext': comment.subject}
 
     def redirect(self, context, request, **kw):
@@ -252,7 +252,7 @@ class Edit(InfiniteCardinality):
 
 def rm_processsecurity_validation(process, context):
     return not context.comments and\
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 class Remove(InfiniteCardinality):
@@ -283,7 +283,7 @@ class Remove(InfiniteCardinality):
 
 def pin_processsecurity_validation(process, context):
     return not getattr(context, 'pinned',  False) and\
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 class Pin(InfiniteCardinality):
@@ -309,7 +309,7 @@ class Pin(InfiniteCardinality):
 
 def unpin_processsecurity_validation(process, context):
     return getattr(context, 'pinned',  False) and\
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 class Unpin(InfiniteCardinality):

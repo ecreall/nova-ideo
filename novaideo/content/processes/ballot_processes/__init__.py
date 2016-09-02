@@ -24,7 +24,7 @@ def vote_processsecurity_validation(process, context):
     report = process.ballot.report
     return user in report.electors and \
            user not in report.voters and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class VoteBase(InfiniteCardinality):

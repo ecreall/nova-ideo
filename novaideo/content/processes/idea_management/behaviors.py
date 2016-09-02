@@ -65,7 +65,7 @@ def createidea_roles_validation(process, context):
 
 
 def createidea_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class CreateIdea(InfiniteCardinality):
@@ -221,7 +221,7 @@ def duplicate_processsecurity_validation(process, context):
             'archived' not in context.state or \
             'version' in context.state) or \
             'published' in context.state) and \
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 class DuplicateIdea(InfiniteCardinality):
@@ -269,7 +269,7 @@ def del_roles_validation(process, context):
 
 
 def del_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def del_state_validation(process, context):
@@ -304,7 +304,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def edit_state_validation(process, context):
@@ -380,7 +380,7 @@ def submit_processsecurity_validation(process, context):
         if originalentity.text == context.text:
             return False
 
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def submit_state_validation(process, context):
@@ -417,7 +417,7 @@ def decision_processsecurity_validation(process, context):
     if not request.moderate_ideas:
         return False
 
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def decision_state_validation(process, context):
@@ -478,7 +478,7 @@ def archive_roles_validation(process, context):
 
 def archive_processsecurity_validation(process, context):
     return not context.target_correlations and\
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 def archive_state_validation(process, context):
@@ -562,7 +562,7 @@ def pub_processsecurity_validation(process, context):
         if originalentity.text == context.text:
             return False
 
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def pub_state_validation(process, context):
@@ -605,7 +605,7 @@ def ab_roles_validation(process, context):
 
 
 def ab_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def ab_state_validation(process, context):
@@ -640,7 +640,7 @@ def re_roles_validation(process, context):
 
 
 def re_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def re_state_validation(process, context):
@@ -676,7 +676,7 @@ def comm_roles_validation(process, context):
 
 
 def comm_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def comm_state_validation(process, context):
@@ -699,10 +699,10 @@ class CommentIdea(InfiniteCardinality):
     def get_nb(self, context, request):
         user = get_current()
         channel = context.channel
-        unreaded_comments = channel.get_comments_between(
-            user.get_readed_date(channel),
+        unread_comments = channel.get_comments_between(
+            user.get_read_date(channel),
             datetime.datetime.now(tz=pytz.UTC))
-        return len(unreaded_comments)
+        return len(unread_comments)
         # return context.channel.len_comments
 
     def get_title(self, context, request):
@@ -787,7 +787,7 @@ class CommentIdea(InfiniteCardinality):
 
             self._alert_users(context, request, user, comment)
             context.reindex()
-            user.set_readed_date(channel, datetime.datetime.now(tz=pytz.UTC))
+            user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
 
         return {}
 
@@ -800,7 +800,7 @@ def present_roles_validation(process, context):
 
 
 def present_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def present_state_validation(process, context):
@@ -890,7 +890,7 @@ class PresentIdea(InfiniteCardinality):
 def associate_processsecurity_validation(process, context):
     return (has_role(role=('Owner', context)) or \
            (has_role(role=('Member',)) and 'published' in context.state)) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class Associate(InfiniteCardinality):
@@ -977,7 +977,7 @@ def opinion_processsecurity_validation(process, context):
     if 'idea' not in request.content_to_examine:
         return False
 
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def opinion_state_validation(process, context):
@@ -1059,7 +1059,7 @@ def support_processsecurity_validation(process, context):
 
     return getattr(user, 'tokens', []) and  \
            not (user in [t.owner for t in context.tokens]) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 def support_state_validation(process, context):
@@ -1128,7 +1128,7 @@ class OpposeIdea(InfiniteCardinality):
 def withdrawt_processsecurity_validation(process, context):
     user = get_current()
     return any((t.owner is user) for t in context.tokens) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class WithdrawToken(InfiniteCardinality):

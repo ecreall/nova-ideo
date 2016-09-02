@@ -566,7 +566,7 @@ class Adminnavbar_panel(object):
 
     def __call__(self):
         root = getSite()
-        if not global_user_processsecurity(None, root):
+        if not global_user_processsecurity():
             return {'error': True}
 
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,

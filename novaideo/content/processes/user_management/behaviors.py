@@ -107,7 +107,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def edit_state_validation(process, context):
@@ -154,7 +154,7 @@ def deactivate_roles_validation(process, context):
 
 
 def deactivate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def deactivate_state_validation(process, context):
@@ -197,7 +197,7 @@ def activate_roles_validation(process, context):
 
 
 def activate_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def activate_state_validation(process, context):
@@ -233,7 +233,7 @@ def assignroles_roles_validation(process, context):
 
 
 def assignroles_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def assignroles_state_validation(process, context):
@@ -436,7 +436,7 @@ def remind_roles_validation(process, context):
 
 def remind_processsecurity_validation(process, context):
     return getattr(context, 'email', '') and \
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 class Remind(InfiniteCardinality):
@@ -490,7 +490,7 @@ def get_access_key_reg(obj):
 
 def seereg_processsecurity_validation(process, context):
     return has_any_roles(roles=('Admin', )) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 @access_action(access_key=get_access_key_reg)
@@ -549,7 +549,7 @@ def discuss_roles_validation(process, context):
 def discuss_processsecurity_validation(process, context):
     user = get_current()
     return context is not user and \
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 def discuss_state_validation(process, context):
@@ -573,10 +573,10 @@ class Discuss(InfiniteCardinality):
         user = get_current()
         channel = context.get_channel(user)
         if channel:
-            unreaded_comments = channel.get_comments_between(
-                user.get_readed_date(channel),
+            unread_comments = channel.get_comments_between(
+                user.get_read_date(channel),
                 datetime.datetime.now(tz=pytz.UTC))
-            return len(unreaded_comments)
+            return len(unread_comments)
 
         return 0
 
@@ -648,7 +648,7 @@ class Discuss(InfiniteCardinality):
             context.addtoproperty('channels', channel)
             channel.addtoproperty('members', user)
             channel.addtoproperty('members', context)
-            context.set_readed_date(channel, comment.created_at)
+            context.set_read_date(channel, comment.created_at)
 
         if channel:
             channel.addtoproperty('comments', comment)
@@ -669,7 +669,7 @@ class Discuss(InfiniteCardinality):
 
             self._alert_users(context, request, user, comment, channel)
             context.reindex()
-            user.set_readed_date(channel, datetime.datetime.now(tz=pytz.UTC))
+            user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
 
         return {}
 
@@ -678,7 +678,7 @@ class Discuss(InfiniteCardinality):
 
 
 def gdiscuss_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class GeneralDiscuss(InfiniteCardinality):
@@ -696,11 +696,11 @@ class GeneralDiscuss(InfiniteCardinality):
         channel = context.channel
         if channel:
             user = get_current()
-            if hasattr(user, 'get_readed_date'):
-                unreaded_comments = channel.get_comments_between(
-                    user.get_readed_date(channel),
+            if hasattr(user, 'get_read_date'):
+                unread_comments = channel.get_comments_between(
+                    user.get_read_date(channel),
                     datetime.datetime.now(tz=pytz.UTC))
-                return len(unreaded_comments)
+                return len(unread_comments)
 
         return 0
 
@@ -779,7 +779,7 @@ class GeneralDiscuss(InfiniteCardinality):
 
             # self._alert_users(context, request, user, comment, channel)
             context.reindex()
-            user.set_readed_date(channel, datetime.datetime.now(tz=pytz.UTC))
+            user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
 
         return {}
 

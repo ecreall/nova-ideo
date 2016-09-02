@@ -171,7 +171,15 @@ function init_channels_scroll(){
     $('.channels-container').mCustomScrollbar({
         theme:"minimal-dark",
         scrollInertia: 100,
+        callbacks:{
+        onScroll:function(){
+            update_unread_messages_alerts()
+        }}
       });
+  }else{
+    $('.channels-container').scroll(function(){
+            update_unread_messages_alerts()
+    })
   }
 }
 
@@ -449,9 +457,9 @@ function get_comment_author_bloc(element){
 }
 
 
-function alert_user_unreaded_messages(){
-  var is_unreaded = $('.all-channels .ureaded-comments-len').length > 0
-  if (is_unreaded){
+function alert_user_unread_messages(){
+  var is_unread = $('.all-channels.toggled .unread-comments-len').length > 0
+  if (is_unread){
     var alert = $('.all-channels-toggle:not(.close) #alert-message')
     setTimeout(function(){alert.show().fadeOut(4000)}, 1000);
   }
@@ -1010,15 +1018,110 @@ $(function () {
   })
 
   $(document).on('click', 'a.channel-action', function(){
-    $($(this).parents('div.channel-action').first().find('.ureaded-comments-len')).remove()
+    var channel_action = $($(this).parents('div.channel-action').first())
+    $(channel_action.find('.unread-comments-len')).remove()
+    channel_action.removeClass('unread-comments')
+    update_unread_messages_alerts()
   });
 
   focus_on_form($('.pontus-main'))
 
   $(document).on('click', '.file-slider:not(.full) .carousel-inner a', display_carousel)
 
-  alert_user_unreaded_messages()
-
+  alert_user_unread_messages()
+  update_unread_messages_alerts()
+  
+  $(document).on('click', '.alert-messages-scroll', scroll_to_unread_message)
 });
 
 
+var alert_unread_messages_bottom_pt = '<div class="alert-messages-scroll down">'+
+  '<span class="fa fa-long-arrow-down"></span> <span>'+novaideo_translate('Unread messages')+'</span> '+
+  '<span class="fa fa-long-arrow-down"></span></div>'
+
+var alert_unread_messages_top_pt = '<div class="alert-messages-scroll top">'+
+  '<span class="fa fa-long-arrow-up"></span> <span>'+novaideo_translate('Unread messages')+'</span> '+
+  '<span class="fa fa-long-arrow-up"></span></div>'
+
+
+function scroll_to_unread_message(){
+  var target = $($(this).data('target'))
+  var channel_action = $(target.parents('.channel-action').first())
+  var scrollable = $(channel_action.parents('.channels-container').first())
+  //scroll if mCS
+  scrollable.mCustomScrollbar("scrollTo",channel_action,{
+        scrollInertia: 200,
+        callbacks:{
+          onScroll:function(){
+            update_unread_messages_alerts()
+          }
+        }
+      })
+  //scroll if not mCS
+  var top = scrollable.scrollTop() + channel_action.position().top-100;      
+  scrollable.animate({ scrollTop: top}, 1000);
+
+}
+
+function update_unread_messages_alerts(){
+  var channels = $('.channels-container')
+  channels.each(function(){
+     var has_unread = has_hidden_unread_messages($(this))
+     $($(this).parents('.channels-block').find('.alert-messages-scroll')).remove()
+     if(has_unread.top){
+       var alert_obj = $(alert_unread_messages_top_pt)
+       alert_obj.data('target', '#'+result.target_bottom)
+       alert_obj.attr('data-target', '#'+result.target_bottom)
+       alert_obj.insertAfter($(this))
+     }
+     if(has_unread.bottom){
+       var alert_obj = $(alert_unread_messages_bottom_pt)
+       alert_obj.data('target', '#'+result.target_top)
+       alert_obj.attr('data-target', '#'+result.target_top)
+       alert_obj.insertBefore($(this))
+     }
+  })
+}
+
+
+function has_hidden_unread_messages(channel){
+  var unread = $(channel.find('.channel-action .unread-comments-len'))
+  result = {'top': false, 'bottom': false}
+  if (unread.length > 0){
+   for(var i=0; i< unread.length; i++){
+     var element = $($(unread[i]).parents('.channel-action').first())
+     var is_visible = is_visible_into_view(element, channel)
+     result.top = result.top || !is_visible.top
+     result.bottom = result.bottom || !is_visible.bottom
+     if(!result.target){
+      if(!is_visible.top ){
+        result.target_bottom = $(element.find('a').first()).attr('id')
+      }
+      if(!is_visible.bottom ){
+        result.target_top = $(element.find('a').first()).attr('id')
+      }
+     }
+   }
+  }
+  return result
+}
+
+
+function is_visible_into_view(elem, scrollable)
+{
+    var docViewTop = 0
+    var elemTop = 0
+    var mCSB_container = $(scrollable.find(".mCSB_container"))
+    if(mCSB_container.length > 0){
+      docViewTop = (parseInt(mCSB_container.css('top').replace('px', '')) * -1);
+      elemTop =  $(elem).offset().top - mCSB_container.offset().top;
+    }else{
+      docViewTop = scrollable.scrollTop();
+      elemTop =  $(elem).position().top;
+    }
+    var docViewBottom = docViewTop + scrollable.height();
+    var elemBottom = elemTop + $(elem).height();
+
+    return {'bottom': (elemBottom <= docViewBottom),
+            'top': (elemTop >= docViewTop)}
+}

@@ -27,7 +27,7 @@ def comm_roles_validation(process, context):
 
 
 def comm_processsecurity_validation(process, context):
-    if not global_user_processsecurity(process, context):
+    if not global_user_processsecurity():
         return False
 
     source = context.source

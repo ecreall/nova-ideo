@@ -68,7 +68,7 @@ def correctitem_roles_validation(process, context):
 
 
 def correctitem_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def correctitem_state_validation(process, context):
@@ -198,7 +198,7 @@ def correct_processsecurity_validation(process, context):
 
     return not correction_in_process and \
            not getattr(context.working_group, 'first_improvement_cycle', True) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 def correct_state_validation(process, context):

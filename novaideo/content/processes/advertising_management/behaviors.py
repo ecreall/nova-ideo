@@ -95,7 +95,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def edit_state_validation(process, context):
@@ -133,7 +133,7 @@ def publish_roles_validation(process, context):
 
 
 def publish_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def publish_state_validation(process, context):
@@ -167,7 +167,7 @@ def archive_roles_validation(process, context):
 
 
 def archive_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def archive_state_validation(process, context):
@@ -201,7 +201,7 @@ def remove_roles_validation(process, context):
 
 
 def remove_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class RemoveAdvertising(InfiniteCardinality):
@@ -230,7 +230,7 @@ def seeads_roles_validation(process, context):
 
 
 def seeads_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class SeeAdvertisings(InfiniteCardinality):

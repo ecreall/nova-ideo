@@ -37,7 +37,7 @@ def uploaduser_roles_validation(process, context):
 
 
 def uploaduser_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class UploadUsers(InfiniteCardinality):
@@ -104,7 +104,7 @@ def inviteuser_roles_validation(process, context):
 
 
 def inviteuser_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class InviteUsers(InfiniteCardinality):
@@ -200,7 +200,7 @@ def seeinvs_roles_validation(process, context):
 
 
 def seeinvs_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class SeeInvitations(InfiniteCardinality):
@@ -224,7 +224,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
+    return global_user_processsecurity() and \
            context.invitations
 
 
@@ -253,7 +253,7 @@ def editinv_roles_validation(process, context):
 
 
 def editinv_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class EditInvitation(InfiniteCardinality):
@@ -428,7 +428,7 @@ def remove_roles_validation(process, context):
 
 
 def remove_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class RemoveInvitation(InfiniteCardinality):
@@ -455,7 +455,7 @@ def reinvite_roles_validation(process, context):
 
 
 def reinvite_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def reinvite_state_validation(process, context):
@@ -503,7 +503,7 @@ def remind_roles_validation(process, context):
 
 
 def remind_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def remind_state_validation(process, context):

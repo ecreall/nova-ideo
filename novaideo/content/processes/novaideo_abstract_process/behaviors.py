@@ -31,7 +31,7 @@ def select_processsecurity_validation(process, context):
     user = get_current()
     return user is not context and \
            context not in getattr(user, 'selections', []) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 def select_state_validation(process, context):
@@ -81,7 +81,7 @@ def deselect_roles_validation(process, context):
 def deselect_processsecurity_validation(process, context):
     user = get_current()
     return (context in getattr(user, 'selections', [])) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 def deselect_state_validation(process, context):
@@ -160,7 +160,7 @@ def adddeadline_processsecurity_validation(process, context):
     return getattr(context, 'content_to_examine', []) and\
            datetime.datetime.now(tz=pytz.UTC) >= \
            context.deadlines[-1].replace(tzinfo=pytz.UTC) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class AddDeadLine(InfiniteCardinality):
@@ -187,7 +187,7 @@ class AddDeadLine(InfiniteCardinality):
 
 def editdeadline_processsecurity_validation(process, context):
     return getattr(context, 'content_to_examine', []) and\
-           global_user_processsecurity(process, context) and \
+           global_user_processsecurity() and \
            getattr(context, 'deadlines', [])
 
 

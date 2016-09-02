@@ -119,7 +119,7 @@ def seefiles_roles_validation(process, context):
 
 
 def seefiles_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class SeeFiles(InfiniteCardinality):

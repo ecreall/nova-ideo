@@ -75,7 +75,7 @@ def seemy_roles_validation(process, context):
 def seemyc_processsecurity_validation(process, context):
     user = get_current()
     contents = [o for o in getattr(user, 'contents', [])]
-    return contents and global_user_processsecurity(process, context)
+    return contents and global_user_processsecurity()
 
 
 class SeeMyContents(InfiniteCardinality):
@@ -102,7 +102,7 @@ def seemys_processsecurity_validation(process, context):
     user = get_current()
     selections = [o for o in getattr(user, 'selections', [])
                   if 'archived' not in o.state]
-    return selections and global_user_processsecurity(process, context)
+    return selections and global_user_processsecurity()
 
 
 class SeeMySelections(InfiniteCardinality):
@@ -132,7 +132,7 @@ def seemypa_processsecurity_validation(process, context):
         return False
 
     return getattr(user, 'participations', []) and \
-                   global_user_processsecurity(process, context)
+                   global_user_processsecurity()
 
 
 class SeeMyParticipations(InfiniteCardinality):
@@ -157,7 +157,7 @@ def seemysu_processsecurity_validation(process, context):
 
     supports = [o for o in getattr(user, 'supports', [])
                 if 'archived' not in o.state]
-    return supports and global_user_processsecurity(process, context)
+    return supports and global_user_processsecurity()
 
 
 class SeeMySupports(InfiniteCardinality):
@@ -186,7 +186,7 @@ def seeproposals_processsecurity_validation(process, context):
         return False
 
     return 'proposal' in getattr(context, 'content_to_examine', [] ) and\
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class SeeOrderedProposal(InfiniteCardinality):
@@ -211,7 +211,7 @@ def seeindeas_roles_validation(process, context):
 
 def seeindeas_processsecurity_validation(process, context):
     return 'idea' in getattr(context, 'content_to_examine', [] ) and\
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class SeeIdeasToExamine(InfiniteCardinality):
@@ -236,7 +236,7 @@ def seeindeasm_roles_validation(process, context):
 
 def seeindeasm_processsecurity_validation(process, context):
     return getattr(context, 'moderate_ideas', False) and\
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class SeeIdeasToModerate(InfiniteCardinality):
@@ -261,7 +261,7 @@ def history_roles_validation(process, context):
 
 def history_processsecurity_validation(process, context):
     return getattr(context, 'annotations', {}).get(PROCESS_HISTORY_KEY, {}) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class SeeEntityHistory(InfiniteCardinality):
@@ -319,7 +319,7 @@ def seealerts_roles_validation(process, context):
 
 
 def seealerts_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class SeeAlerts(InfiniteCardinality):
@@ -341,7 +341,7 @@ def seeusers_roles_validation(process, context):
 
 
 def seeusers_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class SeeUsers(InfiniteCardinality):
@@ -365,7 +365,7 @@ def seeanalytics_roles_validation(process, context):
 
 
 def seeanalytics_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class SeeAnalytics(InfiniteCardinality):
@@ -391,7 +391,7 @@ def seegraph_roles_validation(process, context):
 def seegraph_processsecurity_validation(process, context):
     graph = getattr(context, 'graph', {})
     return len(graph) > 1 and \
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 class SeeGraph(InfiniteCardinality):

@@ -8,7 +8,7 @@
       <h4 class="popover-title view-item-title">
       	<span class="icon ${icon}"></span> ${getattr(object, 'title', object.name)}
       </h4>
-    <a/>
+    </a>
     <div class="popover-content">
       <div>${object.presentation_text(200)}</div>
       <div class="popover-footer">

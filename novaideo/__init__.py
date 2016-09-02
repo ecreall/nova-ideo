@@ -282,7 +282,12 @@ def evolve_person(root, registry):
         )
     len_entities = str(len(contents))
     for index, node in enumerate(contents):
-        node._readed_at = OOBTree()
+        if hasattr(node, '_readed_at'):
+            node._read_at = getattr(node, '_readed_at')
+            del node._readed_at
+        elif not hasattr(node, '_read_at'):
+            node._read_at = OOBTree()
+
         log.info(str(index) + "/" + len_entities)
 
     log.info('Persons evolved.')

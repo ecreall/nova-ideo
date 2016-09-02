@@ -1,6 +1,6 @@
 
   <div i18n:domain="novaideo"
-    class="channel-action view-item"
+    class="channel-action view-item ${channel_nb>0 and 'unread-comments'}"
     tal:define="item action_call;
                title object.get_title(current_user);
                subject object.get_subject(current_user);
@@ -36,5 +36,5 @@
              <span>${title}</span>
           </div>
       </a>
-     <span tal:condition="channel_nb" class="ureaded-comments-len pull-right">${channel_nb}</span>
+     <span tal:condition="channel_nb" class="unread-comments-len pull-right">${channel_nb}</span>
   </div>

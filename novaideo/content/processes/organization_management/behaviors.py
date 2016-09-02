@@ -30,7 +30,7 @@ def add_roles_validation(process, context):
 
 
 def add_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class AddOrganizations(InfiniteCardinality):
@@ -66,7 +66,7 @@ def creatorg_roles_validation(process, context):
 
 
 def creatorg_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class CreatOrganizations(InfiniteCardinality):
@@ -100,7 +100,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
+    return global_user_processsecurity() and \
            context.organizations
 
 
@@ -133,7 +133,7 @@ def seeorgs_roles_validation(process, context):
 
 
 def seeorgs_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class SeeOrganizations(InfiniteCardinality):
@@ -159,7 +159,7 @@ def get_access_key(obj):
 
 
 def see_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context) and \
+    return global_user_processsecurity() and \
            has_role(role=('Member',))
 
 
@@ -184,7 +184,7 @@ def editorg_roles_validation(process, context):
 
 
 def editorg_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class EditOrganization(InfiniteCardinality):

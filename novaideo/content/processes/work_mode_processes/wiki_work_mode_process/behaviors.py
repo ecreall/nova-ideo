@@ -48,7 +48,7 @@ def correct_roles_validation(process, context):
 
 
 def correct_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def correct_state_validation(process, context):

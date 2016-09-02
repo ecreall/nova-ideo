@@ -149,7 +149,7 @@ def createnewsletter_roles_validation(process, context):
 
 
 def createnewsletter_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class CreateNewsletter(InfiniteCardinality):
@@ -181,7 +181,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class EditNewsletter(InfiniteCardinality):
@@ -252,7 +252,7 @@ def send_roles_validation(process, context):
 
 def send_processsecurity_validation(process, context):
     return context.validate_content() and \
-        global_user_processsecurity(process, context)
+        global_user_processsecurity()
 
 
 class SendNewsletter(InfiniteCardinality):
@@ -279,7 +279,7 @@ def remove_roles_validation(process, context):
 
 
 def remove_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 class RemoveNewsletter(InfiniteCardinality):
@@ -403,7 +403,7 @@ class UserUnsubscribeNewsletter(InfiniteCardinality):
 
 
 def unsubscribe_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def unsubscribe_roles_validation(process, context):
@@ -453,7 +453,7 @@ def see_all_roles_validation(process, context):
 
 
 def see_all_processsecurity_validation(process, context):
-    return context.newsletters and global_user_processsecurity(process, context)
+    return context.newsletters and global_user_processsecurity()
 
 
 class SeeNewsletters(InfiniteCardinality):
@@ -474,7 +474,7 @@ class SeeNewsletters(InfiniteCardinality):
 
 
 def see_subscribed_processsecurity_validation(process, context):
-    return context.subscribed and global_user_processsecurity(process, context)
+    return context.subscribed and global_user_processsecurity()
 
 
 class SeeSubscribed(InfiniteCardinality):

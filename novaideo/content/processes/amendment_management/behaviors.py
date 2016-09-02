@@ -87,7 +87,7 @@ def duplicate_processsecurity_validation(process, context):
     return ('submitted' in context.state or \
             ('draft' in context.state and \
              has_role(role=('Owner', context)))) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 def duplicate_state_validation(process, context):
@@ -145,7 +145,7 @@ def del_roles_validation(process, context):
 
 
 def del_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def del_state_validation(process, context):
@@ -178,7 +178,7 @@ def edit_roles_validation(process, context):
 
 
 def edit_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def edit_state_validation(process, context):
@@ -220,7 +220,7 @@ def exp_roles_validation(process, context):
 
 
 def exp_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def exp_state_validation(process, context):
@@ -328,7 +328,7 @@ def pub_processsecurity_validation(process, context):
            not(context.explanations and \
                any(e['intention'] is None 
                    for e in context.explanations.values()))) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 def pub_state_validation(process, context):
@@ -460,7 +460,7 @@ def comm_roles_validation(process, context):
 
 
 def comm_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def comm_state_validation(process, context):
@@ -484,7 +484,7 @@ def present_roles_validation(process, context):
 
 
 def present_processsecurity_validation(process, context):
-    return global_user_processsecurity(process, context)
+    return global_user_processsecurity()
 
 
 def present_state_validation(process, context):
@@ -501,7 +501,7 @@ class PresentAmendment(PresentIdea):
 def associate_processsecurity_validation(process, context):
     return (has_role(role=('Owner', context)) or \
             ('submitted' in context.state and has_role(role=('Member',)))) and \
-           global_user_processsecurity(process, context)
+           global_user_processsecurity()
 
 
 class Associate(AssociateIdea):
