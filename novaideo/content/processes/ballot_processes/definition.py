@@ -33,11 +33,9 @@ from novaideo.content.processes.proposal_management.behaviors import (
     VP_DEFAULT_DURATION)
 
 
-def time_duration(process):
-    if hasattr(process, 'duration'):
-        return getattr(process, 'duration')
-
-    return VP_DEFAULT_DURATION
+def time_date(process):
+    return getattr(process, 'duration', VP_DEFAULT_DURATION) +\
+        datetime.now()
 
 
 def event_condition(process):
@@ -73,7 +71,7 @@ class BallotProcess(ProcessDefinition, VisualisableElement):
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
                 timer = IntermediateCatchEventDefinition(
-                           TimerEventDefinition(time_duration=time_duration)),
+                           TimerEventDefinition(time_date=time_date)),
                 conditional = IntermediateCatchEventDefinition(
                              ConditionalEventDefinition(event_condition)),
                 eg = ExclusiveGatewayDefinition(),
