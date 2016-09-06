@@ -186,7 +186,7 @@ $(document).on('click', 'a.dace-action-modal', update_modal_action);
 $(document).on('click', '.dace-action-direct', update_direct_action);
 
 
-$(document).on('submit', 'form.novaideo-ajax-form', function(){
+$(document).on('submit', 'form.novaideo-ajax-form', function(event){
     var $this = $(this)
     var formid = $this.attr('id');
     var button = $this.find('button.active[type="submit"]').last();
