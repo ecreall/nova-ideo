@@ -190,6 +190,12 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
     var $this = $(this)
     var formid = $this.attr('id');
     var button = $this.find('button.active[type="submit"]').last();
+    var modal_container = $('.action-modal-container.in')
+    if(button.val() == 'Cancel'){
+      modal_container.modal('hide');
+      event.preventDefault();
+      return
+    }
     var url = $(event.target).attr('action');
     $(button).addClass('disabled');
     var formData = new FormData($(this)[0]);
@@ -209,7 +215,6 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
           }catch(err) {};
          finish_progress()
         }else if(! data.redirect_url){
-          var modal_container = $('.action-modal-container.in')
           modal_container.modal('hide')
           finish_progress()
         }
