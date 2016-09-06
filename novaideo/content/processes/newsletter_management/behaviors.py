@@ -30,7 +30,7 @@ from novaideo.content.interface import (
     IProposal,
     Iidea)
 from novaideo.core import access_action, serialize_roles
-from novaideo import _
+from novaideo import _, nothing
 from novaideo.utilities.util import (
     gen_random_token)
 from novaideo.utilities.alerts_utility import alert
@@ -351,8 +351,7 @@ class SubscribeNewsletter(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        root = getSite()
-        return HTTPFound(request.resource_url(root, ""))
+        return nothing
 
 
 def userunsubscribe_roles_validation(process, context):

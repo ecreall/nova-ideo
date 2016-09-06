@@ -17,7 +17,8 @@ novaideoI18n = {
   "No more item.": "No more item.",
   "Message sent": "Message sent",
   "Your message has been delivered to the following recipients": "Your message has been delivered to the following recipients",
-  "Unread messages": "Unread messages"
+  "Unread messages": "Unread messages",
+  "Required": "Required"
 },
 
 'fr':{
@@ -37,7 +38,8 @@ novaideoI18n = {
   "No more item.": "Pas d'autres éléments.",
   "Message sent": "Message envoyé",
   "Your message has been delivered to the following recipients": "Votre message a été envoyé aux destinataires suivants",
-  "Unread messages": "Messages non lus"
+  "Unread messages": "Messages non lus",
+  "Required": "Requis"
 }
 }
 

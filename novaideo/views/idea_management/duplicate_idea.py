@@ -3,7 +3,7 @@
 
 # licence: AGPL
 # author: Amen Souissi
-
+import deform
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -41,7 +41,11 @@ class DuplicateIdeaView(FormView):
 
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'duplicateidea')
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': DuplicateIdea.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form')
 
     def default_data(self):
         data = self.context.get_data(self.schema)

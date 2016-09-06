@@ -36,7 +36,9 @@ class RespondView(FormView):
 
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'respond_comment'})
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Respond.node_definition.id})
         formwidget = deform.widget.FormWidget(css_class='commentform comment-inline-form respondform deform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget

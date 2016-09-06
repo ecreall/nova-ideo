@@ -24,11 +24,6 @@ from pontus.view import BasicView
 
 from novaideo.views.idea_management.comment_idea import (
     CommentsView)
-from novaideo.views.user_management.discuss import (
-    DiscussCommentsView,
-    GeneralCommentsView)
-from novaideo.views.idea_management.present_idea import (
-    SentToView)
 from novaideo.views.novaideo_view_manager.search import (
     get_default_searchable_content)
 from novaideo.content.interface import (
@@ -252,168 +247,12 @@ class NovaideoAPI(IndexManagementJsonView):
 
         return {'body': ''}
 
-    def present_entity(self):
-        present_actions = getAllBusinessAction(
-            self.context, self.request, node_id='present',
-            process_discriminator='Application')
-        if present_actions:
-            action = present_actions[0]
-            present_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
-            present_view_instance = present_view(
-                self.context, self.request,
-                behaviors=[action])
-            present_view_instance.update()
-            result_view = SentToView(self.context, self.request)
-            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            result = {'body': body}
-            result.update(get_components_data(
-                **get_all_updated_data(action, self.request,
-                    self.context, self)))
-            return result
-
-        return {'body': ''}
-
-    def discuss_person(self):
-        discuss_actions = getAllBusinessAction(
-            self.context, self.request, node_id='discuss',
-            process_discriminator='Application')
-        if discuss_actions:
-            action = discuss_actions[0]
-            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
-            comment_view_instance = comment_view(
-                self.context, self.request,
-                behaviors=[action],
-                only_form=True)
-            comment_view_instance.update()
-            user = get_current()
-            channel = self.context.get_channel(user)
-            comments = [channel.comments[-1]]
-            result_view = DiscussCommentsView(self.context, self.request)
-            result_view.comments = comments
-            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            result = {'body': body}
-            result.update(get_components_data(
-                **get_all_updated_data(
-                    action, self.request, self.context,
-                    self, channel=channel)))
-            return result
-
-        return {'body': ''}
-
-    def general_discuss(self):
-        discuss_actions = getAllBusinessAction(
-            self.context, self.request, node_id='general_discuss',
-            process_discriminator='Application')
-        if discuss_actions:
-            action = discuss_actions[0]
-            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
-            comment_view_instance = comment_view(
-                self.context, self.request,
-                behaviors=[action],
-                only_form=True)
-            comment_view_instance.update()
-            channel = self.context.channel
-            comments = [channel.comments[-1]]
-            result_view = GeneralCommentsView(self.context, self.request)
-            result_view.comments = comments
-            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            return {'body': body}
-
-        return {'body': ''}
-
-    def comment_entity(self):
-        comment_actions = getAllBusinessAction(
-            self.context, self.request, node_id='comment',
-            process_discriminator='Application')
-        if comment_actions:
-            action = comment_actions[0]
-            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
-            comment_view_instance = comment_view(
-                self.context, self.request,
-                behaviors=[action],
-                only_form=True)
-            comment_view_instance.update()
-            comments = [self.context.channel.comments[-1]]
-            result_view = CommentsView(self.context, self.request)
-            result_view.comments = comments
-            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            result = {'body': body}
-            result.update(get_components_data(
-                **get_all_updated_data(
-                    action, self.request, self.context, self)))
-            return result
-
-        return {'body': ''}
-
-    def edit_comment(self):
-        comment_actions = getAllBusinessAction(
-            self.context, self.request, node_id='edit',
-            process_discriminator='Application')
-        if comment_actions:
-            action = comment_actions[0]
-            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
-            comment_view_instance = comment_view(
-                self.context, self.request,
-                behaviors=[action],
-                only_form=True)
-            comment_view_instance.update()
-            comments = [self.context]
-            result_view = CommentsView(self.context, self.request)
-            result_view.comments = comments
-            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            return {'body': body}
-
-        return {'body': ''}
-
-    def execute_action(self, action_id):
-        node_actions = getAllBusinessAction(
-            self.context, self.request, node_id=action_id,
-            process_discriminator='Application')
-        if node_actions:
-            action = node_actions[0]
-            node_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
-            node_view_instance = node_view(
-                self.context, self.request,
-                behaviors=[action],
-                only_form=True)
-            node_view_instance.update()
-            return {'status': True, 'action_obj': action}
-
-        return {'status': False, 'action_obj': None}
-
-    def pin_comment(self):
-        result = self.execute_action('pin')
-        result.pop('action_obj')
-        return result
-
-    def unpin_comment(self):
-        result = self.execute_action('unpin')
-        result.pop('action_obj')
-        return result
-
-    def unsubscribe_channel(self):
-        result = self.execute_action('unsubscribe')
-        action = result.pop('action_obj')
-        result.update(get_components_data(
-            **get_all_updated_data(
-                action, self.request,
-                self.context, self)))
-        return result
-
-    def subscribe_channel(self):
-        result = self.execute_action('subscribe')
-        action = result.pop('action_obj')
-        result.update(get_components_data(
-            **get_all_updated_data(
-                action, self.request,
-                self.context, self)))
-        return result
-
     def remove_comment(self):
         channel = self.context.channel
         subject = channel.subject
-        result = self.execute_action('remove')
+        result = self._update_action_view('remove')
         action = result.pop('action_obj')
+        result.pop('view_data')
         if subject:
             result.update(get_components_data(
                 **get_all_updated_data(
@@ -435,31 +274,6 @@ class NovaideoAPI(IndexManagementJsonView):
                 return {'body': body}
             except Exception as error:
                 log.warning(error)
-
-        return {'body': ''}
-
-    def respond_comment(self):
-        comment_actions = getAllBusinessAction(
-            self.context, self.request, node_id='respond',
-            process_discriminator='Application')
-        if comment_actions:
-            action = comment_actions[0]
-            comment_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
-            comment_view_instance = comment_view(
-                self.context, self.request,
-                behaviors=[action],
-                only_form=True)
-            comment_view_instance.update()
-            comments = [self.context.comments[-1]]
-            self.request.POST.clear()
-            result_view = CommentsView(self.context, self.request)
-            result_view.comments = comments
-            body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-            result = {'body': body}
-            result.update(get_components_data(
-                **get_all_updated_data(
-                    action, self.request, self.context, self)))
-            return result
 
         return {'body': ''}
 
@@ -673,7 +487,7 @@ class NovaideoAPI(IndexManagementJsonView):
 
     def withdraw_token_proposal(self):
         localizer = self.request.localizer
-        result = self._execute_action(
+        result = self._update_associated_view(
             'proposalmanagement', 'withdraw_token', {})
         if result.get('state'):
             previous_action = self.params('action')
@@ -750,20 +564,58 @@ class NovaideoAPI(IndexManagementJsonView):
 
         return action
 
+    def _update_action_view(self, node_id=None, process_id=None):
+        if not node_id:
+            node_process = self.params('node_id').split('.')
+            process_id = node_process[0]
+            node_id = node_process[1]
+
+        node_actions = getAllBusinessAction(
+            self.context, self.request,
+            process_id=process_id, node_id=node_id,
+            process_discriminator='Application')
+        if node_actions:
+            action = node_actions[0]
+            node_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+            node_view_instance = node_view(
+                self.context, self.request,
+                behaviors=[action],
+                only_form=True)
+            view_result = node_view_instance()
+            return {
+                'status': True,
+                'action_obj': action,
+                'view_data': (node_view_instance, view_result)}
+
+        return {
+            'status': False,
+            'action_obj': None,
+            'view_data': None}
+
+    def update_action_view(self):
+        result = self._update_action_view()
+        action = result.pop('action_obj')
+        view_data = result.pop('view_data')
+        result.update(get_components_data(
+            **get_all_updated_data(
+                action, self.request,
+                self.context, self, view_data=view_data)))
+        return result
+
     def update_action(self, action=None, context=None):
         result = {}
         action_uid = self.params('action_uid')
         try:
-            if action_uid is not None:
+            if action_uid:
                 action = get_obj(int(action_uid))
             else:
                 action = self._get_start_action()
         except Exception:
-            return {}#message erreur
+            return {}
 
         context_uid = self.params('context_uid')
         try:
-            if context_uid is not None:
+            if context_uid:
                 context = get_obj(int(context_uid))
         except Exception:
             pass
@@ -802,4 +654,3 @@ class NovaideoAPI(IndexManagementJsonView):
             action.after_execution(context, self.request)
 
         return {}#message erreur
-

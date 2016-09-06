@@ -404,12 +404,18 @@ function open_add_idea_form(){
 }
 
 function close_add_idea_form(){
-  $(".home-add-idea").css("position","inherit");
+  var add_idea_form = $(".home-add-idea")
+  add_idea_form.css("position","inherit");
+  var form_groups = add_idea_form.find('.form-group')
+  form_groups.removeClass('has-error')
+  form_groups.find('p.help-block.help-error').remove()
+  add_idea_form.find('#messagedanger').hide();
+
   $('.modal-home-add-idea').remove()
    $(".home-add-idea .form-group:not(.idea-text),"+
      ".home-add-idea .form-group label,"+
      ".home-add-idea .form-group.idea-text #desc").slideUp();
-    $(".home-add-idea").addClass('closed').removeClass('opened')
+    add_idea_form.addClass('closed').removeClass('opened')
     $(".similar-ideas.modal").modal('hide')
     $(".home-add-idea .btn").removeClass('active')
   }
@@ -674,26 +680,38 @@ $(document).ready(function(){
         var parent = $($this.parents('.home-add-idea').first());
         var danger_messages_container = $(parent.find('#messagedanger'));
         var title = $this.find('input[name="title"]').val();
-        if (title=='')
-        {
-           danger_messages_container.text( novaideo_translate("The title is required!") ).show().fadeOut( 6000 );
-           event.preventDefault();
-           return
-        }
         var text = $this.find('textarea[name="text"]').val();
-        if (text=='')
-        {
-           danger_messages_container.text( novaideo_translate("The abstract is required!") ).show().fadeOut( 6000 );
-           event.preventDefault();
-           return
-        }
-
         var keywords = $($this.find('select[name="keywords"]')).val();
-        if (!keywords || keywords.length == 0)
-        {
-           danger_messages_container.text( novaideo_translate("Keywords are required!")).show().fadeOut( 6000 );
-           event.preventDefault();
-           return
+        if(title=='' || text=='' || !keywords || keywords.length == 0){
+          var form_groups = $this.find('.form-group')
+          form_groups.removeClass('has-error')
+          form_groups.find('p.help-block.help-error').remove()
+          var input = null;
+          var error_help = '<p class="help-error help-block">'+novaideo_translate("Required") +'</p>'
+          danger_messages_container.text( novaideo_translate("There was a problem with your submission.") ).show();
+          if (title=='')
+          {
+            form_group = $this.find('input[name="title"]').parents('.form-group').first()
+            form_group.addClass('has-error')
+            form_group.append($(error_help))
+          }
+          
+          if (text=='')
+          {
+             form_group = $this.find('textarea[name="text"]').parents('.form-group').first()
+             form_group.addClass('has-error')
+             form_group.append($(error_help))
+          }
+
+          if (!keywords || keywords.length == 0)
+          {
+             form_group = $this.find('select[name="keywords"]').parents('.form-group').first()
+             form_group.addClass('has-error')
+             form_group.append($(error_help))
+          }
+          $(button).removeClass('active');
+          event.preventDefault();
+          return
         }
 
         var formData = new FormData($(this)[0]);

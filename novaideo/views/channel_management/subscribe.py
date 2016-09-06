@@ -40,7 +40,9 @@ class SubscribeForm(FormView):
 
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'subscribe_channel'})
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Subscribe.node_definition.id})
         formwidget = deform.widget.FormWidget(css_class='channel-subscribe-form deform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget

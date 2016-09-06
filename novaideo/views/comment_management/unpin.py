@@ -40,7 +40,9 @@ class UnpinForm(FormView):
 
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'unpin_comment'})
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Unpin.node_definition.id})
         formwidget = deform.widget.FormWidget(css_class='comment-un-pin-form deform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget

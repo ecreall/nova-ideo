@@ -26,7 +26,6 @@ from novaideo.views.idea_management.present_idea import (
 
 class SentToView(IdeaSentToView):
     validators = [PresentAmendment.get_validator()]
-    template = 'novaideo:views/amendment_management/templates/sent_to.pt'
 
 
 @colander.deferred
@@ -84,7 +83,9 @@ class PresentAmendmentFormView(FormView):
 
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'present_entity'})
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': PresentAmendment.node_definition.id})
         formwidget = deform.widget.FormWidget(css_class='presentform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget

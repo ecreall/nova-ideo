@@ -283,7 +283,7 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(data) {
-                var content = $(data.body).find('.commentulorigin');
+                var content = $(data.new_body).find('.commentulorigin');
                 if (content){
                    init_emoji($(content.find('.emoji-container:not(.emojified)')));
                    $($(content).find('li.commentli').first()).insertBefore(preview);
@@ -355,7 +355,7 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(data) {
-              var content = $(data.body).find('.commentulorigin');
+              var content = $(data.new_body).find('.commentulorigin');
               if (content){
                  init_emoji($(content.find('.emoji-container:not(.emojified)')));
                  $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
@@ -420,7 +420,7 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(data) {
-              var content = $(data.body).find('.commentulorigin');
+              var content = $(data.new_body).find('.commentulorigin');
               if (content){
                  init_emoji($(content.find('.emoji-container:not(.emojified)')));
                  $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
@@ -472,7 +472,7 @@ $(document).ready(function(){
           $( commentmessageinfo).text( novaideo_translate("Message sent") ).show().fadeOut( 3000 );
           var values = $this.serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
-                 var content = $(data.body).find('.study-view.study-present');
+                 var content = $(data.new_body).find('.study-view.study-present');
                  if (content){
                   // var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
                    // $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);

@@ -49,7 +49,9 @@ class DiscussFormView(FormView):
 
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'discuss_person'})
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Discuss.node_definition.id})
         formwidget = deform.widget.FormWidget(css_class='commentform deform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
@@ -99,7 +101,9 @@ class GeneralDiscussFormView(DiscussFormView):
 
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'general_discuss'})
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': GeneralDiscuss.node_definition.id})
         formwidget = deform.widget.FormWidget(css_class='commentform deform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget

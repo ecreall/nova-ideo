@@ -28,7 +28,6 @@ from novaideo.content.processes.idea_management.behaviors import (
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
-from novaideo.utilities.util import to_localized_time
 from novaideo.content.processes import get_states_mapping
 
 
@@ -50,21 +49,18 @@ class CreateIdeaView(FormView):
     name = 'createidea'
 
     def before_update(self):
-        self.action = self.request.resource_url(
-            self.context, 'createidea')
-        self.schema.widget = deform.widget.FormWidget(
-            css_class='material-form deform')
-
-    # def default_data(self):
-    #     localizer = self.request.localizer
-    #     user = get_current()
-    #     time = to_localized_time(
-    #         datetime.datetime.now(tz=pytz.UTC), translate=True)
-    #     title = localizer.translate(_('Idea by'))+' '+\
-    #             getattr(user, 'title', user.name)+' '+\
-    #             localizer.translate(_('the'))+' '+\
-    #             time+' (UTC)'
-    #     return {'title': title}
+        if not getattr(self, 'is_home_form', False):
+            self.action = self.request.resource_url(
+                self.context, 'novaideoapi',
+                query={'op': 'update_action_view',
+                       'node_id': CreateIdea.node_definition.id})
+            self.schema.widget = deform.widget.FormWidget(
+                css_class='deform novaideo-ajax-form')
+        else:
+            self.action = self.request.resource_url(
+                self.context, 'createidea')
+            self.schema.widget = deform.widget.FormWidget(
+                css_class='material-form deform')
 
 
 @view_config(name='ideasmanagement',
@@ -75,15 +71,6 @@ class CreateIdeaView_Json(BasicView):
 
     idea_template = 'novaideo:views/proposal_management/templates/idea_data.pt'
     behaviors = [CreateIdea, CrateAndPublishAsProposal, CrateAndPublish]
-
-    # def _get_new_title(self, user):
-    #     localizer = self.request.localizer
-    #     time = to_localized_time(
-    #         datetime.datetime.now(tz=pytz.UTC), translate=True)
-    #     return localizer.translate(_('Idea by'))+' '+\
-    #             getattr(user, 'title', user.name)+' '+\
-    #             localizer.translate(_('the'))+' '+\
-    #             time+' (UTC)'
 
     def _render_obj(self, obj, user):
         try:
@@ -176,9 +163,10 @@ class CreateIdeaView_Json(BasicView):
             idea = get_obj(oid)
             data = {'title': idea.title,
                     'oid': str(oid),
-                    'body': renderers.render(self.idea_template,
-                                             {'idea': idea},
-                                             self.request)
+                    'body': renderers.render(
+                        self.idea_template,
+                        {'idea': idea},
+                        self.request)
                     }
             result = data
             return result

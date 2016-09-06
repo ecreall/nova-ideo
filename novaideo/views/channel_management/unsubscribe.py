@@ -40,7 +40,9 @@ class UnsubscribeForm(FormView):
 
     def before_update(self):
         self.action = self.request.resource_url(
-            self.context, 'novaideoapi', query={'op': 'unsubscribe_channel'})
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Unsubscribe.node_definition.id})
         formwidget = deform.widget.FormWidget(css_class='channel-unsubscribe-form deform')
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget

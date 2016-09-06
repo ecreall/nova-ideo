@@ -186,6 +186,39 @@ $(document).on('click', 'a.dace-action-modal', update_modal_action);
 $(document).on('click', '.dace-action-direct', update_direct_action);
 
 
+$(document).on('submit', 'form.novaideo-ajax-form', function(){
+    var $this = $(this)
+    var formid = $this.attr('id');
+    var button = $this.find('button.active[type="submit"]').last();
+    var url = $(event.target).attr('action');
+    $(button).addClass('disabled');
+    var formData = new FormData($(this)[0]);
+    formData.append(button.val(), button.val())
+    loading_progress()
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(data) {
+        if(data.new_body){
+         $this.parents('.views-container').first().html($(jQuery.parseJSON(data.new_body)))
+         try {
+                deform.processCallbacks();
+          }catch(err) {}; 
+        }
+        if(! data.redirect_url){
+          var modal_container = $('.action-modal-container.in')
+          modal_container.modal('hide')
+          finish_progress()
+        }
+        update_components(data)
+    }});
+    event.preventDefault();
+})
+
+
 $(document).on('click', function(event){
        var popover_container = $($(event.target).parents('.action-popover-container'))
        if(popover_container.length == 0){

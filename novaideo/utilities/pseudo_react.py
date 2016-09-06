@@ -3,8 +3,10 @@
 
 # licence: AGPL
 # author: Amen Souissi
+import json
 from pyramid.threadlocal import get_current_registry
 from pyramid import renderers
+from pyramid.httpexceptions import HTTPFound
 
 from daceui.interfaces import IDaceUIAPI
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -12,7 +14,14 @@ from dace.objectofcollaboration.principal.util import (
     get_current)
 from dace.util import getAllBusinessAction
 
-from novaideo import _
+from novaideo import _, nothing
+from novaideo.views.idea_management.comment_idea import (
+    CommentsView)
+from novaideo.views.user_management.discuss import (
+    DiscussCommentsView,
+    GeneralCommentsView)
+from novaideo.views.idea_management.present_idea import (
+    SentToView)
 from novaideo.views.novaideo_view_manager.see_my_supports import (
     CONTENTS_MESSAGES)
 from novaideo.views.novaideo_view_manager.see_my_selections import (
@@ -90,14 +99,18 @@ def get_redirect_updated_data(view, **kwargs):
     action_id = kwargs.get('action_id', None)
     if action_id:
         result['action_id'] = action_id
-        result['redirect_url'] = [kwargs.get('redirect_url')]
+        result['redirect_url'] = kwargs.get('redirect_url', None)
+        result['new_body'] = kwargs.get('new_body')
 
     return result
 
 
 DATA_GETTERS = {
     'support_action': [get_navbar_updated_data],
-    'footer_action': [get_footer_action_updated_data, get_navbar_updated_data],
+    'footer_action': [
+        get_footer_action_updated_data,
+        get_navbar_updated_data,
+        get_redirect_updated_data],
     'redirect_action': [get_redirect_updated_data],
     'dropdown_action': [get_dropdown_action_updated_data]
 }
@@ -268,6 +281,13 @@ def get_support_metadata(action, request, context, api, **kwargs):
 
 
 def get_comment_metadata(action, request, context, api, **kwargs):
+    body = None
+    if 'view_data' in kwargs:
+        comments = [context.channel.comments[-1]]
+        result_view = CommentsView(context, request)
+        result_view.comments = comments
+        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+
     actionoid = str(getattr(action, '__oid__', 'entityoid'))
     contextoid = str(getattr(
         context, '__oid__', 'entityoid'))
@@ -278,11 +298,37 @@ def get_comment_metadata(action, request, context, api, **kwargs):
         'action_item_nb': context.channel.len_comments,
         'action_title': action.title,
         'action_icon': getattr(action, 'style_picto', ''),
+        'new_body': body
     }
     return result
 
 
+def get_general_discuss_metadata(action, request, context, api, **kwargs):
+    body = None
+    if 'view_data' in kwargs:
+        channel = context.channel
+        comments = [channel.comments[-1]]
+        result_view = GeneralCommentsView(context, request)
+        result_view.comments = comments
+        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+
+    result = {
+        'action': 'footer_action',
+        'view': api,
+        'new_body': body}
+    return result
+
+
 def get_discuss_metadata(action, request, context, api, **kwargs):
+    body = None
+    if 'view_data' in kwargs:
+        user = get_current()
+        channel = context.get_channel(user)
+        comments = [channel.comments[-1]]
+        result_view = DiscussCommentsView(context, request)
+        result_view.comments = comments
+        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']    
+
     actionoid = str(getattr(action, '__oid__', 'entityoid'))
     contextoid = str(getattr(
         context, '__oid__', 'entityoid'))
@@ -294,16 +340,26 @@ def get_discuss_metadata(action, request, context, api, **kwargs):
         'action_item_nb': getattr(channel, 'len_comments', 0),
         'action_title': action.title,
         'action_icon': getattr(action, 'style_picto', ''),
+        'new_body': body
     }
     return result
 
 
 def get_respond_metadata(action, request, context, api, **kwargs):
+    body = None
+    if 'view_data' in kwargs:
+        request.POST.clear()
+        comments = [context.comments[-1]]
+        result_view = CommentsView(context, request)
+        result_view.comments = comments
+        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+
     channel = context.channel
     subject = channel.subject
     result = {
         'action': 'footer_action',
-        'view': api}
+        'view': api,
+        'new_body': body}
     if subject:
         comment_actions = getAllBusinessAction(
             subject, request, node_id='comment',
@@ -320,13 +376,18 @@ def get_respond_metadata(action, request, context, api, **kwargs):
                 'footer_action_id': actionoid + '-' + contextoid,
                 'action_item_nb': channel.len_comments,
                 'action_title': action.title,
-                'action_icon': getattr(action, 'style_picto', ''),
+                'action_icon': getattr(action, 'style_picto', '')
             })
 
     return result
 
 
 def get_present_metadata(action, request, context, api, **kwargs):
+    body = None
+    if 'view_data' in kwargs:
+        result_view = SentToView(context, request)
+        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+
     actionoid = str(getattr(action, '__oid__', 'entityoid'))
     contextoid = str(getattr(
         context, '__oid__', 'entityoid'))
@@ -337,16 +398,43 @@ def get_present_metadata(action, request, context, api, **kwargs):
         'action_item_nb': context.len_contacted,
         'action_title': action.title,
         'action_icon': getattr(action, 'style_picto', ''),
+        'new_body': body
     }
     return result
 
 
-def get_create_idea_metadata(action, request, context, api, **kwargs):
+def get_api_execution_metadata(action, request, context, api, **kwargs):
+    redirect_url = None
+    body = None
+    if 'view_data' in kwargs:
+        view_instance, view_result = kwargs['view_data']
+        if view_result and view_result is not nothing:
+            if isinstance(view_result, HTTPFound):
+                redirect_url = view_result.headers['location']
+            else:
+                body = view_result['coordinates'][view_instance.coordinates][0]['body']
+
     result = {
         'action': 'redirect_action',
         'view': api,
-        'redirect_url': request.resource_url(context, '@@index')
+        'redirect_url': redirect_url,
+        'new_body': json.dumps(body) if body else None
     }
+    return result
+
+
+def get_edit_comment_metadata(action, request, context, api, **kwargs):
+    body = None
+    if 'view_data' in kwargs:
+        comments = [context]
+        result_view = CommentsView(context, request)
+        result_view.comments = comments
+        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+
+    result = {
+        'action': 'footer_action',
+        'view': api,
+        'new_body': body}
     return result
 
 
@@ -380,9 +468,18 @@ def get_remove_comment_metadata(action, request, context, api, **kwargs):
 METADATA_GETTERS = {
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
+    'novaideoviewmanager.contact': get_api_execution_metadata,
+
+    'newslettermanagement.subscribe': get_api_execution_metadata,
 
     'channelmanagement.subscribe': get_subscribtion_metadata,
     'channelmanagement.unsubscribe': get_subscribtion_metadata,
+
+    'ideamanagement.creat': get_api_execution_metadata,
+    'ideamanagement.duplicate': get_api_execution_metadata,
+    'ideamanagement.edit': get_api_execution_metadata,
+    'ideamanagement.archive': get_api_execution_metadata,
+    'ideamanagement.moderationarchive': get_api_execution_metadata,
 
     'ideamanagement.support': get_support_metadata,
     'ideamanagement.oppose': get_support_metadata,
@@ -397,9 +494,11 @@ METADATA_GETTERS = {
     'amendmentmanagement.comment': get_comment_metadata,
 
     'usermanagement.discuss': get_discuss_metadata,
+    'usermanagement.general_discuss': get_general_discuss_metadata,
 
     'commentmanagement.respond': get_respond_metadata,
     'commentmanagement.remove': get_remove_comment_metadata,
+    'commentmanagement.edit': get_edit_comment_metadata,
 
     'proposalmanagement.present': get_present_metadata,
     'ideamanagement.present': get_present_metadata,

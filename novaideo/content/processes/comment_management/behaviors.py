@@ -89,6 +89,7 @@ class Respond(InfiniteCardinality):
     state_validation = respond_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        root = getSite()
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
         comment.format(request)
@@ -99,7 +100,7 @@ class Respond(InfiniteCardinality):
         channel = comment.channel
         is_discuss = channel.is_discuss()
         channel.add_comment(comment, comment.created_at)
-        if not is_discuss and content:
+        if not is_discuss and content and content is not root:
             content.subscribe_to_channel(user)
 
         if appstruct['related_contents']:
@@ -123,7 +124,6 @@ class Respond(InfiniteCardinality):
         if comment_author in authors:
             authors.remove(comment_author)
 
-        root = getSite()
         comment_oid = getattr(comment, '__oid__', 'None')
         localizer = request.localizer
         author_title = localizer.translate(

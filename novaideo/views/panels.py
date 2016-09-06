@@ -153,6 +153,7 @@ class AddIdea(object):
             add_idea_view_instance = add_idea_view(
                 root, self.request, behaviors=[add_idea_action])
             add_idea_view_instance.viewid = 'formcreateideahome'
+            add_idea_view_instance.is_home_form = True
             add_idea_view_result = add_idea_view_instance()
             add_idea_body = ''
             if isinstance(add_idea_view_result, dict) and \

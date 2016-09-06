@@ -20,7 +20,7 @@ from novaideo.content.interface import (
     INovaIdeoApplication,
     INode)
 from novaideo.content.proposal import Proposal
-from novaideo import _
+from novaideo import _, nothing
 from ..user_management.behaviors import (
     global_user_processsecurity, access_user_processsecurity)
 from novaideo.core import access_action
@@ -310,8 +310,7 @@ class Contact(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(
-            request.resource_url(context, ''))
+        return nothing
 
 
 def seealerts_roles_validation(process, context):

@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import colander
+import deform
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -55,6 +56,15 @@ class ArchiveIdeaView(FormView):
     behaviors = [ArchiveIdea, Cancel]
     validate_behaviors = False
 
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'process_id': ArchiveIdea.node_definition.process.id,
+                   'node_id': ArchiveIdea.node_definition.__name__})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='material-form deform novaideo-ajax-form')
+
 
 @view_config(
     name='archiveidea',
@@ -77,6 +87,14 @@ class ModerationArchiveIdeaView(FormView):
     schema = ArchiveIdeaSchema()
     behaviors = [ModerationArchiveIdea, Cancel]
     validate_behaviors = False
+
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': ModerationArchiveIdea.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form')
 
 
 @view_config(

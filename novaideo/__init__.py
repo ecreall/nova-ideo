@@ -19,6 +19,8 @@ from substanced.db import root_factory
 from dace.util import getSite, find_service
 
 
+nothing = object()
+
 log = logging.getLogger('novaideo')
 
 _ = TranslationStringFactory('novaideo')

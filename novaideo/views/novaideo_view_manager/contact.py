@@ -8,6 +8,7 @@ import deform
 import colander
 from pyramid.view import view_config
 
+from dace.objectofcollaboration.principal.util import get_current
 from dace.util import getSite
 from dace.processinstance.core import (
     DEFAULTMAPPING_ACTIONS_VIEWS, Validator, ValidationError)
@@ -107,6 +108,19 @@ class ContactForm(FormView):
     behaviors = [Contact]
     validators = [ContactValidator]
     validate_behaviors = False
+
+    def default_data(self):
+        user = get_current()
+        return {'name': getattr(user, 'first_name', ''),
+                'email': getattr(user, 'email', '')}
+
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Contact.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form')
 
 
 @view_config(
