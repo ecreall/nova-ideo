@@ -206,9 +206,9 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(){
          $this.parents('.views-container').first().html($(jQuery.parseJSON(data.new_body)))
          try {
                 deform.processCallbacks();
-          }catch(err) {}; 
-        }
-        if(! data.redirect_url){
+          }catch(err) {};
+         finish_progress()
+        }else if(! data.redirect_url){
           var modal_container = $('.action-modal-container.in')
           modal_container.modal('hide')
           finish_progress()
