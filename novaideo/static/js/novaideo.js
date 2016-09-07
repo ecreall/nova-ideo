@@ -169,8 +169,11 @@ function reset_cookie_channels_bar(){
 function init_channels_scroll(){
   if (!window.matchMedia("(max-width: 767px)").matches) {
     $('.channels-container').mCustomScrollbar({
-        theme:"minimal-dark",
+        theme:"dark",
         scrollInertia: 100,
+        scrollButtons:{
+          enable: true
+        },
         callbacks:{
         onScroll:function(){
             update_unread_messages_alerts()
@@ -209,8 +212,11 @@ function initscroll(){
       var to_infinite = result_scroll
     if (!window.matchMedia("(max-width: 767px)").matches) {
       result_scroll.mCustomScrollbar({
-      theme:"minimal-dark",
+      theme:"dark",
       scrollInertia: 100,
+      scrollButtons:{
+        enable: true
+      },
       callbacks:{
         onTotalScroll:function(){
           $(this).trigger('scroll');

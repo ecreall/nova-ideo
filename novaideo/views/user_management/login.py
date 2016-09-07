@@ -77,7 +77,7 @@ class LoginView(BasicView):
                 request.sdiapi.flash(_('Failed login (CSRF)'), 'danger')
             else:
                 self.execute(None)
-                login = request.params['email']
+                login = request.params['email'].strip()
                 password = request.params['password']
                 novaideo_catalog = find_catalog('novaideo')
                 dace_catalog = find_catalog('dace')
