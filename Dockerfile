@@ -1,5 +1,6 @@
 FROM python:3.4
 MAINTAINER Vincent Fretin <vincentfretin@ecreall.com>
+LABEL novaideo=master
 
 ARG userid=1000
 
