@@ -94,5 +94,5 @@ to reduce its size. Example of cron run at 1am sunday:
 
     0 1 * * 0 docker exec novaideo_novaideo_1 /app/bin/zeopack -d 1 -u /app/var/zeo.sock
 
-Be sure that the container name is novaideo_novaideo_1 in you case.
+Be sure that the container name is novaideo_novaideo_1 in your case.
 
