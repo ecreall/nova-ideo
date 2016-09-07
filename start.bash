@@ -5,9 +5,9 @@ sed -i 's@/tmp/build@/app@' develop-eggs/* bin/*
 # use 'mail' hostname which is updated in /etc/hosts when postfix container restart, but not the environment variables
 MAIL_HOST="${POSTFIX_HOST:-mail}"
 MAIL_PORT="${POSTFIX_PORT:-25}"
-MAIL_DEFAULT_SENDER="${MAIL_DEFAULT_SENDER:-site@example.com}"
-SECRET="${SECRET:-dreevTatUk9}"
-APPLICATION_URL="${APPLICATION_URL:-applicationurl}"
+MAIL_DEFAULT_SENDER="${MAIL_DEFAULT_SENDER:-https://mynovaideo.example.com}"
+SECRET="${SECRET:-mybigsecret}"
+APPLICATION_URL="${APPLICATION_URL:-noreply@example.com}"
 TIMEOUT="${TIMEOUT:-30}"
 WORKERS="${WORKERS:-1}"
 export TMPDIR="/app/var/tmp"

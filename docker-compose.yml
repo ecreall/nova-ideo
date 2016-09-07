@@ -4,10 +4,6 @@ services:
     restart: always
 #    build: .
     image: ecreall/novaideo:master
-    environment:
-      - SECRET=mybigsecret
-      - APPLICATION_URL=https://mynovaideo.example.com
-      - MAIL_DEFAULT_SENDER=noreply@example.com
     volumes:
       - ./var:/app/var
     external_links:
