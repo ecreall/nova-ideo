@@ -3,6 +3,7 @@ MAINTAINER Vincent Fretin <vincentfretin@ecreall.com>
 LABEL novaideo=master
 
 ARG userid=1000
+ARG run_buildout=true
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y varnish && \
@@ -44,7 +45,8 @@ RUN mkdir -p -m 700 /app/.ssh && \
     echo "|1|mkhJkTqJT7XEFCg9zJ6vXr9F7KM=|1ihCQCq4xl9SQDtCAqwp4auiRIk= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNn6VI+Ekg/iOz3bZL6bb35tj6fOjmmMOvkw592XDXy+bSes+2qHhcA3uOg5/wEtmRaK583uZH/CJ4512BpLb7M=" >> /app/.ssh/known_hosts && \
     echo "|1|VmfmXO+MNtehwEnpYIEHO7zfvm8=|ya5Yt/ILBv/gMHQLAfSu2tOWO2I= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNn6VI+Ekg/iOz3bZL6bb35tj6fOjmmMOvkw592XDXy+bSes+2qHhcA3uOg5/wEtmRaK583uZH/CJ4512BpLb7M=" >> /app/.ssh/known_hosts
 RUN buildout bootstrap -c heroku.cfg
-# bin/buildout -c heroku.cfg is done outside this build
+# bin/buildout -c heroku.cfg is done outside this build if do_buildout is false
+RUN $run_buildout && bin/buildout -c heroku.cfg || true
 
 USER root
 EXPOSE 5000

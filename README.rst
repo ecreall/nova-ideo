@@ -60,12 +60,11 @@ Deployment with docker
 
 ::
 
-    sudo options="-f docker-compose.yml" ./run.sh rebuild
     sudo docker-compose up -d
 
 
-Currently, you need an external container named postfix with internal port 25
-to send emails.
+Currently, you need an external container named postfix on a mybridge bridge
+network with exposed port 25 to send emails.
 docker-compose runs a nginx container on port 80 and 443.
 You need to create the nginx-app-prod.conf file (similar to nginx-app-dev.conf)
 and add certificates to the local tls directory.
