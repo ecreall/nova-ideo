@@ -58,14 +58,35 @@ If you have a server with postfix, you can do a tunnel like so::
 Deployment with docker
 ----------------------
 
-::
+Currently, you need an external container named postfix on a mybridge bridge
+network with exposed port 25 on the network to send emails.
+
+docker-compose runs a nginx container on port 80 and 443.
+You need to edit the nginx-app-prod.conf file to replace mynovaideo.example.com
+by your domain and add certificates (server.key and server.crt) to the
+tls directory.
+
+You need to configure some environment variables in docker-compose.yml:
+
+- SECRET: the initial admin password
+- APPLICATION_URL: your domain, same as you put in nginx-app-prod.conf
+- MAIL_DEFAULT_SENDER: the sender of the mails that the application use
+
+To deploy::
 
     sudo docker-compose up -d
 
+To connect with the super administrator (for the evolve steps and to create
+an other admin account only), go to
+https://mynovaideo.example.com/manage
+ang login with "admin" and the password is the one you gave in the SECRET
+environment variable.
 
-Currently, you need an external container named postfix on a mybridge bridge
-network with exposed port 25 to send emails.
-docker-compose runs a nginx container on port 80 and 443.
-You need to create the nginx-app-prod.conf file (similar to nginx-app-dev.conf)
-and add certificates to the local tls directory.
+
+Your data is in the var folder, be sure to backup it.
+
+The database with a ZODB filestorage, you should pack it regularly (every week)
+to reduce its size. Example of cron run at 1am sunday:
+
+    0 1 * * 0 docker exec YOUR_CONTAINER_NAME /app/bin/zeopack -d 1 -u /app/var/zeo.sock
 
