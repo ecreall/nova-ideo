@@ -73,19 +73,19 @@ class Alert(VisualisableElement, Entity):
 
         for user in users:
             oid = get_oid(user, user)
-            self.users_toalert[oid] = str(oid)
+            self.users_toalert[str(oid)] = oid
 
     def unsubscribe(self, user):
-        key = get_oid(user, user)
-        if key in self.users_toalert.values():
+        key = str(get_oid(user, user))
+        if key in self.users_toalert:
             self.users_toalert.pop(key)
 
         user.addtoproperty('old_alerts', self)
         self.reindex()
 
     def is_to_alert(self, user):
-        key = get_oid(user, user)
-        return key in self.users_toalert.values()
+        key = str(get_oid(user, user))
+        return key in self.users_toalert
 
     def get_subject_state(self, subject, user, last_state=False):
         states = getattr(subject, 'state_or_none', [None])

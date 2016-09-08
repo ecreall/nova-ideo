@@ -769,4 +769,4 @@ class AlertSearch(SearchableObject):
         return ids
 
     def alert_keys(self):
-        return list(self.context.users_toalert.values())
+        return list(self.context.users_toalert)

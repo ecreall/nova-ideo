@@ -374,6 +374,35 @@ def evolve_alerts(root, registry):
     log.info('Alerts evolved')
 
 
+def evolve_alert_subjects(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IAlert
+    from novaideo.content.alert import InternalAlertKind
+    from BTrees.OOBTree import OOBTree
+    import transaction
+
+    contents = find_entities(interfaces=[IAlert])
+    len_entities = str(len(contents))
+    for index, alert in enumerate(contents):
+        if alert.kind == InternalAlertKind.comment_alert:
+            if alert.subjects:
+                subjects = alert.subjects
+                subject = subjects[0] if subjects else root
+                if hasattr(subject, 'channel'):
+                    alert.delfromproperty('subjects', subject)
+                    alert.addtoproperty('subjects', subject.channel)
+                    alert.reindex()
+                else:
+                    root.delfromproperty('alerts', alert)
+
+        if index % 1000 == 0:
+            log.info("**** Commit ****")
+            transaction.commit()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Alerts evolved')
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -402,6 +431,7 @@ def main(global_config, **settings):
     config.add_evolution_step(subscribe_users_newsletter)
     config.add_evolution_step(evolve_roles_comments)
     config.add_evolution_step(evolve_alerts)
+    config.add_evolution_step(evolve_alert_subjects)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
