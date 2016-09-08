@@ -277,7 +277,7 @@ class Remove(InfiniteCardinality):
             root.delfromproperty(
                 'correlations', context.related_correlation)
 
-        context.channel.remove(context)
+        context.channel.remove_comment(context)
         context.__parent__.delfromproperty('comments', context)
         return {}
 
