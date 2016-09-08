@@ -131,10 +131,12 @@ class Respond(InfiniteCardinality):
         author_first_name = getattr(
             user, 'first_name', user.name)
         author_last_name = getattr(user, 'last_name', '')
-        comment_kind = 'discuss' if is_discuss else 'comment'
+        comment_kind = 'general_discuss' if not channel.get_subject(user) \
+            else 'discuss' if is_discuss else 'comment'
         alert('internal', [root], authors,
               internal_kind=InternalAlertKind.comment_alert,
-              subjects=[content],
+              subjects=[channel],
+              comment_content=comment.comment,
               comment_oid=comment_oid,
               author_title=author_title,
               author_first_name=author_first_name,
@@ -168,7 +170,8 @@ class Respond(InfiniteCardinality):
         if comment_author is not user:
             alert('internal', [root], [comment_author],
                   internal_kind=InternalAlertKind.comment_alert,
-                  subjects=[content], is_respons=True,
+                  subjects=[channel], is_respons=True,
+                  comment_content=comment.comment,
                   author_title=author_title,
                   comment_oid=comment_oid,
                   author_first_name=author_first_name,

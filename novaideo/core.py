@@ -399,6 +399,9 @@ class SearchableEntity(VisualisableElement, Entity):
         channels = getattr(self, 'channels', [])
         return channels[0] if channels else None
 
+    def get_title(self, user=None):
+        return getattr(self, 'title', '')
+
     def subscribe_to_channel(self, user):
         channel = getattr(self, 'channel', None)
         if channel and (user not in channel.members):

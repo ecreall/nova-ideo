@@ -47,7 +47,7 @@
             </a>
             <span i18n:translate="">the</span>
         </div>
-        <span tal:replace="layout.to_localized_time(amendment.created_at)"/> (UTC) <span  i18n:translate="">of the proposal</span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the amended version</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>
+        <span tal:replace="layout.to_localized_time(amendment.created_at)"/> <span  i18n:translate="">of the proposal</span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a><span tal:omit-tag="" tal:condition="amendment.originalentity is not None"><span  i18n:translate="">, duplicated from the amended version</span> <a tal:attributes="href request.resource_url(amendment.originalentity, '@@index')">${amendment.originalentity.title}</a></span>
       </small>
     </div>
   </div>

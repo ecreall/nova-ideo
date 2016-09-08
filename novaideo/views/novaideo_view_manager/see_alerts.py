@@ -47,7 +47,7 @@ class SeeAlertsView(BasicView):
 
     def update(self):
         user = get_current()
-        objects = getattr(user, 'alerts', [])
+        objects = list(getattr(user, 'alerts', []))
         len_result = len(objects)
         objects.extend(getattr(user, 'old_alerts', []))
         now = datetime.datetime.now(tz=pytz.UTC)
@@ -73,7 +73,7 @@ class SeeAlertsView(BasicView):
                 'current_user': user
             }
             body = self.content(args=render_dict,
-                                template=obj.get_templates()['default'])['body']
+                                template=obj.templates['default'])['body']
             result_body.append(body)
 
         result = {}

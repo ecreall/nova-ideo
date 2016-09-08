@@ -1,0 +1,5 @@
+<div tal:define="icon 'octicon octicon-check'">
+  <div tal:define="subject object.subjects[0]">
+    <span>Les modérateurs ont statué sur cette contribution.</span>
+  </div>
+</div>

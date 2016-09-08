@@ -1,0 +1,5 @@
+<div tal:define="icon 'octicon octicon-checklist'">
+  <div tal:define="subject object.subjects[0]">
+    <span>Le comité d'examen a statué sur cette contribution. La contribution est maintenant dans l'état ${object.get_subject_state(subject, current_user, True)}.</span>
+  </div>
+</div>

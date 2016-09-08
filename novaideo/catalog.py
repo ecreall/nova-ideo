@@ -28,7 +28,8 @@ from novaideo.content.interface import (
     Iidea,
     IComment,
     IPreregistration,
-    IInvitation)
+    IInvitation,
+    IAlert)
 from novaideo.dateindex import DateRecurring
 
 
@@ -116,6 +117,9 @@ class ISearchableObject(Interface):
         pass
 
     def is_edited():
+        pass
+
+    def alert_keys():
         pass
 
 
@@ -465,6 +469,19 @@ class NovaideoCatalogViews(object):
 
         return is_edited
 
+    @indexview()
+    def alert_keys(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        alert_keys = adapter.alert_keys()
+        if alert_keys is None:
+            return default
+
+        return alert_keys
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -499,6 +516,7 @@ class NovaideoIndexes(object):
     identifier = Keyword()
     is_pinned = Field()
     is_edited = Field()
+    alert_keys = Keyword()
 
 
 @adapter(context=IEntity)
@@ -636,6 +654,9 @@ class SearchableObject(Adapter):
     def is_edited(self):
         return False
 
+    def alert_keys(self):
+        return []
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
@@ -733,3 +754,19 @@ class CommentSearch(SearchableObject):
 
     def is_edited(self):
         return getattr(self.context, 'edited', False)
+
+
+@adapter(context=IAlert)
+@implementer(ISearchableObject)
+class AlertSearch(SearchableObject):
+
+    def related_contents(self):
+        subjects = getattr(self.context, 'subjects', [])
+        ids = list(set([get_oid(i, None) for i in subjects]))
+        if None in ids:
+            ids.remove(None)
+
+        return ids
+
+    def alert_keys(self):
+        return list(self.context.users_toalert.values())

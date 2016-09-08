@@ -1,14 +1,14 @@
 <div class="thumbnail right-caption span4 search-item result-item" 
      i18n:domain="novaideo"
      tal:condition="object.subjects"
-     tal:define="icon 'glyphicon glyphicon-bookmark';
+     tal:define="icon object.icon;
                  alert_kind getattr(object, 'alert_kind', '');
                  url getattr(object, 'url', None);
                  duplicate_title getattr(object, 'duplicate_title', None);
                  member_url getattr(object, 'member_url', None);
                  member_title getattr(object, 'member_title', None);">
   <div class="media-body" tal:define="subject object.subjects[0]">
-    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
+    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
     <span tal:condition="alert_kind == 'duplicated'">
       Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été dupliqué, le contenu dupliqué est visible sous <a href="${url}"><span class="${getattr(subject, 'icon')}"></span> ${duplicate_title}</a>.
     </span>
@@ -28,5 +28,5 @@
       Le compte du membre <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> que vous avez mis en favori a été désactivé.
     </span>
   </div>
-  <span tal:condition="current_user in object.users_to_alert" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
+  <span tal:condition="object.is_to_alert(current_user)" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 </div>

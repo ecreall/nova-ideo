@@ -448,3 +448,6 @@ class NovaIdeoApplication(VisualisableElement, Application):
         current_keywords = list(self.keywords)
         current_keywords.extend(newkeywords)
         self.keywords = PersistentList(list(set(current_keywords)))
+
+    def get_title(self, user=None):
+        return getattr(self, 'title', '')

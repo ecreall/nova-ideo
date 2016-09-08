@@ -3,10 +3,8 @@
      tal:define="support_kind getattr(object, 'support_kind', '')">
   <div tal:define="subject object.subjects[0]">
     <h4>
-    	<span tal:condition="support_kind == 'support'" class="alert-token token octicon octicon-triangle-up"></span> 
-      <span tal:condition="support_kind == 'oppose'" class="alert-token token octicon octicon-triangle-down"></span> 
-      <span tal:condition="support_kind == 'withdraw'" class="alert-token token glyphicon glyphicon-remove"></span>  
-        <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)
+    	<span class="alert-token token ${object.icon}"></span> 
+        <span tal:replace="layout.to_localized_time(object.modified_at)"/>
     </h4>
     <span>
       <span tal:condition="support_kind == 'support'">Une personne a soutenu votre contribution</span> 

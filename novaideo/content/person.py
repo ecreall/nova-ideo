@@ -42,7 +42,7 @@ from novaideo.core import (
     keywords_choice,
     CorrelableEntity,
     generate_access_keys)
-from .interface import IPerson, IPreregistration
+from .interface import IPerson, IPreregistration, IAlert
 from novaideo import _
 from novaideo.file import Image
 from novaideo.views.widget import (
@@ -276,8 +276,7 @@ class Person(User, SearchableEntity, CorrelableEntity):
     ideas = SharedMultipleProperty('ideas', 'author')
     selections = SharedMultipleProperty('selections')
     working_groups = SharedMultipleProperty('working_groups', 'members')
-    alerts = SharedMultipleProperty('alerts', 'users_to_alert')
-    old_alerts = SharedMultipleProperty('old_alerts', 'alerted_users')
+    old_alerts = SharedMultipleProperty('old_alerts')
     following_channels = SharedMultipleProperty('following_channels', 'members')
 
     def __init__(self, **kwargs):
@@ -395,6 +394,55 @@ class Person(User, SearchableEntity, CorrelableEntity):
                         self, (('AgencyResponsible', current_organization),))
 
                 self.setproperty('organization', organization)
+
+    @property
+    def all_alerts(self):
+        novaideo_catalog = find_catalog('novaideo')
+        dace_catalog = find_catalog('dace')
+        alert_keys_index = novaideo_catalog['alert_keys']
+        object_provides_index = dace_catalog['object_provides']
+        query = object_provides_index.any([IAlert.__identifier__]) & \
+            alert_keys_index.any(self.get_alerts_keys())
+        return query.execute()
+
+    @property
+    def alerts(self):
+        old_alerts = [get_oid(a) for a in self.old_alerts]
+        result = self.all_alerts
+
+        def exclude(result_set, docids):
+            filtered_ids = list(result_set.ids)
+            for _id in docids:
+                if _id in docids and _id in filtered_ids:
+                    filtered_ids.remove(_id)
+
+            return result_set.__class__(
+                filtered_ids, len(filtered_ids), result_set.resolver)
+
+        return exclude(result, old_alerts)
+
+    def get_alerts_keys(self):
+        result = ['all', str(get_oid(self))]
+        return result
+
+    def get_alerts(self, alerts=None, kind=None,
+                   subject=None, **kwargs):
+        if alerts is None:
+            alerts = self.alerts
+
+        if kind:
+            alerts = [a for a in alerts
+                      if a.is_kind_of(kind)]
+
+        if subject:
+            alerts = [a for a in alerts
+                      if subject in a.subjects]
+
+        if kwargs:
+            alerts = [a for a in alerts
+                      if a.has_args(**kwargs)]
+
+        return alerts
 
 
 @content(

@@ -592,14 +592,12 @@ class Discuss(InfiniteCardinality):
         users = list(channel.members)
         if user in users:
             users.remove(user)
+
         return users
 
     def _alert_users(self, context, request, user, comment, channel):
         root = getSite()
         users = self._get_users_to_alerts(context, request, user, channel)
-        if user in users:
-            users.remove(user)
-
         mail_template = root.get_mail_template('alert_discuss')
         comment_oid = getattr(comment, '__oid__', 'None')
         localizer = request.localizer
@@ -610,8 +608,9 @@ class Discuss(InfiniteCardinality):
         author_last_name = getattr(user, 'last_name', '')
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.comment_alert,
-              subjects=[context],
+              subjects=[channel],
               comment_oid=comment_oid,
+              comment_content=comment.comment,
               author_title=author_title,
               author_first_name=author_first_name,
               author_last_name=author_last_name,
@@ -705,18 +704,11 @@ class GeneralDiscuss(InfiniteCardinality):
         return 0
 
     def _get_users_to_alerts(self, context, request, user, channel):
-        users = list(channel.members)
-        if user in users:
-            users.remove(user)
-        return users
+        return 'all'
 
     def _alert_users(self, context, request, user, comment, channel):
         root = getSite()
         users = self._get_users_to_alerts(context, request, user, channel)
-        if user in users:
-            users.remove(user)
-
-        mail_template = root.get_mail_template('alert_discuss')
         comment_oid = getattr(comment, '__oid__', 'None')
         localizer = request.localizer
         author_title = localizer.translate(
@@ -726,33 +718,13 @@ class GeneralDiscuss(InfiniteCardinality):
         author_last_name = getattr(user, 'last_name', '')
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.comment_alert,
-              subjects=[context],
+              subjects=[channel],
               comment_oid=comment_oid,
+              comment_content=comment.comment,
               author_title=author_title,
               author_first_name=author_first_name,
-              author_last_name=author_last_name)
-        subject_type = localizer.translate(
-            _("The " + context.__class__.__name__.lower()))
-        subject = mail_template['subject'].format(
-            subject_title=context.title,
-            subject_type=subject_type)
-        for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
-            message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(user_to_alert, 'user_title', ''))),
-                recipient_first_name=getattr(
-                    user_to_alert, 'first_name', user_to_alert.name),
-                recipient_last_name=getattr(user_to_alert, 'last_name', ''),
-                subject_title=context.title,
-                subject_url=request.resource_url(context, "@@index") + '#comment-' + str(comment_oid),
-                subject_type=subject_type,
-                author_title=author_title,
-                author_first_name=author_first_name,
-                author_last_name=author_last_name,
-                novaideo_title=root.title
-            )
-            alert('email', [root.get_site_sender()], [user_to_alert.email],
-                  subject=subject, body=message)
+              author_last_name=author_last_name,
+              comment_kind='general_discuss')
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
@@ -777,7 +749,7 @@ class GeneralDiscuss(InfiniteCardinality):
                     unique=True)
                 comment.setproperty('related_correlation', correlation[0])
 
-            # self._alert_users(context, request, user, comment, channel)
+            self._alert_users(context, request, user, comment, channel)
             context.reindex()
             user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
 

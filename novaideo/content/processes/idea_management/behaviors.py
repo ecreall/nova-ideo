@@ -711,17 +711,18 @@ class CommentIdea(InfiniteCardinality):
                  mapping={'nember': len_comments,
                           'title': request.localizer.translate(self.title)})
 
-    def _get_users_to_alerts(self, context, request):
-        users = list(get_users_by_preferences(context))
+    def _get_users_to_alerts(self, context, request, channel):
+        users = set(channel.members)
         author = getattr(context, 'author', None)
         context_authors = getattr(
             context, 'authors', [author] if author else [])
-        users.extend(context_authors)
-        return list(set(users))
+        users.update(context_authors)
+        return list(users)
 
     def _alert_users(self, context, request, user, comment):
         root = getSite()
-        users = self._get_users_to_alerts(context, request)
+        channel = comment.channel
+        users = self._get_users_to_alerts(context, request, channel)
         if user in users:
             users.remove(user)
 
@@ -735,8 +736,9 @@ class CommentIdea(InfiniteCardinality):
         author_last_name = getattr(user, 'last_name', '')
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.comment_alert,
-              subjects=[context],
+              subjects=[channel],
               comment_oid=comment_oid,
+              comment_content=comment.comment,
               author_title=author_title,
               author_first_name=author_first_name,
               author_last_name=author_last_name)
@@ -998,7 +1000,6 @@ class MakeOpinion(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         appstruct.pop('_csrf_token_')
         context.opinion = PersistentDict(appstruct)
-        old_state = context.state[0]
         context.state = PersistentList(
             ['examined', 'published', context.opinion['opinion']])
         context.init_examined_at()
@@ -1033,12 +1034,6 @@ class MakeOpinion(InfiniteCardinality):
             alert('email', [root.get_site_sender()], [member.email],
                   subject=subject, body=message)
 
-        request.registry.notify(ObjectModified(
-            object=context,
-            args={
-                'state_source': old_state,
-                'state_target': 'examined'
-            }))
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}

@@ -5,6 +5,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import pytz
 import logging
 from persistent.list import PersistentList
 
@@ -50,6 +51,11 @@ def get_access_keys(context):
 
 def get_novaideo_title():
     return getSite().title
+
+
+def get_time_zone(request):
+    #TODO get user timezone
+    return pytz.timezone('Europe/Paris')
 
 
 def ajax_api(request):
@@ -346,11 +352,35 @@ def evolve_roles_comments(root, registry):
     log.info('Comments evolved.')
 
 
+def evolve_alerts(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IAlert
+    from BTrees.OOBTree import OOBTree
+    import transaction
+
+    contents = find_entities(interfaces=[IAlert])
+    len_entities = str(len(contents))
+    for index, alert in enumerate(contents):
+        users = list(alert.users_to_alert)
+        alert.users_toalert = OOBTree()
+        alert.subscribe(users)
+        alert.reindex()
+        if index % 1000 == 0:
+            log.info("**** Commit ****")
+            transaction.commit()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Alerts evolved')
+
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     config = Configurator(settings=settings, root_factory=root_factory)
     config.add_request_method(ajax_api, reify=True)
+    config.add_request_method(get_time_zone, reify=True)
     config.add_request_method(moderate_ideas, reify=True)
     config.add_request_method(content_to_examine, reify=True)
     config.add_request_method(content_to_support, reify=True)
@@ -371,6 +401,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_channel_comments_at)
     config.add_evolution_step(subscribe_users_newsletter)
     config.add_evolution_step(evolve_roles_comments)
+    config.add_evolution_step(evolve_alerts)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

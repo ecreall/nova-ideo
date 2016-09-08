@@ -4,10 +4,8 @@
      tal:define="support_kind getattr(object, 'support_kind', '')">
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4>
-    	<span tal:condition="support_kind == 'support'" class="alert-token token octicon octicon-triangle-up"></span> 
-    	<span tal:condition="support_kind == 'oppose'" class="alert-token token octicon octicon-triangle-down"></span> 
-    	<span tal:condition="support_kind == 'withdraw'" class="alert-token token glyphicon glyphicon-remove"></span> 
-        <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)
+    	<span class="alert-token token ${object.icon}"></span> 
+        <span tal:replace="layout.to_localized_time(object.modified_at)"/>
     </h4>
     <span>
       <span tal:condition="support_kind == 'support'">Une personne a soutenu votre contribution</span> 
@@ -16,5 +14,5 @@
        <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
      </span>
   </div>
-  <span tal:condition="current_user in object.users_to_alert" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
+  <span tal:condition="object.is_to_alert(current_user)" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 </div>

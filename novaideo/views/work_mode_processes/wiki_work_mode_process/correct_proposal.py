@@ -120,7 +120,7 @@ class AddIdeaFormView(FormView):
         title = localizer.translate(_('Idea by'))+' '+\
                 getattr(user, 'title', user.name)+' '+\
                 localizer.translate(_('the'))+' '+\
-                time+' (UTC)'
+                time
         return {'new_idea': {'title': title}}
 
 

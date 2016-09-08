@@ -1,0 +1,11 @@
+<div tal:omit-tag="" 
+	 tal:define="author_first_name getattr(object, 'author_first_name', '');
+                 author_last_name getattr(object, 'author_last_name', '');
+                 author_parts [author_first_name, author_last_name];
+                 author ' '.join([a for a in author_parts if a]);">
+	<div
+	     i18n:domain="novaideo"
+	     tal:omit-tag="">
+     ${author or 'Une personne'}: ${getattr(object, 'comment_content')}
+	</div>
+</div>

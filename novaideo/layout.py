@@ -4,7 +4,7 @@
 
 # licence: AGPL
 # author: Amen Souissi
-
+import pytz
 from pyramid_layout.layout import layout_config
 
 from novaideo.utilities.util import (
@@ -26,6 +26,8 @@ class GlobalLayout(object):
         date_only=False, format_id='digital',
         ignore_month=False, ignore_year=False,
         add_day_name=False):
+        date = date.replace(tzinfo=pytz.UTC)
+        date = date.astimezone(self.request.get_time_zone)
         return to_localized_time(
             date, request=self.request, date_from=date_from,
             date_only=date_only, format_id=format_id,

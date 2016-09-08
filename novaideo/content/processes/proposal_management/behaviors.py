@@ -743,12 +743,6 @@ class MakeOpinion(InfiniteCardinality):
                 alert('email', [root.get_site_sender()], [member.email],
                       subject=subject, body=message)
 
-        request.registry.notify(ObjectModified(
-            object=context,
-            args={
-                'state_source': old_sate,
-                'state_target': 'examined'
-            }))
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}

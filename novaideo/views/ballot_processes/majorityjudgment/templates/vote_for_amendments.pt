@@ -39,7 +39,7 @@
        </dd>
        <dt i18n:translate="">Period</dt>
        <dd tal:define="run ballot_report.ballot.run_at; finish  ballot_report.ballot.finished_at">
-          <span i18n:translate="">Vote begins at</span> <span tal:replace="layout.to_localized_time(run)"/> (UTC). <span tal:condition="finish is not None"><span i18n:translate="">La fin du vote est prévue pour le</span> <span tal:replace="layout.to_localized_time(finish)"/> (UTC).</span>
+          <span i18n:translate="">Vote begins at</span> <span tal:replace="layout.to_localized_time(run)"/>. <span tal:condition="finish is not None"><span i18n:translate="">La fin du vote est prévue pour le</span> <span tal:replace="layout.to_localized_time(finish)"/>.</span>
        </dd>
      </div>
  </dl>

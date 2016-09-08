@@ -474,7 +474,7 @@ class CommentAmendment(CommentIdea):
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
 
-    def _get_users_to_alerts(self, context, request):
+    def _get_users_to_alerts(self, context, request, channel):
         return getattr(
             context.proposal, 'authors', [])
 

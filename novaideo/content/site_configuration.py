@@ -323,3 +323,9 @@ class NotificationConfigurationSchema(Schema):
         title=_('Application id'),
         missing=""
         )
+
+    app_key = colander.SchemaNode(
+        colander.String(),
+        title=_('REST API Key'),
+        missing=""
+        )

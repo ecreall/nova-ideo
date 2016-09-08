@@ -125,7 +125,7 @@
               ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
             </a>
             <span i18n:translate="">the</span>
-            <span tal:replace="layout.to_localized_time(proposal.created_at)"/> (UTC)
+            <span tal:replace="layout.to_localized_time(proposal.created_at)"/>
           </small>
         </div>
 

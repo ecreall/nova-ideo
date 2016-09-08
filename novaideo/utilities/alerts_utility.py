@@ -18,30 +18,25 @@ from novaideo.ips.mailer import mailer_send
 #     arango_server, create_collection)
 from novaideo.content.alert import INTERNAL_ALERTS
 from novaideo import log
-from .util import html_to_text
 
 
-SLACK_CHANNELS = {
-    'questionnaire': {'url': 'https://hooks.slack.com/services/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',
-                      'name': 'questionnaires'},
-    'improve': {'url': 'https://hooks.slack.com/services/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',
-                'name': 'ameliorations'},
-    'lac_contact': {'url': 'https://hooks.slack.com/services/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',
-                    'name': 'lac_contact'},
-}
+# SLACK_CHANNELS = {
+#     'id': {'url': 'url',
+#                       'name': 'name'}
+# }
 
 
-def alert_slack(senders=[], recipients=[], **kwargs):
-    """
-        recipients: ['improve', 'questionnaire']
-    """
-    for recipient in recipients:
-        channel_data = SLACK_CHANNELS[recipient]
-        kwargs['channel'] = "#" + channel_data['name']
-        kwargs['username'] = 'webhookbot'
-        kwargs = 'payload=' + json.dumps(kwargs)
-        url = channel_data['url']
-        urlopen(url, kwargs.encode())
+# def alert_slack(senders=[], recipients=[], **kwargs):
+#     """
+#         recipients: ['improve', 'questionnaire']
+#     """
+#     for recipient in recipients:
+#         channel_data = SLACK_CHANNELS[recipient]
+#         kwargs['channel'] = "#" + channel_data['name']
+#         kwargs['username'] = 'webhookbot'
+#         kwargs = 'payload=' + json.dumps(kwargs)
+#         url = channel_data['url']
+#         urlopen(url, kwargs.encode())
 
 
 # def alert_arango(senders=[], recipients=[], **kwargs):
@@ -89,35 +84,56 @@ def alert_internal(senders=[], recipients=[], **kwargs):
         alert.init_alert(recipients, subjects)
         if getattr(sender, 'activate_push_notification', False):
             app_id = getattr(sender, 'app_id')
-            players_ids = [getattr(user, 'notification_ids', [])
-                           for user in recipients]
-            players_ids = [item for sublist in players_ids for item in sublist]
-            # players_ids = ['c72acc6f-ed75-4969-ae75-b8e78fa75b9d']
-            if players_ids:
+            app_key = getattr(sender, 'app_key')
+
+            def send_notification(players_ids):
                 subject = subjects[0] if subjects else sender
                 request = get_current_request()
-                html_message = alert.render(
-                    'small', get_current(request), request)
-                message = html_to_text(html_message)
+                user = get_current(request)
+                notification_data = alert_class.get_notification_data(
+                    subject, user, request, alert)
                 header = {
-                    "Content-Type": "application/json"}
+                    "Content-Type": "application/json",
+                    "authorization": "Basic " + app_key}
                 payload = {"app_id": app_id,
-                           "headings": {"en": subject.title, "fr": subject.title},
-                           "contents": {"en": message, "fr": message},
-                           "include_player_ids": players_ids
+                           "headings": {"en": notification_data['title'],
+                                        "fr": notification_data['title']},
+                           "contents": {"en": notification_data['message'],
+                                        "fr": notification_data['message']},
+                           "url": notification_data['url']
                            }
+                if players_ids != 'all':
+                    payload["include_player_ids"] = players_ids
+                else:
+                    payload["included_segments"] = ['All']
+
                 try:
                     requests.post(
                         "https://onesignal.com/api/v1/notifications",
                         headers=header, data=json.dumps(payload), timeout=0.1)
-                except Exception:
-                    pass
+                except Exception as error:
+                    log.warning(error)
+
+            if recipients != 'all':
+                players_ids = [getattr(user, 'notification_ids', [])
+                               for user in recipients]
+                players_ids = [item for sublist in players_ids
+                               for item in sublist]
+                players_ids = ['c72acc6f-ed75-4969-ae75-b8e78fa75b9d']
+                if players_ids:
+                    send_notification(players_ids)
+            else:
+                send_notification('all')
 
 
 def alert(kind="", senders=[], recipients=[], **kwargs):
     alert_op = ALERTS.get(kind, None)
     if alert_op:
-        return alert_op(senders, recipients, **kwargs)
+        try:
+            return alert_op(senders, recipients, **kwargs)
+        except Exception as error:
+            log.warning(error)
+            return None
 
     log.warning("Alert kind {kind} not implemented".format(kind=kind))
     return None
@@ -125,7 +141,7 @@ def alert(kind="", senders=[], recipients=[], **kwargs):
 
 ALERTS = {
     'internal': alert_internal,
-    'slack': alert_slack,
+    # 'slack': alert_slack,
     # 'arango': alert_arango,
     'email': alert_email
 }

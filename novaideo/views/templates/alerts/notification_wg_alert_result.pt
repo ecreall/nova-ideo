@@ -1,0 +1,54 @@
+<div i18n:domain="novaideo"
+     tal:condition="object.subjects"
+     tal:define="alert_kind getattr(object, 'alert_kind', '')">
+  <div tal:define="subject object.subjects[0]">
+    <span tal:condition="alert_kind == 'start_work'">
+      Le groupe de travail a voté pour la poursuite de l'amélioration de cette proposition.
+    </span>
+    <span tal:condition="alert_kind == 'submit_proposal'">
+      Le groupe de travail a voté pour soumettre cette proposition en l'état aux membres de la plateforme.
+    </span>
+
+    <span tal:condition="alert_kind == 'end_work'">
+        Le cycle d'amélioration de cette proposition est terminé, vous devez voter si vous voulez continuer à l'améliorer ou la soumettre en l'état aux membres de la plateforme.
+    </span>
+
+    <span tal:condition="alert_kind == 'voting_amendment'">
+        Le cycle d'amélioration de cette proposition est terminé, vous devez voter sur les amendements soumis.
+    </span>
+
+    <span tal:condition="alert_kind == 'alert_end_work'">
+      Le cycle d'amélioration pour cette proposition touche pratiquement à sa fin. Vous pouvez encore y apporter des améliorations, avant que le groupe de travail vote pour soumettre la proposition en l'état ou pour recommencer un nouveau cycle d'amélioration.
+    </span>
+
+    <span tal:condition="alert_kind == 'new_amendments'">Des amendments pour cette proposition viennent d'être ajoutés.</span>
+    
+    <span tal:condition="alert_kind == 'no_amendment'">Le cycle d'amélioration associé à cette proposition a fini sans proposition d'amendements.</span>
+    
+    <span tal:condition="alert_kind == 'amendments_result'">Le résultat sur les votes sur les amendements associés à cette proposition a été calculé.</span>
+    
+    <span tal:condition="alert_kind == 'correction_added'">Cette proposition a fait l'objet de suggestions d'amélioration et est à relire.</span>
+
+    <span tal:condition="alert_kind == 'participate'">Une personne a rejoint le groupe de travail lié à cette proposition.</span>
+
+    <span tal:condition="alert_kind == 'wg_wating_list_participation'">Une personne, faisant partie de la liste d'attente, a rejoint le groupe de travail lié à cette proposition.</span>
+
+    <span tal:condition="alert_kind == 'resign'">Une personne a quitté le groupe de travail lié à cette proposition.</span>
+
+    <span tal:condition="alert_kind == 'resign_to_wg_open'">Le groupe de travail lié à cette proposition est en dessous du nombre minimum des participants et ne peut plus améliorer la proposition tant qu'il n'a pas atteint de nouveau le nombre minimum des participants.</span>
+
+    <span tal:condition="alert_kind == 'amendable'">Le groupe de travail lié à cette proposition a atteint le nombre minimum des participants et peut améliorer la proposition.</span>
+
+    <span tal:condition="alert_kind == 'add_files'">Des fichiers ont été ajoutés dans l'espace de travail lié à cette proposition.</span>
+    
+    <span tal:condition="alert_kind == 'wg_participation_max'">
+        Le groupe de travail lié à cette proposition a atteint le nombre maximal des participants et ne peut plus accueillir de nouveaux participants, sauf s'il y en a un qui démissionne.
+    </span>
+    <span tal:condition="alert_kind == 'participations_maxi'">
+        Vous participez actuellement à ${request.root.participations_maxi} groupes de travail, vous ne pouvez plus rejoindre d'autres groupes de travail.
+    </span>
+    <span tal:condition="alert_kind == 'correction_validated'">
+        Les suggestions d'amélioration sur cette proposition ont été entièrement acceptées ou refusées, vous pouvez suggérer de nouvelles améliorations.
+    </span>
+  </div>
+</div>

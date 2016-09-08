@@ -1,0 +1,11 @@
+<div i18n:domain="novaideo"
+     tal:condition="object.subjects"
+     tal:define="support_kind getattr(object, 'support_kind', '')">
+  <div tal:define="subject object.subjects[0]">
+    <span>
+      <span tal:condition="support_kind == 'support'">Une personne a soutenu cette contribution</span> 
+	    <span tal:condition="support_kind == 'oppose'">Une personne s'est opposé à cette contribution</span> 
+	    <span tal:condition="support_kind == 'withdraw'">Une personne a retiré son jeton de cette contribution</span>.
+     </span>
+  </div>
+</div>

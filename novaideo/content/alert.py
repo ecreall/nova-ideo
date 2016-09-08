@@ -5,9 +5,11 @@
 # licence: AGPL
 # author: Amen Souissi
 
+from BTrees.OOBTree import OOBTree
 from zope.interface import implementer
 from pyramid import renderers
 
+from substanced.util import get_oid
 from substanced.content import content
 
 from dace.objectofcollaboration.entity import Entity
@@ -18,6 +20,8 @@ from novaideo.content.processes import get_states_mapping
 from .interface import(
     IAlert)
 from novaideo.layout import GlobalLayout
+from novaideo import _
+from novaideo.utilities.util import html_to_text
 
 
 class InternalAlertKind(object):
@@ -37,40 +41,26 @@ class InternalAlertKind(object):
 @implementer(IAlert)
 class Alert(VisualisableElement, Entity):
     """Alert class"""
-    templates = {
-        InternalAlertKind.comment_alert: {
-            'default': 'novaideo:views/templates/alerts/comment_result.pt',
-            'small': 'novaideo:views/templates/alerts/small_comment_result.pt'},
-        InternalAlertKind.content_alert: {
-            'default': 'novaideo:views/templates/alerts/content_result.pt',
-            'small': 'novaideo:views/templates/alerts/small_content_result.pt'
-        },
-        InternalAlertKind.working_group_alert: {
-            'default': 'novaideo:views/templates/alerts/wg_alert_result.pt',
-            'small': 'novaideo:views/templates/alerts/small_wg_alert_result.pt'
-        },
-        InternalAlertKind.moderation_alert: {
-            'default': 'novaideo:views/templates/alerts/moderation_result.pt',
-            'small': 'novaideo:views/templates/alerts/small_moderation_result.pt'
-        },
-        InternalAlertKind.examination_alert: {
-            'default': 'novaideo:views/templates/alerts/examination_result.pt',
-            'small': 'novaideo:views/templates/alerts/small_examination_result.pt'
-        },
-        InternalAlertKind.support_alert: {
-            'default': 'novaideo:views/templates/alerts/support_result.pt',
-            'small': 'novaideo:views/templates/alerts/small_support_result.pt'
-        }
-    }
-    icon = 'glyphicon glyphicon-bell'
-    users_to_alert = SharedMultipleProperty('users_to_alert', 'alerts')
-    alerted_users = SharedMultipleProperty('alerted_users', 'old_alerts')
+    users_to_alert = SharedMultipleProperty('users_to_alert')
     subjects = SharedMultipleProperty('subjects')
 
     def __init__(self, kind, **kwargs):
         super(Alert, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.kind = kind
+        self.users_toalert = OOBTree()
+
+    @property
+    def pattern(self):
+        return INTERNAL_ALERTS.get(self.kind, None)
+
+    @property
+    def templates(self):
+        return self.pattern.templates
+
+    @property
+    def icon(self):
+        return self.pattern.get_icon(self)
 
     def init_alert(self, users, subjects=[]):
         self.subscribe(users)
@@ -82,11 +72,20 @@ class Alert(VisualisableElement, Entity):
             users = [users]
 
         for user in users:
-            self.addtoproperty('users_to_alert', user)
+            oid = get_oid(user, user)
+            self.users_toalert[oid] = str(oid)
 
     def unsubscribe(self, user):
-        self.delfromproperty('users_to_alert', user)
-        self.addtoproperty('alerted_users', user)
+        key = get_oid(user, user)
+        if key in self.users_toalert.values():
+            self.users_toalert.pop(key)
+
+        user.addtoproperty('old_alerts', self)
+        self.reindex()
+
+    def is_to_alert(self, user):
+        key = get_oid(user, user)
+        return key in self.users_toalert.values()
 
     def get_subject_state(self, subject, user, last_state=False):
         states = getattr(subject, 'state_or_none', [None])
@@ -96,9 +95,6 @@ class Alert(VisualisableElement, Entity):
 
         return get_states_mapping(
             user, subject, state)
-
-    def get_templates(self):
-        return self.templates.get(self.kind, {})
 
     def render(self, template, current_user, request):
         layout_manager = getattr(request, 'layout_manager', None)
@@ -110,60 +106,207 @@ class Alert(VisualisableElement, Entity):
             'layout': layout
         }
         return renderers.render(
-            self.get_templates()[template],
+            self.templates[template],
             render_dict,
             request)
 
+    def is_kind_of(self, kind):
+        return kind == self.kind
+
+    def has_args(self, **kwargs):
+        for key in kwargs:
+            if getattr(self, key, None) != kwargs[key]:
+                return False
+
+        return True
+
 
 class _CommentAlert(object):
+    icon = 'glyphicon glyphicon-comment'
+    templates = {
+        'default': 'novaideo:views/templates/alerts/comment_result.pt',
+        'small': 'novaideo:views/templates/alerts/small_comment_result.pt',
+        'notification': 'novaideo:views/templates/alerts/notification_comment_result.pt'
+    }
 
     def __call__(self, **kwargs):
         return Alert(InternalAlertKind.comment_alert, **kwargs)
+
+    def get_icon(self, alert):
+        return self.icon
+
+    def get_notification_data(self, subject, user, request, alert):
+        html_message = alert.render(
+            'notification', user, request)
+        message = html_to_text(html_message)
+        localizer = request.localizer
+        title = localizer.translate(_('New message in')) + ' ' + localizer.translate(
+            subject.get_title(user))
+        channel = subject
+        subject = channel.get_subject(user)
+        if getattr(alert, 'comment_kind', '') == 'discuss':
+            subject = channel.get_subject(subject)
+
+        return {
+            'title': title,
+            'message': message,
+            'url': request.resource_url(subject, '@@index') + \
+            '#comment-' + str(getattr(alert, 'comment_oid', 'None'))}
 
 
 CommentAlert = _CommentAlert()
 
 
 class _ContentAlert(object):
+    icon = 'glyphicon glyphicon-bookmark'
+    templates = {
+        'default': 'novaideo:views/templates/alerts/content_result.pt',
+        'small': 'novaideo:views/templates/alerts/small_content_result.pt',
+        'notification': 'novaideo:views/templates/alerts/notification_content_result.pt'
+    }
 
     def __call__(self, **kwargs):
         return Alert(InternalAlertKind.content_alert, **kwargs)
+
+    def get_icon(self, alert):
+        return self.icon
+
+    def get_notification_data(self, subject, user, request, alert):
+        html_message = alert.render(
+            'notification', user, request)
+        message = html_to_text(html_message)
+        localizer = request.localizer
+        return {
+            'title': localizer.translate(_('Information on')) + ' ' + localizer.translate(
+                subject.get_title(user)),
+            'message': message,
+            'url': request.resource_url(subject, '@@index')}
 
 
 ContentAlert = _ContentAlert()
 
 
 class _WorkingGroupAlert(object):
+    icon = 'novaideo-icon icon-wg'
+    templates = {
+        'default': 'novaideo:views/templates/alerts/wg_alert_result.pt',
+        'small': 'novaideo:views/templates/alerts/small_wg_alert_result.pt',
+        'notification': 'novaideo:views/templates/alerts/notification_wg_alert_result.pt'
+        }
 
     def __call__(self, **kwargs):
         return Alert(InternalAlertKind.working_group_alert, **kwargs)
+
+    def get_icon(self, alert):
+        return self.icon
+
+    def get_notification_data(self, subject, user, request, alert):
+        html_message = alert.render(
+            'notification', user, request)
+        message = html_to_text(html_message)
+        localizer = request.localizer
+        return {
+            'title': localizer.translate(_('New on')) + ' ' + localizer.translate(
+                subject.get_title(user)),
+            'message': message,
+            'url': request.resource_url(subject, '@@index')}
 
 
 WorkingGroupAlert = _WorkingGroupAlert()
 
 
 class _ModerationAlert(object):
+    icon = 'octicon octicon-check'
+    templates = {
+        'default': 'novaideo:views/templates/alerts/moderation_result.pt',
+        'small': 'novaideo:views/templates/alerts/small_moderation_result.pt',
+        'notification': 'novaideo:views/templates/alerts/notification_moderation_result.pt'
+    }
 
     def __call__(self, **kwargs):
         return Alert(InternalAlertKind.moderation_alert, **kwargs)
+
+    def get_icon(self, alert):
+        return self.icon
+
+    def get_notification_data(self, subject, user, request, alert):
+        html_message = alert.render(
+            'notification', user, request)
+        message = html_to_text(html_message)
+        localizer = request.localizer
+        return {
+            'title': localizer.translate(_('Moderation of')) + ' ' + localizer.translate(
+                subject.get_title(user)),
+            'message': message,
+            'url': request.resource_url(subject, '@@index')}
 
 
 ModerationAlert = _ModerationAlert()
 
 
 class _ExaminationAlert(object):
+    icon = 'octicon octicon-checklist'
+    templates = {
+        'default': 'novaideo:views/templates/alerts/examination_result.pt',
+        'small': 'novaideo:views/templates/alerts/small_examination_result.pt',
+        'notification': 'novaideo:views/templates/alerts/notification_examination_result.pt'
+    }
 
     def __call__(self, **kwargs):
         return Alert(InternalAlertKind.examination_alert, **kwargs)
+
+    def get_icon(self, alert):
+        return self.icon
+
+    def get_notification_data(self, subject, user, request, alert):
+        html_message = alert.render(
+            'notification', user, request)
+        message = html_to_text(html_message)
+        localizer = request.localizer
+        return {
+            'title': localizer.translate(_('Examination of')) + ' ' + localizer.translate(
+                subject.get_title(user)),
+            'message': message,
+            'url': request.resource_url(subject, '@@index')}
 
 
 ExaminationAlert = _ExaminationAlert()
 
 
 class _SupportAlert(object):
+    icon = 'octicon octicon-triangle-up'
+    templates = {
+        'default': 'novaideo:views/templates/alerts/support_result.pt',
+        'small': 'novaideo:views/templates/alerts/small_support_result.pt',
+        'notification': 'novaideo:views/templates/alerts/notification_support_result.pt'
+    }
 
     def __call__(self, **kwargs):
         return Alert(InternalAlertKind.support_alert, **kwargs)
+
+    def get_icon(self, alert):
+        support_kind = getattr(alert, 'support_kind', '')
+        if support_kind == 'support':
+            return 'octicon octicon-triangle-up'
+
+        if support_kind == 'oppose':
+            return 'octicon octicon-triangle-down'
+
+        if support_kind == 'withdraw':
+            return 'glyphicon glyphicon-remove'
+
+        return self.icon
+
+    def get_notification_data(self, subject, user, request, alert):
+        html_message = alert.render(
+            'notification', user, request)
+        message = html_to_text(html_message)
+        localizer = request.localizer
+        return {
+            'title': localizer.translate(_('Support:')) + ' ' + localizer.translate(
+                subject.get_title(user)),
+            'message': message,
+            'url': request.resource_url(subject, '@@index')}
 
 
 SupportAlert = _SupportAlert()

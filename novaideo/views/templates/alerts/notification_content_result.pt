@@ -1,0 +1,26 @@
+<div i18n:domain="novaideo"
+     tal:condition="object.subjects"
+     tal:define="icon 'glyphicon glyphicon-bookmark';
+                 alert_kind getattr(object, 'alert_kind', '');
+                 member_title getattr(object, 'member_title', None);">
+  <div tal:define="subject object.subjects[0]">
+    <span tal:condition="alert_kind == 'duplicated'">
+      Ce contenu a été dupliqué.
+    </span>
+    <span tal:condition="alert_kind == 'modified'">Ce contenu faisant partie de vos favoris a été modifié.</span>
+    <span tal:condition="alert_kind == 'published'">Ce contenu faisant partie de vos centres d'intérêt a été publié.</span>
+
+    <span tal:condition="alert_kind == 'published_author'">
+      Ce membre ${member_title} que vous avez mis en favori a publié un contenu.
+    </span>
+
+    <span tal:condition="alert_kind == 'present'">
+      Ce contenu vous a été communiqué.
+    </span>
+
+    <span tal:condition="alert_kind == 'user_deactivated'">
+      Ce compte du membre que vous avez mis en favori a été désactivé.
+    </span>
+
+  </div>
+</div>

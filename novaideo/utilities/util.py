@@ -103,7 +103,7 @@ def to_localized_time(
         request = get_current_request()
 
     if date_from is None:
-        date_from = datetime.datetime.now()
+        date_from = datetime.datetime.now(tz=request.get_time_zone)
 
     hour = getattr(date, 'hour', None)
     minute = getattr(date, 'minute', None)
