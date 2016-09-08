@@ -119,7 +119,6 @@ def alert_internal(senders=[], recipients=[], **kwargs):
                                for user in recipients]
                 players_ids = [item for sublist in players_ids
                                for item in sublist]
-                players_ids = ['c72acc6f-ed75-4969-ae75-b8e78fa75b9d']
                 if players_ids:
                     send_notification(players_ids)
             else:
