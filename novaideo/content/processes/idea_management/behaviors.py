@@ -770,7 +770,7 @@ class CommentIdea(InfiniteCardinality):
         channel = context.channel
         if channel:
             channel.addtoproperty('comments', comment)
-            channel.add_comment(comment, comment.created_at)
+            channel.add_comment(comment)
             comment.format(request)
             user = get_current()
             grant_roles(user=user, roles=(('Owner', comment), ))

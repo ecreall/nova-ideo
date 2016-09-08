@@ -651,7 +651,7 @@ class Discuss(InfiniteCardinality):
 
         if channel:
             channel.addtoproperty('comments', comment)
-            channel.add_comment(comment, comment.created_at)
+            channel.add_comment(comment)
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
@@ -734,7 +734,7 @@ class GeneralDiscuss(InfiniteCardinality):
         #TODO get
         if channel:
             channel.addtoproperty('comments', comment)
-            channel.add_comment(comment, comment.created_at)
+            channel.add_comment(comment)
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))

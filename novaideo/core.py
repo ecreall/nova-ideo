@@ -227,8 +227,11 @@ class Channel(Commentable):
         self.set_data(kwargs)
         self._comments_at = OOBTree()
 
-    def add_comment(self, comment, date):
-        self._comments_at[date] = get_oid(comment)
+    def add_comment(self, comment):
+        self._comments_at[comment.created_at] = get_oid(comment)
+
+    def remove_comment(self, comment):
+        self._comments_at.pop(comment.created_at)
 
     def get_comments_between(self, start, end):
         return list(self._comments_at.values(

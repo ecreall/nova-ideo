@@ -99,7 +99,7 @@ class Respond(InfiniteCardinality):
         content = comment.subject
         channel = comment.channel
         is_discuss = channel.is_discuss()
-        channel.add_comment(comment, comment.created_at)
+        channel.add_comment(comment)
         if not is_discuss and content and content is not root:
             content.subscribe_to_channel(user)
 
@@ -272,10 +272,12 @@ class Remove(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+
         if context.related_correlation:
             root.delfromproperty(
                 'correlations', context.related_correlation)
 
+        context.channel.remove(context)
         context.__parent__.delfromproperty('comments', context)
         return {}
 
