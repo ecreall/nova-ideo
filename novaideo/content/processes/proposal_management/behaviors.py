@@ -1399,8 +1399,8 @@ class Work(ElementaryAction):
     processs_relation_id = 'proposal'
     #actionType = ActionType.system
     relation_validation = decision_relation_validation
-    roles_validation = work_state_validation
-    state_validation = decision_state_validation
+    roles_validation = decision_roles_validation
+    state_validation = work_state_validation
 
     def _send_mails(self, context, request, subject_template, message_template):
         working_group = context.working_group
