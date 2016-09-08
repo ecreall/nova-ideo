@@ -404,6 +404,21 @@ def evolve_alert_subjects(root, registry):
     log.info('Alerts evolved')
 
 
+def subscribe_users_notif_ids(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        node.notification_ids = PersistentList([])
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Channels evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -432,6 +447,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_roles_comments)
     config.add_evolution_step(evolve_alerts)
     config.add_evolution_step(evolve_alert_subjects)
+    config.add_evolution_step(subscribe_users_notif_ids)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

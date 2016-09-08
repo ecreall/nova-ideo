@@ -616,9 +616,9 @@ class Discuss(InfiniteCardinality):
               author_last_name=author_last_name,
               comment_kind='discuss')
         subject_type = localizer.translate(
-            _("The " + context.__class__.__name__.lower()))
+            _("The " + user.__class__.__name__.lower()))
         subject = mail_template['subject'].format(
-            subject_title=context.title,
+            subject_title=user.title,
             subject_type=subject_type)
         for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
             message = mail_template['template'].format(
@@ -627,8 +627,8 @@ class Discuss(InfiniteCardinality):
                 recipient_first_name=getattr(
                     user_to_alert, 'first_name', user_to_alert.name),
                 recipient_last_name=getattr(user_to_alert, 'last_name', ''),
-                subject_title=context.title,
-                subject_url=request.resource_url(context, "@@index") + '#comment-' + str(comment_oid),
+                subject_title=user.title,
+                subject_url=request.resource_url(user, "@@index") + '#comment-' + str(comment_oid),
                 subject_type=subject_type,
                 author_title=author_title,
                 author_first_name=author_first_name,
