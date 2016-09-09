@@ -378,7 +378,6 @@ class SearchableEntity(VisualisableElement, Entity):
     channels = CompositeMultipleProperty('channels', 'subject')
     comments = CompositeMultipleProperty('comments')
 
-
     def __init__(self, **kwargs):
         super(SearchableEntity, self).__init__(**kwargs)
         self.keywords = PersistentList()
@@ -395,7 +394,7 @@ class SearchableEntity(VisualisableElement, Entity):
     def relevant_data(self):
         return [getattr(self, 'title', ''),
                 getattr(self, 'description', ''),
-                ', '.join(self.keywords)]
+                ', '.join(getattr(self, 'keywords', []))]
 
     @property
     def channel(self):
