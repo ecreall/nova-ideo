@@ -400,9 +400,10 @@ class ConfirmRegistration(InfiniteCardinality):
         root.addtoproperty('news_letter_members', person)
         newsletters = root.get_newsletters_automatic_registration()
         email = getattr(person, 'email', '')
-        for newsletter in newsletters and email:
-            newsletter.subscribe(
-                person.first_name, person.last_name, email)
+        if newsletters and email:
+            for newsletter in newsletters:
+                newsletter.subscribe(
+                    person.first_name, person.last_name, email)
 
         transaction.commit()
         if email:

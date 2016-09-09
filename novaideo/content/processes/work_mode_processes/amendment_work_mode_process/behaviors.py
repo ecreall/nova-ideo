@@ -198,7 +198,7 @@ class VotingAmendments(ElementaryAction):
     state_validation = va_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        context.state = PersistentList(['votes for amendments'])
+        context.state = PersistentList(['votes for amendments', 'published'])
         wg = context.working_group
         if 'closed' not in wg.state:
             wg.state.append('closed')
