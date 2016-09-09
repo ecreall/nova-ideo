@@ -64,12 +64,18 @@ class DetailProposalView(BasicView):
 
         return actions, resources, messages, action_updated
 
-    def _get_adapted_text(self, user, is_participant, corrections):
+    def _enable_corrections(self, is_participant, corrections):
+        return 'active' in getattr(self.context.working_group, 'state', []) and\
+               corrections and is_participant
+
+    def _get_adapted_text(
+        self, user, is_participant,
+        corrections, enable_corrections):
         text = getattr(self.context, 'text', '')
         description = getattr(self.context, 'description', '')
         title = getattr(self.context, 'title', '')
         add_filigrane = False
-        if corrections and is_participant:
+        if enable_corrections:
             text = corrections[-1].get_adapted_text(user)
             description = corrections[-1].get_adapted_description(user)
             title = corrections[-1].get_adapted_title(user)
@@ -134,10 +140,11 @@ class DetailProposalView(BasicView):
 
         corrections = [c for c in self.context.corrections
                        if 'in process' in c.state]
+        enable_corrections = self._enable_corrections(is_participant, corrections)
         title, description, text, add_filigrane = self._get_adapted_text(
-            user, is_participant, corrections)
+            user, is_participant, corrections, enable_corrections)
         tinymce_js = 'deform:static/tinymce/tinymce.min.js'
-        if corrections and is_participant and\
+        if enable_corrections and\
            tinymce_js not in resources['js_links']:
             resources['js_links'].append(tinymce_js)
 
@@ -162,6 +169,7 @@ class DetailProposalView(BasicView):
             'description': description,
             'text': text,
             'corrections': corrections,
+            'enable_corrections': enable_corrections,
             'current_user': user,
             'is_participant': is_participant,
             'wg_actions': wg_actions,

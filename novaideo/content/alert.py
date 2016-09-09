@@ -85,6 +85,7 @@ class Alert(VisualisableElement, Entity):
 
     def is_to_alert(self, user):
         key = str(get_oid(user, user))
+        #TODO self not in user.old_alerts
         return key in self.users_toalert
 
     def get_subject_state(self, subject, user, last_state=False):

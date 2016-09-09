@@ -1315,7 +1315,7 @@ def decision_state_validation(process, context):
 
 class VotingPublication(ElementaryAction):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'plus-action'
     style_order = 5
     context = IProposal
     processs_relation_id = 'proposal'
@@ -1393,7 +1393,7 @@ def work_state_validation(process, context):
 
 class Work(ElementaryAction):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'plus-action'
     style_order = 5
     context = IProposal
     processs_relation_id = 'proposal'

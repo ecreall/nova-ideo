@@ -467,7 +467,7 @@ class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
         )
         self.defineTransitions(
                 TransitionDefinition('start', 'eg'),
-                TransitionDefinition('eg', 'votingpublication'),
+                TransitionDefinition('eg', 'votingpublication', sync=True),
                 TransitionDefinition('votingpublication', 'eg1'),
                 TransitionDefinition('eg1', 'pg', amendable_condition, sync=True),
                 TransitionDefinition('pg', 'eg2'),
