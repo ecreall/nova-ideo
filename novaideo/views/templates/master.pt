@@ -10,13 +10,14 @@
       notification_ids getattr(request.user, 'notification_ids', []);
       activate_push_notification getattr(request.root, 'activate_push_notification', False);
       app_id getattr(request.root, 'app_id', None);
-      view_only 'view_only' in request.POST or 'view_only' in  request.GET">
+      view_only 'view_only' in request.POST or 'view_only' in  request.GET;
+      view_title view.title">
   <head tal:condition="not view_only">
 
     <more tal:omit-tag="" metal:define-slot="head-first"></more>
 
     <meta charset="utf-8"/>
-    <title metal:define-slot="page-title">${view.title if view.title else getattr(request.root, 'title', '')}</title>
+    <title metal:define-slot="page-title">${view_title if view_title else getattr(request.root, 'title', '')}</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0"/>
 
@@ -233,7 +234,7 @@
                                 <div class="object-title-block" tal:condition="hasattr(context, '__name__')">
                                   <a tal:attributes="href request.resource_url(context, '@@index')">
                                     <h4>
-                                      <span class="icon ${getattr(context, 'icon', '')}"></span>  ${context.title}
+                                      <span class="icon ${getattr(context, 'icon', '')}"></span>  ${getattr(context, 'title', '')}
                                     </h4>
                                   </a>
                                 </div>
@@ -358,7 +359,7 @@
            <div class="modal-header">
                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                <h4 class="modal-title">
-                <span class="icon ${getattr(context, 'icon', '')}"></span>  ${context.title}
+                <span class="icon ${getattr(context, 'icon', '')}"></span>  ${getattr(context, 'title', '')}
                </h4>
            </div>
            <div class="modal-body">
