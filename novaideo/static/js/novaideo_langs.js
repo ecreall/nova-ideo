@@ -32,7 +32,7 @@ novaideoI18n = {
   "Keywords are required!": "Les mots clés sont requis" ,
   "The idea is not added!": "L'idée n'est pas ajoutée", 
   "Comment sent": "Votre message est bien envoyé" ,
-  "Your comment is integrated": "Votre message est prise en compte", 
+  "Your comment is integrated": "Votre message est pris en compte",
   "Idea already exist!": "Idée est déjà incluse" ,
   "Please select a valid idea!": "Veuillez sélectionner une idée valide",
   "No more item.": "Pas d'autres éléments.",
