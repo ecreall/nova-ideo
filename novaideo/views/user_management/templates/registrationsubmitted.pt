@@ -4,6 +4,6 @@
 	</p>
 
 	<p i18n:translate="" tal:condition="moderate_registration">
-		Merci de vous avoir inscrit à la plateforme. Votre inscription est soumise à modération. Une fois accepter un courriel de confirmation vous sera envoyé. Merci de cliquer sur le lien présent dans le courriel pour compléter votre inscription.
+		Merci de vous avoir inscrit à la plateforme. Votre inscription est soumise à modération. Une fois acceptée un courriel de confirmation vous sera envoyé. Merci de cliquer sur le lien présent dans le courriel pour compléter votre inscription.
 	</p>
 </div>
