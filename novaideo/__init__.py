@@ -419,25 +419,6 @@ def subscribe_users_notif_ids(root, registry):
     log.info('Channels evolved.')
 
 
-def remove_alerts(root, registry):
-    from novaideo.views.filter import find_entities
-    from novaideo.content.interface import IAlert
-    import transaction
-
-    contents = find_entities(interfaces=[IAlert])
-    len_entities = str(len(contents))
-    for index, alert in enumerate(contents):
-        root.delfromproperty('alerts', alert)
-
-        if index % 1000 == 0:
-            log.info("**** Commit ****")
-            transaction.commit()
-
-        log.info(str(index) + "/" + len_entities)
-
-    log.info('Alerts evolved')
-
-
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -467,7 +448,6 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_alerts)
     config.add_evolution_step(evolve_alert_subjects)
     config.add_evolution_step(subscribe_users_notif_ids)
-    config.add_evolution_step(remove_alerts)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
