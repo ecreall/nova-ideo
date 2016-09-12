@@ -477,6 +477,14 @@ class Preregistration(VisualisableElement, Entity):
             + datetime.timedelta(seconds=DEADLINE_PREREGISTRATION)
         return self.deadline_date
 
+    def has_trusted_email(self, trusted_emails):
+        email = getattr(self, 'email', None)
+        if email and trusted_emails:
+            return any(
+                email.find(t)>=0 for t in trusted_emails)
+
+        return True
+
     @property
     def is_expired(self):
         return datetime.datetime.now(tz=pytz.UTC) > self.get_deadline_date()

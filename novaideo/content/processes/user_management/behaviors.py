@@ -43,7 +43,7 @@ from novaideo.content.person import (
     Person, PersonSchema, DEADLINE_PREREGISTRATION)
 from novaideo.utilities.util import (
     to_localized_time, gen_random_token, connect)
-from novaideo import _
+from novaideo import _, nothing
 from novaideo.core import (
     access_action, serialize_roles, PrivateChannel)
 from novaideo.views.filter import get_users_by_preferences
@@ -51,6 +51,30 @@ from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import global_user_processsecurity
+
+
+def accept_preregistration(request, preregistration, root):
+    if getattr(preregistration, 'email', ''):
+        deadline_date = preregistration.get_deadline_date()
+        url = request.resource_url(preregistration, "")
+        localizer = request.localizer
+        mail_template = root.get_mail_template('preregistration')
+        recipient_title = localizer.translate(
+            _(getattr(preregistration, 'user_title', '')))
+        recipient_last_name = getattr(preregistration, 'last_name', '')
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title)
+        deadline_str = to_localized_time(
+            deadline_date, request, translate=True)
+        message = mail_template['template'].format(
+            preregistration=preregistration,
+            recipient_title=recipient_title,
+            recipient_last_name=recipient_last_name,
+            url=url,
+            deadline_date=deadline_str.lower(),
+            novaideo_title=root.title)
+        alert('email', [root.get_site_sender()], [preregistration.email],
+              subject=subject, body=message)
 
 
 def initialize_tokens(person, tokens_nb):
@@ -323,34 +347,16 @@ class Registration(InfiniteCardinality):
         preregistration.__name__ = gen_random_token()
         root = getSite()
         root.addtoproperty('preregistrations', preregistration)
-        url = request.resource_url(preregistration, "")
         deadline = DEADLINE_PREREGISTRATION * 1000
         call_id = 'persistent_' + str(get_oid(preregistration))
         push_callback_after_commit(
             remove_expired_preregistration, deadline, call_id,
             root=root, preregistration=preregistration)
+        preregistration.state.append('pending')
         preregistration.reindex()
         transaction.commit()
-        deadline_date = preregistration.get_deadline_date()
-        if getattr(preregistration, 'email', ''):
-            localizer = request.localizer
-            mail_template = root.get_mail_template('preregistration')
-            recipient_title = localizer.translate(
-                _(getattr(preregistration, 'user_title', '')))
-            recipient_last_name = getattr(preregistration, 'last_name', '')
-            subject = mail_template['subject'].format(
-                novaideo_title=root.title)
-            deadline_str = to_localized_time(
-                deadline_date, request, translate=True)
-            message = mail_template['template'].format(
-                preregistration=preregistration,
-                recipient_title=recipient_title,
-                recipient_last_name=recipient_last_name,
-                url=url,
-                deadline_date=deadline_str.lower(),
-                novaideo_title=root.title)
-            alert('email', [root.get_site_sender()], [preregistration.email],
-                  subject=subject, body=message)
+        if not getattr(root, 'moderate_registration', False):
+            accept_preregistration(request, preregistration, root)
 
         request.registry.notify(ActivityExecuted(self, [preregistration], None))
         return {'preregistration': preregistration}
@@ -358,6 +364,70 @@ class Registration(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(
             context, "@@registrationsubmitted"))
+
+
+def ar_processsecurity_validation(process, context):
+    root = getSite()
+    return getattr(root, 'moderate_registration', False) and\
+        not context.is_expired and\
+        global_user_processsecurity()
+
+
+def ar_roles_validation(process, context):
+    organization = getattr(context, 'organization', None)
+    if organization:
+        return has_any_roles(
+            roles=('Admin', ('OrganizationResponsible', organization)))
+
+    return has_role(role=('Admin',))
+
+
+def ar_state_validation(process, context):
+    return 'pending' in context.state
+
+
+class AcceptRegistration(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-ok'
+    style_order = 1
+    submission_title = _('Continue')
+    context = IPreregistration
+    roles_validation = ar_roles_validation
+    processsecurity_validation = ar_processsecurity_validation
+    state_validation = ar_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        context.state = PersistentList(['accepted'])
+        accept_preregistration(request, context, root)
+        request.registry.notify(ActivityExecuted(self, [context], None))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class RefuseRegistration(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-remove'
+    style_order = 2
+    submission_title = _('Continue')
+    context = IPreregistration
+    roles_validation = ar_roles_validation
+    processsecurity_validation = ar_processsecurity_validation
+    state_validation = ar_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        remove_expired_preregistration(root, context)
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
 
 
 def confirm_processsecurity_validation(process, context):
@@ -432,7 +502,12 @@ class ConfirmRegistration(InfiniteCardinality):
 
 
 def remind_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',))
+    organization = getattr(context, 'organization', None)
+    if organization:
+        return has_any_roles(
+            roles=('Admin', ('OrganizationResponsible', organization)))
+
+    return has_role(role=('Admin',))
 
 
 def remind_processsecurity_validation(process, context):
@@ -440,14 +515,24 @@ def remind_processsecurity_validation(process, context):
         global_user_processsecurity()
 
 
+def remind_state_validation(process, context):
+    root = getSite()
+    moderate_registration = getattr(root, 'moderate_registration', False)
+    if moderate_registration:
+        return 'accepted' in context.state
+
+    return True
+
+
 class Remind(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-refresh'
-    style_order = 1
+    style_order = 3
     context = IPreregistration
     submission_title = _('Continue')
+    state_validation = remind_state_validation
     roles_validation = remind_roles_validation
     processsecurity_validation = remind_processsecurity_validation
 
@@ -486,12 +571,24 @@ class Remind(InfiniteCardinality):
 
 
 def get_access_key_reg(obj):
+    organization = getattr(obj, 'organization', None)
+    if organization:
+        return serialize_roles(('Admin', ('OrganizationResponsible', obj)))
+
     return serialize_roles(('Admin',))
 
 
 def seereg_processsecurity_validation(process, context):
-    return has_any_roles(roles=('Admin', )) and \
-           global_user_processsecurity()
+    has_role_cond = False
+    organization = getattr(context, 'organization', None)
+    if organization:
+        has_role_cond = has_any_roles(
+            roles=('Admin', ('OrganizationResponsible', context)))
+    else:
+        has_role_cond = has_role(role=('Admin',))
+
+    return has_role_cond and \
+        global_user_processsecurity()
 
 
 @access_action(access_key=get_access_key_reg)
@@ -508,6 +605,11 @@ class SeeRegistration(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def seeregs_processsecurity_validation(process, context):
+    return has_any_roles(roles=('Admin', 'OrganizationResponsible')) and \
+           global_user_processsecurity()
+
+
 class SeeRegistrations(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
@@ -515,7 +617,7 @@ class SeeRegistrations(InfiniteCardinality):
     style_order = 4
     isSequential = False
     context = INovaIdeoApplication
-    processsecurity_validation = seereg_processsecurity_validation
+    processsecurity_validation = seeregs_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return {}
@@ -529,7 +631,7 @@ class RemoveRegistration(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
-    style_order = 1
+    style_order = 5
     submission_title = _('Remove')
     context = IPreregistration
     processsecurity_validation = seereg_processsecurity_validation
@@ -540,7 +642,7 @@ class RemoveRegistration(InfiniteCardinality):
         return {'root': root}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(kw['root'], ""))
+        return nothing
 
 
 def discuss_roles_validation(process, context):

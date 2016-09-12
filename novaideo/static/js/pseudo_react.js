@@ -161,7 +161,7 @@ var pseudo_react_components = {
 	'support_action': [nav_bar_component, view_title_component, list_items_component],
 	'footer_action': [nav_bar_component, footer_action_component,
 	                  view_title_component, list_items_component],
-	'redirect_action': [redirect_component],
+	'redirect_action': [redirect_component, list_items_component, view_title_component],
 	'dropdown_action': [dropdown_action_component, list_channels_component]
 }
 

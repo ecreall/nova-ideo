@@ -26,7 +26,11 @@ from novaideo.views.novaideo_view_manager.see_my_supports import (
     CONTENTS_MESSAGES)
 from novaideo.views.novaideo_view_manager.see_my_selections import (
     CONTENTS_MESSAGES as SELECT_CONTENTS_MESSAGES)
+from novaideo.views.user_management.see_registrations import (
+    CONTENTS_MESSAGES as REGISTRATION_CONTENTS_MESSAGES)
 from novaideo.utilities.util import update_all_ajax_action
+from novaideo.views.filter import find_entities
+from novaideo.content.interface import IPreregistration
 
 
 def get_navbar_updated_data(view, **kwargs):
@@ -101,6 +105,9 @@ def get_redirect_updated_data(view, **kwargs):
         result['action_id'] = action_id
         result['redirect_url'] = kwargs.get('redirect_url', None)
         result['new_body'] = kwargs.get('new_body')
+        result['view_title'] = kwargs.get('view_title', None)
+        result['view_name'] = kwargs.get('view_name', None)
+        result['removed'] = kwargs.get('removed', False)
 
     return result
 
@@ -125,6 +132,32 @@ def get_components_data(action, view, **kwargs):
         result['components'].extend(res.pop('components', []))
         result.update(res)
 
+    return result
+
+
+def get_remove_registration_metadata(action, request, context, api, **kwargs):
+    user = get_current()
+    registrations = find_entities(
+        user=user,
+        interfaces=[IPreregistration])
+    len_result = len(registrations)
+    index = str(len_result)
+    if len_result > 1:
+        index = '*'
+
+    view_title = request.localizer.translate(
+        _(REGISTRATION_CONTENTS_MESSAGES[index],
+          mapping={'nember': len_result}))
+
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': None,
+        'new_body': None,
+        'view_name': 'seeregistrations',
+        'view_title': view_title,
+        'removed': True,
+    }
     return result
 
 
@@ -327,7 +360,7 @@ def get_discuss_metadata(action, request, context, api, **kwargs):
         comments = [channel.comments[-1]]
         result_view = DiscussCommentsView(context, request)
         result_view.comments = comments
-        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']    
+        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
 
     actionoid = str(getattr(action, '__oid__', 'entityoid'))
     contextoid = str(getattr(
@@ -503,6 +536,9 @@ METADATA_GETTERS = {
     'proposalmanagement.present': get_present_metadata,
     'ideamanagement.present': get_present_metadata,
     'amendmentmanagement.present': get_present_metadata,
+    'registrationmanagement.remove': get_remove_registration_metadata,
+    'registrationmanagement.refuse': get_remove_registration_metadata,
+    'registrationmanagement.accept': get_api_execution_metadata,
 }
 
 

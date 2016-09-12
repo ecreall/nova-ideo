@@ -1,5 +1,6 @@
 <div tal:replace="structure navbar_body"/>
-<div class="media" i18n:domain="novaideo">
+<div class="media" i18n:domain="novaideo" tal:define="
+              trusted_email registration.has_trusted_email(getattr(request.root, 'trusted_emails', []))">
   <div class="media-body">
     <h4 class="media-heading">
         <strong>${getattr(registration, 'title', registration.name)}</strong> 
@@ -9,6 +10,7 @@
         <dt i18n:translate="">Email</dt>
         <dd tal:define="mail getattr(registration, 'email', '')">
           <a href="mailto:${mail}">${mail}</a>
+          <span class="not-reliable-address" tal:condition="not trusted_email" ><span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">Please note that this address is not a reliable address!</span></span>
         </dd>
         <dt i18n:translate="">Subscribed the</dt>
         <dd><span tal:replace="layout.to_localized_time(registration.created_at)"/></dd>

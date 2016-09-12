@@ -34,6 +34,7 @@ function update_modal_action(event){
            catch(err) {};
            finish_progress()
            focus_on_form(modal_container)
+           modal_container.data('action_id', action.attr('id'))
            return false
         }else{
            location.reload();
@@ -218,6 +219,7 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
           modal_container.modal('hide')
           finish_progress()
         }
+        data.search_item = $($('#'+modal_container.data('action_id')).parents('.search-item').first())
         update_components(data)
     }});
     event.preventDefault();

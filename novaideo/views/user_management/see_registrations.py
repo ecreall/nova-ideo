@@ -20,6 +20,8 @@ from novaideo.content.novaideo_application import (
     NovaIdeoApplication)
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo import _
+from novaideo.views.filter import find_entities
+from novaideo.content.interface import IPreregistration
 
 
 CONTENTS_MESSAGES = {
@@ -46,10 +48,13 @@ class SeeRegistrationsView(BasicView):
 
     def update(self):
         self.execute(None)
-        root = getSite()
-        objects = root.preregistrations
-        objects.reverse()
-        batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
+        user = get_current()
+        objects = find_entities(
+            user=user,
+            interfaces=[IPreregistration])
+        batch = Batch(
+            objects, self.request,
+            default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_registrations"
         len_result = batch.seqlen
         index = str(len_result)

@@ -1,22 +1,23 @@
 <div class="thumbnail right-caption span4 search-item result-item" i18n:domain="novaideo"
   tal:define="icon getattr(object, 'icon', '');
-              url request.resource_url(object, '@@index')">
+              url request.resource_url(object, '@@index');
+              trusted_email object.has_trusted_email(getattr(request.root, 'trusted_emails', []))">
   <div class="media-body media-person">
-    <div class="object-title-block" >
+    <div class="object-menu pull-right">
+      <div tal:replace="structure menu_body"/>
+    </div>
+    <div class="object-title-block view-item-title" >
       <a tal:attributes="href url">
         <h4>
-          <span class="icon ${icon}"></span> ${object.title}
-          <small style="color: #d43f3a" tal:condition="object.is_expired" >(<span i18n:translate="">Expired</span>)</small>
+          <span class="icon ${icon}"></span>  ${object.title} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
         </h4>
       </a>
-    </div>
-    <div class="object-menu pull-right" style="margin-top: 10px;">
-      <div tal:replace="structure menu_body"/>
     </div>
     <dl class="dl-horizontal film-data">
         <dt i18n:translate="">Email</dt>
         <dd tal:define="mail getattr(object, 'email', '')">
           <a href="mailto:${mail}">${mail}</a>
+          <span class="not-reliable-address" tal:condition="not trusted_email" ><span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">Please note that this address is not a reliable address!</span></span>
         </dd>
         <dt i18n:translate="">Subscribed the</dt>
         <dd><span tal:replace="layout.to_localized_time(object.created_at)"/></dd>

@@ -99,6 +99,26 @@ class UserParamsConfigurationSchema(Schema):
         missing=False
     )
 
+    moderate_registration = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Moderate user registration'),
+        description=_('Moderate user registration'),
+        title='',
+        missing=False
+    )
+
+    trusted_emails = colander.SchemaNode(
+        colander.Set(),
+        widget=Select2Widget(
+            values=[],
+            create=True,
+            multiple=True),
+        title=_('Trusted emails'),
+        description=_("To add email, you need to tap the « Enter »"
+                      " key after each email or separate them with commas.")
+        )
+
     only_for_members = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),

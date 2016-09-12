@@ -32,7 +32,9 @@ from .behaviors import (
     Remind,
     SeeRegistration,
     SeeRegistrations,
-    RemoveRegistration)
+    RemoveRegistration,
+    AcceptRegistration,
+    RefuseRegistration)
 from novaideo import _
 
 
@@ -149,6 +151,14 @@ class RegistrationManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Remove the registration"),
                                        title=_("Remove"),
                                        groups=[]),
+                accept = ActivityDefinition(contexts=[AcceptRegistration],
+                                       description=_("Accept the registration"),
+                                       title=_("Accept"),
+                                       groups=[]),
+                refuse = ActivityDefinition(contexts=[RefuseRegistration],
+                                       description=_("Refuse the registration"),
+                                       title=_("Refuse"),
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -156,6 +166,10 @@ class RegistrationManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'registration'),
                 TransitionDefinition('registration', 'eg'),
+                TransitionDefinition('pg', 'accept'),
+                TransitionDefinition('accept', 'eg'),
+                TransitionDefinition('pg', 'refuse'),
+                TransitionDefinition('refuse', 'eg'),
                 TransitionDefinition('pg', 'confirmregistration'),
                 TransitionDefinition('confirmregistration', 'eg'),
                 TransitionDefinition('pg', 'remind'),

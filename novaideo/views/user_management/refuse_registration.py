@@ -13,15 +13,15 @@ from pontus.view import BasicView
 from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.user_management.behaviors import (
-    RemoveRegistration)
+    RefuseRegistration)
 from novaideo.content.person import Preregistration
 from novaideo import _
 
 
-class RemoveRegistrationViewStudyReport(BasicView):
-    title = 'Alert for remove'
-    name = 'alertforremove'
-    template = 'novaideo:views/user_management/templates/alert_remove_registration.pt'
+class RefuseRegistrationViewStudyReport(BasicView):
+    title = 'Alert for refuse'
+    name = 'alertforrefuse'
+    template = 'novaideo:views/user_management/templates/alert_refuse_registration.pt'
 
     def update(self):
         result = {}
@@ -32,35 +32,35 @@ class RemoveRegistrationViewStudyReport(BasicView):
         return result
 
 
-class RemoveRegistrationView(FormView):
-    title = _('Remove')
-    name = 'removeregistrationform'
-    formid = 'formremoveregistration'
-    behaviors = [RemoveRegistration, Cancel]
+class RefuseRegistrationView(FormView):
+    title = _('Refuse')
+    name = 'refuseregistrationform'
+    formid = 'formrefuseregistration'
+    behaviors = [RefuseRegistration, Cancel]
     validate_behaviors = False
 
     def before_update(self):
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',
-                   'node_id': RemoveRegistration.node_definition.id})
+                   'node_id': RefuseRegistration.node_definition.id})
         self.schema.widget = deform.widget.FormWidget(
             css_class='deform novaideo-ajax-form')
 
 
 @view_config(
-    name='removeregistration',
+    name='refuseregistration',
     context=Preregistration,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class RemoveRegistrationViewMultipleView(MultipleView):
-    title = _('Remove the registration')
-    name = 'removeregistration'
-    viewid = 'removeregistration'
+class RefuseRegistrationViewMultipleView(MultipleView):
+    title = _('Refuse the registration')
+    name = 'refuseregistration'
+    viewid = 'refuseregistration'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
-    views = (RemoveRegistrationViewStudyReport, RemoveRegistrationView)
-    validators = [RemoveRegistration.get_validator()]
+    views = (RefuseRegistrationViewStudyReport, RefuseRegistrationView)
+    validators = [RefuseRegistration.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
-    {RemoveRegistration: RemoveRegistrationViewMultipleView})
+    {RefuseRegistration: RefuseRegistrationViewMultipleView})

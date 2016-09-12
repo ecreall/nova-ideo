@@ -1,0 +1,10 @@
+<div class="alert alert-${trusted_email and 'info' or 'danger'}" i18n:domain="novaideo" i18n:translate="" tal:define="
+              trusted_email context.has_trusted_email(getattr(request.root, 'trusted_emails', []))">
+	<p tal:condition="not trusted_email">
+		<span class="not-reliable-address" ><span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">Please note that the address of this registration is not a reliable address!</span></span>
+    </p>
+    <p>
+      <span>
+      	En cliquant sur "Continuer" vous acceptez l'inscription de l'utilisateur. Un email lui sera envoyé lui permettant de confirmer son inscription. Une fois l'inscription confirmée l'utilisateur devient un membre de la plateforme. Ce qui lui permettra d'accéder aux différents contenus de la plateforme.</span>
+    </p>
+</div>

@@ -69,9 +69,15 @@ class RegistrationView(FormView):
     )
 class RegistrationSubmittedView(BasicView):
     template = 'novaideo:views/user_management/templates/registrationsubmitted.pt'
-    title = _('Please confirm your registration ')
+    title = _('Please confirm your registration')
     name = 'registrationsubmitted'
     viewid = 'deactivateview'
+
+    def before_update(self):
+        moderate_registration = getattr(
+            self.context, 'moderate_registration', False)
+        if moderate_registration:
+            self.title = _('Your registration is submitted to moderation')
 
     def update(self):
         result = {}

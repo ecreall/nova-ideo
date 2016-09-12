@@ -60,6 +60,11 @@ STATES_PARTICIPANT_MAPPING = {
 	    'accepted': _('Accepted'),
 	    'refused': _('Refused')
 	},
+    'preregistration': {
+        'pending': _('Pending'),
+        'accepted': _('Accepted'),
+        'refused': _('Refused')
+    },
 	'person': {
         'active': _('Active'),
 	    'deactivated': _('Deactivated')
@@ -119,6 +124,11 @@ STATES_MEMBER_MAPPING = {
 	    'accepted': _('Accepted'),
 	    'refused': _('Refused')
 	},
+    'preregistration': {
+        'pending': _('Pending'),
+        'accepted': _('Accepted'),
+        'refused': _('Refused')
+    },
 	'person': {
         'active': _('Active'),
 	    'deactivated': _('Deactivated')
