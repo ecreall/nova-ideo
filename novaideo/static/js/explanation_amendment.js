@@ -45,8 +45,8 @@ function get_explanation_form(){
                      $(target.find('.modal-content')).addClass('explanation-modal');
                      target.show();
                      init_explanation_select();
-                     ($('.content-text').find('.explanation-action.btn-blue')).removeClass('btn-blue');
-                     btn.addClass('btn-blue');
+                     ($('.content-text').find('.explanation-action.active')).removeClass('active');
+                     btn.addClass('active');
                      $('.explanation-validation').on('click', submit_explanation);
                      $('.explanation-close').on('click', close_explanation);
                      target.find('.explanations-bloc').append("<div class=\"intention-separator\">"+novaideo_translate('Or')+"</div>")
@@ -65,7 +65,7 @@ function get_explanation_form(){
 
 function close_explanation(){
        var button = $(this);
-       ($('.content-text').find('.explanation-action.btn-blue')).removeClass('btn-blue');
+       ($('.content-text').find('.explanation-action.active')).removeClass('active');
        var parent = $($(this).parents('.explanation-modal').first());
        parent.remove();
 }
@@ -113,12 +113,12 @@ function init_explanation(){
           var dl = $(current_del.first());
           dl.slideToggle("fast");
           dl.remove();
-          btn.removeClass('explanation-comment-on');
+          btn.removeClass('on');
       }else{
           var dl = $($(btn.data('target')).find('dl').first()).clone(); 
           target.append(dl);
           dl.slideToggle("fast");
-          btn.addClass('explanation-comment-on');
+          btn.addClass('on');
       }
       
 }

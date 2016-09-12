@@ -3039,58 +3039,19 @@ small .proposal-support .token{
 .mce-edit-area body { font-size: 14px; }
 
 
-.btn-black {
-    background-image: -webkit-linear-gradient(to bottom, black 0%, #3d3d3d 100%);
-    background-image:      -o-linear-gradient(to bottom, black 0%, #3d3d3d 100%);
-    background-image: linear-gradient(to bottom, black 0%, #3d3d3d 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#3d3d3d');
-    background-repeat: repeat-x;
-    border-color: black;
-    color: #ffffff;
-    padding: 6px;
+.btn-warning.explanation-action.active,
+.explanation-modal .modal-title .btn-warning,
+.explanation-comment-on,
+.explanation-comment-on:active,
+.explanation-comment-on:focus{
+  background-color: #3e85c3;
 }
 
-
-.btn-white {
-    background-color: #e4e4e4;
-    border-color: #b5b3b0 !important;
-    color: #585d52 !important;
-    line-height: 1.42857 !important;
-    padding: 6px !important;
-}
-
-.btn-white:hover, .btn-white:focus, .btn-white:active {
-    background-color: #272727;
-    border-color: black;
-    color: #ffffff !important;
-}
-
-.btn-blue,
-.btn-blue:hover, 
-.btn-blue:focus, 
-.btn-blue:active{
-    background-image: -webkit-linear-gradient(to bottom, #3e85c3 0%, #3e85c3 100%);
-    background-image:      -o-linear-gradient(to bottom, #3e85c3 0%, #3e85c3 100%);
-    background-image: linear-gradient(to bottom, #3e85c3 0%, #3e85c3 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3e85c3', endColorstr='#3e85c3');
-    background-repeat: repeat-x;
-    border-color: #3e85c3;
-    color: #ffffff;
-    padding: 6px;
-}
-
-
-.btn-black:hover, 
-.btn-black:focus, 
-.btn-black:active,
- {
-    background-color: #272727;
-    background-image: -webkit-linear-gradient(to bottom, black 0%, #272727 100%);
-    background-image:      -o-linear-gradient(to bottom, black 0%, #272727 100%);
-    background-image: linear-gradient(to bottom, black 0%, #272727 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#272727');
-    border-color: black;
-    color: #ffffff;
+.btn.explanation-action,
+.explanation-modal .modal-title .btn,
+.btn.explanation-item,
+.btn.select-item{
+  padding: 0 5px
 }
 
 .search-idea-bloc{
@@ -3173,10 +3134,6 @@ small .proposal-support .token{
     color: #9bbcd8;
     cursor: pointer;
     text-shadow: 0 3px 2px rgba(0, 0, 0, 0.5)
-}
-
-.explanation-comment-on{
-    color: #e6a51a;
 }
 
 .explanation-comment:hover{

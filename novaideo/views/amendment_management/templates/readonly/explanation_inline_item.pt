@@ -6,7 +6,11 @@
            <dt i18n:translate="">Related ideas</dt>
 	         <dd id="related_ideas">
             <tal:loop repeat="idea data.get('related_ideas', [])">
-               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a>
+               <a 
+                data-oid="${getattr(idea, '__oid__', '')}"
+                class="toggle-popover"
+                tal:attributes="href request.resource_url(idea, '@@index')">
+                <span class="icon ${getattr(idea, 'icon')}"></span> ${idea.title}</a>
                <tal:separator condition="not: repeat['idea'].end">, </tal:separator>
             </tal:loop>
            </dd>

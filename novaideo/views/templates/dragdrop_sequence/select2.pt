@@ -13,7 +13,7 @@
     <tal:loop tal:repeat="item values">
       <span tal:condition=" (item[0] in cstruct or item[0] == cstruct)"
             id="item-${item[0]}" 
-            class="btn btn-white select-item"
+            class="btn btn-success select-item"
             data-item="${item[0]}"
             dat-value="${item[1]}"
             draggable="true">

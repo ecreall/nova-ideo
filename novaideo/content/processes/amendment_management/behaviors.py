@@ -266,8 +266,8 @@ class ExplanationItem(InfiniteCardinality):
     roles_validation = exp_roles_validation
     processsecurity_validation = exp_processsecurity_validation
     state_validation = expitem_state_validation
-    item_css_on = 'btn-white'
-    item_css_off = 'btn-black'
+    item_css_on = 'btn-success'
+    item_css_off = 'btn-warning'
 
     def _add_css_item(self, context, item):
         soup = BeautifulSoup(context.text_diff)

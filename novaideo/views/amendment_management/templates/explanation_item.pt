@@ -1,3 +1,3 @@
 <span id="explanation_action">
-     <button data-url="${url}" type="button" class="btn btn-${((item['intention'] is None) and 'black') or 'white'} explanation-action" data-toggle="modal" data-target="#${item['oid']}">${item['oid']}</button>
+     <button data-url="${url}" type="button" class="btn btn-${((item['intention'] is None) and 'warning') or 'success'} explanation-action" data-toggle="modal" data-target="#${item['oid']}">${item['oid']}</button>
 </span>

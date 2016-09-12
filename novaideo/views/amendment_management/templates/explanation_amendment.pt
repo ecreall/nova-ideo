@@ -1,5 +1,5 @@
 <span class="explanation-amendment">
-  <span  id="${id}" type="button" class="btn btn-black global-action">${id}</span>
+  <span  id="${id}" type="button" class="btn btn-default global-action">${id}</span>
   <span class="items-control hide-bloc">
     <span class="btn-group-vertical btn-group-xs explanation-items">
       <span  id="${id}-replaced" data-globalid="${id}" type="button" class="explanation-item btn btn-success" draggable="true"><span class="glyphicon glyphicon-plus"></span>${id}</span> 

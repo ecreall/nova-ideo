@@ -26,7 +26,6 @@
 }
 
 .remove-item{
-    background: url("../images/remove_button.png") no-repeat scroll right center transparent;
     float: right;
     height: 28px;
     margin-right: 3px;
@@ -35,12 +34,7 @@
     cursor: pointer;
 }
 
-.remove-item:hover{
-    background: url("../images/remove_button_over.png") no-repeat scroll right center transparent;
-}
-
 .disabled-remove-item{
-    background: url("../images/remove_button_disabled.png") no-repeat scroll right center transparent;
     float: right;
     height: 28px;
     margin-right: 3px;
@@ -49,7 +43,6 @@
 }
 
 .sequence-add-item{
-    background: url("../images/add_button.png") no-repeat scroll right center transparent;
     cursor: pointer;
     float: right;
     height: 28px;
@@ -59,9 +52,6 @@
 
 }
 
-.sequence-add-item:hover{
-    background: url("../images/add_button_over.png") no-repeat scroll right center transparent;
-}
 
 .form-group.sequence-item{
     border: 1px solid #428bca;
