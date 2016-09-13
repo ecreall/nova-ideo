@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-09-12 15:20+0200\n"
+"POT-Creation-Date: 2016-09-13 14:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -158,6 +158,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/templates/see_proposal.pt:146
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:8
 #: ./novaideo/views/novaideo_view_manager/analytics.py:226
+#: ./novaideo/adapters/__init__.py:26
 msgid "Keywords"
 msgstr ""
 
@@ -530,8 +531,9 @@ msgid "No more Information."
 msgstr ""
 
 #: ./novaideo/views/panels.py:539
-#: ./novaideo/content/processes/admin_process/definition.py:44
-#: ./novaideo/content/processes/admin_process/definition.py:48
+#: ./novaideo/content/processes/admin_process/definition.py:45
+#: ./novaideo/content/processes/admin_process/definition.py:49
+#: ./novaideo/content/processes/admin_process/definition.py:53
 #: ./novaideo/content/processes/novaideo_process_management/definition.py:42
 msgid "More"
 msgstr ""
@@ -789,6 +791,7 @@ msgstr ""
 #: ./novaideo/views/user_management/templates/see_registration.pt:10
 #: ./novaideo/views/templates/preregistration_result.pt:17
 #: ./novaideo/views/novaideo_view_manager/contact.py:59
+#: ./novaideo/adapters/__init__.py:25
 msgid "Email"
 msgstr ""
 
@@ -1484,7 +1487,7 @@ msgstr ""
 #: ./novaideo/views/invitation_management/templates/see_invitation.pt:8
 #: ./novaideo/views/invitation_management/templates/see_invitations.pt:9
 #: ./novaideo/views/templates/person_result.pt:31
-#: ./novaideo/content/person.py:245
+#: ./novaideo/content/person.py:245 ./novaideo/adapters/__init__.py:28
 msgid "Organization"
 msgstr ""
 
@@ -1825,7 +1828,7 @@ msgstr ""
 #: ./novaideo/views/user_management/templates/registrationsubmitted.pt:6
 msgid ""
 "Merci de vous avoir inscrit à la plateforme. Votre inscription est soumise à "
-"modération. Une fois accepter un courriel de confirmation vous sera envoyé. "
+"modération. Une fois acceptée un courriel de confirmation vous sera envoyé. "
 "Merci de cliquer sur le lien présent dans le courriel pour compléter votre "
 "inscription."
 msgstr ""
@@ -2040,15 +2043,25 @@ msgstr ""
 msgid "Send the news letter"
 msgstr ""
 
+#: ./novaideo/views/admin_process/extract.py:47
+#: ./novaideo/content/processes/admin_process/definition.py:51
+#: ./novaideo/content/processes/admin_process/definition.py:52
+msgid "Extract"
+msgstr ""
+
+#: ./novaideo/views/admin_process/extract.py:37
+msgid "Attributes to extract"
+msgstr ""
+
 #: ./novaideo/views/admin_process/configure_site_folder.py:33
-#: ./novaideo/content/processes/admin_process/definition.py:42
+#: ./novaideo/content/processes/admin_process/definition.py:43
 msgid "Configure the site"
 msgstr ""
 
 #: ./novaideo/views/admin_process/manage_keywords.py:55
 #: ./novaideo/views/admin_process/manage_keywords.py:68
-#: ./novaideo/content/processes/admin_process/definition.py:46
 #: ./novaideo/content/processes/admin_process/definition.py:47
+#: ./novaideo/content/processes/admin_process/definition.py:48
 msgid "Manage keywords"
 msgstr ""
 
@@ -2420,8 +2433,8 @@ msgstr ""
 #: ./novaideo/content/processes/user_management/behaviors.py:340
 #: ./novaideo/content/processes/user_management/behaviors.py:438
 #: ./novaideo/content/processes/ballot_processes/__init__.py:32
-#: ./novaideo/content/processes/admin_process/behaviors.py:35
-#: ./novaideo/content/processes/admin_process/behaviors.py:65
+#: ./novaideo/content/processes/admin_process/behaviors.py:42
+#: ./novaideo/content/processes/admin_process/behaviors.py:72
 #: ./novaideo/content/processes/proposal_management/behaviors.py:238
 #: ./novaideo/content/processes/proposal_management/behaviors.py:299
 #: ./novaideo/content/processes/proposal_management/behaviors.py:487
@@ -4313,6 +4326,7 @@ msgid "You can select the dates of contents to be displayed."
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:234
+#: ./novaideo/adapters/__init__.py:24
 msgid "Author"
 msgstr ""
 
@@ -4321,6 +4335,7 @@ msgid "You can enter the author name of the contents to be displayed."
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:341
+#: ./novaideo/adapters/__init__.py:21
 msgid "Type"
 msgstr ""
 
@@ -4618,6 +4633,7 @@ msgid "By"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/templates/entity_history.pt:16
+#: ./novaideo/adapters/__init__.py:23
 msgid "State"
 msgstr ""
 
@@ -5071,6 +5087,7 @@ msgstr ""
 
 #: ./novaideo/content/site_configuration.py:202
 #: ./novaideo/content/site_configuration.py:293
+#: ./novaideo/adapters/__init__.py:22
 msgid "Title"
 msgstr ""
 
@@ -5191,10 +5208,11 @@ msgid "The subject of the newsletter."
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:170 ./novaideo/content/person.py:178
+#: ./novaideo/adapters/__init__.py:27
 msgid "Description"
 msgstr ""
 
-#: ./novaideo/content/newsletter.py:181
+#: ./novaideo/content/newsletter.py:181 ./novaideo/adapters/__init__.py:33
 msgid "Content"
 msgstr ""
 
@@ -5532,6 +5550,7 @@ msgstr ""
 #: ./novaideo/content/processes/user_management/behaviors.py:395
 #: ./novaideo/content/processes/user_management/behaviors.py:418
 #: ./novaideo/content/processes/user_management/behaviors.py:534
+#: ./novaideo/content/processes/admin_process/behaviors.py:110
 #: ./novaideo/content/processes/proposal_management/behaviors.py:319
 #: ./novaideo/content/processes/proposal_management/behaviors.py:406
 #: ./novaideo/content/processes/advertising_management/behaviors.py:149
@@ -5557,7 +5576,7 @@ msgid "Edit the newsletter"
 msgstr ""
 
 #: ./novaideo/content/processes/newsletter_management/definition.py:62
-#: ./novaideo/content/processes/admin_process/definition.py:43
+#: ./novaideo/content/processes/admin_process/definition.py:44
 msgid "Configure"
 msgstr ""
 
@@ -5810,8 +5829,8 @@ msgstr ""
 msgid "Deactivate users"
 msgstr ""
 
-#: ./novaideo/content/processes/admin_process/definition.py:34
 #: ./novaideo/content/processes/admin_process/definition.py:35
+#: ./novaideo/content/processes/admin_process/definition.py:36
 msgid "Admin process"
 msgstr ""
 
@@ -6240,4 +6259,20 @@ msgstr ""
 #: ./novaideo/content/processes/novaideo_abstract_process/definition.py:56
 #: ./novaideo/content/processes/novaideo_abstract_process/definition.py:57
 msgid "Add the next deadline"
+msgstr ""
+
+#: ./novaideo/adapters/__init__.py:29
+msgid "Created at"
+msgstr ""
+
+#: ./novaideo/adapters/__init__.py:30
+msgid "Modified at"
+msgstr ""
+
+#: ./novaideo/adapters/__init__.py:31
+msgid "Examined at"
+msgstr ""
+
+#: ./novaideo/adapters/__init__.py:32
+msgid "Published at"
 msgstr ""
