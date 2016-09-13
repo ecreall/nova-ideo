@@ -248,6 +248,7 @@ class Comment(Commentable, Emojiable):
                 url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
 
         urls = extract_urls(comment)
+        comment = comment.replace('\n', '<br/>')
         for url in urls:
             comment = comment.replace(
                 url, '<a  target="_blank" href="'+url+'">'+url+'</a>')

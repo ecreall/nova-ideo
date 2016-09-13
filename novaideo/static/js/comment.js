@@ -268,7 +268,7 @@ $(document).ready(function(){
         var url = $(event.target).attr('action');
         if (comment !='' && intention!=''){
           var preview = $(target.find('> .commentli.comment-preview').last());
-          $(preview.find('.comment-preview-text')).text(comment)
+          $(preview.find('.comment-preview-text')).html(comment.replace(/\n/g, '</br>'))
           init_emoji($(preview.find('.comment-preview-text')));
           preview.removeClass('hide-bloc')
           init_comment_scroll(parent)
@@ -340,7 +340,7 @@ $(document).ready(function(){
         var url = $(event.target).attr('action');
         if (comment !='' && intention!=''){
           var preview = $(target.find('> .commentli.comment-preview').last());
-          $(preview.find('.comment-preview-text')).text(comment)
+          $(preview.find('.comment-preview-text')).html(comment.replace(/\n/g, '</br>'))
           init_emoji($(preview.find('.comment-preview-text')));
           preview.removeClass('hide-bloc')
           comment_scroll_to(preview, true)

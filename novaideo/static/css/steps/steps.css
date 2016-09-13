@@ -6,10 +6,6 @@
     margin-left: 121px;
 }
 
-.step-message{
-   font-size: 20px;
-   line-height: 25px
-}
 
 #steps-messages .popover.bottom{
     top: 53px; 
@@ -136,8 +132,12 @@ ul, ol {
 .nav-steps li .step-content:hover {
     background-color: #dddddd;
     color: #565656;
+}
+
+.nav-steps li.active{
     cursor: pointer;
 }
+
 
 .nav-steps li .step-content:hover:after {
     border-left: 20px solid #dddddd;

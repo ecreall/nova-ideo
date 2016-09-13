@@ -54,48 +54,50 @@ function chrono(target){
     }
 }
 
-var inprogress = false;
+
+function open_step_message(step, message){
+    message.css('z-index', '1010');
+    message.addClass('in');
+    var step_li = $(step.parents('li').first());
+    var height = step_li.height();
+    var element_by_media = step_li;
+    //responsive design
+    try{
+      if (window.matchMedia('(max-width: 991px)').matches) {
+         element_by_media = $('body');
+      };
+    }catch(err){
+    }
+    var offset = element_by_media.offset();
+    var element_by_media_width = element_by_media.width();
+    var message_wdth = message.width();
+    var width = element_by_media_width/2 - message_wdth/2;
+    message.css('left', String(offset.left + (width))+'px');
+    message.css('top', String(step_li.offset().top+height-10)+'px');
+    message.show();
+    step_li.addClass('message-in');
+}
+
+function close_step_messages(){
+  var messages = $('.in.step-message');
+  messages.removeClass('in');
+  messages.hide();
+  $(messages).css('z-index', '-1010');
+  $('li.message-in').removeClass('message-in')
+}
 
 $(document).ready(function(){
-    $('.step-content').on('click', function(){
-        var message = $($('#steps-messages').find('#'+$(this).data('step')).first());
-        if (message.hasClass('in')){
-            message.removeClass('in');
-            message.hide();
-            $(this).removeClass('message-in');
-            $(message).css('z-index', '-1010');
-            inprogress = false
-        }else{
-            $(message).css('z-index', '1010');
-            message.addClass('in');
-            var step = $($(this).parents('li').first());
-            var height = step.height();
-            var element_by_media = step;
-            //responsive design
-            try{
-              if (window.matchMedia('(max-width: 991px)').matches) {
-                 element_by_media = $('body');
-              };
-            }catch(err){
-            }
-            var offset = element_by_media.offset();
-            var element_by_media_width = element_by_media.width();
-            var message_wdth = message.width();
-            var width = element_by_media_width/2 - message_wdth/2;
-            message.css('left', String(offset.left + (width))+'px');
-            message.css('top', String(step.offset().top+height)+'px');
-            message.show();
-            $(this).addClass('message-in');
-            inprogress = true
+    $('li.active .step-content').hover(function(){
+        close_step_messages()
+        var $this = $(this)
+        var message = $($('#steps-messages').find('#'+$this.data('step')).first());
+        open_step_message($this, message)
+    })
 
-       }
-    });
-
-    $(document).on('click', function(event){
-       if(!inprogress){
-           $('.step-content.message-in').click();
-       }else{
-           inprogress = false
+   $(document).on('click' ,function(event){
+       var parents = $($(event.target).parents('.message-in, .in.step-message'))
+       if(parents.length == 0){
+         close_step_messages()
        }
     });
 });

@@ -1,31 +1,31 @@
 <div tal:omit-tag="" tal:condition="condition" i18n:domain="novaideo">
   <div  class="hidden-xs" id="steps-messages">
       <div id="messages">
-          <div tal:condition="step1_message != ''" id="message-step-1" role="tooltip" class="step-popover popover fade bottom">
+          <div tal:condition="step1_message != ''" id="message-step-1" role="tooltip" class="step-message step-popover popover fade bottom">
               <div class="arrow"></div>
               <div class="popover-content">
                   ${structure:step1_message}
               </div>
           </div>
-          <div tal:condition="step2_message != ''" id="message-step-2" role="tooltip" class="step-popover popover fade bottom">
+          <div tal:condition="step2_message != ''" id="message-step-2" role="tooltip" class="step-message step-popover popover fade bottom">
               <div class="arrow"></div>
               <div class="popover-content">
                   ${structure:step2_message}
               </div>
           </div>
-          <div tal:condition="step3_message != ''" id="message-step-3" role="tooltip" class="step-popover popover fade bottom">
+          <div tal:condition="step3_message != ''" id="message-step-3" role="tooltip" class="step-message step-popover popover fade bottom">
               <div class="arrow"></div>
               <div class="popover-content">
                   ${structure:step3_message}
               </div>
           </div>
-          <div tal:condition="step4_message != ''" id="message-step-4" role="tooltip" class="step-popover popover fade bottom">
+          <div tal:condition="step4_message != ''" id="message-step-4" role="tooltip" class="step-message step-popover popover fade bottom">
               <div class="arrow"></div>
               <div class="popover-content">
                   ${structure:step4_message}
               </div>
           </div>
-          <div tal:condition="step5_message != ''" id="message-step-5" role="tooltip" class="step-popover popover fade bottom">
+          <div tal:condition="step5_message != ''" id="message-step-5" role="tooltip" class="step-message step-popover popover fade bottom">
               <div class="arrow"></div>
               <div class="popover-content">
                   ${structure:step5_message}

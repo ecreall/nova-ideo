@@ -19,7 +19,8 @@ from pontus.core import VisualisableElement
 
 from .behaviors import (
     ConfigureSite,
-    ManageKeywords
+    ManageKeywords,
+    Extract
     )
 from novaideo import _
 
@@ -46,6 +47,10 @@ class AdminProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Manage keywords"),
                                        title=_("Manage keywords"),
                                        groups=[_('More')]),
+                extract = ActivityDefinition(contexts=[Extract],
+                                       description=_("Extract"),
+                                       title=_("Extract"),
+                                       groups=[_('More')]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -53,6 +58,8 @@ class AdminProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'configure_site'),
                 TransitionDefinition('configure_site', 'eg'),
+                TransitionDefinition('pg', 'extract'),
+                TransitionDefinition('extract', 'eg'),
                 TransitionDefinition('pg', 'managekeywords'),
                 TransitionDefinition('managekeywords', 'eg'),
                 TransitionDefinition('eg', 'end'),
