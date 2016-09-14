@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-09-13 14:19+0200\n"
+"POT-Creation-Date: 2016-09-14 16:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -813,7 +813,7 @@ msgstr "L'utilisateur (${email}) n'est pas abonné"
 #: novaideo/views/templates/dragdrop_sequence/sequence_item.pt:20
 #: novaideo/content/processes/newsletter_management/definition.py:74
 #: novaideo/content/processes/user_management/definition.py:152
-#: novaideo/content/processes/user_management/behaviors.py:635
+#: novaideo/content/processes/user_management/behaviors.py:644
 #: novaideo/content/processes/advertising_management/definition.py:72
 #: novaideo/content/processes/comment_management/definition.py:55
 #: novaideo/content/processes/comment_management/definition.py:56
@@ -960,7 +960,7 @@ msgstr "Supprimer"
 #: novaideo/content/processes/user_management/definition.py:143
 #: novaideo/content/processes/user_management/definition.py:144
 #: novaideo/content/processes/user_management/behaviors.py:310
-#: novaideo/content/processes/user_management/behaviors.py:596
+#: novaideo/content/processes/user_management/behaviors.py:605
 #: novaideo/content/processes/proposal_management/definition.py:372
 #: novaideo/content/processes/proposal_management/definition.py:373
 #: novaideo/content/processes/proposal_management/behaviors.py:1287
@@ -1498,6 +1498,7 @@ msgid "Organization"
 msgstr "Organisation"
 
 #: novaideo/views/filter/__init__.py:532 novaideo/views/filter/__init__.py:902
+#: novaideo/web_services/export_entities.py:169
 msgid "Metadata filter"
 msgstr "Filtre sur les métadonnées"
 
@@ -1710,40 +1711,41 @@ msgstr "${nember} inscriptions trouvées"
 msgid "Registrations"
 msgstr "Inscriptions"
 
-#: novaideo/views/user_management/reset_password.py:39
-#: novaideo/views/user_management/reset_password.py:144
+#: novaideo/views/user_management/reset_password.py:38
+#: novaideo/views/user_management/reset_password.py:143
 #: novaideo/content/processes/newsletter_management/definition.py:70
 #: novaideo/content/processes/idea_management/behaviors.py:818
 #: novaideo/content/processes/invitation_management/behaviors.py:114
 #: novaideo/content/processes/novaideo_view_manager/behaviors.py:297
+#: novaideo/web_services/export_entities.py:126
 msgid "Send"
 msgstr "Envoyer"
 
-#: novaideo/views/user_management/reset_password.py:109
+#: novaideo/views/user_management/reset_password.py:108
 msgid "Alert for reset"
 msgstr "Alerte pour supression"
 
-#: novaideo/views/user_management/reset_password.py:123
-#: novaideo/views/user_management/reset_password.py:134
+#: novaideo/views/user_management/reset_password.py:122
+#: novaideo/views/user_management/reset_password.py:133
 msgid "Request password reset"
 msgstr "Lancer la procédure de changement de mot de passe"
 
-#: novaideo/views/user_management/reset_password.py:171
+#: novaideo/views/user_management/reset_password.py:170
 msgid "Reset Password"
 msgstr "Réinitialiser le mot de passe"
 
-#: novaideo/views/user_management/reset_password.py:104
+#: novaideo/views/user_management/reset_password.py:103
 #: novaideo/views/user_management/templates/login.pt:12
 #: novaideo/content/person.py:196
 msgid "Login (email)"
 msgstr "Identifiant (courriel)"
 
-#: novaideo/views/user_management/reset_password.py:161
+#: novaideo/views/user_management/reset_password.py:160
 #: novaideo/views/user_management/edit.py:49
 msgid "New Password"
 msgstr "Nouveau mot de passe"
 
-#: novaideo/views/user_management/reset_password.py:93
+#: novaideo/views/user_management/reset_password.py:92
 #, python-format
 msgid "No such user ${member}"
 msgstr ""
@@ -2054,7 +2056,7 @@ msgstr "Désactiver"
 msgid "Send the news letter"
 msgstr "Envoyer la newsletter"
 
-#: novaideo/views/admin_process/extract.py:47
+#: novaideo/views/admin_process/extract.py:48
 #: novaideo/content/processes/admin_process/definition.py:51
 #: novaideo/content/processes/admin_process/definition.py:52
 msgid "Extract"
@@ -2443,7 +2445,7 @@ msgstr ""
 #: novaideo/content/processes/user_management/behaviors.py:147
 #: novaideo/content/processes/user_management/behaviors.py:273
 #: novaideo/content/processes/user_management/behaviors.py:340
-#: novaideo/content/processes/user_management/behaviors.py:438
+#: novaideo/content/processes/user_management/behaviors.py:446
 #: novaideo/content/processes/ballot_processes/__init__.py:32
 #: novaideo/content/processes/admin_process/behaviors.py:42
 #: novaideo/content/processes/admin_process/behaviors.py:72
@@ -4568,6 +4570,7 @@ msgid "Contribute"
 msgstr "Contribuer"
 
 #: novaideo/views/novaideo_view_manager/doc_anonymous.py:25
+#: novaideo/web_services/export_entities.py:120
 msgid "Permission denied"
 msgstr "Permission refusée"
 
@@ -5587,7 +5590,7 @@ msgstr "Voir"
 #: novaideo/content/processes/idea_management/behaviors.py:579
 #: novaideo/content/processes/user_management/behaviors.py:395
 #: novaideo/content/processes/user_management/behaviors.py:418
-#: novaideo/content/processes/user_management/behaviors.py:534
+#: novaideo/content/processes/user_management/behaviors.py:543
 #: novaideo/content/processes/admin_process/behaviors.py:110
 #: novaideo/content/processes/proposal_management/behaviors.py:319
 #: novaideo/content/processes/proposal_management/behaviors.py:406
@@ -5725,7 +5728,7 @@ msgstr "Enregistrer et publier"
 
 #: novaideo/content/processes/idea_management/behaviors.py:710
 #: novaideo/content/processes/idea_management/behaviors.py:826
-#: novaideo/content/processes/user_management/behaviors.py:690
+#: novaideo/content/processes/user_management/behaviors.py:699
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:57
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:105
 #, python-format
@@ -6326,3 +6329,11 @@ msgstr "Examiné(e) le"
 #: novaideo/adapters/__init__.py:32
 msgid "Published at"
 msgstr "Publié(e) le"
+
+#: novaideo/web_services/export_entities.py:184
+msgid "Find entities"
+msgstr "Trouver des entités"
+
+#: novaideo/web_services/export_entities.py:158
+msgid "Content type"
+msgstr "Type de contenu"
