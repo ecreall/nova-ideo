@@ -444,7 +444,7 @@ class RemoveInvitation(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         root = getSite()
-        return HTTPFound(request.resource_url(root, ''))
+        return HTTPFound(request.resource_url(root, '@@seeinvitations'))
 
 
 def reinvite_roles_validation(process, context):
