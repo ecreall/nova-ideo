@@ -26,7 +26,6 @@ from novaideo.utilities.alerts_utility import alert
 from novaideo.content.novaideo_application import NovaIdeoApplication
 
 
-
 class Cancel(DefaultCancel):
 
     def redirect(self, context, request, **kw):
@@ -156,8 +155,8 @@ class ResetSchema(Schema):
     """ The schema for validating password reset requests."""
     new_password = colander.SchemaNode(
         colander.String(),
-        validator = colander.Length(min=3, max=100),
-        widget = deform.widget.CheckedPasswordWidget(),
+        validator=colander.Length(min=3, max=100),
+        widget=deform.widget.CheckedPasswordWidget(),
         title=_("New Password")
         )
 
