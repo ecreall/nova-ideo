@@ -116,7 +116,8 @@ class UserParamsConfigurationSchema(Schema):
             multiple=True),
         title=_('Trusted emails'),
         description=_("To add email, you need to tap the « Enter »"
-                      " key after each email or separate them with commas.")
+                      " key after each email or separate them with commas."),
+        missing=[]
         )
 
     only_for_members = colander.SchemaNode(
