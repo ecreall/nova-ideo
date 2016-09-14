@@ -29,7 +29,8 @@ requires = [
     'beautifulsoup4',
     'pyramid_robot',
     'profilehooks',
-    'metadata_parser'
+    'metadata_parser',
+    'deform_treepy'
     ]
 
 setup(name='novaideo',

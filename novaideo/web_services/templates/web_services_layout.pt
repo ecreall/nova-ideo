@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="novaideo"
+      metal:define-macro="web_services_layout"
+      tal:define="mp request.sdiapi.mgmt_path;
+      su request.static_url;
+      sdititle request.sdiapi.sdi_title()">
+  <head>
+
+    <!-- Styles -->
+    <link href="${su('novaideo:static/css/bootstrap.css')}"
+          rel="stylesheet"/>
+    <link href="${su('daceui:static/css/dace_ui.css')}"
+          rel="stylesheet"/>
+
+
+    <!-- Fav icons -->
+    <link rel="shortcut icon"
+          href="${su('novaideo:static/images/favicon.ico')}"/>
+
+
+    <!-- Scripts -->
+    <script type="text/javascript">
+      function novaideo_get_language(){
+        return  '<tal:block >${request.locale_name}</tal:block>'
+      };
+    </script>
+    <script src="${su('novaideo:static/js/main.js')}"
+            type="text/javascript"></script>
+    <script src="${su('daceui:static/js/dace_ui.js')}"
+            type="text/javascript"></script>
+    <script src="${su('daceui:static/jquery.infinitescroll.js')}"
+            type="text/javascript"></script>
+    <script src="${su('daceui:static/behaviors.local.js')}"
+            type="text/javascript"></script>
+    <script src="${su('daceui:static/jquery-endless-scroll/js/jquery.endless-scroll.js')}"
+            type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/novaideo_langs.js')}"
+          type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/action_interaction.js')}"
+          type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/novaideo.js')}"
+          type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/admin_nav.js')}"
+          type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/filter.js')}"
+          type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/steps.js')}"
+          type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/contextual_help.js')}"
+          type="text/javascript"></script>
+    <script src="${su('novaideo:static/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js')}"></script>
+
+    <script src="${request.static_url('novaideo:static/slick/slick/slick.min.js')}"
+        type="text/javascript"></script>
+
+    <script src="${request.static_url('novaideo:static/jsnetworkx/d3.min.js')}"
+        type="text/javascript"></script>
+    <script src="${request.static_url('novaideo:static/jsnetworkx/jsnetworkx.js')}"
+        type="text/javascript"></script>
+
+    <script src="${su('novaideo:static/js/pseudo_react.js')}"
+          type="text/javascript"></script>
+
+    <script src="${request.static_url('novaideo:static/emoji/emoji.js')}" type="text/javascript"></script>
+    <script src="${request.static_url('novaideo:static/emoji/jquery.emoji.js')}" type="text/javascript"></script>
+
+    <more tal:omit-tag="" metal:define-slot="head-more"></more>
+    <script src="${su('novaideo:static/js/templates.js')}"
+          type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+          <div metal:define-slot="main"></div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+  </body>
+</html>
