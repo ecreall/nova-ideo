@@ -16,44 +16,35 @@
          <p tal:condition="actions">
              <div tal:define="anotfinished [ac for ac in actions if not ('finished' in ac)]" tal:condition="anotfinished" id="actions_tabel">
                  <ul class="list-inline pull-right invitation-btn-list">
-                 <li tal:repeat="a anotfinished">
-                   <a id="${a['action_id']}-btn" 
-                      class="btn btn-primary btn-xs dace-action" 
-                      style="max-width: 300px;"
-                      href="${a['action'].url(a['context'])}"   
-                      data-toggle="modal"
-                      data-actionid ="${a['action_id']}" 
-                      data-target="#${a['action_id']}"
-                      data-updateurl="${a['actionurl_update']}"
-                      data-toreplay="${'toreplay' in a}">
-                     <span class="${getattr(a['action'], 'style_picto', '')}"></span> ${a['action'].title}
-                   </a>  
-                      <script tal:condition="'toreplay' in a">       
-                        $(document).ready(function(){
-                             $(${'\'#'+a['action_id']+'-btn\''}).click();
-                        });
-                      </script>  
-                      <script>
-                        $(document).ready(function(){
-                            $(${'\'#'+a['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
-                               after_execution(${'\"'+a['actionurl_after']+'\"'})
-                              })
-                        });
-                      </script>
-                      <!-- Modal -->
-                      <div class="modal fade" id="${a['action_id']}-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                       <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                           <h4 class="modal-title" id="myModalLabel"> ${a['action'].title}</h4>
-                          </div>
-                          <div class="modal-body">
-                            ${structure:a['body']}
-                          </div>
-                        </div>
-                       </div>
-                     </li>
+                 <li tal:repeat="item anotfinished">
+                  <div tal:omit-tag="" 
+                       tal:define="
+                             a item['action'];
+                             icon getattr(a,'style_picto','');
+                             interaction_type getattr(a,'style_interaction_type','modal')">
+
+                      <a id="${item['action_id']}-btn" 
+                        class="btn btn-primary btn-xs ajax-action dace-action-${interaction_type}"
+                        data-toggle="${interaction_type}"
+                        data-target="#action-${interaction_type}-container"
+                        data-actionid ="${item['action_id']}" 
+                        data-updateurl="${item['actionurl_update']}"
+                        data-after_exe_url="${item['actionurl_after']}"
+                        data-toreplay="${'toreplay' in item}"
+                        data-title="${item['action'].title}"
+                        data-view_title="${item['view_title']}"
+                        data-body="${item['body']}"
+                        data-icon="${icon}"
+                        data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
+                         <span class="${icon}" ></span> ${item['action'].title}
+                       </a>
+                       <script tal:condition="'toreplay' in item">       
+                            $(document).ready(function(){
+                                 $(${'\'#'+item['action_id']+'-btn\''}).click();
+                            });
+                       </script>
+                     </div>
+                  </li>
                  </ul>
              </div>
          </p>

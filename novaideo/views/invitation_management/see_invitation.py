@@ -38,7 +38,9 @@ class SeeInvitationView(BasicView):
     behaviors = [SeeInvitation]
     template = 'novaideo:views/invitation_management/templates/see_invitation.pt'
     viewid = 'seeinvitation'
-
+    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
 
     def update(self):
         user = get_current()

@@ -10,7 +10,12 @@ function update_modal_action(event){
     modal_container.data('after_exe_url', after_exe_url)
     if (Boolean(toreplay)){
       var action_body =jQuery.parseJSON(action.data('body'));
-      $(modal_container.find('.modal-body')).html(action_body);
+      if($(action_body).hasClass('pontus-main-view')){
+         var panel = $($(action_body).find('>.panel-body').first())
+         $(modal_container.find('.modal-body')).html(panel.html())
+      }else{
+          $(modal_container.find('.modal-body')).html(action_body);
+      }
       $(modal_container.find('.modal-title')).text(title)
       try {
          deform.processCallbacks();

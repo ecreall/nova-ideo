@@ -539,6 +539,7 @@ METADATA_GETTERS = {
     'registrationmanagement.remove': get_remove_registration_metadata,
     'registrationmanagement.refuse': get_remove_registration_metadata,
     'registrationmanagement.accept': get_api_execution_metadata,
+    'invitationmanagement.edit': get_api_execution_metadata,
 }
 
 

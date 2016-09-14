@@ -271,7 +271,7 @@ class EditInvitation(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(context, ""))
 
 
 def accept_roles_validation(process, context):
