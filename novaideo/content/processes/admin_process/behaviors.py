@@ -148,7 +148,7 @@ class Extract(InfiniteCardinality):
                           attr in attributes_to_extract]))
 
         csv_file.seek(0)
-        return {'file': BytesIO(csv_file.read().encode('windows-1252')),
+        return {'file': BytesIO(csv_file.read().encode('windows-1252', 'replace')),
                 'filter': appstruct, 'user': user}
 
     def redirect(self, context, request, **kw):
