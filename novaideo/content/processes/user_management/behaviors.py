@@ -434,11 +434,20 @@ def confirm_processsecurity_validation(process, context):
     return not context.is_expired
 
 
+def confirm_state_validation(process, context):
+    root = getSite()
+    if getattr(root, 'moderate_registration', False):
+        return 'accepted' in context.state
+
+    return True
+
+
 class ConfirmRegistration(InfiniteCardinality):
     submission_title = _('Save')
     context = IPreregistration
     roles_validation = reg_roles_validation
     processsecurity_validation = confirm_processsecurity_validation
+    state_validation = confirm_state_validation
 
     def start(self, context, request, appstruct, **kw):
         data = context.get_data(PersonSchema())
