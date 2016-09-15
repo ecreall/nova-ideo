@@ -1,11 +1,14 @@
 #!/bin/bash
 sed -i 's@/tmp/build@/app@' develop-eggs/* bin/*
-MAIL_HOST="${POSTFIX_HOST:-mail}"
-MAIL_PORT="${POSTFIX_PORT:-25}"
-MAIL_USERNAME="${MAIL_USERNAME:-}"
-MAIL_PASSWORD="${MAIL_PASSWORD:-}"
-MAIL_TLS="${MAIL_TLS:-false}"
-MAIL_SSL="${MAIL_SSL:-false}"
+# MAIL_HOST may be defined if you did a postfix:mail link and it will be
+# something like tcp://172.17.0.3:25, we don't want that.
+# We want the default 'mail', so we use MAILER_HOST environment variable.
+MAIL_HOST="${MAILER_HOST:-mail}"
+MAIL_PORT="${MAILER_PORT:-25}"
+MAIL_USERNAME="${MAILER_USERNAME:-}"
+MAIL_PASSWORD="${MAILER_PASSWORD:-}"
+MAIL_TLS="${MAILER_TLS:-false}"
+MAIL_SSL="${MAILER_SSL:-false}"
 MAIL_DEFAULT_SENDER="${MAIL_DEFAULT_SENDER:-https://mynovaideo.example.com}"
 SECRET="${SECRET:-mybigsecret}"
 APPLICATION_URL="${APPLICATION_URL:-noreply@example.com}"

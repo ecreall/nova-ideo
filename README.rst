@@ -50,7 +50,7 @@ To run in development mode with docker::
 
 The app is deployed on https://local.ecreall.com:8443
 
-To send emails, you need to configure the MAIL variables in
+To send emails, you need to configure the MAILER variables in
 **docker-compose-dev.yml**
 The default configuration is used to connect with a postfix via a ssh tunnel
 like this::
@@ -72,12 +72,12 @@ You need to configure some environment variables, copy the file
 - SECRET: the initial admin password
 - APPLICATION_URL: your domain, same as you put in nginx-app-prod.conf
 - MAIL_DEFAULT_SENDER: the sender of the mails that the application use
-- MAIL_HOST: SMTP host
-- MAIL_PORT: SMTP port
-- MAIL_USERNAME: SMTP username
-- MAIL_PASSWORD: SMTP password
-- MAIL_TLS: Use TLS
-- MAIL_SSL: Use SSL
+- MAILER_HOST: SMTP host
+- MAILER_PORT: SMTP port
+- MAILER_USERNAME: SMTP username
+- MAILER_PASSWORD: SMTP password
+- MAILER_TLS: Use TLS
+- MAILER_SSL: Use SSL
 
 If you want to connect to a postfix container, there is a commented example
 in **docker-compose.override.yml.templ** that use an external postfix container
