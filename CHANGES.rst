@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1 (unreleased)
+1.1 (2016-09-15)
 ----------------
 
 - Improved ergonomics and fix some issues.
