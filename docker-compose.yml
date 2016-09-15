@@ -3,11 +3,10 @@ services:
   novaideo:
     restart: always
 #    build: .
-    image: ecreall/novaideo:master
+#    image: ecreall/novaideo:master
+    image: ecreall/novaideo:release-1.1
     volumes:
       - ./var:/app/var
-    external_links:
-      - postfix:mail
   nginx:
     restart: always
     image: undownding/nginx-http2
@@ -21,6 +20,3 @@ services:
       - "443:443"
     links:
       - novaideo:app
-networks:
-  mybridge:
-    external: true

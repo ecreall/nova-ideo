@@ -1,7 +1,27 @@
 version: '2'
 services:
   novaideo:
+#    external_links:
+#      - postfix:mail
+#    networks:
+#      - default
+#      - mybridge
     environment:
+      - WORKERS=1
       - SECRET=mybigsecret
       - APPLICATION_URL=https://mynovaideo.example.com
       - MAIL_DEFAULT_SENDER=noreply@example.com
+      - MAIL_HOST=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USERNAME=yourmail@gmail.com
+      - MAIL_PASSWORD="yourgmailpassword"
+      - MAIL_TLS=true
+      - MAIL_SSL=false
+# For gmail, enabling "less secure apps" is apparently needed:
+# https://support.google.com/accounts/answer/6010255?hl=en
+# Look at the logs with *docker-compose logs -f* if you have any errors
+# when sending a mail.
+
+#networks:
+#  mybridge:
+#    external: true

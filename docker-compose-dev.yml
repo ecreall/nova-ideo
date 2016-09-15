@@ -12,8 +12,8 @@ services:
       - APPLICATION_URL=http://local.ecreall.com:8080
       - MAIL_DEFAULT_SENDER=contact@example.com
       - TIMEOUT=999999999
-      - POSTFIX_HOST=172.17.0.1
-      - POSTFIX_PORT=9025
+      - MAIL_HOST=172.17.0.1
+      - MAIL_PORT=9025
     ports:
      - "5000:5000"
     volumes:
