@@ -29,7 +29,8 @@ from dace.objectofcollaboration.principal.util import (
     has_any_roles,
     revoke_roles,
     get_roles,
-    Anonymous)
+    Anonymous,
+    get_users_with_role)
 from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
@@ -357,6 +358,28 @@ class Registration(InfiniteCardinality):
         transaction.commit()
         if not getattr(root, 'moderate_registration', False):
             accept_preregistration(request, preregistration, root)
+        else:
+            admins = get_users_with_role(role='Admin')
+            alert(
+                'internal', [root], admins,
+                internal_kind=InternalAlertKind.admin_alert,
+                subjects=[preregistration], alert_kind='new_registration')
+            mail_template = root.get_mail_template('moderate_preregistration')
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title)
+            url = request.resource_url(preregistration, '@@index')
+            localizer = request.localizer
+            for admin in [a for a in admins if getattr(a, 'email', '')]:
+                recipient_title = localizer.translate(
+                    _(getattr(admin, 'user_title', '')))
+                recipient_last_name = getattr(admin, 'last_name', '')
+                message = mail_template['template'].format(
+                    recipient_title=recipient_title,
+                    recipient_last_name=recipient_last_name,
+                    url=url,
+                    novaideo_title=root.title)
+                alert('email', [root.get_site_sender()], [admin.email],
+                      subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(self, [preregistration], None))
         return {'preregistration': preregistration}

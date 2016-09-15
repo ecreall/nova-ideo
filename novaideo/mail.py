@@ -348,6 +348,17 @@ Vous avez été inscrit à la plateforme participative {novaideo_title}. Vous de
 """+ PORTAL_SIGNATURE
 
 
+ADMIN_PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+
+
+ADMIN_PREREGISTRATION_MESSAGE = u"""
+Bonjour {recipient_title} {recipient_last_name},
+
+Une nouvelle inscription à la plateforme participative {novaideo_title} vient d'être ajoutée. L'inscription est sous {url}. Vous devez donner votre avis pour la modérer.
+
+"""+ PORTAL_SIGNATURE
+
+
 ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_title} »"""
 
 
@@ -570,5 +581,10 @@ DEFAULT_SITE_MAILS = {
               'title': _("Newsletter unsubscription"),
               'subject': NEWSLETTER_UNSUBSCRIPTION_SUBJECT,
               'template': NEWSLETTER_UNSUBSCRIPTION_MESSAGE
+    },
+    'moderate_preregistration': {
+              'title': _("New registration"),
+              'subject': ADMIN_PREREGISTRATION_SUBJECT,
+              'template': ADMIN_PREREGISTRATION_MESSAGE
     }
 }

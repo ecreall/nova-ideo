@@ -32,6 +32,7 @@ class InternalAlertKind(object):
     moderation_alert = 'moderation_alert'
     examination_alert = 'examination_alert'
     support_alert = 'support_alert'
+    admin_alert = 'admin_alert'
 
 
 @content(
@@ -313,11 +314,40 @@ class _SupportAlert(object):
 SupportAlert = _SupportAlert()
 
 
+class _AdminAlert(object):
+    icon = 'glyphicon glyphicon-cog'
+    templates = {
+        'default': 'novaideo:views/templates/alerts/admin_result.pt',
+        'small': 'novaideo:views/templates/alerts/small_admin_result.pt',
+        'notification': 'novaideo:views/templates/alerts/notification_admin_result.pt'
+    }
+
+    def __call__(self, **kwargs):
+        return Alert(InternalAlertKind.admin_alert, **kwargs)
+
+    def get_icon(self, alert):
+        return self.icon
+
+    def get_notification_data(self, subject, user, request, alert):
+        html_message = alert.render(
+            'notification', user, request)
+        message = html_to_text(html_message)
+        localizer = request.localizer
+        return {
+            'title': localizer.translate(_('Administration')) + ': ' + localizer.translate(
+                subject.get_title(user)),
+            'message': message,
+            'url': request.resource_url(subject, '@@index')}
+
+
+AdminAlert = _AdminAlert()
+
 INTERNAL_ALERTS = {
     InternalAlertKind.comment_alert: CommentAlert,
     InternalAlertKind.working_group_alert: WorkingGroupAlert,
     InternalAlertKind.moderation_alert: ModerationAlert,
     InternalAlertKind.examination_alert: ExaminationAlert,
     InternalAlertKind.support_alert: SupportAlert,
-    InternalAlertKind.content_alert: ContentAlert
+    InternalAlertKind.content_alert: ContentAlert,
+    InternalAlertKind.admin_alert: AdminAlert,
 }

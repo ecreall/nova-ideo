@@ -1,0 +1,10 @@
+<div tal:omit-tag=""  
+	 i18n:domain="novaideo"
+     tal:condition="object.subjects"
+     tal:define="alert_kind getattr(object, 'alert_kind', '');">
+  <div tal:omit-tag=""  tal:define="subject object.subjects[0]">
+    <span tal:omit-tag=""  tal:condition="alert_kind == 'new_registration'">
+      Une nouvelle inscription (${subject.title}) vient d'être ajoutée.
+    </span>
+  </div>
+</div>
