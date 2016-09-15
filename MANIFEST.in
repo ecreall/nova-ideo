@@ -6,6 +6,7 @@ include *.js
 include *.json
 include *.py
 include *.sh
+include *.templ
 include *.yml
 include CHECKS
 include Dockerfile
