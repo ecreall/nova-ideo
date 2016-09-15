@@ -27,6 +27,12 @@ sed -i \
     -e "s|APPLICATION_URL|$APPLICATION_URL|" \
     -e "s|WORKERS|$WORKERS|" \
     production-heroku.ini
+if [ -z "$MAIL_USERNAME" ]; then
+    sed -i -e "s|mail.username =.*||" production-heroku.ini
+fi
+if [ -z "$MAIL_PASSWORD" ]; then
+    sed -i -e "s|mail.password =.*||" production-heroku.ini
+fi
 mkdir -p var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 chmod 700 var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 chown u1000 var var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
