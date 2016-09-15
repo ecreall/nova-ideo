@@ -1,7 +1,7 @@
 #!/bin/bash
 sed -i 's@/tmp/build@/app@' develop-eggs/* bin/*
-MAIL_HOST="${MAIL_HOST:-mail}"
-MAIL_PORT="${MAIL_PORT:-25}"
+MAIL_HOST="${POSTFIX_HOST:-mail}"
+MAIL_PORT="${POSTFIX_PORT:-25}"
 MAIL_USERNAME="${MAIL_USERNAME:-}"
 MAIL_PASSWORD="${MAIL_PASSWORD:-}"
 MAIL_TLS="${MAIL_TLS:-false}"
