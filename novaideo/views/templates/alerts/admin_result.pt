@@ -6,7 +6,7 @@
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
     <span tal:condition="alert_kind == 'new_registration'">
-      Une nouvelle inscription vient d'être ajoutée. L'inscription est visibles sous <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
+      Une nouvelle inscription vient d'être ajoutée. L'inscription est visible sous <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
     </span>
   </div>
   <span tal:condition="object.is_to_alert(current_user)" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
