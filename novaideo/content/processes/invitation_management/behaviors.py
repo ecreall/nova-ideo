@@ -257,6 +257,9 @@ def editinv_processsecurity_validation(process, context):
 
 
 class EditInvitation(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-pencil'
     isSequential = False
     title = _('Edit the invitation')
@@ -284,6 +287,9 @@ def accept_state_validation(process, context):
 
 
 class AcceptInvitation(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
     context = IInvitation
     style_picto = 'glyphicon glyphicon-thumbs-up'
     submission_title = _('Save')
@@ -370,6 +376,9 @@ def refuse_state_validation(process, context):
 
 
 class RefuseInvitation(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-thumbs-down'
     context = IInvitation
     roles_validation = refuse_roles_validation
@@ -432,6 +441,9 @@ def remove_processsecurity_validation(process, context):
 
 
 class RemoveInvitation(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
     context = IInvitation
     roles_validation = remove_roles_validation
@@ -463,6 +475,9 @@ def reinvite_state_validation(process, context):
 
 
 class ReinviteUser(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-bullhorn'
     context = IInvitation
     roles_validation = reinvite_roles_validation
@@ -511,6 +526,9 @@ def remind_state_validation(process, context):
 
 
 class RemindInvitation(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-bullhorn'
     isSequential = True
     context = IInvitation

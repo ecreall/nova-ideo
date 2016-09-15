@@ -63,7 +63,6 @@ class SeeRegistrationsView(BasicView):
 
         self.title = _(CONTENTS_MESSAGES[index],
                        mapping={'nember': len_result})
-        user = get_current()
         result_body, result = render_listing_objs(
             self.request, batch, user)
 

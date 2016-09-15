@@ -1,55 +1,36 @@
 <div class="row" i18n:domain="novaideo">
     <div class="col-md-12">
-      <div class="thumbnail">
-        <div class="caption">
-         <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
-         <dl class="dl-horizontal">
-             <dt i18n:translate="">Invitation pour</dt><dd>${user_title} ${last_name} ${first_name}</dd>
-             <dt tal:condition="organization" i18n:translate="">Organization</dt><dd tal:condition="organization">${organization.title}</dd>
-             <dt tal:condition="roles">Invitée en tant que</dt>
-             <dd tal:condition="roles">
-                <ul class="nav nav-list">
-                   <li tal:repeat="r roles" i18n:translate="">${r}</li>
-                </ul>
-             </dd>
-         </dl>
-         <p tal:condition="actions">
-             <div tal:define="anotfinished [ac for ac in actions if not ('finished' in ac)]" tal:condition="anotfinished" id="actions_tabel">
-                 <ul class="list-inline pull-right invitation-btn-list">
-                 <li tal:repeat="item anotfinished">
-                  <div tal:omit-tag="" 
-                       tal:define="
-                             a item['action'];
-                             icon getattr(a,'style_picto','');
-                             interaction_type getattr(a,'style_interaction_type','modal')">
-
-                      <a id="${item['action_id']}-btn" 
-                        class="btn btn-primary btn-xs ajax-action dace-action-${interaction_type}"
-                        data-toggle="${interaction_type}"
-                        data-target="#action-${interaction_type}-container"
-                        data-actionid ="${item['action_id']}" 
-                        data-updateurl="${item['actionurl_update']}"
-                        data-after_exe_url="${item['actionurl_after']}"
-                        data-toreplay="${'toreplay' in item}"
-                        data-title="${item['action'].title}"
-                        data-view_title="${item['view_title']}"
-                        data-body="${item['body']}"
-                        data-icon="${icon}"
-                        data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
-                         <span class="${icon}" ></span> ${item['action'].title}
-                       </a>
-                       <script tal:condition="'toreplay' in item">       
-                            $(document).ready(function(){
-                                 $(${'\'#'+item['action_id']+'-btn\''}).click();
-                            });
-                       </script>
-                     </div>
-                  </li>
-                 </ul>
-             </div>
-         </p>
-       </div>
-     </div>
+    <div class="thumbnail right-caption span4 search-item result-item" i18n:domain="novaideo"
+        tal:define="icon getattr(invitation, 'icon', '');
+                    url request.resource_url(invitation, '');
+                    first_name getattr(invitation, 'first_name', '');
+                    last_name getattr(invitation, 'last_name', '');
+                    user_title getattr(invitation, 'user_title', '');
+                    roles  getattr(invitation, 'roles', '');
+                    organization getattr(invitation, 'organization', None)
+                  ">
+        <div class="media-body media-invitation">
+          <div class="object-title-block view-item-title" >
+            <a tal:attributes="href url">
+              <h4>
+                <span class="icon ${icon}"></span> Invitation pour ${user_title} ${last_name} ${first_name} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
+              </h4>
+            </a>
+          </div>
+           <dl class="dl-horizontal" style="margin-bottom: 35px;">
+               <dt tal:condition="organization" i18n:translate="">Organization</dt><dd tal:condition="organization">${organization.title}</dd>
+               <dt tal:condition="roles">Invitée en tant que</dt>
+               <dd tal:condition="roles">
+                  <ul class="nav nav-list">
+                     <li tal:repeat="r roles" i18n:translate="">${r}</li>
+                  </ul>
+               </dd>
+           </dl>
+          <div class="invitation_menu object-menu pull-right">
+            <div tal:replace="structure menu_body"/>
+          </div>
+        </div>
+      </div>
    </div>
 </div>
 

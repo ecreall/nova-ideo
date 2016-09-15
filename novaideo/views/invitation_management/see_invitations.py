@@ -7,6 +7,8 @@
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 
+from substanced.util import Batch
+
 from dace.processinstance.activity import ActionType
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
@@ -20,6 +22,10 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import get_states_mapping
 from novaideo import _
 from novaideo.core import can_access
+from novaideo.content.interface import IInvitation
+from novaideo.utilities.util import render_listing_objs
+from novaideo.core import BATCH_DEFAULT_SIZE
+from novaideo.views.filter import find_entities
 
 
 CONTENTS_MESSAGES = {
@@ -38,7 +44,7 @@ class SeeInvitationsView(BasicView):
     title = _('Invitations')
     name = 'seeinvitations'
     behaviors = [SeeInvitations]
-    template = 'novaideo:views/invitation_management/templates/see_invitations.pt'
+    template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seeinvitations'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     css_class = 'simple-bloc'
@@ -47,59 +53,31 @@ class SeeInvitationsView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        result = {}
-        invitations = [i for i in self.context.invitations
-                       if can_access(user, i)]
-        len_result = len(invitations)
+        objects = find_entities(
+            user=user,
+            interfaces=[IInvitation])
+        batch = Batch(
+            objects, self.request,
+            default_size=BATCH_DEFAULT_SIZE)
+        batch.target = "#results_invitations"
+        len_result = batch.seqlen
         index = str(len_result)
         if len_result > 1:
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
                        mapping={'nember': len_result})
-        all_invitation_data = {'invitations': []}
-        dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
-                                                        'dace_ui_api')
-        invitations_actions = dace_ui_api.get_actions(
-            invitations, self.request,
-            process_or_id='invitationmanagement')
-        invitations_actions = [a for a in invitations_actions
-                               if a[1].actionType != ActionType.automatic]
-        action_updated, messages, \
-            resources, actions = dace_ui_api.update_actions(
-                self.request, invitations_actions)
-        localizer = self.request.localizer
-        for invitation in invitations:
-            invitation_actions = [a for a in actions
-                                  if a['context'] is invitation]
-            state = None
-            if invitation.state:
-                state = invitation.state[0]
+        result_body, result = render_listing_objs(
+            self.request, batch, user)
 
-            invitation_dic = {
-                'actions': invitation_actions,
-                'url': self.request.resource_url(invitation, '@@index'),
-                'first_name': getattr(invitation, 'first_name', ''),
-                'last_name': getattr(invitation, 'last_name', ''),
-                'user_title': localizer.translate(
-                    _(getattr(invitation, 'user_title', ''))),
-                'roles': getattr(invitation, 'roles', ''),
-                'organization': getattr(invitation, 'organization', None),
-                'state': get_states_mapping(user, invitation, state)
-            }
-            all_invitation_data['invitations'].append(invitation_dic)
-
-        all_invitation_data['tabid'] = self.__class__.__name__ + \
-            'InvitationActions'
-        body = self.content(
-            args=all_invitation_data,
-            template=self.template)['body']
+        values = {
+            'bodies': result_body,
+            'length': len_result,
+            'batch': batch,
+        }
+        body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        item['messages'] = messages
-        item['isactive'] = action_updated
         result['coordinates'] = {self.coordinates: [item]}
-        result.update(resources)
-        result = merge_dicts(self.requirements_copy, result)
         return result
 
 

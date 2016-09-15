@@ -14,7 +14,6 @@ from pontus.view import BasicView
 from novaideo.content.processes.user_management.behaviors import (
     SeeRegistration)
 from novaideo.content.person import Preregistration
-
 from novaideo.utilities.util import (
     generate_navbars,
     ObjectRemovedException)
