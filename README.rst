@@ -13,6 +13,7 @@ Translations
 
 This product has been translated into
 
+- English
 - French
 
 
@@ -49,8 +50,8 @@ To run in development mode with docker::
 
 The app is deployed on https://local.ecreall.com:8443
 
-To send emails, you need to configure the MAIL_ variables in
-*docker-compose-dev.yml*
+To send emails, you need to configure the MAIL variables in
+**docker-compose-dev.yml**
 The default configuration is used to connect with a postfix via a ssh tunnel
 like this::
 
@@ -61,12 +62,12 @@ Deployment with docker
 ----------------------
 
 docker-compose runs a nginx container on port 80 and 443.
-You need to edit the nginx-app-prod.conf file to replace mynovaideo.example.com
-by your domain and add certificates (server.key and server.crt) to the
-tls directory.
+You need to edit the **nginx-app-prod.conf** file to replace mynovaideo.example.com
+by your domain and add certificates (**server.key** and **server.crt**) to the
+**tls** directory.
 
 You need to configure some environment variables, copy the file
-docker-compose.override.yml.templ to docker-compose.override.yml and edit it.
+**docker-compose.override.yml.templ** to **docker-compose.override.yml** and edit it.
 
 - SECRET: the initial admin password
 - APPLICATION_URL: your domain, same as you put in nginx-app-prod.conf
@@ -79,7 +80,7 @@ docker-compose.override.yml.templ to docker-compose.override.yml and edit it.
 - MAIL_SSL: Use SSL
 
 If you want to connect to a postfix container, there is a commented example
-in *docker-compose.override.yml.templ* that use an external postfix container
+in **docker-compose.override.yml.templ** that use an external postfix container
 connected on a mybridge bridge network. You need to create a mybridge bridge
 network and start a postfix container yourself. (not documented here)
 
@@ -94,20 +95,20 @@ and log in with "admin" and the password is the one you gave in the SECRET
 environment variable.
 
 After the initial connection, you can increase the number of workers that are
-used to handle the requests in *docker-compose.override.yml* and run again
-*docker-compose up -d* (WORKERS=3 is a good default).
+used to handle the requests in **docker-compose.override.yml** and run again
+**docker-compose up -d** (WORKERS=3 is a good default).
 
 How to upgrade your install
 ---------------------------
 
-For each release, a docker image is built and the docker-compose.yml is
+For each release, a docker image is built and the **docker-compose.yml** is
 modified accordingly.
 
 If you upgrade your installation, be sure to execute the evolve steps by
 connecting with the super administrator at
 https://mynovaideo.example.com/manage
-and going to Database tab, and click on Evolve red button. You can see
-the evolve steps with the Summarize button.
+and going to *Database* tab, and click on *Evolve* red button. You can see
+the evolve steps with the *Summarize* button.
 
 Backup and maintainance of your database
 ----------------------------------------
