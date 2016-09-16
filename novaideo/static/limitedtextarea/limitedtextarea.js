@@ -35,10 +35,12 @@ function init_textarea(textarea_id, textarea_limit){
         this.limit=limit;
         this.callback=callback;
         this.onkeydown=this.onkeyup=this.onchange=function(){
-          var $this = $(this)
-          $this.val(this.value.substr(0,this.limit));
-          $this.focus()
-          this.reached=this.limit-$this.val().length;
+          var length = this.value.length
+          if(length > this.limit){
+             this.value = this.value.substr(0,this.limit);
+             length = this.value.length
+          }
+          this.reached=this.limit-length;
           this.reached=(this.reached==0)?true:false;
           return this.callback(this.value.length,this.limit,this.reached);
         }
