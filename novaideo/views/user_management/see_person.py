@@ -63,7 +63,7 @@ class ContentView(BasicView):
         batch.target = "#results"+"-"+ self.content_attr
         self.title = _(self.title, mapping={'nb': batch.seqlen})
         result_body, result = render_listing_objs(
-            self.request, batch, user)
+            self.request, batch, current_user)
         values = {'bodies': result_body,
                   'batch': batch,
                   'empty_message': self.empty_message,
