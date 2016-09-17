@@ -674,11 +674,19 @@ $(document).ready(function(){
   
   $(document).on('submit','.home-add-idea form', function( event ) {
         var $this = $(this)
+        if($this.hasClass('pendig')){
+          event.preventDefault();
+          return
+        }
+        $this.addClass('pendig')
         var button = $($this.find('button.active').first())
+        button.addClass('disabled')
         if(button.val() == 'Cancel'){
           $this.find('textarea[name="text"]').val('');
           $this.find('.deform-close-button').click()
-          $(button).removeClass('active');
+          button.removeClass('active');
+          button.removeClass('disabled');
+          $this.removeClass('pendig')
           close_add_idea_form()
           event.preventDefault();
            return
@@ -715,7 +723,9 @@ $(document).ready(function(){
              form_group.addClass('has-error')
              form_group.append($(error_help))
           }
-          $(button).removeClass('active');
+          button.removeClass('active');
+          button.removeClass('disabled');
+          $this.removeClass('pendig')
           event.preventDefault();
           return
         }
@@ -726,7 +736,7 @@ $(document).ready(function(){
         formData.append('view_name', location.pathname)
         
         var buttons = $($this.find('button'))
-        $(buttons).addClass('disabled');
+        buttons.addClass('disabled');
         loading_progress()
         $.ajax({
             url: url,
@@ -743,8 +753,9 @@ $(document).ready(function(){
                     $this.find('input[name="title"]').val(data['new_title']);
                     $this.find('textarea[name="text"]').val('');
                     $this.find('.deform-close-button').click()
-                    $(buttons).removeClass('disabled');
-                    $(button).removeClass('active');
+                    buttons.removeClass('disabled');
+                    button.removeClass('active');
+                    $this.removeClass('pendig')
                     close_add_idea_form()
                     finish_progress()
                   }
