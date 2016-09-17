@@ -28,11 +28,11 @@ jQuery.fn.extend({
 });
 
 function loading_progress(){
-    $('img.lac-loading-indicator').removeClass('hide-bloc');
+    $('img.novaideo-loading-indicator').removeClass('hide-bloc');
 }
 
 function finish_progress(){
-    $('img.lac-loading-indicator').addClass('hide-bloc');
+    $('img.novaideo-loading-indicator').addClass('hide-bloc');
 }
 
 function focus_on_form(container){
