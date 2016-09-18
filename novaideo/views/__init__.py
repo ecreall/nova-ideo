@@ -487,7 +487,7 @@ class NovaideoAPI(IndexManagementJsonView):
 
     def withdraw_token_proposal(self):
         localizer = self.request.localizer
-        result = self._update_associated_view(
+        result = self._execute_action(
             'proposalmanagement', 'withdraw_token', {})
         if result.get('state'):
             previous_action = self.params('action')
