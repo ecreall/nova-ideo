@@ -10,21 +10,21 @@ _here = os.path.dirname(__file__)
 
 
 _OneSignalSDKUpdaterWorker = open(os.path.join(
-    _here, 'OneSignalSDKUpdaterWorker.js')).read()
+    _here, 'OneSignalSDKUpdaterWorker.js'), encoding='utf8').read()
 _OneSignalSDKUpdaterWorker_response = Response(
     content_type='application/javascript',
     charset='utf8',
     body=_OneSignalSDKUpdaterWorker)
 
 _OneSignalSDKWorker = open(os.path.join(
-    _here, 'OneSignalSDKWorker.js')).read()
+    _here, 'OneSignalSDKWorker.js'), encoding='utf8').read()
 _OneSignalSDKWorker_response = Response(
     content_type='application/javascript',
     charset='utf8',
     body=_OneSignalSDKWorker)
 
 _manifest = open(os.path.join(
-    _here, 'manifest.json')).read()
+    _here, 'manifest.json'), encoding='utf8').read()
 _manifest_response = Response(
     content_type='application/json',
     charset='utf8',
