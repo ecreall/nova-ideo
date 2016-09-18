@@ -674,11 +674,11 @@ $(document).ready(function(){
   
   $(document).on('submit','.home-add-idea form', function( event ) {
         var $this = $(this)
-        if($this.hasClass('pendig')){
+        if($this.hasClass('pending')){
           event.preventDefault();
           return
         }
-        $this.addClass('pendig')
+        $this.addClass('pending')
         var button = $($this.find('button.active').first())
         button.addClass('disabled')
         if(button.val() == 'Cancel'){
@@ -686,7 +686,7 @@ $(document).ready(function(){
           $this.find('.deform-close-button').click()
           button.removeClass('active');
           button.removeClass('disabled');
-          $this.removeClass('pendig')
+          $this.removeClass('pending')
           close_add_idea_form()
           event.preventDefault();
            return
@@ -725,7 +725,7 @@ $(document).ready(function(){
           }
           button.removeClass('active');
           button.removeClass('disabled');
-          $this.removeClass('pendig')
+          $this.removeClass('pending')
           event.preventDefault();
           return
         }
@@ -755,7 +755,7 @@ $(document).ready(function(){
                     $this.find('.deform-close-button').click()
                     buttons.removeClass('disabled');
                     button.removeClass('active');
-                    $this.removeClass('pendig')
+                    $this.removeClass('pending')
                     close_add_idea_form()
                     finish_progress()
                   }
