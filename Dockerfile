@@ -6,7 +6,7 @@ ARG userid=1000
 ARG run_buildout=true
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y varnish curl git && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y varnish curl git libzmq3-dev && \
     rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --quiet --gid $userid "u1000" && \
