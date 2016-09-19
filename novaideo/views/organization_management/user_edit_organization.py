@@ -60,7 +60,8 @@ class UserEditOrganizationView(FormView):
             return {
                 'organization': organization,
                 'ismanager': has_role(
-                    ('OrganizationResponsible', organization), self.context)
+                    ('OrganizationResponsible', organization), self.context,
+                    ignore_superiors=True)
             }
 
         return {}
