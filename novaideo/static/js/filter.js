@@ -41,10 +41,18 @@ function filter(){
           catch(err) {};
         }
         if(data['body']){
-          var result_body = $('<div>'+data['body']+'</div>')
+            var result_body = $('<div>'+data['body']+'</div>')
+            // update tab title
+            var tabs = $('.pontus-main ul.nav.nav-tabs > li > a')
+            var new_tabs = tabs.each(function(){
+              var tab = result_body.find('ul.nav.nav-tabs > li > a[href="'+$(this).attr('href')+'"]')
+              $(this).html(tab.html())
+            })
+            // update view title
             var new_title =  $(result_body.find('.filter-btn').first()).data('filter_message');
             target_title.html("<div class=\"panel-title\"><h4>"+new_title+"</h4></div>");
-
+            
+            // update results
             target.html(result_body.find('#'+id).html());
            try {
                 deform.processCallbacks();
