@@ -500,21 +500,25 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
     removed = False
     new_obj_body = None
     redirect_url = None
-    if source_path:
-        source_path = '/'.join(source_path.split('/')[:-1])
-        source_context = find_resource(request.root, source_path)
-        if source_context:
-            if isinstance(source_context, Organization) and\
-               context.organization is not source_context:
-                removed = True
-            elif not isinstance(source_context, Person):
-                new_obj_body = render_listing_obj(
-                    request, context, get_current())
-            elif 'view_data' in kwargs:
-                view_instance, view_result = kwargs['view_data']
-                if view_result and view_result is not nothing:
-                    if isinstance(view_result, HTTPFound):
-                        redirect_url = view_result.headers['location']
+    body = None
+    if 'view_data' in kwargs:
+        view_instance, view_result = kwargs['view_data']
+        if view_result and view_result is not nothing:
+            if isinstance(view_result, HTTPFound):
+                if source_path:
+                    source_path = '/'.join(source_path.split('/')[:-1])
+                    source_context = find_resource(request.root, source_path)
+                    if source_context:
+                        if isinstance(source_context, Organization) and\
+                           context.organization is not source_context:
+                            removed = True
+                        elif not isinstance(source_context, Person):
+                            new_obj_body = render_listing_obj(
+                                request, context, get_current())
+                        else:
+                            redirect_url = view_result.headers['location']
+            else:
+                body = view_result['coordinates'][view_instance.coordinates][0]['body']
 
     result = {
         'action': 'redirect_action',
@@ -523,7 +527,7 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
         'removed': removed,
         'view_name': 'index',
         'new_obj_body': new_obj_body,
-        'new_body': None
+        'new_body': json.dumps(body) if body else None
     }
     return result
 
