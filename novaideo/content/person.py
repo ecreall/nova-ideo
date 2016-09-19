@@ -388,7 +388,8 @@ class Person(User, SearchableEntity, CorrelableEntity):
             current_organization = self.organization
             if current_organization is not organization:
                 is_manager = current_organization and has_role(
-                    ('OrganizationResponsible', current_organization), self)
+                    ('OrganizationResponsible', current_organization), self,
+                    ignore_superiors=True)
                 if current_organization and is_manager:
                     revoke_roles(
                         self, (('OrganizationResponsible', current_organization),))

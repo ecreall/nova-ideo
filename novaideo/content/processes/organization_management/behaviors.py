@@ -299,7 +299,8 @@ class RemoveMembers(InfiniteCardinality):
             if member in context.members:
                 context.delfromproperty('members', member)
                 if has_role(user=member,
-                    role=('OrganizationResponsible', context)):
+                    role=('OrganizationResponsible', context),
+                    ignore_superiors=True):
                     revoke_roles(
                         user=member,
                         roles=(('OrganizationResponsible', context), ))
@@ -387,7 +388,8 @@ class WithdrawUser(InfiniteCardinality):
         current_organization = context.organization
         if current_organization:
             is_manager = has_role(
-                ('OrganizationResponsible', current_organization), context)
+                ('OrganizationResponsible', current_organization), context,
+                ignore_superiors=True)
             if is_manager:
                 revoke_roles(
                     context,
