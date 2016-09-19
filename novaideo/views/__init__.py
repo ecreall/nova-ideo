@@ -86,17 +86,25 @@ class NovaideoAPI(IndexManagementJsonView):
     search_template = 'novaideo:views/templates/live_search_result.pt'
     search_idea_template = 'novaideo:views/templates/live_search_idea_result.pt'
 
-    def find_user(self):
+    def find_user(self, organization=None):
         name = self.params('q')
         if name:
             page_limit, current_page, start, end = self._get_pagin_data()
+            query = None
+            if organization:
+                novaideo_index = find_catalog('novaideo')
+                organization_index = novaideo_index['organizations']
+                query = organization_index.any([get_oid(organization)])
+
             if is_all_values_key(name):
                 result = find_entities(interfaces=[IPerson],
-                                       metadata_filter={'states': ['active']})
+                                       metadata_filter={'states': ['active']},
+                                       add_query=query)
             else:
                 result = find_entities(interfaces=[IPerson],
                                        text_filter={'text_to_search': name},
-                                       metadata_filter={'states': ['active']})
+                                       metadata_filter={'states': ['active']},
+                                       add_query=query)
 
             result = [res for res in result]
             if len(result) >= start:
@@ -115,6 +123,9 @@ class NovaideoAPI(IndexManagementJsonView):
             return result
 
         return {'items': [], 'total_count': 0}
+
+    def find_organization_user(self):
+        return self.find_user(self.context)
 
     def find_base_review(self):
         name = self.params('q')

@@ -206,6 +206,7 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
     $(button).addClass('disabled');
     var formData = new FormData($(this)[0]);
     formData.append(button.val(), button.val())
+    formData.append('source_path', window.location.pathname)
     loading_progress()
     $.ajax({
       url: url,

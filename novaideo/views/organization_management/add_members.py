@@ -4,6 +4,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import deform
+import colander
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -12,31 +14,36 @@ from pontus.schema import select
 from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.organization_management.behaviors import (
-    EditOrganization)
+    AddMembers)
 from novaideo.content.organization import OrganizationSchema, Organization
 from novaideo import _
 
 
+class AddMembersSchema(OrganizationSchema):
+
+    are_managers = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Are managers'),
+        title='',
+        missing=False
+    )
+
+
 @view_config(
-    name='editorganization',
+    name='addmembers',
     context=Organization,
     renderer='pontus:templates/views_templates/grid.pt',
     )
-class EditOrganizationView(FormView):
+class AddMembersView(FormView):
 
-    title = _('Edit the organization')
-    schema = select(OrganizationSchema(editable=True),
-                    ['title',
-                     'description',
-                     'logo',
-                     'managers',
-                     'contacts'])
-    behaviors = [EditOrganization, Cancel]
-    formid = 'formeditorganization'
-    name = 'editorganization'
-
-    def default_data(self):
-        return self.context
+    title = _('Add members')
+    schema = select(AddMembersSchema(),
+                    ['members',
+                     'are_managers'])
+    behaviors = [AddMembers, Cancel]
+    formid = 'formaddmembers'
+    name = 'addmembers'
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({EditOrganization: EditOrganizationView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({AddMembers: AddMembersView})

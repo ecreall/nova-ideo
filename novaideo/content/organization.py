@@ -60,10 +60,6 @@ def managers():
                         roles=(('OrganizationResponsible',
                                 self),))
 
-        for manager in new_managers:
-            if manager not in self.members:
-                self.addtoproperty('members', manager)
-
     return property(_get, _set)
 
 
@@ -87,6 +83,33 @@ def members_choice(node, kw):
     ajax_url = request.resource_url(context,
                                     '@@novaideoapi',
                                     query={'op': 'find_user'})
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        multiple=True,
+        title_getter=title_getter)
+
+
+@colander.deferred
+def managers_choice(node, kw):
+    """"""
+    context = node.bindings['context']
+    request = node.bindings['request']
+    values = []
+
+    def title_getter(oid):
+        author = None
+        try:
+            author = get_obj(int(oid))
+        except Exception:
+            return oid
+
+        title = getattr(author, 'title', author.__name__)
+        return title
+
+    ajax_url = request.resource_url(context,
+                                    '@@novaideoapi',
+                                    query={'op': 'find_organization_user'})
     return AjaxSelect2Widget(
         values=values,
         ajax_url=ajax_url,
@@ -131,12 +154,14 @@ class OrganizationSchema(VisualisableElementSchema):
         colander.Set(),
         widget=members_choice,
         title=_('Members'),
+        missing=[]
         )
 
     managers = colander.SchemaNode(
         colander.Set(),
-        widget=members_choice,
+        widget=managers_choice,
         title=_('Managers'),
+        missing=[]
         )
 
 

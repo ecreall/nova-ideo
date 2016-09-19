@@ -50,6 +50,9 @@ class ISearchableObject(Interface):
     def object_authors():
         pass
 
+    def organizations():
+        pass
+
     def created_at():
         pass
 
@@ -173,6 +176,15 @@ class NovaideoCatalogViews(object):
             return default
 
         return adapter.object_authors()
+
+    @indexview()
+    def organizations(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        return adapter.organizations()
 
     @indexview()
     def access_keys(self, default):
@@ -488,6 +500,7 @@ class NovaideoIndexes(object):
 
     object_keywords = Keyword()
     object_authors = Keyword()
+    organizations = Keyword()
     created_at = Field()
     modified_at = Field()
     published_at = Field()
@@ -541,6 +554,14 @@ class SearchableObject(Adapter):
             return [get_oid(author)]
 
         return []
+
+    def organizations(self):
+        author = getattr(self.context, 'author', None)
+        organization = getattr(author, 'organization', None)
+        if organization:
+            return [get_oid(organization)]
+
+        return [0]
 
     def object_title(self):
         title = getattr(self.context, 'title', '')
@@ -673,6 +694,13 @@ class PersonSearch(SearchableObject):
         identifiers = [getattr(self.context, 'identifier', None),
                        getattr(self.context, 'email', None)]
         return [i for i in identifiers if i]
+
+    def organizations(self):
+        organization = getattr(self.context, 'organization', None)
+        if organization:
+            return [get_oid(organization)]
+
+        return []
 
 
 @adapter(context=IPreregistration)

@@ -86,6 +86,7 @@ class EditView(FormView):
                     ['user_title',
                      'first_name',
                      'last_name',
+                     'organization',
                      'function',
                      'description',
                      'keywords',

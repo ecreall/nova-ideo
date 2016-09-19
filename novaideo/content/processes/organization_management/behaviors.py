@@ -17,12 +17,12 @@ from dace.processinstance.activity import (
 from dace.processinstance.core import ActivityExecuted
 
 from novaideo.ips.xlreader import create_object_from_xl
-from novaideo.content.interface import INovaIdeoApplication, IOrganization
+from novaideo.content.interface import (
+    INovaIdeoApplication, IOrganization, IPerson)
 from novaideo.content.organization import Organization
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.core import access_action, serialize_roles
-
 
 
 def add_roles_validation(process, context):
@@ -118,6 +118,11 @@ class EditOrganizations(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         for org_struct in appstruct['organizations']:
             organization = org_struct['_object_data']
+            members = organization.members
+            for manager in organization.managers:
+                if manager not in members:
+                    organization.addtoproperty('members', manager)
+
             organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
 
         request.registry.notify(ActivityExecuted(
@@ -193,7 +198,7 @@ class EditOrganization(InfiniteCardinality):
     isSequential = False
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
-    title = _('Edit organization')
+    title = _('Edit')
     submission_title = _('Save')
     context = IOrganization
     roles_validation = editorg_roles_validation
@@ -201,6 +206,11 @@ class EditOrganization(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         organization = appstruct['_object_data']
+        members = organization.members
+        for manager in organization.managers:
+            if manager not in members:
+                organization.addtoproperty('members', manager)
+
         organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
         request.registry.notify(ActivityExecuted(
             self, [organization], get_current()))
@@ -208,5 +218,192 @@ class EditOrganization(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def rmorg_processsecurity_validation(process, context):
+    return global_user_processsecurity()
+
+
+class RemoveOrganization(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_picto = 'glyphicon glyphicon-trash'
+    style_interaction = 'ajax-action'
+    style_order = 4
+    submission_title = _('Continue')
+    context = IOrganization
+    roles_validation = editorg_roles_validation
+    processsecurity_validation = rmorg_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        root.delfromproperty('organizations', context)
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(request.root, ""))
+
+
+class AddMembers(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'typcn typcn-user-add'
+    style_interaction = 'ajax-action'
+    style_order = 2
+    submission_title = _('Continue')
+    context = IOrganization
+    roles_validation = editorg_roles_validation
+    processsecurity_validation = editorg_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        members = appstruct['members']
+        are_managers = appstruct['are_managers']
+        for member in members:
+            if member not in context.members:
+                context.addtoproperty('members', member)
+                if are_managers:
+                    grant_roles(
+                        user=member,
+                        roles=(('OrganizationResponsible',
+                                context),))
+            member.reindex()
+
+        context.reindex()
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def rmmembers_processsecurity_validation(process, context):
+    return context.members and global_user_processsecurity()
+
+
+class RemoveMembers(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'typcn typcn-user-delete'
+    style_interaction = 'ajax-action'
+    style_order = 3
+    submission_title = _('Continue')
+    context = IOrganization
+    roles_validation = editorg_roles_validation
+    processsecurity_validation = rmmembers_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        members = appstruct['members']
+        for member in members:
+            if member in context.members:
+                context.delfromproperty('members', member)
+                if has_role(user=member,
+                    role=('OrganizationResponsible', context)):
+                    revoke_roles(
+                        user=member,
+                        roles=(('OrganizationResponsible', context), ))
+            member.reindex()
+
+        context.reindex()
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def usereditorg_roles_validation(process, context):
+    return has_role(role=('Moderator',))
+
+
+def usereditorg_processsecurity_validation(process, context):
+    return global_user_processsecurity()
+
+
+class UserEditOrganization(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'glyphicon glyphicon-home'
+    style_interaction = 'ajax-action'
+    style_order = 3
+    submission_title = _('Save')
+    context = IPerson
+    roles_validation = usereditorg_roles_validation
+    processsecurity_validation = usereditorg_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        organization = appstruct['organization']
+        is_manager = appstruct['ismanager']
+        context.set_organization(organization)
+        if is_manager:
+            grant_roles(
+                user=context,
+                roles=(('OrganizationResponsible',
+                        organization),))
+        else:
+            revoke_roles(
+                user=context,
+                roles=(('OrganizationResponsible',
+                        organization),))
+
+        context.reindex()
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def withdraw_roles_validation(process, context):
+    organization = context.organization
+    if organization:
+        return has_role(role=('Moderator',)) or \
+               has_role(role=('OrganizationResponsible', organization))
+
+    return False
+
+
+def withdraw_processsecurity_validation(process, context):
+    return context.organization and global_user_processsecurity()
+
+
+class WithdrawUser(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'typcn typcn-user-add'
+    style_interaction = 'ajax-action'
+    style_order = 4
+    submission_title = _('Continue')
+    context = IPerson
+    roles_validation = withdraw_roles_validation
+    processsecurity_validation = withdraw_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        current_organization = context.organization
+        if current_organization:
+            is_manager = has_role(
+                ('OrganizationResponsible', current_organization), context)
+            if is_manager:
+                revoke_roles(
+                    context,
+                    (('OrganizationResponsible', current_organization),))
+
+            context.delfromproperty('organization', current_organization)
+            context.reindex()
+            context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+            request.registry.notify(ActivityExecuted(
+                self, [context], get_current()))
+
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
 
 #TODO behaviors

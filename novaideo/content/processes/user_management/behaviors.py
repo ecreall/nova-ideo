@@ -152,6 +152,7 @@ class Edit(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        organization = appstruct.get('organization', None)
         changepassword = appstruct['change_password']['changepassword']
         current_user_password = appstruct['change_password']['currentuserpassword']
         user = get_current()
@@ -162,6 +163,7 @@ class Edit(InfiniteCardinality):
         root = getSite()
         root.merge_keywords(context.keywords)
         context.set_title()
+        context.set_organization(organization)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(self, [context], user))

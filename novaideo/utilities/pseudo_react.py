@@ -7,6 +7,7 @@ import json
 from pyramid.threadlocal import get_current_registry
 from pyramid import renderers
 from pyramid.httpexceptions import HTTPFound
+from pyramid.traversal import find_resource
 
 from daceui.interfaces import IDaceUIAPI
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -28,9 +29,12 @@ from novaideo.views.novaideo_view_manager.see_my_selections import (
     CONTENTS_MESSAGES as SELECT_CONTENTS_MESSAGES)
 from novaideo.views.user_management.see_registrations import (
     CONTENTS_MESSAGES as REGISTRATION_CONTENTS_MESSAGES)
-from novaideo.utilities.util import update_all_ajax_action
+from novaideo.utilities.util import (
+    update_all_ajax_action, render_listing_obj)
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import IPreregistration
+from novaideo.content.organization import Organization
+from novaideo.content.person import Person
 
 
 def get_navbar_updated_data(view, **kwargs):
@@ -107,6 +111,7 @@ def get_redirect_updated_data(view, **kwargs):
         result['new_body'] = kwargs.get('new_body')
         result['view_title'] = kwargs.get('view_title', None)
         result['view_name'] = kwargs.get('view_name', None)
+        result['new_obj_body'] = kwargs.get('new_obj_body', None)
         result['removed'] = kwargs.get('removed', False)
 
     return result
@@ -456,6 +461,73 @@ def get_api_execution_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_withdraw_user_metadata(action, request, context, api, **kwargs):
+    source_path = api.params('source_path')
+    source_context = None
+    removed = False
+    new_obj_body = None
+    redirect_url = None
+    if source_path:
+        source_path = '/'.join(source_path.split('/')[:-1])
+        source_context = find_resource(request.root, source_path)
+        if source_context:
+            if isinstance(source_context, Organization):
+                removed = True
+            elif not isinstance(source_context, Person):
+                new_obj_body = render_listing_obj(
+                    request, context, get_current())
+            elif 'view_data' in kwargs:
+                view_instance, view_result = kwargs['view_data']
+                if view_result and view_result is not nothing:
+                    if isinstance(view_result, HTTPFound):
+                        redirect_url = view_result.headers['location']
+
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': redirect_url,
+        'removed': removed,
+        'view_name': 'index',
+        'new_obj_body': new_obj_body,
+        'new_body': None
+    }
+    return result
+
+
+def get_user_edit_organization_metadata(action, request, context, api, **kwargs):
+    source_path = api.params('source_path')
+    source_context = None
+    removed = False
+    new_obj_body = None
+    redirect_url = None
+    if source_path:
+        source_path = '/'.join(source_path.split('/')[:-1])
+        source_context = find_resource(request.root, source_path)
+        if source_context:
+            if isinstance(source_context, Organization) and\
+               context.organization is not source_context:
+                removed = True
+            elif not isinstance(source_context, Person):
+                new_obj_body = render_listing_obj(
+                    request, context, get_current())
+            elif 'view_data' in kwargs:
+                view_instance, view_result = kwargs['view_data']
+                if view_result and view_result is not nothing:
+                    if isinstance(view_result, HTTPFound):
+                        redirect_url = view_result.headers['location']
+
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': redirect_url,
+        'removed': removed,
+        'view_name': 'index',
+        'new_obj_body': new_obj_body,
+        'new_body': None
+    }
+    return result
+
+
 def get_edit_comment_metadata(action, request, context, api, **kwargs):
     body = None
     if 'view_data' in kwargs:
@@ -540,6 +612,8 @@ METADATA_GETTERS = {
     'registrationmanagement.refuse': get_remove_registration_metadata,
     'registrationmanagement.accept': get_api_execution_metadata,
     'invitationmanagement.edit': get_api_execution_metadata,
+    'organizationmanagement.withdraw_user': get_withdraw_user_metadata,
+    'organizationmanagement.user_edit_organization': get_user_edit_organization_metadata,
 }
 
 

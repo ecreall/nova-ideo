@@ -127,8 +127,16 @@ function list_items_component(data){
     var url = window.location.href; 
 	var concerned_view = url.indexOf('/'+data.view_name+'')>=0 || url.indexOf('/@@'+data.view_name)>=0   
 	if(data.removed && concerned_view){
-        data.search_item.remove()
+        data.search_item.slideDown().remove()
+        return
 	}
+    if(data.new_obj_body){
+        data.search_item.replaceWith(data.new_obj_body)
+        try {
+            deform.processCallbacks();
+        }catch(err) {};
+	}
+
 }
 
 
@@ -137,7 +145,7 @@ function list_channels_component(data){
         var channel_len = $(data.channel_item.parents('.channels-block').find('.channel-title .channel-len').first())
 		var nb = parseInt(channel_len.text().replace('(', '').replace(')', ''))-1
 		channel_len.text('('+nb+')')
-		data.channel_item.remove()
+		data.channel_item.slideDown().remove()
 	}
 	if(!data.removed && data.new_components.length>0 && data.channels_target.length>0){
 		var new_components = $(data.new_components[0])

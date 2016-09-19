@@ -614,6 +614,33 @@ def render_small_listing_objs(request, objs, user, **kw):
     return result_body
 
 
+def render_listing_obj(request, obj, user, **kw):
+    try:
+        navbars = generate_listing_menu(
+            request, obj,
+            template=DEFAUL_LISTING_ACTIONS_TEMPLATE,
+            footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
+            wg_template=DEFAUL_WG_LISTING_ACTIONS_TEMPLATE)
+    except ObjectRemovedException:
+        return ''
+
+    object_values = {
+        'object': obj,
+        'current_user': user,
+        'menu_body': navbars['menu_body'],
+        'footer_body': navbars['footer_body'],
+        'wg_body': navbars['wg_body'],
+        'footer_actions_body': navbars['footer_actions_body'],
+        'state': get_states_mapping(
+            user, obj,
+            getattr(obj, 'state_or_none', [None])[0])}
+    object_values.update(kw)
+    return renderers.render(
+        obj.templates.get('default'),
+        object_values,
+        request)
+
+
 def render_listing_objs(request, objs, user, **kw):
     result_body = []
     resources = {'css_links': [], 'js_links': []}
