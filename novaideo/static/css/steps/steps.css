@@ -1,3 +1,23 @@
+.step-title{
+    font-size: 30px;
+    margin-bottom: 10px;
+
+}
+
+.step-title .step-icon{
+    padding: 10px;
+    border-radius: 50%;
+    color: white;
+    box-shadow: 0 1px 6px rgba(0,0,0,.6);
+    background-color: #156e9d;
+}
+
+.step-metadata {
+    font-size: 15px;
+    vertical-align: middle;
+    text-align: center;
+}
+
 .nb-iteration{
     position: absolute;
     color: #7cc67c;
@@ -21,7 +41,6 @@
 
 #steps-messages #message-step-3.popover.bottom{
     left: 226pt;
-    text-align: center;
 }
 
 .steps-container {

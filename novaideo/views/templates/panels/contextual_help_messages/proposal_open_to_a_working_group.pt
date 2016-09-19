@@ -1,8 +1,10 @@
 
-<div class="contextual-help-item principal-help"  i18n:domain="novaideo">
+<div class="contextual-help-item principal-help"
+	 tal:define="participants_mini getattr(getattr(context.working_group, 'work_mode', None), 'participants_mini', 3)"
+	 i18n:domain="novaideo">
 	<p i18n:translate="">Cette proposition est publiée et ouverte à un groupe de travail, elle est visible par l'ensemble des utilisateurs.</p>
 
-	<p i18n:translate="">Pour l'améliorer, il faut que le groupe de travail atteigne au moins trois participants.</p>
+	<p i18n:translate="">Pour l'améliorer, il faut que le groupe de travail atteigne au moins ${participants_mini} participant(s).</p>
 
 	<p i18n:translate="">Tout membre peut se porter candidat au groupe de travail, à condition qu'il ne soit pas déjà candidat ou participant à cinq autres groupes de travail.</p>
 	

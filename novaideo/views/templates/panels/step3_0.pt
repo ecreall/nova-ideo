@@ -1,3 +1,19 @@
-<div class="proposal-members-nb" i18n:domain="novaideo">
-   <span class="glyphicon glyphicon-bullhorn"></span> <span  i18n:translate="">Composition of the working group</span><br> <span style="color:#d9534f;">(${len(context.working_group.members)} <span  i18n:translate="">member(s)</span> / ${min_members} <span  i18n:translate="">minimum)</span></span>
+<div class="step-metadata" i18n:domain="novaideo"
+	 tal:define="work_mode getattr(getattr(context.working_group, 'work_mode', None), 'title', None)">
+  <div class="step-title"><span class="step-icon glyphicon glyphicon-bullhorn"></span></div>
+  <dl>
+	<div tal:omit-tag="" tal:condition="work_mode">
+     <dt>
+       <span  i18n:translate="">Working group mode</span>
+     </dt>
+     <dd>${work_mode}</dd>
+    </div>
+
+    <dt>
+       <span  i18n:translate="">Composition of the working </span>
+     </dt>
+     <dd>
+     	<span style="color:#d9534f;">(${len(context.working_group.members)} <span  i18n:translate="">member(s)</span> / ${min_members} <span  i18n:translate="">minimum)</span></span>
+     </dd>
+  </dl>
 </div>

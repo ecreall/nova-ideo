@@ -1,3 +1,6 @@
+<div style="text-align: center;" i18n:domain="novaideo">
+  <div class="step-title"><span class="step-icon glyphicon glyphicon-check"></span></div>
+</div>
   <div class="proposal-opinion pull-right"  title="${context.opinion_value}" >
       <div class="circle red ${(context.opinion['opinion'] != 'unfavorable') and 'off' or 'on' }"></div>
       <div class="circle orange ${(context.opinion['opinion'] != 'to_study') and 'off' or 'on' }"></div>

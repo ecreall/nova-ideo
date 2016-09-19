@@ -1,4 +1,5 @@
-<div i18n:domain="novaideo">
+<div class="step-metadata" i18n:domain="novaideo">
+	  <div class="step-title"><span class="step-icon glyphicon glyphicon-shopping-cart"></span></div>
       <div><strong i18n:translate="">Proposals using this idea:</strong> ${proposal_nember}</div>
       <div><strong i18n:translate="">Duplicated ideas from this idea:</strong> ${duplicates_len}</div>
 </div>
