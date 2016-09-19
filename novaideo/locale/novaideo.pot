@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-09-19 11:30+0200\n"
+"POT-Creation-Date: 2016-09-19 14:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -505,8 +505,8 @@ msgstr ""
 msgid "My following"
 msgstr ""
 
-#: ./novaideo/views/__init__.py:364 ./novaideo/views/__init__.py:393
-#: ./novaideo/views/__init__.py:423 ./novaideo/views/__init__.py:453
+#: ./novaideo/views/__init__.py:375 ./novaideo/views/__init__.py:404
+#: ./novaideo/views/__init__.py:434 ./novaideo/views/__init__.py:464
 #: ./novaideo/views/idea_management/withdraw_token.py:24
 #: ./novaideo/views/proposal_management/withdraw_token.py:24
 #: ./novaideo/content/processes/idea_management/definition.py:146
@@ -514,7 +514,7 @@ msgstr ""
 msgid "Withdraw my token"
 msgstr ""
 
-#: ./novaideo/views/__init__.py:369 ./novaideo/views/__init__.py:398
+#: ./novaideo/views/__init__.py:380 ./novaideo/views/__init__.py:409
 #: ./novaideo/views/idea_management/support_proposal.py:24
 #: ./novaideo/views/proposal_management/support_proposal.py:24
 #: ./novaideo/content/processes/idea_management/definition.py:138
@@ -522,7 +522,7 @@ msgstr ""
 msgid "Support"
 msgstr ""
 
-#: ./novaideo/views/__init__.py:428 ./novaideo/views/__init__.py:458
+#: ./novaideo/views/__init__.py:439 ./novaideo/views/__init__.py:469
 #: ./novaideo/views/idea_management/oppose_proposal.py:24
 #: ./novaideo/views/proposal_management/oppose_proposal.py:24
 #: ./novaideo/content/processes/idea_management/definition.py:142
@@ -812,11 +812,11 @@ msgstr ""
 #: ./novaideo/views/templates/dragdrop_sequence/sequence_item.pt:20
 #: ./novaideo/content/processes/newsletter_management/definition.py:74
 #: ./novaideo/content/processes/user_management/definition.py:152
-#: ./novaideo/content/processes/user_management/behaviors.py:667
+#: ./novaideo/content/processes/user_management/behaviors.py:669
 #: ./novaideo/content/processes/advertising_management/definition.py:72
 #: ./novaideo/content/processes/comment_management/definition.py:55
 #: ./novaideo/content/processes/comment_management/definition.py:56
-#: ./novaideo/content/processes/organization_management/definition.py:70
+#: ./novaideo/content/processes/organization_management/definition.py:75
 msgid "Remove"
 msgstr ""
 
@@ -835,6 +835,7 @@ msgstr ""
 #: ./novaideo/views/advertising_management/templates/alert_archive.pt:1
 #: ./novaideo/views/advertising_management/templates/alert_publishing.pt:1
 #: ./novaideo/views/organization_management/templates/alert_remove.pt:1
+#: ./novaideo/views/organization_management/templates/alert_withdraw.pt:1
 msgid "En cliquant sur Continuer..."
 msgstr ""
 
@@ -960,8 +961,8 @@ msgstr ""
 #: ./novaideo/content/processes/user_management/definition.py:80
 #: ./novaideo/content/processes/user_management/definition.py:143
 #: ./novaideo/content/processes/user_management/definition.py:144
-#: ./novaideo/content/processes/user_management/behaviors.py:311
-#: ./novaideo/content/processes/user_management/behaviors.py:628
+#: ./novaideo/content/processes/user_management/behaviors.py:313
+#: ./novaideo/content/processes/user_management/behaviors.py:630
 #: ./novaideo/content/processes/proposal_management/definition.py:372
 #: ./novaideo/content/processes/proposal_management/definition.py:373
 #: ./novaideo/content/processes/proposal_management/behaviors.py:1287
@@ -973,8 +974,8 @@ msgstr ""
 #: ./novaideo/content/processes/amendment_management/definition.py:89
 #: ./novaideo/content/processes/amendment_management/behaviors.py:535
 #: ./novaideo/content/processes/correlation_management/behaviors.py:80
-#: ./novaideo/content/processes/organization_management/definition.py:66
-#: ./novaideo/content/processes/organization_management/behaviors.py:173
+#: ./novaideo/content/processes/organization_management/definition.py:71
+#: ./novaideo/content/processes/organization_management/behaviors.py:174
 msgid "Details"
 msgstr ""
 
@@ -1612,7 +1613,7 @@ msgstr ""
 #: ./novaideo/views/user_management/deactivate.py:23
 #: ./novaideo/content/processes/user_management/definition.py:67
 #: ./novaideo/content/processes/user_management/definition.py:68
-#: ./novaideo/content/processes/user_management/behaviors.py:194
+#: ./novaideo/content/processes/user_management/behaviors.py:196
 msgid "Deactivate the profile"
 msgstr ""
 
@@ -1643,7 +1644,7 @@ msgstr ""
 #: ./novaideo/views/user_management/activate.py:23
 #: ./novaideo/content/processes/user_management/definition.py:71
 #: ./novaideo/content/processes/user_management/definition.py:72
-#: ./novaideo/content/processes/user_management/behaviors.py:237
+#: ./novaideo/content/processes/user_management/behaviors.py:239
 msgid "Activate the profile"
 msgstr ""
 
@@ -1803,7 +1804,7 @@ msgstr ""
 
 #: ./novaideo/views/user_management/assign_roles.py:54
 #: ./novaideo/content/processes/user_management/definition.py:76
-#: ./novaideo/content/processes/user_management/behaviors.py:273
+#: ./novaideo/content/processes/user_management/behaviors.py:275
 msgid "Assign roles"
 msgstr ""
 
@@ -2183,6 +2184,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/see_members.py:41
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:6
 #: ./novaideo/views/novaideo_view_manager/see_users.py:46
+#: ./novaideo/views/organization_management/remove_members.py:56
 #: ./novaideo/views/organization_management/templates/see_organization.pt:51
 #: ./novaideo/content/organization.py:129
 #: ./novaideo/content/processes/proposal_management/definition.py:356
@@ -2271,6 +2273,7 @@ msgstr ""
 #: ./novaideo/views/comment_management/pin.py:21
 #: ./novaideo/views/comment_management/unpin.py:21
 #: ./novaideo/views/comment_management/remove.py:21
+#: ./novaideo/views/organization_management/withdraw_user.py:21
 #: ./novaideo/views/organization_management/remove_organization.py:21
 msgid "Alert for deletion"
 msgstr ""
@@ -2448,9 +2451,9 @@ msgstr ""
 #: ./novaideo/content/processes/invitation_management/behaviors.py:266
 #: ./novaideo/content/processes/invitation_management/behaviors.py:295
 #: ./novaideo/content/processes/user_management/behaviors.py:148
-#: ./novaideo/content/processes/user_management/behaviors.py:274
-#: ./novaideo/content/processes/user_management/behaviors.py:341
-#: ./novaideo/content/processes/user_management/behaviors.py:469
+#: ./novaideo/content/processes/user_management/behaviors.py:276
+#: ./novaideo/content/processes/user_management/behaviors.py:343
+#: ./novaideo/content/processes/user_management/behaviors.py:471
 #: ./novaideo/content/processes/ballot_processes/__init__.py:32
 #: ./novaideo/content/processes/admin_process/behaviors.py:42
 #: ./novaideo/content/processes/admin_process/behaviors.py:72
@@ -2469,10 +2472,11 @@ msgstr ""
 #: ./novaideo/content/processes/work_mode_processes/amendment_work_mode_process/behaviors.py:142
 #: ./novaideo/content/processes/work_mode_processes/correction_work_mode_process/behaviors.py:215
 #: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/behaviors.py:65
-#: ./novaideo/content/processes/organization_management/behaviors.py:40
-#: ./novaideo/content/processes/organization_management/behaviors.py:76
-#: ./novaideo/content/processes/organization_management/behaviors.py:111
-#: ./novaideo/content/processes/organization_management/behaviors.py:201
+#: ./novaideo/content/processes/organization_management/behaviors.py:41
+#: ./novaideo/content/processes/organization_management/behaviors.py:77
+#: ./novaideo/content/processes/organization_management/behaviors.py:112
+#: ./novaideo/content/processes/organization_management/behaviors.py:202
+#: ./novaideo/content/processes/organization_management/behaviors.py:332
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:170
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:198
 msgid "Save"
@@ -4020,8 +4024,10 @@ msgstr ""
 #: ./novaideo/content/processes/comment_management/definition.py:51
 #: ./novaideo/content/processes/comment_management/definition.py:52
 #: ./novaideo/content/processes/amendment_management/definition.py:61
-#: ./novaideo/content/processes/organization_management/definition.py:55
-#: ./novaideo/content/processes/organization_management/definition.py:63
+#: ./novaideo/content/processes/organization_management/definition.py:67
+#: ./novaideo/content/processes/organization_management/definition.py:60
+#: ./novaideo/content/processes/organization_management/definition.py:68
+#: ./novaideo/content/processes/organization_management/behaviors.py:201
 #: ./novaideo/content/processes/novaideo_abstract_process/definition.py:62
 msgid "Edit"
 msgstr ""
@@ -4726,6 +4732,12 @@ msgstr ""
 msgid "Are you sure you want to subscribe to this discuss?"
 msgstr ""
 
+#: ./novaideo/views/organization_management/remove_members.py:68
+#: ./novaideo/content/processes/organization_management/definition.py:82
+#: ./novaideo/content/processes/organization_management/definition.py:83
+msgid "Remove members"
+msgstr ""
+
 #: ./novaideo/views/organization_management/see_organization.py:29
 msgid "no member"
 msgstr ""
@@ -4734,14 +4746,21 @@ msgstr ""
 msgid "one member"
 msgstr ""
 
+#: ./novaideo/views/organization_management/user_edit_organization.py:41
 #: ./novaideo/views/organization_management/edit_organization.py:27
-#: ./novaideo/content/processes/organization_management/definition.py:61
-#: ./novaideo/content/processes/organization_management/behaviors.py:200
-msgid "Edit organization"
+#: ./novaideo/content/processes/organization_management/definition.py:66
+#: ./novaideo/content/processes/organization_management/definition.py:86
+#: ./novaideo/content/processes/organization_management/definition.py:87
+msgid "Edit the organization"
+msgstr ""
+
+#: ./novaideo/views/organization_management/user_edit_organization.py:28
+#: ./novaideo/content/invitation.py:57
+msgid "Is the manager"
 msgstr ""
 
 #: ./novaideo/views/organization_management/add_organizations.py:38
-#: ./novaideo/content/processes/organization_management/definition.py:46
+#: ./novaideo/content/processes/organization_management/definition.py:51
 msgid "Upload organizations"
 msgstr ""
 
@@ -4760,20 +4779,34 @@ msgstr ""
 
 #: ./novaideo/views/organization_management/see_organizations.py:39
 #: ./novaideo/content/novaideo_application.py:194
-#: ./novaideo/content/processes/organization_management/definition.py:58
+#: ./novaideo/content/processes/organization_management/definition.py:63
 msgid "Organizations"
 msgstr ""
 
 #: ./novaideo/views/organization_management/edit_organizations.py:32
-#: ./novaideo/content/processes/organization_management/definition.py:53
-#: ./novaideo/content/processes/organization_management/definition.py:54
-#: ./novaideo/content/processes/organization_management/definition.py:62
+#: ./novaideo/content/processes/organization_management/definition.py:58
+#: ./novaideo/content/processes/organization_management/definition.py:59
 msgid "Edit organizations"
 msgstr ""
 
+#: ./novaideo/views/organization_management/add_members.py:40
+#: ./novaideo/content/processes/organization_management/definition.py:78
+#: ./novaideo/content/processes/organization_management/definition.py:79
+msgid "Add members"
+msgstr ""
+
+#: ./novaideo/views/organization_management/add_members.py:27
+msgid "Are managers"
+msgstr ""
+
+#: ./novaideo/views/organization_management/withdraw_user.py:35
+#: ./novaideo/views/organization_management/withdraw_user.py:48
+msgid "Withdraw user from the organization"
+msgstr ""
+
 #: ./novaideo/views/organization_management/creat_organizations.py:49
-#: ./novaideo/content/processes/organization_management/definition.py:49
-#: ./novaideo/content/processes/organization_management/definition.py:50
+#: ./novaideo/content/processes/organization_management/definition.py:54
+#: ./novaideo/content/processes/organization_management/definition.py:55
 msgid "Creat organizations"
 msgstr ""
 
@@ -4782,7 +4815,7 @@ msgid "Organizations to creat"
 msgstr ""
 
 #: ./novaideo/views/organization_management/remove_organization.py:35
-#: ./novaideo/content/processes/organization_management/definition.py:69
+#: ./novaideo/content/processes/organization_management/definition.py:74
 msgid "Remove organization"
 msgstr ""
 
@@ -4961,10 +4994,6 @@ msgstr ""
 
 #: ./novaideo/content/idea.py:71
 msgid "I have an idea!"
-msgstr ""
-
-#: ./novaideo/content/invitation.py:57
-msgid "Is the manager"
 msgstr ""
 
 #: ./novaideo/content/workspace.py:48
@@ -5547,8 +5576,8 @@ msgstr ""
 #: ./novaideo/content/processes/invitation_management/definition.py:53
 #: ./novaideo/content/processes/proposal_management/definition.py:294
 #: ./novaideo/content/processes/advertising_management/definition.py:49
-#: ./novaideo/content/processes/organization_management/definition.py:47
-#: ./novaideo/content/processes/organization_management/definition.py:51
+#: ./novaideo/content/processes/organization_management/definition.py:52
+#: ./novaideo/content/processes/organization_management/definition.py:56
 #: ./novaideo/content/processes/novaideo_abstract_process/definition.py:58
 msgid "Add"
 msgstr ""
@@ -5564,7 +5593,7 @@ msgstr ""
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:88
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:92
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:108
-#: ./novaideo/content/processes/organization_management/definition.py:59
+#: ./novaideo/content/processes/organization_management/definition.py:64
 msgid "See"
 msgstr ""
 
@@ -5581,9 +5610,9 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/behaviors.py:494
 #: ./novaideo/content/processes/idea_management/behaviors.py:507
 #: ./novaideo/content/processes/idea_management/behaviors.py:579
-#: ./novaideo/content/processes/user_management/behaviors.py:418
-#: ./novaideo/content/processes/user_management/behaviors.py:441
-#: ./novaideo/content/processes/user_management/behaviors.py:566
+#: ./novaideo/content/processes/user_management/behaviors.py:420
+#: ./novaideo/content/processes/user_management/behaviors.py:443
+#: ./novaideo/content/processes/user_management/behaviors.py:568
 #: ./novaideo/content/processes/admin_process/behaviors.py:110
 #: ./novaideo/content/processes/proposal_management/behaviors.py:319
 #: ./novaideo/content/processes/proposal_management/behaviors.py:406
@@ -5597,7 +5626,10 @@ msgstr ""
 #: ./novaideo/content/processes/amendment_management/behaviors.py:237
 #: ./novaideo/content/processes/channel_management/behaviors.py:38
 #: ./novaideo/content/processes/channel_management/behaviors.py:68
-#: ./novaideo/content/processes/organization_management/behaviors.py:232
+#: ./novaideo/content/processes/organization_management/behaviors.py:233
+#: ./novaideo/content/processes/organization_management/behaviors.py:253
+#: ./novaideo/content/processes/organization_management/behaviors.py:291
+#: ./novaideo/content/processes/organization_management/behaviors.py:376
 msgid "Continue"
 msgstr ""
 
@@ -5722,7 +5754,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/idea_management/behaviors.py:710
 #: ./novaideo/content/processes/idea_management/behaviors.py:826
-#: ./novaideo/content/processes/user_management/behaviors.py:722
+#: ./novaideo/content/processes/user_management/behaviors.py:724
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:57
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:105
 #, python-format
@@ -6255,21 +6287,26 @@ msgctxt "channel"
 msgid "Unsubscribe"
 msgstr ""
 
-#: ./novaideo/content/processes/organization_management/definition.py:37
-#: ./novaideo/content/processes/organization_management/definition.py:38
+#: ./novaideo/content/processes/organization_management/definition.py:42
+#: ./novaideo/content/processes/organization_management/definition.py:43
 msgid "Orgaizations management"
 msgstr ""
 
-#: ./novaideo/content/processes/organization_management/definition.py:45
+#: ./novaideo/content/processes/organization_management/definition.py:50
 msgid "Upload organizations from xl file"
 msgstr ""
 
-#: ./novaideo/content/processes/organization_management/definition.py:57
+#: ./novaideo/content/processes/organization_management/definition.py:62
 msgid "See organizations"
 msgstr ""
 
-#: ./novaideo/content/processes/organization_management/definition.py:65
+#: ./novaideo/content/processes/organization_management/definition.py:70
 msgid "See organization"
+msgstr ""
+
+#: ./novaideo/content/processes/organization_management/definition.py:90
+#: ./novaideo/content/processes/organization_management/definition.py:91
+msgid "Withdraw from the organization"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_abstract_process/definition.py:36
