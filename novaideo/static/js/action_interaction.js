@@ -26,7 +26,8 @@ function update_modal_action(event){
     var url = action.data('updateurl');
     modal_container.css('opacity', '0')
     loading_progress()
-    $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
+    $.getJSON(url,{tomerge:'True', coordinates:'main',
+                   source_path: window.location.pathname}, function(data) {
        var action_body = data['body'];
        if (action_body){
            $(modal_container.find('.modal-body')).html(action_body);
@@ -54,7 +55,7 @@ function update_direct_action(event){
     var action = $(this).closest('.dace-action-direct')
     var url = action.data('updateurl');
     loading_progress()
-    $.getJSON(url,{}, function(data) {
+    $.getJSON(url,{source_path: window.location.pathname}, function(data) {
        finish_progress()
        var id = action.attr('id')
        data.search_item = $($('[id="'+id+'"]').parents('.result-item.search-item').first())
@@ -76,7 +77,8 @@ function update_inline_action(){
     }
     actions.removeClass('activated')
     var url = $this.closest('.dace-action-inline').data('updateurl');
-    $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
+    $.getJSON(url,{tomerge:'True', coordinates:'main',
+                   source_path: window.location.pathname}, function(data) {
        var action_body = data['body'];
        if (action_body){
            target.slideDown();
@@ -114,7 +116,8 @@ function update_sidebar_action(){
     actions.removeClass('activated')
     var url = $this.closest('.dace-action-sidebar').data('updateurl');
     loading_progress()
-    $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
+    $.getJSON(url,{tomerge:'True', coordinates:'main',
+                   source_path: window.location.pathname}, function(data) {
        var action_body = data['body'];
        if (action_body){
           var container_bodu = $(target.find('.container-body'))
@@ -155,7 +158,8 @@ function update_popover_action(){
     actions.removeClass('activated')
     var url = $this.closest('.dace-action-popover').data('updateurl');
     loading_progress()
-    $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
+    $.getJSON(url,{tomerge:'True', coordinates:'main',
+                   source_path: window.location.pathname}, function(data) {
        var action_body = data['body'];
        if (action_body){
            target.html(action_body);

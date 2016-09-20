@@ -27,8 +27,9 @@ class RemoveInvitationView(BasicView):
     name = 'remove_invitation'
 
     def update(self):
-        self.execute(None)
-        return {}
+        results = self.execute(None)
+        return results[0]
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({RemoveInvitation:RemoveInvitationView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {RemoveInvitation: RemoveInvitationView})

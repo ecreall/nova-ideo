@@ -3,7 +3,6 @@
 
 # licence: AGPL
 # author: Amen Souissi
-
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -27,8 +26,9 @@ class RemindInvitationView(BasicView):
     name = 'remind_invitation'
 
     def update(self):
-        self.execute(None)
-        return {}
+        results = self.execute(None)
+        return results[0]
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({RemindInvitation:RemindInvitationView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {RemindInvitation: RemindInvitationView})

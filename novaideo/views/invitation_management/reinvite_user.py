@@ -27,8 +27,9 @@ class ReinviteUserView(BasicView):
     name = 'reinvite_user'
 
     def update(self):
-        self.execute(None)
-        return {}
+        results = self.execute(None)
+        return results[0]
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({ReinviteUser:ReinviteUserView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {ReinviteUser: ReinviteUserView})

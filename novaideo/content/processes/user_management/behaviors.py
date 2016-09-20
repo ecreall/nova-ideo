@@ -452,7 +452,7 @@ class RefuseRegistration(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return nothing
+        return HTTPFound(request.resource_url(context, '@@seeregistrations'))
 
 
 def confirm_processsecurity_validation(process, context):
@@ -676,7 +676,7 @@ class RemoveRegistration(InfiniteCardinality):
         return {'root': root}
 
     def redirect(self, context, request, **kw):
-        return nothing
+        return HTTPFound(request.resource_url(context, '@@seeregistrations'))
 
 
 def discuss_roles_validation(process, context):

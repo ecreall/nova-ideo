@@ -29,10 +29,12 @@ from novaideo.views.novaideo_view_manager.see_my_selections import (
     CONTENTS_MESSAGES as SELECT_CONTENTS_MESSAGES)
 from novaideo.views.user_management.see_registrations import (
     CONTENTS_MESSAGES as REGISTRATION_CONTENTS_MESSAGES)
+from novaideo.views.invitation_management.see_invitations import (
+    CONTENTS_MESSAGES as INVITATION_CONTENTS_MESSAGES)
 from novaideo.utilities.util import (
     update_all_ajax_action, render_listing_obj)
 from novaideo.views.filter import find_entities
-from novaideo.content.interface import IPreregistration
+from novaideo.content.interface import IPreregistration, IInvitation
 from novaideo.content.organization import Organization
 from novaideo.content.person import Person
 
@@ -141,6 +143,8 @@ def get_components_data(action, view, **kwargs):
 
 
 def get_remove_registration_metadata(action, request, context, api, **kwargs):
+    result = get_edit_listing_entity_metadata(
+        action, request, context, api, 'seeregistrations', **kwargs)
     user = get_current()
     registrations = find_entities(
         user=user,
@@ -153,16 +157,8 @@ def get_remove_registration_metadata(action, request, context, api, **kwargs):
     view_title = request.localizer.translate(
         _(REGISTRATION_CONTENTS_MESSAGES[index],
           mapping={'nember': len_result}))
-
-    result = {
-        'action': 'redirect_action',
-        'view': api,
-        'redirect_url': None,
-        'new_body': None,
-        'view_name': 'seeregistrations',
-        'view_title': view_title,
-        'removed': True,
-    }
+    result['removed'] = True
+    result['view_title'] = view_title
     return result
 
 
@@ -474,6 +470,10 @@ def get_withdraw_user_metadata(action, request, context, api, **kwargs):
             if isinstance(source_context, Organization):
                 removed = True
             elif not isinstance(source_context, Person):
+                if request.POST:
+                    request.POST.clear()
+
+                request.invalidate_cache = True
                 new_obj_body = render_listing_obj(
                     request, context, get_current())
             elif 'view_data' in kwargs:
@@ -490,6 +490,108 @@ def get_withdraw_user_metadata(action, request, context, api, **kwargs):
         'view_name': 'index',
         'new_obj_body': new_obj_body,
         'new_body': None
+    }
+    return result
+
+
+def get_edit_listing_entity_metadata(action, request, context, api, view_name, **kwargs):
+    source_path = api.params('source_path')
+    redirect_url = None
+    new_obj_body = None
+    body = None
+    if 'view_data' in kwargs:
+        view_instance, view_result = kwargs['view_data']
+        if view_result and view_result is not nothing:
+            if isinstance(view_result, HTTPFound):
+                if source_path.find('/@@'+view_name) >= 0 or \
+                   source_path.find('/'+view_name) >= 0:
+                    if request.POST:
+                        request.POST.clear()
+
+                    request.invalidate_cache = True
+                    new_obj_body = render_listing_obj(
+                        request, context, get_current())
+                else:
+                    redirect_url = view_result.headers['location']
+            else:
+                body = view_result['coordinates'][view_instance.coordinates][0]['body']
+
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': redirect_url,
+        'view_name': view_name,
+        'new_obj_body': new_obj_body,
+        'new_body': json.dumps(body) if body else None
+    }
+    return result
+
+
+def get_edit_invitation_metadata(action, request, context, api, **kwargs):
+    return get_edit_listing_entity_metadata(
+        action, request, context, api, 'seeinvitations', **kwargs)
+
+
+def get_remind_invitation_metadata(action, request, context, api, **kwargs):
+    view_name = 'seeinvitations'
+    source_path = api.params('source_path')
+    redirect_url = None
+    new_obj_body = None
+    if source_path.find('/@@'+view_name) >= 0 or \
+       source_path.find('/'+view_name) >= 0:
+        request.invalidate_cache = True
+        new_obj_body = render_listing_obj(
+            request, context, get_current())
+    else:
+        redirect_url = request.resource_url(context, '')
+
+    result = get_edit_listing_entity_metadata(
+        action, request, context, api, view_name, **kwargs)
+    result['redirect_url'] = redirect_url
+    result['new_obj_body'] = new_obj_body
+    return result
+
+
+def get_remind_registration_metadata(action, request, context, api, **kwargs):
+    return get_edit_listing_entity_metadata(
+        action, request, context, api, 'seeregistrations', **kwargs)
+
+
+def get_accept_registration_metadata(action, request, context, api, **kwargs):
+    return get_edit_listing_entity_metadata(
+        action, request, context, api, 'seeregistrations', **kwargs)
+
+
+def get_remove_invitation_metadata(action, request, context, api, **kwargs):
+    removed = False
+    redirect_url = None
+    view_name = 'seeinvitations'
+    source_path = api.params('source_path')
+    if source_path.find('/@@'+view_name) >= 0 or \
+       source_path.find('/'+view_name) >= 0:
+        removed = True
+    else:
+        redirect_url = request.resource_url(request.root, '@@seeinvitations')
+
+    user = get_current()
+    objects = find_entities(
+        user=user,
+        interfaces=[IInvitation])
+    len_result = len(objects)
+    index = str(len_result)
+    if len_result > 1:
+        index = '*'
+
+    view_title = request.localizer.translate(
+        _(INVITATION_CONTENTS_MESSAGES[index],
+          mapping={'nember': len_result}))
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': redirect_url,
+        'view_title': view_title,
+        'removed': removed,
+        'view_name': 'seeinvitations',
     }
     return result
 
@@ -513,6 +615,10 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
                            context.organization is not source_context:
                             removed = True
                         elif not isinstance(source_context, Person):
+                            if request.POST:
+                                request.POST.clear()
+
+                            request.invalidate_cache = True
                             new_obj_body = render_listing_obj(
                                 request, context, get_current())
                         else:
@@ -614,8 +720,14 @@ METADATA_GETTERS = {
     'amendmentmanagement.present': get_present_metadata,
     'registrationmanagement.remove': get_remove_registration_metadata,
     'registrationmanagement.refuse': get_remove_registration_metadata,
-    'registrationmanagement.accept': get_api_execution_metadata,
-    'invitationmanagement.edit': get_api_execution_metadata,
+    'registrationmanagement.accept': get_accept_registration_metadata,
+    'registrationmanagement.remind': get_remind_registration_metadata,
+
+    'invitationmanagement.edit': get_edit_invitation_metadata,
+    'invitationmanagement.remove': get_remove_invitation_metadata,
+    'invitationmanagement.reinvite': get_remind_invitation_metadata,
+    'invitationmanagement.remind': get_remind_invitation_metadata,
+
     'organizationmanagement.withdraw_user': get_withdraw_user_metadata,
     'organizationmanagement.user_edit_organization': get_user_edit_organization_metadata,
 }

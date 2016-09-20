@@ -20,7 +20,7 @@ from pontus.schema import select, omit
 from novaideo.ips.xlreader import create_object_from_xl
 from novaideo.content.interface import INovaIdeoApplication, IInvitation
 from novaideo.content.invitation import Invitation
-from novaideo import _
+from novaideo import _, nothing
 from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity,
     initialize_tokens)
@@ -444,6 +444,7 @@ class RemoveInvitation(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-trash'
     context = IInvitation
     roles_validation = remove_roles_validation
@@ -478,6 +479,7 @@ class ReinviteUser(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-bullhorn'
     context = IInvitation
     roles_validation = reinvite_roles_validation
@@ -529,6 +531,7 @@ class RemindInvitation(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-bullhorn'
     isSequential = True
     context = IInvitation
@@ -557,6 +560,6 @@ class RemindInvitation(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 #TODO behaviors
