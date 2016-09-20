@@ -127,7 +127,7 @@ function list_items_component(data){
     var url = window.location.href; 
 	var concerned_view = url.indexOf('/'+data.view_name+'')>=0 || url.indexOf('/@@'+data.view_name)>=0   
 	if(data.removed && concerned_view){
-        data.search_item.slideDown().remove()
+        data.search_item.fadeOut( 1000 );
         return
 	}
     if(data.new_obj_body){
@@ -145,7 +145,7 @@ function list_channels_component(data){
         var channel_len = $(data.channel_item.parents('.channels-block').find('.channel-title .channel-len').first())
 		var nb = parseInt(channel_len.text().replace('(', '').replace(')', ''))-1
 		channel_len.text('('+nb+')')
-		data.channel_item.slideDown().remove()
+		data.channel_item.fadeOut( 1000 );
 	}
 	if(!data.removed && data.new_components.length>0 && data.channels_target.length>0){
 		var new_components = $(data.new_components[0])
