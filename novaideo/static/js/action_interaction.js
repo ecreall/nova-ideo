@@ -1,4 +1,13 @@
 
+function get_action_metadata(action){
+    var id = action.attr('id')
+    search_item = $($('[id="'+id+'"]').parents('.result-item.search-item').first())
+    return {source_path: window.location.pathname,
+            is_listing: search_item.length > 0,
+            search_item: search_item}
+}
+
+
 function update_modal_action(event){
     var action = $(this).closest('.dace-action-modal')
     var toreplay = action.data('toreplay');
@@ -26,8 +35,10 @@ function update_modal_action(event){
     var url = action.data('updateurl');
     modal_container.css('opacity', '0')
     loading_progress()
-    $.getJSON(url,{tomerge:'True', coordinates:'main',
-                   source_path: window.location.pathname}, function(data) {
+    var url_attr = {tomerge:'True', coordinates:'main'}
+    $.extend( url_attr, get_action_metadata(action));
+    delete url_attr.search_item;
+    $.getJSON(url, url_attr, function(data) {
        var action_body = data['body'];
        if (action_body){
            $(modal_container.find('.modal-body')).html(action_body);
@@ -53,13 +64,20 @@ function update_modal_action(event){
 
 function update_direct_action(event){
     var action = $(this).closest('.dace-action-direct')
+    var id = action.attr('id')
+    search_item = $($('[id="'+id+'"]').parents('.result-item.search-item').first())
     var url = action.data('updateurl');
     loading_progress()
-    $.getJSON(url,{source_path: window.location.pathname}, function(data) {
-       finish_progress()
-       var id = action.attr('id')
-       data.search_item = $($('[id="'+id+'"]').parents('.result-item.search-item').first())
+    var url_attr = {tomerge:'True', coordinates:'main'}
+    $.extend( url_attr, get_action_metadata(action));
+    var search_item = url_attr.search_item
+    delete url_attr.search_item;
+    $.getJSON(url, url_attr, function(data) {
+       data.search_item = search_item
        update_components(data)
+       if(!data.redirect_url){
+         finish_progress()
+       }
        return false
     });
     return false;
@@ -76,7 +94,11 @@ function update_inline_action(){
        return
     }
     actions.removeClass('activated')
-    var url = $this.closest('.dace-action-inline').data('updateurl');
+    var action = $this.closest('.dace-action-inline')
+    var url = action.data('updateurl');
+    var url_attr = {tomerge:'True', coordinates:'main'}
+    $.extend( url_attr, get_action_metadata(action));
+    delete url_attr.search_item;
     $.getJSON(url,{tomerge:'True', coordinates:'main',
                    source_path: window.location.pathname}, function(data) {
        var action_body = data['body'];
@@ -114,10 +136,13 @@ function update_sidebar_action(){
     var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
     title.find('.label-basic').remove()
     actions.removeClass('activated')
-    var url = $this.closest('.dace-action-sidebar').data('updateurl');
+    var action = $this.closest('.dace-action-sidebar')
+    var url = action.data('updateurl');
+    var url_attr = {tomerge:'True', coordinates:'main'}
+    $.extend( url_attr, get_action_metadata(action));
+    delete url_attr.search_item;
     loading_progress()
-    $.getJSON(url,{tomerge:'True', coordinates:'main',
-                   source_path: window.location.pathname}, function(data) {
+    $.getJSON(url, url_attr, function(data) {
        var action_body = data['body'];
        if (action_body){
           var container_bodu = $(target.find('.container-body'))
@@ -156,10 +181,13 @@ function update_popover_action(){
     var popover_container = $('.action-popover-container')
     var target = $(popover_container.find('.popover-content'))//closest('.dace-action-inline').data('target')+'-target';
     actions.removeClass('activated')
-    var url = $this.closest('.dace-action-popover').data('updateurl');
+    var action = $this.closest('.dace-action-popover')
+    var url = action.data('updateurl');
+    var url_attr = {tomerge:'True', coordinates:'main'}
+    $.extend( url_attr, get_action_metadata(action));
+    delete url_attr.search_item;
     loading_progress()
-    $.getJSON(url,{tomerge:'True', coordinates:'main',
-                   source_path: window.location.pathname}, function(data) {
+    $.getJSON(url, url_attr, function(data) {
        var action_body = data['body'];
        if (action_body){
            target.html(action_body);
@@ -210,7 +238,13 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
     $(button).addClass('disabled');
     var formData = new FormData($(this)[0]);
     formData.append(button.val(), button.val())
-    formData.append('source_path', window.location.pathname)
+    var action = $('#'+modal_container.data('action_id'))
+    var action_metadata = get_action_metadata(action)
+    var search_item = action_metadata.search_item
+    delete action_metadata.search_item;
+    for(key in action_metadata){
+        formData.append(key, action_metadata[key])
+    }
     loading_progress()
     $.ajax({
       url: url,
@@ -229,7 +263,7 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
           modal_container.modal('hide')
           finish_progress()
         }
-        data.search_item = $($('#'+modal_container.data('action_id')).parents('.search-item').first())
+        data.search_item = search_item
         update_components(data)
     }});
     event.preventDefault();

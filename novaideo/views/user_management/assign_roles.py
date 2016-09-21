@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import deform
 import colander
 from pyramid.view import view_config
 
@@ -61,6 +62,14 @@ class AssignRolesView(FormView):
         roles = [r for r in get_roles(self.context)
                  if not getattr(DACE_ROLES.get(r, None), 'islocal', False)]
         return {'roles': roles}
+
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': AssignRoles.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form')
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

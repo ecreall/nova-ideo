@@ -48,11 +48,12 @@
              <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</small>
         </blockquote>
     </div>
-    <h4 tal:condition="object.members"><span class="ion-person-stalker"></span> <span i18n:translate="">Members</span></h4>
-    <div tal:condition="object.members">
-      ${structure:members_body}
-    </div>
+    
   </div>
 </div>
 <div tal:replace="structure footer_body"/>
+<h4 tal:condition="object.members"><span class="ion-person-stalker"></span> <span i18n:translate="">Members</span></h4>
+<div tal:condition="object.members">
+  ${structure:members_body}
+</div>
 ${panel('social_share_toggle')}

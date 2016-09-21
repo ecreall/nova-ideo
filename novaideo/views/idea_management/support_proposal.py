@@ -30,5 +30,6 @@ class SupportIdeaView(BasicView):
         results = self.execute(None)
         return results[0]
 
+
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {SupportIdea: SupportIdeaView})

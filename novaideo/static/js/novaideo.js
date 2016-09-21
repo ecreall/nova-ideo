@@ -415,8 +415,7 @@ function close_add_idea_form(){
   var form_groups = add_idea_form.find('.form-group')
   form_groups.removeClass('has-error')
   form_groups.find('p.help-block.help-error').remove()
-  add_idea_form.find('#messagedanger').hide();
-
+  
   $('.modal-home-add-idea').remove()
    $(".home-add-idea .form-group:not(.idea-text),"+
      ".home-add-idea .form-group label,"+
@@ -692,7 +691,6 @@ $(document).ready(function(){
            return
         }
         var parent = $($this.parents('.home-add-idea').first());
-        var danger_messages_container = $(parent.find('#messagedanger'));
         var title = $this.find('input[name="title"]').val();
         var text = $this.find('textarea[name="text"]').val();
         var keywords = $($this.find('select[name="keywords"]')).val();
@@ -702,7 +700,10 @@ $(document).ready(function(){
           form_groups.find('p.help-block.help-error').remove()
           var input = null;
           var error_help = '<p class="help-error help-block">'+novaideo_translate("Required") +'</p>'
-          danger_messages_container.text( novaideo_translate("There was a problem with your submission.") ).show();
+          alert_component({
+            alert_msg: novaideo_translate("There was a problem with your submission."),
+            alert_type: 'error'
+          })
           if (title=='')
           {
             form_group = $this.find('input[name="title"]').parents('.form-group').first()

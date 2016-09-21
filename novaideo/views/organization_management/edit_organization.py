@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import deform
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -37,6 +38,14 @@ class EditOrganizationView(FormView):
 
     def default_data(self):
         return self.context
+
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': EditOrganization.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form')
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({EditOrganization: EditOrganizationView})

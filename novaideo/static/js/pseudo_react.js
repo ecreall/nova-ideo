@@ -126,7 +126,7 @@ function view_title_component(data){
 function list_items_component(data){
     var url = window.location.href; 
 	var concerned_view = url.indexOf('/'+data.view_name+'')>=0 || url.indexOf('/@@'+data.view_name)>=0   
-	if(data.removed && concerned_view){
+	if(data.removed && (data.force_remove || concerned_view)){
         data.search_item.fadeOut( 1000 );
         return
 	}
@@ -164,13 +164,37 @@ function redirect_component(data){
     }
 }
 
+function alert_component(data){
+	if (data.alert_msg){
+		if(data.alert_source){
+			data.alert_source.notify(
+	            data.alert_msg,
+	            {
+	              globalPosition: 'top center',
+	              className: data.alert_type,
+	            });
+		}else{
+			$.notify(
+	            data.alert_msg,
+	            {
+	              globalPosition: 'bottom center',
+	              className: data.alert_type,
+	            });
+		}
+    }
+}
+
 
 var pseudo_react_components = {
-	'support_action': [nav_bar_component, view_title_component, list_items_component],
+	'support_action': [nav_bar_component, view_title_component,
+	                   list_items_component, alert_component],
 	'footer_action': [nav_bar_component, footer_action_component,
-	                  view_title_component, list_items_component],
-	'redirect_action': [redirect_component, list_items_component, view_title_component],
-	'dropdown_action': [dropdown_action_component, list_channels_component]
+	                  view_title_component, list_items_component,
+	                  alert_component],
+	'redirect_action': [redirect_component, list_items_component,
+	                    view_title_component, alert_component],
+	'dropdown_action': [dropdown_action_component, list_channels_component,
+	                    alert_component]
 }
 
 function update_components(data){

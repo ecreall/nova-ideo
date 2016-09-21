@@ -16,7 +16,9 @@ novaideoI18n = {
   "Please select a valid idea!": "Please select a valid idea",
   "No more item.": "No more item.",
   "Message sent": "Message sent",
-  "Your message has been delivered to the following recipients": "Your message has been delivered to the following recipients",
+  "Your message has been delivered to the indicated recipients": "Your message has been delivered to the indicated recipients",
+  "Your comment cannot be empty!": "Your comment cannot be empty!",
+  "Your intention and comment cannot be empty!": "Your intention and comment cannot be empty!",
   "Unread messages": "Unread messages",
   "Required": "Required"
 },
@@ -31,14 +33,16 @@ novaideoI18n = {
   "The abstract is required!": "Le texte est requis" ,
   "Keywords are required!": "Les mots clés sont requis" ,
   "The idea is not added!": "L'idée n'est pas ajoutée", 
-  "Comment sent": "Votre message est bien envoyé" ,
-  "Your comment is integrated": "Votre message est pris en compte",
+  "Comment sent": "Votre commentaire est bien envoyé" ,
+  "Your comment is integrated": "Votre commentaire est pris en compte",
   "Idea already exist!": "Idée est déjà incluse" ,
   "Please select a valid idea!": "Veuillez sélectionner une idée valide",
   "No more item.": "Pas d'autres éléments.",
   "Message sent": "Message envoyé",
-  "Your message has been delivered to the following recipients": "Votre message a été envoyé aux destinataires suivants",
+  "Your message has been delivered to the indicated recipients": "Votre message a été envoyé aux destinataires indiqués",
   "Unread messages": "Messages non lus",
+  "Your comment cannot be empty!": "Votre commentaire ne peut être vide !",
+  "Your intention and comment cannot be empty!": "Votre intention et votre commentaire ne peuvent être vides !",
   "Required": "Requis"
 }
 }

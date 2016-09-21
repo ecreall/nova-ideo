@@ -85,7 +85,8 @@ def deselect_processsecurity_validation(process, context):
 
 
 def deselect_state_validation(process, context):
-    return True
+    return "archived" not in context.state and \
+           "version" not in context.state
 
 
 class DeselectEntity(InfiniteCardinality):
@@ -99,6 +100,7 @@ class DeselectEntity(InfiniteCardinality):
     context = ISearchableEntity
     roles_validation = deselect_roles_validation
     processsecurity_validation = deselect_processsecurity_validation
+    state_validation = deselect_state_validation
 
     def get_title(self, context, request):
         len_selections = getattr(context, 'len_selections', 0)

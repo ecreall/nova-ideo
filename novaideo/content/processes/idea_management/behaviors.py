@@ -280,6 +280,7 @@ def del_state_validation(process, context):
 class DelIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
     style_order = 6
     submission_title = _('Continue')
@@ -616,6 +617,7 @@ class AbandonIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-stop'
     style_order = 4
     context = Iidea
@@ -652,6 +654,7 @@ class RecuperateIdea(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-play'
     style_order = 8
     context = Iidea
@@ -989,6 +992,7 @@ def opinion_state_validation(process, context):
 class MakeOpinion(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
     style_picto = 'octicon octicon-checklist'
     style_order = 10
     submission_title = _('Save')

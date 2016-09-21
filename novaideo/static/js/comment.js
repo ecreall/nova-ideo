@@ -262,9 +262,6 @@ $(document).ready(function(){
         var comment = textarea.val();
         var parent = $($this.parents('.views-container').first());
         var target = $(parent.find('.comments-scroll .commentulorigin'));
-        var commentmessageinfo = $this.find('#messageinfo');
-        var commentmessagesuccess = $this.find('#messagesuccess');
-        var commentmessagedanger = $this.find('#messagedanger');
         var url = $(event.target).attr('action');
         if (comment !='' && intention!=''){
           var preview = $(target.find('> .commentli.comment-preview').last());
@@ -275,7 +272,10 @@ $(document).ready(function(){
           $(button).addClass('disabled');
           var formData = new FormData($(this)[0]);
           formData.append(button.val(), button.val())
-          $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
+          alert_component({
+            alert_msg: novaideo_translate("Comment sent"),
+            alert_type: 'info'
+          })
           $.ajax({
             url: url,
             type: 'POST',
@@ -288,7 +288,10 @@ $(document).ready(function(){
                    init_emoji($(content.find('.emoji-container:not(.emojified)')));
                    $($(content).find('li.commentli').first()).insertBefore(preview);
                    preview.addClass('hide-bloc')
-                   $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
+                   alert_component({
+                      alert_msg: novaideo_translate("Your comment is integrated"),
+                      alert_type: 'success'
+                    })
                    textarea.val('');
                    select_related_contents.select2('val', []);
                    $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
@@ -299,8 +302,10 @@ $(document).ready(function(){
                     }
                    catch(err) {};
                 }else{
-                 $(commentmessagedanger).text(
-                    novaideo_translate("Your comment is not integrated") ).show().fadeOut( 6000 );
+                  alert_component({
+                      alert_msg: novaideo_translate("Your comment is not integrated"),
+                      alert_type: 'error'
+                    })
                 };
                 $(button).removeClass('disabled');
                 update_components(data)
@@ -314,8 +319,10 @@ $(document).ready(function(){
            if (textarea.val() == ''){
               if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
            };
-           $( commentmessagedanger).text( "Your "+errormessage+" cannot be empty!" ).show().fadeOut( 4000 );
-
+          alert_component({
+              alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
+              alert_type: 'error'
+            })
        };
        event.preventDefault();
    });
@@ -334,9 +341,6 @@ $(document).ready(function(){
         var parentform = parent.find('.commentform');
         
         var target = $($this.parents('.commentli').first().find('.comments-container').first().find('.commentul').first());
-        var commentmessageinfo = $this.find('#messageinfo');
-        var commentmessagesuccess = $this.find('#messagesuccess');
-        var commentmessagedanger = $this.find('#messagedanger');
         var url = $(event.target).attr('action');
         if (comment !='' && intention!=''){
           var preview = $(target.find('> .commentli.comment-preview').last());
@@ -345,7 +349,10 @@ $(document).ready(function(){
           preview.removeClass('hide-bloc')
           comment_scroll_to(preview, true)
           $(button).addClass('disabled');
-          $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
+          alert_component({
+            alert_msg: novaideo_translate("Comment sent"),
+            alert_type: 'info'
+          })
           var formData = new FormData($(this)[0]);
           formData.append(button.val(), button.val())
           $.ajax({
@@ -358,7 +365,10 @@ $(document).ready(function(){
               var content = $(data.new_body).find('.commentulorigin');
               if (content){
                  init_emoji($(content.find('.emoji-container:not(.emojified)')));
-                 $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
+                 alert_component({
+                      alert_msg: novaideo_translate("Your comment is integrated"),
+                      alert_type: 'success'
+                    })
                  $($(content).find('li.commentli').first()).insertBefore(preview);
                  preview.addClass('hide-bloc')
                  textarea.val('');
@@ -372,8 +382,10 @@ $(document).ready(function(){
                     }
                  catch(err) {};
               }else{
-                $(commentmessagedanger).text(
-                  novaideo_translate("Your comment is not integrated") ).show().fadeOut( 6000 );
+                alert_component({
+                      alert_msg: novaideo_translate("Your comment is not integrated"),
+                      alert_type: 'error'
+                })
               };
               update_components(data)
           }});
@@ -385,7 +397,10 @@ $(document).ready(function(){
            if (comment == ''){
               if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
            };
-           $( commentmessagedanger).text( "Your "+errormessage+" cannot be empty!" ).show().fadeOut( 4000 );
+            alert_component({
+              alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
+              alert_type: 'error'
+            })
 
        };
       event.preventDefault();
@@ -410,7 +425,10 @@ $(document).ready(function(){
         var url = $(event.target).attr('action');
         if (comment !='' && intention!=''){
           $(button).addClass('disabled');
-          $( commentmessageinfo).text( novaideo_translate("Comment sent") ).show().fadeOut( 4000 );
+          alert_component({
+            alert_msg: novaideo_translate("Comment sent"),
+            alert_type: 'info'
+          })
           var formData = new FormData($(this)[0]);
           formData.append(button.val(), button.val())
           $.ajax({
@@ -423,7 +441,10 @@ $(document).ready(function(){
               var content = $(data.new_body).find('.commentulorigin');
               if (content){
                  init_emoji($(content.find('.emoji-container:not(.emojified)')));
-                 $( commentmessagesuccess).text( novaideo_translate("Your comment is integrated") ).show().fadeOut( 4000 );
+                 alert_component({
+                      alert_msg: novaideo_translate("Your comment is integrated"),
+                      alert_type: 'success'
+                    })
                  $this.parents('.commentli').first().replaceWith($($(content).find('li.commentli').first()))
                  textarea.val('');
                  select_related_contents.select2('val', []);
@@ -435,8 +456,10 @@ $(document).ready(function(){
                     }
                  catch(err) {};
               }else{
-                $(commentmessagedanger).text(
-                  novaideo_translate("Your comment is not integrated") ).show().fadeOut( 6000 );
+                alert_component({
+                      alert_msg: novaideo_translate("Your comment is not integrated"),
+                      alert_type: 'error'
+                })
               };
           }});
         }else{
@@ -447,7 +470,10 @@ $(document).ready(function(){
            if (comment == ''){
               if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
            };
-           $( commentmessagedanger).text( "Your "+errormessage+" cannot be empty!" ).show().fadeOut( 4000 );
+           alert_component({
+              alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
+              alert_type: 'error'
+            })
 
        };
       event.preventDefault();
@@ -469,7 +495,10 @@ $(document).ready(function(){
         if (subject !='' && textarea.val()!='' && members.val() != null){
           loading_progress();
           $(button).addClass('disabled');
-          $( commentmessageinfo).text( novaideo_translate("Message sent") ).show().fadeOut( 3000 );
+          alert_component({
+              alert_msg: novaideo_translate("Message sent"),
+              alert_type: 'info'
+            })
           var values = $this.serialize()+'&'+button.val()+'='+button.val();
           $.post(url, values, function(data) {
                  var content = $(data.new_body).find('.study-view.study-present');
@@ -478,11 +507,15 @@ $(document).ready(function(){
                    // $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
                    $(target).html($(content).html());
                    members.select2('val', []);
-                  $(commentmessagesuccess).text(
-                        novaideo_translate("Your message has been delivered to the following recipients") ).show().fadeOut( 6000 );
+                   alert_component({
+                      alert_msg: novaideo_translate("Your message has been delivered to the indicated recipients"),
+                      alert_type: 'success'
+                    })
                   }else{
-                    $(commentmessagedanger).text(
-                        novaideo_translate("Your message is not delivered") ).show().fadeOut( 6000 );
+                    alert_component({
+                      alert_msg: novaideo_translate("Your message is not delivered"),
+                      alert_type: 'error'
+                    })
                   };
                   $(button).removeClass('disabled');
                   update_components(data)
@@ -499,8 +532,11 @@ $(document).ready(function(){
            if (textarea.val() == ''){
               if (errormessage != ''){errormessage=errormessage+' and message'}else{errormessage = 'message'}
            };
-           $( commentmessagedanger).text( "Your "+errormessage+" cannot be empty!" ).show().fadeOut( 4000 );
 
+           alert_component({
+              alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
+              alert_type: 'error'
+            })
        };
        event.preventDefault();
    });

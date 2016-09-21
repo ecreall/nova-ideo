@@ -195,6 +195,7 @@ def editorg_processsecurity_validation(process, context):
 class EditOrganization(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
+    style_interaction = 'ajax-action'
     isSequential = False
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
@@ -241,7 +242,7 @@ class RemoveOrganization(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(request.root, ""))
+        return HTTPFound(request.resource_url(request.root, "@@seeorganizations"))
 
 
 class AddMembers(InfiniteCardinality):
@@ -259,13 +260,19 @@ class AddMembers(InfiniteCardinality):
         members = appstruct['members']
         are_managers = appstruct['are_managers']
         for member in members:
+            new_member = False
             if member not in context.members:
                 context.addtoproperty('members', member)
-                if are_managers:
-                    grant_roles(
-                        user=member,
-                        roles=(('OrganizationResponsible',
-                                context),))
+                new_member = True
+
+            if are_managers and (new_member or not has_role(
+                    user=member,
+                    role=('OrganizationResponsible', context),
+                    ignore_superiors=True)):
+                grant_roles(
+                    user=member,
+                    roles=(('OrganizationResponsible',
+                            context),))
             member.reindex()
 
         context.reindex()

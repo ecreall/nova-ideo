@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2016 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
@@ -31,10 +32,13 @@ from novaideo.views.user_management.see_registrations import (
     CONTENTS_MESSAGES as REGISTRATION_CONTENTS_MESSAGES)
 from novaideo.views.invitation_management.see_invitations import (
     CONTENTS_MESSAGES as INVITATION_CONTENTS_MESSAGES)
+from novaideo.views.organization_management.see_organizations import (
+    CONTENTS_MESSAGES as ORGANIZATION_CONTENTS_MESSAGES)
 from novaideo.utilities.util import (
     update_all_ajax_action, render_listing_obj)
 from novaideo.views.filter import find_entities
-from novaideo.content.interface import IPreregistration, IInvitation
+from novaideo.content.interface import (
+    IPreregistration, IInvitation, IOrganization)
 from novaideo.content.organization import Organization
 from novaideo.content.person import Person
 
@@ -54,6 +58,9 @@ def get_navbar_updated_data(view, **kwargs):
         result['navbar_icon'] = kwargs.get('navbar_icon')
         result['view_name'] = kwargs.get('view_name')
         result['removed'] = kwargs.get('removed')
+        result['force_remove'] = kwargs.get('force_remove', False)
+        result['alert_msg'] = kwargs.get('alert_msg', None)
+        result['alert_type'] = kwargs.get('alert_type', None)
 
     return result
 
@@ -77,6 +84,8 @@ def get_footer_action_updated_data(view, **kwargs):
             'opposit_actionurl_update', None)
         result['opposit_actionurl_after'] = kwargs.get(
             'opposit_actionurl_after', None)
+        result['alert_msg'] = kwargs.get('alert_msg', None)
+        result['alert_type'] = kwargs.get('alert_type', None)
 
     return result
 
@@ -100,6 +109,8 @@ def get_dropdown_action_updated_data(view, **kwargs):
             'opposit_actionurl_update', None)
         result['opposit_actionurl_after'] = kwargs.get(
             'opposit_actionurl_after', None)
+        result['alert_msg'] = kwargs.get('alert_msg', None)
+        result['alert_type'] = kwargs.get('alert_type', None)
 
     return result
 
@@ -115,6 +126,9 @@ def get_redirect_updated_data(view, **kwargs):
         result['view_name'] = kwargs.get('view_name', None)
         result['new_obj_body'] = kwargs.get('new_obj_body', None)
         result['removed'] = kwargs.get('removed', False)
+        result['force_remove'] = kwargs.get('force_remove', False)
+        result['alert_msg'] = kwargs.get('alert_msg', None)
+        result['alert_type'] = kwargs.get('alert_type', None)
 
     return result
 
@@ -142,29 +156,107 @@ def get_components_data(action, view, **kwargs):
     return result
 
 
-def get_remove_registration_metadata(action, request, context, api, **kwargs):
-    result = get_edit_listing_entity_metadata(
-        action, request, context, api, 'seeregistrations', **kwargs)
-    user = get_current()
-    registrations = find_entities(
-        user=user,
-        interfaces=[IPreregistration])
-    len_result = len(registrations)
-    index = str(len_result)
-    if len_result > 1:
-        index = '*'
+def get_default_action_metadata(action, request, context, api, **kwargs):
+    redirect_url = None
+    body = None
+    if 'view_data' in kwargs:
+        view_instance, view_result = kwargs['view_data']
+        if view_result and view_result is not nothing:
+            if isinstance(view_result, HTTPFound):
+                redirect_url = view_result.headers['location']
+            else:
+                body = view_result['coordinates'][view_instance.coordinates][0]['body']
 
-    view_title = request.localizer.translate(
-        _(REGISTRATION_CONTENTS_MESSAGES[index],
-          mapping={'nember': len_result}))
-    result['removed'] = True
-    result['view_title'] = view_title
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': redirect_url,
+        'new_body': json.dumps(body) if body else None
+    }
+    return result
+
+
+def get_edit_entity_metadata(
+    action, request, context, api,
+    msg=None, view_name=None, **kwargs):
+    is_listing = api.params('is_listing')
+    source_path = api.params('source_path')
+    is_listing = json.loads(is_listing) if is_listing else False
+    alert_msg = None
+    new_obj_body = None
+    redirect_url = None
+    is_excuted = False
+    body = None
+    if 'view_data' in kwargs:
+        view_instance, view_result = kwargs['view_data']
+        if view_result and view_result is not nothing:
+            if isinstance(view_result, HTTPFound):
+                is_excuted = True
+                alert_msg = msg
+                if is_listing:
+                    if request.POST:
+                        request.POST.clear()
+
+                    request.invalidate_cache = True
+                    new_obj_body = render_listing_obj(
+                        request, context, get_current())
+                else:
+                    redirect_url = view_result.headers['location']
+            else:
+                body = view_result['coordinates'][view_instance.coordinates][0]['body']
+
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': redirect_url,
+        'view_name': view_name,
+        'new_obj_body': new_obj_body,
+        'new_body': json.dumps(body) if body else None
+    }
+    result['alert_msg'] = request.localizer.translate(alert_msg) if alert_msg else None
+    result['alert_type'] = 'success'
+    result['is_listing'] = is_listing
+    result['source_path'] = source_path
+    result['is_excuted'] = is_excuted
+    return result
+
+
+def get_dirct_edit_entity_metadata(
+    action, request, context, api,
+    msg=None, view_name=None, **kwargs):
+    is_listing = api.params('is_listing')
+    is_listing = json.loads(is_listing) if is_listing else False
+    alert_msg = None
+    new_obj_body = None
+    redirect_url = None
+    alert_msg = msg
+    if is_listing:
+        if request.POST:
+            request.POST.clear()
+
+        request.invalidate_cache = True
+        new_obj_body = render_listing_obj(
+            request, context, get_current())
+    else:
+        redirect_url = request.resource_url(context, '@@index')
+
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': redirect_url,
+        'view_name': view_name,
+        'new_obj_body': new_obj_body
+    }
+    result['alert_msg'] = request.localizer.translate(alert_msg) if alert_msg else None
+    result['alert_type'] = 'success'
     return result
 
 
 def get_subscribtion_metadata(action, request, context, api, **kwargs):
+    alert_msg = _("Vous n'êtes plus abonné à la discussion.")
     opposit_action = 'subscribe'
     if action.node_id == 'subscribe':
+        alert_msg = _('Vous êtes maintenant abonné à la discussion.')
         opposit_action = 'unsubscribe'
 
     opposit_actions = getAllBusinessAction(
@@ -216,6 +308,8 @@ def get_subscribtion_metadata(action, request, context, api, **kwargs):
             'opposit_actionurl_update': opposit_action_inf.get(
                 'actionurl_update'),
             'opposit_actionurl_after': opposit_action_inf.get('after_url'),
+            'alert_msg': request.localizer.translate(alert_msg),
+            'alert_type': 'success'
         })
 
     return result
@@ -223,10 +317,14 @@ def get_subscribtion_metadata(action, request, context, api, **kwargs):
 
 def get_selection_metadata(action, request, context, api, **kwargs):
     opposit_action = 'select'
+    alert_msg = _('${context} ne fait maintenant plus partie de vos suivis.',
+                  mapping={'context': context.title})
     removed = True
     if action.node_id == 'select':
         removed = False
         opposit_action = 'deselect'
+        alert_msg = _('${context} fait maintenant partie de vos suivis.',
+                      mapping={'context': context.title})
 
     opposit_actions = getAllBusinessAction(
         context, request, node_id=opposit_action,
@@ -280,12 +378,26 @@ def get_selection_metadata(action, request, context, api, **kwargs):
             'opposit_actionurl_update': opposit_action_inf.get(
                 'actionurl_update'),
             'opposit_actionurl_after': opposit_action_inf.get('after_url'),
+            'alert_msg': localizer.translate(alert_msg),
+            'alert_type': 'success'
         })
 
     return result
 
 
 def get_support_metadata(action, request, context, api, **kwargs):
+    node_id = action.node_id
+    alert_msg = None
+    if node_id == 'oppose':
+        alert_msg = _('Vous êtes maintenant opposé au contenu ${context}.',
+                      mapping={'context': context.title})
+    elif node_id == 'support':
+        alert_msg = _('Vous soutenez maintenant le contenu ${context}.',
+                      mapping={'context': context.title})
+    elif node_id == 'withdraw_token':
+        alert_msg = _('Votre jeton est bien récupéré du contenu ${context}.',
+                      mapping={'context': context.title})
+
     user = get_current()
     localizer = request.localizer
     item_nb = len(getattr(user, 'supports', []))
@@ -309,10 +421,14 @@ def get_support_metadata(action, request, context, api, **kwargs):
                        'tokens': len_tokens})),
         'navbar_icon': "ion-ios7-circle-filled",
         'view_name': 'seemysupports',
-        'removed': action.node_id == 'withdraw_token'
+        'removed': action.node_id == 'withdraw_token',
+        'alert_msg': localizer.translate(alert_msg),
+        'alert_type': 'success'
     }
     return result
 
+
+#Chanels
 
 def get_comment_metadata(action, request, context, api, **kwargs):
     body = None
@@ -334,6 +450,50 @@ def get_comment_metadata(action, request, context, api, **kwargs):
         'action_icon': getattr(action, 'style_picto', ''),
         'new_body': body
     }
+    return result
+
+
+def get_edit_comment_metadata(action, request, context, api, **kwargs):
+    body = None
+    if 'view_data' in kwargs:
+        comments = [context]
+        result_view = CommentsView(context, request)
+        result_view.comments = comments
+        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+
+    result = {
+        'action': 'footer_action',
+        'view': api,
+        'new_body': body}
+    return result
+
+
+def get_remove_comment_metadata(action, request, context, api, **kwargs):
+    result = {
+        'action': 'footer_action',
+        'view': api}
+    channel = kwargs.get('channel')
+    if context:
+        comment_actions = getAllBusinessAction(
+            context, request, node_id='comment',
+            process_discriminator='Application')
+        comment_actions.extend(getAllBusinessAction(
+            context, request, node_id='discuss',
+            process_discriminator='Application'))
+        if comment_actions:
+            action = comment_actions[0]
+            actionoid = str(getattr(action, '__oid__', 'entityoid'))
+            contextoid = str(getattr(
+                context, '__oid__', 'entityoid'))
+            result.update({
+                'footer_action_id': actionoid + '-' + contextoid,
+                'action_item_nb': channel.len_comments,
+                'action_title': action.title,
+                'action_icon': getattr(action, 'style_picto', ''),
+                'alert_msg': request.localizer.translate(_('Le commentaire est maintenant supprimé.')),
+                'alert_type': 'success'
+            })
+
     return result
 
 
@@ -416,6 +576,7 @@ def get_respond_metadata(action, request, context, api, **kwargs):
     return result
 
 
+
 def get_present_metadata(action, request, context, api, **kwargs):
     body = None
     if 'view_data' in kwargs:
@@ -437,38 +598,21 @@ def get_present_metadata(action, request, context, api, **kwargs):
     return result
 
 
-def get_api_execution_metadata(action, request, context, api, **kwargs):
-    redirect_url = None
-    body = None
-    if 'view_data' in kwargs:
-        view_instance, view_result = kwargs['view_data']
-        if view_result and view_result is not nothing:
-            if isinstance(view_result, HTTPFound):
-                redirect_url = view_result.headers['location']
-            else:
-                body = view_result['coordinates'][view_instance.coordinates][0]['body']
-
-    result = {
-        'action': 'redirect_action',
-        'view': api,
-        'redirect_url': redirect_url,
-        'new_body': json.dumps(body) if body else None
-    }
-    return result
-
-
 def get_withdraw_user_metadata(action, request, context, api, **kwargs):
     source_path = api.params('source_path')
     source_context = None
     removed = False
     new_obj_body = None
     redirect_url = None
+    alert_msg = None
+    executed = False
     if source_path:
         source_path = '/'.join(source_path.split('/')[:-1])
         source_context = find_resource(request.root, source_path)
         if source_context:
             if isinstance(source_context, Organization):
                 removed = True
+                executed = True
             elif not isinstance(source_context, Person):
                 if request.POST:
                     request.POST.clear()
@@ -476,12 +620,17 @@ def get_withdraw_user_metadata(action, request, context, api, **kwargs):
                 request.invalidate_cache = True
                 new_obj_body = render_listing_obj(
                     request, context, get_current())
+                executed = True
             elif 'view_data' in kwargs:
                 view_instance, view_result = kwargs['view_data']
                 if view_result and view_result is not nothing:
                     if isinstance(view_result, HTTPFound):
                         redirect_url = view_result.headers['location']
+                        executed = True
 
+    if executed:
+        alert_msg = _("Le membre ${context} est bien retiré de l'organisation.",
+                      mapping={'context': context.title})
     result = {
         'action': 'redirect_action',
         'view': api,
@@ -489,89 +638,25 @@ def get_withdraw_user_metadata(action, request, context, api, **kwargs):
         'removed': removed,
         'view_name': 'index',
         'new_obj_body': new_obj_body,
-        'new_body': None
+        'new_body': None,
+        'alert_msg': request.localizer.translate(alert_msg) if alert_msg else None,
+        'alert_type': 'success'
     }
     return result
 
 
-def get_edit_listing_entity_metadata(action, request, context, api, view_name, **kwargs):
-    source_path = api.params('source_path')
-    redirect_url = None
-    new_obj_body = None
-    body = None
-    if 'view_data' in kwargs:
-        view_instance, view_result = kwargs['view_data']
-        if view_result and view_result is not nothing:
-            if isinstance(view_result, HTTPFound):
-                if source_path.find('/@@'+view_name) >= 0 or \
-                   source_path.find('/'+view_name) >= 0:
-                    if request.POST:
-                        request.POST.clear()
-
-                    request.invalidate_cache = True
-                    new_obj_body = render_listing_obj(
-                        request, context, get_current())
-                else:
-                    redirect_url = view_result.headers['location']
-            else:
-                body = view_result['coordinates'][view_instance.coordinates][0]['body']
-
-    result = {
-        'action': 'redirect_action',
-        'view': api,
-        'redirect_url': redirect_url,
-        'view_name': view_name,
-        'new_obj_body': new_obj_body,
-        'new_body': json.dumps(body) if body else None
-    }
-    return result
-
-
-def get_edit_invitation_metadata(action, request, context, api, **kwargs):
-    return get_edit_listing_entity_metadata(
-        action, request, context, api, 'seeinvitations', **kwargs)
-
-
-def get_remind_invitation_metadata(action, request, context, api, **kwargs):
-    view_name = 'seeinvitations'
-    source_path = api.params('source_path')
-    redirect_url = None
-    new_obj_body = None
-    if source_path.find('/@@'+view_name) >= 0 or \
-       source_path.find('/'+view_name) >= 0:
-        request.invalidate_cache = True
-        new_obj_body = render_listing_obj(
-            request, context, get_current())
-    else:
-        redirect_url = request.resource_url(context, '')
-
-    result = get_edit_listing_entity_metadata(
-        action, request, context, api, view_name, **kwargs)
-    result['redirect_url'] = redirect_url
-    result['new_obj_body'] = new_obj_body
-    return result
-
-
-def get_remind_registration_metadata(action, request, context, api, **kwargs):
-    return get_edit_listing_entity_metadata(
-        action, request, context, api, 'seeregistrations', **kwargs)
-
-
-def get_accept_registration_metadata(action, request, context, api, **kwargs):
-    return get_edit_listing_entity_metadata(
-        action, request, context, api, 'seeregistrations', **kwargs)
-
+#Invitations
 
 def get_remove_invitation_metadata(action, request, context, api, **kwargs):
     removed = False
     redirect_url = None
     view_name = 'seeinvitations'
-    source_path = api.params('source_path')
-    if source_path.find('/@@'+view_name) >= 0 or \
-       source_path.find('/'+view_name) >= 0:
+    is_listing = api.params('is_listing')
+    is_listing = json.loads(is_listing) if is_listing else False
+    if is_listing:
         removed = True
     else:
-        redirect_url = request.resource_url(request.root, '@@seeinvitations')
+        redirect_url = request.resource_url(request.root, '@@'+view_name)
 
     user = get_current()
     objects = find_entities(
@@ -591,14 +676,162 @@ def get_remove_invitation_metadata(action, request, context, api, **kwargs):
         'redirect_url': redirect_url,
         'view_title': view_title,
         'removed': removed,
-        'view_name': 'seeinvitations',
+        'view_name': view_name,
     }
+    result['alert_msg'] = request.localizer.translate(
+        _("L'invitation a bien été supprimée."))
+    result['alert_type'] = 'success'
     return result
 
+
+def get_edit_invitation_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("L'invitation a bien été modifiée."),
+        'seeinvitations', **kwargs)
+    return result
+
+
+def get_remind_invitation_metadata(action, request, context, api, **kwargs):
+    return get_dirct_edit_entity_metadata(
+        action, request, context, api,
+         _("L'invité ${context} a bien été rappelé.",
+          mapping={'context': context.first_name + ' ' + context.last_name}),
+        'seeinvitations', **kwargs)
+
+
+#Registrations
+
+def get_remind_registration_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request, context, api,
+        _("L'inscrit ${context} a bien été rappelé.",
+        mapping={'context': context.first_name + ' ' + context.last_name}),
+        'seeregistrations', **kwargs)
+
+
+def get_accept_registration_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request, context, api,
+        _("L'inscription de ${context} a bien été accepter.",
+          mapping={'context': context.first_name + ' ' + context.last_name}),
+        'seeregistrations', **kwargs)
+
+
+def get_remove_registration_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("L'inscription a bien été supprimée."),
+        'seeregistrations', **kwargs)
+    user = get_current()
+    registrations = find_entities(
+        user=user,
+        interfaces=[IPreregistration])
+    len_result = len(registrations)
+    index = str(len_result)
+    if len_result > 1:
+        index = '*'
+
+    view_title = request.localizer.translate(
+        _(REGISTRATION_CONTENTS_MESSAGES[index],
+          mapping={'nember': len_result}))
+    result['removed'] = True
+    result['view_title'] = view_title
+    return result
+
+
+#Ideas
+
+def get_archive_idea_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("L'idée a bien été archivée."),
+        **kwargs)
+    source_path = result.get('source_path')
+    view_name = 'seemycontents'
+    if result.get('is_excuted') and source_path and \
+       not (source_path.find('/@@'+view_name) >= 0 or \
+            source_path.find('/'+view_name) >= 0):
+        result['removed'] = True
+        result['force_remove'] = True
+
+    return result
+
+
+def get_publish_idea_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("L'idée a bien été publiée."),
+        **kwargs)
+
+
+def get_opinion_idea_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("L'idée a bien été examinée."),
+        **kwargs)
+
+
+def get_edit_idea_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("L'idée a bien été modifiée."),
+        **kwargs)
+
+
+def get_dirct_archive_idea_metadata(action, request, context, api, **kwargs):
+    result = get_dirct_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("L'idée a bien été archivée."),
+        **kwargs)
+    source_path = api.params('source_path')
+    view_name = 'seemycontents'
+    if source_path and \
+       not (source_path.find('/@@'+view_name) >= 0 or \
+            source_path.find('/'+view_name) >= 0):
+        result['removed'] = True
+        result['force_remove'] = True
+
+    return result
+
+
+def get_dirct_recuperate_idea_metadata(action, request, context, api, **kwargs):
+    return get_dirct_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("L'idée a bien été récupérée."),
+        **kwargs)
+
+
+def get_dirct_edit_idea_metadata(action, request, context, api, **kwargs):
+    return get_dirct_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("L'idée a bien été modifiée."),
+        **kwargs)
+
+
+def get_remove_idea_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("L'idée a bien été supprimée."),
+        **kwargs)
+    result['removed'] = True
+    result['force_remove'] = True
+    return result
+
+
+#Organizations
 
 def get_user_edit_organization_metadata(action, request, context, api, **kwargs):
     source_path = api.params('source_path')
     source_context = None
+    alert_msg = None
     removed = False
     new_obj_body = None
     redirect_url = None
@@ -607,6 +840,13 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
         view_instance, view_result = kwargs['view_data']
         if view_result and view_result is not nothing:
             if isinstance(view_result, HTTPFound):
+                alert_msg = _(
+                    "Les données associées à l'organisation "
+                    "de l'utilisateur ${context} ont bien été"
+                    " modifiées.",
+                    mapping={
+                        'context': context.first_name + ' ' + \
+                                   context.last_name})
                 if source_path:
                     source_path = '/'.join(source_path.split('/')[:-1])
                     source_context = find_resource(request.root, source_path)
@@ -614,6 +854,12 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
                         if isinstance(source_context, Organization) and\
                            context.organization is not source_context:
                             removed = True
+                            alert_msg = _(
+                                "L'utilisateur ${context} a bien"
+                                " changé d'organisation.",
+                                mapping={
+                                    'context': context.first_name + \
+                                               ' ' + context.last_name})
                         elif not isinstance(source_context, Person):
                             if request.POST:
                                 request.POST.clear()
@@ -635,89 +881,94 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
         'new_obj_body': new_obj_body,
         'new_body': json.dumps(body) if body else None
     }
+    result['alert_msg'] = request.localizer.translate(alert_msg) if alert_msg else None
+    result['alert_type'] = 'success'
     return result
 
 
-def get_edit_comment_metadata(action, request, context, api, **kwargs):
-    body = None
-    if 'view_data' in kwargs:
-        comments = [context]
-        result_view = CommentsView(context, request)
-        result_view.comments = comments
-        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+def get_edit_organization_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Les données de l'organisation"" ont été mis à jour."),
+        **kwargs)
 
-    result = {
-        'action': 'footer_action',
-        'view': api,
-        'new_body': body}
+
+def get_remove_organization_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("L'organisation a bien été supprimée."),
+        'seeorganizations', **kwargs)
+    user = get_current()
+    registrations = find_entities(
+        user=user,
+        interfaces=[IOrganization])
+    len_result = len(registrations)
+    index = str(len_result)
+    if len_result > 1:
+        index = '*'
+
+    view_title = request.localizer.translate(
+        _(ORGANIZATION_CONTENTS_MESSAGES[index],
+          mapping={'nember': len_result}))
+    result['removed'] = True
+    result['view_title'] = view_title
     return result
 
 
-def get_remove_comment_metadata(action, request, context, api, **kwargs):
-    result = {
-        'action': 'footer_action',
-        'view': api}
-    channel = kwargs.get('channel')
-    if context:
-        comment_actions = getAllBusinessAction(
-            context, request, node_id='comment',
-            process_discriminator='Application')
-        comment_actions.extend(getAllBusinessAction(
-            context, request, node_id='discuss',
-            process_discriminator='Application'))
-        if comment_actions:
-            action = comment_actions[0]
-            actionoid = str(getattr(action, '__oid__', 'entityoid'))
-            contextoid = str(getattr(
-                context, '__oid__', 'entityoid'))
-            result.update({
-                'footer_action_id': actionoid + '-' + contextoid,
-                'action_item_nb': channel.len_comments,
-                'action_title': action.title,
-                'action_icon': getattr(action, 'style_picto', ''),
-            })
-
-    return result
+def get_assigne_roles_user_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le rôle de l'utilisateur a bien été modifié."),
+        **kwargs)
 
 
 METADATA_GETTERS = {
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
-    'novaideoviewmanager.contact': get_api_execution_metadata,
 
-    'newslettermanagement.subscribe': get_api_execution_metadata,
+    'novaideoviewmanager.contact': get_default_action_metadata,
+
+    'newslettermanagement.subscribe': get_default_action_metadata,
 
     'channelmanagement.subscribe': get_subscribtion_metadata,
     'channelmanagement.unsubscribe': get_subscribtion_metadata,
 
-    'ideamanagement.creat': get_api_execution_metadata,
-    'ideamanagement.duplicate': get_api_execution_metadata,
-    'ideamanagement.edit': get_api_execution_metadata,
-    'ideamanagement.archive': get_api_execution_metadata,
-    'ideamanagement.moderationarchive': get_api_execution_metadata,
-
+    'ideamanagement.creat': get_default_action_metadata,
+    'ideamanagement.delidea': get_remove_idea_metadata,
+    'ideamanagement.duplicate': get_default_action_metadata,
+    'ideamanagement.edit': get_edit_idea_metadata,
+    'ideamanagement.archive': get_archive_idea_metadata,
+    'ideamanagement.moderationarchive': get_archive_idea_metadata,
+    'ideamanagement.abandon': get_dirct_archive_idea_metadata,
+    'ideamanagement.recuperate': get_dirct_recuperate_idea_metadata,
+    'ideamanagement.publish': get_publish_idea_metadata,
+    'ideamanagement.publish_moderation': get_publish_idea_metadata,
+    'ideamanagement.makeitsopinion': get_opinion_idea_metadata,
     'ideamanagement.support': get_support_metadata,
     'ideamanagement.oppose': get_support_metadata,
     'ideamanagement.withdraw_token': get_support_metadata,
+    'ideamanagement.comment': get_comment_metadata,
+    'ideamanagement.present': get_present_metadata,
 
     'proposalmanagement.support': get_support_metadata,
     'proposalmanagement.oppose': get_support_metadata,
     'proposalmanagement.withdraw_token': get_support_metadata,
-
     'proposalmanagement.comment': get_comment_metadata,
-    'ideamanagement.comment': get_comment_metadata,
+    'proposalmanagement.present': get_present_metadata,
+
     'amendmentmanagement.comment': get_comment_metadata,
+    'amendmentmanagement.present': get_present_metadata,
 
     'usermanagement.discuss': get_discuss_metadata,
     'usermanagement.general_discuss': get_general_discuss_metadata,
+    'usermanagement.assign_roles': get_assigne_roles_user_metadata,
 
     'commentmanagement.respond': get_respond_metadata,
     'commentmanagement.remove': get_remove_comment_metadata,
     'commentmanagement.edit': get_edit_comment_metadata,
 
-    'proposalmanagement.present': get_present_metadata,
-    'ideamanagement.present': get_present_metadata,
-    'amendmentmanagement.present': get_present_metadata,
     'registrationmanagement.remove': get_remove_registration_metadata,
     'registrationmanagement.refuse': get_remove_registration_metadata,
     'registrationmanagement.accept': get_accept_registration_metadata,
@@ -728,7 +979,11 @@ METADATA_GETTERS = {
     'invitationmanagement.reinvite': get_remind_invitation_metadata,
     'invitationmanagement.remind': get_remind_invitation_metadata,
 
+    'organizationmanagement.edit': get_edit_organization_metadata,
+    'organizationmanagement.remove': get_remove_organization_metadata,
     'organizationmanagement.withdraw_user': get_withdraw_user_metadata,
+    'organizationmanagement.add_members': get_edit_organization_metadata,
+    'organizationmanagement.remove_members': get_edit_organization_metadata,
     'organizationmanagement.user_edit_organization': get_user_edit_organization_metadata,
 }
 

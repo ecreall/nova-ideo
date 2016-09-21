@@ -270,6 +270,7 @@ def assignroles_state_validation(process, context):
 class AssignRoles(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'text-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-tower'
     style_order = 2
     title = _('Assign roles')

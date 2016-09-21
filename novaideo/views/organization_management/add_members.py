@@ -45,5 +45,13 @@ class AddMembersView(FormView):
     formid = 'formaddmembers'
     name = 'addmembers'
 
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': AddMembers.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form')
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({AddMembers: AddMembersView})
