@@ -993,11 +993,8 @@ def person_ideas_counter(action, request, context, api, **kwargs):
 
 
 def home_proposals_counter(action, request, context, api, **kwargs):
-    user = kwargs.get('user', None)
-    result = {
-        'home-proposals-counter.title': request.localizer.translate(_('My participations')),
-        }
-    return result
+    #TODO
+    return {}
 
 
 def home_ideas_counter(action, request, context, api, **kwargs):
@@ -1091,6 +1088,3 @@ COUNTERS_COMPONENTS = {
    'home-ideas-counter': home_ideas_counter,
    'novideo-contents-ideas': novideo_contents_ideas
 }
-
-
-

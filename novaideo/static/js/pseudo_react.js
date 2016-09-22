@@ -5,7 +5,6 @@ function nav_bar_component(data){
 			return $(this)
 		}
 	})
-	
 	$.each(components_to_update, function(index){
 		var original_components = $(this)
 		var component_id = original_components.attr('id')
@@ -73,6 +72,7 @@ function novaideo_content_nb_component(data){
 		}
 	})
 }
+
 
 function tab_component_component(data){
 	var components = $('[data-component_type="tab_component"]')
