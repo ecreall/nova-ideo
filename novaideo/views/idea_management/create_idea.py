@@ -10,6 +10,7 @@ import deform
 from pyramid.view import view_config
 from substanced.util import get_oid
 from pyramid import renderers
+from pyramid.httpexceptions import HTTPFound
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import get_obj
@@ -19,16 +20,12 @@ from pontus.form import FormView
 from pontus.schema import select
 from pontus.view import BasicView
 
-from novaideo.utilities.util import (
-    generate_listing_menu, ObjectRemovedException,
-    DEFAUL_LISTING_ACTIONS_TEMPLATE, DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
-    DEFAUL_WG_LISTING_ACTIONS_TEMPLATE)
+from novaideo.utilities.util import render_listing_obj
 from novaideo.content.processes.idea_management.behaviors import (
     CreateIdea, CrateAndPublish, CrateAndPublishAsProposal)
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
-from novaideo.content.processes import get_states_mapping
 
 
 @view_config(
@@ -72,59 +69,45 @@ class CreateIdeaView_Json(BasicView):
     idea_template = 'novaideo:views/proposal_management/templates/idea_data.pt'
     behaviors = [CreateIdea, CrateAndPublishAsProposal, CrateAndPublish]
 
-    def _render_obj(self, obj, user):
-        try:
-            navbars = generate_listing_menu(
-                self.request, obj,
-                template=DEFAUL_LISTING_ACTIONS_TEMPLATE,
-                footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
-                wg_template=DEFAUL_WG_LISTING_ACTIONS_TEMPLATE
-                )
-        except ObjectRemovedException:
-            return None
-
-        render_dict = {'object': obj,
-                       'current_user': user,
-                       'menu_body': navbars['menu_body'],
-                       'footer_body': navbars['footer_body'],
-                       'footer_actions_body': navbars['footer_actions_body'],
-                       'wg_body': navbars['wg_body'],
-                       'state': get_states_mapping(user, obj,
-                               getattr(obj, 'state_or_none', [None])[0])}
-        return self.content(args=render_dict,
-                            template=obj.templates['default'])['body']
-
     def creat_home_idea(self):
         try:
             view_name = self.params('view_name')
             view_name = view_name if view_name else ''
             redirect = not view_name.endswith('seemycontents') #TODO
-            button = 'Create_an_idea' if 'Create_an_idea' in self.request.POST \
-                else ('Create_and_publish' if 'Create_and_publish' in self.request.POST
-                      else 'Create_a_working_group')
+            for action_id in self.behaviors_instances:
+                if action_id in self.request.POST:
+                    button = action_id
+                    break
+
             add_idea_action = self.behaviors_instances[button]
             add_idea_view = DEFAULTMAPPING_ACTIONS_VIEWS[add_idea_action.__class__]
             add_idea_view_instance = add_idea_view(
                 self.context, self.request, behaviors=[add_idea_action])
             add_idea_view_instance.viewid = 'formcreateideahome'
             add_idea_view_result = add_idea_view_instance()
+            redirect_url = self.request.resource_url(
+                self.request.root, '@@seemycontents')
+            if isinstance(add_idea_view_result, HTTPFound):
+                redirect_url = add_idea_view_result.headers['location']
+
             if add_idea_view_instance.finished_successfully:
                 user = get_current()
                 body = ''
                 if not redirect:
                     if button == 'Create_a_working_group':
                         proposal = user.working_groups[-1].proposal
-                        body = self._render_obj(proposal, user)
+                        body = render_listing_obj(
+                            self.request, proposal, user)
 
                     idea = user.ideas[-1]
-                    body = body + self._render_obj(idea, user)
+                    body = body + render_listing_obj(
+                        self.request, idea, user)
 
                 return {'state': True,
                         'body': body,
                         'new_title': '', #self._get_new_title(user)
                         'redirect': redirect,
-                        'redirect_url': self.request.resource_url(
-                            self.request.root, '@@seemycontents')}
+                        'redirect_url': redirect_url}
 
         except Exception:
             return {'state': False}

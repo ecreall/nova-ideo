@@ -509,28 +509,6 @@ class LateralMenu(object):
                               if c not in resources['js_links']]
         update_resources(self.request, result)
         return result
-        # actions = []
-        # for action_class, data in self.actions.items():
-        #     item_actions = getAllBusinessAction(
-        #         root,
-        #         self.request,
-        #         process_id=data[0],
-        #         node_id=data[1])
-        #     action = None
-        #     if item_actions:
-        #         action = item_actions[0]
-
-        #     actions.append({'title': action_class.title,
-        #                     'action': action,
-        #                     'unavailable_link': getattr(
-        #                         action_class, 'unavailable_link', None),
-        #                     'order': getattr(action_class, 'style_order', 100),
-        #                     'style_btn': data[2],
-        #                     'style_picto': getattr(action_class,
-        #                                            'style_picto', '')})
-
-        # actions = sorted(actions, key=lambda e: e['order'])
-        # return {'items': actions}
 
 
 def group_actions(actions):

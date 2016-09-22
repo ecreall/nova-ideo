@@ -8,9 +8,9 @@
         <span tal:replace="layout.to_localized_time(object.modified_at)"/>
     </h4>
     <span>
-      <span tal:condition="support_kind == 'support'">Une personne a soutenu votre contribution</span> 
-      <span tal:condition="support_kind == 'oppose'">Une personne s'est opposé à votre contribution</span> 
-      <span tal:condition="support_kind == 'withdraw'">Une personne a retiré son jeton de votre contribution</span> 
+      <span tal:condition="support_kind == 'support'">Une personne a soutenu cette contribution</span> 
+      <span tal:condition="support_kind == 'oppose'">Une personne s'est opposé à cette contribution</span> 
+      <span tal:condition="support_kind == 'withdraw'">Une personne a retiré son jeton de cette contribution</span> 
        <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
      </span>
   </div>

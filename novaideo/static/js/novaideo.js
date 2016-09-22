@@ -530,9 +530,11 @@ $(document).on('click', '.proposal-support .token:not(.disabled)', function(){
    var support_nb = $(parent.find('.support-nb').first())
    var opposit_support_nb = $(opposit.find('.support-nb').first())
    var item = $($this.parents('.search-item').first())
+   var url_attr = get_action_metadata($this)
+   delete url_attr.search_item;
    if(action_url){
      loading_progress()
-     $.getJSON(action_url,{}, function(data) {
+     $.getJSON(action_url,url_attr, function(data) {
           finish_progress()
           if(data['state']){
              if (data.title){

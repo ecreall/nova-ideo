@@ -2,16 +2,16 @@
     <div class="novaideo-contents-list">
             <ul>
                 <div tal:omit-tag="" tal:condition="nb_person > 0">
-                   <li tal:condition="nb_person == 1"><strong>${nb_person}</strong> <span i18n:translate="">Member</span></li>
-                   <li tal:condition="nb_person > 1"><strong>${nb_person}</strong> <span i18n:translate="">Members</span></li>
+                   <li class="counter" id="novideo-contents-members" data-component_type="novaideo_content_nb" tal:condition="nb_person == 1"><strong>${nb_person}</strong> <span i18n:translate="">Member</span></li>
+                   <li class="counter" id="novideo-contents-members" data-component_type="novaideo_content_nb" tal:condition="nb_person > 1"><strong>${nb_person}</strong> <span i18n:translate="">Members</span></li>
                 </div>    
                 <div tal:omit-tag="" tal:condition="nb_idea > 0">
-                   <li tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published idea</span></li>
-                   <li tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published ideas</span></li>
+                   <li class="counter" id="novideo-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published idea</span></li>
+                   <li class="counter" id="novideo-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published ideas</span></li>
                 </div> 
                 <div tal:omit-tag="" tal:condition="nb_proposal > 0">
-                   <li tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposal</span></li>
-                   <li tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposals</span></li>
+                   <li class="counter" id="counter-novideo-contents-proposals" data-component_type="novaideo_content_nb" tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposal</span></li>
+                   <li class="counter" id="novideo-contents-proposals" data-component_type="novaideo_content_nb" tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposals</span></li>
                 </div>                    
             </ul>
     </div>

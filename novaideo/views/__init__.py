@@ -31,7 +31,8 @@ from novaideo.content.interface import (
     ICorrelableEntity,
     Iidea)
 from novaideo.utilities.util import (
-    render_small_listing_objs, extract_keywords)
+    render_small_listing_objs, extract_keywords,
+    render_listing_obj)
 from novaideo.utilities.pseudo_react import (
     get_components_data, get_all_updated_data)
 from novaideo.views.filter import find_entities, FILTER_SOURCES

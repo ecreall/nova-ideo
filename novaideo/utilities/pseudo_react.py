@@ -14,7 +14,7 @@ from daceui.interfaces import IDaceUIAPI
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import (
     get_current)
-from dace.util import getAllBusinessAction
+from dace.util import getAllBusinessAction, find_catalog
 
 from novaideo import _, nothing
 from novaideo.views.idea_management.comment_idea import (
@@ -28,6 +28,8 @@ from novaideo.views.novaideo_view_manager.see_my_supports import (
     CONTENTS_MESSAGES)
 from novaideo.views.novaideo_view_manager.see_my_selections import (
     CONTENTS_MESSAGES as SELECT_CONTENTS_MESSAGES)
+from novaideo.views.novaideo_view_manager.see_my_contents import (
+    CONTENTS_MESSAGES as MY_CONTENTS_MESSAGES)
 from novaideo.views.user_management.see_registrations import (
     CONTENTS_MESSAGES as REGISTRATION_CONTENTS_MESSAGES)
 from novaideo.views.invitation_management.see_invitations import (
@@ -38,122 +40,50 @@ from novaideo.utilities.util import (
     update_all_ajax_action, render_listing_obj)
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import (
-    IPreregistration, IInvitation, IOrganization)
+    IPreregistration, IInvitation, IOrganization,
+    Iidea)
 from novaideo.content.organization import Organization
 from novaideo.content.person import Person
+from novaideo.content.proposal import Proposal
+from novaideo.core import can_access
 
 
-def get_navbar_updated_data(view, **kwargs):
-    result = {}
-    action_id = kwargs.get('action_id', None)
-    if action_id:
-        localizer = view.request.localizer
-        result['action_id'] = action_id
-        result['components'] = [kwargs.get('navbr_action_id')]
-        result['navbar_item_nb'] = kwargs.get('navbar_item_nb', 0)
-        result['navbar_all_item_nb'] = kwargs.get('navbar_all_item_nb', None)
-        result['navbar_title'] = localizer.translate(kwargs.get('navbar_title'))
-        result['view_url'] = kwargs.get('view_url')
-        result['view_title'] = kwargs.get('view_title')
-        result['navbar_icon'] = kwargs.get('navbar_icon')
-        result['view_name'] = kwargs.get('view_name')
-        result['removed'] = kwargs.get('removed')
-        result['force_remove'] = kwargs.get('force_remove', False)
-        result['alert_msg'] = kwargs.get('alert_msg', None)
-        result['alert_type'] = kwargs.get('alert_type', None)
+def get_all_updated_data(action, request, context, api, **kwargs):
+    metadatagetter = METADATA_GETTERS.get(
+        action.process_id + '.' + action.node_id, None)
+    if metadatagetter:
+        source_path = api.params('source_path')
+        source_context = None
+        if source_path:
+            kwargs['source_path'] = source_path
+            source_path = '/'.join(source_path.split('/')[:-1])
+            try:
+                source_context = find_resource(request.root, source_path)
+                kwargs['source_context'] = source_context
+            except Exception:
+                kwargs['source_context'] = context
 
-    return result
+        kwargs['user'] = get_current()
+        counters = api.params('counters')
+        if counters:
+            counters = json.loads(counters)
 
+        result = metadatagetter(action, request, context, api, **kwargs)
+        counters_to_update = [c for c in result.get('counters-to-update', [])
+                              if c in counters]
+        for count_op_id in counters_to_update:
+            count_op = COUNTERS_COMPONENTS.get(count_op_id, None)
+            if count_op:
+                result.update(count_op(action, request, context, api, **kwargs))
 
-def get_footer_action_updated_data(view, **kwargs):
-    result = {}
-    action_id = kwargs.get('action_id', None)
-    if action_id:
-        localizer = view.request.localizer
-        result['action_id'] = action_id
-        result['components'] = [kwargs.get('footer_action_id')]
-        result['action_item_nb'] = kwargs.get('action_item_nb')
-        result['action_title'] = localizer.translate(kwargs.get('action_title'))
-        result['action_icon'] = kwargs.get('action_icon')
-        result['action_view_title'] = localizer.translate(
-            kwargs.get('action_view_title', result['action_title']))
-        result['has_opposit'] = kwargs.get('has_opposit', False)
-        result['new_component_id'] = kwargs.get('new_component_id', None)
-        result['opposit_action_id'] = kwargs.get('opposit_action_id', None)
-        result['opposit_actionurl_update'] = kwargs.get(
-            'opposit_actionurl_update', None)
-        result['opposit_actionurl_after'] = kwargs.get(
-            'opposit_actionurl_after', None)
-        result['alert_msg'] = kwargs.get('alert_msg', None)
-        result['alert_type'] = kwargs.get('alert_type', None)
+        return result
 
-    return result
-
-
-def get_dropdown_action_updated_data(view, **kwargs):
-    result = {}
-    action_id = kwargs.get('action_id', None)
-    if action_id:
-        localizer = view.request.localizer
-        result['action_id'] = action_id
-        result['components'] = [kwargs.get('dropdown_action_id')]
-        result['action_title'] = localizer.translate(kwargs.get('action_title'))
-        result['action_icon'] = kwargs.get('action_icon')
-        result['new_components'] = [kwargs.get('new_channel')]
-        result['action_view_title'] = localizer.translate(
-            kwargs.get('action_view_title', result['action_title']))
-        result['has_opposit'] = kwargs.get('has_opposit', False)
-        result['new_component_id'] = kwargs.get('new_component_id', None)
-        result['opposit_action_id'] = kwargs.get('opposit_action_id', None)
-        result['opposit_actionurl_update'] = kwargs.get(
-            'opposit_actionurl_update', None)
-        result['opposit_actionurl_after'] = kwargs.get(
-            'opposit_actionurl_after', None)
-        result['alert_msg'] = kwargs.get('alert_msg', None)
-        result['alert_type'] = kwargs.get('alert_type', None)
-
-    return result
-
-
-def get_redirect_updated_data(view, **kwargs):
-    result = {}
-    action_id = kwargs.get('action_id', None)
-    if action_id:
-        result['action_id'] = action_id
-        result['redirect_url'] = kwargs.get('redirect_url', None)
-        result['new_body'] = kwargs.get('new_body')
-        result['view_title'] = kwargs.get('view_title', None)
-        result['view_name'] = kwargs.get('view_name', None)
-        result['new_obj_body'] = kwargs.get('new_obj_body', None)
-        result['removed'] = kwargs.get('removed', False)
-        result['force_remove'] = kwargs.get('force_remove', False)
-        result['alert_msg'] = kwargs.get('alert_msg', None)
-        result['alert_type'] = kwargs.get('alert_type', None)
-
-    return result
-
-
-DATA_GETTERS = {
-    'support_action': [get_navbar_updated_data],
-    'footer_action': [
-        get_footer_action_updated_data,
-        get_navbar_updated_data,
-        get_redirect_updated_data],
-    'redirect_action': [get_redirect_updated_data],
-    'dropdown_action': [get_dropdown_action_updated_data]
-}
+    return {'action': None, 'view': api}
 
 
 def get_components_data(action, view, **kwargs):
-    getters = DATA_GETTERS.get(action, [])
     kwargs['action_id'] = action
-    result = {'components': []}
-    for getter in getters:
-        res = getter(view, **kwargs)
-        result['components'].extend(res.pop('components', []))
-        result.update(res)
-
-    return result
+    return kwargs
 
 
 def get_default_action_metadata(action, request, context, api, **kwargs):
@@ -180,7 +110,6 @@ def get_edit_entity_metadata(
     action, request, context, api,
     msg=None, view_name=None, **kwargs):
     is_listing = api.params('is_listing')
-    source_path = api.params('source_path')
     is_listing = json.loads(is_listing) if is_listing else False
     alert_msg = None
     new_obj_body = None
@@ -199,7 +128,7 @@ def get_edit_entity_metadata(
 
                     request.invalidate_cache = True
                     new_obj_body = render_listing_obj(
-                        request, context, get_current())
+                        request, context, kwargs.get('user', None))
                 else:
                     redirect_url = view_result.headers['location']
             else:
@@ -216,7 +145,6 @@ def get_edit_entity_metadata(
     result['alert_msg'] = request.localizer.translate(alert_msg) if alert_msg else None
     result['alert_type'] = 'success'
     result['is_listing'] = is_listing
-    result['source_path'] = source_path
     result['is_excuted'] = is_excuted
     return result
 
@@ -236,7 +164,7 @@ def get_dirct_edit_entity_metadata(
 
         request.invalidate_cache = True
         new_obj_body = render_listing_obj(
-            request, context, get_current())
+            request, context, kwargs.get('user', None))
     else:
         redirect_url = request.resource_url(context, '@@index')
 
@@ -267,7 +195,7 @@ def get_subscribtion_metadata(action, request, context, api, **kwargs):
         'view': api,
     }
     subject = context.subject
-    user = get_current()
+    user = kwargs.get('user', None)
     new_channel = ''
     if subject:
         actions_call, action_resources = update_all_ajax_action(
@@ -297,11 +225,11 @@ def get_subscribtion_metadata(action, request, context, api, **kwargs):
         action_view_title = action_view.title
 
         result.update({
-            'dropdown_action_id': actionoid + '-' + contextoid,
-            'action_title': opposit_action.title,
+            'components': [actionoid + '-' + contextoid],
+            'action_title': request.localizer.translate(opposit_action.title),
             'action_icon': getattr(opposit_action, 'style_picto', ''),
-            'action_view_title': action_view_title,
-            'new_channel': new_channel,
+            'action_view_title': request.localizer.translate(action_view_title),
+            'new_components': [new_channel],
             'has_opposit': True,
             'new_component_id': oppositactionoid + '-' + contextoid,
             'opposit_action_id': opposit_action_inf.get('action_id'),
@@ -334,7 +262,6 @@ def get_selection_metadata(action, request, context, api, **kwargs):
         'view': api,
     }
     if opposit_actions:
-        user = get_current()
         localizer = request.localizer
         opposit_action = opposit_actions[0]
         dace_ui_api = get_current_registry().getUtility(
@@ -347,30 +274,14 @@ def get_selection_metadata(action, request, context, api, **kwargs):
         contextoid = str(getattr(
             context, '__oid__', 'entityoid'))
         len_selection = getattr(context, 'len_selections', 0)
-        len_all_selection = len(getattr(user, 'selections', 0))
-        index = str(len_all_selection)
-        if len_all_selection > 1:
-            index = '*'
-
-        view_title = localizer.translate(
-            _(SELECT_CONTENTS_MESSAGES[index],
-              mapping={'nember': len_all_selection}))
         action_view = DEFAULTMAPPING_ACTIONS_VIEWS[opposit_action.__class__]
         action_view_title = action_view.title
         result.update({
-            'footer_action_id': actionoid + '-' + contextoid,
-            'navbr_action_id': 'myselections',
+            'components': [actionoid + '-' + contextoid],
             'action_item_nb': len_selection,
-            'navbar_item_nb': len_all_selection,
-            'action_title': opposit_action.title,
-            'navbar_title': _('My following'),
-            'action_view_title': action_view_title,
-            'view_title': view_title,
+            'action_title': localizer.translate(opposit_action.title),
+            'action_view_title': localizer.translate(action_view_title),
             'action_icon': getattr(opposit_action, 'style_picto', ''),
-            'navbar_icon': 'glyphicon glyphicon-star-empty',
-            'view_url': request.resource_url(
-                request.root, 'seemyselections'),
-            'view_name': 'seemyselections',
             'removed': removed,
             'has_opposit': True,
             'new_component_id': oppositactionoid + '-' + contextoid,
@@ -381,6 +292,8 @@ def get_selection_metadata(action, request, context, api, **kwargs):
             'alert_msg': localizer.translate(alert_msg),
             'alert_type': 'success'
         })
+
+    result['counters-to-update'] = ['component-navbar-myselections']
 
     return result
 
@@ -398,33 +311,16 @@ def get_support_metadata(action, request, context, api, **kwargs):
         alert_msg = _('Votre jeton est bien récupéré du contenu ${context}.',
                       mapping={'context': context.title})
 
-    user = get_current()
     localizer = request.localizer
-    item_nb = len(getattr(user, 'supports', []))
-    len_tokens = len(getattr(user, 'tokens', []))
-    index = str(item_nb)
-    if item_nb > 1:
-        index = '*'
-
     result = {
         'action': 'support_action',
         'view': api,
-        'navbar_item_nb': item_nb,
-        'navbar_all_item_nb': len(getattr(user, 'tokens_ref', [])),
-        'navbr_action_id': 'mysupports',
-        'navbar_title': localizer.translate(_("My supports")),
-        'view_url': request.resource_url(
-            request.root, 'seemysupports'),
-        'view_title': localizer.translate(
-            _(CONTENTS_MESSAGES[index],
-              mapping={'nember': item_nb,
-                       'tokens': len_tokens})),
-        'navbar_icon': "ion-ios7-circle-filled",
-        'view_name': 'seemysupports',
         'removed': action.node_id == 'withdraw_token',
         'alert_msg': localizer.translate(alert_msg),
         'alert_type': 'success'
     }
+
+    result['counters-to-update'] = ['component-navbar-mysupports']
     return result
 
 
@@ -444,9 +340,9 @@ def get_comment_metadata(action, request, context, api, **kwargs):
     result = {
         'action': 'footer_action',
         'view': api,
-        'footer_action_id': actionoid + '-' + contextoid,
+        'components': [actionoid + '-' + contextoid],
         'action_item_nb': context.channel.len_comments,
-        'action_title': action.title,
+        'action_title': request.localizer.translate(action.title),
         'action_icon': getattr(action, 'style_picto', ''),
         'new_body': body
     }
@@ -486,11 +382,12 @@ def get_remove_comment_metadata(action, request, context, api, **kwargs):
             contextoid = str(getattr(
                 context, '__oid__', 'entityoid'))
             result.update({
-                'footer_action_id': actionoid + '-' + contextoid,
+                'components': [actionoid + '-' + contextoid],
                 'action_item_nb': channel.len_comments,
-                'action_title': action.title,
+                'action_title': request.localizer.translate(action.title),
                 'action_icon': getattr(action, 'style_picto', ''),
-                'alert_msg': request.localizer.translate(_('Le commentaire est maintenant supprimé.')),
+                'alert_msg': request.localizer.translate(
+                    _('Le commentaire est maintenant supprimé.')),
                 'alert_type': 'success'
             })
 
@@ -515,8 +412,9 @@ def get_general_discuss_metadata(action, request, context, api, **kwargs):
 
 def get_discuss_metadata(action, request, context, api, **kwargs):
     body = None
+    channel = None
     if 'view_data' in kwargs:
-        user = get_current()
+        user = kwargs.get('user', None)
         channel = context.get_channel(user)
         comments = [channel.comments[-1]]
         result_view = DiscussCommentsView(context, request)
@@ -526,13 +424,15 @@ def get_discuss_metadata(action, request, context, api, **kwargs):
     actionoid = str(getattr(action, '__oid__', 'entityoid'))
     contextoid = str(getattr(
         context, '__oid__', 'entityoid'))
-    channel = kwargs.get('channel', None)
+    if not channel:
+        channel = kwargs.get('channel', None)
+
     result = {
         'action': 'footer_action',
         'view': api,
-        'footer_action_id': actionoid + '-' + contextoid,
+        'components': [actionoid + '-' + contextoid],
         'action_item_nb': getattr(channel, 'len_comments', 0),
-        'action_title': action.title,
+        'action_title': request.localizer.translate(action.title),
         'action_icon': getattr(action, 'style_picto', ''),
         'new_body': body
     }
@@ -567,14 +467,13 @@ def get_respond_metadata(action, request, context, api, **kwargs):
             contextoid = str(getattr(
                 subject, '__oid__', 'entityoid'))
             result.update({
-                'footer_action_id': actionoid + '-' + contextoid,
+                'components': [actionoid + '-' + contextoid],
                 'action_item_nb': channel.len_comments,
-                'action_title': action.title,
+                'action_title': request.localizer.translate(action.title),
                 'action_icon': getattr(action, 'style_picto', '')
             })
 
     return result
-
 
 
 def get_present_metadata(action, request, context, api, **kwargs):
@@ -589,9 +488,9 @@ def get_present_metadata(action, request, context, api, **kwargs):
     result = {
         'action': 'footer_action',
         'view': api,
-        'footer_action_id': actionoid + '-' + contextoid,
+        'components': [actionoid + '-' + contextoid],
         'action_item_nb': context.len_contacted,
-        'action_title': action.title,
+        'action_title': request.localizer.translate(action.title),
         'action_icon': getattr(action, 'style_picto', ''),
         'new_body': body
     }
@@ -599,34 +498,30 @@ def get_present_metadata(action, request, context, api, **kwargs):
 
 
 def get_withdraw_user_metadata(action, request, context, api, **kwargs):
-    source_path = api.params('source_path')
-    source_context = None
+    source_context = kwargs.get('source_context', None)
     removed = False
     new_obj_body = None
     redirect_url = None
     alert_msg = None
     executed = False
-    if source_path:
-        source_path = '/'.join(source_path.split('/')[:-1])
-        source_context = find_resource(request.root, source_path)
-        if source_context:
-            if isinstance(source_context, Organization):
-                removed = True
-                executed = True
-            elif not isinstance(source_context, Person):
-                if request.POST:
-                    request.POST.clear()
+    if source_context:
+        if isinstance(source_context, Organization):
+            removed = True
+            executed = True
+        elif not isinstance(source_context, Person):
+            if request.POST:
+                request.POST.clear()
 
-                request.invalidate_cache = True
-                new_obj_body = render_listing_obj(
-                    request, context, get_current())
-                executed = True
-            elif 'view_data' in kwargs:
-                view_instance, view_result = kwargs['view_data']
-                if view_result and view_result is not nothing:
-                    if isinstance(view_result, HTTPFound):
-                        redirect_url = view_result.headers['location']
-                        executed = True
+            request.invalidate_cache = True
+            new_obj_body = render_listing_obj(
+                request, context, kwargs.get('user', None))
+            executed = True
+        elif 'view_data' in kwargs:
+            view_instance, view_result = kwargs['view_data']
+            if view_result and view_result is not nothing:
+                if isinstance(view_result, HTTPFound):
+                    redirect_url = view_result.headers['location']
+                    executed = True
 
     if executed:
         alert_msg = _("Le membre ${context} est bien retiré de l'organisation.",
@@ -658,7 +553,7 @@ def get_remove_invitation_metadata(action, request, context, api, **kwargs):
     else:
         redirect_url = request.resource_url(request.root, '@@'+view_name)
 
-    user = get_current()
+    user = kwargs.get('user', None)
     objects = find_entities(
         user=user,
         interfaces=[IInvitation])
@@ -723,7 +618,7 @@ def get_remove_registration_metadata(action, request, context, api, **kwargs):
         action, request, context, api,
         _("L'inscription a bien été supprimée."),
         'seeregistrations', **kwargs)
-    user = get_current()
+    user = kwargs.get('user', None)
     registrations = find_entities(
         user=user,
         interfaces=[IPreregistration])
@@ -748,13 +643,18 @@ def get_archive_idea_metadata(action, request, context, api, **kwargs):
         context, api,
         _("L'idée a bien été archivée."),
         **kwargs)
-    source_path = result.get('source_path')
+    source_path = kwargs.get('source_path', None)
     view_name = 'seemycontents'
     if result.get('is_excuted') and source_path and \
        not (source_path.find('/@@'+view_name) >= 0 or \
             source_path.find('/'+view_name) >= 0):
         result['removed'] = True
         result['force_remove'] = True
+        result['counters-to-update'] = [
+            'home-ideas-counter',
+            'person-ideas-counter',
+            'novideo-contents-ideas'
+        ]
 
     return result
 
@@ -789,7 +689,7 @@ def get_dirct_archive_idea_metadata(action, request, context, api, **kwargs):
         context, api,
         _("L'idée a bien été archivée."),
         **kwargs)
-    source_path = api.params('source_path')
+    source_path = kwargs.get('source_path', None)
     view_name = 'seemycontents'
     if source_path and \
        not (source_path.find('/@@'+view_name) >= 0 or \
@@ -823,14 +723,15 @@ def get_remove_idea_metadata(action, request, context, api, **kwargs):
         **kwargs)
     result['removed'] = True
     result['force_remove'] = True
+    result['counters-to-update'] = [
+        'component-navbar-mycontents'
+        ]
     return result
 
 
 #Organizations
 
 def get_user_edit_organization_metadata(action, request, context, api, **kwargs):
-    source_path = api.params('source_path')
-    source_context = None
     alert_msg = None
     removed = False
     new_obj_body = None
@@ -847,28 +748,26 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
                     mapping={
                         'context': context.first_name + ' ' + \
                                    context.last_name})
-                if source_path:
-                    source_path = '/'.join(source_path.split('/')[:-1])
-                    source_context = find_resource(request.root, source_path)
-                    if source_context:
-                        if isinstance(source_context, Organization) and\
-                           context.organization is not source_context:
-                            removed = True
-                            alert_msg = _(
-                                "L'utilisateur ${context} a bien"
-                                " changé d'organisation.",
-                                mapping={
-                                    'context': context.first_name + \
-                                               ' ' + context.last_name})
-                        elif not isinstance(source_context, Person):
-                            if request.POST:
-                                request.POST.clear()
+                source_context = kwargs.get('source_context', None)
+                if source_context:
+                    if isinstance(source_context, Organization) and\
+                       context.organization is not source_context:
+                        removed = True
+                        alert_msg = _(
+                            "L'utilisateur ${context} a bien"
+                            " changé d'organisation.",
+                            mapping={
+                                'context': context.first_name + \
+                                           ' ' + context.last_name})
+                    elif not isinstance(source_context, Person):
+                        if request.POST:
+                            request.POST.clear()
 
-                            request.invalidate_cache = True
-                            new_obj_body = render_listing_obj(
-                                request, context, get_current())
-                        else:
-                            redirect_url = view_result.headers['location']
+                        request.invalidate_cache = True
+                        new_obj_body = render_listing_obj(
+                            request, context, kwargs.get('user', None))
+                    else:
+                        redirect_url = view_result.headers['location']
             else:
                 body = view_result['coordinates'][view_instance.coordinates][0]['body']
 
@@ -899,7 +798,7 @@ def get_remove_organization_metadata(action, request, context, api, **kwargs):
         action, request, context, api,
         _("L'organisation a bien été supprimée."),
         'seeorganizations', **kwargs)
-    user = get_current()
+    user = kwargs.get('user', None)
     registrations = find_entities(
         user=user,
         interfaces=[IOrganization])
@@ -922,6 +821,199 @@ def get_assigne_roles_user_metadata(action, request, context, api, **kwargs):
         context, api,
         _("Le rôle de l'utilisateur a bien été modifié."),
         **kwargs)
+
+
+#Counters
+
+def component_navbar_myselections(action, request, context, api, **kwargs):
+    user = kwargs.get('user', None)
+    source_path = kwargs.get('source_path', '')
+    localizer = request.localizer
+    selections = [o for o in getattr(user, 'selections', [])
+                  if 'archived' not in o.state]
+    if getattr(request, 'is_idea_box', False):
+        selections = [s for s in selections
+                      if not isinstance(s, Proposal)]
+    len_selections = len(selections)
+    result = {
+        'component-navbar-myselections.item_nb': len_selections,
+        'component-navbar-myselections.title': localizer.translate(
+            _('My following')),
+        'component-navbar-myselections.icon': 'glyphicon glyphicon-star-empty',
+        'component-navbar-myselections.url': request.resource_url(
+            request.root, 'seemyselections'),
+    }
+    view_name = 'seemyselections'
+    if source_path.find(view_name) >= 0:
+        index = str(len_selections)
+        if len_selections > 1:
+            index = '*'
+
+        view_title = localizer.translate(
+                _(SELECT_CONTENTS_MESSAGES[index],
+                  mapping={'nember': len_selections}))
+        result.update({
+            'view_title': view_title,
+            'view_name': view_name
+        })
+
+    return result
+
+
+def component_navbar_mysupports(action, request, context, api, **kwargs):
+    user = kwargs.get('user', None)
+    localizer = request.localizer
+    source_path = kwargs.get('source_path', '')
+    item_nb = len(getattr(user, 'supports', []))
+    result = {
+        'component-navbar-mysupports.item_nb': item_nb,
+        'component-navbar-mysupports.all_item_nb': len(getattr(user, 'tokens_ref', [])),
+        'component-navbar-mysupports.title': localizer.translate(_("My supports")),
+        'component-navbar-mysupports.icon': 'ion-ios7-circle-filled',
+        'component-navbar-mysupports.url': request.resource_url(
+            request.root, 'seemysupports')
+    }
+
+    view_name = 'seemysupports'
+    if source_path.find(view_name) >= 0:
+        len_tokens = len(getattr(user, 'tokens', []))
+        index = str(item_nb)
+        if item_nb > 1:
+            index = '*'
+
+        view_title = localizer.translate(
+            _(CONTENTS_MESSAGES[index],
+              mapping={'nember': item_nb,
+                       'tokens': len_tokens}))
+        result.update({
+            'view_title': view_title,
+            'view_name': view_name
+        })
+
+    return result
+
+
+def component_navbar_mycontents(action, request, context, api, **kwargs):
+    user = kwargs.get('user', None)
+    localizer = request.localizer
+    source_path = kwargs.get('source_path', '')
+    contents = [o for o in getattr(user, 'contents', [])]
+    if getattr(request, 'is_idea_box', False):
+        contents = [s for s in contents
+                    if not isinstance(s, Proposal)]
+    item_nb = len(contents)
+    result = {
+        'component-navbar-mycontents.item_nb': item_nb,
+        'component-navbar-mycontents.title': localizer.translate(_('My contents')),
+        'component-navbar-mycontents.icon': 'glyphicon glyphicon-inbox',
+        'component-navbar-mycontents.url': request.resource_url(
+            request.root, 'seemycontents')
+    }
+
+    view_name = 'seemycontents'
+    if source_path.find(view_name) >= 0:
+        index = str(item_nb)
+        if item_nb > 1:
+            index = '*'
+
+        view_title = localizer.translate(
+            _(MY_CONTENTS_MESSAGES[index],
+              mapping={'nember': item_nb}))
+        result.update({
+            'view_title': view_title,
+            'view_name': view_name
+        })
+
+    return result
+
+
+def novideo_contents_ideas(action, request, context, api, **kwargs):
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any((Iidea.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Published idea')
+    if item_nb > 1:
+        title = _('Published ideas')
+
+    result = {
+        'novideo-contents-ideas.item_nb': item_nb,
+        'novideo-contents-ideas.title': request.localizer.translate(title),
+    }
+
+    return result
+
+
+def component_navbar_myparticipations(action, request, context, api, **kwargs):
+    user = kwargs.get('user', None)
+    result = {
+        'component-navbar-myparticipations.item_nb': len(getattr(user, 'participations', [])),
+        'component-navbar-myparticipations.title': request.localizer.translate(_('My participations')),
+        'component-navbar-myparticipations.icon': 'novaideo-icon icon-wg',
+        'component-navbar-myparticipations.url': request.resource_url(
+            request.root, 'seemyparticipations')
+    }
+    return result
+
+
+def person_proposals_counter(action, request, context, api, **kwargs):
+    user = kwargs.get('user', None)
+    source_context = kwargs.get('source_context', None)
+    if source_context is user:
+        objects = list(filter(lambda o: 'archived' not in o.state,
+                         getattr(user, 'proposals', [])))
+    else:
+        objects = list(filter(lambda o: can_access(source_context, o) and
+                                   'archived' not in o.state,
+                         getattr(user, 'proposals', [])))
+    title = _('Her working groups (${nb})', mapping={'nb': len(objects)})
+    result = {
+        'person-proposals-counter.title': request.localizer.translate(title),
+    }
+    return result
+
+
+def person_ideas_counter(action, request, context, api, **kwargs):
+    user = kwargs.get('user', None)
+    source_context = kwargs.get('source_context', None)
+    if source_context is user:
+        objects = list(filter(lambda o: 'archived' not in o.state,
+                              getattr(user, 'ideas', [])))
+    else:
+        objects = list(filter(lambda o: can_access(source_context, o) and
+                                        'archived' not in o.state,
+                              getattr(user, 'ideas', [])))
+    title = _('Her ideas (${nb})', mapping={'nb': len(objects)})
+    result = {
+        'person-ideas-counter.title': request.localizer.translate(title),
+        }
+    return result
+
+
+def home_proposals_counter(action, request, context, api, **kwargs):
+    user = kwargs.get('user', None)
+    result = {
+        'home-proposals-counter.title': request.localizer.translate(_('My participations')),
+        }
+    return result
+
+
+def home_ideas_counter(action, request, context, api, **kwargs):
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any((Iidea.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Ideas (${nb})', mapping={'nb': item_nb})
+
+    result = {
+        'home-ideas-counter.title': request.localizer.translate(title),
+    }
+    return result
+
 
 
 METADATA_GETTERS = {
@@ -988,10 +1080,17 @@ METADATA_GETTERS = {
 }
 
 
-def get_all_updated_data(action, request, context, api, **kwargs):
-    metadatagetter = METADATA_GETTERS.get(
-        action.process_id + '.' + action.node_id, None)
-    if metadatagetter:
-        return metadatagetter(action, request, context, api, **kwargs)
+COUNTERS_COMPONENTS = {
+   'component-navbar-mycontents': component_navbar_mycontents,
+   'component-navbar-myparticipations': component_navbar_myparticipations,
+   'component-navbar-myselections': component_navbar_myselections,
+   'component-navbar-mysupports': component_navbar_mysupports,
+   'person-proposals-counter': person_proposals_counter,
+   'person-ideas-counter': person_ideas_counter,
+   'home-proposals-counter': home_proposals_counter,
+   'home-ideas-counter': home_ideas_counter,
+   'novideo-contents-ideas': novideo_contents_ideas
+}
 
-    return {'action': None, 'view': api}
+
+

@@ -2,9 +2,11 @@
 function get_action_metadata(action){
     var id = action.attr('id')
     search_item = $($('[id="'+id+'"]').parents('.result-item.search-item').first())
+    var counters = $('.counter').map(function(){return $(this).attr('id')}).get()
     return {source_path: window.location.pathname,
             is_listing: search_item.length > 0,
-            search_item: search_item}
+            search_item: search_item,
+            counters: JSON.stringify(counters)}
 }
 
 

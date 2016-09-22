@@ -129,6 +129,7 @@ class IdeasView(ContentView):
     content_type = 'idea'
     viewid = 'home-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
+    counter_id = 'home-ideas-counter'
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
 
@@ -138,6 +139,7 @@ class ProposalsView(ContentView):
     content_type = 'proposal'
     viewid = 'home-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'
+    counter_id = 'home-proposals-counter'
     empty_message = _("No working groups created")
     empty_icon = 'icon icon novaideo-icon icon-wg'
 
@@ -164,6 +166,7 @@ class HomeView(MultipleView):
     behaviors = [SeeHome]
     anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
     # wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    template = 'novaideo:views/templates/multipleview.pt'
     viewid = 'home'
     css_class = 'simple-bloc'
     container_css_class = 'home'

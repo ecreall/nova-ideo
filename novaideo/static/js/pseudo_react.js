@@ -1,33 +1,40 @@
 function nav_bar_component(data){
-	$.each(data.components, function(index){
-		var component_id = 'component-navbar-'+data.components[index]
-		var original_components = $('#'+component_id)
+	var components = $('[data-component_type="navbar_component"]')
+	var components_to_update = components.map(function(){
+		if($.inArray($(this).attr('id'), data['counters-to-update']) >= 0){
+			return $(this)
+		}
+	})
+	
+	$.each(components_to_update, function(index){
+		var original_components = $(this)
+		var component_id = original_components.attr('id')
 		if (original_components.length > 0){
 			var original_component = $(original_components[0])
 			var new_component = null
-			if (data.navbar_item_nb > 0){
-				new_component = '<li class="menu-item" id="'+component_id+'">'
+			if (data[component_id+'.item_nb'] > 0){
+				new_component = '<li data-component_type="navbar_component" class="menu-item counter" id="'+component_id+'">'
 	            var ori_view_link =  $(original_component.find('a').first())
 	            if (ori_view_link && ori_view_link.attr('href')){
 	              var link_class = ori_view_link.attr('class')? ori_view_link.attr('class'): ''
-	              new_component += '<a class="'+link_class+'" href="'+data.view_url+'">'
+	              new_component += '<a class="'+link_class+'" href="'+data[component_id+'.url']+'">'
 	            	
 	            }else{
-	            	new_component += '<a href="'+data.view_url+'">'
+	            	new_component += '<a href="'+data[component_id+'.url']+'">'
 	            }
-			    new_component +='<span class="hidden-xs">'+data.navbar_title+' <span class=" item-nb">'+data.navbar_item_nb
-                    if (data.navbar_all_item_nb){
-                    	new_component += '/'+data.navbar_all_item_nb
+			    new_component +='<span class="hidden-xs">'+data[component_id+'.title']+' <span class=" item-nb">'+data[component_id+'.item_nb']
+                    if (data[component_id+'.all_item_nb']){
+                    	new_component += '/'+data[component_id+'.all_item_nb']
                     }
 			    new_component +='</span></span>'
-			    new_component +='<span class="visible-xs-inline-block action-icon '+data.navbar_icon+'"></span>'
+			    new_component +='<span class="visible-xs-inline-block action-icon '+data[component_id+'.icon']+'"></span>'
 			    new_component +='</a>'
 			    new_component +='</li>'
 			}else{
-				new_component = '<li class="menu-item" id="'+component_id+'">'
+				new_component = '<li data-component_type="navbar_component" class="menu-item counter" id="'+component_id+'">'
 	            new_component += '<a class="disabled">'
-	            new_component +='<span class="hidden-xs">'+data.navbar_title+'</span>'
-			    new_component +='<span class="visible-xs-inline-block action-icon '+data.navbar_icon+'"></span>'
+	            new_component +='<span class="hidden-xs">'+data[component_id+'.title']+'</span>'
+			    new_component +='<span class="visible-xs-inline-block action-icon '+data[component_id+'.icon']+'"></span>'
 			    new_component +='</a>'
 			    new_component +='</li>'
 			}
@@ -38,6 +45,52 @@ function nav_bar_component(data){
 		}
 	})
 }
+
+
+function novaideo_content_nb_component(data){
+	var components = $('[data-component_type="novaideo_content_nb"]')
+	var components_to_update = components.map(function(){
+		if($.inArray($(this).attr('id'), data['counters-to-update']) >= 0){
+			return $(this)
+		}
+	})
+	$.each(components_to_update, function(index){
+		var original_components = $(this)
+		var component_id = original_components.attr('id')
+		if (original_components.length > 0){
+			var original_component = $(original_components[0])
+			var new_component = null
+			if (data[component_id+'.item_nb'] > 0){
+				new_component = '<li data-component_type="novaideo_content_nb" class="counter" id="'+component_id+'"><strong>'
+				new_component += data[component_id+'.item_nb'] + '</strong> <span>'+ data[component_id+'.title'] + '</span></li>'
+			}else{
+				new_component = '<li data-component_type="novaideo_content_nb" class="counter" id="'+component_id+'"><li>'
+			}
+			if(new_component != null){
+				original_component.replaceWith($(new_component))
+			}
+			
+		}
+	})
+}
+
+function tab_component_component(data){
+	var components = $('[data-component_type="tab_component"]')
+	var components_to_update = components.map(function(){
+		if($.inArray($(this).attr('id'), data['counters-to-update']) >= 0){
+			return $(this)
+		}
+	})
+	$.each(components_to_update, function(index){
+		var original_components = $(this)
+		var component_id = original_components.attr('id')
+		if (original_components.length > 0){
+			var original_component = $(original_components[0])
+			$(original_component.find('>a>span').last()).text(data[component_id+'.title'])
+		}
+	})
+}
+
 
 function footer_action_component(data){
 	$.each(data.components, function(index){
@@ -187,12 +240,16 @@ function alert_component(data){
 
 var pseudo_react_components = {
 	'support_action': [nav_bar_component, view_title_component,
-	                   list_items_component, alert_component],
+	                   list_items_component, alert_component,
+	                   tab_component_component, novaideo_content_nb_component],
 	'footer_action': [nav_bar_component, footer_action_component,
 	                  view_title_component, list_items_component,
-	                  alert_component],
-	'redirect_action': [redirect_component, list_items_component,
-	                    view_title_component, alert_component],
+	                  alert_component, novaideo_content_nb_component,
+	                  tab_component_component],
+	'redirect_action': [nav_bar_component,redirect_component,
+	                    list_items_component, novaideo_content_nb_component,
+	                    view_title_component, alert_component,
+	                    tab_component_component],
 	'dropdown_action': [dropdown_action_component, list_channels_component,
 	                    alert_component]
 }

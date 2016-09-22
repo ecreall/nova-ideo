@@ -79,6 +79,7 @@ class IdeasView(ContentView):
     content_attr = 'ideas'
     viewid = 'person-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
+    counter_id = 'person-ideas-counter'
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
 
@@ -88,6 +89,7 @@ class ProposalsView(ContentView):
     content_attr = 'proposals'
     viewid = 'person-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'
+    counter_id = 'person-proposals-counter'
     empty_message = _("Not belong to any working group")
     empty_icon = 'icon icon novaideo-icon icon-wg'
 
@@ -97,6 +99,7 @@ class PersonContentsView(MultipleView):
     name = 'see-person-contents'
     viewid = 'person-contents'
     css_class = 'simple-bloc'
+    template = 'novaideo:views/templates/multipleview.pt'
     container_css_class = 'person-view'
     views = (IdeasView, ProposalsView)
 
