@@ -221,15 +221,23 @@ function alert_component(data){
 	if (data.alert_msg){
 		if(data.alert_source){
 			data.alert_source.notify(
-	            data.alert_msg,
 	            {
+                  text: data.alert_msg,
+                  icon: '<span class="icon '+data.alert_type+'"></span>'
+                 },
+                 {
+                  style: 'bootstrap',
 	              globalPosition: 'top center',
 	              className: data.alert_type,
 	            });
 		}else{
 			$.notify(
-	            data.alert_msg,
 	            {
+                  text: data.alert_msg,
+                  icon: '<span class="icon '+data.alert_type+'"></span>'
+                 },
+                 {
+                  style: 'bootstrap',
 	              globalPosition: 'bottom center',
 	              className: data.alert_type,
 	            });

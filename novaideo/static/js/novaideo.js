@@ -269,10 +269,26 @@ function initscroll(){
   },
   function(arrayOfNewElems){
     init_emoji($('.emoji-container:not(.emojified)'));
-  });
+    var next = $($(this).find('.result-container').last()).data('nex_url')
+    if(next){
+      var currentbtn = $($(this).find('.btn-more-scroll').last())
+     $($(this).find('.btn-more-scroll').not(currentbtn)).remove()
+    }else{
+     $($(this).find('.btn-more-scroll')).remove()
+    }
+  }); 
  }
 };
 
+
+$(document).on('click', '.btn-more-scroll', function(){
+  var result_scroll = $($(this).parents('.result-scroll').first())
+  result_scroll.mCustomScrollbar(
+    'scrollTo','bottom', {
+        scrollInertia: 1
+    });
+  result_scroll.scrollTop(result_scroll[0].scrollHeight);
+})
 
 function init_content_text(){
      var texts = $('.content-text');
@@ -632,6 +648,10 @@ $(document).on('shown.bs.modal', '.modal', function () {
 });
 
 $(document).ready(function(){
+
+  $.notify.addStyle('bootstrap', {
+    html: "<div><span data-notify-html='icon'/> <span data-notify-text='text'/></div>"
+  });
 
   init_emoji($('.emoji-container:not(.emojified)'));
   
