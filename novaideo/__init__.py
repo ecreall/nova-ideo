@@ -361,7 +361,7 @@ def evolve_alerts(root, registry):
     contents = find_entities(interfaces=[IAlert])
     len_entities = str(len(contents))
     for index, alert in enumerate(contents):
-        # alert.users_toexclude = OOBTree()
+        alert.users_toexclude = OOBTree()
         alert.reindex()
         if index % 1000 == 0:
             log.info("**** Commit ****")
