@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import deform
 import colander
 from pyramid.view import view_config
 
@@ -42,8 +43,8 @@ class ExplanationSchema(Schema):
     explanation = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=600),
-        widget=LimitedTextAreaWidget(rows=5, 
-                                     cols=30, 
+        widget=LimitedTextAreaWidget(rows=5,
+                                     cols=30,
                                      limit=600),
         title=_("Explanation")
         )
@@ -62,6 +63,13 @@ class DeleteProposalFormView(FormView):
     def before_update(self):
         if getattr(self.parent, 'is_draft_owner', False):
             self.schema = omit(self.schema, ['explanation'])
+
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': DeleteProposal.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form')
 
 
 @view_config(

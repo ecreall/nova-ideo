@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import deform
 import colander
 from pyramid.view import view_config
 
@@ -59,6 +60,14 @@ class MakeOpinionFormView(FormView):
 
     def default_data(self):
         return getattr(self.context, 'opinion', {})
+
+    def before_update(self):
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': MakeOpinion.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form')
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({MakeOpinion: MakeOpinionFormView})

@@ -729,6 +729,29 @@ def get_remove_idea_metadata(action, request, context, api, **kwargs):
     return result
 
 
+#Proposals
+
+def get_opinion_proposal_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("La proposition a bien été examinée."),
+        **kwargs)
+
+
+def get_remove_proposal_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("La proposition a bien été supprimée."),
+        **kwargs)
+    result['removed'] = True
+    result['force_remove'] = True
+    result['counters-to-update'] = [
+        'component-navbar-mycontents'
+        ]
+    return result
+
+
 #Organizations
 
 def get_user_edit_organization_metadata(action, request, context, api, **kwargs):
@@ -1046,6 +1069,8 @@ METADATA_GETTERS = {
     'proposalmanagement.withdraw_token': get_support_metadata,
     'proposalmanagement.comment': get_comment_metadata,
     'proposalmanagement.present': get_present_metadata,
+    'proposalmanagement.makeitsopinion': get_opinion_proposal_metadata,
+    'proposalmanagement.delete': get_remove_proposal_metadata,
 
     'amendmentmanagement.comment': get_comment_metadata,
     'amendmentmanagement.present': get_present_metadata,
