@@ -30,18 +30,24 @@ def conditions_widget(node, kw):
 class AcceptInvitationSchema(Schema):
     password = colander.SchemaNode(
         colander.String(),
-        widget = deform.widget.CheckedPasswordWidget(),
+        widget=deform.widget.CheckedPasswordWidget(),
         validator=colander.Length(min=3, max=100),
         title=_('Password')
         )
 
     accept_conditions = colander.SchemaNode(
-               colander.Boolean(),
-               widget=conditions_widget,
-               label=_('I have read and accept the terms and conditions'),
-               title ='',
-               missing=False
-            )
+        colander.Boolean(),
+        widget=conditions_widget,
+        label=_('I have read and accept the terms and conditions'),
+        title='',
+        missing=False
+    )
+
+    email = colander.SchemaNode(
+        colander.String(),
+        widget=deform.widget.HiddenWidget(),
+        title=_('Login (email)')
+        )
 
 
 @view_config(
@@ -55,6 +61,9 @@ class AcceptInvitationView(FormView):
     behaviors = [AcceptInvitation]
     formid = 'formacceptinvitation'
     name = 'accept_invitation'
+
+    def default_data(self):
+        return {'email': getattr(self.context, 'email')}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({AcceptInvitation:AcceptInvitationView})

@@ -3,7 +3,8 @@
 
 # licence: AGPL
 # author: Amen Souissi
-
+import deform
+import colander
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -17,6 +18,15 @@ from novaideo.content.person import Preregistration, PersonSchema
 from novaideo import _
 
 
+class ConfirmRegistrationSchema(PersonSchema):
+
+    email = colander.SchemaNode(
+        colander.String(),
+        widget=deform.widget.HiddenWidget(),
+        title=_('Login (email)')
+        )
+
+
 @view_config(
     name='',
     context=Preregistration,
@@ -25,13 +35,16 @@ from novaideo import _
 class ConfirmRegistrationView(FormView):
 
     title = _('Registration confirmation')
-    schema = select(PersonSchema(),
-                    ['password'])
+    schema = select(ConfirmRegistrationSchema(),
+                    ['email', 'password'])
     behaviors = [ConfirmRegistration, Cancel]
     formid = 'formregistration'
     name = ''
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/user_management.js']}
+
+    def default_data(self):
+        return {'email': getattr(self.context, 'email')}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
