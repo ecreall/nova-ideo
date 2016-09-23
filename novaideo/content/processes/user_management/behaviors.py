@@ -854,7 +854,7 @@ class GeneralDiscuss(InfiniteCardinality):
         author_first_name = getattr(
             user, 'first_name', user.name)
         author_last_name = getattr(user, 'last_name', '')
-        alert('internal', [root], users,
+        alert('internal', [root], users, exclude=[user],
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[channel],
               comment_oid=comment_oid,

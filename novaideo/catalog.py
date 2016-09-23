@@ -125,6 +125,9 @@ class ISearchableObject(Interface):
     def alert_keys():
         pass
 
+    def alert_exclude_keys():
+        pass
+
 
 @indexview_defaults(catalog_name='novaideo')
 class NovaideoCatalogViews(object):
@@ -494,6 +497,19 @@ class NovaideoCatalogViews(object):
 
         return alert_keys
 
+    @indexview()
+    def alert_exclude_keys(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        alert_exclude_keys = adapter.alert_exclude_keys()
+        if alert_exclude_keys is None:
+            return default
+
+        return alert_exclude_keys
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -530,6 +546,7 @@ class NovaideoIndexes(object):
     is_pinned = Field()
     is_edited = Field()
     alert_keys = Keyword()
+    alert_exclude_keys = Keyword()
 
 
 @adapter(context=IEntity)
@@ -678,6 +695,9 @@ class SearchableObject(Adapter):
     def alert_keys(self):
         return []
 
+    def alert_exclude_keys(self):
+        return []
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
@@ -798,3 +818,7 @@ class AlertSearch(SearchableObject):
 
     def alert_keys(self):
         return list(self.context.users_toalert)
+
+    def alert_exclude_keys(self):
+        users_toexclude = list(self.context.users_toexclude)
+        return users_toexclude if users_toexclude else ['no_one']

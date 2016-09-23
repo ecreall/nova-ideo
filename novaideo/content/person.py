@@ -401,9 +401,11 @@ class Person(User, SearchableEntity, CorrelableEntity):
         novaideo_catalog = find_catalog('novaideo')
         dace_catalog = find_catalog('dace')
         alert_keys_index = novaideo_catalog['alert_keys']
+        alert_exclude_keys_index = novaideo_catalog['alert_exclude_keys']
         object_provides_index = dace_catalog['object_provides']
         query = object_provides_index.any([IAlert.__identifier__]) & \
-            alert_keys_index.any(self.get_alerts_keys())
+            alert_keys_index.any(self.get_alerts_keys()) & \
+            alert_exclude_keys_index.notany([str(get_oid(self))])
         return query.execute()
 
     @property

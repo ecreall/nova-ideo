@@ -50,6 +50,7 @@ class Alert(VisualisableElement, Entity):
         self.set_data(kwargs)
         self.kind = kind
         self.users_toalert = OOBTree()
+        self.users_toexclude = OOBTree()
 
     @property
     def pattern(self):
@@ -63,10 +64,12 @@ class Alert(VisualisableElement, Entity):
     def icon(self):
         return self.pattern.get_icon(self)
 
-    def init_alert(self, users, subjects=[]):
+    def init_alert(self, users, subjects=[], exclude=[]):
         self.subscribe(users)
         for subject in subjects:
             self.addtoproperty('subjects', subject)
+
+        self.exclude(exclude)
 
     def subscribe(self, users):
         if not isinstance(users, (list, tuple, set)):
@@ -84,10 +87,19 @@ class Alert(VisualisableElement, Entity):
         user.addtoproperty('old_alerts', self)
         self.reindex()
 
+    def exclude(self, users):
+        if not isinstance(users, (list, tuple, set)):
+            users = [users]
+
+        for user in users:
+            oid = get_oid(user, user)
+            self.users_toexclude[str(oid)] = oid
+
     def is_to_alert(self, user):
         key = str(get_oid(user, user))
         #TODO self not in user.old_alerts
-        return key in self.users_toalert
+        return key in self.users_toalert and \
+            key not in self.users_toexclude
 
     def get_subject_state(self, subject, user, last_state=False):
         states = getattr(subject, 'state_or_none', [None])

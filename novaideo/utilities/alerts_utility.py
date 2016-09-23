@@ -53,7 +53,7 @@ from novaideo import log
 #             collection.create_document(kwargs)
 
 
-def alert_email(senders=[], recipients=[], **kwargs):
+def alert_email(senders=[], recipients=[], exclude=[], **kwargs):
     """
         recipients: ['mail@mail.com']
     """
@@ -69,7 +69,7 @@ def alert_email(senders=[], recipients=[], **kwargs):
             recipients=recipients, sender=sender)
 
 
-def alert_internal(senders=[], recipients=[], **kwargs):
+def alert_internal(senders=[], recipients=[], exclude=[], **kwargs):
     """
         recipients: [user1, user2],
         kwargs: {'internal_kind': 'content_alert',...}
@@ -81,12 +81,12 @@ def alert_internal(senders=[], recipients=[], **kwargs):
         sender = senders[0]
         alert = alert_class(**kwargs)
         sender.addtoproperty('alerts', alert)
-        alert.init_alert(recipients, subjects)
+        alert.init_alert(recipients, subjects, exclude)
         if getattr(sender, 'activate_push_notification', False):
             app_id = getattr(sender, 'app_id')
             app_key = getattr(sender, 'app_key')
 
-            def send_notification(players_ids):
+            def send_notification(players_ids, excluded_ids=[]):
                 subject = subjects[0] if subjects else sender
                 request = get_current_request()
                 user = get_current(request)
@@ -107,6 +107,9 @@ def alert_internal(senders=[], recipients=[], **kwargs):
                 else:
                     payload["included_segments"] = ['All']
 
+                # if excluded_ids:
+                #     payload["excluded_player_ids"] = excluded_ids
+
                 try:
                     requests.post(
                         "https://onesignal.com/api/v1/notifications",
@@ -120,16 +123,20 @@ def alert_internal(senders=[], recipients=[], **kwargs):
                 players_ids = [item for sublist in players_ids
                                for item in sublist]
                 if players_ids:
-                    send_notification(players_ids)
+                    excluded_ids = [getattr(user, 'notification_ids', [])
+                                    for user in exclude]
+                    excluded_ids = [item for sublist in excluded_ids
+                                   for item in sublist]
+                    send_notification(players_ids, excluded_ids)
             else:
                 send_notification('all')
 
 
-def alert(kind="", senders=[], recipients=[], **kwargs):
+def alert(kind="", senders=[], recipients=[], exclude=[], **kwargs):
     alert_op = ALERTS.get(kind, None)
     if alert_op:
         try:
-            return alert_op(senders, recipients, **kwargs)
+            return alert_op(senders, recipients, exclude, **kwargs)
         except Exception as error:
             log.warning(error)
             return None
