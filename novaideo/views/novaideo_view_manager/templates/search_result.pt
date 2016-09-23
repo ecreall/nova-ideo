@@ -1,8 +1,9 @@
 <div class="items-main-view-container" 
 	 id="items-main-view-container-${id}"
 	 tal:define="batch_value batch|nothing;
-	                             id (batch_value and batch_value.target.replace('#', '')) or 'results'">
-	<div tal:omit-tag="" tal:define="filterbody filter_body|nothing" i18n:domain="novaideo">
+	             id (batch_value and batch_value.target.replace('#', '')) or 'results'"
+	 i18n:domain="novaideo">
+	<div tal:omit-tag="" tal:define="filterbody filter_body|nothing">
 		<div id="filter-${id}" tal:condition="filterbody">
 			${structure: filterbody}
 	    </div>
@@ -12,6 +13,7 @@
 	    <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
 	    <div class="col-md-12 result-container " data-nex_url="${batch.next_url}">
 	      <div tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
+	       <button tal:condition="bodies and batch.next_url" id="${id}-btn-more" class="btn btn-default btn-xs scroll btn-more-scroll"><span i18n:translate="">More</span> <span class="glyphicon glyphicon-option-horizontal"></span></button>
 	    </div>
 	  </div>
 	</div>
