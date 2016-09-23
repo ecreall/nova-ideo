@@ -12,7 +12,7 @@ MAIL_SSL="${MAILER_SSL:-false}"
 MAIL_DEFAULT_SENDER="${MAIL_DEFAULT_SENDER:-https://mynovaideo.example.com}"
 SECRET="${SECRET:-mybigsecret}"
 APPLICATION_URL="${APPLICATION_URL:-noreply@example.com}"
-TIMEOUT="${TIMEOUT:-30}"
+TIMEOUT="${TIMEOUT:-300}"
 WORKERS="${WORKERS:-1}"
 export TMPDIR="/app/var/tmp"
 sed -i \
