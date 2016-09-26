@@ -534,9 +534,10 @@ def disconnect(
     objects.extend(targets)
     calculated = []
     for obj in objects:
-        oid = obj.get_node_id()
-        if isinstance(obj, Node) and oid not in calculated:
-            graph, calculated = obj.init_graph(calculated)
+        if isinstance(obj, Node):
+            oid = obj.get_node_id()
+            if oid not in calculated:
+                graph, calculated = obj.init_graph(calculated)
 
 
 def add_file_data(container, attr):

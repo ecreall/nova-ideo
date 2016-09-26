@@ -3,6 +3,8 @@
         <div class="graph-legend-idea"><span class="circle"></span> <span i18n:translate="">Idea</span></div> 
         <div class="graph-legend-wg"><span class="circle"></span> <span i18n:translate="">Working group</span></div>
         <div class="graph-legend-current"><span class="circle"></span> <span i18n:translate="">Current entity</span></div>
+        <div class="graph-legend-solid"><span class="line"></span> <span i18n:translate="">Solid relation</span></div>
+        <div class="graph-legend-weak"><span class="line"></span> <span i18n:translate="">Weak relation</span></div>
       </div>
       <div class="graph-canvas" id="${canvas_id}"></div>
       <script>
@@ -18,7 +20,7 @@
                   </div>
                   G.addNodesFrom([${','.join(['[node'+node+', {url:"'+request.resource_url(get_obj(nodes[node]['oid']), '@@index')+'", entityid: "node'+node+'", descriminator:"'+nodes[node]['descriminator']+'"}]' for node in nodes])}]);
                   <div tal:omit-tag="" tal:repeat="node nodes">
-                    G.addEdgesFrom([${','.join(['[node'+node+', node'+target+']' for target in nodes[node]['targets']])}]);
+                    G.addEdgesFrom([${','.join(['[node'+node+', node'+target[0]+',{type:"'+target[1]+'"}]' for target in nodes[node]['targets']])}]);
                   </div>
                   var color = d3.scale.category20();
                   jsnx.draw(G, {
@@ -37,11 +39,16 @@
                       },
                       nodeStyle: {
                           fill: function(d) { return d.data.descriminator == 'idea'? "#54902a": "#3f6da6";},
-                          stroke: 'none'
+                          stroke: 'none',
+                          'cursor': 'pointer'
                       },
                       edgeStyle: {
-                          fill: '#999'
-                      }
+                          'fill': function(d) {
+                                  return d.data.type=='solid'? "#999": '#df9b3e';
+                          },
+                          'stroke-width': 4
+                        } 
+                      
                   });
                 }
               );

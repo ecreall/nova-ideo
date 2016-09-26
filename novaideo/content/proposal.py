@@ -211,6 +211,13 @@ class Proposal(VersionableEntity,
                           for target in targets])
 
     @property
+    def related_contents(self):
+        lists_targets = [(c.targets, c) for c in self.source_correlations
+                         if c.type == CorrelationType.weak]
+        return MultiDict([(target, c) for targets, c in lists_targets
+                          for target in targets])
+
+    @property
     def tokens(self):
         result = list(self.tokens_opposition)
         result.extend(list(self.tokens_support))
@@ -294,17 +301,23 @@ class Proposal(VersionableEntity,
             return {}, newcalculated
 
         related_ideas = self.related_ideas
+        targets = [(t.get_node_id(), 'solid')
+                   for t in related_ideas]
+        related_contents = [r for r in self.related_contents
+                            if isinstance(r, Node)
+                            and r not in related_ideas]
+        targets.extend([(t.get_node_id(), 'weak')
+                        for t in related_contents])
         result = {oid: {
             'oid': self.__oid__,
             'title': self.title,
             'descriminator': 'proposal',
-            'targets': [t.get_node_id()
-                        for t in related_ideas]
+            'targets': targets
         }}
-
+        related_contents.extend(related_ideas)
         newcalculated.append(oid)
-        for idea in related_ideas:
-            sub_result, newcalculated = idea.get_nodes_data(newcalculated)
+        for r_content in related_contents:
+            sub_result, newcalculated = r_content.get_nodes_data(newcalculated)
             result.update(sub_result)
 
         return result, newcalculated

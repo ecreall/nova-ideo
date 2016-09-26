@@ -22,9 +22,8 @@ from dace.processinstance.activity import InfiniteCardinality
 
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.content.interface import IComment
-from novaideo.content.comment import Comment
 from novaideo import _
-from novaideo.utilities.util import connect
+from novaideo.utilities.util import connect, disconnect
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.alert import InternalAlertKind
 
@@ -229,11 +228,18 @@ class Edit(InfiniteCardinality):
         context.edited = True
         content = context.subject
         user = get_current()
-        if context.related_correlation and\
+        current_correlation = context.related_correlation
+        if current_correlation and\
            not appstruct['related_contents']:
             root = getSite()
+            targets = getattr(current_correlation, 'targets', [])
+            disconnect(content, targets)
             root.delfromproperty('correlations', context.related_correlation)
         elif appstruct['related_contents']:
+            if current_correlation:
+                targets = getattr(current_correlation, 'targets', [])
+                disconnect(content, targets)
+
             related_contents = appstruct['related_contents']
             correlation = connect(
                 content,
@@ -271,11 +277,11 @@ class Remove(InfiniteCardinality):
     processsecurity_validation = rm_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        root = getSite()
-
-        if context.related_correlation:
-            root.delfromproperty(
-                'correlations', context.related_correlation)
+        content = context.subject
+        current_correlation = context.related_correlation
+        if current_correlation:
+            targets = getattr(current_correlation, 'targets', [])
+            disconnect(content, targets)
 
         context.channel.remove_comment(context)
         context.__parent__.delfromproperty('comments', context)

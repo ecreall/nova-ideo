@@ -919,7 +919,7 @@ form .btn{
 }
 
 .graph-canvas .current.node-shape{
-    stroke: #37a02f !important;
+    stroke: #df283e !important;
     stroke-width: 5 !important;
 }
 
@@ -962,6 +962,12 @@ form .btn{
   margin-bottom: 0px;
 }
 
+
+.graph-legend div .line{
+    width: 50px;
+    display: inline-block;
+}
+
 .graph-legend div.graph-legend-idea .circle{
   background-color: @idea-color;
 }
@@ -971,7 +977,15 @@ form .btn{
 }
 
 .graph-legend div.graph-legend-current .circle{
-  border: solid 3px #37a02f;
+  border: solid 3px #df283e;
+}
+
+.graph-legend div.graph-legend-solid .line{
+  border: solid 2px #999;
+}
+
+.graph-legend div.graph-legend-weak .line{
+  border: solid 2px #df9b3e;
 }
 
 .similar-ideas .modal-title{

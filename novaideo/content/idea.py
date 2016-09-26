@@ -143,9 +143,17 @@ class Idea(VersionableEntity, DuplicableEntity,
     @property
     def related_proposals(self):
         """Return all proposals that uses this idea"""
-        return MultiDict([(c.source, c) for c in self.target_correlations
+        return MultiDict([(c.source, c) for c in self.source_correlations
                           if c.type == CorrelationType.solid and
                           'related_proposals' in c.tags])
+
+    @property
+    def related_contents(self):
+        """Return all related contents"""
+        lists_targets = [(c.targets, c) for c in self.source_correlations
+                         if c.type == CorrelationType.weak]
+        return MultiDict([(target, c) for targets, c in lists_targets
+                          for target in targets])
 
     @property
     def tokens(self):
@@ -219,16 +227,23 @@ class Idea(VersionableEntity, DuplicableEntity,
             return {}, newcalculated
 
         related_proposals = self.related_proposals
+        targets = [(t.get_node_id(), 'solid')
+                   for t in related_proposals]
+        related_contents = [r for r in self.related_contents
+                            if isinstance(r, Node)
+                            and r not in related_proposals]
+        targets.extend([(t.get_node_id(), 'weak')
+                        for t in related_contents])
         result = {oid: {
             'oid': self.__oid__,
             'title': self.title,
             'descriminator': 'idea',
-            'targets': [t.get_node_id()
-                        for t in related_proposals]
+            'targets': targets
         }}
+        related_contents.extend(related_proposals)
         newcalculated.append(oid)
-        for proposal in related_proposals:
-            sub_result, newcalculated = proposal.get_nodes_data(newcalculated)
+        for r_content in related_contents:
+            sub_result, newcalculated = r_content.get_nodes_data(newcalculated)
             result.update(sub_result)
 
         return result, newcalculated
