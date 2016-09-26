@@ -752,6 +752,21 @@ def get_remove_proposal_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_addfiles_proposal_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Les fichiers ont bien été ajoutés dans l'espace de  travail."),
+        **kwargs)
+
+
+def get_attachfiles_proposal_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Les fichiers ont bien été attachés à la proposition."),
+        **kwargs)
+
 #Organizations
 
 def get_user_edit_organization_metadata(action, request, context, api, **kwargs):
@@ -1071,6 +1086,8 @@ METADATA_GETTERS = {
     'proposalmanagement.present': get_present_metadata,
     'proposalmanagement.makeitsopinion': get_opinion_proposal_metadata,
     'proposalmanagement.delete': get_remove_proposal_metadata,
+    'proposalmanagement.attach_files': get_attachfiles_proposal_metadata,
+    'workspacemanagement.add_files': get_addfiles_proposal_metadata,
 
     'amendmentmanagement.comment': get_comment_metadata,
     'amendmentmanagement.present': get_present_metadata,

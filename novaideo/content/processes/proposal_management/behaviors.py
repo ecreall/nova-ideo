@@ -1643,6 +1643,7 @@ class SeeWorkspace(InfiniteCardinality):
 class AddFiles(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-import'
     style_order = 4
     submission_title = _('Save')
