@@ -29,7 +29,7 @@
           <div class="view-item-title channel-item-title"
              data-title="${title}"
              data-icon="${getattr(subject, 'icon', '')}"
-             data-img="${getattr(picture, 'url', default_img) if is_discuss else ''}"
+             data-img="${getattr(profil_picture, 'url', default_img) if is_discuss else ''}"
             >
              <span tal:condition="not is_discuss" class="channel-icon" >#</span>
              <span tal:condition="not is_discuss" class="${getattr(subject, 'icon', '')}" ></span>

@@ -1,6 +1,7 @@
 <div tal:omit-tag="" i18n:domain="novaideo"
   tal:define="
       user_picture user.picture;
+      profil_picture getattr(user_picture, 'profil', picture);
       default_img request.static_url('novaideo:static/images/user100.png');">
 <div class="user-panel" style="
   background: transparent url(${getattr(user_picture, 'blur', user_picture).url if user_picture else request.static_url('novaideo:static/images/user100_blur.png')}) no-repeat scroll center center / cover ;">
@@ -19,7 +20,7 @@
           <h3 class="view-item-title"
             data-title="${getattr(user, 'title', user.name)}"
             data-icon=""
-            data-img="${getattr(user_picture, 'url', default_img)}">
+            data-img="${getattr(profil_picture, 'url', default_img)}">
             ${getattr(user, 'title', user.name)} <span tal:condition="getattr(user, 'organization', None)">
                  <a tal:attributes="href request.resource_url(user.organization, '@@index')"><small><strong>(<span class="glyphicon glyphicon-home"></span> ${user.organization.title})</strong></small></a>
               </span>
