@@ -4,19 +4,23 @@
                  icon getattr(object, 'icon');
                  picture object.picture;
                  profil_picture getattr(picture, 'profil', picture);
-                 keywords getattr(object, 'keywords', [])">
+                 keywords getattr(object, 'keywords', []);
+                 default_img request.static_url('novaideo:static/images/user.png')">
   <div class="media-body media-person">
     <div class="object-menu pull-right">
       <div tal:replace="structure menu_body"/>
     </div>
-    <div class="object-title-block view-item-title" >
+    <div class="object-title-block view-item-title"
+      data-title="${object.title}"
+      data-icon=""
+      data-img="${getattr(profil_picture, 'url', default_img)}">
       <a tal:attributes="href url">
         <h4>
           <img class="img-circle" tal:condition="profil_picture is not None"
                tal:attributes="src profil_picture.url"  width="50"/>
           <img class="img-circle"
                tal:condition="profil_picture is None"
-               src="${request.static_url('novaideo:static/images/user.png')}" width="50"/>
+               src="${default_img}" width="50"/>
           ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
           <small class="date">
             <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.created_at, date_only=True)"/>

@@ -3,16 +3,21 @@
 	  tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
                  picture object.picture;
-                 profil_picture getattr(picture, 'profil', picture)">
+                 profil_picture getattr(picture, 'profil', picture);
+                 default_img request.static_url('novaideo:static/images/user.png')">
 	<div style="top: 50%;" class="arrow">
 	</div>
   <a class="popover-title-link" href="${request.resource_url(object, '@@index')}">
-    <h4 class="popover-title view-item-title">
+    <h4 class="popover-title view-item-title"
+      data-title="${getattr(object, 'title', object.name)}"
+      data-icon="${icon}"
+      data-img="${getattr(profil_picture, 'url', default_img)}"
+      >
     	<img class="img-circle" tal:condition="profil_picture is not None"
                tal:attributes="src profil_picture.url"  width="25"/>
 	    <img class="img-circle"
 	           tal:condition="profil_picture is None"
-	           src="${request.static_url('novaideo:static/images/user.png')}" width="25"/>
+	           src="${default_img}" width="25"/>
 	      ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
 	      <small class="date" tal:condition="getattr(object, 'function', '')">
             ${object.function}

@@ -4,7 +4,7 @@
                  picture object.logo;
                  contacts getattr(object, 'contacts', [])">
   <div class="media-body media-person">
-    <div class="object-title-block" >
+    <div class="object-title-block view-item-title" >
       <a tal:attributes="href url">
         <h4>
           <img class="pull-right" tal:condition="picture"

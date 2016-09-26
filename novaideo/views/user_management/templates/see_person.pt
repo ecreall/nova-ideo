@@ -1,6 +1,7 @@
 <div tal:omit-tag="" i18n:domain="novaideo"
   tal:define="
-      user_picture user.picture">
+      user_picture user.picture;
+      default_img request.static_url('novaideo:static/images/user100.png');">
 <div class="user-panel" style="
   background: transparent url(${getattr(user_picture, 'blur', user_picture).url if user_picture else request.static_url('novaideo:static/images/user100_blur.png')}) no-repeat scroll center center / cover ;">
   <div class="user-panel-container" style="
@@ -9,13 +10,16 @@
         <div class="col-md-2">
           <div class="user-img-container">
             <img tal:condition="user_picture" class="img-circle" src="${getattr(user_picture, 'profil', user.picture).url}">
-            <img tal:condition="not user_picture" class="img-circle" src="${request.static_url('novaideo:static/images/user100.png')}">
+            <img tal:condition="not user_picture" class="img-circle" src="${default_img}">
             
           </div>
         </div>
         <div class="col-md-8">
         <div class="user-data-container">
-          <h3>
+          <h3 class="view-item-title"
+            data-title="${getattr(user, 'title', user.name)}"
+            data-icon=""
+            data-img="${getattr(user_picture, 'url', default_img)}">
             ${getattr(user, 'title', user.name)} <span tal:condition="getattr(user, 'organization', None)">
                  <a tal:attributes="href request.resource_url(user.organization, '@@index')"><small><strong>(<span class="glyphicon glyphicon-home"></span> ${user.organization.title})</strong></small></a>
               </span>

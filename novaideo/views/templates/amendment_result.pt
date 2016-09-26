@@ -24,7 +24,10 @@
       </small>
     </div>
 
-    <div class="object-title-block view-item-title" >
+    <div class="object-title-block view-item-title"
+        data-title="${object.title}"
+        data-icon="${icon}"
+        data-img="">
       <a tal:attributes="href url">
         <h4>
           <span class="icon ${icon}"></span> ${object.title}

@@ -34,7 +34,10 @@
     <div class="object-menu pull-right">
       <div tal:replace="structure menu_body"/>
     </div>
-    <div class="object-title-block view-item-title" >
+    <div class="object-title-block view-item-title"
+        data-title="${object.title}"
+        data-icon="${icon}"
+        data-img="">
         <a tal:attributes="href url">
           <h4>
             <span class="icon ${icon}"></span> ${object.title} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>

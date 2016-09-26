@@ -1,4 +1,5 @@
-<div class="content-view" i18n:domain="novaideo">
+<div class="content-view" i18n:domain="novaideo"
+     tal:define="icon getattr(object, 'icon');">
   <div tal:replace="structure navbar_body"/>
   <div class="media-body content-title-body">
 
@@ -31,7 +32,11 @@
     </div>
 
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-    <h3 class="content-title"><span class="icon novaideo-icon icon-amendment"></span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a> / ${amendment.title}</h3>
+    <h3 class="content-title"
+        data-title="${amendment.title}"
+        data-icon="${icon}"
+        data-img=""
+      ><span class="icon ${icon}"></span> <a tal:attributes="href request.resource_url(amendment.proposal, '@@index')">${amendment.proposal.title}</a> / ${amendment.title}</h3>
     <div class="object-description"
       tal:define="author amendment.author;
                   author_picture getattr(author, 'picture', None)">

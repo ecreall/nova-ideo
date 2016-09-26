@@ -5,7 +5,11 @@
 	<div style="top: 50%;" class="arrow">
 	</div>
     <a class="popover-title-link" href="${request.resource_url(object, '@@index')}">
-      <h4 class="popover-title view-item-title">
+      <h4 class="popover-title view-item-title"
+        data-title="${object.title}"
+        data-icon="${icon}"
+        data-img=""
+        >
         <span class="icon ${icon}"></span> ${getattr(object, 'title', object.name)}
       </h4>
     </a>

@@ -4,11 +4,14 @@
     tal:define="item action_call;
                title object.get_title(current_user);
                subject object.get_subject(current_user);
+               picture getattr(subject, 'picture', None);
+               profil_picture getattr(picture, 'profil', None);
                subjectclassname subject.__class__.__name__.lower(); 
                is_discuss object.is_discuss();
                icon getattr(item['action'],'style_picto','');
                interaction_type getattr(item['action'],'style_interaction_type','modal');
-               channel_nb item['action'].get_nb(item['context'], request)">
+               channel_nb item['action'].get_nb(item['context'], request);
+               default_img request.static_url('novaideo:static/images/user.png')">
        <a id="${item['action_id']}-btn" 
             class="toggle-popover channel-action ajax-action dace-action-${interaction_type} media-${subjectclassname}"
             data-oid="${getattr(subject, '__oid__', '')}"
@@ -23,12 +26,14 @@
             data-body="${item['body']}"
             data-icon="${icon}"
             data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
-          <div class="view-item-title channel-item-title">
+          <div class="view-item-title channel-item-title"
+             data-title="${title}"
+             data-icon="${getattr(subject, 'icon', '')}"
+             data-img="${getattr(picture, 'url', default_img) if is_discuss else ''}"
+            >
              <span tal:condition="not is_discuss" class="channel-icon" >#</span>
              <span tal:condition="not is_discuss" class="${getattr(subject, 'icon', '')}" ></span>
-             <div tal:omit-tag="" tal:condition="is_discuss" tal:define="
-                  picture getattr(subject, 'picture', None);
-                  profil_picture getattr(picture, 'profil', None)">
+             <div tal:omit-tag="" tal:condition="is_discuss">
                <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
                <img class="author-img img-circle" tal:condition="profil_picture is not None"
                 tal:attributes="src profil_picture.url"  width="25"/>

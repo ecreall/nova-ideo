@@ -122,6 +122,19 @@ function update_inline_action(){
     return false;
 };
 
+function _get_side_bar_title(data){
+  var result = '<div class="view-item-title">'
+  if (data.img){
+    result += '<img class="img-circle" src="'+data.img+'" width="25">'
+  }
+  else if(data.icon){
+    result += '<span class="icon '+data.icon+'"></span>'
+  }
+   result += ' <span>'+data.title+'</span></div>'
+  return result
+}
+
+
 function update_sidebar_action(){
     var $this = $(this)
     var actions = $('.dace-action-sidebar');
@@ -136,7 +149,6 @@ function update_sidebar_action(){
     var target = $(sidebar.find('.actions-footer-container'))//closest('.dace-action-inline').data('target')+'-target';
     var toggle = $('.menu-right-toggle:not(.close)')
     var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
-    title.find('.label-basic').remove()
     actions.removeClass('activated')
     var action = $this.closest('.dace-action-sidebar')
     var url = action.data('updateurl');
@@ -150,7 +162,12 @@ function update_sidebar_action(){
           var container_bodu = $(target.find('.container-body'))
            container_bodu.html(action_body);
            if(title.length > 0){
-               $(sidebar.find('.sidebar-title .entity-title').first()).html(title)
+            var new_title = _get_side_bar_title({
+               title: title.data('title'),
+               img: title.data('img'),
+               icon: title.data('icon'),
+            })
+            $(sidebar.find('.sidebar-title .entity-title').first()).html(new_title)
            }
            $this.addClass('activated')
            try {

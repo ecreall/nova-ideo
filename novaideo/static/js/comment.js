@@ -192,7 +192,10 @@ function update_comment(element){
   $.post(url, {op: 'update_comment',
               comment_id: element.data('comment_id')}, function(data){
     if(data.removed){
-      element.remove()
+      element.addClass('deletion-process')
+      element.animate({height: 0, opacity: 0}, 'slow', function() {
+        $(this).remove();
+    });
       var component = $($('.dace-action-sidebar.activated>span').first())
     }else{
       var content = $(data.body).find('.commentulorigin');
@@ -643,7 +646,11 @@ $(document).ready(function(){
               filters = filters.toArray()
               if ($.inArray('pinned', filters)>=0){
                 //action is unpin with the 'pinned' filter => remove the comment
-                $(action.parents('li.commentli').first()).remove()
+                var item = $(action.parents('li.commentli').first())
+                $(item.find('.comment-data')).addClass('deletion-process')
+                item.fadeOut( 1000 );
+
+
               }else{
                 update_comment($(action.parents('li.commentli').first()))
               }

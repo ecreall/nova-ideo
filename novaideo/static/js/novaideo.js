@@ -653,6 +653,7 @@ $(document).ready(function(){
     html: "<div><span data-notify-html='icon'/> <span data-notify-text='text'/></div>"
   });
 
+
   init_emoji($('.emoji-container:not(.emojified)'));
   
 
@@ -1090,6 +1091,7 @@ $(function () {
   update_unread_messages_alerts()
   
   $(document).on('click', '.alert-messages-scroll', scroll_to_unread_message)
+
 });
 
 

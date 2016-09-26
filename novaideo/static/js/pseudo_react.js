@@ -180,7 +180,10 @@ function list_items_component(data){
     var url = window.location.href; 
 	var concerned_view = url.indexOf('/'+data.view_name+'')>=0 || url.indexOf('/@@'+data.view_name)>=0   
 	if(data.removed && (data.force_remove || concerned_view)){
-        data.search_item.fadeOut( 1000 );
+        data.search_item.addClass('deletion-process')
+        data.search_item.animate({height: 0, opacity: 0}, 'slow', function() {
+            $(this).remove();
+        });
         return
 	}
     if(data.new_obj_body){
