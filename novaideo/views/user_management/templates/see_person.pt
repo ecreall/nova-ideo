@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-2">
           <div class="user-img-container">
-            <img tal:condition="user_picture" class="img-circle" src="${profil_picture}">
+            <img tal:condition="user_picture" class="img-circle" src="${profil_picture.url}">
             <img tal:condition="not user_picture" class="img-circle" src="${default_img}">
           </div>
         </div>
@@ -54,11 +54,11 @@
   </div>
 </div>
 <div class="user-data-detail">
-<div class="navbar-user-entity">
-  <div tal:replace="structure navbar_body"/>
-</div>
-<div class="user-description" tal:condition="getattr(user, 'description', '')">${user.description}
-</div>
+  <div class="navbar-user-entity">
+    <div tal:replace="structure navbar_body"/>
+  </div>
+  <div class="user-description" tal:condition="getattr(user, 'description', '')">${user.description}
+  </div>
 
   <div class="content-footer">
     <div class="actions-block">
