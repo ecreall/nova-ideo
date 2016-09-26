@@ -1,7 +1,7 @@
 <div tal:omit-tag="" i18n:domain="novaideo"
   tal:define="
       user_picture user.picture;
-      profil_picture getattr(user_picture, 'profil', picture);
+      profil_picture getattr(user_picture, 'profil', user_picture);
       default_img request.static_url('novaideo:static/images/user100.png');">
 <div class="user-panel" style="
   background: transparent url(${getattr(user_picture, 'blur', user_picture).url if user_picture else request.static_url('novaideo:static/images/user100_blur.png')}) no-repeat scroll center center / cover ;">
@@ -10,9 +10,8 @@
     <div class="row">
         <div class="col-md-2">
           <div class="user-img-container">
-            <img tal:condition="user_picture" class="img-circle" src="${getattr(user_picture, 'profil', user.picture).url}">
+            <img tal:condition="user_picture" class="img-circle" src="${profil_picture}">
             <img tal:condition="not user_picture" class="img-circle" src="${default_img}">
-            
           </div>
         </div>
         <div class="col-md-8">
