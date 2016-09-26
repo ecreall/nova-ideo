@@ -16,7 +16,7 @@
              function(oid) {
                   var G = new jsnx.Graph();
                   <div tal:omit-tag="" tal:repeat="node nodes">
-                    var node${node} = {toString: function() { return "${nodes[node]['title']}"; }};
+                    var node${node} = {toString: function() { return ${json.dumps(nodes[node]['title'])}; }};
                   </div>
                   G.addNodesFrom([${','.join(['[node'+node+', {url:"'+request.resource_url(get_obj(nodes[node]['oid']), '@@index')+'", entityid: "node'+node+'", descriminator:"'+nodes[node]['descriminator']+'"}]' for node in nodes])}]);
                   <div tal:omit-tag="" tal:repeat="node nodes">

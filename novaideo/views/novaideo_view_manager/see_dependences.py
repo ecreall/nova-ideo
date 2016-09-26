@@ -3,6 +3,7 @@
 
 # licence: AGPL
 # author: Amen Souissi
+import json
 from pyramid.view import view_config
 
 from dace.processinstance.core import (
@@ -36,7 +37,8 @@ class SeeGraphView(BasicView):
         result = {}
         values = {'nodes': self.context.graph,
                   'node_id': self.context.get_node_id(),
-                  'get_obj': get_obj}
+                  'get_obj': get_obj,
+                  'json': json}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
