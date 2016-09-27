@@ -368,3 +368,12 @@ class Proposal(VersionableEntity,
             list(self.related_ideas.keys()), user)
         copy_of_proposal.reindex()
         return copy_of_proposal
+
+    def get_token(self, user):
+        tokens = [t for t in user.tokens if
+                  not t.proposal or t.proposal is self]
+        proposal_tokens = [t for t in tokens if t.proposal is self]
+        if proposal_tokens:
+            return proposal_tokens[0]
+
+        return tokens[-1] if tokens else None

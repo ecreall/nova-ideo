@@ -103,6 +103,25 @@ VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
                            " group will be useful")
 
 
+def remove_tokens(proposal):
+    tokens = [t for t in proposal.tokens if not t.proposal]
+    proposal_tokens = [t for t in proposal.tokens if t.proposal]
+    for token in list(tokens):
+        token.owner.addtoproperty('tokens', token)
+
+    for proposal_token in list(proposal_tokens):
+        proposal_token.owner.delfromproperty('tokens_ref', proposal_token)
+        proposal.__delitem__(proposal_token.__name__)
+
+    members = proposal.working_group.members
+    for member in members:
+        to_remove = [t for t in member.tokens
+                     if t.proposal is proposal]
+        if to_remove:
+            token = to_remove[0]
+            token.owner.delfromproperty('tokens_ref', token)
+
+
 def publish_ideas(ideas, request):
     for idea in ideas:
         idea.state = PersistentList(['published'])
@@ -324,14 +343,7 @@ class DeleteProposal(InfiniteCardinality):
         root = getSite()
         not_draft_owner = 'draft' not in context.state or \
                           not has_role(role=('Owner', context))
-        tokens = [t for t in context.tokens if not t.proposal]
-        proposal_tokens = [t for t in context.tokens if t.proposal]
-        for token in list(tokens):
-            token.owner.addtoproperty('tokens', token)
-
-        for proposal_token in list(proposal_tokens):
-            proposal_token.owner.delfromproperty('tokens_ref', proposal_token)
-
+        remove_tokens(context)
         wg = context.working_group
         members = list(wg.members)
         for member in members:
@@ -590,7 +602,7 @@ def support_processsecurity_validation(process, context):
         return False
 
     user = get_current()
-    return getattr(user, 'tokens', []) and  \
+    return context.get_token(user) and  \
            not (user in [t.owner for t in context.tokens]) and \
            global_user_processsecurity()
 
@@ -611,14 +623,7 @@ class SupportProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
-        token = None
-        for tok in user.tokens:
-            if tok.proposal is context:
-                token = tok
-
-        if token is None:
-            token = user.tokens[-1]
-
+        token = context.get_token(user)
         context.addtoproperty('tokens_support', token)
         context.init_support_history()
         context._support_history.append(
@@ -647,15 +652,7 @@ class OpposeProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
-        token = None
-        for tok in user.tokens:
-            if tok.proposal is context:
-                token = tok
-                break
-
-        if token is None:
-            token = user.tokens[-1]
-
+        token = context.get_token(user)
         context.addtoproperty('tokens_opposition', token)
         context.init_support_history()
         context._support_history.append(
@@ -708,14 +705,7 @@ class MakeOpinion(InfiniteCardinality):
             ['examined', 'published', context.opinion['opinion']])
         context.init_examined_at()
         context.reindex()
-        tokens = [t for t in context.tokens if not t.proposal]
-        proposal_tokens = [t for t in context.tokens if t.proposal]
-        for token in list(tokens):
-            token.owner.addtoproperty('tokens', token)
-
-        for token in list(proposal_tokens):
-            context.__delitem__(token.__name__)
-
+        remove_tokens(context)
         members = context.working_group.members
         url = request.resource_url(context, "@@index")
         root = getSite()

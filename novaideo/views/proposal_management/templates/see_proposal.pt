@@ -222,7 +222,7 @@
         tal:define="
               support any(t.owner is current_user for t in proposal.tokens_support);
               oppose any(t.owner is current_user for t in proposal.tokens_opposition);
-              active support or oppose or getattr(current_user, 'tokens', [])"
+              active support or oppose or proposal.get_token(current_user)"
         class="vertical-support proposal-support ${(support or oppose) and 'my-support'}"
         >
         <span class="label success"

@@ -1056,7 +1056,7 @@ def support_processsecurity_validation(process, context):
     if 'idea' not in request.content_to_support:
         return False
 
-    return getattr(user, 'tokens', []) and  \
+    return context.get_token(user) and  \
            not (user in [t.owner for t in context.tokens]) and \
            global_user_processsecurity()
 
@@ -1078,7 +1078,7 @@ class SupportIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
-        token = user.tokens[-1]
+        token = context.get_token(user)
         context.addtoproperty('tokens_support', token)
         context.init_support_history()
         context._support_history.append(
@@ -1107,7 +1107,7 @@ class OpposeIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
-        token = user.tokens[-1]
+        token = context.get_token(user)
         context.addtoproperty('tokens_opposition', token)
         context.init_support_history()
         context._support_history.append(
