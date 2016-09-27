@@ -281,6 +281,14 @@ function initscroll(){
 };
 
 
+function open_node_url(){
+    window.open($($(this).parents('.node').first().find('.node-shape').first()).attr('url'))
+}
+
+
+$(document).on('dblclick', 'g.node .node-shape, g.node text', open_node_url)
+
+
 $(document).on('click', '.btn-more-scroll', function(){
   var result_scroll = $($(this).parents('.result-scroll').first())
   result_scroll.mCustomScrollbar(

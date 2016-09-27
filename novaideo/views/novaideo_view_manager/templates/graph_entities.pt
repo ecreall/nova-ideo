@@ -8,9 +8,6 @@
       </div>
       <div class="graph-canvas" id="${canvas_id}"></div>
       <script>
-          $(document).on('dblclick', 'g.node .node-shape, g.node text', function(){
-              window.open($($(this).parents('.node').first().find('.node-shape').first()).attr('url'))
-          })
           deform.addCallback(
              '${canvas_id}',
              function(oid) {
