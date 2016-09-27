@@ -249,6 +249,6 @@ class Idea(VersionableEntity, DuplicableEntity,
         return result, newcalculated
 
     def get_token(self, user):
-        tokens = [t for t in user.tokens if
+        tokens = [t for t in getattr(user, 'tokens', []) if
                   not t.proposal]
         return tokens[-1] if tokens else None

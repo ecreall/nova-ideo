@@ -370,7 +370,7 @@ class Proposal(VersionableEntity,
         return copy_of_proposal
 
     def get_token(self, user):
-        tokens = [t for t in user.tokens if
+        tokens = [t for t in getattr(user, 'tokens', []) if
                   not t.proposal or t.proposal is self]
         proposal_tokens = [t for t in tokens if t.proposal is self]
         if proposal_tokens:
