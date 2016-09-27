@@ -76,7 +76,7 @@ class ConfigureSiteView(FormView):
         return data
 
     def before_update(self):
-        if not has_role(role=('SuperAdmin', )):
+        if not has_role(role=('Admin', )):
             self.schema = omit(
                 self.schema,
                 [('user_conf', ['only_for_members'])])
