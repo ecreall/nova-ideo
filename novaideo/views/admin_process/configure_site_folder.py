@@ -8,10 +8,11 @@ from pyramid.view import view_config
 
 from substanced.util import get_oid
 
+from dace.objectofcollaboration.principal.util import has_role
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select
+from pontus.schema import select, omit
 from pontus.file import OBJECT_OID
 
 from novaideo.content.processes.admin_process.behaviors import (
@@ -73,6 +74,12 @@ class ConfigureSiteView(FormView):
         #     data['work_conf']['deadline'] = deadlines[-1]
 
         return data
+
+    def before_update(self):
+        if not has_role(role=('SuperAdmin', )):
+            self.schema = omit(
+                self.schema,
+                [('user_conf', ['only_for_members'])])
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({ConfigureSite: ConfigureSiteView})

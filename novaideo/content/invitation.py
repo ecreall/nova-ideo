@@ -30,6 +30,9 @@ def roles_choice(node, kw):
     if not has_role(role=('Admin', )) and 'Admin' in roles:
         roles.pop('Admin')
 
+    if not has_role(role=('SiteAdmin', )) and 'SiteAdmin' in roles:
+        roles.pop('SiteAdmin')
+
     values = [(key, name) for (key, name) in roles.items()
               if not DACE_ROLES[key].islocal]
     values = sorted(values, key=lambda e: e[0])

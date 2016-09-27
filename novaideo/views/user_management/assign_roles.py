@@ -26,6 +26,9 @@ from novaideo.role import APPLICATION_ROLES
 @colander.deferred
 def roles_choice(node, kw):
     roles = APPLICATION_ROLES.copy()
+    if not has_role(role=('SiteAdmin', )) and 'SiteAdmin' in roles:
+        roles.pop('SiteAdmin')
+
     if not has_role(role=('Admin', )) and 'Admin' in roles:
         roles.pop('Admin')
 

@@ -220,7 +220,7 @@ class SeeInvitations(InfiniteCardinality):
 
 
 def edit_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return has_role(role=('SiteAdmin',))
 
 
 def edit_processsecurity_validation(process, context):
@@ -279,7 +279,7 @@ class EditInvitation(InfiniteCardinality):
 
 def accept_roles_validation(process, context):
     return has_role(role=('Anonymous',)) and \
-           not has_role(role=('Admin',))
+           not has_role(role=('SiteAdmin',))
 
 
 def accept_state_validation(process, context):
@@ -368,7 +368,7 @@ class AcceptInvitation(InfiniteCardinality):
 
 def refuse_roles_validation(process, context):
     return has_role(role=('Anonymous',)) and \
-           not has_role(role=('Admin',))
+           not has_role(role=('SiteAdmin',))
 
 
 def refuse_state_validation(process, context):

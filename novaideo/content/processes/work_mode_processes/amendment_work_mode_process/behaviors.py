@@ -249,7 +249,7 @@ class VotingAmendments(ElementaryAction):
 
 
 def ar_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return has_role(role=('SiteAdmin',))
 
 
 def ar_state_validation(process, context):

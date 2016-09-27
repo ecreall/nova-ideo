@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -10,22 +10,28 @@ from dace.objectofcollaboration.principal.role import (
 from novaideo import _
 
 
+@role(name='SiteAdmin',
+      superiors=[Administrator])
+class SiteAdmin(Role):
+    pass
+
+
 @role(name='Member',
-      superiors=[Administrator],
+      superiors=[Administrator, SiteAdmin],
       lowers=[Collaborator])
 class Member(Role):
     pass
 
 
 @role(name='PortalManager',
-      superiors=[Administrator],
+      superiors=[Administrator, SiteAdmin],
       lowers=[Collaborator, Member])
 class PortalManager(Role):
     pass
 
 
 @role(name='Observer',
-      superiors=[Administrator],
+      superiors=[Administrator, SiteAdmin],
       lowers=[Collaborator],
       islocal=True)
 class Observer(Role):
@@ -33,21 +39,21 @@ class Observer(Role):
 
 
 @role(name='Moderator',
-      superiors=[Administrator],
+      superiors=[Administrator, SiteAdmin],
       lowers=[Collaborator, Member, PortalManager])
 class Moderator(Role):
     pass
 
 
 @role(name='Examiner',
-      superiors=[Administrator],
+      superiors=[Administrator, SiteAdmin],
       lowers=[Collaborator, Member, Moderator])
 class Examiner(Role):
     pass
 
 
 @role(name='OrganizationResponsible',
-      superiors=[Administrator],
+      superiors=[Administrator, SiteAdmin],
       lowers=[Collaborator],
       islocal=True)
 class OrganizationResponsible(Role):
@@ -55,7 +61,7 @@ class OrganizationResponsible(Role):
 
 
 @role(name='Participant',
-      superiors=[Administrator],
+      superiors=[Administrator, SiteAdmin],
       lowers=[Collaborator, Observer],
       islocal=True)
 class Participant(Role):
@@ -69,19 +75,19 @@ class Elector(Role):
 
 
 @role(name='Certifier',
-     superiors=[Administrator],
-     lowers=[Collaborator])
+      superiors=[Administrator, SiteAdmin],
+      lowers=[Collaborator])
 class Certifier(Role):
     pass
-
-
 
 
 DEFAULT_ROLES = ['Member']
 
 
-APPLICATION_ROLES = {'Member': _('Member'),
-                     'Admin': _('Administrator'),
-                     'Moderator': _('Moderator'),
-                     'Examiner': _('Examiner'),
-                      }
+APPLICATION_ROLES = {
+    'Member': _('Member'),
+    'Admin': _('Administrator'),
+    'SiteAdmin': _('Site administrator'),
+    'Moderator': _('Moderator'),
+    'Examiner': _('Examiner'),
+}

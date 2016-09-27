@@ -177,7 +177,7 @@ def deactivate_roles_validation(process, context):
     return (context.organization and \
             has_role(role=('OrganizationResponsible',
                            context.organization))) or \
-            has_role(role=('Admin',))
+            has_role(role=('SiteAdmin',))
 
 
 def deactivate_processsecurity_validation(process, context):
@@ -220,7 +220,7 @@ def activate_roles_validation(process, context):
     return (context.organization and \
             has_role(role=('OrganizationResponsible',
                            context.organization))) or \
-            has_role(role=('Admin',))
+            has_role(role=('SiteAdmin',))
 
 
 def activate_processsecurity_validation(process, context):
@@ -256,7 +256,7 @@ class Activate(InfiniteCardinality):
 
 
 def assignroles_roles_validation(process, context):
-    return has_role(role=('Admin', ))
+    return has_role(role=('SiteAdmin', ))
 
 
 def assignroles_processsecurity_validation(process, context):
@@ -362,7 +362,7 @@ class Registration(InfiniteCardinality):
         if not getattr(root, 'moderate_registration', False):
             accept_preregistration(request, preregistration, root)
         else:
-            admins = get_users_with_role(role='Admin')
+            admins = get_users_with_role(role='SiteAdmin')
             alert(
                 'internal', [root], admins,
                 internal_kind=InternalAlertKind.admin_alert,
@@ -403,9 +403,9 @@ def ar_roles_validation(process, context):
     organization = getattr(context, 'organization', None)
     if organization:
         return has_any_roles(
-            roles=('Admin', ('OrganizationResponsible', organization)))
+            roles=('SiteAdmin', ('OrganizationResponsible', organization)))
 
-    return has_role(role=('Admin',))
+    return has_role(role=('SiteAdmin',))
 
 
 def ar_state_validation(process, context):
@@ -540,9 +540,9 @@ def remind_roles_validation(process, context):
     organization = getattr(context, 'organization', None)
     if organization:
         return has_any_roles(
-            roles=('Admin', ('OrganizationResponsible', organization)))
+            roles=('SiteAdmin', ('OrganizationResponsible', organization)))
 
-    return has_role(role=('Admin',))
+    return has_role(role=('SiteAdmin',))
 
 
 def remind_processsecurity_validation(process, context):
@@ -608,9 +608,9 @@ class Remind(InfiniteCardinality):
 def get_access_key_reg(obj):
     organization = getattr(obj, 'organization', None)
     if organization:
-        return serialize_roles(('Admin', ('OrganizationResponsible', obj)))
+        return serialize_roles(('SiteAdmin', 'Admin', ('OrganizationResponsible', obj)))
 
-    return serialize_roles(('Admin',))
+    return serialize_roles(('SiteAdmin', 'Admin'))
 
 
 def seereg_processsecurity_validation(process, context):
@@ -618,9 +618,9 @@ def seereg_processsecurity_validation(process, context):
     organization = getattr(context, 'organization', None)
     if organization:
         has_role_cond = has_any_roles(
-            roles=('Admin', ('OrganizationResponsible', context)))
+            roles=('SiteAdmin', ('OrganizationResponsible', context)))
     else:
-        has_role_cond = has_role(role=('Admin',))
+        has_role_cond = has_role(role=('SiteAdmin',))
 
     return has_role_cond and \
         global_user_processsecurity()
@@ -641,7 +641,7 @@ class SeeRegistration(InfiniteCardinality):
 
 
 def seeregs_processsecurity_validation(process, context):
-    return has_any_roles(roles=('Admin', 'OrganizationResponsible')) and \
+    return has_any_roles(roles=('SiteAdmin', 'OrganizationResponsible')) and \
            global_user_processsecurity()
 
 

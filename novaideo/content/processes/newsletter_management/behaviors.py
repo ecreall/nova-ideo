@@ -121,12 +121,12 @@ def send_newsletter_content(newsletter, request):
 
 
 def get_access_key(obj):
-    result = serialize_roles(('Admin',))
+    result = serialize_roles(('Admin', 'SiteAdmin'))
     return result
 
 
 def seenewsletter_processsecurity_validation(process, context):
-    return has_any_roles(roles=('Admin',))
+    return has_any_roles(roles=('SiteAdmin',))
 
 
 @access_action(access_key=get_access_key)
@@ -145,7 +145,7 @@ class SeeNewsletter(InfiniteCardinality):
 
 
 def createnewsletter_roles_validation(process, context):
-    return has_role(role=('Admin', ))
+    return has_role(role=('SiteAdmin', ))
 
 
 def createnewsletter_processsecurity_validation(process, context):
@@ -177,7 +177,7 @@ class CreateNewsletter(InfiniteCardinality):
 
 def edit_roles_validation(process, context):
     return has_any_roles(
-        roles=('Admin',))
+        roles=('SiteAdmin',))
 
 
 def edit_processsecurity_validation(process, context):
@@ -247,7 +247,7 @@ class RedactNewsletter(InfiniteCardinality):
 
 
 def send_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',))
+    return has_any_roles(roles=('SiteAdmin',))
 
 
 def send_processsecurity_validation(process, context):
@@ -275,7 +275,7 @@ class SendNewsletter(InfiniteCardinality):
 
 
 def remove_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',))
+    return has_any_roles(roles=('SiteAdmin',))
 
 
 def remove_processsecurity_validation(process, context):
@@ -406,7 +406,7 @@ def unsubscribe_processsecurity_validation(process, context):
 
 
 def unsubscribe_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',))
+    return has_any_roles(roles=('SiteAdmin',))
 
 
 class UnsubscribeNewsletter(InfiniteCardinality):
@@ -448,7 +448,7 @@ class UnsubscribeNewsletter(InfiniteCardinality):
 
 
 def see_all_roles_validation(process, context):
-    return has_any_roles(roles=('Admin',))
+    return has_any_roles(roles=('SiteAdmin',))
 
 
 def see_all_processsecurity_validation(process, context):

@@ -89,7 +89,7 @@ class LoginView(BasicView):
                 user = users[0] if users else None
                 valid_check = user and user.check_password(password)
                 if valid_check and \
-                   (has_role(user=user, role=('Admin', )) or \
+                   (has_role(user=user, role=('SiteAdmin', )) or \
                    'active' in getattr(user, 'state', [])):
                     request.session.pop('novaideo.came_from', None)
                     headers = remember(request, get_oid(user))

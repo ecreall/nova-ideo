@@ -114,7 +114,7 @@ class SendValidator(Validator):
 
     @classmethod
     def validate(cls, context, request, **kw):
-        if has_role(role=('Admin',)):
+        if has_role(role=('SiteAdmin',)):
             return True
 
         raise ValidationError(msg=_("Permission denied"))

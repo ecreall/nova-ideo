@@ -923,16 +923,16 @@ def get_access_key(obj):
         return ['always']
     elif 'submitted' in obj.state:
         return serialize_roles(
-            (('Owner', obj), 'Admin', 'Moderator'))
+            (('Owner', obj), 'SiteAdmin', 'Admin', 'Moderator'))
     else:
         return serialize_roles(
-            (('Owner', obj), 'Admin'))
+            (('Owner', obj), 'SiteAdmin', 'Admin'))
 
 
 def seeidea_processsecurity_validation(process, context):
     return access_user_processsecurity(process, context) and \
            ('published' in context.state or\
-            has_any_roles(roles=(('Owner', context), 'Admin')) or\
+            has_any_roles(roles=(('Owner', context), 'SiteAdmin')) or\
             ('submitted' in context.state and has_role(role=('Moderator',)))
             )
 

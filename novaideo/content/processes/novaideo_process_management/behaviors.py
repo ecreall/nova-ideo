@@ -18,7 +18,7 @@ from novaideo import _
 
 
 def update_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return has_role(role=('SiteAdmin',))
 
 
 class Update(InfiniteCardinality):

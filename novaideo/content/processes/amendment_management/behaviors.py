@@ -513,10 +513,11 @@ def get_access_key(obj):
     result = []
     if 'submitted' in obj.state:
         result = serialize_roles(
-            (('Participant', obj.proposal), 'Admin', 'Moderator'))
+            (('Participant', obj.proposal),
+             'SiteAdmin', 'Admin', 'Moderator'))
     elif 'draft' in obj.state:
         result = serialize_roles(
-            (('Owner', obj), 'Admin'))
+            (('Owner', obj), 'SiteAdmin', 'Admin'))
 
     return result
 
@@ -525,7 +526,7 @@ def seeamendment_processsecurity_validation(process, context):
     return ('submitted' in context.state and \
             has_any_roles(roles=(('Participant', context.proposal), 'Moderator'))) or \
            ('draft' in context.state and has_role(role=('Owner', context))) or \
-           has_any_roles(roles=('Admin',))
+           has_any_roles(roles=('SiteAdmin',))
 
 
 @access_action(access_key=get_access_key)

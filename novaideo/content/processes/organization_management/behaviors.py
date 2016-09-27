@@ -96,7 +96,7 @@ class CreatOrganizations(InfiniteCardinality):
 
 
 def edit_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return has_role(role=('SiteAdmin',))
 
 
 def edit_processsecurity_validation(process, context):

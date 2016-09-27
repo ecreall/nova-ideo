@@ -301,6 +301,22 @@ def evolve_person(root, registry):
     log.info('Persons evolved.')
 
 
+def evolve_access_keys(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+    from BTrees.OOBTree import OOBTree
+
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        node.reindex()
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Access keys evolved.')
+
+
 def evolve_channel_comments_at(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IChannel
@@ -446,6 +462,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_alerts)
     config.add_evolution_step(evolve_alert_subjects)
     config.add_evolution_step(subscribe_users_notif_ids)
+    config.add_evolution_step(evolve_access_keys)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

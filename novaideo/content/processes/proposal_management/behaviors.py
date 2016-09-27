@@ -217,7 +217,7 @@ def calculate_amendments_cycle_duration(process):
 
 
 def createproposal_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return has_role(role=('SiteAdmin',))
 
 
 def createproposal_processsecurity_validation(process, context):
@@ -1273,14 +1273,14 @@ def get_access_key(obj):
         return ['always']
     else:
         result = serialize_roles(
-            (('Owner', obj), 'Admin'))
+            (('Owner', obj), 'SiteAdmin', 'Admin'))
         return result
 
 
 def seeproposal_processsecurity_validation(process, context):
     return access_user_processsecurity(process, context) and \
            ('draft' not in context.state or \
-            has_any_roles(roles=(('Owner', context), 'Admin')))
+            has_any_roles(roles=(('Owner', context), 'SiteAdmin')))
 
 
 @access_action(access_key=get_access_key)
@@ -1305,7 +1305,7 @@ def decision_relation_validation(process, context):
 
 
 def decision_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return has_role(role=('SiteAdmin',))
 
 
 def decision_state_validation(process, context):
@@ -1482,7 +1482,7 @@ class Work(ElementaryAction):
 
 
 def submit_roles_validation(process, context):
-    return has_role(role=('Admin',))
+    return has_role(role=('SiteAdmin',))
 
 
 def submit_state_validation(process, context):
@@ -1618,12 +1618,12 @@ class AlertEnd(ElementaryAction):
 
 def get_access_key_ws(obj):
     return serialize_roles(
-        (('Participant', obj.proposal), 'Admin'))
+        (('Participant', obj.proposal), 'SiteAdmin', 'Admin'))
 
 
 def seeworkspace_processsecurity_validation(process, context):
     return has_any_roles(
-        roles=(('Participant', context.proposal), 'Admin'))
+        roles=(('Participant', context.proposal), 'SiteAdmin'))
 
 
 @access_action(access_key=get_access_key_ws)

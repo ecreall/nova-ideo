@@ -212,4 +212,4 @@ def get_states_mapping(user, context, state):
 def global_user_processsecurity():
     user = get_current()
     return 'active' in list(getattr(user, 'state', [])) or\
-        has_role(role=('Admin',), user=user)
+        has_role(role=('SiteAdmin',), user=user)

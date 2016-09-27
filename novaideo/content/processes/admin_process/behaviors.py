@@ -31,7 +31,7 @@ from novaideo.views.filter import find_entities
 
 
 def siteadmin_roles_validation(process, context):
-    return has_any_roles(roles=('Admin', ))
+    return has_any_roles(roles=('SiteAdmin', ))
 
 
 class ConfigureSite(InfiniteCardinality):
