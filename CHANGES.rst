@@ -5,7 +5,8 @@ Changelog
 ----------------
 
 - Remove runtime pyramid_robot dependency, this avoid a dependency on
-  robotsuite that depends on lxml.
+  robotsuite that depends on lxml. Add optional lxml dependency in
+  buildout:eggs
 
 
 1.1 (2016-09-15)
