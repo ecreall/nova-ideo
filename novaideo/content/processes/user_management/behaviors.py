@@ -128,7 +128,7 @@ class LogOut(InfiniteCardinality):
 
 
 def edit_roles_validation(process, context):
-    return has_role(role=('Owner', context))
+    return has_any_roles(roles=(('Owner', context), 'SiteAdmin'))
 
 
 def edit_processsecurity_validation(process, context):
