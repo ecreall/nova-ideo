@@ -27,7 +27,6 @@ requires = [
     'html_diff_wrapper',
     'Genshi',
     'beautifulsoup4',
-    'pyramid_robot',
     'profilehooks',
     'metadata_parser',
     'deform_treepy'

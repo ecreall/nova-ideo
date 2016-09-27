@@ -6,8 +6,12 @@
 
 import unittest
 from pyramid import testing
-from pyramid_robot.layer import Layer
-from webtest import http
+try:
+    from pyramid_robot.layer import Layer
+except ImportError:
+    class Layer():
+        pass
+
 from substanced.db import root_factory
 
 from dace.subscribers import stop_ioloop
@@ -69,6 +73,7 @@ class RobotLayer(BaseFunctionalTests, Layer):
 
     def setUp(self):
         super(RobotLayer, self).setUp()
+        from webtest import http
         self.server = http.StopableWSGIServer.create(self.app, port=8080)
 
     def tearDown(self):

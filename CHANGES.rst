@@ -4,7 +4,8 @@ Changelog
 1.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Remove runtime pyramid_robot dependency, this avoid a dependency on
+  robotsuite that depends on lxml.
 
 
 1.1 (2016-09-15)
