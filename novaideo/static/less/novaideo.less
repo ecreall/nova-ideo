@@ -1,3 +1,92 @@
+.file-container .file-header .file-meta {
+    color: #9e9ea6;
+    margin: -9px 0px 0px 4px;
+}
+
+.file-container:hover{
+  .file-icon{
+    box-shadow: -3px 3px 10px rgba(138,138,138,.8);
+  }
+}
+
+.file-container .file-header .file-title {
+    color: #555459;
+    font-weight: 700;
+    line-height: 1.2375;
+    margin: 0 4px 4px;
+    overflow: hidden!important;
+    text-overflow: ellipsis!important;
+    white-space: inherit;
+    font-size: 14px;
+}
+
+.file-container .file-header .file-icon{
+    display: inline-block;
+    position: absolute;
+    left: 7px;
+}
+
+.file-container .file-header {
+    min-height: 4.25rem;
+    padding-top: 0.6875rem;
+}
+
+.file-container .file-header {
+    display: block;
+    line-height: 1.4667;
+    margin: -0.8125rem -0.95rem -0.75rem;
+    min-height: 2.375rem;
+    padding: 0.8125rem 0.95rem 0.75rem 3.625rem;
+    position: relative;
+    text-decoration: none;
+}
+
+.file-container {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.file-icon-l{
+  width: 32px !important;
+  height: 41px !important;
+}
+
+.workspace-files .file-container .file-header{
+  padding: 0.8125rem 0.95rem 0.75rem 4.625rem !important;
+}
+
+.workspace-files .file-container{
+  display: block;
+  margin-left: 0px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 13px;
+  margin-bottom: 10px;
+}
+
+.workspace-files .file-container .file-header{
+  display: table !important;
+}
+
+.workspace-files .file-container .file-header .file-meta{
+  margin: -3px 0px 0px 4px !important;
+}
+
+.workspace-files .file-container .file-header .file-title {
+    font-size: 17px !important;
+}
+
+.workspace-files .file-container:hover{
+  box-shadow: 0px 3px 4px rgba(138,138,138,.5);
+  .file-icon{
+    box-shadow: none !important;
+  }
+}
+
+.file-preview-text{
+  overflow: hidden !important;
+}
+
 .search-item .view-item-title h1,
 .search-item .view-item-title h2,
 .search-item .view-item-title h3,
@@ -271,7 +360,7 @@
     box-shadow: none;
     padding: 0px;
     float: left;
-    text-align: initial;
+    text-align: center;
     vertical-align: middle;
     padding-bottom: 10px;
     margin-bottom: 10px;
@@ -298,7 +387,13 @@
 
 .files-block .form-group.deform-seq-item{
     margin-right: 20px;
-    display: inline;
+    display: inline-block;
+    box-shadow: 0 0 5px rgba(138,138,138,.8);
+    float: left;
+    min-height: 200px;
+    padding: 5px;
+    border-radius: 3px;
+    margin-bottom: 15px !important;
 }
 
 .files-block .form-group.deform-seq-item:not(.uploaded){
@@ -1308,6 +1403,7 @@ form .btn{
     height: 150px;
     border-radius: 3px;
     cursor: zoom-in;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
 }
 
 .file-slider .carousel-control{

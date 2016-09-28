@@ -19,7 +19,7 @@ from dace.util import (
     getSite, get_obj, find_service)
 from dace.objectofcollaboration.principal.util import (
     get_current)
-from dace.objectofcollaboration.entity import Entity
+from dace.objectofcollaboration.object import Object
 from pontus.view import BasicView
 
 from novaideo.views.idea_management.comment_idea import (
@@ -79,7 +79,7 @@ class IndexManagementJsonView(BasicView):
 
 
 @view_config(name='novaideoapi',
-             context=Entity,
+             context=Object,
              xhr=True,
              renderer='json')
 class NovaideoAPI(IndexManagementJsonView):

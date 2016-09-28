@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import mimetypes
 import datetime
 import pytz
 import string
@@ -91,6 +92,10 @@ DATE_FORMAT = {
         'day_hour_month': _('${day} ${hour}:00')
     }
 }
+
+
+MIMETYPES_MANAGER = mimetypes.MimeTypes()
+
 
 
 def to_localized_time(
@@ -229,11 +234,43 @@ def dates(propertyname):
     return property(_get, _set)
 
 
+def add_mimetype_map(mimetype, extension):
+    common = MIMETYPES_MANAGER.types_map[0]
+    base = MIMETYPES_MANAGER.types_map[1]
+    common_inv = MIMETYPES_MANAGER.types_map_inv[0]
+    base_inv = MIMETYPES_MANAGER.types_map_inv[1]
+    if mimetype not in common and \
+       mimetype not in base:
+        common['.'+extension] = mimetype
+        common_inv[mimetype] = common_inv[mimetype] if \
+            mimetype in common_inv else []
+        common_inv[mimetype].append('.'+extension)
+    elif mimetype in common_inv:
+        if extension not in common_inv[mimetype]:
+            common_inv[mimetype].append('.'+extension)
+    elif mimetype in base_inv:
+        if extension not in base_inv[mimetype]:
+            base_inv[mimetype].append('.'+extension)
+
+
+def guess_extension(file_):
+    mimetype = getattr(file_, 'mimetype', None)
+    if mimetype:
+        extensions = MIMETYPES_MANAGER.types_map_inv[1].get(mimetype, [])
+        if not extensions:
+            extensions = MIMETYPES_MANAGER.types_map_inv[0].get(mimetype, [])
+
+        if extensions:
+            return extensions[0][1:]
+
+    return 'file'
+
+
 def get_url_domain(url, name_only=False):
     parsed_uri = urlparse(url)
     if not name_only:
         return '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-    
+
     return '{uri.netloc}'.format(uri=parsed_uri)
 
 
@@ -901,6 +938,35 @@ def generate_listing_menu(request, context, **args):
             }
 
 
+FILE_TEMPLATE = 'novaideo:views/templates/up_file_result.pt'
+
+
+def render_files(files, request, template=FILE_TEMPLATE, navbar=False):
+    bodies = []
+    for file_ in files:
+        navbars = {}
+        if navbar:
+            try:
+                navbars = generate_listing_menu(
+                    request, file_,
+                    template=DEFAUL_LISTING_ACTIONS_TEMPLATE,)
+            except ObjectRemovedException:
+                pass
+
+        extension = guess_extension(file_)
+        object_values = {
+            'extension': extension,
+            'file': file_,
+            'menu_body': navbars.get('menu_body', None)
+        }
+        bodies.append(renderers.render(
+            template,
+            object_values,
+            request))
+
+    return bodies
+
+
 def get_emoji_form(
     request, template=EMOJI_TEMPLATE, emoji_class='',
     groups=DEFAULT_EMOJIS, items=[], is_grouped=True, add_preview=True):
@@ -912,3 +978,7 @@ def get_emoji_form(
          'groups': groups,
          'items': items},
         request)
+
+
+#add unrecognized mimetype
+add_mimetype_map('audio/mp3', 'mp3')

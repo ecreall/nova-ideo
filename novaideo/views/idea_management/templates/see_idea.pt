@@ -137,9 +137,9 @@
      <dt tal:condition="file_len>1" i18n:translate="">Attachments:</dt>
      <dt tal:condition="file_len==1" i18n:translate="">Attachment:</dt>
      <dd>
-          <tal:loop repeat="f files">
-            <a tal:attributes="href f['url']">${f['title']}</a><tal:separator condition="not: repeat['f'].end">, </tal:separator> 
-          </tal:loop>
+        <tal:loop repeat="f layout.render_files(idea.attached_files)">
+          <div tal:replace="structure f"/>
+        </tal:loop>
      </dd>
    </dl>
    </blockquote>

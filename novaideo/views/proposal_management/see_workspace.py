@@ -17,7 +17,8 @@ from pontus.view import BasicView
 from novaideo.content.processes.proposal_management.behaviors import (
     SeeWorkspace)
 from novaideo.content.workspace import Workspace
-from novaideo.utilities.util import generate_navbars, ObjectRemovedException
+from novaideo.utilities.util import (
+    generate_navbars, ObjectRemovedException, render_files)
 
 
 @view_config(
@@ -30,6 +31,7 @@ class SeeWorkspaceView(BasicView):
     name = 'seeworkspace'
     behaviors = [SeeWorkspace]
     template = 'novaideo:views/proposal_management/templates/see_workspace.pt'
+    file_template = 'novaideo:views/proposal_management/templates/up_file_result.pt'
     viewid = 'seeworkspace'
 
     def update(self):
@@ -43,10 +45,11 @@ class SeeWorkspaceView(BasicView):
         can_remove_file = any(a.action.node_id == 'remove_file'
                               for a in self.context.actions)
         files = self.context.files
+        files_bodies = render_files(
+            files, self.request, self.file_template, True)
         values = {
             'workspace': self.context,
-            'files': files,
-            'row_len': math.ceil(len(files)/3),
+            'files': files_bodies,
             'get_oid': get_oid,
             'can_remove_file': can_remove_file,
             'navbar_body': navbars['navbar_body'],

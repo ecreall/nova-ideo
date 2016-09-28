@@ -35,6 +35,7 @@ from dace.processinstance.activity import (
     InfiniteCardinality, ElementaryAction, ActionType)
 from dace.processinstance.core import ActivityExecuted
 from pontus.file import OBJECT_DATA
+from pontus.interfaces import IFile
 
 from novaideo.content.interface import (
     INovaIdeoApplication,
@@ -61,6 +62,7 @@ from novaideo.event import (
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo.core import access_action, serialize_roles
 from novaideo.content.alert import InternalAlertKind
+from novaideo.content.workspace import Workspace
 from novaideo.views.filter import get_users_by_preferences
 from novaideo.utilities.alerts_utility import alert
 from . import (
@@ -1630,6 +1632,11 @@ class SeeWorkspace(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def addfiles_state_validation(process, context):
+    wg = context.working_group
+    return wg and 'active' in wg.state and 'amendable' in context.proposal.state
+
+
 class AddFiles(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
@@ -1639,7 +1646,8 @@ class AddFiles(InfiniteCardinality):
     submission_title = _('Save')
     context = IWorkspace
     roles_validation = seeworkspace_processsecurity_validation
-    processsecurity_validation = createproposal_processsecurity_validation
+    processsecurity_validation = attach_processsecurity_validation
+    state_validation = addfiles_state_validation
 
     def start(self, context, request, appstruct, **kw):
         add_files_to_workspace(appstruct.get('files', []), context)
@@ -1650,25 +1658,46 @@ class AddFiles(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def rmfile_relation_validation(process, context):
+    parent = context.__parent__
+    return isinstance(parent, Workspace)
+
+
+def rmfile_roles_validation(process, context):
+    workspace = context.__parent__
+    return has_any_roles(
+        roles=(('Participant', workspace.proposal), 'SiteAdmin'))
+
+
+def rmfile_state_validation(process, context):
+    workspace = context.__parent__
+    wg = workspace.working_group
+    return wg and 'active' in wg.state and \
+        'amendable' in workspace.proposal.state
+
+
 class RemoveFile(InfiniteCardinality):
-    context = IWorkspace
-    roles_validation = seeworkspace_processsecurity_validation
-    processsecurity_validation = createproposal_processsecurity_validation
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-trash'
+    style_order = 2
+    submission_title = _('Continue')
+    context = IFile
+    roles_validation = rmfile_roles_validation
+    processsecurity_validation = attach_processsecurity_validation
+    state_validation = rmfile_state_validation
+    relation_validation = rmfile_relation_validation
 
     def start(self, context, request, appstruct, **kw):
-        oid = appstruct.get('oid', None)
-        if oid:
-            try:
-                file_ = get_obj(int(oid))
-                if file_ and file_ in context.files:
-                    context.delfromproperty('files', file_)
-            except Exception as error:
-                log.warning(error)
+        workspace = context.__parent__
+        if context in workspace.files:
+            workspace.delfromproperty('files', context)
 
-        return {}
+        return {'newcontext': workspace}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
 
 
 #TODO behaviors

@@ -65,6 +65,8 @@
       rel="stylesheet"/>
     <link href="${request.static_url('novaideo:static/css/slick-theme-cc.css')}"
       rel="stylesheet"/>
+    <link href="${request.static_url('novaideo:static/css/fileicon/fileicon.css')}"
+      rel="stylesheet"/>
     <link rel="stylesheet" href="${request.static_url('novaideo:static/custom-scrollbar/jquery.mCustomScrollbar.css')}" />
     <!-- Fav icons -->
 

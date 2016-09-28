@@ -1,0 +1,9 @@
+<div class="file-container">
+	<a target="_blank" href="${file.url}" class="file-header ">
+		<i class="file-icon" data-type="${extension}"></i>
+		<h4 class="file-title">${file.title}</h4>
+		<p class="file-meta">
+			<span class="size">${file.get_size()}B</span>
+		</p>
+    </a>
+</div>

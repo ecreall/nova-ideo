@@ -8,7 +8,8 @@ import pytz
 from pyramid_layout.layout import layout_config
 
 from novaideo.utilities.util import (
-    to_localized_time, get_emoji_form, EMOJI_TEMPLATE)
+    to_localized_time, get_emoji_form, EMOJI_TEMPLATE,
+    render_files)
 from novaideo.emojis import DEFAULT_EMOJIS
 
 
@@ -43,3 +44,6 @@ class GlobalLayout(object):
             emoji_class=emoji_class,
             groups=groups,
             is_grouped=is_grouped)
+
+    def render_files(self, files):
+        return render_files(files, self.request)
