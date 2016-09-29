@@ -83,7 +83,7 @@ def mysubscriber(event):
     catalogs = find_service(root, 'catalogs')
     catalogs.add_catalog('novaideo')
     site_type = os.getenv('INITIAL_SITE_TYPE', 'public')
-    root.only_for_members = site_type != 'public'
+    root.only_for_members = site_type.lower() != 'public'
     #invit initial user
     root.first_invitation_to_add = True
 
