@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import os
 import transaction
 from pyramid.events import subscriber, ApplicationCreated
 from pyramid.threadlocal import get_current_registry, get_current_request
@@ -13,7 +14,7 @@ from pyramid.threadlocal import manager
 from substanced.event import RootAdded
 from substanced.util import find_service
 
-from dace.util import getSite
+from dace.util import getSite, get_system_request
 
 from novaideo import core
 from novaideo.event import (
@@ -24,10 +25,50 @@ from novaideo.views.filter import (
 from novaideo.content.processes import get_states_mapping
 from novaideo import _
 from novaideo.content.alert import InternalAlertKind
+from novaideo.content.invitation import Invitation
+from novaideo.role import APPLICATION_ROLES
 from novaideo.utilities.alerts_utility import alert
+from novaideo.utilities.util import gen_random_token
+
 
 _CONTENT_TRANSLATION = [_("The proposal"),
                         _("The idea")]
+
+
+def _invite_first_user(root, registry, title, first_name, last_name, email):
+    first_user_roles = ['SiteAdmin']
+    settings = registry.settings
+    application_url = settings.get('application.url')
+    principals = find_service(root, 'principals')
+    user = principals['users']['admin']
+    invitation = Invitation(
+        user_title=title,
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        roles=first_user_roles
+        )
+    mail_template = root.get_mail_template('invitation')
+    novaideo_title = root.title
+    invitation.state.append('pending')
+    invitation.setproperty('manager', user)
+    invitation.__name__ = gen_random_token()
+    root.addtoproperty('invitations', invitation)
+    invitation.reindex()
+    roles_translate = [APPLICATION_ROLES.get(r, r)
+                       for r in invitation.roles]
+    url = application_url + '/' + invitation.__name__
+    subject = mail_template['subject'].format(
+        novaideo_title=novaideo_title
+    )
+    message = mail_template['template'].format(
+        invitation=invitation,
+        user_title='',
+        invitation_url=url,
+        roles=", ".join(roles_translate),
+        novaideo_title=novaideo_title)
+    alert('email', [root.get_site_sender()], [invitation.email],
+          subject=subject, body=message)
 
 
 @subscriber(RootAdded)
@@ -41,6 +82,10 @@ def mysubscriber(event):
     root.init_files()
     catalogs = find_service(root, 'catalogs')
     catalogs.add_catalog('novaideo')
+    site_type = os.getenv('INITIAL_SITE_TYPE', 'public')
+    root.only_for_members = site_type != 'public'
+    #invit initial user
+    root.first_invitation_to_add = True
 
 
 @subscriber(ObjectPublished)
@@ -192,6 +237,18 @@ def init_application(event):
     root.init_channels()
     # other init functions
     init_contents(registry)
+    #invite initial user if first deployment
+    if getattr(root, 'first_invitation_to_add', False):
+        title = os.getenv('INITIAL_USER_TITLE', '')
+        first_name = os.getenv('INITIAL_USER_FIRSTNAME', '')
+        last_name = os.getenv('INITIAL_USER_LASTNAME', '')
+        email = os.getenv('INITIAL_USER_EMAIL', '')
+        if first_name and last_name and email:
+            _invite_first_user(
+                root, registry, title,
+                first_name, last_name, email)
+
+        del root.first_invitation_to_add
 
     transaction.commit()
     manager.pop()
