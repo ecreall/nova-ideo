@@ -33,7 +33,7 @@ from novaideo import _, log
 
 COMMENT_LEVEL = 2
 
-BATCH_DEFAULT_SIZE = 10
+BATCH_DEFAULT_SIZE = 15
 
 
 class CommentsView(BasicView):
