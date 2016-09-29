@@ -21,7 +21,7 @@ def mailer_send(subject="!",
     try:
         request = get_current_request()
         if sender is None:
-            sender = request.registry.settings['novaideo.admin_email']
+            sender = request.registry.settings['mail.default_sender']
 
         mailer = get_mailer(request)
         message = Message(subject=subject,

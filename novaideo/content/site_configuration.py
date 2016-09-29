@@ -281,12 +281,6 @@ class KeywordsConfSchema(Schema):
     )
 
 
-@colander.deferred
-def default_sender(node, kw):
-    request = node.bindings['request']
-    return request.registry.settings['novaideo.admin_email']
-
-
 class OtherSchema(Schema):
 
     title = colander.SchemaNode(
@@ -307,17 +301,6 @@ class OtherSchema(Schema):
             add_subitem_text_template=_('Add a new contact')),
         title='Contacts',
         oid='contacts'
-        )
-
-    site_sender = colander.SchemaNode(
-        colander.String(),
-        widget=EmailInputWidget(),
-        validator=colander.All(
-            colander.Email(),
-            colander.Length(max=100)
-            ),
-        default=default_sender,
-        title=_('Site sender')
         )
 
     analytics = colander.SchemaNode(

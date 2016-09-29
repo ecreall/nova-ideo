@@ -407,8 +407,8 @@ class NovaIdeoApplication(VisualisableElement, Application):
 
     def get_site_sender(self):
         registry = get_current_registry()
-        default_sender = registry.settings['novaideo.admin_email']
-        return getattr(self, 'site_sender', default_sender)
+        default_sender = registry.settings['mail.default_sender']
+        return default_sender
 
     def get_work_modes(self):
         modes = getattr(self, 'work_modes', [])

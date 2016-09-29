@@ -30,7 +30,7 @@ class BaseFunctionalTests(object):
                     'substanced.initial_password': 'admin',
                     'novaideo.secret' : 'seekri1',
                     'substanced.uploads_tempdir' : self.tmpdir,
-                    'novaideo.admin_email': 'admin@example.com',
+                    'mail.default_sender': 'admin@example.com',
                     'pyramid.includes': [
                         'substanced',
                         'pyramid_chameleon',
