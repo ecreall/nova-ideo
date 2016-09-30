@@ -729,6 +729,19 @@ def get_remove_idea_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_create_idea_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("L'idée a bien été créée."),
+        **kwargs)
+    result['counters-to-update'] = [
+        'component-navbar-mycontents',
+        'novideo-contents-ideas',
+        'home-ideas-counter'
+        ]
+    return result
+
+
 #Proposals
 
 def get_opinion_proposal_metadata(action, request, context, api, **kwargs):
@@ -1074,7 +1087,9 @@ METADATA_GETTERS = {
     'channelmanagement.subscribe': get_subscribtion_metadata,
     'channelmanagement.unsubscribe': get_subscribtion_metadata,
 
-    'ideamanagement.creat': get_default_action_metadata,
+    'ideamanagement.creat': get_create_idea_metadata,
+    'ideamanagement.creatandpublish': get_create_idea_metadata,
+    'ideamanagement.creatandpublishasproposal': get_create_idea_metadata,
     'ideamanagement.delidea': get_remove_idea_metadata,
     'ideamanagement.duplicate': get_default_action_metadata,
     'ideamanagement.edit': get_edit_idea_metadata,

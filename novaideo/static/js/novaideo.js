@@ -761,12 +761,15 @@ $(document).ready(function(){
           event.preventDefault();
           return
         }
-
+        
         var formData = new FormData($(this)[0]);
         formData.append(button.val(), button.val())
+        var action_metadata = get_action_metadata(button)
+        delete action_metadata.search_item;
+        for(key in action_metadata){
+            formData.append(key, action_metadata[key])
+        }
         var url = parent.data('url')
-        formData.append('view_name', location.pathname)
-        
         var buttons = $($this.find('button'))
         buttons.addClass('disabled');
         loading_progress()
@@ -777,20 +780,20 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(data) {
-              if(data.state){
-                 if(data.redirect){
-                    document.location.href = data.redirect_url
-                  }else{
-                    $(data.body).hide().prependTo($('.result-container')).fadeIn(1500)
-                    $this.find('input[name="title"]').val(data['new_title']);
-                    $this.find('textarea[name="text"]').val('');
-                    $this.find('.deform-close-button').click()
-                    buttons.removeClass('disabled');
-                    button.removeClass('active');
-                    $this.removeClass('pending')
-                    close_add_idea_form()
-                    finish_progress()
-                  }
+              if(data.status && !data.redirect_url){
+                    $(data.new_obj_body).hide().prependTo($('.result-container')).fadeIn(1500)
+                    init_result_scroll()
+              }
+              $this.find('input[name="title"]').val(data['new_title']);
+              $this.find('textarea[name="text"]').val('');
+              $this.find('.deform-close-button').click()
+              buttons.removeClass('disabled');
+              button.removeClass('active');
+              $this.removeClass('pending')
+              close_add_idea_form()
+              update_components(data)
+              if(!data.redirect_url){
+                  finish_progress()
               }
              }
         });

@@ -21,11 +21,13 @@ from pontus.schema import select
 from pontus.view import BasicView
 
 from novaideo.utilities.util import render_listing_obj
+from novaideo.utilities.pseudo_react import (
+    get_all_updated_data, get_components_data)
 from novaideo.content.processes.idea_management.behaviors import (
     CreateIdea, CrateAndPublish, CrateAndPublishAsProposal)
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo import _
+from novaideo import _, log
 
 
 @view_config(
@@ -71,9 +73,10 @@ class CreateIdeaView_Json(BasicView):
 
     def creat_home_idea(self):
         try:
-            view_name = self.params('view_name')
+            view_name = self.params('source_path')
             view_name = view_name if view_name else ''
-            redirect = not view_name.endswith('seemycontents') #TODO
+            is_mycontents_view = view_name.endswith('seemycontents')
+            redirect = False
             for action_id in self.behaviors_instances:
                 if action_id in self.request.POST:
                     button = action_id
@@ -85,34 +88,43 @@ class CreateIdeaView_Json(BasicView):
                 self.context, self.request, behaviors=[add_idea_action])
             add_idea_view_instance.viewid = 'formcreateideahome'
             add_idea_view_result = add_idea_view_instance()
-            redirect_url = self.request.resource_url(
-                self.request.root, '@@seemycontents')
-            if isinstance(add_idea_view_result, HTTPFound):
-                redirect_url = add_idea_view_result.headers['location']
-
             if add_idea_view_instance.finished_successfully:
+                result = get_components_data(
+                    **get_all_updated_data(
+                        add_idea_action, self.request, self.context, self,
+                        view_data=(add_idea_view_instance, add_idea_view_result)
+                    ))
                 user = get_current()
                 body = ''
-                if not redirect:
-                    if button == 'Create_a_working_group':
-                        proposal = user.working_groups[-1].proposal
+                if button == 'Create_a_working_group':
+                    redirect = True
+                    proposal = user.working_groups[-1].proposal
+                    if is_mycontents_view:
+                        redirect = False
                         body = render_listing_obj(
                             self.request, proposal, user)
 
+                if not redirect:
                     idea = user.ideas[-1]
-                    body = body + render_listing_obj(
-                        self.request, idea, user)
+                    if not is_mycontents_view and \
+                       'published' not in idea.state:
+                        redirect = True
+                    else:
+                        body = body + render_listing_obj(
+                            self.request, idea, user)
 
-                return {'state': True,
-                        'body': body,
-                        'new_title': '', #self._get_new_title(user)
-                        'redirect': redirect,
-                        'redirect_url': redirect_url}
+                if not redirect:
+                    result['redirect_url'] = None
 
-        except Exception:
-            return {'state': False}
+                result['new_obj_body'] = body
+                result['status'] = True
+                return result
 
-        return {'state': False}
+        except Exception as error:
+            log.warning(error)
+            return {'status': False}
+
+        return {'status': False}
 
     def creat_idea(self):
         behavior = None

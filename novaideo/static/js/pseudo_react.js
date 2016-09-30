@@ -186,7 +186,7 @@ function list_items_component(data){
         });
         return
 	}
-    if(data.new_obj_body){
+    if(data.new_obj_body && data.search_item){
         data.search_item.replaceWith(data.new_obj_body)
         try {
             deform.processCallbacks();
