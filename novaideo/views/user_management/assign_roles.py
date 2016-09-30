@@ -20,18 +20,13 @@ from novaideo.content.processes.user_management.behaviors import (
     AssignRoles)
 from novaideo.content.person import Person
 from novaideo import _
-from novaideo.role import APPLICATION_ROLES
+from novaideo.role import get_authorized_roles
+from novaideo.content.invitation import roles_validator
 
 
 @colander.deferred
 def roles_choice(node, kw):
-    roles = APPLICATION_ROLES.copy()
-    if not has_role(role=('SiteAdmin', )) and 'SiteAdmin' in roles:
-        roles.pop('SiteAdmin')
-
-    if not has_role(role=('Admin', )) and 'Admin' in roles:
-        roles.pop('Admin')
-
+    roles = get_authorized_roles()
     values = [(key, name) for (key, name) in roles.items()
               if not DACE_ROLES[key].islocal]
     values = sorted(values, key=lambda e: e[0])
@@ -42,6 +37,9 @@ class RolesSchema(Schema):
 
     roles = colander.SchemaNode(
         colander.Set(),
+        validator=colander.All(
+            roles_validator
+            ),
         widget=roles_choice,
         title=_('Roles'),
         missing='Member'

@@ -4,6 +4,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+from dace.objectofcollaboration.principal.util import (
+  has_role, get_current)
 from dace.objectofcollaboration.principal.role import (
     Collaborator, Role, Administrator, role)
 
@@ -79,6 +81,22 @@ class Elector(Role):
       lowers=[Collaborator])
 class Certifier(Role):
     pass
+
+
+def get_authorized_roles(user=None):
+    if not user:
+        user = get_current()
+
+    roles = APPLICATION_ROLES.copy()
+    if not has_role(user=user, role=('SiteAdmin', )) and \
+       'SiteAdmin' in roles:
+        roles.pop('SiteAdmin')
+
+    if not has_role(user=user, role=('Admin', )) and \
+       'Admin' in roles:
+        roles.pop('Admin')
+
+    return roles
 
 
 DEFAULT_ROLES = ['Member']

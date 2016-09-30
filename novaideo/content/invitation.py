@@ -21,18 +21,23 @@ from pontus.core import VisualisableElement
 from .interface import IInvitation
 from .person import PersonSchema
 from novaideo import _
-from novaideo.role import DEFAULT_ROLES, APPLICATION_ROLES
+from novaideo.role import DEFAULT_ROLES, get_authorized_roles
+
+
+@colander.deferred
+def roles_validator(node, kw):
+    roles = get_authorized_roles()
+    not_authorized = [r for r in kw if r not in roles]
+    if not_authorized:
+        raise colander.Invalid(
+            node,
+            _('You do not have the right to assign these/this role(s): ${roles}',
+              mapping={'roles': ', '.join(not_authorized)}))
 
 
 @colander.deferred
 def roles_choice(node, kw):
-    roles = APPLICATION_ROLES.copy()
-    if not has_role(role=('Admin', )) and 'Admin' in roles:
-        roles.pop('Admin')
-
-    if not has_role(role=('SiteAdmin', )) and 'SiteAdmin' in roles:
-        roles.pop('SiteAdmin')
-
+    roles = get_authorized_roles()
     values = [(key, name) for (key, name) in roles.items()
               if not DACE_ROLES[key].islocal]
     values = sorted(values, key=lambda e: e[0])
@@ -49,6 +54,9 @@ class InvitationSchema(PersonSchema):
     roles = colander.SchemaNode(
         colander.Set(),
         widget=roles_choice,
+        validator=colander.All(
+            roles_validator
+            ),
         title=_('Roles'),
         missing=DEFAULT_ROLES,
         default=DEFAULT_ROLES,

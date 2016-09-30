@@ -52,6 +52,7 @@ from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import global_user_processsecurity
+from novaideo.role import get_authorized_roles
 
 
 def accept_preregistration(request, preregistration, root):
@@ -282,19 +283,23 @@ class AssignRoles(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         new_roles = list(appstruct['roles'])
-        current_roles = [r for r in get_roles(context) if
-                         not getattr(
-                         DACE_ROLES.get(r, None), 'islocal', False)]
-        roles_to_revoke = [r for r in current_roles
-                           if r not in new_roles]
-        roles_to_grant = [r for r in new_roles
-                          if r not in current_roles]
-        revoke_roles(context, roles_to_revoke)
-        grant_roles(context, roles_to_grant)
-        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        context.reindex()
-        request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+        authorized_roles = get_authorized_roles()
+        new_roles = [r for r in new_roles if r in authorized_roles]
+        if new_roles:
+            current_roles = [r for r in get_roles(context) if
+                             not getattr(
+                                 DACE_ROLES.get(r, None), 'islocal', False)]
+            roles_to_revoke = [r for r in current_roles
+                               if r not in new_roles]
+            roles_to_grant = [r for r in new_roles
+                              if r not in current_roles]
+            revoke_roles(context, roles_to_revoke)
+            grant_roles(context, roles_to_grant)
+            context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+            context.reindex()
+            request.registry.notify(ActivityExecuted(
+                self, [context], get_current()))
+
         return {}
 
     def redirect(self, context, request, **kw):
