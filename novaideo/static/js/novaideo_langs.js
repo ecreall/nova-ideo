@@ -20,7 +20,8 @@ novaideoI18n = {
   "Your comment cannot be empty!": "Your comment cannot be empty!",
   "Your intention and comment cannot be empty!": "Your intention and comment cannot be empty!",
   "Unread messages": "Unread messages",
-  "Required": "Required"
+  "Required": "Required",
+  "Loading": "Loading"
 },
 
 'fr':{
@@ -43,7 +44,8 @@ novaideoI18n = {
   "Unread messages": "Messages non lus",
   "Your comment cannot be empty!": "Votre commentaire ne peut être vide !",
   "Your intention and comment cannot be empty!": "Votre intention et votre commentaire ne peuvent être vides !",
-  "Required": "Requis"
+  "Required": "Requis",
+  "Loading": "Chargement en cours"
 }
 }
 

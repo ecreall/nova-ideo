@@ -216,7 +216,17 @@ function list_channels_component(data){
 
 function redirect_component(data){
 	if (data.redirect_url){
-		 window.location.replace(data.redirect_url)
+		$.notify(
+            {
+              text: novaideo_translate('Loading') + '...',
+              icon: '<span class="ion-refreshing"></span>'
+             },
+             {
+              style: 'bootstrap',
+              globalPosition: 'bottom center',
+              className: 'warning',
+        });
+		window.location.replace(data.redirect_url)
     }
 }
 

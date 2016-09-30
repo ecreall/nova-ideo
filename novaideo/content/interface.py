@@ -34,6 +34,11 @@ class IEntity(IEntityO):
     pass
 
 
+@interface(True)
+class IIdeaSource(IEntityO):
+    pass
+
+
 @interface()
 @interface_config(type_id='creation_culturelle_image',
                   deserializer=file_deserializer,
@@ -127,7 +132,7 @@ class ICommentable(IEntity):
 
 
 @interface()
-class IComment(ICommentable):
+class IComment(ICommentable, IIdeaSource):
     pass
 
 
@@ -266,7 +271,7 @@ class IOrganization(IEntity):
 
 
 @interface()
-class INovaIdeoApplication(IEntity, IApplication):
+class INovaIdeoApplication(IEntity, IApplication, IIdeaSource):
     pass
 
 

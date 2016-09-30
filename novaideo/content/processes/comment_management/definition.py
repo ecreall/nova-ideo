@@ -26,7 +26,8 @@ from .behaviors import (
     Edit,
     Remove,
     Pin,
-    Unpin)
+    Unpin,
+    TransformToIdea)
 from novaideo import _
 
 
@@ -63,6 +64,10 @@ class CommentManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Unpin"),
                                        title=_("Unpin"),
                                        groups=[]),
+                transformtoidea = ActivityDefinition(contexts=[TransformToIdea],
+                                       description=_("Transform a comment into an idea"),
+                                       title=_("Transform into an idea"),
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -70,6 +75,8 @@ class CommentManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'respond'),
                 TransitionDefinition('respond', 'eg'),
+                TransitionDefinition('pg', 'transformtoidea'),
+                TransitionDefinition('transformtoidea', 'eg'),
                 TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('edit', 'eg'),
                 TransitionDefinition('pg', 'remove'),

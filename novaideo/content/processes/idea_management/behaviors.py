@@ -32,13 +32,14 @@ from dace.processinstance.core import ActivityExecuted
 
 import html_diff_wrapper
 
-from novaideo.content.interface import INovaIdeoApplication, Iidea
+from novaideo.content.interface import (
+    INovaIdeoApplication, Iidea, IIdeaSource)
 from ..user_management.behaviors import (
     global_user_processsecurity,
     access_user_processsecurity)
 from novaideo import _
 from novaideo.content.idea import Idea
-from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
+from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
 from novaideo.utilities.util import connect
 from novaideo.event import (
@@ -104,7 +105,7 @@ class CrateAndPublish(InfiniteCardinality):
     style_order = 1
     title = _('Create and publish')
     # submission_title = _('Save and publish')
-    context = INovaIdeoApplication
+    context = IIdeaSource
     roles_validation = createidea_roles_validation
     processsecurity_validation = createidea_processsecurity_validation
 

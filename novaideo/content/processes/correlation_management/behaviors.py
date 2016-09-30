@@ -18,7 +18,7 @@ from novaideo.content.correlation import Correlation
 from novaideo.content.interface import ICorrelation
 from novaideo import _
 from ..user_management.behaviors import global_user_processsecurity
-from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
+from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import can_access, access_action, get_access_keys
 
 

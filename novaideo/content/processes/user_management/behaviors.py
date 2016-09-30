@@ -36,7 +36,7 @@ from dace.processinstance.activity import (
     ActionType)
 from dace.processinstance.core import ActivityExecuted, PROCESS_HISTORY_KEY
 
-from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
+from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.content.interface import (
     INovaIdeoApplication, IPerson, IPreregistration)
 from novaideo.content.token import Token

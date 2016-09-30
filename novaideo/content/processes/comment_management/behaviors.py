@@ -26,9 +26,8 @@ from novaideo import _
 from novaideo.utilities.util import connect, disconnect
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.alert import InternalAlertKind
-
-
-VALIDATOR_BY_CONTEXT = {}
+from novaideo.content.processes.idea_management.behaviors import CreateIdea
+from . import VALIDATOR_BY_CONTEXT
 
 
 def respond_relation_validation(process, context):
@@ -78,7 +77,7 @@ class Respond(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_interaction_type = 'comment-replay'
     style_action_class = 'comment-inline-toggle'
-    style_order = 1
+    style_order = 0
     title = _('Replay')
     access_controled = True
     context = IComment
@@ -219,7 +218,7 @@ class Edit(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_interaction_type = 'comment-replay'
     style_action_class = 'comment-edit-action comment-inline-toggle'
-    style_order = 4
+    style_order = 2
     submission_title = _('Continue')
     context = IComment
     roles_validation = edit_roles_validation
@@ -270,7 +269,7 @@ class Remove(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_action_class = 'comment-ajax-action comment-remove-action'
     style_picto = 'glyphicon glyphicon-trash'
-    style_order = 3
+    style_order = 4
     submission_title = _('Continue')
     context = IComment
     roles_validation = edit_roles_validation
@@ -303,7 +302,7 @@ class Pin(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_action_class = 'comment-ajax-action comment-un-pin-action'
     style_picto = 'typcn typcn-pin'
-    style_order = 2
+    style_order = 1
     submission_title = _('Continue')
     context = IComment
     roles_validation = pin_processsecurity_validation
@@ -342,5 +341,15 @@ class Unpin(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         root = getSite()
         return HTTPFound(request.resource_url(root))
+
+
+class TransformToIdea(CreateIdea):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'icon novaideo-icon icon-idea'
+    style_order = 3
+    title = _('Transform into an idea')
+    context = IComment
 
 #TODO behaviors

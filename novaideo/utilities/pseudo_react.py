@@ -476,6 +476,19 @@ def get_respond_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_tranform_into_idea_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("Le commentaire a bien été tranformé en une idée."),
+        **kwargs)
+    result['counters-to-update'] = [
+        'component-navbar-mycontents',
+        'novideo-contents-ideas',
+        'home-ideas-counter'
+        ]
+    return result
+
+
 def get_present_metadata(action, request, context, api, **kwargs):
     body = None
     if 'view_data' in kwargs:
@@ -1127,6 +1140,7 @@ METADATA_GETTERS = {
     'commentmanagement.respond': get_respond_metadata,
     'commentmanagement.remove': get_remove_comment_metadata,
     'commentmanagement.edit': get_edit_comment_metadata,
+    'commentmanagement.transformtoidea': get_tranform_into_idea_metadata,
 
     'registrationmanagement.remove': get_remove_registration_metadata,
     'registrationmanagement.refuse': get_remove_registration_metadata,

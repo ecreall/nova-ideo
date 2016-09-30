@@ -213,11 +213,7 @@ class Comment(Commentable, Emojiable):
         return []
 
     def get_related_contents(self):
-        if self.related_correlation:
-            return [t for t
-                    in self.related_correlation.targets
-                    if not isinstance(t, Comment)]
-        return []
+        return self.related_contents
 
     def init_urls(self):
         self.urls = PersistentDict({})

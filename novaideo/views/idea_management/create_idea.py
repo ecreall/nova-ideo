@@ -47,6 +47,7 @@ class CreateIdeaView(FormView):
     formid = 'formcreateidea'
     name = 'createidea'
 
+
     def before_update(self):
         if not getattr(self, 'is_home_form', False):
             self.action = self.request.resource_url(

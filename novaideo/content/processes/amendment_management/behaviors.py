@@ -33,7 +33,7 @@ from novaideo.content.interface import IAmendment
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo import _
 from novaideo.content.amendment import Amendment
-from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
+from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
 from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea,

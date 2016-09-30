@@ -47,7 +47,7 @@ from ..user_management.behaviors import (
     access_user_processsecurity)
 from novaideo import _, log
 from novaideo.content.proposal import Proposal
-from ..comment_management.behaviors import VALIDATOR_BY_CONTEXT
+from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.content.correlation import CorrelationType
 from novaideo.content.token import Token
 from novaideo.content.working_group import WorkingGroup
