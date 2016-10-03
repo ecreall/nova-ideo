@@ -24,20 +24,26 @@ def update_roles_validation(process, context):
 class Update(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-repeat'
+    style_interaction = 'ajax-action'
     style_order = 10
     submission_title = _('Update')
     context = INovaIdeoApplication
     roles_validation = update_roles_validation
 
     def start(self, context, request, appstruct, **kw):
+        processes_names = appstruct['processes']
         root = getSite()
         runtime = root['runtime']
-        processes = list(runtime.processes)
+        processes = [p for p in list(runtime.processes)
+                     if p.__name__ in processes_names]
         if self.process in processes:
             processes.remove(self.process)
 
-        [runtime.delfromproperty('processes', p) for p in processes
-         if getattr(p.definition, 'isUnique', False)]
+        for proc in processes:
+            proc_def = proc.definition
+            if getattr(proc_def, 'isUnique', False):
+                runtime.delfromproperty('processes', proc)
+
         return {}
 
     def redirect(self, context, request, **kw):

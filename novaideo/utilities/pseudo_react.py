@@ -899,6 +899,13 @@ def get_assigne_roles_user_metadata(action, request, context, api, **kwargs):
         **kwargs)
 
 
+def get_update_processes_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Les processus sont bien mis à jour."),
+        **kwargs)
+
 #Counters
 
 def component_navbar_myselections(action, request, context, api, **kwargs):
@@ -1088,10 +1095,10 @@ def home_ideas_counter(action, request, context, api, **kwargs):
     return result
 
 
-
 METADATA_GETTERS = {
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
+    'novaideoprocessmanagement.update': get_update_processes_metadata,
 
     'novaideoviewmanager.contact': get_default_action_metadata,
 
