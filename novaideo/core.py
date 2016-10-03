@@ -123,7 +123,8 @@ class access_action(object):
 
 def can_access(user, context, request=None, root=None):
     """ Return 'True' if the user can access to the context"""
-    declared = context.__provides__.declared[0]
+    declared = getattr(getattr(context, '__provides__', None),
+                       'declared', [None])[0]
     for data in ACCESS_ACTIONS.get(declared, []):
         if data['action'].processsecurity_validation(None, context):
             return True

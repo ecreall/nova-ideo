@@ -7,17 +7,17 @@
         <div class="graph-legend-weak"><span class="line"></span> <span i18n:translate="">Weak relation</span></div>
       </div>
       <div class="graph-canvas" id="${canvas_id}"></div>
-      <script>
+      <script tal:define="valid_nodes dict([n for n in nodes.items() if can_access(user, get_obj(n[1]['oid']))])">
           deform.addCallback(
              '${canvas_id}',
              function(oid) {
                   var G = new jsnx.Graph();
-                  <div tal:omit-tag="" tal:repeat="node nodes">
-                    var node${node} = {toString: function() { return ${json.dumps(nodes[node]['title'])}; }};
+                  <div tal:omit-tag="" tal:repeat="node valid_nodes">
+                    var node${node} = {toString: function() { return ${json.dumps(valid_nodes[node]['title'])}; }};
                   </div>
-                  G.addNodesFrom([${','.join(['[node'+node+', {url:"'+request.resource_url(get_obj(nodes[node]['oid']), '@@index')+'", entityid: "node'+node+'", descriminator:"'+nodes[node]['descriminator']+'"}]' for node in nodes])}]);
-                  <div tal:omit-tag="" tal:repeat="node nodes">
-                    G.addEdgesFrom([${','.join(['[node'+node+', node'+target[0]+',{type:"'+target[1]+'"}]' for target in nodes[node]['targets']])}]);
+                  G.addNodesFrom([${','.join(['[node'+node+', {url:"'+request.resource_url(get_obj(valid_nodes[node]['oid']), '@@index')+'", entityid: "node'+node+'", descriminator:"'+valid_nodes[node]['descriminator']+'"}]' for node in valid_nodes])}]);
+                  <div tal:omit-tag="" tal:repeat="node valid_nodes">
+                    G.addEdgesFrom([${','.join(['[node'+node+', node'+target['id']+',{type:"'+target['type']+'"}]' for target in valid_nodes[node]['targets'] if can_access(user, get_obj(target['oid']))])}]);
                   </div>
                   var color = d3.scale.category20();
                   jsnx.draw(G, {

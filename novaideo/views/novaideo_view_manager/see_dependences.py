@@ -6,6 +6,7 @@
 import json
 from pyramid.view import view_config
 
+from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import (
     DEFAULTMAPPING_ACTIONS_VIEWS)
 from dace.util import get_obj
@@ -16,6 +17,7 @@ from novaideo.core import Node
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeGraph)
 from novaideo import _
+from novaideo.core import can_access
 
 
 @view_config(
@@ -35,9 +37,12 @@ class SeeGraphView(BasicView):
 
     def update(self):
         result = {}
+        user = get_current()
         values = {'nodes': self.context.graph,
                   'node_id': self.context.get_node_id(),
                   'get_obj': get_obj,
+                  'can_access': can_access,
+                  'user': user,
                   'json': json}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

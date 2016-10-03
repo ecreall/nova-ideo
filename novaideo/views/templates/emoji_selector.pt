@@ -8,9 +8,9 @@
     </div>
     <div class="emoji-groups malihu-scroll">
       <div tal:omit-tag="" tal:repeat="group groups" >
-        <h3 tal:condition="is_grouped"
+        <div class="emoji-group-title" tal:condition="is_grouped"
             id="emoji-${group['id']}"
-            i18n:translate="">${group['title']}</h3>
+            i18n:translate="">${group['title']}</div>
         <p class="emoji-container">
           <span tal:omit-tag="" tal:repeat="item group['items']" >${item+'\n'}</span>
         </p>

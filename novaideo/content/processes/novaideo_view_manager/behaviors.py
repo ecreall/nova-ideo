@@ -396,7 +396,7 @@ def seegraph_processsecurity_validation(process, context):
 class SeeGraph(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_interaction = 'ajax-action'
-    style_interaction_container = 'modal-l'
+    style_interaction_container = 'modal-l modal-graph'
     style_picto = 'ion-android-share'
     style_order = 1
     isSequential = False

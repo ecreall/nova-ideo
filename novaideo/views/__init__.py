@@ -37,6 +37,7 @@ from novaideo.utilities.pseudo_react import (
     get_components_data, get_all_updated_data)
 from novaideo.views.filter import find_entities, FILTER_SOURCES
 from novaideo import _, log
+from novaideo.core import can_access
 
 
 ALL_VALUES_KEY = "*"
@@ -536,7 +537,8 @@ class NovaideoAPI(IndexManagementJsonView):
         if oid_str:
             try:
                 obj = get_obj(int(oid_str))
-                if obj:
+                user = get_current()
+                if obj and can_access(user, obj):
                     try:
                         navbars = generate_listing_menu(
                             self.request, obj,

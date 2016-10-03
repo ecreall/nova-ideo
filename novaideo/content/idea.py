@@ -227,12 +227,16 @@ class Idea(VersionableEntity, DuplicableEntity,
             return {}, newcalculated
 
         related_proposals = self.related_proposals
-        targets = [(t.get_node_id(), 'solid')
+        targets = [{'id': t.get_node_id(),
+                    'type': 'solid',
+                    'oid': getattr(t, '__oid__', 0)}
                    for t in related_proposals]
         related_contents = [r for r in self.related_contents
                             if isinstance(r, Node)
                             and r not in related_proposals]
-        targets.extend([(t.get_node_id(), 'weak')
+        targets.extend([{'id': t.get_node_id(),
+                         'type': 'weak',
+                         'oid': getattr(t, '__oid__', 0)}
                         for t in related_contents])
         result = {oid: {
             'oid': self.__oid__,
