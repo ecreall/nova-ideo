@@ -8,7 +8,7 @@
   id 'comment-'+str(oid);
   picture getattr(comment.author, 'picture', None);
   attached_files comment.files;
-  contents comment.get_related_contents();">
+  contents comment.get_related_contents(current_user);">
          <div class="thumbnail right-caption span4 comment-data">
             <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
             <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>

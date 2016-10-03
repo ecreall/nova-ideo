@@ -204,18 +204,15 @@ class Proposal(VersionableEntity,
 
     @property
     def related_ideas(self):
-        lists_targets = [(c.targets, c) for c in self.source_correlations
-                         if c.type == CorrelationType.solid and
-                         'related_ideas' in c.tags]
-        return MultiDict([(target, c) for targets, c in lists_targets
-                          for target in targets])
+        return MultiDict([(item, c) for (item, c) in self.all_source_related_contents.items()
+                if c.type == CorrelationType.solid and
+                'related_ideas' in c.tags])
 
     @property
     def related_contents(self):
-        lists_targets = [(c.targets, c) for c in self.source_correlations
-                         if c.type == CorrelationType.weak]
-        return MultiDict([(target, c) for targets, c in lists_targets
-                          for target in targets])
+        return MultiDict([(item, c) for (item, c) in
+                          self.all_source_related_contents.items()
+                          if c.type == CorrelationType.weak])
 
     @property
     def tokens(self):
@@ -294,38 +291,6 @@ class Proposal(VersionableEntity,
 
         return result
 
-    def get_nodes_data(self, calculated=[]):
-        oid = self.get_node_id()
-        newcalculated = list(calculated)
-        if oid in calculated:
-            return {}, newcalculated
-
-        related_ideas = self.related_ideas
-        targets = [{'id': t.get_node_id(),
-                    'type': 'solid',
-                    'oid': getattr(t, '__oid__', 0)}
-                   for t in related_ideas]
-        related_contents = [r for r in self.related_contents
-                            if isinstance(r, Node)
-                            and r not in related_ideas]
-        targets.extend([{'id': t.get_node_id(),
-                         'type': 'weak',
-                         'oid': getattr(t, '__oid__', 0)}
-                        for t in related_contents])
-        result = {oid: {
-            'oid': self.__oid__,
-            'title': self.title,
-            'descriminator': 'proposal',
-            'targets': targets
-        }}
-        related_contents.extend(related_ideas)
-        newcalculated.append(oid)
-        for r_content in related_contents:
-            sub_result, newcalculated = r_content.get_nodes_data(newcalculated)
-            result.update(sub_result)
-
-        return result, newcalculated
-
     def set_related_ideas(self, relatedideas, user):
         current_related_ideas = list(self.related_ideas.keys())
         related_ideas_to_add = [i for i in relatedideas
@@ -381,3 +346,6 @@ class Proposal(VersionableEntity,
             return proposal_tokens[0]
 
         return tokens[-1] if tokens else None
+
+    def get_node_descriminator(self):
+        return 'proposal'

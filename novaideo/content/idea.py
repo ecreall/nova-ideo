@@ -143,17 +143,17 @@ class Idea(VersionableEntity, DuplicableEntity,
     @property
     def related_proposals(self):
         """Return all proposals that uses this idea"""
-        return MultiDict([(c.source, c) for c in self.target_correlations
+        return MultiDict([(item, c) for (item, c) in
+                          self.all_target_related_contents.items()
                           if c.type == CorrelationType.solid and
                           'related_proposals' in c.tags])
 
     @property
     def related_contents(self):
         """Return all related contents"""
-        lists_targets = [(c.targets, c) for c in self.source_correlations
-                         if c.type == CorrelationType.weak]
-        return MultiDict([(target, c) for targets, c in lists_targets
-                          for target in targets])
+        return MultiDict([(item, c) for (item, c) in
+                          self.all_source_related_contents.items()
+                          if c.type == CorrelationType.weak])
 
     @property
     def tokens(self):
@@ -220,39 +220,10 @@ class Idea(VersionableEntity, DuplicableEntity,
 
         return result
 
-    def get_nodes_data(self, calculated=[]):
-        oid = self.get_node_id()
-        newcalculated = list(calculated)
-        if oid in calculated:
-            return {}, newcalculated
-
-        related_proposals = self.related_proposals
-        targets = [{'id': t.get_node_id(),
-                    'type': 'solid',
-                    'oid': getattr(t, '__oid__', 0)}
-                   for t in related_proposals]
-        related_contents = [r for r in self.related_contents
-                            if isinstance(r, Node)
-                            and r not in related_proposals]
-        targets.extend([{'id': t.get_node_id(),
-                         'type': 'weak',
-                         'oid': getattr(t, '__oid__', 0)}
-                        for t in related_contents])
-        result = {oid: {
-            'oid': self.__oid__,
-            'title': self.title,
-            'descriminator': 'idea',
-            'targets': targets
-        }}
-        related_contents.extend(related_proposals)
-        newcalculated.append(oid)
-        for r_content in related_contents:
-            sub_result, newcalculated = r_content.get_nodes_data(newcalculated)
-            result.update(sub_result)
-
-        return result, newcalculated
-
     def get_token(self, user):
         tokens = [t for t in getattr(user, 'tokens', []) if
                   not t.proposal]
         return tokens[-1] if tokens else None
+
+    def get_node_descriminator(self):
+        return 'idea'

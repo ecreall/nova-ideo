@@ -6,6 +6,7 @@
 import deform
 from pyramid.view import view_config
 
+from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.view import BasicView
@@ -24,7 +25,9 @@ class UnpinViewStudyReport(BasicView):
 
     def update(self):
         result = {}
-        values = {'comment': self.context}
+        user = get_current()
+        values = {'comment': self.context,
+                  'current_user': user}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

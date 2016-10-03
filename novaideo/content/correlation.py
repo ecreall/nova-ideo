@@ -31,6 +31,16 @@ class CorrelationType:
     weak = 0
     solid = 1
 
+    @classmethod
+    def type_name(cls, value):
+        if value == 0:
+            return 'weak'
+
+        if value == 1:
+            return 'solid'
+
+        return None
+
 
 @colander.deferred
 def targets_choice(node, kw):
@@ -114,7 +124,7 @@ class Correlation(VisualisableElement, Entity):
     author = SharedUniqueProperty('author')
     channels = CompositeMultipleProperty('channels', 'subject')
     comments = CompositeMultipleProperty('comments')
-
+    
     def __init__(self, **kwargs):
         super(Correlation, self).__init__(**kwargs)
         self.set_data(kwargs)
@@ -133,3 +143,7 @@ class Correlation(VisualisableElement, Entity):
     def channel(self):
         channels = getattr(self, 'channels', [])
         return channels[0] if channels else None
+
+    @property
+    def type_name(self):
+        return CorrelationType.type_name(self.type)

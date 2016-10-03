@@ -230,10 +230,8 @@ class Edit(InfiniteCardinality):
         current_correlation = context.related_correlation
         if current_correlation and\
            not appstruct['related_contents']:
-            root = getSite()
             targets = getattr(current_correlation, 'targets', [])
             disconnect(content, targets)
-            root.delfromproperty('correlations', context.related_correlation)
         elif appstruct['related_contents']:
             if current_correlation:
                 targets = getattr(current_correlation, 'targets', [])

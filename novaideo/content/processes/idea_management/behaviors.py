@@ -41,7 +41,7 @@ from novaideo import _
 from novaideo.content.idea import Idea
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
-from novaideo.utilities.util import connect
+from novaideo.utilities.util import connect, disconnect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
     ObjectModified)
@@ -53,6 +53,7 @@ from novaideo.content.working_group import WorkingGroup
 from novaideo.content.correlation import CorrelationType
 from novaideo.content.processes.proposal_management import (
     init_proposal_ballots, add_attached_files)
+from novaideo.content.comment import Comment
 
 
 try:
@@ -92,6 +93,26 @@ class CreateIdea(InfiniteCardinality):
         grant_roles(user=user, roles=(('Owner', idea), ))
         idea.setproperty('author', user)
         idea.subscribe_to_channel(user)
+        if isinstance(context, Comment):
+            current_correlation = context.related_correlation
+            related_contents = []
+            content = context.subject
+            if current_correlation:
+                related_contents = getattr(current_correlation, 'targets', [])
+                disconnect(content, related_contents)
+                related_contents.append(idea)
+            else:
+                related_contents = [idea]
+
+            correlation = connect(
+                content,
+                list(related_contents),
+                {'comment': context.comment,
+                 'type': context.intention},
+                user,
+                unique=True)
+            context.setproperty('related_correlation', correlation[0])
+
         idea.reindex()
         request.registry.notify(ActivityExecuted(self, [idea], user))
         return {'newcontext': idea}
@@ -127,19 +148,18 @@ class CrateAndPublish(InfiniteCardinality):
             if idea:
                 user = get_current()
                 idea.subscribe_to_channel(user)
+                if request.moderate_ideas:
+                    submit_actions = self.process.get_actions('submit')
+                    submit_action = submit_actions[0] if submit_actions else None
+                    if submit_action:
+                        submit_action.start(idea, request, {})
+                else:
+                    publish_actions = self.process.get_actions('publish')
+                    publish_action = publish_actions[0] if publish_actions else None
+                    if publish_action:
+                        publish_action.start(idea, request, {})
 
-            if request.moderate_ideas:
-                submit_actions = self.process.get_actions('submit')
-                submit_action = submit_actions[0] if submit_actions else None
-                if submit_action:
-                    submit_action.start(idea, request, {})
-            else:
-                publish_actions = self.process.get_actions('publish')
-                publish_action = publish_actions[0] if publish_actions else None
-                if publish_action:
-                    publish_action.start(idea, request, {})
-
-            return {'newcontext': idea, 'state': True}
+                return {'newcontext': idea, 'state': True}
 
         return {'newcontext': getSite(), 'state': False}
 

@@ -9,7 +9,9 @@ import venusian
 from BTrees.OOBTree import OOBTree
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
+from webob.multidict import MultiDict
 from zope.interface import implementer
+
 from pyramid.threadlocal import get_current_request
 
 from substanced.util import get_oid
@@ -494,8 +496,21 @@ class Node(Entity):
         super(Node, self).__init__(**kwargs)
         self.graph = PersistentDict()
 
+    @property
+    def all_source_related_contents(self):
+        lists_targets = [(c.targets, c) for c in self.source_correlations]
+        return MultiDict([(target, c) for targets, c in lists_targets
+                          for target in targets])
+
+    @property
+    def all_target_related_contents(self):
+        return MultiDict([(c.source, c) for c in self.target_correlations])
+
     def get_node_id(self):
         return str(self.__oid__).replace('-', '_')
+
+    def get_node_descriminator(self):
+        return 'node'
 
     def init_graph(self, calculated=[]):
         result = self.get_nodes_data()
@@ -513,7 +528,37 @@ class Node(Entity):
         return self.graph, newcalculated
 
     def get_nodes_data(self, calculated=[]):
-        pass
+        oid = self.get_node_id()
+        newcalculated = list(calculated)
+        if oid in calculated:
+            return {}, newcalculated
+
+        all_target_contents = [r for r in self.all_target_related_contents.items()
+                               if isinstance(r[0], Node)]
+        targets = [{'id': t.get_node_id(),
+                    'type': c.type_name,
+                    'oid': getattr(t, '__oid__', 0)}
+                   for (t, c) in all_target_contents]
+        all_source_contents = [r for r in self.all_source_related_contents.items()
+                               if r[0] not in all_target_contents
+                               and isinstance(r[0], Node)]
+        targets.extend([{'id': t.get_node_id(),
+                         'type': c.type_name,
+                         'oid': getattr(t, '__oid__', 0)}
+                        for (t, c) in all_source_contents])
+        result = {oid: {
+            'oid': self.__oid__,
+            'title': self.title,
+            'descriminator': self.get_node_descriminator(),
+            'targets': targets
+        }}
+        all_source_contents.extend(all_target_contents)
+        newcalculated.append(oid)
+        for r_content in all_source_contents:
+            sub_result, newcalculated = r_content[0].get_nodes_data(newcalculated)
+            result.update(sub_result)
+
+        return result, newcalculated
 
 
 class FileSchema(VisualisableElementSchema, SearchableEntitySchema):

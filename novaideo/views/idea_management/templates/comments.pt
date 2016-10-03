@@ -15,7 +15,7 @@
               (i, item) comment_data;
               diff view._datetimedelta(item['context'].created_at);
               comment item['context'];
-              contents comment.get_related_contents();
+              contents comment.get_related_contents(current_user);
               picture getattr(comment.author, 'picture', None);
               oid getattr(comment, '__oid__', 'None');
               id 'comment-'+str(oid);
@@ -126,7 +126,7 @@
                           </dd>
                       </div>
                       <div tal:omit-tag=""
-                           tal:condition="comment.related_correlation is not None"
+                           tal:condition="contents"
                            >
                         <div tal:omit-tag="" tal:define="
                            contents_len len(contents)">

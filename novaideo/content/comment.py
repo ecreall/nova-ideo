@@ -25,7 +25,7 @@ from pontus.schema import Schema
 from pontus.file import ObjectData, File
 
 from .interface import IComment
-from novaideo.core import Commentable, Emojiable
+from novaideo.core import Commentable, Emojiable, can_access
 from novaideo import _, log
 from novaideo.content import get_file_widget
 from novaideo.utilities.url_extractor import extract_urls
@@ -52,7 +52,7 @@ def relatedcontents_choice(node, kw):
     if isinstance(context, Comment) and\
        context.related_correlation:
         values = [(get_oid(t), t.title) for
-                  t in context.get_related_contents()]
+                  t in context.related_contents]
 
     def title_getter(id):
         try:
@@ -212,8 +212,8 @@ class Comment(Commentable, Emojiable):
                     if not isinstance(t, Comment)]
         return []
 
-    def get_related_contents(self):
-        return self.related_contents
+    def get_related_contents(self, user):
+        return [r for r in self.related_contents if can_access(user, r)]
 
     def init_urls(self):
         self.urls = PersistentDict({})
