@@ -1,9 +1,49 @@
+.modal-loading {
+    opacity: .8;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    z-index: 1048;
+    height: 200px;
+    box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.2);
+    white-space: nowrap; 
+}
+
+.loading-msg-container{
+    text-align: center;
+    height: 100%;
+    display: flex;
+}
+
+.loading-msg{
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 100%;
+}
+
+.loading-msg-author{
+    margin-top: 12px;
+    font-size: 17px;
+    font-weight: 100;
+    color: gray;
+}
+
+.loading-msg-img{
+  margin-bottom: 10px;
+}
+
+.loading-msg-text{
+    font-size: 18px;
+    font-weight: 700;  
+}
+
 .panel{
     margin-bottom: 20px;
     background-color: #fff;
     border: 1px solid #e8e8e8;
     border-radius: 4px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
 
 .file-container .file-header .file-meta {
@@ -430,6 +470,11 @@
     margin-top: 0px
 }
 
+.files-block .panel-body.deform-seq-body{
+    overflow: auto;
+    max-height: 240px;
+}
+
 .btn.correction-action{
   height: 20px;
 }
@@ -514,18 +559,22 @@
     width: 111%;
     margin-top: -11px;
     margin-left: -11px;
-    padding: 10px;
-    box-shadow: 0 0px 6px gray;
+    padding: 6px;
+    box-shadow: 0 0px 3px gray;
+}
+
+a.emoji-group-tab.active {
+    background: #fbfaf8 none repeat scroll 0 0;
+    border-bottom: 3px solid #ee701c;
 }
 
 a.emoji-group-tab{
-    cursor: pointer;
-    margin-right: 10px;
-    padding: 5px;
+    border-radius: 3px 3px 0 0;
     color: #9e9ea6;
+    cursor: pointer;
     font-size: 20px;
-    font-weight: bold;
-    border-radius: 3px;
+    font-weight: 700;
+    padding: 8px 7px 7px;
 }
 
 a.emoji-group-tab>.md{
@@ -533,7 +582,7 @@ a.emoji-group-tab>.md{
 }
 
 a.emoji-group-tab:hover{
-    background-color: #ffffff;
+    background: #fbfaf8 none repeat scroll 0 0;
     color: #616166;
 }
 
@@ -2559,15 +2608,6 @@ ins {
   padding: 10px;
 }
 
-
-.amendment-well {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(207, 35, 0, 0.20);
-}
-
-.proposal-well {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0) inset, -2px 3px 4px rgba(76, 164, 76, 0.16);
-}
-
 .working-group-toggle{
     cursor: pointer;
 }
@@ -2871,7 +2911,7 @@ ins {
 
 .navbar-entity .navbar-nav{
     background-color: #f6f4f2;
-    box-shadow: 0 1px 1px rgba(138, 138, 138, 0.5);
+    box-shadow: 0 1px 2px rgba(138, 138, 138, 0.5);
     width: 100%;
 }
 

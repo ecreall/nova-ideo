@@ -21,7 +21,11 @@ novaideoI18n = {
   "Your intention and comment cannot be empty!": "Your intention and comment cannot be empty!",
   "Unread messages": "Unread messages",
   "Required": "Required",
-  "Loading": "Loading"
+  "Loading": "Loading",
+  "file": "file",
+  "files": "files",
+  "assciation": "assciation",
+  "assciations": "assciations"
 },
 
 'fr':{
@@ -45,7 +49,11 @@ novaideoI18n = {
   "Your comment cannot be empty!": "Votre commentaire ne peut être vide !",
   "Your intention and comment cannot be empty!": "Votre intention et votre commentaire ne peuvent être vides !",
   "Required": "Requis",
-  "Loading": "Chargement en cours"
+  "Loading": "Chargement en cours",
+  "file": "fichier",
+  "files": "fichiers",
+  "assciation": "assciation",
+  "assciations": "assciations"
 }
 }
 

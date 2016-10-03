@@ -149,6 +149,7 @@ function update_replay(url){
            var textareainput = $(replay_bloc.find('textarea').first())
            textareainput.val(textareainput.val()).focus()
            comment_scroll_to(replay_bloc)
+           init_comment_form_changes($(replay_bloc.find('.commentform')))
            try {
                 deform.processCallbacks();
             }
@@ -208,6 +209,36 @@ function update_comment(element){
 
 }
 
+function init_comment_form_changes(form){
+    form.find('.comment-form-changes').remove()
+    var select_itention = $(form.find("select[name=\'intention\']"))
+    var intention = select_itention.val();
+    intention = select_itention.find('option[value="'+intention+'"]').text()
+    var select_related_contents = $(form.find("select[name='related_contents']").first());
+    var related_len = 0;
+    if(select_related_contents.val()){
+      related_len = select_related_contents.val().length
+    };
+    var len_files = $(form.find('.comment-files .form-group.deform-seq-item.uploaded')).length;
+    var result = '<div class="comment-form-changes"> <span class="glyphicon glyphicon-question-sign"></span> ' +
+                 intention;
+    if(len_files>0){
+      result += ', <span class="glyphicon glyphicon-paperclip"></span> ' +
+                 len_files + ' ' + (len_files ==1?novaideo_translate('file'): novaideo_translate('files'));
+    }
+    if(related_len>0){
+       result += ', <span class="glyphicon glyphicon-link"></span> ' +
+                 related_len + ' ' +(related_len ==1?novaideo_translate('association'): novaideo_translate('associations'));
+    }
+
+    result += '</div>'
+    if(form.hasClass('edit-comment-form')){
+        form.append(result)  
+    }else{
+        form.prepend(result)
+    }
+}
+
 $(document).on('click', '.comment-filter-action', function(){
       var $this = $(this);
       $this.toggleClass('active')
@@ -254,6 +285,9 @@ $(document).ready(function(){
 
     $(document).on('click', '.comment-inline-toggle', update_replay);
 
+    $(document).on('change', '.commentform', function(){
+        init_comment_form_changes($(this))
+    })
 
     $(document).on('submit','.commentform:not(.comment-inline-form)', function( event ) {
         var $this = $(this)

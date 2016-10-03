@@ -1,3 +1,11 @@
+.comment-form-changes{
+    margin-top: -20px;
+    padding-top: 5px;
+    font-size: 13px;
+    margin-left: 2px;
+    color: gray
+}
+
 .comment-replay-nb-container{
    margin-right: 10px   
 }
@@ -92,6 +100,7 @@
     width: 111%;
     margin-top: -11px;
     margin-left: -11px;
+    min-height: 64px;
     padding: 10px;
     position: absolute;
     bottom: 0px;
@@ -187,10 +196,12 @@
 }
 
 .commentform .comment-form-group > p.help-block{
-    text-align: center;
-    margin-top: 0px;
+    color: #989ba0;
+    font-size: 17px;
+    font-weight: 700;
     margin-bottom: 10px;
-    font-weight: bold;
+    margin-top: 0;
+    text-align: center;
 }
 
 
@@ -210,19 +221,23 @@
 
 .commentform .comment-form-group.active,
 .emoji-container-input.active{
-    position: fixed;
-    display: block!important;
-    right: 40px;
-    bottom: 70px;
-    width: 35%;
-    background-color: #fff;
-    -webkit-box-shadow: 0 5px 25px rgba(0,0,0,.6);
-    box-shadow: 0 5px 25px rgba(0,0,0,.6);
-    padding: 11px;
+    background-color: #f7f7f7;
     border-radius: 6px;
-    max-height:300px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    bottom: 70px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+    display: block !important;
+    max-height: 320px;
     overflow: auto;
+    padding: 11px;
+    position: fixed;
+    right: 40px;
+    width: 35%;
     z-index: 1300;
+}
+
+.emoji-container-input{
+    background-color: #fff !important;
 }
 
 .emoji-container-input span.emoji-sizer{

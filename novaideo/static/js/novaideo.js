@@ -1041,6 +1041,8 @@ $(function () {
 
   $(document).on('click', 'a.emoji-group-tab', function(){
       var $this = $(this);
+      $('a.emoji-group-tab').removeClass('active')
+      $this.addClass('active')
       var group_id = $this.data('group_id')
       var container = $($this.parents('.emoji-anchors').siblings('.emoji-groups').first())
       var group = $(container.find('#'+group_id).first())
