@@ -94,9 +94,8 @@
                           <dt tal:condition="file_len>1"><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachments:</span></dt>
                           <dt tal:condition="file_len==1" ><span class="glyphicon glyphicon-paperclip"></span>  <span i18n:translate="">Attachment:</span></dt>
                           <dd>
-                              <tal:loop repeat="f attached_files">
-                                <a tal:attributes="href f.url">${f.title}</a>
-                                <tal:separator condition="not: repeat['f'].end">, </tal:separator> 
+                              <tal:loop repeat="f layout.render_files(attached_files)">
+                                <div tal:replace="structure f"/>
                               </tal:loop>
                           </dd>
                       </div>
