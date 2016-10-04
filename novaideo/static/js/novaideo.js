@@ -501,6 +501,18 @@ function alert_user_unread_messages(){
 }
 
 
+function unsubscribe_user_from_alerts(alerts){
+    var alert_content = $(alerts.find('.alerts-content'))
+      if(!alert_content.hasClass('hide-bloc')){
+        var url = alert_content.data('unsubscribe_url')
+        $.getJSON(url,{}, function(data) {
+          if(data.status){
+            alerts.addClass('off')
+          }
+        });
+      }
+}
+
 $(document).on('click', '.full-screen-btn.small', function(){
     var $this = $(this)
     $('.pontus-main').addClass('full-screen');
@@ -966,6 +978,9 @@ $(function () {
           if(data['body']){
             target.html(data['body']);
             alert_content.find('.loading-indicator').addClass('hide-bloc')
+            setTimeout(function(){
+              unsubscribe_user_from_alerts($this)
+            }, 500)
           }
         });
 

@@ -312,6 +312,13 @@ class NovaideoAPI(IndexManagementJsonView):
         body = self.content(args=values, template=self.alert_template)['body']
         return {'body': body}
 
+    def unsubscribe_user_from_alerts(self):
+        user = get_current()
+        for alert in getattr(user, 'alerts', []):
+            alert.unsubscribe(user)
+
+        return {'status': True}
+
     def get_similar_ideas(self):
         user = get_current()
         # text = self.params('text')

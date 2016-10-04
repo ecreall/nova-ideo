@@ -10,6 +10,7 @@
                   alerts getattr(request.user, 'alerts', []);
                   len_alerts len(alerts);
                   alerts_url request.resource_url(request.root, 'novaideoapi', query={'op': 'get_user_alerts'});
+                  unsubscribe_alerts_url request.resource_url(request.root, 'novaideoapi', query={'op': 'unsubscribe_user_from_alerts'});
                   all_alerts_url request.resource_url(request.root, '@@seealerts');
                   progress_url request.static_url('novaideo:static/images/progress.svg');
                   picture getattr(request.user, 'picture', None);
@@ -67,7 +68,7 @@
           data-url="${alerts_url}">
             <a href="${all_alerts_url}"><span class="icon glyphicon glyphicon-bell"></span></a>
             <span class="alert-nb" >${len_alerts}</span>
-            <div class="alerts-content hide-bloc">
+            <div data-unsubscribe_url="${unsubscribe_alerts_url}" class="alerts-content hide-bloc">
               <img class="loading-indicator hide-bloc" src="${progress_url}"/>
               <div class="content"></div>
             </div>
