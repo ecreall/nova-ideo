@@ -49,6 +49,10 @@ from novaideo.core import can_access
 
 
 def get_all_updated_data(action, request, context, api, **kwargs):
+    result = {'action': None, 'view': api}
+    if not action:
+        return result
+
     metadatagetter = METADATA_GETTERS.get(
         action.process_id + '.' + action.node_id, None)
     if metadatagetter:
@@ -78,7 +82,7 @@ def get_all_updated_data(action, request, context, api, **kwargs):
 
         return result
 
-    return {'action': None, 'view': api}
+    return result
 
 
 def get_components_data(action, view, **kwargs):
