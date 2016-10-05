@@ -237,14 +237,15 @@ function initscroll(){
     itemSelector : "#"+id+" .result-container",
 
     pathParse: function(path, next_page) {
-       var new_path = path;
        var id = result_scroll.attr('id')
        var filter = $('#filter-'+id);
+       var sort = $('#sort-'+id);
+       var data_get = ''
        if (filter.length>0){
             var form = $($(filter).find('form').first());
             var filter_container = $(form.parents('.filter-container'));
             var filter_btn = $(filter_container.find('.filter-btn').first());
-            var data_get = $(form).serialize();
+            data_get = $(form).serialize();
             data_get += '&'+'op=filter_result';
             var filter_source = filter_btn.data('filter_source');
             if (filter_source !== ''){
@@ -253,8 +254,12 @@ function initscroll(){
             data_get += '&'+'filter_result=true';
             data_get += '&'+'scroll=true';
             data_get += '&'+'view_only=1';
-            new_path += '&'+ data_get;
       };
+       if (sort.length>0){
+          var sort_form = $(sort.find('form').first()).serialize();
+          data_get += '&'+sort_form;
+       }
+
        var f = function(currPage) {
           var next_path = $($('#'+id+' .result-container').first().parents('div').first().find('>.result-container').last()).data('nex_url')
           return next_path +'&'+ data_get;

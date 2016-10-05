@@ -45,6 +45,7 @@ from novaideo.views.filter.util import (
     merge_with_filter_view)
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo import log
+from .sort import sort_on as filter_sort
 
 
 #If updated: See data_manager utility FILTER_DEFAULT_DATA
@@ -1053,6 +1054,7 @@ def get_filter(view, url, omit=(),
                    'filter_url': url,
                    'filter_source': args.get('filter_source', view.name),
                    'filter_message': view.title,
+                   'is_sort': view.params('is_sort') is not None,
                    'filter_resul': view.params('filter_result') is not None,
                    'filter_validated': filter_instance.validated}
     return filter_form, filter_data
@@ -1165,8 +1167,9 @@ def find_entities(user=None,
         result_set = result_set.intersect(intersect)
 
     if sort_on is not None:
-        result_set = result_set.sort(
-            novaideo_catalog[sort_on], reverse=reverse)
+        result_set = filter_sort(
+            sort_on, result_set, reverse=reverse,
+            novaideo_catalog=novaideo_catalog)
 
     return result_set
 
@@ -1189,7 +1192,6 @@ def find_more_contents(obj):
             user=user,
             add_query=query,
             sort_on='release_date',
-            reverse=True,
             **args)
 
     return []
@@ -1409,6 +1411,5 @@ def get_comments(channel, filters, text_to_search='', filtered=False):
             'text_to_search': text_to_search
         },
         add_query=query,
-        sort_on='created_at',
-        reverse=True)
+        sort_on='created_at')
     return objects

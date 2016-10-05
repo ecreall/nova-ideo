@@ -22,6 +22,8 @@ from novaideo import _
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES, merge_with_filter_view, find_entities)
+from novaideo.views.filter.sort import (
+    sort_view_objects)
 
 
 CONTENTS_MESSAGES = {
@@ -49,6 +51,7 @@ class SeeMyContentsView(BasicView):
     selected_filter = ['metadata_filter', ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
     include_archived = True
+    content_types = ['idea', 'proposal']
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],
@@ -77,9 +80,14 @@ class SeeMyContentsView(BasicView):
         filter_form, filter_data = self._add_filter(user)
         args = merge_with_filter_view(self, {})
         args['request'] = self.request
-        objects = find_entities(user=user, intersect=self._get_content_ids(user),
-                                sort_on='release_date', reverse=True,
-                                include_archived=self.include_archived, **args)
+        objects = find_entities(
+            user=user,
+            intersect=self._get_content_ids(user),
+            include_archived=self.include_archived,
+            **args)
+        objects, sort_body = sort_view_objects(
+            self, objects, self.content_types, user,
+            intersect=getattr(self, 'sorts', None))
         url = self.request.resource_url(self.context, self.name)
         batch = Batch(objects, self.request,
                       url=url,
@@ -104,7 +112,8 @@ class SeeMyContentsView(BasicView):
 
         values = {'bodies': result_body,
                   'batch': batch,
-                  'filter_body': filter_body}
+                  'filter_body': filter_body,
+                  'sort_body': sort_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

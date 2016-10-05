@@ -21,6 +21,8 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES, merge_with_filter_view, find_entities)
+from novaideo.views.filter.sort import (
+    sort_view_objects)
 
 
 CONTENTS_MESSAGES = {
@@ -83,6 +85,8 @@ class SeeIdeasToModerateView(BasicView):
             user=user,
             filters=filters,
             **args)
+        objects, sort_body = sort_view_objects(
+            self, objects, ['idea'], user)
         url = self.request.resource_url(
             self.context, 'seeideastomoderate')
         batch = Batch(objects, self.request,
@@ -108,7 +112,8 @@ class SeeIdeasToModerateView(BasicView):
 
         values = {'bodies': result_body,
                   'batch': batch,
-                  'filter_body': filter_body}
+                  'filter_body': filter_body,
+                  'sort_body': sort_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

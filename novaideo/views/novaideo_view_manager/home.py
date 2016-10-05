@@ -23,6 +23,8 @@ from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES,
     merge_with_filter_view, find_entities)
+from novaideo.views.filter.sort import (
+    sort_view_objects)
 from .search import get_default_searchable_content
 
 
@@ -87,9 +89,10 @@ class ContentView(BasicView):
         args['request'] = self.request
         objects = find_entities(
             user=user,
-            sort_on='release_date', reverse=True,
             filters=[validated],
             **args)
+        objects, sort_body = sort_view_objects(
+            self, objects, [self.content_type], user)
         url = self.request.resource_url(
             self.context, '',
             query={'view_content_type': self.content_type})
@@ -110,7 +113,8 @@ class ContentView(BasicView):
                   'batch': batch,
                   'empty_message': self.empty_message,
                   'empty_icon': self.empty_icon,
-                  'filter_body': filter_body}
+                  'filter_body': filter_body,
+                  'sort_body': sort_body}
         if filter_form:
             result = merge_dicts(
                 {'css_links': filter_form['css_links'],

@@ -21,6 +21,8 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES, merge_with_filter_view, find_entities)
+from novaideo.views.filter.sort import (
+    sort_view_objects)
 
 
 CONTENTS_MESSAGES = {
@@ -28,29 +30,6 @@ CONTENTS_MESSAGES = {
     '1': _(u"""One proposal found"""),
     '*': _(u"""${nember} proposals found""")
     }
-
-
-def sort_proposals(proposals):
-    ordered_proposals = [(proposal,
-                          (len(proposal.tokens_support) - \
-                           len(proposal.tokens_opposition))) \
-                         for proposal in proposals]
-    groups = {}
-    for proposal in ordered_proposals:
-        if groups.get(proposal[1], None):
-            groups[proposal[1]].append(proposal)
-        else:
-            groups[proposal[1]] = [proposal]
-
-    for group_key in list(groups.keys()):
-        sub_proposals = list(groups[group_key])
-        groups[group_key] = sorted(sub_proposals,
-                    key=lambda proposal: len(proposal[0].tokens_support),
-                    reverse=True)
-
-    groups = sorted(groups.items(), key=lambda value: value[0], reverse=True)
-    return [proposal[0] for sublist in groups \
-           for proposal in sublist[1]]
 
 
 @view_config(
@@ -107,9 +86,8 @@ class SeeOrderedProposalView(BasicView):
             user=user,
             filters=filters,
             **args)
-        if 'proposal' in self.request.content_to_support:
-            objects = sort_proposals(objects)
-
+        objects, sort_body = sort_view_objects(
+            self, objects, ['proposal'], user, 'nbsupport')
         url = self.request.resource_url(self.context, 'proposalstoexamine')
         batch = Batch(objects, self.request,
                       url=url,
@@ -134,7 +112,8 @@ class SeeOrderedProposalView(BasicView):
 
         values = {'bodies': result_body,
                   'batch': batch,
-                  'filter_body': filter_body}
+                  'filter_body': filter_body,
+                  'sort_body': sort_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

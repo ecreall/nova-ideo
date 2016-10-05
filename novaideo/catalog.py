@@ -128,6 +128,15 @@ class ISearchableObject(Interface):
     def alert_exclude_keys():
         pass
 
+    def support():
+        pass
+
+    def oppose():
+        pass
+
+    def support_diff():
+        pass
+
 
 @indexview_defaults(catalog_name='novaideo')
 class NovaideoCatalogViews(object):
@@ -511,6 +520,46 @@ class NovaideoCatalogViews(object):
         return alert_exclude_keys
 
 
+    @indexview()
+    def support(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        support = adapter.support()
+        if support is None:
+            return default
+
+        return support
+
+    @indexview()
+    def oppose(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        oppose = adapter.oppose()
+        if oppose is None:
+            return default
+
+        return oppose
+
+    @indexview()
+    def support_diff(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        support_diff = adapter.support_diff()
+        if support_diff is None:
+            return default
+
+        return support_diff
+
+
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
 
@@ -547,6 +596,9 @@ class NovaideoIndexes(object):
     is_edited = Field()
     alert_keys = Keyword()
     alert_exclude_keys = Keyword()
+    support = Field()
+    oppose = Field()
+    support_diff = Field()
 
 
 @adapter(context=IEntity)
@@ -654,7 +706,7 @@ class SearchableObject(Adapter):
         return []
 
     def last_connection(self):
-        return None
+        return self.modified_at()
 
     def related_contents(self):
         return []
@@ -697,6 +749,15 @@ class SearchableObject(Adapter):
 
     def alert_exclude_keys(self):
         return []
+
+    def support(self):
+        return 0
+
+    def oppose(self):
+        return 0
+
+    def support_diff(self):
+        return 0
 
 
 @adapter(context=IPerson)
@@ -759,6 +820,15 @@ class ProposalSearch(SearchableObject):
     def has_file(self):
         return True if self.context.attached_files else False
 
+    def support(self):
+        return len(getattr(self.context, 'tokens_support', []))
+
+    def oppose(self):
+        return len(getattr(self.context, 'tokens_opposition', []))
+
+    def support_diff(self):
+        return self.support() - self.oppose()
+
 
 @adapter(context=Iidea)
 @implementer(ISearchableObject)
@@ -777,6 +847,15 @@ class IdeaSearch(SearchableObject):
 
     def has_file(self):
         return True if self.context.attached_files else False
+
+    def support(self):
+        return len(getattr(self.context, 'tokens_support', []))
+
+    def oppose(self):
+        return len(getattr(self.context, 'tokens_opposition', []))
+
+    def support_diff(self):
+        return self.support() - self.oppose()
 
 
 @adapter(context=IComment)

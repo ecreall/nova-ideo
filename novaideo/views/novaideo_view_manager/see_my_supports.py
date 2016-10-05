@@ -46,6 +46,7 @@ class SeeMySupportsView(SeeMyContentsView):
                        ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
     include_archived = False
+    content_types = ['idea', 'proposal']
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],

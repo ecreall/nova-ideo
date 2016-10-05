@@ -3,6 +3,11 @@
 	 tal:define="batch_value batch|nothing;
 	             id (batch_value and batch_value.target.replace('#', '')) or 'results'"
 	 i18n:domain="novaideo">
+	<div tal:omit-tag="" tal:define="sortbody sort_body|nothing">
+		<div id="sort-${id}" tal:condition="sortbody">
+			${structure: sortbody}
+	    </div>
+	</div>
 	<div tal:omit-tag="" tal:define="filterbody filter_body|nothing">
 		<div id="filter-${id}" tal:condition="filterbody">
 			${structure: filterbody}

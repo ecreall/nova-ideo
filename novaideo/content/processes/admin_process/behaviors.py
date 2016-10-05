@@ -123,8 +123,7 @@ class Extract(InfiniteCardinality):
             attributes_to_extract, key=lambda a: EXTRACTION_ATTR[a]['order'])
         objects = find_entities(
             user=user,
-            sort_on='modified_at',
-            reverse=True,
+            sort_on='release_date',
             **appstruct
         )
         csv_file = StringIO()

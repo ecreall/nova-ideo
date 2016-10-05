@@ -43,6 +43,8 @@ class SeeMyParticipationsView(SeeMyContentsView):
                        ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
     include_archived = False
+    content_types = ['proposal']
+    sorts = ['release_date', 'created_at']
 
     def _get_content_ids(self, user):
         return [get_oid(o) for o in getattr(user, 'participations', [])]

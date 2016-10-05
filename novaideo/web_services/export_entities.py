@@ -72,8 +72,7 @@ class FindEntitiesJsonAPI(WebServicesJsonView):
         appstruct['system'] = system_catalog
         appstruct['novaideo'] = novaideo_catalog
         entities = find_entities(
-            user=user, sort_on='modified_at',
-            reverse=True, include_site=True, **appstruct)
+            user=user, sort_on='release_date', include_site=True, **appstruct)
 
         def dumps(obj):
             """return values of attributes descibed in

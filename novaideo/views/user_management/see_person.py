@@ -26,6 +26,8 @@ from novaideo.content.processes import get_states_mapping
 from novaideo.utilities.util import (
     generate_navbars, ObjectRemovedException)
 from novaideo import _
+from novaideo.views.filter.sort import (
+    sort_view_objects)
 
 
 class ContentView(BasicView):
@@ -48,11 +50,8 @@ class ContentView(BasicView):
                                        'archived' not in o.state,
                              getattr(user, self.content_attr, [])))
 
-        now = datetime.datetime.now(tz=pytz.UTC)
-        objects = sorted(
-            objects,
-            key=lambda e: getattr(e, 'modified_at', now),
-            reverse=True)
+        objects, sort_body = sort_view_objects(
+            self, objects, [self.content_type], user)
         url = self.request.resource_url(
             self.context, '@@seeperson',
             query={'view_content_attr': self.content_attr})
@@ -67,7 +66,8 @@ class ContentView(BasicView):
         values = {'bodies': result_body,
                   'batch': batch,
                   'empty_message': self.empty_message,
-                  'empty_icon': self.empty_icon}
+                  'empty_icon': self.empty_icon,
+                  'sort_body': sort_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
@@ -77,6 +77,7 @@ class ContentView(BasicView):
 class IdeasView(ContentView):
     title = _('Her ideas (${nb})')
     content_attr = 'ideas'
+    content_type = 'idea'
     viewid = 'person-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
     counter_id = 'person-ideas-counter'
@@ -87,6 +88,7 @@ class IdeasView(ContentView):
 class ProposalsView(ContentView):
     title = _('Her working groups (${nb})')
     content_attr = 'proposals'
+    content_type = 'proposal'
     viewid = 'person-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'
     counter_id = 'person-proposals-counter'

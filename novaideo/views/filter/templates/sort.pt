@@ -1,0 +1,11 @@
+<div class="sort-container" i18n:domain="novaideo">
+  <form class="sort-form">
+  <span class="glyphicon glyphicon-sort"></span> Trier par :
+    <select class="sort-input" name="sort">
+      <option i18n:attributes="title" title="${sort['description'] or sort['title']}" tal:repeat="(value, sort) options"
+        tal:attributes="selected (value == current) and 'selected'" value="${value}">${sort['title']}</option>
+    </select>
+    <span i18n:attributes="title" title="Invert sort" class="reverse-icon glyphicon glyphicon-repeat ${reverse and 'on'} "></span>
+    <input type="hidden" value="${reverse and 'on'}" name="reverse_sort">
+  </form>
+</div>

@@ -9,12 +9,12 @@
 """
 
 from novaideo.testing import FunctionalTests
-from novaideo.views.novaideo_view_manager.see_ordered_proposals import (
-    sort_proposals)
+from novaideo.views.filter.sort import (
+    sort_by_tokens)
 
 
 class Proposal(object):
-	pass
+    pass
 
 
 class TestProposalManagement(FunctionalTests): #pylint: disable=R0904
@@ -38,7 +38,7 @@ class TestProposalManagement(FunctionalTests): #pylint: disable=R0904
         proposal4.tokens_opposition = [1, 1, 1, 1, 1]#-5
 
         proposals = [proposal3, proposal2, proposal4, proposal1]
-        ordered_proposals = sort_proposals(proposals)
+        ordered_proposals = sort_by_tokens(proposals, True)
         self.assertEqual(len(ordered_proposals), 4)
         self.assertIn(proposal1, ordered_proposals)
         self.assertIn(proposal2, ordered_proposals)

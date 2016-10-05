@@ -711,7 +711,7 @@ class MoreContents(object):
                         user=get_current(),
                         metadata_filter={'content_types': ['proposal', 'idea'],
                                          'keywords': getattr(user, 'keywords', [])},
-                        sort_on='modified_at', reverse=True)
+                        sort_on='release_date')
 
                 is_root = True
             else:

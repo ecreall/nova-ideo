@@ -630,6 +630,7 @@ class SupportProposal(InfiniteCardinality):
         context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
+        context.reindex()
         request.registry.notify(ActivityExecuted(self, [context], user))
         users = list(get_users_by_preferences(context))
         users.extend(context.working_group.members)
@@ -659,6 +660,7 @@ class OpposeProposal(InfiniteCardinality):
         context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
+        context.reindex()
         request.registry.notify(ActivityExecuted(self, [context], user))
         users = list(get_users_by_preferences(context))
         users.extend(context.working_group.members)
@@ -770,6 +772,7 @@ class WithdrawToken(InfiniteCardinality):
         context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
+        context.reindex()
         request.registry.notify(ActivityExecuted(self, [context], user))
         users = list(get_users_by_preferences(context))
         users.extend(context.working_group.members)

@@ -28,6 +28,8 @@ from novaideo import _
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES, merge_with_filter_view, find_entities)
+from novaideo.views.filter.sort import (
+    sort_view_objects)
 
 
 CONTENTS_MESSAGES = {
@@ -100,9 +102,10 @@ class SeeUsersView(BasicView):
         args['request'] = self.request
         objects = find_entities(
             user=user,
-            sort_on='last_connection',
             filters=filters,
             **args)
+        objects, sort_body = sort_view_objects(
+            self, objects, ['person'], user)
         url = self.request.resource_url(self.context, self.name)
         batch = Batch(objects, self.request,
                       url=url,
@@ -137,7 +140,8 @@ class SeeUsersView(BasicView):
                   'is_manager': is_manager,
                   'inactivity_duration': INACTIVITY_DURATION,
                   'inactive_users': inactive_users.__len__(),
-                  'filter_body': filter_body}
+                  'filter_body': filter_body,
+                  'sort_body': sort_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

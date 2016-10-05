@@ -33,6 +33,8 @@ from novaideo.views.filter import (
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
 from novaideo.content.person import Person
+# from novaideo.views.filter.sort import (
+#     sort_view_objects)
 
 
 CONTENTS_MESSAGES = {
@@ -258,8 +260,10 @@ class SearchResultView(BasicView):
 
         objects = find_entities(
             user=user,
-            sort_on='release_date', reverse=True,
             **validated)
+        # content_types = validated.get('metadata_filter', {}).get('content_types', ['all'])
+        # objects, sort_body = sort_view_objects(
+        #     self, objects, content_types, user)
         url = self.request.resource_url(
             self.context, self.request.view_name,
             query=posted)
@@ -279,6 +283,7 @@ class SearchResultView(BasicView):
             self.request, batch, user)
         values = {'bodies': result_body,
                   'batch': batch}
+                  # 'sort_body': sort_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

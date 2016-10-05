@@ -39,6 +39,7 @@ class SeeMySelectionsView(SeeMyContentsView):
     viewid = 'seemyselections'
     contents_messages = CONTENTS_MESSAGES
     include_archived = False
+    content_types = ['all']
 
     def _get_content_ids(self, user):
         return [get_oid(o) for o in getattr(user, 'selections', [])]
