@@ -35,6 +35,10 @@ case "$1" in
   buildout)
     do_buildout
     ;;
+  test)
+    shift
+    docker-compose $options run --rm novaideo bin/test $@
+    ;;
   *)
     if [ -z "$1" ]; then
       docker-compose $options up -d
