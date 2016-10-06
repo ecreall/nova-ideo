@@ -176,7 +176,6 @@
             <div tal:condition="content or deadline" class="col-md-7 col-md-offset-2">
               ${content}
               ${deadline}
-              <div class="separator"></div>
             </div>
           </div>
         </div>
@@ -255,14 +254,6 @@
                  ${panel('lateral_menu')}
                  ${panel('advertisting_right_1')}
                  ${panel('advertisting_right_2')}
-                 ${panel('advertisting_right_3')}
-                 ${panel('advertisting_right_5')}
-                 ${panel('advertisting_right_6')}
-                 ${panel('advertisting_right_7')}
-                 ${panel('advertisting_right_8')}
-                 ${panel('advertisting_right_9')}
-                 ${panel('advertisting_right_10')}
-                 ${panel('advertisting_right_11')}
                  ${contextual_help}
                <div metal:define-slot="right"></div>
                

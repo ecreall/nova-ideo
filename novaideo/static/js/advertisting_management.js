@@ -82,30 +82,13 @@ var ui_prototype = "<div class=\"preview-ui\">"+
                       "</div>"+
                     "<div class=\"preview-menu\"></div>"+
                     "<div class=\"preview-right-ui\">"+
-                      "<div class=\"preview-btn\"></div>"+
                           "<div class=\"preview-advertising-right-top-1\"></div>"+
-                          "<div class=\"preview-advertising-right-top-2\"></div>"+
-                          "<div class=\"preview-advertising-right-top-3\"></div>"+
-                          "<div class=\"preview-advertising-right-top-4\"></div>"+
-                          "<div class=\"preview-advertising-right-top-5\"></div>"+
-                          "<div class=\"preview-advertising-right-top-7\"></div>"+
-                          "<div class=\"preview-advertising-right-top-8\"></div>"+
-                          "<div class=\"preview-advertising-right-top-9\"></div>"+
-                          "<div class=\"preview-advertising-right-top-10\"></div>"+
-                          "<div class=\"preview-advertising-right-top-11\"></div></div>"+
+                          "<div class=\"preview-advertising-right-top-2\"></div></div>"+
                       "</div>"
 
 var panels_css_mapping = {
   'advertisting_right_1': 'preview-advertising-right-top-1',
-  'advertisting_right_2': 'preview-advertising-right-top-2',
-  'advertisting_right_3': 'preview-advertising-right-top-3',
-  'advertisting_right_6': 'preview-advertising-right-top-4',
-  'advertisting_right_5': 'preview-advertising-right-top-5',
-  'advertisting_right_7': 'preview-advertising-right-top-7',
-  'advertisting_right_8': 'preview-advertising-right-top-8',
-  'advertisting_right_9': 'preview-advertising-right-top-9',
-  'advertisting_right_10': 'preview-advertising-right-top-10',
-  'advertisting_right_11': 'preview-advertising-right-top-11',
+  'advertisting_right_2': 'preview-advertising-right-top-2'
 }
 
 function set_active_preview(input, preview){

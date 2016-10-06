@@ -73,7 +73,7 @@ function find_items(input){
 
 function submit_live_serach_form(element){
   var oid = $($(element).parents('.live-search-container').first()).data('oid');
-  var btn = $($('#'+oid+'.search-text-input').parents('#searchsection').find('button.search-primary-btn').first());
+  var btn = $($('#'+oid+'.search-text-input').parents('#searchsection').find('button[type="submit"]').first());
   btn.click()
 }
 

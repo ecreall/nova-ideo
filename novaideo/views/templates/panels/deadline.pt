@@ -1,4 +1,4 @@
-<div tal:condition="condition" class="container-fluid novaideo-alert-container">
+<div tal:condition="condition" class="novaideo-alert-container">
   <div  i18n:domain="novaideo">
   		<div class="deadline-panel">
          <div class="progress progress-striped">

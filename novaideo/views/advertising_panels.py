@@ -160,105 +160,105 @@ class BannerRight2(AdvertistingBanner):
     order = 3
 
 
-@advertising_banner_config(
-    name='advertisting_right_3',
-    context=Entity,
-    renderer='templates/panels/advertisting/advertisting_right_3.pt'
-    )
-class BannerRight3(AdvertistingBanner):
+# @advertising_banner_config(
+#     name='advertisting_right_3',
+#     context=Entity,
+#     renderer='templates/panels/advertisting/advertisting_right_3.pt'
+#     )
+# class BannerRight3(AdvertistingBanner):
 
-    title = _('Third on the right')
-    description = _('Third on the right banner')
-    name = 'advertisting_right_3'
-    order = 4
-
-
-@advertising_banner_config(
-    name='advertisting_right_5',
-    context=Entity,
-    renderer='templates/panels/advertisting/advertisting_right_5.pt'
-    )
-class BannerRight5(AdvertistingBanner):
-
-    title = _('Fourth on the right')
-    description = _('Fourth on the right banner')
-    name = 'advertisting_right_5'
-    order = 5
+#     title = _('Third on the right')
+#     description = _('Third on the right banner')
+#     name = 'advertisting_right_3'
+#     order = 4
 
 
-@advertising_banner_config(
-    name='advertisting_right_6',
-    context=Entity,
-    renderer='templates/panels/advertisting/advertisting_right_6.pt'
-    )
-class BannerRight6(AdvertistingBanner):
+# @advertising_banner_config(
+#     name='advertisting_right_5',
+#     context=Entity,
+#     renderer='templates/panels/advertisting/advertisting_right_5.pt'
+#     )
+# class BannerRight5(AdvertistingBanner):
 
-    title = _('Fifth on the right')
-    description = _('Fifth on the right banner')
-    name = 'advertisting_right_6'
-    order = 6
-
-
-@advertising_banner_config(
-    name='advertisting_right_7',
-    context=Entity,
-    renderer='templates/panels/advertisting/advertisting_right_7.pt'
-    )
-class BannerRight7(AdvertistingBanner):
-
-    title = _('Sixth on the right')
-    description = _('Sixth on the right banner')
-    name = 'advertisting_right_7'
-    order = 7
+#     title = _('Fourth on the right')
+#     description = _('Fourth on the right banner')
+#     name = 'advertisting_right_5'
+#     order = 5
 
 
-@advertising_banner_config(
-    name='advertisting_right_8',
-    context=Entity,
-    renderer='templates/panels/advertisting/advertisting_right_8.pt'
-    )
-class BannerRight8(AdvertistingBanner):
+# @advertising_banner_config(
+#     name='advertisting_right_6',
+#     context=Entity,
+#     renderer='templates/panels/advertisting/advertisting_right_6.pt'
+#     )
+# class BannerRight6(AdvertistingBanner):
 
-    title = _('Seventh on the right')
-    description = _('Seventh on the right banner')
-    name = 'advertisting_right_8'
-    order = 8
-
-
-@advertising_banner_config(
-    name='advertisting_right_9',
-    context=Entity,
-    renderer='templates/panels/advertisting/advertisting_right_9.pt'
-    )
-class BannerRight9(AdvertistingBanner):
-
-    title = _('Eighth on the right')
-    description = _('Eighth on the right banner')
-    name = 'advertisting_right_9'
-    order = 9
+#     title = _('Fifth on the right')
+#     description = _('Fifth on the right banner')
+#     name = 'advertisting_right_6'
+#     order = 6
 
 
-@advertising_banner_config(
-    name='advertisting_right_10',
-    context=Entity,
-    renderer='templates/panels/advertisting/advertisting_right_10.pt'
-    )
-class BannerRight10(AdvertistingBanner):
+# @advertising_banner_config(
+#     name='advertisting_right_7',
+#     context=Entity,
+#     renderer='templates/panels/advertisting/advertisting_right_7.pt'
+#     )
+# class BannerRight7(AdvertistingBanner):
 
-    title = _('Ninth on the right')
-    description = _('Ninth on the right banner')
-    name = 'advertisting_right_10'
-    order = 10
+#     title = _('Sixth on the right')
+#     description = _('Sixth on the right banner')
+#     name = 'advertisting_right_7'
+#     order = 7
 
 
-@advertising_banner_config(
-    name='advertisting_right_11',
-    context=Entity,
-    renderer='templates/panels/advertisting/advertisting_right_11.pt'
-    )
-class BannerRight11(AdvertistingBanner):
+# @advertising_banner_config(
+#     name='advertisting_right_8',
+#     context=Entity,
+#     renderer='templates/panels/advertisting/advertisting_right_8.pt'
+#     )
+# class BannerRight8(AdvertistingBanner):
 
-    title = _('Tenth on the right')
-    description = _('Tenth on the right banner')
-    name = 'advertisting_right_11'
-    order = 11
+#     title = _('Seventh on the right')
+#     description = _('Seventh on the right banner')
+#     name = 'advertisting_right_8'
+#     order = 8
+
+
+# @advertising_banner_config(
+#     name='advertisting_right_9',
+#     context=Entity,
+#     renderer='templates/panels/advertisting/advertisting_right_9.pt'
+#     )
+# class BannerRight9(AdvertistingBanner):
+
+#     title = _('Eighth on the right')
+#     description = _('Eighth on the right banner')
+#     name = 'advertisting_right_9'
+#     order = 9
+
+
+# @advertising_banner_config(
+#     name='advertisting_right_10',
+#     context=Entity,
+#     renderer='templates/panels/advertisting/advertisting_right_10.pt'
+#     )
+# class BannerRight10(AdvertistingBanner):
+
+#     title = _('Ninth on the right')
+#     description = _('Ninth on the right banner')
+#     name = 'advertisting_right_10'
+#     order = 10
+
+
+# @advertising_banner_config(
+#     name='advertisting_right_11',
+#     context=Entity,
+#     renderer='templates/panels/advertisting/advertisting_right_11.pt'
+#     )
+# class BannerRight11(AdvertistingBanner):
+
+#     title = _('Tenth on the right')
+#     description = _('Tenth on the right banner')
+#     name = 'advertisting_right_11'
+#     order = 11
