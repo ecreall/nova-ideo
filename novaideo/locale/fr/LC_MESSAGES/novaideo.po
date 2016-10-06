@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-10-05 14:24+0200\n"
+"POT-Creation-Date: 2016-10-05 18:50+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -496,205 +496,205 @@ msgstr "1er"
 msgid "${name} ${day}"
 msgstr "${name} ${day}"
 
-#: novaideo/utilities/pseudo_react.py:184
+#: novaideo/utilities/pseudo_react.py:188
 msgid "Vous n'êtes plus abonné à la discussion."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:248
+#: novaideo/utilities/pseudo_react.py:252
 #, python-format
 msgid "${context} ne fait maintenant plus partie de vos suivis."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1020
+#: novaideo/utilities/pseudo_react.py:1024
 #: novaideo/views/templates/panels/novaideo_contents.pt:9
 msgid "Published idea"
 msgstr "Idée publiée"
 
-#: novaideo/utilities/pseudo_react.py:1054
+#: novaideo/utilities/pseudo_react.py:1058
 #: novaideo/views/user_management/see_person.py:89
 #, python-format
 msgid "Her working groups (${nb})"
 msgstr "Ses groupes de travail (${nb})"
 
-#: novaideo/utilities/pseudo_react.py:1071
+#: novaideo/utilities/pseudo_react.py:1075
 #: novaideo/views/user_management/see_person.py:78
 #, python-format
 msgid "Her ideas (${nb})"
 msgstr "Ses idées (${nb})"
 
-#: novaideo/utilities/pseudo_react.py:1090
+#: novaideo/utilities/pseudo_react.py:1094
 #: novaideo/views/novaideo_view_manager/home.py:132
 #, python-format
 msgid "Ideas (${nb})"
 msgstr "Les idées (${nb})"
 
-#: novaideo/utilities/pseudo_react.py:187
+#: novaideo/utilities/pseudo_react.py:191
 msgid "Vous êtes maintenant abonné à la discussion."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:254
+#: novaideo/utilities/pseudo_react.py:258
 #, python-format
 msgid "${context} fait maintenant partie de vos suivis."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:305
+#: novaideo/utilities/pseudo_react.py:309
 #, python-format
 msgid "Vous êtes maintenant opposé au contenu ${context}."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:482
+#: novaideo/utilities/pseudo_react.py:486
 msgid "Le commentaire a bien été tranformé en une idée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:540
+#: novaideo/utilities/pseudo_react.py:544
 #, python-format
 msgid "Le membre ${context} est bien retiré de l'organisation."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:590
+#: novaideo/utilities/pseudo_react.py:594
 msgid "L'invitation a bien été supprimée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:598
+#: novaideo/utilities/pseudo_react.py:602
 msgid "L'invitation a bien été modifiée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:606
+#: novaideo/utilities/pseudo_react.py:610
 #, python-format
 msgid "L'invité ${context} a bien été rappelé."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:616
+#: novaideo/utilities/pseudo_react.py:620
 #, python-format
 msgid "L'inscrit ${context} a bien été rappelé."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:624
+#: novaideo/utilities/pseudo_react.py:628
 #, python-format
 msgid "L'inscription de ${context} a bien été accepter."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:632
+#: novaideo/utilities/pseudo_react.py:636
 msgid "L'inscription a bien été supprimée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:657
-#: novaideo/utilities/pseudo_react.py:703
+#: novaideo/utilities/pseudo_react.py:661
+#: novaideo/utilities/pseudo_react.py:707
 msgid "L'idée a bien été archivée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:679
+#: novaideo/utilities/pseudo_react.py:683
 msgid "L'idée a bien été publiée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:687
+#: novaideo/utilities/pseudo_react.py:691
 msgid "L'idée a bien été examinée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:695
-#: novaideo/utilities/pseudo_react.py:728
+#: novaideo/utilities/pseudo_react.py:699
+#: novaideo/utilities/pseudo_react.py:732
 msgid "L'idée a bien été modifiée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:720
+#: novaideo/utilities/pseudo_react.py:724
 msgid "L'idée a bien été récupérée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:735
+#: novaideo/utilities/pseudo_react.py:739
 msgid "L'idée a bien été supprimée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:748
+#: novaideo/utilities/pseudo_react.py:752
 msgid "L'idée a bien été créée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:764
+#: novaideo/utilities/pseudo_react.py:768
 msgid "La proposition a bien été examinée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:771
+#: novaideo/utilities/pseudo_react.py:775
 msgid "La proposition a bien été supprimée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:785
+#: novaideo/utilities/pseudo_react.py:789
 msgid "Les fichiers ont bien été ajoutés dans l'espace de  travail."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:793
+#: novaideo/utilities/pseudo_react.py:797
 msgid "Le fichier à bien été supprimé de l'espace de  travail."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:805
+#: novaideo/utilities/pseudo_react.py:809
 msgid "Les fichiers ont bien été attachés à la proposition."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:868
+#: novaideo/utilities/pseudo_react.py:872
 msgid "Les données de l'organisation ont été mis à jour."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:875
+#: novaideo/utilities/pseudo_react.py:879
 msgid "L'organisation a bien été supprimée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:898
+#: novaideo/utilities/pseudo_react.py:902
 msgid "Le rôle de l'utilisateur a bien été modifié."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:906
+#: novaideo/utilities/pseudo_react.py:910
 msgid "Les processus sont bien mis à jour."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1022
+#: novaideo/utilities/pseudo_react.py:1026
 #: novaideo/views/templates/panels/novaideo_contents.pt:10
 msgid "Published ideas"
 msgstr "Idées publiées"
 
-#: novaideo/utilities/pseudo_react.py:308
+#: novaideo/utilities/pseudo_react.py:312
 #, python-format
 msgid "Vous soutenez maintenant le contenu ${context}."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:924
+#: novaideo/utilities/pseudo_react.py:928
 #: novaideo/views/novaideo_view_manager/see_my_selections.py:35
 #: novaideo/content/processes/novaideo_view_manager/definition.py:67
 msgid "My following"
 msgstr "Mes suivis"
 
-#: novaideo/utilities/pseudo_react.py:954
+#: novaideo/utilities/pseudo_react.py:958
 #: novaideo/views/novaideo_view_manager/see_my_supports.py:39
 #: novaideo/content/processes/novaideo_view_manager/definition.py:75
 msgid "My supports"
 msgstr "Mes appréciations"
 
-#: novaideo/utilities/pseudo_react.py:990
+#: novaideo/utilities/pseudo_react.py:994
 #: novaideo/views/novaideo_view_manager/see_my_contents.py:42
 #: novaideo/content/processes/novaideo_view_manager/definition.py:63
 msgid "My contents"
 msgstr "Mes contenus"
 
-#: novaideo/utilities/pseudo_react.py:1036
+#: novaideo/utilities/pseudo_react.py:1040
 #: novaideo/views/novaideo_view_manager/see_my_participations.py:36
 #: novaideo/content/processes/novaideo_view_manager/definition.py:71
 msgid "My participations"
 msgstr "Mes groupes de travail"
 
-#: novaideo/utilities/pseudo_react.py:311
+#: novaideo/utilities/pseudo_react.py:315
 #, python-format
 msgid "Votre jeton est bien récupéré du contenu ${context}."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:820
+#: novaideo/utilities/pseudo_react.py:824
 #, python-format
 msgid ""
 "Les données associées à l'organisation de l'utilisateur ${context} ont bien "
 "été modifiées."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:390
+#: novaideo/utilities/pseudo_react.py:394
 msgid "Le commentaire est maintenant supprimé."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:832
+#: novaideo/utilities/pseudo_react.py:836
 #, python-format
 msgid "L'utilisateur ${context} a bien changé d'organisation."
 msgstr ""
