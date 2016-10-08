@@ -89,7 +89,7 @@ sub vcl_recv {
         return(pass);
     }
 
-    if (req.url ~ "^[^?]*\.(svg|css|js|png|gif|jpeg|jpg|woff|woff2)(\?.*)?$") {
+    if (req.url ~ "^[^?]*\.(svg|css|js|png|gif|jpeg|jpg|ttf|woff|woff2)(\?.*)?$") {
        unset req.http.Cookie;
     }
 
