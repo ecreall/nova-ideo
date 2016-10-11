@@ -182,7 +182,7 @@ function _wrap_action_body(action, body){
 
 }
 
-function open_sidebar_container_item(to_open){
+function open_sidebar_container_item(to_open, interaction_args){
   var new_title = _get_side_bar_title({
      title: to_open.data('context_title'),
      img: to_open.data('context_img'),
@@ -203,9 +203,11 @@ function open_sidebar_container_item(to_open){
     to_open.fadeIn("fast").promise().done(
       function(){
         $(this).removeClass('closed');
-        if(current_scroll){
+        if(interaction_args && interaction_args.scroll_bottom){
+           init_comment_scroll(sidebar)
+        }else if(current_scroll){
             $('.sidebar-right-wrapper').scrollTop(current_scroll);
-          }
+        }
       })
   }
   $('.sidebar-container-item').fadeOut( "fast").promise().done(complete)
@@ -234,15 +236,14 @@ function update_sidebar_action(){
     loading_progress()
     $.post(url, url_attr, function(data) {
       include_resources(data['resources'], function(){
-       var action_body = data['body'];
-       if (action_body){
-          var container_body = $(target.find('>.container-body').first())
-          // container_body.find('.sidebar-container-item').addClass('closed')
-          var wrapped = _wrap_action_body(action, action_body)
-          var current_item = null
-          if (closed){
-            container_body.html(wrapped);
-          }else{
+        var action_body = data['body'];
+        if (action_body){
+           var container_body = $(target.find('>.container-body').first())
+           var wrapped = _wrap_action_body(action, action_body)
+           var current_item = null
+           if(closed){
+             container_body.html(wrapped);
+           }else{
              current_item = $(container_body.find('#sidebar-'+action.attr('id')+''))
              if(current_item.length>0){
                current_item.html(action_body)
@@ -250,20 +251,20 @@ function update_sidebar_action(){
                container_body.append($(wrapped).addClass('closed'));
                current_item = $(container_body.find('#sidebar-'+action.attr('id')+''))
              }
-          }
-          _update_sidebar_nav_items(container_body)
-          if(current_item){
-            open_sidebar_container_item(current_item)
-          }else if(title.length > 0){
-              var new_title = _get_side_bar_title({
-                 title: title.data('title'),
-                 img: title.data('img'),
-                 icon: title.data('icon'),
-              })
-              $(sidebar.find('.sidebar-title .entity-title').first()).html(new_title)
            }
-           $this.addClass('activated')
-           target.find('.carousel').carousel()
+           _update_sidebar_nav_items(container_body)
+           if(current_item){
+             //first call : put interaction args
+             open_sidebar_container_item(current_item, {scroll_bottom})
+           }else if(title.length > 0){
+             var new_title = _get_side_bar_title({
+               title: title.data('title'),
+               img: title.data('img'),
+               icon: title.data('icon'),
+             })
+             $(sidebar.find('.sidebar-title .entity-title').first()).html(new_title)
+             if(scroll_bottom){init_comment_scroll(target)}
+           }
            try {
                 deform.processCallbacks();
             }
@@ -271,11 +272,10 @@ function update_sidebar_action(){
            if(toggle.length>0 && closed){
               toggle.click()
            }
+           $this.addClass('activated')
+           target.find('.carousel').carousel()
            init_emoji($(target.find('.emoji-container:not(.emojified)')));
            rebuild_scrolls($(target.find('.malihu-scroll')))
-           if(scroll_bottom){
-               init_comment_scroll(target)
-           }
            finish_progress()
            focus_on_form(target)
         }else{
