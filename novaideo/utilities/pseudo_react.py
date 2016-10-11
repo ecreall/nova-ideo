@@ -230,7 +230,7 @@ def get_edit_entity_metadata(
                     'listing_'+str(oid),
                     'index_'+str(oid),
                 ]
-                if view_result is not nothing :
+                if view_result is not nothing:
                     redirect_url = view_result.headers['location']
             else:
                 body = view_result['coordinates'][view_instance.coordinates][0]['body']
@@ -678,6 +678,11 @@ def get_remove_invitation_metadata(action, request, context, api, **kwargs):
         interfaces=[IInvitation])
     len_result = len(objects)
     index = str(len_result)
+    oid = get_oid(context, None)
+    object_views_to_update = [
+        'listing_'+str(oid),
+        'index_'+str(oid),
+    ]
     if len_result > 1:
         index = '*'
 
@@ -689,6 +694,7 @@ def get_remove_invitation_metadata(action, request, context, api, **kwargs):
         'view': api,
         'redirect_url': redirect_url,
         'view_title': view_title,
+        'object_views_to_update': object_views_to_update,
         'ignore_redirect': not kwargs['is_source_context'],
         'view_name': view_name,
     }
