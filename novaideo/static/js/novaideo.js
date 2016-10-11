@@ -572,7 +572,7 @@ $(document).on('click', '.proposal-support .token:not(.disabled)', function(){
    var url_attr = get_action_metadata($($this.parents('.proposal-support').first()))
    if(action_url){
      loading_progress()
-     $.getJSON(action_url,url_attr, function(data) {
+     $.post(action_url,url_attr, function(data) {
           finish_progress()
           data.token_action = $this.hasClass('token-success')? 'token-success': 'token-danger';
           update_components(data)

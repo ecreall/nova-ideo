@@ -49,7 +49,7 @@ function update_modal_action(event){
     loading_progress()
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
-    $.getJSON(url, url_attr, function(data) {
+    $.post(url, url_attr, function(data) {
         include_resources(data['resources'], function(){
            var action_body = data['body'];
            if (action_body){
@@ -82,7 +82,7 @@ function update_direct_action(event){
     loading_progress()
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
-    $.getJSON(url, url_attr, function(data) {
+    $.post(url, url_attr, function(data) {
        update_components(data)
        if(!(data.redirect_url && !data.ignore_redirect)){
          finish_progress()
@@ -107,7 +107,7 @@ function update_inline_action(){
     var url = action.data('updateurl');
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
-    $.getJSON(url, url_attr, function(data) {
+    $.post(url, url_attr, function(data) {
       include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
@@ -232,7 +232,7 @@ function update_sidebar_action(){
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
     loading_progress()
-    $.getJSON(url, url_attr, function(data) {
+    $.post(url, url_attr, function(data) {
       include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
@@ -300,9 +300,9 @@ function update_popover_action(){
     var action = $this.closest('.dace-action-popover')
     var url = action.data('updateurl');
     var url_attr = {tomerge:'True', coordinates:'main'}
-    $.extend( url_attr, get_action_metadata(action));
+    $.extend(url_attr, get_action_metadata(action));
     loading_progress()
-    $.getJSON(url, url_attr, function(data) {
+    $.post(url, url_attr, function(data) {
        var action_body = data['body'];
        if (action_body){
            target.html(action_body);
