@@ -271,7 +271,7 @@ class SendNewsletter(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def remove_roles_validation(process, context):

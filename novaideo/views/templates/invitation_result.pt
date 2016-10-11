@@ -1,11 +1,15 @@
-<div class="thumbnail right-caption span4 search-item result-item" i18n:domain="novaideo"
+<div class="thumbnail right-caption span4 search-item result-item component-obj-view component-listing-view"
+  id="listing_${oid}"
+  data-component_type="object-view"
+  i18n:domain="novaideo"
   tal:define="icon getattr(object, 'icon', '');
               url request.resource_url(object, '');
               first_name getattr(object, 'first_name', '');
               last_name getattr(object, 'last_name', '');
               user_title getattr(object, 'user_title', '');
               roles  getattr(object, 'roles', '');
-              organization getattr(object, 'organization', None)
+              organization getattr(object, 'organization', None);
+              oid object.__oid__;
             ">
   <div class="media-body media-invitation">
     <div class="object-title-block view-item-title" >

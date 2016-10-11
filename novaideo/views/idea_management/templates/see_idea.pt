@@ -1,6 +1,9 @@
-<div class="content-view" i18n:domain="novaideo"
+<div class="content-view component-obj-view component-index-view" i18n:domain="novaideo"
+  data-component_type="object-view"
+  id="index_${oid}"
   tal:define="support_condition 'idea' in getattr(request, 'content_to_support', []) and 'published' in idea.state and 'examined' not in idea.state;
-  icon getattr(idea, 'icon')">
+  icon getattr(idea, 'icon');
+  oid idea.__oid__">
   <div tal:replace="structure navbar_body"/>
   <div class="media-body content-title-body">
     <div tal:condition="cant_publish" role="alert" class="alert alert-info alert-dismissible">
@@ -25,8 +28,7 @@
       tal:define="author idea.author;
                   original idea.originalentity;
                   current_version idea.current_version;
-                  is_current idea is current_version;
-                  oid idea.__oid__">
+                  is_current idea is current_version">
      <small tal:define="author_picture getattr(author, 'picture', None)">
         <div class="author-block">
           <img class="author-img img-circle" 
@@ -53,7 +55,8 @@
               support any(t.owner is current_user for t in idea.tokens_support);
               oppose any(t.owner is current_user for t in idea.tokens_opposition);
               active support or oppose or idea.get_token(current_user)"
-        class="vertical-support proposal-support ${(support or oppose) and 'my-support'}">
+        class="vertical-support proposal-support ${(support or oppose) and 'my-support'}"
+        id='component-support-action-${oid}'>
         <span class="label success"
             title="${support and 'Withdraw my token' or 'Support'}"
             i18n:attributes="title"

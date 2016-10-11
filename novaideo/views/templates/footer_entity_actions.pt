@@ -8,7 +8,8 @@
            tal:condition="a in ajax_actions"
            tal:define="item ajax_actions.get(a, None);
                        icon getattr(a,'style_picto','');
-                       interaction_type getattr(a,'style_interaction_type','modal')">
+                       interaction_type getattr(a,'style_interaction_type','modal');
+                       interaction_args getattr(a,'style_interaction_args','');">
            <a id="${item['action_id']}-btn" 
                 class="btn btn-sm ajax-action dace-action-${interaction_type}"
                 data-toggle="${interaction_type}"
@@ -18,6 +19,7 @@
                 data-after_exe_url="${item['actionurl_after']}"
                 data-toreplay="${'toreplay' in item}"
                 data-title="${item['action'].title}"
+                data-interaction_args="${interaction_args}"
                 data-view_title="${item['view_title']}"
                 data-body="${item['body']}"
                 data-icon="${icon}"

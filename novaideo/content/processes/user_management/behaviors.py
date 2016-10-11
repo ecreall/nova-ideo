@@ -303,7 +303,7 @@ class AssignRoles(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def get_access_key(obj):
@@ -316,6 +316,11 @@ def seeperson_processsecurity_validation(process, context):
 
 @access_action(access_key=get_access_key)
 class SeePerson(InfiniteCardinality):
+    # style = 'button' #TODO add style abstract class
+    # style_descriminator = 'access-action'
+    # style_interaction = 'ajax-action'
+    # style_interaction_type = 'sidebar'
+    # style_picto = 'glyphicon glyphicon-eye-open'
     title = _('Details')
     context = IPerson
     actionType = ActionType.automatic
@@ -437,7 +442,7 @@ class AcceptRegistration(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 class RefuseRegistration(InfiniteCardinality):
@@ -458,7 +463,7 @@ class RefuseRegistration(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, '@@seeregistrations'))
+        return nothing
 
 
 def confirm_processsecurity_validation(process, context):
@@ -607,7 +612,7 @@ class Remind(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def get_access_key_reg(obj):
@@ -704,6 +709,7 @@ class Discuss(InfiniteCardinality):
     style_descriminator = 'communication-action'
     style_interaction = 'ajax-action'
     style_interaction_type = 'sidebar'
+    style_interaction_args = 'scroll-bottom'
     style_picto = 'ion-chatbubble'
     style_order = 0
     style_activate = True
@@ -827,6 +833,7 @@ class GeneralDiscuss(InfiniteCardinality):
     isSequential = False
     style_interaction = 'ajax-action'
     style_interaction_type = 'sidebar'
+    style_interaction_args = 'scroll-bottom'
     style_picto = 'ion-chatbubble'
     style_order = 0
     style_activate = True

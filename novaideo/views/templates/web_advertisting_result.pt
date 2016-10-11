@@ -1,7 +1,10 @@
-<div class="thumbnail right-caption span4 search-item result-item"
+<div class="thumbnail right-caption span4 search-item result-item component-obj-view component-listing-view"
+  id="listing_${oid}"
+  data-component_type="object-view"
   i18n:domain="novaideo"
   tal:define="url request.resource_url(object, '@@index');
-              icon getattr(object, 'icon', '')">
+              icon getattr(object, 'icon', '');
+              oid object.__oid__;">
   <div class="media-body media-advertisting">
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
     <div class="object-title-block" >

@@ -53,14 +53,14 @@ function init_file_content(){
         var content = $(file_contents[i]);
         var opposit_is_closed = html_content_is_empty($(content.parents('form').first().find('.advertising-html-content .html-content-text').first()));
         var template = close_template;
-		if(!opposit_is_closed){
-           content.addClass('closed');
-           var inner = $(content.find('.file-content').first());
-           inner.css('display', 'none');
-           template = open_template;
-		};
-    	init_label($(file_contents[i]), 'deformFileupload', 'advertising-html-content', template)
-    }
+    		if(!opposit_is_closed){
+               content.addClass('closed');
+               var inner = $(content.find('.file-content').first());
+               inner.css('display', 'none');
+               template = open_template;
+    		};
+        init_label($(file_contents[i]), 'deformFileupload', 'advertising-html-content', template)
+  }
 };
 
 
@@ -142,46 +142,3 @@ $(document).ready(function(){
 
 });
 
-// var image_preview = "<div class=\"preview\"><div class=\"advertisement\">"+
-//          "<div data-ride=\"carousel\" class=\"carousel slide  advertisement-right-2\" id=\"advertisement_right_2\">"+  
-//          "<div role=\"listbox\" class=\"carousel-inner advertisement-container\">"+
-//          "<div class=\"item active\">"+
-//          "<a href=\"#\" target=\"_blank\">"+
-//          "<img class=\"file-content-preview\" alt=\"publicite\" src=\"\" data-holder-rendered=\"true\"></a>"+
-//          "</div></div></div></div>"
-
-// var flash_preview = "<div class=\"preview\"><div class=\"advertisement\">"+
-//          "<div data-ride=\"carousel\" class=\"carousel slide  advertisement-right-2\" id=\"advertisement_right_2\">"+  
-//          "<div role=\"listbox\" class=\"carousel-inner advertisement-container\">"+
-//          "<div class=\"item active\">"+
-//          "<object height=\"90\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451\" >"+
-//          " <param class=\"file-content-preview-param\" name=\"movie\" value=\"\">"+
-//          "<param name=\"quality\" value=\"high\">"+
-//          "<embed class=\"file-content-preview\" src=\"\" quality=\"high\" height=\"90\" "+
-//          "type=\"application/x-shockwave-flash\" "+
-//          "pluginspage=\"http://www.macromedia.com/go/getflashplayer\">"+
-//          "</embed></object></div></div></div></div>"
-
-
-
-// function readURL(input, target) {
-
-//     if (input.files && input.files[0]) {
-//         var reader = new FileReader();
-//         reader.onload = function (e) {
-//             set_preview_template(target, e)
-//         }
-
-//         reader.readAsDataURL(input.files[0]);
-//     }
-// }
-
-
-// function init_preview(){
-//   $(".file-content").change(function(){
-//    var form = $($(this).parents('form'));
-//    var old_preview = $(form.find('.preview').first());
-//    old_preview.remove();
-//     readURL(this, $(form.find('.advertising-html-content').first()));
-//   });
-// }

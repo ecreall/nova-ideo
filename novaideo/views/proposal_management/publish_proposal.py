@@ -5,6 +5,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import deform
 import colander
 from pyramid.view import view_config
 
@@ -141,6 +142,12 @@ class PublishProposalFormView(FormView):
         vote_widget = vote_choice(vp_ballot_report)
         self.schema.get('vote').widget = vote_widget
         self.schema.view = self
+        self.action = self.request.resource_url(
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': PublishProposal.node_definition.id})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform novaideo-ajax-form publish-proposal-form')
 
 
 @view_config(
@@ -152,7 +159,7 @@ class PublishProposalView(MultipleView):
     title = _("Améliorer la proposition ou la soumettre en l'état")
     name = 'publishproposal'
     viewid = 'publishproposal'
-    template = 'daceui:templates/mergedmultipleview.pt'
+    template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (PublishProposalStudyReport, PublishProposalFormView)
     validators = [PublishProposal.get_validator()]
 

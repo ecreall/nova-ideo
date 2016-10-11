@@ -86,19 +86,23 @@ function close_step_messages(){
   $('li.message-in').removeClass('message-in')
 }
 
-$(document).ready(function(){
-    $('li.active .step-content').hover(function(){
+$(document).on('click' ,function(event){
+   var parents = $($(event.target).parents('.message-in, .in.step-message'))
+   if(parents.length == 0){
+     close_step_messages()
+   }
+});
+
+function init_step_contents(){
+  $('li.active .step-content').hover(function(){
         close_step_messages()
         var $this = $(this)
         var message = $($('#steps-messages').find('#'+$this.data('step')).first());
         open_step_message($this, message)
     })
+}
 
-   $(document).on('click' ,function(event){
-       var parents = $($(event.target).parents('.message-in, .in.step-message'))
-       if(parents.length == 0){
-         close_step_messages()
-       }
-    });
+$(document).ready(function(){
+    init_step_contents()
 });
 

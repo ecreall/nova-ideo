@@ -91,6 +91,51 @@ function init_explanation_item(){
       
 }
 
+$(document).on('submit','form', function( event ) {
+    var button = $(event['originalEvent']['explicitOriginalTarget'])
+    var btn_name = button.attr('name');
+    if (btn_name != 'Cancel'){
+      var parent = $($(this).parents('.panel-body').first());
+      var commentmessagedanger = $(parent.find('#messagedanger'));
+      if (!$('.single-amendment-control')[0].checked){
+        if (button.attr('name') != 'Cancel'){  
+           var items = $('.sequence-item:not(.header)');
+           for (i=0; i<items.length; i++){
+               var item = $(items[i]);
+               var selected = $(item.find('select[name="explanations"]'));
+               var values = $($(selected).find("option:selected")).map(function(){ return this.value }).get().join(", ");
+               var justification = $(item.find('textarea.justification-select-item').first());
+               var justification_val = justification.val();
+               if (justification_val == "" ){
+                   item.addClass('sequence-item-error');
+                   item.addClass('has-error');
+                   $(commentmessagedanger).removeClass('hide-bloc');
+                   $( commentmessagedanger.find('.errorMsgLbl')).text(novaideo_translate("There was a problem with your submission.")).show();
+                   event.preventDefault();
+               }else{ 
+                    item.removeClass('sequence-item-error');
+                    item.removeClass('has-error');
+                     };
+           }       
+       }
+     }else{
+       var justification = $(parent.find('.form-group.justification-amendment').first());
+       var justification_val = $(justification.find('textarea').first()).val();
+       if (justification_val == ""){
+          justification.addClass('has-error');
+          $(commentmessagedanger).removeClass('hide-bloc');
+          $( commentmessagedanger.find('.errorMsgLbl')).text(novaideo_translate("There was a problem with your submission.")).show();
+          event.preventDefault();
+       }else{
+         justification.removeClass('has-error');
+       }
+     }
+   }
+ });
+
+$(document).on('click', '.explanation-item', init_explanation_item);
+
+
 $(document).ready(function(){
   $('.form-group.explanation-groups label').hide();
 
@@ -115,50 +160,6 @@ $(document).ready(function(){
   $('.add-amendment-item.deform-seq-add').on('itemadded', init_select); 
 
   $('.select-item').on('click', scrollto);
-
-  $(document).on('submit','form', function( event ) {
-      var button = $(event['originalEvent']['explicitOriginalTarget'])
-      var btn_name = button.attr('name');
-      if (btn_name != 'Cancel'){
-        var parent = $($(this).parents('.panel-body').first());
-        var commentmessagedanger = $(parent.find('#messagedanger'));
-        if (!$('.single-amendment-control')[0].checked){
-          if (button.attr('name') != 'Cancel'){  
-             var items = $('.sequence-item:not(.header)');
-             for (i=0; i<items.length; i++){
-                 var item = $(items[i]);
-                 var selected = $(item.find('select[name="explanations"]'));
-                 var values = $($(selected).find("option:selected")).map(function(){ return this.value }).get().join(", ");
-                 var justification = $(item.find('textarea.justification-select-item').first());
-                 var justification_val = justification.val();
-                 if (justification_val == "" ){
-                     item.addClass('sequence-item-error');
-                     item.addClass('has-error');
-                     $(commentmessagedanger).removeClass('hide-bloc');
-                     $( commentmessagedanger.find('.errorMsgLbl')).text(novaideo_translate("There was a problem with your submission.")).show();
-                     event.preventDefault();
-                 }else{ 
-                      item.removeClass('sequence-item-error');
-                      item.removeClass('has-error');
-                       };
-             }       
-         }
-       }else{
-         var justification = $(parent.find('.form-group.justification-amendment').first());
-         var justification_val = $(justification.find('textarea').first()).val();
-         if (justification_val == ""){
-            justification.addClass('has-error');
-            $(commentmessagedanger).removeClass('hide-bloc');
-            $( commentmessagedanger.find('.errorMsgLbl')).text(novaideo_translate("There was a problem with your submission.")).show();
-            event.preventDefault();
-         }else{
-           justification.removeClass('has-error');
-         }
-       }
-     }
-   });
-
-  $(document).on('click', '.explanation-item', init_explanation_item);
 
   $('.justification-select-item').elastic();
 

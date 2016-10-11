@@ -1,3 +1,40 @@
+.views-container .wg-actions-navbar li>a{
+    color: #fff;
+    border-color: #204d74;
+    padding: 5px 7px;
+    background-color: #337ab7;
+    height: 31px;
+    line-height: 32px;
+    border-radius: 2px;
+    margin-bottom: 0;
+    font-weight: 400;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    white-space: nowrap;
+    font-size: 12px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 1px 3px 0 rgba(0,0,0,.12);
+}
+
+
+.views-container .wg-actions-navbar li>a:hover{
+    background-color: #245580
+}
+
+
+.listing-access-menu{
+  display: inline;
+  font-size: 14px
+}
+
+.listing-access-menu ul.list-inline {
+    display: inline;
+    margin-left: 0;
+}
+
+.sidebar-right-nav .navbar-entity{
+  margin-top: -10px;
+}
+
 .sort-container{
  height: 3px; 
 }
@@ -1060,18 +1097,6 @@ form .btn{
     z-index: -1;
 }
 
-.navbar-channel{
-    position: fixed;
-    width: 69%;
-    padding-right: 10px;
-    margin-left: 1px;
-    margin-top: -11px !important;
-    z-index: 1999;
-}
-
-.navbar-channel ul.nav.navbar-nav{
-  padding-right: 20px
-}
 
 .unread-comments .channel-item-title{
   font-weight: bold;
@@ -2256,6 +2281,11 @@ body{
     margin-right: 0 !important;
     position: absolute !important;
     right: 10px;
+    display: none
+}
+
+.contextual-help-toggle-container.active{
+  display: block
 }
 
 .contextual-help-toggle:not(.close){
@@ -2937,7 +2967,7 @@ ins {
    margin-bottom: 0px;
 }
 
-.navbar-entity .navbar-entity-content{
+.navbar-entity .navbar-entity-content {
     margin-left: -31.5px;
     margin-right: -31.5px;
 }
@@ -3252,6 +3282,7 @@ small .proposal-support .token{
 .object-title-block .label-basic{
   margin-left: 10px;
   font-size: 11px;
+  vertical-align: middle;
 }
 
 .panel-heading .label-basic{

@@ -1,4 +1,6 @@
 
+from pyramid import renderers
+
 from dace.objectofcollaboration.principal.util import Anonymous, has_role
 
 from novaideo.content.novaideo_application import NovaIdeoApplication
@@ -237,3 +239,22 @@ CONTEXTUAL_HELP_MESSAGES = {
 
 }
 
+
+def render_contextual_help(request, context, user, view_name):
+    messages = [CONTEXTUAL_HELP_MESSAGES.get(
+                   (context.__class__, s, view_name),
+                   None)
+                for s in context.state]
+    messages.append(CONTEXTUAL_HELP_MESSAGES.get(
+                    (context.__class__, 'any', view_name),
+                    None))
+    messages = [m for m in messages if m is not None]
+    messages = [item for sublist in messages for item in sublist]
+    messages = sorted(messages, key=lambda m: m[2])
+    messages = [renderers.render(
+                    m[1],
+                    {'context': context,
+                     'user': user},
+                    request) for m in messages
+                if m[0] is None or m[0](context, user)]
+    return messages

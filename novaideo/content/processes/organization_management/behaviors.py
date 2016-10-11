@@ -20,7 +20,7 @@ from novaideo.ips.xlreader import create_object_from_xl
 from novaideo.content.interface import (
     INovaIdeoApplication, IOrganization, IPerson)
 from novaideo.content.organization import Organization
-from novaideo import _
+from novaideo import _, nothing
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo.core import access_action, serialize_roles
 
@@ -218,7 +218,7 @@ class EditOrganization(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def rmorg_processsecurity_validation(process, context):
@@ -282,7 +282,7 @@ class AddMembers(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def rmmembers_processsecurity_validation(process, context):
@@ -320,8 +320,7 @@ class RemoveMembers(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
-
+        return nothing
 
 def usereditorg_roles_validation(process, context):
     return has_role(role=('Moderator',))
@@ -364,7 +363,7 @@ class UserEditOrganization(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def withdraw_roles_validation(process, context):
@@ -411,7 +410,7 @@ class WithdrawUser(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 

@@ -38,11 +38,60 @@ function nav_bar_component(data){
 			    new_component +='</li>'
 			}
 			if(new_component != null){
-				original_component.replaceWith($(new_component))
+				original_components.replaceWith($(new_component))
 			}
 			
 		}
 	})
+}
+
+function token_component(data){
+  $.each(data.components, function(index){
+    var component_id = 'component-support-action-'+data.components[index]
+    var original_components = $('[id="'+component_id+'"]')
+    $.each( original_components, function(index){
+       var original_component = $(original_components[index])
+       var $this = original_component.find('.'+data.token_action)
+       var opposit_class = $this.hasClass('token-success')? '.danger': '.success';
+       var opposit = $(original_component.find('.label'+opposit_class).first())
+       var opposit_token = $(opposit.find('.token').first())
+       var parent = $($this.parents('.label').first())
+       var support_nb = $(parent.find('.support-nb').first())
+       var opposit_support_nb = $(opposit.find('.support-nb').first())
+       if(data['state']){
+           if (data.title){
+              parent.attr('title', data.title)
+           }
+           if (data.opposit_title){
+              opposit.attr('title', data.opposit_title)
+           }
+          if(!data.withdraw){
+           $this.addClass('my-token')
+           var new_nb = parseInt(support_nb.text()) + 1
+           support_nb.text(new_nb)
+           if (data.change){
+             opposit_token.removeClass('my-token')
+             var opposit_new_nb = parseInt(opposit_support_nb.text()) - 1
+             opposit_support_nb.text(opposit_new_nb)
+             opposit_token.data('action', data.opposit_action)
+           }
+          }else{
+            original_component.removeClass('my-support')
+            $this.removeClass('my-token')
+            var new_nb = parseInt(support_nb.text()) - 1
+            support_nb.text(new_nb)
+          }
+          $this.data('action', data.action)
+      }
+      if(data.hastoken != undefined){
+        if(data.hastoken){
+          $('.token.disabled').removeClass('disabled').addClass('active')
+        }else{
+          $('.proposal-support:not(.my-support) .token.active').removeClass('active').addClass('disabled')
+        }
+      }
+   })
+  })
 }
 
 
@@ -66,13 +115,86 @@ function novaideo_content_nb_component(data){
 				new_component = '<li data-component_type="novaideo_content_nb" class="counter" id="'+component_id+'"><li>'
 			}
 			if(new_component != null){
-				original_component.replaceWith($(new_component))
+				original_components.replaceWith($(new_component))
 			}
 			
 		}
 	})
 }
 
+
+function object_view_component(data){
+	var components = $('[data-component_type="object-view"]')
+	var components_to_update = components.map(function(){
+		if($.inArray($(this).attr('id'), data['object_views_to_update']) >= 0){
+			return $(this)
+		}
+	})
+	$.each(components_to_update, function(index){
+		var original_components = $(this)
+		var component_id = original_components.attr('id')
+		if (original_components.length > 0){
+			if(!(data.objects_to_hide && $.inArray(component_id, data.objects_to_hide) >= 0)){
+			    if(data[component_id+'.delated']){
+			    	original_components.each(function(){
+		               $(this).addClass('deletion-process')
+				        $(this).animate({height: 0, opacity: 0}, 'slow', function() {
+				            $(this).remove();
+				        });
+			        })
+
+			    }else{
+				    var new_body = data[component_id+'.body']
+				    if (new_body){
+				    	var new_view = $('<div>'+data[component_id+'.body']+'</div>').find('#'+component_id).first()
+				        original_components.replaceWith(new_view)
+				        try {
+				            deform.processCallbacks();
+				        }catch(err) {};
+			        }
+		       }
+	 	    }
+	    }
+	})
+}
+
+function contextual_help_component(data){
+	var components = $('[data-component_type="contextual-help"]')
+	var components_to_update = components.map(function(){
+		if($.inArray($(this).attr('id'), data['contextualhelp_to_update']) >= 0){
+			return $(this)
+		}
+	})
+	$.each(components_to_update, function(index){
+		var original_components = $(this)
+		var component_id = original_components.attr('id')
+		if (original_components.length > 0){
+			var original_component = $(original_components[0])
+			original_component.html(data[component_id+'.body'])
+			rebuild_scrolls($(original_component.find('.malihu-scroll')))
+			init_contextual_help()
+		}
+	})
+}
+
+
+function process_steps_component(data){
+	var components = $('[data-component_type="process_steps"]')
+	var components_to_update = components.map(function(){
+		if($.inArray($(this).attr('id'), data['stepsnavbars_to_update']) >= 0){
+			return $(this)
+		}
+	})
+	$.each(components_to_update, function(index){
+		var original_components = $(this)
+		var component_id = original_components.attr('id')
+		if (original_components.length > 0){
+			var original_component = $(original_components[0])
+			original_component.html(data[component_id+'.body'])
+			init_step_contents()
+		}
+	})
+}
 
 function tab_component_component(data){
 	var components = $('[data-component_type="tab_component"]')
@@ -176,23 +298,16 @@ function view_title_component(data){
 	}
 }
 
-function list_items_component(data){
-    var url = window.location.href; 
-	var concerned_view = url.indexOf('/'+data.view_name+'')>=0 || url.indexOf('/@@'+data.view_name)>=0   
-	if(data.removed && (data.force_remove || concerned_view)){
-        data.search_item.addClass('deletion-process')
-        data.search_item.animate({height: 0, opacity: 0}, 'slow', function() {
-            $(this).remove();
-        });
-        return
-	}
-    if(data.new_obj_body && data.search_item){
-        data.search_item.replaceWith(data.new_obj_body)
-        try {
-            deform.processCallbacks();
-        }catch(err) {};
-	}
-
+function removed_items_component(data){
+	$.each(data['objects_to_hide'], function(index){
+		objects_to_hides = $('#'+data['objects_to_hide'][index])
+		objects_to_hides.each(function(){
+          $(this).addClass('deletion-process')
+		        $(this).animate({height: 0, opacity: 0}, 'slow', function() {
+		            $(this).remove();
+		   });
+		})
+	})
 }
 
 
@@ -214,8 +329,8 @@ function list_channels_component(data){
 	}
 }
 
-function redirect_component(data){
-	if (data.redirect_url){
+function redirect_component(data){	
+	if (data.redirect_url && !data.ignore_redirect){
 		$.notify(
             {
               text: novaideo_translate('Loading') + '...',
@@ -261,18 +376,23 @@ function alert_component(data){
 
 var pseudo_react_components = {
 	'support_action': [nav_bar_component, view_title_component,
-	                   list_items_component, alert_component,
-	                   tab_component_component, novaideo_content_nb_component],
+	                   removed_items_component, object_view_component, alert_component,
+	                   tab_component_component, novaideo_content_nb_component,
+	                   token_component],
 	'footer_action': [nav_bar_component, footer_action_component,
-	                  view_title_component, list_items_component,
+	                  view_title_component, removed_items_component,
+	                  object_view_component,
 	                  alert_component, novaideo_content_nb_component,
-	                  tab_component_component],
+	                  tab_component_component, contextual_help_component,
+	                  process_steps_component],
 	'redirect_action': [nav_bar_component,redirect_component,
-	                    list_items_component, novaideo_content_nb_component,
+	                    removed_items_component, novaideo_content_nb_component,
 	                    view_title_component, alert_component,
-	                    tab_component_component],
+	                    tab_component_component, object_view_component, contextual_help_component,
+	                    process_steps_component],
 	'dropdown_action': [dropdown_action_component, list_channels_component,
-	                    alert_component]
+	                    alert_component, contextual_help_component,
+	                    process_steps_component]
 }
 
 function update_components(data){

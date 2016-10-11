@@ -1,5 +1,9 @@
-<div class="content-view" i18n:domain="novaideo"
-     tal:define="icon getattr(object, 'icon');">
+<div class="content-view component-obj-view component-index-view" i18n:domain="novaideo"
+     tal:define="
+         icon getattr(amendment, 'icon');
+         oid amendment.__oid__"
+     id="index_${oid}"
+     data-component_type="object-view">
   <div tal:replace="structure navbar_body"/>
   <div class="media-body content-title-body">
 

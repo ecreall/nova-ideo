@@ -35,6 +35,35 @@
     transition: all 0.5s ease;
 }
 
+.sidebar-right-nav .navbar-entity .navbar-entity-content {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+
+.sidebar-right-nav .navbar-entity{
+    position: fixed;
+    width: 70%;
+    padding-right: 10px;
+    margin-top: -11px !important;
+    z-index: 1999;
+}
+
+.sidebar-right-nav .navbar-entity > .container-fluid{
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: -15px;
+}
+
+.sidebar-right-nav .navbar-entity ul.nav.navbar-nav{
+  padding-right: 20px
+}
+
+.sidebar-right-nav .content-view > .media-body{
+  padding-top: 25px
+}
+
+
 .bar-right-wrapper.toggled .sidebar-right-wrapper {
     right: -600px;
 }
@@ -127,13 +156,63 @@
 }
 
 
-.sidebar-right-nav .actions-footer-container>.container-body:first-child{
+.sidebar-right-nav .sidebar-container>.container-body:first-child{
     padding: 10px 0px 10px 15px;
     border-top: none;
     box-shadow: none;
     margin: 0px -6px -5px -10px;
 }
 
+.sidebar-container-item.closed,
+.sidebar-nav-items.closed{
+    display:none
+}
+
+
+.sidebar-nav-items{
+    position: fixed;
+    bottom: 75px;
+    right: 25px;
+    display: block;
+    z-index: 2000;
+}
+
+.sidebar-nav-items .item{
+    padding: 5px;
+    border-radius: 3px;
+    color: #fff;
+    box-shadow: -1px 1px 3px gray;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #373a35;
+
+}
+
+.sidebar-nav-items.desabled .item{
+    display: none
+}
+
+.sidebar-nav-items .item:hover,
+.sidebar-nav-items .item:not(.closed){
+    background-color: #dc6510 !important;
+}
+
+.sidebar-nav-items> .item-activator{
+    font-size: 16px;
+    margin-right: 0px;
+    background-color: #dc6510;
+    border-radius: 50%;
+    padding: 9px 9.5px;
+    color: #fff;
+    margin-top: 0px;
+    box-shadow: -1px 1px 5px gray;
+    cursor: pointer;
+    float: right;
+}
+
+.sidebar-nav-items> .item-activator:hover{
+    background-color: #b7520a
+}
 
 .sidebar-title .object-title-block a h4{
         text-overflow: ellipsis;
@@ -175,7 +254,13 @@
     border-bottom: none !important;
 }
 
+.sidebar-right-nav .sidebar-container-item{
+    float:left;
+    width: 100%
+}
+
 @media (max-width: 767px) {
+    .sidebar-right-nav .navbar-entity,
     .sidebar-right-wrapper,
     .sidebar-title{
       width: 100% ;
@@ -188,6 +273,7 @@
 }
 
 @media (max-width: 1400px) and (min-width: 768px){
+    .sidebar-right-nav .navbar-entity,
     .sidebar-right-wrapper,
     .sidebar-title
      {

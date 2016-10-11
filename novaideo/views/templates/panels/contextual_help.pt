@@ -1,6 +1,10 @@
-<div tal:condition="condition and messages" class="contextual-help">
-  <button type="button" class="close contextual-help-toggle-close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <ul class="list-unstyled malihu-scroll">
-  	<li tal:repeat="message messages"> ${structure:message}</li>
-  </ul>    
+<div class="contextual-help-container"
+	 id="contextualhelp"
+	 data-component_type="contextual-help">
+	<div tal:condition="condition and messages" class="contextual-help">
+	  <button type="button" class="close contextual-help-toggle-close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	  <ul class="list-unstyled malihu-scroll">
+	  	<li tal:repeat="message messages"> ${structure:message}</li>
+	  </ul>    
+	</div>
 </div>

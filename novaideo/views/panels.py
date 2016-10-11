@@ -20,24 +20,18 @@ from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from daceui.interfaces import IDaceUIAPI
 
-from novaideo.utilities.util import generate_listing_menu, ObjectRemovedException
+from novaideo.utilities.util import (
+    generate_listing_menu, ObjectRemovedException)
 from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMyContents,
     SeeMySelections,
     SeeMyParticipations,
     SeeMySupports)
-# from novaideo.content.processes.proposal_management.behaviors import (
-#     CreateProposal)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
-from novaideo.content.proposal import Proposal
-from novaideo.content.workspace import Workspace
-from novaideo.content.idea import Idea
 from novaideo.content.person import Person
 from novaideo.content.interface import IPerson, Iidea, IProposal
-from novaideo.content.amendment import Amendment
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.core import _, SearchableEntity
-from novaideo.content.processes import get_states_mapping
 from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity)
 from novaideo.utilities.util import (
@@ -47,6 +41,8 @@ from novaideo.utilities.util import (
     FOOTER_NAVBAR_TEMPLATE,
     update_all_ajax_action)
 from novaideo.views.filter import find_entities, find_more_contents
+from novaideo.contextual_help_messages import render_contextual_help
+from novaideo.steps import steps_panels
 
 
 MORE_NB = 20
@@ -254,200 +250,19 @@ class NovaideoContents(object):
         return result
 
 
-def days_hours_minutes(timed):
-    return (timed.days, 
-           timed.seconds//3600,
-           (timed.seconds//60)%60, 
-           timed.seconds%60)
-
-
 @panel_config(
-    name = 'steps',
-    context =Entity,
+    name='steps',
+    context=Entity,
     renderer='templates/panels/steps.pt'
     )
 class StepsPanel(object):
-    step1_0_template = 'novaideo:views/templates/panels/step1_0.pt'
-    step2_0_template = 'novaideo:views/templates/panels/step2_0.pt'
-    step3_0_template = 'novaideo:views/templates/panels/step3_0.pt'
-    step3_1_template = 'novaideo:views/templates/panels/step3_1.pt'
-    step3_2_template = 'novaideo:views/templates/panels/step3_2.pt'
-    step3_3_template = 'novaideo:views/templates/panels/step3_3.pt'
-    step4_0_template = 'novaideo:views/templates/panels/step4.pt'
-    step5_0_template = 'novaideo:views/templates/panels/step5_0.pt'
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
 
-    def _get_process_context(self):
-        if isinstance(self.context, (Amendment, Workspace)):
-            return self.context.proposal
-
-        return self.context
-
-    def _get_step1_informations(self, context, request):
-        proposal_nember = len(list(dict(context.related_proposals).keys()))
-        duplicates_len = len(context.duplicates)
-        return renderers.render(self.step1_0_template,
-                                {'context': context,
-                                 'proposal_nember': proposal_nember,
-                                 'duplicates_len': duplicates_len},
-                                request)
-
-    def _get_step2_informations(self, context, request):
-        related_ideas = list(dict(context.related_ideas).keys())
-        related_proposals = [list(dict(idea.related_proposals).keys())
-                             for idea in related_ideas]
-        related_proposals = [item for sublist in related_proposals
-                             for item in sublist]
-        related_proposals = list(set(related_proposals))
-        len_related_proposals = len(related_proposals)
-        if context in related_proposals:
-            len_related_proposals -= 1
-
-        return renderers.render(self.step2_0_template,
-                                {'context': context,
-                                 'proposal_nember': len_related_proposals},
-                                request)
-
-    def _get_step3_informations(self, context, request):
-        time_delta = None
-        working_group = context.working_group
-        process = working_group.improvement_cycle_proc
-        is_closed = 'closed' in working_group.state
-        user = get_current()
-        working_group_states = [_(get_states_mapping(user, working_group, s))
-                                for s in working_group.state]
-        if 'amendable' in context.state:
-            subprocesses = process['work'].sub_processes
-            date_iteration = None
-            if subprocesses:
-                date_iteration = subprocesses[-1]['timer'].eventKind.time_date
-
-            today = datetime.datetime.now()
-            if date_iteration is not None and date_iteration > today:
-                time_delta = date_iteration - today
-                time_delta = days_hours_minutes(time_delta)
-
-            return renderers.render(self.step3_1_template,
-                                    {'context':context,
-                                     'working_group_states': working_group_states,
-                                     'is_closed': is_closed,
-                                     'duration': time_delta,
-                                     'process': process},
-                                    request)
-        elif 'votes for publishing'  in context.state:
-            ballot = working_group.vp_ballot
-            today = datetime.datetime.now(tz=pytz.UTC)
-            if ballot.finished_at is not None and ballot.finished_at > today:
-                time_delta = ballot.finished_at - today
-                time_delta = days_hours_minutes(time_delta)
-
-            return renderers.render(self.step3_3_template,
-                                    {'context': context, 
-                                     'working_group_states': working_group_states,
-                                     'is_closed': is_closed,
-                                     'duration': time_delta,
-                                     'process': process,
-                                     'ballot_report': ballot.report},
-                                    request)
-        elif 'votes for amendments' in context.state:
-            voters = []
-            [voters.extend(b.report.voters)
-             for b in working_group.amendments_ballots]
-            voters = list(set(voters))
-            ballot = working_group.amendments_ballots[-1]
-            today = datetime.datetime.now(tz=pytz.UTC)
-            if ballot.finished_at is not None and ballot.finished_at > today:
-                time_delta = ballot.finished_at - today
-                time_delta = days_hours_minutes(time_delta)
-
-            return renderers.render(self.step3_2_template,
-                                    {'context': context,
-                                     'working_group_states': working_group_states,
-                                     'is_closed': is_closed,
-                                     'duration': time_delta,
-                                     'process': process,
-                                     'ballot_report': ballot.report,
-                                     'voters': voters},
-                                    request)
-        elif 'open to a working group' in context.state:
-            participants_mini = getSite().participants_mini
-            work_mode = getattr(working_group, 'work_mode', None)
-            if work_mode:
-                participants_mini = work_mode.participants_mini
-
-            return renderers.render(self.step3_0_template,
-                                   {'context': context,
-                                    'process': process,
-                                    'min_members': participants_mini},
-                                   request)
-
-        return _('No more Information.')
-
-    def _get_step4_informations(self, context, request):
-        user = get_current()
-        support = 0
-        if any(t.owner is user for t in context.tokens_support):
-            support = 1
-        elif any(t.owner is user for t in context.tokens_opposition):
-            support = -1
-
-        return renderers.render(self.step4_0_template,
-                                {'context': context,
-                                 'support': support},
-                                request)
-
-    def _get_step5_informations(self, context, request):
-        return renderers.render(self.step5_0_template,
-                                    {'context': context},
-                                    request)
-
     def __call__(self):
-        if getattr(self.request, 'is_idea_box', False):
-            return {'condition': False}
-
-        result = {}
-        context = self._get_process_context()
-        result['condition'] = isinstance(context, (Proposal, Idea))
-        result['current_step'] = 1
-        result['step1_message'] = ""
-        result['step2_message'] = ""
-        result['step3_message'] = ""
-        result['step4_message'] = ""
-        result['step5_message'] = ""
-        if isinstance(context, Proposal):
-            if 'draft' in context.state:
-                result['current_step'] = 2
-                result['step2_message'] = self._get_step2_informations(context,
-                                                                   self.request)
-            elif 'proposal' in self.request.content_to_support and \
-                 'submitted_support' in context.state:
-                result['current_step'] = 4
-                result['step4_message'] = self._get_step4_informations(context,
-                                                                   self.request)
-            elif 'proposal' in self.request.content_to_examine and\
-                 'examined' in context.state:
-                result['current_step'] = 5
-                result['step5_message'] = self._get_step5_informations(context,
-                                                                   self.request)
-            elif not ('examined' in context.state or \
-                      'submitted_support' in context.state or\
-                      'archived' in context.state):
-                result['current_step'] = 3
-                result['step3_message'] = self._get_step3_informations(context,
-                                                                   self.request)
-            elif 'examined' in context.state or \
-                 'submitted_support' in context.state or\
-                 'archived' in context.state:
-                result['current_step'] = 0
-
-        if isinstance(context, Idea):
-            result['step1_message'] = self._get_step1_informations(context,
-                                                                   self.request)
-
-        return result
+        return steps_panels(self.context, self.request)
 
 
 @panel_config(
@@ -489,8 +304,8 @@ class LateralMenu(object):
 
     def __call__(self):
         root = getSite()
-        resources = deepcopy(getattr(
-            self.request, 'resources', {'js_links': [], 'css_links': []}))
+        # resources = deepcopy(getattr(
+        #     self.request, 'resources', {'js_links': [], 'css_links': []}))
         try:
             navbars = generate_listing_menu(
                 self.request, root,
@@ -503,11 +318,11 @@ class LateralMenu(object):
             'css_links': [],
             'js_links': [],
             'menu_body': navbars['menu_body']}
-        result['css_links'] = [c for c in navbars['resources'].get('css_links', [])
-                               if c not in resources['css_links']]
-        result['js_links'] = [c for c in navbars['resources'].get('js_links', [])
-                              if c not in resources['js_links']]
-        update_resources(self.request, result)
+        # result['css_links'] = [c for c in navbars['resources'].get('css_links', [])
+        #                        if c not in resources['css_links']]
+        # result['js_links'] = [c for c in navbars['resources'].get('js_links', [])
+        #                       if c not in resources['js_links']]
+        # update_resources(self.request, result)
         return result
 
 
@@ -600,8 +415,6 @@ class Deadline_panel(object):
                 'previous_deadline': previous_deadline,
                 'condition': True}
 
-from novaideo.contextual_help_messages import CONTEXTUAL_HELP_MESSAGES
-
 
 @panel_config(
     name='contextual_help',
@@ -619,21 +432,8 @@ class ContextualHelp(object):
             return {'condition': False}
 
         user = get_current()
-        messages = [CONTEXTUAL_HELP_MESSAGES.get((self.context.__class__,
-                                                  s, self.request.view_name),
-                                                 None)
-                    for s in self.context.state]
-        messages.append(CONTEXTUAL_HELP_MESSAGES.get(
-                        (self.context.__class__, 'any', self.request.view_name),
-                        None))
-        messages = [m for m in messages if m is not None]
-        messages = [item for sublist in messages for item in sublist]
-        messages = sorted(messages, key=lambda m: m[2])
-        messages = [renderers.render(m[1],
-                      {'context': self.context,
-                       'user': user},
-                      self.request) for m in messages
-                    if m[0] is None or m[0](self.context, user)]
+        messages = render_contextual_help(
+            self.request, self.context, user, self.request.view_name)
         return {'messages': messages,
                 'condition': True}
 
@@ -750,12 +550,10 @@ class Channels(object):
 
     def _get_channels_bodies(self, root, user, channels, action_id):
         result_body = []
-        resources = {'css_links': [], 'js_links': []}
         for channel in channels:
             subject = channel.get_subject(user)
             actions_call, action_resources = update_all_ajax_action(
                 subject, self.request, action_id)
-            resources = merge_dicts(action_resources, resources)
             if actions_call:
                 object_values = {
                     'object': channel,
@@ -767,13 +565,11 @@ class Channels(object):
                     self.request)
                 result_body.append(body)
 
-        return result_body, resources
+        return result_body
 
     def __call__(self):
         user = get_current(self.request)
-        result = {
-            'css_links': [],
-            'js_links': []}
+        result = {}
         users_result_body = []
         others_result_body = []
         general_result_body = []
@@ -785,28 +581,13 @@ class Channels(object):
                             if isinstance(c.__parent__, Person)]
             generals = [general_channel]
             others = [c for c in channels if c not in user_channel]
-            resources = deepcopy(getattr(
-                self.request, 'resources', {'js_links': [], 'css_links': []}))
-            users_result_body, users_resources = self._get_channels_bodies(
+            users_result_body = self._get_channels_bodies(
                 root, user, user_channel, 'discuss')
-            others_result_body, others_resources = self._get_channels_bodies(
+            others_result_body = self._get_channels_bodies(
                 root, user, others, 'comment')
-            general_result_body, general_resources = self._get_channels_bodies(
+            general_result_body = self._get_channels_bodies(
                 root, user, generals, 'general_discuss')
             general_result_body.extend(others_result_body)
-            result['css_links'] = [c for c in users_resources['css_links']
-                                   if c not in resources['css_links']]
-            result['js_links'] = [c for c in users_resources['js_links']
-                                  if c not in resources['js_links']]
-            result['css_links'] = [c for c in others_resources['css_links']
-                                   if c not in resources['css_links']]
-            result['js_links'] = [c for c in others_resources['js_links']
-                                  if c not in resources['js_links']]
-            result['css_links'] = [c for c in general_resources['css_links']
-                                   if c not in resources['css_links']]
-            result['js_links'] = [c for c in general_resources['js_links']
-                                  if c not in resources['js_links']]
-            update_resources(self.request, result)
 
         result.update({
             'users_channels': users_result_body,

@@ -1,8 +1,11 @@
-<div class="thumbnail right-caption span4 search-item result-item view-item"  
+<div class="thumbnail right-caption span4 search-item result-item view-item component-obj-view component-listing-view"
+     id="listing_${oid}"
+     data-component_type="object-view"
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
-                 author object.author;">
+                 author object.author;
+                 oid object.__oid__;">
   <div class="media-body media-amendment" tal:define="author_picture getattr(author, 'picture', None)">
     <a href="${url}">
       <h4 tal:condition="state">

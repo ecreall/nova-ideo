@@ -45,7 +45,7 @@ from novaideo.content.interface import (
 from ..user_management.behaviors import (
     global_user_processsecurity,
     access_user_processsecurity)
-from novaideo import _, log
+from novaideo import _, nothing
 from novaideo.content.proposal import Proposal
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.content.correlation import CorrelationType
@@ -415,6 +415,7 @@ def publish_state_validation(process, context):
 class PublishProposal(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
     style_order = 13
     submission_title = _('Continue')
@@ -485,7 +486,7 @@ class PublishProposal(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def duplicate_processsecurity_validation(process, context):
@@ -743,7 +744,7 @@ class MakeOpinion(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def withdrawt_processsecurity_validation(process, context):
@@ -836,7 +837,7 @@ def seem_processsecurity_validation(process, context):
 
 
 class SeeMembers(InfiniteCardinality):
-    style_descriminator = 'wg-action'
+    style_descriminator = 'listing-wg-action'
     style_interaction = 'ajax-action'
     style_picto = 'fa fa-users'
     isSequential = False
@@ -977,6 +978,8 @@ def resign_state_validation(process, context):
 class Resign(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'wg-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_order = 2
     style_picto = 'typcn typcn-user-delete'
     style_css_class = 'btn-danger'
@@ -1073,7 +1076,7 @@ class Resign(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def participate_roles_validation(process, context):
@@ -1105,8 +1108,10 @@ def participate_state_validation(process, context):
 class Participate(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'wg-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_order = 1
-    style_picto = 'md md-group-add'
+    style_picto = 'typcn typcn-user-add'
     style_css_class = 'btn-success'
     submission_title = _('Save')
     isSequential = False
@@ -1204,7 +1209,7 @@ class Participate(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def compare_processsecurity_validation(process, context):
@@ -1260,7 +1265,7 @@ class AttachFiles(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def get_access_key(obj):
@@ -1280,6 +1285,11 @@ def seeproposal_processsecurity_validation(process, context):
 
 @access_action(access_key=get_access_key)
 class SeeProposal(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'access-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'sidebar'
+    style_picto = 'glyphicon glyphicon-eye-open'
     title = _('Details')
     context = IProposal
     actionType = ActionType.automatic
@@ -1658,7 +1668,7 @@ class AddFiles(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def rmfile_relation_validation(process, context):
@@ -1700,7 +1710,7 @@ class RemoveFile(InfiniteCardinality):
         return {'newcontext': workspace}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
+        return nothing
 
 
 #TODO behaviors

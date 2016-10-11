@@ -1,3 +1,29 @@
+function add_edit_correction_form(oid){
+    return '<div data-oid="'+oid+'" aria-hidden="true" role="dialog" class="edit-item-modal-container modal fade">'+
+            '<div class="modal-dialog">'+
+              '<div class="modal-content">'+
+                '<div class="modal-body">'+
+                  '<form class="deform edit-item-form">'+
+                    '<fieldset class="deform-form-fieldset">'+
+                      '<div title="" class="form-group  ">'+
+                        '<label class="control-label required" >'+
+                         novaideo_translate('Text')+
+                        '</label>'+
+                        '<textarea id="'+oid+'" class="tinymce form-control"></textarea>'+
+                        '<span id="'+oid+'-preload" class="tinymce-preload"></span>'+
+                      '</div>'+
+                      '<div class="form-group">'+
+                          '<button value="edit_item" class="btn btn-primary " name="edit_item" >'+
+                            novaideo_translate('Save')+
+                          '</button>'+
+                          '<button value="Cancel" class="btn btn-default " name="cancel">'+
+                            novaideo_translate('Cancel')+
+                          '</button>'+
+                      '</div></fieldset></form></div></div></div></div>'
+
+}
+
+
 function show_edit_item_form(event){
     var parent = $($(this).parents('#correction').first())
     var correction = $(parent.find('ins').first());
@@ -26,23 +52,16 @@ function edit_item(form){
   dict_post['edited'] = true
   dict_post['new_text'] = text
   modal.modal('hide')
+  $.extend(dict_post, get_action_metadata(btn));
   $.get(url, dict_post, function(data) {
     if (data){
       var content = $(data['body']).find('#correction_'+correction_attr);
       if (content){
            $(target).html($(content).html());
            var corrections = $(target).find('.correction-action');
-           if (corrections.length==0){
-               location.reload();
-           }
-      }else{
-         location.reload();
-         return false
-       };
-    }else{
-         location.reload();
-         return false
-       };
+      }
+      update_components(data)
+    }
     });
 }
 
@@ -57,23 +76,16 @@ function correct_handler(event){
     dict_post['item'] = parseInt(correction.data('item'));
     dict_post['content'] = correction_attr;
     dict_post['correction_id'] = parseInt(correction.data('correction'));
+    $.extend(dict_post, get_action_metadata(correction));
     $.get(url, dict_post, function(data) {
       if (data){
         var content = $(data['body']).find('#correction_'+correction_attr);
         if (content){
              $(target).html($(content).html());
              var corrections = $(target).find('.correction-action');
-             if (corrections.length==0){
-                 location.reload();
-             }
-        }else{
-           location.reload();
-           return false
-         };
-      }else{
-           location.reload();
-           return false
-         };
+        }
+        update_components(data)
+      }
       });
     
    }
@@ -101,8 +113,9 @@ function correct_all_action(element, vote){
     var url = $(element.parents('ul.correction-nav-actions').first()).data('url');
     dict_post = {};
     dict_post['vote'] = vote;
+    $.extend(dict_post, get_action_metadata(element));
     $.get(url, dict_post, function(data) {
-      location.reload();
+      update_components(data)
       });
 }
 
@@ -128,23 +141,56 @@ function init_correction_navbar(){
    }
 }
 
+function init_correction_textarea(oid, lg){
+      init_correction_navbar()
+      $(document.body).append(add_edit_correction_form(oid))
+      window.tinymce.dom.Event.domLoaded = true;
+      var jqoid = $('#' + oid);
+      var jqoid_preload = $('#' + oid + '-preload');
+      jqoid.hide();
+      jqoid_preload.click(function(){
+        jqoid.show();
+        jqoid_preload.remove();
+        tinyMCE.init({
+          language: lg,
+          body_class: 'form-control',
+          plugins: ["textcolor"],
+         "theme_advanced_resizing_advanced_toolbar_location": "top",
+         "toolbar": "undo redo | fontselect fontsizeselect | forecolor backcolor | bold italic",
+         "height": 100,
+         "theme_advanced_resizing": true,
+         "fontsize_formats": "8pt 9pt 10pt 11pt 12pt 13pt 14pt 15pt 26pt 36pt", "skin": "lightgray",
+         "strict_loading_mode": true,
+         "remove_linebreaks": false,
+         "width": 0,
+         "theme": "modern",
+         "mode": "exact",
+          forced_root_block : '',
+          invalid_elements : 'p',
+          elements: oid
+        });
+        jqoid_preload.unbind('click');
+      });
+      jqoid_preload.click();
+}
 
-$(document).ready(function(){
-  $(document).on('click', '.correction-action:not(.edit-item-action)', correct_handler);
-  $(document).on('click', '.edit-item-action', show_edit_item_form);
-  $(document).on('click', '.edit-item-modal-container button', function(){
-       $(this).addClass('active')
-  });
-  $(document).on('submit','.edit-item-form', function( event ) {
-    var form = $(this)
-    var button = $(form.find('button.active').first())
-    if (button.attr('name') == 'cancel'){
-      $(form.parents('.edit-item-modal-container').first()).modal('hide')
-      $('#correction.active-correction').removeClass('active-correction')
-    }else{
-      edit_item(form)
-    }
-    event.preventDefault();
-  })
-  init_correction_navbar()
+$(document).on('click', '.correction-action:not(.edit-item-action)', correct_handler);
+
+$(document).on('click', '.edit-item-action', show_edit_item_form);
+
+$(document).on('click', '.edit-item-modal-container button', function(){
+     $(this).addClass('active')
 });
+
+$(document).on('submit','.edit-item-form', function( event ) {
+  var form = $(this)
+  var button = $(form.find('button.active').first())
+  if (button.attr('name') == 'cancel'){
+    $(form.parents('.edit-item-modal-container').first()).modal('hide')
+    $('#correction.active-correction').removeClass('active-correction')
+  }else{
+    edit_item(form)
+  }
+  event.preventDefault();
+})
+

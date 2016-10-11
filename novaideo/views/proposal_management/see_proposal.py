@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import json
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_registry
 from pyramid.httpexceptions import HTTPFound
@@ -54,12 +55,16 @@ class DetailProposalView(BasicView):
             process_discriminator='Vote process')
         action_updated, messages, \
             resources, actions = dace_ui_api.update_actions(
-                self.request, vote_actions, True)
+                self.request, vote_actions, True, False)
         for action in list(actions):
-            action['body'] = dace_ui_api.get_action_body(
+            action['body'], action_resources = dace_ui_api.get_action_body(
                 self.context, self.request, action['action'],
-                True, False)
+                True, False, True)
             if not action['body']:
+                resources['js_links'].extend(action_resources['js_links'])
+                resources['js_links'] = list(set(resources['js_links']))
+                resources['css_links'].extend(action_resources['css_links'])
+                resources['css_links'] = list(set(resources['css_links']))
                 actions.remove(action)
 
         return actions, resources, messages, action_updated
@@ -172,7 +177,6 @@ class DetailProposalView(BasicView):
             'enable_corrections': enable_corrections,
             'current_user': user,
             'is_participant': is_participant,
-            'wg_actions': wg_actions,
             'voteactions': vote_actions,
             'filigrane': add_filigrane,
             'cant_publish': self._cant_publish_alert(navbars['all_actions']),
@@ -182,9 +186,11 @@ class DetailProposalView(BasicView):
             'ct_participate': ct_participate,
             'ct_participate_closed': ct_participate_closed,
             'ct_participate_max': ct_participate_max,
+            'wg_body': navbars['wg_body'],
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
-            'footer_body': navbars['footer_body']
+            'footer_body': navbars['footer_body'],
+            'json': json
         }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

@@ -274,7 +274,7 @@ class EditInvitation(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, ""))
+        return nothing
 
 
 def accept_roles_validation(process, context):
@@ -362,8 +362,7 @@ class AcceptInvitation(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return nothing
 
 
 def refuse_roles_validation(process, context):
@@ -379,6 +378,7 @@ class RefuseInvitation(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'direct'
     style_picto = 'glyphicon glyphicon-thumbs-down'
     context = IInvitation
     roles_validation = refuse_roles_validation
@@ -426,7 +426,7 @@ class RefuseInvitation(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def remove_roles_validation(process, context):
@@ -509,7 +509,7 @@ class ReinviteUser(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def remind_roles_validation(process, context):

@@ -1,5 +1,12 @@
+<div i18n:domain="novaideo"
+  class="content-view component-obj-view component-index-view"
+  id="index_${oid}"
+  data-component_type="object-view"
+  tal:define="
+      oid registration.__oid__;">
+
 <div tal:replace="structure navbar_body"/>
-<div class="media" i18n:domain="novaideo" tal:define="
+<div class="media" tal:define="
               trusted_email registration.has_trusted_email(getattr(request.root, 'trusted_emails', []))">
   <div class="media-body">
     <h4 class="media-heading">
@@ -20,3 +27,4 @@
   </div>
 </div>
 <div tal:replace="structure footer_body"/>
+</div>

@@ -549,7 +549,7 @@ class NovaideoAPI(IndexManagementJsonView):
                     try:
                         navbars = generate_listing_menu(
                             self.request, obj,
-                            descriminators=['communication-action'],
+                            descriminators=['communication-action', 'access-action'],
                             footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE)
                     except ObjectRemovedException:
                         return {'body': ''}
@@ -559,7 +559,8 @@ class NovaideoAPI(IndexManagementJsonView):
                         'object': obj,
                         'oid': oid_str,
                         'current_user': user,
-                        'footer_body': navbars['footer_body']
+                        'footer_body': navbars['footer_body'],
+                        'access_body': navbars['access_body'],
                     }
                     body = self.content(
                         args=render_dict,
@@ -643,12 +644,14 @@ class NovaideoAPI(IndexManagementJsonView):
 
         dace_ui_api = get_current_registry().getUtility(
             IDaceUIAPI, 'dace_ui_api')
-        body = dace_ui_api.get_action_body(
-            context, self.request, action)
+        body, resources = dace_ui_api.get_action_body(
+            context, self.request, action,
+            include_resources=True)
         result = {'body': body}
         result.update(get_components_data(
             **get_all_updated_data(
-                action, self.request, context, self)))
+                action, self.request, context,
+                self, resources=resources)))
         return result
 
     def after_execution_action(self):

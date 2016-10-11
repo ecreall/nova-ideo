@@ -1,5 +1,11 @@
+<div class="content-view component-obj-view component-index-view"
+  id="index_${oid}"
+  data-component_type="object-view"
+  tal:define="
+      oid workspace.__oid__"
+  i18n:domain="novaideo">
 <div tal:replace="structure navbar_body"/>
-<div class="right-caption span4"  i18n:domain="novaideo">
+<div class="right-caption span4">
   <div class="caption" tal:define="proposal workspace.proposal">
   <h3 class="content-title"
         data-title="${proposal.title}/${workspace.type_title}"
@@ -12,4 +18,5 @@
       </tal:loop>
     </div>
   </div>
+</div>
 </div>

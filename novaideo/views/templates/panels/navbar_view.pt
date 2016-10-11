@@ -12,7 +12,7 @@
                      <span class="visible-xs-inline-block action-icon ${actions[k]['icon']}"></span>
                   </a>
                </li>
-               <li i18n:attributes="title" title="Activate the contextual help" tal:condition="has_contextual_help" class="contextual-help-toggle-container">
+               <li i18n:attributes="title" title="Activate the contextual help" class="contextual-help-toggle-container">
                  <div class="contextual-help-toggle glyphicon glyphicon-info-sign"></div>
                </li> 
             </ul>

@@ -1,8 +1,13 @@
-<div class="row" i18n:domain="novaideo">
+<div class="row content-view component-obj-view component-index-view"
+  id="index_${oid}"
+  data-component_type="object-view"
+  tal:define="
+      icon getattr(invitation, 'icon', '');
+      oid invitation.__oid__"
+      i18n:domain="novaideo">
     <div class="col-md-12">
     <div class="thumbnail right-caption span4 search-item result-item" i18n:domain="novaideo"
-        tal:define="icon getattr(invitation, 'icon', '');
-                    url request.resource_url(invitation, '');
+        tal:define="url request.resource_url(invitation, '');
                     first_name getattr(invitation, 'first_name', '');
                     last_name getattr(invitation, 'last_name', '');
                     user_title getattr(invitation, 'user_title', '');

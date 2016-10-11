@@ -1,5 +1,9 @@
-<div tal:omit-tag="" i18n:domain="novaideo"
+<div i18n:domain="novaideo"
+  class="content-view component-obj-view component-index-view"
+  id="index_${oid}"
+  data-component_type="object-view"
   tal:define="
+      oid user.__oid__;
       user_picture user.picture;
       profil_picture getattr(user_picture, 'profil', user_picture);
       default_img request.static_url('novaideo:static/images/user100.png');">
@@ -20,7 +24,8 @@
             data-title="${getattr(user, 'title', user.name)}"
             data-icon=""
             data-img="${getattr(profil_picture, 'url', default_img)}">
-            ${getattr(user, 'title', user.name)} <span tal:condition="getattr(user, 'organization', None)">
+            ${getattr(user, 'title', user.name)} 
+            <span tal:condition="getattr(user, 'organization', None)">
                  <a tal:attributes="href request.resource_url(user.organization, '@@index')"><small><strong>(<span class="glyphicon glyphicon-home"></span> ${user.organization.title})</strong></small></a>
               </span>
           </h3>
@@ -74,5 +79,3 @@
   ${structure:contents}
 </div>
 </div>
-
-${panel('social_share_toggle')}

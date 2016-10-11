@@ -25,7 +25,9 @@ novaideoI18n = {
   "file": "file",
   "files": "files",
   "assciation": "assciation",
-  "assciations": "assciations"
+  "assciations": "assciations",
+  "Save": "Save",
+  "Cancel": "Cance"
 },
 
 'fr':{
@@ -53,7 +55,9 @@ novaideoI18n = {
   "file": "fichier",
   "files": "fichiers",
   "assciation": "assciation",
-  "assciations": "assciations"
+  "assciations": "assciations",
+  "Save": "Enregistrer",
+  "Cancel": "Annuler"
 }
 }
 

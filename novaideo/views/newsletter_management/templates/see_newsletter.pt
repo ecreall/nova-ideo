@@ -1,5 +1,12 @@
+<div class="content-view component-obj-view component-index-view"
+  id="index_${oid}"
+  data-component_type="object-view"
+  tal:define="
+      icon getattr(object, 'icon');
+      oid object.__oid__"
+  i18n:domain="novaideo">
 <div tal:replace="structure navbar_body"/>
-<div class="right-caption span4"  i18n:domain="novaideo">
+<div class="right-caption span4" >
   <div class="caption" tal:define="
     recurrence getattr(object, 'recurrence', False);
     sending_date getattr(object, 'sending_date', None);
@@ -9,7 +16,7 @@
     <div tal:condition="not validate_content and content" class="alert alert-danger">
       Selon la configuration de la newsletter, la désinscription des abonnées n'est pas autorisée. Afin de garder la cohérence du contenu et pour pouvoir envoyer la newsletter, il faut supprimer la variable "unsubscribeurl" du contenu de la newsletter.
     </div>
-    <h3 class="content-title"><span class="${object.icon}"></span> ${object.title} 
+    <h3 class="content-title"><span class="${icon}"></span> ${object.title} 
       <small style="color:gray" tal:condition="len_subscribed">(${len_subscribed} 
         <span tal:condition="len_subscribed > 1" i18n:translate="">registrations</span>
         <span tal:condition="len_subscribed == 1" i18n:translate="">registration</span>)
@@ -56,4 +63,5 @@
     </div>
   </div>
   <div tal:replace="structure footer_body"/>
+</div>
 </div>

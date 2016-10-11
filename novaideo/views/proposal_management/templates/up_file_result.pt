@@ -1,4 +1,7 @@
-<div class="file-container result-item search-item">
+<div class="file-container result-item search-item component-obj-view component-listing-view"
+     id="listing_${oid}"
+     data-component_type="object-view"
+     tal:define="oid file.__oid__">
 	<div class="object-menu pull-right">
 	    <div tal:replace="structure menu_body"/>
 	</div>

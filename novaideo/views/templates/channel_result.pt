@@ -10,6 +10,7 @@
                is_discuss object.is_discuss();
                icon getattr(item['action'],'style_picto','');
                interaction_type getattr(item['action'],'style_interaction_type','modal');
+               interaction_args getattr(item['action'],'style_interaction_args','');
                channel_nb item['action'].get_nb(item['context'], request);
                default_img request.static_url('novaideo:static/images/user.png')">
        <a id="${item['action_id']}-btn" 
@@ -22,6 +23,7 @@
             data-after_exe_url="${item['actionurl_after']}"
             data-toreplay="${'toreplay' in item}"
             data-title="${title}"
+            data-interaction_args="${interaction_args}"
             data-view_title="${item['view_title']}"
             data-body="${item['body']}"
             data-icon="${icon}"

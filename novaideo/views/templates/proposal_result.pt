@@ -1,4 +1,6 @@
-<div class="thumbnail right-caption span4 search-item result-item view-item"  
+<div class="thumbnail right-caption span4 search-item result-item view-item component-obj-view component-listing-view"
+     id="listing_${oid}"
+     data-component_type="object-view"
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
@@ -40,7 +42,11 @@
         data-img="">
         <a tal:attributes="href url">
           <h4>
-            <span class="icon ${icon}"></span> ${object.title} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
+            <span class="icon ${icon}"></span> ${object.title} 
+            <div class="listing-access-menu">
+              <div tal:replace="structure access_body"/>
+            </div>
+            <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
           </h4>
         </a>
     </div>
@@ -56,6 +62,7 @@
               oppose any(t.owner is current_user for t in object.tokens_opposition);
               active support or oppose or object.get_token(current_user)"
         class="vertical-support proposal-support ${(support or oppose) and 'my-support'}"
+        id='component-support-action-${oid}'
         >
         <span class="label success"
             title="${support and 'Withdraw my token' or 'Support'}"

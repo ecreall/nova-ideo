@@ -1,12 +1,22 @@
 
 function get_action_metadata(action){
     var id = action.attr('id')
-    search_item = $($('[id="'+id+'"]').parents('.result-item.search-item').first())
-    var counters = $('.counter').map(function(){return $(this).attr('id')}).get()
+    var view_name = $(document.body).data('view_name')
+    var actions = id? $('[id="'+id+'"]'): $(action)
+    var object_views = actions.map(function(index){
+      var view = $($(this).parents('.component-obj-view.component-listing-view, .component-obj-view.component-index-view').first())
+      return view.attr('id')
+    }).get()
+    var counters = $('[data-component_type="navbar_component"]').map(function(){return $(this).attr('id')}).get()
+    var contextual_help = $('[data-component_type="contextual-help"]').map(function(){return $(this).attr('id')}).get()
+    var steps_navbars = $('[data-component_type="process_steps"]').map(function(){return $(this).attr('id')}).get()
     return {source_path: window.location.pathname,
-            is_listing: search_item.length > 0,
-            search_item: search_item,
-            counters: JSON.stringify(counters)}
+            view_name: view_name,
+            object_views: JSON.stringify(object_views),
+            counters: JSON.stringify(counters),
+            included_resources: JSON.stringify(includejs_resources),
+            contextual_help: JSON.stringify(contextual_help),
+            steps_navbars: JSON.stringify(steps_navbars)}
 }
 
 
@@ -39,45 +49,42 @@ function update_modal_action(event){
     loading_progress()
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
-    delete url_attr.search_item;
     $.getJSON(url, url_attr, function(data) {
-       var action_body = data['body'];
-       if (action_body){
-           $(modal_container.find('.modal-body')).html(action_body);
-           $(modal_container.find('.modal-title')).text(title)
-           modal_container.css('opacity', '1')
-           modal_container.modal('show');
-           try {
-                deform.processCallbacks();
-            }
-           catch(err) {};
-           finish_progress()
-           focus_on_form(modal_container)
-           modal_container.data('action_id', action.attr('id'))
-           return false
-        }else{
-           location.reload();
-           return false
-        }
-    });
+        include_resources(data['resources'], function(){
+           var action_body = data['body'];
+           if (action_body){
+             $(modal_container.find('.modal-body')).html(action_body);
+             $(modal_container.find('.modal-title')).text(title)
+             modal_container.css('opacity', '1')
+             modal_container.modal('show');
+             modal_container.find('.carousel').carousel()
+             try {
+                  deform.processCallbacks();
+              }
+             catch(err) {};
+             finish_progress()
+             focus_on_form(modal_container)
+             modal_container.data('action_id', action.attr('id'))
+             return false
+          }else{
+             location.reload();
+             return false
+          }
+        })
+     });
     return false;
 };
 
 
 function update_direct_action(event){
     var action = $(this).closest('.dace-action-direct')
-    var id = action.attr('id')
-    search_item = $($('[id="'+id+'"]').parents('.result-item.search-item').first())
     var url = action.data('updateurl');
     loading_progress()
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
-    var search_item = url_attr.search_item
-    delete url_attr.search_item;
     $.getJSON(url, url_attr, function(data) {
-       data.search_item = search_item
        update_components(data)
-       if(!data.redirect_url){
+       if(!(data.redirect_url && !data.ignore_redirect)){
          finish_progress()
        }
        return false
@@ -100,15 +107,15 @@ function update_inline_action(){
     var url = action.data('updateurl');
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
-    delete url_attr.search_item;
-    $.getJSON(url,{tomerge:'True', coordinates:'main',
-                   source_path: window.location.pathname}, function(data) {
+    $.getJSON(url, url_attr, function(data) {
+      include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
            target.slideDown();
            $(target.find('.container-body')).html(action_body);
            $this.addClass('activated')
            init_comment_scroll(target)
+           target.find('.carousel').carousel()
            try {
                 deform.processCallbacks();
             }
@@ -118,6 +125,7 @@ function update_inline_action(){
            location.reload();
            return false
         }
+     })
     });
     return false;
 };
@@ -135,6 +143,74 @@ function _get_side_bar_title(data){
 }
 
 
+function _update_sidebar_nav_items(target){
+  var current_items = $(target.find('.sidebar-container-item'))
+  var sidebar_state = current_items.length<=1? 'closed': ''
+  var result = '<div class="sidebar-nav-items desabled '+sidebar_state+'">'
+  current_items.each(function(){
+    var $this = $(this)
+    var title = $this.data('title') + ': '+$this.data('context_title')
+    var item_state = $this.hasClass('closed')? 'closed': ''
+    result += '<div title="'+title
+    result +='"'+
+             ' data-target="'+$this.attr('id')+'"'+
+             ' data-scroll="'+$this.data('scroll')+'"'+
+             ' class="item '+item_state+'"><span class="'+
+             $this.data('icon')+'"></span> '+title+'</div>'
+  })
+  result += '<span class="item-activator desabled glyphicon glyphicon-th"></span>'
+  result += '</div>'
+  var current_nav_items = target.find('.sidebar-nav-items')
+  if(current_nav_items.length>0){
+    current_nav_items.replaceWith(result)
+  }else{
+    target.append(result)
+  }
+}
+
+
+function _wrap_action_body(action, body){
+  var title = $(action.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
+  return '<div id="sidebar-'+action.attr('id')+'"'+
+             ' data-title="'+action.data('title')+'"'+
+             ' data-icon="'+action.data('icon')+'"'+
+             ' data-context_title="'+title.data('title')+'"'+
+             ' data-context_icon="'+title.data('icon')+'"'+
+             ' data-context_img="'+title.data('img')+'"'+
+         'class="sidebar-container-item">' + body + '</div>'
+          
+
+}
+
+function open_sidebar_container_item(to_open){
+  var new_title = _get_side_bar_title({
+     title: to_open.data('context_title'),
+     img: to_open.data('context_img'),
+     icon: to_open.data('context_icon'),
+  })
+  var sidebar = $('.sidebar-right-nav')
+  $(sidebar.find('.sidebar-title .entity-title').first()).html(new_title)
+  var current_item = $('.sidebar-nav-items .item:not(.closed)').first();
+  var scrollTop = $('.sidebar-right-wrapper').scrollTop()+1;
+  current_item.data('scroll', scrollTop)
+  current_item.attr('data-scroll', scrollTop)
+  var item = $('.sidebar-nav-items .item[data-target="'+to_open.attr('id')+'"]')
+  $('.sidebar-nav-items .item').not(item).addClass('closed')
+  item.removeClass('closed')
+  var current_scroll = item.data('scroll')
+  function complete() {
+    $(this).addClass('closed')
+    to_open.fadeIn("fast").promise().done(
+      function(){
+        $(this).removeClass('closed');
+        if(current_scroll){
+            $('.sidebar-right-wrapper').scrollTop(current_scroll);
+          }
+      })
+  }
+  $('.sidebar-container-item').fadeOut( "fast").promise().done(complete)
+}
+
 function update_sidebar_action(){
     var $this = $(this)
     var actions = $('.dace-action-sidebar');
@@ -145,31 +221,49 @@ function update_sidebar_action(){
     var sidebar = $('.sidebar-right-nav')
     var bar = $(".bar-right-wrapper")
     var closed = bar.hasClass('toggled')
-    
-    var target = $(sidebar.find('.actions-footer-container'))//closest('.dace-action-inline').data('target')+'-target';
+    var target = $(sidebar.find('.sidebar-container'))//closest('.dace-action-inline').data('target')+'-target';
     var toggle = $('.menu-right-toggle:not(.close)')
     var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
     actions.removeClass('activated')
     var action = $this.closest('.dace-action-sidebar')
     var url = action.data('updateurl');
+    var interaction_args = action.data('interaction_args')
+    var scroll_bottom = interaction_args?interaction_args.indexOf('scroll-bottom') !== -1: false
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
-    delete url_attr.search_item;
     loading_progress()
     $.getJSON(url, url_attr, function(data) {
+      include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
-          var container_bodu = $(target.find('.container-body'))
-           container_bodu.html(action_body);
-           if(title.length > 0){
-            var new_title = _get_side_bar_title({
-               title: title.data('title'),
-               img: title.data('img'),
-               icon: title.data('icon'),
-            })
-            $(sidebar.find('.sidebar-title .entity-title').first()).html(new_title)
+          var container_body = $(target.find('>.container-body').first())
+          // container_body.find('.sidebar-container-item').addClass('closed')
+          var wrapped = _wrap_action_body(action, action_body)
+          var current_item = null
+          if (closed){
+            container_body.html(wrapped);
+          }else{
+             current_item = $(container_body.find('#sidebar-'+action.attr('id')+''))
+             if(current_item.length>0){
+               current_item.html(action_body)
+             }else{
+               container_body.append($(wrapped).addClass('closed'));
+               current_item = $(container_body.find('#sidebar-'+action.attr('id')+''))
+             }
+          }
+          _update_sidebar_nav_items(container_body)
+          if(current_item){
+            open_sidebar_container_item(current_item)
+          }else if(title.length > 0){
+              var new_title = _get_side_bar_title({
+                 title: title.data('title'),
+                 img: title.data('img'),
+                 icon: title.data('icon'),
+              })
+              $(sidebar.find('.sidebar-title .entity-title').first()).html(new_title)
            }
            $this.addClass('activated')
+           target.find('.carousel').carousel()
            try {
                 deform.processCallbacks();
             }
@@ -179,13 +273,16 @@ function update_sidebar_action(){
            }
            init_emoji($(target.find('.emoji-container:not(.emojified)')));
            rebuild_scrolls($(target.find('.malihu-scroll')))
-           init_comment_scroll(target)
+           if(scroll_bottom){
+               init_comment_scroll(target)
+           }
            finish_progress()
            focus_on_form(target)
         }else{
            location.reload();
            return false
         }
+      })
     });
     return false;
 };
@@ -204,7 +301,6 @@ function update_popover_action(){
     var url = action.data('updateurl');
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
-    delete url_attr.search_item;
     loading_progress()
     $.getJSON(url, url_attr, function(data) {
        var action_body = data['body'];
@@ -233,7 +329,6 @@ function update_popover_action(){
     return false;
 };
 
-
 $(document).on('click', '.dace-action-sidebar', update_sidebar_action);
 
 $(document).on('click', '.dace-action-popover', update_popover_action);
@@ -259,8 +354,6 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
     formData.append(button.val(), button.val())
     var action = $('#'+modal_container.data('action_id'))
     var action_metadata = get_action_metadata(action)
-    var search_item = action_metadata.search_item
-    delete action_metadata.search_item;
     for(key in action_metadata){
         formData.append(key, action_metadata[key])
     }
@@ -278,11 +371,10 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
                 deform.processCallbacks();
           }catch(err) {};
          finish_progress()
-        }else if(! data.redirect_url){
+        }else if(! (data.redirect_url && !data.ignore_redirect)){
           modal_container.modal('hide')
           finish_progress()
         }
-        data.search_item = search_item
         update_components(data)
     }});
     event.preventDefault();
@@ -301,4 +393,31 @@ $(document).on('click', function(event){
           }
        }
     });
-             
+
+
+$(document).on('click', '.sidebar-nav-items .item-activator.desabled', function(event){
+      var $this = $(this)
+      $this.removeClass('desabled')
+      $this.parents('.sidebar-nav-items').first().removeClass('desabled')
+});
+
+$(document).on('click', '.sidebar-nav-items .item-activator:not(.desabled)', function(event){
+      var $this = $(this)
+      $this.addClass('desabled')
+      $this.parents('.sidebar-nav-items').first().addClass('desabled')
+});
+
+$(document).on('click', function(event){
+      var $this = $(this)
+      var parents = $($(event.target).parents('.sidebar-nav-items:not(.desabled)'))
+      if(parents.length == 0){
+         $('.sidebar-nav-items').addClass('desabled');
+         $('.sidebar-nav-items .item-activator').addClass('desabled')
+      }
+});
+
+$(document).on('click', '.sidebar-nav-items .item.closed',function(event){
+      var $this = $(this)
+      var to_open = $('#'+$this.data('target'))
+      open_sidebar_container_item(to_open)
+});             

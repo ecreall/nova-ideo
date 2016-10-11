@@ -37,7 +37,7 @@ from novaideo.content.interface import (
 from ..user_management.behaviors import (
     global_user_processsecurity,
     access_user_processsecurity)
-from novaideo import _
+from novaideo import _, nothing
 from novaideo.content.idea import Idea
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
@@ -385,7 +385,7 @@ class EditIdea(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def submit_roles_validation(process, context):
@@ -427,7 +427,7 @@ class SubmitIdea(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def decision_roles_validation(process, context):
@@ -491,7 +491,7 @@ class ArchiveIdea(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def archive_roles_validation(process, context):
@@ -567,7 +567,7 @@ class PublishIdeaModeration(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def pub_roles_validation(process, context):
@@ -619,7 +619,7 @@ class PublishIdea(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def ab_roles_validation(process, context):
@@ -655,7 +655,7 @@ class AbandonIdea(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def re_roles_validation(process, context):
@@ -692,8 +692,7 @@ class RecuperateIdea(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
-
+        return nothing
 
 def comm_roles_validation(process, context):
     return has_role(role=('Member',))
@@ -712,6 +711,7 @@ class CommentIdea(InfiniteCardinality):
     style_descriminator = 'communication-action'
     style_interaction = 'ajax-action'
     style_interaction_type = 'sidebar'
+    style_interaction_args = 'scroll-bottom'
     style_picto = 'ion-chatbubble'
     style_order = 0
     style_activate = True
@@ -961,6 +961,11 @@ def seeidea_processsecurity_validation(process, context):
 @access_action(access_key=get_access_key)
 class SeeIdea(InfiniteCardinality):
     """SeeIdea is the behavior allowing access to context"""
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'access-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'sidebar'
+    style_picto = 'glyphicon glyphicon-eye-open'
     title = _('Details')
     context = Iidea
     actionType = ActionType.automatic
@@ -1064,7 +1069,7 @@ class MakeOpinion(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def support_roles_validation(process, context):
@@ -1114,7 +1119,7 @@ class SupportIdea(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 class OpposeIdea(InfiniteCardinality):
@@ -1144,7 +1149,7 @@ class OpposeIdea(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def withdrawt_processsecurity_validation(process, context):
@@ -1183,7 +1188,7 @@ class WithdrawToken(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def seewgs_state_validation(process, context):
@@ -1214,7 +1219,7 @@ class SeeRelatedWorkingGroups(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 #TODO behaviors
 
 VALIDATOR_BY_CONTEXT[Idea] = CommentIdea

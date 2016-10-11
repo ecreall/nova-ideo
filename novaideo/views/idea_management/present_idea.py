@@ -206,6 +206,8 @@ class PresentIdeaView(MultipleView):
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (SentToView, PresentIdeaFormView)
     contextual_help = 'present-help'
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/comment.js']}
 
     def get_message(self):
         message = (PRESENT_MESSAGE['0']).format()

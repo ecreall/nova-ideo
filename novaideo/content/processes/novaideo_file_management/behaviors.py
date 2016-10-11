@@ -26,7 +26,7 @@ from ..user_management.behaviors import (
     access_user_processsecurity)
 from novaideo.content.interface import INovaIdeoApplication, IFile
 from novaideo.core import access_action, serialize_roles
-from novaideo import _, DEFAULT_FILES
+from novaideo import _, DEFAULT_FILES, nothing
 
 
 def get_access_key(obj):
@@ -165,7 +165,7 @@ class Publish(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def private_state_validation(process, context):
@@ -191,6 +191,6 @@ class Private(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 #TODO behaviors

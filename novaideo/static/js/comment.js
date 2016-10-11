@@ -106,11 +106,8 @@ function init_comment_scroll(element){
   if(elem.length) {
      var hide_comment = $(elem.parents('.commentli.hide-bloc'))
      $(hide_comment.parents('.commentli:not(.hide-bloc)').children('.comment-data').find('#commentaction .comment-replay-nb.closed')).click() 
-     // var parent = $(elem.parents('.actions-footer-container'))
      setTimeout(function(){comment_scroll_to($(elem.parents('.commentli').first()), true)}, 1000)
   }else{
-   // if (comment_scroll.length>0){
-     // comment_scroll.animate({ scrollTop: comment_scroll.prop("scrollHeight")}, 1000);
      comment_scroll.scrollTop(comment_scroll.prop("scrollHeight"));
    }
 };
@@ -251,11 +248,517 @@ $(document).on('change', '.comments-text-search', function(){
       search_comments($this)
 });
 
+$(document).on('click', '.comment-inline-toggle', update_replay);
+
+$(document).on('change', '.commentform', function(){
+    init_comment_form_changes($(this))
+})
+
+$(document).on('submit','.commentform:not(.comment-inline-form)', function( event ) {
+    var $this = $(this)
+    var button = $this.find('button[type="submit"]').last();
+    var select_itention = $($this.find("select[name=\'intention\']"))
+    var intention = select_itention.val();
+    var select_related_contents = $($this.find("select[name='related_contents']").first());
+    var textarea = $this.find('textarea');
+    var comment = textarea.val();
+    var parent = $($this.parents('.views-container').first());
+    var target = $(parent.find('.comments-scroll .commentulorigin'));
+    var url = $(event.target).attr('action');
+    if (comment !='' && intention!=''){
+      var preview = $(target.find('> .commentli.comment-preview').last());
+      $(preview.find('.comment-preview-text')).html(comment.replace(/\n/g, '</br>'))
+      init_emoji($(preview.find('.comment-preview-text')));
+      preview.removeClass('hide-bloc')
+      init_comment_scroll(parent)
+      $(button).addClass('disabled');
+      var formData = new FormData($(this)[0]);
+      formData.append(button.val(), button.val())
+      alert_component({
+        alert_msg: novaideo_translate("Comment sent"),
+        alert_type: 'info'
+      })
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+            var content = $(data.new_body).find('.commentulorigin');
+            if (content){
+               init_emoji($(content.find('.emoji-container:not(.emojified)')));
+               $($(content).find('li.commentli').first()).insertBefore(preview);
+               preview.addClass('hide-bloc')
+               alert_component({
+                  alert_msg: novaideo_translate("Your comment is integrated"),
+                  alert_type: 'success'
+                })
+               textarea.val('');
+               select_related_contents.select2('val', []);
+               $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
+               select_itention.select2('val', 'Remark')
+               init_comment_scroll(parent)
+               try {
+                 deform.processCallbacks();
+                }
+               catch(err) {};
+            }else{
+              alert_component({
+                  alert_msg: novaideo_translate("Your comment is not integrated"),
+                  alert_type: 'error'
+                })
+            };
+            $(button).removeClass('disabled');
+            update_components(data)
+          }});
+          
+    }else{
+       var errormessage = '';
+       if (intention == ''){
+          errormessage = 'intention'
+        };
+       if (textarea.val() == ''){
+          if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
+       };
+      alert_component({
+          alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
+          alert_type: 'error'
+        })
+   };
+   event.preventDefault();
+});
+
+
+$(document).on('submit','.respondform', function( event ) {
+    var $this = $(this)
+    var formid = $this.attr('id');
+    var button = $this.find('button[type="submit"]').last();
+    var select_itention = $($this.find("select[name=\'intention\']"))
+    var intention = select_itention.val();
+    var textarea = $this.find('textarea');
+    var comment = textarea.val();
+    var select_related_contents = $($this.find("select[name='related_contents']").first());
+    var parent = $($this.parents('.views-container').get(1));
+    var parentform = parent.find('.commentform');
+    
+    var target = $($this.parents('.commentli').first().find('.comments-container').first().find('.commentul').first());
+    var url = $(event.target).attr('action');
+    if (comment !='' && intention!=''){
+      var preview = $(target.find('> .commentli.comment-preview').last());
+      $(preview.find('.comment-preview-text')).html(comment.replace(/\n/g, '</br>'))
+      init_emoji($(preview.find('.comment-preview-text')));
+      preview.removeClass('hide-bloc')
+      comment_scroll_to(preview, true)
+      $(button).addClass('disabled');
+      alert_component({
+        alert_msg: novaideo_translate("Comment sent"),
+        alert_type: 'info'
+      })
+      var formData = new FormData($(this)[0]);
+      formData.append(button.val(), button.val())
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+          var content = $(data.new_body).find('.commentulorigin');
+          if (content){
+             init_emoji($(content.find('.emoji-container:not(.emojified)')));
+             alert_component({
+                  alert_msg: novaideo_translate("Your comment is integrated"),
+                  alert_type: 'success'
+                })
+             $($(content).find('li.commentli').first()).insertBefore(preview);
+             preview.addClass('hide-bloc')
+             textarea.val('');
+             select_related_contents.select2('val', []);
+             $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
+             select_itention.select2('val', 'Remark')
+             $this.parents('.replay-form-container').first().find('button.close').first().click()
+             comment_scroll_to(target.find('> li.commentli:not(.comment-preview)').last(), true)
+             try {
+                 deform.processCallbacks();
+                }
+             catch(err) {};
+          }else{
+            alert_component({
+                  alert_msg: novaideo_translate("Your comment is not integrated"),
+                  alert_type: 'error'
+            })
+          };
+          update_components(data)
+      }});
+    }else{
+       var errormessage = '';
+       if (intention == ''){
+           errormessage =  "intention";
+       };
+       if (comment == ''){
+          if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
+       };
+        alert_component({
+          alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
+          alert_type: 'error'
+        })
+
+   };
+  event.preventDefault();
+});
+
+$(document).on('submit','.edit-comment-form', function( event ) {
+    var $this = $(this)
+    var formid = $this.attr('id');
+    var button = $this.find('button[type="submit"]').last();
+    var select_itention = $($this.find("select[name=\'intention\']"))
+    var intention = select_itention.val();
+    var textarea = $this.find('textarea');
+    var comment = textarea.val();
+    var select_related_contents = $($this.find("select[name='related_contents']").first());
+    var parent = $($this.parents('.views-container').get(1));
+    var parentform = parent.find('.commentform');
+    
+    var target = $($this.parents('.commentli').first().find('.comments-container').first().find('.commentul').first());
+    var commentmessageinfo = $this.find('#messageinfo');
+    var commentmessagesuccess = $this.find('#messagesuccess');
+    var commentmessagedanger = $this.find('#messagedanger');
+    var url = $(event.target).attr('action');
+    if (comment !='' && intention!=''){
+      $(button).addClass('disabled');
+      alert_component({
+        alert_msg: novaideo_translate("Comment sent"),
+        alert_type: 'info'
+      })
+      var formData = new FormData($(this)[0]);
+      formData.append(button.val(), button.val())
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+          var content = $(data.new_body).find('.commentulorigin');
+          if (content){
+             init_emoji($(content.find('.emoji-container:not(.emojified)')));
+             alert_component({
+                  alert_msg: novaideo_translate("Your comment is integrated"),
+                  alert_type: 'success'
+                })
+             $this.parents('.commentli').first().replaceWith($($(content).find('li.commentli').first()))
+             textarea.val('');
+             select_related_contents.select2('val', []);
+             $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
+             select_itention.select2('val', 'Remark')
+             $this.parents('.replay-form-container').first().find('button.close').first().click()
+             try {
+                 deform.processCallbacks();
+                }
+             catch(err) {};
+          }else{
+            alert_component({
+                  alert_msg: novaideo_translate("Your comment is not integrated"),
+                  alert_type: 'error'
+            })
+          };
+      }});
+    }else{
+       var errormessage = '';
+       if (intention == ''){
+           errormessage =  "intention";
+       };
+       if (comment == ''){
+          if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
+       };
+       alert_component({
+          alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
+          alert_type: 'error'
+        })
+
+   };
+  event.preventDefault();
+});
+
+
+$(document).on('submit','.presentform', function( event ) {
+    var $this = $(this)
+    var button = $this.find('button').last();
+    var members = $this.find("select[name=\'members\']");
+    var subject = $this.find("input[name=\'subject\']").val();
+    var textarea = $this.find('textarea');
+    var parent = $($this.parents('.views-container').first());
+    var target = $(parent.find('.study-view').first());
+    var commentmessageinfo = parent.find('#messageinfo');
+    var commentmessagesuccess = parent.find('#messagesuccess');
+    var commentmessagedanger = parent.find('#messagedanger');
+    var url = $(event.target).attr('action');
+    if (subject !='' && textarea.val()!='' && members.val() != null){
+      loading_progress();
+      $(button).addClass('disabled');
+      alert_component({
+          alert_msg: novaideo_translate("Message sent"),
+          alert_type: 'info'
+        })
+      var values = $this.serialize()+'&'+button.val()+'='+button.val();
+      $.post(url, values, function(data) {
+             var content = $(data.new_body).find('.study-view.study-present');
+             if (content){
+              // var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
+               // $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
+               $(target).html($(content).html());
+               members.select2('val', []);
+               alert_component({
+                  alert_msg: novaideo_translate("Your message has been delivered to the indicated recipients"),
+                  alert_type: 'success'
+                })
+              }else{
+                alert_component({
+                  alert_msg: novaideo_translate("Your message is not delivered"),
+                  alert_type: 'error'
+                })
+              };
+              $(button).removeClass('disabled');
+              update_components(data)
+          });
+          finish_progress();
+    }else{
+       var errormessage = '';
+       if (members.val() == null){
+           errormessage =  "members";
+       };
+       if (subject == ''){
+          if (errormessage != ''){errormessage=errormessage+' and subject'}else{errormessage = 'subject'}
+       };
+       if (textarea.val() == ''){
+          if (errormessage != ''){errormessage=errormessage+' and message'}else{errormessage = 'message'}
+       };
+
+       alert_component({
+          alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
+          alert_type: 'error'
+        })
+   };
+   event.preventDefault();
+});
+
+
+  $(document).on('click','.commentform .comment-textarea-actions .comment-submit', function(event){
+     var $this = $(this)
+    var form = $($this.parents('form').first())
+    $((".comment-form-group")).removeClass('active')
+    var button = $(form.find("button[type='submit']").first());
+    button.click()
+  });
+
+  $(document).on('click', '.comment-cancel', function(){
+    var $this = $(this)
+    var form = $($this.parents('form').first())
+    $((".comment-form-group")).removeClass('active')
+    $((".comment-data .comment-content.hide-bloc")).removeClass('hide-bloc');
+    var close_btn = $($(form).parents('.replay-form-container').first().find('button.close').first());
+    close_btn.click()
+  })
+  
+  $(document).on('click','.commentform .comment-textarea-actions .comment-intention', function(event){
+    var $this = $(this)
+    var form = $($this.parents('form').first())
+    $((".comment-form-group")).removeClass('active')
+    var button = $(form.find(".comment-form-group.comment-intention-form").first());
+    button.addClass('active')
+    // button.css('bottom', form.offset().top- $(window).height()+'px')
+  });
+
+  $(document).on('click','.commentform .comment-textarea-actions .comment-related', function(event){
+    var $this = $(this)
+    var form = $($this.parents('form').first())
+    $((".comment-form-group")).removeClass('active')
+    var button = $(form.find(".comment-form-group.comment-related-form").first());
+    button.addClass('active')
+    // var bottom =($('.comments-scroll').offset().top + $('.comments-scroll').height() - form.offset().top)+70;
+    // button.css('bottom', bottom+'px')
+  });
+
+  $(document).on('click','.commentform .comment-textarea-actions .comment-add-file', function(event){
+    var $this = $(this)
+    var form = $($this.parents('form').first())
+    $((".comment-form-group")).removeClass('active')
+    var button = $(form.find(".comment-form-group.comment-files").first());
+    button.addClass('active')
+    // button.css('bottom', $this.parents('form').offset().top+'px')
+  });
+
+  $(document).on('click','.commentform .comment-textarea textarea', function(event){
+    var $this = $(this)
+    var form = $($this.parents('form').first())
+    $((".comment-form-group")).removeClass('active')
+  });
+
+  $(document).on('click','.commentform .comment-textarea-actions .comment-emoji', function(event){
+    var $this = $(this)
+    var form = $($this.parents('form').first())
+    $((".comment-form-group")).removeClass('active')
+    var button = $(form.find(".comment-form-group.emoji-container-input").first());
+    button.addClass('active')
+    // button.css('bottom', $this.parents('form').offset().top+'px')
+  });
+
+$(document).on('click', '.emoji-container-input span.emoji-sizer', function(){
+    var $this = $(this)
+    var value = ':'+$($this.find('.emoji-inner').first()).attr('title')+':'
+    var container = $($this.parents('.emoji-container-input'))
+    var text = $(container.siblings('textarea'))
+    text.insertAtCaret(value)
+    // text.val(text.val()+' '+value+' ')
+    container.removeClass('active')
+
+})
+
+$(document).on('click', '.comment-ajax-action', function(){
+  $('.comment-ajax-action').removeClass('active')
+  $(this).addClass('active')
+})
+
+$(document).on('submit', '.comment-un-pin-form', function(event){
+    var $this = $(this)
+    var button = $this.find('button.active[type="submit"]').first();
+    if(button.val() == 'Cancel'){
+      $($this.parents('.modal').first()).modal('hide');
+      event.preventDefault();
+      return
+    }
+    var action = $($('.comment-un-pin-action.active').first())
+    var url = $(event.target).attr('action');
+    $(button).addClass('disabled');
+    var formData = new FormData($(this)[0]);
+    formData.append(button.val(), button.val())
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+          var navchannel = $(action.parents('.comments-scroll').first().siblings('.navbar-channel').first())
+          var filters = $(navchannel.find('.comment-filter-action.active')).map(function(){return $(this).data('name')})
+          filters = filters.toArray()
+          if ($.inArray('pinned', filters)>=0){
+            //action is unpin with the 'pinned' filter => remove the comment
+            var item = $(action.parents('li.commentli').first())
+            $(item.find('.comment-data')).addClass('deletion-process')
+            item.fadeOut( 1000 );
+
+
+          }else{
+            update_comment($(action.parents('li.commentli').first()))
+          }
+          $($this.parents('.modal').first()).modal('hide')
+
+      }})
+
+    event.preventDefault();
+})
+
+$(document).on('submit', '.comment-remove-form', function(event){
+    var $this = $(this)
+    var button = $this.find('button.active[type="submit"]').first();
+    if(button.val() == 'Cancel'){
+      $($this.parents('.modal').first()).modal('hide');
+      event.preventDefault();
+      return
+    }
+    var action = $($('.comment-remove-action.active').first())
+    var url = $(event.target).attr('action');
+    $(button).addClass('disabled');
+    var formData = new FormData($(this)[0]);
+    formData.append(button.val(), button.val())
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+          update_comment($(action.parents('li.commentli').last()))
+          $($this.parents('.modal').first()).modal('hide')
+          update_components(data)
+      }})
+
+    event.preventDefault();
+})
+
+
+$(document).on('submit', '.channel-unsubscribe-form', function(event){
+    var $this = $(this)
+    var button = $this.find('button.active[type="submit"]').first();
+    if(button.val() == 'Cancel'){
+      $($this.parents('.modal').first()).modal('hide');
+      event.preventDefault();
+      return
+    }
+    var url = $(event.target).attr('action');
+    $(button).addClass('disabled');
+    var formData = new FormData($(this)[0]);
+    formData.append(button.val(), button.val())
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+          $($this.parents('.modal').first()).modal('hide')
+          data.channel_item = $('.channel-action.ajax-action.activated')
+          data.removed = true
+          update_components(data)
+      }})
+
+    event.preventDefault();
+})
+
+$(document).on('submit', '.channel-subscribe-form', function(event){
+    var $this = $(this)
+    var button = $this.find('button.active[type="submit"]').first();
+    if(button.val() == 'Cancel'){
+      $($this.parents('.modal').first()).modal('hide');
+      event.preventDefault();
+      return
+    }
+    var url = $(event.target).attr('action');
+    $(button).addClass('disabled');
+    var formData = new FormData($(this)[0]);
+    formData.append(button.val(), button.val())
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data:formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+          $($this.parents('.modal').first()).modal('hide')
+          data.channels_target = $($('.channel-action.view-item').first().parents('div').first())
+          update_components(data)
+      }})
+    
+    event.preventDefault();
+})
+
+$(document).on('hidden.bs.modal', '.modal', function(){
+    if($('.sidebar-right-background.toggled').length > 0){
+      $('body').addClass('modal-open')
+    }
+})
+
+$(document).on('click', '.comment-edit-action', function(){
+  $($(this).parents('.commentli').first().find('.comment-data .comment-content').first()).addClass('hide-bloc')
+})  
+
 $(document).ready(function(){
 
   $('.sidebar-right-wrapper').on( 'scroll', function(){
       var $this = $(this);
-      if($($this.find('.comments-scroll')).length > 0 && $this.scrollTop() <= 0) {
+      if($($this.find('.sidebar-container-item:not(.closed) .comments-scroll')).length > 0 && $this.scrollTop() <= 0) {
             var navchannel = $($this.find('.navbar-channel'))
             var text_to_search = $(navchannel.find('.comments-text-search').first()).val()
             var filters = $(navchannel.find('.comment-filter-action.active')).map(function(){return $(this).data('name')})
@@ -282,511 +785,4 @@ $(document).ready(function(){
             })
         }
   });
-
-    $(document).on('click', '.comment-inline-toggle', update_replay);
-
-    $(document).on('change', '.commentform', function(){
-        init_comment_form_changes($(this))
-    })
-
-    $(document).on('submit','.commentform:not(.comment-inline-form)', function( event ) {
-        var $this = $(this)
-        var button = $this.find('button[type="submit"]').last();
-        var select_itention = $($this.find("select[name=\'intention\']"))
-        var intention = select_itention.val();
-        var select_related_contents = $($this.find("select[name='related_contents']").first());
-        var textarea = $this.find('textarea');
-        var comment = textarea.val();
-        var parent = $($this.parents('.views-container').first());
-        var target = $(parent.find('.comments-scroll .commentulorigin'));
-        var url = $(event.target).attr('action');
-        if (comment !='' && intention!=''){
-          var preview = $(target.find('> .commentli.comment-preview').last());
-          $(preview.find('.comment-preview-text')).html(comment.replace(/\n/g, '</br>'))
-          init_emoji($(preview.find('.comment-preview-text')));
-          preview.removeClass('hide-bloc')
-          init_comment_scroll(parent)
-          $(button).addClass('disabled');
-          var formData = new FormData($(this)[0]);
-          formData.append(button.val(), button.val())
-          alert_component({
-            alert_msg: novaideo_translate("Comment sent"),
-            alert_type: 'info'
-          })
-          $.ajax({
-            url: url,
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-                var content = $(data.new_body).find('.commentulorigin');
-                if (content){
-                   init_emoji($(content.find('.emoji-container:not(.emojified)')));
-                   $($(content).find('li.commentli').first()).insertBefore(preview);
-                   preview.addClass('hide-bloc')
-                   alert_component({
-                      alert_msg: novaideo_translate("Your comment is integrated"),
-                      alert_type: 'success'
-                    })
-                   textarea.val('');
-                   select_related_contents.select2('val', []);
-                   $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
-                   select_itention.select2('val', 'Remark')
-                   init_comment_scroll(parent)
-                   try {
-                     deform.processCallbacks();
-                    }
-                   catch(err) {};
-                }else{
-                  alert_component({
-                      alert_msg: novaideo_translate("Your comment is not integrated"),
-                      alert_type: 'error'
-                    })
-                };
-                $(button).removeClass('disabled');
-                update_components(data)
-              }});
-              
-        }else{
-           var errormessage = '';
-           if (intention == ''){
-              errormessage = 'intention'
-            };
-           if (textarea.val() == ''){
-              if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
-           };
-          alert_component({
-              alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
-              alert_type: 'error'
-            })
-       };
-       event.preventDefault();
-   });
-  
-
-    $(document).on('submit','.respondform', function( event ) {
-        var $this = $(this)
-        var formid = $this.attr('id');
-        var button = $this.find('button[type="submit"]').last();
-        var select_itention = $($this.find("select[name=\'intention\']"))
-        var intention = select_itention.val();
-        var textarea = $this.find('textarea');
-        var comment = textarea.val();
-        var select_related_contents = $($this.find("select[name='related_contents']").first());
-        var parent = $($this.parents('.views-container').get(1));
-        var parentform = parent.find('.commentform');
-        
-        var target = $($this.parents('.commentli').first().find('.comments-container').first().find('.commentul').first());
-        var url = $(event.target).attr('action');
-        if (comment !='' && intention!=''){
-          var preview = $(target.find('> .commentli.comment-preview').last());
-          $(preview.find('.comment-preview-text')).html(comment.replace(/\n/g, '</br>'))
-          init_emoji($(preview.find('.comment-preview-text')));
-          preview.removeClass('hide-bloc')
-          comment_scroll_to(preview, true)
-          $(button).addClass('disabled');
-          alert_component({
-            alert_msg: novaideo_translate("Comment sent"),
-            alert_type: 'info'
-          })
-          var formData = new FormData($(this)[0]);
-          formData.append(button.val(), button.val())
-          $.ajax({
-            url: url,
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-              var content = $(data.new_body).find('.commentulorigin');
-              if (content){
-                 init_emoji($(content.find('.emoji-container:not(.emojified)')));
-                 alert_component({
-                      alert_msg: novaideo_translate("Your comment is integrated"),
-                      alert_type: 'success'
-                    })
-                 $($(content).find('li.commentli').first()).insertBefore(preview);
-                 preview.addClass('hide-bloc')
-                 textarea.val('');
-                 select_related_contents.select2('val', []);
-                 $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
-                 select_itention.select2('val', 'Remark')
-                 $this.parents('.replay-form-container').first().find('button.close').first().click()
-                 comment_scroll_to(target.find('> li.commentli:not(.comment-preview)').last(), true)
-                 try {
-                     deform.processCallbacks();
-                    }
-                 catch(err) {};
-              }else{
-                alert_component({
-                      alert_msg: novaideo_translate("Your comment is not integrated"),
-                      alert_type: 'error'
-                })
-              };
-              update_components(data)
-          }});
-        }else{
-           var errormessage = '';
-           if (intention == ''){
-               errormessage =  "intention";
-           };
-           if (comment == ''){
-              if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
-           };
-            alert_component({
-              alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
-              alert_type: 'error'
-            })
-
-       };
-      event.preventDefault();
-   });
-
-    $(document).on('submit','.edit-comment-form', function( event ) {
-        var $this = $(this)
-        var formid = $this.attr('id');
-        var button = $this.find('button[type="submit"]').last();
-        var select_itention = $($this.find("select[name=\'intention\']"))
-        var intention = select_itention.val();
-        var textarea = $this.find('textarea');
-        var comment = textarea.val();
-        var select_related_contents = $($this.find("select[name='related_contents']").first());
-        var parent = $($this.parents('.views-container').get(1));
-        var parentform = parent.find('.commentform');
-        
-        var target = $($this.parents('.commentli').first().find('.comments-container').first().find('.commentul').first());
-        var commentmessageinfo = $this.find('#messageinfo');
-        var commentmessagesuccess = $this.find('#messagesuccess');
-        var commentmessagedanger = $this.find('#messagedanger');
-        var url = $(event.target).attr('action');
-        if (comment !='' && intention!=''){
-          $(button).addClass('disabled');
-          alert_component({
-            alert_msg: novaideo_translate("Comment sent"),
-            alert_type: 'info'
-          })
-          var formData = new FormData($(this)[0]);
-          formData.append(button.val(), button.val())
-          $.ajax({
-            url: url,
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-              var content = $(data.new_body).find('.commentulorigin');
-              if (content){
-                 init_emoji($(content.find('.emoji-container:not(.emojified)')));
-                 alert_component({
-                      alert_msg: novaideo_translate("Your comment is integrated"),
-                      alert_type: 'success'
-                    })
-                 $this.parents('.commentli').first().replaceWith($($(content).find('li.commentli').first()))
-                 textarea.val('');
-                 select_related_contents.select2('val', []);
-                 $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
-                 select_itention.select2('val', 'Remark')
-                 $this.parents('.replay-form-container').first().find('button.close').first().click()
-                 try {
-                     deform.processCallbacks();
-                    }
-                 catch(err) {};
-              }else{
-                alert_component({
-                      alert_msg: novaideo_translate("Your comment is not integrated"),
-                      alert_type: 'error'
-                })
-              };
-          }});
-        }else{
-           var errormessage = '';
-           if (intention == ''){
-               errormessage =  "intention";
-           };
-           if (comment == ''){
-              if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
-           };
-           alert_component({
-              alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
-              alert_type: 'error'
-            })
-
-       };
-      event.preventDefault();
-   });
-
-
-    $(document).on('submit','.presentform', function( event ) {
-        var $this = $(this)
-        var button = $this.find('button').last();
-        var members = $this.find("select[name=\'members\']");
-        var subject = $this.find("input[name=\'subject\']").val();
-        var textarea = $this.find('textarea');
-        var parent = $($this.parents('.views-container').first());
-        var target = $(parent.find('.study-view').first());
-        var commentmessageinfo = parent.find('#messageinfo');
-        var commentmessagesuccess = parent.find('#messagesuccess');
-        var commentmessagedanger = parent.find('#messagedanger');
-        var url = $(event.target).attr('action');
-        if (subject !='' && textarea.val()!='' && members.val() != null){
-          loading_progress();
-          $(button).addClass('disabled');
-          alert_component({
-              alert_msg: novaideo_translate("Message sent"),
-              alert_type: 'info'
-            })
-          var values = $this.serialize()+'&'+button.val()+'='+button.val();
-          $.post(url, values, function(data) {
-                 var content = $(data.new_body).find('.study-view.study-present');
-                 if (content){
-                  // var label = $($(content).parents(".panel").first()).find('.panel-heading span.action-message').html();
-                   // $($(target).parents(".panel").first()).find('.panel-heading span.action-message').html(label);
-                   $(target).html($(content).html());
-                   members.select2('val', []);
-                   alert_component({
-                      alert_msg: novaideo_translate("Your message has been delivered to the indicated recipients"),
-                      alert_type: 'success'
-                    })
-                  }else{
-                    alert_component({
-                      alert_msg: novaideo_translate("Your message is not delivered"),
-                      alert_type: 'error'
-                    })
-                  };
-                  $(button).removeClass('disabled');
-                  update_components(data)
-              });
-              finish_progress();
-        }else{
-           var errormessage = '';
-           if (members.val() == null){
-               errormessage =  "members";
-           };
-           if (subject == ''){
-              if (errormessage != ''){errormessage=errormessage+' and subject'}else{errormessage = 'subject'}
-           };
-           if (textarea.val() == ''){
-              if (errormessage != ''){errormessage=errormessage+' and message'}else{errormessage = 'message'}
-           };
-
-           alert_component({
-              alert_msg: novaideo_translate("Your "+errormessage+" cannot be empty!"),
-              alert_type: 'error'
-            })
-       };
-       event.preventDefault();
-   });
-
-
-      $(document).on('click','.commentform .comment-textarea-actions .comment-submit', function(event){
-         var $this = $(this)
-        var form = $($this.parents('form').first())
-        $((".comment-form-group")).removeClass('active')
-        var button = $(form.find("button[type='submit']").first());
-        button.click()
-      });
-
-      $(document).on('click', '.comment-cancel', function(){
-        var $this = $(this)
-        var form = $($this.parents('form').first())
-        $((".comment-form-group")).removeClass('active')
-        $((".comment-data .comment-content.hide-bloc")).removeClass('hide-bloc');
-        var close_btn = $($(form).parents('.replay-form-container').first().find('button.close').first());
-        close_btn.click()
-      })
-      
-      $(document).on('click','.commentform .comment-textarea-actions .comment-intention', function(event){
-        var $this = $(this)
-        var form = $($this.parents('form').first())
-        $((".comment-form-group")).removeClass('active')
-        var button = $(form.find(".comment-form-group.comment-intention-form").first());
-        button.addClass('active')
-        // button.css('bottom', form.offset().top- $(window).height()+'px')
-      });
-
-      $(document).on('click','.commentform .comment-textarea-actions .comment-related', function(event){
-        var $this = $(this)
-        var form = $($this.parents('form').first())
-        $((".comment-form-group")).removeClass('active')
-        var button = $(form.find(".comment-form-group.comment-related-form").first());
-        button.addClass('active')
-        // var bottom =($('.comments-scroll').offset().top + $('.comments-scroll').height() - form.offset().top)+70;
-        // button.css('bottom', bottom+'px')
-      });
-
-      $(document).on('click','.commentform .comment-textarea-actions .comment-add-file', function(event){
-        var $this = $(this)
-        var form = $($this.parents('form').first())
-        $((".comment-form-group")).removeClass('active')
-        var button = $(form.find(".comment-form-group.comment-files").first());
-        button.addClass('active')
-        // button.css('bottom', $this.parents('form').offset().top+'px')
-      });
-
-      $(document).on('click','.commentform .comment-textarea textarea', function(event){
-        var $this = $(this)
-        var form = $($this.parents('form').first())
-        $((".comment-form-group")).removeClass('active')
-      });
-
-      $(document).on('click','.commentform .comment-textarea-actions .comment-emoji', function(event){
-        var $this = $(this)
-        var form = $($this.parents('form').first())
-        $((".comment-form-group")).removeClass('active')
-        var button = $(form.find(".comment-form-group.emoji-container-input").first());
-        button.addClass('active')
-        // button.css('bottom', $this.parents('form').offset().top+'px')
-      });
-
-  $(document).on('click', '.emoji-container-input span.emoji-sizer', function(){
-        var $this = $(this)
-        var value = ':'+$($this.find('.emoji-inner').first()).attr('title')+':'
-        var container = $($this.parents('.emoji-container-input'))
-        var text = $(container.siblings('textarea'))
-        text.insertAtCaret(value)
-        // text.val(text.val()+' '+value+' ')
-        container.removeClass('active')
-
-  })
-
-  $(document).on('click', '.comment-ajax-action', function(){
-      $('.comment-ajax-action').removeClass('active')
-      $(this).addClass('active')
-  })
-
-  $(document).on('submit', '.comment-un-pin-form', function(event){
-        var $this = $(this)
-        var button = $this.find('button.active[type="submit"]').first();
-        if(button.val() == 'Cancel'){
-          $($this.parents('.modal').first()).modal('hide');
-          event.preventDefault();
-          return
-        }
-        var action = $($('.comment-un-pin-action.active').first())
-        var url = $(event.target).attr('action');
-        $(button).addClass('disabled');
-        var formData = new FormData($(this)[0]);
-        formData.append(button.val(), button.val())
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data:formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-              var navchannel = $(action.parents('.comments-scroll').first().siblings('.navbar-channel').first())
-              var filters = $(navchannel.find('.comment-filter-action.active')).map(function(){return $(this).data('name')})
-              filters = filters.toArray()
-              if ($.inArray('pinned', filters)>=0){
-                //action is unpin with the 'pinned' filter => remove the comment
-                var item = $(action.parents('li.commentli').first())
-                $(item.find('.comment-data')).addClass('deletion-process')
-                item.fadeOut( 1000 );
-
-
-              }else{
-                update_comment($(action.parents('li.commentli').first()))
-              }
-              $($this.parents('.modal').first()).modal('hide')
-
-          }})
-
-        event.preventDefault();
-  })
-
-  $(document).on('submit', '.comment-remove-form', function(event){
-        var $this = $(this)
-        var button = $this.find('button.active[type="submit"]').first();
-        if(button.val() == 'Cancel'){
-          $($this.parents('.modal').first()).modal('hide');
-          event.preventDefault();
-          return
-        }
-        var action = $($('.comment-remove-action.active').first())
-        var url = $(event.target).attr('action');
-        $(button).addClass('disabled');
-        var formData = new FormData($(this)[0]);
-        formData.append(button.val(), button.val())
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data:formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-              update_comment($(action.parents('li.commentli').last()))
-              $($this.parents('.modal').first()).modal('hide')
-              update_components(data)
-          }})
-
-        event.preventDefault();
-  })
-
-
-  $(document).on('submit', '.channel-unsubscribe-form', function(event){
-        var $this = $(this)
-        var button = $this.find('button.active[type="submit"]').first();
-        if(button.val() == 'Cancel'){
-          $($this.parents('.modal').first()).modal('hide');
-          event.preventDefault();
-          return
-        }
-        var url = $(event.target).attr('action');
-        $(button).addClass('disabled');
-        var formData = new FormData($(this)[0]);
-        formData.append(button.val(), button.val())
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data:formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-              $($this.parents('.modal').first()).modal('hide')
-              data.channel_item = $('.channel-action.ajax-action.activated')
-              data.removed = true
-              update_components(data)
-          }})
-
-        event.preventDefault();
-  })
-
-  $(document).on('submit', '.channel-subscribe-form', function(event){
-        var $this = $(this)
-        var button = $this.find('button.active[type="submit"]').first();
-        if(button.val() == 'Cancel'){
-          $($this.parents('.modal').first()).modal('hide');
-          event.preventDefault();
-          return
-        }
-        var url = $(event.target).attr('action');
-        $(button).addClass('disabled');
-        var formData = new FormData($(this)[0]);
-        formData.append(button.val(), button.val())
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data:formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-              $($this.parents('.modal').first()).modal('hide')
-              data.channels_target = $($('.channel-action.view-item').first().parents('div').first())
-              update_components(data)
-          }})
-        
-        event.preventDefault();
-  })
-
-  $(document).on('hidden.bs.modal', '.modal', function(){
-        if($('.sidebar-right-background.toggled').length > 0){
-          $('body').addClass('modal-open')
-        }
-   })
-
-   $(document).on('click', '.comment-edit-action', function(){
-      $($(this).parents('.commentli').first().find('.comment-data .comment-content').first()).addClass('hide-bloc')
-   })  
-
 });

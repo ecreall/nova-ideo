@@ -20,7 +20,7 @@ from ..user_management.behaviors import global_user_processsecurity
 from novaideo.content.interface import (
     INovaIdeoApplication, ISearchableEntity,
     IEmojiable)
-from novaideo import _
+from novaideo import _, nothing
 
 
 def select_roles_validation(process, context):
@@ -71,7 +71,7 @@ class SelectEntity(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, '@@index'))
+        return nothing
 
 
 def deselect_roles_validation(process, context):
@@ -121,7 +121,7 @@ class DeselectEntity(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, '@@index'))
+        return nothing
 
 
 def addr_roles_validation(process, context):
@@ -151,7 +151,7 @@ class AddReaction(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def deadline_roles_validation(process, context):

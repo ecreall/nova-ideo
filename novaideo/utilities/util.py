@@ -25,6 +25,7 @@ from pyramid.threadlocal import get_current_registry, get_current_request
 
 from substanced.util import get_oid
 
+from pontus.index import Index
 from pontus.file import OBJECT_OID
 from pontus.util import merge_dicts
 from dace.processinstance.activity import ActionType
@@ -36,7 +37,7 @@ from .ical_date_utility import getDatesFromString, set_recurrence
 from novaideo.content.correlation import Correlation, CorrelationType
 from novaideo.content.processes import get_states_mapping
 from novaideo.file import Image
-from novaideo.core import _
+from novaideo import _, log
 from novaideo.fr_stopdict import _words
 from novaideo.core import Node
 from novaideo.emojis import DEFAULT_EMOJIS
@@ -609,10 +610,12 @@ def html_article_to_text(html):
 ALL_DESCRIMINATORS = ['global-action',
                       'text-action',
                       'lateral-action',
+                      'access-action',
                       'primary-action',
                       'listing-primary-action',
                       'admin-action',
                       'wg-action',
+                      'listing-wg-action',
                       'plus-action',
                       'body-action',
                       'communication-action',
@@ -633,6 +636,8 @@ DEFAULT_MENU_TEMPLATE = 'novaideo:views/templates/navbar_actions.pt'
 FOOTER_BLOCK_TEMPLATE = 'novaideo:views/templates/footer_entity_actions.pt'
 
 EMOJI_TEMPLATE = 'novaideo:views/templates/emoji_selector.pt'
+
+DEFAUL_ACCESS_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_access_actions.pt'
 
 
 def render_small_listing_objs(request, objs, user, **kw):
@@ -655,10 +660,7 @@ def render_small_listing_objs(request, objs, user, **kw):
 def render_listing_obj(request, obj, user, **kw):
     try:
         navbars = generate_listing_menu(
-            request, obj,
-            template=DEFAUL_LISTING_ACTIONS_TEMPLATE,
-            footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
-            wg_template=DEFAUL_WG_LISTING_ACTIONS_TEMPLATE)
+            request, obj)
     except ObjectRemovedException:
         return ''
 
@@ -669,6 +671,7 @@ def render_listing_obj(request, obj, user, **kw):
         'footer_body': navbars['footer_body'],
         'wg_body': navbars['wg_body'],
         'footer_actions_body': navbars['footer_actions_body'],
+        'access_body': navbars['access_body'],
         'state': get_states_mapping(
             user, obj,
             getattr(obj, 'state_or_none', [None])[0])}
@@ -679,16 +682,28 @@ def render_listing_obj(request, obj, user, **kw):
         request)
 
 
+def render_view_obj(request, obj, user, **kw):
+    body = ''
+    try:
+        view_instance = Index(obj, request)
+        view_result = view_instance()
+        if isinstance(view_result, dict) and 'coordinates' in view_result:
+            body = view_instance.render_item(
+                view_result['coordinates'][view_instance.coordinates][0],
+                view_instance.coordinates, None)
+    except Exception as error:
+        log.warning(error)
+
+    return body
+
+
 def render_listing_objs(request, objs, user, **kw):
     result_body = []
     resources = {'css_links': [], 'js_links': []}
     for obj in objs:
         try:
             navbars = generate_listing_menu(
-                request, obj,
-                template=DEFAUL_LISTING_ACTIONS_TEMPLATE,
-                footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
-                wg_template=DEFAUL_WG_LISTING_ACTIONS_TEMPLATE)
+                request, obj)
         except ObjectRemovedException:
             continue
 
@@ -700,6 +715,7 @@ def render_listing_objs(request, objs, user, **kw):
             'footer_body': navbars['footer_body'],
             'wg_body': navbars['wg_body'],
             'footer_actions_body': navbars['footer_actions_body'],
+            'access_body': navbars['access_body'],
             'state': get_states_mapping(user, obj,
                 getattr(obj, 'state_or_none', [None])[0])}
         object_values.update(kw)
@@ -712,26 +728,31 @@ def render_listing_objs(request, objs, user, **kw):
     return result_body, resources
 
 
-def update_ajax_actions(actions, context, request):
+def update_ajax_actions(
+    actions, context, request,
+    include_resources=False):
     dace_ui_api = get_current_registry().getUtility(
         IDaceUIAPI, 'dace_ui_api')
     actions = [(context, a) for a in actions]
     action_updated, messages, \
     resources, actions = dace_ui_api.update_actions(
-        request, actions)
+        request, actions,
+        include_resources=include_resources)
     return action_updated, messages, resources, actions
 
 
 def update_ajax_action(
     context, request,
-    process_id, node_id):
+    process_id, node_id,
+    include_resources=False):
     seemembers_actions = getBusinessAction(
         context, request,
         process_id, node_id)
     if seemembers_actions:
         isactive, messages, \
-        resources, ajax_actions = update_ajax_actions(
-            seemembers_actions, context, request)
+            resources, ajax_actions = update_ajax_actions(
+                seemembers_actions, context, request,
+                include_resources)
         return ajax_actions, resources
 
     return [], {}
@@ -739,15 +760,17 @@ def update_ajax_action(
 
 def update_all_ajax_action(
     context, request,
-    node_id, process_id=None):
+    node_id, process_id=None,
+    include_resources=False):
     seemembers_actions = getAllBusinessAction(
         context, request, node_id=node_id,
         process_id=process_id,
         process_discriminator='Application')
     if seemembers_actions:
         isactive, messages, \
-        resources, ajax_actions = update_ajax_actions(
-            seemembers_actions, context, request)
+            resources, ajax_actions = update_ajax_actions(
+                seemembers_actions, context, request,
+                include_resources)
         return ajax_actions, resources
 
     return [], {}
@@ -762,21 +785,22 @@ def get_actions_navbar(
     while isactive and update_nb < 2:
         actions = actions_getter()
         ajax_actions = [a for a in actions
-                         if getattr(a, 'style_interaction', '') ==
-                         'ajax-action']
+                        if getattr(a, 'style_interaction', '') ==
+                        'ajax-action']
         isactive, messages, \
-        resources, ajax_actions = update_ajax_actions(
-            ajax_actions, context, request)
+            resources, ajax_actions = update_ajax_actions(
+                ajax_actions, context, request)
         update_nb += 1
         if isactive:
             request.invalidate_cache = True
 
     ajax_actions = [(a['action'], a) for a in ajax_actions]
-    result['ajax-action'] = {'isactive': isactive,
-                              'messages': messages,
-                              'resources': resources,
-                              'actions': ajax_actions
-                              }
+    result['ajax-action'] = {
+        'isactive': isactive,
+        'messages': messages,
+        'resources': resources,
+        'actions': ajax_actions
+    }
     actions = sorted(
         actions, key=lambda a: getattr(a, 'style_order', 0))
     result.update({descriminator: [] for descriminator in descriminators})
@@ -873,8 +897,14 @@ def generate_navbars(request, context, **args):
                 request, context, actions_navbar, args.get('template', None)),
             'footer_body': render_navbar_body(
                 request, context, actions_navbar,
-                DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE, ['communication-action'])
-                if 'communication-action' in actions_navbar else None,
+                DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
+                ['communication-action'])
+            if 'communication-action' in actions_navbar else None,
+            'wg_body':  render_navbar_body(
+                request, context, actions_navbar,
+                args.get('wg_template', DEFAUL_WG_LISTING_ACTIONS_TEMPLATE),
+                ['wg-action'])
+            if 'wg-action' in actions_navbar else None
             }
 
 
@@ -895,13 +925,20 @@ def generate_listing_menu(request, context, **args):
 
     #for listing navbars merge actions (not actions to unmerge)
     actions_navbar['actions'] = []
-    if 'primary-action' in actions_navbar:
+    if 'primary-action' in actions_navbar and \
+       'listing-primary-action' in actions_navbar:
         actions_navbar['primary-action'].extend(
             actions_navbar.pop('listing-primary-action'))
 
+    if 'wg-action' in actions_navbar and \
+       'listing-wg-action' in actions_navbar:
+        actions_navbar['wg-action'].extend(
+            actions_navbar.pop('listing-wg-action'))
+
     tounmerge = [
-        'communication-action', 'wg-action', 'primary-action',
-        'communication-body-action']
+        'communication-action', 'wg-action',
+        'primary-action', 'communication-body-action',
+        'access-action']
     tomerge = [d for d in descriminators
                if d not in tounmerge and d in actions_navbar]
     for descriminator in tomerge:
@@ -910,7 +947,7 @@ def generate_listing_menu(request, context, **args):
 
     communication_actions_bodies = []
     for action in actions_navbar.get(
-        'communication-body-action', []):
+            'communication-body-action', []):
         object_values = {
             'action': action,
             'context': context,
@@ -926,14 +963,24 @@ def generate_listing_menu(request, context, **args):
             'footer_actions_body': communication_actions_bodies,
             'menu_body': render_navbar_body(
                 request, context, actions_navbar,
-                args.get('template', None), ['actions', 'primary-action']),
+                args.get('template', DEFAUL_LISTING_ACTIONS_TEMPLATE),
+                ['actions', 'primary-action']),
             'footer_body':  render_navbar_body(
                 request, context, actions_navbar,
-                args.get('footer_template', None), ['communication-action'])
+                args.get('footer_template',
+                         DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE),
+                ['communication-action'])
             if 'communication-action' in actions_navbar else None,
+            'access_body':  render_navbar_body(
+                request, context, actions_navbar,
+                args.get('access_template',
+                         DEFAUL_ACCESS_LISTING_ACTIONS_TEMPLATE),
+                ['access-action'])
+            if 'access-action' in actions_navbar else None,
             'wg_body':  render_navbar_body(
                 request, context, actions_navbar,
-                args.get('wg_template', None), ['wg-action'])
+                args.get('wg_template', DEFAUL_WG_LISTING_ACTIONS_TEMPLATE),
+                ['wg-action'])
             if 'wg-action' in actions_navbar else None
             }
 

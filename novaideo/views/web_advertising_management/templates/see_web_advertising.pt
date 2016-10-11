@@ -1,5 +1,11 @@
+<div class="content-view component-obj-view component-index-view"
+  id="index_${oid}"
+  data-component_type="object-view"
+  tal:define="
+      oid object.__oid__"
+  i18n:domain="novaideo">
 <div tal:replace="structure navbar_body"/>
-<div class="right-caption span4"  i18n:domain="novaideo">
+<div class="right-caption span4">
   <div class="caption">
     <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4> 
     <h2 class="content-title"><span class="glyphicon glyphicon-picture"></span> ${object.title}</h2>
@@ -52,4 +58,5 @@
         </div>
    </div>
   </div>
+</div>
 </div>

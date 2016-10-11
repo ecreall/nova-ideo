@@ -1,4 +1,8 @@
-<div tal:omit-tag="" tal:condition="condition" i18n:domain="novaideo">
+<div class="steps-navbar-container"
+     id="process_steps_component"
+     data-component_type="process_steps"
+  i18n:domain="novaideo">
+<div tal:omit-tag="" tal:condition="condition">
   <div  class="hidden-xs" id="steps-messages">
       <div id="messages">
           <div tal:condition="step1_message != ''" id="message-step-1" role="tooltip" class="step-message step-popover popover fade bottom">
@@ -81,5 +85,6 @@
     </div>
   </div>
   </div>
+</div>
 </div>
 

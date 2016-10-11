@@ -16,6 +16,9 @@
     <div class="popover-content">
       <div>${object.presentation_text(100)}</div>
       <div class="popover-footer">
+        <div class="listing-access-menu pull-right">
+            <div tal:replace="structure access_body"/>
+        </div>
 	      <div class="actions-block">
 	        <div tal:replace="structure footer_body"/>
 	      </div>

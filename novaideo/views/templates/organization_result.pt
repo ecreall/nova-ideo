@@ -1,8 +1,12 @@
-<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="novaideo"
+<div class="thumbnail right-caption span4 search-item result-item component-obj-view component-listing-view"
+  id="listing_${oid}"
+  data-component_type="object-view"
+  i18n:domain="novaideo"
   tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
                  picture object.logo;
-                 contacts getattr(object, 'contacts', [])">
+                 contacts getattr(object, 'contacts', []);
+                 oid object.__oid__;">
   <div class="media-body media-person">
     <div class="object-title-block view-item-title" >
       <a tal:attributes="href url">

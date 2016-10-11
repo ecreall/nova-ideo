@@ -29,11 +29,9 @@ from daceui.interfaces import IDaceUIAPI
 from dace.processinstance.activity import (
     InfiniteCardinality, ActionType, ElementaryAction)
 
-from novaideo.content.correlation import CorrelationType
 from novaideo.content.interface import IProposal, ICorrection
 from ...user_management.behaviors import global_user_processsecurity
-from novaideo import _
-from novaideo.utilities.util import connect
+from novaideo import _, nothing
 from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import alert
 
@@ -181,7 +179,7 @@ class CorrectItem(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def correct_relation_validation(process, context):

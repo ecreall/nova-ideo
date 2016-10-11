@@ -110,7 +110,11 @@ function send_vote(event){
       success: function(data) {
         var has_error = $(data).find('.amendment-body .has-error').length > 0
         if(!has_error){
+          var panel_to_remove = panel.find('.panel-collapse').first().attr('id')
+          var source_body = $('<div>'+jQuery.parseJSON($('#'+modal.data('source')).data('body'))+'</div>')
+          source_body.find('#'+panel_to_remove).parents('.panel').remove()
           panel.remove()
+          $('#'+modal.data('source')).data('body', JSON.stringify(source_body.html()))
           var votes = $(group.find('.panel-title.collapsed'))
           if(votes.length>0){
             $(votes.first()).click()
@@ -121,6 +125,7 @@ function send_vote(event){
           }
         }else{
           button.removeClass('disabled');
+          //TODO display errors
           finish_progress()
         }
        }
@@ -518,6 +523,7 @@ function unsubscribe_user_from_alerts(alerts){
       }
 }
 
+
 $(document).on('click', '.full-screen-btn.small', function(){
     var $this = $(this)
     $('.pontus-main').addClass('full-screen');
@@ -562,54 +568,13 @@ $(document).on('click', '.working-group-toggle', function(){
 
 $(document).on('click', '.proposal-support .token:not(.disabled)', function(){
    var $this = $(this)
-   var opposit_class = $this.hasClass('token-success')? '.danger': '.success';
-   var supportbloc = $($this.parents('.proposal-support').first())
-   var opposit = $(supportbloc.find('.label'+opposit_class).first())
-   var opposit_token = $(opposit.find('.token').first())
-   var parent = $($this.parents('.label').first())
    var action_url = $this.data('action')
-   var support_nb = $(parent.find('.support-nb').first())
-   var opposit_support_nb = $(opposit.find('.support-nb').first())
-   var item = $($this.parents('.search-item').first())
-   var url_attr = get_action_metadata($this)
-   delete url_attr.search_item;
+   var url_attr = get_action_metadata($($this.parents('.proposal-support').first()))
    if(action_url){
      loading_progress()
      $.getJSON(action_url,url_attr, function(data) {
           finish_progress()
-          if(data['state']){
-             if (data.title){
-                parent.attr('title', data.title)
-             }
-             if (data.opposit_title){
-                opposit.attr('title', data.opposit_title)
-             }
-            if(!data.withdraw){
-             $this.addClass('my-token')
-             var new_nb = parseInt(support_nb.text()) + 1
-             support_nb.text(new_nb)
-             if (data.change){
-               opposit_token.removeClass('my-token')
-               var opposit_new_nb = parseInt(opposit_support_nb.text()) - 1
-               opposit_support_nb.text(opposit_new_nb)
-               opposit_token.data('action', data.opposit_action)
-             }
-            }else{
-              supportbloc.removeClass('my-support')
-              $this.removeClass('my-token')
-              var new_nb = parseInt(support_nb.text()) - 1
-              support_nb.text(new_nb)
-            }
-            $this.data('action', data.action)
-          }
-          if(data.hastoken != undefined){
-            if(data.hastoken){
-              $('.token.disabled').removeClass('disabled').addClass('active')
-            }else{
-              $('.proposal-support:not(.my-support) .token.active').removeClass('active').addClass('disabled')
-            }
-          }
-          data.search_item = item
+          data.token_action = $this.hasClass('token-success')? 'token-success': 'token-danger';
           update_components(data)
         });
    }
@@ -782,7 +747,6 @@ $(document).ready(function(){
         var formData = new FormData($(this)[0]);
         formData.append(button.val(), button.val())
         var action_metadata = get_action_metadata(button)
-        delete action_metadata.search_item;
         for(key in action_metadata){
             formData.append(key, action_metadata[key])
         }
@@ -797,7 +761,8 @@ $(document).ready(function(){
             contentType: false,
             processData: false,
             success: function(data) {
-              if(data.status && !data.redirect_url){
+              var redirect_url = data.redirect_url && !data.ignore_redirect
+              if(data.status && !redirect_url){
                     $(data.new_obj_body).hide().prependTo($('.result-container')).fadeIn(1500)
                     init_result_scroll()
               }
@@ -809,7 +774,7 @@ $(document).ready(function(){
               $this.removeClass('pending')
               close_add_idea_form()
               update_components(data)
-              if(!data.redirect_url){
+              if(!redirect_url){
                   finish_progress()
               }
              }
@@ -833,18 +798,6 @@ $(document).ready(function(){
         e.preventDefault();
         $(".all-channels").toggleClass("toggled");
         reset_cookie_channels_bar()
-    });
-
-   $(".contextual-help-toggle").click(function(e) {
-        e.preventDefault();
-        $(this).toggleClass("toggled");
-        $(".contextual-help").toggleClass("toggled");
-    });
-
-   $(".contextual-help-toggle-close").click(function(e) {
-        e.preventDefault();
-        $(".contextual-help-toggle").toggleClass("toggled");
-        $(".contextual-help").toggleClass("toggled");
     });
 
    $(".menu-right-toggle").click(function(e) {
@@ -895,79 +848,8 @@ $(document).ready(function(){
 
   $(document).on('show.bs.collapse', '.panel-collapse', function () {
     $(this).siblings().find('a span.glyphicon-plus').attr('class', 'glyphicon glyphicon-minus');
-  });
-
-  $('.panel-collapse').on('shown.bs.collapse', function () {
     init_result_scroll(undefined, 1000, $(this));
   });
-
-
-//code adapted from http://bootsnipp.com/snippets/featured/jquery-checkbox-buttons
-$(function () {
-    $('.search-choices .checkbox-inline').each(function () {
-
-        // Settings
-        var $widget = $(this),
-            $checkbox = $widget.find('input:checkbox'),
-            $button = $('#search-choice-'+$checkbox.attr('value')),
-            color = $button.data('color'),
-            settings = {
-                on: {
-                    icon: 'glyphicon glyphicon-check'
-                },
-                off: {
-                    icon: 'glyphicon glyphicon-unchecked'
-                }
-            };
-
-        // Event Handlers
-        $button.on('click', function () {
-            $checkbox.prop('checked', !$checkbox.is(':checked'));
-            $checkbox.triggerHandler('change');
-            updateDisplay();
-        });
-        $checkbox.on('change', function () {
-            updateDisplay();
-        });
-
-        // Actions
-        function updateDisplay() {
-            var isChecked = $checkbox.is(':checked');
-
-            // Set the button's state
-            $button.data('state', (isChecked) ? "on" : "off");
-
-            // Set the button's icon
-            $button.find('.state-icon')
-                .removeClass()
-                .addClass('state-icon ' + settings[$button.data('state')].icon);
-
-            // Update the button's color
-            if (isChecked) {
-                $button
-                    .addClass('active');
-                $('#'+$button.attr('id')+'-icon').removeClass('hide-bloc')
-            }
-            else {
-                $button
-                    .removeClass('active')
-                $('#'+$button.attr('id')+'-icon').addClass('hide-bloc')
-            }
-        }
-
-        // Initialization
-        function init() {
-
-            updateDisplay();
-
-            // Inject the icon if applicable
-            if ($button.find('.state-icon').length == 0) {
-                $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
-            }
-        }
-        init();
-    });
-});
 
   // more_content($('.more-content-carousel.verticla'), true);
   // more_content($('.more-content-carousel:not(.vertical)'), false);
@@ -996,7 +878,7 @@ $(function () {
 
   scroll_to_panel()
 
-  $('.nav-tabs').on('shown.bs.tab', init_result_scroll)
+  $(document).on('shown.bs.tab', '.nav-tabs',init_result_scroll)
 
   $(document).on('show.bs.modal', '.similar-ideas', function(){
       $('body').addClass('similar-ideas-modal-open')
@@ -1124,7 +1006,7 @@ $(function () {
   update_unread_messages_alerts()
   
   $(document).on('click', '.alert-messages-scroll', scroll_to_unread_message)
-
+  
 });
 
 
@@ -1218,3 +1100,72 @@ function is_visible_into_view(elem, scrollable)
     return {'bottom': (elemBottom <= docViewBottom),
             'top': (elemTop >= docViewTop)}
 }
+
+
+
+//code adapted from http://bootsnipp.com/snippets/featured/jquery-checkbox-buttons
+$(function () {
+    $('.search-choices .checkbox-inline').each(function () {
+
+        // Settings
+        var $widget = $(this),
+            $checkbox = $widget.find('input:checkbox'),
+            $button = $('#search-choice-'+$checkbox.attr('value')),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        // Event Handlers
+        $button.on('click', function () {
+            $checkbox.prop('checked', !$checkbox.is(':checked'));
+            $checkbox.triggerHandler('change');
+            updateDisplay();
+        });
+        $checkbox.on('change', function () {
+            updateDisplay();
+        });
+
+        // Actions
+        function updateDisplay() {
+            var isChecked = $checkbox.is(':checked');
+
+            // Set the button's state
+            $button.data('state', (isChecked) ? "on" : "off");
+
+            // Set the button's icon
+            $button.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+            // Update the button's color
+            if (isChecked) {
+                $button
+                    .addClass('active');
+                $('#'+$button.attr('id')+'-icon').removeClass('hide-bloc')
+            }
+            else {
+                $button
+                    .removeClass('active')
+                $('#'+$button.attr('id')+'-icon').addClass('hide-bloc')
+            }
+        }
+
+        // Initialization
+        function init() {
+
+            updateDisplay();
+
+            // Inject the icon if applicable
+            if ($button.find('.state-icon').length == 0) {
+                $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+            }
+        }
+        init();
+    });
+});

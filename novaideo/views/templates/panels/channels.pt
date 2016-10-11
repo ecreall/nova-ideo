@@ -1,10 +1,4 @@
 <div tal:condition="users_channels or others_channels" i18n:domain="novaideo">
-  <tal:block tal:repeat="jslink js_links">
-      <script src="${request.static_url(jslink)}"></script>
-  </tal:block>
-  <tal:block tal:repeat="csslink css_links">
-      <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
-  </tal:block>
 	<span i18n:attributes="title" title="My discussions" class="all-channels-toggle ion-chatbubbles">
       <div id="alert-message" class="popover fade in right">
       	<div style="" class="arrow"></div>

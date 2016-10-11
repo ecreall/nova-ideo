@@ -14,6 +14,8 @@ from novaideo.content.processes.work_mode_processes.correction_work_mode_process
     CorrectItem)
 from novaideo.content.correction import Correction
 from novaideo import _
+from novaideo.utilities.pseudo_react import (
+    get_components_data, get_all_updated_data)
 
 
 @view_config(
@@ -79,7 +81,15 @@ class CorrectAllItemsView(BasicView):
             'description': self.context.get_adapted_description(user),
         }
         body = self.content(args=values, template=self.template)['body']
-        return {'body': body}
+        result = {'body': body}
+        if self.behaviors_instances.values():
+            action = list(self.behaviors_instances.values())[0]
+            result.update(get_components_data(
+                **get_all_updated_data(
+                    action, self.request,
+                    self.context, self)))
+
+        return result
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
