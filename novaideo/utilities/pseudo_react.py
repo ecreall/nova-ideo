@@ -213,7 +213,7 @@ def get_default_action_metadata(action, request, context, api, **kwargs):
 
 def get_edit_entity_metadata(
     action, request, context, api,
-    msg=None, view_name=None, **kwargs):
+    msg=None, viewname=None, **kwargs):
     alert_msg = None
     redirect_url = None
     is_excuted = False
@@ -239,7 +239,7 @@ def get_edit_entity_metadata(
         'action': 'redirect_action',
         'view': api,
         'redirect_url': redirect_url,
-        'view_name': view_name,
+        'view_name': viewname,
         'object_views_to_update': object_views_to_update,
         'new_body': json.dumps(body) if body else None
     }
@@ -251,7 +251,7 @@ def get_edit_entity_metadata(
 
 def get_dirct_edit_entity_metadata(
     action, request, context, api,
-    msg=None, view_name=None, **kwargs):
+    msg=None, viewname=None, **kwargs):
     alert_msg = None
     redirect_url = None
     alert_msg = msg
@@ -265,7 +265,7 @@ def get_dirct_edit_entity_metadata(
         'action': 'redirect_action',
         'view': api,
         'redirect_url': redirect_url,
-        'view_name': view_name,
+        'view_name': viewname,
         'object_views_to_update': object_views_to_update,
     }
     result['alert_msg'] = request.localizer.translate(alert_msg) if alert_msg else None
