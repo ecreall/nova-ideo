@@ -1,4 +1,4 @@
-<div tal:condition="has_social_share and object.is_published"
+<div tal:condition="has_social_share and getattr(object, 'is_published', False)"
 	 class="social-share-contaier"
 	 i18n:domain="novaideo">
   <a class="social-share-toggle"
