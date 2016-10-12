@@ -151,12 +151,11 @@ function _update_sidebar_nav_items(target){
     var $this = $(this)
     var title = $this.data('title') + ': '+$this.data('context_title')
     var item_state = $this.hasClass('closed')? 'closed': ''
-    result += '<div title="'+title
-    result +='"'+
-             ' data-target="'+$this.attr('id')+'"'+
-             ' data-scroll="'+$this.data('scroll')+'"'+
-             ' class="item '+item_state+'"><span class="'+
-             $this.data('icon')+'"></span> '+title+'</div>'
+    result += '<div title=\''+title +'\''
+    result += ' data-target="'+$this.attr('id')+'"'+
+              ' data-scroll="'+$this.data('scroll')+'"'+
+              ' class="item '+item_state+'"><span class="'+
+              $this.data('icon')+'"></span> '+title+'</div>'
   })
   result += '<span class="item-activator desabled glyphicon glyphicon-th"></span>'
   result += '</div>'
@@ -174,7 +173,7 @@ function _wrap_action_body(action, body){
   return '<div id="sidebar-'+action.attr('id')+'"'+
              ' data-title="'+action.data('title')+'"'+
              ' data-icon="'+action.data('icon')+'"'+
-             ' data-context_title="'+title.data('title')+'"'+
+             ' data-context_title=\''+ title.data('title')+'\''+
              ' data-context_icon="'+title.data('icon')+'"'+
              ' data-context_img="'+title.data('img')+'"'+
          'class="sidebar-container-item">' + body + '</div>'
