@@ -846,7 +846,7 @@ $(document).ready(function(){
     $(this).siblings().find('a span.glyphicon-minus').attr('class', 'glyphicon glyphicon-plus');
   });
 
-  $(document).on('show.bs.collapse', '.panel-collapse', function () {
+  $(document).on('shown.bs.collapse', '.panel-collapse', function () {
     $(this).siblings().find('a span.glyphicon-plus').attr('class', 'glyphicon glyphicon-minus');
     init_result_scroll(undefined, 1000, $(this));
   });

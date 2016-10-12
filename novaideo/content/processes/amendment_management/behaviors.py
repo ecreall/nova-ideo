@@ -532,7 +532,11 @@ def seeamendment_processsecurity_validation(process, context):
 @access_action(access_key=get_access_key)
 class SeeAmendment(InfiniteCardinality):
     """SeeAmendment is the behavior allowing access to context"""
-
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'access-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'sidebar'
+    style_picto = 'glyphicon glyphicon-eye-open'
     title = _('Details')
     context = IAmendment
     actionType = ActionType.automatic
