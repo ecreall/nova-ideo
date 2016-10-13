@@ -437,6 +437,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     config = Configurator(settings=settings, root_factory=root_factory)
+    config.include('.graphql')
     config.add_request_method(ajax_api, reify=True)
     config.add_request_method(get_time_zone, reify=True)
     config.add_request_method(moderate_ideas, reify=True)

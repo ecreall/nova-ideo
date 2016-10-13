@@ -29,7 +29,9 @@ requires = [
     'beautifulsoup4',
     'profilehooks',
     'metadata_parser',
-    'deform_treepy'
+    'deform_treepy',
+    'graphql-wsgi',
+    'graphene',
     ]
 
 setup(name='novaideo',
