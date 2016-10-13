@@ -114,6 +114,7 @@ class Node(object):
 
 class Idea(relay.Node, Node):
     title = graphene.String()
+    text = graphene.String()
     keywords = graphene.List(graphene.String())
 
 
