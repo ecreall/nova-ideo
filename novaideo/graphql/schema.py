@@ -115,9 +115,11 @@ class Node(object):
                 self.__class__.__name__, self.id, name)
             raise
 
+
 class File(relay.Node, Node):
     url = graphene.String()
     mimetype = graphene.String()
+
 
 class Person(relay.Node, Node):
     function = graphene.String()
@@ -125,12 +127,14 @@ class Person(relay.Node, Node):
     picture = relay.ConnectionField(File)
     first_name = graphene.String()
     last_name = graphene.String()
+    title = graphene.String()
     user_title = graphene.String()
     locale = graphene.String()
     email = graphene.String()
 
     def resolve_picture(self, args, info):
         return [File(_root=self.picture)]
+
 
 class Idea(relay.Node, Node):
 
