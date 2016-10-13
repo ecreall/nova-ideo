@@ -14,7 +14,7 @@ from substanced.objectmap import find_objectmap
 from dace.util import get_obj, find_catalog
 
 from novaideo.views.filter import find_entities
-from novaideo.content.interface import Iidea, IProposal
+from novaideo.content.interface import Iidea, IProposal, IPerson
 from novaideo import log
 from .mutations import Mutations
 
@@ -241,6 +241,9 @@ class Query(graphene.ObjectType):
     proposals = relay.ConnectionField(
         Proposal,
     )
+    persons = relay.ConnectionField(
+        Person,
+    )
 
     def resolve_ideas(self, args, info):
         oids = get_entities([Iidea], ['published'], args, info)
@@ -249,7 +252,9 @@ class Query(graphene.ObjectType):
     def resolve_proposals(self, args, info):
         oids = get_entities([IProposal], ['published'], args, info)
         return ResolverLazyList(oids, Proposal)
-
+    def resolve_persons(self, args, info):
+        oids = get_entities([IPerson], ['active'], args, info)
+        return ResolverLazyList(oids, Person)
 
 schema = graphene.Schema(query=Query, mutation=Mutations)
 
