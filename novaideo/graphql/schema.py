@@ -11,9 +11,68 @@ from hypatia.interfaces import STABLE
 from pyramid.threadlocal import get_current_request
 from substanced.objectmap import find_objectmap
 
-from dace.util import get_obj, find_catalog
+from dace.objectofcollaboration.principal.util import has_role
+from dace.util import get_obj, find_catalog, getSite, getAllBusinessAction
+
 from novaideo.views.filter import find_entities
-from novaideo.content.interface import Iidea
+from novaideo.content.interface import Iidea, IPerson
+from novaideo.content.idea import Idea as IdeaClass
+from novaideo import log
+
+
+def oth_user(token):
+    current_user = None
+    request = get_current_request()
+    login, password = token.split('#')
+    #token to password login
+    novaideo_catalog = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    identifier_index = novaideo_catalog['identifier']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any([IPerson.__identifier__]) &\
+        identifier_index.any([login])
+    users = list(query.execute().all())
+    user = users[0] if users else None
+    valid_check = user and user.check_password(password)
+    if valid_check and \
+       (has_role(user=user, role=('SiteAdmin', )) or \
+        'active' in getattr(user, 'state', [])):
+        current_user = user
+        request.user = current_user
+
+    return current_user
+
+
+def get_context(oid):
+    try:
+        return get_obj(int(oid))
+    except:
+        return getSite()
+
+
+def get_action(action_id, context, request):
+    node_process = action_id.split('.')
+    if len(node_process) == 2:
+        process_id = node_process[0]
+        node_id = node_process[1]
+        node_actions = getAllBusinessAction(
+            context, request,
+            process_id=process_id, node_id=node_id,
+            process_discriminator='Application')
+        if node_actions:
+            return node_actions[0]
+
+    return None
+
+
+def get_execution_data(action_id, args):
+    args = dict(args)
+    oth_user(args.pop('token'))
+    context = get_context(
+        args.pop('context') if 'context' in args else None)
+    request = get_current_request()
+    action = get_action(action_id, context, request)
+    return context, request, action, args
 
 
 def get_ideas(args, info):
@@ -107,7 +166,8 @@ class Node(object):
         try:
             return super(Node, self).__getattr__(name)
         except Exception:
-            log.exception("Error in node %s id:%s attr:%s",
+            log.exception(
+                "Error in node %s id:%s attr:%s",
                 self.__class__.__name__, self.id, name)
             raise
 
@@ -175,11 +235,69 @@ class ResolverLazyList(LazyList):
         return item
 
 
+class CreateIdea(graphene.Mutation):
+    class Input:
+        context = graphene.String()
+        token = graphene.String()
+        title = graphene.String()
+        text = graphene.String()
+        keywords = graphene.List(graphene.String())
+
+    status = graphene.Boolean()
+    idea = graphene.Field('Idea')
+    action_id = 'ideamanagement.creat'
+
+    @classmethod
+    def mutate(cls, instance, args, info):
+        context, request, action, args = get_execution_data(
+            cls.action_id, args)
+        new_idea = None
+        if action:
+            new_idea = IdeaClass(**args)
+            appstruct = {
+                '_object_data': new_idea
+            }
+            action.execute(context, request, appstruct)
+
+        status = new_idea is not None
+        return CreateIdea(idea=new_idea, status=status)
+
+
+class CreateAndPublishIdea(graphene.Mutation):
+    class Input:
+        context = graphene.String()
+        token = graphene.String()
+        title = graphene.String()
+        text = graphene.String()
+        keywords = graphene.List(graphene.String())
+
+    status = graphene.Boolean()
+    idea = graphene.Field('Idea')
+    action_id = 'ideamanagement.creatandpublish'
+
+    @classmethod
+    def mutate(cls, instance, args, info):
+        context, request, action, args = get_execution_data(
+            cls.action_id, args)
+        new_idea = None
+        if action:
+            new_idea = IdeaClass(**args)
+            appstruct = {
+                '_object_data': new_idea
+            }
+            action.execute(context, request, appstruct)
+
+        status = new_idea is not None
+        return CreateAndPublishIdea(idea=new_idea, status=status)
+
+
 class Query(graphene.ObjectType):
     node = relay.NodeField()
     ideas = relay.ConnectionField(
         Idea,
     )
+    create_idea = graphene.Field(CreateIdea)
+    create_publish_idea = graphene.Field(CreateAndPublishIdea)
 
     def resolve_ideas(self, args, info):
         oids = get_ideas(args, info)
