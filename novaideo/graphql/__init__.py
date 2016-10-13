@@ -13,5 +13,7 @@ def includeme(config):
     config.add_view(graphqlview, route_name='graphql')
     config.add_route('graphiql', '/graphiql')
     config.add_view(route_name='graphiql', renderer='graphiql.pt')
-    config.add_static_view('graphiql',
-                           'novaideo:graphql/build')
+    config.add_static_view(
+        'graphql', 'novaideo:graphql/build')
+    config.add_route('graphqldocs', '/graphqldocs')
+    config.add_view(route_name='graphqldocs', renderer='graphqldocs.pt')
