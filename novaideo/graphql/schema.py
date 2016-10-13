@@ -111,12 +111,37 @@ class Node(object):
                 self.__class__.__name__, self.id, name)
             raise
 
+class File(relay.Node, Node):
+    url = graphene.String()
+    mimetype = graphene.String()
+
+class Person(relay.Node, Node):
+    function = graphene.String()
+    description = graphene.String()
+    picture = relay.ConnectionField(File)
+    first_name = graphene.String()
+    last_name = graphene.String()
+    user_title = graphene.String()
+    locale = graphene.String()
+    email = graphene.String()
+
+    def resolve_picture(self, args, info):
+        return [File(_root=self.picture)]
 
 class Idea(relay.Node, Node):
     title = graphene.String()
     text = graphene.String()
     keywords = graphene.List(graphene.String())
+    author = relay.ConnectionField(Person)
+    attached_files = relay.ConnectionField(File)
+    tokens_opposition = graphene.List(graphene.String())
+    tokens_support = graphene.List(graphene.String())
 
+    def resolve_attached_files(self, args, info):
+        return [File(*f) for f in self.attached_files]
+
+    def resolve_author(self, args, info):
+        return [Person(_root=self.author)]
 
 class ResolverLazyList(LazyList):
 
