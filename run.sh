@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-options=${options:-"-f docker-compose-dev.yml"}
+options=${options:-"-f docker-compose-dev.yml -f docker-compose.override.yml"}
 
 do_buildout() {
     CACHE_PATH=${CACHE_PATH:-$PWD/cache}
