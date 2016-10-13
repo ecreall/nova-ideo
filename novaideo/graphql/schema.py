@@ -141,14 +141,21 @@ class Idea(relay.Node, Node):
     keywords = graphene.List(graphene.String())
     author = relay.ConnectionField(Person)
     attached_files = relay.ConnectionField(File)
-    tokens_opposition = graphene.List(graphene.String())
-    tokens_support = graphene.List(graphene.String())
+    tokens_opposition = graphene.Int()
+    tokens_support = graphene.Int()
 
     def resolve_attached_files(self, args, info):
         return [File(*f) for f in self.attached_files]
 
     def resolve_author(self, args, info):
         return [Person(_root=self.author)]
+
+    def resolve_tokens_opposition(self, args, info):
+        return len(self.tokens_opposition)
+
+    def resolve_tokens_support(self, args, info):
+        return len(self.tokens_support)
+
 
 class ResolverLazyList(LazyList):
 
