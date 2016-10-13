@@ -55,12 +55,15 @@ To run in development mode with docker::
 The app is deployed on https://local.ecreall.com:8443
 (local.ecreall.com resolves to 127.0.0.1 and is necessary for nginx)
 
-To send emails, you need to configure the MAILER variables in
-**docker-compose-dev.yml**
-The default configuration is used to connect with a postfix via a ssh tunnel
-like this::
+The default configuration in **docker-compose-dev.yml** is used to connect
+with a postfix via a ssh tunnel like this::
 
     ssh -L 172.17.0.1:9025:localhost:25 myserver.example.com
+
+To send emails with gmail smtp instead, you need to configure the MAILER
+variables in **docker-compose.override.yml**, copy the file
+**docker-compose.override.yml.templ** to **docker-compose.override.yml** and
+edit it. This will overrides the configuration in **docker-compose-dev.yml**.
 
 
 Deployment with docker
