@@ -15,6 +15,11 @@ APPLICATION_URL="${APPLICATION_URL:-https://mynovaideo.example.com}"
 TIMEOUT="${TIMEOUT:-300}"
 WORKERS="${WORKERS:-1}"
 export TMPDIR="/app/var/tmp"
+if [ "$ENV" == "development" ]; then
+    inifile="development-heroku.ini"
+else
+    inifile="production-heroku.ini"
+fi
 sed -i \
     -e "s|MAIL_HOST|$MAIL_HOST|" \
     -e "s|MAIL_PORT|$MAIL_PORT|" \
@@ -26,16 +31,24 @@ sed -i \
     -e "s|SECRET|$SECRET|" \
     -e "s|APPLICATION_URL|$APPLICATION_URL|" \
     -e "s|WORKERS|$WORKERS|" \
-    production-heroku.ini
+    $inifile
 if [ -z "$MAIL_USERNAME" ]; then
-    sed -i -e "s|mail.username =.*||" production-heroku.ini
+    sed -i -e "s|mail.username =.*||" $inifile
 fi
 if [ -z "$MAIL_PASSWORD" ]; then
-    sed -i -e "s|mail.password =.*||" production-heroku.ini
+    sed -i -e "s|mail.password =.*||" $inifile
 fi
 mkdir -p var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 chmod 700 var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 chown u1000 var var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
-sed -e 's@dace$@dace.wosystem@' -e 's@^substanced.catalogs.autosync = .*@substanced.catalogs.autosync = false@' production-heroku.ini > production-script.ini
 /usr/sbin/varnishd -P /app/var/varnishd.pid -a 0.0.0.0:5000 -f /app/etc/varnish.vcl -s malloc,256m -t 0
-exec ./start_all.bash production-heroku.ini $TIMEOUT
+sed -e 's@dace$@dace.wosystem@' -e 's@^substanced.catalogs.autosync = .*@substanced.catalogs.autosync = false@' production-heroku.ini > production-script.ini
+if [ "$ENV" == "development" ]; then
+    set -eo monitor
+    trap 'kill $(jobs -p) &> /dev/null' EXIT
+    trap 'exit 2' CHLD
+    gosu u1000 ./bin/runzeo -C etc/zeo.conf &
+    exec gosu u1000 ./bin/pserve --reload $inifile
+else
+    exec ./start_all.bash $inifile $TIMEOUT
+fi

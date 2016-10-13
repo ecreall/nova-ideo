@@ -14,6 +14,7 @@ services:
       - TIMEOUT=999999999
       - MAILER_HOST=172.17.0.1
       - MAILER_PORT=9025
+      - ENV=development
     ports:
      - "5000:5000"
     volumes:
