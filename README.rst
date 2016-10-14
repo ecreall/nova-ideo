@@ -81,6 +81,15 @@ variables in **docker-compose.override.yml**, copy the file
 **docker-compose.override.yml.templ** to **docker-compose.override.yml** and
 edit it. This will overrides the configuration in **docker-compose-dev.yml**.
 
+To stop the application, do a Ctrl-c, and to stop the other containers (nginx),
+run::
+
+    ./run.sh down
+
+To execute the tests::
+
+    ./run.sh test -s novaideo
+
 
 Allow your gmail account to be used to send emails
 --------------------------------------------------
