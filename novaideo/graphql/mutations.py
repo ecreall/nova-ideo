@@ -14,7 +14,7 @@ def oth_user(token):
     request = get_current_request()
     novaideo_catalog = find_catalog('novaideo')
     dace_catalog = find_catalog('dace')
-    identifier_index = novaideo_catalog['user_token_id']
+    identifier_index = novaideo_catalog['api_token']
     object_provides_index = dace_catalog['object_provides']
     query = object_provides_index.any([IPerson.__identifier__]) &\
         identifier_index.eq(token)
@@ -84,32 +84,8 @@ class CreateIdea(graphene.Mutation):
             action.execute(context, request, appstruct)
 
         status = new_idea is not None
-        return CreateIdea(idea=new_idea, status=status)
+        return cls(idea=new_idea, status=status)
 
 
-class CreateAndPublishIdea(graphene.Mutation):
-    class Input:
-        context = graphene.String()
-        token = graphene.String()
-        title = graphene.String()
-        text = graphene.String()
-        keywords = graphene.List(graphene.String())
-
-    status = graphene.Boolean()
-    idea = graphene.Field('Idea')
+class CreateAndPublishIdea(CreateIdea):
     action_id = 'ideamanagement.creatandpublish'
-
-    @classmethod
-    def mutate(cls, instance, args, info):
-        context, request, action, args = get_execution_data(
-            cls.action_id, args)
-        new_idea = None
-        if action:
-            new_idea = IdeaClass(**args)
-            appstruct = {
-                '_object_data': new_idea
-            }
-            action.execute(context, request, appstruct)
-
-        status = new_idea is not None
-        return CreateAndPublishIdea(idea=new_idea, status=status)
