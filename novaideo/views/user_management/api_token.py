@@ -53,11 +53,6 @@ class GetAPITokenSchema(Schema):
         )
 
 
-# @view_config(
-#     name='get_api_token',
-#     context=Person,
-#     renderer='pontus:templates/views_templates/grid.pt',
-#     )
 class EditAPITokenView(FormView):
 
     title = _('Edit the API token')
