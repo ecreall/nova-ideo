@@ -7,6 +7,9 @@ Features
 
 See `nova-ideo.com <https://www.nova-ideo.com/>`__
 
+The application exposes a `GraphQL <http://graphql.org>`__ endpoint if you
+want to communicate with Nova-Ideo from an external application.
+See novaideo/graphql/README.md in this directory for more details.
 
 Translations
 ------------
