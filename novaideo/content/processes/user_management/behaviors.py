@@ -174,7 +174,7 @@ class Edit(InfiniteCardinality):
 class GetAPIToken(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'plus-action'
-    style_picto = 'glyphicon glyphicon-pencil'
+    style_picto = 'glyphicon glyphicon-wrench'
     style_order = 1
     title = _('Get API token')
     submission_title = _('Get a new API token')
