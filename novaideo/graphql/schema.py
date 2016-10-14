@@ -14,12 +14,12 @@ from substanced.objectmap import find_objectmap
 from dace.util import get_obj, find_catalog
 
 from novaideo.views.filter import find_entities
-from novaideo.content.interface import Iidea
+from novaideo.content.interface import Iidea, IProposal
 from novaideo import log
 from .mutations import CreateIdea, CreateAndPublishIdea
 
 
-def get_ideas(args, info):
+def get_entities(interfaces, states, args, info):
     try:
         after = cursor_to_offset(args.get('after'))
         first = args.get('first')
@@ -49,8 +49,8 @@ def get_ideas(args, info):
     # reality it should rarely happen.
     rs = find_entities(
         sort_on=None,
-        interfaces=[Iidea],
-        metadata_filter={'states': ['published']},
+        interfaces=interfaces,
+        metadata_filter={'states': states},
     )
     catalog = find_catalog('novaideo')
     release_date_index = catalog['release_date']
@@ -161,6 +161,40 @@ class Idea(relay.Node, Node):
         return len(self.tokens_support)
 
 
+class Proposal(relay.Node, Node):
+
+    """Nova-Ideo proposals."""
+
+    title = graphene.String()
+    text = graphene.String()
+    description = graphene.String()
+    keywords = graphene.List(graphene.String())
+    author = relay.ConnectionField(Person)
+    members = relay.ConnectionField(Person)
+    related_ideas = relay.ConnectionField(Idea)
+    attached_files = relay.ConnectionField(File)
+    tokens_opposition = graphene.Int()
+    tokens_support = graphene.Int()
+
+    def resolve_attached_files(self, args, info):
+        return [File(*f) for f in self.attached_files]
+
+    def resolve_author(self, args, info):
+        return [Person(_root=self.author)]
+
+    def resolve_members(self, args, info):
+        return [Person(_root=p) for p in self.working_group.members]
+
+    def resolve_related_ideas(self, args, info):
+        return [Idea(_root=ri) for ri in self.related_ideas]
+
+    def resolve_tokens_opposition(self, args, info):
+        return len(self.tokens_opposition)
+
+    def resolve_tokens_support(self, args, info):
+        return len(self.tokens_support)
+
+
 class ResolverLazyList(LazyList):
 
     def __init__(self, origin, object_type):
@@ -195,12 +229,19 @@ class Query(graphene.ObjectType):
     ideas = relay.ConnectionField(
         Idea,
     )
+    proposals = relay.ConnectionField(
+        Proposal,
+    )
     create_idea = graphene.Field(CreateIdea)
     create_publish_idea = graphene.Field(CreateAndPublishIdea)
 
     def resolve_ideas(self, args, info):
-        oids = get_ideas(args, info)
+        oids = get_entities([Iidea], ['published'], args, info)
         return ResolverLazyList(oids, Idea)
+
+    def resolve_proposals(self, args, info):
+        oids = get_entities([IProposal], ['published'], args, info)
+        return ResolverLazyList(oids, Proposal)
 
 
 schema = graphene.Schema(query=Query)
