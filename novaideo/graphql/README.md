@@ -43,6 +43,7 @@ If you have a "Variables are invalid JSON." error, be sure you have {} in the
       createPublishIdea(
         token: "User API token",
         title: "Idea title",
+        keywords: ["keword"...],
         text: "Idea text")
         #returned value
         {
@@ -57,6 +58,7 @@ If you have a "Variables are invalid JSON." error, be sure you have {} in the
       CreateProposal(
         token: "User API token",
         title: "Idea title",
+        keywords: ["keword"...],
         text: "Idea text")
         #returned value
         {
