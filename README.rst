@@ -33,6 +33,9 @@ The project is licensed under the AGPLv3+.
 Getting Started for development
 -------------------------------
 
+without docker
+~~~~~~~~~~~~~~
+
 To run in development mode without docker::
 
     python3.4 bootstrap.py
@@ -42,6 +45,12 @@ To run in development mode without docker::
 
 The application is on http://localhost:6543
 
+To send emails with gmail smtp, you need to uncomment some lines and configure
+the mail and password in development.ini
+
+
+with docker
+~~~~~~~~~~~
 
 To run in development mode with docker::
 
@@ -60,6 +69,17 @@ To send emails with gmail smtp instead, you need to configure the MAILER
 variables in **docker-compose.override.yml**, copy the file
 **docker-compose.override.yml.templ** to **docker-compose.override.yml** and
 edit it. This will overrides the configuration in **docker-compose-dev.yml**.
+
+
+Allow your gmail account to be used to send emails
+--------------------------------------------------
+
+To allow your gmail account to be used to send emails, you need to enable
+`less secure apps <https://support.google.com/accounts/answer/6010255>`__ and
+do the `captcha <https://support.google.com/accounts/answer/6009563>`__
+Look at the logs in the terminal if you have an error when sending a mail.
+
+Be careful to not commit your gmail password!
 
 
 Deployment with docker
@@ -108,6 +128,10 @@ environment variable.
 After the initial connection, you can increase the number of workers that are
 used to handle the requests in **docker-compose.override.yml** and run again
 **sudo docker-compose up -d** (WORKERS=3 is a good default).
+
+To see the logs::
+
+    docker-compose logs -f
 
 
 How to upgrade your install
