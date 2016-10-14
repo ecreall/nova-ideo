@@ -13,6 +13,9 @@ graphiql is accessible at [http://localhost:6543/graphiql](http://localhost:6543
       }
     }
 
+If you have a "Variables are invalid JSON." error, be sure you have {} in the
+*Query variables* section.
+
 ## Example:
 
     query MyQuery ($after: String) {
