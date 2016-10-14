@@ -39,8 +39,22 @@ If you have a "Variables are invalid JSON." error, be sure you have {} in the
       }
     }
 
-    query MyMutation{
+    mutation MyMutation{
       createPublishIdea(
+        token: "User API token",
+        title: "Idea title",
+        text: "Idea text")
+        #returned value
+        {
+          idea { 
+              title
+          }
+          status
+        }
+    }
+
+    mutation MyMutation{
+      CreateProposal(
         token: "User API token",
         title: "Idea title",
         text: "Idea text")
