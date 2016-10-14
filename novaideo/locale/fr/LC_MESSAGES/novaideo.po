@@ -74,7 +74,7 @@ msgstr "Générale"
 
 #: novaideo/core_schema.py:35
 msgid "Administration service"
-msgstr "Service d'administraction"
+msgstr "Service d'administration"
 
 #: novaideo/core_schema.py:27
 #, python-format
