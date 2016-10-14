@@ -16,7 +16,7 @@ from dace.util import get_obj, find_catalog
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import Iidea, IProposal
 from novaideo import log
-from .mutations import CreateIdea, CreateAndPublishIdea
+from .mutations import CreateIdea, CreateAndPublishIdea, CreateProposal
 
 
 def get_entities(interfaces, states, args, info):
@@ -234,6 +234,7 @@ class Query(graphene.ObjectType):
     )
     create_idea = graphene.Field(CreateIdea)
     create_publish_idea = graphene.Field(CreateAndPublishIdea)
+    create_proposal = graphene.Field(CreateProposal)
 
     def resolve_ideas(self, args, info):
         oids = get_entities([Iidea], ['published'], args, info)
