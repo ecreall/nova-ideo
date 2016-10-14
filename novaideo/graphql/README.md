@@ -2,6 +2,9 @@
 
 You can use [graphiql](https://github.com/graphql/graphiql) to explore the API.
 graphiql is accessible at [http://localhost:6543/graphiql](http://localhost:6543/graphiql)
+The API documentation in accessible by clicking on "Docs" on the top right. An
+alternative view is available at
+[http://localhost:6543/graphqldocs](http://localhost:6543/graphqldocs)
 
 ## Basic example:
 
