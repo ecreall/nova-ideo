@@ -30,7 +30,13 @@ class DisplayAPITokenStudyReport(BasicView):
 
     def update(self):
         result = {}
-        values = {'api_token': getattr(self.context, 'api_token', None)}
+        if 'invalid_password' in self.request.GET:
+            self.request.sdiapi.flash(
+                _('Your password is incorrect. Please try again'), 'danger')
+
+        values = {
+            'api_token': getattr(self.context, 'api_token', None)
+        }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
@@ -47,11 +53,6 @@ class GetAPITokenSchema(Schema):
         )
 
 
-# @view_config(
-#     name='get_api_token',
-#     context=Person,
-#     renderer='pontus:templates/views_templates/grid.pt',
-#     )
 class EditAPITokenView(FormView):
 
     title = _('Edit the API token')

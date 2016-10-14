@@ -199,7 +199,12 @@ class GetAPIToken(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@get_api_token"))
+        query = {}
+        if 'api_token' not in kw:
+            query['invalid_password'] = True
+
+        return HTTPFound(request.resource_url(
+            context, "@@get_api_token", query=query))
 
 
 def deactivate_roles_validation(process, context):
