@@ -32,6 +32,22 @@ graphiql is accessible at [http://localhost:6543/graphiql](http://localhost:6543
       }
     }
 
+    query MyMutation{
+      createPublishIdea(
+        token: "User API token",
+        title: "Idea title",
+        text: "Idea text")
+        #returned value
+        {
+          idea { 
+              title
+          }
+          status
+        }
+    }
+
+
+
 Query variables :
 
     {"after": ""}
