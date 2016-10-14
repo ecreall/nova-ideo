@@ -33,6 +33,9 @@ The project is licensed under the AGPLv3+.
 Getting Started for development
 -------------------------------
 
+without docker
+~~~~~~~~~~~~~~
+
 To run in development mode without docker::
 
     python3.4 bootstrap.py
@@ -42,6 +45,12 @@ To run in development mode without docker::
 
 The application is on http://localhost:6543
 
+To send emails with gmail smtp, you need to uncomment some lines and configure
+the mail and password in development.ini
+
+
+with docker
+~~~~~~~~~~~
 
 To run in development mode with docker::
 
