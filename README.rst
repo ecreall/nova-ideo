@@ -48,6 +48,8 @@ To run in development mode without docker::
 
 The application is on http://localhost:6543
 
+I'll use $DOMAIN for http://localhost:6543 in the rest of the documentation.
+
 To send emails with gmail smtp, you need to uncomment some lines and configure
 the mail and password in development.ini
 
@@ -66,6 +68,8 @@ To run in development mode with docker::
 
 The app is deployed on https://local.ecreall.com:8443
 (local.ecreall.com resolves to 127.0.0.1 and is necessary for nginx)
+
+I'll use $DOMAIN for https://local.ecreall.com:8443 in the rest of the documentation.
 
 The default configuration in **docker-compose-dev.yml** is used to connect
 with a postfix via a ssh tunnel like this::
@@ -90,6 +94,22 @@ Be careful to not commit your gmail password!
 The ini file doesn't support the use of % character in your password.
 It thinks it's the beginning of a variable.
 If you use this character in your password, you will need to change it!
+
+How to assign roles to a person
+-------------------------------
+
+If you want to give a person some additional roles, you need to have the
+*Administrator* or *Site administrator* role. The first time, you will need to
+do it with the special super administrator account.
+Go to $DOMAIN/manage (there is no accessible link from the home page)
+and authenticate with login admin and the password
+you have in SECRET environment variable
+(It's substanced.initial_password key in development.ini if you use the
+install without docker).
+Return to $DOMAIN and go the hamburger menu on the top left, select
+See/Members, go to a person's profile, click on *Assign
+roles* button and give her the *Site administrator*, *Examiner* or *Moderator*
+role.
 
 
 Deployment with docker
