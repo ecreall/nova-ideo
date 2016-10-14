@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-10-14 11:33+0200\n"
+"POT-Creation-Date: 2016-10-14 11:48+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -3807,8 +3807,7 @@ msgstr ""
 "confiance !"
 
 #: novaideo/views/user_management/templates/display_api_token.pt:2
-#, fuzzy
-msgid "Your token is ${api_token}. You can generate a new token below:"
+msgid "Your API token is ${api_token}. You can generate a new token below:"
 msgstr ""
 "Votre jeton d'API est ${api_token}. Vous pouvez en générer un nouveau ci-"
 "dessous :"
@@ -3816,6 +3815,8 @@ msgstr ""
 #: novaideo/views/user_management/templates/display_api_token.pt:3
 msgid "You don't have an API token yet, you can generate a token below:"
 msgstr ""
+"Vous n'avez pas encore de jeton d'API, vous pouvez obtenir un token ci-"
+"dessous :"
 
 #: novaideo/views/user_management/templates/alert_remind_registration.pt:1
 msgid ""
