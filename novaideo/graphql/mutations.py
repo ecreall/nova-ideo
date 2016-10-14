@@ -2,11 +2,12 @@ import graphene
 import graphene.core.types.custom_scalars
 from pyramid.threadlocal import get_current_request
 
+from pontus.schema import select
 from dace.objectofcollaboration.principal.util import has_role
 from dace.util import get_obj, find_catalog, getSite, getAllBusinessAction
 
 from novaideo.content.interface import IPerson
-from novaideo.content.idea import Idea as IdeaClass
+from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
 
 
 def oth_user(token):
@@ -50,7 +51,6 @@ def get_action(action_id, context, request):
 
 
 def get_execution_data(action_id, args):
-    args = dict(args)
     oth_user(args.pop('token'))
     context = get_context(
         args.pop('context') if 'context' in args else None)
@@ -74,6 +74,10 @@ class CreateIdea(graphene.Mutation):
 
     @classmethod
     def mutate(cls, instance, args, info):
+        idea_schema = select(
+            IdeaSchema(), ['title', 'text', 'keywords'])
+        args = dict(args)
+        idea_schema.deserialize(args)
         context, request, action, args = get_execution_data(
             cls.action_id, args)
         new_idea = None
