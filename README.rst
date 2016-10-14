@@ -35,11 +35,14 @@ Getting Started for development
 
 To run in development mode without docker::
 
-    python3.4 bootstrap.py
+    sudo apt-get install python3 python3-dev libxml2-dev libxslt1-dev \
+      libjpeg-dev zlib1g-dev libfreetype6-dev libtiff5-dev libzmq3-dev \
+      libyaml-dev git  # this is working on debian jessie and ubuntu xenial
+    python3 bootstrap.py
     mkdir -p var/{filestorage,blobstorage,log}
-    bin/buildout
-    bin/runzeo -C etc/zeo.conf
-    bin/pserve development.ini
+    bin/buildout  # It takes a long time...
+    bin/runzeo -C etc/zeo.conf  # It starts in foreground, there is no output.  Use Ctrl+C to stop it.
+    bin/pserve development.ini  # in another terminal
 
 The application is on http://localhost:6543
 
