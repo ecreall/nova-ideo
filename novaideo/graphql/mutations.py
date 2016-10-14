@@ -87,6 +87,8 @@ class CreateIdea(graphene.Mutation):
                 '_object_data': new_idea
             }
             action.execute(context, request, appstruct)
+        else:
+            raise(Exception("Authorization failed"))
 
         status = new_idea is not None
         return cls(idea=new_idea, status=status)
