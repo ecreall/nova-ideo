@@ -137,6 +137,9 @@ class ISearchableObject(Interface):
     def support_diff():
         pass
 
+    def api_token():
+        pass
+
 
 @indexview_defaults(catalog_name='novaideo')
 class NovaideoCatalogViews(object):
@@ -559,6 +562,19 @@ class NovaideoCatalogViews(object):
 
         return support_diff
 
+    @indexview()
+    def api_token(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        api_token = adapter.api_token()
+        if api_token is None:
+            return default
+
+        return api_token
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -599,6 +615,7 @@ class NovaideoIndexes(object):
     support = Field()
     oppose = Field()
     support_diff = Field()
+    api_token = Field()
 
 
 @adapter(context=IEntity)
@@ -759,6 +776,9 @@ class SearchableObject(Adapter):
     def support_diff(self):
         return 0
 
+    def api_token(self):
+        return None
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
@@ -782,6 +802,9 @@ class PersonSearch(SearchableObject):
             return [get_oid(organization)]
 
         return []
+
+    def api_token(self):
+        return getattr(self.context, 'api_token', None)
 
 
 @adapter(context=IPreregistration)
