@@ -5,6 +5,8 @@
 # author: Amen Souissi
 
 import unittest
+
+from pyramid.interfaces import IRequestExtensions
 from pyramid import testing
 try:
     from pyramid_robot.layer import Layer
@@ -47,7 +49,14 @@ class BaseFunctionalTests(object):
         self.app = app = main({}, **settings)
         self.db = app.registry._zodb_databases['']
         self.request = request = testing.DummyRequest()
+        self.request.test = True
         self.config = testing.setUp(registry=app.registry, request=request)
+
+        # set extensions (add_request_method, so the request.user works)
+        extensions = app.registry.queryUtility(IRequestExtensions)
+        if extensions is not None:
+            request._set_extensions(extensions)
+
         self.registry = self.config.registry
         self.root = root_factory(request)
         request.root = self.root
