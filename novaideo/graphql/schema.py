@@ -16,7 +16,7 @@ from dace.util import get_obj, find_catalog
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import Iidea, IProposal
 from novaideo import log
-from .mutations import CreateIdea, CreateAndPublishIdea, CreateProposal
+from .mutations import Mutations
 
 
 def get_entities(interfaces, states, args, info):
@@ -232,9 +232,6 @@ class Query(graphene.ObjectType):
     proposals = relay.ConnectionField(
         Proposal,
     )
-    create_idea = graphene.Field(CreateIdea)
-    create_publish_idea = graphene.Field(CreateAndPublishIdea)
-    create_proposal = graphene.Field(CreateProposal)
 
     def resolve_ideas(self, args, info):
         oids = get_entities([Iidea], ['published'], args, info)
@@ -245,7 +242,7 @@ class Query(graphene.ObjectType):
         return ResolverLazyList(oids, Proposal)
 
 
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(query=Query, mutation=Mutations)
 
 if __name__ == '__main__':
     import json

@@ -94,3 +94,9 @@ class CreateAndPublishIdea(CreateIdea):
 
 class CreateProposal(CreateIdea):
     action_id = 'ideamanagement.creatandpublishasproposal'
+
+
+class Mutations(graphene.ObjectType):
+    create_idea = graphene.Field(CreateIdea)
+    create_publish_idea = graphene.Field(CreateAndPublishIdea)
+    create_proposal = graphene.Field(CreateProposal)
