@@ -20,8 +20,8 @@ def oth_user(token):
         identifier_index.eq(token)
     users = list(query.execute().all())
     user = users[0] if users else None
-    if (has_role(user=user, role=('SiteAdmin', )) or\
-       'active' in getattr(user, 'state', [])):
+    if (has_role(user=user, role=('SiteAdmin', )) or
+            'active' in getattr(user, 'state', [])):
         current_user = user
         request.user = current_user
 
@@ -60,6 +60,7 @@ def get_execution_data(action_id, args):
 
 
 class CreateIdea(graphene.Mutation):
+
     class Input:
         context = graphene.String()
         token = graphene.String()
@@ -89,3 +90,7 @@ class CreateIdea(graphene.Mutation):
 
 class CreateAndPublishIdea(CreateIdea):
     action_id = 'ideamanagement.creatandpublish'
+
+
+class CreateProposal(CreateIdea):
+    action_id = 'ideamanagement.creatandpublishasproposal'
