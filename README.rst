@@ -36,8 +36,7 @@ Getting Started for development
 To run in development mode without docker::
 
     python3.4 bootstrap.py
-    mkdir -p var/filestorage
-    mkdir var/blobstorage
+    mkdir -p var/{filestorage,blobstorage,log}
     bin/buildout
     bin/runzeo -C etc/zeo.conf
     bin/pserve development.ini
