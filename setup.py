@@ -7,6 +7,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
+    'babel',
     'dogpile.cache',
     'ecreall_dace',
     'ecreall_pontus',
