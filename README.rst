@@ -75,6 +75,17 @@ variables in **docker-compose.override.yml**, copy the file
 edit it. This will overrides the configuration in **docker-compose-dev.yml**.
 
 
+Allow your gmail account to be used to send emails
+--------------------------------------------------
+
+To allow your gmail account to be used to send emails, you need to enable
+`less secure apps <https://support.google.com/accounts/answer/6010255>`__ and
+do the `captcha <https://support.google.com/accounts/answer/6009563>`__
+Look at the logs in the terminal if you have an error when sending a mail.
+
+Be careful to not commit your gmail password!
+
+
 Deployment with docker
 ----------------------
 
@@ -125,6 +136,10 @@ environment variable.
 After the initial connection, you can increase the number of workers that are
 used to handle the requests in **docker-compose.override.yml** and run again
 **sudo docker-compose up -d** (WORKERS=3 is a good default).
+
+To see the logs::
+
+    docker-compose logs -f
 
 
 How to upgrade your install
