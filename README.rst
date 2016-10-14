@@ -52,6 +52,10 @@ the mail and password in development.ini
 with docker
 ~~~~~~~~~~~
 
+You first need to install the `docker engine
+<https://docs.docker.com/engine/installation/linux/>`__ and
+`docker-compose <https://docs.docker.com/compose/install/>`__.
+
 To run in development mode with docker::
 
     ./run.sh rebuild
