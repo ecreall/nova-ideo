@@ -80,6 +80,9 @@ do the `captcha <https://support.google.com/accounts/answer/6009563>`__
 Look at the logs in the terminal if you have an error when sending a mail.
 
 Be careful to not commit your gmail password!
+The ini file doesn't support the use of % character in your password.
+It thinks it's the beginning of a variable.
+If you use this character in your password, you will need to change it!
 
 
 Deployment with docker
