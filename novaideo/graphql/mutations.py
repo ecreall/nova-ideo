@@ -102,7 +102,40 @@ class CreateProposal(CreateIdea):
     action_id = 'ideamanagement.creatandpublishasproposal'
 
 
+class EditIdea(CreateIdea):
+    action_id = 'ideamanagement.edit'
+
+    @classmethod
+    def mutate(cls, instance, args, info):
+        args = dict(args)
+        #Schema validation
+        idea_schema = select(
+            IdeaSchema(), list(args.keys()))
+        idea_schema.deserialize(args)
+        #Get execution data
+        context, request, action, args = get_execution_data(
+            cls.action_id, args)
+
+        if not isinstance(context, IdeaClass):
+            raise Exception("The context is not an idea")
+
+        if action:
+            args['attached_files'] = []
+            args['title'] = args.get(
+                'title', context.title)
+            args['text'] = args.get(
+                'text', context.text)
+            args['keywords'] = args.get(
+                'keywords', context.keywords)
+            action.execute(context, request, args)
+        else:
+            raise Exception("Authorization failed")
+
+        return cls(idea=context, status=True)
+
+
 class Mutations(graphene.ObjectType):
     create_idea = graphene.Field(CreateIdea)
+    edit_idea = graphene.Field(EditIdea)
     create_publish_idea = graphene.Field(CreateAndPublishIdea)
     create_proposal = graphene.Field(CreateProposal)

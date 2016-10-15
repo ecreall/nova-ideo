@@ -139,7 +139,8 @@ class Person(relay.Node, Node):
 class Idea(relay.Node, Node):
 
     """Nova-Ideo ideas."""
-
+    oid = graphene.String()
+    state = graphene.List(graphene.String())
     title = graphene.String()
     text = graphene.String()
     keywords = graphene.List(graphene.String())
@@ -147,6 +148,9 @@ class Idea(relay.Node, Node):
     attached_files = relay.ConnectionField(File)
     tokens_opposition = graphene.Int()
     tokens_support = graphene.Int()
+
+    def resolve_oid(self, args, info):
+        return str(getattr(self._root, '__oid__', None))
 
     def resolve_attached_files(self, args, info):
         return [File(*f) for f in self.attached_files]
@@ -165,6 +169,8 @@ class Proposal(relay.Node, Node):
 
     """Nova-Ideo proposals."""
 
+    oid = graphene.String()
+    state = graphene.List(graphene.String())
     title = graphene.String()
     text = graphene.String()
     description = graphene.String()
@@ -175,6 +181,9 @@ class Proposal(relay.Node, Node):
     attached_files = relay.ConnectionField(File)
     tokens_opposition = graphene.Int()
     tokens_support = graphene.Int()
+
+    def resolve_oid(self, args, info):
+        return str(getattr(self._root, '__oid__', None))
 
     def resolve_attached_files(self, args, info):
         return [File(*f) for f in self.attached_files]

@@ -41,10 +41,10 @@ If you have a "Variables are invalid JSON." error, be sure you have {} in the
 
     mutation MyMutation{
       createPublishIdea(
-        token: "User API token",
-        title: "Idea title",
-        keywords: ["keyword"...],
-        text: "Idea text")
+        token: "User API token", #required
+        title: "Idea title", #required
+        keywords: ["keword"...], #required
+        text: "Idea text") #required
         #returned value
         {
           idea { 
@@ -56,10 +56,10 @@ If you have a "Variables are invalid JSON." error, be sure you have {} in the
 
     mutation MyMutation{
       CreateProposal(
-        token: "User API token",
-        title: "Idea title",
-        keywords: ["keyword"...],
-        text: "Idea text")
+        token: "User API token", #required
+        title: "Idea title", #required
+        keywords: ["keword"...], #required
+        text: "Idea text") #required
         #returned value
         {
           idea { 
@@ -69,7 +69,21 @@ If you have a "Variables are invalid JSON." error, be sure you have {} in the
         }
     }
 
-
+  mutation MyMutation{
+      editIdea(
+        context: "-322154363986523291", #required
+        token: "User API token" #required
+        title: "Edited title", #opt
+        text: "Edited text", #opt
+        keywords: ["editedkeyword"], #opt
+      ) {
+       idea{
+        title,
+        oid
+      }
+        status
+      }
+  }
 
 Query variables :
 
