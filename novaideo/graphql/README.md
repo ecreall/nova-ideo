@@ -20,7 +20,7 @@ but you need to build it, see below.
 If you have a "Variables are invalid JSON." error, be sure you have {} in the
 *Query variables* section.
 
-## Example with pagination:
+## Query (example with pagination):
 
     query MyQuery ($after: String) {
       allIdeas: ideas(
@@ -39,11 +39,13 @@ If you have a "Variables are invalid JSON." error, be sure you have {} in the
       }
     }
 
+## Mutation:
+
     mutation MyMutation{
       createPublishIdea(
         token: "User API token", #required
         title: "Idea title", #required
-        keywords: ["keword"...], #required
+        keywords: ["keyword"...], #required
         text: "Idea text") #required
         #returned value
         {
@@ -58,7 +60,7 @@ If you have a "Variables are invalid JSON." error, be sure you have {} in the
       CreateProposal(
         token: "User API token", #required
         title: "Idea title", #required
-        keywords: ["keword"...], #required
+        keywords: ["keyword"...], #required
         text: "Idea text") #required
         #returned value
         {
@@ -69,7 +71,7 @@ If you have a "Variables are invalid JSON." error, be sure you have {} in the
         }
     }
 
-  mutation MyMutation{
+    mutation MyMutation{
       editIdea(
         context: "-322154363986523291", #required
         token: "User API token" #required
