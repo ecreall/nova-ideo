@@ -49,7 +49,7 @@ from novaideo.content.site_configuration import (
 )
 
 
-DEFAULT_TITLES = [_('Mr'), _('Madam'), _('Miss')]
+DEFAULT_TITLES = [_('Mr'), _('Madam')]
 
 DEFAULT_COMMENT_INTENTIONS = [
     _('Changing an idea'),
