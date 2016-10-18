@@ -254,7 +254,7 @@ function update_sidebar_action(){
            _update_sidebar_nav_items(container_body)
            if(current_item){
              //first call : put interaction args
-             open_sidebar_container_item(current_item, {scroll_bottom})
+             open_sidebar_container_item(current_item, {'scroll_bottom': scroll_bottom})
            }else if(title.length > 0){
              var new_title = _get_side_bar_title({
                title: title.data('title'),
