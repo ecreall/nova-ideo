@@ -60,8 +60,7 @@ function update_modal_action(event){
              modal_container.find('.carousel').carousel()
              try {
                   deform.processCallbacks();
-              }
-             catch(err) {};
+             }catch(err) {};
              finish_progress()
              focus_on_form(modal_container)
              modal_container.data('action_id', action.attr('id'))
@@ -220,11 +219,10 @@ function update_sidebar_action(){
        return
     }
     var sidebar = $('.sidebar-right-nav')
-    var bar = $(".bar-right-wrapper")
-    var closed = bar.hasClass('toggled')
+    var closed = $(".bar-right-wrapper").hasClass('toggled')
     var target = $(sidebar.find('.sidebar-container'))//closest('.dace-action-inline').data('target')+'-target';
     var toggle = $('.menu-right-toggle:not(.close)')
-    var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
+    var title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first())
     actions.removeClass('activated')
     var action = $this.closest('.dace-action-sidebar')
     var url = action.data('updateurl');
@@ -310,9 +308,9 @@ function update_popover_action(){
            $this.addClass('activated')
            var position = $this.offset()
            popover_container.css('top', position.top-$(document).scrollTop()-(popover_container.height()/2)+'px')
-           popover_container.css('left', position.left+$this.width()-2+'px')
-           popover_container.css('display', 'block')
-           popover_container.addClass('in')
+           .css('left', position.left+$this.width()-2+'px')
+           .css('display', 'block')
+           .addClass('in')
            try {
                 deform.processCallbacks();
             }
@@ -332,7 +330,7 @@ $(document).on('click', '.dace-action-sidebar', update_sidebar_action);
 
 $(document).on('click', '.dace-action-popover', update_popover_action);
 
-$(document).on('click', 'a.dace-action-modal', update_modal_action);
+$(document).on('click', '.dace-action-modal', update_modal_action);
 
 $(document).on('click', '.dace-action-direct', update_direct_action);
 
@@ -367,7 +365,7 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
         if(data.new_body){
          $this.parents('.views-container').first().html($(jQuery.parseJSON(data.new_body)))
          try {
-                deform.processCallbacks();
+            deform.processCallbacks();
           }catch(err) {};
          finish_progress()
         }else if(! (data.redirect_url && !data.ignore_redirect)){

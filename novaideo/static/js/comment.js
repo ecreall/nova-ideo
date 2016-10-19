@@ -28,19 +28,17 @@ catch(err) {
 function replays_show(element){
     var $element = $(element)
     var replays = $($element.parents('li').first().find('ul.commentul:not(.replay-bloc)').first().children('li:not(.comment-preview)'));
-    if($(element).hasClass('closed')){
+    if($element.hasClass('closed')){
        replays.slideDown( );
        $($element.find('span').first()).attr('class', 'glyphicon glyphicon-chevron-up');
-       $element.addClass('opened');
-       $element.removeClass('closed');
+       $element.addClass('opened').removeClass('closed');
        $($element.find('.comment-replay-message-closed').first()).removeClass('hide-bloc');
        $($element.find('.comment-replay-message-opened').first()).addClass('hide-bloc');
     }else{
        replays.splice(-1,1);
        replays.slideUp();
        $($element.find('span').first()).attr('class', 'glyphicon glyphicon-chevron-down');
-       $element.addClass('closed');
-       $element.removeClass('opened');
+       $element.addClass('closed').removeClass('opened');
        $($element.find('.comment-replay-message-closed').first()).addClass('hide-bloc');
        $($element.find('.comment-replay-message-opened').first()).removeClass('hide-bloc');
     }
@@ -248,11 +246,21 @@ $(document).on('change', '.comments-text-search', function(){
       search_comments($this)
 });
 
+
 $(document).on('click', '.comment-inline-toggle', update_replay);
+
 
 $(document).on('change', '.commentform', function(){
     init_comment_form_changes($(this))
 })
+
+
+$(document).on('keypress', 'form.commentform textarea', function (event) {
+  if ((event.ctrlKey || event.metaKey) && (event.keyCode == 13 || event.keyCode == 10)) {
+    $(this).parents('form').first().find('button[type="submit"]').last().click()
+  }
+});
+
 
 $(document).on('submit','.commentform:not(.comment-inline-form)', function( event ) {
     var $this = $(this)
