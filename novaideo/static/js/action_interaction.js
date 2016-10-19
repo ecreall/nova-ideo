@@ -40,7 +40,8 @@ function update_modal_action(event){
       $(modal_container.find('.modal-title')).text(title)
       try {
          deform.processCallbacks();
-      }catch(err) {};
+      }
+      catch(err) {};
       modal_container.modal('show');
       return false
     }
@@ -366,7 +367,8 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
          $this.parents('.views-container').first().html($(jQuery.parseJSON(data.new_body)))
          try {
             deform.processCallbacks();
-          }catch(err) {};
+          }
+          catch(err) {};
          finish_progress()
         }else if(! (data.redirect_url && !data.ignore_redirect)){
           modal_container.modal('hide')
