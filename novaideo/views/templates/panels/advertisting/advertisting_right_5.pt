@@ -1,6 +1,6 @@
-<div tal:condition="sources" class="advertisement">
-	<div data-ride="carousel" data-interval="10000" class="carousel slide  advertisement-right-5" id="advertisement_right_5">   
-	      <div role="listbox" class="carousel-inner advertisement-container">
+<div tal:condition="sources" class="announcement">
+	<div data-ride="carousel" data-interval="10000" class="carousel slide  announcement-right-5" id="announcement_right_5">   
+	      <div role="listbox" class="carousel-inner announcement-container">
 	        <div tal:repeat="(i, source) enumerate(sources)" class="item ${i==0 and 'active'}">
 	           <a tal:condition="source['type'] == 'img'" href="${source['url']}" target="_blank">
 	             <img alt="publicite" src="${source['content']}" data-holder-rendered="true" width="100%">

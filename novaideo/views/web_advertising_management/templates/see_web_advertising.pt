@@ -35,9 +35,9 @@
         </dl>
       </div>
 
-    <div class="advertisement">
-        <div data-ride="carousel" data-interval="10000" class="carousel slide  advertisement-preview" id="advertisement_preview">   
-          <div role="listbox" class="carousel-inner advertisement-container">
+    <div class="announcement">
+        <div data-ride="carousel" data-interval="10000" class="carousel slide  announcement-preview" id="announcement_preview">   
+          <div role="listbox" class="carousel-inner announcement-container">
                 <div tal:define="source object.get_content_data()" class="item active">
                    <a class="image-preview" tal:condition="source['type'] == 'img'" href="#" target="_blank">
                      <img alt="publicite" src="${source['content']}" data-holder-rendered="true" width="200">
