@@ -40,19 +40,26 @@ from novaideo.views.filter import find_entities
 CONTENT_TEMPLATE = 'novaideo:views/templates/newsletter_content_template.pt'
 
 
-def get_adapted_content(email, request):
+def get_adapted_content(email, request, last_sending_date=None):
     body = ''
     novaideo_catalog = find_catalog('novaideo')
     identifier_index = novaideo_catalog['identifier']
     query = identifier_index.any([email])
     users = list(query.execute().all())
     member = users[0] if users else None
+    query = None
+    if last_sending_date:
+        published_at_index = novaideo_catalog['published_at']
+        query = published_at_index.gt(last_sending_date)
+
     entities = find_entities(
         interfaces=[IProposal, Iidea],
         metadata_filter={
             'content_types': ['idea', 'proposal'],
             'states': ['published'],
-            'keywords': getattr(member, 'keywords', [])})
+            'keywords': getattr(member, 'keywords', [])},
+        sort_on='release_date',
+        add_query=query)
 
     result = []
     for obj in entities:
@@ -73,9 +80,21 @@ def send_newsletter_content(newsletter, request):
     mail_template = newsletter.content
     include_adapted_content = mail_template.find("{content}") >= 0
     sender = root.get_site_sender()
+    last_sending_date = getattr(newsletter, 'last_sending_date', None)
+    if last_sending_date:
+        last_sending_date = datetime.datetime.combine(
+            last_sending_date,
+            datetime.datetime.min.time()).replace(tzinfo=pytz.UTC)
+
     for (key, user_data) in newsletter.subscribed.items():
         email = user_data.get('email', None)
         if email:
+            content = get_adapted_content(
+                email, request, last_sending_date) if \
+                include_adapted_content else ''
+            if include_adapted_content and not content:
+                continue
+
             first_name = user_data.get('first_name')
             last_name = user_data.get('last_name')
             allow_unsubscribing = getattr(
@@ -86,8 +105,6 @@ def send_newsletter_content(newsletter, request):
                        'user': key+'@@'+user_data.get('id', '')})\
                 if allow_unsubscribing \
                 else request.resource_url(root, '')
-            content = get_adapted_content(email, request) if \
-                include_adapted_content else ''
             logo = getattr(root, 'picture', None)
             subject = subject_base.format(
                 first_name=first_name,
