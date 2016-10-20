@@ -28,6 +28,15 @@ def conditions_widget(node, kw):
 
 
 class AcceptInvitationSchema(Schema):
+
+    email = colander.SchemaNode(
+        colander.String(),
+        widget=deform.widget.TextInputWidget(
+            template='novaideo:views/templates/disabled_text_input.pt'),
+        title=_('Login (email)'),
+        missing=''
+        )
+
     password = colander.SchemaNode(
         colander.String(),
         widget=deform.widget.CheckedPasswordWidget(),
@@ -42,12 +51,6 @@ class AcceptInvitationSchema(Schema):
         title='',
         missing=False
     )
-
-    email = colander.SchemaNode(
-        colander.String(),
-        widget=deform.widget.HiddenWidget(),
-        title=_('Login (email)')
-        )
 
 
 @view_config(
@@ -65,5 +68,12 @@ class AcceptInvitationView(FormView):
     def default_data(self):
         return {'email': getattr(self.context, 'email')}
 
+    def before_update(self):
+        if self.request.POST:
+            self.request.POST.update(self.default_data())
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({AcceptInvitation:AcceptInvitationView})
+        return super(AcceptInvitationView, self).before_update()
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {AcceptInvitation: AcceptInvitationView})

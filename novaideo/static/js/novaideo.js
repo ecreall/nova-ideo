@@ -449,14 +449,13 @@ function close_add_idea_form(){
   var form_groups = add_idea_form.find('.form-group')
   form_groups.removeClass('has-error')
   form_groups.find('p.help-block.help-error').remove()
-  
   $('.modal-home-add-idea').remove()
-   $(".home-add-idea .form-group:not(.idea-text),"+
-     ".home-add-idea .form-group label,"+
-     ".home-add-idea .form-group.idea-text #desc").slideUp();
-    add_idea_form.addClass('closed').removeClass('opened')
-    $(".similar-ideas.modal").modal('hide')
-    $(".home-add-idea .btn").removeClass('active')
+  $(".home-add-idea .form-group:not(.idea-text),"+
+    ".home-add-idea .form-group label,"+
+    ".home-add-idea .form-group.idea-text #desc").slideUp();
+  add_idea_form.addClass('closed').removeClass('opened')
+  $(".similar-ideas.modal").modal('hide')
+  $(".home-add-idea .btn").removeClass('active')
   }
 
 
