@@ -578,6 +578,16 @@ class NovaideoCatalogViews(object):
         return challenges
 
 
+class TextWithCustomLexicon(Text):
+
+    def __call__(self, catalog_name, index_name):
+        # lexicon is a persistent object, we need to be sure it's a fresh one
+        # between tests
+        self.kw['lexicon'] = Lexicon(
+            Splitter(), CaseNormalizer(), StopWordRemover())
+        return super().__call__(catalog_name, index_name)
+
+
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
 
@@ -605,8 +615,7 @@ class NovaideoIndexes(object):
     object_title = Field()
     object_access_control = Keyword()
     access_keys = Keyword()
-    relevant_data = Text(
-        lexicon=Lexicon(Splitter(), CaseNormalizer(), StopWordRemover()))
+    relevant_data = TextWithCustomLexicon()
     has_related_contents = Field()
     has_file = Field()
     identifier = Keyword()
