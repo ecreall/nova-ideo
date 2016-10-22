@@ -252,6 +252,7 @@ class Query(graphene.ObjectType):
     def resolve_proposals(self, args, info):
         oids = get_entities([IProposal], ['published'], args, info)
         return ResolverLazyList(oids, Proposal)
+
     def resolve_persons(self, args, info):
         oids = get_entities([IPerson], ['active'], args, info)
         return ResolverLazyList(oids, Person)

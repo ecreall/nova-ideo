@@ -10,7 +10,7 @@ from novaideo.content.interface import IPerson
 from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
 
 
-def oth_user(token):
+def auth_user(token):
     current_user = None
     request = get_current_request()
     novaideo_catalog = find_catalog('novaideo')
@@ -51,7 +51,7 @@ def get_action(action_id, context, request):
 
 
 def get_execution_data(action_id, args):
-    oth_user(args.pop('token'))
+    auth_user(args.pop('token'))
     context = get_context(
         args.pop('context') if 'context' in args else None)
     request = get_current_request()
@@ -107,12 +107,13 @@ class EditIdea(CreateIdea):
 
     @classmethod
     def mutate(cls, instance, args, info):
+        # Transform GraphQL args as simple dict
         args = dict(args)
-        #Schema validation
+        # Schema validation
         idea_schema = select(
             IdeaSchema(), list(args.keys()))
         idea_schema.deserialize(args)
-        #Get execution data
+        # Get execution data
         context, request, action, args = get_execution_data(
             cls.action_id, args)
 
