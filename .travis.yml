@@ -1,0 +1,15 @@
+sudo: required
+services:
+  - docker
+cache:                                                                          
+  directories:
+    - cache
+before_install:
+  - docker info
+  - docker-compose -v
+  - ./run.sh rebuild
+script:
+  - ./run.sh test -s novaideo
+notifications:
+  email:
+    - novaideo-travis@ecreall.com
