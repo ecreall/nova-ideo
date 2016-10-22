@@ -7,7 +7,6 @@
 from zope.interface import implementer
 from pyramid.threadlocal import get_current_registry
 from hypatia.text.interfaces import IPipelineElement
-from hypatia.text.lexicon import Splitter, Lexicon
 
 from dace.i18n.normalizer.interfaces import INormalizer
 from dace.util import name_normalizer
