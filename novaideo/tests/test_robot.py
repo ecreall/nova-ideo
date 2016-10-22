@@ -10,6 +10,8 @@ from novaideo.testing import ROBOT_LAYER
 
 
 def test_suite():
+    return unittest.TestSuite() # robot tests disabled, not maintained
+
     import robotsuite
     from pyramid_robot.layer import layered
     suite = unittest.TestSuite()
