@@ -13,13 +13,12 @@ from substanced.catalog import (
     )
 
 from dace.util import Adapter, adapter
+from hypatia.text.lexicon import Splitter, Lexicon
 
-# from novaideo.utilities.tree_utility import (
-#     get_branches, tree_to_keywords)
 from novaideo import get_access_keys
 from novaideo.fr_lexicon import (
-    Splitter, CaseNormalizer,
-    StopWordRemover, Lexicon,
+    CaseNormalizer,
+    StopWordRemover,
     normalize_word)
 from novaideo.content.interface import (
     IEntity,
