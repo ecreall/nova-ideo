@@ -130,7 +130,8 @@ class Person(relay.Node, Node):
     title = graphene.String()
     user_title = graphene.String()
     locale = graphene.String()
-    email = graphene.String()
+#    email = graphene.String()
+#    email should be visible only by user with Admin or Site Administrator role
 
     def resolve_picture(self, args, info):
         return [File(_root=self.picture)]
