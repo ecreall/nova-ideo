@@ -23,12 +23,6 @@ from novaideo.content.idea import Idea
 from novaideo import _, log
 
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
-
 PRESENT_MESSAGE = {'0': _(u"""Aucune personne contactée"""),
                    '1': _(u"""Personne contactée"""),
                    '*': _(u"""Personnes contactées""")}
@@ -55,8 +49,7 @@ class SentToView(BasicView):
         result = {}
         values = {
             'message': message,
-            'members': members,
-            'basestring': basestring,
+            'members': members
         }
         self.message = message
         body = self.content(args=values, template=self.template)['body']
@@ -125,7 +118,7 @@ def default_message(node, kw):
 
 @colander.deferred
 def emails_validator(node, kw):
-    new_emails = [e for e in kw if isinstance(e, basestring)]
+    new_emails = [e for e in kw if isinstance(e, str)]
     validator = colander.Email()
     for email in new_emails:
         validator(node, email)

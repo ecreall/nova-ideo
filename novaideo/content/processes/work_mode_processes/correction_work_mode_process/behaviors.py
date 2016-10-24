@@ -35,11 +35,6 @@ from novaideo import _, nothing
 from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import alert
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
 
 DEFAULT_NB_CORRECTORS = 1
 

@@ -37,11 +37,6 @@ from novaideo.content.processes.amendment_management.behaviors import (
 from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import alert, get_user_data
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
 
 VOTE_AMENDMENTS_MESSAGE = _("Vous êtes invité à voter sur les amendements."
                             " Chaque groupe d'amendements oppose différents "

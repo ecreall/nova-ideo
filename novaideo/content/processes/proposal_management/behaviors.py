@@ -74,11 +74,6 @@ from . import (
     add_files_to_workspace,
     add_attached_files)
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
 
 VOTE_PUBLISHING_MESSAGE = _("Chaque participant du groupe de travail vote pour" 
                             " ou contre l'amélioration de la proposition. Si la majorité"

@@ -56,12 +56,6 @@ from novaideo.content.processes.proposal_management import (
 from novaideo.content.comment import Comment
 
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
-
 def createidea_roles_validation(process, context):
     return has_role(role=('Member',))
 
@@ -851,14 +845,14 @@ class PresentIdea(InfiniteCardinality):
         presentation_subject = appstruct['subject']
         presentation_message = appstruct['message']
         subject = presentation_subject.format(subject_title=context.title)
-        users = [m for m in members if not isinstance(m, basestring)]
+        users = [m for m in members if not isinstance(m, str)]
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.content_alert,
               subjects=[context], alert_kind='present')
         for member in members:
             usersdata = get_user_data(member, 'recipient', request)
             member_email = getattr(member, 'email', '') \
-                if not isinstance(member, basestring) else member
+                if not isinstance(member, str) else member
             usersdata.update(userdata)
             if member_email:
                 message = presentation_message.format(

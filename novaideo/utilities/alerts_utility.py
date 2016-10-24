@@ -20,12 +20,6 @@ from novaideo.content.alert import INTERNAL_ALERTS
 from novaideo import log, _
 
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
-
 # SLACK_CHANNELS = {
 #     'id': {'url': 'url',
 #                       'name': 'name'}
@@ -59,7 +53,7 @@ except NameError:
 #             collection.create_document(kwargs)
 
 def get_user_data(user, id, request=None):
-    if not isinstance(user, basestring):
+    if not isinstance(user, str):
         if not request:
             request = get_current_request()
         localizer = request.localizer

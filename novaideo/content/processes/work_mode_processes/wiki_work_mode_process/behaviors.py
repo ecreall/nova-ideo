@@ -28,15 +28,7 @@ from dace.processinstance.activity import (
 from novaideo.content.interface import IProposal
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _
-from novaideo.content.correlation import CorrelationType
-from novaideo.utilities.util import connect
 from ...proposal_management.behaviors import add_attached_files
-
-
-try:
-    basestring
-except NameError:
-    basestring = str
 
 
 def correct_relation_validation(process, context):

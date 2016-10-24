@@ -47,11 +47,6 @@ from novaideo.event import CorrelableRemoved
 from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import alert
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
 
 def get_text_amendment_diff(proposal, amendment):
     soup, textdiff = html_diff_wrapper.render_html_diff(

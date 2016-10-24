@@ -10,8 +10,8 @@
          ${message[0]}
     </h4>
     <div tal:condition="members"
-         tal:define="platform_members [m for m in members if not isinstance(m, basestring)];
-                     external_members [m for m in members if isinstance(m, basestring)];
+         tal:define="platform_members [m for m in members if not isinstance(m, str)];
+                     external_members [m for m in members if isinstance(m, str)];
                      external_len len(external_members)" 
          i18n:domain="novaideo">
       <div tal:condition="platform_members">
