@@ -475,7 +475,7 @@ class ArchiveIdea(InfiniteCardinality):
             mail_template = root.get_mail_template('archive_idea_decision')
             localizer = request.localizer
             subject = mail_template['subject'].format(subject_title=context.title)
-            recipientdata = get_user_data(user_to_alert, 'recipient', request)
+            recipientdata = get_user_data(user, 'recipient', request)
             message = mail_template['template'].format(
                 subject_title=context.title,
                 subject_url=request.resource_url(context, "@@index"),
@@ -762,7 +762,8 @@ class CommentIdea(InfiniteCardinality):
             subject_title=context.title,
             subject_type=subject_type)
         for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
-            usersdata = get_user_data(user_to_alert, 'recipient', request=request)
+            usersdata = get_user_data(
+                user_to_alert, 'recipient', request=request)
             usersdata.update(authordata)
             message = mail_template['template'].format(
                 subject_title=context.title,
