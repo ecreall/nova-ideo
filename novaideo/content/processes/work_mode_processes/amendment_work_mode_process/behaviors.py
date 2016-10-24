@@ -35,7 +35,7 @@ from novaideo.content.amendment import Amendment
 from novaideo.content.processes.amendment_management.behaviors import (
     get_text_amendment_diff)
 from novaideo.content.alert import InternalAlertKind
-from novaideo.utilities.alerts_utility import alert
+from novaideo.utilities.alerts_utility import alert, get_user_data
 
 try:
     basestring
@@ -96,16 +96,12 @@ class Alert(ElementaryAction):
               subjects=[context], alert_kind='no_amendment')
         for member in members:
             if getattr(member, 'email', ''):
+                recipientdata = get_user_data(member, 'recipient', request)
                 message = mail_template['template'].format(
-                    recipient_title=localizer.translate(
-                        _(getattr(member, 'user_title', ''))),
-                    recipient_first_name=getattr(
-                        member, 'first_name', member.name),
-                    recipient_last_name=getattr(
-                        member, 'last_name', ''),
                     subject_url=url,
                     subject_title=context.title,
-                    novaideo_title=request.root.title
+                    novaideo_title=request.root.title,
+                    **recipientdata
                 )
                 alert('email', [root.get_site_sender()], [member.email],
                       subject=subject, body=message)
@@ -215,16 +211,12 @@ class VotingAmendments(ElementaryAction):
               subjects=[context], alert_kind='voting_amendment')
         for member in members:
             if getattr(member, 'email', ''):
+                recipientdata = get_user_data(member, 'recipient', request)
                 message = mail_template['template'].format(
-                    recipient_title=localizer.translate(
-                        _(getattr(member, 'user_title', ''))),
-                    recipient_first_name=getattr(
-                        member, 'first_name', member.name),
-                    recipient_last_name=getattr(
-                        member, 'last_name', ''),
                     subject_title=context.title,
                     subject_url=url,
-                    novaideo_title=root.title
+                    novaideo_title=root.title,
+                    **recipientdata
                 )
                 alert('email', [root.get_site_sender()], [member.email],
                       subject=subject, body=message)
@@ -297,15 +289,11 @@ class AmendmentsResult(ElementaryAction):
             subject_title=context.title)
         for member in members:
             if getattr(member, 'email', ''):
+                recipientdata = get_user_data(member, 'recipient', request)
                 message = mail_template['template'].format(
-                    recipient_title=localizer.translate(
-                        _(getattr(member, 'user_title', ''))),
-                    recipient_first_name=getattr(
-                        member, 'first_name', member.name),
-                    recipient_last_name=getattr(
-                        member, 'last_name', ''),
                     message_result=result_body,
-                    novaideo_title=root.title
+                    novaideo_title=root.title,
+                    **recipientdata
                 )
                 alert('email', [root.get_site_sender()], [member.email],
                       subject=subject, html=message)

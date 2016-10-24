@@ -24,7 +24,7 @@ from novaideo.content.processes import global_user_processsecurity
 from novaideo.content.interface import IComment
 from novaideo import _
 from novaideo.utilities.util import connect, disconnect
-from novaideo.utilities.alerts_utility import alert
+from novaideo.utilities.alerts_utility import alert, get_user_data
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from . import VALIDATOR_BY_CONTEXT
@@ -124,11 +124,7 @@ class Respond(InfiniteCardinality):
 
         comment_oid = getattr(comment, '__oid__', 'None')
         localizer = request.localizer
-        author_title = localizer.translate(
-            _(getattr(user, 'user_title', '')))
-        author_first_name = getattr(
-            user, 'first_name', user.name)
-        author_last_name = getattr(user, 'last_name', '')
+        authordata = get_user_data(user, 'author', request)
         comment_kind = 'general_discuss' if not channel.get_subject(user) \
             else 'discuss' if is_discuss else 'comment'
         alert('internal', [root], authors,
@@ -136,10 +132,8 @@ class Respond(InfiniteCardinality):
               subjects=[channel],
               comment_content=comment.comment,
               comment_oid=comment_oid,
-              author_title=author_title,
-              author_first_name=author_first_name,
-              author_last_name=author_last_name,
-              comment_kind=comment_kind)
+              comment_kind=comment_kind,
+              **authordata)
         mail_template = root.get_mail_template(
             'alert_discuss' if is_discuss else 'alert_comment')
         subject_type = localizer.translate(
@@ -148,19 +142,16 @@ class Respond(InfiniteCardinality):
             subject_title=content.title,
             subject_type=subject_type)
         for user_to_alert in [u for u in authors if getattr(u, 'email', '')]:
+            usersdata = get_user_data(user_to_alert, 'recipient', request)
+            usersdata.update(authordata)
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(user_to_alert, 'user_title', ''))),
-                recipient_first_name=getattr(
-                    user_to_alert, 'first_name', user_to_alert.name),
-                recipient_last_name=getattr(user_to_alert, 'last_name', ''),
                 subject_title=content.title,
-                subject_url=request.resource_url(content, "@@index") + '#comment-' + str(comment_oid),
+                subject_url=request.resource_url(
+                    content, "@@index") + '#comment-' + str(comment_oid),
                 subject_type=subject_type,
-                author_title=author_title,
-                author_first_name=author_first_name,
-                author_last_name=author_last_name,
-                novaideo_title=root.title
+                comment_content=comment.comment,
+                novaideo_title=root.title,
+                **usersdata
             )
             alert('email', [root.get_site_sender()], [user_to_alert.email],
                   subject=subject, body=message)
@@ -170,32 +161,26 @@ class Respond(InfiniteCardinality):
                   internal_kind=InternalAlertKind.comment_alert,
                   subjects=[channel], is_respons=True,
                   comment_content=comment.comment,
-                  author_title=author_title,
                   comment_oid=comment_oid,
-                  author_first_name=author_first_name,
-                  author_last_name=author_last_name,
-                  comment_kind=comment_kind
+                  comment_kind=comment_kind,
+                  **authordata
                   )
             if getattr(comment_author, 'email', ''):
+                usersdata = get_user_data(comment_author, 'represent', request)
+                usersdata.update(authordata)
                 mail_template = root.get_mail_template(
                     'alert_discuss' if is_discuss else 'alert_respons')
                 subject = mail_template['subject'].format(
                     subject_title=content.title,
                     subject_type=subject_type)
                 message = mail_template['template'].format(
-                    recipient_title=localizer.translate(
-                        _(getattr(comment_author, 'user_title', ''))),
-                    recipient_first_name=getattr(
-                        comment_author, 'first_name', comment_author.name),
-                    recipient_last_name=getattr(
-                        comment_author, 'last_name', ''),
                     subject_title=content.title,
-                    subject_url=request.resource_url(content, "@@index") + '#comment-' + str(comment_oid),
+                    subject_url=request.resource_url(
+                        content, "@@index") + '#comment-' + str(comment_oid),
                     subject_type=subject_type,
-                    author_title=author_title,
-                    author_first_name=author_first_name,
-                    author_last_name=author_last_name,
-                    novaideo_title=root.title
+                    comment_content=comment.comment,
+                    novaideo_title=root.title,
+                    **usersdata
                 )
                 alert('email', [root.get_site_sender()], [comment_author.email],
                       subject=subject, body=message)

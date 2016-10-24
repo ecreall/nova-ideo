@@ -29,7 +29,7 @@ from novaideo.utilities.util import gen_random_token
 from novaideo.content.person import Person
 from novaideo.content.invitation import InvitationSchema
 from novaideo.role import DEFAULT_ROLES, APPLICATION_ROLES
-from novaideo.utilities.alerts_utility import alert
+from novaideo.utilities.alerts_utility import alert, get_user_data
 
 
 def uploaduser_roles_validation(process, context):
@@ -58,15 +58,13 @@ class UploadUsers(InfiniteCardinality):
                         'last_name': ('String', False),
                         'user_title': ('String', False),
                         'email': ('String', False)})
-        title_template = u"""{title} {user_title} {first_name} {last_name}"""
+        title_template = u"""{title} {first_name} {last_name}"""
         mail_template = root.get_mail_template('invitation')
         localizer = request.localizer
         novaideo_title = root.title
         for invitation in new_invitations:
             invitation.title = title_template.format(
                 title=invitation.title,
-                user_title=getattr(self.context,
-                                   'user_title', ''),
                 first_name=getattr(self.context,
                                    'first_name', ''),
                 last_name=getattr(self.context,
@@ -82,13 +80,12 @@ class UploadUsers(InfiniteCardinality):
             subject = mail_template['subject'].format(
                 novaideo_title=novaideo_title
             )
+            userdata = get_user_data(invitation, 'recipient', request)
             message = mail_template['template'].format(
-                invitation=invitation,
-                user_title=localizer.translate(_(getattr(
-                            invitation, 'user_title', ''))),
                 invitation_url=url,
                 roles=", ".join(roles_translate),
-                novaideo_title=novaideo_title)
+                novaideo_title=novaideo_title,
+                **userdata)
             alert('email', [root.get_site_sender()], [invitation.email],
                   subject=subject, body=message)
 
@@ -143,13 +140,12 @@ class InviteUsers(InfiniteCardinality):
             subject = mail_template['subject'].format(
                 novaideo_title=novaideo_title
             )
+            userdata = get_user_data(invitation, 'recipient', request)
             message = mail_template['template'].format(
-                invitation=invitation,
-                user_title=localizer.translate(_(getattr(
-                    invitation, 'user_title', ''))),
                 invitation_url=url,
                 roles=", ".join(roles_translate),
-                novaideo_title=novaideo_title)
+                novaideo_title=novaideo_title,
+                **userdata)
             alert('email', [root.get_site_sender()], [invitation.email],
                   subject=subject, body=message)
 
@@ -330,32 +326,22 @@ class AcceptInvitation(InfiniteCardinality):
         if manager:
             mail_template = root.get_mail_template('accept_invitation')
             localizer = request.localizer
-            recipient_title = localizer.translate(
-                _(getattr(manager, 'user_title', '')))
-            recipient_last_name = getattr(manager, 'last_name', '')
-            user_title = localizer.translate(
-                _(getattr(person, 'user_title', '')))
-            user_first_name = getattr(person, 'first_name', '')
-            user_last_name = getattr(person, 'last_name', '')
+            userdata = get_user_data(person, 'user', request)
+            recipientdata = get_user_data(manager, 'recipient', request)
             novaideo_title = request.root.title
             url = request.resource_url(person, "@@index")
             roles_translate = [localizer.translate(APPLICATION_ROLES.get(r, r))
                                for r in roles]
             subject = mail_template['subject'].format(
-                user_title=user_title,
-                user_first_name=user_first_name,
-                user_last_name=user_last_name,
-                novaideo_title=novaideo_title
+                novaideo_title=novaideo_title,
+                **userdata
             )
+            userdata.update(recipientdata)
             message = mail_template['template'].format(
-                user_title=user_title,
-                user_first_name=user_first_name,
-                user_last_name=user_last_name,
-                recipient_title=recipient_title,
-                recipient_last_name=recipient_last_name,
                 user_url=url,
                 roles=", ".join(roles_translate),
-                novaideo_title=novaideo_title)
+                novaideo_title=novaideo_title,
+                **userdata)
             alert('email', [root.get_site_sender()], [manager.email],
                   subject=subject, body=message)
 
@@ -394,32 +380,22 @@ class RefuseInvitation(InfiniteCardinality):
             root = getSite()
             mail_template = root.get_mail_template('refuse_invitation')
             localizer = request.localizer
-            recipient_title = localizer.translate(
-                _(getattr(manager, 'user_title', '')))
-            recipient_last_name = getattr(manager, 'last_name', '')
-            user_title = localizer.translate(
-                           _(getattr(context, 'user_title', '')))
-            user_first_name = getattr(context, 'first_name', '')
-            user_last_name = getattr(context, 'last_name', '')
+            userdata = get_user_data(context, 'user', request)
+            recipientdata = get_user_data(manager, 'recipient', request)
             novaideo_title = request.root.title
             url = request.resource_url(context, "@@index")
             roles_translate = [localizer.translate(APPLICATION_ROLES.get(r, r))
                                for r in context.roles]
             subject = mail_template['subject'].format(
-                user_title=user_title,
-                user_first_name=user_first_name,
-                user_last_name=user_last_name,
-                novaideo_title=novaideo_title
+                novaideo_title=novaideo_title,
+                **userdata
             )
+            userdata.update(recipientdata)
             message = mail_template['template'].format(
-                user_title=user_title,
-                user_first_name=user_first_name,
-                user_last_name=user_last_name,
-                recipient_title=recipient_title,
-                recipient_last_name=recipient_last_name,
                 invitation_url=url,
                 roles=", ".join(roles_translate),
-                novaideo_title=novaideo_title)
+                novaideo_title=novaideo_title,
+                **userdata)
             alert('email', [root.get_site_sender()], [context.manager.email],
                   subject=subject, body=message)
 
@@ -496,12 +472,12 @@ class ReinviteUser(InfiniteCardinality):
         subject = mail_template['subject'].format(
             novaideo_title=root.title
         )
+        userdata = get_user_data(context, 'recipient', request)
         message = mail_template['template'].format(
-            invitation=context,
-            user_title=localizer.translate(getattr(context, 'user_title', '')),
             invitation_url=url,
             roles=", ".join(roles_translate),
-            novaideo_title=root.title)
+            novaideo_title=root.title,
+            **userdata)
         alert('email', [root.get_site_sender()], [context.email],
               subject=subject, body=message)
         context.state.remove('refused')
@@ -549,12 +525,12 @@ class RemindInvitation(InfiniteCardinality):
         subject = mail_template['subject'].format(
             novaideo_title=root.title
         )
+        userdata = get_user_data(context, 'recipient', request)
         message = mail_template['template'].format(
-            invitation=context,
-            user_title=localizer.translate(getattr(context, 'user_title', '')),
             invitation_url=url,
             roles=", ".join(roles_translate),
-            novaideo_title=root.title)
+            novaideo_title=root.title,
+            **userdata)
         alert('email', [root.get_site_sender()], [context.email],
               subject=subject, body=message)
         return {}

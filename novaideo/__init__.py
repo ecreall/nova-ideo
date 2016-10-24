@@ -433,6 +433,22 @@ def subscribe_users_notif_ids(root, registry):
     log.info('Channels evolved.')
 
 
+def evolve_mails(root, registry):
+    from novaideo.mail import DEFAULT_SITE_MAILS
+    result = []
+    for mail in getattr(root, 'mail_templates', []):
+        template = DEFAULT_SITE_MAILS.get(
+            mail.get('mail_id', None), None)
+        if template:
+            mail['template'] = template['template']
+            mail['subject'] = template['subject']
+
+        result.append(mail)
+
+    root.mail_templates = PersistentList(result)
+    log.info('Emails evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -462,6 +478,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_alerts)
     config.add_evolution_step(evolve_alert_subjects)
     config.add_evolution_step(subscribe_users_notif_ids)
+    config.add_evolution_step(evolve_mails)
     config.add_evolution_step(evolve_access_keys)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')

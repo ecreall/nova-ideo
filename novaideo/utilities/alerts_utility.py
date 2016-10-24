@@ -17,7 +17,13 @@ from novaideo.ips.mailer import mailer_send
 # from novaideo.content.resources import (
 #     arango_server, create_collection)
 from novaideo.content.alert import INTERNAL_ALERTS
-from novaideo import log
+from novaideo import log, _
+
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 
 # SLACK_CHANNELS = {
@@ -52,6 +58,25 @@ from novaideo import log
 #             collection = create_collection(db, collection_id)
 #             collection.create_document(kwargs)
 
+def get_user_data(user, id, request=None):
+    if not isinstance(user, basestring):
+        if not request:
+            request = get_current_request()
+        localizer = request.localizer
+        user_title = getattr(user, 'user_title', '')
+        user_title = localizer.translate(_(user_title)) \
+            if user_title else ''
+        return {
+            id+'_title': user_title,
+            id+'_last_name': getattr(user, 'last_name', ''),
+            id+'_first_name': getattr(user, 'first_name', ''),
+        }
+
+    return {
+        id+'_title': '',
+        id+'_last_name': '',
+        id+'_first_name': '',
+    }
 
 def alert_email(senders=[], recipients=[], exclude=[], **kwargs):
     """

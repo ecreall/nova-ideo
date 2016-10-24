@@ -49,7 +49,7 @@ from novaideo.core import (
     access_action, serialize_roles, PrivateChannel)
 from novaideo.views.filter import get_users_by_preferences
 from novaideo.content.alert import InternalAlertKind
-from novaideo.utilities.alerts_utility import alert
+from novaideo.utilities.alerts_utility import alert, get_user_data
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.role import get_authorized_roles
@@ -61,20 +61,17 @@ def accept_preregistration(request, preregistration, root):
         url = request.resource_url(preregistration, "")
         localizer = request.localizer
         mail_template = root.get_mail_template('preregistration')
-        recipient_title = localizer.translate(
-            _(getattr(preregistration, 'user_title', '')))
-        recipient_last_name = getattr(preregistration, 'last_name', '')
+        recipientdata = get_user_data(preregistration, 'recipient', request)     
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
         message = mail_template['template'].format(
             preregistration=preregistration,
-            recipient_title=recipient_title,
-            recipient_last_name=recipient_last_name,
             url=url,
             deadline_date=deadline_str.lower(),
-            novaideo_title=root.title)
+            novaideo_title=root.title,
+            **recipientdata)
         alert('email', [root.get_site_sender()], [preregistration.email],
               subject=subject, body=message)
 
@@ -383,14 +380,11 @@ class Registration(InfiniteCardinality):
             url = request.resource_url(preregistration, '@@index')
             localizer = request.localizer
             for admin in [a for a in admins if getattr(a, 'email', '')]:
-                recipient_title = localizer.translate(
-                    _(getattr(admin, 'user_title', '')))
-                recipient_last_name = getattr(admin, 'last_name', '')
+                recipientdata = get_user_data(admin, 'recipient', request)
                 message = mail_template['template'].format(
-                    recipient_title=recipient_title,
-                    recipient_last_name=recipient_last_name,
                     url=url,
-                    novaideo_title=root.title)
+                    novaideo_title=root.title,
+                    **recipientdata)
                 alert('email', [root.get_site_sender()], [admin.email],
                       subject=subject, body=message)
 
@@ -526,12 +520,11 @@ class ConfirmRegistration(InfiniteCardinality):
             mail_template = root.get_mail_template('registration_confiramtion')
             subject = mail_template['subject'].format(
                 novaideo_title=root.title)
+            recipientdata = get_user_data(person, 'recipient', request)
             message = mail_template['template'].format(
-                person=person,
-                user_title=localizer.translate(
-                    _(getattr(person, 'user_title', ''))),
                 login_url=request.resource_url(root, '@@login'),
-                novaideo_title=root.title)
+                novaideo_title=root.title,
+                **recipientdata)
             alert('email', [root.get_site_sender()], [email],
                   subject=subject, body=message)
 
@@ -590,20 +583,17 @@ class Remind(InfiniteCardinality):
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
         mail_template = root.get_mail_template('preregistration')
-        recipient_title = localizer.translate(
-            _(getattr(context, 'user_title', '')))
-        recipient_last_name = getattr(context, 'last_name', '')
+        recipientdata = get_user_data(context, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
         message = mail_template['template'].format(
             preregistration=context,
-            recipient_title=recipient_title,
-            recipient_last_name=recipient_last_name,
             url=url,
             deadline_date=deadline_str.lower(),
-            novaideo_title=root.title)
+            novaideo_title=root.title,
+            **recipientdata)
         alert('email', [root.get_site_sender()], [context.email],
               subject=subject, body=message)
 
@@ -750,39 +740,29 @@ class Discuss(InfiniteCardinality):
         mail_template = root.get_mail_template('alert_discuss')
         comment_oid = getattr(comment, '__oid__', 'None')
         localizer = request.localizer
-        author_title = localizer.translate(
-            _(getattr(user, 'user_title', '')))
-        author_first_name = getattr(
-            user, 'first_name', user.name)
-        author_last_name = getattr(user, 'last_name', '')
+        authordata = get_user_data(user, 'author', request)
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[channel],
               comment_oid=comment_oid,
               comment_content=comment.comment,
-              author_title=author_title,
-              author_first_name=author_first_name,
-              author_last_name=author_last_name,
-              comment_kind='discuss')
+              comment_kind='discuss',
+              **authordata)
         subject_type = localizer.translate(
             _("The " + user.__class__.__name__.lower()))
         subject = mail_template['subject'].format(
             subject_title=user.title,
             subject_type=subject_type)
         for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
+            usersdata = get_user_data(user_to_alert, 'recipient', request)
+            usersdata.update(authordata)
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(user_to_alert, 'user_title', ''))),
-                recipient_first_name=getattr(
-                    user_to_alert, 'first_name', user_to_alert.name),
-                recipient_last_name=getattr(user_to_alert, 'last_name', ''),
                 subject_title=user.title,
                 subject_url=request.resource_url(user, "@@index") + '#comment-' + str(comment_oid),
                 subject_type=subject_type,
-                author_title=author_title,
-                author_first_name=author_first_name,
-                author_last_name=author_last_name,
-                novaideo_title=root.title
+                comment_content=comment.comment,
+                novaideo_title=root.title,
+                **usersdata
             )
             alert('email', [root.get_site_sender()], [user_to_alert.email],
                   subject=subject, body=message)
@@ -860,21 +840,14 @@ class GeneralDiscuss(InfiniteCardinality):
         root = getSite()
         users = self._get_users_to_alerts(context, request, user, channel)
         comment_oid = getattr(comment, '__oid__', 'None')
-        localizer = request.localizer
-        author_title = localizer.translate(
-            _(getattr(user, 'user_title', '')))
-        author_first_name = getattr(
-            user, 'first_name', user.name)
-        author_last_name = getattr(user, 'last_name', '')
+        authordata = get_user_data(user, 'author', request)
         alert('internal', [root], users, exclude=[user],
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[channel],
               comment_oid=comment_oid,
               comment_content=comment.comment,
-              author_title=author_title,
-              author_first_name=author_first_name,
-              author_last_name=author_last_name,
-              comment_kind='general_discuss')
+              comment_kind='general_discuss',
+              **authordata)
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()

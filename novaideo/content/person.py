@@ -221,6 +221,8 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         colander.String(),
         widget=titles_choice,
         title=_('Title', context='user'),
+        description=_('Please do not select anything if you do not want to communicate this information.'),
+        missing=''
         )
 
     locale = colander.SchemaNode(

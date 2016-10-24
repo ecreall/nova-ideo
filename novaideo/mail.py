@@ -23,7 +23,7 @@ INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {no
 INVITATION_MESSAGE = u"""
 Bonjour,
 
-{user_title} {invitation.last_name} vous êtes invité à rejoindre la plateforme participative {novaideo_title} en tant que {roles}.
+{recipient_first_name} vous êtes invité à rejoindre la plateforme participative {novaideo_title} en tant que {roles}.
 
 Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
 
@@ -78,7 +78,7 @@ AMENDABLE_FIRST_SUBJECT = u"""Début du cycle d'amélioration de la proposition 
 
 
 AMENDABLE_FIRST_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Vous êtes dorénavant trois participants au groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}, vous pouvez commencer à l'améliorer. 
 
@@ -92,7 +92,7 @@ AMENDABLE_SUBJECT = u"""Début du cycle d'amélioration de la proposition « {su
 
 
 AMENDABLE_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} a voté à la majorité pour continuer à améliorer la proposition.
 
@@ -105,7 +105,7 @@ Le cycle d'amélioration se termine le {duration}.
 ALERT_SUBJECT = u"""Fin du cycle d'amélioration de la proposition « {subject_title} » sans aucune amélioration"""
 
 ALERT_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Alors que le cycle d'amélioration est terminé, aucune amélioration n'a été apportée à la proposition « {subject_title} » qui se trouve sous {subject_url}. Vous allez devoir procéder au vote pour soumettre la proposition en l'état ou pour recommencer un nouveau cycle d'amélioration. 
 
@@ -114,7 +114,7 @@ Alors que le cycle d'amélioration est terminé, aucune amélioration n'a été 
 ALERT_END_SUBJECT = u"""Dernières améliorations avant la fin du cycle d'amélioration de la proposition « {subject_title} »"""
 
 ALERT_END_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Le cycle d'amélioration pour la proposition « {subject_title} » qui se trouve sous {subject_url} touche pratiquement à sa fin. Vous pouvez encore y apporter des améliorations, avant que le groupe de travail vote pour soumettre la proposition en l'état ou pour recommencer un nouveau cycle d'amélioration.
 
@@ -125,7 +125,7 @@ RESULT_VOTE_AMENDMENT_SUBJECT = u"""Les résultats du vote sur les amendements l
 
 RESULT_VOTE_AMENDMENT_MESSAGE = u"""
 <div>
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 {message_result}
 </div>
@@ -135,7 +135,7 @@ Bonjour {recipient_title} {recipient_last_name},
 PUBLISHPROPOSAL_SUBJECT = u"""Décision de soumettre la proposition « {subject_title} » à l'appréciation des membres de la plateforme"""
 
 PUBLISHPROPOSAL_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} a voté à la majorité pour soumettre la proposition à l'appréciation des membres de la plateforme.
 
@@ -147,7 +147,7 @@ Chaque membre de la plateforme peut dorénavant soutenir ou s'opposer à la prop
 VOTINGPUBLICATION_SUBJECT = u"""Début du vote pour améliorer la proposition « {subject_title} » ou la soumettre à l'appréciation des membres de la plateforme """
 
 VOTINGPUBLICATION_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Le cycle d'amélioration de la proposition « {subject_title} » qui se trouve sous {subject_url} est terminé, vous êtes invité à prendre part au vote pour améliorer la proposition ou la soumettre à l'appréciation des membres de la plateforme.
 
@@ -159,7 +159,7 @@ Vous disposez de 24 heures pour voter, après quoi le vote sera dépouillé en t
 VOTINGAMENDMENTS_SUBJECT = u"""Début des votes sur les amendements portant sur la proposition « {subject_title} »"""
 
 VOTINGAMENDMENTS_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Les votes sur les amendements portant sur la proposition « {subject_title} » qui se trouve sous {subject_url} ont commencé. Merci de prendre part aux votes.
 
@@ -168,7 +168,7 @@ Les votes sur les amendements portant sur la proposition « {subject_title} » q
 WITHDRAW_SUBJECT = u"""Retrait de la liste d'attente du groupe de travail de la proposition « {subject_title} »"""
 
 WITHDRAW_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Vous ne faites plus partie de la liste d'attente du groupe de travail de la proposition {subject_title} » qui se trouve sous {subject_url}, suite à votre retrait de cette liste d'attente. 
 
@@ -179,7 +179,7 @@ Vous pourrez à tout moment chercher à rejoindre à nouveau le groupe de travai
 PARTICIPATE_WL_SUBJECT = u"""Participation au groupe de travail de la proposition « {subject_title} »"""
 
 PARTICIPATE_WL_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Vous faites partie du groupe de travail de la proposition {subject_title} » qui se trouve sous {subject_url}, suite au départ de l'un des participants. 
 
@@ -190,7 +190,7 @@ Vous pouvez en tant que participant au groupe de travail améliorer la propositi
 PARTICIPATE_SUBJECT = u"""Votre participation au groupe de travail de la proposition « {subject_title} »"""
 
 PARTICIPATE_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Vous faites partie du groupe de travail de la proposition {subject_title} qui se trouve sous {subject_url}.
 
@@ -201,7 +201,7 @@ Vous pouvez en tant que participant au groupe de travail améliorer la propositi
 RESIGN_SUBJECT = u"""Votre départ du groupe de travail de la proposition « {subject_title} »"""
 
 RESIGN_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Nous vous confirmons que vous ne faites plus partie du groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
 
@@ -212,7 +212,7 @@ Vous pourrez à tout moment le rejoindre de nouveau, si vous ne faites pas parti
 WATINGLIST_SUBJECT = u"""Inscription sur la liste d'attente du groupe de travail de la proposition « {subject_title} »"""
 
 WATINGLIST_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Vous souhaitez participer au groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}, mais le nombre de participants a déjà atteint 12 personnes, qui est le nombre maximum de participants dans un groupe de travail.
 
@@ -225,7 +225,7 @@ NEWCONTENT_SUBJECT = u"""{subject_type} « {subject_title} qui contient un des m
 
 
 NEWCONTENT_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 {subject_type} « {subject_title} » qui contient un des mots clés faisant partie de vos centres d'intérêt vient d'être publiée. Vous pouvez la consulter sous {subject_url}.
 
@@ -236,7 +236,7 @@ CONTENTMODIFIEF_SUBJECT = u"""{subject_type} « {subject_title} » qui fait part
 
 
 CONTENTMODIFIEF_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 {subject_type} « {subject_title} » qui fait partie de vos favoris vient de passer de l'état {state_source} à l'état {state_target}. Vous pouvez la consulter sous {subject_url}.
 
@@ -247,7 +247,7 @@ ARCHIVEIDEA_SUBJECT = u"""Décision des modérateurs d'archiver l'idée « {subj
 
 
 ARCHIVEIDEA_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 L'idée « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
 
@@ -262,7 +262,7 @@ ALERTOPINION_SUBJECT = u"""Avis du Comité d'examen sur la proposition « {subje
 
 
 ALERTOPINION_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Le Comité d'examen a émis un avis « {opinion} » sur la proposition « {subject_title} » avec l'explication suivante : « {explanation} ».
 
@@ -273,7 +273,7 @@ ALERTOPINIONIDEA_SUBJECT = u"""Avis d'un Examinateur sur l'idée « {subject_tit
 
 
 ALERTOPINIONIDEA_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Un Examinateur a émis un avis « {opinion} » sur l'idée « {subject_title} » avec l'explication suivante : « {explanation} ».
 
@@ -284,7 +284,7 @@ PUBLISHEDIDEA_SUBJECT = u"""Décision des modérateurs de publier l'idée « {su
 
 
 PUBLISHEDIDEA_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 L'idée « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}. Cette idée peut maintenant être utilisée par n'importe quel membre de la plateforme pour une proposition.
 
@@ -295,7 +295,7 @@ PROPOSALREMOVED_SUBJECT = u"""Suppression de la proposition « {subject_title} �
 
 
 PROPOSALREMOVED_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 La proposition « {subject_title} » viens d'être supprimée par les modérateurs pour le motif suivant:
 
@@ -304,13 +304,13 @@ La proposition « {subject_title} » viens d'être supprimée par les modérateu
 """+ PORTAL_SIGNATURE 
 
 
-REFUSE_INVITATION_SUBJECT = u"""Refus de {user_title} {user_first_name} {user_last_name} de rejoindre la plateforme {novaideo_title}"""
+REFUSE_INVITATION_SUBJECT = u"""Refus de {user_first_name} {user_last_name} de rejoindre la plateforme {novaideo_title}"""
 
 
 REFUSE_INVITATION_MESSAGE = u"""
 Bonjour,
 
-Nous vous signalons que {user_title} {user_first_name} {user_last_name} a refusé votre invitation de rejoindre la plateforme {novaideo_title}.
+Nous vous signalons que {user_first_name} {user_last_name} a refusé votre invitation de rejoindre la plateforme {novaideo_title}.
 
 """+ PORTAL_SIGNATURE 
 
@@ -319,9 +319,9 @@ ACCEPT_INVITATION_SUBJECT = u"""Acceptation de {user_first_name} {user_last_name
 
 
 ACCEPT_INVITATION_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
-{user_title} {user_first_name} {user_last_name} a accepté votre invitation de rejoindre la plateforme {novaideo_title}.
+{user_first_name} {user_last_name} a accepté votre invitation de rejoindre la plateforme {novaideo_title}.
 
 """+ PORTAL_SIGNATURE
 
@@ -330,7 +330,7 @@ RESETPW_SUBJECT = u"""Votre nouveau mot de passe sur la plateforme {novaideo_tit
 
 
 RESETPW_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Vous souhaitez avoir un nouveau votre mot de passe sur la plateforme {novaideo_title}, merci de cliquer sur l'adresse {reseturl} et de saisir votre nouveau mot de passe.
 
@@ -341,7 +341,7 @@ PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaid
 
 
 PREREGISTRATION_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Vous avez été inscrit à la plateforme participative {novaideo_title}. Vous devez cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
 
@@ -352,7 +352,7 @@ ADMIN_PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {
 
 
 ADMIN_PREREGISTRATION_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Une nouvelle inscription à la plateforme participative {novaideo_title} vient d'être ajoutée. L'inscription est sous {url}. Vous devez donner votre avis pour la modérer.
 
@@ -363,9 +363,13 @@ ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_ti
 
 
 ALERTCOMMENT_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
-Un nouveau commentaire a été fait sur {subject_type} « {subject_title} ». Vous pouvez le retrouver sous {subject_url} et lui apporter une réponse.
+Un nouveau commentaire a été fait sur {subject_type} « {subject_title} ».
+
+"{comment_content}"
+
+Vous pouvez le retrouver sous {subject_url} et lui apporter une réponse.
 
 """+ PORTAL_SIGNATURE
 
@@ -373,9 +377,13 @@ ALERTDISCUSS_SUBJECT = u"""Nouveau message ajouté à votre discussion avec « {
 
 
 ALERTDISCUSS_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
-Un nouveau message a été ajouté à votre discussion avec « {subject_title} ». Vous pouvez le retrouver sous {subject_url} et lui apporter une réponse.
+Un nouveau message a été ajouté à votre discussion avec « {subject_title} ».
+
+"{comment_content}"
+
+Vous pouvez le retrouver sous {subject_url} et lui apporter une réponse.
 
 """+ PORTAL_SIGNATURE
 
@@ -383,9 +391,11 @@ ALERTRESPONS_SUBJECT = u"""Une personne a donné une réponse à un commentaire 
 
 
 ALERTRESPONS_MESSAGE = u"""
-Bonjour {recipient_title} {recipient_last_name},
+Bonjour {recipient_first_name},
 
 Une personne a donné une réponse à un commentaire sur {subject_type} « {subject_title} » qui se trouve sous {subject_url}.
+
+"{comment_content}"
 
 """+ PORTAL_SIGNATURE
 

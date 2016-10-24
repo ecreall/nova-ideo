@@ -62,8 +62,9 @@ def _invite_first_user(root, registry, title, first_name, last_name, email):
         novaideo_title=novaideo_title
     )
     message = mail_template['template'].format(
-        invitation=invitation,
-        user_title='',
+        recipient_title='',
+        recipient_first_name=invitation.first_name,
+        recipient_last_name=invitation.last_name,
         invitation_url=url,
         roles=", ".join(roles_translate),
         novaideo_title=novaideo_title)
@@ -108,15 +109,13 @@ def mysubscriber_object_published(event):
     for member in users:
         all_users.append(member)
         if getattr(member, 'email', '') and author is not member:
+            recipientdata = get_user_data(member, 'recipient', request)
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(member, 'user_title', ''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name', ''),
                 subject_title=content.title,
                 subject_url=url,
                 subject_type=subject_type,
-                novaideo_title=root.title
+                novaideo_title=root.title,
+                **recipientdata
             )
             alert('email', [root.get_site_sender()], [member.email],
                   subject=subject, body=message)
@@ -179,17 +178,15 @@ def mysubscriber_object_modified(event):
                     get_states_mapping(
                         member, content, state_target))
 
+            recipientdata = get_user_data(member, 'recipient', request)
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(member, 'user_title', ''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name', ''),
                 state_source=state_source_translate,
                 state_target=state_target_translate,
                 subject_title=content.title,
                 subject_url=url,
                 subject_type=subject_type,
-                novaideo_title=root.title
+                novaideo_title=root.title,
+                **recipientdata
             )
             alert('email', [root.get_site_sender()], [member.email],
                   subject=subject, body=message)

@@ -45,7 +45,7 @@ from novaideo.utilities.util import connect, disconnect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
     ObjectModified)
-from novaideo.utilities.alerts_utility import alert
+from novaideo.utilities.alerts_utility import alert, get_user_data
 from novaideo.content.alert import InternalAlertKind
 from novaideo.views.filter import get_users_by_preferences
 from novaideo.content.proposal import Proposal
@@ -475,15 +475,13 @@ class ArchiveIdea(InfiniteCardinality):
             mail_template = root.get_mail_template('archive_idea_decision')
             localizer = request.localizer
             subject = mail_template['subject'].format(subject_title=context.title)
+            recipientdata = get_user_data(user_to_alert, 'recipient', request)
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(user, 'user_title', ''))),
-                recipient_first_name=getattr(user, 'first_name', user.name),
-                recipient_last_name=getattr(user, 'last_name', ''),
                 subject_title=context.title,
                 subject_url=request.resource_url(context, "@@index"),
                 explanation=explanation,
-                novaideo_title=root.title
+                novaideo_title=root.title,
+                **recipientdata
             )
             alert('email', [root.get_site_sender()], [user.email],
                   subject=subject, body=message)
@@ -549,14 +547,12 @@ class PublishIdeaModeration(InfiniteCardinality):
             localizer = request.localizer
             mail_template = root.get_mail_template('publish_idea_decision')
             subject = mail_template['subject'].format(subject_title=context.title)
+            recipientdata = get_user_data(user, 'recipient', request)
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(user, 'user_title', ''))),
-                recipient_first_name=getattr(user, 'first_name', user.name),
-                recipient_last_name=getattr(user, 'last_name', ''),
                 subject_title=context.title,
                 subject_url=request.resource_url(context, "@@index"),
-                novaideo_title=root.title
+                novaideo_title=root.title,
+                **recipientdata
             )
             alert('email', [root.get_site_sender()], [user.email],
                   subject=subject, body=message)
@@ -753,38 +749,28 @@ class CommentIdea(InfiniteCardinality):
         mail_template = root.get_mail_template('alert_comment')
         comment_oid = getattr(comment, '__oid__', 'None')
         localizer = request.localizer
-        author_title = localizer.translate(
-            _(getattr(user, 'user_title', '')))
-        author_first_name = getattr(
-            user, 'first_name', user.name)
-        author_last_name = getattr(user, 'last_name', '')
+        authordata = get_user_data(user, 'author', request)
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[channel],
               comment_oid=comment_oid,
               comment_content=comment.comment,
-              author_title=author_title,
-              author_first_name=author_first_name,
-              author_last_name=author_last_name)
+              **authordata)
         subject_type = localizer.translate(
             _("The " + context.__class__.__name__.lower()))
         subject = mail_template['subject'].format(
             subject_title=context.title,
             subject_type=subject_type)
         for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
+            usersdata = get_user_data(user_to_alert, 'recipient', request=request)
+            usersdata.update(authordata)
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(user_to_alert, 'user_title', ''))),
-                recipient_first_name=getattr(
-                    user_to_alert, 'first_name', user_to_alert.name),
-                recipient_last_name=getattr(user_to_alert, 'last_name', ''),
                 subject_title=context.title,
                 subject_url=request.resource_url(context, "@@index") + '#comment-' + str(comment_oid),
                 subject_type=subject_type,
-                author_title=author_title,
-                author_first_name=author_first_name,
-                author_last_name=author_last_name,
-                novaideo_title=root.title
+                comment_content=comment.comment,
+                novaideo_title=root.title,
+                **usersdata
             )
             alert('email', [root.get_site_sender()], [user_to_alert.email],
                   subject=subject, body=message)
@@ -859,10 +845,7 @@ class PresentIdea(InfiniteCardinality):
         if send_to_me:
             members.append(user)
 
-        localizer = request.localizer
-        user_title = localizer.translate(_(getattr(user, 'user_title', '')))
-        user_first_name = getattr(user, 'first_name', user.name)
-        user_last_name = getattr(user, 'last_name', '')
+        userdata = get_user_data(user, 'my', request)
         url = request.resource_url(context, "@@index")
         presentation_subject = appstruct['subject']
         presentation_message = appstruct['message']
@@ -872,32 +855,16 @@ class PresentIdea(InfiniteCardinality):
               internal_kind=InternalAlertKind.content_alert,
               subjects=[context], alert_kind='present')
         for member in members:
-            recipient_title = ''
-            recipient_first_name = ''
-            recipient_last_name = ''
-            member_email = ''
-            if not isinstance(member, basestring):
-                member_email = getattr(member, 'email', '')
-                recipient_title = localizer.translate(
-                    _(getattr(member, 'user_title', '')))
-                recipient_first_name = getattr(
-                    member, 'first_name', member.name)
-                recipient_last_name = getattr(
-                    member, 'last_name', '')
-            else:
-                member_email = member
-
+            usersdata = get_user_data(member, 'recipient', request)
+            member_email = getattr(member, 'email', '') \
+                if not isinstance(member, basestring) else member
+            usersdata.update(userdata)
             if member_email:
                 message = presentation_message.format(
-                    recipient_title=recipient_title,
-                    recipient_first_name=recipient_first_name,
-                    recipient_last_name=recipient_last_name,
                     subject_url=url,
                     subject_title=getattr(context, 'title', context.name),
-                    my_title=user_title,
-                    my_first_name=user_first_name,
-                    my_last_name=user_last_name,
-                    novaideo_title=root.title
+                    novaideo_title=root.title,
+                    **usersdata
                 )
                 alert('email', [root.get_site_sender()], [member_email],
                       subject=subject, body=message)
@@ -1048,18 +1015,17 @@ class MakeOpinion(InfiniteCardinality):
         if getattr(member, 'email', ''):
             url = request.resource_url(context, "@@index")
             mail_template = root.get_mail_template('opinion_idea')
-            subject = mail_template['subject'].format(subject_title=context.title)
+            subject = mail_template['subject'].format(
+                subject_title=context.title)
             localizer = request.localizer
+            recipientdata = get_user_data(member, 'recipient', request)   
             message = mail_template['template'].format(
-                recipient_title=localizer.translate(
-                    _(getattr(member, 'user_title', ''))),
-                recipient_first_name=getattr(member, 'first_name', member.name),
-                recipient_last_name=getattr(member, 'last_name', ''),
                 subject_url=url,
                 subject_title=context.title,
                 opinion=localizer.translate(_(context.opinion_value)),
                 explanation=context.opinion['explanation'],
-                novaideo_title=root.title
+                novaideo_title=root.title,
+                **recipientdata
             )
             alert('email', [root.get_site_sender()], [member.email],
                   subject=subject, body=message)
