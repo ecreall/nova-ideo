@@ -166,7 +166,7 @@ class Respond(InfiniteCardinality):
                   **authordata
                   )
             if getattr(comment_author, 'email', ''):
-                usersdata = get_user_data(comment_author, 'represent', request)
+                usersdata = get_user_data(comment_author, 'recipient', request)
                 usersdata.update(authordata)
                 mail_template = root.get_mail_template(
                     'alert_discuss' if is_discuss else 'alert_respons')
