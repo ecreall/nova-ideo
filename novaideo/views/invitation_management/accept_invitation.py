@@ -41,6 +41,7 @@ class AcceptInvitationSchema(Schema):
         colander.String(),
         widget=deform.widget.CheckedPasswordWidget(),
         validator=colander.Length(min=3, max=100),
+        description=_('Please choose a password to confirm your subscription'),
         title=_('Password')
         )
 

@@ -33,7 +33,7 @@ class ConfirmRegistrationSchema(PersonSchema):
         widget=deform.widget.CheckedPasswordWidget(),
         validator=colander.Length(min=3, max=100),
         title=_("Password"),
-        description=_("Veuillez choisir un mot de passe pour valider votre inscription")
+        description=_('Please choose a password to confirm your subscription')
         )
 
 
