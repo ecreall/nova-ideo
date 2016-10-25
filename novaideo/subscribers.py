@@ -27,7 +27,8 @@ from novaideo import _
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.invitation import Invitation
 from novaideo.role import APPLICATION_ROLES
-from novaideo.utilities.alerts_utility import alert
+from novaideo.utilities.alerts_utility import (
+    alert, get_user_data, get_entity_data)
 from novaideo.utilities.util import gen_random_token
 
 
@@ -95,27 +96,21 @@ def mysubscriber_object_published(event):
     keywords = content.keywords
     request = get_current_request()
     users = get_users_by_keywords(keywords)
-    url = request.resource_url(content, "@@index")
     root = request.root
     mail_template = root.get_mail_template('alert_new_content')
-    localizer = request.localizer
-    subject_type = localizer.translate(
-        _("The " + content.__class__.__name__.lower()))
+    subject_data = get_entity_data(content, 'subject', request)
     subject = mail_template['subject'].format(
-        subject_title=content.title,
-        subject_type=subject_type)
+        **subject_data)
     author = getattr(content, 'author', None)
     all_users = []
     for member in users:
         all_users.append(member)
         if getattr(member, 'email', '') and author is not member:
-            recipientdata = get_user_data(member, 'recipient', request)
+            email_data = get_user_data(member, 'recipient', request)
+            email_data.update(subject_data)
             message = mail_template['template'].format(
-                subject_title=content.title,
-                subject_url=url,
-                subject_type=subject_type,
                 novaideo_title=root.title,
-                **recipientdata
+                **email_data
             )
             alert('email', [root.get_site_sender()], [member.email],
                   subject=subject, body=message)
@@ -154,15 +149,12 @@ def mysubscriber_object_modified(event):
     state_target = args.get('state_target', '')
     request = get_current_request()
     users = get_users_by_preferences(content)
-    url = request.resource_url(content, "@@index")
     root = request.root
-    mail_template = root.get_mail_template('alert_content_modified')
     localizer = request.localizer
-    subject_type = localizer.translate(
-        _("The " + content.__class__.__name__.lower()))
+    mail_template = root.get_mail_template('alert_content_modified')
+    subject_data = get_entity_data(content, 'subject', request)
     subject = mail_template['subject'].format(
-        subject_title=content.title,
-        subject_type=subject_type)
+        **subject_data)
     all_users = []
     for member in users:
         all_users.append(member)
@@ -178,15 +170,13 @@ def mysubscriber_object_modified(event):
                     get_states_mapping(
                         member, content, state_target))
 
-            recipientdata = get_user_data(member, 'recipient', request)
+            email_data = get_user_data(member, 'recipient', request)
+            email_data.update(subject_data)
             message = mail_template['template'].format(
                 state_source=state_source_translate,
                 state_target=state_target_translate,
-                subject_title=content.title,
-                subject_url=url,
-                subject_type=subject_type,
                 novaideo_title=root.title,
-                **recipientdata
+                **email_data
             )
             alert('email', [root.get_site_sender()], [member.email],
                   subject=subject, body=message)

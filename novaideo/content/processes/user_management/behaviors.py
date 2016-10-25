@@ -49,7 +49,8 @@ from novaideo.core import (
     access_action, serialize_roles, PrivateChannel)
 from novaideo.views.filter import get_users_by_preferences
 from novaideo.content.alert import InternalAlertKind
-from novaideo.utilities.alerts_utility import alert, get_user_data
+from novaideo.utilities.alerts_utility import (
+    alert, get_user_data, get_entity_data)
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.role import get_authorized_roles
@@ -59,7 +60,6 @@ def accept_preregistration(request, preregistration, root):
     if getattr(preregistration, 'email', ''):
         deadline_date = preregistration.get_deadline_date()
         url = request.resource_url(preregistration, "")
-        localizer = request.localizer
         mail_template = root.get_mail_template('preregistration')
         recipientdata = get_user_data(preregistration, 'recipient', request)     
         subject = mail_template['subject'].format(
@@ -67,7 +67,6 @@ def accept_preregistration(request, preregistration, root):
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
         message = mail_template['template'].format(
-            preregistration=preregistration,
             url=url,
             deadline_date=deadline_str.lower(),
             novaideo_title=root.title,
@@ -579,7 +578,6 @@ class Remind(InfiniteCardinality):
         url = request.resource_url(context, "")
         deadline_date = context.init_deadline(
             datetime.datetime.now(tz=pytz.UTC))
-        localizer = request.localizer
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
         mail_template = root.get_mail_template('preregistration')
@@ -589,7 +587,6 @@ class Remind(InfiniteCardinality):
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
         message = mail_template['template'].format(
-            preregistration=context,
             url=url,
             deadline_date=deadline_str.lower(),
             novaideo_title=root.title,
@@ -738,31 +735,24 @@ class Discuss(InfiniteCardinality):
         root = getSite()
         users = self._get_users_to_alerts(context, request, user, channel)
         mail_template = root.get_mail_template('alert_discuss')
-        comment_oid = getattr(comment, '__oid__', 'None')
-        localizer = request.localizer
-        authordata = get_user_data(user, 'author', request)
+        author_data = get_user_data(user, 'author', request)
+        alert_data = get_entity_data(comment, 'comment', request)
+        alert_data.update(author_data)
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.comment_alert,
               subjects=[channel],
-              comment_oid=comment_oid,
-              comment_content=comment.comment,
               comment_kind='discuss',
-              **authordata)
-        subject_type = localizer.translate(
-            _("The " + user.__class__.__name__.lower()))
+              **alert_data)
+        subject_data = get_entity_data(user, 'subject', request)
+        alert_data.update(subject_data)
         subject = mail_template['subject'].format(
-            subject_title=user.title,
-            subject_type=subject_type)
+            **subject_data)
         for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
-            usersdata = get_user_data(user_to_alert, 'recipient', request)
-            usersdata.update(authordata)
+            email_data = get_user_data(user_to_alert, 'recipient', request)
+            email_data.update(alert_data)
             message = mail_template['template'].format(
-                subject_title=user.title,
-                subject_url=request.resource_url(user, "@@index") + '#comment-' + str(comment_oid),
-                subject_type=subject_type,
-                comment_content=comment.comment,
                 novaideo_title=root.title,
-                **usersdata
+                **email_data
             )
             alert('email', [root.get_site_sender()], [user_to_alert.email],
                   subject=subject, body=message)

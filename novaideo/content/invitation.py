@@ -87,6 +87,9 @@ class Invitation(VisualisableElement, Entity):
     def __init__(self, **kwargs):
         super(Invitation, self).__init__(**kwargs)
         self.set_data(kwargs)
-        self.title = 'Invitation' + \
+        self.title = 'Invitation ' + \
                      self.first_name + ' ' + \
                      self.last_name
+
+    def get_url(self, request):
+        return request.resource_url(self, '')

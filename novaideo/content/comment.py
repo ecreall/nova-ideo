@@ -212,6 +212,13 @@ class Comment(Commentable, Emojiable):
                     if not isinstance(t, Comment)]
         return []
 
+    def presentation_text(self, nb_characters=400):
+        return getattr(self, 'comment', "")[:nb_characters]+'...'
+
+    def get_url(self, request):
+        return request.resource_url(
+            self.subject, "@@index") + '#comment-' + str(get_oid(self, 'None'))
+
     def get_related_contents(self, user):
         return [r for r in self.related_contents if can_access(user, r)]
 

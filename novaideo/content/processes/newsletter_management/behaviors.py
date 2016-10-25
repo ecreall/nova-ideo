@@ -33,7 +33,8 @@ from novaideo.core import access_action, serialize_roles
 from novaideo import _, nothing
 from novaideo.utilities.util import (
     gen_random_token)
-from novaideo.utilities.alerts_utility import alert
+from novaideo.utilities.alerts_utility import (
+    alert, get_entity_data)
 from novaideo.views.filter import find_entities
 
 
@@ -353,15 +354,17 @@ class SubscribeNewsletter(InfiniteCardinality):
                 context, '@@userunsubscribenewsletter',
                 query={'oid': get_oid(newsletter),
                        'user': email+'@@'+random_key})
+            email_data = get_entity_data(
+                newsletter, 'newsletter', request)
             subject = mail_template['subject'].format(
                 newsletter_title=newsletter.title,
                 novaideo_title=root.title)
             mail = mail_template['template'].format(
                 first_name=first_name,
                 last_name=last_name,
-                newsletter_title=newsletter.title,
                 unsubscribeurl=url,
-                novaideo_title=root.title)
+                novaideo_title=root.title,
+                **email_data)
             alert('email', [root.get_site_sender()], [email],
                   subject=subject, body=mail)
 
@@ -399,15 +402,18 @@ class UserUnsubscribeNewsletter(InfiniteCardinality):
                 last_name = subscribed.get('last_name')
                 email = subscribed.get('email')
                 root = getSite()
-                mail_template = root.get_mail_template('newsletter_unsubscription')
+                mail_template = root.get_mail_template(
+                    'newsletter_unsubscription')
+                email_data = get_entity_data(
+                    newsletter, 'newsletter', request)
                 subject = mail_template['subject'].format(
                     newsletter_title=newsletter.title,
                     novaideo_title=root.title)
                 mail = mail_template['template'].format(
                     first_name=first_name,
                     last_name=last_name,
-                    newsletter_title=newsletter.title,
-                    novaideo_title=root.title)
+                    novaideo_title=root.title,
+                    **email_data)
                 alert('email', [root.get_site_sender()], [email],
                       subject=subject, body=mail)
 
@@ -447,14 +453,15 @@ class UnsubscribeNewsletter(InfiniteCardinality):
             email = subscribed.get('email')
             root = getSite()
             mail_template = root.get_mail_template('newsletter_unsubscription')
+            email_data = get_entity_data(context, 'newsletter', request)
             subject = mail_template['subject'].format(
                 newsletter_title=context.title,
                 novaideo_title=root.title)
             mail = mail_template['template'].format(
                 first_name=first_name,
                 last_name=last_name,
-                newsletter_title=context.title,
-                novaideo_title=root.title)
+                novaideo_title=root.title,
+                **email_data)
             alert('email', [root.get_site_sender()], [email],
                   subject=subject, body=mail)
 

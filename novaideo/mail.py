@@ -369,7 +369,7 @@ Un nouveau commentaire a été fait sur {subject_type} « {subject_title} ».
 
 "{comment_content}"
 
-Vous pouvez le retrouver sous {subject_url} et lui apporter une réponse.
+Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
 
 """+ PORTAL_SIGNATURE
 
@@ -383,7 +383,7 @@ Un nouveau message a été ajouté à votre discussion avec « {subject_title} �
 
 "{comment_content}"
 
-Vous pouvez le retrouver sous {subject_url} et lui apporter une réponse.
+Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
 
 """+ PORTAL_SIGNATURE
 
@@ -393,7 +393,7 @@ ALERTRESPONS_SUBJECT = u"""Une personne a donné une réponse à un commentaire 
 ALERTRESPONS_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Une personne a donné une réponse à un commentaire sur {subject_type} « {subject_title} » qui se trouve sous {subject_url}.
+Une personne a donné une réponse à un commentaire sur {subject_type} « {subject_title} » qui se trouve sous {comment_url}.
 
 "{comment_content}"
 

@@ -9,6 +9,8 @@ import json
 import requests
 from urllib.request import urlopen
 
+from substanced.util import get_oid
+
 from pyramid.threadlocal import get_current_request
 
 from dace.objectofcollaboration.principal.util import get_current
@@ -56,6 +58,7 @@ def get_user_data(user, id, request=None):
     if not isinstance(user, str):
         if not request:
             request = get_current_request()
+
         localizer = request.localizer
         user_title = getattr(user, 'user_title', '')
         user_title = localizer.translate(_(user_title)) \
@@ -71,6 +74,30 @@ def get_user_data(user, id, request=None):
         id+'_last_name': '',
         id+'_first_name': '',
     }
+
+
+def get_entity_data(entity, id, request=None):
+    if not request:
+        request = get_current_request()
+
+    def default_presentation_text(nb_characters=400):
+        return getattr(entity, 'description', "")[:nb_characters]+'...'
+
+    def default_get_url(request):
+        request.resource_url(entity, '@@index')
+
+    entity_type = request.localizer.translate(
+        _("The " + entity.__class__.__name__.lower()))
+    return {
+        id+'_title': getattr(entity, 'title', ''),
+        id+'_content': getattr(
+            entity, 'presentation_text', default_presentation_text)(),
+        id+'_url': getattr(
+            entity, 'get_url', default_get_url)(request),
+        id+'_oid': get_oid(entity, 'None'),
+        id+'_type': entity_type
+    }
+
 
 def alert_email(senders=[], recipients=[], exclude=[], **kwargs):
     """

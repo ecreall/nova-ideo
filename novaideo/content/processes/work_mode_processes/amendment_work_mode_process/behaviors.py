@@ -81,22 +81,20 @@ class Alert(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         members = context.working_group.members
-        url = request.resource_url(context, "@@index")
         root = request.root
         mail_template = root.get_mail_template('alert_amendment')
         subject = mail_template['subject'].format(subject_title=context.title)
-        localizer = request.localizer
         alert('internal', [root], members,
               internal_kind=InternalAlertKind.working_group_alert,
               subjects=[context], alert_kind='no_amendment')
+        subject_data = get_entity_data(context, 'subject', request)
         for member in members:
             if getattr(member, 'email', ''):
-                recipientdata = get_user_data(member, 'recipient', request)
+                email_data = get_user_data(member, 'recipient', request)
+                email_data.update(subject_data)
                 message = mail_template['template'].format(
-                    subject_url=url,
-                    subject_title=context.title,
                     novaideo_title=request.root.title,
-                    **recipientdata
+                    **email_data
                 )
                 alert('email', [root.get_site_sender()], [member.email],
                       subject=subject, body=message)
@@ -196,22 +194,20 @@ class VotingAmendments(ElementaryAction):
 
         context.reindex()
         members = wg.members
-        url = request.resource_url(context, "@@index")
-        localizer = request.localizer
         root = request.root
         mail_template = root.get_mail_template('start_vote_amendments')
         subject = mail_template['subject'].format(subject_title=context.title)
         alert('internal', [root], members,
               internal_kind=InternalAlertKind.working_group_alert,
               subjects=[context], alert_kind='voting_amendment')
+        subject_data = get_entity_data(context, 'subject', request)
         for member in members:
             if getattr(member, 'email', ''):
-                recipientdata = get_user_data(member, 'recipient', request)
+                email_data = get_user_data(member, 'recipient', request)
+                email_data.update(subject_data)
                 message = mail_template['template'].format(
-                    subject_title=context.title,
-                    subject_url=url,
                     novaideo_title=root.title,
-                    **recipientdata
+                    **email_data
                 )
                 alert('email', [root.get_site_sender()], [member.email],
                       subject=subject, body=message)
