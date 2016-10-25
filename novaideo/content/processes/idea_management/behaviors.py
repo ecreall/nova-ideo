@@ -842,14 +842,14 @@ class PresentIdea(InfiniteCardinality):
         email_data = get_entity_data(context, 'subject', request)
         email_data.update(userdata)
         for member in members:
-            email_memeber_data = get_user_data(member, 'recipient', request)
-            email_memeber_data.update(email_data)
+            email_member_data = get_user_data(member, 'recipient', request)
+            email_member_data.update(email_data)
             member_email = getattr(member, 'email', '') \
                 if not isinstance(member, str) else member
             if member_email:
                 message = presentation_message.format(
                     novaideo_title=root.title,
-                    **email_memeber_data
+                    **email_member_data
                 )
                 alert('email', [root.get_site_sender()], [member_email],
                       subject=subject, body=message)
