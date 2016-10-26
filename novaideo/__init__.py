@@ -27,7 +27,7 @@ log = logging.getLogger('novaideo')
 _ = TranslationStringFactory('novaideo')
 
 
-DEFAULT_SESSION_TIMEOUT = 30*24*3600
+DEFAULT_SESSION_TIMEOUT = 25200
 
 
 ANALYTICS_DEFAUT_CONTENTS = ['idea', 'proposal']
@@ -499,7 +499,7 @@ def main(global_config, **settings):
     session_factory = SignedCookieSessionFactory(
         secret,
         timeout=DEFAULT_SESSION_TIMEOUT,
-        reissue_time=48*3600)
+        reissue_time=3600)
     config.set_session_factory(session_factory)
     return config.make_wsgi_app()
 
