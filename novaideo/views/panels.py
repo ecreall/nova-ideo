@@ -459,6 +459,7 @@ class SocialShare(object):
         has_social_share = getattr(
             self.request.root, 'social_share', False),
         return {'request': self.request,
+                'object': self.context,
                 'condition': has_social_share}
 
 

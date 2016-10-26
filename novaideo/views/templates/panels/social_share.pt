@@ -21,21 +21,21 @@
     <script type="text/javascript">
         function update_socialSharePrivacy_settings(){
             var default_settings = {
-                                  "path_prefix":"${su('novaideo:static/panzi-SocialSharePrivacy/')}",
-                                  "layout":"line",
-                                  "services":{"buffer":{"status":false},
-                                              "delicious":{"status":false},
-                                              "disqus":{"status":false},
-                                              "flattr":{"status":false},
-                                              "hackernews":{"status":false},
-                                              "mail":{"status":false},
-                                              "pinterest":{"status":false},
-                                              "reddit":{"status":false},
-                                              "stumbleupon":{"status":false},
-                                              "tumblr":{"status":false},
-                                              "xing":{"status":false}
-                                              },
-                                 };
+        "path_prefix":"${su('novaideo:static/panzi-SocialSharePrivacy/')}",
+        "layout":"line",
+        "services":{"buffer":{"status":false},
+                    "delicious":{"status":false},
+                    "disqus":{"status":false},
+                    "flattr":{"status":false},
+                    "hackernews":{"status":false},
+                    "mail":{"status":false},
+                    "pinterest":{"status":false},
+                    "reddit":{"status":false},
+                    "stumbleupon":{"status":false},
+                    "tumblr":{"status":false},
+                    "xing":{"status":false}
+                    },
+              };
             try{
               jQuery.extend(!0, socialSharePrivacy_settings, default_settings);
             }catch(err){
@@ -48,4 +48,21 @@
     <script type="application/x-social-share-privacy-settings">
         update_socialSharePrivacy_settings()
     </script>
+        <div tal:omit-tag=""
+         tal:define="description object.presentation_text(300);
+                     url request.url;">
+        <meta name="description" content="${description}" />
+
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="${object.title}" />
+        <meta property="og:description" content="${description}" />
+        <meta property="og:url" content="${url}" />
+        <meta property="og:site_name" content="${request.root.title}" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="${request.root.title}" />
+        <meta name="twitter:title" content="${object.title}" />
+        <meta name="twitter:description" content="${description}" />
+    </div>
+
 </tal:block>

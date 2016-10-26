@@ -1,16 +1,7 @@
 <div tal:condition="has_social_share and getattr(object, 'is_published', False)"
 	 class="social-share-contaier"
 	 i18n:domain="novaideo">
-  <a class="social-share-toggle"
-     role="button"
-  	 data-toggle="collapse"
-  	 href="#collapse-social-share"
-  	 aria-expanded="false"
-  	 aria-controls="collapse-social-share">
-  	<span class="fa fa-share-alt-square"></span> <span i18n:translate="">Share</span>
-  </a>
-  <div class="collapse"
-  	   id="collapse-social-share">
+  <div id="collapse-social-share">
     <div class="social-share"
     	 data-social-share-privacy="true"></div>
   </div>
