@@ -35,7 +35,8 @@ from novaideo.content.amendment import Amendment
 from novaideo.content.processes.amendment_management.behaviors import (
     get_text_amendment_diff)
 from novaideo.content.alert import InternalAlertKind
-from novaideo.utilities.alerts_utility import alert, get_user_data
+from novaideo.utilities.alerts_utility import (
+    alert, get_user_data, get_entity_data)
 
 
 VOTE_AMENDMENTS_MESSAGE = _("Vous êtes invité à voter sur les amendements."
