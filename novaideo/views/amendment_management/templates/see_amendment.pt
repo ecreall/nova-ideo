@@ -70,7 +70,7 @@
           <dd tal:condition="justification">${justification}</dd>
       </dl>
     </div>
-    <div id="contenttext" class="content-text">
+    <div id="contenttext" class="content-text malihu-scroll">
       ${structure:textdiff}
     </div>
    </div>
