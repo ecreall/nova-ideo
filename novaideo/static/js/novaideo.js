@@ -324,8 +324,8 @@ $(document).on('click', '.btn-more-scroll', function(){
   result_scroll.scrollTop(result_scroll[0].scrollHeight);
 })
 
-function init_content_text(){
-     var texts = $('.content-text');
+function init_content_text(texts){
+     texts = texts? texts: $('.content-text');
      for(i=0; i<texts.length; i++){
          if ($(texts[i]).height()>600){
              $(texts[i]).addClass("content-text-scroll")
@@ -440,8 +440,9 @@ function rebuild_scrolls(scrolls){
     }
     if(scrolls.length>0){
       scrolls.mCustomScrollbar({
-        theme:"minimal-dark",
-        scrollInertia: 200
+        theme:"dark",
+        scrollInertia: 100,
+        mouseWheelPixels: 90
       });
     }
   }

@@ -53,12 +53,12 @@ function edit_item(form){
   dict_post['new_text'] = text
   modal.modal('hide')
   $.extend(dict_post, get_action_metadata(btn));
-  $.get(url, dict_post, function(data) {
+  $.post(url, dict_post, function(data) {
     if (data){
-      var content = $(data['body']).find('#correction_'+correction_attr);
+      var correction_id = '#correction_'+correction_attr
+      var content = $(data['body']).find(correction_id);
       if (content){
            $(target).html($(content).html());
-           var corrections = $(target).find('.correction-action');
       }
       update_components(data)
     }
@@ -77,12 +77,12 @@ function correct_handler(event){
     dict_post['content'] = correction_attr;
     dict_post['correction_id'] = parseInt(correction.data('correction'));
     $.extend(dict_post, get_action_metadata(correction));
-    $.get(url, dict_post, function(data) {
+    $.post(url, dict_post, function(data) {
       if (data){
-        var content = $(data['body']).find('#correction_'+correction_attr);
+        var correction_id = '#correction_'+correction_attr
+        var content = $(data['body']).find(correction_id);
         if (content){
              $(target).html($(content).html());
-             var corrections = $(target).find('.correction-action');
         }
         update_components(data)
       }
@@ -114,7 +114,7 @@ function correct_all_action(element, vote){
     dict_post = {};
     dict_post['vote'] = vote;
     $.extend(dict_post, get_action_metadata(element));
-    $.get(url, dict_post, function(data) {
+    $.post(url, dict_post, function(data) {
       update_components(data)
       });
 }
