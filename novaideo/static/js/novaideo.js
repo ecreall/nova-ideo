@@ -147,14 +147,26 @@ function collapse_current_collpsein(){
 
 function activate_explanation(event){
   if($(event.target).parents('.proposal-explanation').length == 0){
+    event.open_explanation = true;
+    $('.proposal-explanation:not(.closed)').addClass('closed');
     var explanation = $($(this).find('.proposal-explanation').first());
-    explanation.removeClass('hide-bloc');}
+    explanation.removeClass('closed');
+  }
 };
 
 function close_explanation(event){
     var explanation = $($(this).parents('.proposal-explanation').first());
-    explanation.addClass('hide-bloc');
+    explanation.addClass('closed');
 };
+
+$(document).on('click', function(event){
+    if(!event.open_explanation){
+      var parents = $($(event.target).parents('.proposal-explanation:not(.closed)'))
+      if(parents.length == 0){
+         $('.proposal-explanation:not(.closed)').addClass('closed');
+      }
+    }
+});
 
 
 function set_visited(){
@@ -229,7 +241,7 @@ function initscroll(){
         }
       }
     });
-      to_infinite = result_scroll.find('.mCSB_container')
+      to_infinite = result_scroll.find('.mCSB_container').first()
     }
   $(to_infinite).infinitescroll({
     behavior: 'local',
@@ -280,12 +292,15 @@ function initscroll(){
   },
   function(arrayOfNewElems){
     init_emoji($('.emoji-container:not(.emojified)'));
-    var next = $($(this).find('.result-container').last()).data('nex_url')
+    var $this = $(this)
+    var new_content = $($(this).find('.result-container').last())
+    rebuild_scrolls(new_content.find(".malihu-scroll"))
+    var next = new_content.data('nex_url')
     if(next){
-      var currentbtn = $($(this).find('.btn-more-scroll').last())
-      $($(this).find('.btn-more-scroll').not(currentbtn)).remove()
+      var currentbtn = $($this.find('.btn-more-scroll').last())
+      $this.find('.btn-more-scroll').not(currentbtn).remove()
     }else{
-     $($(this).find('.btn-more-scroll')).remove()
+     $this.find('.btn-more-scroll').remove()
     }
   }); 
  }
@@ -636,6 +651,7 @@ $(document).mouseup(function (e)
 $(document).on('shown.bs.modal', '.modal', function () {
     init_result_scroll(undefined, 1000, $(this));
 });
+
 
 $(document).ready(function(){
 
