@@ -219,6 +219,7 @@ function initscroll(){
       result_scroll.mCustomScrollbar({
       theme:"dark",
       scrollInertia: 100,
+      mouseWheelPixels: 90,
       scrollButtons:{
         enable: true
       },
@@ -282,7 +283,7 @@ function initscroll(){
     var next = $($(this).find('.result-container').last()).data('nex_url')
     if(next){
       var currentbtn = $($(this).find('.btn-more-scroll').last())
-     $($(this).find('.btn-more-scroll').not(currentbtn)).remove()
+      $($(this).find('.btn-more-scroll').not(currentbtn)).remove()
     }else{
      $($(this).find('.btn-more-scroll')).remove()
     }
