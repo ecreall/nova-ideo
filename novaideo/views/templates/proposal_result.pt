@@ -135,9 +135,12 @@
         <div tal:replace="structure footer_body"/>
       </div>
       <div tal:condition="examined" class="proposal-opinion pull-right"  title="${object.opinion_value}" >
-          <div class="proposal-explanation hide-bloc">
+          <div class="proposal-explanation closed">
             <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-             ${object.opinion['explanation']}</div>
+             <div class="text malihu-scroll">
+             ${object.opinion['explanation']}
+             </div>
+          </div>
           <div class="circle red ${(object.opinion['opinion'] != 'unfavorable') and 'off' or 'on' }"></div>
           <div class="circle orange ${(object.opinion['opinion'] != 'to_study') and 'off' or 'on' }"></div>
           <div class="circle green ${(object.opinion['opinion'] != 'favorable') and 'off' or 'on'}"></div>

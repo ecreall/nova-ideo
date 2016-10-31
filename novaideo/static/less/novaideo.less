@@ -2521,7 +2521,8 @@ a:hover, a:focus {
 }
 
 .scroll-able {
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 
@@ -3737,21 +3738,32 @@ small .proposal-support .token{
 }
 
 .proposal-explanation{
-    background-color: white;
-    border: 0.5px solid #ddd;
+    border: 1px solid #a9a9a9;
     border-radius: 3px;
-    box-shadow: 0 6px 11px #888;
+    box-shadow: 0 1px 20px rgba(0, 0, 0, 0.4);
     color: #333;
     max-width: 400px;
-    min-width: 200px;
-    padding: 9px;
+    min-width: 300px;
+    padding: 15px 5px 10px 10px;
     position: absolute;
-    right: 53px;
+    right: 47px;
+    z-index: 1025;
+    bottom: 2px;
+    font-size: 13px;
+    cursor: auto !important
+}
+
+.proposal-explanation.closed{
+  display: none
+}
+
+.proposal-explanation .text{
+  overflow: auto;
+  max-height: 170px;
 }
 
 .proposal-explanation button.close{
-    margin-left: 9px;
-    margin-top: -12px;
+    margin-top: -17px;
 }
 
 .proposal-explanation-step{
