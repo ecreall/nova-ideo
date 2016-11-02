@@ -324,13 +324,15 @@ $(document).on('click', '.btn-more-scroll', function(){
   result_scroll.scrollTop(result_scroll[0].scrollHeight);
 })
 
-function init_content_text(texts){
-     texts = texts? texts: $('.content-text');
-     for(i=0; i<texts.length; i++){
-         if ($(texts[i]).height()>600){
-             $(texts[i]).addClass("content-text-scroll")
-         }
-     }
+function init_content_text_scroll(texts){
+  var default_top = 600
+  texts = texts? texts: $('.content-text-scroll');
+  for(var i = 0; i<= texts.length; i++){
+    var text = $(texts[i]);
+    if (text.height() >= default_top){
+         text.height(default_top)
+    }
+  }
 };
 
 function init_result_scroll(event, default_top, element){
@@ -843,7 +845,7 @@ $(document).ready(function(){
 
   set_visited();
 
-  init_content_text();
+  init_content_text_scroll();
 
   init_result_scroll();
 

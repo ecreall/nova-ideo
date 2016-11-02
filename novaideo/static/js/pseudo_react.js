@@ -152,7 +152,7 @@ function object_view_component(data){
 				        try {
 				            deform.processCallbacks();
 				        }catch(err) {};
-				        init_content_text(parent.find('#'+component_id).first().find(".content-text"))
+				        init_content_text_scroll(parent.find('#'+component_id).first().find(".content-text-scroll"))
 				        rebuild_scrolls(parent.find('#'+component_id).first().find(".malihu-scroll"))
 			        }
 		       }
