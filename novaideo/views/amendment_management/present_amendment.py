@@ -22,6 +22,7 @@ from novaideo.views.idea_management.present_idea import (
     PresentIdeaView,
     PresentIdeaSchema,
     SentToView as IdeaSentToView)
+from novaideo.utilities.alerts_utility import get_user_data, get_entity_data
 
 
 class SentToView(IdeaSentToView):
@@ -40,19 +41,14 @@ def default_message(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
     mail_template = node.bindings['mail_template']
-    localizer = request.localizer
-    url = request.resource_url(context, "@@index")
-    user = get_current()
+    email_data = get_user_data(get_current(request), 'my', request)
+    email_data.update(get_entity_data(context, 'subject', request))
     return mail_template['template'].format(
         recipient_title='',
         recipient_first_name='',
         recipient_last_name='',
-        subject_url=url,
-        subject_title=getattr(context, 'title', context.name),
-        my_title=localizer.translate(_(getattr(user, 'user_title', ''))),
-        my_first_name=getattr(user, 'first_name', user.name),
-        my_last_name=getattr(user, 'last_name', ''),
-        novaideo_title=request.root.title
+        novaideo_title=request.root.title,
+        **email_data
     )
 
 
