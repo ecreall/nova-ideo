@@ -1265,7 +1265,7 @@ def get_contents_by_keywords(
         else:
             query = query & date_index.lt(date_to)
 
-    keywords = filter_.get('keywords', root.keywords)
+    keywords = filter_.get('metadata_filter', {}).get('keywords', root.keywords)
     keywords_mapping = dict([(k.lower(), k) for k in keywords])
     objects = find_entities(
         user=user,

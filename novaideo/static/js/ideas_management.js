@@ -92,28 +92,36 @@ $(document).on('click','.add-idea-form button.ajax-button', function( event ) {
     var isnewidea = $(form.find('.new-idea-control'))[0].checked;
     var targetform =  $('#'+related_ideas.data('target'));
     var target = $(targetform.find('.controlled-items'));
-    var danger_messages_container = $($(related_ideas.parents('div').first()).find('#messagedanger'));
     var dict_post = {};
     if (isnewidea)
      {
         newideaform = form.find('.new-idea-form');
         var title = newideaform.find('input[name="title"]').val();
-        if (title=='')
+        if (title =='')
         {
-           danger_messages_container.text( novaideo_translate("The title is required!") ).show().fadeOut( 6000 );
+           alert_component({
+                  alert_msg: novaideo_translate("The title is required!"),
+                  alert_type: 'error'
+           })
            return
         }
         var text = newideaform.find('textarea[name="text"]').val();
-        if (text=='')
+        if (text =='')
         {
-           danger_messages_container.text( novaideo_translate("The abstract is required!") ).show().fadeOut( 6000 );
+           alert_component({
+                  alert_msg: novaideo_translate("The abstract is required!"),
+                  alert_type: 'error'
+           })
            return
         }
 
-        var keywords = $(newideaform.find('select[name="keywords"]')).select2('val');
+        var keywords = $(newideaform.find('select[name="keywords"]')).val();
         if (keywords.length == 0)
         {
-           danger_messages_container.text( novaideo_translate("Keywords are required!")).show().fadeOut( 6000 );
+           alert_component({
+                  alert_msg: novaideo_translate("Keywords are required!"),
+                  alert_type: 'error'
+              })
            return
         }
 
@@ -126,17 +134,24 @@ $(document).on('click','.add-idea-form button.ajax-button', function( event ) {
         var new_items = related_ideas.find('span[data-id=\"'+oid+'\"]');
         if (new_items.length>0)
         {
-           danger_messages_container.text( novaideo_translate("Idea already exist!") ).show().fadeOut( 6000 );
+           alert_component({
+                  alert_msg: novaideo_translate("Idea already exist!"),
+                  alert_type: 'error'
+              })
            return
         }
         if (oid == "")
         {
-           danger_messages_container.text( novaideo_translate("Please select a valid idea!") ).show().fadeOut( 6000 );
+           alert_component({
+                  alert_msg: novaideo_translate("Please select a valid idea!"),
+                  alert_type: 'error'
+              })
            return
         }
         dict_post = {'oid': oid,
                      'op': 'get_idea'};
      };
+     loading_progress()
      var url = $(form).data('url');
      button.addClass('disabled');
      $.get(url, dict_post, function(data) {
@@ -163,13 +178,20 @@ $(document).on('click','.add-idea-form button.ajax-button', function( event ) {
            if (isnewidea){
               newideaform.find('input[name="title"]').val(data['new_title']);
               newideaform.find('textarea[name="text"]').val('');
-              $(newideaform.find('select[name="keywords"]')).select2('val', []);
+              alert_component({
+                  alert_msg: novaideo_translate("The idea is added!"),
+                  alert_type: 'success'
+              })
            }else{
              $($(form).find('select.search-idea-form')).select2('val', '')
            }
          }else{
-            danger_messages_container.text( novaideo_translate("The idea is not added!") ).show().fadeOut( 6000 );
+            alert_component({
+                  alert_msg: novaideo_translate("The idea is not added!"),
+                  alert_type: 'error'
+              })
          }
+         finish_progress()
     });
 });
 
