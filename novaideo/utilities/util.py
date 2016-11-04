@@ -607,8 +607,8 @@ def html_article_to_text(html):
 
     return ''
 
-ALL_DESCRIMINATORS = ['global-action',
-                      'text-action',
+ALL_DESCRIMINATORS = ['text-action',
+                      'global-action',
                       'lateral-action',
                       'access-action',
                       'primary-action',
@@ -837,32 +837,47 @@ class ObjectRemovedException(Exception):
 def generate_navbars(request, context, **args):
     def actions_getter():
         return getAllBusinessAction(
-            context, request, process_discriminator='Application')
+            context, request,
+            process_id=args.get('process_id', None),
+            process_discriminator='Application')
 
+    root = request.root
+    descriminators = args.get(
+        'descriminators',
+        list(ALL_DESCRIMINATORS))
     actions_navbar = get_actions_navbar(
-        actions_getter, context, request, list(ALL_DESCRIMINATORS))
-    if getattr(context, '__parent__', None) is None:
+        actions_getter, context, request, descriminators)
+    if context is not root and getattr(context, '__parent__', None) is None:
         raise ObjectRemovedException("Object removed")
 
-    actions_navbar['global-action'].extend(
-        actions_navbar.pop('admin-action'))
-    actions_navbar['global-action'].extend(
-        args.get('global_action', []))
-    actions_navbar['global-action'].extend(
-        actions_navbar.pop('primary-action'))
-    actions_navbar['text-action'].extend(
-        args.get('text_action', []))
-    actions_navbar['plus-action'].extend(
-        actions_navbar.pop('listing-primary-action'))
-    actions_navbar['plus-action'].extend(
-        args.get('plus_action', []))
-    actions_navbar['body-action'].extend(
-        args.get('body_action', []))
-    actions_navbar['communication-body-action'].extend(
-        args.get('communication-body-action', []))
+    if 'global-action' in actions_navbar:
+        actions_navbar['global-action'].extend(
+            actions_navbar.pop('admin-action'))
+        actions_navbar['global-action'].extend(
+            args.get('global_action', []))
+        actions_navbar['global-action'].extend(
+            actions_navbar.pop('primary-action'))
+
+    if 'text-action' in actions_navbar:
+        actions_navbar['text-action'].extend(
+            args.get('text_action', []))
+
+    if 'plus-action' in actions_navbar:
+        actions_navbar['plus-action'].extend(
+            actions_navbar.pop('listing-primary-action'))
+        actions_navbar['plus-action'].extend(
+            args.get('plus_action', []))
+
+    if 'body-action' in actions_navbar:
+        actions_navbar['body-action'].extend(
+            args.get('body_action', []))
+
+    if 'communication-body-action' in actions_navbar:
+        actions_navbar['communication-body-action'].extend(
+            args.get('communication-body-action', []))
 
     actions_bodies = []
-    for action in actions_navbar['body-action']:
+    for action in actions_navbar.get('body-action', []):
         object_values = {
             'action': action,
             'context': context,
@@ -911,7 +926,9 @@ def generate_navbars(request, context, **args):
 def generate_listing_menu(request, context, **args):
     def actions_getter():
         return getAllBusinessAction(
-            context, request, process_discriminator='Application')
+            context, request,
+            process_id=args.get('process_id', None),
+            process_discriminator='Application')
 
     #find actions descriminated by descriminators
     descriminators = args.get(
