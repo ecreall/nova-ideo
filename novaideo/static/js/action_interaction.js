@@ -130,18 +130,6 @@ function update_inline_action(){
     return false;
 };
 
-function _get_side_bar_title(data){
-  var result = '<div class="view-item-title">'
-  if (data.img){
-    result += '<img class="img-circle" src="'+data.img+'" width="25">'
-  }
-  else if(data.icon){
-    result += '<span class="icon '+data.icon+'"></span>'
-  }
-   result += ' <span>'+data.title+'</span></div>'
-  return result
-}
-
 
 function _update_sidebar_nav_items(target){
   var current_items = $(target.find('.sidebar-container-item'))
@@ -169,7 +157,7 @@ function _update_sidebar_nav_items(target){
 
 
 function _wrap_action_body(action, body){
-  var title = $(action.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
+  var title = $(action.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first())
   return '<div id="sidebar-'+action.attr('id')+'"'+
              ' data-title="'+action.data('title')+'"'+
              ' data-icon="'+action.data('icon')+'"'+
@@ -182,7 +170,7 @@ function _wrap_action_body(action, body){
 }
 
 function open_sidebar_container_item(to_open, interaction_args){
-  var new_title = _get_side_bar_title({
+  var new_title = get_component_title({
      title: to_open.data('context_title'),
      img: to_open.data('context_img'),
      icon: to_open.data('context_icon'),
@@ -255,7 +243,7 @@ function update_sidebar_action(){
              //first call : put interaction args
              open_sidebar_container_item(current_item, {'scroll_bottom': scroll_bottom})
            }else if(title.length > 0){
-             var new_title = _get_side_bar_title({
+             var new_title = get_component_title({
                title: title.data('title'),
                img: title.data('img'),
                icon: title.data('icon'),

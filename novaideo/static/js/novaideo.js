@@ -35,6 +35,20 @@ function finish_progress(){
     $('img.novaideo-loading-indicator').addClass('hide-bloc');
 }
 
+
+function get_component_title(data){
+  var result = '<div class="view-item-title">'
+  if (data.img){
+    result += '<img class="img-circle" src="'+data.img+'" width="25">'
+  }
+  else if(data.icon){
+    result += '<span class="icon '+data.icon+'"></span>'
+  }
+   result += ' <span>'+data.title+'</span></div>'
+  return result
+}
+
+
 function focus_on_form(container){
     setTimeout(function(){
      var form = $(container.find('form')).first()
@@ -479,11 +493,13 @@ function close_add_idea_form(){
 
 
 function display_carousel(){
-  var slider =  $($(this).parents('.file-slider').first())
+  var $this = $(this)
+  var slider =  $($this.parents('.file-slider').first())
   var clone = slider.clone()
   $(clone.find('div.img-content')).each(function(){
-     var imgurl = $($(this).parents('a').first()).attr('href')
-     $(this).replaceWith('<img class="img-content" src="'+imgurl+'"/>')
+     var $this = $(this)
+     var imgurl = $($this.parents('a').first()).attr('href')
+     $this.replaceWith('<img class="img-content" src="'+imgurl+'"/>')
   })
 
   clone.addClass('full')
@@ -494,13 +510,15 @@ function display_carousel(){
   controls.attr('href', '#'+new_id)
   var modal_container = $('#carousel-img-modal-container')
   $(modal_container.find('.modal-body')).html(clone);
-  var title = get_comment_author_bloc($(this))
+  var title = get_comment_author_bloc($this)
   if(title.length == 0){
-    title = $($(this).parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first()).clone()
-    title.find('.label-basic').remove()
-    title = $(title.find(':header').first()).html()
+    title = $($this.parents('.view-item, .content-view').first().find('.view-item-title, .content-title').first())
+    title = get_component_title({
+       title: title.data('title'),
+       img: title.data('img'),
+       icon: title.data('icon'),
+     })
   }
-
   $(modal_container.find('.modal-title')).html(title)  
   modal_container.css('opacity', '1')
   modal_container.modal('show');
