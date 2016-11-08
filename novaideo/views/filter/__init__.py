@@ -832,17 +832,13 @@ class TemporalSchema(Schema):
         )
 
     created_date = omit(CreatedDates(
-        widget=SimpleMappingWidget(css_class="filter-block"
-                                             " object-well"
-                                             " default-well"),
+        widget=SimpleMappingWidget(css_class="filter-block"),
         query=created_date_query
         ),
             ["_csrf_token_"])
 
     connected_date = omit(ConnectedDates(
-        widget=SimpleMappingWidget(css_class="filter-block"
-                                             " object-well"
-                                             " default-well"),
+        widget=SimpleMappingWidget(css_class="filter-block"),
         query=connected_date_query
         ),
             ["_csrf_token_"])

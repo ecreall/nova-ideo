@@ -1,3 +1,53 @@
+.filter-input-container{
+    color: #babbbf;
+    background-color: #fff;
+    border: 1px solid rgba(113, 114, 116, 0.5);
+    border-radius: 4px;
+    margin-top: -7px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    height: 28px;
+}
+
+.filter-form .form-group.item-negation>label{
+    display:none !important  
+}
+
+ .filter-container .filter-input-container input{
+    color: #333
+  }
+
+.filter-form>.arrow_shadow,
+.filter-form>arrow {
+    background-clip: padding-box;
+    content: "";
+    display: block;
+    height: 10px;
+    transform: rotate(45deg);
+    width: 10px;
+    right: 31px;
+    position: absolute;
+    top: -5px;
+    background-color: #fff;
+}
+
+.filter-form>.arrow_shadow{
+      box-shadow: -1px -1px 0 0 #e0e0e0, -1px -1px 2px rgba(0, 0, 0, 0.08);
+    z-index: -1;
+}
+
+.filter-input-container .filter-input{
+    border: none !important;
+    box-shadow: none;
+    background-color: transparent !important;
+    position: relative;
+    text-rendering: optimizespeed;
+    border-radius: 0;
+    outline: none;
+
+}
+
 .views-container .wg-actions-navbar li>a{
     color: #fff;
     border-color: #204d74;
@@ -3773,12 +3823,6 @@ small .proposal-support .token{
 /* Filter*/
 
 
-.filter-form{
-    box-shadow: 0 0 2px #888888;
-    font-size: 11px;
-    padding: 6px !important;
-}
-
 .filter-form>.filter-title{
     font-size: 20px; 
     color: #337ab7; 
@@ -3786,9 +3830,22 @@ small .proposal-support .token{
     width: 100%
 }
 
-.well.filter-form {
-  background-image: linear-gradient(to bottom, #e8e8e8 0%, #f5f5f5 50%);
-  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8e8e8',endColorstr='#f5f5f5', GradientType=0);
+.filter-form {
+    font-size: 11px;
+    padding: 15px !important;
+    position: absolute;
+    z-index: 1027;
+    opacity: 0.99;
+    background-color: white !important;
+    background-image: none;
+    margin-right: 35px !important;
+    margin-left: 35px !important;
+    margin-top: 1px;
+    border-color: #e0e0e0 rgba(0, 0, 0, 0.07) rgba(0, 0, 0, 0.07);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.04), 0 0px 12px rgba(0, 0, 0, 0.2);
 }
 
 .filter-form>hr.soften {
@@ -3811,8 +3868,9 @@ small .proposal-support .token{
     color: #4ca44c;
 }
 
-.filter-form .deform-form-fieldset>.form-group, .filter-form .ajax-form{
-    width: 31%;
+.filter-form .deform-form-fieldset>.form-group,
+.filter-form .ajax-form{
+    width: 48%;
     display: inline-block;
 }
 
@@ -3850,11 +3908,14 @@ small .proposal-support .token{
    background-color: white
 }
 
-.filter-btn{
-    cursor: pointer;
+.filter-activator{
     float: right;
     margin-top: -25px;
-    margin-right: 10px;
+    margin-right: 5px;
+}
+
+.filter-activator .filter-btn{
+    cursor: pointer;
 }
 
 .filter-btn.closed{
@@ -4115,6 +4176,18 @@ small .proposal-support .token{
   }
 }
 
+@media (max-width: 565px) {
+  .filter-form .deform-form-fieldset>.form-group,
+  .filter-form .ajax-form{
+      width: 46%;
+      display: inline-block;
+  }
+  .filter-form{
+      margin-right: 5px!important;
+      margin-left: 5px!important;
+  }
+}
+
 @media (max-width: 520px) {
 
     .user-media>.media-left>.img-thumbnail{
@@ -4126,6 +4199,12 @@ small .proposal-support .token{
     .action-message.pull-right{
         float: inherit !important;
     }
+}
+
+@media (max-width: 470px) {
+  .filter-container .filter-input-container input{
+    display: none
+  }
 }
 
 @media (max-width: 1141px) {

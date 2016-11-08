@@ -1,15 +1,18 @@
 <div tal:omit-tag="" tal:define="filterbody filter_body|nothing" i18n:domain="novaideo">
-  <div tal:condition="filterbody" class="filter-container" tal:define="opened filter_resul and not is_sort">
-    <div class="filter-btn ${(opened and 'open') or 'closed'}"
+  <div tal:condition="filterbody" class="filter-container ${(opened and 'open') or 'closed'}" tal:define="opened filter_resul and not is_sort">
+    <div class="filter-activator"
        data-url="${filter_url}"
        data-filter_source="${filter_source}"
        data-filter_message="${filter_message}">
-        <span class="glyphicon glyphicon-filter"></span> <span i18n:translate="">Filter</span></div>
-      <div class="filter-form well well-sm ${(not opened and 'hide-bloc')}" >
-        <div class="filter-title"><span class="glyphicon glyphicon-filter"></span> <span i18n:translate="">Filter results</span>
-            <img class="loading-indicator hide-bloc" src="${request.static_url('novaideo:static/images/progress.svg')}" width="50"/>
-          </div>
-       <hr class="soften">
+       <div class="filter-input-container">
+         <span class="glyphicon glyphicon-filter"></span>
+         <input id="text_filter_terms" name="filter_input" class="filter-input" placeholder="Filter" autocomplete="off" maxlength="250" aria-label="Filter" type="text">
+          <span class="filter-btn md ${(opened and 'md-expand-less open') or 'md-expand-more closed'}"></span>
+       </div>
+      </div>
+      <div class="filter-form ${(not opened and 'hide-bloc')}" >
+        <span class="arrow"></span>
+        <span class="arrow_shadow"></span>
        ${structure: filterbody}
       </div>
     </div>
