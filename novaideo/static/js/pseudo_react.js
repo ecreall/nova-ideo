@@ -66,6 +66,7 @@ function token_component(data){
               opposit.attr('title', data.opposit_title)
            }
           if(!data.withdraw){
+           original_component.addClass('my-support')
            $this.addClass('my-token')
            var new_nb = parseInt(support_nb.text()) + 1
            support_nb.text(new_nb)
