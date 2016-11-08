@@ -241,9 +241,10 @@ $(document).on('click', '.comment-filter-action', function(){
 });
 
 
-$(document).on('change', '.comments-text-search', function(){
-      var $this = $(this);
-      search_comments($this)
+$(document).on('keypress', '.comments-text-search', function (event) {
+  if (event.keyCode == 13 || event.keyCode == 10) {
+    search_comments($(this))
+  }
 });
 
 

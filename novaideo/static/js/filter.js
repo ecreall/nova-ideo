@@ -184,12 +184,15 @@ function sort(){
 
 }
 
-$(document).on('change', '.filter-container .filter-input-container input',function(e) {
+
+$(document).on('keypress', '.filter-container .filter-input-container input', function (event) {
+  if (event.keyCode == 13 || event.keyCode == 10) {
     var $this = $(this)
     var form = $this.parents('.filter-container').first().find('.filter-form form');
     var text_to_serach = form.find('input.form-control[name="text_to_search"]').first()
-   text_to_serach.val($this.val()).trigger('change')
-}) 
+    text_to_serach.val($this.val()).trigger('change')
+  }
+});
 
 $(document).on('click', '.filter-btn', activate_filter);
 
