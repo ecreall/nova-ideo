@@ -3,7 +3,7 @@
      style="z-index: 1300">
   <tal:loop repeat="a footer_entity_action">
     <li>
-      <a tal:condition="a not in ajax_actions" tal:attributes="href a.url(obj)" class="btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span> ${a.title}</a>
+      <a tal:condition="a not in ajax_actions" tal:attributes="href a.url(obj)" class="${getattr(a, 'node_id', '')}-btn btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span> ${a.title}</a>
       <div tal:omit-tag="" 
            tal:condition="a in ajax_actions"
            tal:define="item ajax_actions.get(a, None);
@@ -11,7 +11,7 @@
                        interaction_type getattr(a,'style_interaction_type','modal');
                        interaction_args getattr(a,'style_interaction_args','');">
            <a id="${item['action_id']}-btn" 
-                class="btn btn-sm ajax-action dace-action-${interaction_type}"
+                class="${getattr(a, 'node_id', '')}-btn btn btn-sm ajax-action dace-action-${interaction_type}"
                 data-toggle="${interaction_type}"
                 data-target="#action-${interaction_type}-container"
                 data-actionid ="${item['action_id']}" 

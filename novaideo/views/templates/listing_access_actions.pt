@@ -6,7 +6,8 @@
           <li tal:condition="hasattr(a, 'url')">
             <a tal:condition="a not in ajax_actions"
                tal:attributes="href a.url(obj)"
-               title="${a.title}">
+               title="${a.title}"
+               class="${getattr(a, 'node_id', '')}-btn">
                <span class="${getattr(a,'style_picto','')}" ></span>
             </a>
             <div tal:omit-tag="" 
@@ -15,7 +16,7 @@
                        icon getattr(a,'style_picto','');
                        interaction_type getattr(a,'style_interaction_type','modal')">
               <a id="${item['action_id']}-btn" 
-                class="ajax-action dace-action-${interaction_type}"
+                class="${getattr(a, 'node_id', '')}-btn ajax-action dace-action-${interaction_type}"
                 data-toggle="${interaction_type}"
                 data-target="#action-${interaction_type}-container"
                 data-actionid ="${item['action_id']}" 

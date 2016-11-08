@@ -18,7 +18,7 @@
                        icon getattr(a,'style_picto','');
                        interaction_type getattr(a,'style_interaction_type','modal')">
                 <a id="${item['action_id']}-btn" 
-                  class="btn btn-sm ajax-action dace-action-${interaction_type}"
+                  class="${getattr(a, 'node_id', '')}-btn btn btn-sm ajax-action dace-action-${interaction_type}"
                   data-toggle="${interaction_type}"
                   data-target="#action-${interaction_type}-container"
                   data-actionid ="${item['action_id']}" 
@@ -61,7 +61,7 @@
                        icon getattr(a,'style_picto','');
                        interaction_type getattr(a,'style_interaction_type','modal')">
                        <a id="${item['action_id']}-btn" 
-                            class="ajax-action dace-action-${interaction_type}"
+                            class="${getattr(a, 'node_id', '')}-btn ajax-action dace-action-${interaction_type}"
                             data-toggle="${interaction_type}"
                             data-target="#action-${interaction_type}-container"
                             data-actionid ="${item['action_id']}" 
@@ -94,14 +94,14 @@
             <a class="${a.get('class_css','')} btn btn-sm"><span class="${a.get('style_picto','')}" ></span> ${a.get('title', '')}</a>
           </li>
           <li class="pull-right">
-            <a tal:condition="a not in ajax_actions" tal:attributes="href a.url(obj)" class="btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span> ${a.title}</a>
+            <a tal:condition="a not in ajax_actions" tal:attributes="href a.url(obj)" class="${getattr(a, 'node_id', '')}-btn btn btn-sm"><span class="${getattr(a,'style_picto','')}" ></span> ${a.title}</a>
             <div tal:omit-tag="" 
                  tal:condition="a in ajax_actions"
                  tal:define="item ajax_actions.get(a, None);
                        icon getattr(a,'style_picto','');
                        interaction_type getattr(a,'style_interaction_type','modal')">
                 <a id="${item['action_id']}-btn" 
-                  class="btn btn-sm ajax-action dace-action-${interaction_type}"
+                  class="${getattr(a, 'node_id', '')}-btn btn btn-sm ajax-action dace-action-${interaction_type}"
                   data-toggle="${interaction_type}"
                   data-target="#action-${interaction_type}-container"
                   data-actionid ="${item['action_id']}" 
