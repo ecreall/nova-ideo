@@ -13,6 +13,7 @@ import unicodedata
 import urllib
 import io
 import re
+import json
 import metadata_parser
 from urllib.parse import urlparse
 from itertools import groupby
@@ -639,6 +640,10 @@ EMOJI_TEMPLATE = 'novaideo:views/templates/emoji_selector.pt'
 
 DEFAUL_ACCESS_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_access_actions.pt'
 
+FILE_TEMPLATE = 'novaideo:views/templates/up_file_result.pt'
+
+VOTE_TEMPLATE = 'novaideo:views/templates/vote_actions.pt'
+
 
 def render_small_listing_objs(request, objs, user, **kw):
     result_body = []
@@ -1002,9 +1007,6 @@ def generate_listing_menu(request, context, **args):
             }
 
 
-FILE_TEMPLATE = 'novaideo:views/templates/up_file_result.pt'
-
-
 def render_files(files, request, template=FILE_TEMPLATE, navbar=False):
     bodies = []
     for file_ in files:
@@ -1029,6 +1031,45 @@ def render_files(files, request, template=FILE_TEMPLATE, navbar=False):
             request))
 
     return bodies
+
+
+def get_vote_actions(context, request):
+    dace_ui_api = get_current_registry().getUtility(
+        IDaceUIAPI, 'dace_ui_api')
+    vote_actions = dace_ui_api.get_actions(
+        [context], request,
+        process_discriminator='Vote process')
+    action_updated, messages, \
+        resources, actions = dace_ui_api.update_actions(
+            request, vote_actions, True, False)
+    for action in list(actions):
+        action['body'], action_resources = dace_ui_api.get_action_body(
+            context, request, action['action'],
+            True, False, True)
+        if not action['body']:
+            actions.remove(action)
+
+    return actions, resources, messages, action_updated
+
+
+def get_vote_actions_body(context, request):
+    actions, resources, messages, action_updated = get_vote_actions(
+        context, request)
+    body = renderers.render(
+        VOTE_TEMPLATE,
+        {
+            'vote_actions': actions,
+            'context': context,
+            'json': json
+        },
+        request)
+    return {
+        'body': body,
+        'actions': actions,
+        'resources': resources,
+        'messages': messages,
+        'isactive': action_updated
+    }
 
 
 def get_emoji_form(

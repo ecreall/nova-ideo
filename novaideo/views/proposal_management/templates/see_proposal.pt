@@ -6,6 +6,7 @@
   icon getattr(proposal, 'icon');
   oid proposal.__oid__">
   <div tal:replace="structure navbar_body"/>
+  <div tal:replace="structure vote_actions_body"/>
   <div class="media-body content-title-body">
     <div tal:condition="'open to a working group' in proposal.state" role="alert" class="alert alert-info alert-dismissible">
       <div tal:omit-tag="" tal:define="participants_mini getattr(getattr(proposal.working_group, 'work_mode', None), 'participants_mini', 3)">
@@ -231,17 +232,6 @@
           </div>
         </div>
     </div>
-  </div>
-
-  <div tal:condition="voteactions" 
-       id="voteactions-${oid}"
-       class="vote-actions-container"
-       data-body="${json.dumps(''.join([a['body'] for a in voteactions]))}">
-      <script >
-        $(document).ready(function(){
-          show_votes_modal("voteactions-${oid}")
-        })
-      </script>
   </div>
 
   <div tal:condition="proposal.attached_files" class="attached-files" i18n:domain="novaideo">

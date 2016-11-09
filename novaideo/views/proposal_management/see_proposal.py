@@ -14,14 +14,13 @@ from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
     get_current, has_role, Anonymous)
 from pontus.view import BasicView
-from daceui.interfaces import IDaceUIAPI
 from pontus.view_operation import MultipleView
 from pontus.util import merge_dicts
 
 from novaideo.content.processes.proposal_management.behaviors import (
     SeeProposal)
 from novaideo.utilities.util import (
-    generate_navbars, ObjectRemovedException)
+    generate_navbars, ObjectRemovedException, get_vote_actions_body)
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.content.processes import get_states_mapping
@@ -46,28 +45,6 @@ class DetailProposalView(BasicView):
     viewid = 'seeproposal'
     filigrane_template = 'novaideo:views/proposal_management/templates/filigrane.pt'
     validate_behaviors = False
-
-    def _vote_actions(self):
-        dace_ui_api = get_current_registry().getUtility(
-            IDaceUIAPI, 'dace_ui_api')
-        vote_actions = dace_ui_api.get_actions(
-            [self.context], self.request,
-            process_discriminator='Vote process')
-        action_updated, messages, \
-            resources, actions = dace_ui_api.update_actions(
-                self.request, vote_actions, True, False)
-        for action in list(actions):
-            action['body'], action_resources = dace_ui_api.get_action_body(
-                self.context, self.request, action['action'],
-                True, False, True)
-            if not action['body']:
-                resources['js_links'].extend(action_resources['js_links'])
-                resources['js_links'] = list(set(resources['js_links']))
-                resources['css_links'].extend(action_resources['css_links'])
-                resources['css_links'] = list(set(resources['css_links']))
-                actions.remove(action)
-
-        return actions, resources, messages, action_updated
 
     def _enable_corrections(self, is_participant, corrections):
         return 'active' in getattr(self.context.working_group, 'state', []) and\
@@ -100,12 +77,13 @@ class DetailProposalView(BasicView):
 
     def update(self):
         self.execute(None)
-        vote_actions, resources, messages, isactive = self._vote_actions()
+        vote_actions = get_vote_actions_body(
+            self.context, self.request)
         try:
             text_action = [{'title': _('Vote'),
                             'class_css': 'vote-action',
                             'style_picto': 'glyphicon glyphicon-stats'}] \
-                if vote_actions else []
+                if vote_actions['actions'] else []
 
             navbars = generate_navbars(
                 self.request, self.context,
@@ -123,10 +101,11 @@ class DetailProposalView(BasicView):
         working_group = self.context.working_group
         wg_actions = [a for a in navbars['all_actions']['wg-action']
                       if a.node_id != "seemembers"]
-        resources = merge_dicts(navbars['resources'], resources,
+        resources = merge_dicts(navbars['resources'], vote_actions['resources'],
                                 ('js_links', 'css_links'))
         resources['js_links'] = list(set(resources['js_links']))
         resources['css_links'] = list(set(resources['css_links']))
+        messages = vote_actions['messages']
         if not messages:
             messages = navbars['messages']
 
@@ -177,7 +156,7 @@ class DetailProposalView(BasicView):
             'enable_corrections': enable_corrections,
             'current_user': user,
             'is_participant': is_participant,
-            'voteactions': vote_actions,
+            'vote_actions_body': vote_actions['body'],
             'filigrane': add_filigrane,
             'cant_publish': self._cant_publish_alert(navbars['all_actions']),
             'idea_to_examine': idea_to_examine,
@@ -195,7 +174,7 @@ class DetailProposalView(BasicView):
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
-        item['isactive'] = isactive or navbars['isactive']
+        item['isactive'] = vote_actions['isactive'] or navbars['isactive']
         result.update(resources)
         result['coordinates'] = {self.coordinates: [item]}
         return result

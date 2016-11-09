@@ -1,0 +1,11 @@
+<div tal:define="oid getattr(context, '__oid__', 'none')"
+     tal:condition="vote_actions" 
+     id="voteactions-${oid}"
+     class="vote-actions-container"
+     data-body="${json.dumps(''.join([a['body'] for a in vote_actions]))}">
+    <script >
+      $(document).ready(function(){
+        show_votes_modal("voteactions-${oid}")
+      })
+    </script>
+</div>
