@@ -34,7 +34,7 @@ function activate_filter(event){
 };
 
 function filter(){
-  var form = $($(this).parents('form').first());
+  var form = $(this)
   var filter_container = $(form.parents('.filter-container'));
   var is_open = filter_container.hasClass('open')
   var filter_activator = $(filter_container.find('.filter-activator').first());
@@ -196,7 +196,7 @@ $(document).on('keypress', '.filter-container .filter-input-container input', fu
 
 $(document).on('click', '.filter-btn', activate_filter);
 
-$(document).on('change', '.filter-form  .form-control', filter);
+$(document).on('change', '.filter-form form', filter);
 
 $(document).on('change', '.sort-container .sort-form', sort);
 
