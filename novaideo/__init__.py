@@ -449,6 +449,22 @@ def evolve_mails(root, registry):
     log.info('Emails evolved.')
 
 
+def format_ideas(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import Iidea
+
+    contents = find_entities(
+        interfaces=[Iidea]
+        )
+    request = get_current_request()
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        node.format(request)
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Ideas evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -480,6 +496,7 @@ def main(global_config, **settings):
     config.add_evolution_step(subscribe_users_notif_ids)
     config.add_evolution_step(evolve_mails)
     config.add_evolution_step(evolve_access_keys)
+    config.add_evolution_step(format_ideas)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
