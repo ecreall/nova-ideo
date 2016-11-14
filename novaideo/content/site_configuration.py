@@ -36,10 +36,13 @@ def modes_choice(node, kw):
 @colander.deferred
 def content_types_choices(node, kw):
     content_to_examine = ['idea', 'proposal']
-    values = [(key, getattr(c, 'type_title', c.__class__.__name__))
+    request = node.bindings['request']
+    localizer = request.localizer
+    values = [(key, localizer.translate(
+              getattr(c, 'type_title', c.__class__.__name__)))
               for key, c in list(core.SEARCHABLE_CONTENTS.items())
               if key in content_to_examine]
-    return Select2Widget(values=values, multiple=True)
+    return CheckboxChoiceWidget(values=sorted(values), multiple=True)
 
 
 class WorkParamsConfigurationSchema(Schema):
@@ -54,13 +57,12 @@ class WorkParamsConfigurationSchema(Schema):
         missing=False
     )
 
-    moderate_ideas = colander.SchemaNode(
-        colander.Boolean(),
-        widget=deform.widget.CheckboxWidget(),
-        label=_('Moderate ideas'),
-        description=_('Ideas will be published after moderation.'),
-        title='',
-        missing=False
+    content_to_moderate = colander.SchemaNode(
+        colander.Set(),
+        widget=content_types_choices,
+        title=_('Contents to moderate'),
+        description=_('Contents can be moderated.'),
+        missing=[]
     )
 
     content_to_support = colander.SchemaNode(

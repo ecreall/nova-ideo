@@ -40,7 +40,7 @@ from novaideo.core import (
     Node,
     Emojiable)
 from novaideo.content import get_file_widget
-from novaideo.utilities.util import text_urls_format, tuncate_text
+from novaideo.utilities.util import text_urls_format, truncate_text
 
 
 OPINIONS = OrderedDict([
@@ -186,8 +186,7 @@ class Idea(VersionableEntity, DuplicableEntity,
             setattr(self, '_support_history', PersistentList())
 
     def presentation_text(self, nb_characters=400):
-        return tuncate_text(getattr(self, 'text', ""), nb_characters)
-        # return getattr(self, 'text', "")[:nb_characters]+'...'
+        return truncate_text(getattr(self, 'text', ""), nb_characters)
 
     def get_more_contents_criteria(self):
         "return specific query, filter values"
@@ -235,9 +234,9 @@ class Idea(VersionableEntity, DuplicableEntity,
 
     def format(self, request):
         text = getattr(self, 'text', '')
-        all_urls, url_files, text_urls, formated_text = text_urls_format(
+        all_urls, url_files, text_urls, formatted_text = text_urls_format(
             text, request)
         self.urls = PersistentDict(all_urls)
         self.setproperty('url_files', url_files)
-        self.formated_text = formated_text
-        self.formated_urls = text_urls
+        self.formatted_text = formatted_text
+        self.formatted_urls = text_urls

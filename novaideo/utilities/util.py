@@ -638,31 +638,33 @@ def text_urls_format(text, request=None):
         text_urls = text_urls.replace(
             url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
 
-    text = tuncate_text(text, len(text)).replace('\n', '<br/>')
-    formated_text = '<p class="emoji-container">' + text + '</p>'
-    return all_urls, url_files, text_urls, formated_text
+    text = truncate_text(text, len(text)).replace('\n', '<br/>')
+    formatted_text = '<p class="emoji-container">' + text + '</p>'
+    return all_urls, url_files, text_urls, formatted_text
 
 
-def tuncate_text(text, nb, ellipse='...'):
-    urls = extract_urls(text)
-    sorted_urls = sorted(
-        urls,
-        key=lambda url: len(url),
-        reverse=True)
+def truncate_text(text, nb, ellipsis='...'):
     truncated_text = text[:nb]
-    truncated_urls = extract_urls(truncated_text)
-    for index, url in enumerate(truncated_urls):
-        truncated_text = truncated_text.replace(
-            url, '<@url'+str(index)+'>', 1)
+    urls = extract_urls(text)
+    if urls:
+        sorted_urls = sorted(
+            urls,
+            key=lambda url: len(url),
+            reverse=True)
+        truncated_urls = extract_urls(truncated_text)
+        for index, url in enumerate(truncated_urls):
+            truncated_text = truncated_text.replace(
+                url, '<@url'+str(index)+'>', 1)
 
-    for url in sorted_urls:
-        index = urls.index(url)
-        urls[index] = None
-        truncated_text = truncated_text.replace(
-            '<@url'+str(index)+'>',
-            '<a  target="_blank" href="'+url+'">'+url+'</a>')
+        for url in sorted_urls:
+            index = urls.index(url)
+            urls[index] = None
+            truncated_text = truncated_text.replace(
+                '<@url'+str(index)+'>',
+                '<a  target="_blank" href="'+url+'">'+url+'</a>')
+
     if len(text) > nb:
-        truncated_text += ellipse
+        truncated_text += ellipsis
 
     return truncated_text
 

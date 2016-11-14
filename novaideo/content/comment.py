@@ -223,12 +223,12 @@ class Comment(Commentable, Emojiable):
 
     def format(self, request):
         comment = getattr(self, 'comment', '')
-        all_urls, url_files, text_urls, formated_text = text_urls_format(
+        all_urls, url_files, text_urls, formatted_text = text_urls_format(
             comment, request)
         self.urls = PersistentDict(all_urls)
         self.setproperty('url_files', url_files)
-        self.formated_comment = formated_text
-        self.formated_urls = text_urls
+        self.formatted_comment = formatted_text
+        self.formatted_urls = text_urls
 
     def get_attached_files_data(self):
         result = []

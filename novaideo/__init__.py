@@ -70,6 +70,10 @@ def moderate_ideas(request):
     return getattr(request.root, 'moderate_ideas', False)
 
 
+def moderate_proposals(request):
+    return getattr(request.root, 'moderate_proposals', False)
+
+
 def is_idea_box(request):
     return getattr(request.root, 'is_idea_box', False)
 
@@ -223,6 +227,12 @@ def evolve_comments(root, registry):
     request = get_current_request()
     contents = find_entities(interfaces=[IComment])
     for comment in contents:
+        if hasattr(comment, 'formated_comment'):
+            del comment.formated_comment
+
+        if hasattr(comment, 'formated_urls'):
+            del comment.formated_urls
+
         comment.format(request)
 
     log.info('Comments evolved.')
@@ -459,6 +469,12 @@ def format_ideas(root, registry):
     request = get_current_request()
     len_entities = str(len(contents))
     for index, node in enumerate(contents):
+        if hasattr(node, 'formated_text'):
+            del node.formated_text
+
+        if hasattr(node, 'formated_urls'):
+            del node.formated_urls
+
         node.format(request)
         log.info(str(index) + "/" + len_entities)
 
@@ -472,6 +488,7 @@ def main(global_config, **settings):
     config.add_request_method(ajax_api, reify=True)
     config.add_request_method(get_time_zone, reify=True)
     config.add_request_method(moderate_ideas, reify=True)
+    config.add_request_method(moderate_proposals, reify=True)
     config.add_request_method(content_to_examine, reify=True)
     config.add_request_method(content_to_support, reify=True)
     config.add_request_method(is_idea_box, reify=True)
