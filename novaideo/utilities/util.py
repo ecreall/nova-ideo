@@ -638,7 +638,7 @@ def text_urls_format(text, request=None):
         text_urls = text_urls.replace(
             url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
 
-    text = tuncate_text(text, len(text))
+    text = tuncate_text(text, len(text)).replace('\n', '<br/>')
     formated_text = '<p class="emoji-container">' + text + '</p>'
     return all_urls, url_files, text_urls, formated_text
 
