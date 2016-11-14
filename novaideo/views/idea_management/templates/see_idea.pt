@@ -127,7 +127,14 @@
          </div>
         </div>
         <div class="text-container" tal:omit-tag="not files">
-          <div class="object-text">${structure:text}</div>
+          <div class="object-text">
+            <div>
+              ${structure:getattr(idea, 'formated_text', text)}
+            </div>
+            <div>
+              ${structure:getattr(idea, 'formated_urls', '')}
+            </div>
+          </div>
         </div>
     </div>
 

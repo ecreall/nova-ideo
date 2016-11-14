@@ -8,7 +8,6 @@ import colander
 import deform.widget
 from persistent.dict import PersistentDict
 from zope.interface import implementer
-from pyramid import renderers
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -28,9 +27,9 @@ from .interface import IComment
 from novaideo.core import Commentable, Emojiable, can_access
 from novaideo import _, log
 from novaideo.content import get_file_widget
-from novaideo.utilities.url_extractor import extract_urls
 from novaideo.utilities.util import (
-    html_to_text, extract_urls_metadata, get_emoji_form)
+    text_urls_format,
+    get_emoji_form)
 
 
 @colander.deferred
@@ -222,42 +221,14 @@ class Comment(Commentable, Emojiable):
     def get_related_contents(self, user):
         return [r for r in self.related_contents if can_access(user, r)]
 
-    def init_urls(self):
-        self.urls = PersistentDict({})
-
     def format(self, request):
         comment = getattr(self, 'comment', '')
-        url_results = []
-        self.init_urls()
-        self.setproperty('url_files', [])
-        if comment:
-            urls = extract_urls(comment)
-            for data_url in extract_urls_metadata(urls):
-                if data_url['image']:
-                    new_image = data_url.pop('image')
-                    self.addtoproperty('url_files', new_image)
-                    data_url['image_url'] = new_image.url
-
-                self.urls[data_url['url']] = data_url
-                value = renderers.render(
-                    'novaideo:views/templates/comment_url.pt',
-                    data_url, request)
-                url_results.append(value)
-
-        comment_urls = '<p>' + ''.join(url_results) + '</p>'
-        urls = extract_urls(html_to_text(comment_urls))
-        for url in urls:
-            comment_urls = comment_urls.replace(
-                url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
-
-        urls = extract_urls(comment)
-        comment = comment.replace('\n', '<br/>')
-        for url in urls:
-            comment = comment.replace(
-                url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
-
-        self.formated_comment = '<p class="emoji-container">' + comment + '</p>'
-        self.formated_urls = comment_urls
+        all_urls, url_files, text_urls, formated_text = text_urls_format(
+            comment, request)
+        self.urls = PersistentDict(all_urls)
+        self.setproperty('url_files', url_files)
+        self.formated_comment = formated_text
+        self.formated_urls = text_urls
 
     def get_attached_files_data(self):
         result = []

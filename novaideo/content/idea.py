@@ -9,6 +9,7 @@ import datetime
 import pytz
 import colander
 from webob.multidict import MultiDict
+from persistent.dict import PersistentDict
 from collections import OrderedDict
 from persistent.list import PersistentList
 from zope.interface import implementer
@@ -39,6 +40,7 @@ from novaideo.core import (
     Node,
     Emojiable)
 from novaideo.content import get_file_widget
+from novaideo.utilities.util import text_urls_format, tuncate_text
 
 
 OPINIONS = OrderedDict([
@@ -118,6 +120,7 @@ class Idea(VersionableEntity, DuplicableEntity,
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')
     attached_files = CompositeMultipleProperty('attached_files')
+    url_files = CompositeMultipleProperty('url_files')
     tokens_opposition = CompositeMultipleProperty('tokens_opposition')
     tokens_support = CompositeMultipleProperty('tokens_support')
 
@@ -125,6 +128,7 @@ class Idea(VersionableEntity, DuplicableEntity,
         super(Idea, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.addtoproperty('channels', Channel())
+        self.urls = PersistentDict({})
 
     @property
     def is_workable(self):
@@ -182,7 +186,8 @@ class Idea(VersionableEntity, DuplicableEntity,
             setattr(self, '_support_history', PersistentList())
 
     def presentation_text(self, nb_characters=400):
-        return getattr(self, 'text', "")[:nb_characters]+'...'
+        return tuncate_text(getattr(self, 'text', ""), nb_characters)
+        # return getattr(self, 'text', "")[:nb_characters]+'...'
 
     def get_more_contents_criteria(self):
         "return specific query, filter values"
@@ -227,3 +232,12 @@ class Idea(VersionableEntity, DuplicableEntity,
 
     def get_node_descriminator(self):
         return 'idea'
+
+    def format(self, request):
+        text = getattr(self, 'text', '')
+        all_urls, url_files, text_urls, formated_text = text_urls_format(
+            text, request)
+        self.urls = PersistentDict(all_urls)
+        self.setproperty('url_files', url_files)
+        self.formated_text = formated_text
+        self.formated_urls = text_urls

@@ -86,7 +86,7 @@
 
     <div class="row object-row-content ${support_condition and 'row-md'}">
       <div class="col col-xs-12 ${files and 'col-md-8' or 'col-md-12'}">
-        <div class="object-text">${object.presentation_text(500)}</div>
+        <div class="object-text">${structure:object.presentation_text(500)}</div>
       </div>
       <div class="col col-xs-12 col-md-4" tal:condition="files">
           <div class="file-slider">

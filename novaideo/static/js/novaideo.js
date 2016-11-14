@@ -961,9 +961,8 @@ $(document).ready(function(){
         $('.comme-popover').remove()
     });
 
-  $(document).on('click', 'a.popover-title-link', function(event){
+  $(document).on('click', 'a.popover-title-link, .popover-content>.popover-text a', function(event){
       event.stopPropagation()
-      window.location.replace($(this).attr('href'))
   })
 
   $('.btn-sub-menu-container').hover(function(){

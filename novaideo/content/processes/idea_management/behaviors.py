@@ -108,6 +108,7 @@ class CreateIdea(InfiniteCardinality):
                 unique=True)
             context.setproperty('related_correlation', correlation[0])
 
+        idea.format(request)
         idea.reindex()
         request.registry.notify(ActivityExecuted(self, [idea], user))
         return {'newcontext': idea}
@@ -270,6 +271,7 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.set_data(appstruct)
         copy_of_idea.modified_at = datetime.datetime.now(tz=pytz.UTC)
         copy_of_idea.subscribe_to_channel(user)
+        copy_of_idea.format(request)
         copy_of_idea.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
@@ -367,6 +369,7 @@ class EditIdea(InfiniteCardinality):
         context.set_data(appstruct)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         copy_of_idea.reindex()
+        context.format(request)
         context.reindex()
         if 'archived' in context.state:
             recuperate_actions = getBusinessAction(context,

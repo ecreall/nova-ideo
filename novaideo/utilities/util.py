@@ -35,6 +35,7 @@ from dace.util import getSite, getAllBusinessAction
 from daceui.interfaces import IDaceUIAPI
 
 from .ical_date_utility import getDatesFromString, set_recurrence
+from novaideo.utilities.url_extractor import extract_urls
 from novaideo.content.correlation import Correlation, CorrelationType
 from novaideo.content.processes import get_states_mapping
 from novaideo.file import Image
@@ -607,6 +608,64 @@ def html_article_to_text(html):
         return text
 
     return ''
+
+
+def text_urls_format(text, request=None):
+    if not request:
+        request = get_current_request()
+
+    url_results = []
+    url_files = []
+    all_urls = {}
+    if text:
+        urls = extract_urls(text)
+        for data_url in extract_urls_metadata(urls):
+            if data_url['url'] not in all_urls:
+                if data_url['image']:
+                    new_image = data_url.pop('image')
+                    url_files.append(new_image)
+                    data_url['image_url'] = new_image.url
+
+                all_urls[data_url['url']] = data_url
+                value = renderers.render(
+                    'novaideo:views/templates/text_url.pt',
+                    data_url, request)
+                url_results.append(value)
+
+    text_urls = '<p>' + ''.join(url_results) + '</p>'
+    urls = extract_urls(html_to_text(text_urls))
+    for url in urls:
+        text_urls = text_urls.replace(
+            url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
+
+    text = tuncate_text(text, len(text))
+    formated_text = '<p class="emoji-container">' + text + '</p>'
+    return all_urls, url_files, text_urls, formated_text
+
+
+def tuncate_text(text, nb, ellipse='...'):
+    urls = extract_urls(text)
+    sorted_urls = sorted(
+        urls,
+        key=lambda url: len(url),
+        reverse=True)
+    truncated_text = text[:nb]
+    truncated_urls = extract_urls(truncated_text)
+    for index, url in enumerate(truncated_urls):
+        truncated_text = truncated_text.replace(
+            url, '<@url'+str(index)+'>', 1)
+
+    for url in sorted_urls:
+        index = urls.index(url)
+        urls[index] = None
+        truncated_text = truncated_text.replace(
+            '<@url'+str(index)+'>',
+            '<a  target="_blank" href="'+url+'">'+url+'</a>')
+    if len(text) > nb:
+        truncated_text += ellipse
+
+    return truncated_text
+
 
 ALL_DESCRIMINATORS = ['text-action',
                       'global-action',

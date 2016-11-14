@@ -25,4 +25,4 @@ WEB_URL_REGEX = r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|
 
 
 def extract_urls(text):
-    return re.findall(WEB_URL_REGEX,text)
+    return re.findall(WEB_URL_REGEX, text)
