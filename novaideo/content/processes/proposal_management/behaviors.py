@@ -499,7 +499,7 @@ def decision_roles_validation(process, context):
 
 def decision_processsecurity_validation(process, context):
     request = get_current_request()
-    if not request.moderate_ideas:
+    if not request.moderate_proposals:
         return False
 
     return global_user_processsecurity()

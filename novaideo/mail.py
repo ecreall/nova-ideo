@@ -267,7 +267,7 @@ La proposition « {subject_title} » vient d'être archivée par les modérateur
 
 {explanation}
 
-Vous pouvez retrouver votre idée sous {subject_url}.
+Vous pouvez retrouver votre proposition sous {subject_url}.
 
 """+ PORTAL_SIGNATURE
 
@@ -311,7 +311,7 @@ PUBLISHEDPROPOSAL_SUBJECT = u"""Décision des modérateurs de publier la proposi
 PUBLISHEDPROPOSAL_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-La proposition « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}. Cette idée peut maintenant être utilisée par n'importe quel membre de la plateforme pour une proposition.
+La proposition « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}.
 
 """+ PORTAL_SIGNATURE
 
