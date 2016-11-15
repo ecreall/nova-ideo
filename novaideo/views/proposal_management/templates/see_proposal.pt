@@ -1,7 +1,7 @@
 <div class="content-view component-obj-view component-index-view" i18n:domain="novaideo"
    id="index_${oid}"
    data-component_type="object-view"
-  tal:define="submitted 'proposal' in getattr(request, 'content_to_support', []) and 'submitted_support' in proposal.state;
+  tal:define="submitted request.support_proposals and 'submitted_support' in proposal.state;
   editoid 'edit_item_text_area';
   icon getattr(proposal, 'icon');
   oid proposal.__oid__">
@@ -20,23 +20,30 @@
     <div tal:condition="cant_publish" role="alert" class="alert alert-info alert-dismissible">
        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
        <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-       <div tal:omit-tag="" tal:condition="not (request.moderate_ideas and not_published_ideas) and not not_favorable_ideas">
+       <div tal:omit-tag="" tal:condition="not (request.moderate_ideas and not_published_ideas) and not (request.examine_ideas and not_favorable_ideas)">
         <span  i18n:translate="">Vous avez atteint la limite de participations autorisées. Afin de pouvoir soumettre votre proposition, veuillez démissionner de l'un de</span> <a tal:attributes="href request.resource_url(request.virtual_root, '@@seemyparticipations')"  i18n:translate="">vos groupes de travail actuels</a>.
        </div>
        <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
+        <p tal:condition="not request.moderate_proposals" i18n:translate="">
+          Pour que vous puissiez publier votre proposition, il faut que l'ensemble de ses idées liées soit préalablement modéré favorablement par un Modérateur.</p>
+        <p tal:condition="request.moderate_proposals" i18n:translate="">
+          Pour que vous puissiez soumettre votre proposition, il faut que l'ensemble de ses idées liées soit préalablement modéré favorablement par un Modérateur.</p>
+        
         <p i18n:translate="">
-          Pour que vous puissiez publier votre proposition, il faut que l'ensemble de ses idées liées soit préalablement examiné favorablement par un Examinateur.</p>
-        <p i18n:translate="">
-           Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont pas été examinée favorablement, du moment que ces idées ont été préalablement publiées par les modérateurs.</p>
+           Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont pas été modérée favorablement.</p>
+        <p i18n:translate="" tal:condition="request.examine_ideas">
+           Ces idées doivent être ensuite examinées favorablement par un Examinateur.</p>
         <ol class="list-unstyled not-published-list">
           <tal:loop repeat="i not_published_ideas">
             <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
           </tal:loop>
         </ol>
        </div>
-       <div tal:omit-tag="" tal:condition="not_favorable_ideas and idea_to_examine">
-        <p i18n:translate="">
+       <div tal:omit-tag="" tal:condition="not_favorable_ideas and request.examine_ideas">
+        <p tal:condition="not request.moderate_proposals" i18n:translate="">
           Pour que vous puissiez publier votre proposition, il faut que l'ensemble de ses idées liées soit préalablement examiné favorablement par un Examinateur.</p>
+        <p tal:condition="request.moderate_proposals" i18n:translate="">
+          Pour que vous puissiez soumettre votre proposition, il faut que l'ensemble de ses idées liées soit préalablement examiné favorablement par un Examinateur.</p>
         <p i18n:translate="">
            Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont pas été examinée favorablement.</p>
         <ol class="list-unstyled not-published-list">

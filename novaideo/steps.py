@@ -182,7 +182,7 @@ class StepsPanel(object):
                 result['current_step'] = 2
                 result['step2_message'] = self._get_step2_informations(
                     context, self.request)
-            elif 'proposal' in self.request.content_to_support and \
+            elif self.request.support_proposals and \
                  'submitted_support' in context.state:
                 result['current_step'] = 4
                 result['step4_message'] = self._get_step4_informations(

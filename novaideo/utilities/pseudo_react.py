@@ -788,6 +788,14 @@ def get_archive_idea_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_submit_idea_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("L'idée a bien été soumise à modération."),
+        **kwargs)
+
+
 def get_publish_idea_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
@@ -873,6 +881,30 @@ def get_create_idea_metadata(action, request, context, api, **kwargs):
 
 
 #Proposals
+
+def get_submit_proposal_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("La proposition a bien été soumise à modération."),
+        **kwargs)
+
+
+def get_publish_proposal_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("La modération a bien été publiée."),
+        **kwargs)
+
+
+def get_archive_proposal_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("La modération a bien été archivée."),
+        **kwargs)
+
 
 def get_opinion_proposal_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
@@ -1337,6 +1369,7 @@ METADATA_GETTERS = {
     'ideamanagement.duplicate': get_default_action_metadata,
     'ideamanagement.edit': get_edit_idea_metadata,
     'ideamanagement.archive': get_archive_idea_metadata,
+    'ideamanagement.submit': get_submit_idea_metadata,
     'ideamanagement.moderationarchive': get_archive_idea_metadata,
     'ideamanagement.abandon': get_dirct_archive_idea_metadata,
     'ideamanagement.recuperate': get_dirct_recuperate_idea_metadata,
@@ -1349,6 +1382,9 @@ METADATA_GETTERS = {
     'ideamanagement.comment': get_comment_metadata,
     'ideamanagement.present': get_present_metadata,
 
+    'proposalmanagement.submit': get_submit_proposal_metadata,
+    'proposalmanagement.publish_moderation': get_publish_proposal_metadata,
+    'proposalmanagement.archive_moderation': get_archive_proposal_metadata,
     'proposalmanagement.support': get_support_metadata,
     'proposalmanagement.oppose': get_support_metadata,
     'proposalmanagement.withdraw_token': get_support_metadata,

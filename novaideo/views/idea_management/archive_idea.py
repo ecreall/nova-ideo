@@ -60,8 +60,7 @@ class ArchiveIdeaView(FormView):
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',
-                   'process_id': ArchiveIdea.node_definition.process.id,
-                   'node_id': ArchiveIdea.node_definition.__name__})
+                   'node_id': ArchiveIdea.node_definition.id})
         self.schema.widget = deform.widget.FormWidget(
             css_class='material-form deform novaideo-ajax-form')
 

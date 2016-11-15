@@ -32,6 +32,7 @@ STATES_PARTICIPANT_MAPPING = {
     'proposal': {
         'draft': _('Draft'),
         'submitted_support': _('Submitted for support'),
+        'submitted': _('Submitted for moderation'),
         'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
 	    'votes for publishing': _('Votes for publishing'),
@@ -96,6 +97,7 @@ STATES_MEMBER_MAPPING = {
     'proposal': {
         'draft': _('Draft'),
         'submitted_support': _('Submitted for support'),
+        'submitted': _('Submitted for moderation'),
         'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
 	    'votes for publishing': _('Votes for publishing'),
@@ -167,30 +169,33 @@ def get_content_types_states(content_types, flatten=False, request=None):
         for c in content_types}
 
     if 'idea' in results:
-        if not getattr(root, 'moderate_ideas', False):
+        if not root.moderate_ideas:
             results['idea'].pop('submitted')
 
-        if 'idea' not in getattr(root, 'content_to_examine', []):
+        if not root.examine_ideas:
             results['idea'].pop('examined')
             results['idea'].pop('favorable')
             results['idea'].pop('unfavorable')
             results['idea'].pop('to_study')
 
-        if 'idea' not in getattr(root, 'content_to_support', []):
+        if not root.support_ideas:
             results['idea'].pop('submitted_support')
 
     if 'proposal' in results:
         modes = root.get_work_modes()
+        if not root.moderate_proposals:
+            results['proposal'].pop('submitted')
+
         if 'amendment' not in modes:
             results['proposal'].pop('votes for amendments')
 
-        if 'proposal' not in getattr(root, 'content_to_examine', []):
+        if not root.examine_proposals:
             results['proposal'].pop('examined')
             results['proposal'].pop('favorable')
             results['proposal'].pop('unfavorable')
             results['proposal'].pop('to_study')
 
-        if 'proposal' not in getattr(root, 'content_to_support', []):
+        if not root.support_proposals:
             results['proposal'].pop('submitted_support')
 
     if flatten:

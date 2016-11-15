@@ -47,8 +47,8 @@
           rel="stylesheet"/>
 
     <div tal:omit-tag=""
-         tal:define="to_examine 'proposal' in request.content_to_examine;
-                     to_support 'proposal' in request.content_to_support;
+         tal:define="to_examine request.examine_proposals;
+                     to_support request.support_proposals;
                      tosupport_toexamine to_examine and to_support">
       <link tal:condition="tosupport_toexamine"
               href="${su('novaideo:static/css/steps/steps_5.css')}"

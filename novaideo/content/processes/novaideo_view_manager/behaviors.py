@@ -217,7 +217,7 @@ def seeindeas_processsecurity_validation(process, context):
 class SeeIdeasToExamine(InfiniteCardinality):
     style_descriminator = 'lateral-action'
     style_picto = 'novaideo-icon icon-idea-ex'
-    style_order = -3
+    style_order = -4
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeindeas_roles_validation
@@ -242,11 +242,32 @@ def seeindeasm_processsecurity_validation(process, context):
 class SeeIdeasToModerate(InfiniteCardinality):
     style_descriminator = 'lateral-action'
     style_picto = 'octicon octicon-check'
-    style_order = -4
+    style_order = -5
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeindeasm_roles_validation
     processsecurity_validation = seeindeasm_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
+
+
+def seepropm_processsecurity_validation(process, context):
+    return getattr(context, 'moderate_proposals', False) and\
+           global_user_processsecurity()
+
+
+class SeeProposalsToModerate(InfiniteCardinality):
+    style_descriminator = 'lateral-action'
+    style_picto = 'typcn typcn-input-checked'
+    style_order = -3
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seeindeasm_roles_validation
+    processsecurity_validation = seepropm_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return {}

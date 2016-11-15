@@ -371,6 +371,22 @@ class NovaIdeoApplication(VisualisableElement, Application):
         return 'idea' in getattr(self, 'content_to_moderate', [])
 
     @property
+    def examine_proposals(self):
+        return 'proposal' in getattr(self, 'content_to_examine', [])
+
+    @property
+    def examine_ideas(self):
+        return 'idea' in getattr(self, 'content_to_examine', [])
+
+    @property
+    def support_proposals(self):
+        return 'proposal' in getattr(self, 'content_to_support', [])
+
+    @property
+    def support_ideas(self):
+        return 'idea' in getattr(self, 'content_to_support', [])
+
+    @property
     def titles(self):
         return DEFAULT_TITLES
 

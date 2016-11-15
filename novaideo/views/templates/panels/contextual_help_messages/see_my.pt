@@ -13,7 +13,7 @@
     </p>
     <tal:block tal:condition="request.view_name == 'seemysupports'" >
 
-      <div tal:omit-tag="" tal:condition="'idea' in request.content_to_support and 'proposal' in request.content_to_support" >
+      <div tal:omit-tag="" tal:condition="request.support_ideas and request.support_proposals" >
         <p i18n:translate="">
             Vous trouvez dans « Mes appréciations », les idées et les propositions soumises à appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées.
         </p>
@@ -24,7 +24,7 @@
             Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions soumises à appréciation dont vous avez été l'un des participants sans que ces appréciations soient décomptées de vos sept jetons d'appréciation initiaux. Une fois allouée, ces appréciations ne peuvent plus en revanche être réutilisées pour d'autres propositions.
         </p>
      </div>
-     <div tal:omit-tag="" tal:condition="'idea' in request.content_to_support and 'proposal' not in request.content_to_support" >
+     <div tal:omit-tag="" tal:condition="request.support_ideas and not request.support_proposals" >
         <p i18n:translate="">
             Vous trouvez dans « Mes appréciations », les idées soumises à appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées.
         </p>
@@ -32,7 +32,7 @@
             Vous disposez en tout de sept jetons d'appréciation, soutiens ou oppositions, que vous êtes libre à tout moment d'allouer ou de retirer à n'importe quelles idées soumises à appréciation. Pour soutenir ou vous opposer à une idée, il vous suffit de cliquer sur l'idée concernée.
         </p>
      </div>
-     <div tal:omit-tag="" tal:condition="'idea' not in request.content_to_support and 'proposal' in request.content_to_support" >
+     <div tal:omit-tag="" tal:condition="not request.support_ideas and request.support_proposals" >
         <p i18n:translate="">
             Vous trouvez dans « Mes appréciations », les propositions soumises à appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées.
         </p>

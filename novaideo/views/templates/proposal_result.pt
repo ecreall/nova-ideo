@@ -10,7 +10,7 @@
                  oid object.__oid__;
                  len_members len(object.working_group.members);
                  wg_state object.working_group.get_state(request, current_user);
-                 submitted 'proposal' in getattr(request, 'content_to_support', []) and 'submitted_support' in object.state;">
+                 submitted request.support_proposals and 'submitted_support' in object.state;">
   <div class="media-body media-proposal" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="wg-block">
         <div class="wg-actions pull-right">

@@ -1,0 +1,34 @@
+<div  i18n:domain="novaideo" id="publication-data" data-is_unique="${'true' if is_unique_choice else 'false'}">
+ <div class="alert alert-info">
+  <p i18n:translate="">En cliquant sur « Continuer », votre proposition sera soumise pour publication et fera l'objet d'une modération préalable. Les modérateurs peuvent décider soit de la publier, soit de l'archiver.</p>
+
+ 	<div tal:omit-tag="" tal:condition="not request.moderate_ideas and not_published_ideas">
+      <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+      <p i18n:translate="">Pour qu'une proposition soit publiée, l'ensemble des idées liées doivent être préalablement publiées. Vous pouvez les modifier en cliquant sur celles qui sont à retravailler. Une fois la proposition est acceptée par les modérateurs, ces idées seront publiées automatiquement.</p>
+        <ol class="list-unstyled not-published-list">
+          <tal:loop repeat="i not_published_ideas">
+            <li><a target="_blank" class="btn btn-info btn-xs" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
+          </tal:loop>
+        </ol>
+    </div>
+ 	<span class="glyphicon glyphicon-info-sign pull-right"></span>
+    <div>
+      <p>Une fois votre proposition acceptée et publiée par les modérateurs, vous pouvez décider :</p>
+      <ul>
+        <li>soit de la soumettre à appréciation en l'état à l'ensemble des utilisateurs sans l'améliorer,</li>
+        <li>soit l'améliorer d'abord avec d'autres utilisateurs dans un groupe de travail puis la soumettre à appréciation à l'ensemble des utilisateurs.</li>
+      </ul>
+   </div>
+   <p>
+    Si vous décidez de l'améliorer avec d'autres utilisateurs, ce qui est le choix proposé par défaut, vous devez indiquer la durée du cycle d'amélioration, celle-ci est fixée par défaut à une semaine.
+   </p>
+
+ </div>
+ <div tal:condition="len(request.root.get_work_modes()) > 1" class="alert alert-warning">
+  <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+  <p>
+    <b>Pour améliorer la proposition, il faut que le groupe de travail atteigne au moins le nombre minimum de participants indiqué pour chaque mode de travail. Si le nombre n'est pas atteint, le groupe de travail reste inactif et la proposition ne peut être améliorée.</b>
+  </p>
+ </div>
+</div>
+

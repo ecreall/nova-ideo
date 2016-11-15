@@ -1,9 +1,9 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
       <div  tal:omit-tag="" tal:condition="not request.is_idea_box">
-        <p i18n:translate="" tal:condition="'idea' in request.content_to_support or 'proposal' in request.content_to_support">
+        <p i18n:translate="" tal:condition="request.support_ideas or request.support_proposals">
             En tant que membre connecté à la plateforme, vous pouvez accéder à vos contenus, vos groupes de travail, vos favoris et vos appréciations, noter une idée, faire des recherches, voir les membres inscrits ou intervenir sur des idées ou des propositions.
         </p>
-        <p i18n:translate="" tal:condition="not ('idea' in request.content_to_support or 'proposal' in request.content_to_support)">
+        <p i18n:translate="" tal:condition="not (request.support_ideas or request.support_proposals)">
             En tant que membre connecté à la plateforme, vous pouvez accéder à vos contenus, vos groupes de travail et vos favoris, noter une idée, faire des recherches, voir les membres inscrits ou intervenir sur des idées ou des propositions.
         </p>
         <p i18n:translate="">
@@ -12,20 +12,20 @@
         <p >
             <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
             <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' not in request.content_to_support">soit publiée</span>
-            <span tal:omit-tag="" tal:condition="'idea' in request.content_to_support">soit soumise à appréciation</span>
-            <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' in request.content_to_examine">, soit examinée</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">soit publiée</span>
+            <span tal:omit-tag="" tal:condition="request.support_ideas">soit soumise à appréciation</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">, soit examinée</span> 
             <span i18n:translate="">et une proposition peut être soit privée, soit ouverte à un groupe de travail, soit en cours d'amélioration, soit faire l'objet d'un vote pour améliorer ou non la proposition,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' not in request.content_to_support">soit publiée</span>
-            <span tal:omit-tag="" tal:condition="'proposal' in request.content_to_support">soit soumise à appréciation</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_proposals">soit publiée</span>
+            <span tal:omit-tag="" tal:condition="request.support_proposals">soit soumise à appréciation</span>
             <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">, soit examinée</span>.
         </p>
     </div>
     <div tal:omit-tag=""  tal:condition="request.is_idea_box">
-        <p i18n:translate="" tal:condition="'idea' in request.content_to_support" >
+        <p i18n:translate="" tal:condition="request.support_ideas" >
             En tant que membre connecté à la plateforme, vous pouvez accéder à vos contenus et vos favoris, noter une idée, faire des recherches, voir les membres inscrits ou intervenir sur des idées.
         </p>
-         <p i18n:translate="" tal:condition="'idea' not in request.content_to_support" >
+         <p i18n:translate="" tal:condition="not request.support_ideas" >
             En tant que membre connecté à la plateforme, vous pouvez accéder à vos contenus, vos favoris et vos appréciations, noter une idée, faire des recherches, voir les membres inscrits ou intervenir sur des idées.
         </p>
         <p i18n:translate="">
@@ -34,9 +34,9 @@
         <p >
             <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
             <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' not in request.content_to_support">soit publiée</span>
-            <span tal:omit-tag="" tal:condition="'idea' in request.content_to_support">soit soumise à appréciation</span>
-            <span i18n:translate="" tal:omit-tag="" tal:condition="'idea' in request.content_to_examine">, soit examinée</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">soit publiée</span>
+            <span tal:omit-tag="" tal:condition="request.support_ideas">soit soumise à appréciation</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">, soit examinée</span> 
             <span i18n:translate="">.
         </p>
     </div>

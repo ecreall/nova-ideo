@@ -529,7 +529,7 @@ class PublishIdeaModeration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        if 'idea' in getattr(root, 'content_to_support', []):
+        if root.support_ideas:
             context.state = PersistentList(['submitted_support', 'published'])
         else:
             context.state = PersistentList(['published', 'submitted_support'])
@@ -598,7 +598,7 @@ class PublishIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = request.root
-        if 'idea' in getattr(root, 'content_to_support', []):
+        if root.support_ideas:
             context.state = PersistentList(['submitted_support', 'published'])
         else:
             context.state = PersistentList(['published', 'submitted_support'])
@@ -1031,7 +1031,7 @@ def support_roles_validation(process, context):
 def support_processsecurity_validation(process, context):
     user = get_current()
     request = get_current_request()
-    if 'idea' not in request.content_to_support:
+    if not request.support_ideas:
         return False
 
     return context.get_token(user) and  \

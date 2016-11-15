@@ -257,6 +257,20 @@ Vous pouvez retrouver votre idée sous {subject_url}.
 
 """+ PORTAL_SIGNATURE
 
+ARCHIVEPROPOSAL_SUBJECT = u"""Décision des modérateurs d'archiver la proposition « {subject_title} »"""
+
+
+ARCHIVEPROPOSAL_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+La proposition « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+
+{explanation}
+
+Vous pouvez retrouver votre idée sous {subject_url}.
+
+"""+ PORTAL_SIGNATURE
+
 
 ALERTOPINION_SUBJECT = u"""Avis du Comité d'examen sur la proposition « {subject_title} »"""
 
@@ -287,6 +301,17 @@ PUBLISHEDIDEA_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
 L'idée « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}. Cette idée peut maintenant être utilisée par n'importe quel membre de la plateforme pour une proposition.
+
+"""+ PORTAL_SIGNATURE
+
+
+PUBLISHEDPROPOSAL_SUBJECT = u"""Décision des modérateurs de publier la proposition « {subject_title} »"""
+
+
+PUBLISHEDPROPOSAL_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+La proposition « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}. Cette idée peut maintenant être utilisée par n'importe quel membre de la plateforme pour une proposition.
 
 """+ PORTAL_SIGNATURE
 
@@ -561,6 +586,16 @@ DEFAULT_SITE_MAILS = {
               'title': _("Moderation: Publish the idea"),
               'subject': PUBLISHEDIDEA_SUBJECT,
               'template': PUBLISHEDIDEA_MESSAGE
+    },
+    'archive_proposal_decision': {
+              'title': _("Moderation: Archive the proposal"),
+              'subject': ARCHIVEPROPOSAL_SUBJECT,
+              'template': ARCHIVEPROPOSAL_MESSAGE
+    },
+    'publish_proposal_decision': {
+              'title': _("Moderation: Publish the proposal"),
+              'subject': PUBLISHEDPROPOSAL_SUBJECT,
+              'template': PUBLISHEDPROPOSAL_MESSAGE
     },
     'delete_proposal': {
               'title': _("Moderation: Delete the proposal"),

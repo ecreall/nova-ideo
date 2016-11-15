@@ -101,6 +101,65 @@ VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
                            " group will be useful")
 
 
+def confirm_proposal(
+    context, request, user, submitted_appstruct, root):
+    working_group = context.working_group
+    if submitted_appstruct.get('vote', False):
+        if root.support_proposals:
+            context.state = PersistentList(
+                ['submitted_support', 'published'])
+        else:
+            context.state = PersistentList(
+                ['published', 'submitted_support'])
+
+        working_group.state = PersistentList(['archived'])
+        context.reindex()
+        working_group.reindex()
+    else:
+        default_mode = root.get_default_work_mode()
+        participants_mini = root.participants_mini
+        mode_id = submitted_appstruct.get(
+            'work_mode', default_mode.work_id)
+        if mode_id:
+            working_group.work_mode_id = mode_id
+            participants_mini = WORK_MODES[mode_id].participants_mini
+
+        #Only the vote of the author is considered
+        first_vote_registration(
+            user, working_group, submitted_appstruct)
+        if participants_mini > 1:
+            context.state = PersistentList(
+                ['open to a working group', 'published'])
+            context.reindex()
+        else:
+            context.state = PersistentList(['amendable', 'published'])
+            working_group.state = PersistentList(['active'])
+            context.reindex()
+            working_group.reindex()
+            if not hasattr(working_group, 'first_improvement_cycle'):
+                working_group.first_improvement_cycle = True
+
+            if not working_group.improvement_cycle_proc:
+                improvement_cycle_proc = start_improvement_cycle(context)
+                working_group.setproperty(
+                    'improvement_cycle_proc', improvement_cycle_proc)
+
+            working_group.improvement_cycle_proc.execute_action(
+                context, request, 'votingpublication', {})
+
+    context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+    context.init_published_at()
+    not_published_ideas = []
+    if not getattr(root, 'moderate_ideas', False) and\
+       'idea' not in getattr(root, 'content_to_examine', []):
+        not_published_ideas = [i for i in context.related_ideas.keys()
+                               if 'published' not in i.state]
+        publish_ideas(not_published_ideas, request)
+
+    not_published_ideas.extend(context)
+    return not_published_ideas
+
+
 def remove_tokens(proposal):
     tokens = [t for t in proposal.tokens if not t.proposal]
     proposal_tokens = [t for t in proposal.tokens if t.proposal]
@@ -378,11 +437,7 @@ class DeleteProposal(InfiniteCardinality):
         return HTTPFound(request.resource_url(kw['newcontext'], ""))
 
 
-def publish_roles_validation(process, context):
-    return has_role(role=('Owner', context))
-
-
-def publish_processsecurity_validation(process, context):
+def pu_sub_processsecurity_validation(process, context):
     user = get_current()
     root = getSite()
     not_published_ideas = False
@@ -398,6 +453,156 @@ def publish_processsecurity_validation(process, context):
     return not (not_published_ideas or not_favorable_ideas) and \
            len(user.active_working_groups) < root.participations_maxi and \
            global_user_processsecurity()
+
+
+def submit_roles_validation(process, context):
+    return has_role(role=('Owner', context))
+
+
+def submit_processsecurity_validation(process, context):
+    request = get_current_request()
+    if not request.moderate_proposals:
+        return False
+
+    return pu_sub_processsecurity_validation(process, context)
+
+
+def submit_state_validation(process, context):
+    return 'draft' in context.state
+
+
+class SubmitProposalModeration(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-share'
+    style_order = 6
+    submission_title = _('Continue')
+    context = IProposal
+    roles_validation = submit_roles_validation
+    processsecurity_validation = submit_processsecurity_validation
+    state_validation = submit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state = PersistentList(['submitted'])
+        context.submitted_appstruct = PersistentDict(appstruct)
+        context.reindex()
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
+
+
+def decision_roles_validation(process, context):
+    return has_role(role=('Moderator',))
+
+
+def decision_processsecurity_validation(process, context):
+    request = get_current_request()
+    if not request.moderate_ideas:
+        return False
+
+    return global_user_processsecurity()
+
+
+def decision_state_validation(process, context):
+    return 'submitted' in context.state
+
+
+class ArchiveProposalModeration(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-inbox'
+    style_order = 4
+    submission_title = _('Continue')
+    context = IProposal
+    roles_validation = decision_roles_validation
+    processsecurity_validation = decision_processsecurity_validation
+    state_validation = decision_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        explanation = appstruct['explanation']
+        context.state = PersistentList(['archived'])
+        context.reindex()
+        user = context.author
+        alert('internal', [root], [user],
+              internal_kind=InternalAlertKind.moderation_alert,
+              subjects=[context])
+        if getattr(user, 'email', ''):
+            mail_template = root.get_mail_template('archive_proposal_decision')
+            subject = mail_template['subject'].format(
+                subject_title=context.title)
+            email_data = get_user_data(user, 'recipient', request)
+            email_data.update(get_entity_data(context, 'subject', request))
+            message = mail_template['template'].format(
+                explanation=explanation,
+                novaideo_title=root.title,
+                **email_data
+            )
+            alert('email', [root.get_site_sender()], [user.email],
+                  subject=subject, body=message)
+
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
+
+
+class PublishProposalModeration(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-share'
+    style_order = 5
+    submission_title = _('Continue')
+    context = IProposal
+    roles_validation = decision_roles_validation
+    processsecurity_validation = decision_processsecurity_validation
+    state_validation = decision_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = context.author
+        root = getSite()
+        context.state.remove('submitted')
+        submitted_appstruct = getattr(context, 'submitted_appstruct', {})
+        not_published_ideas = confirm_proposal(
+            context, request, user, submitted_appstruct, root)
+        alert('internal', [root], [user],
+              internal_kind=InternalAlertKind.moderation_alert,
+              subjects=[context])
+        if getattr(user, 'email', ''):
+            mail_template = root.get_mail_template('publish_proposal_decision')
+            subject = mail_template['subject'].format(
+                subject_title=context.title)
+            email_data = get_user_data(user, 'recipient', request)
+            email_data.update(get_entity_data(context, 'subject', request))
+            message = mail_template['template'].format(
+                novaideo_title=root.title,
+                **email_data
+            )
+            alert('email', [root.get_site_sender()], [user.email],
+                  subject=subject, body=message)
+
+        request.registry.notify(ObjectPublished(object=context))
+        request.registry.notify(ActivityExecuted(
+            self, not_published_ideas, user))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
+
+
+def publish_roles_validation(process, context):
+    return has_role(role=('Owner', context))
+
+
+def publish_processsecurity_validation(process, context):
+    request = get_current_request()
+    if request.moderate_proposals:
+        return False
+    return pu_sub_processsecurity_validation(process, context)
 
 
 def publish_state_validation(process, context):
@@ -419,59 +624,9 @@ class PublishProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         root = getSite()
-        working_group = context.working_group
         context.state.remove('draft')
-        if appstruct.get('vote', False):
-            if 'proposal' in getattr(root, 'content_to_support', []):
-                context.state = PersistentList(
-                    ['submitted_support', 'published'])
-            else:
-                context.state = PersistentList(
-                    ['published', 'submitted_support'])
-
-            working_group.state = PersistentList(['archived'])
-            context.reindex()
-            working_group.reindex()
-        else:
-            default_mode = root.get_default_work_mode()
-            participants_mini = root.participants_mini
-            mode_id = appstruct.get('work_mode', default_mode.work_id)
-            if mode_id:
-                working_group.work_mode_id = mode_id
-                participants_mini = WORK_MODES[mode_id].participants_mini
-
-            #Only the vote of the author is considered
-            first_vote_registration(user, working_group, appstruct)
-            if participants_mini > 1:
-                context.state = PersistentList(
-                    ['open to a working group', 'published'])
-                context.reindex()
-            else:
-                context.state = PersistentList(['amendable', 'published'])
-                working_group.state = PersistentList(['active'])
-                context.reindex()
-                working_group.reindex()
-                if not hasattr(working_group, 'first_improvement_cycle'):
-                    working_group.first_improvement_cycle = True
-
-                if not working_group.improvement_cycle_proc:
-                    improvement_cycle_proc = start_improvement_cycle(context)
-                    working_group.setproperty(
-                        'improvement_cycle_proc', improvement_cycle_proc)
-
-                working_group.improvement_cycle_proc.execute_action(
-                    context, request, 'votingpublication', {})
-
-        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        context.init_published_at()
-        not_published_ideas = []
-        if not getattr(root, 'moderate_ideas', False) and\
-           'idea' not in getattr(root, 'content_to_examine', []):
-            not_published_ideas = [i for i in context.related_ideas.keys()
-                                   if 'published' not in i.state]
-            publish_ideas(not_published_ideas, request)
-
-        not_published_ideas.extend(context)
+        not_published_ideas = confirm_proposal(
+            context, request, user, appstruct, root)
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
             self, not_published_ideas, user))
@@ -593,7 +748,7 @@ def support_roles_validation(process, context):
 
 def support_processsecurity_validation(process, context):
     request = get_current_request()
-    if 'proposal' not in request.content_to_support:
+    if not request.support_proposals:
         return False
 
     user = get_current()
@@ -1244,15 +1399,14 @@ def get_access_key(obj):
     if 'draft' not in obj.state:
         return ['always']
     else:
-        result = serialize_roles(
-            (('Owner', obj), 'SiteAdmin', 'Admin'))
-        return result
+        return serialize_roles(
+            (('Owner', obj), 'SiteAdmin', 'Admin', 'Moderator'))
 
 
 def seeproposal_processsecurity_validation(process, context):
     return access_user_processsecurity(process, context) and \
            ('draft' not in context.state or \
-            has_any_roles(roles=(('Owner', context), 'SiteAdmin')))
+            has_any_roles(roles=(('Owner', context), 'SiteAdmin', 'Moderator')))
 
 
 @access_action(access_key=get_access_key)
@@ -1472,7 +1626,7 @@ class SubmitProposal(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         working_group = context.working_group
-        if 'proposal' in getattr(root, 'content_to_support', []):
+        if root.support_proposals:
             context.state = PersistentList(['submitted_support', 'published'])
         else:
             context.state = PersistentList(['published', 'submitted_support'])

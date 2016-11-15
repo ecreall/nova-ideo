@@ -68,9 +68,10 @@ class DetailProposalView(BasicView):
 
         return title, description, text, add_filigrane
 
-    def _cant_publish_alert(self, actions):
+    def _cant_publish(self, actions):
         if 'draft' in self.context.state:
-            return not any(a.behavior_id == 'publish'
+            return not any(a.behavior_id == 'publish' or
+                           a.behavior_id == 'submit'
                            for a in actions.get('global-action', []))
 
         return False
@@ -158,7 +159,7 @@ class DetailProposalView(BasicView):
             'is_participant': is_participant,
             'vote_actions_body': vote_actions['body'],
             'filigrane': add_filigrane,
-            'cant_publish': self._cant_publish_alert(navbars['all_actions']),
+            'cant_publish': self._cant_publish(navbars['all_actions']),
             'idea_to_examine': idea_to_examine,
             'not_published_ideas': not_published_ideas,
             'not_favorable_ideas': not_favorable_ideas,

@@ -74,6 +74,22 @@ def moderate_proposals(request):
     return getattr(request.root, 'moderate_proposals', False)
 
 
+def examine_ideas(request):
+    return getattr(request.root, 'examine_ideas', False)
+
+
+def examine_proposals(request):
+    return getattr(request.root, 'examine_proposals', False)
+
+
+def support_ideas(request):
+    return getattr(request.root, 'support_ideas', False)
+
+
+def support_proposals(request):
+    return getattr(request.root, 'support_proposals', False)
+
+
 def is_idea_box(request):
     return getattr(request.root, 'is_idea_box', False)
 
@@ -489,6 +505,10 @@ def main(global_config, **settings):
     config.add_request_method(get_time_zone, reify=True)
     config.add_request_method(moderate_ideas, reify=True)
     config.add_request_method(moderate_proposals, reify=True)
+    config.add_request_method(examine_ideas, reify=True)
+    config.add_request_method(examine_proposals, reify=True)
+    config.add_request_method(support_ideas, reify=True)
+    config.add_request_method(support_proposals, reify=True)
     config.add_request_method(content_to_examine, reify=True)
     config.add_request_method(content_to_support, reify=True)
     config.add_request_method(is_idea_box, reify=True)

@@ -1,7 +1,7 @@
 <div class="content-view component-obj-view component-index-view" i18n:domain="novaideo"
   data-component_type="object-view"
   id="index_${oid}"
-  tal:define="support_condition 'idea' in getattr(request, 'content_to_support', []) and 'published' in idea.state and 'examined' not in idea.state;
+  tal:define="support_condition request.support_ideas and 'published' in idea.state and 'examined' not in idea.state;
   icon getattr(idea, 'icon');
   oid idea.__oid__">
   <div tal:replace="structure navbar_body"/>

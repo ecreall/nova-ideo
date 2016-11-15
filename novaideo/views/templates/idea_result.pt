@@ -8,7 +8,7 @@
                  files object.get_attached_files_data();
                  len_files len(files);
                  oid object.__oid__;
-                 support_condition 'idea' in getattr(request, 'content_to_support', []) and 'published' in object.state and 'examined' not in object.state">
+                 support_condition request.support_ideas and 'published' in object.state and 'examined' not in object.state">
   <div class="media-body media-idea" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="author-block">
       <img class="author-img img-circle" 
