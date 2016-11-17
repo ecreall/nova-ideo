@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
@@ -15,6 +16,7 @@ import io
 import re
 import json
 import metadata_parser
+from webob.multidict import MultiDict
 from urllib.parse import urlparse
 from itertools import groupby
 from persistent.dict import PersistentDict
@@ -667,6 +669,55 @@ def truncate_text(text, nb, ellipsis='...'):
         truncated_text += ellipsis
 
     return truncated_text
+
+
+def get_debatescore_data(context, request):
+    from .alerts_utility import get_user_data
+    accessible_to_anonymous = request.accessible_to_anonymous
+    author = getattr(context, 'author', None)
+    author_data = get_user_data(author, 'author', request)
+    organization = getattr(author, 'organization', None)
+    published_at = getattr(context, 'published_at', None)
+    p_at_str = published_at.strftime("%Y-%m-%d") if published_at else ''
+    working_group = getattr(context, 'working_group', None)
+    members = getattr(working_group, 'members', [])
+    status = 'en-cours'
+    if request.examine_ideas and 'submitted_support' in context.state:
+        status = 'examen'
+
+    result = MultiDict({
+        'dc.title': context.title,
+        'dc.identifier': getattr(context, '__oid__', None),
+        'dc.description.abstract': context.presentation_text(),
+        'dc.subject': ', '.join(context.keywords),
+        'vp.status': status,
+        'dc.date.Issued': p_at_str,
+        'dc.date.Submitted': p_at_str,
+        'dc.date.Accepted': p_at_str,
+        'dc.type': 'interactive ressource',
+        'vp.participationMode': 'en ligne',
+        'dc.audience': 'tout public' if accessible_to_anonymous else \
+                       'repésentants',
+        'dc.creator.corporateName': organization.title if organization else \
+                                    '',
+        'dc.creator.personnalName': author_data['author_first_name'] + ' ' + \
+                                    author_data['author_last_name'],
+        'dc.publisher': request.root.title,
+        'vp.relation.websitedebate': request.resource_url(
+            context, '@@index'),
+        'dc.rights': 'licence libre d’utilisation' if \
+                     accessible_to_anonymous else 'licence propriétaire',
+        'dc.language': 'fr',
+        'dc.format': 'text/html'
+    })
+    result['dc.type'] = 'débat public'
+    for member in members:
+        member_data = get_user_data(author, 'member', request)
+        title = member_data['member_first_name'] + ' ' + \
+            member_data['member_last_name']
+        result.add('dc.contributor.personalName', title)
+
+    return result
 
 
 ALL_DESCRIMINATORS = ['text-action',

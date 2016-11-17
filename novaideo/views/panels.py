@@ -39,10 +39,13 @@ from novaideo.utilities.util import (
     render_navbar_body,
     deepcopy,
     FOOTER_NAVBAR_TEMPLATE,
-    update_all_ajax_action)
+    update_all_ajax_action,
+    get_debatescore_data)
 from novaideo.views.filter import find_entities, find_more_contents
 from novaideo.contextual_help_messages import render_contextual_help
 from novaideo.steps import steps_panels
+from novaideo.content.idea import Idea
+from novaideo.content.proposal import Proposal
 
 
 MORE_NB = 20
@@ -595,3 +598,25 @@ class Channels(object):
             'others_channels': general_result_body,
         })
         return result
+
+
+@panel_config(
+    name='debatescore',
+    context=SearchableEntity,
+    renderer='templates/panels/debates_core.pt'
+    )
+class Debates_core(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        debatescore_data = {}
+        if self.request.view_name == 'index' and \
+           self.context.is_published and \
+           isinstance(self.context, (Idea, Proposal)):
+            debatescore_data = get_debatescore_data(
+                self.context, self.request)
+
+        return {'debatescore': debatescore_data}
