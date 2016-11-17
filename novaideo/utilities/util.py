@@ -697,7 +697,7 @@ def get_debatescore_data(context, request):
         'dc.type': 'interactive ressource',
         'vp.participationMode': 'en ligne',
         'dc.audience': 'tout public' if accessible_to_anonymous else \
-                       'repésentants',
+                       'représentants',
         'dc.creator.corporateName': organization.title if organization else \
                                     '',
         'dc.creator.personnalName': author_data['author_first_name'] + ' ' + \
