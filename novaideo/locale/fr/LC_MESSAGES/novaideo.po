@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-11-15 15:07+0100\n"
+"POT-Creation-Date: 2016-11-16 15:09+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -51,23 +51,55 @@ msgstr "La proposition"
 msgid "The idea"
 msgstr "L'idée"
 
-#: novaideo/__init__.py:563
+#: novaideo/__init__.py:39
+msgid "À caractère sexuel explicite"
+msgstr ""
+
+#: novaideo/__init__.py:40
+msgid "Le contenu est à caractère sexuel explicite."
+msgstr ""
+
+#: novaideo/__init__.py:44
+msgid "Violent ou dangereux"
+msgstr ""
+
+#: novaideo/__init__.py:45
+msgid "Le contenu est violent ou dangereux."
+msgstr ""
+
+#: novaideo/__init__.py:49
+msgid "Incitation à la haine, harcèlement ou intimidation"
+msgstr ""
+
+#: novaideo/__init__.py:50
+msgid "Le contenu incite à la haine, harcèlement ou intimidation."
+msgstr ""
+
+#: novaideo/__init__.py:54 novaideo/content/novaideo_application.py:241
+msgid "Other"
+msgstr "Autre"
+
+#: novaideo/__init__.py:55
+msgid "Une autre raison ? Veuillez détailler la raison de votre signalement."
+msgstr ""
+
+#: novaideo/__init__.py:604
 msgid "Legal notices"
 msgstr "Mentions légales"
 
-#: novaideo/__init__.py:564
+#: novaideo/__init__.py:605
 msgid "The legal notices"
 msgstr "Les mentions légales"
 
-#: novaideo/__init__.py:567
+#: novaideo/__init__.py:608
 msgid "Terms of use"
 msgstr "Conditions d'utilisation"
 
-#: novaideo/__init__.py:568
+#: novaideo/__init__.py:609
 msgid "The terms of use"
 msgstr "Les conditions d'utilisation"
 
-#: novaideo/__init__.py:285 novaideo/content/correlation.py:133
+#: novaideo/__init__.py:309 novaideo/content/correlation.py:133
 #: novaideo/content/novaideo_application.py:356
 msgid "General"
 msgstr "Générale"
@@ -144,17 +176,17 @@ msgstr "Modérateur"
 msgid "Examiner"
 msgstr "Examinateur"
 
-#: novaideo/core.py:221
+#: novaideo/core.py:222
 msgid "Channel"
 msgstr "Channel"
 
-#: novaideo/core.py:583 novaideo/content/idea.py:92
+#: novaideo/core.py:584 novaideo/content/idea.py:92
 #: novaideo/content/workspace.py:44 novaideo/content/proposal.py:115
 #: novaideo/content/comment.py:147
 msgid "File"
 msgstr "Fichier"
 
-#: novaideo/core.py:369
+#: novaideo/core.py:370
 #: novaideo/views/idea_management/templates/diff_result.pt:7
 #: novaideo/views/admin_process/manage_keywords.py:44
 #: novaideo/views/proposal_management/templates/see_proposal.pt:112
@@ -164,7 +196,7 @@ msgstr "Fichier"
 msgid "Keywords"
 msgstr "Mots clés"
 
-#: novaideo/core.py:370
+#: novaideo/core.py:371
 msgid ""
 "To add keywords, you need to tap the « Enter » key after each keyword or "
 "separate them with commas."
@@ -172,7 +204,7 @@ msgstr ""
 "Pour ajouter des mots clés, vous devez taper sur la touche « Entrée » après "
 "chaque mot clé ou les séparer par des virgules."
 
-#: novaideo/core.py:569 novaideo/views/filter/__init__.py:884
+#: novaideo/core.py:570 novaideo/views/filter/__init__.py:884
 #: novaideo/views/proposal_management/templates/idea_data.pt:3
 #: novaideo/views/correlation_management/templates/see_correlation.pt:7
 #: novaideo/content/idea.py:74 novaideo/content/correction.py:51
@@ -1161,13 +1193,14 @@ msgstr "Supression de l'idée"
 #: novaideo/views/idea_management/see_idea.py:30
 #: novaideo/views/proposal_management/see_proposal.py:40
 #: novaideo/views/correlation_management/see_correlation.py:21
+#: novaideo/content/report.py:73
 #: novaideo/content/processes/novaideo_file_management/definition.py:53
 #: novaideo/content/processes/novaideo_file_management/definition.py:54
 #: novaideo/content/processes/novaideo_file_management/behaviors.py:53
 #: novaideo/content/processes/newsletter_management/behaviors.py:153
 #: novaideo/content/processes/idea_management/definition.py:129
 #: novaideo/content/processes/idea_management/definition.py:130
-#: novaideo/content/processes/idea_management/behaviors.py:924
+#: novaideo/content/processes/idea_management/behaviors.py:926
 #: novaideo/content/processes/invitation_management/definition.py:56
 #: novaideo/content/processes/user_management/definition.py:79
 #: novaideo/content/processes/user_management/definition.py:80
@@ -1964,7 +1997,7 @@ msgstr "Inscriptions"
 #: novaideo/views/user_management/reset_password.py:38
 #: novaideo/views/user_management/reset_password.py:143
 #: novaideo/content/processes/newsletter_management/definition.py:70
-#: novaideo/content/processes/idea_management/behaviors.py:817
+#: novaideo/content/processes/idea_management/behaviors.py:819
 #: novaideo/content/processes/invitation_management/behaviors.py:112
 #: novaideo/content/processes/novaideo_view_manager/behaviors.py:318
 #: novaideo/web_services/export_entities.py:125
@@ -2291,6 +2324,24 @@ msgstr "Texte ajouté à la version d'origine"
 #: novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:56
 msgid "Text removed"
 msgstr "Texte supprimé"
+
+#: novaideo/views/reports_management/report.py:24
+#, fuzzy
+msgid "Alert for reporting"
+msgstr "Alerte pour supression"
+
+#: novaideo/views/reports_management/report.py:39
+#: novaideo/views/reports_management/report.py:62
+#: novaideo/content/processes/reports_management/definition.py:40
+msgid "Report"
+msgstr "Signaler"
+
+#: novaideo/views/reports_management/templates/alert_report.pt:2
+msgid ""
+"En cliquant sur « Continuer », le contenu sera soumis à modération. Vous "
+"devez expliquer cette décision, afin que les modérateurs comprennent le "
+"pourquoi de votre signalement."
+msgstr ""
 
 #: novaideo/views/system_process/deactivate_users.py:25
 msgid "Deactivate"
@@ -5225,10 +5276,6 @@ msgstr "Configurer les paramètres des utilisateurs"
 msgid "Configure keywords"
 msgstr "Configurer les mots clés"
 
-#: novaideo/content/novaideo_application.py:241
-msgid "Other"
-msgstr "Autre"
-
 #: novaideo/content/novaideo_application.py:249
 msgid "Configure the ui"
 msgstr "Configurer l'interface utilisateur"
@@ -5273,6 +5320,10 @@ msgstr "J'ai une idée !"
 #, python-format
 msgid "You do not have the right to assign these/this role(s): ${roles}"
 msgstr ""
+
+#: novaideo/content/report.py:64
+msgid "Reporting reasons"
+msgstr "Les raisons du signalement"
 
 #: novaideo/content/workspace.py:48
 msgid "Add file"
@@ -5898,7 +5949,7 @@ msgstr "Voir"
 #: novaideo/content/processes/idea_management/behaviors.py:76
 #: novaideo/content/processes/idea_management/behaviors.py:250
 #: novaideo/content/processes/idea_management/behaviors.py:339
-#: novaideo/content/processes/idea_management/behaviors.py:979
+#: novaideo/content/processes/idea_management/behaviors.py:981
 #: novaideo/content/processes/invitation_management/behaviors.py:232
 #: novaideo/content/processes/invitation_management/behaviors.py:263
 #: novaideo/content/processes/invitation_management/behaviors.py:292
@@ -5950,6 +6001,7 @@ msgstr "Enregistrer"
 #: novaideo/content/processes/user_management/behaviors.py:424
 #: novaideo/content/processes/user_management/behaviors.py:447
 #: novaideo/content/processes/user_management/behaviors.py:571
+#: novaideo/content/processes/reports_management/behaviors.py:39
 #: novaideo/content/processes/admin_process/behaviors.py:110
 #: novaideo/content/processes/proposal_management/behaviors.py:395
 #: novaideo/content/processes/proposal_management/behaviors.py:480
@@ -5960,10 +6012,10 @@ msgstr "Enregistrer"
 #: novaideo/content/processes/advertising_management/behaviors.py:149
 #: novaideo/content/processes/advertising_management/behaviors.py:183
 #: novaideo/content/processes/advertising_management/behaviors.py:213
-#: novaideo/content/processes/comment_management/behaviors.py:192
-#: novaideo/content/processes/comment_management/behaviors.py:241
-#: novaideo/content/processes/comment_management/behaviors.py:274
-#: novaideo/content/processes/comment_management/behaviors.py:300
+#: novaideo/content/processes/comment_management/behaviors.py:195
+#: novaideo/content/processes/comment_management/behaviors.py:244
+#: novaideo/content/processes/comment_management/behaviors.py:277
+#: novaideo/content/processes/comment_management/behaviors.py:303
 #: novaideo/content/processes/amendment_management/behaviors.py:232
 #: novaideo/content/processes/channel_management/behaviors.py:38
 #: novaideo/content/processes/channel_management/behaviors.py:68
@@ -6066,7 +6118,7 @@ msgid "Associate"
 msgstr "Associer"
 
 #: novaideo/content/processes/idea_management/definition.py:134
-#: novaideo/content/processes/idea_management/behaviors.py:945
+#: novaideo/content/processes/idea_management/behaviors.py:947
 #: novaideo/content/processes/proposal_management/definition.py:385
 #: novaideo/content/processes/proposal_management/behaviors.py:1351
 msgid "Compare"
@@ -6100,7 +6152,7 @@ msgid "Save and publish"
 msgstr "Enregistrer et publier"
 
 #: novaideo/content/processes/idea_management/behaviors.py:726
-#: novaideo/content/processes/idea_management/behaviors.py:825
+#: novaideo/content/processes/idea_management/behaviors.py:827
 #: novaideo/content/processes/user_management/behaviors.py:723
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:57
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:107
@@ -6227,6 +6279,15 @@ msgstr ""
 #: novaideo/content/processes/ballot_processes/majorityjudgment/definition.py:37
 msgid "Majority judgment Process"
 msgstr ""
+
+#: novaideo/content/processes/reports_management/definition.py:31
+#: novaideo/content/processes/reports_management/definition.py:32
+msgid "Reports management"
+msgstr "Gestion des signalisations"
+
+#: novaideo/content/processes/reports_management/definition.py:39
+msgid "Report the content"
+msgstr "Signaler le contenu"
 
 #: novaideo/content/processes/system_process/definition.py:55
 #: novaideo/content/processes/system_process/definition.py:56
@@ -6489,11 +6550,11 @@ msgid "Unpin"
 msgstr "Détacher"
 
 #: novaideo/content/processes/comment_management/definition.py:69
-#: novaideo/content/processes/comment_management/behaviors.py:320
+#: novaideo/content/processes/comment_management/behaviors.py:323
 msgid "Transform into an idea"
 msgstr "Transformer en une idée"
 
-#: novaideo/content/processes/comment_management/behaviors.py:82
+#: novaideo/content/processes/comment_management/behaviors.py:83
 msgid "Replay"
 msgstr "Répondre"
 
