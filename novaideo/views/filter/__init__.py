@@ -121,8 +121,11 @@ def content_types_query(node, **args):
     if not content_types:
         content_types = list(searchable_contents.keys())
 
-    if args.get('interfaces', []):
-        interfaces = [i.__identifier__ for i in args['interfaces']]
+    interfaces = value.get('interfaces', []) if value else []
+    interfaces.extend(args.get('interfaces', []))
+    interfaces = list(set(interfaces))
+    if interfaces:
+        interfaces = [i.__identifier__ for i in interfaces]
     else:
         interfaces = [list(searchable_contents[i].
                      __implemented__.interfaces())[0].__identifier__

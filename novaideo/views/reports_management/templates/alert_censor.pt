@@ -1,0 +1,3 @@
+<div class="alert alert-info" i18n:domain="novaideo">
+    <p i18n:translate="">En cliquant sur « Continuer », le contenu sera censuré. Vous devez expliquer cette décision.</p>
+</div>

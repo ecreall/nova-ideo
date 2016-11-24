@@ -38,7 +38,8 @@ from novaideo.core import (
     PresentableEntity,
     Channel,
     Node,
-    Emojiable)
+    Emojiable,
+    SignalableEntity)
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import text_urls_format, truncate_text
 
@@ -107,7 +108,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(Iidea)
 class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
-           Node, Emojiable):
+           Node, Emojiable, SignalableEntity):
     """Idea class"""
 
     type_title = _('Idea')

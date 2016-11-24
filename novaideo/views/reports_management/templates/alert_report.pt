@@ -1,0 +1,3 @@
+<div class="alert alert-info" i18n:domain="novaideo">
+    <p i18n:translate="">En cliquant sur « Continuer », le contenu sera soumis à modération. Vous devez expliquer cette décision, afin que les modérateurs comprennent le pourquoi de votre signalement.</p>
+</div>

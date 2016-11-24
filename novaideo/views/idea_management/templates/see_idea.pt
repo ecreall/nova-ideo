@@ -3,27 +3,24 @@
   id="index_${oid}"
   tal:define="support_condition request.support_ideas and 'published' in idea.state and 'examined' not in idea.state;
   icon getattr(idea, 'icon');
-  oid idea.__oid__">
+  oid idea.__oid__;">
   <div tal:replace="structure navbar_body"/>
   <div class="media-body content-title-body">
-    <div tal:condition="cant_publish" role="alert" class="alert alert-info alert-dismissible">
+    <div tal:condition="cant_publish or cant_submit" role="alert" class="alert alert-info alert-dismissible">
        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
        <span class="glyphicon glyphicon-info-sign pull-right"></span>
         <span  i18n:translate="">Pour que votre idée dupliquée puisse être publiée, vous devez préalablement la modifier pour qu'elle ne soit pas identique à l'idée d'origine.</span>
     </div>
-
-    <div tal:condition="cant_submit" role="alert" class="alert alert-info alert-dismissible">
-       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-       <span class="glyphicon glyphicon-info-sign pull-right"></span>
-        <span  i18n:translate="">Pour que votre idée dupliquée puisse être soumise, vous devez préalablement la modifier pour qu'elle ne soit pas identique à l'idée d'origine.</span>
-    </div>
-
-  <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-  <h3 class="content-title"
-      data-title="${idea.title}"
-      data-icon="${icon}"
-      data-img=""
-    ><span class="icon ${icon}"></span> ${idea.title}</h3>
+    <h4 tal:condition="state">
+      <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
+    </h4>
+    <h3 class="content-title"
+        data-title="${idea.title}"
+        data-icon="${icon}"
+        data-img=""
+      >
+      <span class="icon ${icon}"></span> ${idea.title}
+    </h3>
     <div class="object-description"
       tal:define="author idea.author;
                   original idea.originalentity;
@@ -45,12 +42,17 @@
           </span>
         </div>
         <span tal:omit-tag="" tal:condition="original is not None"><span i18n:translate="">, duplicated from the idea</span> <a tal:attributes="href request.resource_url(original, '@@index')">${original.title}</a></span>
-       <span tal:omit-tag="" tal:condition="current_version and not is_current"><span i18n:translate="">, previous version of the current version of the idea</span> <a tal:attributes="href request.resource_url(current_version, '@@index')">${current_version.title}</a></span>
+        <span tal:omit-tag="" tal:condition="current_version and not is_current"><span i18n:translate="">, previous version of the current version of the idea</span> <a tal:attributes="href request.resource_url(current_version, '@@index')">${current_version.title}</a></span>
      </small>
     </div>
   </div>
-
-<div tal:condition="support_condition" 
+  <div tal:condition="is_censored">
+   <div class="alert-terms-of-use">
+    This content does not respect terms of use.
+   </div>
+  </div>
+  <div tal:condition="not to_hide">
+  <div tal:condition="support_condition" 
         tal:define="
               support any(t.owner is current_user for t in idea.tokens_support);
               oppose any(t.owner is current_user for t in idea.tokens_opposition);
@@ -77,10 +79,10 @@
               data-action="${request.resource_url(idea, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
               class="token token-toggle ${not active and 'disabled' or 'active'} token-danger octicon octicon-triangle-down ${oppose and 'my-token'}"></span>
         </span>
-        </div>
+  </div>
 
 
-  <div id="contenttext" class="content-text ${support_condition and 'row-md'}"  i18n:domain="novaideo"
+   <div id="contenttext" class="content-text ${support_condition and 'row-md'}"  i18n:domain="novaideo"
     tal:define="files idea.get_attached_files_data();
                 len_files len(files)">
     <div tal:omit-tag="not files">
@@ -137,24 +139,24 @@
           </div>
         </div>
     </div>
-
   </div>
 
   <div tal:condition="files" id="idea_files" class="attached-files" i18n:domain="novaideo">
-  <small>
-   <blockquote class="attached-contents" tal:define="file_len len(files)">
-     <dl >
-     <dt tal:condition="file_len>1" i18n:translate="">Attachments:</dt>
-     <dt tal:condition="file_len==1" i18n:translate="">Attachment:</dt>
-     <dd>
-        <tal:loop repeat="f layout.render_files(idea.attached_files)">
-          <div tal:replace="structure f"/>
-        </tal:loop>
-     </dd>
-   </dl>
-   </blockquote>
-  </small>
+    <small>
+     <blockquote class="attached-contents" tal:define="file_len len(files)">
+       <dl>
+         <dt tal:condition="file_len>1" i18n:translate="">Attachments:</dt>
+         <dt tal:condition="file_len==1" i18n:translate="">Attachment:</dt>
+         <dd>
+            <tal:loop repeat="f layout.render_files(idea.attached_files)">
+              <div tal:replace="structure f"/>
+            </tal:loop>
+         </dd>
+      </dl>
+     </blockquote>
+    </small>
   </div>
+ </div>
   <div class="content-footer">
     <div class="actions-block">
         <div tal:replace="structure footer_body"/>

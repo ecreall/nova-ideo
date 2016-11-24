@@ -33,6 +33,30 @@ DEFAULT_SESSION_TIMEOUT = 25200
 ANALYTICS_DEFAUT_CONTENTS = ['idea', 'proposal']
 
 
+REPORTING_REASONS = {
+    'sexual': {
+        'order': 1,
+        'title': _('À caractère sexuel explicite'),
+        'description': _('Le contenu est à caractère sexuel explicite.')
+    },
+    'violent_dangerous': {
+        'order': 2,
+        'title': _('Violent ou dangereux'),
+        'description': _('Le contenu est violent ou dangereux.')
+    },
+    'hatred': {
+        'order': 3,
+        'title': _('Incitation à la haine, harcèlement ou intimidation'),
+        'description': _('Le contenu incite à la haine, harcèlement ou intimidation.')
+    },
+    'other': {
+        'order': 100,
+        'title': _('Other'),
+        'description': _('Une autre raison ? Veuillez détailler la raison de votre signalement.')
+    }
+}
+
+
 ACCESS_ACTIONS = {}
 
 
@@ -497,6 +521,22 @@ def format_ideas(root, registry):
     log.info('Ideas evolved.')
 
 
+def publish_comments(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IComment
+
+    contents = find_entities(
+        interfaces=[IComment]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        node.state = PersistentList(['published'])
+        node.reindex()
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Comments published')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -534,6 +574,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_mails)
     config.add_evolution_step(evolve_access_keys)
     config.add_evolution_step(format_ideas)
+    config.add_evolution_step(publish_comments)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

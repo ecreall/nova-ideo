@@ -1,6 +1,18 @@
 <div tal:define="icon object.icon">
-  <div tal:define="subject object.subjects[0]">
+  <div tal:define="
+  	    subject object.subjects[0];
+  	    alert_kind getattr(object, 'alert_kind', '');">
     <h5><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h5>
-    <span>Les modérateurs ont statué sur la contribution <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+    <span tal:condition="alert_kind == 'moderation'">
+    	Les modérateurs ont statué sur la contribution <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+    <span tal:condition="alert_kind == 'new_report'">
+      Une nouvelle signalisation vient d'être ajoutée. Les signalisations sont accessibles <a href="${request.resource_url(request.root, '@@seereports')}">ici</a>.
+    </span>
+    <span tal:condition="alert_kind == 'object_restor'">
+      La contribution  <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> a été restorée.
+    </span>
+    <span tal:condition="alert_kind == 'object_censor'">
+      La contribution  <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> a été censurée.
+    </span>
   </div>
 </div>

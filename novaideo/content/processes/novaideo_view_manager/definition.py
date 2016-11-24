@@ -33,7 +33,8 @@ from .behaviors import (
     SeeUsers,
     SeeAnalytics,
     SeeHome,
-    SeeGraph
+    SeeGraph,
+    SeeReportedContents
     )
 from novaideo import _
 
@@ -86,6 +87,10 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                 seeideastomoderate = ActivityDefinition(contexts=[SeeIdeasToModerate],
                                        description=_("Ideas to moderate"),
                                        title=_("Ideas to moderate"),
+                                       groups=[_('See')]),
+                seereportedcontents = ActivityDefinition(contexts=[SeeReportedContents],
+                                       description=_("Reported contents"),
+                                       title=_("Reported contents"),
                                        groups=[_('See')]),
                 seeideastoexamine = ActivityDefinition(contexts=[SeeIdeasToExamine],
                                        description=_("Ideas to examine"),
@@ -144,6 +149,8 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('seeideastomoderate', 'eg'),
                 TransitionDefinition('pg', 'seeproposalstomoderate'),
                 TransitionDefinition('seeproposalstomoderate', 'eg'),
+                TransitionDefinition('pg', 'seereportedcontents'),
+                TransitionDefinition('seereportedcontents', 'eg'),
                 TransitionDefinition('pg', 'seehistory'),
                 TransitionDefinition('seehistory', 'eg'),
                 TransitionDefinition('pg', 'contact'),

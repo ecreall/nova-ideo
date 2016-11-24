@@ -11,32 +11,37 @@ Comment management process definition.
 """
 import datetime
 import pytz
+from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
     get_current,
     grant_roles,
-    has_role)
-from dace.processinstance.activity import InfiniteCardinality
+    has_role,
+    has_any_roles)
+from dace.processinstance.activity import (
+    InfiniteCardinality, ActionType)
 
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.content.interface import IComment
-from novaideo import _
+from novaideo import _, nothing
 from novaideo.utilities.util import connect, disconnect
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from . import VALIDATOR_BY_CONTEXT
+from novaideo.core import access_action, serialize_roles
 
 
 def respond_relation_validation(process, context):
     subject = context.subject
     try:
-        if subject.__class__ in VALIDATOR_BY_CONTEXT:
-            comment_action = VALIDATOR_BY_CONTEXT[subject.__class__]
-            return comment_action.relation_validation.__func__(process, subject)
+        comment_action = VALIDATOR_BY_CONTEXT.get(
+            subject.__class__, {}).get('action', None)
+        return comment_action.relation_validation.__func__(
+            process, subject) if comment_action else True
     except Exception:
         return True
 
@@ -44,9 +49,10 @@ def respond_relation_validation(process, context):
 def respond_roles_validation(process, context):
     subject = context.subject
     try:
-        if subject.__class__ in VALIDATOR_BY_CONTEXT:
-            comment_action = VALIDATOR_BY_CONTEXT[subject.__class__]
-            return comment_action.roles_validation.__func__(process, subject)
+        comment_action = VALIDATOR_BY_CONTEXT.get(
+            subject.__class__, {}).get('action', None)
+        return comment_action.roles_validation.__func__(
+            process, subject) if comment_action else True
     except Exception:
         return True
 
@@ -54,20 +60,24 @@ def respond_roles_validation(process, context):
 def respond_processsecurity_validation(process, context):
     subject = context.subject
     try:
-        if subject.__class__ in VALIDATOR_BY_CONTEXT:
-            comment_action = VALIDATOR_BY_CONTEXT[subject.__class__]
-            return comment_action.processsecurity_validation.__func__(
-                process, subject)
+        comment_action = VALIDATOR_BY_CONTEXT.get(
+            subject.__class__, {}).get('action', None)
+        return comment_action.processsecurity_validation.__func__(
+            process, subject) if comment_action else True
     except Exception:
         return True
 
 
 def respond_state_validation(process, context):
+    if 'published' not in context.state:
+        return False
+
     subject = context.subject
     try:
-        if subject.__class__ in VALIDATOR_BY_CONTEXT:
-            comment_action = VALIDATOR_BY_CONTEXT[subject.__class__]
-            return comment_action.state_validation.__func__(process, subject)
+        comment_action = VALIDATOR_BY_CONTEXT.get(
+            subject.__class__, {}).get('action', None)
+        return comment_action.state_validation.__func__(
+            process, subject) if comment_action else True
     except Exception:
         return True
 
@@ -78,6 +88,7 @@ class Respond(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_interaction_type = 'comment-replay'
     style_action_class = 'comment-inline-toggle'
+    style_interaction_contextual = True
     style_order = 0
     title = _('Replay')
     access_controled = True
@@ -94,11 +105,13 @@ class Respond(InfiniteCardinality):
         comment.format(request)
         user = get_current()
         comment.setproperty('author', user)
+        comment.state = PersistentList(['published'])
         grant_roles(user=user, roles=(('Owner', comment), ))
         content = comment.subject
         channel = comment.channel
         is_discuss = channel.is_discuss()
         channel.add_comment(comment)
+        comment.reindex()
         if not is_discuss and content and content is not root:
             content.subscribe_to_channel(user)
 
@@ -174,7 +187,11 @@ class Respond(InfiniteCardinality):
         return {'newcontext': comment.subject}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(kw['newcontext'], '@@index'))
+        return nothing
+
+
+def state_validation(process, context):
+    return 'published' in context.state
 
 
 def edit_roles_validation(process, context):
@@ -188,10 +205,12 @@ class Edit(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_interaction_type = 'comment-replay'
     style_action_class = 'comment-edit-action comment-inline-toggle'
+    style_interaction_contextual = True
     style_order = 2
     submission_title = _('Continue')
     context = IComment
     roles_validation = edit_roles_validation
+    state_validation = state_validation
 
     def start(self, context, request, appstruct, **kw):
         context.edited = True
@@ -222,8 +241,7 @@ class Edit(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return nothing
 
 
 def rm_processsecurity_validation(process, context):
@@ -255,8 +273,7 @@ class Remove(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return nothing
 
 
 def pin_processsecurity_validation(process, context):
@@ -274,6 +291,7 @@ class Pin(InfiniteCardinality):
     submission_title = _('Continue')
     context = IComment
     roles_validation = pin_processsecurity_validation
+    state_validation = state_validation
 
     def start(self, context, request, appstruct, **kw):
         context.pinned = True
@@ -281,8 +299,7 @@ class Pin(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return nothing
 
 
 def unpin_processsecurity_validation(process, context):
@@ -300,6 +317,7 @@ class Unpin(InfiniteCardinality):
     submission_title = _('Continue')
     context = IComment
     roles_validation = unpin_processsecurity_validation
+    state_validation = state_validation
 
     def start(self, context, request, appstruct, **kw):
         context.pinned = False
@@ -307,8 +325,7 @@ class Unpin(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        root = getSite()
-        return HTTPFound(request.resource_url(root))
+        return nothing
 
 
 class TransformToIdea(CreateIdea):
@@ -319,5 +336,42 @@ class TransformToIdea(CreateIdea):
     style_order = 3
     title = _('Transform into an idea')
     context = IComment
+    state_validation = state_validation
+
+
+def get_access_key(obj):
+    if 'published' in obj.state:
+        subject = obj.subject
+        access_key = VALIDATOR_BY_CONTEXT.get(
+            subject.__class__, {}).get('access_key', None)
+        return access_key(subject) if access_key else ['always']
+    else:
+        return serialize_roles(
+            (('Owner', obj), 'SiteAdmin', 'Admin', 'Moderator'))
+
+
+def seecomment_processsecurity_validation(process, context):
+    if 'published' in context.state:
+        subject = context.subject
+        see_action = VALIDATOR_BY_CONTEXT.get(
+            subject.__class__, {}).get('see', None)
+        return see_action.processsecurity_validation(
+            process, subject) if see_action else True
+    else:
+        return has_any_roles(
+            roles=(('Owner', context), 'Moderator'))
+
+
+@access_action(access_key=get_access_key)
+class SeeComment(InfiniteCardinality):
+    """SeeComment is the behavior allowing access to context"""
+    context = IComment
+    processsecurity_validation = seecomment_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 #TODO behaviors

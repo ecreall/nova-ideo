@@ -6,7 +6,7 @@
                    <div tal:define="item items[0]" tal:replace="item['view'].render_item(item, coordinates, None)" />
                </div>
                <div tal:omit-tag="" tal:condition="items and itemslen > 1">
-                   <div tal:repeat="item items" >
+                   <div tal:repeat="item items" class="${item['view'].css_class}">
                       <div tal:replace="item['view'].render_item(item, coordinates, subitem['view'])" />
                    </div>
                </div>

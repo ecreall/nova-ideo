@@ -44,7 +44,7 @@ from novaideo.views.organization_management.see_organizations import (
     CONTENTS_MESSAGES as ORGANIZATION_CONTENTS_MESSAGES)
 from novaideo.utilities.util import (
     update_all_ajax_action, render_listing_obj,
-    render_view_obj)
+    render_index_obj, render_view_obj, render_view_comment)
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import (
     IPreregistration, IInvitation, IOrganization,
@@ -85,8 +85,15 @@ def _render_obj_view(id_, user, request):
                     request, obj, user)}
 
             if type_ == 'index':
-                return {id_+'.body': render_view_obj(
+                return {id_+'.body': render_index_obj(
                     request, obj, user)}
+
+            if type_ == 'comment':
+                return {id_+'.body': render_view_comment(
+                    request, obj)}
+
+            return {id_+'.body': render_view_obj(
+                request, obj, type_)}
         else:
             return {id_+'.delated': True}
 
@@ -458,23 +465,29 @@ def get_comment_metadata(action, request, context, api, **kwargs):
         'action_item_nb': context.channel.len_comments,
         'action_title': request.localizer.translate(action.title),
         'action_icon': getattr(action, 'style_picto', ''),
-        'new_body': body
+        'new_body': body,
+        'object_views_to_update': [
+            'listing_'+contextoid,
+            'comment_'+contextoid]
     }
     return result
 
 
 def get_edit_comment_metadata(action, request, context, api, **kwargs):
-    body = None
+    status = False
     if 'view_data' in kwargs:
-        comments = [context]
-        result_view = CommentsView(context, request)
-        result_view.comments = comments
-        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+        status = True
 
+    contextoid = str(get_oid(context, None))
     result = {
         'action': 'footer_action',
         'view': api,
-        'new_body': body}
+        'status': status,
+        'object_views_to_update': [
+            'listing_'+contextoid,
+            'comment_'+contextoid]
+        }
+
     return result
 
 
@@ -504,6 +517,15 @@ def get_remove_comment_metadata(action, request, context, api, **kwargs):
                     _('Le commentaire est maintenant supprimé.')),
                 'alert_type': 'success'
             })
+    result['object_views_to_update'] = [
+        'listing_'+str(kwargs.get('comment_oid', None)),
+        'comment_'+str(kwargs.get('comment_oid', None))]
+    comment_parent = kwargs.get('comment_parent', None)
+    if comment_parent:
+        parent_oid = str(get_oid(comment_parent, None))
+        result['object_views_to_update'].extend(
+            ['comment_'+parent_oid,
+             'listing_'+parent_oid])
 
     return result
 
@@ -517,10 +539,16 @@ def get_general_discuss_metadata(action, request, context, api, **kwargs):
         result_view.comments = comments
         body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
 
+    contextoid = str(get_oid(context, None))
     result = {
         'action': 'footer_action',
         'view': api,
-        'new_body': body}
+        'new_body': body,
+        'object_views_to_update': [
+            'listing_'+contextoid,
+            'comment_'+contextoid,
+            ]
+        }
     return result
 
 
@@ -548,7 +576,10 @@ def get_discuss_metadata(action, request, context, api, **kwargs):
         'action_item_nb': getattr(channel, 'len_comments', 0),
         'action_title': request.localizer.translate(action.title),
         'action_icon': getattr(action, 'style_picto', ''),
-        'new_body': body
+        'new_body': body,
+        'object_views_to_update': [
+            'listing_'+contextoid,
+            'comment_'+contextoid]
     }
     return result
 
@@ -584,9 +615,13 @@ def get_respond_metadata(action, request, context, api, **kwargs):
                 'components': [actionoid + '-' + contextoid],
                 'action_item_nb': channel.len_comments,
                 'action_title': request.localizer.translate(action.title),
-                'action_icon': getattr(action, 'style_picto', '')
+                'action_icon': getattr(action, 'style_picto', ''),
             })
 
+    contextoid = str(get_oid(context))
+    result['object_views_to_update'] = [
+        'listing_'+contextoid,
+        'comment_'+contextoid]
     return result
 
 
@@ -666,6 +701,33 @@ def get_withdraw_user_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_comment_pin_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le commentaire a bien été épinglé."),
+        **kwargs)
+    contextoid = str(get_oid(context, None))
+    result['object_views_to_update'] = [
+        'listing_'+contextoid,
+        'comment_'+contextoid
+    ]
+    return result
+
+
+def get_comment_unpin_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le commentaire a bien été détaché."),
+        **kwargs)
+    contextoid = str(get_oid(context, None))
+    result['object_views_to_update'] = [
+        'listing_'+contextoid,
+        'comment_'+contextoid
+    ]
+    return result
+
 #Invitations
 
 def get_remove_invitation_metadata(action, request, context, api, **kwargs):
@@ -726,6 +788,88 @@ def get_refuse_invitation_metadata(action, request, context, api, **kwargs):
          _("L'invité ${context} a bien été réfusée.",
           mapping={'context': context.first_name + ' ' + context.last_name}),
         'seeinvitations', **kwargs)
+
+
+def get_report_entity_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le contenu a bien été signalé."),
+        **kwargs)
+    if result.get('is_excuted'):
+        context_id = str(get_oid(context, None))
+        result['object_views_to_update'] = [
+            'listing_'+context_id,
+            'index_'+context_id,
+            'seereports_'+context_id,
+            'comment_'+context_id]
+
+    return result
+
+
+def get_ignore_entity_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Les signalisations ont bien été ignorées."),
+        **kwargs)
+    if result.get('is_excuted'):
+        context_id = str(get_oid(context, None))
+        result['object_views_to_update'] = [
+            'listing_'+context_id,
+            'index_'+context_id,
+            'seereports_'+context_id,
+            'comment_'+context_id]
+
+    return result
+
+
+def get_censor_entity_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le contenu a bien été censuré."),
+        **kwargs)
+    if result.get('is_excuted'):
+        source_view_name = kwargs.get('view_name', '')
+        context_id = str(get_oid(context, None))
+        result['object_views_to_update'] = [
+            'index_'+context_id,
+            'seereports_'+context_id,
+            'comment_'+context_id
+        ]
+        view_name = 'seemycontents'
+        if source_view_name != view_name:
+            result['objects_to_hide'] = [
+                'listing_'+context_id]
+            result['counters-to-update'] = [
+                'home-ideas-counter',
+                'person-ideas-counter',
+                'novideo-contents-ideas'
+            ]
+
+    return result
+
+
+def get_restor_entity_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le contenu a bien été restoré."),
+        **kwargs)
+    if result.get('is_excuted'):
+        context_id = str(get_oid(context, None))
+        result['object_views_to_update'] = [
+            'listing_'+context_id,
+            'index_'+context_id,
+            'seereports_'+context_id,
+            'comment_'+context_id]
+        result['counters-to-update'] = [
+            'person-ideas-counter'
+        ]
+
+    return result
+
 #Registrations
 
 def get_remind_registration_metadata(action, request, context, api, **kwargs):
@@ -1355,6 +1499,11 @@ METADATA_GETTERS = {
     'novaideoabstractprocess.deselect': get_selection_metadata,
     'novaideoprocessmanagement.update': get_update_processes_metadata,
 
+    'reportsmanagement.report': get_report_entity_metadata,
+    'reportsmanagement.censor': get_censor_entity_metadata,
+    'reportsmanagement.ignore': get_ignore_entity_metadata,
+    'reportsmanagement.restor': get_restor_entity_metadata,
+
     'novaideoviewmanager.contact': get_default_action_metadata,
 
     'newslettermanagement.subscribe': get_default_action_metadata,
@@ -1407,6 +1556,8 @@ METADATA_GETTERS = {
     'usermanagement.general_discuss': get_general_discuss_metadata,
     'usermanagement.assign_roles': get_assigne_roles_user_metadata,
 
+    'commentmanagement.pin': get_comment_pin_metadata,
+    'commentmanagement.unpin': get_comment_unpin_metadata,
     'commentmanagement.respond': get_respond_metadata,
     'commentmanagement.remove': get_remove_comment_metadata,
     'commentmanagement.edit': get_edit_comment_metadata,

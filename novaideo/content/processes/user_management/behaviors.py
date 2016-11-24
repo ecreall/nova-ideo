@@ -29,7 +29,6 @@ from dace.objectofcollaboration.principal.util import (
     has_any_roles,
     revoke_roles,
     get_roles,
-    Anonymous,
     get_users_with_role)
 from dace.processinstance.activity import (
     InfiniteCardinality,
@@ -377,7 +376,6 @@ class Registration(InfiniteCardinality):
             subject = mail_template['subject'].format(
                 novaideo_title=root.title)
             url = request.resource_url(preregistration, '@@index')
-            localizer = request.localizer
             for admin in [a for a in admins if getattr(a, 'email', '')]:
                 recipientdata = get_user_data(admin, 'recipient', request)
                 message = mail_template['template'].format(
@@ -515,7 +513,6 @@ class ConfirmRegistration(InfiniteCardinality):
 
         transaction.commit()
         if email:
-            localizer = request.localizer
             mail_template = root.get_mail_template('registration_confiramtion')
             subject = mail_template['subject'].format(
                 novaideo_title=root.title)
@@ -605,7 +602,8 @@ class Remind(InfiniteCardinality):
 def get_access_key_reg(obj):
     organization = getattr(obj, 'organization', None)
     if organization:
-        return serialize_roles(('SiteAdmin', 'Admin', ('OrganizationResponsible', obj)))
+        return serialize_roles(
+            ('SiteAdmin', 'Admin', ('OrganizationResponsible', obj)))
 
     return serialize_roles(('SiteAdmin', 'Admin'))
 
@@ -771,6 +769,8 @@ class Discuss(InfiniteCardinality):
         if channel:
             channel.addtoproperty('comments', comment)
             channel.add_comment(comment)
+            comment.state = PersistentList(['published'])
+            comment.reindex()
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
@@ -848,6 +848,8 @@ class GeneralDiscuss(InfiniteCardinality):
         if channel:
             channel.addtoproperty('comments', comment)
             channel.add_comment(comment)
+            comment.state = PersistentList(['published'])
+            comment.reindex()
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
@@ -872,6 +874,14 @@ class GeneralDiscuss(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 #TODO behaviors
 
-VALIDATOR_BY_CONTEXT[Person] = Discuss
+VALIDATOR_BY_CONTEXT[Person] = {
+    'action': Discuss,
+    'see': SeePerson,
+    'access_key': get_access_key
+}
 
-VALIDATOR_BY_CONTEXT[NovaIdeoApplication] = GeneralDiscuss
+VALIDATOR_BY_CONTEXT[NovaIdeoApplication] = {
+    'action': GeneralDiscuss,
+    'see': None,
+    'access_key': None
+}

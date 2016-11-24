@@ -1,0 +1,8 @@
+<div tal:omit-tag="" i18n:domain="novaideo">
+	<div class="reason-title">
+	    ${title}
+	</div>
+	<small class="reason-text">
+		${description}
+	</small>
+</div>

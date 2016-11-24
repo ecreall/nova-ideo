@@ -261,6 +261,9 @@ class NovaideoAPI(IndexManagementJsonView):
         return {'body': ''}
 
     def remove_comment(self):
+        comment_oid = get_oid(self.context, None)
+        comment_root = self.context.root
+        comment_parent = self.context.comment_parent
         channel = self.context.channel
         subject = channel.subject
         result = self._update_action_view('remove')
@@ -270,25 +273,11 @@ class NovaideoAPI(IndexManagementJsonView):
             result.update(get_components_data(
                 **get_all_updated_data(
                     action, self.request,
-                    subject, self, channel=channel)))
+                    subject, self, channel=channel,
+                    comment_oid=comment_oid,
+                    comment_root=comment_root,
+                    comment_parent=comment_parent)))
         return result
-
-    def update_comment(self):
-        comment_id = self.params('comment_id')
-        if comment_id:
-            try:
-                comment = get_obj(int(comment_id))
-                if not comment:
-                    return {'body': '', 'removed': True}
-
-                result_view = CommentsView(self.context, self.request)
-                result_view.comments = [comment]
-                body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-                return {'body': body}
-            except Exception as error:
-                log.warning(error)
-
-        return {'body': ''}
 
     def get_user_alerts(self):
         user = get_current()

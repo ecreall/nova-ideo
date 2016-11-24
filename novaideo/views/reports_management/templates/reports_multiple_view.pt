@@ -1,0 +1,21 @@
+<div 
+  class="content-view component-obj-view component-index-view" i18n:domain="novaideo"
+  data-component_type="object-view"
+  id="seereports_${oid}"
+  tal:define="
+      oid subitem['view'].context.__oid__;
+      item subitem|nothing; hasparent (subitem['view'].parent is not None)">
+    <div tal:omit-tag="" tal:condition="item">
+            <div tal:omit-tag="" tal:define=" items subitem['items'];
+                                  itemslen len(items)|0">
+               <div tal:omit-tag="" tal:condition="items and itemslen == 1">
+                   <div tal:define="item items[0]" tal:replace="item['view'].render_item(item, coordinates, None)" />
+               </div>
+               <div tal:omit-tag="" tal:condition="items and itemslen > 1">
+                   <div tal:repeat="item items" class="${item['view'].css_class}">
+                      <div tal:replace="item['view'].render_item(item, coordinates, subitem['view'])" />
+                   </div>
+               </div>
+            </div>
+    </div>
+</div>

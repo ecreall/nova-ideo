@@ -1,5 +1,16 @@
 <div tal:define="icon 'octicon octicon-check'">
-  <div tal:define="subject object.subjects[0]">
-    <span>Les modérateurs ont statué sur cette contribution.</span>
+  <div tal:define="
+  	    subject object.subjects[0];
+  	    alert_kind getattr(object, 'alert_kind', '');">
+    <span tal:condition="alert_kind == 'moderation'">Les modérateurs ont statué sur cette contribution.</span>
+    <span tal:condition="alert_kind == 'new_report'">
+      Une nouvelle signalisation vient d'être ajoutée.
+    </span>
+    <span tal:condition="alert_kind == 'object_restor'">
+      La contribution ${subject.get_title()} a été restorée.
+    </span>
+    <span tal:condition="alert_kind == 'object_censor'">
+      La contribution ${subject.get_title()} a été censurée.
+    </span>
   </div>
 </div>

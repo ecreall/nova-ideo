@@ -131,8 +131,18 @@ class ICommentable(IEntity):
     pass
 
 
+@interface(True)
+class ISignalableEntity(IEntity):
+    pass
+
+
 @interface()
-class IComment(ICommentable, IIdeaSource):
+class ISReport(IEntity):
+    pass
+
+
+@interface()
+class IComment(ICommentable, IIdeaSource, ISignalableEntity):
     pass
 
 
@@ -163,7 +173,8 @@ class Iidea(IDuplicableEntity,
             ISearchableEntity,
             ICorrelableEntity,
             IPresentableEntity,
-            INode):
+            INode,
+            ISignalableEntity):
 
     text = Attribute('text')
 
@@ -235,7 +246,8 @@ class IProposal(ISearchableEntity,
                 ICorrelableEntity,
                 IDuplicableEntity,
                 IPresentableEntity,
-                INode):
+                INode,
+                ISignalableEntity):
 
     text = Attribute('text')
 

@@ -546,4 +546,8 @@ class SeeAmendment(InfiniteCardinality):
 
 #TODO behaviors
 
-VALIDATOR_BY_CONTEXT[Amendment] = CommentAmendment
+VALIDATOR_BY_CONTEXT[Amendment] = {
+    'action': CommentAmendment,
+    'see': SeeAmendment,
+    'access_key': get_access_key
+}

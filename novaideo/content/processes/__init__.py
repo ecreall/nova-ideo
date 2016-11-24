@@ -31,6 +31,7 @@ STATES_PARTICIPANT_MAPPING = {
     },
     'proposal': {
         'draft': _('Draft'),
+        'censored': _('Censored'),
         'submitted_support': _('Submitted for support'),
         'submitted': _('Submitted for moderation'),
         'published': _('Published'),
@@ -47,6 +48,7 @@ STATES_PARTICIPANT_MAPPING = {
     },
     'idea': {
 	    'to work': _('To work'),
+        'censored': _('Censored'),
         'submitted_support': _('Submitted for support'),
 	    'submitted': _('Submitted for moderation'),
 	    'archived': _('Archived'),
@@ -96,6 +98,7 @@ STATES_MEMBER_MAPPING = {
     },
     'proposal': {
         'draft': _('Draft'),
+        'censored': _('Censored'),
         'submitted_support': _('Submitted for support'),
         'submitted': _('Submitted for moderation'),
         'published': _('Published'),
@@ -112,6 +115,7 @@ STATES_MEMBER_MAPPING = {
     },
     'idea': {
 	    'to work': _('To work'),
+        'censored': _('Censored'),
         'submitted_support': _('Submitted for support'),
 	    'submitted': _('Submitted for moderation'),
 	    'archived': _('Archived'),

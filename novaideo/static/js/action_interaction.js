@@ -65,6 +65,7 @@ function update_modal_action(event){
              finish_progress()
              focus_on_form(modal_container)
              modal_container.data('action_id', action.attr('id'))
+             init_emoji($(modal_container.find('.emoji-container:not(.emojified)')));
              return false
           }else{
              location.reload();
@@ -263,6 +264,7 @@ function update_sidebar_action(){
            init_emoji(target.find('.emoji-container:not(.emojified)'));
            init_content_text_scroll(target.find(".content-text-scroll"))
            rebuild_scrolls(target.find('.malihu-scroll'))
+           initscroll(target.find(".result-scroll"))
            finish_progress()
            focus_on_form(target)
         }else{
@@ -295,6 +297,7 @@ function update_popover_action(){
            target.html(action_body);
            init_emoji($(target.find('.emoji-container:not(.emojified)')));
            rebuild_scrolls($(target.find('.malihu-scroll')))
+           initscroll(target.find(".result-scroll"))
            $this.addClass('activated')
            var position = $this.offset()
            popover_container.css('top', position.top-$(document).scrollTop()-(popover_container.height()/2)+'px')

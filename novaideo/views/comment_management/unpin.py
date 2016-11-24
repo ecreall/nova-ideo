@@ -5,6 +5,7 @@
 # author: Amen Souissi
 import deform
 from pyramid.view import view_config
+from pyramid import renderers
 
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -26,8 +27,13 @@ class UnpinViewStudyReport(BasicView):
     def update(self):
         result = {}
         user = get_current()
-        values = {'comment': self.context,
+        values = {'object': self.context,
                   'current_user': user}
+        comment_body = renderers.render(
+            self.context.templates.get('default'),
+            values,
+            self.request)
+        values = {'comment_body': comment_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

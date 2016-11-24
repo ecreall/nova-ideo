@@ -27,5 +27,10 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
+    <div tal:condition="'censored' in object.state">
+     <div class="alert-terms-of-use">
+      This content does not respect terms of use.
+     </div>
+    </div>
   </div>
 </div>

@@ -24,7 +24,8 @@ from pontus.schema import Schema
 from pontus.file import ObjectData, File
 
 from .interface import IComment
-from novaideo.core import Commentable, Emojiable, can_access
+from novaideo.core import (
+    Commentable, Emojiable, can_access, SignalableEntity)
 from novaideo import _, log
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
@@ -168,8 +169,10 @@ class CommentSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IComment)
-class Comment(Commentable, Emojiable):
+class Comment(Commentable, Emojiable, SignalableEntity):
     """Comment class"""
+    icon = 'icon ion-chatbubbles'
+    templates = {'default': 'novaideo:views/templates/comment_result.pt'}
     name = renamer()
     author = SharedUniqueProperty('author')
     files = CompositeMultipleProperty('files')
@@ -193,6 +196,24 @@ class Comment(Commentable, Emojiable):
             return self.__parent__.channel
 
     @property
+    def root(self):
+        """Return the root comment"""
+
+        if not isinstance(self.__parent__, Comment):
+            return self
+        else:
+            return self.__parent__.root
+
+    @property
+    def comment_parent(self):
+        """Return the root comment"""
+
+        if isinstance(self.__parent__, Comment):
+            return self.__parent__
+        else:
+            return None
+
+    @property
     def subject(self):
         """Return the commented entity"""
         return self.channel.get_subject()
@@ -211,12 +232,20 @@ class Comment(Commentable, Emojiable):
                     if not isinstance(t, Comment)]
         return []
 
+    def get_title(self):
+        return self.subject.title
+
     def presentation_text(self, nb_characters=400):
         return getattr(self, 'comment', "")[:nb_characters]+'...'
 
+    def get_discuss_url(self, request, user):
+        subject = self.channel.get_subject(user)
+        return request.resource_url(
+            subject, "@@index") + '#comment-' + str(get_oid(self, 'None'))
+
     def get_url(self, request):
         return request.resource_url(
-            self.subject, "@@index") + '#comment-' + str(get_oid(self, 'None'))
+            request.root, "@@seecomment", query={'comment_id': get_oid(self)})
 
     def get_related_contents(self, user):
         return [r for r in self.related_contents if can_access(user, r)]

@@ -6,13 +6,12 @@
 
 import json
 from pyramid.view import view_config
-from pyramid.threadlocal import get_current_registry
 from pyramid.httpexceptions import HTTPFound
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
-    get_current, has_role, Anonymous)
+    get_current, has_role, Anonymous, has_any_roles)
 from pontus.view import BasicView
 from pontus.view_operation import MultipleView
 from pontus.util import merge_dicts
@@ -24,10 +23,6 @@ from novaideo.utilities.util import (
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.content.processes import get_states_mapping
-from novaideo.views.proposal_management.present_proposal import (
-    PresentProposalView)
-from novaideo.views.proposal_management.comment_proposal import (
-    CommentProposalView)
 from novaideo.views.proposal_management.see_amendments import (
     SeeAmendmentsView)
 from novaideo.views.proposal_management.see_related_ideas import (
@@ -125,7 +120,8 @@ class DetailProposalView(BasicView):
 
         corrections = [c for c in self.context.corrections
                        if 'in process' in c.state]
-        enable_corrections = self._enable_corrections(is_participant, corrections)
+        enable_corrections = self._enable_corrections(
+            is_participant, corrections)
         title, description, text, add_filigrane = self._get_adapted_text(
             user, is_participant, corrections, enable_corrections)
         tinymce_js = 'deform:static/tinymce/tinymce.min.js'
@@ -145,9 +141,14 @@ class DetailProposalView(BasicView):
             if not self.request.moderate_ideas:
                 not_favorable_ideas.extend(not_published_ideas)
 
+        is_censored = 'censored' in self.context.state
+        to_hide = is_censored and not has_any_roles(
+            user=user, roles=(('Participant', self.context), 'Moderator'))
         result = {}
         values = {
             'proposal': self.context,
+            'is_censored': is_censored,
+            'to_hide': to_hide,
             'state': get_states_mapping(user, self.context,
                                         self.context.state[0]),
             'title': title,

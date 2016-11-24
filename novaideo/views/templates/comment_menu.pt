@@ -1,7 +1,7 @@
 <div tal:omit-tag="" tal:define="
   actions actions|nothing;
   primary_action primary_action|nothing">
- <div class="clearfix listing-object-menu" tal:condition="primary_action">
+ <div class="clearfix listing-object-menu" tal:condition="primary_action or actions">
     <ul class="list-inline primary-actions" >
         <tal:loop repeat="a primary_action">
           <li tal:condition="not hasattr(a, 'url')">

@@ -153,8 +153,12 @@ function object_view_component(data){
 				        try {
 				            deform.processCallbacks();
 				        }catch(err) {};
-				        init_content_text_scroll(parent.find('#'+component_id).first().find(".content-text-scroll"))
-				        rebuild_scrolls(parent.find('#'+component_id).first().find(".malihu-scroll"))
+				        var new_comp = parent.find('#'+component_id).first()
+				        init_content_text_scroll(new_comp.find(".content-text-scroll"))
+				        rebuild_scrolls(new_comp.find(".malihu-scroll"))
+				        initscroll(new_comp.find(".result-scroll"))
+				        init_emoji($(new_comp.find('.emoji-container:not(.emojified)')));
+             
 			        }
 		       }
 	 	    }
@@ -176,6 +180,8 @@ function contextual_help_component(data){
 			var original_component = $(original_components[0])
 			original_component.html(data[component_id+'.body'])
 			rebuild_scrolls(original_component.find('.malihu-scroll'))
+			initscroll(original_component.find(".result-scroll"))
+			init_emoji($(original_component.find('.emoji-container:not(.emojified)')));
 			init_contextual_help()
 		}
 	})

@@ -12,6 +12,7 @@ from pyramid.threadlocal import get_current_registry
 
 from substanced.util import Batch
 
+from dace.objectofcollaboration.principal.util import has_role
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
@@ -67,7 +68,8 @@ class CommentsView(BasicView):
             object_values = {
                 'context': obj,
                 'menu_body': navbars['menu_body'],
-                'footer_actions_body': navbars['footer_actions_body']}
+                'footer_actions_body': navbars['footer_actions_body'],
+                'footer_body': navbars['footer_body']}
             all_comments.append(object_values)
 
         all_comments = sorted(all_comments,
@@ -90,6 +92,8 @@ class CommentsView(BasicView):
 
     def update(self):
         current_user = get_current()
+        self.is_moderator = has_role(
+            user=current_user, role=('Moderator',))
         result = {}
         channel = self._get_channel(current_user)
         is_selected = hasattr(self, 'comments')

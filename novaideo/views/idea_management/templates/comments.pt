@@ -8,19 +8,30 @@
       data-origin_url="${(origin and batch.origin_url)}"
       >
     <tal:loop repeat="comment_data enumerate(comments)">
-      <li class="commentli ${repeat['comment_data'].end>0 and 'last' or ''} ${ (i>=level and not origin) and 'hide-bloc' or ''}" 
+      <li class="view-item commentli ${repeat['comment_data'].end>0 and 'last' or ''} ${ (i>=level and not origin) and 'hide-bloc' or ''} component-obj-view component-listing-view" 
+          id="comment_${oid}"
+          data-component_type="object-view"
           data-association="${(contents and 'true') or 'false'}"
           data-comment_id="${oid}"
           tal:define="
               (i, item) comment_data;
               diff view._datetimedelta(item['context'].created_at);
               comment item['context'];
+              author comment.author;
               contents comment.get_related_contents(current_user);
-              picture getattr(comment.author, 'picture', None);
+              picture getattr(author, 'picture', None);
+              profil_picture getattr(picture, 'profil', None);
               oid getattr(comment, '__oid__', 'None');
               id 'comment-'+str(oid);
-              attached_files comment.files">
-         <div id="${id}" class="thumbnail right-caption span4 comment-data">
+              attached_files comment.files;
+              default_img request.static_url('novaideo:static/images/user.png');
+              is_censored 'censored' in comment.state;
+              to_hide is_censored and not (view.is_moderator or current_user is comment.author)">
+         <div id="${id}" class="view-item-title thumbnail right-caption span4 comment-data"
+             data-title="${getattr(author, 'title', author.__name__)}"
+             data-icon="${getattr(comment, 'icon', '')}"
+             data-img="${getattr(profil_picture, 'url', default_img)}"
+             >
             <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
             <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
             <div class="media-body comment-content">
@@ -32,9 +43,9 @@
                 is_unread_comment oid in unread_comments
                 ">
                 <a 
-                  data-oid="${getattr(comment.author, '__oid__', '')}"
+                  data-oid="${getattr(author, '__oid__', '')}"
                   class="toggle-popover"
-                  tal:attributes="href request.resource_url(comment.author, '@@index')">${getattr(comment.author, 'title', comment.author.name)}</a>
+                  tal:attributes="href request.resource_url(author, '@@index')">${getattr(author, 'title', author.name)}</a>
                 <div title="${layout.to_localized_time(comment.created_at)}" class="${is_unread_comment and 'unread-comment' or ''} comment-detail-container">
                   <span tal:condition="is_unread_comment" class="unread-comment-tag" i18n:translate="">New comment</span>
                   <div  tal:omit-tag="" tal:condition="diff">
@@ -48,6 +59,12 @@
                   <span tal:condition="getattr(comment, 'intention', None)" i18n:translate="" tal:content="comment.intention"/>
                 </div>
                 </div>
+                <div tal:condition="is_censored">
+                 <div class="alert-terms-of-use">
+                  This content does not respect terms of use.
+                 </div>
+                </div>
+              <div tal:condition="not to_hide" tal:omit-tag="" >
               <div class="content-text"  i18n:domain="novaideo"
                 tal:define="files comment.get_attached_files_data();
                             len_files len(files)">
@@ -147,7 +164,18 @@
                  </dl>
                  </blockquote>
                 </small>
-              </div>     
+              </div>
+              <div class="footer-actions-bodies">
+                <div tal:repeat="a item['footer_actions_body']" >
+                  <div tal:replace="structure a"/>
+                </div>
+              </div>
+              <div tal:condition="item['footer_body']" class="content-footer">
+                <div class="actions-block">
+                    <div tal:replace="structure item['footer_body']"/>
+                </div>
+              </div>
+            </div>
               <div tal:condition="not filtered" class="comment-replay-nb-container pull-right" tal:define="commentlen len(comment.comments)">
                 <span tal:condition="commentlen-level > 0" 
                       class="comment-replay-nb closed"
@@ -166,12 +194,6 @@
                   </small>
                 </span>
               </div>
-
-            <div class="footer-actions-bodies">
-              <div tal:repeat="a item['footer_actions_body']" >
-                <div tal:replace="structure a"/>
-              </div>
-            </div>
             </div>
          </div>
          <ul  class="commentul replay-bloc hide-bloc">

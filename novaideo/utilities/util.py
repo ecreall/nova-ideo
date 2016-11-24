@@ -25,12 +25,13 @@ from pyramid import renderers
 from babel.core import Locale
 from bs4 import BeautifulSoup
 from pyramid.threadlocal import get_current_registry, get_current_request
+from pyramid.view import render_view
 
 from substanced.util import get_oid
 
 from pontus.index import Index
 from pontus.file import OBJECT_OID
-from pontus.util import merge_dicts
+from pontus.util import merge_dicts, get_view
 from dace.processinstance.activity import ActionType
 from dace.objectofcollaboration.principal.util import get_current
 from dace.util import getSite, getAllBusinessAction
@@ -799,7 +800,7 @@ def render_listing_obj(request, obj, user, **kw):
         request)
 
 
-def render_view_obj(request, obj, user, **kw):
+def render_index_obj(request, obj, user, **kw):
     body = ''
     try:
         view_instance = Index(obj, request)
@@ -808,6 +809,41 @@ def render_view_obj(request, obj, user, **kw):
             body = view_instance.render_item(
                 view_result['coordinates'][view_instance.coordinates][0],
                 view_instance.coordinates, None)
+    except Exception as error:
+        log.warning(error)
+
+    return body
+
+
+def render_view_obj(request, obj, view, **kw):
+    body = ''
+    try:
+        view = get_view(obj, request, view)
+        if view:
+            view = view.__original_view__
+            view_instance = view(obj, request)
+            view_result = view_instance()
+            if isinstance(view_result, dict) and 'coordinates' in view_result:
+                body = view_instance.render_item(
+                    view_result['coordinates'][view_instance.coordinates][0],
+                    view_instance.coordinates, None)
+
+    except Exception as error:
+        log.warning(error)
+
+    return body
+
+
+def render_view_comment(request, comment, **kw):
+    from novaideo.views.idea_management.comment_idea import (
+        CommentsView)
+    body = ''
+    try:
+        context = comment.channel.subject
+        context = context if context else request.root
+        result_view = CommentsView(context, request)
+        result_view.comments = [comment]
+        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
     except Exception as error:
         log.warning(error)
 
@@ -969,11 +1005,11 @@ def generate_navbars(request, context, **args):
 
     if 'global-action' in actions_navbar:
         actions_navbar['global-action'].extend(
-            actions_navbar.pop('admin-action'))
+            actions_navbar.pop('admin-action', []))
         actions_navbar['global-action'].extend(
             args.get('global_action', []))
         actions_navbar['global-action'].extend(
-            actions_navbar.pop('primary-action'))
+            actions_navbar.pop('primary-action', []))
 
     if 'text-action' in actions_navbar:
         actions_navbar['text-action'].extend(
@@ -981,9 +1017,14 @@ def generate_navbars(request, context, **args):
 
     if 'plus-action' in actions_navbar:
         actions_navbar['plus-action'].extend(
-            actions_navbar.pop('listing-primary-action'))
+            actions_navbar.pop('listing-primary-action', []))
         actions_navbar['plus-action'].extend(
             args.get('plus_action', []))
+        if args.get('flatten', False):
+            actions_navbar['global-action'] = actions_navbar.get(
+                'global-action', [])
+            actions_navbar['global-action'].extend(
+                actions_navbar.pop('plus-action'))
 
     if 'body-action' in actions_navbar:
         actions_navbar['body-action'].extend(
@@ -1062,12 +1103,12 @@ def generate_listing_menu(request, context, **args):
     if 'primary-action' in actions_navbar and \
        'listing-primary-action' in actions_navbar:
         actions_navbar['primary-action'].extend(
-            actions_navbar.pop('listing-primary-action'))
+            actions_navbar.pop('listing-primary-action', []))
 
     if 'wg-action' in actions_navbar and \
        'listing-wg-action' in actions_navbar:
         actions_navbar['wg-action'].extend(
-            actions_navbar.pop('listing-wg-action'))
+            actions_navbar.pop('listing-wg-action', []))
 
     tounmerge = [
         'communication-action', 'wg-action',
@@ -1077,7 +1118,7 @@ def generate_listing_menu(request, context, **args):
                if d not in tounmerge and d in actions_navbar]
     for descriminator in tomerge:
         actions_navbar['actions'].extend(
-            actions_navbar.pop(descriminator))
+            actions_navbar.pop(descriminator, []))
 
     communication_actions_bodies = []
     for action in actions_navbar.get(

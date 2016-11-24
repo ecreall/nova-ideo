@@ -47,6 +47,9 @@ function replays_show(element){
 
 
 function comment_scroll_to(element, animate){
+  if(!element.position()){
+    return false
+  }
   var comment_scroll = null 
   var sidebar = $(element.parents('.sidebar-right-wrapper').first())
   if(sidebar.length>0){
@@ -118,19 +121,22 @@ function get_form_replay_container(){
 
 function update_replay(url){
     var $this = $(this)
-    $this.parents('.comments-scroll').find('.replay-form-container button.close').click()
+    $this.parents('.comments-scroll, .result-scroll').find('.replay-form-container button.close').click()
     var toreplay = $this.closest('.comment-inline-toggle').data('toreplay');
-    var target = $this.closest('.comment-inline-toggle').data('target');
-    if (Boolean(toreplay)){$(target).parent('ul.replay-bloc').removeClass('hide-bloc'); return false}
+    var target_id = $this.closest('.comment-inline-toggle').data('target');
+    var target = $($this.parents('.commentli').find(target_id).first())
+    if (Boolean(toreplay)){target.parent('ul.replay-bloc').removeClass('hide-bloc'); return false}
     var url = $this.closest('.comment-inline-toggle').data('updateurl');
-    $.getJSON(url,{tomerge:'True', coordinates:'main'}, function(data) {
+    var url_attr = {tomerge:'True', coordinates:'main'}
+    $.extend( url_attr, get_action_metadata($this));
+    $.getJSON(url,url_attr, function(data) {
+       include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
-           $($(target).find('.media-body').first()).html(get_form_replay_container());
-           var container = $($(target).find('.replay-form-container').first());
+           $(target.find('.media-body').first()).html(get_form_replay_container());
+           var container = $(target.find('.replay-form-container').first());
            container.append($(action_body));
-           init_emoji($(container.find('.emoji-container:not(.emojified)')));
-           var replay_bloc = $($(target).parents('ul.replay-bloc').first());
+           var replay_bloc = $(target.parents('ul.replay-bloc').first());
            var commentdata = $(replay_bloc.find('.comment-data').first());
            var commentli = $(replay_bloc.parents('.commentli').first());
            $(container.find('button.close').first()).on('click', function(){
@@ -141,8 +147,10 @@ function update_replay(url){
            replay_bloc.slideDown()
            commentdata.addClass('replay-active')
            commentli.addClass('replay-active')
+           container.find('form').first().data('action_id', $this.attr('id'))
            var textareainput = $(replay_bloc.find('textarea').first())
            textareainput.val(textareainput.val()).focus()
+           init_emoji($(container.find('.emoji-container:not(.emojified)')));
            comment_scroll_to(replay_bloc)
            init_comment_form_changes($(replay_bloc.find('.commentform')))
            try {
@@ -155,6 +163,7 @@ function update_replay(url){
            location.reload();
            return false
         }
+      })
     });
     return false;
 };
@@ -182,27 +191,6 @@ function search_comments(input){
   })
 }
 
-
-function update_comment(element){
-  var url = $('body').data('api_url')
-  $.post(url, {op: 'update_comment',
-              comment_id: element.data('comment_id')}, function(data){
-    if(data.removed){
-      element.addClass('deletion-process')
-      element.animate({height: 0, opacity: 0}, 'slow', function() {
-        $(this).remove();
-    });
-      var component = $($('.dace-action-sidebar.activated>span').first())
-    }else{
-      var content = $(data.body).find('.commentulorigin');
-      if (content){
-         init_emoji($(content.find('.emoji-container:not(.emojified)')));
-         element.replaceWith($($(content).find('li.commentli').first()))
-        }
-    }     
-  })
-
-}
 
 function init_comment_form_changes(form){
     form.find('.comment-form-changes').remove()
@@ -281,8 +269,13 @@ $(document).on('submit','.commentform:not(.comment-inline-form)', function( even
       preview.removeClass('hide-bloc')
       init_comment_scroll(parent)
       $(button).addClass('disabled');
-      var formData = new FormData($(this)[0]);
+      var formData = new FormData($this[0]);
       formData.append(button.val(), button.val())
+      var action = $('#'+$this.data('action_id'))
+      var action_metadata = get_action_metadata(action)
+      for(key in action_metadata){
+          formData.append(key, action_metadata[key])
+      }
       alert_component({
         alert_msg: novaideo_translate("Comment sent"),
         alert_type: 'info'
@@ -366,6 +359,11 @@ $(document).on('submit','.respondform', function( event ) {
       })
       var formData = new FormData($(this)[0]);
       formData.append(button.val(), button.val())
+      var action = $('#'+$this.data('action_id'))
+      var action_metadata = get_action_metadata(action)
+      for(key in action_metadata){
+          formData.append(key, action_metadata[key])
+      }
       $.ajax({
         url: url,
         type: 'POST',
@@ -425,14 +423,6 @@ $(document).on('submit','.edit-comment-form', function( event ) {
     var intention = select_itention.val();
     var textarea = $this.find('textarea');
     var comment = textarea.val();
-    var select_related_contents = $($this.find("select[name='related_contents']").first());
-    var parent = $($this.parents('.views-container').get(1));
-    var parentform = parent.find('.commentform');
-    
-    var target = $($this.parents('.commentli').first().find('.comments-container').first().find('.commentul').first());
-    var commentmessageinfo = $this.find('#messageinfo');
-    var commentmessagesuccess = $this.find('#messagesuccess');
-    var commentmessagedanger = $this.find('#messagedanger');
     var url = $(event.target).attr('action');
     if (comment !='' && intention!=''){
       $(button).addClass('disabled');
@@ -442,6 +432,11 @@ $(document).on('submit','.edit-comment-form', function( event ) {
       })
       var formData = new FormData($(this)[0]);
       formData.append(button.val(), button.val())
+      var action = $('#'+$this.data('action_id'))
+      var action_metadata = get_action_metadata(action)
+      for(key in action_metadata){
+          formData.append(key, action_metadata[key])
+      }
       $.ajax({
         url: url,
         type: 'POST',
@@ -449,29 +444,18 @@ $(document).on('submit','.edit-comment-form', function( event ) {
         contentType: false,
         processData: false,
         success: function(data) {
-          var content = $(data.new_body).find('.commentulorigin');
-          if (content){
-             init_emoji($(content.find('.emoji-container:not(.emojified)')));
+          if (data.status){
              alert_component({
                   alert_msg: novaideo_translate("Your comment is integrated"),
                   alert_type: 'success'
                 })
-             $this.parents('.commentli').first().replaceWith($($(content).find('li.commentli').first()))
-             textarea.val('');
-             select_related_contents.select2('val', []);
-             $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
-             select_itention.select2('val', 'Remark')
-             $this.parents('.replay-form-container').first().find('button.close').first().click()
-             try {
-                 deform.processCallbacks();
-                }
-             catch(err) {};
           }else{
             alert_component({
                   alert_msg: novaideo_translate("Your comment is not integrated"),
                   alert_type: 'error'
             })
           };
+          update_components(data)
       }});
     }else{
        var errormessage = '';
@@ -642,6 +626,10 @@ $(document).on('submit', '.comment-un-pin-form', function(event){
     $(button).addClass('disabled');
     var formData = new FormData($(this)[0]);
     formData.append(button.val(), button.val())
+    var action_metadata = get_action_metadata(action)
+    for(key in action_metadata){
+        formData.append(key, action_metadata[key])
+    }
     $.ajax({
         url: url,
         type: 'POST',
@@ -653,17 +641,14 @@ $(document).on('submit', '.comment-un-pin-form', function(event){
           var filters = $(navchannel.find('.comment-filter-action.active')).map(function(){return $(this).data('name')})
           filters = filters.toArray()
           if ($.inArray('pinned', filters)>=0){
+            data['object_views_to_update'] = []
             //action is unpin with the 'pinned' filter => remove the comment
             var item = $(action.parents('li.commentli').first())
             $(item.find('.comment-data')).addClass('deletion-process')
             item.fadeOut( 1000 );
-
-
-          }else{
-            update_comment($(action.parents('li.commentli').first()))
           }
+          update_components(data)
           $($this.parents('.modal').first()).modal('hide')
-
       }})
 
     event.preventDefault();
@@ -682,6 +667,14 @@ $(document).on('submit', '.comment-remove-form', function(event){
     $(button).addClass('disabled');
     var formData = new FormData($(this)[0]);
     formData.append(button.val(), button.val())
+    var action_metadata = get_action_metadata(action)
+    action_metadata['object_views'] = jQuery.parseJSON(action_metadata['object_views'])
+    action_metadata['object_views'].push(
+      $(action.parents('li.commentli').first().parents('li.commentli').first()).attr('id'))
+    action_metadata['object_views'] = JSON.stringify(action_metadata['object_views'])
+    for(key in action_metadata){
+        formData.append(key, action_metadata[key])
+    }
     $.ajax({
         url: url,
         type: 'POST',
@@ -689,7 +682,6 @@ $(document).on('submit', '.comment-remove-form', function(event){
         contentType: false,
         processData: false,
         success: function(data) {
-          update_comment($(action.parents('li.commentli').last()))
           $($this.parents('.modal').first()).modal('hide')
           update_components(data)
       }})

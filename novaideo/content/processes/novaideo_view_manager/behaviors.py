@@ -276,6 +276,26 @@ class SeeProposalsToModerate(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
+def seereported_processsecurity_validation(process, context):
+    return global_user_processsecurity()
+
+
+class SeeReportedContents(InfiniteCardinality):
+    style_descriminator = 'lateral-action'
+    style_picto = 'md md-sms-failed'
+    style_order = -6
+    isSequential = False
+    context = INovaIdeoApplication
+    roles_validation = seeindeasm_roles_validation
+    processsecurity_validation = seereported_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
+
+
 def history_roles_validation(process, context):
     return has_any_roles(roles=('PortalManager', ('Owner', context)))
 
@@ -427,5 +447,7 @@ class SeeGraph(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         return {}
+
+
 
 #TODO behaviors

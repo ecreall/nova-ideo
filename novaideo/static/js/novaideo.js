@@ -235,8 +235,8 @@ function init_channels_top(){
     }
   }
 
-function initscroll(){
-  var result_scrolls = $(".result-scroll")
+function initscroll(result_scrolls){
+    result_scrolls = result_scrolls? result_scrolls: $(".result-scroll")
     for(var i = 0; i<= result_scrolls.length; i++){
       var result_scroll = $(result_scrolls[i]);
       var id = result_scroll.attr('id')
@@ -673,6 +673,11 @@ $(document).on('shown.bs.modal', '.modal', function () {
     init_result_scroll(undefined, 1000, $(this));
 });
 
+
+// $(document).on('click', '.more-text .activator', function (event) {
+//     $(this).parents('.more-text').first().toggleClass('open');
+//     event.stopPropagation()
+// });
 
 $(document).ready(function(){
 

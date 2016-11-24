@@ -89,6 +89,10 @@ class SeeCorrelation(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-VALIDATOR_BY_CONTEXT[Correlation] = CommentCorrelation
+VALIDATOR_BY_CONTEXT[Correlation] = {
+    'action': CommentCorrelation,
+    'see': SeeCorrelation,
+    'access_key': get_access_key
+}
 
 #TODO behaviors

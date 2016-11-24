@@ -14,9 +14,12 @@
              tal:condition="a in ajax_actions"
              tal:define="item ajax_actions.get(a, None);
                        icon getattr(a,'style_picto','');
-                       interaction_type getattr(a,'style_interaction_type','modal')">
-              <a id="${item['action_id']}-btn" 
-                class="${getattr(a, 'node_id', '')}-btn ajax-action dace-action-${interaction_type}"
+                       interaction_type getattr(a,'style_interaction_type','modal');
+                       is_contextual getattr(a,'style_interaction_contextual', False)">
+              <a id="${item['action_id']}-btn"
+                tal:define="
+                      context_oid getattr(item['context'], '__oid__', '')"
+                class="${getattr(a,'style_action_class','')} ${getattr(a, 'node_id', '')}-btn ajax-action dace-action-${interaction_type}${is_contextual and ('-'+str(context_oid)) or ''}"
                 data-toggle="${interaction_type}"
                 data-target="#action-${interaction_type}-container"
                 data-actionid ="${item['action_id']}" 

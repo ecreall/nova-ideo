@@ -36,7 +36,8 @@ def select_processsecurity_validation(process, context):
 
 def select_state_validation(process, context):
     return "archived" not in context.state and \
-           "version" not in context.state
+           "version" not in context.state and \
+           "censored" not in context.state
 
 
 class SelectEntity(InfiniteCardinality):
@@ -84,11 +85,6 @@ def deselect_processsecurity_validation(process, context):
            global_user_processsecurity()
 
 
-def deselect_state_validation(process, context):
-    return "archived" not in context.state and \
-           "version" not in context.state
-
-
 class DeselectEntity(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'communication-action'
@@ -100,7 +96,7 @@ class DeselectEntity(InfiniteCardinality):
     context = ISearchableEntity
     roles_validation = deselect_roles_validation
     processsecurity_validation = deselect_processsecurity_validation
-    state_validation = deselect_state_validation
+    state_validation = select_state_validation
 
     def get_title(self, context, request):
         len_selections = getattr(context, 'len_selections', 0)

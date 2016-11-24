@@ -41,7 +41,8 @@ from novaideo.core import (
     VersionableEntity,
     PresentableEntity,
     Node,
-    Emojiable)
+    Emojiable,
+    SignalableEntity)
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
@@ -178,7 +179,8 @@ class Proposal(VersionableEntity,
                CorrelableEntity,
                PresentableEntity,
                Node,
-               Emojiable):
+               Emojiable,
+               SignalableEntity):
     """Proposal class"""
 
     type_title = _('Proposal')
@@ -346,6 +348,24 @@ class Proposal(VersionableEntity,
             return proposal_tokens[0]
 
         return tokens[-1] if tokens else None
+
+    def remove_tokens(self):
+        tokens = [t for t in self.tokens if not t.proposal]
+        proposal_tokens = [t for t in self.tokens if t.proposal]
+        for token in list(tokens):
+            token.owner.addtoproperty('tokens', token)
+
+        for proposal_token in list(proposal_tokens):
+            proposal_token.owner.delfromproperty('tokens_ref', proposal_token)
+            self.__delitem__(proposal_token.__name__)
+
+        members = self.working_group.members
+        for member in members:
+            to_remove = [t for t in member.tokens
+                         if t.proposal is self]
+            if to_remove:
+                token = to_remove[0]
+                token.owner.delfromproperty('tokens_ref', token)
 
     def get_node_descriminator(self):
         return 'proposal'

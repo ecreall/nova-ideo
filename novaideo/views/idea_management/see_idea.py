@@ -9,7 +9,8 @@ from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.objectofcollaboration.principal.util import get_current
+from dace.objectofcollaboration.principal.util import (
+    get_current, has_any_roles)
 from pontus.view import BasicView
 from pontus.view_operation import MultipleView
 
@@ -18,8 +19,6 @@ from novaideo.content.idea import Idea
 from novaideo.content.processes import get_states_mapping
 from novaideo.utilities.util import generate_navbars, ObjectRemovedException
 from novaideo import _
-from .present_idea import PresentIdeaView
-from .comment_idea import CommentIdeaView
 from .compare_idea import CompareIdeaView
 
 
@@ -64,16 +63,24 @@ class DetailIdeaView(BasicView):
         for file_ in files:
             files_urls.append({'title': file_.title,
                                'url': file_.url})
+
+        is_censored = 'censored' in self.context.state
+        to_hide = is_censored and not has_any_roles(
+            user=user, roles=(('Owner', self.context), 'Moderator'))
         result = {}
         values = {
             'idea': self.context,
+            'is_censored': is_censored,
+            'to_hide': to_hide,
             'text': self.context.text.replace('\n', '<br/>'),
             'state': get_states_mapping(
                 user, self.context, self.context.state[0]),
             'current_user': user,
             'files': files_urls,
-            'cant_publish': self._cant_publish_alert(navbars['all_actions'], user),
-            'cant_submit': self._cant_submit_alert(navbars['all_actions'], user),
+            'cant_publish': self._cant_publish_alert(
+                navbars['all_actions'], user),
+            'cant_submit': self._cant_submit_alert(
+                navbars['all_actions'], user),
             'navbar_body': navbars['navbar_body'],
             'footer_actions_body': navbars['footer_actions_body'],
             'actions_bodies': navbars['body_actions'],

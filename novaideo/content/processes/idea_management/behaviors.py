@@ -467,7 +467,7 @@ class ArchiveIdea(InfiniteCardinality):
         user = context.author
         alert('internal', [root], [user],
               internal_kind=InternalAlertKind.moderation_alert,
-              subjects=[context])
+              subjects=[context], alert_kind='moderation')
 
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('archive_idea_decision')
@@ -539,7 +539,7 @@ class PublishIdeaModeration(InfiniteCardinality):
         user = context.author
         alert('internal', [root], [user],
               internal_kind=InternalAlertKind.moderation_alert,
-              subjects=[context])
+              subjects=[context], alert_kind='moderation')
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('publish_idea_decision')
             subject = mail_template['subject'].format(
@@ -771,6 +771,8 @@ class CommentIdea(InfiniteCardinality):
             channel.addtoproperty('comments', comment)
             channel.add_comment(comment)
             comment.format(request)
+            comment.state = PersistentList(['published'])
+            comment.reindex()
             user = get_current()
             grant_roles(user=user, roles=(('Owner', comment), ))
             context.subscribe_to_channel(user)
@@ -897,20 +899,15 @@ class Associate(InfiniteCardinality):
 def get_access_key(obj):
     if 'published' in obj.state:
         return ['always']
-    elif 'submitted' in obj.state:
-        return serialize_roles(
-            (('Owner', obj), 'SiteAdmin', 'Admin', 'Moderator'))
     else:
         return serialize_roles(
-            (('Owner', obj), 'SiteAdmin', 'Admin'))
+            (('Owner', obj), 'SiteAdmin', 'Admin', 'Moderator'))
 
 
 def seeidea_processsecurity_validation(process, context):
     return access_user_processsecurity(process, context) and \
-           ('published' in context.state or\
-            has_any_roles(roles=(('Owner', context), 'SiteAdmin')) or\
-            ('submitted' in context.state and has_role(role=('Moderator',)))
-            )
+           ('published' in context.state or 'censored' in context.state or\
+            has_any_roles(roles=(('Owner', context), 'Moderator')))
 
 
 @access_action(access_key=get_access_key)
@@ -1174,4 +1171,8 @@ class SeeRelatedWorkingGroups(InfiniteCardinality):
         return nothing
 #TODO behaviors
 
-VALIDATOR_BY_CONTEXT[Idea] = CommentIdea
+VALIDATOR_BY_CONTEXT[Idea] = {
+    'action': CommentIdea,
+    'see': SeeIdea,
+    'access_key': get_access_key
+}

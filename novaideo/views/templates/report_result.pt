@@ -1,0 +1,34 @@
+<div class="thumbnail right-caption span4 search-item result-item component-obj-view component-listing-view"
+  id="listing_${oid}"
+  data-component_type="object-view"
+  i18n:domain="novaideo"
+  tal:define="icon getattr(object, 'icon', '');
+   url request.resource_url(object, '@@index');
+   oid object.__oid__;
+   author getattr(object, 'author', None);
+   author_picture getattr(object.author, 'picture', None);">
+  <div class="media-body">
+    <div class="author-block">
+      <img class="author-img img-circle" 
+         tal:condition="author_picture is not None" 
+         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+      <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
+      <small>
+        <span i18n:translate="">Reported by</span>
+        <a tal:attributes="href request.resource_url(author, '@@index')"
+          data-oid="${getattr(author, '__oid__', '')}"
+          class="toggle-popover">
+          ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+        </a>
+        <span i18n:translate="">the</span>
+        <span tal:replace="layout.to_localized_time(object.created_at)"/>
+      </small>
+    </div>
+    <div class="separator"></div>
+    <div class="reason-container" tal:repeat="(title, description) object.get_reporting_reasons()">
+      <div class="reason-title">${title}</div>
+      <small class="reason-text">${description}</small>
+    </div>
+    <div class="object-text reason-details-text">${object.details}</div>
+  </div>
+</div>

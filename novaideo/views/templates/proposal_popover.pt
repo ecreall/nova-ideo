@@ -14,7 +14,16 @@
       </h4>
     </a>
     <div class="popover-content">
-      <div>${object.presentation_text(200)}</div>
+      <div class="popover-text">
+        <div tal:condition="censored">
+         <div class="alert-terms-of-use">
+          This content does not respect terms of use.
+         </div>
+        </div>
+        <div tal:condition="not censored">
+          ${structure:object.presentation_text(200)}
+        </div>
+      </div>
       <div class="popover-footer">
         <div class="listing-access-menu pull-right">
             <div tal:replace="structure access_body"/>
