@@ -835,6 +835,7 @@ def get_censor_entity_metadata(action, request, context, api, **kwargs):
         context_id = str(get_oid(context, None))
         result['object_views_to_update'] = [
             'index_'+context_id,
+            'listing_'+context_id,
             'seereports_'+context_id,
             'comment_'+context_id
         ]
