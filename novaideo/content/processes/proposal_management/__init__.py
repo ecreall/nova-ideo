@@ -63,7 +63,7 @@ AMENDMENTS_CYCLE_DEFAULT_DURATION = {
 
 
 class work_mode(object):
-    """ Decorator for novaideo access actions. 
+    """ Decorator for novaideo access actions.
     An access action allows to view an object"""
 
     def __call__(self, wrapped):
@@ -168,3 +168,38 @@ def add_attached_files(appstruct, proposal):
             files_to_add.extend(ws_files)
 
     proposal.setproperty('attached_files', files_to_add)
+
+
+def end_work(proposal, request):
+    """Close the improvement cycle process"""
+    runtime = request.root['runtime']
+    # The improvement cycle
+    proc = proposal.creator
+    if proc:
+        def remove_vote_processes(vote_action):
+            ballot_process = vote_action.sub_process
+            if ballot_process:
+                runtime.delfromproperty('processes', ballot_process)
+                exec_ctx = ballot_process.execution_context
+                vote_processes = exec_ctx.get_involved_collection(
+                    'vote_processes')
+                for v_proc in vote_processes:
+                    runtime.delfromproperty('processes', v_proc)
+
+        # Work sub process
+        work_actions = proc.get_actions('work')
+        # Voting publication sub process
+        vote_actions = proc.get_actions('votingpublication')
+        if work_actions:
+            work_proc = work_actions[0].sub_process
+            if work_proc:
+                # If amendment mode
+                a_vote_actions = work_proc.get_actions('votingamendments')
+                if a_vote_actions:
+                    remove_vote_processes(a_vote_actions[0])
+
+                runtime.delfromproperty('processes', work_proc)
+        elif vote_actions:
+            remove_vote_processes(vote_actions[0])
+
+        runtime.delfromproperty('processes', proc)

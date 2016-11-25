@@ -9,15 +9,16 @@ from persistent.list import PersistentList
 from zope.interface import Interface, implementer
 
 from dace.util import Adapter, adapter
+from dace.objectofcollaboration.principal.util import (
+    revoke_roles, grant_roles)
 
 from novaideo.content.interface import (
     IComment,
     Iidea,
     IProposal)
-from novaideo import _
-from novaideo.content.processes import get_states_mapping
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.alert import InternalAlertKind
+from novaideo.content.processes.proposal_management import end_work
 
 
 class ISignalableObject(Interface):
@@ -41,6 +42,7 @@ class CommentAdapter(Adapter):
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[self.context], alert_kind='object_censor')
+        self.context.reindex()
 
     def restor(self, request):
         self.context.state = PersistentList(['published'])
@@ -49,6 +51,7 @@ class CommentAdapter(Adapter):
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[self.context], alert_kind='object_restor')
+        self.context.reindex()
 
 
 @adapter(context=Iidea)
@@ -68,6 +71,7 @@ class IdeaAdapter(Adapter):
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[self.context], alert_kind='object_censor')
+        self.context.reindex()
 
     def restor(self, request):
         self.context.state = PersistentList(
@@ -78,6 +82,7 @@ class IdeaAdapter(Adapter):
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[self.context], alert_kind='object_restor')
+        self.context.reindex()
 
 
 @adapter(context=IProposal)
@@ -88,20 +93,45 @@ class ProposalAdapter(Adapter):
     def censor(self, request):
         self.context.state = PersistentList(['censored'])
         self.context.remove_tokens()
+        author = self.context.author
+        end_work(self.context, request)
         working_group = self.context.working_group
         working_group.state = PersistentList(['deactivated'])
         working_group.setproperty('wating_list', [])
+        if hasattr(working_group, 'first_improvement_cycle'):
+            del working_group.first_improvement_cycle
+
+        if hasattr(working_group, 'first_vote'):
+            del working_group.first_vote
+
         members = working_group.members
         alert(
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[self.context], alert_kind='object_censor')
+        if author in members:
+            members.remove(author)
+
+        for member in members:
+            working_group.delfromproperty('members', member)
+            revoke_roles(member, (('Participant', self.context),))
+
+        self.context.reindex()
+        working_group.reindex()
 
     def restor(self, request):
-        self.context.state = PersistentList(
-            ['open to a working group', 'published'])
-        members = [self.context.author]
+        self.context.state = PersistentList(['draft'])
+        author = self.context.author
+        working_group = self.context.working_group
+        members = working_group.members
+        if author not in members:
+            grant_roles(user=author, roles=(('Participant', self.context), ))
+            working_group.addtoproperty('members', author)
+
+        members = working_group.members
         alert(
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[self.context], alert_kind='object_restor')
+        self.context.reindex()
+        working_group.reindex()

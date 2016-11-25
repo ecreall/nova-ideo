@@ -165,7 +165,6 @@ class Censor(InfiniteCardinality):
             context.state.remove('reported')
             adapter.censor(request)
 
-        context.reindex()
         return {}
 
     def redirect(self, context, request, **kw):
