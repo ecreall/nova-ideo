@@ -14,12 +14,9 @@
       </dd>
     </dl>
   </div>
-  <div class="content-text" id="contenttext">
+  <div class="content-text content-text-scroll malihu-scroll" id="contenttext">
     ${structure:textdiff}
   </div>
-  <script>
-    init_content_text()
-  </script>
   <div id="legend">
     <div><div class="legend-carre-ins"></div> : <span i18n:translate="">Text added to the current version</span></div>
     <div><div class="legend-carre-del"></div> : <span i18n:translate="">Text removed from the current version</span></div>
