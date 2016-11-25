@@ -2,7 +2,8 @@
 	  role="tooltip"
 	  tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
-                 censored 'censored' in object.state">
+                 censored 'censored' in object.state"
+    i18n:domain="novaideo">
 	<div style="top: 50%;" class="arrow">
 	</div>
     <a class="popover-title-link" href="${request.resource_url(object, '@@index')}">
@@ -17,7 +18,7 @@
     <div class="popover-content">
       <div class="popover-text">
         <div tal:condition="censored">
-         <div class="alert-terms-of-use">
+         <div class="alert-terms-of-use" i18n:translate="">
           This content does not respect terms of use.
          </div>
         </div>

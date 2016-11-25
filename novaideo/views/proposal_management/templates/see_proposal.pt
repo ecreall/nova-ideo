@@ -101,7 +101,7 @@
     </div>
   </div>
   <div tal:condition="is_censored">
-   <div class="alert-terms-of-use">
+   <div class="alert-terms-of-use" i18n:translate="">
     This content does not respect terms of use.
    </div>
   </div>
