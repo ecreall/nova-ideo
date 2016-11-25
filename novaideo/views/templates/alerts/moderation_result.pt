@@ -8,7 +8,7 @@
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
     <span tal:condition="alert_kind == 'moderation'">Les modérateurs ont statué sur la contribution <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
     <span tal:condition="alert_kind == 'new_report'">
-      Une nouvelle signalisation vient d'être ajoutée. Les signalisations sont accessibles <a href="${request.resource_url(request.root, '@@seereports')}">ici</a>.
+      Une nouvelle signalisation vient d'être ajoutée. Les signalisations sont accessibles <a href="${request.resource_url(request.root, '@@seereportedcontents')}">ici</a>.
     </span>
     <span tal:condition="alert_kind == 'object_restor'">
       La contribution <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> a été restorée.
