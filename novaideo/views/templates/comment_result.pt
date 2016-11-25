@@ -48,10 +48,10 @@
                       <div class="object-text">
                         <div>${structure:getattr(object, 'formatted_comment', object.comment)}</div>
                         <div tal:condition="getattr(object, 'edited', False)" i18n:translate="" style="color: gray">(edited)</div>
-                        <small>
+                        <small tal:condition="menu_body|nothing or footer_actions_body|nothing">
                           <a href="${object.get_discuss_url(request, current_user)}">
                             <span class="glyphicon glyphicon-eye-open"></span>
-                            <span >View in discussion</span>
+                            <span i18n:translate="">View in discussion</span>
                           </a>
                         </small>
                       </div>
