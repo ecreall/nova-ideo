@@ -12,8 +12,7 @@
     contents object.get_related_contents(current_user);
     default_img request.static_url('novaideo:static/images/user.png')"
   i18n:domain="novaideo">
-        <div class="commentli" style="display: flex;">
-         <div class="media-body media-comment">
+         <div class="commentli media-body media-comment">
           <div tal:condition="menu_body|nothing" id="commentaction" class="object-menu pull-right">
               <div tal:replace="structure menu_body"/>
           </div>
@@ -179,5 +178,4 @@
             </li>
            </ul>
          </div>
-        </div>
       </div>

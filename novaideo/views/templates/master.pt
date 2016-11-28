@@ -38,7 +38,7 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=2"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=3"
             rel="stylesheet"/>
     </div>
     <link href="${su('daceui:static/css/dace_ui.css')}"
@@ -96,13 +96,13 @@
             type="text/javascript"></script>
     <script src="${su('novaideo:static/js/novaideo_langs.js')}"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/action_interaction.js')}"
+    <script src="${su('novaideo:static/js/action_interaction.js')}?v=2"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo.js')}?v=2"
+    <script src="${su('novaideo:static/js/novaideo.js')}?v=3"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/admin_nav.js')}"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/filter.js')}?v=2"
+    <script src="${su('novaideo:static/js/filter.js')}?v=3"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/steps.js')}"
           type="text/javascript"></script>
@@ -118,7 +118,7 @@
         type="text/javascript"></script>
     <script src="${request.static_url('novaideo:static/jsnetworkx/jsnetworkx.js')}"
         type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/pseudo_react.js')}"
+    <script src="${su('novaideo:static/js/pseudo_react.js')}?v=2"
           type="text/javascript"></script>
     <script src="${request.static_url('novaideo:static/emoji/emoji.js')}" type="text/javascript"></script>
     <script src="${request.static_url('novaideo:static/emoji/jquery.emoji.js')}" type="text/javascript"></script>
