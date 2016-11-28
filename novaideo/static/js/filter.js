@@ -33,7 +33,11 @@ function activate_filter(event){
   }
 };
 
-function filter(){
+function filter(event){
+  //if change on select2 search field then return
+  if($(event.target).hasClass('select2-search__field')){
+    return
+  }
   var form = $(this)
   var filter_container = $(form.parents('.filter-container'));
   var is_open = filter_container.hasClass('open')
