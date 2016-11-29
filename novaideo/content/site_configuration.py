@@ -93,7 +93,7 @@ class WorkParamsConfigurationSchema(Schema):
         colander.Integer(),
         validator=colander.Range(1, 10),
         title=_('Number of non-productive cycles'),
-        description=_('The number of non-productive improvement cycles before closure.'),
+        description=_('The number of non-productive improvement cycles before the closure of the working group.'),
         default=1,
         )
 
