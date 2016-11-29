@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 from zope.interface import implementer
+from persistent.list import PersistentList
 
 from substanced.content import content
 from substanced.util import renamer
@@ -16,6 +17,8 @@ from dace.descriptors import (
     SharedUniqueProperty,
     CompositeMultipleProperty,
     CompositeUniqueProperty)
+from dace.objectofcollaboration.principal.util import (
+    revoke_roles)
 from pontus.core import VisualisableElement, VisualisableElementSchema
 
 from .interface import IWorkingGroup
@@ -71,3 +74,32 @@ class WorkingGroup(VisualisableElement, Entity):
         return get_states_mapping(
             user, self,
             getattr(self, 'state_or_none', [None])[0])
+
+    def empty(self, remove_author=True):
+        author = self.proposal.author
+        self.state = PersistentList(['deactivated'])
+        self.setproperty('wating_list', [])
+        if hasattr(self, 'first_improvement_cycle'):
+            del self.first_improvement_cycle
+
+        if hasattr(self, 'first_vote'):
+            del self.first_vote
+
+        members = self.members
+        if remove_author and author in members:
+            members.remove(author)
+
+        for member in members:
+            self.delfromproperty('members', member)
+            revoke_roles(member, (('Participant', self.proposal),))
+
+        self.init_nonproductive_cycle()
+
+    def inc_iteration(self):
+        self.iteration = getattr(self, 'iteration', 0) + 1
+
+    def init_nonproductive_cycle(self):
+        self.nonproductive_cycle = 0
+
+    def inc_nonproductive_cycle(self):
+        self.nonproductive_cycle = getattr(self, 'nonproductive_cycle', 0) + 1

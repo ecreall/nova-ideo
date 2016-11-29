@@ -93,29 +93,14 @@ class ProposalAdapter(Adapter):
     def censor(self, request):
         self.context.state = PersistentList(['censored'])
         self.context.remove_tokens()
-        author = self.context.author
         end_work(self.context, request)
         working_group = self.context.working_group
-        working_group.state = PersistentList(['deactivated'])
-        working_group.setproperty('wating_list', [])
-        if hasattr(working_group, 'first_improvement_cycle'):
-            del working_group.first_improvement_cycle
-
-        if hasattr(working_group, 'first_vote'):
-            del working_group.first_vote
-
         members = working_group.members
         alert(
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[self.context], alert_kind='object_censor')
-        if author in members:
-            members.remove(author)
-
-        for member in members:
-            working_group.delfromproperty('members', member)
-            revoke_roles(member, (('Participant', self.context),))
-
+        working_group.empty()
         self.context.reindex()
         working_group.reindex()
 

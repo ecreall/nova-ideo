@@ -410,6 +410,9 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
     def channel(self):
         return getattr(self, 'general_chanel', None)
 
+    def get_nonproductive_cycle_nb(self):
+        return getattr(self, 'nonproductive_cycle_nb', 2)
+
     def init_files(self):
         for information in DEFAULT_FILES:
             if not self.get(information['name'], None):

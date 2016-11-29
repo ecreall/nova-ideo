@@ -81,6 +81,7 @@ class Alert(ElementaryAction):
     state_validation = alert_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        #improvement_cycle TODO no improve
         members = context.working_group.members
         root = request.root
         mail_template = root.get_mail_template('alert_amendment')
@@ -274,7 +275,6 @@ class AmendmentsResult(ElementaryAction):
                   'subject': context}
         result_body = renderers.render(
             self.amendments_vote_result_template, values, request)
-        localizer = request.localizer
         root = request.root
         mail_template = root.get_mail_template('vote_amendment_result')
         subject = mail_template['subject'].format(
@@ -322,6 +322,7 @@ class AmendmentsResult(ElementaryAction):
             related_ideas.extend(context.related_ideas)
             related_ideas = list(set(related_ideas))
             context.set_related_ideas(related_ideas, user)
+            context.working_group.init_nonproductive_cycle()
             context.reindex()
             alert('internal', [root], members,
                   internal_kind=InternalAlertKind.working_group_alert,

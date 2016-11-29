@@ -74,6 +74,7 @@ from . import (
     init_proposal_ballots,
     add_files_to_workspace,
     add_attached_files)
+from . import end_work
 
 
 VOTE_PUBLISHING_MESSAGE = _("Chaque participant du groupe de travail vote pour" 
@@ -255,7 +256,7 @@ def first_vote_remove(user, working_group):
         ballot.report.delfromproperty('voters', user)
 
 
-def calculate_amendments_cycle_duration(process):
+def calculate_improvement_cycle_duration(process):
     if getattr(process, 'attachedTo', None):
         process = process.attachedTo.process
 
@@ -266,11 +267,14 @@ def calculate_amendments_cycle_duration(process):
     if duration_ballot is not None and duration_ballot.report.voters:
         electeds = duration_ballot.report.get_electeds()
         if electeds:
-            return AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]] + \
-                   datetime.datetime.now()
+            return AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]]
 
-    return AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"] + \
-           datetime.datetime.now()
+    return AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"]
+
+
+def calculate_improvement_cycle_date(process):
+    return calculate_improvement_cycle_duration(process) + \
+        datetime.datetime.now()
 
 
 def createproposal_roles_validation(process, context):
@@ -1444,7 +1448,12 @@ class VotingPublication(ElementaryAction):
         context.state.insert(0, 'votes for publishing')
         context.reindex()
         working_group = context.working_group
-        working_group.iteration = getattr(working_group, 'iteration', 0) + 1
+        duration = calculate_improvement_cycle_duration(
+            self.process)
+        if duration >= datetime.timedelta(weeks=1):
+            working_group.inc_iteration()
+
+        working_group.inc_nonproductive_cycle()
         if not getattr(working_group, 'first_vote', True):
             members = working_group.members
             root = getSite()
@@ -1513,7 +1522,7 @@ class Work(ElementaryAction):
     def _send_mails(self, context, request, subject_template, message_template):
         working_group = context.working_group
         duration = to_localized_time(
-            calculate_amendments_cycle_duration(self.process),
+            calculate_improvement_cycle_date(self.process),
             translate=True)
         isclosed = 'closed' in working_group.state
         members = working_group.members
@@ -1578,7 +1587,37 @@ class Work(ElementaryAction):
     def after_execution(self, context, request, **kw):
         proposal = self.process.execution_context.created_entity('proposal')
         super(Work, self).after_execution(proposal, request, **kw)
-        self.process.execute_action(proposal, request, 'votingpublication', {})
+        working_group = proposal.working_group
+        root = request.root
+        nonproductive_cycle = root.get_nonproductive_cycle_nb()
+        if getattr(working_group, 'nonproductive_cycle', 1) >= nonproductive_cycle:
+            end_work(proposal, request)
+            proposal.state = PersistentList(
+                ['open to a working group', 'published'])
+            members = working_group.members
+            working_group.empty(False)
+            working_group.state = PersistentList(['deactivated'])
+            proposal.reindex()
+            working_group.reindex()
+            alert(
+                'internal', [request.root], members,
+                internal_kind=InternalAlertKind.moderation_alert,
+                subjects=[proposal], alert_kind='object_closed')
+            mail_template = root.get_mail_template('close_proposal')
+            subject_data = get_entity_data(proposal, 'subject', request)
+            subject = mail_template['subject'].format(
+                **subject_data)
+            for member in [m for m in members if getattr(m, 'email', '')]:
+                email_data = get_user_data(member, 'recipient', request)
+                email_data.update(subject_data)
+                message = mail_template['template'].format(
+                    novaideo_title=root.title,
+                    **email_data
+                )
+                alert('email', [root.get_site_sender()], [member.email],
+                      subject=subject, body=message)
+        else:
+            self.process.execute_action(proposal, request, 'votingpublication', {})
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))

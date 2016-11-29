@@ -537,6 +537,24 @@ def publish_comments(root, registry):
     log.info('Comments published')
 
 
+def evolve_nonproductive_cycle(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IProposal
+
+    contents = find_entities(
+        interfaces=[IProposal]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        working_group = node.working_group
+        if working_group:
+            working_group.init_nonproductive_cycle()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Working group evolved')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -575,6 +593,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_access_keys)
     config.add_evolution_step(format_ideas)
     config.add_evolution_step(publish_comments)
+    config.add_evolution_step(evolve_nonproductive_cycle)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

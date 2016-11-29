@@ -25,7 +25,7 @@ from dace.objectofcollaboration.services.processdef_container import (
 from pontus.core import VisualisableElement
 
 from novaideo.content.processes.proposal_management.behaviors import (
-    calculate_amendments_cycle_duration)
+    calculate_improvement_cycle_date)
 from .behaviors import (
     CorrectProposal,
     CloseWork
@@ -56,7 +56,7 @@ class WikiWorkModeProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Close work"),
                                        title=_("Close work"),
                                        groups=[]),
-                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=calculate_amendments_cycle_duration)),
+                timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=calculate_improvement_cycle_date)),
                 end = EndEventDefinition(),
         )
         self.defineTransitions(

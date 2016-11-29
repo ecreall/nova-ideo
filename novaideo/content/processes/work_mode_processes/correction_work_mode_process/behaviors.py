@@ -81,6 +81,7 @@ class CorrectItem(InfiniteCardinality):
     def _include_to_proposal(
         self, context, proposal,
         text_to_correct, request, content):
+        proposal.working_group.init_nonproductive_cycle()
         corrections = [item for item in context.corrections.keys()
                        if 'included' not in context.corrections[item]]
         text = self._include_items(text_to_correct, request, corrections)
@@ -190,7 +191,8 @@ def correct_processsecurity_validation(process, context):
                                  for c in context.corrections))
 
     return not correction_in_process and \
-           not getattr(context.working_group, 'first_improvement_cycle', True) and \
+           not getattr(context.working_group,
+                       'first_improvement_cycle', True) and \
            global_user_processsecurity()
 
 
@@ -214,18 +216,6 @@ class CorrectProposal(InfiniteCardinality):
     roles_validation = correct_roles_validation
     processsecurity_validation = correct_processsecurity_validation
     state_validation = correct_state_validation
-
-    def _get_newversion(self, context, correction):
-        copy_of_proposal = copy(context,
-                                (correction, 'current_version'),
-                                new_name=context.__name__,
-                                omit=('created_at', 'modified_at',
-                                      'corrections'),
-                                roles=True)
-        copy_of_proposal.setproperty('originalentity', context.originalentity)
-        copy_of_proposal.state = PersistentList(['version', 'archived'])
-        copy_of_proposal.reindex()
-        return copy_of_proposal
 
     def _add_vote_actions(self, tag, correction, request):
         dace_ui_api = get_current_registry().getUtility(IDaceUIAPI,
@@ -266,7 +256,8 @@ class CorrectProposal(InfiniteCardinality):
             correction_tag['data-correction'] = correction_oid
             correction_tag['data-item'] = str(descriminator)
             correction_tag['data-content'] = content
-            init_vote = {'favour': [user_oid], 'against': [], 'content': content}
+            init_vote = {'favour': [user_oid],
+                         'against': [], 'content': content}
             correction.corrections[str(descriminator)] = init_vote
             descriminator += 1
 

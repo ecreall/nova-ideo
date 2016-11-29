@@ -12,5 +12,8 @@
     <span tal:condition="alert_kind == 'object_censor'">
       La contribution ${subject.get_title()} a été censurée.
     </span>
+    <span tal:condition="alert_kind == 'object_closed'">
+      Le groupe de travail de cette proposition n'est plus actif depuis quelques cycles de plus d'une semaine. Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant ouverte à un groupe de travail.
+    </span>
   </div>
 </div>

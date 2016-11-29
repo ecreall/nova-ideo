@@ -16,6 +16,9 @@
     <span tal:condition="alert_kind == 'object_censor'">
       La contribution <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> a été censurée.
     </span>
+    <span tal:condition="alert_kind == 'object_closed'">
+      Le groupe de travail sur la proposition <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> n'est plus actif depuis quelques cycles de plus d'une semaine. Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant ouverte à un groupe de travail.
+    </span>
   </div>
   <span tal:condition="object.is_to_alert(current_user)" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 </div>

@@ -67,6 +67,7 @@ class CorrectProposal(InfiniteCardinality):
         related_ideas = appstruct.pop('related_ideas')
         add_files = appstruct.pop('add_files')
         copy_of_proposal = context.get_version(user, (context, 'version'))
+        context.working_group.init_nonproductive_cycle()
         context.state = PersistentList(['amendable', 'published'])
         context.set_data(appstruct)
         context.text = html_diff_wrapper.normalize_text(

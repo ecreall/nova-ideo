@@ -89,6 +89,14 @@ class WorkParamsConfigurationSchema(Schema):
         default=[],
     )
 
+    nonproductive_cycle_nb = colander.SchemaNode(
+        colander.Integer(),
+        validator=colander.Range(1, 10),
+        title=_('Number of non-productive cycles'),
+        description=_('The number of non-productive improvement cycles before closure.'),
+        default=1,
+        )
+
 
 class UserParamsConfigurationSchema(Schema):
 
