@@ -32,7 +32,7 @@ def manifest_json(context, request):
     _manifest_response = Response(
         content_type='application/json',
         charset='utf8',
-        body=_manifest.replace('START', request.script_name or '/')
+        body=_manifest.replace('START', request.script_name + '/')
     )
     return _manifest_response
 

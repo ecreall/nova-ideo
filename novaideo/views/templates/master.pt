@@ -288,7 +288,7 @@
         <div class="container-fluid anonymous-container">
           <div class="anonymous-logo">
             <a class="navbar-brand"
-               href="${request.script_name or '/'}"
+               href="${request.script_name + '/'}"
                tal:define="logo getattr(request.root, 'picture', None)">
                 <img tal:condition="logo" src="${logo.url}" class="globe-logo">
                 <div tal:omit-tag="" tal:condition="not logo">
