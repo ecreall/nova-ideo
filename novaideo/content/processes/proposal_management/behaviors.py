@@ -1450,10 +1450,10 @@ class VotingPublication(ElementaryAction):
         working_group = context.working_group
         duration = calculate_improvement_cycle_duration(
             self.process)
+        working_group.inc_iteration()
         if duration >= datetime.timedelta(weeks=1):
-            working_group.inc_iteration()
+            working_group.inc_nonproductive_cycle()
 
-        working_group.inc_nonproductive_cycle()
         if not getattr(working_group, 'first_vote', True):
             members = working_group.members
             root = getSite()
