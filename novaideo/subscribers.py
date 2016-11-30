@@ -224,6 +224,15 @@ def init_application(event):
     root.init_channels()
     # other init functions
     init_contents(registry)
+    # LOGO_FILENAME='marianne.svg' for example
+    logo = os.getenv('LOGO_FILENAME', '')
+    if logo:
+        logo_path = os.path.join(
+            os.path.dirname(__file__), 'static', 'images', logo)
+        if os.path.exists(logo_path):
+            # TODO set logo
+            pass
+
     #invite initial user if first deployment
     if getattr(root, 'first_invitation_to_add', False):
         title = os.getenv('INITIAL_USER_TITLE', '')

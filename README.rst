@@ -90,6 +90,10 @@ You need to configure some environment variables, copy the file
 - MAILER_PASSWORD: SMTP password
 - MAILER_TLS: Use TLS
 - MAILER_SSL: Use SSL
+- LOGO_FILENAME: empty by default to use the Nova-Ideo logo. You can
+  set the variable to 'marianne.svg' or other images included in the
+  novaideo/static/images/ directory to configure the logo when the application
+  is created.
 
 If you want to connect to a postfix container, there is a commented example
 in **docker-compose.override.yml.templ** that use an external postfix container
