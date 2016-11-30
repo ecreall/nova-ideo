@@ -1,7 +1,7 @@
 {
   "name": "nova-ideo",
   "short_name": "novaideo",
-  "start_url": "/",
+  "start_url": "START",
   "display": "standalone",
   "gcm_sender_id": "74304986242"
 }

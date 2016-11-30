@@ -300,8 +300,8 @@ function initscroll(result_scrolls){
     },
     loading: {
       finishedMsg: '<span class="label label-warning">'+ novaideo_translate("No more item.")+"</span>",
-      img: window.location.protocol + "//" + window.location.host + "/novaideostatic/images/progress_bar.gif",
-      msgText: "",
+      img: $('body').data('spinner'),
+      msgText: ""
     }
   },
   function(arrayOfNewElems){

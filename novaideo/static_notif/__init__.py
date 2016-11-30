@@ -25,14 +25,15 @@ _OneSignalSDKWorker_response = Response(
 
 _manifest = open(os.path.join(
     _here, 'manifest.json'), encoding='utf8').read()
-_manifest_response = Response(
-    content_type='application/json',
-    charset='utf8',
-    body=_manifest)
 
 
 @view_config(name='manifest.json')
-def favicon_view(context, request):
+def manifest_json(context, request):
+    _manifest_response = Response(
+        content_type='application/json',
+        charset='utf8',
+        body=_manifest.replace('START', request.script_name or '/')
+    )
     return _manifest_response
 
 

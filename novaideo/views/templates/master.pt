@@ -159,6 +159,7 @@
   <body tal:define="
     adminnavbar panel('adminnavbar');
     contextual_help panel('contextual_help')"
+    data-spinner="${request.static_url('novaideo:static/images/progress_bar.gif')}"
     data-api_url="${request.resource_url(request.root, 'novaideoapi')}"
     data-emoji_url="${request.static_url('novaideo:static/emoji/images/sheet_apple_64_indexed_256colors.png')}"
     data-view_name="${request.view_name}">
@@ -286,7 +287,9 @@
     <div tal:omit-tag="" tal:condition="not request.accessible_to_anonymous">
         <div class="container-fluid anonymous-container">
           <div class="anonymous-logo">
-            <a class="navbar-brand" href="/" tal:define="logo getattr(request.root, 'picture', None)" >
+            <a class="navbar-brand"
+               href="${request.script_name or '/'}"
+               tal:define="logo getattr(request.root, 'picture', None)">
                 <img tal:condition="logo" src="${logo.url}" class="globe-logo">
                 <div tal:omit-tag="" tal:condition="not logo">
                   <img alt="Nova-Ideo" src="${request.static_url('novaideo:static/images/novaideo_logo.png')}" class="globe-logo"> Nova-Ideo
