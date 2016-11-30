@@ -286,7 +286,9 @@
     <div tal:omit-tag="" tal:condition="not request.accessible_to_anonymous">
         <div class="container-fluid anonymous-container">
           <div class="anonymous-logo">
-            <a class="navbar-brand" href="/" tal:define="logo getattr(request.root, 'picture', None)" >
+            <a class="navbar-brand"
+               href="${request.resource_url(request.root)}"
+               tal:define="logo getattr(request.root, 'picture', None)">
                 <img tal:condition="logo" src="${logo.url}" class="globe-logo">
                 <div tal:omit-tag="" tal:condition="not logo">
                   <img alt="Nova-Ideo" src="${request.static_url('novaideo:static/images/novaideo_logo.png')}" class="globe-logo"> Nova-Ideo
