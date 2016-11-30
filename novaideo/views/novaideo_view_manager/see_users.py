@@ -171,7 +171,7 @@ class SeeInactiveUsersView(BasicView):
     css_class = 'simple-bloc'
     container_css_class = 'home'
     contents_messages = CONTENTS_MESSAGES
-    selected_filter = [('metadata_filter', ['neagtion', 'states', 'keywords']),
+    selected_filter = [('metadata_filter', ['negation', 'keywords']),
                        'temporal_filter',
                        'text_filter', 'other_filter']
 
@@ -183,7 +183,8 @@ class SeeInactiveUsersView(BasicView):
         def source(**args):
             filters = [
                 {'metadata_filter': {
-                    'content_types': ['person']
+                    'content_types': ['person'],
+                    'states': ['active']
                 },
                 'temporal_filter': {
                     'negation': True,
@@ -215,7 +216,8 @@ class SeeInactiveUsersView(BasicView):
         user = get_current()
         filters = [
             {'metadata_filter': {
-                'content_types': ['person']
+                'content_types': ['person'],
+                'states': ['active']
              },
              'temporal_filter': {
                  'negation': True,
