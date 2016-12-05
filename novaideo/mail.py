@@ -18,6 +18,58 @@ PORTAL_PRESENTATION = u"""{novaideo_title} est une plateforme participative qui 
 
 """
 
+FIRST_INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
+
+FIRST_INVITATION_MESSAGE = u"""
+Bonjour,
+
+Nous vous remercions de l'intérêt que vous portez à Nova-Ideo.
+
+{recipient_first_name} vous êtes invité à rejoindre la plateforme participative Nova-Ideo en tant que administrateur du site.
+
+Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
+
+Nous vous rappellons que Nova-Ideo est une solution d'innovation participative en ligne qui permet de répondre aux problèmes suivants :
+- Vous souhaitez mettre en place une solution d'innovation participative ;
+- Vous avez déjà une boite à idées, mais soit elle est vide, soit si pleine qu'il est impossible de trouver les bonnes idées ;
+- Vous n'avez pas de temps à passer à gérer les idées et manquez ainsi de nombreuses opportunités, et créez de la déception chez ceux qui ont des idées.
+
+Nova-Ideo permet de recueillir les idées d'un collectif, de trouver les bonnes idées et de les transformer en propositions applicables reflétant tous les points de vue.
+
+Pour cela Nova-Ideo utilise le crowdsourcing en faisant travailler la "foule" sur la transformation des idées en propositions.
+
+Nova-Ideo fusionne le meilleur de la boite à idées, du portail collaboratif et des outils de communication internes et propose des solutions d'innovation sociale à la pointe comme l'utilisation du jugement majoritaire ou l'organisation de la rareté des soutiens/rejets.
+
+Consultez notre page https://www.nova-ideo.com et notamment sa page Documentation https://www.nova-ideo.com/documentation
+
+Suivez notre compte twitter : https://twitter.com/NovaIdeo
+
+Vous pouvez consulter notre présentation détaillée de Nova-Ideo http://fr.slideshare.net/MichaelLaunay/20160911-novaideo-linnovation-participative-en-ligne
+
+Le code de Nova-Ideo sous licence libre AGPL V3 est accessible sur : https://github.com/ecreall/nova-ideo
+
+La vidéo filmée lors du PyConFR expliquant d'où vient Nova-Ideo et pourquoi il est libre : http://video-pyconfr2015.paulla.asso.fr/112_-_Michael_Launay_-_Nova-Ideo,_une_boite_a_idees_collaborative.html
+
+Nous réalisons également une série de vidéos expliquant l'administration et le fonctionnement de Nova-Ideo accessible depuis la page Documentation de notre site https://www.nova-ideo.com/documentation .
+
+Nous pouvons adapter Nova-Ideo à vos besoins spécifiques, alors n'hésitez pas à nous contacter, nous répondrons à vos questions !
+
+Vous pouvez aussi faire part de vos remarques et proposer des évolutions en créant un compte sur https://evolutions.nova-ideo.com
+
+Cordialement
+L'équipe d'Ecréall
+Services et Solutions en Logiciels Libres
+Parc scientifique de la Haute Borne
+Bâtiment Hub Innovation
+11, rue de l'Harmonie
+59650 Villeneuve d'Ascq
+site : http://www.ecreall.com
+tél : 03 20 79 32 90
+mob : 06 16 85 91 12
+Fax : 09 56 94 39 44
+"""
+
+
 INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
 
 INVITATION_MESSAGE = u"""
@@ -453,6 +505,12 @@ Bonjour {first_name} {last_name},
 Vous êtes maintenant désabonné de la newsletter {newsletter_title}.
 
 """ + PORTAL_SIGNATURE
+
+
+FIRST_INVITATION = {
+    'subject': FIRST_INVITATION_SUBJECT,
+    'template': FIRST_INVITATION_MESSAGE
+}
 
 
 DEFAULT_SITE_MAILS = {

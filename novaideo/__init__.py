@@ -622,9 +622,11 @@ DEFAULT_FILES = [
     {'name': 'ml_file',
      'title': _('Legal notices'),
      'description': _('The legal notices'),
-     'content': ''},
+     'content': '',
+     'content_file': 'legal_notices.html'},
     {'name': 'terms_of_use',
      'title': _('Terms of use'),
      'description': _('The terms of use'),
-     'content': ''}
+     'content': '',
+     'content_file': 'terms_of_use.html'}
 ]

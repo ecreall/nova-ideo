@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import os
+import io
 import transaction
 from pyramid.events import subscriber, ApplicationCreated
 from pyramid.threadlocal import get_current_registry, get_current_request
@@ -14,7 +15,8 @@ from pyramid.threadlocal import manager
 from substanced.event import RootAdded
 from substanced.util import find_service
 
-from dace.util import getSite, get_system_request
+from dace.util import getSite
+from pontus.file import File
 
 from novaideo import core
 from novaideo.event import (
@@ -30,6 +32,7 @@ from novaideo.role import APPLICATION_ROLES
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.utilities.util import gen_random_token
+from novaideo.mail import FIRST_INVITATION
 
 
 _CONTENT_TRANSLATION = [_("The proposal"),
@@ -49,7 +52,6 @@ def _invite_first_user(root, registry, title, first_name, last_name, email):
         email=email,
         roles=first_user_roles
         )
-    mail_template = root.get_mail_template('invitation')
     novaideo_title = root.title
     invitation.state.append('pending')
     invitation.setproperty('manager', user)
@@ -59,10 +61,10 @@ def _invite_first_user(root, registry, title, first_name, last_name, email):
     roles_translate = [APPLICATION_ROLES.get(r, r)
                        for r in invitation.roles]
     url = application_url + '/' + invitation.__name__
-    subject = mail_template['subject'].format(
+    subject = FIRST_INVITATION['subject'].format(
         novaideo_title=novaideo_title
     )
-    message = mail_template['template'].format(
+    message = FIRST_INVITATION['template'].format(
         recipient_title='',
         recipient_first_name=invitation.first_name,
         recipient_last_name=invitation.last_name,
@@ -224,17 +226,20 @@ def init_application(event):
     root.init_channels()
     # other init functions
     init_contents(registry)
-    # LOGO_FILENAME='marianne.svg' for example
-    logo = os.getenv('LOGO_FILENAME', '')
-    if logo:
-        logo_path = os.path.join(
-            os.path.dirname(__file__), 'static', 'images', logo)
-        if os.path.exists(logo_path):
-            # TODO set logo
-            pass
-
     #invite initial user if first deployment
     if getattr(root, 'first_invitation_to_add', False):
+        # LOGO_FILENAME='marianne.svg' for example
+        logo = os.getenv('LOGO_FILENAME', '')
+        if logo:
+            logo_path = os.path.join(
+                os.path.dirname(__file__), 'static', 'images', logo)
+            if os.path.exists(logo_path):
+                buf = io.BytesIO(open(logo_path).read().encode())
+                buf.seek(0)
+                log_file = File(
+                    fp=buf, filename=logo, mimetype='image/svg+xml')
+                root.setproperty('picture', log_file)
+
         title = os.getenv('INITIAL_USER_TITLE', '')
         first_name = os.getenv('INITIAL_USER_FIRSTNAME', '')
         last_name = os.getenv('INITIAL_USER_LASTNAME', '')

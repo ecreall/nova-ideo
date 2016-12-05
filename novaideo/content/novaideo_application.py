@@ -5,6 +5,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import os
 import pytz
 import colander
 import datetime
@@ -417,7 +418,16 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
         for information in DEFAULT_FILES:
             if not self.get(information['name'], None):
                 info_file = FileEntity(title=information['title'])
-                info_file.text = information['content']
+                content = information.get('content', '')
+                content_file = information.get('content_file', None)
+                if content_file:
+                    content_path = os.path.join(
+                        os.path.dirname(__file__), 'static',
+                        'default_files', content_file)
+                    if os.path.exists(content_path):
+                        content = open(content_path).read()
+
+                info_file.text = content
                 info_file.__name__ = information['name']
                 self.addtoproperty('files', info_file)
                 info_file.state = PersistentList(['draft'])
