@@ -7,12 +7,14 @@
                  author ' '.join([a for a in author_parts if a]);
                  comment_kind getattr(object, 'comment_kind', 'comment');
                  subjects object.subjects if object.subjects else [request.root.channel];
-                 icon object.icon">
+                 icon object.icon;
+                 new_alert object.is_to_alert(current_user)">
 	<div tal:omit-tag=""
 	     i18n:domain="novaideo"
 	     tal:condition="subjects">
      <div tal:define="channel subjects[0];
-		  	          subject channel.get_subject(current_user);">
+		  	          subject channel.get_subject(current_user);"
+		  class="alert-item ${new_alert and 'new-alert'}">
 	     <div tal:condition="comment_kind == 'comment'">  
 			  <div 
 			     tal:condition="not is_respons">

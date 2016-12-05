@@ -1,3 +1,12 @@
+.alert-item{
+    padding: 0px 5px;
+    border-radius: 3px;
+}
+
+.alert-item.new-alert{
+  background-color: #d8d8d8;
+}
+
 .alert-terms-of-use{
     border: solid 2px @brand-danger;
     padding: 10px;
@@ -2315,15 +2324,13 @@ ul.nav.navbar-right a.dropdown-toggle{
    display: inline-block
 }
 
-.alert-block,
-.alert-block>a{
+.alert-block{
     color: #d51c17;
     display: inline-block;
     font-weight: bold;
 }
 
-.alert-block.off,
-.alert-block.off>a{
+.alert-block.off{
    color: gray   
 }
 
@@ -2339,10 +2346,11 @@ ul.nav.navbar-right a.dropdown-toggle{
 }
 
 
-.alert-block>a>span.icon{
+.alert-block>span.icon{
     font-size: 20px;
     top: 5px;
-    margin-right: -3px
+    margin-right: -3px;
+    cursor: pointer
 }
 
 .alert-block>span.alert-nb{
@@ -2351,6 +2359,13 @@ ul.nav.navbar-right a.dropdown-toggle{
 
 .all-alerts-btn{
     width: 100%
+}
+
+.alerts-content .result-container{
+  padding: 0px 10px;
+  max-height: 460px;
+  max-width: 400px;
+  overflow: auto;
 }
 
 .alerts-content{
@@ -2364,8 +2379,8 @@ ul.nav.navbar-right a.dropdown-toggle{
   margin-top: 1px;
   max-height: 500px;
   max-width: 400px;
-  overflow: auto;
-  padding: 10px 15px;
+  overflow: hidden;
+  padding: 0px;
   position: absolute;
   z-index: 1300;
 }

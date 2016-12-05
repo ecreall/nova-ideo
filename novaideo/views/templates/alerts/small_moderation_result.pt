@@ -1,7 +1,10 @@
-<div tal:define="icon object.icon">
+<div tal:define="
+      icon object.icon;
+      new_alert object.is_to_alert(current_user)">
   <div tal:define="
   	    subject object.subjects[0];
-  	    alert_kind getattr(object, 'alert_kind', '');">
+  	    alert_kind getattr(object, 'alert_kind', '');"
+      class="alert-item ${new_alert and 'new-alert'}">
     <h5><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h5>
     <span tal:condition="alert_kind == 'moderation'">
     	Les modérateurs ont statué sur la contribution <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>

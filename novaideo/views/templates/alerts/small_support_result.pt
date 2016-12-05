@@ -1,7 +1,9 @@
 <div i18n:domain="novaideo"
      tal:condition="object.subjects"
-     tal:define="support_kind getattr(object, 'support_kind', '')">
-  <div tal:define="subject object.subjects[0]">
+     tal:define="
+         support_kind getattr(object, 'support_kind', '');
+         new_alert object.is_to_alert(current_user)">
+  <div tal:define="subject object.subjects[0]" class="alert-item ${new_alert and 'new-alert'}">
     <h4>
     	<span class="alert-token token ${object.icon}"></span> 
         <span tal:replace="layout.to_localized_time(object.modified_at)"/>

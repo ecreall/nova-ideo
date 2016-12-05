@@ -180,6 +180,10 @@ $(document).on('click', function(event){
          $('.proposal-explanation:not(.closed)').addClass('closed');
       }
     }
+    var parents = $($(event.target).parents('.alerts-content'))
+    if(parents.length == 0){
+      $('.alerts-content').addClass('hide-bloc')
+    }
 });
 
 
@@ -896,8 +900,8 @@ $(document).ready(function(){
   // more_content($('.more-content-carousel.verticla'), true);
   // more_content($('.more-content-carousel:not(.vertical)'), false);
 
-  $('.alert-block:not(.off)').hover(function(){
-        var $this = $(this);
+  $('.alert-block>span.icon').click(function(event){
+        var $this = $(this).parents('.alert-block').first();
         var url = $this.data('url');
         var alert_content = $($this.find('.alerts-content').first());
         var target = $(alert_content.find('.content').first());
@@ -907,15 +911,11 @@ $(document).ready(function(){
           if(data['body']){
             target.html(data['body']);
             alert_content.find('.loading-indicator').addClass('hide-bloc')
-            setTimeout(function(){
-              unsubscribe_user_from_alerts($this)
-            }, 500)
+            unsubscribe_user_from_alerts($this)
           }
         });
+        event.stopPropagation()
 
-    }, function(){
-        var $this = $(this);
-        $this.find('.alerts-content').addClass('hide-bloc')
     });
 
   scroll_to_panel()

@@ -281,14 +281,15 @@ class NovaideoAPI(IndexManagementJsonView):
 
     def get_user_alerts(self):
         user = get_current()
-        objects = getattr(user, 'alerts', [])
+        objects = list(getattr(user, 'alerts', []))
+        objects.extend(getattr(user, 'old_alerts', []))
         now = datetime.datetime.now(tz=pytz.UTC)
         objects = sorted(
             objects,
             key=lambda e: getattr(e, 'modified_at', now),
             reverse=True)
         result_body = []
-        for obj in objects:
+        for obj in objects[:20]:
             render_dict = {
                 'object': obj,
                 'current_user': user

@@ -34,7 +34,7 @@
        <span tal:condition="hasalerts"
           class="visible-xs-inline-block alert-block ${len_alerts==0 and 'off'}"
           data-url="${alerts_url}">
-            <a href="${all_alerts_url}"><span class="icon glyphicon glyphicon-bell"></span></a>
+            <span i18n:attributes="title" title="Notifications" class="icon glyphicon glyphicon-bell"></span>
             <span class="alert-nb" >${len_alerts}</span>
             <div class="alerts-content hide-bloc">
               <img class="loading-indicator hide-bloc" src="${progress_url}"/>
@@ -66,7 +66,7 @@
         <span tal:condition="hasalerts"
           class="hidden-xs alert-block ${len_alerts==0 and 'off'}"
           data-url="${alerts_url}">
-            <a href="${all_alerts_url}"><span class="icon glyphicon glyphicon-bell"></span></a>
+            <span i18n:attributes="title" title="Notifications" class="icon glyphicon glyphicon-bell"></span>
             <span class="alert-nb" >${len_alerts}</span>
             <div data-unsubscribe_url="${unsubscribe_alerts_url}" class="alerts-content hide-bloc">
               <img class="loading-indicator hide-bloc" src="${progress_url}"/>

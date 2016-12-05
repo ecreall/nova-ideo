@@ -5,8 +5,9 @@
                  url getattr(object, 'url', None);
                  duplicate_title getattr(object, 'duplicate_title', None);
                  member_url getattr(object, 'member_url', None);
-                 member_title getattr(object, 'member_title', None);">
-  <div tal:define="subject object.subjects[0]">
+                 member_title getattr(object, 'member_title', None);
+                 new_alert object.is_to_alert(current_user)">
+  <div tal:define="subject object.subjects[0]" class="alert-item ${new_alert and 'new-alert'}">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
     <span tal:condition="alert_kind == 'duplicated'">
       Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été dupliqué, le contenu dupliqué est visible sous <a href="${url}"><span class="${getattr(subject, 'icon')}"></span> ${duplicate_title}</a>.
