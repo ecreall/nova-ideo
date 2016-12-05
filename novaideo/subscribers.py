@@ -234,8 +234,7 @@ def init_application(event):
             logo_path = os.path.join(
                 os.path.dirname(__file__), 'static', 'images', logo)
             if os.path.exists(logo_path):
-                buf = io.BytesIO(open(logo_path).read().encode())
-                buf.seek(0)
+                buf = open(logo_path, mode='rb')
                 log_file = File(
                     fp=buf, filename=logo, mimetype='image/svg+xml')
                 root.setproperty('picture', log_file)
