@@ -215,16 +215,19 @@
             <img tal:condition="current_picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
             <div class="media-body comment-content">
               <small class="comment-author">
-                <a tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a><span class="ion-refreshing"></span>
+                <a tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a><span class="comment-loading-icon ion-refreshing"></span>
                 <div class="comment-detail-container">
                   <span i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span>
                 </div>
               </small>
-              <div class="comment-preview-text"></div>     
+              <div class="object-text">
+                <p class="emoji-container">
+                  <div class="comment-preview-text"></div>     
+                </p>
+              </div>
             </div>
          </div>
       </li>
   </ul>
 </div>
-
 

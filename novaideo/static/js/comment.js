@@ -280,6 +280,7 @@ $(document).on('submit','.commentform:not(.comment-inline-form)', function( even
         alert_msg: novaideo_translate("Comment sent"),
         alert_type: 'info'
       })
+      textarea.val('');
       $.ajax({
         url: url,
         type: 'POST',
@@ -364,6 +365,7 @@ $(document).on('submit','.respondform', function( event ) {
       for(key in action_metadata){
           formData.append(key, action_metadata[key])
       }
+      textarea.val('');
       $.ajax({
         url: url,
         type: 'POST',
@@ -380,7 +382,6 @@ $(document).on('submit','.respondform', function( event ) {
                 })
              $($(content).find('li.commentli').first()).insertBefore(preview);
              preview.addClass('hide-bloc')
-             textarea.val('');
              select_related_contents.select2('val', []);
              $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
              select_itention.select2('val', 'Remark')
