@@ -280,7 +280,7 @@ def get_url_domain(url, name_only=False):
     return '{uri.netloc}'.format(uri=parsed_uri)
 
 
-def extract_twitter_metadata(page):
+def extract_twitter_metadata(page, url, url_metadata):
     result = {}
     soup = BeautifulSoup(page, "lxml")
     twit = soup.find('div', attrs={'class': 'permalink-header'})
@@ -327,9 +327,42 @@ def extract_favicon(page, domain):
     return result
 
 
+def extract_wikipedia_metadata(page, url, url_metadata):
+    result = {}
+    try:
+        parsed_uri = urlparse(url)
+        title = parsed_uri.path.split('/')[-1].replace('_',  '%20')
+        # get metadata: use wikipedia api
+        api_url = url_metadata['domain']+"/w/api.php?action=query&prop=extracts&format=json&explaintext=&exintro=&titles="+title
+        response = urllib.request.urlopen(api_url).read()
+        data = json.loads(response.decode())
+        pages = data.get('query', {}).get('pages', {})
+        if pages:
+            item = list(pages.items())[0][1]
+            result['description'] = item.get('extract').replace('\n', '')
+
+    except Exception:
+        pass
+
+    return result
+
+
 DATA_EXTRACTORS = {
-    'twitter': extract_twitter_metadata
+    'twitter': extract_twitter_metadata,
+    'wikipedia': extract_wikipedia_metadata,
 }
+
+
+def get_data_extractor(site_name):
+    site_id = site_name.lower()
+    extractor = DATA_EXTRACTORS.get(site_id, None)
+    if not extractor:
+        for key in DATA_EXTRACTORS:
+            if site_id.find(key+'-') >= 0:
+                site_id = key
+                break
+
+    return site_id, DATA_EXTRACTORS.get(site_id, None)
 
 
 def extract_urls_metadata(urls, save_images=False):
@@ -337,7 +370,9 @@ def extract_urls_metadata(urls, save_images=False):
     for url in urls:
         page = ''
         try:
-            page = urllib.request.urlopen(url).read()
+            resp = urllib.request.urlopen(url)
+            url = resp.url
+            page = resp.read()
             url_metadata = metadata_parser.MetadataParser(
                 html=page, requests_timeout=100)
         except Exception:
@@ -345,21 +380,26 @@ def extract_urls_metadata(urls, save_images=False):
         result = {
             'url': url,
             'title': url_metadata.get_metadata('title'),
-            'description': url_metadata.get_metadata('description'),
+            'description': url_metadata.get_metadata('description', ''),
             'site_name': url_metadata.get_metadata('site_name'),
             'image_url': None,
-            'image': None
+            'image': None,
+            'domain': get_url_domain(url)
         }
         if not result.get('site_name'):
             result['site_name'] = get_url_domain(
                 url, True).replace('www.', '').replace('.', '-')
 
         if result['site_name']:
-            extractor = DATA_EXTRACTORS.get(result['site_name'].lower(), None)
+            site_name, extractor = get_data_extractor(result['site_name'])
+            result['site_name'] = site_name.title()
             if extractor:
-                result.update(extractor(page))
+                result.update(extractor(page, url, result))
 
         result.update(extract_favicon(page, get_url_domain(url)))
+        if result['description']:
+            result['description'] = result['description'][:500] + '...'
+
         try:
             image = url_metadata.get_metadata('image')
             if save_images and image:
@@ -623,7 +663,8 @@ def text_urls_format(text, request=None):
     if text:
         urls = extract_urls(text)
         for data_url in extract_urls_metadata(urls):
-            if data_url['url'] not in all_urls:
+            if data_url['url'] not in all_urls and \
+               (data_url['image'] or data_url['description']):
                 if data_url['image']:
                     new_image = data_url.pop('image')
                     url_files.append(new_image)
