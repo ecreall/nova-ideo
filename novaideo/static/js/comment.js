@@ -297,7 +297,6 @@ $(document).on('submit','.commentform:not(.comment-inline-form)', function( even
                   alert_msg: novaideo_translate("Your comment is integrated"),
                   alert_type: 'success'
                 })
-               textarea.val('');
                select_related_contents.select2('val', []);
                $($this.find('.comment-files .form-group.deform-seq-item  ')).remove()
                select_itention.select2('val', 'Remark')
