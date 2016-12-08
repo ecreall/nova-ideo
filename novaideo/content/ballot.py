@@ -54,7 +54,7 @@ class Referendum(object):
         self.false_val = kwargs.get('false_val', _('Favour'))
         self.true_val = kwargs.get('true_val', _('Against'))
 
-    def run_ballot(self, context=None):
+    def run_ballot(self, context=None, id_=None):
         """Run referendum election processes for all electors"""
 
         processes = []
@@ -66,6 +66,7 @@ class Referendum(object):
 
         proc = pd()
         proc.__name__ = proc.id
+        proc.activator_id = id_
         runtime.addtoproperty('processes', proc)
         proc.defineGraph(pd)
         proc.execution_context.add_involved_entity('subject', context)
@@ -138,7 +139,7 @@ class MajorityJudgment(object):
         self.report = report
         self.judgments = DEFAULT_JUDGMENTS
 
-    def run_ballot(self, context=None):
+    def run_ballot(self, context=None, id_=None):
         """Run MajorityJudgment election processes for all electors"""
 
         processes = []
@@ -150,6 +151,7 @@ class MajorityJudgment(object):
 
         proc = pd()
         proc.__name__ = proc.id
+        proc.activator_id = id_
         runtime.addtoproperty('processes', proc)
         proc.defineGraph(pd)
         proc.execution_context.add_involved_entity('subject', context)
@@ -235,7 +237,7 @@ class FPTP(object):
         self.group_values = kwargs.get('group_values', None)
         self.group_default = kwargs.get('group_default', None)
 
-    def run_ballot(self, context=None):
+    def run_ballot(self, context=None, id_=None):
         """Run FPTP election processes for all electors"""
 
         processes = []
@@ -247,6 +249,7 @@ class FPTP(object):
 
         proc = pd()
         proc.__name__ = proc.id
+        proc.activator_id = id_
         runtime.addtoproperty('processes', proc)
         proc.defineGraph(pd)
         proc.execution_context.add_involved_entity('subject', context)
@@ -356,7 +359,7 @@ class RangeVoting(object):
         self.subject_type_manager = SUBJECT_TYPES_MANAGER.get(self.subject_type,
                                                               None)
 
-    def run_ballot(self, context=None):
+    def run_ballot(self, context=None, id_=None):
         """Run range voting processes for all electors"""
         processes = []
         def_container = find_service('process_definition_container')
@@ -367,6 +370,7 @@ class RangeVoting(object):
 
         proc = pd()
         proc.__name__ = proc.id
+        proc.activator_id = id_
         runtime.addtoproperty('processes', proc)
         proc.defineGraph(pd)
         proc.execution_context.add_involved_entity('subject', context)
@@ -473,9 +477,8 @@ class Ballot(VisualisableElement, Entity):
         self.duration = duration
         self.finished_at = None
 
-    def run_ballot(self, context=None):
+    def run_ballot(self, context=None, id_=None):
         """Run the ballot"""
         self.run_at = datetime.datetime.now(tz=pytz.UTC)
         self.finished_at = self.run_at + self.duration
-        processes = self.report.ballottype.run_ballot(context)
-        return processes
+        return self.report.ballottype.run_ballot(context, id_)
