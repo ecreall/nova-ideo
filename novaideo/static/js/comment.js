@@ -129,7 +129,7 @@ function update_replay(url){
     var url = $this.closest('.comment-inline-toggle').data('updateurl');
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata($this));
-    $.getJSON(url,url_attr, function(data) {
+    $.post(url,url_attr, function(data) {
        include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
