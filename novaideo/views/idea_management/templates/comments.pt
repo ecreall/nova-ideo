@@ -35,7 +35,7 @@
             <img tal:condition="picture is not None" class="img-circle" tal:attributes="src getattr(picture, 'profil', picture).url"  width="30"/>
             <img tal:condition="picture is None" class="img-circle" src="${request.static_url('novaideo:static/images/user.png')}" width="30"/>
             <div class="media-body comment-content">
-              <div id="commentaction" class="pull-right">
+              <div class="comment-menu">
                   <div tal:replace="structure item['menu_body']"/>
               </div>
               <div class="comment-author" tal:define="

@@ -106,7 +106,7 @@ function init_comment_scroll(element){
   var elem = $(comment_id);
   if(elem.length) {
      var hide_comment = $(elem.parents('.commentli.hide-bloc'))
-     $(hide_comment.parents('.commentli:not(.hide-bloc)').children('.comment-data').find('#commentaction .comment-replay-nb.closed')).click() 
+     $(hide_comment.parents('.commentli:not(.hide-bloc)').children('.comment-data').find('.comment-replay-nb.closed')).click() 
      setTimeout(function(){comment_scroll_to($(elem.parents('.commentli').first()), true)}, 1000)
   }else{
      comment_scroll.scrollTop(comment_scroll.prop("scrollHeight"));
