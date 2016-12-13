@@ -7,7 +7,8 @@ function get_action_metadata(action){
       var view = $($(this).parents('.component-obj-view.component-listing-view, .component-obj-view.component-index-view').first())
       return view.attr('id')
     }).get()
-    var counters = $('[data-component_type="navbar_component"], [data-component_type="novaideo_content_nb"]').map(function(){return $(this).attr('id')}).get()
+    var counters = $('[data-component_type="tab_component"], [data-component_type="navbar_component"], [data-component_type="novaideo_content_nb"]')
+        .map(function(){return $(this).attr('id')}).get()
     var contextual_help = $('[data-component_type="contextual-help"]').map(function(){return $(this).attr('id')}).get()
     var steps_navbars = $('[data-component_type="process_steps"]').map(function(){return $(this).attr('id')}).get()
     return {source_path: window.location.pathname,
