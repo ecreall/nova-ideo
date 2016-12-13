@@ -1227,12 +1227,14 @@ def render_files(files, request, template=FILE_TEMPLATE, navbar=False):
     return bodies
 
 
-def get_vote_actions(context, request, activator_ids=[]):
+def get_vote_actions(
+    context, request, activator_ids=[],
+    process_discriminator='Vote process'):
     dace_ui_api = get_current_registry().getUtility(
         IDaceUIAPI, 'dace_ui_api')
     vote_actions = dace_ui_api.get_actions(
         [context], request,
-        process_discriminator='Vote process')
+        process_discriminator=process_discriminator)
     if activator_ids:
         vote_actions = [(va_context, va) for (va_context, va) in vote_actions
                         if getattr(va.process, 'activator_id', None) in
@@ -1251,14 +1253,23 @@ def get_vote_actions(context, request, activator_ids=[]):
     return actions, resources, messages, action_updated
 
 
-def get_vote_actions_body(context, request, activator_ids=[]):
+def get_vote_actions_body(
+    context, request,
+    activator_ids=[],
+    process_discriminator='Vote process',
+    kind='voteactions',
+    activate=True,
+    title=_('Votes')):
     actions, resources, messages, action_updated = get_vote_actions(
-        context, request, activator_ids)
+        context, request, activator_ids, process_discriminator)
     body = renderers.render(
         VOTE_TEMPLATE,
         {
             'vote_actions': actions,
+            'kind': kind,
+            'activate': activate,
             'context': context,
+            'title': title,
             'json': json
         },
         request)
