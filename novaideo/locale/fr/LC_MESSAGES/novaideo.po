@@ -53,11 +53,11 @@ msgstr "L'idée"
 
 #: novaideo/__init__.py:60
 msgid "Default view"
-msgstr ""
+msgstr "la vue par défaut"
 
 #: novaideo/__init__.py:61
 msgid "Bloc view"
-msgstr ""
+msgstr "la vue en blocs"
 
 #: novaideo/__init__.py:39
 msgid "À caractère sexuel explicite"
