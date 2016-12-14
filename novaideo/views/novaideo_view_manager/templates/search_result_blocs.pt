@@ -1,0 +1,29 @@
+<div class="items-main-view-container" 
+   id="items-main-view-container-${id}"
+   tal:define="batch_value batch|nothing;
+               id (batch_value and batch_value.target.replace('#', '')) or 'results'"
+   i18n:domain="novaideo">
+  <div tal:omit-tag="" tal:define="sortbody sort_body|nothing">
+    <div id="sort-${id}" tal:condition="sortbody">
+      ${structure: sortbody}
+      </div>
+  </div>
+  <div tal:omit-tag="" tal:define="filterbody filter_body|nothing">
+    <div id="filter-${id}" tal:condition="filterbody">
+      ${structure: filterbody}
+      </div>
+  </div>
+  <div class="row scroll-able result-scroll" tal:define="batch_value batch|nothing">
+    <div tal:condition="bodies" id="${(batch_value and batch_value.target.replace('#', '')) or 'results'}" class="results">
+      <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
+  	  <div class="container-fluid result-container" data-nex_url="${batch.next_url}">
+      	  <div class="row" tal:repeat="row_index range(row_len)">
+      	    <div class="col-md-6" tal:repeat="body bodies[(row_index*2): (row_index*2)+2]" style="padding-top: 10px">
+                ${structure:body}
+      	    </div>
+      	  </div>
+      </div>
+    </div>
+  </div>
+</div>
+
