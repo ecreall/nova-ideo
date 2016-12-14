@@ -4,9 +4,9 @@
 
 # licence: AGPL
 # author: Amen Souissi
-from substanced.util import get_oid
+from hypatia.util import ResultSet
 
-from dace.util import get_obj
+from substanced.util import get_oid, find_objectmap
 
 from novaideo.views.filter import (
     find_entities)
@@ -47,7 +47,8 @@ def get_folder_content(folder, user,
         oids = contents.ids if not isinstance(contents, list) else contents
 
     if isinstance(objects, list):
-        objects.extend([get_obj(o) for o in oids])
+        objectmap = find_objectmap(folder)
+        objects = ResultSet(oids, len(oids), objectmap.object_for)
     else: # ResultSet
         objects.ids = list(objects.ids)
         objects.ids.extend(oids)
