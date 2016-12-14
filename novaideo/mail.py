@@ -619,7 +619,7 @@ DEFAULT_SITE_MAILS = {
     'wg_resign': {
               'title': _("Resignation of the working group"),
               'subject': RESIGN_SUBJECT,
-              'template': RESIGN_SUBJECT
+              'template': RESIGN_MESSAGE
     },
     'wating_list': {
               'title': _("Registration on the waiting list"),
