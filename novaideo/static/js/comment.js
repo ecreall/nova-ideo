@@ -1,30 +1,3 @@
-
-function related_item_template(item){
-   var markup = '<div class="clearfix">' +
-                '<div class="col-sm-1">'
-   if(item.icon){
-      markup += '<span class=\"search-icon '+item.icon+'\"></span>'
-   };
-   markup += '</div>'+
-             '<div clas="col-sm-10">' +
-               '<div class="clearfix">' +
-                  '<div class="col-sm-3">' + item.text + '</div>';
-   if (item.description) {
-      markup += '<div class="col-sm-8">' + item.description + '</div>';
-    };
-   markup += '</div></div></div>';
-   return markup
-};
-
-
-
-try {
-    select2_ajax_templates['related_item_template'] = related_item_template;
-}
-catch(err) {
-}
-
-
 function replays_show(element){
     var $element = $(element)
     var replays = $($element.parents('li').first().find('ul.commentul:not(.replay-bloc)').first().children('li:not(.comment-preview)'));
