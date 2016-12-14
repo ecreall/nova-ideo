@@ -23,7 +23,7 @@ from .create_proposal import (
     AddIdeaFormView,
     add_file_data,
     IdeaManagementView as IdeaManagementViewOr)
-from novaideo import _
+from novaideo import _, log
 
 
 
@@ -67,17 +67,17 @@ class IdeaManagementView(IdeaManagementViewOr):
 class PublishAsProposalStudyReport(BasicView):
     title = _('Alert for transformation')
     name = 'alertfortransformation'
-    template ='novaideo:views/proposal_management/templates/alert_proposal_transformation.pt'
+    template = 'novaideo:views/proposal_management/templates/alert_proposal_transformation.pt'
 
     def update(self):
         result = {}
         body = self.content(args={}, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
-def ideas_choice(context, request):   
+def ideas_choice(context, request):
     values = [(context, context.title)]
     return Select2Widget(values=values, multiple=True)
 
@@ -89,12 +89,22 @@ class PublishFormView(CreateProposalFormView):
     name = 'publishasproposal'
 
     def default_data(self):
+        root = self.request.root
+        template = getattr(root, 'proposal_template', None)
+        text = '<p>{idea_text}</p>'
+        if template:
+            try:
+                text = template.fp.readall().decode()
+            except Exception as error:
+                log.warning(error)
+
         localizer = self.request.localizer
         title = self.context.title + \
             localizer.translate(_(" (the proposal)"))
         data = {'title': title,
                 'description': self.context.text,
-                'text': self.context.text,
+                'text': text.format(
+                    idea_text=self.context.text.replace('\n', '<br/>')),
                 'keywords': self.context.keywords,
                 'related_ideas': [self.context]}
         attached_files = self.context.attached_files

@@ -81,6 +81,14 @@ class WorkParamsConfigurationSchema(Schema):
         missing=[]
     )
 
+    proposal_template = colander.SchemaNode(
+        ObjectData(File),
+        widget=get_file_widget(file_extensions=['html']),
+        title=_('Proposal template'),
+        missing=None,
+        description=_("Only HTML files are supported."),
+        )
+
     work_modes = colander.SchemaNode(
         colander.Set(),
         title=_('Work modes'),

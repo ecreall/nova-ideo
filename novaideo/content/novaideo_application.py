@@ -113,6 +113,11 @@ class ObjectData(ObjectDataOrigine):
 
         if 'work_conf' in result:
             work_conf = result.pop('work_conf')
+            if 'proposal_template' in work_conf and \
+               work_conf['proposal_template'] and \
+               OBJECT_DATA in work_conf['proposal_template']:
+                work_conf['proposal_template'] = work_conf['proposal_template'][OBJECT_DATA]
+
             result.update(work_conf)
 
         if 'user_conf' in result:
@@ -290,6 +295,7 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
     picture = CompositeUniqueProperty('picture')
     favicon = CompositeUniqueProperty('favicon')
     theme = CompositeUniqueProperty('theme')
+    proposal_template = CompositeUniqueProperty('proposal_template')
     advertisings = CompositeMultipleProperty('advertisings')
     news_letter_members = SharedMultipleProperty('news_letter_members')
     channels = CompositeMultipleProperty('channels', 'subject')
