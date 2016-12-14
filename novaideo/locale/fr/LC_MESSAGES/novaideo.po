@@ -889,7 +889,7 @@ msgstr "Plus"
 
 #: novaideo/views/panels.py:650
 msgid "My private folders"
-msgstr ""
+msgstr "Mes dossiers privés"
 
 #: novaideo/views/advertising_panels.py:97
 msgid "Banner"
