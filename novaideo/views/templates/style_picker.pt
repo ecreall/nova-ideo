@@ -1,0 +1,40 @@
+<span tal:define="name name|field.name;
+                css_class css_class|field.widget.css_class;
+                oid oid|field.oid;
+                mask mask|field.widget.mask;
+                mask_placeholder mask_placeholder|field.widget.mask_placeholder;
+                style style|field.widget.style;
+"
+    tal:omit-tag="">
+  <style>
+      .color-selection label
+      {
+         margin-left: 15px;
+         margin-right: 10px
+      }
+      .color-preview{
+        float:right;
+        padding-right:100px;
+      }
+  </style>
+  <div class="color-picker"  i18n:domain="novaideo">
+    <div class="color-selection">
+        <label i18n:translate="">Text</label>
+        <input type='text' id="${oid}-font" name="font"/>
+        <label i18n:translate="">Background</label>
+        <input type='text' id="${oid}-background" name="background"/>
+    </div>
+    <input type="hidden" name="${name}" value="${cstruct}"
+           tal:attributes="class string: form-control ${css_class};
+                           style style"
+           id="${oid}"/>
+  </div>
+ <script type="text/javascript">
+      deform.addCallback(
+         '${oid}',
+         function(oid) {
+            initialize_color_picker(oid);
+         }
+        );
+    </script>
+</span>

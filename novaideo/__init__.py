@@ -57,6 +57,10 @@ REPORTING_REASONS = {
 }
 
 
+VIEW_TYPES = {'default': _('Default view'),
+              'bloc': _('Bloc view')}
+
+
 ACCESS_ACTIONS = {}
 
 

@@ -194,6 +194,7 @@
             <div tal:condition="not view_only" class="col-md-2 column ui-sortable novaideo-left">
               ${panel('channels')}
               ${adminnavbar}
+              ${panel('navigation_bar')}
                <div metal:define-slot="left"></div>
             </div>
             <div class="col-md-7 column ui-sortable novaideo-main">

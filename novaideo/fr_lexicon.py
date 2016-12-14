@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import string
 from zope.interface import implementer
 from pyramid.threadlocal import get_current_registry
 from hypatia.text.interfaces import IPipelineElement
@@ -15,6 +16,9 @@ from dace.util import name_normalizer
 from novaideo.fr_stopdict import get_stopdict
 
 
+TITLE_RE_MAPPING = {ord(c): ' ' for c in string.punctuation}
+
+
 def normalize_word(word):
     normalizer = get_current_registry().getUtility(INormalizer,
                                                    'default_normalizer')
@@ -22,6 +26,12 @@ def normalize_word(word):
         return normalizer.normalize(word).decode().lower()
 
     return name_normalizer(word).lower()
+
+
+def normalize_title(obj_title):
+    title = normalize_word(obj_title).translate(TITLE_RE_MAPPING)
+    #Format the white spaces
+    return ' '.join(filter(lambda a: a, title.split(' ')))
 
 
 @implementer(IPipelineElement)

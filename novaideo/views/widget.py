@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import deform
+from colander import null
 from deform.widget import default_resource_registry
 from pyramid.threadlocal import get_current_request
 from pyramid import renderers
@@ -101,6 +102,51 @@ class DateIcalWidget(TextInputWidget):
     requirements = (('jquery.maskedinput', None),
                     ('date_ical', None))
 
+
+class BootstrapIconInputWidget(deform.widget.TextInputWidget):
+    template = 'novaideo:views/templates/bootstrap_icon_input.pt'
+    requirements = (('bootstrap_icon', None),)
+
+    def serialize(self, field, cstruct, **kw):
+        if cstruct is null:
+            cstruct = ''
+        elif isinstance(cstruct, dict):
+            cstruct = cstruct.get('icon_class')+','+cstruct.get('icon')
+        return super(BootstrapIconInputWidget, self).serialize(
+                                                  field, cstruct, **kw)
+
+    def deserialize(self, field, pstruct):
+        row = super(BootstrapIconInputWidget, self).deserialize(field, pstruct)
+        if row is null:
+            return null
+
+        data = row.split(',')
+        try:
+            return {'icon_class': data[0],
+                    'icon': data[1]}
+        except:
+            return data
+
+
+class CssWidget(TextInputWidget):
+    template = 'novaideo:views/templates/style_picker.pt'
+    requirements = (('jquery.maskedinput', None),
+                    ('stylepicker', None))
+
+
+default_resource_registry.set_js_resources('stylepicker', None,
+               'novaideo:static/bgrins-spectrum/spectrum.js',
+               'novaideo:static/js/style_picker.js')
+
+default_resource_registry.set_css_resources('stylepicker', None,
+              'novaideo:static/bgrins-spectrum/spectrum.css')
+
+default_resource_registry.set_js_resources('bootstrap_icon', None,
+           'novaideo:static/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js',
+           'novaideo:static/js/bootstrap_iconpicker.js')
+
+default_resource_registry.set_css_resources('bootstrap_icon', None,
+              'novaideo:static/bootstrap-iconpicker/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css')
 
 default_resource_registry.set_js_resources('simple_mapping', None,
                'novaideo:static/js/simple_mapping.js'  )

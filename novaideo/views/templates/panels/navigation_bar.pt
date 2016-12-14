@@ -1,0 +1,34 @@
+<ul class="smartfolder-source-nav smartfolder-nav nav">
+              <tal:loop repeat="node nodes" >
+                <div tal:condition="current_level <= maxi_level"
+                     tal:omit-tag=""
+                     tal:define=" node_name  node.title;
+                                  children view.get_folder_children(node);
+                                  node_id view.get_folder_name(node).replace(' ','-')+'-folder';
+                                  is_active node.contains(active_folder)">
+                      <li tal:condition="not children"
+                          class="menu-item ${node_id} ${node.contains(active_folder) and 'opened'}">
+                          <span class="folder-icon ${node.icon}"></span>
+                          <a href="${request.resource_url(request.root, 'open', query={'folderid': view.get_folder_id(node)})}"
+                            class="folder-title"> ${node_name}</a>
+                      </li>
+                      <li tal:condition="children"
+                          tal:define="
+                              issubmenu current_level+1 <= maxi_level;
+                              folderid view.get_folder_id(node)"
+                          class="menu-item ${(issubmenu and 'dropdown') or ''} ${node_id} ${node.contains(active_folder) and 'opened'}">
+                          <span class="folder-icon ${node.icon}"></span>
+                          <a 
+                            href="${folderid and request.resource_url(request.root, 'open', query={'folderid': folderid})}" 
+                            role="button"
+                            class="folder-title">
+                            ${node_name}
+                          </a>
+                            <span class="primary collapsed icon-state pull-right ${is_active and 'ion-chevron-down' or 'ion-chevron-up'}"
+                             data-toggle="collapse" data-target="#${node_id}" aria-expanded="${is_active and 'true' or 'false'}" id="${node_id}-btn"
+                              ></span>
+                          <div tal:condition="issubmenu" tal:replace="structure view.get_sub_menu(children, node_name, (current_level+1), active_folder, is_active, node_id)"/>
+                      </li>
+                </div>
+            </tal:loop>
+          </ul>

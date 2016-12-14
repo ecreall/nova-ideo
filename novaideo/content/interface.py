@@ -309,3 +309,14 @@ class IWebAdvertising(IAdvertising):
     html_content = Attribute('html_content')
 
     advertisting_url = Attribute('advertisting_url')
+
+
+@interface()
+@interface_config(type_id='smartfolder')
+class ISmartFolder(IVisualisableElement, IEntity):
+
+    view_type = Attribute('view_type')
+
+    children = Attribute('children', type='smartfolder', multiplicity='*')
+
+    style = Attribute('style')

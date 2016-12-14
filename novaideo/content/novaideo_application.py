@@ -301,6 +301,7 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
     channels = CompositeMultipleProperty('channels', 'subject')
     general_chanel = SharedUniqueProperty('general_chanel')
     newsletters = CompositeMultipleProperty('newsletters')
+    smart_folders = CompositeMultipleProperty('smart_folders')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)

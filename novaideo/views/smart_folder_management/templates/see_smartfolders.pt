@@ -1,0 +1,8 @@
+<div tal:condition="body_actions and folders" tal:repeat="action_body body_actions" >
+		${structure:action_body}
+</div>
+<div class="workspace-files">
+  <tal:loop repeat="folder folders">
+    ${structure:folder}
+  </tal:loop>
+</div>

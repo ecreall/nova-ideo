@@ -659,6 +659,16 @@ $(document).on('click', '.sidebar-right-background.toggled', function(){
 
 })
 
+$(document).on('click', '.smartfolder-nav li > span.icon-state', function(event){
+    var $this = $(this)
+    if($this.hasClass('ion-chevron-down')){
+       $this.addClass('ion-chevron-up')
+       .removeClass('ion-chevron-down')
+    }else{
+      $this.addClass('ion-chevron-down')
+       .removeClass('ion-chevron-up')
+    }
+})
 
 $(document).mouseup(function (e)
 {

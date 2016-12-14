@@ -1,0 +1,38 @@
+<div class="content-view component-obj-view component-index-view" i18n:domain="novaideo"
+  data-component_type="object-view"
+  id="index_${oid}"
+  tal:define="
+  icon getattr(object, 'icon');
+  oid object.__oid__">
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="novaideo">
+  <div class="caption">
+  	<h3 tal:define="parents object.parents"><a tal:condition="parents" tal:attributes="href request.resource_url(parents[0], '@@index')" >${parents[0].title}</a> <span tal:condition="parents">/</span> ${object.title} </h3>
+    <div id="contenttext" class="content-text">
+      ${getattr(object, 'description', '')}
+    </div>
+  </div>
+
+<div class="object-nav-tabs">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li tal:condition="subfolders" class="active" role="presentation"><a href="#contents" aria-controls="contents" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Contents</span></a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div tal:condition="subfolders" role="tabpanel" class="tab-pane active" id="contents">
+          <div tal:condition="body_actions" tal:repeat="action_body body_actions" >
+              ${structure:action_body}
+          </div>
+          <div class="workspace-files">
+            <tal:loop repeat="folder subfolders">
+              ${structure:folder}
+            </tal:loop>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

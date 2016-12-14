@@ -12,10 +12,14 @@ from pyramid import renderers
 from pyramid_layout.panel import panel_config
 from pyramid.threadlocal import get_current_registry
 
-from pontus.util import update_resources, merge_dicts
+from substanced.util import get_oid
+
+from pontus.util import update_resources
 from dace.objectofcollaboration.entity import Entity
 from dace.util import (
-    getBusinessAction, getSite, find_catalog, getAllBusinessAction)
+    getBusinessAction, getSite,
+    find_catalog, getAllBusinessAction,
+    get_obj)
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from daceui.interfaces import IDaceUIAPI
@@ -29,9 +33,9 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMySupports)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.person import Person
-from novaideo.content.interface import IPerson, Iidea, IProposal
+from novaideo.content.interface import IPerson, Iidea, IProposal, ISmartFolder
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.core import _, SearchableEntity
+from novaideo.core import _, SearchableEntity, can_access
 from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity)
 from novaideo.utilities.util import (
@@ -46,6 +50,15 @@ from novaideo.contextual_help_messages import render_contextual_help
 from novaideo.steps import steps_panels
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
+from novaideo.content.smart_folder import SmartFolder
+from novaideo.fr_lexicon import normalize_title
+
+
+LEVEL_MENU = 3
+
+
+DEFAULT_FOLDER_COLORS = {'usual_color': 'white, #2d6ca2',
+                         'hover_color': 'white, #2d6ca2'}
 
 
 MORE_NB = 20
@@ -620,3 +633,103 @@ class Debates_core(object):
                 self.context, self.request)
 
         return {'debatescore': debatescore_data}
+
+
+@panel_config(
+    name='navigation_bar',
+    context=Entity,
+    renderer='templates/panels/navigation_bar.pt'
+    )
+class NavigationBar(object):
+
+    template_sub_menu = 'templates/panels/sub_menu.pt'
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.default_folder = SmartFolder(title=_('My private folders'),
+                                          style=DEFAULT_FOLDER_COLORS,
+                                          )
+        self.default_folder.folder_order = -1
+
+    def get_sub_menu(
+        self, nodes, parent_name, current_level,
+        active_folder, parent_active, parent_id):
+        body = renderers.render(self.template_sub_menu,
+                                {'nodes': nodes,
+                                 'active_folder': active_folder,
+                                 'parent_name': parent_name,
+                                 'view': self,
+                                 'current_level': current_level,
+                                 'maxi_level': LEVEL_MENU,
+                                 'is_active': parent_active,
+                                 'parent_id': parent_id
+                                },
+                                self.request)
+        return body
+
+    def get_folder_parent(self, node):
+        if node.parents:
+            return node.parents[0]
+
+        return self.default_folder
+
+    def get_folder_children(self, node):
+        user = get_current(self.request)
+        locale = self.request.locale_name
+        children = node.children if node is not self.default_folder\
+            else self.default_folder.volatile_children
+        nodes = [sf for sf in children if can_access(user, sf)
+                 and (not sf.locale or sf.locale == locale)]
+        nodes = sorted(nodes, key=lambda e: e.get_order())
+        return nodes
+
+    def get_folder_id(self, node):
+        if node is self.default_folder:
+            return None
+
+        return get_oid(node)
+
+    def get_folder_name(self, node):
+        if node is self.default_folder:
+            return 'default_folder'
+
+        return normalize_title(node.name).replace(' ', '-')
+
+    def __call__(self):
+        nodes = find_entities(
+            interfaces=[ISmartFolder],
+            metadata_filter={'states': ['published']})
+        active_folder_id = None
+        active_folder = None
+        if self.request.GET:
+            active_folder_id = dict(self.request.GET._items).get('folderid', None)
+
+        try:
+            if active_folder_id:
+                active_folder = get_obj(int(active_folder_id))
+        except (TypeError, ValueError):
+            active_folder = None
+
+        locale = self.request.locale_name
+        if self.request.user:
+            my_folders = getattr(get_current(), 'folders', [])
+            my_folders = [folder for folder in my_folders
+                          if isinstance(folder, SmartFolder) and
+                          'private' in folder.state and
+                          not folder.parents]
+            if my_folders:
+                self.default_folder.volatile_children = my_folders
+
+        nodes = [sf for sf in nodes
+                 if not sf.parents and (not sf.locale or sf.locale == locale)]
+        if getattr(self.default_folder, 'volatile_children', []):
+            nodes.append(self.default_folder)
+
+        nodes = sorted(nodes, key=lambda e: e.get_order())
+        return {'nodes': nodes,
+                'active_folder': active_folder,
+                'view': self,
+                'current_level': 1,
+                'maxi_level': LEVEL_MENU
+                }

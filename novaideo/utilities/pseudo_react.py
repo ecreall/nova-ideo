@@ -911,6 +911,50 @@ def get_remove_registration_metadata(action, request, context, api, **kwargs):
     return result
 
 
+# Smart folders
+
+
+def get_edit_folder_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le dossier a bien été modifié."),
+        **kwargs)
+
+
+def get_remove_folder_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("Le dossier a bien été supprimé."),
+        **kwargs)
+    result['ignore_redirect'] = not kwargs['is_source_context']
+    return result
+
+
+def get_publish_folder_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le dossier a bien été publié."),
+        **kwargs)
+
+
+def get_archive_folder_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le dossier a bien été retiré."),
+        **kwargs)
+
+
+def get_add_subfolder_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le sous dossier a bien été ajouté."),
+        **kwargs)
+
+
 #Ideas
 
 def get_archive_idea_metadata(action, request, context, api, **kwargs):
@@ -1496,6 +1540,12 @@ def home_ideas_counter(action, request, context, api, **kwargs):
 
 
 METADATA_GETTERS = {
+    'smartfoldermanagement.edit_smart_folder': get_edit_folder_metadata,
+    'smartfoldermanagement.remove_smart_folder': get_remove_folder_metadata,
+    'smartfoldermanagement.publish_smart_folder': get_publish_folder_metadata,
+    'smartfoldermanagement.withdraw_smart_folder': get_archive_folder_metadata,
+    'smartfoldermanagement.addsub_smart_folder': get_add_subfolder_metadata,
+
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
     'novaideoprocessmanagement.update': get_update_processes_metadata,

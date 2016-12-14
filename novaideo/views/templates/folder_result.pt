@@ -1,0 +1,14 @@
+<div class="file-container thumbnail result-item search-item component-obj-view component-listing-view"
+     id="listing_${oid}"
+     data-component_type="object-view"
+     tal:define="oid object.__oid__;
+	    icon getattr(object, 'icon', '');
+	    url request.resource_url(object, '@@index');">
+	<div class="object-menu pull-right" style="margin-top: -10px;">
+      <div tal:replace="structure menu_body"/>
+    </div>
+	<a href="${url}" class="file-header "
+		 style="padding: 5px 10px !important">
+		<h4 class="file-title"><i class="${icon}"></i> ${object.title}</h4>
+    </a>
+</div>

@@ -1,3 +1,74 @@
+.smartfolder-source-nav{
+   margin-top: 20px;
+}
+
+.smartfolder-nav li::after {
+    clear: both;
+    content: " ";
+}
+.smartfolder-nav li {
+    color: #555459 !important;
+    cursor: pointer;
+    font-size: 15px;
+    outline: medium none;
+    overflow: hidden;
+    padding: 5px 10px 5px 5px;
+    transition: background-color 0.3s cubic-bezier(0, 0, 0.2, 1) 0s;
+}
+
+.smartfolder-nav li > a.folder-title:hover,
+.smartfolder-nav li > a.folder-title:focus{
+    background-color: transparent !important;
+    text-decoration: underline;
+}
+
+.smartfolder-nav li > .folder-icon {
+    font-weight: 300;
+    display: inline;
+    height: inherit;
+    padding-right: 5px;
+    padding-top: 1px;
+    width: 20px;
+    font-size: 15px;
+    color: #3f6da6;
+}
+
+.smartfolder-nav li.opened{
+  background-color: #eee !important;
+   >a.folder-title{
+    text-decoration: underline;
+  }
+}
+
+.smartfolder-nav li > a.folder-title {
+    color: #555459 !important;
+    overflow: hidden;
+    display: inline;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+    padding: 0px !important
+}
+
+.smartfolder-nav .smartfolder-nav{
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px; 
+}
+
+.folder-breadcrumb.breadcrumb{
+    display: inline;
+    overflow: unset;
+}
+
+.open-folder .panel-title{
+    font-size: 16px !important;
+}
+
+.vakata-context, .vakata-context ul{
+    z-index: 30000  
+}
+
 .alert-item{
     padding: 0px 5px;
     border-radius: 3px;

@@ -1,0 +1,38 @@
+{
+  "name": "spectrum-colorpicker",
+  "description": "Spectrum: the no hassle jQuery colorpicker",
+  "version": "1.7.1",
+  "main": "spectrum.js",
+  "license": "MIT",
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "color",
+    "colorpicker",
+    "ui"
+  ],
+  "homepage": "http://bgrins.github.com/spectrum",
+  "repository": {
+    "type": "git",
+    "url": "https://bgrins.github.com/spectrum"
+  },
+  "author": {
+    "name": "Brian Grinstead",
+    "email": "briangrinstead@gmail.com",
+    "url": "http://briangrinstead.com/"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-contrib-qunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.0"
+  },
+  "readme": "# Spectrum\n## The No Hassle Colorpicker\n\nSee the demo and docs: http://bgrins.github.io/spectrum.\n\nI wanted a colorpicker that didn't require images, and that had an API that made sense to me as a developer who has worked with color in a number of applications.  I had tried a number of existing plugins, but decided to try and make a smaller, simpler one.\n\nI started using canvas, then switched to CSS gradients, since it turned out to be easier to manage, and provided better cross browser support.\n\n### Basic Usage\n\nHead over to the [docs](http://bgrins.github.io/spectrum) for more information.  There is a visual demo of the different options hosted at: http://bgrins.github.io/spectrum.\n\n    <script src='spectrum.js'></script>\n    <link rel='stylesheet' href='spectrum.css' />\n\n    <input id='colorpicker' />\n\n    <script>\n    $(\"#colorpicker\").spectrum({\n        color: \"#f00\"\n    });\n    </script>\n\n### npm\n\nSpectrum is registered as package with npm.  It can be installed with:\n\n    npm install spectrum-colorpicker\n\n### Bower\n\nSpectrum is registered as a package with [Bower](http://bower.io/), so it can be pulled down using:\n\n    bower install spectrum\n\n### Using spectrum with a CDN\n\nCDN provided by [cdnjs](https://cdnjs.com/libraries/spectrum)\n\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.1/spectrum.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.1/spectrum.min.css\">\n\n### Continuous Integration\n\n[![Build Status](https://secure.travis-ci.org/bgrins/spectrum.png?branch=master)](http://travis-ci.org/bgrins/spectrum)\n\nVisit https://travis-ci.org/bgrins/spectrum to view the status of the automated tests.\n\n### Building Spectrum Locally\n\nIf you'd like to download and use the plugin, head over to http://bgrins.github.io/spectrum/ and click the 'Download Zip' button.\n\nIf you'd like to run the development version, spectrum uses Grunt to automate the testing, linting, and building.  Head over to http://gruntjs.com/getting-started for more information.  First, clone the repository, then run:\n\n    npm install -g grunt-cli\n    npm install\n\n    # runs jshint and the unit test suite\n    grunt\n\n    # runs jshint, the unit test suite, and builds a minified version of the file.\n    grunt build\n\n### Internationalization\n\nIf you are able to translate the text in the UI to another language, please do!  You can do so by either [filing a pull request](https://github.com/bgrins/spectrum/pulls) or [opening an issue]( https://github.com/bgrins/spectrum/issues) with the translation.  The existing languages are listed at: https://github.com/bgrins/spectrum/tree/master/i18n.\n\nFor an example, see the [Dutch translation](i18n/jquery.spectrum-nl.js).\n",
+  "readmeFilename": "README.md",
+  "_id": "spectrum-colorpicker@1.7.1",
+  "dist": {
+    "shasum": "d9a2b374a699bae86646c3aaeefde741e0d84c86"
+  },
+  "_resolved": "git://github.com/bgrins/spectrum.git#61ad86cbccf9e494a83eb8cd5ccd8eef068e7501",
+  "_from": "spectrum-colorpicker@git://github.com/bgrins/spectrum.git#61ad86cbccf9e494a83eb8cd5ccd8eef068e7501"
+}
