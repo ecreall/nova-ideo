@@ -836,7 +836,7 @@ def render_listing_obj(request, obj, user, **kw):
             getattr(obj, 'state_or_none', [None])[0])}
     object_values.update(kw)
     return renderers.render(
-        obj.templates.get('default'),
+        obj.templates.get(kw.get('listing_template', 'default')),
         object_values,
         request)
 
@@ -914,7 +914,7 @@ def render_listing_objs(request, objs, user, **kw):
                 getattr(obj, 'state_or_none', [None])[0])}
         object_values.update(kw)
         body = renderers.render(
-            obj.templates.get('default'),
+            obj.templates.get(kw.get('listing_template', 'default')),
             object_values,
             request)
         result_body.append(body)
