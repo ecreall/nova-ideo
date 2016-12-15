@@ -1,0 +1,54 @@
+<div class="thumbnail right-caption span4 search-item result-item view-item component-obj-view component-listing-view"
+     id="listingbloc_${oid}"
+     data-component_type="object-view"
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(object, '@@index');
+                 icon getattr(object, 'icon');
+                 picture object.picture;
+                 profil_picture getattr(picture, 'profil', picture);
+                 keywords getattr(object, 'keywords', []);
+                 default_img request.static_url('novaideo:static/images/user.png');
+                 oid object.__oid__;">
+  <div class="media-body media-person media-bloc">
+    <div class="object-menu pull-right">
+      <div tal:replace="structure menu_body"/>
+    </div>
+    <div class="object-title-block view-item-title"
+      data-title="${object.title}"
+      data-icon=""
+      data-img="${getattr(profil_picture, 'url', default_img)}">
+      <a tal:attributes="href url">
+        <h4>
+          <img class="img-circle" tal:condition="profil_picture is not None"
+               tal:attributes="src profil_picture.url"  width="50"/>
+          <img class="img-circle"
+               tal:condition="profil_picture is None"
+               src="${default_img}" width="50"/>
+          ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
+          <small class="date">
+            <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.created_at, date_only=True)"/>
+          </small>
+           <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
+        </h4>
+      </a>
+    </div>
+    <div class="user-function" >
+      <span tal:condition="getattr(object, 'function', '')">${object.function}, </span>
+      <span tal:condition="getattr(object, 'organization', None)" >
+          <a i18n:attributes="title" style="color: #555C63" title="Organization" tal:attributes="href request.resource_url(object.organization, '@@index')"><span class="glyphicon glyphicon-home"></span> ${object.organization.title}</a>
+      </span>
+    </div>
+    <div class="object-text">${object.presentation_text(200)}</div>
+    <div i18n:attributes="title" title="Preferences" tal:condition="keywords" class="keywords-result">
+      <span class="glyphicon glyphicon-tags"></span> 
+      <tal:loop repeat="k keywords">
+            <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+      </tal:loop>
+    </div>
+    <div class="search-item-footer">
+      <div class="actions-block">
+        <div tal:replace="structure footer_body"/>
+      </div>
+    </div>
+  </div>
+</div>
