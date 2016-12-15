@@ -84,6 +84,10 @@ def _render_obj_view(id_, user, request):
                 return {id_+'.body': render_listing_obj(
                     request, obj, user)}
 
+            if type_ == 'listingbloc':
+                return {id_+'.body': render_listing_obj(
+                    request, obj, user, listing_template='bloc')}
+
             if type_ == 'index':
                 return {id_+'.body': render_index_obj(
                     request, obj, user)}
@@ -162,8 +166,14 @@ def get_all_updated_data(action, request, context, api, **kwargs):
         kwargs['view_name'] = api.params('view_name')
         result = metadatagetter(action, request, context, api, **kwargs)
         #update views: listing view, index view
-        object_views_to_update = [o for o in result.get(
-                                  'object_views_to_update', [])
+        result_ovtu = result.get('object_views_to_update', [])
+        #include listingbloc
+        for ovtu in list(result_ovtu):
+            if ovtu.startswith('listing_'):
+                result_ovtu.append(
+                    ovtu.replace('listing_', 'listingbloc_'))
+
+        object_views_to_update = [o for o in result_ovtu
                                   if o in kwargs['object_views']]
         for obj_id in object_views_to_update:
             result.update(_render_obj_view(

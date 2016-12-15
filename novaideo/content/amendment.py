@@ -259,7 +259,8 @@ class Amendment(CorrelableEntity,
     name = renamer()
     templates = {
         'default': 'novaideo:views/templates/amendment_result.pt',
-        'popover': 'novaideo:views/templates/amendment_popover.pt'
+        'popover': 'novaideo:views/templates/amendment_popover.pt',
+        'bloc': 'novaideo:views/templates/amendment_bloc.pt'
     }
     author = SharedUniqueProperty('author')
     proposal = SharedUniqueProperty('proposal', 'amendments')

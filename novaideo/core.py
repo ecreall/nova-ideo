@@ -579,7 +579,9 @@ class FileEntity(SearchableEntity):
     """ A file entity is an entity that can be searched"""
 
     icon = "glyphicon glyphicon-file"
-    templates = {'default': 'novaideo:views/templates/file_result.pt'}
+    templates = {
+        'default': 'novaideo:views/templates/file_result.pt',
+        'bloc': 'novaideo:views/templates/file_bloc.pt'}
     type_title = _('File')
 
     def __init__(self, **kwargs):

@@ -6,7 +6,7 @@
 
 import colander
 import deform
-from zope.interface import implementer
+from zope.interface import implementer, invariant
 from pyramid.threadlocal import get_current_request
 
 from substanced.content import content
@@ -134,6 +134,7 @@ class SmartFolderSchema(VisualisableElementSchema):
     locale = colander.SchemaNode(
         colander.String(),
         title=_('Locale'),
+        description=_('The language for which the folder will be displayed'),
         widget=locale_widget,
         missing=''
     )
@@ -151,6 +152,8 @@ class SmartFolderSchema(VisualisableElementSchema):
              ["_csrf_token_"]),
         widget=SequenceWidget(
             add_subitem_text_template=_('Add a new filter')),
+        title=_('Filters'),
+        description=_('Applied filters'),
         missing=[]
         )
 
@@ -167,6 +170,7 @@ class SmartFolderSchema(VisualisableElementSchema):
         colander.String(),
         widget=view_type_widget,
         title=_("View type"),
+        description=_('How to display contents'),
         default='default'
         )
 
@@ -177,10 +181,17 @@ class SmartFolderSchema(VisualisableElementSchema):
         default={'icon': 'glyphicon-folder-open',
                  'icon_class': 'glyphicon'},
         description=_('Select an icon.')
-        # description="Sélectionner une icône."
         )
 
     style = omit(CssSchema(widget=SimpleMappingWidget()), ["_csrf_token_"])
+
+    @invariant
+    def contact_invariant(self, appstruct):
+        contents = appstruct.get('contents', [])
+        filters = appstruct.get('filters', [])
+        if not contents and not filters:
+            raise colander.Invalid(
+                self, _('Filters or associated contents must be specified.'))
 
 
 @content(
