@@ -542,7 +542,8 @@ class NovaideoAPI(IndexManagementJsonView):
                         navbars = generate_listing_menu(
                             self.request, obj,
                             descriminators=['communication-action', 'access-action'],
-                            footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE)
+                            footer_template=DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
+                            view_type='popover')
                     except ObjectRemovedException:
                         return {'body': ''}
 

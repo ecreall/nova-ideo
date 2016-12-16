@@ -730,8 +730,11 @@ class CommentIdea(InfiniteCardinality):
         return len(unread_comments)
         # return context.channel.len_comments
 
-    def get_title(self, context, request):
+    def get_title(self, context, request, nb_only=False):
         len_comments = context.channel.len_comments
+        if nb_only:
+            return str(len_comments)
+
         return _("${title} (${nember})",
                  mapping={'nember': len_comments,
                           'title': request.localizer.translate(self.title)})
@@ -831,8 +834,11 @@ class PresentIdea(InfiniteCardinality):
     processsecurity_validation = present_processsecurity_validation
     state_validation = present_state_validation
 
-    def get_title(self, context, request):
+    def get_title(self, context, request, nb_only=False):
         len_members = context.len_contacted
+        if nb_only:
+            return str(len_members)
+
         return _("${title} (${nember})",
                  mapping={'nember': len_members,
                           'title': request.localizer.translate(self.title)})

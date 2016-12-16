@@ -714,10 +714,13 @@ class Discuss(InfiniteCardinality):
 
         return 0
 
-    def get_title(self, context, request):
+    def get_title(self, context, request, nb_only=False):
         user = get_current()
         channel = context.get_channel(user)
         len_comments = channel.len_comments if channel else 0
+        if nb_only:
+            return str(len_comments)
+
         return _("${title} (${nember})",
                  mapping={'nember': len_comments,
                           'title': request.localizer.translate(self.title)})

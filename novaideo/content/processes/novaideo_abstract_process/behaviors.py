@@ -53,8 +53,11 @@ class SelectEntity(InfiniteCardinality):
     processsecurity_validation = select_processsecurity_validation
     state_validation = select_state_validation
 
-    def get_title(self, context, request):
+    def get_title(self, context, request, nb_only=False):
         len_selections = getattr(context, 'len_selections', 0)
+        if nb_only:
+            return str(len_selections)
+
         return _("${title} (${nember})",
                  mapping={'nember': len_selections,
                           'title': request.localizer.translate(self.title)})
@@ -98,8 +101,11 @@ class DeselectEntity(InfiniteCardinality):
     processsecurity_validation = deselect_processsecurity_validation
     state_validation = select_state_validation
 
-    def get_title(self, context, request):
+    def get_title(self, context, request, nb_only=False):
         len_selections = getattr(context, 'len_selections', 0)
+        if nb_only:
+            return str(len_selections)
+
         return _("${title} (${nember})",
                  mapping={'nember': len_selections,
                           'title': request.localizer.translate(self.title)})

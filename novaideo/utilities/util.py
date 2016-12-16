@@ -799,7 +799,9 @@ FILE_TEMPLATE = 'novaideo:views/templates/up_file_result.pt'
 VOTE_TEMPLATE = 'novaideo:views/templates/vote_actions.pt'
 
 
-def render_small_listing_objs(request, objs, user, **kw):
+def render_small_listing_objs(
+    request, objs, user,
+    view_type='default', **kw):
     result_body = []
     for obj in objs:
         object_values = {
@@ -816,18 +818,18 @@ def render_small_listing_objs(request, objs, user, **kw):
     return result_body
 
 
-def render_listing_obj(request, obj, user, **kw):
-    listing_type = kw.get('listing_template', 'default')
+def render_listing_obj(
+    request, obj, user,
+    view_type='default', **kw):
     try:
         args = {}
-        if listing_type == 'bloc':
-            args = {
-                'tounmerge': [
-                    'communication-action',
-                    'access-action']
-            }
+        if view_type == 'bloc':
+            args['tounmerge'] = [
+                'communication-action',
+                'access-action']
+
         navbars = generate_listing_menu(
-            request, obj, **args)
+            request, obj, view_type=view_type, **args)
     except ObjectRemovedException:
         return ''
 
@@ -844,7 +846,7 @@ def render_listing_obj(request, obj, user, **kw):
             getattr(obj, 'state_or_none', [None])[0])}
     object_values.update(kw)
     return renderers.render(
-        obj.templates.get(listing_type),
+        obj.templates.get(view_type),
         object_values,
         request)
 
@@ -899,22 +901,21 @@ def render_view_comment(request, comment, **kw):
     return body
 
 
-def render_listing_objs(request, objs, user, **kw):
+def render_listing_objs(
+    request, objs, user,
+    view_type='default', **kw):
     result_body = []
     resources = {'css_links': [], 'js_links': []}
-    listing_type = kw.get('listing_template', 'default')
     args = {}
-    if listing_type == 'bloc':
-        args = {
-            'tounmerge': [
-                'communication-action',
-                'access-action']
-        }
+    if view_type == 'bloc':
+        args['tounmerge'] = [
+            'communication-action',
+            'access-action']
 
     for obj in objs:
         try:
             navbars = generate_listing_menu(
-                request, obj, **args)
+                request, obj, view_type=view_type, **args)
         except ObjectRemovedException:
             continue
 
@@ -931,7 +932,7 @@ def render_listing_objs(request, objs, user, **kw):
                 getattr(obj, 'state_or_none', [None])[0])}
         object_values.update(kw)
         body = renderers.render(
-            obj.templates.get(kw.get('listing_template', 'default')),
+            obj.templates.get(view_type),
             object_values,
             request)
         result_body.append(body)
@@ -1028,15 +1029,17 @@ def render_navbar_body(
     request, context,
     actions_navbar,
     template=None,
-    keys=['global-action', 'text-action', 'plus-action']):
-    actions = {key.replace('-', '_'): actions_navbar.get(key, [])
+    keys=['global-action', 'text-action', 'plus-action'],
+    view_type='default'):
+    values = {key.replace('-', '_'): actions_navbar.get(key, [])
                for key in keys if actions_navbar.get(key, [])}
-    if actions:
+    if values:
         ajax_actions = actions_navbar['ajax-action']['actions']
         template = template if template else DEFAUL_NAVBAR_TEMPLATE
-        actions['ajax_actions'] = dict(ajax_actions)
-        actions['obj'] = context
-        return renderers.render(template, actions, request)
+        values['ajax_actions'] = dict(ajax_actions)
+        values['obj'] = context
+        values['view_type'] = view_type
+        return renderers.render(template, values, request)
 
     return None
 
@@ -1045,7 +1048,7 @@ class ObjectRemovedException(Exception):
     pass
 
 
-def generate_navbars(request, context, **args):
+def generate_navbars(request, context, view_type='default', **args):
     def actions_getter():
         return getAllBusinessAction(
             context, request,
@@ -1125,21 +1128,22 @@ def generate_navbars(request, context, **args):
             'body_actions': actions_bodies,
             'footer_actions_body': communication_actions_bodies,
             'navbar_body': render_navbar_body(
-                request, context, actions_navbar, args.get('template', None)),
+                request, context, actions_navbar, args.get('template', None),
+                view_type=view_type),
             'footer_body': render_navbar_body(
                 request, context, actions_navbar,
                 DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE,
-                ['communication-action'])
+                ['communication-action'], view_type=view_type)
             if 'communication-action' in actions_navbar else None,
             'wg_body':  render_navbar_body(
                 request, context, actions_navbar,
                 args.get('wg_template', DEFAUL_WG_LISTING_ACTIONS_TEMPLATE),
-                ['wg-action'])
+                ['wg-action'], view_type=view_type)
             if 'wg-action' in actions_navbar else None
             }
 
 
-def generate_listing_menu(request, context, **args):
+def generate_listing_menu(request, context, view_type='default', **args):
     def actions_getter():
         return getAllBusinessAction(
             context, request,
@@ -1198,23 +1202,23 @@ def generate_listing_menu(request, context, **args):
             'menu_body': render_navbar_body(
                 request, context, actions_navbar,
                 args.get('template', DEFAUL_LISTING_ACTIONS_TEMPLATE),
-                ['actions', 'primary-action']),
+                ['actions', 'primary-action'], view_type=view_type),
             'footer_body':  render_navbar_body(
                 request, context, actions_navbar,
                 args.get('footer_template',
                          DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE),
-                ['communication-action'])
+                ['communication-action'], view_type=view_type)
             if 'communication-action' in actions_navbar else None,
             'access_body':  render_navbar_body(
                 request, context, actions_navbar,
                 args.get('access_template',
                          DEFAUL_ACCESS_LISTING_ACTIONS_TEMPLATE),
-                ['access-action'])
+                ['access-action'], view_type=view_type)
             if 'access-action' in actions_navbar else None,
             'wg_body':  render_navbar_body(
                 request, context, actions_navbar,
                 args.get('wg_template', DEFAUL_WG_LISTING_ACTIONS_TEMPLATE),
-                ['wg-action'])
+                ['wg-action'], view_type=view_type)
             if 'wg-action' in actions_navbar else None
             }
 

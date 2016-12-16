@@ -14,7 +14,7 @@
              tal:define="item ajax_actions.get(a, None);
                        icon getattr(a,'style_picto','');
                        interaction_type getattr(a,'style_interaction_type','modal');
-                       interaction_args getattr(a,'style_interaction_args','');">
+                       interaction_args getattr(a,'style_interaction_args','')">
               <a id="${item['action_id']}-btn" 
                 class="${getattr(a, 'node_id', '')}-btn ajax-action dace-action-${interaction_type}"
                 data-toggle="${interaction_type}"
@@ -31,8 +31,12 @@
                 data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" 
                 title="${item['action'].title}">
                  <span id="component-footer-action-${str(getattr(item['action'], '__oid__', 'actionoid'))+'-'+str(getattr(item['context'], '__oid__', 'contextoid' ))}">
-                   <span class="footer-icon ${icon}" ></span> 
-                   <span class="hidden-xs">${item['action'].get_title(obj, request)}</span>
+                   <span class="footer-icon ${icon}" ></span>
+                   <span tal:omit-tag="" tal:condition="view_type=='default'">
+                      <span  class="hidden-xs">${item['action'].get_title(obj, request)}</span>
+                      <span  class="visible-xs-inline-block">${item['action'].get_title(obj, request, nb_only=True)}</span>
+                   </span>
+                   <span tal:condition="view_type in ('bloc', 'popover')">${item['action'].get_title(obj, request, nb_only=True)}</span>
                  <span>
                </a>
                <script tal:condition="'toreplay' in item">       

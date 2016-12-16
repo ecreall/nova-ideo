@@ -173,7 +173,7 @@ class OpenFolderView(BasicView):
         for obj in batch:
             body = render_listing_obj(
                 self.request, obj, user,
-                listing_template=template_type)
+                view_type=template_type)
             if body:
                 result_body.append(body)
 

@@ -219,8 +219,11 @@ class SeeReports(InfiniteCardinality):
     def get_nb(self, context, request):
         return getattr(context, 'len_current_reports', 0)
 
-    def get_title(self, context, request):
+    def get_title(self, context, request, nb_only=False):
         len_reports = self.get_nb(context, request)
+        if nb_only:
+            return str(len_reports)
+
         return _("${title} (${nember})",
                  mapping={'nember': len_reports,
                           'title': request.localizer.translate(self.title)})

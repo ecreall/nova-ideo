@@ -86,7 +86,7 @@ def _render_obj_view(id_, user, request):
 
             if type_ == 'listingbloc':
                 return {id_+'.body': render_listing_obj(
-                    request, obj, user, listing_template='bloc')}
+                    request, obj, user, view_type='bloc')}
 
             if type_ == 'index':
                 return {id_+'.body': render_index_obj(
