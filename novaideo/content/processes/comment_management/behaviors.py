@@ -37,35 +37,37 @@ from novaideo.core import access_action, serialize_roles
 
 def respond_relation_validation(process, context):
     subject = context.subject
-    try:
-        comment_action = VALIDATOR_BY_CONTEXT.get(
-            subject.__class__, {}).get('action', None)
-        return comment_action.relation_validation.__func__(
-            process, subject) if comment_action else True
-    except Exception:
-        return True
+    comment_action = VALIDATOR_BY_CONTEXT.get(
+        subject.__class__, {}).get('action', None)
+    relation_validation = getattr(comment_action, 'relation_validation', None)
+    if relation_validation and relation_validation is not NotImplemented:
+        return relation_validation(process, subject)
+
+    return True
 
 
 def respond_roles_validation(process, context):
     subject = context.subject
-    try:
-        comment_action = VALIDATOR_BY_CONTEXT.get(
-            subject.__class__, {}).get('action', None)
-        return comment_action.roles_validation.__func__(
-            process, subject) if comment_action else True
-    except Exception:
-        return True
+    comment_action = VALIDATOR_BY_CONTEXT.get(
+        subject.__class__, {}).get('action', None)
+    roles_validation = getattr(comment_action, 'roles_validation', None)
+    if roles_validation and roles_validation is not NotImplemented:
+        return roles_validation(process, subject)
+
+    return True
 
 
 def respond_processsecurity_validation(process, context):
     subject = context.subject
-    try:
-        comment_action = VALIDATOR_BY_CONTEXT.get(
-            subject.__class__, {}).get('action', None)
-        return comment_action.processsecurity_validation.__func__(
-            process, subject) if comment_action else True
-    except Exception:
-        return True
+    comment_action = VALIDATOR_BY_CONTEXT.get(
+        subject.__class__, {}).get('action', None)
+    processsecurity_validation = getattr(
+        comment_action, 'processsecurity_validation', None)
+    if processsecurity_validation and \
+       processsecurity_validation is not NotImplemented:
+        return processsecurity_validation(process, subject)
+
+    return True
 
 
 def respond_state_validation(process, context):
@@ -73,13 +75,14 @@ def respond_state_validation(process, context):
         return False
 
     subject = context.subject
-    try:
-        comment_action = VALIDATOR_BY_CONTEXT.get(
-            subject.__class__, {}).get('action', None)
-        return comment_action.state_validation.__func__(
-            process, subject) if comment_action else True
-    except Exception:
-        return True
+    comment_action = VALIDATOR_BY_CONTEXT.get(
+        subject.__class__, {}).get('action', None)
+    state_validation_ = getattr(
+        comment_action, 'state_validation', None)
+    if state_validation_ and state_validation_ is not NotImplemented:
+        return state_validation_(process, subject)
+
+    return True
 
 
 class Respond(InfiniteCardinality):
