@@ -142,8 +142,8 @@ default_resource_registry.set_css_resources('stylepicker', None,
               'novaideo:static/bgrins-spectrum/spectrum.css')
 
 default_resource_registry.set_js_resources('bootstrap_icon', None,
-           'novaideo:static/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js',
-           'novaideo:static/js/bootstrap_iconpicker.js')
+           'novaideo:static/js/bootstrap_iconpicker.js',
+           'novaideo:static/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js')
 
 default_resource_registry.set_css_resources('bootstrap_icon', None,
               'novaideo:static/bootstrap-iconpicker/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css')
