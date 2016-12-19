@@ -7,10 +7,10 @@
            </div>
          </div>
   		   <small class="deadline-text-danger" tal:condition="expired">
-          <span i18n:translate="">The review committee held recently the</span> <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>, <span i18n:translate="">no new fixed examination date.</span>
+          <span i18n:translate="">The review committee convened for the last time on</span> <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>, <span i18n:translate="">no new examination date was fixed.</span>
         </small>
          <small class="deadline-text-warning" tal:condition="not expired">
-          <span i18n:translate="">The review committee is scheduled to meet the</span> : <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>
+          <span i18n:translate="">The review committee is scheduled to convene on</span> : <strong tal:content="layout.to_localized_time(current_deadline, date_only=True)"/>
          </small>
       </div>
   </div>

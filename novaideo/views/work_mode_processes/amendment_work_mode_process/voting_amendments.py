@@ -21,11 +21,10 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class VotingAmendmentsView(BasicView):
-    title = _('Voting amendments')
+    title = _('Vote on the amendments')
     name = 'votingamendments'
     behaviors = [VotingAmendments]
     viewid = 'votingamendments'
-
 
     def update(self):
         results = self.execute(None)

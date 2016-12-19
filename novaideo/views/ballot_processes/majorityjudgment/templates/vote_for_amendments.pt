@@ -1,13 +1,13 @@
 <div class="vote-subject" i18n:domain="novaideo"> 
  <dl>
-     <dt i18n:translate="">Subject of the vote</dt>
+     <dt i18n:translate="">Purpose of the ballot</dt>
      <dd>
       <div>
         ${ballot_report.description}
       </div>
      </dd>
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
-       <dt tal:condition="ballot_report.electors" i18n:translate="">Participant voting</dt>
+       <dt tal:condition="ballot_report.electors" i18n:translate="">Participants in the ballot</dt>
        <dd tal:condition="ballot_report.electors">
           <div class="working-group-section">
             <tal:loop repeat="m ballot_report.electors">
@@ -22,7 +22,7 @@
            </tal:loop>
           </div>
        </dd>
-       <dt tal:condition="ballot_report.voters" i18n:translate="">Voters</dt>
+       <dt tal:condition="ballot_report.voters" i18n:translate="">Participants having participated in the ballot</dt>
        <dd tal:condition="ballot_report.voters">
          <div class="working-group-section">
             <tal:loop repeat="m ballot_report.voters">
@@ -37,9 +37,9 @@
            </tal:loop>
           </div>
        </dd>
-       <dt i18n:translate="">Period</dt>
+       <dt i18n:translate="">Duration</dt>
        <dd tal:define="run ballot_report.ballot.run_at; finish  ballot_report.ballot.finished_at">
-          <span i18n:translate="">Vote begins at</span> <span tal:replace="layout.to_localized_time(run)"/>. <span tal:condition="finish is not None"><span i18n:translate="">La fin du vote est prévue pour le</span> <span tal:replace="layout.to_localized_time(finish)"/>.</span>
+          <span i18n:translate="">The ballot begins on</span> <span tal:replace="layout.to_localized_time(run)"/>. <span tal:condition="finish is not None"><span i18n:translate="">The end of the ballot is planned on</span> <span tal:replace="layout.to_localized_time(finish)"/>.</span>
        </dd>
      </div>
  </dl>

@@ -111,7 +111,7 @@ class UserParamsConfigurationSchema(Schema):
     only_invitation = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Invitation only'),
+        label=_('By invitation only'),
         description=_('Users can register by invitation only.'),
         title='',
         missing=False

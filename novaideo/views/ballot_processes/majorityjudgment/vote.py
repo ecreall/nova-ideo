@@ -109,7 +109,7 @@ def get_trimed_proposal_text(text, amendments):
 
 
 class VoteViewStudyReport(BasicView):
-    title = _('Vote for amendments')
+    title = _('Vote on amendments')
     name = 'voteforamendments'
     template = 'novaideo:views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt'
 
@@ -147,7 +147,7 @@ class CandidateSchema(Schema):
 
     judgment = colander.SchemaNode(
         colander.String(),
-        title=_('Judgment')
+        title=_('Judgement')
         )
 
 

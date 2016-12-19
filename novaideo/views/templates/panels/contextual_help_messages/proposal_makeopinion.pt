@@ -1,14 +1,14 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
 	<p i18n:translate="">
-		En tant qu'Examinateur, vous pouvez donner votre avis sur une proposition.
+		As an Examiner, you can express your opinion on a proposal.
 	</p>
 	<p i18n:translate="">
-		Cet avis peut être soit favorable, soit défavorable, soit "À retravailler".
+		This opinion can be either positive, negative or "To be re-worked upon".
 	</p>
 	<p i18n:translate="">
-		En complément de cet avis, vous devez évaluer la proposition selon trois critères (« Impact Client et/ou Interne », « Faisabilité » et « Reproductibilité Occurrence ») et en donner une explication.
+		To complement this opinion, you must evaluate the proposal along three criteria:"Internal or customer impact", "Feasibility" and "Reproductibility and frequency of occurence", and explain this evaluation.
 	</p>
 	<p i18n:translate="">
-		Un avis favorable signifie que le Comité d'examen est prêt à la mettre en oeuvre, "À retravailler" qu'elle est intéressante, mais qu'elle demande avant à être retravaillée, et défavorable qu'elle n'est finalement pas retenue.
+		A positive opinion means that the Examination Committee is ready to implement it. "To be re-worked upon" that it is interesting, but deserves being re-worked upon. A negative opinion means that it will not be further considered.
 	</p>
 </div>

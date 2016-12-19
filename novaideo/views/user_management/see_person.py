@@ -92,7 +92,7 @@ class ProposalsView(ContentView):
     viewid = 'person-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'
     counter_id = 'person-proposals-counter'
-    empty_message = _("Not belong to any working group")
+    empty_message = _("Belongs to no working group")
     empty_icon = 'icon icon novaideo-icon icon-wg'
 
 

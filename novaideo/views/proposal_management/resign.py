@@ -20,11 +20,10 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class ResignView(BasicView):
-    title = _('Resign')
+    title = _('Quit')
     name = 'resign'
     behaviors = [Resign]
     viewid = 'resign'
-
 
     def update(self):
         results = self.execute(None)

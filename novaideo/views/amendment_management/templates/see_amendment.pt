@@ -10,14 +10,14 @@
     <div tal:condition="to_submit" role="alert" class="alert alert-info alert-dismissible">
        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
        <span class="glyphicon glyphicon-info-sign pull-right"></span>
-        <span  i18n:translate="">Vous avez donné des explications à l'ensemble de vos améliorations. Vous pouvez maintenant préparer des amendements que vous pourrez soumettre aux autres participants.</span> 
+        <span  i18n:translate="">You have now provided explanations to all of your improvements. You can now prepare the amendments that you will submit to the other participants.</span> 
     </div>
     <div tal:omit-tag="" tal:condition="'explanation' in amendment.state and (not_favorable_ideas or not_published_ideas)">
       <div role="alert" class="alert alert-info alert-dismissible">
          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
          <span class="glyphicon glyphicon-warning-sign pull-right"></span>
          <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
-          <span i18n:translate="">Pour qu'un amendment soit soumis, l'ensemble de ses idées liées doivent être préalablement publiées par les modérateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
+          <span i18n:translate="">For an amendment to be submitted, all related ideas must have been previously published by the moderators. You can modify these ideas one by one by clicking on those that you want to re-work upon.</span><br>
           <ol class="list-unstyled not-published-list">
             <tal:loop repeat="i not_published_ideas">
               <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
@@ -25,7 +25,7 @@
           </ol>
          </div>
          <div tal:omit-tag="" tal:condition="not_favorable_ideas and idea_to_examine">
-          <span i18n:translate="">Pour qu'un amendment soit soumis, l'ensemble de ses idées liées doivent être préalablement publiées et désignées comme favorables par les examinateurs. Vous pouvez les modifier une par une en cliquant sur celles qui sont à retravailler.</span><br>
+          <span i18n:translate="">For an amendment to be submitted, all related ideas must have been previously published and have received a positive opinion by the Examiners. You can modify these ideas one by one by clicking on those that you want to re-work upon.</span><br>
           <ol class="list-unstyled not-published-list">
             <tal:loop repeat="i not_favorable_ideas">
               <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>

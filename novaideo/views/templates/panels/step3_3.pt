@@ -22,7 +22,7 @@
      </dt>
      <dd>
         <span id="time_duration" tal:condition="duration is not None"  style="color:#d9534f;">
-           <span class="glyphicon glyphicon-time"></span>  <span i18n:translate="">Fin du vote dans</span>
+           <span class="glyphicon glyphicon-time"></span>  <span i18n:translate="">End of ballot in</span>
            <span tal:omit-tag="" tal:condition="duration[0]>0"> <span id="day">${duration[0]}</span> <span tal:omit-tag="" i18n:translate="">day(s)</span></span>
            <span tal:omit-tag="" tal:condition="duration[1]>0"> <span id="hour">${duration[1]}</span> <span tal:omit-tag="" i18n:translate="">hour(s)</span></span>
            <span tal:omit-tag="" tal:condition="duration[2]>0"> <span id="minu">${duration[2]}</span> <span tal:omit-tag="" i18n:translate="">minute(s)</span></span>
@@ -44,7 +44,7 @@
            <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
          </tal:loop>
        </dd>
-       <dt tal:condition="ballot_report.voters"><span i18n:translate="">Voters</span> <span style="color:#d9534f;">(${len(ballot_report.voters)}/${len(ballot_report.electors)})</span></dt>
+       <dt tal:condition="ballot_report.voters"><span i18n:translate="">Participants having participated in the ballot</span> <span style="color:#d9534f;">(${len(ballot_report.voters)}/${len(ballot_report.electors)})</span></dt>
        <dd tal:condition="ballot_report.voters">
          <tal:loop repeat="e ballot_report.voters">
              ${getattr(e, 'title', e.name)}
@@ -62,7 +62,7 @@
           <li class="step sub-step-1 ${( 'votes for publishing' not in context.state) and 'off'}">
               <span class="step-content">
                   <div class="step-text" i18n:translate="">
-                     Vote for improving or not the proposal
+                     Vote on whether to improve the proposal or not
                   </div>
               </span>
             </li>
@@ -83,7 +83,7 @@
             <li class="step sub-step-4 ${((is_amendment and ('votes for amendments' not in context.state)) or ((not is_amendment) and ('votes for publishing' not in context.state))) and 'off'} ">
                <span class="step-content ${(not is_amendment) and 'step-ignored'}">
                  <div class="step-text" i18n:translate="">
-                   Vote for amendments
+                   Vote on amendments
                  </div>
                </span>
             </li>

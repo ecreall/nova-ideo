@@ -84,7 +84,7 @@ def vote_choice(ballot_report):
     values = [(True, getattr(ballot_report.ballottype,
                             'true_val', _('Against'))),
               (False, getattr(ballot_report.ballottype,
-                             'false_val', _('Favour')))]
+                             'false_val', _('In favour')))]
     return RadioChoiceWidget(values=values)
 
 
@@ -106,7 +106,7 @@ class PublishProposalSchema(Schema):
 
     elected = colander.SchemaNode(
         colander.String(),
-        title=_('Amendment duration'),
+        title=_('Duration of the amendment cycle'),
     )
 
 
@@ -156,7 +156,7 @@ class PublishProposalFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishProposalView(MultipleView):
-    title = _("Améliorer la proposition ou la soumettre en l'état")
+    title = _("Improve the proposal or submit it as is")
     name = 'publishproposal'
     viewid = 'publishproposal'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

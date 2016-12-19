@@ -126,8 +126,8 @@ def text_to_search_widget(node, kw):
 
     return SearchTextInputWidget(
         button_type='submit',
-        description=_("The keyword search is done using"
-                      " commas between keywords."),
+        description=_("If you wish to search with several keywords,"
+                      " you should separate these keywords with commas."),
         advanced_search_url=advanced_search_url,
         live_search_url=live_search_url,
         placeholder=_("Search"),

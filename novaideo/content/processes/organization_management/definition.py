@@ -39,8 +39,8 @@ class OrganizationManagement(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(OrganizationManagement, self).__init__(**kwargs)
-        self.title = _('Orgaizations management')
-        self.description = _('Orgaizations management')
+        self.title = _('Organizations management')
+        self.description = _('Organizations management')
 
     def _init_definition(self):
         self.defineNodes(

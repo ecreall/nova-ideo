@@ -25,9 +25,9 @@ from novaideo import _
 from novaideo.core import can_access
 
 
-ASSOCIATION_MESSAGES = {'0': _(u"""Pas de contenus associés"""),
-                        '1': _(u"""Contenu associé"""),
-                        '*': _(u"""Contenus associés""")}
+ASSOCIATION_MESSAGES = {'0': _(u"""No associated content"""),
+                        '1': _(u"""Associated content"""),
+                        '*': _(u"""Associated contents""")}
 
 
 class RelatedContentsView(BasicView):

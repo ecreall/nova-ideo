@@ -1,60 +1,58 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
 
 	<p tal:condition="request.view_name == 'seemycontents'" i18n:translate="">
-        Vous retrouvez dans « Mes contenus », les idées et les propositions dont vous avez été l'auteur ou les propositions dont vous avez été l'un des participants.
-
-        Sont notamment présentes dans « Mes contenus », l'ensemble de vos idées archivées.
+        You will find under "My contents" the ideas and proposals of which you were the author, and the proposals for which you were a participant in the working group. You will also find there all your archived ideas.
     </p>
     <p tal:condition="request.view_name == 'seemyparticipations'" i18n:translate="">
-	    Vous retrouvez dans « Mes groupes de travail », les propositions pour lesquelles vous intervenez actuellement en tant que participant.
+	    You will find under "My working groups" the proposals for which you participate in the working group.
     </p>
     <p tal:condition="request.view_name == 'seemyselections'" i18n:translate="">
-        Vous retrouvez dans « Mes favoris », toutes les idées, les propositions, les membres que vous avez préalablement mis en favori.
+        You will find under "My favourites" all the ideas, proposals and members that you have previously noted as your favourites.
     </p>
     <tal:block tal:condition="request.view_name == 'seemysupports'" >
 
       <div tal:omit-tag="" tal:condition="request.support_ideas and request.support_proposals" >
         <p i18n:translate="">
-            Vous trouvez dans « Mes appréciations », les idées et les propositions soumises à appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées.
+            You will find under "My appraisals" the published ideas and the proposals submitted for appraisal to which you have allocated a support token or an opposition token.
         </p>
         <p i18n:translate="">
-            Vous disposez en tout de sept jetons d'appréciation, soutiens ou oppositions, que vous êtes libre à tout moment d'allouer ou de retirer à n'importe quelles idées ou propositions soumises à appréciation. Pour soutenir ou vous opposer à une idée ou à une proposition, il vous suffit de cliquer sur l'idée ou la proposition concernée.
+            You have a total of seven tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to appraisal. Each token can be used to support an idea or a proposal, or to oppose it. To support or oppose an idea or proposal, you must first click on it.
         </p>
         <p i18n:translate="">
-            Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions soumises à appréciation dont vous avez été l'un des participants sans que ces appréciations soient décomptées de vos sept jetons d'appréciation initiaux. Une fois allouée, ces appréciations ne peuvent plus en revanche être réutilisées pour d'autres propositions.
+            In addition, you may also support or oppose proposals submitted for appraisal in which you participated in the working group. In this case, these special tokens are not counted against your initial reserve of seven appraisal tokens. Once allocated, these special tokens cannot be re-used for other proposals.
         </p>
      </div>
      <div tal:omit-tag="" tal:condition="request.support_ideas and not request.support_proposals" >
         <p i18n:translate="">
-            Vous trouvez dans « Mes appréciations », les idées soumises à appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées.
+            You will find under the tab "My appraisals" the published ideas that you have supported or that you have opposed.
         </p>
         <p i18n:translate="">
-            Vous disposez en tout de sept jetons d'appréciation, soutiens ou oppositions, que vous êtes libre à tout moment d'allouer ou de retirer à n'importe quelles idées soumises à appréciation. Pour soutenir ou vous opposer à une idée, il vous suffit de cliquer sur l'idée concernée.
+            You have a total of seven appraisal tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to appraisal. Each token can be used to support an idea or a proposal, or to oppose it. To support or oppose an idea or proposal, you must first click on it.
         </p>
      </div>
      <div tal:omit-tag="" tal:condition="not request.support_ideas and request.support_proposals" >
         <p i18n:translate="">
-            Vous trouvez dans « Mes appréciations », les propositions soumises à appréciation que vous avez soutenues ou auxquelles vous vous êtes opposées.
+            You will find under the tab "My appraisals" the proposals submitted for appraisal that you have supported or that you have opposed.
         </p>
         <p i18n:translate="">
-            Vous disposez en tout de sept jetons d'appréciation, soutiens ou oppositions, que vous êtes libre à tout moment d'allouer ou de retirer à n'importe quelles propositions soumises à appréciation. Pour soutenir ou vous opposer à une proposition, il vous suffit de cliquer sur la proposition concernée.
+            You have a total of seven tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to appraisal. Each token can be used to support an idea or a proposal, or to oppose it. To support or oppose an idea or proposal, you must first click on it.
         </p>
         <p i18n:translate="">
-            Par ailleurs, vous pouvez également soutenir ou vous opposer aux propositions soumises à appréciation dont vous avez été l'un des participants sans que ces appréciations soient décomptées de vos sept jetons d'appréciation initiaux. Une fois allouée, ces appréciations ne peuvent plus en revanche être réutilisées pour d'autres propositions.
+            In addition, you may also support or oppose proposals submitted for appraisal in which you participated in the working group. In this case, these special tokens are not counted against your initial reserve of seven appraisal tokens. Once allocated, these special tokens cannot be re-used for other proposals.
         </p>
      </div>
     </tal:block>
 
     <tal:block tal:condition="request.view_name == 'seealerts'" >
-        <p i18n:translate="">Le picto <span style="color: red" class="icon glyphicon glyphicon-bell"></span> indique les dernières alertes que vous avez reçues.</p>
-        <p i18n:translate="">
-         Vous recevez une alerte :
+        <p i18n:translate="">The pictogram <span style="color: red" class="icon glyphicon glyphicon-bell"></span> indicates the latest warnings that you have received.</p>
+        <p>
+         <span i18n:translate="">You have received a warning:</span>
          <ul>
-            <li> lorsqu'une idée ou une proposition vient d'être publiée et que l'un des mots clés correspond à vos centres d'intérêt,</li>
-            <li> lorsqu'il se passe quelque chose sur vos idées ou les propositions auxquelles vous contribuez ou vous avez contribué,</li>
-            <li> lorsqu'un membre vous communique une idée ou une proposition,</li>
-            <li> lorsqu'il y a une réponse à l'un de vos commentaires,</li>
-            <li> lorsqu'il se passe quelque chose sur une idée, une proposition, un membre que vous avez mis en favori.</li>
+            <li i18n:translate=""> lorsqu'une idée ou une proposition vient d'être publiée et que l'un des mots clés correspond à vos centres d'intérêt,</li>
+            <li i18n:translate=""> lorsqu'il se passe quelque chose sur vos idées ou les propositions auxquelles vous contribuez ou vous avez contribué,</li>
+            <li i18n:translate=""> lorsqu'un membre vous communique une idée ou une proposition,</li>
+            <li i18n:translate=""> lorsqu'il y a une réponse à l'un de vos commentaires,</li>
+            <li i18n:translate=""> lorsqu'il se passe quelque chose sur une idée, une proposition, un membre que vous avez mis en favori.</li>
         </ul>
         </p>
     </tal:block>

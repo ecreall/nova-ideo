@@ -36,8 +36,8 @@ STATES_PARTICIPANT_MAPPING = {
         'submitted': _('Submitted for moderation'),
         'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
-	    'votes for publishing': _('Votes for publishing'),
-	    'votes for amendments': _('Votes for amendments'),
+	    'votes for publishing': _('Vote to improve the proposal or not'),
+	    'votes for amendments': _('Votes on amendments'),
 	    'amendable': _('Being improved'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
@@ -47,7 +47,7 @@ STATES_PARTICIPANT_MAPPING = {
 
     },
     'idea': {
-	    'to work': _('To work'),
+	    'to work': _('To be worked upon'),
         'censored': _('Censored'),
         'submitted_support': _('Submitted for support'),
 	    'submitted': _('Submitted for moderation'),
@@ -103,8 +103,8 @@ STATES_MEMBER_MAPPING = {
         'submitted': _('Submitted for moderation'),
         'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
-	    'votes for publishing': _('Votes for publishing'),
-	    'votes for amendments': _('Votes for amendments'),
+	    'votes for publishing': _('Vote to improve the proposal or not'),
+	    'votes for amendments': _('Votes on amendments'),
 	    'amendable': _('Being improved'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
@@ -114,7 +114,7 @@ STATES_MEMBER_MAPPING = {
 
     },
     'idea': {
-	    'to work': _('To work'),
+	    'to work': _('To be worked upon'),
         'censored': _('Censored'),
         'submitted_support': _('Submitted for support'),
 	    'submitted': _('Submitted for moderation'),

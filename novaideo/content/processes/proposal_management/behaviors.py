@@ -77,29 +77,24 @@ from . import (
 from . import end_work
 
 
-VOTE_PUBLISHING_MESSAGE = _("Chaque participant du groupe de travail vote pour" 
-                            " ou contre l'amélioration de la proposition. Si la majorité"
-                            " est \"pour\", un nouveau cycle d'amélioration commence, sinon"
-                            " la proposition est soumise en l'état aux autres membres de la plateforme")
+VOTE_PUBLISHING_MESSAGE = _("Each participant votes for or against continuing the improvement of the proposal. "
+                            "If the majority is \"In favour\", a new improvement cycle begins. "
+                            "If not, the proposal is submitted as is to the evaluation of the other "
+                            "members of the platform.")
 
 
-VOTE_DURATION_MESSAGE = _("Voting results may not be known until the end of"
-                          " the period for voting. In the case where the"
-                          " majority are for the continuation of improvements"
-                          " of the proposal, your vote for the duration of the"
-                          " amendment period will be useful")
+VOTE_DURATION_MESSAGE = _("Voting results regarding the further improvement of the proposal will not be known until the end of the ballot. "
+                          "If the majority happens to vote for continuing to improve the "
+                          "proposal, your vote on the duration of the improvement cycle is needed.")
 
-VOTE_MODEWORK_MESSAGE = _("Voting results may not be known until the end of"
-                          " the period for voting. In the case where the"
-                          " majority are for the continuation of improvements"
-                          " of the proposal, your vote for the work mode will be useful")
+VOTE_MODEWORK_MESSAGE = _("Voting results regarding the further improvement of the proposal will not be known until the end of the ballot. "
+                          "If the majority happens to vote for continuing to improve the "
+                          "proposal, your vote on the operating method of the working group is needed.")
 
 
-VOTE_REOPENING_MESSAGE = _("Voting results may not be known until the end of"
-                           " the period for voting. In the case where the"
-                           " majority are for the continuation of improvements"
-                           " of the proposal, your vote for reopening working"
-                           " group will be useful")
+VOTE_REOPENING_MESSAGE = _("Voting results regarding the further improvement of the proposal will not be known until the end of the ballot. "
+                           "If the majority happens to vote for continuing to improve the "
+                           "proposal, your vote on reopening the working group is needed.")
 
 
 def confirm_proposal(

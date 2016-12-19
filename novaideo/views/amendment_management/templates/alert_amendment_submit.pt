@@ -1,6 +1,6 @@
 <div tal:condition="not request.moderate_ideas and not_published_ideas" class="alert alert-info" i18n:domain="novaideo">
       <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-      <p i18n:translate="">Pour que vos amendements puissent être soumis aux autres participants, l'ensemble de leurs idées liées doivent être préalablement publiées. Vous pouvez soit les publier en l'état en cliquant sur « Continuer », soit les modifier en cliquant sur celles qui sont à retravailler.</p>
+      <p i18n:translate="">In order for your amendments to be submitted to the other participants, all related ideas must have been previously published. You can either publish them as they are, by clicking on "Continue", or modify them by clicking on those that are to be re-worked upon.</p>
         <ol class="list-unstyled not-published-list">
           <tal:loop repeat="i not_published_ideas">
             <li><a target="_blank" class="btn btn-info btn-xs" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
@@ -9,7 +9,7 @@
 </div>
 <div class="alert alert-info">
   <span class="glyphicon glyphicon-info-sign pull-right"></span>
-  <p i18n:domain="novaideo" i18n:translate="">Par défaut, les améliorations partageant la même explication sont regroupées dans le même amendement. Il est préférable de soumettre plusieurs amendements aux autres participants pour avoir plus de chance qu'ils en retiennent certains. Néanmoins, vous devez faire attention que chaque amendement peut être retenu séparément, indépendamment des autres.</p>
+  <p i18n:domain="novaideo" i18n:translate="">As a default, the improvements that share the same explanation are grouped in the same amendment. It is preferable to submit several amendments to the other participants in the working group, so as to increase the chances that they will accept at least some of them. However, you must beware that each amendment can be accepted separately, independently from the others.</p>
 </div>
 
 <div id="amendment-diff" class="amendment-diff-scroll scroll-able">

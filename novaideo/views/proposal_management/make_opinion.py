@@ -52,7 +52,7 @@ class OpinionSchema(Schema):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class MakeOpinionFormView(FormView):
-    title = _('Make opinion')
+    title = _('Give your opinion')
     schema = OpinionSchema()
     behaviors = [MakeOpinion, Cancel]
     formid = 'formmakeopinion'

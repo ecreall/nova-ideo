@@ -26,7 +26,7 @@ class SubmitProposalViewStudyReport(PublishProposalStudyReport):
 
 
 class SubmitProposalView(PublishProposalFormView):
-    title = _('Submit for publishing')
+    title = _('Submit for publication')
     name = 'submitproposalform'
     formid = 'formsubmitproposal'
     behaviors = [SubmitProposalModeration, Cancel]
@@ -50,7 +50,7 @@ class SubmitProposalView(PublishProposalFormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishProposalViewMultipleView(MultipleView):
-    title = _('Submit for publishing')
+    title = _('Submit for publication')
     name = 'submitproposal'
     viewid = 'submitproposal'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

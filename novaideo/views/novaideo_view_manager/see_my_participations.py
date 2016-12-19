@@ -21,9 +21,9 @@ from .see_my_contents import SeeMyContentsView
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""Aucune participations"""),
-    '1': _(u"""Un groupe de travail auquel j'ai participé"""),
-    '*': _(u"""${nember} groupes de travail auxquels j'ai participé""")
+    '0': _(u"""I have participated in no working group so far"""),
+    '1': _(u"""I have participated in one working group so far"""),
+    '*': _(u"""I have participated in ${nember} working groups so far""")
 }
 
 
@@ -33,7 +33,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeMyParticipationsView(SeeMyContentsView):
-    title = _('My participations')
+    title = _('My working groups')
     name = 'seemyparticipations'
     behaviors = [SeeMyParticipations]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

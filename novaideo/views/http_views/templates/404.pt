@@ -1,5 +1,5 @@
 <div class="httperror-container"
 	  i18n:domain="novaideo">
 	<img class="httperror-img" src="${request.static_url('novaideo:static/images/find.svg')}">
-	<div class="httperror-title" i18n:translate="">Le contenu que vous recherchez n'existe pas ou n'est plus disponible sur notre site.</div> 
+	<div class="httperror-title" i18n:translate="">The content that you are lookinf for does not exist or not available any more on our site.</div> 
 </div>

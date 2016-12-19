@@ -24,13 +24,13 @@ from novaideo import _, log
 from novaideo.utilities.alerts_utility import get_user_data, get_entity_data
 
 
-PRESENT_MESSAGE = {'0': _(u"""Aucune personne contactée"""),
-                   '1': _(u"""Personne contactée"""),
-                   '*': _(u"""Personnes contactées""")}
+PRESENT_MESSAGE = {'0': _(u"""No person contacted"""),
+                   '1': _(u"""Person contacted"""),
+                   '*': _(u"""Persons contacted""")}
 
 
 class SentToView(BasicView):
-    title = _('Sent to')
+    title = _('Send to')
     name = 'sentto'
     validators = [PresentIdea.get_validator()]
     template = 'novaideo:views/idea_management/templates/sent_to.pt'
@@ -151,7 +151,7 @@ class PresentIdeaSchema(Schema):
     send_to_me = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Send to me'),
+        label=_('Put me in copy'),
         title='',
         missing=False
         )
@@ -159,7 +159,7 @@ class PresentIdeaSchema(Schema):
 
 class PresentIdeaFormView(FormView):
 
-    title = _('Submit the idea to others')
+    title = _('Transmit the idea to others')
     schema = select(PresentIdeaSchema(),
                     ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentIdea]

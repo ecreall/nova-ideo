@@ -1,14 +1,14 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
 	<p i18n:translate="">
-		En tant qu'Examinateur, vous pouvez donner votre avis sur une idée.
+		As an Examiner, you can express your opinion on an idea.
 	</p>
 	<p i18n:translate="">
-		Cet avis peut être soit favorable, soit défavorable.
+		This opinion can be positive or negative.
 	</p>
 	<p i18n:translate="">
-		Si l'avis est favorable, l'idée pourra être transformée en proposition, s'il est défavorable, elle ne pourra plus être travaillée sous forme de proposition.
+		If your expressed opinion is positive, the idea will be allowed to be transformed into a proposal. If it is negative, it won't be allowed to be worked upon as a proposal.
 	</p>
 	<p i18n:translate="">
-		Quelque soit cet avis, vous devez en donner une explication.
+		Whatever your opinion, you will be requested to provide an explanation.
 	</p>
 </div>

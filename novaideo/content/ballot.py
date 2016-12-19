@@ -51,7 +51,7 @@ class Referendum(object):
         else:
             self.subject = self.report.subjects
 
-        self.false_val = kwargs.get('false_val', _('Favour'))
+        self.false_val = kwargs.get('false_val', _('In favour'))
         self.true_val = kwargs.get('true_val', _('Against'))
 
     def run_ballot(self, context=None, id_=None):
@@ -101,18 +101,18 @@ class Referendum(object):
 DEFAULT_JUDGMENTS = {'Excellent': 7,
                      'Very good': 6,
                      'Good': 5,
-                     'Fairly well': 4,
+                     'Fairly good': 4,
                      'Passable': 3,
                      'Insufficient': 2,
-                     'Reject': 1}
+                     'To be rejected': 1}
 
 _JUDGMENTS_TRANSLATION = [_('Excellent'),
                           _('Very good'),
                           _('Good'),
-                          _('Fairly well'),
+                          _('Fairly good'),
                           _('Passable'),
                           _('Insufficient'),
-                          _('Reject')]
+                          _('To be rejected')]
 
 @content(
     'majorityjudgmentvote',

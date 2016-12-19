@@ -817,7 +817,7 @@ class ConnectedDates(Schema):
         colander.Date(),
         title=_('Connected before'),
         description_bottom=True,
-        description=_('You can select the last connection dates of users to be displayed.'),
+        description=_('For each of the users to be displayed, you can select the dates of its last connexion.'),
         missing=None,
         )
 
@@ -863,7 +863,7 @@ class ContributionFilterSchema(Schema):
         colander.Set(),
         widget=authors_choices,
         title=_('Authors'),
-        description=_('You can enter the authors names of the contents to be displayed.'),
+        description=_("You can enter the authors' names of the contents to be displayed."),
         default=[],
         missing=[],
         query=authors_query,

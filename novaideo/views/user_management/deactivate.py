@@ -20,7 +20,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class DeactivateView(BasicView):
-    title = _('Deactivate the profile')
+    title = _('Disactivate the profile')
     name = 'deactivate'
     behaviors = [Deactivate]
     viewid = 'deactivateview'

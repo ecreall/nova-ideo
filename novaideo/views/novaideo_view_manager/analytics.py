@@ -102,11 +102,11 @@ class ContentsByKeywords(BasicView):
             'charts': [
                 {
                     'id': 'bar',
-                    'title': _('Total des contenus classé par types par mots clés')
+                    'title': _('Total number of contents, classified per type and per keyword.')
                 },
                 {
                     'id': 'doughnut',
-                    'title': _('Pourcentage du cumul par mots clés')
+                    'title': _('Percentage of the cumulated number of contents per keyword.')
                 }
             ]
         }
@@ -287,11 +287,11 @@ class ContentsByStates(BasicView):
             'charts': [
                 {
                     'id': 'bar',
-                    'title': _('Total des contenus classé par types par états')
+                    'title': _('Total number of contents, classified per type and per state.')
                 },
                 {
                     'id': 'doughnut',
-                    'title': _('Pourcentage du cumul par états')
+                    'title': _('Percentage of the cumulated number of contents per state.')
                 }
             ]
         }
@@ -396,7 +396,7 @@ class ContentsByDates(BasicView):
             'charts': [
                 {
                     'id': 'line',
-                    'title': _('Total des contenus classé par types par date')
+                    'title': _('Total number of contents, classified per type and per date.')
                 }
             ]
         }

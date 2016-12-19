@@ -70,7 +70,7 @@ class PresentProposalSchema(PresentIdeaSchema):
 
 class PresentProposalFormView(FormView):
 
-    title = _('Submit the proposal to others')
+    title = _('Transmit the proposal to others')
     schema = select(PresentProposalSchema(),
                     ['members', 'subject', 'message', 'send_to_me'])
     behaviors = [PresentProposal]
@@ -98,8 +98,8 @@ class PresentProposalFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PresentProposalView(PresentIdeaView):
-    title = _('Submit the proposal to others')
-    description = _('Submit the proposal to others')
+    title = _('Transmit the proposal to others')
+    description = _('Transmit the proposal to others')
     name = 'present'
     views = (SentToView, PresentProposalFormView)
 

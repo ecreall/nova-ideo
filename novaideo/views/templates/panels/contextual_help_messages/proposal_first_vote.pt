@@ -1,12 +1,12 @@
 
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
 	<p i18n:translate="">
-	  La durée du cycle d'exploitation est écoulée, les participants doivent voter pour améliorer ou non la proposition.
+	  The duration of the exploitation cycle is over. The participants must now vote to decide whether to improve the proposal or not.
     </p>
 	<p i18n:translate="">
-		S'ils votent en majorité pour améliorer la proposition à plusieurs, ils doivent indiquer une nouvelle durée pour le cycle d'amélioration et ils peuvent de nouveau améliorer la proposition pendant ce nouveau cycle.
+		If they vote in majority in favour of collectively improving the proposal, they must specify a new duration for the improvement cycle and they can improve the proposal further during this new cycle.
 	</p>
 	<p i18n:translate="">
-		S'ils votent en majorité pour soumettre la proposition en l'état, la proposition ne peut plus être améliorée et les membres de la plateforme peuvent dès lors soutenir ou s'opposer à la proposition.
+		If they vote in majority in favour of submitting the proposal as it is, the proposal cannot be improved any more. The members of the platform are then entitled to support or to oppose the proposal.
 	</p>
 </div>

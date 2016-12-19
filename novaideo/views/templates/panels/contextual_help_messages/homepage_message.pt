@@ -1,44 +1,44 @@
 <div   class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <div tal:omit-tag="" tal:condition="not request.is_idea_box" >
         <p i18n:translate="" tal:condition="not (request.support_ideas or request.support_proposals)">
-            Pour noter une idée, accéder à vos éléments ou intervenir sur une idée ou une proposition, vous devez préalablement être inscrit et vous connecter.
+            To write down an idea, access your content, or intervene on an idea or a proposal, you must beforehand be registered and connected.
         </p>
          <p i18n:translate="">
-            Si vous n'êtes pas connecté, vous pourrez uniquement faire des recherches, consulter les contenus  (idées et propositions) et voir les membres inscrits.
+            If you are not connected, you will only be able to perform searches, to read content (ideas and proposals) and to see registered members.
         </p>
         <p i18n:translate="">
-            Une idée est une note personnelle, courte, émise spontanément, alors qu'une proposition est un document rédigé à plusieurs, finalisé, avec un travail de fond.
+            An idea is a short, spontaneous personal note. A proposal is a complete, collectively written document, based on thorough work.
         </p>
         <p >
-            <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">soit publiée</span>
-            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">, soit examinée</span> 
-            <span i18n:translate="">et une proposition peut être soit privée, soit ouverte à un groupe de travail, soit en cours d'amélioration, soit faire l'objet d'un vote pour améliorer ou non la proposition,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_proposals">soit publiée</span>
-            <span tal:omit-tag="" tal:condition="request.support_proposals">soit soumise à appréciation</span>
-            <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">, soit examinée</span>.
+            <span i18n:translate="">An idea can either be archived, or "To be further worked upon",</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">or submitted for moderation,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">or published</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">or "Being moderated"</span> 
+            <span i18n:translate="">A proposal can be in either one of the following states: private, open to a working group, under improvement, or the purpose of a vote to determine whether the proposal should be further improved or not,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_proposals">or published</span>
+            <span tal:omit-tag="" tal:condition="request.support_proposals">or submitted for appraisal</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">or "Being moderated"</span>.
         </p>
     </div>
     <div  tal:omit-tag="" tal:condition="request.is_idea_box">
         <p i18n:translate="">
-            Pour noter une idée, accéder à vos éléments ou intervenir sur une idée ou une proposition, vous devez préalablement être inscrit et vous connecter.
+            To write down an idea, access your content, or intervene on an idea or a proposal, you must beforehand be registered and connected.
         </p>
          <p i18n:translate="">
-            Si vous n'êtes pas connecté, vous pourrez uniquement faire des recherches, consulter les contenus  (idées) et voir les membres inscrits.
+            If you are not connected, you will only be able to perform searches, to read content (ideas) and to see registered members.
         </p>
         <p i18n:translate="">
-            Une idée est une note personnelle, courte, émise spontanément.
+            An idea is a short, spontaneous, personal note.
         </p>
         <p >
-            <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">soit publiée</span>
-            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">, soit examinée</span> 
+            <span i18n:translate="">An idea can either be archived, or "To be further worked upon",</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">or submitted for moderation,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">or published</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">or "Being moderated"</span> 
             <span i18n:translate="">.
         </p>
     </div>
     <p i18n:translate="">
-        Avec la recherche avancée et les filtres, vous pouvez également affiner votre recherche en spécifiant pour des périodes particulières les types de contenus et leurs états, les mots clés, les contributeurs et les textes à rechercher.
+        With the advanced search and the filters, you can also refine your search, by specifying the time period, the type of content and its status, the keywords, the contributors and the texts to search.
     </p>
 </div>

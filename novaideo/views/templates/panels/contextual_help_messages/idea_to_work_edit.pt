@@ -1,11 +1,11 @@
 <div class="contextual-help-item principal-help" i18n:domain="novaideo">
    <p i18n:translate="">
-       Vous souhaitez modifier votre idée.
+       You want to modify your idea.
    </p>
    <p i18n:translate="">
-       Pour vous souvenir des modifications effectuées, vous pouvez saisir une note de modification.
+       In order to remember the changes made, you can write a change note.
    </p>
    <p i18n:translate="">
-       Vous pourrez retrouver vos différentes versions et les comparer dans l'onglet « Comparer des versions ».
+       You will be able to find your various versions and compare them with one another under the tab « Compare the versions ».
    </p>
 </div>

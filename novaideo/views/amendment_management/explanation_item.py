@@ -21,7 +21,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class ExplanationItemView(BasicView):
-    title = _('Justification item')
+    title = _('Justification of the item')
     name = 'explanationitem'
     behaviors = [ExplanationItem]
     viewid = 'explanationitem'
@@ -43,5 +43,4 @@ class ExplanationItemView(BasicView):
         result['coordinates'] = {self.coordinates:[item]}
         return result
         
-
 DEFAULTMAPPING_ACTIONS_VIEWS.update({ExplanationItem:ExplanationItemView})

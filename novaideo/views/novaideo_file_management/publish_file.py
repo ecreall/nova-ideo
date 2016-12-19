@@ -55,7 +55,7 @@ class PublishFileView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishFileMultipleView(MultipleView):
-    title = _('Publish the file')
+    title = _('Publish the document')
     name = 'publishfile'
     behaviors = [Publish]
     viewid = 'publishfile'

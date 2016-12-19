@@ -9,7 +9,7 @@
       <div tal:condition="errormsg" 
            class="clearfix alert alert-message error">
         <p i18n:translate="">
-           There was a problem with this section
+           There was a problem with this section. Please check the infomation provided.
         </p>
         <p>${errormsg}</p>
       </div>

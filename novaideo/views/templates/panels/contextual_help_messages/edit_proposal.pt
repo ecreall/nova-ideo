@@ -1,11 +1,11 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
 	<p i18n:translate="">
-	Pour modifier votre proposition, vous disposez d'un éditeur de texte riche qui vous permet d'intégrer tout type de contenu (image, vidéo, tableau, lien).
+	In order to edit your proposal, a rich text editor is available, with which you will be able to include any type of content (image, video, table, link).
 	</p>
 	<p i18n:translate="">
-	Vous pouvez rechercher des idées existantes sur la plateforme et y reprendre des éléments de texte par un simple glisser-déposer.
+	You can search existing ideas on the platform and re-use text elements from them by a simple drag-and-drop.
 	</p>
 	<p i18n:translate="">
-	Vous pouvez également noter vos nouvelles idées qui seront reprises automatiquement dans la plateforme sous forme d'idées à travailler.
+	You can also write down your new ideas, which will be automatically integrated by the platform as ideas to be worked upon.
 	</p>
 </div>

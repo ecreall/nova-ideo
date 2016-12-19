@@ -1,19 +1,19 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo"
      tal:define="idea_to_support request.support_ideas">
-     <p i18n:translate="" tal:condition="idea_to_support">Les idées publiées sont visibles par l'ensemble des membres de la plateforme, qui peuvent soit les soutenir, soit s'y opposer.</p>
+     <p i18n:translate="" tal:condition="idea_to_support">The published ideas are visible by all members of the platform. They can either support or oppose them.</p>
 
     <span tal:omit-tag="" tal:condition="not idea_to_support">
         <p i18n:translate="">
-           Les idées publiées sont visibles par l'ensemble des membres de la plateforme.
+           The published ideas are visible by all members of the platform.
         </p>
         <p i18n:translate="" >
-            Elles peuvent être transformées en proposition ou utilisées dans des propositions existantes par les membres de la plateforme.
+            They can be transformed into proposals or used in existing proposals by members of the platform.
         </p>
     </span>
     <p i18n:translate="">
-        Les idées publiées peuvent également être dupliquées pour qu'une copie soit travaillée différemment ou vous pouvez les ajouter à vos favoris.
+        The published ideas can also be duplicated. You can then work on the copy as you wish. You can also add published ideas to your favourites.
     </p>
     <p i18n:translate="">
-        Elles peuvent enfin être communiquées à des tiers ou discutées entre membres.
+        They can also be communicated to third parties or discussed among members.
     </p>
 </div>

@@ -64,7 +64,7 @@ DEFAULT_COMMENT_INTENTIONS = [
     _('Ask a question'),
     _('Review'),
     _('Irony'),
-    _('Use humor'),
+    _('Joke'),
     _('Remark')
 ]
 
@@ -189,7 +189,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                widget=SimpleMappingWidget(css_class='object-well default-well')),
             ['_csrf_token_']),
         widget=invitations_choice,
-        title=_('List of invitation'),
+        title=_('List of invitations'),
         )
 
     organizations = colander.SchemaNode(
@@ -253,7 +253,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                                   ' object-well default-well hide-bloc',
                                 ajax=True,
                                 activator_icon="glyphicon glyphicon-eye-open",
-                                activator_title=_('Configure the ui'))),
+                                activator_title=_('Configure the user interface'))),
                         ["_csrf_token_"])
 
     notif_conf = omit(NotificationConfigurationSchema(widget=SimpleMappingtWidget(

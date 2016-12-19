@@ -21,12 +21,9 @@ from .see_my_contents import SeeMyContentsView
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""Aucun contenu apprécié """
-          u"""et ${tokens} jeton(s) d'appréciation restant(s)"""),
-    '1': _(u"""Un contenu apprécié """
-            u"""et ${tokens} jeton(s) d'appréciation restant(s)"""),
-    '*': _(u"""${nember} contenus appréciés """
-            u"""et ${tokens} jeton(s) d'appréciation restant(s)""")
+    '0': _(u"""You have evaluated no proposal so far. You have ${tokens} remaining evaluation tokens"""),
+    '1': _(u"""You have evaluated one proposal so far. You have ${tokens} remaining evaluation tokens"""),
+    '*': _(u"""You have evaluated ${nember} proposals so far. You have ${tokens} remaining evaluation tokens""")
 }
 
 

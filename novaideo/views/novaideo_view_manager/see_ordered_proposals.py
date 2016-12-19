@@ -38,7 +38,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeOrderedProposalView(BasicView):
-    title = _('Proposals to examine')
+    title = _('Proposals to be examined')
     name = 'proposalstoexamine'
     behaviors = [SeeOrderedProposal]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

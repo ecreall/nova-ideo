@@ -33,14 +33,11 @@ WORK_MODES = {}
 
 
 FIRST_VOTE_DURATION_MESSAGE = _(
-    "Vous avez décidé de rejoindre le groupe de travail,"
-    " votre première action est de voter pour ou contre"
-    " l'amélioration de la proposition. Le scrutin de vote"
-    " est clos, dès que le groupe de travail comprend trois"
-    " participants. Si le « Pour » est majoritaire, un cycle "
-    "d'amélioration commence, sinon la proposition n'est plus "
-    "améliorée, elle est directement soumise à l'appréciation "
-    "des autres membres de la plateforme.")
+    "You have decided to join the working group. Your first decision is to vote "
+    "whether the proposal should or not be improved. The ballot is closed as soon as "
+    "the working group has three participants. If « Improve » wins a majority, "
+    "an improvement cycle begins. If not, the proposal is not improved. It is directly submitted "
+    "as is to the evaluation of the other members of the platform.")
 
 
 FIRST_VOTE_PUBLISHING_MESSAGE = _("Vote for submission")
@@ -120,7 +117,7 @@ def init_proposal_ballots(proposal):
     electors = []
     subjects = [proposal]
     ballot = Ballot('Referendum', electors, subjects, VP_DEFAULT_DURATION,
-                    true_val=_("Submit the proposal"),
+                    true_val=_("Submit the proposal as is"),
                     false_val=_("Continue to improve the proposal"))
     wg.addtoproperty('ballots', ballot)
     ballot.report.description = FIRST_VOTE_PUBLISHING_MESSAGE
@@ -130,10 +127,10 @@ def init_proposal_ballots(proposal):
     group = sorted(durations,
                    key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
     ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
-                    group_title=_('Amendment duration'),
+                    group_title=_('Duration of the amendment cycle'),
                     group_default='One week')
     wg.addtoproperty('ballots', ballot)
-    ballot.title = _('Amendment duration')
+    ballot.title = _('Duration of the amendment cycle')
     ballot.report.description = FIRST_VOTE_DURATION_MESSAGE
     wg.duration_configuration_ballot = ballot
 

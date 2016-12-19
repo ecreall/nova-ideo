@@ -27,9 +27,9 @@ from novaideo.views.filter.sort import (
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""Aucun contenus auxquels j'ai contribué"""),
-    '1': _(u"""Un contenu auquel j'ai contribué"""),
-    '*': _(u"""${nember} contenus auxquels j'ai contribué""")
+    '0': _(u"""I have contributed to no content so far"""),
+    '1': _(u"""I have contributed to one content so far"""),
+    '*': _(u"""I have contributed to ${nember} contents so far""")
     }
 
 

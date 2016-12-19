@@ -50,7 +50,7 @@ def vote_choice(ballot_report):
     values = [(True, getattr(ballot_report.ballottype,
                             'true_val', _('Against'))),
               (False, getattr(ballot_report.ballottype,
-                             'false_val', _('Favour')))]
+                             'false_val', _('In favour')))]
     return RadioChoiceWidget(values=values)
 
 

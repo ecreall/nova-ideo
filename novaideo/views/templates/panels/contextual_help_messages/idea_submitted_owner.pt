@@ -1,15 +1,15 @@
 
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
-        Votre idée est soumise à modération.
+        Your idea is being moderated.
     </p>
     <p i18n:translate="">
-        Pour pouvoir être publiées, les idées sont soumises à modération. Les modérateurs peuvent décider soit de les publier, soit de les archiver.
+        Before they are published, all ideas are moderated. The moderators can decide either to publish them, or to archive them without publication.
     </p>
     <p i18n:translate="">
-        Quelque soit les décisions, des notifications par courriel sont envoyées aux auteurs des idées.
+        Whatever the decision taken, an e-mail notification is sent to the author of the idea.
     </p>
     <p i18n:translate="">
-        Si votre idée est archivée, une explication vous est apportée et vous devrez préalablement la retravailler avant de la soumettre de nouveau pour publication.
+        If your idea is archived, an explanation will be given to you and you will have to re-work on int before you re-submit it again for publication.
     </p>
 </div>

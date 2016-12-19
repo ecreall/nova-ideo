@@ -1,42 +1,42 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
-        Les propositions examinées sont visibles par l'ensemble des utilisateurs.
+        The examined proposals are visible by all users.
     </p>
     <span tal:omit-tag="" tal:condition="'favorable' in context.state">
         <p i18n:translate="" >
-            Le Comité d'examen a émis un avis favorable sur cette proposition, ce qui signifie qu'il est prêt à la mettre en oeuvre.
+            The Examination Committee expressed a positive opinion on this proposal. This means that it is ready to implement it.
         </p>
         <p i18n:translate="" >
-            En cliquant sur le picto "Feu vert", vous pouvez avoir des explications supplémentaires concernant l'avis du Comité d'examen.
+            By clicking on the "Green light" pictogram, you can have more explanations on the opinion of the Examination Committee.
         </p>
         <p i18n:translate="">
-            Les propositions examinées peuvent également être dupliquées pour qu'une copie soit travaillée différemment et vous pouvez les ajouter à vos favoris.
+            You can also duplicate examined proposals. You will then be able to work specifically on your copy and to add it to your favourites.
         </p>
     </span>
     <span tal:omit-tag="" tal:condition="'unfavorable' in context.state">
         <p i18n:translate="" >
-            Le Comité d'examen a émis un avis défavorable sur cette proposition, ce qui signifie qu'il ne l'a pas retenue.
+            The Examination Committee expressed a negative opinion on this proposal. This means that it has not selected it for implementation.
         </p>
         <p i18n:translate="" >
-            En cliquant sur le picto "Feu rouge", vous pouvez avoir des explications supplémentaires concernant l'avis du Comité d'examen.
+            By clicking on the "Red light" pictogram, you can have more explanations on the opinion of the Examination Committee.
         </p>
         <p i18n:translate="">
-            Même les propositions examinées défavorablement peuvent être dupliquées pour qu'une copie soit travaillée différemment et vous pouvez les ajouter à vos favoris.
+            You can also duplicate proposals that received a negative opinion. You will then be able to work specifically on your copy and to add it to your favourites.
         </p>
     </span>
     <span tal:omit-tag="" tal:condition="'to_study' in context.state">
         <p i18n:translate="" >     
-          Le Comité d'examen a émis un avis "À retravailler" sur cette proposition, ce qui signifie que pour être retenue, elle devra être retravaillée auparavant.
+          The Examination Committee expressed an opinion "To be re-worked upon" on this proposal. This means that, in order to be considered for implementation, you will need to re-work on it beforehand.
         </p>
         <p i18n:translate="" >
-            En cliquant sur le picto "Feu orange", vous pouvez avoir des explications supplémentaires concernant l'avis du Comité d'examen.
+            By clicking on the "Orange light" pictogram, you can have more explanations on the opinion of the Examination Committee.
         </p>
         <p i18n:translate="">
-            Pour être retravaillée, la proposition doit être dupliquée, la proposition initiale ne pouvant être modifiée.
+            In order to re-work on your proposal you will need to duplicate it and work on your copy. Indeed the initial proposal as such cannot be modified.
         </p>
     </span>
     <p i18n:translate="">
-        Elles peuvent enfin être communiquées à des tiers, ajoutées à vos favoris et discutées entre membres.
+        Finally, they can be transmitted to third parties, added to your favourites or discussed between members.
     </p>
 </div>
 

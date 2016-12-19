@@ -39,10 +39,9 @@ from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 
 
-VOTE_AMENDMENTS_MESSAGE = _("Vous êtes invité à voter sur les amendements."
-                            " Chaque groupe d'amendements oppose différents "
-                            "amendements soumis et le texte original lorsqu'ils "
-                            "portent sur les mêmes parties de textes ou les mêmes idées.")
+VOTE_AMENDMENTS_MESSAGE = _("You are invited to vote on amendments. Each group of amendments opposes "
+                            "various submitted amendments to the original text, when they bear on the same "
+                            "segments of the text or on the same ideas.")
 
 AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(days=1)
 

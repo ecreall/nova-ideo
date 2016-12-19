@@ -1,5 +1,5 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
-	<p i18n:translate="">Les éléments de texte en vert sont ceux que vous avez ajoutés lors de vos corrections et en rouge ceux que vous avez supprimés.</p>
+	<p i18n:translate="">The text elements in green are those that you have added in your corrections, while those in red are those that you have suppressed.</p>
 
-    <p i18n:translate="">Pour que les corrections soit acceptées, il faut qu'un autre participant les valide. S'il considère qu'elles ne sont pas justifiées, il peut les rejeter et elles ne seront pas retenues dans la proposition.</p>
+    <p i18n:translate="">For your corrections to be accepted, they must be validated by another participant. If s/he considers them as not being justified, s/he can reject them, and they will not be maintained in the proposal.</p>
 </div>

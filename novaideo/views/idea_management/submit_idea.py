@@ -33,7 +33,7 @@ class SubmitIdeaViewStudyReport(BasicView):
 
 
 class SubmitIdeaView(FormView):
-    title = _('Submit for publishing')
+    title = _('Submit for publication')
     name = 'submitideaform'
     formid = 'formsubmitidea'
     behaviors = [SubmitIdea, Cancel]
@@ -54,7 +54,7 @@ class SubmitIdeaView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishIdeaViewMultipleView(MultipleView):
-    title = _('Submit for publishing')
+    title = _('Submit for publication')
     name = 'submitidea'
     viewid = 'submitidea'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

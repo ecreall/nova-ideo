@@ -1,8 +1,8 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
-      Les anciennes versions des idées sont accessibles uniquement à titre indicatif.
+      The former versions of the ideas are available for information only.
     </p>
 	<p i18n:translate="">
-      Si vous souhaitez repartir d'une version passée pour travailler une idée, vous devez préalablement dupliquer cette ancienne version.
+      If you wish to re-start from a past version of an idea to work upon it, you must first duplicate this old version.
     </p>
 </div>

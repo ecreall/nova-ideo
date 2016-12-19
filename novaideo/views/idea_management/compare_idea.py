@@ -24,14 +24,14 @@ from novaideo.content.idea import Idea
 from novaideo import _
 
 
-COMPARE_MESSAGE = {'0': _(u"""Pas de versions"""),
-                   '1': _(u"""Version disponible"""),
-                   '*': _(u"""Versions disponibles""")}
+COMPARE_MESSAGE = {'0': _(u"""No other version"""),
+                   '1': _(u"""Available version"""),
+                   '*': _(u"""Available versions""")}
 
 
 class DiffView(BasicView):
 
-    title = _('Diff result')
+    title = _('Differences between versions')
     name = 'diffresult'
     viewid = 'diffresult'
     validators = [CompareIdea.get_validator()]
@@ -123,13 +123,13 @@ class CompareIdeaSchema(Schema):
         ObjectType(),
         widget=version_choice,
         title=_('Last versions'),
-        description=_("Select the previous version to compare")
+        description=_("Select the previous version with which to compare")
         )
 
 
 class CompareIdeaFormView(FormView):
 
-    title = _('Compare idea form')
+    title = _('Form to compare the idea')
     schema = select(CompareIdeaSchema(), ['current_version', 'versions'])
     behaviors = [CompareIdea]
     formid = 'formcompareidea'
@@ -150,7 +150,7 @@ class CompareIdeaFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CompareIdeaView(MultipleView):
-    title = _('Compare versions')
+    title = _('Compare the versions')
     name = 'compare'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'

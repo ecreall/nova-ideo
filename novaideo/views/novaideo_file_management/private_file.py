@@ -55,7 +55,7 @@ class PrivateFileView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PrivateFileMultipleView(MultipleView):
-    title = _('Privatize the file')
+    title = _('Privatize the document')
     name = 'privatefile'
     behaviors = [Private]
     viewid = 'privatefile'

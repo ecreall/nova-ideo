@@ -35,7 +35,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeAdvertisingsView(BasicView):
-    title = _('Announcements')
+    title = _('The announcements')
     name = 'seeadvertisings'
     behaviors = [SeeAdvertisings]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

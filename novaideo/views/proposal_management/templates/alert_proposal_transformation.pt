@@ -2,6 +2,6 @@
   <div class="alert alert-info">
   	<span class="glyphicon glyphicon-info-sign pull-right"></span>
     <span i18n:translate="">
-      Vous venez de transformer une idée en proposition, vous devez maintenant ajouter un résumé à votre proposition. Pour être plus explicite, nous vous conseillons également de modifier le titre de la proposition généré automatiquement à partir du titre de l'idée.</span>
+      You have just transformed the idea into a proposal. You must now add a summary to your proposal. In order for it to be easier to understand, we advise you to modify the title that was automatically generated from the title of the idea.</span>
   </div>
 </div>

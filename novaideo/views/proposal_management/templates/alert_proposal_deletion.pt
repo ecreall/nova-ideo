@@ -2,10 +2,10 @@
   <div class="alert alert-danger">
   	<span class="glyphicon glyphicon-warning-sign pull-right"></span>
     <span tal:condition="draft_owner" i18n:translate="">
-      Attention, vous êtes sur le point de supprimer votre proposition. Vous pouvez soit cliquer sur « Continuer » et votre proposition sera supprimée, soit cliquer sur « Annuler » et vous pourrez revenir à votre proposition.
+      Warning: you are about to delete your proposal. You can either click on « Continue » and your proposal will be suppressed, or click on « Cancel » and you will return to your proposal.
     </span>
     <span tal:condition="not draft_owner" i18n:translate="">
-      Attention, vous êtes sur le point de supprimer la proposition. Vous pouvez soit cliquer sur « Continuer » et la proposition sera supprimée, soit cliquer sur « Annuler » et vous pourrez revenir à la proposition.
+      Warning: you are about to delete the proposal. You can either click on « Continue » and the proposal will be suppressed, or click on « Cancel » and you will return to the proposal.
     </span>
   </div>
 </div>

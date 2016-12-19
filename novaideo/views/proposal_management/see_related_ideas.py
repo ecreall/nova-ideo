@@ -23,9 +23,9 @@ from novaideo import _
 
 BATCH_DEFAULT_SIZE = 30
 
-ADDIDEAS_MESSAGES = {'0': _(u"""Pas d'idées liées"""),
-                     '1': _(u"""Idée liée"""),
-                     '*': _(u"""Idées liées""")}
+ADDIDEAS_MESSAGES = {'0': _(u"""No related ideas"""),
+                     '1': _(u"""Related idea"""),
+                     '*': _(u"""Related ideas""")}
 
 
 @view_config(
@@ -34,8 +34,8 @@ ADDIDEAS_MESSAGES = {'0': _(u"""Pas d'idées liées"""),
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeRelatedIdeasView(BasicView):
-    title = _('See related ideas')
-    description = _('See related ideas')
+    title = _('See the related ideas')
+    description = _('See the related ideas')
     name = 'relatedideas'
     behaviors = [SeeRelatedIdeas]
     # template = 'novaideo:views/idea_management/templates/related_contents.pt'

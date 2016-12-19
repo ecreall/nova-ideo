@@ -24,7 +24,7 @@
              <small  >${object.description}</small>
     </p>
     <dl tal:define="managers object.managers">
-      <dt tal:condition="managers and len(managers)>1"  i18n:translate="">Managers</dt>
+      <dt tal:condition="managers and len(managers)>1"  i18n:translate="">The managers</dt>
       <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
       <dd tal:condition="managers">
         <div class="working-group-section">

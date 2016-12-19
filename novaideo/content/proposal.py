@@ -106,7 +106,7 @@ class AddFilesSchemaSchema(Schema):
         colander.Set(),
         widget=files_choice,
         missing=[],
-        title=_("Connect to workspace's files")
+        title=_("Connect to the files of the workspace")
         )
 
     attached_files = colander.SchemaNode(

@@ -36,7 +36,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeAlertsView(BasicView):
-    title = _('Processes history')
+    title = _('The notifications')
     name = 'seealerts'
     behaviors = [SeeAlerts]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

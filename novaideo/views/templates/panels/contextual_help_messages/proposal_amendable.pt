@@ -1,7 +1,7 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
-   <p i18n:translate="">La proposition est en cours d'amendement.</p>
+   <p i18n:translate="">The proposal is being amended.</p>
 
-	<p i18n:translate="">Vous pouvez améliorer la proposition et soumettre aux autres participants vos améliorations.</p>
+	<p i18n:translate="">You can improve the proposal and submit your improvements to the other participants.</p>
 
-	<p i18n:translate="">Vous pouvez également dupliquer la proposition et dans quel cas vous pourrez en modifier une copie que vous pourrez publier par la suite.</p>
+	<p i18n:translate="">You can also duplicate the proposal. In this case, you will be able to modify your copy, and to publish it.</p>
 </div>

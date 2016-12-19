@@ -1,7 +1,7 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
-	<p i18n:translate="">Un premier participant du groupe de travail a corrigé la proposition.</p>
+	<p i18n:translate="">A first participant in the working group has proof-read the proposal.</p>
 
-	<p i18n:translate="">Vous pouvez soit accepter ses corrections et elles seront intégrées à la proposition, soit les refuser et elles ne seront pas prises en compte.</p>
+	<p i18n:translate="">You can either accept his/her corrections and they will be integrated into the proposal, or refuse them and they will not be considered.</p>
 
-	<p i18n:translate="">L'intérêt qu'un second participant du groupe de travail valide ou rejette les corrections effectuées par un premier participant est d'éviter si possible des corrections qui ne seraient pas justifiées.</p>
+	<p i18n:translate="">The reason why a second participant in the working group is requested to validate or to reject the corrections proposed by a first participant is to prevent corrections that would not be justified only by spelling or grammar considerations.</p>
 </div>

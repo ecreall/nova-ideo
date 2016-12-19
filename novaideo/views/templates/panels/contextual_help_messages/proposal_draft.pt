@@ -2,10 +2,10 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo"
    tal:define="idea_to_examine 'idea' in request.content_to_examine"
 	>
-	<p i18n:translate="">Votre proposition est dans un statut privé, vous êtes le seul à la voir.</p>
+	<p i18n:translate="">Your proposal is in a private state. You are the only able to see it.</p>
 
-	<p i18n:translate="" tal:condition="not idea_to_examine">Si vous souhaitez la rendre publique, vous devez la publier. Pour que ses idées liées deviennent également visibles aux autres utilisateurs, vous devrez préalablement les publier.</p>
-	<p i18n:translate="" tal:condition="idea_to_examine">Si vous souhaitez la rendre publique, vous devez la publier. Pour la rendre publique, vous devez vous assurez préalablement que toutes les idées liées à la proposition ont été examinés favorablement, il n'est pas possible d'utiliser des idées qui n'ont pas obtenu avant un avis favorable du Comité d'examen.</p>
+	<p i18n:translate="" tal:condition="not idea_to_examine">If you wish to make it public, you must publish it. For the attached ideas to be also visible to the other users, you must previously publish them.</p>
+	<p i18n:translate="" tal:condition="idea_to_examine">If you wish to make it public, you must publish it. In order to publish it, you must previously make sure that all ideas related to the proposal were positively examined. It is not allowed to use in a proposal ideas that have not received beforehand a positive opinion by the Examination Committee.</p>
 
-	<p i18n:translate="">Si vous n'êtes pas satisfait de votre proposition, vous pouvez la supprimer ou la modifier.</p>
+	<p i18n:translate="">If you are not happy with your proposal, you can either suppress it or modifiy it.</p>
 </div>

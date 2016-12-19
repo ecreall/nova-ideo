@@ -24,7 +24,7 @@ from novaideo import _
     )
 class EditFileView(FormView):
 
-    title = _('Edit the file')
+    title = _('Edit the document')
     schema = select(FileSchema(factory=FileEntity, editable=True),
                     ['title',
                      'text'])

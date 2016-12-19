@@ -160,7 +160,7 @@ class OrganizationSchema(VisualisableElementSchema):
     managers = colander.SchemaNode(
         colander.Set(),
         widget=managers_choice,
-        title=_('Managers'),
+        title=_('The managers'),
         missing=[]
         )
 

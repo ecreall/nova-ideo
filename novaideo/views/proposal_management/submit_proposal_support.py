@@ -21,7 +21,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SubmitProposalView(BasicView):
-    title = _('Submit the proposal')
+    title = _('Submit the proposal as is')
     name = 'submitproposal'
     behaviors = [SubmitProposal]
     viewid = 'submitproposal'

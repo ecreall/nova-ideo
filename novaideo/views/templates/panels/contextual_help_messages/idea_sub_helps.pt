@@ -1,15 +1,15 @@
 <tal:block  i18n:domain="novaideo" >
 	<div class="contextual-help-item present-help hide-bloc">
-	  <p i18n:translate="">Tout membre peut communiquer une idée publiée à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel. Ce dernier aura un accès à la plateforme, mais ne pourra pas s'y connecter tant qu'il n'est pas membre.</p>
+	  <p i18n:translate="">Any member can transmit a published idea to any other member of the platform, and to any external person by providing his/her e-mail address. This external  person will have an access to the platform, but will be unable to connect to it as long as s/he is not a member.</p>
 	</div>
 	<div class="contextual-help-item compare-help hide-bloc">
-	  <p i18n:translate="">Vous pouvez comparer la version en cours de l'idée avec ses versions précédentes.</p>
-	  <p i18n:translate="">Les textes respectivement en vert et en rouge sont les textes ajoutés et supprimés dans la version actuelle de l'idée.</p>
+	  <p i18n:translate="">You can compare the current version of the idea with its previous versions.</p>
+	  <p i18n:translate="">The portions of text in green and in red are those that were spectively added to and removed from the current version of the idea.</p>
 	</div>
 	<div class="contextual-help-item  comment-help hide-bloc">
-	    <p i18n:translate="">Toute idée publiée peut être discutée entre membres de la plateforme.</p>
-		<p i18n:translate="">Pour commencer un fil de discussion, il vous suffit de préciser votre intention et le message que vous souhaitez communiquer aux autres.</p>
-		<p i18n:translate="">Tout membre peut vous répondre, comme vous pouvez répondre à tout message d'un fil de discussion.</p>
-		<p i18n:translate="">Vous pouvez également associer à vos messages tout type d'éléments figurant dans la plateforme. En cliquant sur « Associations », vous retrouvez les fils de discussion ayant des éléments associés.</p>
+	    <p i18n:translate="">Any published idea can be discussed among members of the platform.</p>
+		<p i18n:translate="">To start a discussion thread, you only need to specify your intention and the message that you wish to transmit to others.</p>
+		<p i18n:translate="">Any member can answer to you, and you can answer to any message in a discussion thread.</p>
+		<p i18n:translate="">You can also add to your message any element that is present in the platfom. By clicking on « Associations », you will find all the discussion threads with elements associated to this one.</p>
 	</div>
 </tal:block>

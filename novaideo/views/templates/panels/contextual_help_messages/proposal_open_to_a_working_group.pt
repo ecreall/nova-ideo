@@ -2,11 +2,12 @@
 <div class="contextual-help-item principal-help"
 	 tal:define="participants_mini getattr(getattr(context.working_group, 'work_mode', None), 'participants_mini', 3)"
 	 i18n:domain="novaideo">
-	<p i18n:translate="">Cette proposition est publiée et ouverte à un groupe de travail, elle est visible par l'ensemble des utilisateurs.</p>
+	<p i18n:translate="">This proposal is published and open to a working group. It is visible to all users.</p>
 
-	<p i18n:translate="">Pour l'améliorer, il faut que le groupe de travail atteigne au moins ${participants_mini} participant(s).</p>
+	<p i18n:translate="">
+        In order to improve it, the working group must reach at least ${participants_mini} participant(s).</p>
 
-	<p i18n:translate="">Tout membre peut se porter candidat au groupe de travail, à condition qu'il ne soit pas déjà candidat ou participant à cinq autres groupes de travail.</p>
+	<p i18n:translate="">Any member can be a candidate in the working group, provided that s/he is not already candidate or participant in 5 other working groups.</p>
 	
-	<p i18n:translate="">Un groupe de travail peut comprendre au maximum douze participants, les autres candidats sont mis sur liste d'attente. Si un participant quitte le groupe de travail et que des candidats sont sur liste d'attente, le premier inscrit rejoint automatiquement le groupe de travail.</p>
+	<p i18n:translate="">The maximum number of participants in a working group is 12. The other candidates are on the waiting list.If a participant leaves the working group, and if there are candidates in the waiting list, the first registered candidate on the waiting list joins the working group.</p>
 </div>

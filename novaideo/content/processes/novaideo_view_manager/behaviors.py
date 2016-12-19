@@ -310,7 +310,7 @@ class SeeEntityHistory(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-time'
-    title = _('Processes history')
+    title = _('History of processes')
     style_order = 2
     isSequential = False
     context = IEntity

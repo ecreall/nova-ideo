@@ -1,11 +1,11 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
-        Dans ces vues statistiques, vous pouvez voir la répartition des idées et des propositions selon différents critères (par états, par mots clés, par dates).
+        In these statistical views, you can see the distribution of ideas and proposals according to several criteria (per state, per keyword, per date).
     </p>
     <p i18n:translate="">
-      Vous pouvez affiner vos sélections d'éléments, en précisant spécifiquement les états, les mots clés, l'auteur et/ou les périodes à prendre en compte. Vous avez en résultat dans la partie du haut, le nombre de contenu correspondant à vos critères.
+      You can refine your selection, by specifying the states, the keywords, the author and /or he periods in time to consider. The upper part of the results displays the total number of content items matching your criteria.
     </p>
     <p i18n:translate="">
-      Pour rafraîchir les vues, vous devez appuyer sur le bouton "Calculer".
+      In order to refresh the views, you must click on the "Compute" button.
     </p>
 </div>

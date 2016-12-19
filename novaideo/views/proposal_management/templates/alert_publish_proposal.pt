@@ -2,7 +2,7 @@
  <div class="alert alert-info">
  	<div tal:omit-tag="" tal:condition="not request.moderate_ideas and not_published_ideas">
       <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-      <p i18n:translate="">Pour qu'une proposition soit publiée, l'ensemble des idées liées doivent être préalablement publiées. Vous pouvez soit les publier en l'état en cliquant sur « Continuer », soit les modifier en cliquant sur celles qui sont à retravailler.</p>
+      <p i18n:translate="">For a proposal to be published, all related ideas must have been previously published. You may either publish them as they are by clicking on « Continue », or edit them by clicking on those which are to be re-worked upon.</p>
         <ol class="list-unstyled not-published-list">
           <tal:loop repeat="i not_published_ideas">
             <li><a target="_blank" class="btn btn-info btn-xs" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
@@ -11,13 +11,13 @@
     </div>
  	<span class="glyphicon glyphicon-info-sign pull-right"></span>
     <div>
-      <p>Une fois votre proposition publiée, vous pouvez décider :</p>
+      <p i18n:translate="">Une fois votre proposition publiée, vous pouvez décider :</p>
       <ul>
-        <li>soit de la soumettre à appréciation en l'état à l'ensemble des utilisateurs sans l'améliorer,</li>
-        <li>soit l'améliorer d'abord avec d'autres utilisateurs dans un groupe de travail puis la soumettre à appréciation à l'ensemble des utilisateurs.</li>
+        <li i18n:translate="">soit de la soumettre à appréciation en l'état à l'ensemble des utilisateurs sans l'améliorer,</li>
+        <li i18n:translate="">soit l'améliorer d'abord avec d'autres utilisateurs dans un groupe de travail puis la soumettre à appréciation à l'ensemble des utilisateurs.</li>
       </ul>
    </div>
-   <p>
+   <p i18n:translate="">
     Si vous décidez de l'améliorer avec d'autres utilisateurs, ce qui est le choix proposé par défaut, vous devez indiquer la durée du cycle d'amélioration, celle-ci est fixée par défaut à une semaine.
    </p>
 
@@ -25,7 +25,7 @@
  <div tal:condition="len(request.root.get_work_modes()) > 1" class="alert alert-warning">
   <span class="glyphicon glyphicon-warning-sign pull-right"></span>
   <p>
-    <b>Pour améliorer la proposition, il faut que le groupe de travail atteigne au moins le nombre minimum de participants indiqué pour chaque mode de travail. Si le nombre n'est pas atteint, le groupe de travail reste inactif et la proposition ne peut être améliorée.</b>
+    <b i18n:translate="">Pour améliorer la proposition, il faut que le groupe de travail atteigne au moins le nombre minimum de participants indiqué pour chaque mode de travail. Si le nombre n'est pas atteint, le groupe de travail reste inactif et la proposition ne peut être améliorée.</b>
   </p>
  </div>
 </div>

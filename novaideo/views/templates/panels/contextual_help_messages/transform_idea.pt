@@ -1,9 +1,9 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
-	<p i18n:translate="">Vous avez décidé de transformer une idée en proposition.</p>
+	<p i18n:translate="">You have decided to transform an idea into a proposal.</p>
 
-	<p i18n:translate="">Pour que les autres utilisateurs aient un aperçu rapide de votre proposition, vous devez en saisir un résumé.</p>
+	<p i18n:translate="">In order for other users to have a fast overview of your proposal, you must provide a summary of it.</p>
 
-	<p i18n:translate="">Pour compléter votre proposition, vous disposez d'un éditeur de texte riche qui permet d'intégrer tout type de contenu (image, vidéo, tableau, lien).</p>
+	<p i18n:translate="">To complement your proposal, you can use a rich text editor, which enables you to integrate any form of content (image, video, table, link).</p>
 
-	<p i18n:translate="">Vous pouvez également reprendre d'autres idées existantes de la plateforme, y sélectionner des éléments de texte et les glisser-déposer dans votre proposition ou noter vos nouvelles idées, que vous pourrez retravailler par la suite.</p>
+	<p i18n:translate="">You can also re-use other existing ideas on the platform, select text elements from them and drag-and-drop them into your proposal, or also write down your new ideas, which you will be able to re-work upon later.</p>
 </div>

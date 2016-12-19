@@ -1,15 +1,15 @@
 
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
-        Pour pouvoir être publiées, les idées sont soumises à modération.
+        Before they are published, ideas are subject to moderation.
     </p>
     <p i18n:translate="">
-        En tant que modérateur, vous pouvez soit les publier, soit les archiver.
+        As a moderator, you can either publish them, or archive them.
     </p>
     <p i18n:translate="">
-        Si une idée est publiée, elle sera rendu publique et ne pourra plus être modifiée.
+        As soon as an idea is published, it will be made public, and won't be modifiable any more.
     </p>
     <p i18n:translate="">
-        Si elle est archivée, l'auteur de l'idée devra la retravailler avant de la soumettre de nouveau pour publication. Dans ce second cas, vous devez expliquer votre décision.
+        If it is archived, the author of the idea will need to re-work on it before s/he submits it again for publication. In this second case, you will need to explain your decision.
     </p>
 </div>

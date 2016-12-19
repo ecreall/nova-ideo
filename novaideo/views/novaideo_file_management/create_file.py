@@ -25,7 +25,7 @@ from novaideo import _
     )
 class CreateFileView(FormView):
 
-    title = _('Create a file')
+    title = _('Create a document')
     schema = select(FileSchema(factory=FileEntity, editable=True),
                     ['title',
                      'text'])

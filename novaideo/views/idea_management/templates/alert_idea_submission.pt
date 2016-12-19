@@ -1,4 +1,4 @@
 <div class="alert alert-info" i18n:domain="novaideo">
 	 <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-	<p i18n:translate="">En cliquant sur « Continuer », votre idée sera soumise pour publication et fera l'objet d'une modération préalable. Les modérateurs peuvent décider soit de la publier, soit de l'archiver. Si votre idée est publiée, elle ne pourra plus être modifiée. Pour en modifier une copie, il faudra préalablement la dupliquer.</p>
+	<p i18n:translate="">By clicking on « Continue », the idea will be  suubmitted for publication, and will be the purpose of an a priori moderation. The randomly selected moderators can decide either to publish it, or to stop its process and to store it in the archive. If your idea is published, you won't be able to further edit it. You will only be able to edit a copy of it, which requres that you have duplicated it beforehand.</p>
 </div>

@@ -21,9 +21,9 @@ from .see_my_contents import SeeMyContentsView
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""Aucun éléments suivi"""),
-    '1': _(u"""Un élément suivi"""),
-    '*': _(u"""${nember} éléments suivis""")}
+    '0': _(u"""No followed element was found"""),
+    '1': _(u"""One followed element was found"""),
+    '*': _(u"""${nember} followed elements were found""")}
 
 
 @view_config(

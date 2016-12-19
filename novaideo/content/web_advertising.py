@@ -40,7 +40,7 @@ def dates_validator(node, kw):
     def _dates_validator(node, value):
         try:
             if Parser.getDatesFromSeances(value) is None:
-                raise colander.Invalid(node, _('Not valid value'))
+                raise colander.Invalid(node, _('Invalid value'))
         except AttributeError as e:
             raise colander.Invalid(node, e.args[0])
 
@@ -132,7 +132,7 @@ class WebAdvertisingSchema(AdvertisingSchema):
     def content_invariant(self, appstruct):
         if not(appstruct['html_content'] or appstruct['picture']):
             raise colander.Invalid(self, _
-                        ('Content will be defined.'))
+                        ('Content must be defined.'))
 
     @invariant
     def banner_invariant(self, appstruct):

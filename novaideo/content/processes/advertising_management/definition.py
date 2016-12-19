@@ -57,7 +57,7 @@ class AdvertisingManagement(ProcessDefinition, VisualisableElement):
                                        groups=[]),
                 see_all = ActivityDefinition(contexts=[SeeAdvertisings],
                                        description=_("See announcements"),
-                                       title=_("Announcements"),
+                                       title=_("The announcements"),
                                        groups=[_('See')]),
                 publish = ActivityDefinition(contexts=[PublishAdvertising],
                                        description=_("Publish the announcement"),

@@ -1,5 +1,5 @@
 <div class="alert alert-info" i18n:domain="novaideo">
 	<span class="glyphicon glyphicon-info-sign pull-right"></span>
-	<p i18n:translate="">Pour que les autres participants puissent se prononcer sur vos améliorations, vous devez les expliquer. Vous pouvez donner la même explication à plusieurs améliorations en même temps. Une fois que vous avez expliqué l'ensemble de vos améliorations, vous pourrez préparer vos amendements et les soumettre aux autres participants.</p>
+	<p i18n:translate="">In order for the other participants to decide on your improvements, you must explain them. You can provide the same explanation to several improvements at the same time. Once you have explained all your improvements, you can prepare your amendements and submit them to the other participants.</p>
 </div>
 

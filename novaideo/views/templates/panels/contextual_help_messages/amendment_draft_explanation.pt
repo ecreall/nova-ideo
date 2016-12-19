@@ -1,9 +1,10 @@
 <div class="contextual-help-item principal-help" i18n:domain="novaideo">
-	<p i18n:translate="">Pour expliquer vos améliorations, vous devez cliquer sur chacun de leur numéro correspondant.</p>
+	<p i18n:translate="">In order to explain each of your improvements, you can click on the related number.</p>
 
-	<p i18n:translate="">Vous pouvez soit reprendre une explication existante d'une amélioration précédente, soit en donner une spécifique. Si vous modifiez une explication existante, celle-ci se répercute sur l'ensemble des améliorations qui partagent cette même explication. Si vous souhaitez en modifier une seule, vous devez en donner une explication spécifique.</p>
+	<p i18n:translate="">You can either re-use the existing explanation of an earlier improvement, or give a specific one. If you modify an existing explanation, this change in the explanation will be replicated to all improvements that share this explanation. If you wish to modify a single explanation only, you must provide a specific explanation.</p>
 
-	<p i18n:translate="">Vous pouvez également lier une idée à une explication ou noter une nouvelle idée.</p>
+	<p i18n:translate="">You can also relate an idea to an explanation or write down a new idea.</p>
 
-	<p i18n:translate="">Si vous souhaitez scinder une amélioration en plusieurs, vous pouvez intégrer des améliorations supplémentaires au texte.</p>
+	<p i18n:translate="">If you wish to split an improvement in several parts, you can integrate "
+"additional improvements to the text.</p>
 </div>

@@ -29,7 +29,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeFilesView(BasicView):
-    title = _('Files')
+    title = _('The documents')
     name = 'seefiles'
     behaviors = [SeeFiles]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

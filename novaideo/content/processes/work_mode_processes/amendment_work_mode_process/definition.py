@@ -130,7 +130,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
                             group, AMENDMENTS_VOTE_DEFAULT_DURATION)
             working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_AMENDMENTS_MESSAGE
-            ballot.title = _('Vote for amendments (group ${nbi})',
+            ballot.title = _('Vote on amendments (group ${nbi})',
                              mapping={'nbi': index+1})
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
@@ -159,8 +159,8 @@ class AmendmentWorkModeProcess(ProcessDefinition, VisualisableElement):
                 pg1 = ParallelGatewayDefinition(),
                 eg2 = ExclusiveGatewayDefinition(),
                 votingamendments = SubProcessDefinitionAmendments(pd='ballotprocess', contexts=[VotingAmendments],
-                                       description=_("Start voting for amendments"),
-                                       title=_("Start voting for amendments"),
+                                       description=_("Start voting on amendments"),
+                                       title=_("Start voting on amendments"),
                                        groups=[]),
                 alert = ActivityDefinition(contexts=[Alert],
                                        description=_("Alert"),
@@ -168,8 +168,8 @@ class AmendmentWorkModeProcess(ProcessDefinition, VisualisableElement):
                                        groups=[]),
                 timer = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=calculate_improvement_cycle_date)),
                 amendmentsresult = ActivityDefinition(contexts=[AmendmentsResult],
-                                       description=_("Amendments result"),
-                                       title=_("Amendments result"),
+                                       description=_("Result of the vote on amendments"),
+                                       title=_("Result of the vote on amendments"),
                                        groups=[]),
                 improve = ActivityDefinition(contexts=[ImproveProposal],
                                        description=_("Improve the proposal"),

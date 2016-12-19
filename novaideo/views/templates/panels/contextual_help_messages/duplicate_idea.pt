@@ -1,14 +1,14 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
-		Vous avez décidé de dupliquer l'idée.
+		You have decided to duplicate the idea.
     </p>
 	<p i18n:translate="">
-		Dès lors qu'une idée est dupliquée, elle peut être modifiée.
+		As soon as an idea is duplicated, the copy can be freely modified.
     </p>
 	<p i18n:translate="" tal:condition="not request.moderate_ideas">
-		Pour qu'elle soit publiée, une idée dupliquée ne doit pas être identique à l'idée d'origine.
+		In order to be published, the duplicated copy of an idea must be different from the original idea.
     </p>
     <p i18n:translate="" tal:condition="request.moderate_ideas">
-		Pour qu'elle soit soumise à modération, une idée dupliquée ne doit pas être identique à l'idée d'origine.
+		In order to be moderated, the duplicated copy of an idea must be different from the original idea.
     </p>
 </div>

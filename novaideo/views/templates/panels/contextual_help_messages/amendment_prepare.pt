@@ -1,11 +1,11 @@
 <div class="contextual-help-item principal-help" i18n:domain="novaideo">
-	<p i18n:translate="">Vous pouvez librement regrouper vos améliorations en un ou plusieurs amendements.</p>
+	<p i18n:translate="">You can freely group your improvements into one or several amendments.</p>
 
-	<p i18n:translate="">Pour cela, vous pouvez glisser déposer vos améliorations d'un amendement à un autre, ajouter des amendements supplémentaires ou supprimer ceux qui sont vides.</p>
+	<p i18n:translate="">To do so, you can drag-and-drop your improvements from one amendment to the other, add amendments or suppress the empty ones.</p>
 
-	<p i18n:translate="">Par défaut, l'explication partagée par les améliorations d'un amendement est reprise comme justification de l'amendement. Si les justifications des amendements sont modifiées, les explications des améliorations correspondantes ne sont en revanche pas changées.</p>
+	<p i18n:translate="">As a default, if an explanation is shared by all improvements that are part of an amendment is taken over as the explanation for the amendment. If the explanation of an amendment is modified, the explanations of the attached improvements are not changed.</p>
 
-	<p i18n:translate="">Vous pouvez aussi décider de regrouper l'ensemble de vos améliorations en un seul amendement, dans quel cas vous devez apporter la justification de cet amendement unique.</p>
+	<p i18n:translate="">You can also decide to group all your improvements into one single amendment. In this case, you must provide the justification of this single amendment.</p>
 
-	<p i18n:translate="">Lorsque vous êtes satisfait de vos amendements, vous pouvez les soumettre aux autres participants. Vous pouvez aussi annuler la préparation des amendements et revenir aux explications des améliorations.</p>
+	<p i18n:translate="">When you are satisfied with your amendments, you can submit them to the other participants. You can also cancel the preparation of amendments and come back to the explanations of individual improvements.</p>
 </div>

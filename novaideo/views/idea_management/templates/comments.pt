@@ -182,15 +182,15 @@
                       onclick="javascript:replays_show(this);">
                   <small>
                     <span class="glyphicon glyphicon-chevron-down"></span> 
-                    <span class="comment-replay-message-opened" i18n:translate="">View all <span i18n:name="commentlen">${commentlen}</span> responses</span>
-                    <span class="comment-replay-message-closed hide-bloc" i18n:translate="">Hide responses</span>
+                    <span class="comment-replay-message-opened" i18n:translate="">View all <span i18n:name="commentlen">${commentlen}</span> answers</span>
+                    <span class="comment-replay-message-closed hide-bloc" i18n:translate="">Hide answers</span>
                   </small>
                 </span>
                 <span tal:condition="commentlen-level <= 0 and commentlen > 0" 
                     class="comment-replay-nb disabled">
                   <small>
-                    <span tal:condition="commentlen==1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> response</span>
-                    <span tal:condition="commentlen>1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> responses</span>
+                    <span tal:condition="commentlen==1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> answer</span>
+                    <span tal:condition="commentlen>1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> answers</span>
                   </small>
                 </span>
               </div>

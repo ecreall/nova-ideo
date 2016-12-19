@@ -1,47 +1,47 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
       <div  tal:omit-tag="" tal:condition="not request.is_idea_box">
         <p i18n:translate="" tal:condition="request.support_ideas or request.support_proposals">
-            En tant que membre connecté à la plateforme, vous pouvez accéder à vos contenus, vos groupes de travail, vos favoris et vos appréciations, noter une idée, faire des recherches, voir les membres inscrits ou intervenir sur des idées ou des propositions.
+            As a member connected to the platform, you can access your content, your working groups, your favourites and your appraisals, note an idea perform a search, see the registered members or intervene on ideas or proposals.
         </p>
         <p i18n:translate="" tal:condition="not (request.support_ideas or request.support_proposals)">
-            En tant que membre connecté à la plateforme, vous pouvez accéder à vos contenus, vos groupes de travail et vos favoris, noter une idée, faire des recherches, voir les membres inscrits ou intervenir sur des idées ou des propositions.
+            As a member connected to the platform, you can access your content, your working groups, and your favourites, note an idea perform a search, see the registered members or intervene on ideas or proposals.
         </p>
         <p i18n:translate="">
-            Une idée est une note personnelle, courte, émise spontanément, alors qu'une proposition est un document rédigé à plusieurs, finalisé, avec un travail de fond.
+            An idea is a short, spontaneous personal note. A proposal is a complete, collectively written document, based on thorough work.
         </p>
         <p >
-            <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">soit publiée</span>
-            <span tal:omit-tag="" tal:condition="request.support_ideas">soit soumise à appréciation</span>
-            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">, soit examinée</span> 
-            <span i18n:translate="">et une proposition peut être soit privée, soit ouverte à un groupe de travail, soit en cours d'amélioration, soit faire l'objet d'un vote pour améliorer ou non la proposition,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_proposals">soit publiée</span>
+            <span i18n:translate="">An idea can either be archived, or "To be further worked upon",</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">or submitted for moderation,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">or published</span>
+            <span tal:omit-tag="" tal:condition="request.support_ideas">or submitted for appraisal</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">or "Being moderated"</span> 
+            <span i18n:translate="">A proposal can be in either one of the following states: private, open to a working group, under improvement, or the purpose of a vote to determine whether the proposal should be further improved or not,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_proposals">or published</span>
             <span tal:omit-tag="" tal:condition="request.support_proposals">soit soumise à appréciation</span>
-            <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">, soit examinée</span>.
+            <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">or "Being moderated"</span>.
         </p>
     </div>
     <div tal:omit-tag=""  tal:condition="request.is_idea_box">
-        <p i18n:translate="" tal:condition="request.support_ideas" >
-            En tant que membre connecté à la plateforme, vous pouvez accéder à vos contenus et vos favoris, noter une idée, faire des recherches, voir les membres inscrits ou intervenir sur des idées.
+        <p i18n:translate="" tal:condition="request.support_ideas or request.support_proposals" >
+            As a member connected to the platform, you can access your content, your favourites and your appraisals, note an idea, perform a search, see the registered members or intervene on ideas.
         </p>
-         <p i18n:translate="" tal:condition="not request.support_ideas" >
-            En tant que membre connecté à la plateforme, vous pouvez accéder à vos contenus, vos favoris et vos appréciations, noter une idée, faire des recherches, voir les membres inscrits ou intervenir sur des idées.
+         <p i18n:translate="" tal:condition="not request.support_ideas and not request.support_proposals" >
+            As a member connected to the platform, you can access your content and your favourites and, note an idea, perform a search, see the registered members or intervene on ideas.
         </p>
         <p i18n:translate="">
-            Une idée est une note personnelle, courte, émise spontanément.
+            An idea is a short, spontaneous, personal note.
         </p>
         <p >
-            <span i18n:translate="">Une idée peut être soit archivée, soit à travailler,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">soit soumise à modération,</span> 
-            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">soit publiée</span>
-            <span tal:omit-tag="" tal:condition="request.support_ideas">soit soumise à appréciation</span>
-            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">, soit examinée</span> 
+            <span i18n:translate="">An idea can either be archived, or "To be further worked upon",</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.moderate_ideas">or submitted for moderation,</span> 
+            <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_ideas">or published</span>
+            <span tal:omit-tag="" tal:condition="request.support_ideas">or submitted for appraisal</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">or "Being moderated"</span> 
             <span i18n:translate="">.
         </p>
     </div>
     <p i18n:translate="">
-        Avec la recherche avancée et les filtres, vous pouvez également affiner votre recherche en spécifiant pour des périodes particulières les types de contenus et leurs états, les mots clés, les contributeurs et les textes à rechercher.
+        With the advanced search and the filters, you can also refine your search, by specifying the time period, the type of content and its status, the keywords, the contributors and the texts to search.
     </p>
 
 </div>

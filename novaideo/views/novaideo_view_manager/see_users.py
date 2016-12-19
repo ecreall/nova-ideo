@@ -33,9 +33,9 @@ from novaideo.views.filter.sort import (
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""Aucun membre"""),
-    '1': _(u"""Un membre trouvé"""),
-    '*': _(u"""${nember} membres trouvés""")
+    '0': _(u"""No member"""),
+    '1': _(u"""One member was found"""),
+    '*': _(u"""${nember} members were found""")
     }
 
 

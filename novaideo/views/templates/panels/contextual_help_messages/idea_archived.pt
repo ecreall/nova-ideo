@@ -1,10 +1,10 @@
 
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
-      Vos idées archivées sont uniquement visibles par vous et sont accessibles à partir de « Mes contenus ».
+      Your archived ideas are only visible to yourself, and can be accessed under the tab "My content".
     </p>
 	<p i18n:translate="">
-      Vous pouvez décider de supprimer définitivement une idée archivée ou de la rétablir pour la travailler de nouveau.
+      You can decide to completely suppress an archived idea, or to restore it to work on it further.
     </p>
 </div>
 

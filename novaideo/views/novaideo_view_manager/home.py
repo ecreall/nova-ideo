@@ -144,7 +144,7 @@ class ProposalsView(ContentView):
     viewid = 'home-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'
     counter_id = 'home-proposals-counter'
-    empty_message = _("No working groups created")
+    empty_message = _("No working group created")
     empty_icon = 'icon icon novaideo-icon icon-wg'
 
 

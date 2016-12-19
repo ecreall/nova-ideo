@@ -41,7 +41,7 @@
     	    <li class="step sub-step-1 ${( 'votes for publishing' not in context.state) and 'off'}">
       	      <span class="step-content">
                   <div class="step-text" i18n:translate="">
-                     Vote for improving or not the proposal
+                     Vote on whether to improve the proposal or not
                   </div>
               </span>
             </li>
@@ -62,7 +62,7 @@
             <li class="step sub-step-4 ${((is_amendment and ('votes for amendments' not in context.state)) or ((not is_amendment) and ('votes for publishing' not in context.state))) and 'off'} ">
       	       <span class="step-content ${(not is_amendment) and 'step-ignored'}">
                  <div class="step-text" i18n:translate="">
-                   Vote for amendments
+                   Vote on amendments
                  </div>
                </span>
             </li>

@@ -38,7 +38,7 @@ class NovaIdeoProcessManagement(ProcessDefinition, VisualisableElement):
                 pg = ParallelGatewayDefinition(),
                 update = ActivityDefinition(contexts=[Update],
                                        description=_("Update processes"),
-                                       title=_("update processes"),
+                                       title=_("Update processes"),
                                        groups=[_('More')]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),

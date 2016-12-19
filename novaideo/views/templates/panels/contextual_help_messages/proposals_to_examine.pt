@@ -1,12 +1,12 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
-        En tant qu'Examinateur, vous pouvez voir l'ensemble des propositions à examiner.
+        As an Examiner, you can see all proposals to be examined.
     </p>
     <p i18n:translate="">
-    Pour en examiner une en particulier, il suffit de cliquer dessus et de donner votre avis.
+    In order to examine one specifically, you just need to click on it and to express your opinion.
     </p>
     <p i18n:translate="">
-    Vous pourrez toujours revenir sur les propositions à examiner à partir de votre Tableau de bord dans "Voir les propositions à examiner".
+    You will always be able to come back to the proposals to be examined from your dashboard, under the tab "See the proposals to be examined".
     </p>
 </div>
 

@@ -1472,7 +1472,7 @@ def component_navbar_myparticipations(action, request, context, api, **kwargs):
     item_nb = len(getattr(user, 'participations', []))
     result = {
         'component-navbar-myparticipations.item_nb': item_nb,
-        'component-navbar-myparticipations.title': request.localizer.translate(_('My participations')),
+        'component-navbar-myparticipations.title': request.localizer.translate(_('My working groups')),
         'component-navbar-myparticipations.icon': 'novaideo-icon icon-wg',
         'component-navbar-myparticipations.url': request.resource_url(
             request.root, 'seemyparticipations')

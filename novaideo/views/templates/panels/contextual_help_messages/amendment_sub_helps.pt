@@ -1,13 +1,13 @@
 <tal:block  i18n:domain="novaideo" >
 	<div class="contextual-help-item present-help hide-bloc">
-	  <p i18n:translate="">Tout membre peut communiquer à tout autre membre de la plateforme, ainsi qu'à toute personne externe en saisissant directement son courriel, une version amendée qui a été soumise.</p>
-	  <p i18n:translate="">Les personnes externes ont un accès à la plateforme, mais ne peuvent s'y connecter que s'ils deviennent membres.</p>
+	  <p i18n:translate="">Any member can communicate to any other member of the platform an amended version that was submitted. S/he can also transmit it to any external person, by providing the e-mail address of this external person.</p>
+	  <p i18n:translate="">External persons have access to the platform, but can connect to it only if they become members.</p>
 	</div>
 	<div class="contextual-help-item  comment-help hide-bloc">
-	    <p i18n:translate="">Toute version amendée qui a été soumise peut être discutée entre les participants du groupe de travail.</p>
-		<p i18n:translate="">Pour commencer un fil de discussion, il vous suffit de préciser votre intention et le message que vous souhaitez communiquer aux autres.</p>
-		<p i18n:translate="">Tout participant au groupe de travail peut vous répondre, comme vous pouvez répondre à tout message d'un fil de discussion.</p>
-		<p i18n:translate="">Vous pouvez également associer à vos messages tout type d'éléments figurant dans la plateforme. En cliquant sur « Associations », vous retrouvez les fils de discussion ayant des éléments associés.</p>
+	    <p i18n:translate="">Any amended version that was submitted can be discussed among the participants in the working group.</p>
+	    <p i18n:translate="">To start a discussion thread, you only need to specify your intention and the message that you wish to transmit to others.</p>
+		<p i18n:translate="">Any participant in the working group can answer you. Reciprocally, you can answer to any message in a discussion thread.</p>
+		<p i18n:translate="">You can also add to your message any element that is present in the platfom. By clicking on « Associations », you will find all the discussion threads with elements associated to this one.</p>
 	</div>
 </tal:block>
 

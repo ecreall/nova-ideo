@@ -20,7 +20,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class RecuperateIdeaView(BasicView):
-    title = _('Recuperate')
+    title = _('Restore')
     name = 'recuperateidea'
     behaviors = [RecuperateIdea]
     viewid = 'recuperateidea'

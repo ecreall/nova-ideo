@@ -1,5 +1,5 @@
 <div class="httperror-container"
 	  i18n:domain="novaideo">
 	<img class="httperror-img" src="${request.static_url('novaideo:static/images/red_cross.svg')}">
-	<div class="httperror-title" i18n:translate="">Une erreur inattendue s'est produite. Un rapport d'erreur est envoyé aux administrateurs du site.</div> 
+	<div class="httperror-title" i18n:translate="">An unexpected error has occurred. An error report is being sent to the site administrator.</div> 
 </div>

@@ -562,12 +562,12 @@ DEFAULT_SITE_MAILS = {
               'template': PRESENTATION_AMENDMENT_MESSAGE
     },
     'first_start_work': {
-              'title': _('Beginning of the improvement cycle'),
+              'title': _('Start of the improvement cycle'),
               'subject': AMENDABLE_FIRST_SUBJECT,
               'template': AMENDABLE_FIRST_MESSAGE
     },
     'start_work': {
-              'title': _('Beginning of the improvement cycle'),
+              'title': _('Start of the improvement cycle'),
               'subject': AMENDABLE_SUBJECT,
               'template': AMENDABLE_MESSAGE
     },
@@ -577,32 +577,32 @@ DEFAULT_SITE_MAILS = {
               'template': ALERT_MESSAGE
     },
     'alert_end': {
-              'title': _("End of the improvement cycle alert"),
+              'title': _("End of the improvement cycle"),
               'subject': ALERT_END_SUBJECT,
               'template': ALERT_END_MESSAGE
     },
     'vote_amendment_result': {
-              'title': _("Vote result (amendments)"),
+              'title': _("Result of the ballot (amendments)"),
               'subject': RESULT_VOTE_AMENDMENT_SUBJECT,
               'template': RESULT_VOTE_AMENDMENT_MESSAGE
     },
     'publish_proposal': {
-              'title': _("Proposal publishing"),
+              'title': _("Publication of the proposal"),
               'subject': PUBLISHPROPOSAL_SUBJECT,
               'template': PUBLISHPROPOSAL_MESSAGE
     },
     'start_vote_publishing': {
-              'title': _("Start votes (publishing proposal)"),
+              'title': _("Start ballot (publication of the proposal)"),
               'subject': VOTINGPUBLICATION_SUBJECT,
               'template': VOTINGPUBLICATION_MESSAGE
     },
     'start_vote_amendments': {
-              'title': _("Start votes (amendments)"),
+              'title': _("Start ballot (amendments)"),
               'subject': VOTINGAMENDMENTS_SUBJECT,
               'template': VOTINGAMENDMENTS_MESSAGE
     },
     'withdeaw': {
-              'title': _("Withdeaw"),
+              'title': _("Withdraw"),
               'subject': WITHDRAW_SUBJECT,
               'template': WITHDRAW_MESSAGE
     },
@@ -612,12 +612,12 @@ DEFAULT_SITE_MAILS = {
               'template': PARTICIPATE_WL_MESSAGE
     },
     'wg_participation': {
-              'title': _("Participation to the working group"),
+              'title': _("Participation in the working group"),
               'subject': PARTICIPATE_SUBJECT,
               'template': PARTICIPATE_MESSAGE
     },
     'wg_resign': {
-              'title': _("Resignation of the working group"),
+              'title': _("Resignation from the working group"),
               'subject': RESIGN_SUBJECT,
               'template': RESIGN_MESSAGE
     },
@@ -672,12 +672,12 @@ DEFAULT_SITE_MAILS = {
               'template': PROPOSALREMOVED_MESSAGE
     },
     'alert_comment': {
-              'title': _("Alert comment"),
+              'title': _("Warning: new comment"),
               'subject': ALERTCOMMENT_SUBJECT,
               'template': ALERTCOMMENT_MESSAGE
     },
     'alert_discuss': {
-              'title': _("Alert discuss"),
+              'title': _("Warning: new discuss"),
               'subject': ALERTDISCUSS_SUBJECT,
               'template': ALERTDISCUSS_MESSAGE
     },

@@ -68,7 +68,7 @@ class RelatedIdeasView(BasicView):
 
 
 class IdeaManagementView(MultipleView):
-    title = _('Used ideas')
+    title = _('Ideas being used')
     name = 'ideasmanagementproposal'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (RelatedIdeasView, AddIdeaFormView)

@@ -150,8 +150,8 @@
                 <span tal:condition="commentlen > 0" 
                     class="comment-replay-nb disabled">
                   <small>
-                    <span tal:condition="commentlen==1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> response</span>
-                    <span tal:condition="commentlen>1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> responses</span>
+                    <span tal:condition="commentlen==1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> answer</span>
+                    <span tal:condition="commentlen>1" class="comment-replay-message-opened" i18n:translate=""><span i18n:name="commentlen">${commentlen}</span> answers</span>
                   </small>
                 </span>
               </div>

@@ -8,7 +8,7 @@
    <metal:slot metal:define-slot="before-login-form">
 
      <div class="alert alert-danger">
-       <span i18n:translate="">Sorry, your account is not permitted to perform the requested action.
+       <span i18n:translate="">Sorry, your account is not allowed to perform the requested action.
        You can try to log in using a different account below or you can</span>
        <a onclick="javascript:history.go(-2)"><span i18n:translate="">return to where you were</span></a>.
      </div>
@@ -18,7 +18,7 @@
 
   <metal:slot metal:fill-slot="login-form-title">
    <metal:slot metal:define-slot="login-form-title">
-    <h2 i18n:translate="">Log In as Another User</h2>
+    <h2 i18n:translate="">Log in as Another User</h2>
    </metal:slot>
   </metal:slot>
 

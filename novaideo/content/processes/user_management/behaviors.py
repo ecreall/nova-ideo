@@ -189,7 +189,7 @@ class Deactivate(InfiniteCardinality):
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-ban-circle'
     style_order = 0
-    title = _('Deactivate the profile')
+    title = _('Disactivate the profile')
     context = IPerson
     roles_validation = deactivate_roles_validation
     processsecurity_validation = deactivate_processsecurity_validation

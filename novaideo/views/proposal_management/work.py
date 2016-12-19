@@ -20,7 +20,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class WorkView(BasicView):
-    title = _('Amendable')
+    title = _('Being amended')
     name = 'amendable'
     behaviors = [Work]
     viewid = 'amendable'

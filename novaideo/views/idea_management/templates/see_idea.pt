@@ -9,7 +9,7 @@
     <div tal:condition="cant_publish or cant_submit" role="alert" class="alert alert-info alert-dismissible">
        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
        <span class="glyphicon glyphicon-info-sign pull-right"></span>
-        <span  i18n:translate="">Pour que votre idée dupliquée puisse être publiée, vous devez préalablement la modifier pour qu'elle ne soit pas identique à l'idée d'origine.</span>
+        <span  i18n:translate="">In order for your duplicated idea to be published, you must modify it berforehand, so that it be different from the original idea.</span>
     </div>
     <h4 tal:condition="state">
       <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>

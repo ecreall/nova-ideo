@@ -1,7 +1,7 @@
 <div class="contextual-help-item principal-help" i18n:domain="novaideo">
-   <p i18n:translate="">Vous avez effectué une version améliorée de la proposition, celle-ci est dans un statut privé et vous êtes le seul à pouvoir la voir.</p>
+   <p i18n:translate="">You have created a new, modified version of the proposal. It is in a private status and you are the only one able to see it.</p>
 
-   <p i18n:translate="">Les éléments de texte que vous avez ajoutés apparaissent en vert et ceux supprimés en rouge. Pour que vos améliorations soient soumises sous forme d'amendements aux autres participants, vous devez préalablement les avoir expliqués et les avoir regroupés en amendements.</p>
+   <p i18n:translate="">The text elements that you have added appear in green. Those that you have deleted appear in red. For your improvements to be submitted as amendments to the other participants, you must previously have explained them and regrouped them into amendments.</p>
 
-   <p i18n:translate="">Si vous n'êtes pas satisfait de votre version améliorée, vous pouvez la supprimer, la modifier ou la dupliquer, dans quel cas vous accédez à une copie de la version améliorée tout en conservant celle-ci en l'état.</p>
+   <p i18n:translate="">If you are not happy with your modified version, you can delete it, modify it or duplicate it. In the latter case, you will access a copy of the modified version, while keeping this modified version unchanged.</p>
 </div>

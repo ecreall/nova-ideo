@@ -21,7 +21,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CloseWorkView(BasicView):
-    title = _('Close work')
+    title = _('Close the work')
     name = 'closecorrectionwork'
     behaviors = [CloseWork]
     viewid = 'closecorrectionwork'

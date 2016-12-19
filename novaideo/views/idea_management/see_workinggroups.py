@@ -23,9 +23,9 @@ from novaideo import _
 
 BATCH_DEFAULT_SIZE = 30
 
-WG_MESSAGES = {'0': _(u"""Pas de groupes de travail liés"""),
-                     '1': _(u"""Groupe de travail lié"""),
-                     '*': _(u"""Groupes de travail liés""")}
+WG_MESSAGES = {'0': _(u"""No related working group"""),
+               '1': _(u"""Related working group"""),
+               '*': _(u"""Related working groups""")}
 
 
 @view_config(
@@ -34,8 +34,8 @@ WG_MESSAGES = {'0': _(u"""Pas de groupes de travail liés"""),
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeRelatedWorkingGroupsView(BasicView):
-    title = _('Working groups')
-    description = _('See related working groups')
+    title = _('The working groups')
+    description = _('See the related working groups')
     name = 'relatedworkinggroups'
     behaviors = [SeeRelatedWorkingGroups]
     template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
@@ -76,7 +76,7 @@ class SeeRelatedWorkingGroupsView(BasicView):
             'bodies': result_body,
             'batch': batch,
             'message': message,
-            'empty_message': _("No working groups created"),
+            'empty_message': _("No working group created"),
             'empty_icon': 'novaideo-icon icon-wg'
         }
         body = self.content(args=values, template=self.template)['body']

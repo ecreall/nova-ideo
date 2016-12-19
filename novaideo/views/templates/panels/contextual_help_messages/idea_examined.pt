@@ -1,25 +1,25 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">
-        Les idées examinées sont visibles par l'ensemble des utilisateurs.
+        Ideas that have been examined are visible by all users.
     </p>
     <span tal:omit-tag="" tal:condition="'favorable' in context.state">
         <p i18n:translate="" >
-            Le Comité d'examen a émis un avis favorable à cette idée. En conséquence de quoi, elle peut être transformée en proposition ou utilisée dans des propositions existantes par les membres de la plateforme.
+            The Examination Committee expressed a positive opinion on this idea. Consequently, it can be tranformed into a proposal or used in existing proposals by the members of the platform.
         </p>
          <p i18n:translate="">
-            Les idées examinées, avec un avis favorable, peuvent également être dupliquées pour qu'une copie soit travaillée différemment et vous pouvez les ajouter à vos favoris.
+            Ideas that were examined and received a positive opinion can be duplicated so that a copy be worked upon differently and you can add them to your favourites.
         </p>
     </span>
     <span tal:omit-tag="" tal:condition="'unfavorable' in context.state">
         <p i18n:translate="" >
-            Le Comité d'examen a émis un avis défavorable à cette idée. En conséquence de quoi, elle ne peut être transformée en proposition ou utilisée dans des propositions existantes par les membres de la plateforme.
+            The Examination Committee expressed a negative opinion on this idea. Consequently, it cannot be tranformed into a proposal or used in existing proposals by the members of the platform.
         </p>
         <p i18n:translate="">
-            Les idées examinées, même avec un avis défavorable, peuvent être dupliquées pour qu'une copie soit travaillée différemment et vous pouvez les ajouter à vos favoris.
+            Examined ideas, even after having received a negative opinion, can still be duplicated so that a copy be worked upon differently, and you can add them to your favourites.
         </p>
     </span>
     <p i18n:translate="">
-        Elles peuvent enfin être communiquées à des tiers ou discutées entre membres.
+        They can also be communicated to third parties or discussed among members.
     </p>
 </div>
 

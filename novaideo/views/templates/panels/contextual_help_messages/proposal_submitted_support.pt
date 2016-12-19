@@ -1,14 +1,14 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
 	<p i18n:translate="">
-		Vous pouvez en tant que membre de la plateforme soutenir ou vous opposer à une proposition soumise à appréciation.
+		As a member of the platform, you can support or oppose a proposal that has been submitted for appraisal.
 	</p>
 	<p i18n:translate="">
-		Si vous changez d'avis, vous pouvez retirer votre jeton de soutien ou d'opposition.
+		If you change your mind, you can take away your support token or your opposition token.
 	</p>
 	<p i18n:translate="">
-		Vous disposez en tout de sept jetons que vous êtes libre d'allouer ou de retirer à n'importe quelles idées publiées ou propositions soumises à appréciation. Si vous ne pouvez plus soutenir ou vous opposer à une idée ou à une opposition, c'est que vous avez déjà utilisé vos sept jetons.
+		You have a total of seven tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to appraisal. If you cannot support or oppose an idea or a proposal, this means that you have used all your seven tokens.
 	</p>
 	<p i18n:translate="">
-		Vous disposez également de jetons supplémentaires pour les propositions dont vous avez été l'un des participants au groupe de travail qui a voté pour soumettre la proposition à l'appréciation des membres de la plateforme. Ces jetons supplémentaires sont destinés uniquement à ces propositions.
+		You also have additional tokens for the proposals for which you were a member in the working group that voted to submit the proposal to the appraisal of the other members of the platform. These additiona tokens can only be used for these proposals.
 	</p>
 </div>
