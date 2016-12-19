@@ -53,7 +53,7 @@ class SeeSmartFoldersView(BasicView):
         folders = sorted(folders, key=lambda e: e.get_order())
         root_navbars = generate_navbars(
             self.request, self.context,
-            process_id='adminprocess',
+            process_id='smartfoldermanagement',
             descriminators=['body-action'])
         len_result = len(folders)
         index = str(len_result)

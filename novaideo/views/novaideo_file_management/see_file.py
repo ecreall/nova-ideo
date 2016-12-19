@@ -15,7 +15,7 @@ from pontus.view import BasicView
 
 from novaideo.content.processes.novaideo_file_management.behaviors import (
     SeeFile)
-from novaideo.core import FileEntity
+from novaideo.content.file import FileEntity
 from novaideo.utilities.util import generate_navbars, ObjectRemovedException
 from novaideo.content.processes import get_states_mapping
 

@@ -31,7 +31,8 @@ from pontus.file import ObjectData as ObjectDataOrigine, OBJECT_DATA
 from pontus.schema import omit, select
 
 from novaideo import _, DEFAULT_FILES
-from novaideo.core import FileEntity, Channel, CorrelableEntity
+from novaideo.content.file import FileEntity
+from novaideo.core import Channel, CorrelableEntity
 from .organization import OrganizationSchema, Organization
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation

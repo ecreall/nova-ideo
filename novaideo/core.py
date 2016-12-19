@@ -28,9 +28,9 @@ from dace.descriptors import (
     CompositeMultipleProperty)
 from dace.util import getSite, get_obj, find_catalog
 from pontus.schema import Schema
-from pontus.core import VisualisableElement, VisualisableElementSchema
+from pontus.core import VisualisableElement
 from pontus.widget import (
-    RichTextWidget, Select2Widget)
+    Select2Widget)
 
 from novaideo import _, ACCESS_ACTIONS
 from novaideo.content.interface import (
@@ -561,17 +561,9 @@ class Node(Entity):
         return result, newcalculated
 
 
-class FileSchema(VisualisableElementSchema, SearchableEntitySchema):
-
-    text = colander.SchemaNode(
-        colander.String(),
-        widget=RichTextWidget(),
-        title=_("Text")
-        )
-
 
 @content(
-    'file',
+    'oldfile',
     icon='icon novaideo-icon icon-user',
     )
 @implementer(IFile)

@@ -15,7 +15,7 @@ from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.novaideo_file_management.behaviors import (
     Publish)
-from novaideo.core import FileEntity
+from novaideo.content.file import FileEntity
 from novaideo import _
 
 

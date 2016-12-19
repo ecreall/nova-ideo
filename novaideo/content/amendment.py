@@ -39,7 +39,7 @@ from novaideo.views.widget import (
     SimpleMappingtWidget)
 from novaideo.content.idea import Idea, IdeaSchema
 from novaideo.content.proposal import AddFilesSchemaSchema
-from novaideo.utilities.util import html_to_text
+from novaideo.utilities.util import html_to_text, truncate_text
 
 
 @colander.deferred
@@ -299,7 +299,7 @@ class Amendment(CorrelableEntity,
             self._init_presentation_text()
             text = getattr(self, '_presentation_text', '')
 
-        return text[:nb_characters]+'...'
+        return truncate_text(text, nb_characters)
 
 
    # @region.cache_on_arguments() 

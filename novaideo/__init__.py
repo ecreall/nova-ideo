@@ -559,6 +559,47 @@ def evolve_nonproductive_cycle(root, registry):
     log.info('Working group evolved')
 
 
+def evolve_files(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IFile
+    from novaideo.content.file import FileSchema, FileEntity
+    from dace.objectofcollaboration.principal.util import (
+        grant_roles, get_users_with_role)
+
+    contents = find_entities(
+        interfaces=[IFile]
+        )
+    len_entities = str(len(contents))
+    schema = FileSchema()
+    default_files = [f['name'] for f in DEFAULT_FILES]
+    for index, node in enumerate(contents):
+        data = node.get_data(schema)
+        data.pop('_csrf_token_')
+        new_file = FileEntity(**data)
+        if not node.state:
+            new_file.state = PersistentList(['draft'])
+        else:
+            new_file.state = node.state
+
+        name = node.__name__
+        new_file.__name__ = name
+        users = get_users_with_role(('Owner', node))
+        root.delfromproperty('files', node)
+        root.addtoproperty('files', new_file)
+        if users:
+            author = users[0]
+            grant_roles(user=author, roles=(('Owner', new_file), ))
+            new_file.setproperty('author', author)
+            new_file.reindex()
+
+        if name in default_files:
+            setattr(root, name, new_file)
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Files evolved')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -598,6 +639,7 @@ def main(global_config, **settings):
     config.add_evolution_step(format_ideas)
     config.add_evolution_step(publish_comments)
     config.add_evolution_step(evolve_nonproductive_cycle)
+    config.add_evolution_step(evolve_files)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

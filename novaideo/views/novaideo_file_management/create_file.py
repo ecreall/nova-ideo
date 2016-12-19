@@ -13,7 +13,7 @@ from pontus.schema import select
 
 from novaideo.content.processes.novaideo_file_management.behaviors import  (
     CreateFile)
-from novaideo.core import FileSchema, FileEntity
+from novaideo.content.file import FileSchema, FileEntity
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
 

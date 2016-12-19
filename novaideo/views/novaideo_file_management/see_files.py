@@ -14,7 +14,6 @@ from dace.objectofcollaboration.principal.util import (
     get_current, has_role)
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
-from pontus.util import merge_dicts
 
 from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_file_management.behaviors import (
@@ -43,8 +42,8 @@ class SeeFilesView(BasicView):
         self.execute(None)
         objects = self.context.files
         now = datetime.datetime.now(tz=pytz.UTC)
-        objects = sorted(objects, 
-                         key=lambda e: getattr(e, 'modified_at', now), 
+        objects = sorted(objects,
+                         key=lambda e: getattr(e, 'modified_at', now),
                          reverse=True)
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_files"
@@ -56,14 +55,14 @@ class SeeFilesView(BasicView):
             is_portalmanager=is_portalmanager
             )
         values = {
-                'bodies': result_body,
-                'length': len_result,
-                'batch': batch,
-               }
+            'bodies': result_body,
+            'length': len_result,
+            'batch': batch,
+        }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeFiles:SeeFilesView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeFiles: SeeFilesView})

@@ -18,6 +18,7 @@ from dace.descriptors import (
 from pontus.widget import (
     Select2Widget,
     RichTextWidget)
+from pontus.core import VisualisableElementSchema
 from pontus.file import ObjectData, File
 
 from .interface import (
@@ -26,7 +27,6 @@ from .interface import (
 from novaideo import _
 from novaideo.core import (
     SearchableEntitySchema,
-    VisualisableElementSchema,
     SearchableEntity,
     ADVERTISING_CONTAINERS)
 from novaideo.utilities import french_dates_parser as Parser
