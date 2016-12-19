@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-12-19 17:54+0100\n"
+"POT-Creation-Date: 2016-12-19 19:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -142,7 +142,7 @@ msgstr ""
 #: ./novaideo/core_schema.py:76
 #: ./novaideo/views/templates/organization_result.pt:58
 #: ./novaideo/views/organization_management/templates/see_organization.pt:54
-msgid "Surtax"
+msgid "Surcharge"
 msgstr ""
 
 #: ./novaideo/core_schema.py:77

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-12-19 17:54+0100\n"
+"POT-Creation-Date: 2016-12-19 19:08+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -137,8 +137,8 @@ msgstr "Téléphone"
 #: novaideo/core_schema.py:76
 #: novaideo/views/templates/organization_result.pt:58
 #: novaideo/views/organization_management/templates/see_organization.pt:54
-msgid "Surtax"
-msgstr ""
+msgid "Surcharge"
+msgstr "Surtaxe"
 
 #: novaideo/core_schema.py:77
 msgid "Indicate the amount of the surcharge (for the premium-rate number)."
@@ -157,7 +157,6 @@ msgid "One value must be entered."
 msgstr "Une valeur doit être saisie."
 
 #: novaideo/core_schema.py:108
-#, fuzzy
 msgid "Surtax field must be filled in."
 msgstr "Le champ surtaxe doit être rempli."
 
@@ -228,7 +227,6 @@ msgid "Reset the password"
 msgstr "Réinitialiser le mot de passe"
 
 #: novaideo/mail.py:538
-#, fuzzy
 msgid "Registration confiramtion"
 msgstr "Confirmation de l'inscription"
 
@@ -343,14 +341,12 @@ msgid "Warning: new comment"
 msgstr "Alerte: nouveau Commentaire"
 
 #: novaideo/mail.py:680
-#, fuzzy
 msgid "Warning: new discuss"
 msgstr "Alerte: nouvelle discussion"
 
 #: novaideo/mail.py:685
-#, fuzzy
 msgid "Alert respons"
-msgstr "Alerte pour supression"
+msgstr "Alerte réponse"
 
 #: novaideo/mail.py:690
 msgid "Newsletter subscription"
@@ -1438,7 +1434,6 @@ msgstr "Communiquer l'idée à des tiers"
 
 #: novaideo/views/idea_management/present_idea.py:191
 #: novaideo/views/idea_management/present_idea.py:192
-#, fuzzy
 msgid "Submit the idea to others"
 msgstr "Communiquer l'idée à des tiers"
 
@@ -2544,7 +2539,6 @@ msgid "Disactivate"
 msgstr "Désactiver"
 
 #: novaideo/views/system_process/send_newsletter.py:25
-#, fuzzy
 msgid "Send the news letter"
 msgstr "Envoyer l'infolettre"
 
@@ -5736,9 +5730,8 @@ msgid "You have ${nember} new alerts"
 msgstr "Vous avez ${nember} nouvelles alertes"
 
 #: novaideo/views/novaideo_view_manager/see_alerts.py:39
-#, fuzzy
 msgid "The notifications"
-msgstr "Notifications"
+msgstr "Les notifications"
 
 #: novaideo/views/novaideo_view_manager/see_my_participations.py:24
 msgid "I have participated in no working group so far"
@@ -5760,7 +5753,6 @@ msgid "Proposals to be examined"
 msgstr "Les propositions à examiner"
 
 #: novaideo/views/novaideo_view_manager/see_ideas_to_examine.py:41
-#, fuzzy
 msgid "Ideas to examine"
 msgstr "Les idées à examiner"
 
@@ -6795,9 +6787,8 @@ msgstr "Gestion des documents"
 
 #: novaideo/content/processes/novaideo_file_management/definition.py:49
 #: novaideo/content/processes/novaideo_file_management/definition.py:50
-#, fuzzy
 msgid "Edit the file"
-msgstr "Modifier le profil"
+msgstr "Modifier le document"
 
 #: novaideo/content/processes/novaideo_file_management/definition.py:61
 #: novaideo/content/processes/novaideo_file_management/definition.py:62
@@ -7143,7 +7134,7 @@ msgstr "Discuter"
 #: novaideo/content/processes/user_management/definition.py:131
 #: novaideo/content/processes/user_management/definition.py:132
 msgid "User registration"
-msgstr "Inscription"
+msgstr "Inscription des utilisateurs"
 
 #: novaideo/content/processes/user_management/definition.py:135
 #: novaideo/content/processes/user_management/definition.py:136
@@ -7634,7 +7625,6 @@ msgstr "Voir mes soutiens"
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:84
 #: novaideo/content/processes/novaideo_view_manager/definition.py:85
-#, fuzzy
 msgid "Proposals to be moderated"
 msgstr "Les propositions à modérer"
 
