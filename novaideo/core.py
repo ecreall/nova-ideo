@@ -42,7 +42,6 @@ from novaideo.content.interface import (
     IChannel,
     ICorrelableEntity,
     IPresentableEntity,
-    IFile,
     INode,
     IEmojiable,
     IPerson,
@@ -559,26 +558,6 @@ class Node(Entity):
             result.update(sub_result)
 
         return result, newcalculated
-
-
-
-@content(
-    'oldfile',
-    icon='icon novaideo-icon icon-user',
-    )
-@implementer(IFile)
-class FileEntity(SearchableEntity):
-    """ A file entity is an entity that can be searched"""
-
-    icon = "glyphicon glyphicon-file"
-    templates = {
-        'default': 'novaideo:views/templates/file_result.pt',
-        'bloc': 'novaideo:views/templates/file_bloc.pt'}
-    type_title = _('File')
-
-    def __init__(self, **kwargs):
-        super(FileEntity, self).__init__(**kwargs)
-        self.set_data(kwargs)
 
 
 @implementer(ISignalableEntity)
