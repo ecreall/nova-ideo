@@ -51,7 +51,7 @@
              <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
              <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
               <span class="glyphicon glyphicon-earphone"></span>  ${contact['phone']} 
-              <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
+              <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surcharge</span>: ${surtax})</span></small>
              <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</small>
         </blockquote>
     </div>

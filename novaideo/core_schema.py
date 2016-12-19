@@ -73,7 +73,7 @@ class ContactSchema(Schema):
         missing="0",
         widget=TextInputWidget(item_css_class="hide-bloc"),
         default="0",
-        title=_('Surtax'),
+        title=_('Surcharge'),
         description=_('Indicate the amount of the surcharge (for the premium-rate number).'),
         )
 
