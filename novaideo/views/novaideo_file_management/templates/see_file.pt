@@ -4,21 +4,18 @@
   tal:define="
       oid object.__oid__"
   i18n:domain="novaideo">
-<div tal:replace="structure navbar_body"/>
-<hr class="soften">
-<div class="right-caption span4">
-  <div class="caption">
-  	<h4 tal:condition="is_portalmanager and state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
-    <h3>${object.title} </h3>
-    <br>
-    <div id="contenttext" class="content-text">
-      ${structure:getattr(object, 'text', '')}
-    </div>
+  <div tal:replace="structure navbar_body"/>
+  <div class="media-body content-title-body">
+      <h4 tal:condition="is_portalmanager and state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+      <h3>${object.title} </h3>
+      <br>
   </div>
-</div>
- <div class="content-footer">
-    <div class="actions-block">
-        <div tal:replace="structure footer_body"/>
-    </div>
- </div>
+  <div class="content-text content-text-scroll malihu-scroll">
+    ${structure:getattr(object, 'text', '')}
+  </div>
+   <div class="content-footer">
+      <div class="actions-block">
+          <div tal:replace="structure footer_body"/>
+      </div>
+   </div>
  </div>

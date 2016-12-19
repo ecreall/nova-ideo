@@ -12,7 +12,11 @@
     <div class="object-title-block" >
       <a tal:attributes="href url">
         <h4>
-          <span class="icon ${icon}"></span>  ${object.title} <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
+          <span class="icon ${icon}"></span>  ${object.title} 
+          <div class="listing-access-menu">
+              <div tal:replace="structure access_body"/>
+          </div>
+          <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
         </h4>
       </a>
     </div>
