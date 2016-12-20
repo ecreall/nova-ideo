@@ -66,15 +66,16 @@ from .behaviors import (
     VOTE_PUBLISHING_MESSAGE,
     VOTE_DURATION_MESSAGE,
     VOTE_REOPENING_MESSAGE,
-    VP_DEFAULT_DURATION,
     VOTE_MODEWORK_MESSAGE,
     publish_condition,
     AlertEnd,
     SeeWorkspace,
     AddFiles,
     RemoveFile,
-    AttachFiles
+    AttachFiles,
+    calculate_improvement_cycle_duration
     )
+from . import VP_DEFAULT_DURATION
 from novaideo import _, log
 from novaideo.content.ballot import Ballot
 
@@ -97,23 +98,17 @@ ALERTS = {0: firs_alert, 1: second_alert}
 def alert_end_cycle_duration(process):
     alert = getattr(process, 'previous_alert', -1) + 1
     alert_op = ALERTS.get(alert, None)
-    if alert_op:
-        proposal = process.execution_context.created_entity('proposal')
-        if proposal:
-          working_group = proposal.working_group
-          duration_ballot = getattr(
-              working_group, 'duration_configuration_ballot', None)
-          default_date = AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"]
-          date = None
-          if duration_ballot is not None and duration_ballot.report.voters:
-              electeds = duration_ballot.report.get_electeds()
-              if electeds:
-                  date = AMENDMENTS_CYCLE_DEFAULT_DURATION[electeds[0]]
+    proposal = process.execution_context.created_entity('proposal')
+    if alert_op and proposal:
+        working_group = proposal.working_group
+        date = getattr(
+            working_group, 'work_duration', None)
+        if not date:
+            date = calculate_improvement_cycle_duration(process)
 
-          date = date if date else default_date
-          alert_date = alert_op(process, date)
-          log.warning(alert_date)
-          return alert_date
+        alert_date = alert_op(process, date)
+        log.warning(alert_date)
+        return alert_date
 
     return datetime.datetime.now()
 
