@@ -463,6 +463,7 @@ def get_support_metadata(action, request, context, api, **kwargs):
 
 # User
 
+
 def get_deactivate_profile_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
@@ -472,7 +473,7 @@ def get_deactivate_profile_metadata(action, request, context, api, **kwargs):
     source_view_name = kwargs.get('view_name', '')
     view_name = 'seeusers'
     if result.get('is_excuted'):
-        if source_view_name == view_name:
+        if source_view_name != view_name:
             result['objects_to_hide'] = [
                 'listing_'+str(get_oid(context, None))]
 
