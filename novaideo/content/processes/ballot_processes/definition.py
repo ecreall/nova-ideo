@@ -29,7 +29,7 @@ from dace.objectofcollaboration.services.processdef_container import (
 from pontus.core import VisualisableElement
 
 from novaideo import _
-from novaideo.content.processes.proposal_management.behaviors import (
+from novaideo.content.processes.proposal_management import (
     VP_DEFAULT_DURATION)
 
 
