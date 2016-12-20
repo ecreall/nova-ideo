@@ -67,15 +67,13 @@ from novaideo.views.filter import get_users_by_preferences
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from . import (
-    FIRST_VOTE_PUBLISHING_MESSAGE,
-    VP_DEFAULT_DURATION,
     AMENDMENTS_CYCLE_DEFAULT_DURATION,
-    FIRST_VOTE_DURATION_MESSAGE,
     init_proposal_ballots,
     add_files_to_workspace,
-    add_attached_files)
-from . import end_work
-
+    add_attached_files,
+    end_work,
+    remove_participant_from_ballots
+    )
 
 VOTE_PUBLISHING_MESSAGE = _("Each participant votes for or against continuing the improvement of the proposal. "
                             "If the majority is \"In favour\", a new improvement cycle begins. "
@@ -181,6 +179,82 @@ def publish_condition(process):
             return False
 
     return True
+
+
+def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
+    working_group = context.working_group
+    working_group.delfromproperty('members', user)
+    remove_participant_from_ballots(context, request, user)
+    members = working_group.members
+    mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
+    revoke_roles(user, (('Participant', context),))
+    if members:
+        alert(
+            'internal', [root], members,
+            internal_kind=InternalAlertKind.working_group_alert,
+            subjects=[context], alert_kind=kind)
+
+    subject_data = get_entity_data(context, 'subject', request)
+    sender = root.get_site_sender()
+    if working_group.wating_list:
+        def _get_next_user(users):
+            for user in users:
+                wgs = user.active_working_groups
+                if 'active' in user.state and \
+                   len(wgs) < root.participations_maxi:
+                    return user
+
+            return None
+
+        next_user = _get_next_user(working_group.wating_list)
+        if next_user is not None:
+            mail_template = root.get_mail_template(
+                'wg_wating_list_participation')
+            working_group.delfromproperty('wating_list', next_user)
+            working_group.addtoproperty('members', next_user)
+            grant_roles(next_user, (('Participant', context),))
+            if members:
+                alert('internal', [root], members,
+                      internal_kind=InternalAlertKind.working_group_alert,
+                      subjects=[context], alert_kind='wg_wating_list_participation')
+
+            if getattr(next_user, 'email', ''):
+                subject = mail_template['subject'].format(
+                    subject_title=context.title)
+                email_data = get_user_data(next_user, 'recipient', request)
+                email_data.update(subject_data)
+                message = mail_template['template'].format(
+                    novaideo_title=root.title,
+                    **email_data
+                )
+                alert('email', [sender], [next_user.email],
+                      subject=subject, body=message)
+
+    participants = working_group.members
+    len_participants = len(participants)
+    if len_participants < mode.participants_mini and \
+       'open to a working group' not in context.state:
+        context.state = PersistentList(
+            ['open to a working group', 'published'])
+        working_group.state = PersistentList(['deactivated'])
+        working_group.reindex()
+        context.reindex()
+        alert('internal', [root], participants,
+              internal_kind=InternalAlertKind.working_group_alert,
+              subjects=[context], alert_kind=kind+'_to_wg_open')
+
+    if getattr(user, 'email', ''):
+        mail_template = root.get_mail_template('wg_'+kind)
+        subject = mail_template['subject'].format(
+            subject_title=context.title)
+        email_data = get_user_data(user, 'recipient', request)
+        email_data.update(subject_data)
+        message = mail_template['template'].format(
+            novaideo_title=root.title,
+            **email_data
+        )
+        alert('email', [sender], [user.email],
+              subject=subject, body=message)
 
 
 def start_improvement_cycle(proposal):
@@ -1109,83 +1183,12 @@ class Resign(InfiniteCardinality):
     processsecurity_validation = resign_processsecurity_validation
     state_validation = resign_state_validation
 
-    def _get_next_user(self, users, root):
-        for user in users:
-            wgs = user.active_working_groups
-            if 'active' in user.state and len(wgs) < root.participations_maxi:
-                return user
-
-        return None
-
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        working_group = context.working_group
-        working_group.delfromproperty('members', user)
-        members = working_group.members
-        mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
-        revoke_roles(user, (('Participant', context),))
-        if members:
-            alert(
-                'internal', [root], members,
-                internal_kind=InternalAlertKind.working_group_alert,
-                subjects=[context], alert_kind='resign')
-
-        subject_data = get_entity_data(context, 'subject', request)
-        sender = root.get_site_sender()
-        if working_group.wating_list:
-            next_user = self._get_next_user(working_group.wating_list, root)
-            if next_user is not None:
-                mail_template = root.get_mail_template(
-                    'wg_wating_list_participation')
-                working_group.delfromproperty('wating_list', next_user)
-                working_group.addtoproperty('members', next_user)
-                grant_roles(next_user, (('Participant', context),))
-                if members:
-                    alert('internal', [root], members,
-                          internal_kind=InternalAlertKind.working_group_alert,
-                          subjects=[context], alert_kind='wg_wating_list_participation')
-
-                if getattr(next_user, 'email', ''):
-                    subject = mail_template['subject'].format(
-                        subject_title=context.title)
-                    email_data = get_user_data(next_user, 'recipient', request)
-                    email_data.update(subject_data)
-                    message = mail_template['template'].format(
-                        novaideo_title=root.title,
-                        **email_data
-                    )
-                    alert('email', [sender], [next_user.email],
-                          subject=subject, body=message)
-
-        participants = working_group.members
-        len_participants = len(participants)
-        if len_participants < mode.participants_mini and \
-           'open to a working group' not in context.state:
-            context.state = PersistentList(
-                ['open to a working group', 'published'])
-            working_group.state = PersistentList(['deactivated'])
-            working_group.reindex()
-            context.reindex()
-            alert('internal', [root], participants,
-                  internal_kind=InternalAlertKind.working_group_alert,
-                  subjects=[context], alert_kind='resign_to_wg_open')
-
-        if getattr(user, 'email', ''):
-            mail_template = root.get_mail_template('wg_resign')
-            subject = mail_template['subject'].format(
-                subject_title=context.title)
-            email_data = get_user_data(user, 'recipient', request)
-            email_data.update(subject_data)
-            message = mail_template['template'].format(
-                novaideo_title=root.title,
-                **email_data
-            )
-            alert('email', [sender], [user.email],
-                  subject=subject, body=message)
-
+        exclude_participant_from_wg(context, request, user, root)
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], user))
+            self, [context, context.working_group], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1443,10 +1446,9 @@ class VotingPublication(ElementaryAction):
         context.state.insert(0, 'votes for publishing')
         context.reindex()
         working_group = context.working_group
-        duration = calculate_improvement_cycle_duration(
-            self.process)
+        duration = getattr(working_group, 'work_duration', None)
         working_group.inc_iteration()
-        if duration >= datetime.timedelta(weeks=1):
+        if duration and duration >= datetime.timedelta(weeks=1):
             working_group.inc_nonproductive_cycle()
 
         if not getattr(working_group, 'first_vote', True):
@@ -1475,24 +1477,27 @@ class VotingPublication(ElementaryAction):
         return {}
 
     def after_execution(self, context, request, **kw):
-        proposal = self.process.execution_context.created_entity(
+        process = self.process
+        proposal = process.execution_context.created_entity(
             'proposal')
         if self.sub_process:
             exec_ctx = self.sub_process.execution_context
             vote_processes = exec_ctx.get_involved_collection('vote_processes')
-            opened_vote_processes = [process for process in vote_processes
-                                     if not process._finished]
+            opened_vote_processes = [proc for proc in vote_processes
+                                     if not proc._finished]
             if opened_vote_processes:
                 close_votes(proposal, request, opened_vote_processes)
 
-        setattr(self.process, 'new_cycle_date', datetime.datetime.now())
-        setattr(self.process, 'previous_alert', -1)
+        setattr(process, 'new_cycle_date', datetime.datetime.now())
+        setattr(process, 'previous_alert', -1)
         super(VotingPublication, self).after_execution(proposal, request, **kw)
-        is_published = publish_condition(self.process)
+        is_published = publish_condition(process)
+        proposal.working_group.work_duration = calculate_improvement_cycle_duration(
+            process)
         if is_published:
-            self.process.execute_action(proposal, request, 'submit', {})
+            process.execute_action(proposal, request, 'submit', {})
         else:
-            self.process.execute_action(proposal, request, 'work', {})
+            process.execute_action(proposal, request, 'work', {})
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))

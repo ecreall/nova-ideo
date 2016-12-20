@@ -169,20 +169,12 @@ def add_attached_files(appstruct, proposal):
 
 def end_work(proposal, request):
     """Close the improvement cycle process"""
+    from novaideo.content.processes.ballot_processes import (
+        remove_vote_processes)
     runtime = request.root['runtime']
     # The improvement cycle
-    proc = proposal.creator
+    proc = proposal.working_group.improvement_cycle_proc
     if proc:
-        def remove_vote_processes(vote_action):
-            ballot_process = vote_action.sub_process
-            if ballot_process:
-                runtime.delfromproperty('processes', ballot_process)
-                exec_ctx = ballot_process.execution_context
-                vote_processes = exec_ctx.get_involved_collection(
-                    'vote_processes')
-                for v_proc in vote_processes:
-                    runtime.delfromproperty('processes', v_proc)
-
         # Work sub process
         work_actions = proc.get_actions('work')
         # Voting publication sub process
@@ -193,10 +185,33 @@ def end_work(proposal, request):
                 # If amendment mode
                 a_vote_actions = work_proc.get_actions('votingamendments')
                 if a_vote_actions:
-                    remove_vote_processes(a_vote_actions[0])
+                    remove_vote_processes(a_vote_actions[0], runtime)
 
                 runtime.delfromproperty('processes', work_proc)
         elif vote_actions:
-            remove_vote_processes(vote_actions[0])
+            remove_vote_processes(vote_actions[0], runtime)
 
         runtime.delfromproperty('processes', proc)
+
+
+def remove_participant_from_ballots(proposal, request, user):
+    """Close the improvement cycle process"""
+    from novaideo.content.processes.ballot_processes import (
+        remove_elector_vote_processes)
+    # The improvement cycle
+    proc = proposal.working_group.improvement_cycle_proc
+    if proc:
+        # Work sub process
+        work_actions = proc.get_actions('work')
+        # Voting publication sub process
+        vote_actions = proc.get_actions('votingpublication')
+        if work_actions:
+            work_proc = work_actions[0].sub_process
+            if work_proc:
+                # If amendment mode
+                a_vote_actions = work_proc.get_actions('votingamendments')
+                if a_vote_actions:
+                    remove_elector_vote_processes(a_vote_actions[0], user)
+
+        elif vote_actions:
+            remove_elector_vote_processes(vote_actions[0], user)

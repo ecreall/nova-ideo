@@ -51,3 +51,23 @@ class VoteBase(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, '@@index'))
+
+
+def remove_vote_processes(ballot_action, runtime):
+    ballot_process = ballot_action.sub_process
+    if ballot_process:
+        runtime.delfromproperty('processes', ballot_process)
+        exec_ctx = ballot_process.execution_context
+        vote_processes = exec_ctx.get_involved_collection(
+            'vote_processes')
+        for v_proc in vote_processes:
+            runtime.delfromproperty('processes', v_proc)
+
+
+def remove_elector_vote_processes(ballot_action, user):
+    ballot_process = ballot_action.sub_process
+    ballots = ballot_process.ballots
+    for ballot in ballots:
+        report = ballot.report
+        if user in report.electors and user not in report.voters:
+            report.delfromproperty('electors', user)
