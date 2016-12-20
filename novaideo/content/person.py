@@ -387,17 +387,28 @@ class Person(User, SearchableEntity, CorrelableEntity):
         return None, None
 
     def set_organization(self, organization):
+        current_organization = self.organization
         if organization:
-            current_organization = self.organization
             if current_organization is not organization:
                 is_manager = current_organization and has_role(
                     ('OrganizationResponsible', current_organization), self,
                     ignore_superiors=True)
                 if current_organization and is_manager:
                     revoke_roles(
-                        self, (('OrganizationResponsible', current_organization),))
+                        self,
+                        (('OrganizationResponsible', current_organization),))
 
                 self.setproperty('organization', organization)
+        elif current_organization:
+            is_manager = has_role(
+                ('OrganizationResponsible', current_organization), self,
+                ignore_superiors=True)
+            if is_manager:
+                revoke_roles(
+                    self,
+                    (('OrganizationResponsible', current_organization),))
+
+            self.delfromproperty('organization', current_organization)
 
     @property
     def all_alerts(self):

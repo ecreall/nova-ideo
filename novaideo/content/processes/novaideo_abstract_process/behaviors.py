@@ -35,9 +35,8 @@ def select_processsecurity_validation(process, context):
 
 
 def select_state_validation(process, context):
-    return "archived" not in context.state and \
-           "version" not in context.state and \
-           "censored" not in context.state
+    return context.is_published
+
 
 
 class SelectEntity(InfiniteCardinality):

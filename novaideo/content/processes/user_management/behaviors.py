@@ -198,6 +198,7 @@ class Deactivate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state.remove('active')
         context.state.append('deactivated')
+        context.set_organization(None)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         pref_author = list(get_users_by_preferences(context))

@@ -322,12 +322,13 @@ class RemoveMembers(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return nothing
 
+
 def usereditorg_roles_validation(process, context):
     return has_role(role=('Moderator',))
 
 
 def usereditorg_processsecurity_validation(process, context):
-    return global_user_processsecurity()
+    return 'active' in context.state and global_user_processsecurity()
 
 
 class UserEditOrganization(InfiniteCardinality):
@@ -391,22 +392,11 @@ class WithdrawUser(InfiniteCardinality):
     processsecurity_validation = withdraw_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        current_organization = context.organization
-        if current_organization:
-            is_manager = has_role(
-                ('OrganizationResponsible', current_organization), context,
-                ignore_superiors=True)
-            if is_manager:
-                revoke_roles(
-                    context,
-                    (('OrganizationResponsible', current_organization),))
-
-            context.delfromproperty('organization', current_organization)
-            context.reindex()
-            context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-            request.registry.notify(ActivityExecuted(
-                self, [context], get_current()))
-
+        context.set_organization(None)
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        context.reindex()
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
