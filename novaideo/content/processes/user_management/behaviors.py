@@ -196,9 +196,16 @@ class Deactivate(InfiniteCardinality):
     state_validation = deactivate_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        from ..proposal_management.behaviors import exclude_participant_from_wg
+        root = getSite()
         context.state.remove('active')
         context.state.append('deactivated')
         context.set_organization(None)
+        proposals = getattr(context, 'participations', [])
+        for proposal in proposals:
+            exclude_participant_from_wg(
+                proposal, request, context, root)
+
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         pref_author = list(get_users_by_preferences(context))
