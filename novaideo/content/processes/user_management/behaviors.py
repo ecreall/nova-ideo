@@ -188,8 +188,10 @@ class Deactivate(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-ban-circle'
+    style_interaction = 'ajax-action'
     style_order = 0
     title = _('Disactivate the profile')
+    submission_title = _('Continue')
     context = IPerson
     roles_validation = deactivate_roles_validation
     processsecurity_validation = deactivate_processsecurity_validation
@@ -217,7 +219,7 @@ class Deactivate(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, "@@index"))
+        return nothing
 
 
 def activate_roles_validation(process, context):

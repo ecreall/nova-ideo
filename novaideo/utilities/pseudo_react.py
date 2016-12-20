@@ -178,6 +178,13 @@ def get_all_updated_data(action, request, context, api, **kwargs):
         for obj_id in object_views_to_update:
             result.update(_render_obj_view(
                 obj_id, user, request))
+
+        #update object to hide: include listingbloc component
+        for ovth in list(result.get('objects_to_hide', [])):
+            if ovth.startswith('listing_'):
+                result['objects_to_hide'].append(
+                    ovth.replace('listing_', 'listingbloc_'))
+
         #update couters
         counters_to_update = [c for c in result.get('counters-to-update', [])
                               if c in counters]
@@ -454,6 +461,27 @@ def get_support_metadata(action, request, context, api, **kwargs):
     result['counters-to-update'] = ['component-navbar-mysupports']
     return result
 
+# User
+
+def get_deactivate_profile_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Le profil a bien été désactivé."),
+        **kwargs)
+    source_view_name = kwargs.get('view_name', '')
+    view_name = 'seeusers'
+    if result.get('is_excuted'):
+        if source_view_name == view_name:
+            result['objects_to_hide'] = [
+                'listing_'+str(get_oid(context, None))]
+
+        result['counters-to-update'] = [
+            'person-proposals-counter',
+            'component-navbar-myparticipations'
+        ]
+
+    return result
 
 #Chanels
 
@@ -1616,6 +1644,7 @@ METADATA_GETTERS = {
     'usermanagement.discuss': get_discuss_metadata,
     'usermanagement.general_discuss': get_general_discuss_metadata,
     'usermanagement.assign_roles': get_assigne_roles_user_metadata,
+    'usermanagement.deactivate': get_assigne_roles_user_metadata,
 
     'commentmanagement.pin': get_comment_pin_metadata,
     'commentmanagement.unpin': get_comment_unpin_metadata,
