@@ -1644,7 +1644,7 @@ METADATA_GETTERS = {
     'usermanagement.discuss': get_discuss_metadata,
     'usermanagement.general_discuss': get_general_discuss_metadata,
     'usermanagement.assign_roles': get_assigne_roles_user_metadata,
-    'usermanagement.deactivate': get_assigne_roles_user_metadata,
+    'usermanagement.deactivate': get_deactivate_profile_metadata,
 
     'commentmanagement.pin': get_comment_pin_metadata,
     'commentmanagement.unpin': get_comment_unpin_metadata,
