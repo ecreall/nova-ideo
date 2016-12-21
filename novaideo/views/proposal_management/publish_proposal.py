@@ -111,7 +111,7 @@ class PublishProposalSchema(Schema):
 
 
 class PublishProposalFormView(FormView):
-    title = _('Publish')
+    title = _('Submit')
     name = 'formpublishproposal'
     behaviors = [PublishProposal, Cancel]
     viewid = 'formpublishproposal'
