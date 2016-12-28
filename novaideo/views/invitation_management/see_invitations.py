@@ -41,7 +41,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeInvitationsView(BasicView):
-    title = _('Invitations')
+    title = _('The invitations')
     name = 'seeinvitations'
     behaviors = [SeeInvitations]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

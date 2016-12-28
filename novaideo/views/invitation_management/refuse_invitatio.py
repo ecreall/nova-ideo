@@ -22,7 +22,7 @@ from novaideo import _
     )
 class RefuseInvitationView(BasicView):
 
-    title = _('Refuse invitation')
+    title = _('Refuse the invitation')
     behaviors = [RefuseInvitation]
     name = 'refuse_invitation'
 

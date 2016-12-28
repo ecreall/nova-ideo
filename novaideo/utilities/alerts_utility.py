@@ -95,7 +95,8 @@ def get_entity_data(entity, id, request=None):
         id+'_url': getattr(
             entity, 'get_url', default_get_url)(request),
         id+'_oid': get_oid(entity, 'None'),
-        id+'_type': entity_type
+        id+'_type': entity_type,
+        id+'_icon': getattr(entity, 'icon', ''),
     }
 
 

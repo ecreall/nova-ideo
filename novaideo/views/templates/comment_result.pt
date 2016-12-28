@@ -33,7 +33,7 @@
                 <div title="${layout.to_localized_time(object.created_at)}" class="comment-detail-container">
                   <span i18n:translate="">the</span>
                   <span tal:replace="layout.to_localized_time(object.created_at)"/>
-                  <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span> 
+                  <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">His/her intention:</span> 
                   <span tal:condition="getattr(object, 'intention', None)" i18n:translate="" tal:content="object.intention"/>
                 </div>
                 </div>

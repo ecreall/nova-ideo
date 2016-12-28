@@ -547,14 +547,14 @@ def geographic_filter_repr(value, request, template_type='default'):
 def temporal_filter_repr(value, request, template_type='default'):
     template = FILTER_TEMPLATES['temporal_filter'].get(template_type, None)
     value_cp = value.copy()
-    value_cp['title'] = _('Temporal filter')
+    value_cp['title'] = _('Time filter')
     return default_repr(value_cp, request, template)
 
 
 def contribution_filter_repr(value, request, template_type='default'):
     template = FILTER_TEMPLATES['contribution_filter'].get(template_type, None)
     value_cp = value.copy()
-    value_cp['title'] = _('Contribution filter')
+    value_cp['title'] = _('Contributor filter')
     return default_repr(value_cp, request, template)
 
 
@@ -749,7 +749,7 @@ class MetadataFilter(Schema):
         colander.Boolean(),
         default=False,
         missing=False,
-        label=_('Not'),
+        label=_('Except'),
         title=None,
         description=_('Check the box to exclude values entered below.'),
         description_bottom=True,
@@ -817,7 +817,8 @@ class ConnectedDates(Schema):
         colander.Date(),
         title=_('Connected before'),
         description_bottom=True,
-        description=_('For each of the users to be displayed, you can select the dates of its last connexion.'),
+        description=_("For each of the users to be displayed, you can select "
+                      "the date of his/her last connection."),
         missing=None,
         )
 
@@ -828,7 +829,7 @@ class TemporalSchema(Schema):
         colander.Boolean(),
         default=False,
         missing=False,
-        label=_('Not'),
+        label=_('Except'),
         title=None,
         description=_('Check the box to exclude values entered below.'),
         description_bottom=True,
@@ -853,7 +854,7 @@ class ContributionFilterSchema(Schema):
         colander.Boolean(),
         default=False,
         missing=False,
-        label=_('Not'),
+        label=_('Except'),
         title=None,
         description=_('Check the box to exclude values entered below.'),
         description_bottom=True,
@@ -863,7 +864,7 @@ class ContributionFilterSchema(Schema):
         colander.Set(),
         widget=authors_choices,
         title=_('Authors'),
-        description=_("You can enter the authors' names of the contents to be displayed."),
+        description=_("You can enter the names of the authors of the contents to be displayed."),
         default=[],
         missing=[],
         query=authors_query,
@@ -876,7 +877,7 @@ class TextFilterSchema(Schema):
         colander.Boolean(),
         default=False,
         missing=False,
-        label=_('Not'),
+        label=_('Except'),
         title=None,
         description=_('Check the box to exclude values entered below.'),
         description_bottom=True,
@@ -912,7 +913,7 @@ class FilterSchema(Schema):
             mapping_css_class='controled-form',
             ajax=True,
             activator_icon="glyphicon glyphicon-calendar",
-            activator_title=_('Temporal filter')),
+            activator_title=_('Time filter')),
         query=temporal_filter_query,
         analyzer=temporal_filter_analyzer,
         repr_value=temporal_filter_repr,
@@ -925,7 +926,7 @@ class FilterSchema(Schema):
             mapping_css_class='controled-form',
             ajax=True,
             activator_icon="glyphicon glyphicon-user",
-            activator_title=_('Contribution filter')),
+            activator_title=_('Contributor filter')),
         query=contribution_filter_query,
         analyzer=contribution_filter_analyzer,
         repr_value=contribution_filter_repr,

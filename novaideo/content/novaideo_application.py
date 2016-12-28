@@ -185,7 +185,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
         colander.Sequence(),
         omit(InvitationSchema(factory=Invitation,
                                editable=True,
-                               name=_('Invitations'),
+                               name=_('The invitations'),
                                widget=SimpleMappingWidget(css_class='object-well default-well')),
             ['_csrf_token_']),
         widget=invitations_choice,

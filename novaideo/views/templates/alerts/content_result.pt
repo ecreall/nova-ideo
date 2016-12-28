@@ -9,22 +9,22 @@
                  member_title getattr(object, 'member_title', None);">
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-    <span tal:condition="alert_kind == 'duplicated'">
+    <span i18n:translate="" tal:condition="alert_kind == 'duplicated'">
       Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été dupliqué, le contenu dupliqué est visible sous <a href="${url}"><span class="${getattr(subject, 'icon')}"></span> ${duplicate_title}</a>.
     </span>
-    <span tal:condition="alert_kind == 'modified'">Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> faisant partie de vos favoris a été modifié.</span>
+    <span i18n:translate="" tal:condition="alert_kind == 'modified'">Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> faisant partie de vos favoris a été modifié.</span>
     
-    <span tal:condition="alert_kind == 'published'">Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>  faisant partie de vos centres d'intérêt a été publié.</span>
+    <span i18n:translate="" tal:condition="alert_kind == 'published'">Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>  faisant partie de vos centres d'intérêt a été publié.</span>
     
-    <span tal:condition="alert_kind == 'published_author'">
+    <span i18n:translate="" tal:condition="alert_kind == 'published_author'">
       Le membre <a href="${member_url}"><span class="icon glyphicon glyphicon-user"></span> ${member_title}</a> que vous avez mis en favori a publié le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
     </span>
 
-    <span tal:condition="alert_kind == 'present'">
+    <span i18n:translate="" tal:condition="alert_kind == 'present'">
       Le contenu <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> vous a été communiqué.
     </span>
 
-    <span tal:condition="alert_kind == 'user_deactivated'">
+    <span i18n:translate="" tal:condition="alert_kind == 'user_deactivated'">
       Le compte du membre <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> que vous avez mis en favori a été désactivé.
     </span>
   </div>

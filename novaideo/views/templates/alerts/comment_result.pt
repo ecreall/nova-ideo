@@ -19,13 +19,13 @@
 		     tal:condition="not is_respons"
 		  	 class="media-body">
 		    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-		    <span>${author or 'Une personne'} a commenté la contribution <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.</span>
+		    <span i18n:translate="">${author or 'Une personne'} a commenté la contribution <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.</span>
 		  </div>
 		  <div 
 		     tal:condition="is_respons"
 		  	 class="media-body">
 		    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-		    <span>${author or 'Une personne'} a répondu à votre message concernant la contribution <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.</span>
+		    <span i18n:translate="">${author or 'Une personne'} a répondu à votre message concernant la contribution <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.</span>
 		  </div>
 		</div>
 	  <div tal:omit-tag="" tal:condition="comment_kind == 'discuss'">
@@ -33,7 +33,7 @@
 		     tal:condition="not is_respons"
 		  	 class="media-body">
 		    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-		    <span>${author or 'Une personne'} a ajouté un message à votre discussion <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.</span>
+		    <span i18n:translate="">${author or 'Une personne'} a ajouté un message à votre discussion <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.</span>
 		  </div>
 		  <div 
 		     tal:condition="is_respons"
@@ -47,14 +47,14 @@
 			  	class="media-body"
 			     tal:condition="not is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-			    <span>${author or 'Une personne'} a ajouté un message à la discussion générale.
+			    <span i18n:translate="">${author or 'Une personne'} a ajouté un message à la discussion générale.
 			    </span>
 			  </div>
 			  <div 
 			  	 class="media-body"
 			     tal:condition="is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-			    <span>${author or 'Une personne'} a répondu à votre message présent dans la discussion générale.</span>
+			    <span i18n:translate="">${author or 'Une personne'} a répondu à votre message présent dans la discussion générale.</span>
 			  </div>
 		 </div>
 		<span tal:condition="new_alert" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>

@@ -73,7 +73,7 @@ class StepsPanel(object):
         user = get_current()
         working_group_states = [_(get_states_mapping(user, working_group, s))
                                 for s in working_group.state]
-        if 'amendable' in context.state:
+        if 'amendable' in context.state and process:
             subprocesses = process['work'].sub_processes
             date_iteration = None
             if subprocesses:

@@ -26,7 +26,6 @@ from .create_proposal import (
 from novaideo import _, log
 
 
-
 class RelatedIdeasView(BasicView):
     title = _('Related Ideas')
     name = 'relatedideas'
@@ -40,23 +39,24 @@ class RelatedIdeasView(BasicView):
         target = None
         try:
             editform = self.parent.parent.validated_children[0].validated_children[1]
-            target = editform.viewid+'_'+editform.formid 
+            target = editform.viewid+'_'+editform.formid
         except Exception:
             pass
 
-
         ideas = [{'title': self.context.title,
-                'id': get_oid(self.context),
-                'body': renderers.render(self.idea_template, 
-                                         {'idea':self.context}, self.request)
-                }]
+                  'id': get_oid(self.context),
+                  'body': renderers.render(
+                      self.idea_template,
+                      {'idea': self.context},
+                      self.request)}
+        ]
         values = {
-                'items': ideas,
-                'target' : target
-               }
+            'items': ideas,
+            'target': target
+        }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
@@ -149,4 +149,5 @@ class PublishAsProposalView(CreateProposalView):
     validators = [PublishAsProposal.get_validator()]
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({PublishAsProposal:PublishAsProposalView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {PublishAsProposal: PublishAsProposalView})

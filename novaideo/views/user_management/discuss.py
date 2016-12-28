@@ -63,8 +63,8 @@ class DiscussFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class DiscussView(MultipleView):
-    title = _('Private discuss')
-    description = _('Private discuss')
+    title = _('Private discussion')
+    description = _('Private discussion')
     name = 'discuss'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (DiscussCommentsView, DiscussFormView)
@@ -115,8 +115,8 @@ class GeneralDiscussFormView(DiscussFormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class GeneralDiscussView(DiscussView):
-    title = _('General discuss')
-    description = _('General discuss')
+    title = _('General discussion')
+    description = _('General discussion')
     views = (GeneralCommentsView, GeneralDiscussFormView)
 
     def _init_views(self, views, **kwargs):

@@ -1,4 +1,5 @@
-<div tal:define="
+<div i18n:domain="novaideo"
+    tal:define="
       icon object.icon;
       new_alert object.is_to_alert(current_user)">
   <div tal:define="
@@ -6,18 +7,18 @@
   	    alert_kind getattr(object, 'alert_kind', '');"
       class="alert-item ${new_alert and 'new-alert'}">
     <h5><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h5>
-    <span tal:condition="alert_kind == 'moderation'">
+    <span i18n:translate="" tal:condition="alert_kind == 'moderation'">
     	Les modérateurs ont statué sur la contribution <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
-    <span tal:condition="alert_kind == 'new_report'">
+    <span i18n:translate="" tal:condition="alert_kind == 'new_report'">
       Une nouvelle signalisation vient d'être ajoutée. Les signalisations sont accessibles <a href="${request.resource_url(request.root, '@@seereportedcontents')}">ici</a>.
     </span>
-    <span tal:condition="alert_kind == 'object_restor'">
+    <span i18n:translate="" tal:condition="alert_kind == 'object_restor'">
       La contribution  <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> a été restorée.
     </span>
-    <span tal:condition="alert_kind == 'object_censor'">
+    <span i18n:translate="" tal:condition="alert_kind == 'object_censor'">
       La contribution  <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> a été censurée.
     </span>
-    <span tal:condition="alert_kind == 'object_closed'">
+    <span i18n:translate="" tal:condition="alert_kind == 'object_closed'">
       Le groupe de travail sur la proposition <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> n'est plus actif depuis quelques cycles de plus d'une semaine. Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant ouverte à un groupe de travail.
     </span>
   </div>

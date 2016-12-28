@@ -5,7 +5,7 @@ $(document).on('submit','.vote-form', function( event ) {
     if (button.val() == 'Cancel'){
         var modal = $($(this).parents('#vote-actions-modal').first());
         modal.modal('hide');
-        event.preventDefault();
+    	event.preventDefault();
     }
 });
 
@@ -27,6 +27,5 @@ function show_votes_modal(id){
 }
 
 $(document).on('click', '.vote-action', function(){
-    var id = $(this).parents('.content-view').first().find('.vote-actions-container').attr('id')
-    show_votes_modal(id)
+    show_votes_modal($(this).data('action_id'))
 });

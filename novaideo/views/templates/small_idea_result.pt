@@ -3,11 +3,12 @@
      tal:define="url request.resource_url(object, '@@index');
                  icon getattr(object, 'icon');
                  author object.author;
+                 censored 'censored' in object.state
                  ">
   <div class="media-body media-idea small-media" tal:define="author_picture getattr(author, 'picture', None)">
     <span tal:condition="state" class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
     <div class="object-title-block" >
-      <a tal:attributes="href url">
+      <a tal:condition="not censored" tal:attributes="href url">
         <h5>
           <span class="icon ${icon}"></span>  ${object.title}
         </h5>
@@ -27,7 +28,7 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
-    <div tal:condition="'censored' in object.state">
+    <div tal:condition="censored">
      <div class="alert-terms-of-use">
       This content does not respect terms of use.
      </div>

@@ -25,19 +25,18 @@ from pyramid import renderers
 from babel.core import Locale
 from bs4 import BeautifulSoup
 from pyramid.threadlocal import get_current_registry, get_current_request
-from pyramid.view import render_view
 
 from substanced.util import get_oid
 
 from pontus.index import Index
 from pontus.file import OBJECT_OID
 from pontus.util import merge_dicts, get_view
-from dace.processinstance.activity import ActionType
 from dace.objectofcollaboration.principal.util import get_current
 from dace.util import getSite, getAllBusinessAction
 from daceui.interfaces import IDaceUIAPI
 
 from .ical_date_utility import getDatesFromString, set_recurrence
+from novaideo.content.ballot import DEFAULT_BALLOT_GROUP
 from novaideo.utilities.url_extractor import extract_urls
 from novaideo.content.correlation import Correlation, CorrelationType
 from novaideo.content.processes import get_states_mapping
@@ -56,45 +55,45 @@ except AttributeError: #pragma NO COVER
 
 DATE_FORMAT = {
     'defined_literal': {
-        'day_month_year': _('On ${month} ${day} ${year}'),
-        'day_month': _('On ${month} ${day}'),
-        'month_year': _('On ${month} ${year}'),
-        'month': _('On ${month}'),
-        'year': _('On ${year}'),
+        'day_month_year': _('On ${day} ${month} ${year}'),
+        'day_month': _('On ${day} ${month}'),
+        'month_year': _('In ${month} ${year}'),
+        'month': _('In ${month}'),
+        'year': _('In ${year}'),
         'day': _('On ${day}'),
-        'day_hour_minute_month_year': _("On ${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"),
-        'day_hour_minute_month': _("On ${month} ${day} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_minute_month_year': _("On ${day} ${month} ${year} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_minute_month': _("On ${day} ${month} at ${hour} o'clock and ${minute} minutes"),
         'day_hour_minute': _("On ${day} at ${hour} o'clock and ${minute} minutes"),
-        'day_hour_month_year': _("On ${month} ${day} ${year} at ${hour} o'clock"),
-        'day_hour_month': _("On ${month} ${day} at ${hour} o'clock"),
+        'day_hour_month_year': _("On ${day} ${month} ${year} at ${hour} o'clock"),
+        'day_hour_month': _("On ${day} ${month} at ${hour} o'clock"),
         'day_hour': _("On ${day} at ${hour} o'clock")
     },
     'direct_literal': {
-        'day_month_year': _('${month} ${day} ${year}'),
-        'day_month': _('${month} ${day}'),
+        'day_month_year': _('${day} ${month} ${year}'),
+        'day_month': _('${day} ${month}'),
         'month_year': _('${month} ${year}'),
         'month': _('${month}'),
         'year': _('${year}'),
         'day': _('${day}'),
-        'day_hour_minute_month_year': _("${month} ${day} ${year} at ${hour} o'clock and ${minute} minutes"),
-        'day_hour_minute_month': _("${month} ${day} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_minute_month_year': _("${day} ${month} ${year} at ${hour} o'clock and ${minute} minutes"),
+        'day_hour_minute_month': _("${day} ${month} at ${hour} o'clock and ${minute} minutes"),
         'day_hour_minute': _("${day} at ${hour} o'clock and ${minute} minutes"),
-        'day_hour_month_year': _("${month} ${day} ${year} at ${hour} o'clock"),
-        'day_hour_month': _("${month} ${day} at ${hour} o'clock"),
+        'day_hour_month_year': _("${day} ${month} ${year} at ${hour} o'clock"),
+        'day_hour_month': _("${day} ${month} at ${hour} o'clock"),
         'day_hour': _("${day} at ${hour} o'clock")
     },
     'digital': {
-        'day_month_year': _('${month}/${day}/${year}'),
-        'day_month': _('${month}/${day}'),
+        'day_month_year': _('${day}/${month}/${year}'),
+        'day_month': _('${day}/${month}'),
         'month_year': _('${month}/${year}'),
         'month': _('${month}'),
         'year': _('${year}'),
         'day': _('${day}'),
-        'day_hour_minute_month_year': _('${month}/${day}/${year} ${hour}:${minute}'),
-        'day_hour_minute_month': _('${month}/${day} ${hour}:${minute}'),
+        'day_hour_minute_month_year': _('${day}/${month}/${year} ${hour}:${minute}'),
+        'day_hour_minute_month': _('${day}/${month} ${hour}:${minute}'),
         'day_hour_minute': _('${day} ${hour}:${minute}'),
-        'day_hour_month_year': _('${month}/${day}/${year} ${hour}:00'),
-        'day_hour_month': _('${month}/${day} ${hour}:00'),
+        'day_hour_month_year': _('${day}/${month}/${year} ${hour}:00'),
+        'day_hour_month': _('${day}/${month} ${hour}:00'),
         'day_hour_month': _('${day} ${hour}:00')
     }
 }
@@ -1071,10 +1070,10 @@ def generate_navbars(request, context, view_type='default', **args):
             args.get('global_action', []))
         actions_navbar['global-action'].extend(
             actions_navbar.pop('primary-action', []))
-
-    if 'text-action' in actions_navbar:
-        actions_navbar['text-action'].extend(
-            args.get('text_action', []))
+    
+    actions_navbar.setdefault('text-action', [])
+    actions_navbar['text-action'].extend(
+        args.get('text_action', []))
 
     if 'plus-action' in actions_navbar:
         actions_navbar['plus-action'].extend(
@@ -1250,21 +1249,21 @@ def render_files(files, request, template=FILE_TEMPLATE, navbar=False):
 
 
 def get_vote_actions(
-    context, request, activator_ids=[],
+    context, request, ballot_ids=[],
     process_discriminator='Vote process'):
     dace_ui_api = get_current_registry().getUtility(
         IDaceUIAPI, 'dace_ui_api')
     vote_actions = dace_ui_api.get_actions(
         [context], request,
         process_discriminator=process_discriminator)
-    if activator_ids:
+    if ballot_ids:
         vote_actions = [(va_context, va) for (va_context, va) in vote_actions
-                        if getattr(va.process, 'activator_id', None) in
-                        activator_ids]
+                        if getattr(va.process.ballot, 'group', {}).get('group_id', None) in
+                        ballot_ids]
 
     action_updated, messages, \
         resources, actions = dace_ui_api.update_actions(
-            request, vote_actions, True, False)
+            request, vote_actions, True, True, False)
     for action in list(actions):
         action['body'], action_resources = dace_ui_api.get_action_body(
             context, request, action['action'],
@@ -1277,26 +1276,56 @@ def get_vote_actions(
 
 def get_vote_actions_body(
     context, request,
-    activator_ids=[],
-    process_discriminator='Vote process',
-    kind='voteactions',
-    activate=True,
-    title=_('Votes')):
+    ballot_ids=[],
+    process_discriminator='Vote process'):
     actions, resources, messages, action_updated = get_vote_actions(
-        context, request, activator_ids, process_discriminator)
-    body = renderers.render(
-        VOTE_TEMPLATE,
-        {
-            'vote_actions': actions,
-            'kind': kind,
-            'activate': activate,
-            'context': context,
-            'title': title,
-            'json': json
-        },
-        request)
+        context, request, ballot_ids, process_discriminator)
+    avions_by_ballot = {}
+    groups = {}
+    for action in actions:
+        ballot = getattr(
+            getattr(action['action'], 'process', None),
+            'ballot', None)
+        if ballot:
+            ballot_group = getattr(ballot, 'group', DEFAULT_BALLOT_GROUP)
+            group_id = ballot_group.get('group_id')
+            groups.setdefault(group_id, ballot_group)
+            avions_by_ballot.setdefault(group_id, [])
+            avions_by_ballot[group_id].append(action)
+
+    bodies = ''
+    activators = []
+    oid = str(get_oid(context))
+    for group_id, ballot_actions in avions_by_ballot.items():
+        ballot_group = groups[group_id]
+        group_title = ballot_group.get('group_title')
+        group_activate = ballot_group.get('activate')
+        body = renderers.render(
+            VOTE_TEMPLATE,
+            {
+                'vote_actions': ballot_actions,
+                'group_id': group_id+'_'+oid,
+                'activate': group_activate,
+                'context': context,
+                'title': group_title,
+                'json': json
+            },
+            request)
+        bodies += body
+        activators.append({
+            'title': ballot_group.get('group_activator_title'),
+            'action_id': group_id+'_'+oid,
+            'class_css': ballot_group.get(
+                'group_activator_class_css'),
+            'style_picto': ballot_group.get(
+                'group_activator_style_picto'),
+            'order': ballot_group.get('group_activator_order')
+        })
+
+    activators = sorted(activators, key=lambda e: e['order'])
     return {
-        'body': body,
+        'body': bodies,
+        'activators': activators,
         'actions': actions,
         'resources': resources,
         'messages': messages,

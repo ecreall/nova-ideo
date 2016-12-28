@@ -55,13 +55,13 @@
                     <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>
                     <span tal:condition="diff_len == 1 and 'seconds' in diff">${diff['seconds']} <span i18n:translate="">second(s)</span></span>
                   </div>
-                  <span tal:condition="diff_len == 0" i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span> 
+                  <span tal:condition="diff_len == 0" i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">His/her intention:</span> 
                   <span tal:condition="getattr(comment, 'intention', None)" i18n:translate="" tal:content="comment.intention"/>
                 </div>
                 </div>
                 <div tal:condition="is_censored">
                  <div class="alert-terms-of-use" i18n:translate="">
-                  This content does not respect terms of use.
+                  This content does not respect the terms of use.
                  </div>
                 </div>
               <div tal:condition="not to_hide" tal:omit-tag="" >
@@ -217,7 +217,7 @@
               <small class="comment-author">
                 <a tal:attributes="href request.resource_url(current_user, '@@index')">${getattr(current_user, 'title', current_user.name)}</a><span class="comment-loading-icon ion-refreshing"></span>
                 <div class="comment-detail-container">
-                  <span i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">Her intention:</span>
+                  <span i18n:translate="">Now</span> - <span class="glyphicon glyphicon-question-sign"></span> <span i18n:translate="">His/her intention:</span>
                 </div>
               </small>
               <div class="object-text">

@@ -80,6 +80,17 @@ from novaideo import _, log
 from novaideo.content.ballot import Ballot
 
 
+VOTE_PUBLISHING_GROUP = {
+    'group_id': 'vote_submission',
+    'group_title': _('Vote for continuing to improve the proposal or not'),
+    'group_activate': True,
+    'group_activator_title': _('Vote for submission'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'glyphicon glyphicon-stats',
+    'group_activator_order': 80
+}
+
+
 def firs_alert(process, date):
     alert_date = datetime.timedelta(seconds=(date.total_seconds()/3) * 2) + \
         getattr(process, 'new_cycle_date', datetime.datetime.now())
@@ -171,7 +182,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         subjects = [proposal]
         ballot = Ballot('Referendum', electors, subjects, VP_DEFAULT_DURATION,
                         true_val=_("Submit the proposal as is"),
-                        false_val=_("Continue to improve the proposal"))
+                        false_val=_("Continue to improve the proposal"),
+                        group=VOTE_PUBLISHING_GROUP)
         working_group.addtoproperty('ballots', ballot)
         ballot.report.description = VOTE_PUBLISHING_MESSAGE
         ballot.title = _("Continue to improve the proposal or not")
@@ -193,7 +205,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
                             group_title=_('Work mode'),
                             group_values=modes,
-                            group_default=default_mode)
+                            group_default=default_mode,
+                            group=VOTE_PUBLISHING_GROUP)
             working_group.addtoproperty('ballots', ballot)
             ballot.title = _('Work modes')
             ballot.report.description = VOTE_MODEWORK_MESSAGE
@@ -205,7 +218,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
            'closed' in working_group.state:
             subjects = [working_group]
             ballot = Ballot('Referendum', electors,
-                            subjects, VP_DEFAULT_DURATION)
+                            subjects, VP_DEFAULT_DURATION,
+                            group=VOTE_PUBLISHING_GROUP)
             working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_REOPENING_MESSAGE
             ballot.title = _('Reopen the working group')
@@ -219,7 +233,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
                            key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
             ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
                             group_title=_('Duration of the amendment cycle'),
-                            group_default='One week')
+                            group_default='One week',
+                            group=VOTE_PUBLISHING_GROUP)
             working_group.addtoproperty('ballots', ballot)
             ballot.title = _('Duration of the amendment cycle')
             ballot.report.description = VOTE_DURATION_MESSAGE

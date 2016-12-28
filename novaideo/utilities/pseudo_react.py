@@ -298,12 +298,12 @@ def get_dirct_edit_entity_metadata(
 
 
 def get_subscribtion_metadata(action, request, context, api, **kwargs):
-    alert_msg = _("Vous n'êtes plus abonné à la discussion.")
+    alert_msg = _("You are not any more a susbscriber in the discussion")
     opposit_action = 'subscribe'
     removed = True
     if action.node_id == 'subscribe':
         removed = False
-        alert_msg = _('Vous êtes maintenant abonné à la discussion.')
+        alert_msg = _('You are now a subscriber in the discussion.')
         opposit_action = 'unsubscribe'
 
     opposit_actions = getAllBusinessAction(
@@ -367,12 +367,12 @@ def get_subscribtion_metadata(action, request, context, api, **kwargs):
 
 def get_selection_metadata(action, request, context, api, **kwargs):
     opposit_action = 'select'
-    alert_msg = _('${context} ne fait maintenant plus partie de vos suivis.',
+    alert_msg = _('${context} is not any more part of the content that you follow.',
                   mapping={'context': context.title})
     objects_to_hide = []
     if action.node_id == 'select':
         opposit_action = 'deselect'
-        alert_msg = _('${context} fait maintenant partie de vos suivis.',
+        alert_msg = _('${context} is now part of the content that you follow.',
                       mapping={'context': context.title})
     else:
         view_name = 'seemyselections'
@@ -431,13 +431,13 @@ def get_support_metadata(action, request, context, api, **kwargs):
     objects_to_hide = []
     alert_msg = None
     if node_id == 'oppose':
-        alert_msg = _('Vous êtes maintenant opposé au contenu ${context}.',
+        alert_msg = _('You are now opposed to the content ${context}.',
                       mapping={'context': context.title})
     elif node_id == 'support':
-        alert_msg = _('Vous soutenez maintenant le contenu ${context}.',
+        alert_msg = _('Now you support the content ${context}.',
                       mapping={'context': context.title})
     elif node_id == 'withdraw_token':
-        alert_msg = _('Votre jeton est bien récupéré du contenu ${context}.',
+        alert_msg = _('Your token has been recovered from content ${context}.',
                       mapping={'context': context.title})
 
     localizer = request.localizer
@@ -553,7 +553,7 @@ def get_remove_comment_metadata(action, request, context, api, **kwargs):
                 'action_title': request.localizer.translate(action.title),
                 'action_icon': getattr(action, 'style_picto', ''),
                 'alert_msg': request.localizer.translate(
-                    _('Le commentaire est maintenant supprimé.')),
+                    _('The comment has now been suppressed.')),
                 'alert_type': 'success'
             })
     result['object_views_to_update'] = [
@@ -667,7 +667,7 @@ def get_respond_metadata(action, request, context, api, **kwargs):
 def get_tranform_into_idea_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("Le commentaire a bien été tranformé en une idée."),
+        _("The commet has been transformed into an idea."),
         **kwargs)
     result['counters-to-update'] = [
         'component-navbar-mycontents',
@@ -724,7 +724,7 @@ def get_withdraw_user_metadata(action, request, context, api, **kwargs):
                     redirect_url = view_result.headers['location']
 
     if executed:
-        alert_msg = _("Le membre ${context} est bien retiré de l'organisation.",
+        alert_msg = _("The member ${context} has been withdrawn from the organisation.",
                       mapping={'context': context.title})
     result = {
         'action': 'redirect_action',
@@ -744,7 +744,7 @@ def get_comment_pin_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le commentaire a bien été épinglé."),
+        _("The comment has been pinned down."),
         **kwargs)
     contextoid = str(get_oid(context, None))
     result['object_views_to_update'] = [
@@ -758,7 +758,7 @@ def get_comment_unpin_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le commentaire a bien été détaché."),
+        _("The comment has been detached."),
         **kwargs)
     contextoid = str(get_oid(context, None))
     result['object_views_to_update'] = [
@@ -800,7 +800,7 @@ def get_remove_invitation_metadata(action, request, context, api, **kwargs):
         'view_name': view_name,
     }
     result['alert_msg'] = request.localizer.translate(
-        _("L'invitation a bien été supprimée."))
+        _("The invitation has been suppressed."))
     result['alert_type'] = 'success'
     return result
 
@@ -808,7 +808,7 @@ def get_remove_invitation_metadata(action, request, context, api, **kwargs):
 def get_edit_invitation_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("L'invitation a bien été modifiée."),
+        _("The invitation has been modified."),
         'seeinvitations', **kwargs)
     return result
 
@@ -816,7 +816,7 @@ def get_edit_invitation_metadata(action, request, context, api, **kwargs):
 def get_remind_invitation_metadata(action, request, context, api, **kwargs):
     return get_dirct_edit_entity_metadata(
         action, request, context, api,
-         _("L'invité ${context} a bien été rappelé.",
+         _("The invitee ${context} has been reminded.",
           mapping={'context': context.first_name + ' ' + context.last_name}),
         'seeinvitations', **kwargs)
 
@@ -824,7 +824,7 @@ def get_remind_invitation_metadata(action, request, context, api, **kwargs):
 def get_refuse_invitation_metadata(action, request, context, api, **kwargs):
     return get_dirct_edit_entity_metadata(
         action, request, context, api,
-         _("L'invité ${context} a bien été réfusée.",
+         _("The invitee ${context} has been refused.",
           mapping={'context': context.first_name + ' ' + context.last_name}),
         'seeinvitations', **kwargs)
 
@@ -833,7 +833,7 @@ def get_report_entity_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le contenu a bien été signalé."),
+        _("The content has been reported as potentially contrary to the Moderation rules."),
         **kwargs)
     if result.get('is_excuted'):
         context_id = str(get_oid(context, None))
@@ -850,7 +850,7 @@ def get_ignore_entity_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Les signalisations ont bien été ignorées."),
+        _("The reports have been ignored."),
         **kwargs)
     if result.get('is_excuted'):
         context_id = str(get_oid(context, None))
@@ -867,7 +867,7 @@ def get_censor_entity_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le contenu a bien été censuré."),
+        _("The content has been censored."),
         **kwargs)
     if result.get('is_excuted'):
         source_view_name = kwargs.get('view_name', '')
@@ -895,7 +895,7 @@ def get_restor_entity_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le contenu a bien été restoré."),
+        _("The content has been restored."),
         **kwargs)
     if result.get('is_excuted'):
         context_id = str(get_oid(context, None))
@@ -915,23 +915,23 @@ def get_restor_entity_metadata(action, request, context, api, **kwargs):
 def get_remind_registration_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request, context, api,
-        _("L'inscrit ${context} a bien été rappelé.",
-        mapping={'context': context.first_name + ' ' + context.last_name}),
+        _("The registered person ${context} has been reminded.",
+        mapping={'context': getattr(context, 'title', context.__name__)}),
         'seeregistrations', **kwargs)
 
 
 def get_accept_registration_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request, context, api,
-        _("L'inscription de ${context} a bien été accepter.",
-          mapping={'context': context.first_name + ' ' + context.last_name}),
+        _("The registration of ${context} has been accepted.",
+          mapping={'context': getattr(context, 'title', context.__name__)}),
         'seeregistrations', **kwargs)
 
 
 def get_remove_registration_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("L'inscription a bien été supprimée."),
+        _("The registration has been suppressed."),
         'seeregistrations', **kwargs)
     user = kwargs.get('user', None)
     registrations = find_entities(
@@ -957,14 +957,14 @@ def get_edit_folder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le dossier a bien été modifié."),
+        _("The center of interest has been modified."),
         **kwargs)
 
 
 def get_remove_folder_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("Le dossier a bien été supprimé."),
+        _("The center of interest has been suppressed."),
         **kwargs)
     result['ignore_redirect'] = not kwargs['is_source_context']
     return result
@@ -974,7 +974,7 @@ def get_publish_folder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le dossier a bien été publié."),
+        _("The center of interest has been published."),
         **kwargs)
 
 
@@ -982,7 +982,7 @@ def get_archive_folder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le dossier a bien été retiré."),
+        _("The center of interest has been withdrawn."),
         **kwargs)
 
 
@@ -990,7 +990,7 @@ def get_add_subfolder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le sous dossier a bien été ajouté."),
+        _("The sub-center of interest has been added."),
         **kwargs)
 
 
@@ -1000,7 +1000,7 @@ def get_archive_idea_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("L'idée a bien été archivée."),
+        _("The idea has been archived."),
         **kwargs)
     source_view_name = kwargs.get('view_name', '')
     view_name = 'seemycontents'
@@ -1020,7 +1020,7 @@ def get_submit_idea_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("L'idée a bien été soumise à modération."),
+        _("The idea has been submitted to moderation."),
         **kwargs)
 
 
@@ -1028,7 +1028,7 @@ def get_publish_idea_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("L'idée a bien été publiée."),
+        _("The idea has been published."),
         **kwargs)
 
 
@@ -1036,7 +1036,7 @@ def get_opinion_idea_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("L'idée a bien été examinée."),
+        _("The idea has been examined."),
         **kwargs)
     result['counters-to-update'] = [
         'component-navbar-mysupports'
@@ -1048,7 +1048,7 @@ def get_edit_idea_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("L'idée a bien été modifiée."),
+        _("The idea has been modified."),
         **kwargs)
 
 
@@ -1056,7 +1056,7 @@ def get_dirct_archive_idea_metadata(action, request, context, api, **kwargs):
     result = get_dirct_edit_entity_metadata(
         action, request,
         context, api,
-        _("L'idée a bien été archivée."),
+        _("The idea has been archived."),
         **kwargs)
     source_view_name = kwargs.get('view_name', '')
     view_name = 'seemycontents'
@@ -1071,7 +1071,7 @@ def get_dirct_recuperate_idea_metadata(action, request, context, api, **kwargs):
     return get_dirct_edit_entity_metadata(
         action, request,
         context, api,
-        _("L'idée a bien été récupérée."),
+        _("The idea has been recovered."),
         **kwargs)
 
 
@@ -1079,14 +1079,14 @@ def get_dirct_edit_idea_metadata(action, request, context, api, **kwargs):
     return get_dirct_edit_entity_metadata(
         action, request,
         context, api,
-        _("L'idée a bien été modifiée."),
+        _("The idea has been modified."),
         **kwargs)
 
 
 def get_remove_idea_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("L'idée a bien été supprimée."),
+        _("The idea has been suppressed."),
         **kwargs)
     result['ignore_redirect'] = not kwargs['is_source_context']
     result['counters-to-update'] = [
@@ -1098,7 +1098,7 @@ def get_remove_idea_metadata(action, request, context, api, **kwargs):
 def get_create_idea_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("L'idée a bien été créée."),
+        _("The idea has been created."),
         **kwargs)
     result['counters-to-update'] = [
         'component-navbar-mycontents',
@@ -1114,7 +1114,7 @@ def get_submit_proposal_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("La proposition a bien été soumise à modération."),
+        _("The proposal has been submitted to moderation."),
         **kwargs)
 
 
@@ -1122,7 +1122,7 @@ def get_publish_proposal_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("La modération a bien été publiée."),
+        _("The content submitted to moderation has been published."),
         **kwargs)
 
 
@@ -1130,7 +1130,7 @@ def get_archive_proposal_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("La modération a bien été archivée."),
+        _("The content submitted to moderation has been archived."),
         **kwargs)
 
 
@@ -1138,7 +1138,7 @@ def get_opinion_proposal_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("La proposition a bien été examinée."),
+        _("The proposal has been examined."),
         **kwargs)
     result['counters-to-update'] = [
         'component-navbar-mysupports'
@@ -1150,14 +1150,14 @@ def get_publish_proposal_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("La proposition a bien été publiée."),
+        _("The proposal has been published."),
         **kwargs)
 
 
 def get_remove_proposal_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("La proposition a bien été supprimée."),
+        _("The proposal has been suppressed."),
         **kwargs)
     result['ignore_redirect'] = not kwargs['is_source_context']
     result['counters-to-update'] = [
@@ -1171,10 +1171,10 @@ def get_participate_proposal_metadata(action, request, context, api, **kwargs):
     working_group = getattr(context, 'working_group', None)
     msg = ''
     if user in working_group.wating_list:
-        msg = _("Vous êtes maintenant sur la liste d'attente.")
+        msg = _("You are now on the waiting list.")
 
     if user in working_group.members:
-        msg = _("Vous êtes maintenant membre du groupe de travail.")
+        msg = _("You are now a member of the Working Group.")
 
     result = get_dirct_edit_entity_metadata(
         action, request, context, api,
@@ -1195,7 +1195,7 @@ def get_correctitem_proposal_metadata(action, request, context, api, **kwargs):
                     for c in context.corrections.keys())
     result = get_dirct_edit_entity_metadata(
         action, request, context, api,
-        _("Votre validation est bien pris en compte"),
+        _("Your validation has been registered."),
         **kwargs)
 
     if not inprocess:
@@ -1214,7 +1214,7 @@ def get_correctitem_proposal_metadata(action, request, context, api, **kwargs):
 def get_resign_proposal_metadata(action, request, context, api, **kwargs):
     result = get_dirct_edit_entity_metadata(
         action, request, context, api,
-        _("Vous n'êtes plus maintenant membre du groupe de travail."),
+        _("You are not any more a member of the Working Group."),
         **kwargs)
     result['counters-to-update'] = [
         'component-navbar-mycontents',
@@ -1233,7 +1233,7 @@ def get_addfiles_proposal_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Les fichiers ont bien été ajoutés dans l'espace de  travail."),
+        _("The files have been added in the working space."),
         **kwargs)
 
 
@@ -1241,7 +1241,7 @@ def get_removefile_ws_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le fichier à bien été supprimé de l'espace de  travail."),
+        _("The file has been suppressed from the working space."),
         **kwargs)
     result['ignore_redirect'] = True
     return result
@@ -1251,7 +1251,7 @@ def get_attachfiles_proposal_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Les fichiers ont bien été attachés à la proposition."),
+        _("The files have been attached to the proposal."),
         **kwargs)
 
 #Organizations
@@ -1267,12 +1267,10 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
         if view_result:
             if isinstance(view_result, HTTPFound) or view_result is nothing:
                 alert_msg = _(
-                    "Les données associées à l'organisation "
-                    "de l'utilisateur ${context} ont bien été"
-                    " modifiées.",
+                    "The information associated to the organisation "
+                    "of the user ${context} have been modified.",
                     mapping={
-                        'context': context.first_name + ' ' + \
-                        context.last_name})
+                        'context': getattr(context, 'title', context.__name__)})
                 source_context = kwargs.get('source_context', None)
                 oid = get_oid(context, None)
                 object_views_to_update = [
@@ -1285,11 +1283,9 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
                         objects_to_hide = [
                             'listing_'+str(get_oid(context, None))]
                         alert_msg = _(
-                            "L'utilisateur ${context} a bien"
-                            " changé d'organisation.",
+                            "The user ${context} has changed his/her organisation.",
                             mapping={
-                                'context': context.first_name + \
-                                ' ' + context.last_name})
+                                'context': getattr(context, 'title', context.__name__)})
 
                 if isinstance(view_result, HTTPFound):
                     redirect_url = view_result.headers['location']
@@ -1314,14 +1310,14 @@ def get_edit_organization_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Les données de l'organisation"" ont été mis à jour."),
+        _("The data relating to the organisation have been updated."),
         **kwargs)
 
 
 def get_remove_organization_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("L'organisation a bien été supprimée."),
+        _("The organisation has been suppressed."),
         'seeorganizations', **kwargs)
     user = kwargs.get('user', None)
     registrations = find_entities(
@@ -1343,7 +1339,7 @@ def get_assigne_roles_user_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le rôle de l'utilisateur a bien été modifié."),
+        _("The role of the user has been modified."),
         **kwargs)
 
 
@@ -1351,7 +1347,7 @@ def get_update_processes_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Les processus sont bien mis à jour."),
+        _("The processes have been updated."),
         **kwargs)
 
 #Files
@@ -1360,7 +1356,7 @@ def get_publish_file_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le fichier a bien été publié."),
+        _("The file has been published."),
         **kwargs)
 
 
@@ -1368,7 +1364,7 @@ def get_private_file_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le fichier a bien été privatisé."),
+        _("The file has been made private."),
         **kwargs)
 
 #Counters
@@ -1534,7 +1530,7 @@ def person_proposals_counter(action, request, context, api, **kwargs):
         objects = list(filter(lambda o: can_access(source_context, o) and
                                    'archived' not in o.state,
                          getattr(user, 'proposals', [])))
-    title = _('Her working groups (${nb})', mapping={'nb': len(objects)})
+    title = _('His/her working groups (${nb})', mapping={'nb': len(objects)})
     result = {
         'person-proposals-counter.title': request.localizer.translate(title),
     }
@@ -1551,7 +1547,7 @@ def person_ideas_counter(action, request, context, api, **kwargs):
         objects = list(filter(lambda o: can_access(source_context, o) and
                                         'archived' not in o.state,
                               getattr(user, 'ideas', [])))
-    title = _('Her ideas (${nb})', mapping={'nb': len(objects)})
+    title = _('His/her ideas (${nb})', mapping={'nb': len(objects)})
     result = {
         'person-ideas-counter.title': request.localizer.translate(title),
         }

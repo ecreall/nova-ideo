@@ -210,7 +210,7 @@ def seeindeas_roles_validation(process, context):
 
 
 def seeindeas_processsecurity_validation(process, context):
-    return 'idea' in getattr(context, 'content_to_examine', [] ) and\
+    return 'idea' in getattr(context, 'content_to_examine', []) and\
            global_user_processsecurity()
 
 
@@ -230,11 +230,11 @@ class SeeIdeasToExamine(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
-def seeindeasm_roles_validation(process, context):
+def seeideasm_roles_validation(process, context):
     return has_role(role=('Moderator', ))
 
 
-def seeindeasm_processsecurity_validation(process, context):
+def seeideasm_processsecurity_validation(process, context):
     return getattr(context, 'moderate_ideas', False) and\
            global_user_processsecurity()
 
@@ -245,8 +245,8 @@ class SeeIdeasToModerate(InfiniteCardinality):
     style_order = -5
     isSequential = False
     context = INovaIdeoApplication
-    roles_validation = seeindeasm_roles_validation
-    processsecurity_validation = seeindeasm_processsecurity_validation
+    roles_validation = seeideasm_roles_validation
+    processsecurity_validation = seeideasm_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return {}
@@ -266,7 +266,7 @@ class SeeProposalsToModerate(InfiniteCardinality):
     style_order = -3
     isSequential = False
     context = INovaIdeoApplication
-    roles_validation = seeindeasm_roles_validation
+    roles_validation = seeideasm_roles_validation
     processsecurity_validation = seepropm_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
@@ -286,7 +286,7 @@ class SeeReportedContents(InfiniteCardinality):
     style_order = -6
     isSequential = False
     context = INovaIdeoApplication
-    roles_validation = seeindeasm_roles_validation
+    roles_validation = seeideasm_roles_validation
     processsecurity_validation = seereported_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):

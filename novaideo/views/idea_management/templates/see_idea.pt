@@ -19,7 +19,7 @@
         data-icon="${icon}"
         data-img=""
       >
-      <span class="icon ${icon}"></span> ${idea.title}
+      <span tal:omit-tag="" tal:condition="not (is_censored and to_hide)"><span class="icon ${icon}"></span> ${idea.title}</span>
     </h3>
     <div class="object-description"
       tal:define="author idea.author;
@@ -48,7 +48,7 @@
   </div>
   <div tal:condition="is_censored">
    <div class="alert-terms-of-use" i18n:translate="">
-    This content does not respect terms of use.
+    This content does not respect the terms of use.
    </div>
   </div>
   <div tal:condition="not to_hide">

@@ -22,7 +22,7 @@ from novaideo import _
     )
 class RemoveInvitationView(BasicView):
 
-    title = _('Remove invitation')
+    title = _('Remove the invitation')
     behaviors = [RemoveInvitation]
     name = 'remove_invitation'
 

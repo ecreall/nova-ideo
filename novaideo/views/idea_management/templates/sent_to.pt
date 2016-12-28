@@ -15,7 +15,7 @@
                      external_len len(external_members)" 
          i18n:domain="novaideo">
       <div tal:condition="platform_members">
-          <span i18n:translate="">The content has been sent:</span>
+          <span i18n:translate="">The content has been sent to:</span>
           <div class="working-group-section">
             <tal:loop repeat="m platform_members">
                       <a tal:attributes="href request.resource_url(m, '@@index')"

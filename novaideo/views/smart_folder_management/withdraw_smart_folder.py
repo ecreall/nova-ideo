@@ -55,7 +55,7 @@ class WithdrawSmartFolderView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class WithdrawSmartFolderViewMultipleView(MultipleView):
-    title = _('Withdraw the smart folder')
+    title = _('Withdraw the center of interest')
     name = 'withdrawsmartfolder'
     viewid = 'withdrawsmartfolder'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

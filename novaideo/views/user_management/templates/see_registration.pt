@@ -13,7 +13,11 @@
         <strong>${getattr(registration, 'title', registration.name)}</strong> 
         <small style="color: #d43f3a" tal:condition="registration.is_expired" >(<span i18n:translate="">Expired</span>)</small>
     </h4>
-      <dl class="dl-horizontal well well-sm film-data">
+      <dl class="dl-horizontal">
+        <dt i18n:translate="">First name</dt>
+        <dd><span tal:replace="registration.first_name"/></dd>
+        <dt i18n:translate="">Last name</dt>
+        <dd><span tal:replace="registration.last_name"/></dd>
         <dt i18n:translate="">Email</dt>
         <dd tal:define="mail getattr(registration, 'email', '')">
           <a href="mailto:${mail}">${mail}</a>

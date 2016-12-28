@@ -22,7 +22,7 @@ from novaideo import _
     )
 class ReinviteUserView(BasicView):
 
-    title = _('Reinvite user')
+    title = _('Re-invite the users')
     behaviors = [ReinviteUser]
     name = 'reinvite_user'
 

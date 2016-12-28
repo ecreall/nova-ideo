@@ -140,7 +140,7 @@ def sort_by_tokens(objects, reverse=False, is_oppose=False):
 
 @sort_config(
     name='nbsupport',
-    title=_('Number of support'),
+    title=_('Number of support tokens'),
     contents=['proposal', 'idea'],
     order=3
 )
@@ -170,7 +170,7 @@ class NumberSupport(object):
 
 @sort_config(
     name='nboppose',
-    title=_('Number of oppose'),
+    title=_('Number of opposition tokens'),
     contents=['proposal', 'idea'],
     order=4
 )

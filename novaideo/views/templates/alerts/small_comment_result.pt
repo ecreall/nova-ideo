@@ -19,21 +19,21 @@
 			  <div 
 			     tal:condition="not is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-			    <span>${author or 'Une personne'} a commenté la contribution <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}">
+			    <span i18n:translate="" >${author or 'Une personne'} a commenté la contribution <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}">
 			    	<span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.
 			    </span>
 			  </div>
 			  <div 
 			     tal:condition="is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-			    <span>${author or 'Une personne'} a répondu à votre commentaire concernant la contribution <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.</span>
+			    <span i18n:translate="" >${author or 'Une personne'} a répondu à votre commentaire concernant la contribution <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.</span>
 			  </div>
 		  </div>
 		  <div tal:condition="comment_kind == 'discuss'">  
 			  <div 
 			     tal:condition="not is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-			    <span>${author or 'Une personne'} a ajouté un message à votre discussion <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}">
+			    <span i18n:translate="" >${author or 'Une personne'} a ajouté un message à votre discussion <a href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}">
 			    	<span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.
 			    </span>
 			  </div>
@@ -47,13 +47,13 @@
 			  <div 
 			     tal:condition="not is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-			    <span>${author or 'Une personne'} a ajouté un message à la discussion générale.
+			    <span i18n:translate="" >${author or 'Une personne'} a ajouté un message à la discussion générale.
 			    </span>
 			  </div>
 			  <div 
 			     tal:condition="is_respons">
 			    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-			    <span>${author or 'Une personne'} a répondu à votre commentaire.</span>
+			    <span i18n:translate="" >${author or 'Une personne'} a répondu à votre commentaire.</span>
 			  </div>
 		  </div>
 	    </div>

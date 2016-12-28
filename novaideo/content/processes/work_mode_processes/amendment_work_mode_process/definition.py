@@ -46,6 +46,17 @@ from novaideo import _
 from novaideo.content.ballot import Ballot
 
 
+VOTE_AMENDMENT_GROUP = {
+    'group_id': 'vote_amendments',
+    'group_title': _('Vote on amendments'),
+    'group_activate': True,
+    'group_activator_title': _('Vote on amendments'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'glyphicon glyphicon-stats',
+    'group_activator_order': 80
+}
+
+
 def eg4_votingamendments_condition(process):
     proposal = process.attachedTo.process.execution_context.created_entity(
         'proposal')
@@ -127,7 +138,8 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
         working_group.amendments_ballots = PersistentList()
         for index, group in enumerate(groups):
             ballot = Ballot('MajorityJudgment', electors,
-                            group, AMENDMENTS_VOTE_DEFAULT_DURATION)
+                            group, AMENDMENTS_VOTE_DEFAULT_DURATION,
+                            group=VOTE_AMENDMENT_GROUP)
             working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_AMENDMENTS_MESSAGE
             ballot.title = _('Vote on amendments (group ${nbi})',

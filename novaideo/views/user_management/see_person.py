@@ -75,7 +75,7 @@ class ContentView(BasicView):
 
 
 class IdeasView(ContentView):
-    title = _('Her ideas (${nb})')
+    title = _('His/her ideas (${nb})')
     content_attr = 'ideas'
     content_type = 'idea'
     viewid = 'person-ideas'
@@ -86,7 +86,7 @@ class IdeasView(ContentView):
 
 
 class ProposalsView(ContentView):
-    title = _('Her working groups (${nb})')
+    title = _('His/her working groups (${nb})')
     content_attr = 'proposals'
     content_type = 'proposal'
     viewid = 'person-proposals'

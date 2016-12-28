@@ -36,7 +36,7 @@ $(document).on('submit','.analytics-form', function( event ) {
         var url = $(event.target).data('url');
         $(button).addClass('disabled');
         var values = $(this).serialize()+'&'+button.val()+'='+button.val();
-        $(parent.find('.analytics-container .loading-indicator')).removeClass('hide-bloc')
+        loading_progress()
         $.post(url, values, function(data){
             if (data){
                 $(parent.find('#chart-script')).html(data['body']);
@@ -60,7 +60,7 @@ $(document).on('submit','.analytics-form', function( event ) {
                 }
             };
             $(button).removeClass('disabled');
-            $(parent.find('.analytics-container .loading-indicator')).addClass('hide-bloc')
+            finish_progress()
         });
         event.preventDefault();
 });

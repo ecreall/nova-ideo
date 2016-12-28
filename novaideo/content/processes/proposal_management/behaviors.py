@@ -188,13 +188,17 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
     members = working_group.members
     mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
     revoke_roles(user, (('Participant', context),))
+    subject_data = get_entity_data(context, 'subject', request)
     if members:
+        alert_data = get_user_data(user, 'participant', request)
+        alert_data.update(get_entity_data(user, 'participant', request))
+        alert_data.update(subject_data)
         alert(
             'internal', [root], members,
             internal_kind=InternalAlertKind.working_group_alert,
-            subjects=[context], alert_kind=kind)
+            subjects=[context], alert_kind=kind,
+            **alert_data)
 
-    subject_data = get_entity_data(context, 'subject', request)
     sender = root.get_site_sender()
     if working_group.wating_list:
         def _get_next_user(users):
@@ -216,7 +220,8 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
             if members:
                 alert('internal', [root], members,
                       internal_kind=InternalAlertKind.working_group_alert,
-                      subjects=[context], alert_kind='wg_wating_list_participation')
+                      subjects=[context],
+                      alert_kind='wg_wating_list_participation')
 
             if getattr(next_user, 'email', ''):
                 subject = mail_template['subject'].format(
@@ -1173,10 +1178,10 @@ class Resign(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
-    style_interaction_type = 'direct'
     style_order = 2
     style_picto = 'typcn typcn-user-delete'
     style_css_class = 'btn-danger'
+    submission_title = _('Continue')
     isSequential = False
     context = IProposal
     roles_validation = resign_roles_validation
@@ -1654,6 +1659,7 @@ class SubmitProposal(ElementaryAction):
             context.state = PersistentList(['published', 'submitted_support'])
 
         working_group.state = PersistentList(['archived'])
+        working_group.setproperty('wating_list', [])
         members = working_group.members
         for member in members:
             token = Token(title='Token_'+context.title)

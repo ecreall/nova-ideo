@@ -26,7 +26,7 @@ from novaideo import _
     )
 class EditInvitationView(FormView):
 
-    title = _('Edit invitation')
+    title = _('Edit the invitation')
     schema = select(InvitationSchema(editable=True),
                     ['title',
                      'user_title',

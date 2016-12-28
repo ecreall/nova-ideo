@@ -22,9 +22,9 @@ from novaideo.utilities.util import (
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""No smart folder found"""),
-    '1': _(u"""One smart folder found"""),
-    '*': _(u"""${nember} smart folders found""")
+    '0': _(u"""No registered interest found"""),
+    '1': _(u"""One registered interest found"""),
+    '*': _(u"""${nember} registered interests found""")
 }
 
 

@@ -27,7 +27,8 @@ novaideoI18n = {
   "assciation": "assciation",
   "assciations": "assciations",
   "Save": "Save",
-  "Cancel": "Cance"
+  "Cancel": "Cance",
+  "Your vote has been validated": "Your vote has been validated"
 },
 
 'fr':{
@@ -57,7 +58,8 @@ novaideoI18n = {
   "assciation": "assciation",
   "assciations": "assciations",
   "Save": "Enregistrer",
-  "Cancel": "Annuler"
+  "Cancel": "Annuler",
+  "Your vote has been validated": "Votre vote a été validé"
 }
 }
 

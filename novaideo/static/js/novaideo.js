@@ -130,6 +130,10 @@ function send_vote(event){
           panel.remove()
           $('#'+modal.data('source')).data('body', JSON.stringify(source_body.html()))
           var votes = $(group.find('.panel-title.collapsed'))
+          alert_component({
+            alert_msg: novaideo_translate("Your vote has been validated"),
+            alert_type: 'success'
+          })
           if(votes.length>0){
             $(votes.first()).click()
             finish_progress()

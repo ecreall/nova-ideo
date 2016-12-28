@@ -170,7 +170,8 @@ class CrateAndPublishAsProposal(CrateAndPublish):
     submission_title = _('Create a working group')
 
     def start(self, context, request, appstruct, **kw):
-        result = super(CrateAndPublishAsProposal, self).start(context, request, appstruct, **kw)
+        result = super(CrateAndPublishAsProposal, self).start(
+            context, request, appstruct, **kw)
         root = getSite()
         state = result.get('state', False)
         if state:

@@ -55,7 +55,7 @@ class PublishSmartFolderView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PublishSmartFolderViewMultipleView(MultipleView):
-    title = _('Publish the smart folder')
+    title = _('Publish the center of interest')
     name = 'publishsmartfolder'
     viewid = 'publishsmartfolder'
     template = 'daceui:templates/simple_mergedmultipleview.pt'

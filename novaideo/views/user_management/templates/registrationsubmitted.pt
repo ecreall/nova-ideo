@@ -1,9 +1,9 @@
 <div i18n:domain="novaideo" tal:define="moderate_registration getattr(request.root, 'moderate_registration', False)">
 	<p i18n:translate="" tal:condition="not moderate_registration">
-		Thank you for registering. A confirmation e-mail has been sent to you. Please click on the link in the email in order to complete your registration.
+		Thank you for having registered. A confirmation e-mail has been sent to you. Please click on the link in the email in order to complete your registration.
 	</p>
 
 	<p i18n:translate="" tal:condition="moderate_registration">
-		Merci de vous avoir inscrit à la plateforme. Votre inscription est soumise à modération. Une fois acceptée un courriel de confirmation vous sera envoyé. Merci de cliquer sur le lien présent dans le courriel pour compléter votre inscription.
+		Thank you for having registered. Your registration is submitted to verification - to check that a given natural person can only be registered once. Once your registration has been verified, a confirmation e-mail will be sent to you. Please click on the link in the email in order to complete your registration.
 	</p>
 </div>

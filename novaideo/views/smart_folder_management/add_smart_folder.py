@@ -27,7 +27,7 @@ from novaideo import _
     )
 class AddSmartFolderView(FormView):
 
-    title = _('Add smart folder')
+    title = _('Create a center of interest')
     schema = select(SmartFolderSchema(factory=SmartFolder, editable=True),
                     ['title',
                      'description',

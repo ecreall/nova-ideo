@@ -11,18 +11,29 @@ from zope.interface import implementer
 
 from substanced.content import content
 from substanced.util import renamer, get_oid
-from dace.objectofcollaboration.principal.util import grant_roles
 from dace.objectofcollaboration.entity import Entity
 from dace.util import find_service, get_obj
 from dace.descriptors import (
-        CompositeUniqueProperty,
-        CompositeMultipleProperty,
-        SharedUniqueProperty,
-        SharedMultipleProperty)
+    CompositeUniqueProperty,
+    CompositeMultipleProperty,
+    SharedUniqueProperty,
+    SharedMultipleProperty)
 from pontus.core import VisualisableElement
 
 from .interface import IVote, IBallotType, IReport, IBallot, IBallotBox
 from novaideo import _
+
+
+DEFAULT_BALLOT_GROUP = {
+    'group_id': 'ballotid',
+    'group_title': _('Votes'),
+    'group_activate': False,
+    'group_activator_title': _('Vote'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'glyphicon glyphicon-stats',
+    'group_activator_order': 100
+}
+
 
 @content(
     'referendumvote',
@@ -54,7 +65,7 @@ class Referendum(object):
         self.false_val = kwargs.get('false_val', _('In favour'))
         self.true_val = kwargs.get('true_val', _('Against'))
 
-    def run_ballot(self, context=None, id_=None):
+    def run_ballot(self, context=None):
         """Run referendum election processes for all electors"""
 
         processes = []
@@ -66,7 +77,6 @@ class Referendum(object):
 
         proc = pd()
         proc.__name__ = proc.id
-        proc.activator_id = id_
         runtime.addtoproperty('processes', proc)
         proc.defineGraph(pd)
         proc.execution_context.add_involved_entity('subject', context)
@@ -139,7 +149,7 @@ class MajorityJudgment(object):
         self.report = report
         self.judgments = DEFAULT_JUDGMENTS
 
-    def run_ballot(self, context=None, id_=None):
+    def run_ballot(self, context=None):
         """Run MajorityJudgment election processes for all electors"""
 
         processes = []
@@ -151,7 +161,6 @@ class MajorityJudgment(object):
 
         proc = pd()
         proc.__name__ = proc.id
-        proc.activator_id = id_
         runtime.addtoproperty('processes', proc)
         proc.defineGraph(pd)
         proc.execution_context.add_involved_entity('subject', context)
@@ -237,7 +246,7 @@ class FPTP(object):
         self.group_values = kwargs.get('group_values', None)
         self.group_default = kwargs.get('group_default', None)
 
-    def run_ballot(self, context=None, id_=None):
+    def run_ballot(self, context=None):
         """Run FPTP election processes for all electors"""
 
         processes = []
@@ -249,7 +258,6 @@ class FPTP(object):
 
         proc = pd()
         proc.__name__ = proc.id
-        proc.activator_id = id_
         runtime.addtoproperty('processes', proc)
         proc.defineGraph(pd)
         proc.execution_context.add_involved_entity('subject', context)
@@ -359,7 +367,7 @@ class RangeVoting(object):
         self.subject_type_manager = SUBJECT_TYPES_MANAGER.get(self.subject_type,
                                                               None)
 
-    def run_ballot(self, context=None, id_=None):
+    def run_ballot(self, context=None):
         """Run range voting processes for all electors"""
         processes = []
         def_container = find_service('process_definition_container')
@@ -370,7 +378,6 @@ class RangeVoting(object):
 
         proc = pd()
         proc.__name__ = proc.id
-        proc.activator_id = id_
         runtime.addtoproperty('processes', proc)
         proc.defineGraph(pd)
         proc.execution_context.add_involved_entity('subject', context)
@@ -476,9 +483,11 @@ class Ballot(VisualisableElement, Entity):
         self.run_at = None
         self.duration = duration
         self.finished_at = None
+        self.group = kwargs.get(
+            'group', DEFAULT_BALLOT_GROUP)
 
-    def run_ballot(self, context=None, id_=None):
+    def run_ballot(self, context=None):
         """Run the ballot"""
         self.run_at = datetime.datetime.now(tz=pytz.UTC)
         self.finished_at = self.run_at + self.duration
-        return self.report.ballottype.run_ballot(context, id_)
+        return self.report.ballottype.run_ballot(context)

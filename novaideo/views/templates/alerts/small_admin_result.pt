@@ -7,7 +7,7 @@
   <div tal:define="subject object.subjects[0]"
     class="alert-item ${new_alert and 'new-alert'}">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-    <span tal:condition="alert_kind == 'new_registration'">
+    <span i18n:translate="" tal:condition="alert_kind == 'new_registration'">
       Une nouvelle inscription vient d'être ajoutée. L'inscription est visible sous <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
     </span>
   </div>
