@@ -63,6 +63,43 @@ class DetailProposalView(BasicView):
 
         return title, description, text, add_filigrane
 
+    def _cant_participate(self, actions, user, root):
+        cant_participate = not any(a.behavior_id == 'participate'
+                                   for a in actions.get('wg-action', []))
+        if cant_participate:
+            working_group = self.context.working_group
+            if not working_group:
+                return _("The working group is closed")
+
+            is_active_user = 'active' in getattr(user, 'state', [])
+            if not is_active_user:
+                return None
+
+            active_working_groups = getattr(user, 'active_working_groups', [])
+            is_member = user in working_group.members
+            in_wl = user in working_group.wating_list
+            max_participation = len(active_working_groups) >= \
+                root.participations_maxi
+            is_closed = 'closed' in working_group.state or \
+                not any(s in self.context.state for s in
+                        ['amendable', 'open to a working group'])
+            if not is_member:
+                if in_wl:
+                    return _("You are on the waiting list")
+
+                if max_participation:
+                    return _("You have reached the limit of the number "
+                             "of working groups in which you can participate "
+                             "simultaneously. In order to submit your proposal, "
+                             "please quit one of your current working groups")
+
+                if is_closed:
+                    return _("The participation is closed")
+
+                return _("You can't participate in the working group")
+
+        return None
+
     def _cant_publish(self, actions):
         if 'draft' in self.context.state:
             return not any(a.behavior_id == 'publish' or
@@ -82,16 +119,6 @@ class DetailProposalView(BasicView):
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))
 
-        ct_participate_max = False
-        ct_participate_closed = False
-        ct_participate = False
-        user = get_current()
-        is_participant = has_role(
-            user=user, role=('Participant', self.context))
-        root = getSite()
-        working_group = self.context.working_group
-        wg_actions = [a for a in navbars['all_actions']['wg-action']
-                      if a.node_id != "seemembers"]
         resources = merge_dicts(navbars['resources'], vote_actions['resources'],
                                 ('js_links', 'css_links'))
         resources['js_links'] = list(set(resources['js_links']))
@@ -100,19 +127,10 @@ class DetailProposalView(BasicView):
         if not messages:
             messages = navbars['messages']
 
-        if working_group:
-            participants_maxi = root.participants_maxi
-            work_mode = getattr(working_group, 'work_mode', None)
-            if work_mode:
-                participants_maxi = work_mode.participants_maxi
-
-            ct_participate_max = len(working_group.members) == participants_maxi
-            ct_participate_closed = 'closed' in working_group.state
-            ct_participate = 'archived' not in working_group.state and \
-                not isinstance(user, Anonymous) and \
-                user not in working_group.members and \
-                (ct_participate_max or ct_participate_closed)
-
+        user = get_current()
+        is_participant = has_role(
+            user=user, role=('Participant', self.context))
+        root = getSite()
         corrections = [c for c in self.context.corrections
                        if 'in process' in c.state]
         enable_corrections = self._enable_corrections(
@@ -159,9 +177,8 @@ class DetailProposalView(BasicView):
             'idea_to_examine': idea_to_examine,
             'not_published_ideas': not_published_ideas,
             'not_favorable_ideas': not_favorable_ideas,
-            'ct_participate': ct_participate,
-            'ct_participate_closed': ct_participate_closed,
-            'ct_participate_max': ct_participate_max,
+            'ct_participate': self._cant_participate(
+                navbars['all_actions'], user, root),
             'wg_body': navbars['wg_body'],
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],

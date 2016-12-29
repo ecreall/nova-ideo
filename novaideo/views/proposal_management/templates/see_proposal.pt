@@ -155,11 +155,9 @@
                   </div>
                 </dd>
                 <dd>
-                <span tal:condition="ct_participate" class="alert alert-info alert-wg-closed" role="alert">
-                  <span class="glyphicon glyphicon-info-sign pull-right"></span>
-                 <span tal:condition="ct_participate_closed" i18n:translate="">The working group is closed</span>
-                 <span tal:condition="not ct_participate_closed and ct_participate_max" i18n:translate="">The maximum number of participants has been reached</span>
-                </span>
+                <div tal:condition="ct_participate" class="alert alert-info alert-wg-closed" role="alert">
+                  <p>${ct_participate}</p>
+                </div>
                 <div tal:condition="wg_body" class="wg-actions-navbar">
                   <div tal:replace="structure wg_body"/>
                  </div>
