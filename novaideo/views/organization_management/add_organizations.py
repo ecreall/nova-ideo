@@ -22,10 +22,10 @@ from novaideo import _
 class AddOrganizationsSchema(Schema):
 
     file = colander.SchemaNode(
-            ObjectData(File),
-            widget=FileWidget(),
-            title=_('The xls file')
-            )
+        ObjectData(File),
+        widget=FileWidget(),
+        title=_('The xls file')
+    )
 
 
 @view_config(

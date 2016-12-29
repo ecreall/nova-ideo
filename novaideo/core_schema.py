@@ -28,7 +28,6 @@ def phone_fax_validator(node, kw):
                   mapping={'phone': kw}))
 
 
-
 @colander.deferred
 def default_title(node, kw):
     request = node.bindings['request']

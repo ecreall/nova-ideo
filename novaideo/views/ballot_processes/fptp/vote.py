@@ -47,6 +47,7 @@ class VoteViewStudyReport(BasicView):
 def subjects_choice(ballot_report):
     subjects = ballot_report.subjects
     group_values = getattr(ballot_report.ballottype, 'group_values', None)
+
     def get_title(ob):
         if isinstance(ob, Entity):
             return ob.title

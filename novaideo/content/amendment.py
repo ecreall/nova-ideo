@@ -301,7 +301,6 @@ class Amendment(CorrelableEntity,
 
         return truncate_text(text, nb_characters)
 
-
    # @region.cache_on_arguments() 
     def get_used_ideas(self):
         """Return used ideas"""

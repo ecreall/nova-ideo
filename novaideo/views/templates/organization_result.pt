@@ -13,7 +13,7 @@
         <h4>
           <img class="pull-right" tal:condition="picture"
                tal:attributes="src picture.url"  width="65"/>
-          <span class="icon ${icon}"></span> ${object.title}
+          <span tal:condition="not picture" class="icon ${icon}"></span> ${object.title}
         </h4>
       </a>
     </div>

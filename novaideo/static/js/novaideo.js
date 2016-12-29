@@ -269,7 +269,6 @@ function initscroll(result_scrolls){
   $(to_infinite).infinitescroll({
     behavior: 'local',
     bufferPx: 0,
-
     binder: result_scroll,
     navSelector  : "#"+id+" .batch",
     // selector for the paged navigation (it will be hidden)
@@ -1157,7 +1156,6 @@ function is_visible_into_view(elem, scrollable)
     return {'bottom': (elemBottom <= docViewBottom),
             'top': (elemTop >= docViewTop)}
 }
-
 
 
 //code adapted from http://bootsnipp.com/snippets/featured/jquery-checkbox-buttons

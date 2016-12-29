@@ -13,13 +13,13 @@
     </div>
  	<span class="glyphicon glyphicon-info-sign pull-right"></span>
     <div>
-      <p>Une fois votre proposition acceptée et publiée par les modérateurs, vous pouvez décider :</p>
+      <p i18n:translate="">Une fois votre proposition acceptée et publiée par les modérateurs, vous pouvez décider :</p>
       <ul>
-        <li>soit de la soumettre à appréciation en l'état à l'ensemble des utilisateurs sans l'améliorer,</li>
-        <li>soit l'améliorer d'abord avec d'autres utilisateurs dans un groupe de travail puis la soumettre à appréciation à l'ensemble des utilisateurs.</li>
+        <li i18n:translate="">soit de la soumettre à appréciation en l'état à l'ensemble des utilisateurs sans l'améliorer,</li>
+        <li i18n:translate="">soit l'améliorer d'abord avec d'autres utilisateurs dans un groupe de travail puis la soumettre à appréciation à l'ensemble des utilisateurs.</li>
       </ul>
    </div>
-   <p>
+   <p i18n:translate="">
     Si vous décidez de l'améliorer avec d'autres utilisateurs, ce qui est le choix proposé par défaut, vous devez indiquer la durée du cycle d'amélioration, celle-ci est fixée par défaut à une semaine.
    </p>
 
@@ -27,7 +27,7 @@
  <div tal:condition="len(request.root.get_work_modes()) > 1" class="alert alert-warning">
   <span class="glyphicon glyphicon-warning-sign pull-right"></span>
   <p>
-    <b>Pour améliorer la proposition, il faut que le groupe de travail atteigne au moins le nombre minimum de participants indiqué pour chaque mode de travail. Si le nombre n'est pas atteint, le groupe de travail reste inactif et la proposition ne peut être améliorée.</b>
+    <b i18n:translate="">Pour améliorer la proposition, il faut que le groupe de travail atteigne au moins le nombre minimum de participants indiqué pour chaque mode de travail. Si le nombre n'est pas atteint, le groupe de travail reste inactif et la proposition ne peut être améliorée.</b>
   </p>
  </div>
 </div>

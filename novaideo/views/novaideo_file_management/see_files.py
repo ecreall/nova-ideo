@@ -4,8 +4,6 @@
 # licence: AGPL
 # author: Amen Souissi
 
-import pytz
-import datetime
 from pyramid.view import view_config
 
 from substanced.util import Batch
@@ -18,8 +16,10 @@ from pontus.view import BasicView
 from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_file_management.behaviors import (
     SeeFiles)
+from novaideo.content.interface import IFile
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.core import BATCH_DEFAULT_SIZE
+from novaideo.views.filter import find_entities
 from novaideo import _
 
 
@@ -40,15 +40,13 @@ class SeeFilesView(BasicView):
 
     def update(self):
         self.execute(None)
-        objects = self.context.files
-        now = datetime.datetime.now(tz=pytz.UTC)
-        objects = sorted(objects,
-                         key=lambda e: getattr(e, 'modified_at', now),
-                         reverse=True)
+        user = get_current()
+        objects = find_entities(
+            user=user, interfaces=[IFile],
+            sort_on='modified_at', reverse=True)
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_files"
         len_result = batch.seqlen
-        user = get_current()
         is_portalmanager = has_role(user=user, role=('PortalManager',)),
         result_body, result = render_listing_objs(
             self.request, batch, user,

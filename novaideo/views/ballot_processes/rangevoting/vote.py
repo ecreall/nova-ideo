@@ -61,7 +61,7 @@ class VoteViewStudyReport(BasicView):
 class VoteSchema(Schema):
 
     vote = colander.SchemaNode(colander.String())
-    
+
 
 class VoteFormView(FormView):
     title =  _('Vote')
@@ -90,7 +90,7 @@ class VoteFormView(FormView):
             self.context, 'rangevotingvote',
             query={'action_uid': getattr(vote_actions[0], '__oid__', '')})
         self.schema.widget = formwidget
-     
+
 
 @view_config(
     name='rangevotingvote',

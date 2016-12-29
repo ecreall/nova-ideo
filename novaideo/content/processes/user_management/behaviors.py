@@ -60,7 +60,7 @@ def accept_preregistration(request, preregistration, root):
         deadline_date = preregistration.get_deadline_date()
         url = request.resource_url(preregistration, "")
         mail_template = root.get_mail_template('preregistration')
-        recipientdata = get_user_data(preregistration, 'recipient', request)     
+        email_data = get_user_data(preregistration, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         deadline_str = to_localized_time(
@@ -69,7 +69,8 @@ def accept_preregistration(request, preregistration, root):
             url=url,
             deadline_date=deadline_str.lower(),
             novaideo_title=root.title,
-            **recipientdata)
+            **email_data
+            )
         alert('email', [root.get_site_sender()], [preregistration.email],
               subject=subject, body=message)
 
@@ -387,11 +388,11 @@ class Registration(InfiniteCardinality):
                 novaideo_title=root.title)
             url = request.resource_url(preregistration, '@@index')
             for admin in [a for a in admins if getattr(a, 'email', '')]:
-                recipientdata = get_user_data(admin, 'recipient', request)
+                email_data = get_user_data(admin, 'recipient', request)
                 message = mail_template['template'].format(
                     url=url,
                     novaideo_title=root.title,
-                    **recipientdata)
+                    **email_data)
                 alert('email', [root.get_site_sender()], [admin.email],
                       subject=subject, body=message)
 
@@ -507,6 +508,10 @@ class ConfirmRegistration(InfiniteCardinality):
         get_socket().send_pyobj(
             ('stop',
              'persistent_' + str(get_oid(context))))
+        organization = context.organization
+        if organization:
+            person.setproperty('organization', organization)
+
         root.delfromproperty('preregistrations', context)
         person.init_annotations()
         person.annotations.setdefault(
@@ -588,7 +593,7 @@ class Remind(InfiniteCardinality):
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
         mail_template = root.get_mail_template('preregistration')
-        recipientdata = get_user_data(context, 'recipient', request)
+        email_data = get_user_data(context, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         deadline_str = to_localized_time(
@@ -597,7 +602,7 @@ class Remind(InfiniteCardinality):
             url=url,
             deadline_date=deadline_str.lower(),
             novaideo_title=root.title,
-            **recipientdata)
+            **email_data)
         alert('email', [root.get_site_sender()], [context.email],
               subject=subject, body=message)
 

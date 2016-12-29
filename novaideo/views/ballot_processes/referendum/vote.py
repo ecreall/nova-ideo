@@ -23,7 +23,6 @@ from novaideo.content.proposal import Proposal
 from novaideo import _
 
 
-
 class VoteViewStudyReport(BasicView):
     title = _('Ballot report')
     name = 'ballotreport'

@@ -118,7 +118,9 @@ class AddIdeaFormView(FormView):
         localizer = self.request.localizer
         user = get_current()
         time = to_localized_time(
-            datetime.datetime.now(tz=self.request.get_time_zone), translate=True)
+            datetime.datetime.now(
+                tz=self.request.get_time_zone),
+            translate=True)
         title = localizer.translate(_('Idea by'))+' '+\
                 getattr(user, 'title', user.name)+' '+\
                 localizer.translate(_('the'))+' '+\

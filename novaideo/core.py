@@ -488,6 +488,20 @@ class CorrelableEntity(Entity):
         return list(set(result))
 
 
+class ExaminableEntity(Entity):
+    """
+    A Examinable entity is an entity that can be examined.
+    """
+
+    opinions_base = {}
+
+
+    @property
+    def opinion_value(self):
+        return self.opinions_base.get(
+            getattr(self, 'opinion', {}).get('opinion', ''), None)
+
+
 @implementer(INode)
 class Node(Entity):
 

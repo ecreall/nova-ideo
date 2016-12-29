@@ -625,8 +625,7 @@ class SearchableObject(Adapter):
         return []
 
     def organizations(self):
-        author = getattr(self.context, 'author', None)
-        organization = getattr(author, 'organization', None)
+        organization = getattr(self.context, 'organization', None)
         if organization:
             return [get_oid(organization)]
 

@@ -42,7 +42,8 @@ from novaideo.core import (
     keywords_choice,
     CorrelableEntity,
     generate_access_keys)
-from .interface import IPerson, IPreregistration, IAlert
+from .interface import (
+    IPerson, IPreregistration, IAlert, IProposal, Iidea)
 from novaideo import _
 from novaideo.file import Image
 from novaideo.views.widget import (
@@ -71,7 +72,7 @@ def organization_choice(node, kw):
 @colander.deferred
 def titles_choice(node, kw):
     root = getSite()
-    values = [(str(i),  i) for i in root.titles]
+    values = [(str(i), i) for i in root.titles]
     values.insert(0, ('', _('- Select -')))
     return Select2Widget(values=values)
 
@@ -293,6 +294,26 @@ class Person(User, SearchableEntity, CorrelableEntity):
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
         self._read_at = OOBTree()
 
+    def __setattr__(self, name, value):
+        super(Person, self).__setattr__(name, value)
+        if name == 'organization' and value:
+            self.init_contents_organizations()
+
+    def init_contents_organizations(self):
+        novaideo_catalog = find_catalog('novaideo')
+        dace_catalog = find_catalog('dace')
+        organizations_index = novaideo_catalog['organizations']
+        object_authors_index = novaideo_catalog['object_authors']
+        object_provides_index = dace_catalog['object_provides']
+        query = object_authors_index.any([get_oid(self)]) & \
+            object_provides_index.any(
+                [Iidea.__identifier__, IProposal.__identifier__]) & \
+            organizations_index.any([0])
+
+        for entity in query.execute().all():
+            entity.init_organization()
+            entity.reindex()
+
     def set_read_date(self, channel, date):
         self._read_at[get_oid(channel)] = date
 
@@ -473,7 +494,7 @@ class Preregistration(VisualisableElement, Entity):
     templates = {'default': 'novaideo:views/templates/preregistration_result.pt',
                  'bloc': 'novaideo:views/templates/preregistration_result.pt'}
     name = renamer()
-    structure = CompositeUniqueProperty('structure')
+    organization = SharedUniqueProperty('organization')
 
     def __init__(self, **kwargs):
         super(Preregistration, self).__init__(**kwargs)
