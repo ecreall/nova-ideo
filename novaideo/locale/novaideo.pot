@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-12-29 11:43+0100\n"
+"POT-Creation-Date: 2016-12-29 16:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1289,7 +1289,7 @@ msgid "Details"
 msgstr ""
 
 #: ./novaideo/views/idea_management/see_idea.py:99
-#: ./novaideo/views/proposal_management/see_proposal.py:181
+#: ./novaideo/views/proposal_management/see_proposal.py:198
 msgid "actions"
 msgstr ""
 
@@ -1585,14 +1585,14 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:137
 #: ./novaideo/views/idea_management/templates/see_idea.pt:148
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:257
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:255
 #: ./novaideo/views/templates/comment_result.pt:117
 msgid "Attachments:"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:138
 #: ./novaideo/views/idea_management/templates/see_idea.pt:149
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:258
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:256
 #: ./novaideo/views/templates/comment_result.pt:118
 msgid "Attachment:"
 msgstr ""
@@ -1712,7 +1712,7 @@ msgid ", previous version of the current version of the idea"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:63
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:183
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:181
 #: ./novaideo/views/templates/idea_bloc.pt:65
 #: ./novaideo/views/templates/proposal_bloc.pt:65
 #: ./novaideo/views/templates/idea_result.pt:65
@@ -1721,7 +1721,7 @@ msgid "${support and 'Withdraw my token' or 'Support'}"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:73
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:193
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:191
 #: ./novaideo/views/templates/idea_bloc.pt:75
 #: ./novaideo/views/templates/proposal_bloc.pt:75
 #: ./novaideo/views/templates/idea_result.pt:75
@@ -2854,6 +2854,29 @@ msgstr ""
 msgid "Archive the proposal"
 msgstr ""
 
+#: ./novaideo/views/proposal_management/see_proposal.py:72
+msgid "The working group is closed."
+msgstr ""
+
+#: ./novaideo/views/proposal_management/see_proposal.py:99
+msgid "You can't participate in the working group."
+msgstr ""
+
+#: ./novaideo/views/proposal_management/see_proposal.py:88
+msgid "You are on the waiting list."
+msgstr ""
+
+#: ./novaideo/views/proposal_management/see_proposal.py:91
+msgid ""
+"You have reached the limit of the number of working groups in which you can "
+"participate simultaneously. In order to participate in this working group, "
+"please quit one of your current working groups."
+msgstr ""
+
+#: ./novaideo/views/proposal_management/see_proposal.py:97
+msgid "The participation is closed."
+msgstr ""
+
 #: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:3
 msgid ""
 "En cliquant sur « Continuer », votre proposition sera soumise pour "
@@ -3046,15 +3069,7 @@ msgstr ""
 msgid "${wg_state} working group with ${len_members} members"
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:160
-msgid "The working group is closed"
-msgstr ""
-
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:161
-msgid "The maximum number of participants has been reached"
-msgstr ""
-
-#: ./novaideo/views/proposal_management/templates/see_proposal.pt:171
+#: ./novaideo/views/proposal_management/templates/see_proposal.pt:169
 #: ./novaideo/content/workspace.py:64
 #: ./novaideo/content/processes/proposal_management/definition.py:532
 #: ./novaideo/content/processes/proposal_management/definition.py:533

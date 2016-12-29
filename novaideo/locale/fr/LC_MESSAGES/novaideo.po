@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-12-29 11:43+0100\n"
+"POT-Creation-Date: 2016-12-29 16:46+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1295,7 +1295,7 @@ msgid "Details"
 msgstr "Détails"
 
 #: novaideo/views/idea_management/see_idea.py:99
-#: novaideo/views/proposal_management/see_proposal.py:181
+#: novaideo/views/proposal_management/see_proposal.py:198
 msgid "actions"
 msgstr "actions"
 
@@ -1591,14 +1591,14 @@ msgstr "(édité)"
 
 #: novaideo/views/idea_management/templates/comments.pt:137
 #: novaideo/views/idea_management/templates/see_idea.pt:148
-#: novaideo/views/proposal_management/templates/see_proposal.pt:257
+#: novaideo/views/proposal_management/templates/see_proposal.pt:255
 #: novaideo/views/templates/comment_result.pt:117
 msgid "Attachments:"
 msgstr "Pièces jointes :"
 
 #: novaideo/views/idea_management/templates/comments.pt:138
 #: novaideo/views/idea_management/templates/see_idea.pt:149
-#: novaideo/views/proposal_management/templates/see_proposal.pt:258
+#: novaideo/views/proposal_management/templates/see_proposal.pt:256
 #: novaideo/views/templates/comment_result.pt:118
 msgid "Attachment:"
 msgstr "Pièce jointe :"
@@ -1733,7 +1733,7 @@ msgid ", previous version of the current version of the idea"
 msgstr ", version passée de la version en cours de l'idée"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:63
-#: novaideo/views/proposal_management/templates/see_proposal.pt:183
+#: novaideo/views/proposal_management/templates/see_proposal.pt:181
 #: novaideo/views/templates/idea_bloc.pt:65
 #: novaideo/views/templates/proposal_bloc.pt:65
 #: novaideo/views/templates/idea_result.pt:65
@@ -1742,7 +1742,7 @@ msgid "${support and 'Withdraw my token' or 'Support'}"
 msgstr "${support and 'Retirer mon jeton' or 'Soutenir'}"
 
 #: novaideo/views/idea_management/templates/see_idea.pt:73
-#: novaideo/views/proposal_management/templates/see_proposal.pt:193
+#: novaideo/views/proposal_management/templates/see_proposal.pt:191
 #: novaideo/views/templates/idea_bloc.pt:75
 #: novaideo/views/templates/proposal_bloc.pt:75
 #: novaideo/views/templates/idea_result.pt:75
@@ -2902,6 +2902,32 @@ msgstr "Supression du fichier"
 msgid "Archive the proposal"
 msgstr "Associer la proposition"
 
+#: novaideo/views/proposal_management/see_proposal.py:72
+msgid "The working group is closed."
+msgstr "Le groupe de travail est fermé."
+
+#: novaideo/views/proposal_management/see_proposal.py:99
+msgid "You can't participate in the working group."
+msgstr "Vous ne pouvez pas participer au groupe de travail."
+
+#: novaideo/views/proposal_management/see_proposal.py:88
+msgid "You are on the waiting list."
+msgstr "Vous êtes sur la liste d'attente."
+
+#: novaideo/views/proposal_management/see_proposal.py:91
+msgid ""
+"You have reached the limit of the number of working groups in which you can "
+"participate simultaneously. In order to participate in this working group, "
+"please quit one of your current working groups."
+msgstr ""
+"Vous avez atteint la limite du nombre de groupes de travail auxquels vous "
+"pouvez participer simultanément. Afin de pouvoir participer à ce groupe de "
+"travail, veuillez démissionner de l'un de vos groupes de travail actuels."
+
+#: novaideo/views/proposal_management/see_proposal.py:97
+msgid "The participation is closed."
+msgstr "La participation est clôturée."
+
 #: novaideo/views/proposal_management/templates/alert_proposal_submission.pt:3
 msgid ""
 "En cliquant sur « Continuer », votre proposition sera soumise pour "
@@ -3104,15 +3130,7 @@ msgstr "Groupe de travail ${wg_state} avec 1 membre"
 msgid "${wg_state} working group with ${len_members} members"
 msgstr "Groupe de travail ${wg_state} avec ${len_members} membres"
 
-#: novaideo/views/proposal_management/templates/see_proposal.pt:160
-msgid "The working group is closed"
-msgstr "Le groupe de travail est fermé"
-
-#: novaideo/views/proposal_management/templates/see_proposal.pt:161
-msgid "The maximum number of participants has been reached"
-msgstr "Nombre maximum de participants pour un groupe de travail"
-
-#: novaideo/views/proposal_management/templates/see_proposal.pt:171
+#: novaideo/views/proposal_management/templates/see_proposal.pt:169
 #: novaideo/content/workspace.py:64
 #: novaideo/content/processes/proposal_management/definition.py:532
 #: novaideo/content/processes/proposal_management/definition.py:533
@@ -8214,3 +8232,6 @@ msgstr "Trouver des entités"
 #: novaideo/web_services/export_entities.py:157
 msgid "Content type"
 msgstr "Type de contenu"
+
+#~ msgid "The maximum number of participants has been reached"
+#~ msgstr "Nombre maximum de participants pour un groupe de travail"
