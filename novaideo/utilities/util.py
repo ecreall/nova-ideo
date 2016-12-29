@@ -1299,7 +1299,7 @@ def get_vote_actions_body(
     for group_id, ballot_actions in avions_by_ballot.items():
         ballot_group = groups[group_id]
         group_title = ballot_group.get('group_title')
-        group_activate = ballot_group.get('activate')
+        group_activate = ballot_group.get('group_activate')
         body = renderers.render(
             VOTE_TEMPLATE,
             {
