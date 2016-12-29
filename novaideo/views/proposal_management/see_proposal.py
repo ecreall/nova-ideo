@@ -90,7 +90,7 @@ class DetailProposalView(BasicView):
                 if max_participation:
                     return _("You have reached the limit of the number "
                              "of working groups in which you can participate "
-                             "simultaneously. In order to submit your proposal, "
+                             "simultaneously. In order to participate in this working group, "
                              "please quit one of your current working groups")
 
                 if is_closed:
