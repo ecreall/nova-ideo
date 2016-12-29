@@ -69,7 +69,7 @@ class DetailProposalView(BasicView):
         if cant_participate:
             working_group = self.context.working_group
             if not working_group:
-                return _("The working group is closed")
+                return _("The working group is closed.")
 
             is_active_user = 'active' in getattr(user, 'state', [])
             if not is_active_user:
@@ -85,18 +85,18 @@ class DetailProposalView(BasicView):
                         ['amendable', 'open to a working group'])
             if not is_member:
                 if in_wl:
-                    return _("You are on the waiting list")
+                    return _("You are on the waiting list.")
 
                 if max_participation:
                     return _("You have reached the limit of the number "
                              "of working groups in which you can participate "
                              "simultaneously. In order to participate in this working group, "
-                             "please quit one of your current working groups")
+                             "please quit one of your current working groups.")
 
                 if is_closed:
-                    return _("The participation is closed")
+                    return _("The participation is closed.")
 
-                return _("You can't participate in the working group")
+                return _("You can't participate in the working group.")
 
         return None
 
