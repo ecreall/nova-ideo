@@ -248,6 +248,7 @@
     padding: 5px 12px!important;
     height: 1600px;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #fafafa;
 }
 
 .slick-well>h4, .vertical-slick-well>h4{
