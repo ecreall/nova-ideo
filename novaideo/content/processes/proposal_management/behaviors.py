@@ -1572,13 +1572,13 @@ class Work(ElementaryAction):
         context.state.insert(0, 'amendable')
         #The first improvement cycle is started
         if working_group.first_improvement_cycle:
-            mail_template = root.get_mail_template('start_work')
+            mail_template = root.get_mail_template('first_start_work')
             self._send_mails(
                 context, request,
                 mail_template['subject'], mail_template['template'])
             working_group.first_improvement_cycle = False
         else:
-            mail_template = root.get_mail_template('first_start_work')
+            mail_template = root.get_mail_template('start_work')
             self._send_mails(
                 context, request,
                 mail_template['subject'], mail_template['template'])
