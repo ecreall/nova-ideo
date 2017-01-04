@@ -152,14 +152,14 @@ class CompareIdeaFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CompareIdeaView(MultipleView):
-    title = _('Compare the versions')
     name = 'compare'
+    view_icon = 'glyphicon glyphicon-time'
     template = 'pontus:templates/views_templates/simple_multipleview.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     css_class = 'compare-block'
-    view_icon = 'glyphicon glyphicon-time'
-    views = (CompareIdeaFormView, DiffView)
     contextual_help = 'compare-help'
+    title = _('Compare the versions')
+    views = (CompareIdeaFormView, DiffView)
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/compare_idea.js']}
 
@@ -171,8 +171,8 @@ class CompareIdeaView(MultipleView):
 
         self.title = _(COMPARE_MESSAGE[index],
                        mapping={'nember': len_history})
-        self.viewid = 'compare'
         super(CompareIdeaView, self).before_update()
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {CompareIdea: CompareIdeaView})

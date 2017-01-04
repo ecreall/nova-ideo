@@ -6,7 +6,6 @@
 # author: Amen Souissi
 
 from pyramid.view import view_config
-from pyramid import renderers
 
 from substanced.util import Batch
 
@@ -22,11 +21,12 @@ from novaideo.utilities.util import (
     render_small_listing_objs, render_listing_objs)
 from novaideo import _
 
-BATCH_DEFAULT_SIZE = 30
+BATCH_DEFAULT_SIZE = 8
 
-WG_MESSAGES = {'0': _(u"""No related working group"""),
-               '1': _(u"""One related working group"""),
-               '*': _(u"""${nember} related working groups""")}
+WG_MESSAGES = {
+    '0': _(u"""No related working group"""),
+    '1': _(u"""One related working group"""),
+    '*': _(u"""${nember} related working groups""")}
 
 
 @view_config(
@@ -35,15 +35,15 @@ WG_MESSAGES = {'0': _(u"""No related working group"""),
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeRelatedWorkingGroupsView(BasicView):
-    title = _('The working groups')
-    description = _('See the related working groups')
     name = 'relatedworkinggroups'
+    viewid = 'relatedworkinggroups'
     behaviors = [SeeRelatedWorkingGroups]
     template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     view_icon = 'icon icon novaideo-icon icon-wg'
-    viewid = 'relatedworkinggroups'
     contextual_help = 'related-wg-help'
+    title = _('The working groups')
+    description = _('See the related working groups')
 
     def update(self):
         self.execute(None)
@@ -86,9 +86,6 @@ class SeeRelatedWorkingGroupsView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
-
-    def get_message(self):
-        return self.message
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

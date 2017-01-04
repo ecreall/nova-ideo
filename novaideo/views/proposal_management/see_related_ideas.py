@@ -6,7 +6,6 @@
 # author: Amen Souissi
 
 from pyramid.view import view_config
-from pyramid import renderers
 
 from substanced.util import Batch
 
@@ -22,11 +21,12 @@ from novaideo.utilities.util import (
     render_listing_objs, render_small_listing_objs)
 from novaideo import _
 
-BATCH_DEFAULT_SIZE = 30
+BATCH_DEFAULT_SIZE = 8
 
-ADDIDEAS_MESSAGES = {'0': _(u"""No related ideas"""),
-                     '1': _(u"""One related idea"""),
-                     '*': _(u"""${nember} related ideas""")}
+ADDIDEAS_MESSAGES = {
+    '0': _(u"""No related ideas"""),
+    '1': _(u"""One related idea"""),
+    '*': _(u"""${nember} related ideas""")}
 
 
 @view_config(
@@ -35,15 +35,15 @@ ADDIDEAS_MESSAGES = {'0': _(u"""No related ideas"""),
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeRelatedIdeasView(BasicView):
-    title = _('See the related ideas')
-    description = _('See the related ideas')
     name = 'relatedideas'
+    viewid = 'relatedideas'
     behaviors = [SeeRelatedIdeas]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     view_icon = 'novaideo-icon icon-idea'
-    viewid = 'relatedideas'
     contextual_help = 'related-ideas-help'
+    title = _('See the related ideas')
+    description = _('See the related ideas')
 
     def update(self):
         self.execute(None)

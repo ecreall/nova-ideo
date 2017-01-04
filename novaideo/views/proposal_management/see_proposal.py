@@ -32,13 +32,13 @@ from novaideo.views.proposal_management.compare_proposal import (
 
 
 class ProposalHeaderView(BasicView):
-    title = _('Proposla header')
     name = 'proposalheader'
+    viewid = 'proposalheader'
     behaviors = [SeeProposal]
+    validate_behaviors = False
     template = 'novaideo:views/proposal_management/templates/header_proposal.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
-    viewid = 'proposalheader'
-    validate_behaviors = False
+    title = _('Proposla header')
 
     def _cant_participate(self, actions, user, root):
         cant_participate = not any(a.behavior_id == 'participate'
@@ -159,14 +159,14 @@ class ProposalHeaderView(BasicView):
 
 
 class DetailProposalView(BasicView):
-    title = _('Details')
     name = 'seeProposal'
-    behaviors = [SeeProposal]
-    template = 'novaideo:views/proposal_management/templates/see_proposal.pt'
-    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'seeproposal'
     view_icon = 'glyphicon glyphicon-eye-open'
+    behaviors = [SeeProposal]
     validate_behaviors = False
+    template = 'novaideo:views/proposal_management/templates/see_proposal.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    title = _('Details')
 
     def update(self):
         navbars = self.get_binding('navbars')
@@ -194,11 +194,11 @@ class DetailProposalView(BasicView):
 
 
 class SeeProposalActionsView(MultipleView):
-    title = ''
     name = 'seeproposalparts'
+    css_class = 'integreted-tab-content'
     template = 'novaideo:views/templates/multipleview.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
-    css_class = 'integreted-tab-content'
+    title = ''
     views = (DetailProposalView,
              SeeAmendmentsView,
              SeeRelatedIdeasView,
@@ -214,9 +214,9 @@ class SeeProposalActionsView(MultipleView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeProposalView(MultipleView):
-    title = ''
     name = 'seeproposal'
     template = 'novaideo:views/templates/entity_multipleview.pt'
+    title = ''
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/correct_proposal.js',
                                  'novaideo:static/js/comment.js',

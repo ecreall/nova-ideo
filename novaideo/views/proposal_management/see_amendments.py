@@ -23,11 +23,12 @@ from novaideo import _
 from novaideo.core import can_access
 
 
-BATCH_DEFAULT_SIZE = 10
+BATCH_DEFAULT_SIZE = 8
 
-AMENDMENTS_MESSAGES = {'0': _(u"""No amended version"""),
-                      '1': _(u"""One amended version"""),
-                      '*': _(u"""${nember} amended versions""")}
+AMENDMENTS_MESSAGES = {
+    '0': _(u"""No amended version"""),
+    '1': _(u"""One amended version"""),
+    '*': _(u"""${nember} amended versions""")}
 
 
 @view_config(
@@ -36,16 +37,15 @@ AMENDMENTS_MESSAGES = {'0': _(u"""No amended version"""),
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeAmendmentsView(BasicView):
-    title = _('See amended versions')
     name = 'seeproposalamendments'
-    description = _("See amended versions")
+    viewid = 'seeproposalamendments'
     behaviors = [SeeAmendments]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     view_icon = 'novaideo-icon icon-amendment'
-    container_css_class = 'home'
-    viewid = 'seeproposalamendments'
     contextual_help = 'amendments-help'
+    title = _('See amended versions')
+    description = _("See amended versions")
 
     def update(self):
         self.execute(None)
@@ -60,7 +60,7 @@ class SeeAmendmentsView(BasicView):
         batch = Batch(objects, self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results_contents"
+        batch.target = "#results_proposalamendments"
         len_result = batch.seqlen
         index = str(len_result)
         if len_result > 1:
@@ -79,10 +79,6 @@ class SeeAmendmentsView(BasicView):
         result['coordinates'] = {self.coordinates: [item]}
         return result
 
-    def before_update(self):
-        self.viewid = 'seeproposalamendments'
-        super(SeeAmendmentsView, self).before_update()
-
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
-  {SeeAmendments: SeeAmendmentsView})
+    {SeeAmendments: SeeAmendmentsView})

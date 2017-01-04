@@ -46,9 +46,6 @@ class CompareProposalFormView(CompareIdeaFormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class CompareProposalView(CompareIdeaView):
-    title = _('Compare versions')
-    container_css_class = 'home'
-    name = 'compare'
     views = (CompareProposalFormView, DiffView)
 
 
