@@ -2,8 +2,8 @@
    tal:define="
      editoid 'edit_item_text_area';
      icon getattr(proposal, 'icon');">
-  <div tal:replace="structure navbar_body"/>
   <div tal:replace="structure vote_actions_body"/>
+  <div tal:replace="structure navbar_body"/>
   <div class="media-body content-title-body">
     <div tal:condition="'open to a working group' in proposal.state" role="alert" class="alert alert-info alert-dismissible">
       <div tal:omit-tag="" tal:define="participants_mini getattr(getattr(proposal.working_group, 'work_mode', None), 'participants_mini', 3)">
