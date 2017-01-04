@@ -1,0 +1,15 @@
+<div tal:condition="subitem|nothing" tal:omit-tag=""  tal:define="
+      items subitem['items'];
+      itemslen len(items)|0;
+      subitem_view  subitem['view'] if itemslen == 1 else None">
+  <div class="content-view component-obj-view component-index-view"
+     id="index_${oid}"
+     data-component_type="object-view"
+     tal:define="
+        oid parent.context.__oid__">
+    <div tal:condition="items" tal:repeat="item items">
+        <div tal:replace="item['view'].render_item(item, coordinates, subitem_view)" />   
+    </div>
+    ${panel('social_share_toggle')}
+  </div>
+</div>

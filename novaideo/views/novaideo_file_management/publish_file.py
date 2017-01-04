@@ -59,7 +59,7 @@ class PublishFileMultipleView(MultipleView):
     name = 'publishfile'
     behaviors = [Publish]
     viewid = 'publishfile'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (PublishFileViewStudyReport, PublishFileView)
     validators = [Publish.get_validator()]
 

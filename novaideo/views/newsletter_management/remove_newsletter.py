@@ -51,7 +51,7 @@ class RemoveNewsletterViewMultipleView(MultipleView):
     title = _('Remove the newsletter')
     name = 'removenewsletter'
     viewid = 'removenewsletter'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (RemoveNewsletterViewStudyReport, RemoveNewsletterView)
     validators = [RemoveNewsletter.get_validator()]
 

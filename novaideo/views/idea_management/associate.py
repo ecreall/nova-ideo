@@ -34,7 +34,7 @@ class RelatedContentsView(BasicView):
     title = _('Related contents')
     name = 'relatedcontents'
     template = 'novaideo:views/idea_management/templates/related_contents.pt'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'relatedcontents'
 
     def _correlation_action(self, correlation):
@@ -156,7 +156,7 @@ class AssociateFormView(FormView):
 class AssociateView(MultipleView):
     title = _('Associate the idea')
     name = 'associate'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (RelatedContentsView, AssociateFormView)
     description = _("Associate the idea to an other content")

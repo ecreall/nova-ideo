@@ -57,7 +57,7 @@ class RemoveRegistrationViewMultipleView(MultipleView):
     title = _('Remove the registration')
     name = 'removeregistration'
     viewid = 'removeregistration'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (RemoveRegistrationViewStudyReport, RemoveRegistrationView)
     validators = [RemoveRegistration.get_validator()]
 

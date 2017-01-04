@@ -57,7 +57,7 @@ class PublishIdeaViewMultipleView(MultipleView):
     title = _('Submit for publication')
     name = 'submitidea'
     viewid = 'submitidea'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (SubmitIdeaViewStudyReport, SubmitIdeaView)
     validators = [SubmitIdea.get_validator()]
 

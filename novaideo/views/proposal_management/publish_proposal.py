@@ -159,7 +159,7 @@ class PublishProposalView(MultipleView):
     title = _("Improve the proposal or submit it as is")
     name = 'publishproposal'
     viewid = 'publishproposal'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (PublishProposalStudyReport, PublishProposalFormView)
     validators = [PublishProposal.get_validator()]
 

@@ -58,7 +58,7 @@ class UnsubscribeView(MultipleView):
     name = 'unsubscribechannel'
     behaviors = [Unsubscribe]
     viewid = 'unsubscribechannel'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (UnsubscribeViewStudyReport, UnsubscribeForm)
     validators = [Unsubscribe.get_validator()]
 

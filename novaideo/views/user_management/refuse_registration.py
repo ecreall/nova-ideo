@@ -57,7 +57,7 @@ class RefuseRegistrationViewMultipleView(MultipleView):
     title = _('Refuse the registration')
     name = 'refuseregistration'
     viewid = 'refuseregistration'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (RefuseRegistrationViewStudyReport, RefuseRegistrationView)
     validators = [RefuseRegistration.get_validator()]
 

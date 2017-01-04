@@ -29,7 +29,7 @@ class EditIdeaFormView(FormView):
                                   'note'])
     behaviors = [EditIdea, Cancel]
     formid = 'formeditidea'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     name = 'editIdea'
 
     def before_update(self):
@@ -63,7 +63,7 @@ class EditIdeaView(MultipleView):
     title = _('Edit the idea')
     name = 'editidea'
     wrapper_template = 'novaideo:views/templates/view_wrapper.pt'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (EditIdeaFormView, EditIdeaActionsView)
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/compare_idea.js']}

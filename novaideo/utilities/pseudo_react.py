@@ -1147,11 +1147,15 @@ def get_opinion_proposal_metadata(action, request, context, api, **kwargs):
 
 
 def get_publish_proposal_metadata(action, request, context, api, **kwargs):
-    return get_edit_entity_metadata(
+    result = get_edit_entity_metadata(
         action, request,
         context, api,
         _("The proposal has been published."),
         **kwargs)
+    result['counters-to-update'] = [
+        'component-navbar-myparticipations'
+        ]
+    return result
 
 
 def get_remove_proposal_metadata(action, request, context, api, **kwargs):

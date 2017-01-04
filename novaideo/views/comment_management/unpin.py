@@ -67,7 +67,7 @@ class UnpinView(MultipleView):
     name = 'unpincomment'
     behaviors = [Unpin]
     viewid = 'unpincomment'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (UnpinViewStudyReport, UnpinForm)
     validators = [Unpin.get_validator()]
 

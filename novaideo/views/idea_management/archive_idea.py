@@ -74,7 +74,7 @@ class ArchiveIdeaViewMultipleView(MultipleView):
     title = _('Archive the idea')
     name = 'archiveidea'
     viewid = 'archiveidea'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (ArchiveIdeaViewStudyReport, ArchiveIdeaView)
     validators = [ArchiveIdea.get_validator()]
 
@@ -105,7 +105,7 @@ class ModerationArchiveIdeaViewMultipleView(MultipleView):
     title = _('Archive the idea')
     name = 'moderationarchiveidea'
     viewid = 'moderationarchiveidea'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (ArchiveIdeaViewStudyReport, ModerationArchiveIdeaView)
     validators = [ModerationArchiveIdea.get_validator()]
 

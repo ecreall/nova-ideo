@@ -1093,6 +1093,7 @@ def seeideas_state_validation(process, context):
 class SeeRelatedIdeas(InfiniteCardinality):
     style_descriminator = 'listing-primary-action'
     style_interaction = 'ajax-action'
+    # style_interaction_container = 'modal-l'
     style_picto = 'glyphicon glyphicon-link'
     context = IProposal
     #processsecurity_validation = seeideas_processsecurity_validation

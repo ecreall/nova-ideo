@@ -58,7 +58,7 @@ class WithdrawView(MultipleView):
     name = 'withdrawuser'
     behaviors = [WithdrawUser]
     viewid = 'withdrawuser'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (WithdrawViewStudyReport, WithdrawForm)
     validators = [WithdrawUser.get_validator()]
 

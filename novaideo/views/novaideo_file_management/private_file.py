@@ -59,7 +59,7 @@ class PrivateFileMultipleView(MultipleView):
     name = 'privatefile'
     behaviors = [Private]
     viewid = 'privatefile'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (PrivateFileViewStudyReport, PrivateFileView)
     validators = [Private.get_validator()]
 

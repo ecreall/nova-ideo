@@ -50,7 +50,7 @@ class ArchiveAdvertisingViewMultipleView(MultipleView):
     title = _('Archive the announcement')
     name = 'archiveadvertising'
     viewid = 'archiveadvertising'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (ArchiveAdvertisingViewStudyReport, ArchiveAdvertisingView)
     validators = [ArchiveAdvertising.get_validator()]
 

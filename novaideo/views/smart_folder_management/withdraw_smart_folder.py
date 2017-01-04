@@ -58,7 +58,7 @@ class WithdrawSmartFolderViewMultipleView(MultipleView):
     title = _('Withdraw the center of interest')
     name = 'withdrawsmartfolder'
     viewid = 'withdrawsmartfolder'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (WithdrawSmartFolderViewStudyReport, WithdrawSmartFolderView)
     validators = [WithdrawSmartFolder.get_validator()]
 

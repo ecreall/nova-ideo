@@ -74,7 +74,7 @@ class ModerationArchiveProposalViewMultipleView(MultipleView):
     title = _('Archive the proposal')
     name = 'moderationarchiveproposal'
     viewid = 'moderationarchiveproposal'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (ArchiveProposalViewStudyReport, ModerationArchiveProposalView)
     validators = [ArchiveProposalModeration.get_validator()]
 

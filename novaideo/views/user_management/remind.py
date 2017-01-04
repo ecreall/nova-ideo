@@ -58,7 +58,7 @@ class RemindViewMultipleView(MultipleView):
     title = _('Remind the user')
     name = 'remind'
     viewid = 'remind'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (RemindViewStudyReport, RemindView)
     validators = [Remind.get_validator()]
 

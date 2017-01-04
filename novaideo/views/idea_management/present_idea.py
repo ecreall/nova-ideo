@@ -34,7 +34,8 @@ class SentToView(BasicView):
     name = 'sentto'
     validators = [PresentIdea.get_validator()]
     template = 'novaideo:views/idea_management/templates/sent_to.pt'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    css_class = 'study-view'
     viewid = 'sentto'
 
     def update(self):
@@ -191,9 +192,10 @@ class PresentIdeaView(MultipleView):
     title = _('Submit the idea to others')
     description = _('Submit the idea to others')
     name = 'present'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
     views = (SentToView, PresentIdeaFormView)
+    css_class = 'present-view-block'
     contextual_help = 'present-help'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}

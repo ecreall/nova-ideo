@@ -25,6 +25,7 @@ class CommentsView(CommentsIdeaView):
 
 class CommentProposalFormView(CommentIdeaFormView):
     title = _('Discuss the proposal')
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     behaviors = [CommentProposal]
     formid = 'formcommentproposal'
     name = 'commentproposalform'

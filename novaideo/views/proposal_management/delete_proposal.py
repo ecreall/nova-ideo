@@ -82,7 +82,7 @@ class DeleteProposalView(MultipleView):
     name = 'deleteproposal'
     behaviors = [DeleteProposal]
     viewid = 'deleteproposal'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (DeleteProposalViewStudyReport, DeleteProposalFormView)
     validators = [DeleteProposal.get_validator()]
 

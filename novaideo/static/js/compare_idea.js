@@ -1,8 +1,8 @@
 $(document).on('submit','.compareform', function( event ) {
-    var button = $(this).find('button')
-
-    var parent = $($(this).parents('.panel-body').first());
-    var target = parent.find('.compare-result');
+    var $this = $(this)
+    var button = $this.find('button')
+    var parent = $($this.parents('.compare-block').first());
+    var target = $(parent.find('.compare-result'));
     //POST dict
     var dict_post = {};
     var inputs = $($(event.target).children().filter('fieldset')[0]).find('input[type|="radio"]');
@@ -18,23 +18,21 @@ $(document).on('submit','.compareform', function( event ) {
       $.get(url, dict_post, function(data) {
              var content = $(data).find('.compare-result');
              if (content){
-                 $(target).html($(content).html());
+                 target.html($(content).html());
+                 init_content_text_scroll(target.find(".content-text-scroll"))
+                 rebuild_scrolls(target.find(".malihu-scroll"))
               }else{
                  location.reload();
                  return false
               };
               $(button).removeClass('disabled');
+              finish_progress();
           });
-          finish_progress();
     }else{
-       var errormessage = '';
-       if (intention == ''){
-           errormessage =  "intention";
-       };
-       if (comment == ''){
-          if (errormessage != ''){errormessage=errormessage+' and comment'}else{errormessage = 'comment'}
-       };
-
+      alert_component({
+          alert_msg: novaideo_translate("Please select a version!"),
+          alert_type: 'error'
+        })
    };
    event.preventDefault();
 });

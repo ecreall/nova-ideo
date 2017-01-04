@@ -11,7 +11,7 @@ from pyramid.httpexceptions import HTTPFound
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
-    get_current, has_role, Anonymous, has_any_roles)
+    get_current, has_role, has_any_roles)
 from pontus.view import BasicView
 from pontus.view_operation import MultipleView
 from pontus.util import merge_dicts
@@ -31,37 +31,14 @@ from novaideo.views.proposal_management.compare_proposal import (
     CompareProposalView)
 
 
-class DetailProposalView(BasicView):
-    title = _('Details')
-    name = 'seeProposal'
+class ProposalHeaderView(BasicView):
+    title = _('Proposla header')
+    name = 'proposalheader'
     behaviors = [SeeProposal]
-    template = 'novaideo:views/proposal_management/templates/see_proposal.pt'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
-    viewid = 'seeproposal'
-    filigrane_template = 'novaideo:views/proposal_management/templates/filigrane.pt'
+    template = 'novaideo:views/proposal_management/templates/header_proposal.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    viewid = 'proposalheader'
     validate_behaviors = False
-
-    def _enable_corrections(self, is_participant, corrections):
-        return 'active' in getattr(self.context.working_group, 'state', []) and\
-               corrections and is_participant
-
-    def _get_adapted_text(
-        self, user, is_participant,
-        corrections, enable_corrections):
-        text = getattr(self.context, 'text', '')
-        description = getattr(self.context, 'description', '')
-        title = getattr(self.context, 'title', '')
-        add_filigrane = False
-        if enable_corrections:
-            text = corrections[-1].get_adapted_text(user)
-            description = corrections[-1].get_adapted_description(user)
-            title = corrections[-1].get_adapted_title(user)
-        elif not is_participant and \
-            not any(s in self.context.state
-                    for s in ['published', 'examined']):
-            add_filigrane = True
-
-        return title, description, text, add_filigrane
 
     def _cant_participate(self, actions, user, root):
         cant_participate = not any(a.behavior_id == 'participate'
@@ -110,14 +87,11 @@ class DetailProposalView(BasicView):
 
     def update(self):
         self.execute(None)
-        vote_actions = get_vote_actions_body(
-            self.context, self.request)
-        try:
-            navbars = generate_navbars(
-                self.request, self.context,
-                text_action=vote_actions['activators'])
-        except ObjectRemovedException:
-            return HTTPFound(self.request.resource_url(getSite(), ''))
+        vote_actions = self.get_binding('vote_actions')
+        navbars = self.get_binding('navbars')
+        root = self.get_binding('root')
+        if navbars is None:
+            return HTTPFound(self.request.resource_url(root, ''))
 
         resources = merge_dicts(navbars['resources'], vote_actions['resources'],
                                 ('js_links', 'css_links'))
@@ -127,16 +101,13 @@ class DetailProposalView(BasicView):
         if not messages:
             messages = navbars['messages']
 
-        user = get_current()
-        is_participant = has_role(
-            user=user, role=('Participant', self.context))
-        root = getSite()
-        corrections = [c for c in self.context.corrections
-                       if 'in process' in c.state]
-        enable_corrections = self._enable_corrections(
-            is_participant, corrections)
-        title, description, text, add_filigrane = self._get_adapted_text(
-            user, is_participant, corrections, enable_corrections)
+        user = self.get_binding('user')
+        is_participant = self.get_binding('is_participant')
+        is_censored = self.get_binding('is_censored')
+        to_hide = self.get_binding('to_hide')
+        title, description, text, add_filigrane = self.get_binding('content_data')
+        corrections = self.get_binding('corrections')
+        enable_corrections = self.get_binding('enable_corrections')
         tinymce_js = 'deform:static/tinymce/tinymce.min.js'
         if enable_corrections and\
            tinymce_js not in resources['js_links']:
@@ -154,9 +125,6 @@ class DetailProposalView(BasicView):
             if not self.request.moderate_ideas:
                 not_favorable_ideas.extend(not_published_ideas)
 
-        is_censored = 'censored' in self.context.state
-        to_hide = is_censored and not has_any_roles(
-            user=user, roles=(('Participant', self.context), 'Moderator'))
         result = {}
         values = {
             'proposal': self.context,
@@ -166,13 +134,11 @@ class DetailProposalView(BasicView):
                                         self.context.state[0]),
             'title': title,
             'description': description,
-            'text': text,
             'corrections': corrections,
             'enable_corrections': enable_corrections,
             'current_user': user,
             'is_participant': is_participant,
             'vote_actions_body': vote_actions['body'],
-            'filigrane': add_filigrane,
             'cant_publish': self._cant_publish(navbars['all_actions']),
             'idea_to_examine': idea_to_examine,
             'not_published_ideas': not_published_ideas,
@@ -181,8 +147,6 @@ class DetailProposalView(BasicView):
                 navbars['all_actions'], user, root),
             'wg_body': navbars['wg_body'],
             'navbar_body': navbars['navbar_body'],
-            'actions_bodies': navbars['body_actions'],
-            'footer_body': navbars['footer_body'],
             'json': json
         }
         body = self.content(args=values, template=self.template)['body']
@@ -194,11 +158,49 @@ class DetailProposalView(BasicView):
         return result
 
 
+class DetailProposalView(BasicView):
+    title = _('Details')
+    name = 'seeProposal'
+    behaviors = [SeeProposal]
+    template = 'novaideo:views/proposal_management/templates/see_proposal.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    viewid = 'seeproposal'
+    view_icon = 'glyphicon glyphicon-eye-open'
+    validate_behaviors = False
+
+    def update(self):
+        navbars = self.get_binding('navbars')
+        if navbars is None:
+            return HTTPFound(self.request.resource_url(
+                self.get_binding('root'), ''))
+
+        user = self.get_binding('user')
+        to_hide = self.get_binding('to_hide')
+        title, description, text, add_filigrane = self.get_binding('content_data')
+        result = {}
+        values = {
+            'proposal': self.context,
+            'text': text,
+            'to_hide': to_hide,
+            'filigrane': add_filigrane,
+            'current_user': user,
+            'footer_body': navbars['footer_body']
+        }
+        body = self.content(args=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        item['isactive'] = True
+        result['coordinates'] = {self.coordinates: [item]}
+        return result
+
+
 class SeeProposalActionsView(MultipleView):
-    title = _('actions')
-    name = 'seeiactionsdea'
-    template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (SeeAmendmentsView,
+    title = ''
+    name = 'seeproposalparts'
+    template = 'novaideo:views/templates/multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    css_class = 'integreted-tab-content'
+    views = (DetailProposalView,
+             SeeAmendmentsView,
              SeeRelatedIdeasView,
              CompareProposalView)
 
@@ -214,14 +216,68 @@ class SeeProposalActionsView(MultipleView):
 class SeeProposalView(MultipleView):
     title = ''
     name = 'seeproposal'
-    template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
+    template = 'novaideo:views/templates/entity_multipleview.pt'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/correct_proposal.js',
                                  'novaideo:static/js/comment.js',
                                  'novaideo:static/js/compare_idea.js',
                                  'novaideo:static/js/ballot_management.js']}
-    views = (DetailProposalView, SeeProposalActionsView)
+    views = (ProposalHeaderView, SeeProposalActionsView)
     validators = [SeeProposal.get_validator()]
+
+    def _enable_corrections(self, is_participant, corrections):
+        return 'active' in getattr(self.context.working_group, 'state', []) and\
+               corrections and is_participant
+
+    def _get_adapted_text(
+        self, user, is_participant,
+        corrections, enable_corrections):
+        text = getattr(self.context, 'text', '')
+        description = getattr(self.context, 'description', '')
+        title = getattr(self.context, 'title', '')
+        add_filigrane = False
+        if enable_corrections:
+            text = corrections[-1].get_adapted_text(user)
+            description = corrections[-1].get_adapted_description(user)
+            title = corrections[-1].get_adapted_title(user)
+        elif not is_participant and \
+            not any(s in self.context.state
+                    for s in ['published', 'examined']):
+            add_filigrane = True
+
+        return title, description, text, add_filigrane
+
+    def bind(self):
+        bindings = {}
+        bindings['navbars'] = None
+        bindings['vote_actions'] = None
+        vote_actions = get_vote_actions_body(
+            self.context, self.request)
+        try:
+            navbars = generate_navbars(
+                self.request, self.context,
+                text_action=vote_actions['activators'])
+            bindings['navbars'] = navbars
+            bindings['vote_actions'] = vote_actions
+        except ObjectRemovedException:
+            return
+
+        bindings['user'] = get_current()
+        bindings['root'] = getSite()
+        bindings['is_participant'] = has_role(
+            user=bindings['user'], role=('Participant', self.context))
+        bindings['is_censored'] = 'censored' in self.context.state
+        bindings['to_hide'] = bindings['is_censored'] and not has_any_roles(
+            user=bindings['user'],
+            roles=(('Participant', self.context), 'Moderator'))
+        bindings['corrections'] = [c for c in self.context.corrections
+                                   if 'in process' in c.state]
+        bindings['enable_corrections'] = self._enable_corrections(
+            bindings['is_participant'], bindings['corrections'])
+        bindings['content_data'] = self._get_adapted_text(
+            bindings['user'], bindings['is_participant'],
+            bindings['corrections'], bindings['enable_corrections'])
+        setattr(self, '_bindings', bindings)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

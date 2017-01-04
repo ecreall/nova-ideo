@@ -70,7 +70,7 @@ class RelatedIdeasView(BasicView):
 class IdeaManagementView(MultipleView):
     title = _('Ideas being used')
     name = 'ideasmanagementproposal'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (RelatedIdeasView, AddIdeaFormView)
     coordinates = 'right'
     css_class = 'idea-managements panel-success'
@@ -114,7 +114,7 @@ class EditProposalFormView(FormView):
 class EditProposalView(MultipleView):
     title = _('Edit the proposal')
     name = 'editproposal'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/ideas_management.js']}
     views = (EditProposalFormView, IdeaManagementView)

@@ -132,13 +132,13 @@ class ContactMultipleView(MultipleView):
     title = _('Contact')
     name = 'contact'
     viewid = 'contact'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (ContactStudyReport, ContactForm)
     validators = [Contact.get_validator()]
 
     def before_update(self):
         if len(self.validated_children) == 1:
-            self.validated_children[0].wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+            self.validated_children[0].wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
 
         super(ContactMultipleView, self).before_update()
 

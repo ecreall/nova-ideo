@@ -75,7 +75,7 @@ class CensorView(MultipleView):
     name = 'censor'
     behaviors = [Censor]
     viewid = 'censorentity'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (CensorViewStudyCensor, CensorFormView)
     validators = [Censor.get_validator()]
 

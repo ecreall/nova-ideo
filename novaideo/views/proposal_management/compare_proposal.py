@@ -47,12 +47,9 @@ class CompareProposalFormView(CompareIdeaFormView):
     )
 class CompareProposalView(CompareIdeaView):
     title = _('Compare versions')
+    container_css_class = 'home'
     name = 'compare'
     views = (CompareProposalFormView, DiffView)
-
-    def before_update(self):
-        self.viewid = 'compare'
-        super(CompareProposalView, self).before_update()
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

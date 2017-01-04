@@ -67,7 +67,7 @@ class PinView(MultipleView):
     name = 'pincomment'
     behaviors = [Pin]
     viewid = 'pincomment'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (PinViewStudyReport, PinForm)
     validators = [Pin.get_validator()]
 

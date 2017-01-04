@@ -57,7 +57,7 @@ class DelIdeaView(MultipleView):
     name = 'delidea'
     behaviors = [DelIdea]
     viewid = 'delidea'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (RemoveViewStudyReport, RemoveForm)
     validators = [DelIdea.get_validator()]
 

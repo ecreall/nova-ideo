@@ -66,7 +66,7 @@ class DiscussView(MultipleView):
     title = _('Private discussion')
     description = _('Private discussion')
     name = 'discuss'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (DiscussCommentsView, DiscussFormView)
     contextual_help = 'comment-help'
     requirements = {'css_links': [],

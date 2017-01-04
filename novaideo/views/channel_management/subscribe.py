@@ -58,7 +58,7 @@ class SubscribeView(MultipleView):
     name = 'subscribechannel'
     behaviors = [Subscribe]
     viewid = 'subscribechannel'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (SubscribeViewStudyReport, SubscribeForm)
     validators = [Subscribe.get_validator()]
 

@@ -1,6 +1,6 @@
 <div tal:omit-tag="" tal:define=" item subitem|nothing">
     <div tal:omit-tag="" tal:condition="item">
-    <div  class="panel panel-default" >
+    <div  class="${getattr(item['view'], 'css_class', '')} panel panel-default" >
          <div  class="panel-heading">
           <div tal:condition="item['view'].title" class="panel-title">${item['view'].title}</div></div>
          <div  class="panel-body">

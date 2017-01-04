@@ -58,7 +58,7 @@ class IgnoreView(MultipleView):
     name = 'ignore'
     behaviors = [Ignore]
     viewid = 'ignoreentity'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (IgnoreViewStudyIgnore, IgnoreFormView)
     validators = [Ignore.get_validator()]
 

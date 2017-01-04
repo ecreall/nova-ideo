@@ -232,7 +232,7 @@ $(document).on('submit','.commentform:not(.comment-inline-form)', function( even
     var select_related_contents = $($this.find("select[name='related_contents']").first());
     var textarea = $this.find('textarea');
     var comment = textarea.val();
-    var parent = $($this.parents('.views-container').first());
+    var parent = $($this.parents('.comment-view-block').first());
     var target = $(parent.find('.comments-scroll .commentulorigin'));
     var url = $(event.target).attr('action');
     if (comment !='' && intention!=''){
@@ -454,11 +454,8 @@ $(document).on('submit','.presentform', function( event ) {
     var members = $this.find("select[name=\'members\']");
     var subject = $this.find("input[name=\'subject\']").val();
     var textarea = $this.find('textarea');
-    var parent = $($this.parents('.views-container').first());
+    var parent = $($this.parents('.present-view-block').first());
     var target = $(parent.find('.study-view').first());
-    var commentmessageinfo = parent.find('#messageinfo');
-    var commentmessagesuccess = parent.find('#messagesuccess');
-    var commentmessagedanger = parent.find('#messagedanger');
     var url = $(event.target).attr('action');
     if (subject !='' && textarea.val()!='' && members.val() != null){
       loading_progress();

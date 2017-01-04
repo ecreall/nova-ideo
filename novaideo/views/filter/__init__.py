@@ -958,7 +958,7 @@ class FilterView(FormView):
     coordinates = 'main'
     schema = FilterSchema()
     formid = 'formfilter'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     filter_template = 'novaideo:views/templates/filter.pt'
 
     def __init__(self,

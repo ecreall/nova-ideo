@@ -58,7 +58,7 @@ class DelFileView(MultipleView):
     name = 'removefile'
     behaviors = [RemoveFile]
     viewid = 'removefile'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (RemoveViewStudyReport, RemoveForm)
     validators = [RemoveFile.get_validator()]
 

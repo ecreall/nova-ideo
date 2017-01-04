@@ -160,7 +160,7 @@ class SearchView(FormView):
     schema = SearchSchema()
     behaviors = [Search]
     formid = 'formsearch'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
 
     def calculate_posted_filter(self):
         post = getattr(self, 'postedform', self.request.POST or self.request.GET or {})

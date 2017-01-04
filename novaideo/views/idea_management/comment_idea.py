@@ -194,7 +194,8 @@ class CommentIdeaView(MultipleView):
     title = _('Discuss the idea')
     description = _('Discuss the idea')
     name = 'comment'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
+    css_class = 'comment-view-block'
     views = (CommentsView, CommentIdeaFormView)
     contextual_help = 'comment-help'
     requirements = {'css_links': [],

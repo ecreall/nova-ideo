@@ -112,7 +112,7 @@ class DetailSubjectView(BasicView):
     title = _('Details')
     name = 'detailssubject'
     template = 'novaideo:views/reports_management/templates/see_reports.pt'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'detailssubject'
 
     def update(self):

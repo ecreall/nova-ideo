@@ -58,7 +58,7 @@ class RemoveView(MultipleView):
     name = 'removeorganization'
     behaviors = [RemoveOrganization]
     viewid = 'removeorganization'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (RemoveViewStudyReport, RemoveForm)
     validators = [RemoveOrganization.get_validator()]
 

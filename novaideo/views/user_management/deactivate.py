@@ -58,7 +58,7 @@ class DeactivateViewMultipleView(MultipleView):
     title = _('Disactivate the profile')
     name = 'disactivate'
     viewid = 'disactivate'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (DeactivateViewStudyReport, DeactivateView)
     validators = [Deactivate.get_validator()]
 

@@ -18,14 +18,15 @@ from novaideo.core import can_access
 from novaideo.content.processes.proposal_management.behaviors import (
     SeeRelatedIdeas)
 from novaideo.content.proposal import Proposal
-from novaideo.utilities.util import render_small_listing_objs
+from novaideo.utilities.util import (
+    render_listing_objs, render_small_listing_objs)
 from novaideo import _
 
 BATCH_DEFAULT_SIZE = 30
 
 ADDIDEAS_MESSAGES = {'0': _(u"""No related ideas"""),
-                     '1': _(u"""Related idea"""),
-                     '*': _(u"""Related ideas""")}
+                     '1': _(u"""One related idea"""),
+                     '*': _(u"""${nember} related ideas""")}
 
 
 @view_config(
@@ -38,9 +39,9 @@ class SeeRelatedIdeasView(BasicView):
     description = _('See the related ideas')
     name = 'relatedideas'
     behaviors = [SeeRelatedIdeas]
-    # template = 'novaideo:views/idea_management/templates/related_contents.pt'
-    template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
-    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    view_icon = 'novaideo-icon icon-idea'
     viewid = 'relatedideas'
     contextual_help = 'related-ideas-help'
 
@@ -63,57 +64,25 @@ class SeeRelatedIdeasView(BasicView):
         index = str(len_result)
         if len_result > 1:
             index = '*'
-
-        result_body = render_small_listing_objs(
-            self.request, batch, user)
         result = {}
-        self.title = _(ADDIDEAS_MESSAGES[index], mapping={'nember': len_result})
-        message = (_(ADDIDEAS_MESSAGES[index]),
-                   len_result,
-                   index)
-        self.message = message
-        values = {'bodies': result_body,
-                  'batch': batch,
-                  'message': message
-                   }
+        # if included in another view
+        if self.parent:
+            result_body, result = render_listing_objs(
+                self.request, batch, user)
+        else:
+            result_body = render_small_listing_objs(
+                self.request, batch, user)
+
+        self.title = _(ADDIDEAS_MESSAGES[index],
+                       mapping={'nember': len_result})
+        values = {
+            'bodies': result_body,
+            'batch': batch
+        }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
-
-
-
-
-        # self.execute(None)
-        # user = get_current()
-        # relatedideas = [{'content': target,
-        #                  'url': target.url,
-        #                  'correlation': correlation}
-        #                 for target, correlation in
-        #                 self.context.related_ideas.items()]
-        # len_ideas = len(relatedideas)
-
-        # index = str(len_ideas)
-        # if len_ideas > 1:
-        #     index = '*'
-
-        # message = (_(ADDIDEAS_MESSAGES[index]),
-        #            len_ideas,
-        #            index)
-        # result = {}
-        # values = {
-        #     'relatedcontents': relatedideas,
-        #     'current_user': user,
-        #     'message': message
-        # }
-        # self.message = message
-        # body = self.content(args=values, template=self.template)['body']
-        # item = self.adapt_item(body, self.viewid)
-        # result['coordinates'] = {self.coordinates: [item]}
-        # return result
-
-    def get_message(self):
-        return self.message
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

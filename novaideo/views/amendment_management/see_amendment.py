@@ -13,7 +13,6 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current, has_role
 from pontus.view import BasicView
 from pontus.util import merge_dicts
-from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.amendment_management.behaviors import (
     SeeAmendment)
@@ -22,7 +21,6 @@ from novaideo.content.processes import get_states_mapping
 from novaideo.utilities.util import generate_navbars, ObjectRemovedException
 # from .present_amendment import PresentAmendmentView
 # from .comment_amendment import CommentAmendmentView
-from novaideo import _
 from .explanation_amendment import IntentionFormView
 
 
@@ -36,7 +34,7 @@ class DetailAmendmentView(BasicView):
     name = 'seeamendment'
     behaviors = [SeeAmendment]
     template = 'novaideo:views/amendment_management/templates/see_amendment.pt'
-    # wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    # wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'seeamendment'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js',
@@ -72,7 +70,7 @@ class DetailAmendmentView(BasicView):
         textdiff = ''
         # descriptiondiff = ''
         # keywordsdiff = []
-        proposal = self.context.proposal
+        # proposal = self.context.proposal
         textdiff = self.context.text_diff
         # soup, descriptiondiff = html_diff_wrapper.render_html_diff(
         #     '<div>'+getattr(proposal, 'description', '')+'</div>',
@@ -123,32 +121,6 @@ class DetailAmendmentView(BasicView):
         result['coordinates'] = {self.coordinates: [item]}
         result = merge_dicts(self.requirements_copy, result)
         return result
-
-
-# class SeeAmendmentActionsView(MultipleView):
-#     title = _('actions')
-#     name = 'seeiactionsamendment'
-#     template = 'novaideo:views/idea_management/templates/panel_group.pt'
-#     views = (PresentAmendmentView, CommentAmendmentView)
-
-#     def _activate(self, items):
-#         pass
-
-
-# @view_config(
-#     name='seeamendment',
-#     context=Amendment,
-#     renderer='pontus:templates/views_templates/grid.pt',
-#     )
-# class SeeAmendmentView(MultipleView):
-#     title = ''
-#     name = 'seeamendment'
-#     template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
-#     views = (DetailAmendmentView,)
-#     requirements = {'css_links': [],
-#                     'js_links': ['novaideo:static/js/comment.js',
-#                                  'novaideo:static/js/explanation_amendment.js']}
-#     validators = [SeeAmendment.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

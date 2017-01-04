@@ -131,7 +131,7 @@ class PublishAsProposalFormView(MultipleView):
     title = _('Transform the idea into a proposal')
     name = 'publishasproposalview'
     viewid = 'publishasproposalview'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (PublishAsProposalStudyReport, PublishFormView)
 
 
@@ -144,7 +144,7 @@ class PublishAsProposalView(CreateProposalView):
     title = _('Transform the idea into a proposal')
     name = 'publishasproposal'
     viewid = 'publishasproposal'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (PublishAsProposalFormView, IdeaManagementView)
     validators = [PublishAsProposal.get_validator()]
 

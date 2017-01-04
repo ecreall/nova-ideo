@@ -51,7 +51,7 @@ class PublishAdvertisingViewMultipleView(MultipleView):
     title = _('Publish the announcement')
     name = 'publishadvertising'
     viewid = 'publishadvertising'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (PublishAdvertisingViewStudyReport, PublishAdvertisingView)
     validators = [PublishAdvertising.get_validator()]
 

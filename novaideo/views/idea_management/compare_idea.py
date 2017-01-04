@@ -25,8 +25,8 @@ from novaideo import _
 
 
 COMPARE_MESSAGE = {'0': _(u"""No other version"""),
-                   '1': _(u"""Available version"""),
-                   '*': _(u"""Available versions""")}
+                   '1': _(u"""One available version"""),
+                   '*': _(u"""${nember} available versions""")}
 
 
 class DiffView(BasicView):
@@ -36,6 +36,7 @@ class DiffView(BasicView):
     viewid = 'diffresult'
     validators = [CompareIdea.get_validator()]
     template = 'novaideo:views/idea_management/templates/diff_result.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
 
     #TODO current version
     def update(self):
@@ -129,6 +130,7 @@ class CompareIdeaSchema(Schema):
 
 class CompareIdeaFormView(FormView):
 
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     title = _('Form to compare the idea')
     schema = select(CompareIdeaSchema(), ['current_version', 'versions'])
     behaviors = [CompareIdea]
@@ -152,25 +154,23 @@ class CompareIdeaFormView(FormView):
 class CompareIdeaView(MultipleView):
     title = _('Compare the versions')
     name = 'compare'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
-    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    css_class = 'compare-block'
+    view_icon = 'glyphicon glyphicon-time'
     views = (CompareIdeaFormView, DiffView)
     contextual_help = 'compare-help'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/compare_idea.js']}
 
-    def get_message(self):
+    def before_update(self):
         len_history = len(self.context.history)
         index = str(len_history)
         if len_history > 1:
             index = '*'
 
-        message = (_(COMPARE_MESSAGE[index]),
-                   len_history,
-                   index)
-        return message
-
-    def before_update(self):
+        self.title = _(COMPARE_MESSAGE[index],
+                       mapping={'nember': len_history})
         self.viewid = 'compare'
         super(CompareIdeaView, self).before_update()
 

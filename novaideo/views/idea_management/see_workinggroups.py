@@ -18,14 +18,15 @@ from novaideo.core import can_access
 from novaideo.content.processes.idea_management.behaviors import (
     SeeRelatedWorkingGroups)
 from novaideo.content.idea import Idea
-from novaideo.utilities.util import render_small_listing_objs
+from novaideo.utilities.util import (
+    render_small_listing_objs, render_listing_objs)
 from novaideo import _
 
 BATCH_DEFAULT_SIZE = 30
 
 WG_MESSAGES = {'0': _(u"""No related working group"""),
-               '1': _(u"""Related working group"""),
-               '*': _(u"""Related working groups""")}
+               '1': _(u"""One related working group"""),
+               '*': _(u"""${nember} related working groups""")}
 
 
 @view_config(
@@ -39,7 +40,8 @@ class SeeRelatedWorkingGroupsView(BasicView):
     name = 'relatedworkinggroups'
     behaviors = [SeeRelatedWorkingGroups]
     template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
-    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    view_icon = 'icon icon novaideo-icon icon-wg'
     viewid = 'relatedworkinggroups'
     contextual_help = 'related-wg-help'
 
@@ -64,18 +66,19 @@ class SeeRelatedWorkingGroupsView(BasicView):
         if len_result > 1:
             index = '*'
 
-        result_body = render_small_listing_objs(
-            self.request, batch, user)
-        result = {}
         self.title = _(WG_MESSAGES[index], mapping={'nember': len_result})
-        message = (_(WG_MESSAGES[index]),
-                   len_result,
-                   index)
-        self.message = message
+        result = {}
+        # if included in another view
+        if self.parent:
+            result_body, result = render_listing_objs(
+                self.request, batch, user)
+        else:
+            result_body = render_small_listing_objs(
+                self.request, batch, user)
+
         values = {
             'bodies': result_body,
             'batch': batch,
-            'message': message,
             'empty_message': _("No working group created"),
             'empty_icon': 'novaideo-icon icon-wg'
         }

@@ -64,7 +64,7 @@ class ReportView(MultipleView):
     name = 'report'
     behaviors = [Report]
     viewid = 'reportentity'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (ReportViewStudyReport, ReportFormView)
     validators = [Report.get_validator()]
 

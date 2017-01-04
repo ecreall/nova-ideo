@@ -29,34 +29,28 @@ $(document).on('click', ".contextual-help-toggle-close", function(e) {
     $(".contextual-help").toggleClass("toggled");
 });
 
-$(document).ready(function(){
-    init_contextual_help();
-
-    $('div.panel-collapse').on('shown.bs.collapse', function(){
-        var help = $('.'+ $(this).data('help'));
+$(document).on('click', '.nav-tabs>li', function(){
+    var $this = $(event.target).parents('li').first()
+    if ($this.data('help')){
+        var help = $('.'+ $this.data('help'));
         if(help.length>0){
             var helps = $('.contextual-help-item');
-            var help_parent = $(help.parents('.contextual-help.alert').first());
+            var help_parent = $(help.parents('.contextual-help').first());
             helps.addClass('hide-bloc');
             help_parent.removeClass('hide-bloc');
             help.removeClass('hide-bloc');
-            
         }
-    });
-
-    $('div.panel-collapse').on('hide.bs.collapse', function(){
-        var help = $('.'+ $(this).data('help'));
+        
+    }else{
         var principal_help = $('.principal-help');
-        if(help.length>0){
+        if(principal_help.length>0){
             var helps = $('.contextual-help-item');
-            var help_parent = $(help.parents('.contextual-help.alert').first());
             helps.addClass('hide-bloc');
-            if(principal_help.length>0){
-                principal_help.removeClass('hide-bloc')
-            }else{
-              help_parent.addClass('hide-bloc');
-            }
-            
+            principal_help.removeClass('hide-bloc')
         }
-    })
+    }
+});
+
+$(document).ready(function(){
+    init_contextual_help();
 })

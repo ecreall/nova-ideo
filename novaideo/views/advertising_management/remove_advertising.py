@@ -50,7 +50,7 @@ class RemoveAdvertisingViewMultipleView(MultipleView):
     title = _('Remove the announcement')
     name = 'removeadvertising'
     viewid = 'removeadvertising'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (RemoveAdvertisingViewStudyReport, RemoveAdvertisingView)
     validators = [RemoveAdvertising.get_validator()]
 

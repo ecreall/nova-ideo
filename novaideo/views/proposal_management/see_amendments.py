@@ -26,8 +26,8 @@ from novaideo.core import can_access
 BATCH_DEFAULT_SIZE = 10
 
 AMENDMENTS_MESSAGES = {'0': _(u"""No amended version"""),
-                      '1': _(u"""Amended version"""),
-                      '*': _(u"""Amended versions""")}
+                      '1': _(u"""One amended version"""),
+                      '*': _(u"""${nember} amended versions""")}
 
 
 @view_config(
@@ -40,8 +40,10 @@ class SeeAmendmentsView(BasicView):
     name = 'seeproposalamendments'
     description = _("See amended versions")
     behaviors = [SeeAmendments]
-    template = 'novaideo:views/proposal_management/templates/amendments.pt'
-    wrapper_template = 'novaideo:views/idea_management/templates/panel_item.pt'
+    template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    view_icon = 'novaideo-icon icon-amendment'
+    container_css_class = 'home'
     viewid = 'seeproposalamendments'
     contextual_help = 'amendments-help'
 
@@ -54,12 +56,6 @@ class SeeAmendmentsView(BasicView):
         objects = sorted(objects,
                          key=lambda e: getattr(e, 'modified_at', now),
                          reverse=True)
-        # lenamendments = len(objects)
-        # index = str(lenamendments)
-        # if lenamendments > 1:
-        #     index = '*'
-
-
         url = self.request.resource_url(self.context, self.name)
         batch = Batch(objects, self.request,
                       url=url,
@@ -70,27 +66,18 @@ class SeeAmendmentsView(BasicView):
         if len_result > 1:
             index = '*'
 
-        # self.title = self._get_title(
-        #     index=index, len_result=len_result, user=user)
-        # filter_data['filter_message'] = self.title
-        # filter_body = self.filter_instance.get_body(filter_data)
+        self.title = _(AMENDMENTS_MESSAGES[index],
+                       mapping={'nember': len_result})
         result_body, result = render_listing_objs(
             self.request, batch, user)
-        message = (_(AMENDMENTS_MESSAGES[index]),
-                   len_result,
-                   index)
-        values = {'bodies': result_body,
-                  'batch': batch,
-                  'message': message
-                   }
-        self.message = message
+        values = {
+            'bodies': result_body,
+            'batch': batch
+        }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
-
-    def get_message(self):
-        return self.message
 
     def before_update(self):
         self.viewid = 'seeproposalamendments'

@@ -40,7 +40,7 @@ class LoginView(BasicView):
     name = 'login'
     behaviors = [LogIn]
     template = 'novaideo:views/user_management/templates/login.pt'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'login'
 
     def update(self):

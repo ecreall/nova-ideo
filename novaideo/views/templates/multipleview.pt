@@ -5,7 +5,11 @@
   </div>
   <div tal:omit-tag="" tal:condition="items and itemslen > 1">
       <ul tal:attributes="id (subitem['view'].viewid+'_multipleform_'+coordinates)" class="nav nav-tabs">
-          <li id="${getattr(item['view'], 'counter_id', '')}" data-component_type="tab_component" tal:repeat="item items" tal:attributes="class item['isactive'] and 'active counter' or 'counter'">
+          <li id="${getattr(item['view'], 'counter_id', '')}"
+              data-component_type="tab_component"
+              tal:repeat="item items"
+              tal:attributes="class item['isactive'] and 'active counter' or 'counter'"
+              data-help="${getattr(item['view'], 'contextual_help', '')}">
              <a data-toggle="tab" tal:attributes="href '#'+item['id']+coordinates"
                 tal:define="icon getattr(item['view'], 'view_icon', None)">
               <span tal:condition="icon" class="${icon}"></span> <span class="tab-title">${item['view'].title}</span></a>
@@ -19,4 +23,3 @@
       </div>
   </div>
 </div>
-

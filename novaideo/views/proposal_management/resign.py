@@ -57,7 +57,7 @@ class ResignViewMultipleView(MultipleView):
     name = 'resign'
     behaviors = [Resign]
     viewid = 'resign'
-    template = 'daceui:templates/simple_mergedmultipleview.pt'
+    template = 'pontus:templates/views_templates/simple_multipleview.pt'
     views = (ResignViewStudyReport, ResignView)
     validators = [Resign.get_validator()]
 
