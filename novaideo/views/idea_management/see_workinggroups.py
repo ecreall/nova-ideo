@@ -50,8 +50,10 @@ class SeeRelatedWorkingGroupsView(BasicView):
         user = get_current()
         objects = [proposal for proposal
                    in dict(self.context.related_proposals).keys()
-                   if proposal.working_group and 'archived' not in proposal.state
-                   and can_access(user, proposal)]
+                   if proposal.working_group and
+                   'archived' not in proposal.state and
+                   'censored' not in proposal.state and
+                   can_access(user, proposal)]
         objects = sorted(
             objects,
             key=lambda e: getattr(e, 'modified_at'),
@@ -69,7 +71,7 @@ class SeeRelatedWorkingGroupsView(BasicView):
         self.title = _(WG_MESSAGES[index], mapping={'nember': len_result})
         result = {}
         # if included in another view
-        if self.parent:
+        if self.parent or self.request.view_name == self.name:
             result_body, result = render_listing_objs(
                 self.request, batch, user)
         else:

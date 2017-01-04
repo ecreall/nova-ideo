@@ -66,7 +66,7 @@ class SeeRelatedIdeasView(BasicView):
             index = '*'
         result = {}
         # if included in another view
-        if self.parent:
+        if self.parent or self.request.view_name == self.name:
             result_body, result = render_listing_objs(
                 self.request, batch, user)
         else:
