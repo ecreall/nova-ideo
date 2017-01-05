@@ -1313,4 +1313,4 @@ if __name__ == '__main__' :
       except AttributeError as pErr :
         pass
 
-warnings.warn("@TODO vérifier la cohérence des heures avec matin midi soir après-midi avant exploitation")
+#warnings.warn("@TODO vérifier la cohérence des heures avec matin midi soir après-midi avant exploitation")
