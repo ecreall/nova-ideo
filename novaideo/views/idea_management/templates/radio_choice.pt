@@ -4,7 +4,7 @@
                  inline getattr(field.widget, 'inline', False)"
      tal:omit-tag="not inline">
 
-  <div class="scroll-able scroll-choice" >
+  <div class="scroll-able scroll-choice malihu-scroll" >
   ${field.start_rename()}
   <div tal:repeat="choice values | field.widget.values"
        tal:omit-tag="inline"

@@ -94,37 +94,14 @@ def version_choice(node, kw):
     return widget
 
 
-@colander.deferred
-def current_version_choice(node, kw):
-    context = node.bindings['context']
-    request = node.bindings['request']
-    current_version = context.current_version
-    values = [(current_version, current_version.get_view(request))]
-    return CheckboxChoiceWidget(values=values, multiple=True, readonly=True)
-
-
-@colander.deferred
-def default_current_version_choice(node, kw):
-    context = node.bindings['context']
-    values = [context.current_version]
-    return values
-
-
 class CompareIdeaSchema(Schema):
-
-    current_version = colander.SchemaNode(
-        colander.Set(),
-        widget=current_version_choice,
-        default=default_current_version_choice,
-        missing=[],
-        title=_('Current version')
-        )
 
     versions = colander.SchemaNode(
         ObjectType(),
         widget=version_choice,
         title=_('Last versions'),
-        description=_("Select the previous version with which to compare")
+        description=_("Select the previous version with which to compare"),
+        missing=None
         )
 
 
@@ -132,7 +109,7 @@ class CompareIdeaFormView(FormView):
 
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     title = _('Form to compare the idea')
-    schema = select(CompareIdeaSchema(), ['current_version', 'versions'])
+    schema = select(CompareIdeaSchema(), ['versions'])
     behaviors = [CompareIdea]
     formid = 'formcompareidea'
     name = 'compareideaform'
@@ -164,7 +141,7 @@ class CompareIdeaView(MultipleView):
                     'js_links': ['novaideo:static/js/compare_idea.js']}
 
     def before_update(self):
-        len_history = len(self.context.history)
+        len_history = len(self.context.history) - 1
         index = str(len_history)
         if len_history > 1:
             index = '*'

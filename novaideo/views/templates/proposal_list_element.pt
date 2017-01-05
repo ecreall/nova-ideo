@@ -1,3 +1,30 @@
-<span i18n:domain="novaideo">
-  <a href="${request.resource_url(object, '@@index')}">${object.title}</a> <span i18n:translate="">modified on</span> <span tal:replace="layout.to_localized_time(object.modified_at)"/>
-</span>
+<div class="thumbnail right-caption span4 small-result" 
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(object, '@@index');
+                 icon getattr(object, 'icon');
+                 author object.author;
+                 censored 'censored' in object.state
+                 ">
+  <div class="media-body media-proposal small-media" tal:define="author_picture getattr(author, 'picture', None)">
+    <div class="object-title-block" >
+      <a tal:condition="not censored" tal:attributes="href url">
+        <h5>
+          <span class="icon ${icon}"></span>  ${object.title}
+        </h5>
+      </a>
+    </div>
+    <div class="author-block">
+      <span i18n:translate="">modified on</span> <span tal:replace="layout.to_localized_time(object.modified_at)"/>
+	  <div class="version-note" tal:condition="hasattr(object, 'note')">
+	    <small>
+	       ${object.note}
+	    </small>
+	  </div>
+    </div>
+    <div tal:condition="censored">
+     <div class="alert-terms-of-use" i18n:translate="">
+        This content does not respect the terms of use.
+     </div>
+    </div>
+  </div>
+</div>
