@@ -83,6 +83,11 @@ class Certifier(Role):
     pass
 
 
+@role(name='Bot', superiors=[Administrator])
+class Bot(Role):
+    pass
+
+
 def get_authorized_roles(user=None):
     if not user:
         user = get_current()

@@ -10,7 +10,6 @@ This module represent all of behaviors used in the
 Proposal management process definition. 
 """
 
-from persistent.list import PersistentList
 from bs4 import BeautifulSoup
 from pyramid.httpexceptions import HTTPFound
 from pyramid.threadlocal import get_current_registry
@@ -19,13 +18,11 @@ from pyramid import renderers
 from substanced.util import get_oid
 
 import html_diff_wrapper
-from dace.util import copy, getSite
+from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
     has_role,
-    get_current,
-    grant_roles)
+    get_current)
 from daceui.interfaces import IDaceUIAPI
-#from dace.objectofcollaboration import system
 from dace.processinstance.activity import (
     InfiniteCardinality, ActionType, ElementaryAction)
 
@@ -33,13 +30,14 @@ from novaideo.content.interface import IProposal, ICorrection
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _, nothing
 from novaideo.content.alert import InternalAlertKind
-from novaideo.utilities.alerts_utility import alert
+from novaideo.utilities.alerts_utility import alert, alert_comment_nia
+from novaideo.utilities.util import diff_analytics
 
 
 DEFAULT_NB_CORRECTORS = 1
 
 
-def valid_correction(process, correction, proposal):
+def valid_correction(process, correction, proposal, request):
     correction.state.remove('in process')
     correction.state.append('processed')
     current_version = correction.current_version
@@ -50,6 +48,15 @@ def valid_correction(process, correction, proposal):
     proposal.setproperty('version', current_version)
     proposal.reindex()
     current_version.reindex()
+    # Add Nia comment
+    alert_comment_nia(
+        proposal, request, getSite(),
+        internal_kind=InternalAlertKind.working_group_alert,
+        subject_type='proposal',
+        alert_kind='new_version',
+        diff=diff_analytics(
+            current_version, proposal, ['title', 'text', 'description'])
+        )
 
 
 def correctitem_relation_validation(process, context):
@@ -128,7 +135,8 @@ class CorrectItem(InfiniteCardinality):
             proposal = context.proposal
             if not any('included' not in context.corrections[c]
                        for c in context.corrections.keys()):
-                valid_correction(self.process, context, proposal)
+                valid_correction(
+                    self.process, context, proposal, request)
 
             self._include_to_proposal(context, proposal, text_to_correct,
                                       request, content)
@@ -346,8 +354,9 @@ class CloseWork(ElementaryAction):
         if context.corrections:
             last_correction = context.corrections[-1]
             if 'in process' in last_correction.state:
-                valid_correction(self.process, last_correction,
-                                 last_correction.proposal)
+                valid_correction(
+                    self.process, last_correction,
+                    last_correction.proposal, request)
 
         return {}
 

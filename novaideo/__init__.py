@@ -6,6 +6,7 @@
 # author: Amen Souissi
 
 import pytz
+import os
 import logging
 from persistent.list import PersistentList
 
@@ -18,6 +19,10 @@ from pyramid.threadlocal import get_current_request
 from substanced.db import root_factory
 
 from dace.util import getSite, find_service
+from dace.objectofcollaboration.principal.util import grant_roles
+from pontus.file import File
+
+from novaideo.content.bot import Bot
 
 
 nothing = object()
@@ -600,6 +605,30 @@ def evolve_files(root, registry):
     log.info('Files evolved')
 
 
+def add_nia_bot(root):
+    nia_picture = os.path.join(
+        os.path.dirname(__file__), 'static', 'images', 'nia.png')
+    picture = None
+    if os.path.exists(nia_picture):
+        buf = open(nia_picture, mode='rb')
+        picture = File(
+            fp=buf, filename='nia', mimetype='image/png')
+
+    nia = root['principals']['users'].get('nia', None)
+    if nia is None:
+        nia = Bot(
+            title='Nia',
+            picture=picture
+            )
+        root['principals']['users']['nia'] = nia
+        grant_roles(nia, ('Bot',), root=root)
+
+
+def evolve_add_nia_bot(root, registry):
+    root = getSite()
+    add_nia_bot(root)
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -640,6 +669,7 @@ def main(global_config, **settings):
     config.add_evolution_step(publish_comments)
     config.add_evolution_step(evolve_nonproductive_cycle)
     config.add_evolution_step(evolve_files)
+    config.add_evolution_step(evolve_add_nia_bot)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

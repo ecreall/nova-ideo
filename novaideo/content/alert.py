@@ -176,7 +176,8 @@ class _ContentAlert(object):
     templates = {
         'default': 'novaideo:views/templates/alerts/content_result.pt',
         'small': 'novaideo:views/templates/alerts/small_content_result.pt',
-        'notification': 'novaideo:views/templates/alerts/notification_content_result.pt'
+        'notification': 'novaideo:views/templates/alerts/notification_content_result.pt',
+        'nia': 'novaideo:views/templates/alerts/nia_content_result.pt'
     }
 
     def __call__(self, **kwargs):
@@ -205,7 +206,8 @@ class _WorkingGroupAlert(object):
     templates = {
         'default': 'novaideo:views/templates/alerts/wg_alert_result.pt',
         'small': 'novaideo:views/templates/alerts/small_wg_alert_result.pt',
-        'notification': 'novaideo:views/templates/alerts/notification_wg_alert_result.pt'
+        'notification': 'novaideo:views/templates/alerts/notification_wg_alert_result.pt',
+        'nia': 'novaideo:views/templates/alerts/nia_wg_result.pt'
         }
 
     def __call__(self, **kwargs):
@@ -263,7 +265,8 @@ class _ExaminationAlert(object):
     templates = {
         'default': 'novaideo:views/templates/alerts/examination_result.pt',
         'small': 'novaideo:views/templates/alerts/small_examination_result.pt',
-        'notification': 'novaideo:views/templates/alerts/notification_examination_result.pt'
+        'notification': 'novaideo:views/templates/alerts/notification_examination_result.pt',
+        'nia': 'novaideo:views/templates/alerts/nia_examination_result.pt'
     }
 
     def __call__(self, **kwargs):

@@ -250,10 +250,10 @@ class Comment(Commentable, Emojiable, SignalableEntity):
     def get_related_contents(self, user):
         return [r for r in self.related_contents if can_access(user, r)]
 
-    def format(self, request):
+    def format(self, request, is_html=False):
         comment = getattr(self, 'comment', '')
         all_urls, url_files, text_urls, formatted_text = text_urls_format(
-            comment, request)
+            comment, request, is_html)
         self.urls = PersistentDict(all_urls)
         self.setproperty('url_files', url_files)
         self.formatted_comment = formatted_text

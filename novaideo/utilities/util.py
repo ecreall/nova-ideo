@@ -28,6 +28,7 @@ from pyramid.threadlocal import get_current_registry, get_current_request
 
 from substanced.util import get_oid
 
+import html_diff_wrapper
 from pontus.index import Index
 from pontus.file import OBJECT_OID
 from pontus.util import merge_dicts, get_view
@@ -652,7 +653,7 @@ def html_article_to_text(html):
     return ''
 
 
-def text_urls_format(text, request=None):
+def text_urls_format(text, request=None, is_html=False):
     if not request:
         request = get_current_request()
 
@@ -681,7 +682,10 @@ def text_urls_format(text, request=None):
         text_urls = text_urls.replace(
             url, '<a  target="_blank" href="'+url+'">'+url+'</a>')
 
-    text = truncate_text(text, len(text)).replace('\n', '<br/>')
+    if not is_html:
+        text = truncate_text(text, len(text))
+        text = text.replace('\n', '<br/>')
+
     formatted_text = '<p class="emoji-container">' + text + '</p>'
     return all_urls, url_files, text_urls, formatted_text
 
@@ -1345,6 +1349,25 @@ def get_emoji_form(
          'items': items},
         request)
 
+
+def diff_analytics(context, version, attrs):
+    ins_ = 0
+    del_ = 0
+    diff = 0
+    for attr in attrs:
+        soup, diff_text = html_diff_wrapper.render_html_diff(
+            getattr(context, attr, ''),
+            getattr(version, attr, ''),
+            "analytics_diff")
+        ins_ += len(soup.find_all('ins'))
+        del_ += len(soup.find_all('del'))
+        diff += len(soup.find_all('span', {'id': "analytics_diff"}))
+
+    return {
+        'diff': diff,
+        'ins': ins_,
+        'del': del_
+    }
 
 #add unrecognized mimetype
 

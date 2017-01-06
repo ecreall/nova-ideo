@@ -1,0 +1,34 @@
+<div tal:omit-tag="" i18n:domain="novaideo"
+     tal:define="icon 'glyphicon glyphicon-bookmark';
+                 alert_kind getattr(object, 'alert_kind', '');
+                 member getattr(object, 'member', None);
+                 subject object.subject;">
+  <div tal:omit-tag=""  tal:condition="object.subject_type == 'idea'">
+    <span i18n:translate="" tal:condition="alert_kind == 'duplicated'">
+      <span tal:omit-tag=""
+        tal:define="
+            duplication object.duplication;
+            author duplication.author
+         ">
+       Cette idée vient d'être dupliquée et travaillée différemment. Vous trouverez l'idée dupliquée ici <a 
+            data-oid="${getattr(duplication, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(duplication, '@@index')}" class="alert-link"><span class="${getattr(duplication, 'icon', '')}"></span> ${duplication.title}</a>.
+     </span>
+    </span>
+  </div>
+  <div tal:omit-tag=""  tal:condition="object.subject_type == 'proposal'">
+    <span i18n:translate="" tal:condition="alert_kind == 'duplicated'">
+      <span tal:omit-tag=""
+        tal:define="
+            duplication object.duplication;
+            author duplication.author
+         ">
+       Cette proposition vient d'être dupliquée et travaillée différemment. Vous trouverez la proposition dupliquée ici <a 
+            data-oid="${getattr(duplication, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(duplication, '@@index')}" class="alert-link"><span class="${getattr(duplication, 'icon', '')}"></span> ${duplication.title}</a>.
+     </span>
+    </span>
+  </div>
+</div>

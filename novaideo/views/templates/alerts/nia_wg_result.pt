@@ -1,0 +1,33 @@
+<div tal:omit-tag="" i18n:domain="novaideo"
+     tal:define="alert_kind getattr(object, 'alert_kind', '');
+                 subject object.subject;">
+  <div tal:omit-tag=""  tal:condition="object.subject_type == 'proposal'">
+    <span i18n:translate="" tal:condition="alert_kind == 'new_version'">
+       Le groupe de travail vient de produire une nouvelle version de la proposition. N'hésitez pas à discuter les modifications apportées. Vous pouvez voir les modifications en comparant la version en cours avec la dernière version produite.
+       <blockquote class="url-block" tal:define="diff_a object.diff" tal:condition="diff_a['diff']">
+         <span class="url-title">
+           La nouvelle version apporte ${diff_a['diff']} modification(s) avec :
+         </span>
+         <div class="url-description">
+          <div tal:condition="diff_a['ins']"
+               style="color: #4eaf4e"><b>${diff_a['ins']} insertion(s)</b></div>
+          <div tal:condition="diff_a['del']"
+               style="color: #ef3128"><b>${diff_a['del']} suppression(s)</b></div>
+         </div>
+      </blockquote>
+    </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'start_work'">
+       Le cycle d'amélioration de cette proposition vient de commencer. Une nouvelle version sera produite à la fin de ce cycle. N'hésitez pas à discuter le contenu de la proposition au fur et à mesure de sa rédaction. Vos avis peuvent aider le groupe de travail à rédiger la proposition.
+       Si vous n'êtes pas déjà participant, vous pouvez y participer et y contribuer concrètement en apportant vos améliorations.
+    </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'open_to_a_working_group'">
+       Cette proposition vient d'être publiée et est ouverte à un groupe de travail. Si vous êtes intéressé par la proposition, vous pouvez y participer et y contribuer concrètement en apportant vos améliorations.
+    </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'exclusion_open_to_a_wg'">
+       Cette proposition est maintenant ouverte à un groupe de travail. Si vous êtes intéressé par la proposition, vous pouvez y participer et y contribuer concrètement en apportant vos améliorations.
+    </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'submitted_support'">
+       Cette proposition vient d'être soumise à l'appréciation des membres. Vous pouvez soit la soutenir, soit vous y opposer. N'hésitez pas à discuter le contenu de la proposition, vos avis ne font qu'améliorer le débat.
+    </span>
+  </div>
+</div>

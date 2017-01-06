@@ -12,19 +12,16 @@ Proposal management process definition.
 import datetime
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
-from pyramid.threadlocal import get_current_registry
 from pyramid import renderers
 
 import html_diff_wrapper
 from dace.util import (
     getSite,
-    copy,
     get_obj)
 from dace.objectofcollaboration.principal.util import (
     has_role,
     grant_roles,
     get_current)
-#from dace.objectofcollaboration import system
 from dace.processinstance.activity import (
     InfiniteCardinality, ElementaryAction, ActionType)
 
@@ -36,7 +33,8 @@ from novaideo.content.processes.amendment_management.behaviors import (
     get_text_amendment_diff)
 from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import (
-    alert, get_user_data, get_entity_data)
+    alert, get_user_data, get_entity_data, alert_comment_nia)
+from novaideo.utilities.util import diff_analytics
 
 
 VOTE_AMENDMENTS_MESSAGE = _("You are invited to vote on amendments. Each group of amendments opposes "
@@ -326,6 +324,15 @@ class AmendmentsResult(ElementaryAction):
             alert('internal', [root], members,
                   internal_kind=InternalAlertKind.working_group_alert,
                   subjects=[context], alert_kind='amendments_result')
+            # Add Nia comment
+            alert_comment_nia(
+                context, request, root,
+                internal_kind=InternalAlertKind.working_group_alert,
+                subject_type='proposal',
+                alert_kind='new_version',
+                diff=diff_analytics(
+                    version, context, ['title', 'text', 'description'])
+                )
         else:
             context.state = PersistentList(['amendable', 'published'])
             alert('internal', [root], members,

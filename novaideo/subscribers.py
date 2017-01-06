@@ -5,7 +5,6 @@
 # author: Amen Souissi
 
 import os
-import io
 import transaction
 from pyramid.events import subscriber, ApplicationCreated
 from pyramid.threadlocal import get_current_registry, get_current_request
@@ -25,7 +24,7 @@ from novaideo.event import (
 from novaideo.views.filter import (
     get_users_by_keywords, get_users_by_preferences)
 from novaideo.content.processes import get_states_mapping
-from novaideo import _
+from novaideo import _, add_nia_bot
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.invitation import Invitation
 from novaideo.role import APPLICATION_ROLES
@@ -90,6 +89,7 @@ def mysubscriber(event):
     root.only_for_members = site_type.lower() != 'public'
     #invit initial user
     root.first_invitation_to_add = True
+    add_nia_bot(root)
 
 
 @subscriber(ObjectPublished)

@@ -7,6 +7,7 @@
 
 import json
 import requests
+from persistent.list import PersistentList
 from urllib.request import urlopen
 
 from substanced.util import get_oid
@@ -19,6 +20,8 @@ from novaideo.ips.mailer import mailer_send
 # from novaideo.content.resources import (
 #     arango_server, create_collection)
 from novaideo.content.alert import INTERNAL_ALERTS
+from novaideo.utilities.util import connect
+from novaideo.content.comment import Comment 
 from novaideo import log, _
 
 
@@ -98,6 +101,43 @@ def get_entity_data(entity, id, request=None):
         id+'_type': entity_type,
         id+'_icon': getattr(entity, 'icon', ''),
     }
+
+
+def alert_comment_nia(context, request, root, **kwargs):
+    nia = root['principals']['users'].get('nia', None)
+    channel = context.channel
+    kind = kwargs.pop('internal_kind', None)
+    alert_class = INTERNAL_ALERTS.get(kind, None)
+    if nia and channel and alert_class:
+        # For Nia the alert is volatil
+        alert = alert_class(**kwargs)
+        alert.subject = context
+        comment_text = alert.render('nia', None, request).strip()
+        comment = Comment(
+            intention=_('Remark'),
+            comment=comment_text
+            )
+        channel.addtoproperty('comments', comment)
+        channel.add_comment(comment)
+        comment.format(request, True)
+        comment.formatted_comment = '<div class="bot-message">' + \
+            comment.formatted_comment +\
+            '</div>'
+        comment.state = PersistentList(['published'])
+        comment.reindex()
+        comment.setproperty('author', nia)
+        if kwargs.get('related_contents', []):
+            related_contents = kwargs.get('related_contents')
+            correlation = connect(
+                context,
+                list(related_contents),
+                {'comment': comment.comment,
+                 'type': comment.intention},
+                nia,
+                unique=True)
+            comment.setproperty('related_correlation', correlation[0])
+
+        context.reindex()
 
 
 def alert_email(senders=[], recipients=[], exclude=[], **kwargs):

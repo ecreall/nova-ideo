@@ -6,7 +6,9 @@
 
 from zope.interface import Interface
 
-from dace.interfaces import Attribute, IUser, IEntity as IEntityO, IApplication
+from dace.interfaces import (
+    Attribute, IUser, IEntity as IEntityO, IApplication,
+    IMachine)
 
 from pontus.interfaces import IVisualisableElement, IImage as SourceIImage
 
@@ -230,6 +232,13 @@ class IPerson(IVisualisableElement,
               ICorrelableEntity,
               IBaseUser,
               IUser):
+
+    picture = Attribute('picture', type=IMAGETYPE)
+
+
+@interface()
+@interface_config(type_id='bot')
+class IBot(IMachine):
 
     picture = Attribute('picture', type=IMAGETYPE)
 

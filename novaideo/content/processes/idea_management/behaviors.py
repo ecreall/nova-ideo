@@ -46,7 +46,7 @@ from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
     ObjectModified)
 from novaideo.utilities.alerts_utility import (
-    alert, get_user_data, get_entity_data)
+    alert, get_user_data, get_entity_data, alert_comment_nia)
 from novaideo.content.alert import InternalAlertKind
 from novaideo.views.filter import get_users_by_preferences
 from novaideo.content.proposal import Proposal
@@ -549,6 +549,16 @@ class PublishIdeaModeration(InfiniteCardinality):
         alert('internal', [root], [user],
               internal_kind=InternalAlertKind.moderation_alert,
               subjects=[context], alert_kind='moderation')
+        if context.originalentity:
+            # Add Nia comment
+            alert_comment_nia(
+                context.originalentity, request, root,
+                internal_kind=InternalAlertKind.content_alert,
+                subject_type='idea',
+                alert_kind='duplicated',
+                duplication=context
+                )
+
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('publish_idea_decision')
             subject = mail_template['subject'].format(
@@ -613,6 +623,17 @@ class PublishIdea(InfiniteCardinality):
             context.state = PersistentList(['published', 'submitted_support'])
 
         context.init_published_at()
+
+        if context.originalentity:
+            # Add Nia comment
+            alert_comment_nia(
+                context.originalentity, request, root,
+                internal_kind=InternalAlertKind.content_alert,
+                subject_type='idea',
+                alert_kind='duplicated',
+                duplication=context
+                )
+
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
@@ -1008,10 +1029,16 @@ class MakeOpinion(InfiniteCardinality):
         root = getSite()
         users = list(get_users_by_preferences(context))
         users.append(member)
-        alert('internal', [root], users,
-              internal_kind=InternalAlertKind.examination_alert,
-              subjects=[context])
-
+        alert(
+            'internal', [root], users,
+            internal_kind=InternalAlertKind.examination_alert,
+            subjects=[context])
+        # Add Nia comment
+        alert_comment_nia(
+            context, request, root,
+            internal_kind=InternalAlertKind.examination_alert,
+            subject_type='idea'
+            )
         if getattr(member, 'email', ''):
             mail_template = root.get_mail_template('opinion_idea')
             subject = mail_template['subject'].format(

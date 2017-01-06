@@ -65,7 +65,7 @@ from novaideo.content.alert import InternalAlertKind
 from novaideo.content.workspace import Workspace
 from novaideo.views.filter import get_users_by_preferences
 from novaideo.utilities.alerts_utility import (
-    alert, get_user_data, get_entity_data)
+    alert, get_user_data, get_entity_data, alert_comment_nia)
 from . import (
     AMENDMENTS_CYCLE_DEFAULT_DURATION,
     init_proposal_ballots,
@@ -98,10 +98,28 @@ VOTE_REOPENING_MESSAGE = _("Voting results regarding the further improvement of 
 def confirm_proposal(
     context, request, user, submitted_appstruct, root):
     working_group = context.working_group
+    if context.originalentity:
+        # Add Nia comment
+        alert_comment_nia(
+            context.originalentity, request, root,
+            internal_kind=InternalAlertKind.content_alert,
+            subject_type='proposal',
+            alert_kind='duplicated',
+            duplication=context
+            )
+
     if submitted_appstruct.get('vote', False):
         if root.support_proposals:
             context.state = PersistentList(
                 ['submitted_support', 'published'])
+            # Add Nia comment
+            alert_comment_nia(
+                context, request, root,
+                internal_kind=InternalAlertKind.working_group_alert,
+                subject_type='proposal',
+                alert_kind='submitted_support',
+                duplication=context
+                )
         else:
             context.state = PersistentList(
                 ['published', 'submitted_support'])
@@ -125,6 +143,14 @@ def confirm_proposal(
             context.state = PersistentList(
                 ['open to a working group', 'published'])
             context.reindex()
+            # Add Nia comment
+            alert_comment_nia(
+                context, request, root,
+                internal_kind=InternalAlertKind.working_group_alert,
+                subject_type='proposal',
+                alert_kind='open_to_a_working_group',
+                duplication=context
+                )
         else:
             context.state = PersistentList(['amendable', 'published'])
             working_group.state = PersistentList(['active'])
@@ -140,6 +166,15 @@ def confirm_proposal(
 
             working_group.improvement_cycle_proc.execute_action(
                 context, request, 'votingpublication', {})
+
+            # Add Nia comment
+            alert_comment_nia(
+                context, request, root,
+                internal_kind=InternalAlertKind.working_group_alert,
+                subject_type='proposal',
+                alert_kind='start_work',
+                duplication=context
+                )
 
     context.modified_at = datetime.datetime.now(tz=pytz.UTC)
     context.init_published_at()
@@ -247,6 +282,14 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
         alert('internal', [root], participants,
               internal_kind=InternalAlertKind.working_group_alert,
               subjects=[context], alert_kind=kind+'_to_wg_open')
+        # Add Nia comment
+        alert_comment_nia(
+            context, request, root,
+            internal_kind=InternalAlertKind.working_group_alert,
+            subject_type='proposal',
+            alert_kind='exclusion_open_to_a_wg',
+            duplication=context
+            )
 
     if getattr(user, 'email', ''):
         mail_template = root.get_mail_template('wg_'+kind)
@@ -402,6 +445,7 @@ class CreateProposal(InfiniteCardinality):
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
 
+        #TODO Add Nia comment to related ideas
         add_attached_files(appstruct, proposal)
         proposal.reindex()
         init_proposal_ballots(proposal)
@@ -926,6 +970,12 @@ class MakeOpinion(InfiniteCardinality):
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.examination_alert,
               subjects=[context])
+        # Add Nia comment
+        alert_comment_nia(
+            context, request, root,
+            internal_kind=InternalAlertKind.examination_alert,
+            subject_type='proposal'
+            )
         subject_data = get_entity_data(context, 'subject', request)
         for member in members:
             if getattr(member, 'email', ''):
@@ -1300,6 +1350,14 @@ class Participate(InfiniteCardinality):
                 alert('internal', [root], participants,
                       internal_kind=InternalAlertKind.working_group_alert,
                       subjects=[context], alert_kind='amendable')
+                # Add Nia comment
+                alert_comment_nia(
+                    context, request, root,
+                    internal_kind=InternalAlertKind.working_group_alert,
+                    subject_type='proposal',
+                    alert_kind='start_work',
+                    duplication=context
+                    )
 
             #Send Mail alert to user
             if getattr(user, 'email', ''):
@@ -1656,6 +1714,14 @@ class SubmitProposal(ElementaryAction):
         working_group = context.working_group
         if root.support_proposals:
             context.state = PersistentList(['submitted_support', 'published'])
+            # Add Nia comment
+            alert_comment_nia(
+                context, request, root,
+                internal_kind=InternalAlertKind.working_group_alert,
+                subject_type='proposal',
+                alert_kind='submitted_support',
+                duplication=context
+                )
         else:
             context.state = PersistentList(['published', 'submitted_support'])
 

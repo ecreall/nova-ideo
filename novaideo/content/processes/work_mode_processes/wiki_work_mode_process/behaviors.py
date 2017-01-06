@@ -16,8 +16,7 @@ from pyramid.httpexceptions import HTTPFound
 
 import html_diff_wrapper
 from dace.util import (
-    getSite,
-    copy)
+    getSite)
 from dace.objectofcollaboration.principal.util import (
     has_role,
     get_current)
@@ -25,6 +24,9 @@ from dace.objectofcollaboration.principal.util import (
 from dace.processinstance.activity import (
     InfiniteCardinality, ActionType, ElementaryAction)
 
+from novaideo.content.alert import InternalAlertKind
+from novaideo.utilities.alerts_utility import alert_comment_nia
+from novaideo.utilities.util import diff_analytics
 from novaideo.content.interface import IProposal
 from ...user_management.behaviors import global_user_processsecurity
 from novaideo import _
@@ -75,6 +77,15 @@ class CorrectProposal(InfiniteCardinality):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.set_related_ideas(
             related_ideas, user)
+        # Add Nia comment
+        alert_comment_nia(
+            context, request, getSite(),
+            internal_kind=InternalAlertKind.working_group_alert,
+            subject_type='proposal',
+            alert_kind='new_version',
+            diff=diff_analytics(
+                copy_of_proposal, context, ['title', 'text', 'description'])
+            )
         add_attached_files({'add_files': add_files}, context)
         context.reindex()
         return {'newcontext': context}
