@@ -1,4 +1,3 @@
-=========
 Nova Ideo
 =========
 
@@ -126,7 +125,7 @@ Clone a specific version::
     git clone -b VERSION git@github.com:ecreall/nova-ideo.git
     cd nova-ideo
 
-(replace VERSION with the latest release, 1.1 for example)
+(replace VERSION with the latest release, 1.2 for example)
 
 docker-compose runs a nginx container on port 80 and 443.
 You need to edit the **nginx-app-prod.conf** file to replace mynovaideo.example.com
@@ -180,10 +179,10 @@ How to upgrade your install
 For each release, a docker image is built and the **docker-compose.yml** is
 modified accordingly.
 
-If you previously cloned the repository with version 1.0, to upgrade to 1.1 for
+If you previously cloned the repository with version 1.1, to upgrade to 1.2 for
 example, do::
 
-    git checkout 1.1
+    git checkout 1.2
     sudo docker-compose up -d
 
 After that, be sure to execute the evolve steps by connecting with the super
