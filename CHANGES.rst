@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2 (unreleased)
+1.2 (2017-01-06)
 ----------------
 
 - Remove runtime pyramid_robot dependency, this avoid a dependency on
