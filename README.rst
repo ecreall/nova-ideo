@@ -132,6 +132,9 @@ You need to edit the **nginx-app-prod.conf** file to replace mynovaideo.example.
 by your domain and add certificates (**server.key** and **server.crt**) to the
 **tls** directory.
 
+Be sure that in **docker-compose.yml** it uses the correct version
+ecreall/novaideo:release-VERSION. Edit it if it's not the case.
+
 You need to configure some environment variables, copy the file
 **docker-compose.override.yml.templ** to **docker-compose.override.yml** and edit it.
 
