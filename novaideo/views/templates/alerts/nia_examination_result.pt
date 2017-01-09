@@ -3,7 +3,7 @@
   	<div tal:omit-tag=""  tal:condition="object.subject_type == 'idea'">
 	  	<div tal:omit-tag=""  tal:condition="subject.opinion['opinion'] == 'unfavorable'">
 		    <p i18n:translate="">
-		    	The Examination Committee expressed a <span><b>${object.get_subject_state(subject, current_user, True)}</b> <span class="circle red on"></span></span> opinion on this idea. Consequently, it cannot be tranformed into a proposal or used in existing proposals by the members of the platform.
+		    	The Examination Committee expressed a <span><b>${object.get_subject_state(subject, current_user, True)}</b> <span class="circle red on"></span></span> opinion on this idea. Consequently, it cannot be transformed into a proposal or used in existing proposals by the members of the platform.
 		    </p>
 		    <p i18n:translate="">
 		      Do not hesitate to duplicate this idea if you think it can be worked differently.
@@ -11,7 +11,7 @@
 	    </div>
 	    <div tal:omit-tag=""  tal:condition="subject.opinion['opinion'] == 'to_study'">
 		    <p i18n:translate="">
-		    	The Examination Committee expressed a <span><b>${object.get_subject_state(subject, current_user, True)}</b> <span class="circle orange on"></span></span> opinion on this idea. Consequently, it cannot be tranformed into a proposal or used in existing proposals by the members of the platform.
+		    	The Examination Committee expressed a <span><b>${object.get_subject_state(subject, current_user, True)}</b> <span class="circle orange on"></span></span> opinion on this idea. Consequently, it cannot be transformed into a proposal or used in existing proposals by the members of the platform.
 		    </p>
 		    <p i18n:translate="">
 		      Do not hesitate to duplicate this idea if you think it can be worked differently.
@@ -19,7 +19,7 @@
 	    </div>
 	    <div tal:omit-tag=""  tal:condition="subject.opinion['opinion'] == 'favorable'">
 		    <p i18n:translate="">
-		    	The Examination Committee expressed a <span><b>${object.get_subject_state(subject, current_user, True)}</b> <span class="circle green on"></span></span> opinion on this idea. Consequently, it can be tranformed into a proposal or used in existing proposals by the members of the platform.
+		    	The Examination Committee expressed a <span><b>${object.get_subject_state(subject, current_user, True)}</b> <span class="circle green on"></span></span> opinion on this idea. Consequently, it can be transformed into a proposal or used in existing proposals by the members of the platform.
 		    </p>
 	    </div>
     </div>
