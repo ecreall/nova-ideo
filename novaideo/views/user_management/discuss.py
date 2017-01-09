@@ -67,6 +67,7 @@ class DiscussView(MultipleView):
     description = _('Private discussion')
     name = 'discuss'
     template = 'pontus:templates/views_templates/simple_multipleview.pt'
+    css_class = 'comment-view-block'
     views = (DiscussCommentsView, DiscussFormView)
     contextual_help = 'comment-help'
     requirements = {'css_links': [],
