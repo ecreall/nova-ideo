@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-01-09 11:09+0100\n"
+"POT-Creation-Date: 2017-01-10 16:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,7 +88,7 @@ msgstr ""
 msgid "Le contenu incite à la haine, harcèlement ou intimidation."
 msgstr ""
 
-#: ./novaideo/__init__.py:59 ./novaideo/content/novaideo_application.py:248
+#: ./novaideo/__init__.py:59 ./novaideo/content/novaideo_application.py:257
 msgid "Other"
 msgstr ""
 
@@ -113,7 +113,7 @@ msgid "The terms of use"
 msgstr ""
 
 #: ./novaideo/__init__.py:318 ./novaideo/content/correlation.py:133
-#: ./novaideo/content/novaideo_application.py:365
+#: ./novaideo/content/novaideo_application.py:388
 msgid "General"
 msgstr ""
 
@@ -846,9 +846,9 @@ msgid "The user ${context} has changed his/her organisation."
 msgstr ""
 
 #: ./novaideo/utilities/alerts_utility.py:117
-#: ./novaideo/content/novaideo_application.py:68
-#: ./novaideo/content/novaideo_application.py:71
-#: ./novaideo/content/novaideo_application.py:75
+#: ./novaideo/content/novaideo_application.py:69
+#: ./novaideo/content/novaideo_application.py:72
+#: ./novaideo/content/novaideo_application.py:76
 #: ./novaideo/content/comment.py:132
 msgid "Remark"
 msgstr ""
@@ -1453,7 +1453,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/present_proposal.py:60
 #: ./novaideo/views/amendment_management/present_amendment.py:60
 #: ./novaideo/views/novaideo_view_manager/contact.py:65
-#: ./novaideo/content/site_configuration.py:227
+#: ./novaideo/content/site_configuration.py:246
 #: ./novaideo/content/newsletter.py:162
 msgid "Subject"
 msgstr ""
@@ -1748,7 +1748,7 @@ msgstr ""
 
 #: ./novaideo/views/invitation_management/invite_user.py:35
 #: ./novaideo/views/invitation_management/see_invitations.py:44
-#: ./novaideo/content/novaideo_application.py:188
+#: ./novaideo/content/novaideo_application.py:197
 #: ./novaideo/content/processes/invitation_management/definition.py:60
 msgid "The invitations"
 msgstr ""
@@ -1959,8 +1959,8 @@ msgstr ""
 #: ./novaideo/views/templates/style_picker.pt:22
 #: ./novaideo/views/correlation_management/templates/see_correlation.pt:7
 #: ./novaideo/content/idea.py:76 ./novaideo/content/correction.py:51
-#: ./novaideo/content/file.py:31 ./novaideo/content/proposal.py:151
-#: ./novaideo/content/amendment.py:233
+#: ./novaideo/content/file.py:31 ./novaideo/content/site_configuration.py:224
+#: ./novaideo/content/proposal.py:151 ./novaideo/content/amendment.py:233
 msgid "Text"
 msgstr ""
 
@@ -2058,8 +2058,8 @@ msgstr ""
 msgid "Private discussion"
 msgstr ""
 
-#: ./novaideo/views/user_management/discuss.py:118
 #: ./novaideo/views/user_management/discuss.py:119
+#: ./novaideo/views/user_management/discuss.py:120
 msgid "General discussion"
 msgstr ""
 
@@ -3747,7 +3747,7 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/idea_examined.pt:6
 msgid ""
 "The Examination Committee expressed a positive opinion on this idea. "
-"Consequently, it can be tranformed into a proposal or used in existing "
+"Consequently, it can be transformed into a proposal or used in existing "
 "proposals by the members of the platform."
 msgstr ""
 
@@ -3761,7 +3761,7 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/idea_examined.pt:14
 msgid ""
 "The Examination Committee expressed a negative opinion on this idea. "
-"Consequently, it cannot be tranformed into a proposal or used in existing "
+"Consequently, it cannot be transformed into a proposal or used in existing "
 "proposals by the members of the platform."
 msgstr ""
 
@@ -5527,7 +5527,7 @@ msgid "Contents by dates"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:503
-#: ./novaideo/content/site_configuration.py:327
+#: ./novaideo/content/site_configuration.py:346
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:117
 msgid "Analytics"
 msgstr ""
@@ -5994,7 +5994,7 @@ msgid "${nember} organizations found"
 msgstr ""
 
 #: ./novaideo/views/organization_management/see_organizations.py:39
-#: ./novaideo/content/novaideo_application.py:203
+#: ./novaideo/content/novaideo_application.py:212
 #: ./novaideo/content/processes/organization_management/definition.py:63
 msgid "Organizations"
 msgstr ""
@@ -6067,12 +6067,12 @@ msgid "Remove from my favorites"
 msgstr ""
 
 #: ./novaideo/content/organization.py:136
-#: ./novaideo/content/site_configuration.py:180
+#: ./novaideo/content/site_configuration.py:181
 msgid "Logo"
 msgstr ""
 
 #: ./novaideo/content/organization.py:148
-#: ./novaideo/content/site_configuration.py:319
+#: ./novaideo/content/site_configuration.py:338
 msgid "Add a new contact"
 msgstr ""
 
@@ -6080,88 +6080,92 @@ msgstr ""
 msgid "Targets"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:55
+#: ./novaideo/content/novaideo_application.py:56
 msgid "Mr"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:56
+#: ./novaideo/content/novaideo_application.py:57
 msgid "Madam"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:59
+#: ./novaideo/content/novaideo_application.py:60
 msgid "Changing an idea"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:60
+#: ./novaideo/content/novaideo_application.py:61
 msgid "Propose improvements"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:61
+#: ./novaideo/content/novaideo_application.py:62
 msgid "Reformulate"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:62
+#: ./novaideo/content/novaideo_application.py:63
 msgid "Generalize"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:63
+#: ./novaideo/content/novaideo_application.py:64
 msgid "Expand"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:64
+#: ./novaideo/content/novaideo_application.py:65
 msgid "Ask a question"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:65
+#: ./novaideo/content/novaideo_application.py:66
 msgid "Review"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:66
-#: ./novaideo/content/novaideo_application.py:71
-#: ./novaideo/content/novaideo_application.py:73
-#: ./novaideo/content/novaideo_application.py:75
+#: ./novaideo/content/novaideo_application.py:67
+#: ./novaideo/content/novaideo_application.py:72
+#: ./novaideo/content/novaideo_application.py:74
+#: ./novaideo/content/novaideo_application.py:76
 msgid "Irony"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:67
+#: ./novaideo/content/novaideo_application.py:68
 msgid "Joke"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:71
-#: ./novaideo/content/novaideo_application.py:73
-#: ./novaideo/content/novaideo_application.py:75
+#: ./novaideo/content/novaideo_application.py:72
+#: ./novaideo/content/novaideo_application.py:74
+#: ./novaideo/content/novaideo_application.py:76
 msgid "Humor"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:73
+#: ./novaideo/content/novaideo_application.py:74
 msgid "Improvement"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:192
+#: ./novaideo/content/novaideo_application.py:201
 msgid "List of invitations"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:212
+#: ./novaideo/content/novaideo_application.py:221
 msgid "Set up work parameters"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:221
+#: ./novaideo/content/novaideo_application.py:230
 msgid "Edit mail templates"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:230
+#: ./novaideo/content/novaideo_application.py:239
 msgid "Configure user parameters"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:239
+#: ./novaideo/content/novaideo_application.py:248
 msgid "Configure keywords"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:256
+#: ./novaideo/content/novaideo_application.py:265
 msgid "Configure the user interface"
 msgstr ""
 
-#: ./novaideo/content/novaideo_application.py:264
+#: ./novaideo/content/novaideo_application.py:273
+msgid "Configure the homepage"
+msgstr ""
+
+#: ./novaideo/content/novaideo_application.py:281
 msgid "Configure the push notification"
 msgstr ""
 
@@ -6229,8 +6233,8 @@ msgid "Choose the text and background color of the menu section on mouse-over."
 msgstr ""
 
 #: ./novaideo/content/smart_folder.py:125
-#: ./novaideo/content/site_configuration.py:221
-#: ./novaideo/content/site_configuration.py:306
+#: ./novaideo/content/site_configuration.py:240
+#: ./novaideo/content/site_configuration.py:325
 #: ./novaideo/adapters/__init__.py:22
 msgid "Title"
 msgstr ""
@@ -6320,166 +6324,171 @@ msgstr ""
 msgid "To be rejected"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:54
+#: ./novaideo/content/site_configuration.py:55
 msgid "Is a suggestion box"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:55
+#: ./novaideo/content/site_configuration.py:56
 msgid "In a suggestion box, only the ideas are managed."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:63
+#: ./novaideo/content/site_configuration.py:64
 msgid "Contents to moderate"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:64
+#: ./novaideo/content/site_configuration.py:65
 msgid "Contents can be moderated."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:71
+#: ./novaideo/content/site_configuration.py:72
 msgid "Contents to support"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:72
+#: ./novaideo/content/site_configuration.py:73
 msgid "Contents can be supported by users."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:79
+#: ./novaideo/content/site_configuration.py:80
 msgid "Contents to examine"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:80
+#: ./novaideo/content/site_configuration.py:81
 msgid "Contents must be examined by a review committee."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:87
+#: ./novaideo/content/site_configuration.py:88
 msgid "Proposal template"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:89
+#: ./novaideo/content/site_configuration.py:90
 #: ./novaideo/content/newsletter.py:137
 msgid "Only HTML files are supported."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:94
+#: ./novaideo/content/site_configuration.py:95
 #: ./novaideo/content/processes/proposal_management/definition.py:211
 msgid "Work modes"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:95
+#: ./novaideo/content/site_configuration.py:96
 msgid "Work modes of the working group (for proposals)."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:103
+#: ./novaideo/content/site_configuration.py:104
 msgid "Number of non-productive cycles"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:104
+#: ./novaideo/content/site_configuration.py:105
 msgid ""
 "The number of non-productive improvement cycles before the closure of the "
 "working group."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:114
+#: ./novaideo/content/site_configuration.py:115
 msgid "By invitation only"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:115
+#: ./novaideo/content/site_configuration.py:116
 msgid "Users can register by invitation only."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:123
 #: ./novaideo/content/site_configuration.py:124
+#: ./novaideo/content/site_configuration.py:125
 msgid "Moderate user registration"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:135
+#: ./novaideo/content/site_configuration.py:136
 msgid "Trusted emails"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:136
+#: ./novaideo/content/site_configuration.py:137
 msgid ""
 "To add email, you need to tap the « Enter » key after each email or separate "
 "them with commas."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:144
+#: ./novaideo/content/site_configuration.py:145
 msgid "Accessible only by members"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:145
+#: ./novaideo/content/site_configuration.py:146
 msgid "Contents can be displayed only by members."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:152
+#: ./novaideo/content/site_configuration.py:153
 msgid "Minimum number of participants for a working group"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:158
+#: ./novaideo/content/site_configuration.py:159
 msgid "Maximum number of participants for a working group"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:164
+#: ./novaideo/content/site_configuration.py:165
 msgid "Maximum number of working group by member"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:170
+#: ./novaideo/content/site_configuration.py:171
 msgid "Minimum number of tokens by member"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:182
+#: ./novaideo/content/site_configuration.py:183
+#: ./novaideo/content/site_configuration.py:218
 msgid "Only PNG and SVG files are supported."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:188
+#: ./novaideo/content/site_configuration.py:189
 msgid "Favicon"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:190
+#: ./novaideo/content/site_configuration.py:191
 msgid "Only ICO file is supported."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:196
+#: ./novaideo/content/site_configuration.py:197
 msgid "Theme"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:198
+#: ./novaideo/content/site_configuration.py:199
 msgid "Only CSS files are supported."
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:204
+#: ./novaideo/content/site_configuration.py:205
 msgid "Activate the social share"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:215
+#: ./novaideo/content/site_configuration.py:216
+msgid "Picture of the homepage"
+msgstr ""
+
+#: ./novaideo/content/site_configuration.py:234
 msgid "Mail id"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:233
+#: ./novaideo/content/site_configuration.py:252
 msgid "Template"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:271
+#: ./novaideo/content/site_configuration.py:290
 msgid "Mail templates"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:295
+#: ./novaideo/content/site_configuration.py:314
 msgid "Authorize the addition of keywords"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:338
+#: ./novaideo/content/site_configuration.py:357
 msgid "Activate the push notification"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:345
+#: ./novaideo/content/site_configuration.py:364
 msgid "Application id"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:351
+#: ./novaideo/content/site_configuration.py:370
 msgid "REST API Key"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:263
+#: ./novaideo/content/site_configuration.py:282
 msgid "Mail template"
 msgstr ""
 
