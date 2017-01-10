@@ -228,20 +228,29 @@ function init_channels_scroll(){
 
 function init_channels_top(){
     var navbar_top_h = $('.navbar.navbar-fixed-top').height()
-    navbar_top_h = navbar_top_h == undefined? 0 : navbar_top_h 
+    navbar_top_h = navbar_top_h == undefined? 0 : navbar_top_h
+    var home_top_h = $('.home-panel-container').height()
+    home_top_h = home_top_h == undefined? 0 : home_top_h - 17
     var navbar_h = $('nav.navbar.navbar-bottom').height()
     navbar_h = navbar_h == undefined? 0 : navbar_h
     var default_top = navbar_h + navbar_top_h - 3
     var scrolltop = $(window).scrollTop();
     var btn = $('.all-channels-toggle:not(.close)')
-    var blocks = $('.all-blocks')
-    if (scrolltop <= navbar_h){
-      btn.css('top', default_top - scrolltop+"px")
-      blocks.css('margin-top', default_top - scrolltop+"px")
+    var blocks = $('.all-channels')
+    btn.addClass('notransition')
+    blocks.addClass('notransition')
+    blocks.css('display','block')
+    if (scrolltop <= navbar_h + home_top_h){
+      btn.css('top', default_top + home_top_h - scrolltop+"px")
+      blocks.css('top', default_top + home_top_h - scrolltop+"px")
     }else{
       btn.css('top', default_top - navbar_h+"px")
-      blocks.css('margin-top', default_top - navbar_h+"px")
+      blocks.css('top', default_top - navbar_h+"px")
     }
+    setTimeout(function () {
+        btn.removeClass('notransition')
+        blocks.removeClass('notransition')
+      })
   }
 
 function initscroll(result_scrolls){

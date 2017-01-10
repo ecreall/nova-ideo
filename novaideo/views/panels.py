@@ -733,3 +733,23 @@ class NavigationBar(object):
                 'current_level': 1,
                 'maxi_level': LEVEL_MENU
                 }
+
+
+@panel_config(
+    name='homepage',
+    context=NovaIdeoApplication,
+    renderer='templates/panels/homepage.pt'
+    )
+class Debates_core(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        # import pdb; pdb.set_trace()
+        return {
+            'is_homepage': self.request.view_name in ('index', ''),
+            'picture': getattr(self.context, 'homepage_picture', None),
+            'text': getattr(self.context, 'homepage_text', None)
+        }

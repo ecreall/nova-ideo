@@ -175,6 +175,7 @@
           </div>
         </div>
         <!-- bar  -->
+        ${panel('homepage')}
         ${panel('usernavbar', True if contextual_help else False)}
         <div class="container-fluid">
           <div class="novaideo-info row"

@@ -47,6 +47,7 @@ from novaideo.content.site_configuration import (
     KeywordsConfSchema,
     UserInterfaceConfigurationSchema,
     NotificationConfigurationSchema,
+    HomepageConfigurationSchema,
     OtherSchema,
 )
 
@@ -111,6 +112,14 @@ class ObjectData(ObjectDataOrigine):
                 ui_conf['theme'] = ui_conf['theme'][OBJECT_DATA]
 
             result.update(ui_conf)
+
+        if 'homepage_conf' in result:
+            homepage_conf = result.pop('homepage_conf')
+            if 'homepage_picture' in homepage_conf and homepage_conf['homepage_picture'] and \
+               OBJECT_DATA in homepage_conf['homepage_picture']:
+                homepage_conf['homepage_picture'] = homepage_conf['homepage_picture'][OBJECT_DATA]
+
+            result.update(homepage_conf)
 
         if 'work_conf' in result:
             work_conf = result.pop('work_conf')
@@ -256,6 +265,14 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                 activator_title=_('Configure the user interface'))),
                         ["_csrf_token_"])
 
+    homepage_conf = omit(HomepageConfigurationSchema(widget=SimpleMappingtWidget(
+                                mapping_css_class='controled-form'
+                                                  ' object-well default-well hide-bloc',
+                                ajax=True,
+                                activator_icon="glyphicon glyphicon-home",
+                                activator_title=_('Configure the homepage'))),
+                        ["_csrf_token_"])
+
     notif_conf = omit(NotificationConfigurationSchema(widget=SimpleMappingtWidget(
                                 mapping_css_class='controled-form'
                                                   ' object-well default-well hide-bloc',
@@ -294,6 +311,7 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
     files = CompositeMultipleProperty('files')
     alerts = CompositeMultipleProperty('alerts')
     picture = CompositeUniqueProperty('picture')
+    homepage_picture = CompositeUniqueProperty('homepage_picture')
     favicon = CompositeUniqueProperty('favicon')
     theme = CompositeUniqueProperty('theme')
     proposal_template = CompositeUniqueProperty('proposal_template')
@@ -333,6 +351,11 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
     @property
     def ui_conf(self):
         return self.get_data(omit(UserInterfaceConfigurationSchema(),
+                                  '_csrf_token_'))
+
+    @property
+    def homepage_conf(self):
+        return self.get_data(omit(HomepageConfigurationSchema(),
                                   '_csrf_token_'))
 
     @property

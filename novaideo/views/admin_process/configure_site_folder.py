@@ -38,6 +38,7 @@ class ConfigureSiteView(FormView):
                         # omit=('work_conf',)),
                     ['work_conf',
                      'user_conf',
+                     'homepage_conf',
                      'notif_conf',
                      'keywords_conf',
                      'mail_conf',
@@ -65,6 +66,16 @@ class ConfigureSiteView(FormView):
             ui_conf = add_file_data(ui_conf, 'favicon')
             ui_conf = add_file_data(ui_conf, 'theme')
             data['ui_conf'] = ui_conf
+
+        work_conf = data.get('work_conf', {})
+        if work_conf:
+            work_conf = add_file_data(work_conf, 'proposal_template')
+            data['work_conf'] = work_conf
+
+        homepage_conf = data.get('homepage_conf', {})
+        if homepage_conf:
+            homepage_conf = add_file_data(homepage_conf, 'homepage_picture')
+            data['homepage_conf'] = homepage_conf
 
         templates = sorted(templates, key=lambda e: e['mail_id'])
         data['mail_conf'] = {'mail_templates': templates}
