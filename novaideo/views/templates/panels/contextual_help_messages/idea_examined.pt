@@ -4,7 +4,7 @@
     </p>
     <span tal:omit-tag="" tal:condition="'favorable' in context.state">
         <p i18n:translate="" >
-            The Examination Committee expressed a positive opinion on this idea. Consequently, it can be tranformed into a proposal or used in existing proposals by the members of the platform.
+            The Examination Committee expressed a positive opinion on this idea. Consequently, it can be transformed into a proposal or used in existing proposals by the members of the platform.
         </p>
          <p i18n:translate="">
             Ideas that were examined and received a positive opinion can be duplicated so that a copy be worked upon differently and you can add them to your favourites.
@@ -12,7 +12,7 @@
     </span>
     <span tal:omit-tag="" tal:condition="'unfavorable' in context.state">
         <p i18n:translate="" >
-            The Examination Committee expressed a negative opinion on this idea. Consequently, it cannot be tranformed into a proposal or used in existing proposals by the members of the platform.
+            The Examination Committee expressed a negative opinion on this idea. Consequently, it cannot be transformed into a proposal or used in existing proposals by the members of the platform.
         </p>
         <p i18n:translate="">
             Examined ideas, even after having received a negative opinion, can still be duplicated so that a copy be worked upon differently, and you can add them to your favourites.
