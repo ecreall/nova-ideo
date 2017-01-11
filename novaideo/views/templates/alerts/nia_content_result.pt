@@ -4,8 +4,8 @@
                  member getattr(object, 'member', None);
                  subject object.subject;">
   <div tal:omit-tag=""  tal:condition="object.subject_type == 'idea'">
-    <span i18n:translate="" tal:condition="alert_kind == 'duplicated'">
-      <span tal:omit-tag=""
+    <span  tal:condition="alert_kind == 'duplicated'">
+      <span i18n:translate="" tal:omit-tag=""
         tal:define="
             duplication object.duplication;
             author duplication.author
@@ -18,8 +18,8 @@
     </span>
   </div>
   <div tal:omit-tag=""  tal:condition="object.subject_type == 'proposal'">
-    <span i18n:translate="" tal:condition="alert_kind == 'duplicated'">
-      <span tal:omit-tag=""
+    <span tal:condition="alert_kind == 'duplicated'">
+      <span i18n:translate="" tal:omit-tag=""
         tal:define="
             duplication object.duplication;
             author duplication.author

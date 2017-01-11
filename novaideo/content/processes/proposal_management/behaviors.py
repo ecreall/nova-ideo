@@ -107,9 +107,12 @@ def confirm_proposal(
             alert_kind='duplicated',
             duplication=context
             )
-
+    
+    proposal_state = 'amendable'
     if submitted_appstruct.get('vote', False):
+        proposal_state = 'published'
         if root.support_proposals:
+            proposal_state = 'submitted_support'
             context.state = PersistentList(
                 ['submitted_support', 'published'])
             # Add Nia comment
@@ -175,6 +178,19 @@ def confirm_proposal(
                 alert_kind='start_work',
                 duplication=context
                 )
+    
+    related_ideas = [idea for idea, correlation in
+                     context.related_ideas.items()]
+    for idea in related_ideas:
+        # Add Nia comment
+        alert_comment_nia(
+            idea, request, root,
+            internal_kind=InternalAlertKind.working_group_alert,
+            subject_type='idea',
+            alert_kind='new_proposal',
+            proposal_state=proposal_state,
+            proposal=context
+            )
 
     context.modified_at = datetime.datetime.now(tz=pytz.UTC)
     context.init_published_at()

@@ -30,4 +30,32 @@
        Cette proposition vient d'être soumise à l'appréciation des membres. Vous pouvez soit la soutenir, soit vous y opposer. N'hésitez pas à discuter le contenu de la proposition, vos avis ne font qu'améliorer le débat.
     </span>
   </div>
+  <div tal:omit-tag=""  tal:condition="object.subject_type == 'idea'">
+    <span  tal:omit-tag="" tal:condition="alert_kind == 'new_proposal'">
+      <span tal:omit-tag=""
+        tal:define="
+            proposal object.proposal;
+         ">
+         <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'amendable'">
+          Cette idée vient d'être utilisée par la proposition suivante <a 
+            data-oid="${getattr(proposal, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. N'hésitez pas à discuter le contenu de la proposition et y participer si le sujet traité vous intéresse. Vous pouvez ainsi contribuer à la proposition en apportant vos améliorations.
+         </span>
+         <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'published'">
+          Cette idée vient d'être utilisée par la proposition suivante <a 
+            data-oid="${getattr(proposal, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. N'hésitez pas à discuter le contenu de la proposition.
+         </span>
+         <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'submitted_support'">
+          Cette idée vient d'être utilisée par la proposition suivante <a 
+            data-oid="${getattr(proposal, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. Cette proposition est soumise à l'appréciation des membres. Vous pouvez soit la soutenir, soit vous y opposer. N'hésitez pas à discuter le contenu de la proposition, vos avis ne font qu'améliorer le débat.
+         </span>
+      </span>
+    </span>
+  </div>
+
 </div>
