@@ -37,7 +37,7 @@ class RedactNewsletterViewStudyReport(BasicView):
 
 class RedactFormNewsletterView(FormView):
 
-    title = _('Redact a newsletter')
+    title = _('Write a newsletter')
     schema = select(NewsletterSchema(factory=Newsletter, editable=True),
                     ['subject', 'content'])
     behaviors = [RedactNewsletter, Cancel]
@@ -54,7 +54,7 @@ class RedactFormNewsletterView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class RedactNewsletterView(MultipleView):
-    title = _('Redact a newsletter')
+    title = _('Write a newsletter')
     name = 'redactnewsletter'
     viewid = 'redactnewsletter'
     template = 'daceui:templates/mergedmultipleview.pt'

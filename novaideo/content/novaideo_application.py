@@ -57,7 +57,7 @@ DEFAULT_TITLES = [
     _('Madam')]
 
 DEFAULT_COMMENT_INTENTIONS = [
-    _('Changing an idea'),
+    _('Change an idea'),
     _('Propose improvements'),
     _('Reformulate'),
     _('Generalize'),
@@ -69,11 +69,11 @@ DEFAULT_COMMENT_INTENTIONS = [
     _('Remark')
 ]
 
-DEFAULT_CORRELATION_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
+DEFAULT_CORRELATION_INTENTIONS = [_('Irony'), _('Humour'), _('Remark')]
 
-DEFAULT_IDEA_INTENTIONS = [_('Improvement'), _('Humor'), _('Irony')]
+DEFAULT_IDEA_INTENTIONS = [_('Improvement'), _('Humour'), _('Irony')]
 
-DEFAULT_AMENDMENT_INTENTIONS = [_('Irony'), _('Humor'), _('Remark')]
+DEFAULT_AMENDMENT_INTENTIONS = [_('Irony'), _('Humour'), _('Remark')]
 
 DEFAULT_COLORS = {
     'idea': {
@@ -209,7 +209,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                 widget=SimpleMappingWidget(css_class='object-well default-well')),
             ['_csrf_token_']),
         widget=organizations_choice,
-        title=_('Organizations'),
+        title=_('The Organizations'),
         )
 
     work_conf = omit(WorkParamsConfigurationSchema(
@@ -227,7 +227,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                                   ' object-well default-well hide-bloc',
                                 ajax=True,
                                 activator_icon="glyphicon glyphicon-envelope",
-                                activator_title=_('Edit mail templates'))),
+                                activator_title=_('Edit e-mail templates'))),
                         ["_csrf_token_"])
 
     user_conf = omit(UserParamsConfigurationSchema(

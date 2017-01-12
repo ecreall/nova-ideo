@@ -51,9 +51,9 @@ from novaideo.utilities.util import (
 
 
 OPINIONS = OrderedDict([
-    ('favorable', _('Favorable')),
-    ('to_study', _('To study')),
-    ('unfavorable', _('Unfavorable'))
+    ('favorable', _('Positive')),
+    ('to_study', _('To be re-worked upon')),
+    ('unfavorable', _('Negative'))
 ])
 
 

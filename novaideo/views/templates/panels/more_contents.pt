@@ -1,5 +1,5 @@
 <div class="vertical-slick-well scroll-able" tal:condition="contents"  i18n:domain="novaideo">
-	<h4 tal:condition="is_root"><span class="glyphicon glyphicon-bookmark"></span> <span i18n:translate="">My interests</span></h4>
+	<h4 tal:condition="is_root"><span class="glyphicon glyphicon-bookmark"></span> <span i18n:translate="">My topics of interest</span></h4>
 	<h4 tal:condition="not is_root"><span class="glyphicon glyphicon-plus"></span> <span i18n:translate="">And more</span></h4>
 	<div class="more-content-carousel verticla malihu-scroll">
 		<div tal:repeat="object contents">

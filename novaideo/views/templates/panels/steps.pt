@@ -67,7 +67,7 @@
          <li tal:condition="request.support_proposals" class="3 ${(current_step == 4)  and 'active'}">
                <span class="${(current_step == 4)  and 'active'} step-content" data-step="message-step-4">
                  <div class="step-text">
-                   <span i18n:translate="" >Support of the proposal</span>
+                   <span i18n:translate="" >Evaluation of the proposal</span>
                    <br />
                  </div>
                </span>

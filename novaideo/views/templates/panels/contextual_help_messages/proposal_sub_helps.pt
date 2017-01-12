@@ -10,7 +10,7 @@
 	  <p i18n:translate="">To access any one of the ideas, you just need to click on it.</p>
 	</div>
 	<div class="contextual-help-item present-help hide-bloc">
-	  <p i18n:translate="">Any member may transmit a published proposal to any other member of the platform. S/he may also transmit it to any external person by providing the person's e-mail address. This person will have access to the platform, but will be unable to connect "to it as long as s/he is not a member.</p>
+	  <p i18n:translate="">Any member may transmit a published proposal to any other member of the platform. S/he may also transmit it to any external person by providing the person's e-mail address. This person will have access to the platform, but will be unable to connect to it as long as s/he is not a member.</p>
 	</div>
 	<div class="contextual-help-item compare-help hide-bloc">
 	  <p i18n:translate="">You can compare the current version of the proposal with its earlier versions.</p>

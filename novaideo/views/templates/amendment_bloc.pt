@@ -18,7 +18,7 @@
          tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
       <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
       <small>
-        <span i18n:translate="">Amended version by</span>
+        <span i18n:translate="">Version amended by</span>
         <a tal:attributes="href request.resource_url(author, '@@index')">
           ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
         </a>

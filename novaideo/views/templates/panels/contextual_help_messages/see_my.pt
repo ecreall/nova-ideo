@@ -13,46 +13,46 @@
 
       <div tal:omit-tag="" tal:condition="request.support_ideas and request.support_proposals" >
         <p i18n:translate="">
-            You will find under "My appraisals" the published ideas and the proposals submitted for appraisal to which you have allocated a support token or an opposition token.
+            You will find under "My evaluations" the published ideas and the proposals submitted for evaluation to which you have allocated a support token or an opposition token.
         </p>
         <p i18n:translate="">
-            You have a total of seven tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to appraisal. Each token can be used to support an idea or a proposal, or to oppose it. To support or oppose an idea or proposal, you must first click on it.
+            You have a total of seven tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to evaluation. Each token can be used to support an idea or a proposal, or to oppose it. To support or oppose an idea or proposal, you must first click on it.
         </p>
         <p i18n:translate="">
-            In addition, you may also support or oppose proposals submitted for appraisal in which you participated in the working group. In this case, these special tokens are not counted against your initial reserve of seven appraisal tokens. Once allocated, these special tokens cannot be re-used for other proposals.
+            In addition, you may also support or oppose proposals submitted for evaluation in which you participated in the working group. In this case, these special tokens are not counted against your initial reserve of seven evaluation tokens. Once allocated, these special tokens cannot be re-used for other proposals.
         </p>
      </div>
      <div tal:omit-tag="" tal:condition="request.support_ideas and not request.support_proposals" >
         <p i18n:translate="">
-            You will find under the tab "My appraisals" the published ideas that you have supported or that you have opposed.
+            You will find under the tab "My evaluations" the published ideas that you have supported or that you have opposed.
         </p>
         <p i18n:translate="">
-            You have a total of seven appraisal tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to appraisal. Each token can be used to support an idea or a proposal, or to oppose it. To support or oppose an idea or proposal, you must first click on it.
+            You have a total of seven evaluation tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to evaluation. Each token can be used to support an idea or a proposal, or to oppose it. To support or oppose an idea or proposal, you must first click on it.
         </p>
      </div>
      <div tal:omit-tag="" tal:condition="not request.support_ideas and request.support_proposals" >
         <p i18n:translate="">
-            You will find under the tab "My appraisals" the proposals submitted for appraisal that you have supported or that you have opposed.
+            You will find under the tab "My evaluations" the proposals submitted for evaluation that you have supported or that you have opposed.
         </p>
         <p i18n:translate="">
-            You have a total of seven tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to appraisal. Each token can be used to support an idea or a proposal, or to oppose it. To support or oppose an idea or proposal, you must first click on it.
+            You have a total of seven tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to evaluation. Each token can be used to support an idea or a proposal, or to oppose it. To support or oppose an idea or proposal, you must first click on it.
         </p>
         <p i18n:translate="">
-            In addition, you may also support or oppose proposals submitted for appraisal in which you participated in the working group. In this case, these special tokens are not counted against your initial reserve of seven appraisal tokens. Once allocated, these special tokens cannot be re-used for other proposals.
+            In addition, you may also support or oppose proposals submitted for evaluation in which you participated in the working group. In this case, these special tokens are not counted against your initial reserve of seven evaluation tokens. Once allocated, these special tokens cannot be re-used for other proposals.
         </p>
      </div>
     </tal:block>
 
     <tal:block tal:condition="request.view_name == 'seealerts'" >
-        <p i18n:translate="">The pictogram <span style="color: red" class="icon glyphicon glyphicon-bell"></span> indicates the latest warnings that you have received.</p>
+        <p i18n:translate="">The pictogram <span i18n:name="dynamic" style="color: red" class="icon glyphicon glyphicon-bell"></span> indicates the latest warnings that you have received.</p>
         <p>
          <span i18n:translate="">You have received a warning:</span>
          <ul>
-            <li i18n:translate=""> lorsqu'une idée ou une proposition vient d'être publiée et que l'un des mots clés correspond à vos centres d'intérêt,</li>
-            <li i18n:translate=""> lorsqu'il se passe quelque chose sur vos idées ou les propositions auxquelles vous contribuez ou vous avez contribué,</li>
-            <li i18n:translate=""> lorsqu'un membre vous communique une idée ou une proposition,</li>
-            <li i18n:translate=""> lorsqu'il y a une réponse à l'un de vos commentaires,</li>
-            <li i18n:translate=""> lorsqu'il se passe quelque chose sur une idée, une proposition, un membre que vous avez mis en favori.</li>
+            <li i18n:translate="">When an idea or a proposal has just been published and one of its keywords matches your topics of interest,</li>
+            <li i18n:translate=""> when something happens on your ideas or on the proposals to which you contribute or have contributed,</li>
+            <li i18n:translate="">when a member sends you an idea or a proposal,</li>
+            <li i18n:translate="">when there is an answer to one of your comments,</li>
+            <li i18n:translate="">when something happens on an idea, a proposal or a member that you have included in your favourites.</li>
         </ul>
         </p>
     </tal:block>

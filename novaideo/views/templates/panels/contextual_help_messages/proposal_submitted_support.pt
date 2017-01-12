@@ -1,14 +1,14 @@
 <div  class="contextual-help-item principal-help"  i18n:domain="novaideo">
 	<p i18n:translate="">
-		As a member of the platform, you can support or oppose a proposal that has been submitted for appraisal.
+		As a member of the platform, you can support or oppose a proposal that has been submitted for evaluation.
 	</p>
 	<p i18n:translate="">
 		If you change your mind, you can take away your support token or your opposition token.
 	</p>
 	<p i18n:translate="">
-		You have a total of seven tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to appraisal. If you cannot support or oppose an idea or a proposal, this means that you have used all your seven tokens.
+		You have a total of seven tokens that you are free to allocate to and to take away from any published idea or any proposal submitted to evaluation. If you cannot support or oppose an idea or a proposal, this means that you have used all your seven tokens.
 	</p>
 	<p i18n:translate="">
-		You also have additional tokens for the proposals for which you were a member in the working group that voted to submit the proposal to the appraisal of the other members of the platform. These additiona tokens can only be used for these proposals.
+		You also have additional tokens for the proposals for which you were a member in the working group that voted to submit the proposal to the evaluation of the other members of the platform. These additiona tokens can only be used for these proposals.
 	</p>
 </div>

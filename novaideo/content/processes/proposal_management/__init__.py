@@ -76,8 +76,8 @@ class WorkMode(Entity):
     work_mode_process_id = NotImplemented
     participants_mini = NotImplemented
     participants_maxi = 12
-    title = _('Work mode')
-    description = _('Work mode for the improvement of the proposal')
+    title = _('Working mode')
+    description = _('Working mode for the improvement of the proposal')
     work_id = 'work_mode'
     order = 0
 

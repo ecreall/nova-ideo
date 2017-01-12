@@ -34,7 +34,7 @@ class RestorViewStudyRestor(BasicView):
 
 class RestorFormView(FormView):
 
-    title = _('Restor')
+    title = _('Restore')
     behaviors = [Restor, Cancel]
     formid = 'formrestor'
     name = 'formrestor'
@@ -54,7 +54,7 @@ class RestorFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class RestorView(MultipleView):
-    title = _('Restor')
+    title = _('Restore')
     name = 'restor'
     behaviors = [Restor]
     viewid = 'restorentity'

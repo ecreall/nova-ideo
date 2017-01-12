@@ -99,7 +99,7 @@ class CompareIdeaSchema(Schema):
     versions = colander.SchemaNode(
         ObjectType(),
         widget=version_choice,
-        title=_('Last versions'),
+        title=_('Previous versions'),
         description=_("Select the previous version with which to compare"),
         missing=None
         )

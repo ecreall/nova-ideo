@@ -33,7 +33,7 @@ class RemoveViewStudyReport(BasicView):
 
 
 class RemoveForm(FormView):
-    title = _('Remove the file')
+    title = _('Delete file')
     name = 'delfileform'
     behaviors = [RemoveFile, Cancel]
     viewid = 'delfileform'
@@ -54,7 +54,7 @@ class RemoveForm(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class DelFileView(MultipleView):
-    title = _('File deletion')
+    title = _('Delete file')
     name = 'removefile'
     behaviors = [RemoveFile]
     viewid = 'removefile'

@@ -112,7 +112,7 @@ DEFAULT_JUDGMENTS = {'Excellent': 7,
                      'Very good': 6,
                      'Good': 5,
                      'Fairly good': 4,
-                     'Passable': 3,
+                     'Pass': 3,
                      'Insufficient': 2,
                      'To be rejected': 1}
 
@@ -120,7 +120,7 @@ _JUDGMENTS_TRANSLATION = [_('Excellent'),
                           _('Very good'),
                           _('Good'),
                           _('Fairly good'),
-                          _('Passable'),
+                          _('Pass'),
                           _('Insufficient'),
                           _('To be rejected')]
 

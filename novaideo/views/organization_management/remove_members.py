@@ -66,7 +66,7 @@ class OrganizationSchema(Schema):
     )
 class RemoveMembersView(FormView):
 
-    title = _('Remove members')
+    title = _('Remove Members')
     schema = select(OrganizationSchema(),
                     ['members'])
     behaviors = [RemoveMembers, Cancel]

@@ -20,7 +20,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class AlertEndView(BasicView):
-    title = _('Alert the end of cycle')
+    title = _('Alert for the end of an improvement cycle')
     name = 'alertend'
     behaviors = [AlertEnd]
     viewid = 'alertend'

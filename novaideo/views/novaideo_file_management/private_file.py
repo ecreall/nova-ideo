@@ -20,7 +20,7 @@ from novaideo import _
 
 
 class PrivateFileViewStudyReport(BasicView):
-    title = _('Alert for private')
+    title = _('Alert: content privatised')
     name = 'alertforprivate'
     template = 'novaideo:views/novaideo_file_management/templates/alert_private.pt'
 

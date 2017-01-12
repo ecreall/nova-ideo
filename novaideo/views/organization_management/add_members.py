@@ -37,7 +37,7 @@ class AddMembersSchema(OrganizationSchema):
     )
 class AddMembersView(FormView):
 
-    title = _('Add members')
+    title = _('Add Members')
     schema = select(AddMembersSchema(),
                     ['members',
                      'are_managers'])

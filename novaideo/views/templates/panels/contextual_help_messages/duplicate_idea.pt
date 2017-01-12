@@ -9,6 +9,6 @@
 		In order to be published, the duplicated copy of an idea must be different from the original idea.
     </p>
     <p i18n:translate="" tal:condition="request.moderate_ideas">
-		In order to be moderated, the duplicated copy of an idea must be different from the original idea.
+		In order to be submmitted to moderation, the duplicated copy of an idea must be different from the original idea.
     </p>
 </div>

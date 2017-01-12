@@ -320,7 +320,7 @@ class _SupportAlert(object):
         message = html_to_text(html_message)
         localizer = request.localizer
         return {
-            'title': localizer.translate(_('Support of')) + ' ' + localizer.translate(
+            'title': localizer.translate(_('Evaluation of')) + ' ' + localizer.translate(
                 subject.get_title(user)),
             'message': message,
             'url': request.resource_url(subject, '@@index')}

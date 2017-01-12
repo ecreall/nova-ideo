@@ -18,7 +18,7 @@
 
   <metal:slot metal:fill-slot="login-form-title">
    <metal:slot metal:define-slot="login-form-title">
-    <h2 i18n:translate="">Log in as Another User</h2>
+    <h2 i18n:translate="">Log in as another User</h2>
    </metal:slot>
   </metal:slot>
 

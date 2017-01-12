@@ -1,6 +1,6 @@
 <div i18n:domain="novaideo">
   <div i18n:translate="" class="alert alert-info">
-      Are you sure you want to pin this comment to this discuss?
+      Are you sure you want to pin this comment to this discussion?
   </div>
   <div tal:replace="structure comment_body"/>
 </div>

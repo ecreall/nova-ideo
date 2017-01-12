@@ -1,10 +1,11 @@
 <div  i18n:domain="novaideo" id="publication-data" data-is_unique="${'true' if is_unique_choice else 'false'}">
  <div class="alert alert-info">
-  <p i18n:translate="">En cliquant sur « Continuer », votre proposition sera soumise pour publication et fera l'objet d'une modération préalable. Les modérateurs peuvent décider soit de la publier, soit de l'archiver.</p>
+  <p i18n:translate="">By clicking on « Continue », your proposal will be submitted to moderation before publication. The moderators can decide either to publish it, or to archive it.
+  </p>
 
  	<div tal:omit-tag="" tal:condition="not request.moderate_ideas and not_published_ideas">
       <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-      <p i18n:translate="">Pour qu'une proposition soit publiée, l'ensemble des idées liées doivent être préalablement publiées. Vous pouvez les modifier en cliquant sur celles qui sont à retravailler. Une fois la proposition est acceptée par les modérateurs, ces idées seront publiées automatiquement.</p>
+      <p i18n:translate="">For a proposal to be published, all related ideas must have been published beforehand. You can modify these ideas by clicking on those that are to be re-worked upon. Once the proposal has been accepted by the moderators, these ideas will automatically be published.</p>
         <ol class="list-unstyled not-published-list">
           <tal:loop repeat="i not_published_ideas">
             <li><a target="_blank" class="btn btn-info btn-xs" tal:attributes="href request.resource_url(i, '@@editidea')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>
@@ -13,21 +14,21 @@
     </div>
  	<span class="glyphicon glyphicon-info-sign pull-right"></span>
     <div>
-      <p i18n:translate="">Une fois votre proposition acceptée et publiée par les modérateurs, vous pouvez décider :</p>
+      <p i18n:translate="">As soon as your proposal has been accepted and published by the moderators, you can decide:</p>
       <ul>
-        <li i18n:translate="">soit de la soumettre à appréciation en l'état à l'ensemble des utilisateurs sans l'améliorer,</li>
-        <li i18n:translate="">soit l'améliorer d'abord avec d'autres utilisateurs dans un groupe de travail puis la soumettre à appréciation à l'ensemble des utilisateurs.</li>
+        <li i18n:translate="">either to submit it as it is to all Members, without improving it,</li>
+        <li i18n:translate="">or to first improve it with other Members in a Working Group, and then submit it to the evaluation of all Members.</li>
       </ul>
    </div>
    <p i18n:translate="">
-    Si vous décidez de l'améliorer avec d'autres utilisateurs, ce qui est le choix proposé par défaut, vous devez indiquer la durée du cycle d'amélioration, celle-ci est fixée par défaut à une semaine.
+    If you choose to improve it with other Members, which is the default choice, you must specify the duration of the improvement cycle. The default value for this duration is one week.
    </p>
 
  </div>
  <div tal:condition="len(request.root.get_work_modes()) > 1" class="alert alert-warning">
   <span class="glyphicon glyphicon-warning-sign pull-right"></span>
   <p>
-    <b i18n:translate="">Pour améliorer la proposition, il faut que le groupe de travail atteigne au moins le nombre minimum de participants indiqué pour chaque mode de travail. Si le nombre n'est pas atteint, le groupe de travail reste inactif et la proposition ne peut être améliorée.</b>
+    <b i18n:translate="">In order to improve the proposal, the Working Group must gather at least the quorum, i.e. the minimum number of Participants indicated for each working mode. If this quorum is not reached, the Working Group remains inactive and the proposal cannot be improved.</b>
   </p>
  </div>
 </div>

@@ -1,6 +1,6 @@
 <div class="alert alert-info" i18n:domain="novaideo" i18n:translate="">
-Vous pouvez ordonner les dossier dynamiques en cliquant sur le bouton suivant
-	<a tal:attributes="href action.url(context)" 
+You can order the topics of interest by clicking on the following button 
+	<a i18n:name="dynamic"  tal:attributes="href action.url(context)" 
 	   class="btn btn-primary btn-sm">
 	    <span class="${getattr(action, 'style_picto', '')}"></span> ${action.title}        
 	</a>

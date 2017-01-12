@@ -139,7 +139,7 @@ class IdeasView(ContentView):
 
 
 class ProposalsView(ContentView):
-    title = _('Working groups (${nb})')
+    title = _('The Working Groups (${nb})')
     content_type = 'proposal'
     viewid = 'home-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'

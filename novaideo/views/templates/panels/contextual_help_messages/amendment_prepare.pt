@@ -3,7 +3,7 @@
 
 	<p i18n:translate="">To do so, you can drag-and-drop your improvements from one amendment to the other, add amendments or suppress the empty ones.</p>
 
-	<p i18n:translate="">As a default, if an explanation is shared by all improvements that are part of an amendment is taken over as the explanation for the amendment. If the explanation of an amendment is modified, the explanations of the attached improvements are not changed.</p>
+	<p i18n:translate="">As a default, if an explanation is shared by all improvements that are part of an amendment, it is taken over as the explanation for the amendment. If the explanation of an amendment is modified, the explanations of the attached improvements are not changed.</p>
 
 	<p i18n:translate="">You can also decide to group all your improvements into one single amendment. In this case, you must provide the justification of this single amendment.</p>
 

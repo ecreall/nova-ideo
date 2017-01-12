@@ -58,7 +58,7 @@ def validate_file_content(node, appstruct, width, height):
             flash_height = header['height']
             if flash_width > width or flash_height > height:
                 raise colander.Invalid(node, _
-                    (_('The flash animation size is not valid: the allowed size is ${width} x ${height} px.',
+                    (_('The Flash animation size is not valid: the allowed size is ${width} x ${height} px.',
                          mapping={'width': width,
                                    'height': height})))
 

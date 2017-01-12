@@ -1,4 +1,4 @@
 <div class="alert alert-danger" i18n:domain="novaideo">
     <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-   <p i18n:translate="">En cliquant sur « Continuer », la proposition sera archivée. Vous devez expliquer cette décision, afin que l'auteur de la proposition comprenne pourquoi sa proposition n'est pas publiée. Un courriel lui sera envoyé avec votre explication.</p>
+   <p i18n:translate="">By clicking on « Continue », the proposal will be archived. You must explain your decision, so that the author understands why his/her proposal is not published. An e-mail will be sent to him/her with your explanation.</p>
 </div>

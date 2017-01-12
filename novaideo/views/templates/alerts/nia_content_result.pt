@@ -11,6 +11,7 @@
             author duplication.author
          ">
        Cette idée vient d'être dupliquée et travaillée différemment. Vous trouverez l'idée dupliquée ici <a 
+            i18n:name="dynamic" 
             data-oid="${getattr(duplication, '__oid__', '')}"
             class="alert-link toggle-popover"
             target="_blank" href="${request.resource_url(duplication, '@@index')}" class="alert-link"><span class="${getattr(duplication, 'icon', '')}"></span> ${duplication.title}</a>.
@@ -25,6 +26,7 @@
             author duplication.author
          ">
        Cette proposition vient d'être dupliquée et travaillée différemment. Vous trouverez la proposition dupliquée ici <a 
+            i18n:name="dynamic" 
             data-oid="${getattr(duplication, '__oid__', '')}"
             class="alert-link toggle-popover"
             target="_blank" href="${request.resource_url(duplication, '@@index')}" class="alert-link"><span class="${getattr(duplication, 'icon', '')}"></span> ${duplication.title}</a>.

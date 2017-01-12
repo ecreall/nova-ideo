@@ -4,7 +4,7 @@
 	</div>
 	<div class="contextual-help-item compare-help hide-bloc">
 	  <p i18n:translate="">You can compare the current version of the idea with its previous versions.</p>
-	  <p i18n:translate="">The portions of text in green and in red are those that were spectively added to and removed from the current version of the idea.</p>
+	  <p i18n:translate="">The portions of text in green and in red are those that were respectively added to and removed from the current version of the idea.</p>
 	</div>
 	<div class="contextual-help-item  comment-help hide-bloc">
 	    <p i18n:translate="">Any published idea can be discussed among members of the platform.</p>

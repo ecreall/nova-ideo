@@ -38,8 +38,8 @@
                 </li>
               </ul>
             </div>
-           <button class="btn btn-default search-primary-btn" type="${button_type}" data-url="${url}" i18n:translate=""><span class="glyphicon glyphicon-search"></span></button>
-           <a class="btn btn-default" href="${advanced_search_url}" i18n:translate=""><span class="glyphicon glyphicon-zoom-in"></span> <span class="hidden-sm hidden-xs" i18n:translate="">Advanced search</span></a>
+           <button class="btn btn-default search-primary-btn" type="${button_type}" data-url="${url}" ><span class="glyphicon glyphicon-search"></span></button>
+           <a class="btn btn-default" href="${advanced_search_url}"><span class="glyphicon glyphicon-zoom-in"></span> <span class="hidden-sm hidden-xs" i18n:translate="">Advanced search</span></a>
         </span>
       </div>
     <script type="text/javascript">

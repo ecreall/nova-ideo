@@ -26,7 +26,7 @@ class DiffView(DiffViewIdea):
 
 
 class CompareProposalFormView(CompareIdeaFormView):
-    title = _('Compare proposal form')
+    title = _('Form to compare the proposal')
     behaviors = [CompareProposal]
     formid = 'formcompareproposal'
     name = 'compareproposalform'

@@ -29,7 +29,7 @@ from novaideo.content.comment import Comment
     )
 class CreateIdeaView(FormView):
 
-    title = _('Transform a comment into an idea')
+    title = _('Transform the comment into an idea')
     schema = select(IdeaSchema(factory=Idea, editable=True),
                     ['title',
                      'text',

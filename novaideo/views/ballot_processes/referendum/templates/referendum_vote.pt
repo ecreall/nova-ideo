@@ -24,7 +24,7 @@
        </dd>
        <dt i18n:translate="">Duration</dt>
        <dd tal:define="run ballot_report.ballot.run_at; finish  ballot_report.ballot.finished_at">
-          <span i18n:translate="">The ballot begins on</span> <span tal:replace="layout.to_localized_time(run)"/>. <span tal:condition="finish is not None"><span i18n:translate="">The end of the ballot is planned on</span> <span tal:replace="layout.to_localized_time(finish)"/>.</span>
+          <span i18n:translate="">The ballot starts on</span> <span tal:replace="layout.to_localized_time(run)"/>. <span tal:condition="finish is not None"><span i18n:translate="">The end of the ballot is planned on</span> <span tal:replace="layout.to_localized_time(finish)"/>.</span>
        </dd>
      </div>
  </dl>

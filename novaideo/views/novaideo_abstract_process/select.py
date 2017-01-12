@@ -21,7 +21,7 @@ from novaideo.core import SearchableEntity
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SelectEntityView(BasicView):
-    title = _('Add to my favorites')
+    title = _('Add to my favourites')
     name = 'selectentity'
     behaviors = [SelectEntity]
     viewid = 'selectentity'

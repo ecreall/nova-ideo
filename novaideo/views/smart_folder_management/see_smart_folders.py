@@ -22,9 +22,9 @@ from novaideo.utilities.util import (
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""No registered interest found"""),
-    '1': _(u"""One registered interest found"""),
-    '*': _(u"""${nember} registered interests found""")
+    '0': _(u"""No topic of interest found"""),
+    '1': _(u"""One topic of interest found"""),
+    '*': _(u"""${nember} topics of interests found""")
 }
 
 

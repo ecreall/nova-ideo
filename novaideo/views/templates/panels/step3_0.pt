@@ -4,13 +4,13 @@
   <dl>
 	<div tal:omit-tag="" tal:condition="work_mode">
      <dt>
-       <span  i18n:translate="">Working group mode</span>
+       <span  i18n:translate="">Working mode of the group</span>
      </dt>
      <dd>${work_mode}</dd>
     </div>
 
     <dt>
-       <span  i18n:translate="">Composition of the working </span>
+       <span  i18n:translate="">Composition of the working group</span>
      </dt>
      <dd>
      	<span style="color:#d9534f;">(${len(context.working_group.members)} <span  i18n:translate="">member(s)</span> / ${min_members} <span  i18n:translate="">minimum)</span></span>

@@ -51,7 +51,7 @@ class ExplanationSchema(Schema):
 
 
 class DeleteProposalFormView(FormView):
-    title = _('Proposal deletion')
+    title = _('Delete the proposal')
     schema = ExplanationSchema()
     behaviors = [DeleteProposal, Cancel]
     formid = 'formdeleteproposal'
@@ -78,7 +78,7 @@ class DeleteProposalFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class DeleteProposalView(MultipleView):
-    title = _('Proposal deletion')
+    title = _('Delete the proposal')
     name = 'deleteproposal'
     behaviors = [DeleteProposal]
     viewid = 'deleteproposal'

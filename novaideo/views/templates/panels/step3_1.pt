@@ -4,7 +4,7 @@
   <dl>
     <div tal:omit-tag="" tal:condition="work_mode">
      <dt>
-       <span  i18n:translate="">Working group mode</span>
+       <span  i18n:translate="">Working mode of the group</span>
      </dt>
      <dd>${work_mode}</dd>
     </div>

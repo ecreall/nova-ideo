@@ -75,7 +75,7 @@ from . import (
     remove_participant_from_ballots
     )
 
-VOTE_PUBLISHING_MESSAGE = _("Each participant votes for or against continuing the improvement of the proposal. "
+VOTE_PUBLISHING_MESSAGE = _("Each participant in the working group votes for or against continuing the improvement of the proposal. "
                             "If the majority is \"In favour\", a new improvement cycle begins. "
                             "If not, the proposal is submitted as is to the evaluation of the other "
                             "members of the platform.")
@@ -87,12 +87,14 @@ VOTE_DURATION_MESSAGE = _("Voting results regarding the further improvement of t
 
 VOTE_MODEWORK_MESSAGE = _("Voting results regarding the further improvement of the proposal will not be known until the end of the ballot. "
                           "If the majority happens to vote for continuing to improve the "
-                          "proposal, your vote on the operating method of the working group is needed.")
+                          "proposal before submitting it to the other members of the platform,"
+                          " your vote on the operating method of the working group is needed.")
 
 
 VOTE_REOPENING_MESSAGE = _("Voting results regarding the further improvement of the proposal will not be known until the end of the ballot. "
                            "If the majority happens to vote for continuing to improve the "
-                           "proposal, your vote on reopening the working group is needed.")
+                           "proposal before submitting it to the other members of the platform,"
+                          " your vote on reopening the working group is needed.")
 
 
 def confirm_proposal(

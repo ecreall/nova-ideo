@@ -35,7 +35,7 @@ class CreatOrganizationsSchema(Schema):
                 'logo',
                 'contacts']),
         widget=SequenceWidget(min_len=1),
-        title=_('Organizations to creat')
+        title=_('Organizations to create')
     )
 
 
@@ -46,7 +46,7 @@ class CreatOrganizationsSchema(Schema):
     )
 class CreatOrganizationsView(FormView):
 
-    title = _('Creat organizations')
+    title = _('Create organizations')
     schema = CreatOrganizationsSchema()
     behaviors = [CreatOrganizations, Cancel]
     formid = 'formcreatorganizations'

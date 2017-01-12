@@ -1,5 +1,5 @@
 <div i18n:domain="novaideo">
-  <h1 i18n:translate="">Welcome to ${request.root.title}!</h1>
+  <h1 i18n:translate="">Welcome to <span i18n:name="dynamic" >${request.root.title}</span>!</h1>
   <p><strong>${request.root.title}</strong> <span i18n:translate="">is a platform implementing a complete process, in which working groups transform ideas into complete proposals with a system of amendment and voting sessions. Access to this platform is restricted to registered members only.</span></p>
   <p>
     <div class="btn-group navbar-right">

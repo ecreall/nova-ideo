@@ -32,8 +32,8 @@ class FPTPProcess(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(FPTPProcess, self).__init__(**kwargs)
-        self.title = _('FPTP Process')
-        self.description = _('FPTP Process')
+        self.title = _('First Past The Post Process')
+        self.description = _('First Past The Post Process')
 
     def _init_definition(self):
         self.defineNodes(

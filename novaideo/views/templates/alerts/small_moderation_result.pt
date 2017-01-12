@@ -8,18 +8,18 @@
       class="alert-item ${new_alert and 'new-alert'}">
     <h5><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h5>
     <span i18n:translate="" tal:condition="alert_kind == 'moderation'">
-    	Les modérateurs ont statué sur la contribution <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+    	The moderators have decided on the contribution <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
     <span i18n:translate="" tal:condition="alert_kind == 'new_report'">
-      Une nouvelle signalisation vient d'être ajoutée. Les signalisations sont accessibles <a href="${request.resource_url(request.root, '@@seereportedcontents')}">ici</a>.
+      A new content has been reported as potentially offensive. The reported contents can be reached <a i18n:name="dynamic" href="${request.resource_url(request.root, '@@seereportedcontents')}">ici</a>.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_restor'">
-      La contribution  <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> a été restorée.
+      The contribution  <a i18n:name="dynamic" href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been restored.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_censor'">
-      La contribution  <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> a été censurée.
+      The contribution  <a i18n:name="dynamic" href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been censored.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_closed'">
-      Le groupe de travail sur la proposition <a href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> n'est plus actif depuis quelques cycles de plus d'une semaine. Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant ouverte à un groupe de travail.
+      The Woking Group on the Proposal <a i18n:name="dynamic" href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been inactive for several cycles, each lasting more than one week. For this reason, the Group has been dissolved, and the Proposal is back to the state "Open to a working group".
     </span>
   </div>
 </div>

@@ -26,7 +26,7 @@ from novaideo import _
     )
 class EditSmartFolderView(FormView):
 
-    title = _('Edit the center of interest')
+    title = _('Edit the topic of interest')
     schema = select(SmartFolderSchema(factory=SmartFolder, editable=True),
                     ['title',
                      'description',

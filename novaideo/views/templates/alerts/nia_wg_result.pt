@@ -4,15 +4,15 @@
   <div tal:omit-tag=""  tal:condition="object.subject_type == 'proposal'">
     <span i18n:translate="" tal:condition="alert_kind == 'new_version'">
        Le groupe de travail vient de produire une nouvelle version de la proposition. N'hésitez pas à discuter les modifications apportées. Vous pouvez voir les modifications en comparant la version en cours avec la dernière version produite.
-       <blockquote class="url-block" tal:define="diff_a object.diff" tal:condition="diff_a['diff']">
-         <span class="url-title">
-           La nouvelle version apporte ${diff_a['diff']} modification(s) avec :
+       <blockquote i18n:name="dynamic"  class="url-block" tal:define="diff_a object.diff" tal:condition="diff_a['diff']">
+         <span i18n:translate="" class="url-title">
+           La nouvelle version apporte <span i18n:name="dynamic">${diff_a['diff']}</span> modification(s) avec :
          </span>
          <div class="url-description">
           <div tal:condition="diff_a['ins']"
-               style="color: #4eaf4e"><b>${diff_a['ins']} insertion(s)</b></div>
+               style="color: #4eaf4e"><b i18n:translate=""><span i18n:name="dynamic">${diff_a['ins']}</span> insertion(s)</b></div>
           <div tal:condition="diff_a['del']"
-               style="color: #ef3128"><b>${diff_a['del']} suppression(s)</b></div>
+               style="color: #ef3128"><b i18n:translate=""><span i18n:name="dynamic">${diff_a['del']}</span> suppression(s)</b></div>
          </div>
       </blockquote>
     </span>
@@ -38,18 +38,21 @@
          ">
          <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'amendable'">
           Cette idée vient d'être utilisée par la proposition suivante <a 
+            i18n:name="dynamic"
             data-oid="${getattr(proposal, '__oid__', '')}"
             class="alert-link toggle-popover"
             target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. N'hésitez pas à discuter le contenu de la proposition et y participer si le sujet traité vous intéresse. Vous pouvez ainsi contribuer à la proposition en apportant vos améliorations.
          </span>
          <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'published'">
           Cette idée vient d'être utilisée par la proposition suivante <a 
+            i18n:name="dynamic" 
             data-oid="${getattr(proposal, '__oid__', '')}"
             class="alert-link toggle-popover"
             target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. N'hésitez pas à discuter le contenu de la proposition.
          </span>
          <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'submitted_support'">
           Cette idée vient d'être utilisée par la proposition suivante <a 
+            i18n:name="dynamic" 
             data-oid="${getattr(proposal, '__oid__', '')}"
             class="alert-link toggle-popover"
             target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. Cette proposition est soumise à l'appréciation des membres. Vous pouvez soit la soutenir, soit vous y opposer. N'hésitez pas à discuter le contenu de la proposition, vos avis ne font qu'améliorer le débat.

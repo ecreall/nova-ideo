@@ -1,7 +1,7 @@
     <div i18n:domain="novaideo" tal:omit-tag="" tal:condition="nodes" tal:define="canvas_id 'canvas_'+node_id">
       <div class="graph-legend">
         <div class="graph-legend-idea"><span class="circle"></span> <span i18n:translate="">Idea</span></div> 
-        <div class="graph-legend-wg"><span class="circle"></span> <span i18n:translate="">Working group</span></div>
+        <div class="graph-legend-wg"><span class="circle"></span> <span i18n:translate="">Working Group</span></div>
         <div class="graph-legend-current"><span class="circle"></span> <span i18n:translate="">Current entity</span></div>
         <div class="graph-legend-solid"><span class="line"></span> <span i18n:translate="">Solid relation</span></div>
         <div class="graph-legend-weak"><span class="line"></span> <span i18n:translate="">Weak relation</span></div>

@@ -21,7 +21,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class DeselectEntityView(BasicView):
-    title = _('Remove from my favorites')
+    title = _('Remove from my favourites')
     name = 'deselectentity'
     behaviors = [DeselectEntity]
     viewid = 'deselectentity'

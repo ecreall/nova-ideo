@@ -61,7 +61,7 @@ class WorkParamsConfigurationSchema(Schema):
     content_to_moderate = colander.SchemaNode(
         colander.Set(),
         widget=content_types_choices,
-        title=_('Contents to moderate'),
+        title=_('Contents to be moderated'),
         description=_('Contents can be moderated.'),
         missing=[]
     )
@@ -69,7 +69,7 @@ class WorkParamsConfigurationSchema(Schema):
     content_to_support = colander.SchemaNode(
         colander.Set(),
         widget=content_types_choices,
-        title=_('Contents to support'),
+        title=_('Contents to be supported'),
         description=_('Contents can be supported by users.'),
         missing=[]
     )
@@ -77,7 +77,7 @@ class WorkParamsConfigurationSchema(Schema):
     content_to_examine = colander.SchemaNode(
         colander.Set(),
         widget=content_types_choices,
-        title=_('Contents to examine'),
+        title=_('Contents to be examined'),
         description=_('Contents must be examined by a review committee.'),
         missing=[]
     )
@@ -133,17 +133,17 @@ class UserParamsConfigurationSchema(Schema):
             values=[],
             create=True,
             multiple=True),
-        title=_('Trusted emails'),
-        description=_("To add email, you need to tap the « Enter »"
-                      " key after each email or separate them with commas."),
+        title=_('Trusted email addresses'),
+        description=_("To add trusted email addresses, you need to tap the « Enter »"
+                      " key after each email address or to separate them with commas."),
         missing=[]
         )
 
     only_for_members = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Accessible only by members'),
-        description=_('Contents can be displayed only by members.'),
+        label=_('Accessible by Members only'),
+        description=_('Contents can be displayed by Member sonly.'),
         title='',
         missing=False
     )
@@ -156,19 +156,19 @@ class UserParamsConfigurationSchema(Schema):
 
     participants_maxi = colander.SchemaNode(
         colander.Integer(),
-        title=_('Maximum number of participants for a working group'),
+        title=_('Maximum number of Participants per Working Group'),
         default=12,
         )
 
     participations_maxi = colander.SchemaNode(
         colander.Integer(),
-        title=_('Maximum number of working group by member'),
+        title=_('Maximum number of Working Groups per Member'),
         default=5,
         )
 
     tokens_mini = colander.SchemaNode(
         colander.Integer(),
-        title=_('Minimum number of tokens by member'),
+        title=_('Minimum number of evaluation Tokens allocated to a Member'),
         default=7,
         )
 
@@ -188,7 +188,7 @@ class UserInterfaceConfigurationSchema(Schema):
         widget=get_file_widget(file_extensions=['ico']),
         title=_('Favicon'),
         missing=None,
-        description=_("Only ICO file is supported."),
+        description=_("Only ICO files are supported."),
         )
 
     theme = colander.SchemaNode(
@@ -202,7 +202,7 @@ class UserInterfaceConfigurationSchema(Schema):
     social_share = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Activate the social share'),
+        label=_('Activate the sharing on social networks'),
         title='',
         missing=False
         )
@@ -279,7 +279,7 @@ class MailTemplatesConfigurationSchema(Schema):
     mail_templates = colander.SchemaNode(
         colander.Sequence(),
         omit(select(MailTemplate(name='template',
-                                 title=_('Mail template'),
+                                 title=_('E-mail template'),
                                  widget=SimpleMappingWidget(
                                          css_class="object-well default-well mail-template-well mail-template-block")),
                         ['mail_id', 'title', 'subject', 'template']),
@@ -287,7 +287,7 @@ class MailTemplatesConfigurationSchema(Schema):
         widget=templates_widget,
         default=templates_default,
         missing=templates_default,
-        title=_('Mail templates'),
+        title=_('E-mail templates'),
         )
 
 
@@ -354,7 +354,7 @@ class NotificationConfigurationSchema(Schema):
     activate_push_notification = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Activate the push notification'),
+        label=_('Activate the push notifications on the browser'),
         title='',
         missing=False
     )

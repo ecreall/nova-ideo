@@ -11,21 +11,21 @@
     </div>
  	<span class="glyphicon glyphicon-info-sign pull-right"></span>
     <div>
-      <p i18n:translate="">Une fois votre proposition publiée, vous pouvez décider :</p>
+      <p i18n:translate="">As soon as your proposal is published, you can decide:</p>
       <ul>
-        <li i18n:translate="">soit de la soumettre à appréciation en l'état à l'ensemble des utilisateurs sans l'améliorer,</li>
-        <li i18n:translate="">soit l'améliorer d'abord avec d'autres utilisateurs dans un groupe de travail puis la soumettre à appréciation à l'ensemble des utilisateurs.</li>
+        <li i18n:translate="">either to submit it as it is to all Members, without improving it,</li>
+        <li i18n:translate="">or to first improve it with other Members in a Working Group, and then submit it to the evaluation of all Members.</li>
       </ul>
    </div>
    <p i18n:translate="">
-    Si vous décidez de l'améliorer avec d'autres utilisateurs, ce qui est le choix proposé par défaut, vous devez indiquer la durée du cycle d'amélioration, celle-ci est fixée par défaut à une semaine.
+    If you choose to improve it with other Members, which is the default choice, you must specify the duration of the improvement cycle. The default value for this duration is one week.
    </p>
 
  </div>
  <div tal:condition="len(request.root.get_work_modes()) > 1" class="alert alert-warning">
   <span class="glyphicon glyphicon-warning-sign pull-right"></span>
   <p>
-    <b i18n:translate="">Pour améliorer la proposition, il faut que le groupe de travail atteigne au moins le nombre minimum de participants indiqué pour chaque mode de travail. Si le nombre n'est pas atteint, le groupe de travail reste inactif et la proposition ne peut être améliorée.</b>
+    <b i18n:translate="">In order to improve the proposal, the Working Group must gather at least the quorum, i.e. the minimum number of Participants indicated for each working mode. If this quorum is not reached, the Working Group remains inactive and the proposal cannot be improved.</b>
   </p>
  </div>
 </div>

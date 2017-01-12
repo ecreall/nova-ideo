@@ -5,21 +5,21 @@
                  member_title getattr(object, 'member_title', None);">
   <div tal:define="subject object.subjects[0]">
     <span i18n:translate="" tal:condition="alert_kind == 'duplicated'">
-      Ce contenu a été dupliqué.
+      This content has been duplicated.
     </span>
-    <span i18n:translate="" tal:condition="alert_kind == 'modified'">Ce contenu faisant partie de vos favoris a été modifié.</span>
-    <span i18n:translate="" tal:condition="alert_kind == 'published'">Ce contenu faisant partie de vos centres d'intérêt a été publié.</span>
+    <span i18n:translate="" tal:condition="alert_kind == 'modified'">This content, which was part of your favourites, has been modified.</span>
+    <span i18n:translate="" tal:condition="alert_kind == 'published'">This content, which was part of your topics of interest, has been published.</span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'published_author'">
-      Ce membre ${member_title} que vous avez mis en favori a publié un contenu.
+      The Member ${member_title}, which was part of your favourites, has published a content.
     </span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'present'">
-      Ce contenu vous a été communiqué.
+      This content has been sent to you.
     </span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'user_deactivated'">
-      Ce compte du membre que vous avez mis en favori a été désactivé.
+      The account of this Member, which was part of your favourites, has been disactivated.
     </span>
 
   </div>

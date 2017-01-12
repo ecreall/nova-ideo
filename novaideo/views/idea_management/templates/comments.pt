@@ -49,7 +49,7 @@
                 <div title="${layout.to_localized_time(comment.created_at)}" class="${is_unread_comment and 'unread-comment' or ''} comment-detail-container">
                   <span tal:condition="is_unread_comment" class="unread-comment-tag" i18n:translate="">New comment</span>
                   <div  tal:omit-tag="" tal:condition="diff">
-                    <span i18n:translate="">There is a</span>  
+                    <span i18n:translate="">For</span>  
                     <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 
                     <span tal:condition="'hours' in diff">${diff['hours']} <span i18n:translate="">hour(s)</span></span> 
                     <span tal:condition="'minutes' in diff">${diff['minutes']} <span i18n:translate="">minute(s)</span></span>

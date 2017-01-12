@@ -71,8 +71,8 @@ class SystemProcess(ProcessDefinition, VisualisableElement):
                 #First loop
                 egblock1 = ExclusiveGatewayDefinition(),
                 manage_users = ActivityDefinition(contexts=[DeactivateUsers],
-                                       description=_("Deactivate users"),
-                                       title=_("Deactivate users"),
+                                       description=_("Disactivate users"),
+                                       title=_("Disactivate users"),
                                        groups=[]),
                 timerblock1 = IntermediateCatchEventDefinition(
                                  TimerEventDefinition(

@@ -80,7 +80,7 @@ class SeeSmartFolderView(BasicView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class OpenFolderView(BasicView):
-    title = _('Open a folder')
+    title = _('Open the folder')
     name = 'open'
     breadcrumb_template = 'novaideo:views/templates/folder_breadcrumb.pt'
     templates = {'default': 'novaideo:views/novaideo_view_manager/templates/search_result.pt',

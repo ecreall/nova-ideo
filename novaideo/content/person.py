@@ -183,7 +183,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     keywords = colander.SchemaNode(
         colander.Set(),
         widget=keywords_choice,
-        title=_('Preferences'),
+        title=_('Topics of interest'),
         missing=[]
         )
 

@@ -4,7 +4,7 @@
   <dl>
     <div tal:omit-tag="" tal:condition="work_mode">
      <dt>
-       <span  i18n:translate="">Working group mode</span>
+       <span  i18n:translate="">Working mode of the group</span>
      </dt>
      <dd>${work_mode}</dd>
     </div>
@@ -37,7 +37,7 @@
 <div class="object-well vote-well" i18n:domain="novaideo">  
 <dl >
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
-       <dt tal:condition="ballot_report.electors" i18n:translate="">Electors</dt>
+       <dt tal:condition="ballot_report.electors" i18n:translate="">Participants in the ballot</dt>
        <dd tal:condition="ballot_report.electors">
          <tal:loop repeat="e ballot_report.electors">
            <a tal:attributes="href request.resource_url(e, '@@index')">${getattr(e, 'title', e.name)}</a>

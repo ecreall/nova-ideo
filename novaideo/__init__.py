@@ -41,29 +41,29 @@ ANALYTICS_DEFAUT_CONTENTS = ['idea', 'proposal']
 REPORTING_REASONS = {
     'sexual': {
         'order': 1,
-        'title': _('À caractère sexuel explicite'),
-        'description': _('Le contenu est à caractère sexuel explicite.')
+        'title': _('Sexually explicit'),
+        'description': _('The content is sexually explicit.')
     },
     'violent_dangerous': {
         'order': 2,
-        'title': _('Violent ou dangereux'),
-        'description': _('Le contenu est violent ou dangereux.')
+        'title': _('Violent or dangerous'),
+        'description': _('The content is violent or dangerous.')
     },
     'hatred': {
         'order': 3,
-        'title': _('Incitation à la haine, harcèlement ou intimidation'),
-        'description': _('Le contenu incite à la haine, harcèlement ou intimidation.')
+        'title': _('Harrassment, intimidation or invitation to hate'),
+        'description': _('The content harrasses, intimidates or invites to hate.')
     },
     'other': {
         'order': 100,
         'title': _('Other'),
-        'description': _('Une autre raison ? Veuillez détailler la raison de votre signalement.')
+        'description': _('Another reason? Please detail why you signal this content')
     }
 }
 
 
 VIEW_TYPES = {'default': _('Default view'),
-              'bloc': _('Bloc view')}
+              'bloc': _('Block view')}
 
 
 ACCESS_ACTIONS = {}
@@ -696,8 +696,8 @@ def main(global_config, **settings):
 
 DEFAULT_FILES = [
     {'name': 'ml_file',
-     'title': _('Legal notices'),
-     'description': _('The legal notices'),
+     'title': _('Legal notice'),
+     'description': _('The legal notice'),
      'content': '',
      'content_file': 'legal_notices.html'},
     {'name': 'terms_of_use',

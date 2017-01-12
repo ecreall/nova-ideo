@@ -9,9 +9,9 @@
       <div tal:omit-tag="" tal:define="participants_mini getattr(getattr(proposal.working_group, 'work_mode', None), 'participants_mini', 3)">
          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
          <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-         <p i18n:translate="">Cette proposition est publiée et ouverte à un groupe de travail, elle est visible par l'ensemble des utilisateurs.</p>
+         <p i18n:translate="">This Proposal is published. It is visible to all Members. The related Working Group is inactive, waiting for the quorum to be reached.</p>
 
-         <p i18n:translate="">Pour l'améliorer, il faut que le groupe de travail atteigne au moins ${participants_mini} participant(s).</p>
+         <p i18n:translate="">To improve it, the Working Group must gather at least ${participants_mini} participants.</p>
       </div>
     </div>   
     <div tal:condition="cant_publish" role="alert" class="alert alert-info alert-dismissible">
@@ -22,14 +22,14 @@
        </div>
        <div tal:omit-tag="" tal:condition="request.moderate_ideas and not_published_ideas">
         <p tal:condition="not request.moderate_proposals" i18n:translate="">
-          Pour que vous puissiez publier votre proposition, il faut que l'ensemble de ses idées liées soit préalablement modéré favorablement par un Modérateur.</p>
+          In order for you to publish you proposal, all ideas related to it must have been previously approved by the Moderation.</p>
         <p tal:condition="request.moderate_proposals" i18n:translate="">
-          Pour que vous puissiez soumettre votre proposition, il faut que l'ensemble de ses idées liées soit préalablement modéré favorablement par un Modérateur.</p>
+          In order for you to submit you proposal, all ideas related to it must have been previously approved by the Moderation.</p>
         
         <p i18n:translate="">
-           Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont pas été modérée favorablement.</p>
+           You can access below the ideas related to the proposal that have not been approved by the Moderation.</p>
         <p i18n:translate="" tal:condition="request.examine_ideas">
-           Ces idées doivent être ensuite examinées favorablement par un Examinateur.</p>
+           These ideas must afterwards be favourably examined by an Examiner.</p>
         <ol class="list-unstyled not-published-list">
           <tal:loop repeat="i not_published_ideas">
             <li><a target="_blank" class="btn btn-warning btn-xs" tal:attributes="href request.resource_url(i, '@@index')"><strong><span class="glyphicon glyphicon-pencil"></span> ${i.title}</strong></a></li>

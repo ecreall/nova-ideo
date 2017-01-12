@@ -166,8 +166,8 @@ class CrateAndPublish(InfiniteCardinality):
 class CrateAndPublishAsProposal(CrateAndPublish):
     style_picto = 'icon novaideo-icon icon-idea'
     style_order = 2
-    title = _('Create a working group')
-    submission_title = _('Create a working group')
+    title = _('Create a Working Group')
+    submission_title = _('Create a Working Group')
 
     def start(self, context, request, appstruct, **kw):
         result = super(CrateAndPublishAsProposal, self).start(

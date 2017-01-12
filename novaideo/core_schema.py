@@ -104,4 +104,4 @@ class ContactSchema(Schema):
             ('surtax' not in appstruct or \
              'surtax' in appstruct and not appstruct['surtax']):
             raise colander.Invalid(self,
-                                   _('Surtax field must be filled in.'))
+                                   _('Surcharge field must be filled in.'))

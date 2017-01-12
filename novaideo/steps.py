@@ -142,7 +142,7 @@ class StepsPanel(object):
                  'min_members': participants_mini},
                 request)
 
-        return _('No more Information.')
+        return _('Information unvailable.')
 
     def _get_step4_informations(self, context, request):
         user = get_current()

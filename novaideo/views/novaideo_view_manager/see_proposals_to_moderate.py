@@ -38,7 +38,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeProposalsToModerateView(BasicView):
-    title = _('Proposals to moderate')
+    title = _('Proposals to be moderated')
     name = 'seeproposalstomoderate'
     behaviors = [SeeProposalsToModerate]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

@@ -30,7 +30,7 @@
           <span class="glyphicon glyphicon-repeat"></span> 
           <span i18n:translate="">Recurrence</span>
         </dt>
-        <dd class="nl-sinding" tal:condition="recurrence" i18n:translate="">
+        <dd class="nl-sinding" tal:condition="recurrence">
           <span>
             <span i18n:translate="">Every</span> ${object.recurrence_nb} <span i18n:translate="">days</span>
           </span>
@@ -39,7 +39,7 @@
           <span class="glyphicon glyphicon-send"></span> 
           <span i18n:translate="">Last sending</span>
         </dt>
-        <dd  class="nl-last-sinding" tal:condition="last_sending_date" i18n:translate="">
+        <dd  class="nl-last-sinding" tal:condition="last_sending_date">
           <span>
             <span tal:replace="layout.to_localized_time(last_sending_date)"/>
           </span>
@@ -48,7 +48,7 @@
           <span class="glyphicon glyphicon-calendar"></span> 
           <span i18n:translate="">Next sending</span>
         </dt>
-        <dd class="nl-sinding"  tal:condition="sending_date" i18n:translate="">
+        <dd class="nl-sinding"  tal:condition="sending_date">
           <span>
            <span tal:replace="layout.to_localized_time(sending_date)"/>
           </span>

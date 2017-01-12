@@ -74,11 +74,11 @@ class ReportView(BasicView):
 
 
 class OldReportView(ReportView):
-    title = _('Old reports (${nb})')
+    title = _('Previous reports (${nb})')
     report_state = 'processed'
     viewid = 'old-reporst'
     view_icon = 'icon glyphicon glyphicon-time'
-    empty_message = _("No old reports")
+    empty_message = _("No previous report")
     empty_icon = 'icon glyphicon glyphicon-time'
 
 
@@ -87,7 +87,7 @@ class NewReportsView(ReportView):
     report_state = 'pending'
     viewid = 'new-reporst'
     view_icon = 'icon md md-sms-failed'
-    empty_message = _("No new reports")
+    empty_message = _("No new report")
     empty_icon = 'icon md md-sms-failed'
 
 

@@ -647,7 +647,7 @@ class NavigationBar(object):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.default_folder = SmartFolder(title=_('My interests'),
+        self.default_folder = SmartFolder(title=_('My topics of interest'),
                                           style=DEFAULT_FOLDER_COLORS,
                                           )
         self.default_folder.folder_order = -1

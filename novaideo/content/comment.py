@@ -86,7 +86,7 @@ class RelatedContentsSchema(Schema):
         colander.Set(),
         widget=relatedcontents_choice,
         title=_('Associated contents'),
-        description=_('Choose contents to associate.'),
+        description=_('Choose the contents to be associated'),
         missing=[],
         default=[],
         )

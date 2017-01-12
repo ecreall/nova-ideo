@@ -23,9 +23,9 @@
           <a href="mailto:${mail}">${mail}</a>
           <span class="not-reliable-address" tal:condition="not trusted_email" ><span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">Please note that this address is not a reliable address!</span></span>
         </dd>
-        <dt i18n:translate="">Subscribed the</dt>
+        <dt i18n:translate="">Registered on</dt>
         <dd><span tal:replace="layout.to_localized_time(registration.created_at)"/></dd>
-        <dt i18n:translate="">Expire the</dt>
+        <dt i18n:translate="">Expires on</dt>
         <dd><span tal:replace="layout.to_localized_time(registration.get_deadline_date())"/></dd>
       </dl>
   </div>

@@ -180,7 +180,7 @@ def seeinv_processsecurity_validation(process, context):
 @access_action(access_key=get_access_key)
 class SeeInvitation(InfiniteCardinality):
     isSequential = False
-    title = _('Plus')
+    title = _('More')
     actionType = ActionType.automatic
     context = IInvitation
     processsecurity_validation = seeinv_processsecurity_validation

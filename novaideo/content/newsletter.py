@@ -105,8 +105,8 @@ class NewsletterWorkingParamConf(Schema):
     automatic_registration = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Automatic subscribing'),
-        description=_('Automatic subscribing at user registration'),
+        label=_('Automatic subscription'),
+        description=_('Automatic subscription at user registration'),
         title='',
         missing=True
         )
@@ -114,8 +114,8 @@ class NewsletterWorkingParamConf(Schema):
     propose_to_registration = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Propose to subscribing'),
-        description=_('Allow users to subscribing'),
+        label=_('Propose for subscription'),
+        description=_('Allow users to subscribe manually'),
         title='',
         missing=True
         )
@@ -123,7 +123,7 @@ class NewsletterWorkingParamConf(Schema):
     allow_unsubscribing = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Allow unsubscribing'),
+        label=_('Allow unsubscription'),
         description=_('Allow users to unsubscribe'),
         title='',
         missing=True
@@ -179,7 +179,7 @@ class NewsletterSchema(VisualisableElementSchema):
         default=default_content,
         missing='',
         title=_("Content"),
-        description=_("The content to send."),
+        description=_("The content to be sent."),
         )
 
     working_params_conf = omit(NewsletterWorkingParamConf(

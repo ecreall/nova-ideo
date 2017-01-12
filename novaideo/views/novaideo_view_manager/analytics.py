@@ -431,7 +431,7 @@ class IntervalDates(Schema):
         colander.String(),
         widget=frequency_of_choices,
         title=_('Frequency'),
-        description=_('You can select the frequency.'),
+        description=_('You can select the display frequency.'),
         default='month',
         missing='month'
     )

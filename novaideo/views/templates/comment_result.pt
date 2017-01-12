@@ -50,7 +50,7 @@
                         <small tal:condition="menu_body|nothing or footer_actions_body|nothing">
                           <a href="${object.get_discuss_url(request, current_user)}">
                             <span class="glyphicon glyphicon-eye-open"></span>
-                            <span i18n:translate="">View in discussion</span>
+                            <span i18n:translate="">View in the discussion</span>
                           </a>
                         </small>
                       </div>

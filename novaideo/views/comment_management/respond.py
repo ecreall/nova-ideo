@@ -23,7 +23,7 @@ from novaideo import _
     )
 class RespondView(FormView):
 
-    title = _('Respond')
+    title = _('Answer')
     schema = select(CommentSchema(factory=Comment,
                                   editable=True,
                                   omit=('related_contents',)),

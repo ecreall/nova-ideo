@@ -468,7 +468,7 @@ def get_deactivate_profile_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("Le profil a bien été désactivé."),
+        _("The profile has been disactivated."),
         **kwargs)
     source_view_name = kwargs.get('view_name', '')
     view_name = 'seeusers'
@@ -667,7 +667,7 @@ def get_respond_metadata(action, request, context, api, **kwargs):
 def get_tranform_into_idea_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("The commet has been transformed into an idea."),
+        _("The comment has been transformed into an idea."),
         **kwargs)
     result['counters-to-update'] = [
         'component-navbar-mycontents',
@@ -957,14 +957,14 @@ def get_edit_folder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The center of interest has been modified."),
+        _("The centre of interest has been modified."),
         **kwargs)
 
 
 def get_remove_folder_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("The center of interest has been suppressed."),
+        _("The centre of interest has been suppressed."),
         **kwargs)
     result['ignore_redirect'] = not kwargs['is_source_context']
     return result
@@ -974,7 +974,7 @@ def get_publish_folder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The center of interest has been published."),
+        _("The centre of interest has been published."),
         **kwargs)
 
 
@@ -982,7 +982,7 @@ def get_archive_folder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The center of interest has been withdrawn."),
+        _("The centre of interest has been withdrawn."),
         **kwargs)
 
 
@@ -990,7 +990,7 @@ def get_add_subfolder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The sub-center of interest has been added."),
+        _("The sub-centre of interest has been added."),
         **kwargs)
 
 
@@ -1416,7 +1416,7 @@ def component_navbar_mysupports(action, request, context, api, **kwargs):
     result = {
         'component-navbar-mysupports.item_nb': item_nb,
         'component-navbar-mysupports.all_item_nb': len(getattr(user, 'tokens_ref', [])),
-        'component-navbar-mysupports.title': localizer.translate(_("My supports")),
+        'component-navbar-mysupports.title': localizer.translate(_("My evaluations")),
         'component-navbar-mysupports.icon': 'ion-ios7-circle-filled',
         'component-navbar-mysupports.url': request.resource_url(
             request.root, 'seemysupports')

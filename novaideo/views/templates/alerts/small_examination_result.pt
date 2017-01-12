@@ -4,6 +4,6 @@
 	new_alert object.is_to_alert(current_user)">
   <div tal:define="subject object.subjects[0]" class="alert-item ${new_alert and 'new-alert'}">
     <h5><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h5>
-    <span i18n:translate="" >Le comité d'examen a statué sur la contribution <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>. La contribution est maintenant dans l'état ${object.get_subject_state(subject, current_user, True)}.</span>
+    <span i18n:translate="" >The Examination Committee has decided over the contribution <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>. The contribution is now in the state <span i18n:name="obj_state" >${object.get_subject_state(subject, current_user, True)}</span>.</span>
   </div>
 </div>

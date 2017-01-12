@@ -52,11 +52,11 @@ class OrderSmartFoldersSchema(Schema):
         colander.SchemaNode(
             ObjectType(),
             widget=folders_widget,
-            name=_("folder")
+            name=_("topic of interest")
             ),
         widget=folder_seq_widget,
-        title=_('Folders'),
-        description=_('Drag and drop folders to order')
+        title=_('The topics of interests'),
+        description=_('Drag and drop the topics of interests to be sorted')
         )
 
 
@@ -67,7 +67,7 @@ class OrderSmartFoldersSchema(Schema):
     )
 class OrderSmartFoldersView(FormView):
 
-    title = _('Order')
+    title = _('Sort')
     schema = select(OrderSmartFoldersSchema(),
                     ['folders'])
     behaviors = [OrderSmartFolders, Cancel]

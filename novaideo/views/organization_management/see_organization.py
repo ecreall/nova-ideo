@@ -26,8 +26,8 @@ from novaideo import _
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""no member"""),
-    '1': _(u"""one member"""),
+    '0': _(u"""no Member"""),
+    '1': _(u"""one Member"""),
     '*': _(u"""${nember} members""")
 }
 

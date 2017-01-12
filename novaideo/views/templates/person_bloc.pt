@@ -39,7 +39,7 @@
       </span>
     </div>
     <div class="object-text">${object.presentation_text(200)}</div>
-    <div i18n:attributes="title" title="Preferences" tal:condition="keywords" class="keywords-result">
+    <div i18n:attributes="title" title="Topics of interest" tal:condition="keywords" class="keywords-result">
       <span class="glyphicon glyphicon-tags"></span> 
       <tal:loop repeat="k keywords">
             <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 

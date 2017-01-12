@@ -2,18 +2,18 @@
   <div tal:define="
   	    subject object.subjects[0];
   	    alert_kind getattr(object, 'alert_kind', '');">
-    <span i18n:translate="" tal:condition="alert_kind == 'moderation'">Les modérateurs ont statué sur cette contribution.</span>
+    <span i18n:translate="" tal:condition="alert_kind == 'moderation'">The moderators have decided on this contribution.</span>
     <span i18n:translate="" tal:condition="alert_kind == 'new_report'">
-      Une nouvelle signalisation vient d'être ajoutée.
+      A new content has been reported as potentially offensive.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_restor'">
-      La contribution ${subject.get_title()} a été restorée.
+      The contribution <span i18n:name="dynamic" >${subject.get_title()}</span> has been restored.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_censor'">
-      La contribution ${subject.get_title()} a été censurée.
+      The contribution <span i18n:name="dynamic" >${subject.get_title()}</span> has been censored.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_closed'">
-      Le groupe de travail de cette proposition n'est plus actif depuis quelques cycles de plus d'une semaine. Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant ouverte à un groupe de travail.
+      The Woking Group on this Proposal has been inactive for several cycles, each lasting more than one week. For this reason, the Group has been dissolved, and the Proposal is back to the state "Open to a working group".
     </span>
   </div>
 </div>

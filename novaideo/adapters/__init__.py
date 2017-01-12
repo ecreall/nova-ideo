@@ -26,10 +26,10 @@ EXTRACTION_ATTR = {
     'keywords': {'title': _('Keywords'), 'order': 5},
     'description': {'title': _('Description'), 'order': 6},
     'organization': {'title': _('Organization'), 'order': 7},
-    'created_at': {'title': _('Created at'), 'order': 8},
-    'modified_at': {'title': _('Modified at'), 'order': 9},
-    'examined_at': {'title': _('Examined at'), 'order': 10},
-    'published_at': {'title': _('Published at'), 'order': 11},
+    'created_at': {'title': _('Created on'), 'order': 8},
+    'modified_at': {'title': _('Modified on'), 'order': 9},
+    'examined_at': {'title': _('Examined on'), 'order': 10},
+    'published_at': {'title': _('Published on'), 'order': 11},
     'content': {'title': _('Content'), 'order': 12},
 }
 
