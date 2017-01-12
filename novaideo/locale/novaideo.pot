@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-01-10 16:07+0100\n"
+"POT-Creation-Date: 2017-01-12 17:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,31 +61,31 @@ msgid "Default view"
 msgstr ""
 
 #: ./novaideo/__init__.py:66
-msgid "Bloc view"
+msgid "Block view"
 msgstr ""
 
 #: ./novaideo/__init__.py:44
-msgid "À caractère sexuel explicite"
+msgid "Sexually explicit"
 msgstr ""
 
 #: ./novaideo/__init__.py:45
-msgid "Le contenu est à caractère sexuel explicite."
+msgid "The content is sexually explicit."
 msgstr ""
 
 #: ./novaideo/__init__.py:49
-msgid "Violent ou dangereux"
+msgid "Violent or dangerous"
 msgstr ""
 
 #: ./novaideo/__init__.py:50
-msgid "Le contenu est violent ou dangereux."
+msgid "The content is violent or dangerous."
 msgstr ""
 
 #: ./novaideo/__init__.py:54
-msgid "Incitation à la haine, harcèlement ou intimidation"
+msgid "Harrassment, intimidation or invitation to hate"
 msgstr ""
 
 #: ./novaideo/__init__.py:55
-msgid "Le contenu incite à la haine, harcèlement ou intimidation."
+msgid "The content harrasses, intimidates or invites to hate."
 msgstr ""
 
 #: ./novaideo/__init__.py:59 ./novaideo/content/novaideo_application.py:257
@@ -93,15 +93,15 @@ msgid "Other"
 msgstr ""
 
 #: ./novaideo/__init__.py:60
-msgid "Une autre raison ? Veuillez détailler la raison de votre signalement."
+msgid "Another reason? Please detail why you signal this content"
 msgstr ""
 
 #: ./novaideo/__init__.py:699
-msgid "Legal notices"
+msgid "Legal notice"
 msgstr ""
 
 #: ./novaideo/__init__.py:700
-msgid "The legal notices"
+msgid "The legal notice"
 msgstr ""
 
 #: ./novaideo/__init__.py:704
@@ -162,11 +162,11 @@ msgid "One value must be entered."
 msgstr ""
 
 #: ./novaideo/core_schema.py:107
-msgid "Surtax field must be filled in."
+msgid "Surcharge field must be filled in."
 msgstr ""
 
 #: ./novaideo/steps.py:145
-msgid "No more Information."
+msgid "Information unvailable."
 msgstr ""
 
 #: ./novaideo/role.py:111
@@ -590,11 +590,11 @@ msgid "You are now opposed to the content ${context}."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:471
-msgid "Le profil a bien été désactivé."
+msgid "The profile has been disactivated."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:670
-msgid "The commet has been transformed into an idea."
+msgid "The comment has been transformed into an idea."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:727
@@ -661,23 +661,23 @@ msgid "The registration has been suppressed."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:960
-msgid "The center of interest has been modified."
+msgid "The centre of interest has been modified."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:967
-msgid "The center of interest has been suppressed."
+msgid "The centre of interest has been suppressed."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:977
-msgid "The center of interest has been published."
+msgid "The centre of interest has been published."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:985
-msgid "The center of interest has been withdrawn."
+msgid "The centre of interest has been withdrawn."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:993
-msgid "The sub-center of interest has been added."
+msgid "The sub-centre of interest has been added."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:1003
@@ -809,7 +809,7 @@ msgstr ""
 #: ./novaideo/utilities/pseudo_react.py:1419
 #: ./novaideo/views/novaideo_view_manager/see_my_supports.py:36
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:77
-msgid "My supports"
+msgid "My evaluations"
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:1455
@@ -882,6 +882,7 @@ msgstr ""
 #: ./novaideo/views/novaideo_view_manager/templates/search_result.pt:21
 #: ./novaideo/views/novaideo_view_manager/templates/search_result_blocs.pt:25
 #: ./novaideo/views/novaideo_view_manager/templates/home.pt:24
+#: ./novaideo/content/processes/invitation_management/behaviors.py:183
 #: ./novaideo/content/processes/admin_process/definition.py:45
 #: ./novaideo/content/processes/admin_process/definition.py:49
 #: ./novaideo/content/processes/admin_process/definition.py:53
@@ -891,7 +892,7 @@ msgstr ""
 
 #: ./novaideo/views/panels.py:650
 #: ./novaideo/views/templates/panels/more_contents.pt:2
-msgid "My interests"
+msgid "My topics of interest"
 msgstr ""
 
 #: ./novaideo/views/advertising_panels.py:97
@@ -927,7 +928,7 @@ msgstr ""
 #: ./novaideo/views/advertising_panels.py:61
 #, python-format
 msgid ""
-"The flash animation size is not valid: the allowed size is ${width} x "
+"The Flash animation size is not valid: the allowed size is ${width} x "
 "${height} px."
 msgstr ""
 
@@ -971,7 +972,7 @@ msgid "Create a document"
 msgstr ""
 
 #: ./novaideo/views/novaideo_file_management/private_file.py:23
-msgid "Alert for private"
+msgid "Alert: content privatised"
 msgstr ""
 
 #: ./novaideo/views/novaideo_file_management/private_file.py:37
@@ -1051,7 +1052,7 @@ msgstr ""
 
 #: ./novaideo/views/newsletter_management/redact_newsletter.py:40
 #: ./novaideo/views/newsletter_management/redact_newsletter.py:57
-msgid "Redact a newsletter"
+msgid "Write a newsletter"
 msgstr ""
 
 #: ./novaideo/views/newsletter_management/subscribe_newsletter.py:82
@@ -1133,7 +1134,15 @@ msgstr ""
 #: ./novaideo/views/smart_folder_management/templates/alert_smartfolder_publish.pt:1
 #: ./novaideo/views/organization_management/templates/alert_remove.pt:1
 #: ./novaideo/views/organization_management/templates/alert_withdraw.pt:1
-msgid "En cliquant sur Continuer..."
+msgid "By clicking on « Continue »..."
+msgstr ""
+
+#: ./novaideo/views/newsletter_management/templates/see_newsletter.pt:16
+msgid ""
+"Selon la configuration de la newsletter, la désinscription des abonnées n'est"
+" pas autorisée. Afin de garder la cohérence du contenu et pour pouvoir "
+"envoyer la newsletter, il faut supprimer la variable \"unsubscribeurl\" du "
+"contenu de la newsletter."
 msgstr ""
 
 #: ./novaideo/views/newsletter_management/templates/see_newsletter.pt:21
@@ -1157,18 +1166,6 @@ msgstr ""
 #: ./novaideo/views/newsletter_management/templates/see_newsletter.pt:38
 #: ./novaideo/views/templates/newsletter_result.pt:35
 msgid "days"
-msgstr ""
-
-#: ./novaideo/views/newsletter_management/templates/see_newsletter.pt:36
-#: ./novaideo/views/newsletter_management/templates/see_newsletter.pt:45
-#: ./novaideo/views/newsletter_management/templates/see_newsletter.pt:54
-#: ./novaideo/views/templates/newsletter_result.pt:33
-#: ./novaideo/views/templates/newsletter_result.pt:42
-#: ./novaideo/views/templates/newsletter_result.pt:51
-#: ./novaideo/views/templates/alerts/nia_content_result.pt:7
-#: ./novaideo/views/templates/alerts/nia_content_result.pt:21
-#: ./novaideo/views/novaideo_view_manager/templates/search_textinput.pt:41
-msgid "<dynamic element>"
 msgstr ""
 
 #: ./novaideo/views/newsletter_management/templates/see_newsletter.pt:43
@@ -1285,8 +1282,8 @@ msgstr ""
 #: ./novaideo/content/processes/user_management/behaviors.py:641
 #: ./novaideo/content/processes/proposal_management/definition.py:398
 #: ./novaideo/content/processes/proposal_management/definition.py:399
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1468
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1834
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1486
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1852
 #: ./novaideo/content/processes/advertising_management/definition.py:55
 #: ./novaideo/content/processes/advertising_management/definition.py:56
 #: ./novaideo/content/processes/advertising_management/behaviors.py:53
@@ -1367,7 +1364,7 @@ msgid "Compare the versions"
 msgstr ""
 
 #: ./novaideo/views/idea_management/compare_idea.py:102
-msgid "Last versions"
+msgid "Previous versions"
 msgstr ""
 
 #: ./novaideo/views/idea_management/compare_idea.py:103
@@ -1375,6 +1372,8 @@ msgid "Select the previous version with which to compare"
 msgstr ""
 
 #: ./novaideo/views/idea_management/recuperate_idea.py:23
+#: ./novaideo/views/reports_management/restor.py:37
+#: ./novaideo/views/reports_management/restor.py:57
 #: ./novaideo/content/processes/idea_management/definition.py:110
 msgid "Restore"
 msgstr ""
@@ -1535,7 +1534,7 @@ msgid "New comment"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:52
-msgid "There is a"
+msgid "For"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:53
@@ -1698,7 +1697,7 @@ msgid ""
 " will be the purpose of an a priori moderation. The randomly selected "
 "moderators can decide either to publish it, or to stop its process and to "
 "store it in the archive. If your idea is published, you won't be able to "
-"further edit it. You will only be able to edit a copy of it, which requres "
+"further edit it. You will only be able to edit a copy of it, which requires "
 "that you have duplicated it beforehand."
 msgstr ""
 
@@ -1997,7 +1996,7 @@ msgid "${sort['description'] or sort['title']}"
 msgstr ""
 
 #: ./novaideo/views/filter/templates/sort.pt:8
-msgid "Invert sort"
+msgid "Invert sorting order"
 msgstr ""
 
 #: ./novaideo/views/user_management/deactivate.py:37
@@ -2221,27 +2220,19 @@ msgid "return to where you were"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/forbidden.pt:21
-msgid "Log in as Another User"
+msgid "Log in as another User"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_accept_registration.pt:4
-msgid "Please note that the address of this registration is not reliable!"
+msgid "Please beware that the address of this registration is not reliable!"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_accept_registration.pt:7
 msgid ""
-"En cliquant sur \"Continuer\" vous acceptez l'inscription de l'utilisateur. "
-"Un email lui sera envoyé lui permettant de confirmer son inscription. Une "
-"fois l'inscription confirmée l'utilisateur devient un membre de la "
-"plateforme. Ce qui lui permettra d'accéder aux différents contenus de la "
-"plateforme."
-msgstr ""
-
-#: ./novaideo/views/user_management/templates/alert_accept_registration.pt:2
-#: ./novaideo/views/templates/live_search_result.pt:13
-#: ./novaideo/views/templates/panels/contextual_help_messages/advanced_search.pt:5
-#: ./novaideo/views/novaideo_view_manager/templates/search_textinput.pt:42
-msgid "<dynamic element> <dynamic element>"
+"By clicking on « Continue »,you accept the registration of the user. An email"
+" will be sent to him/her so that s/he can confirm his/her registration. Once "
+"the registration is confirmed, the user becomes a Member of the platform, and"
+" can access all its content and perform all actions allowed to a Member."
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_remind_registration.pt:1
@@ -2262,7 +2253,7 @@ msgid "Member since"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_remove_registration.pt:1
-msgid "By clicking on Continue, the registration will be removed."
+msgid "By clicking on « Continue », the registration will be cancelled."
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_reset.pt:3
@@ -2283,12 +2274,12 @@ msgstr ""
 
 #: ./novaideo/views/user_management/templates/see_registration.pt:26
 #: ./novaideo/views/templates/preregistration_result.pt:26
-msgid "Subscribed the"
+msgid "Registered on"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/see_registration.pt:28
 #: ./novaideo/views/templates/preregistration_result.pt:28
-msgid "Expire the"
+msgid "Expires on"
 msgstr ""
 
 #: ./novaideo/views/ballot_processes/rangevoting/vote.py:40
@@ -2338,6 +2329,8 @@ msgstr ""
 #: ./novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:11
 #: ./novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:11
 #: ./novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:10
+#: ./novaideo/views/templates/panels/step3_3.pt:40
+#: ./novaideo/views/templates/panels/step3_2.pt:40
 msgid "Participants in the ballot"
 msgstr ""
 
@@ -2361,7 +2354,7 @@ msgstr ""
 #: ./novaideo/views/ballot_processes/referendum/templates/referendum_vote.pt:27
 #: ./novaideo/views/ballot_processes/fptp/templates/fptp_vote.pt:27
 #: ./novaideo/views/ballot_processes/majorityjudgment/templates/vote_for_amendments.pt:42
-msgid "The ballot begins on"
+msgid "The ballot starts on"
 msgstr ""
 
 #: ./novaideo/views/ballot_processes/rangevoting/templates/rangevoting_vote.pt:27
@@ -2432,11 +2425,6 @@ msgstr ""
 msgid "Alert for restoring"
 msgstr ""
 
-#: ./novaideo/views/reports_management/restor.py:37
-#: ./novaideo/views/reports_management/restor.py:57
-msgid "Restor"
-msgstr ""
-
 #: ./novaideo/views/reports_management/censor.py:26
 msgid "Alert for censoring"
 msgstr ""
@@ -2483,11 +2471,11 @@ msgstr ""
 
 #: ./novaideo/views/reports_management/see_reports.py:77
 #, python-format
-msgid "Old reports (${nb})"
+msgid "Previous reports (${nb})"
 msgstr ""
 
 #: ./novaideo/views/reports_management/see_reports.py:81
-msgid "No old reports"
+msgid "No previous report"
 msgstr ""
 
 #: ./novaideo/views/reports_management/see_reports.py:86
@@ -2496,7 +2484,7 @@ msgid "New reports (${nb})"
 msgstr ""
 
 #: ./novaideo/views/reports_management/see_reports.py:90
-msgid "No new reports"
+msgid "No new report"
 msgstr ""
 
 #: ./novaideo/views/reports_management/ignore.py:22
@@ -2510,17 +2498,23 @@ msgstr ""
 
 #: ./novaideo/views/reports_management/templates/alert_report.pt:2
 msgid ""
-"En cliquant sur « Continuer », le contenu sera soumis à modération. Vous "
-"devez expliquer cette décision, afin que les modérateurs comprennent le "
-"pourquoi de votre signalement."
+"By clicking on « Continue », the content will be submitted to moderation. You"
+" must explain your action, so that the Moderators understand the reason why "
+"you reported this content as inappropriate."
 msgstr ""
 
 #: ./novaideo/views/reports_management/templates/alert_restor.pt:2
+msgid "By clicking on « Continue », the content will be restored."
+msgstr ""
+
 #: ./novaideo/views/reports_management/templates/alert_censor.pt:2
-#: ./novaideo/views/reports_management/templates/alert_ignore.pt:2
 msgid ""
-"En cliquant sur « Continuer », le contenu sera censuré. Vous devez expliquer "
-"cette décision."
+"By clicking on « Continue », the content will be censored. You must explain "
+"your decision."
+msgstr ""
+
+#: ./novaideo/views/reports_management/templates/alert_ignore.pt:2
+msgid "By clicking on « Continue », the reports will be ignored."
 msgstr ""
 
 #: ./novaideo/views/system_process/deactivate_users.py:25
@@ -2590,7 +2584,6 @@ msgid "Improve the proposal or submit it as is"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/publish_proposal.py:103
-#: ./novaideo/content/processes/proposal_management/__init__.py:79
 #: ./novaideo/content/processes/proposal_management/definition.py:206
 msgid "Work mode"
 msgstr ""
@@ -2614,7 +2607,7 @@ msgid "Transmit the proposal to others"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/compare_proposal.py:29
-msgid "Compare proposal form"
+msgid "Form to compare the proposal"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/resign.py:35
@@ -2774,7 +2767,8 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/delete_proposal.py:54
 #: ./novaideo/views/proposal_management/delete_proposal.py:81
-msgid "Proposal deletion"
+#: ./novaideo/content/processes/proposal_management/definition.py:309
+msgid "Delete the proposal"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/publish_as_proposal.py:68
@@ -2796,7 +2790,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/duplicate_proposal.py:24
 #: ./novaideo/content/processes/idea_management/definition.py:78
 #: ./novaideo/content/processes/proposal_management/definition.py:318
-#: ./novaideo/content/processes/proposal_management/behaviors.py:787
+#: ./novaideo/content/processes/proposal_management/behaviors.py:805
 #: ./novaideo/content/processes/amendment_management/definition.py:57
 msgid "Duplicate"
 msgstr ""
@@ -2832,7 +2826,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/alert.py:23
 #: ./novaideo/content/processes/proposal_management/definition.py:487
 #: ./novaideo/content/processes/proposal_management/definition.py:488
-msgid "Alert the end of cycle"
+msgid "Alert for the end of an improvement cycle"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/attach_files.py:28
@@ -2840,13 +2834,8 @@ msgid "Attach files to the proposal"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/remove_file.py:36
-#: ./novaideo/content/processes/proposal_management/definition.py:536
-#: ./novaideo/content/processes/proposal_management/definition.py:537
-msgid "Remove the file"
-msgstr ""
-
 #: ./novaideo/views/proposal_management/remove_file.py:57
-msgid "File deletion"
+msgid "Delete file"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/archive_proposal_moderation.py:74
@@ -2883,72 +2872,70 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:3
 msgid ""
-"En cliquant sur « Continuer », votre proposition sera soumise pour "
-"publication et fera l'objet d'une modération préalable. Les modérateurs "
-"peuvent décider soit de la publier, soit de l'archiver."
+"By clicking on « Continue », your proposal will be submitted to moderation "
+"before publication. The moderators can decide either to publish it, or to "
+"archive it."
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:7
+#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:8
 msgid ""
-"Pour qu'une proposition soit publiée, l'ensemble des idées liées doivent être"
-" préalablement publiées. Vous pouvez les modifier en cliquant sur celles qui "
-"sont à retravailler. Une fois la proposition est acceptée par les "
-"modérateurs, ces idées seront publiées automatiquement."
+"For a proposal to be published, all related ideas must have been published "
+"beforehand. You can modify these ideas by clicking on those that are to be "
+"re-worked upon. Once the proposal has been accepted by the moderators, these "
+"ideas will automatically be published."
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:16
+#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:17
 msgid ""
-"Une fois votre proposition acceptée et publiée par les modérateurs, vous "
-"pouvez décider :"
-msgstr ""
-
-#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:18
-#: ./novaideo/views/proposal_management/templates/alert_publish_proposal.pt:16
-msgid ""
-"soit de la soumettre à appréciation en l'état à l'ensemble des utilisateurs "
-"sans l'améliorer,"
+"As soon as your proposal has been accepted and published by the moderators, "
+"you can decide:"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:19
+#: ./novaideo/views/proposal_management/templates/alert_publish_proposal.pt:16
+msgid "either to submit it as it is to all Members, without improving it,"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:20
 #: ./novaideo/views/proposal_management/templates/alert_publish_proposal.pt:17
 msgid ""
-"soit l'améliorer d'abord avec d'autres utilisateurs dans un groupe de travail"
-" puis la soumettre à appréciation à l'ensemble des utilisateurs."
+"or to first improve it with other Members in a Working Group, and then submit"
+" it to the evaluation of all Members."
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:22
+#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:23
 #: ./novaideo/views/proposal_management/templates/alert_publish_proposal.pt:20
 msgid ""
-"Si vous décidez de l'améliorer avec d'autres utilisateurs, ce qui est le "
-"choix proposé par défaut, vous devez indiquer la durée du cycle "
-"d'amélioration, celle-ci est fixée par défaut à une semaine."
+"If you choose to improve it with other Members, which is the default choice, "
+"you must specify the duration of the improvement cycle. The default value for"
+" this duration is one week."
 msgstr ""
 
-#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:30
+#: ./novaideo/views/proposal_management/templates/alert_proposal_submission.pt:31
 #: ./novaideo/views/proposal_management/templates/alert_publish_proposal.pt:28
 msgid ""
-"Pour améliorer la proposition, il faut que le groupe de travail atteigne au "
-"moins le nombre minimum de participants indiqué pour chaque mode de travail. "
-"Si le nombre n'est pas atteint, le groupe de travail reste inactif et la "
-"proposition ne peut être améliorée."
+"In order to improve the proposal, the Working Group must gather at least the "
+"quorum, i.e. the minimum number of Participants indicated for each working "
+"mode. If this quorum is not reached, the Working Group remains inactive and "
+"the proposal cannot be improved."
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/alert_resign.pt:3
 msgid ""
-"Attention, vous êtes sur le point de quitter le groupe de travail. Êtes-vous "
-"sûre de vouloir quitter le groupe de travail ?"
+"Warning! You are about to quit the Working Group. Are you sure that you want "
+"to quit the Working Group?"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:12
 msgid ""
-"Cette proposition est publiée et ouverte à un groupe de travail, elle est "
-"visible par l'ensemble des utilisateurs."
+"This Proposal is published. It is visible to all Members. The related Working"
+" Group is inactive, waiting for the quorum to be reached."
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:14
 msgid ""
-"Pour l'améliorer, il faut que le groupe de travail atteigne au moins "
-"${participants_mini} participant(s)."
+"To improve it, the Working Group must gather at least ${participants_mini} "
+"participants."
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:21
@@ -2964,25 +2951,24 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:24
 msgid ""
-"Pour que vous puissiez publier votre proposition, il faut que l'ensemble de "
-"ses idées liées soit préalablement modéré favorablement par un Modérateur."
+"In order for you to publish you proposal, all ideas related to it must have "
+"been previously approved by the Moderation."
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:26
 msgid ""
-"Pour que vous puissiez soumettre votre proposition, il faut que l'ensemble de"
-" ses idées liées soit préalablement modéré favorablement par un Modérateur."
+"In order for you to submit you proposal, all ideas related to it must have "
+"been previously approved by the Moderation."
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:29
 msgid ""
-"Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont pas"
-" été modérée favorablement."
+"You can access below the ideas related to the proposal that have not been "
+"approved by the Moderation."
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:31
-msgid ""
-"Ces idées doivent être ensuite examinées favorablement par un Examinateur."
+msgid "These ideas must afterwards be favourably examined by an Examiner."
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:40
@@ -3108,10 +3094,9 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/alert_proposal_archive.pt:3
 msgid ""
-"En cliquant sur « Continuer », la proposition sera archivée. Vous devez "
-"expliquer cette décision, afin que l'auteur de la proposition comprenne "
-"pourquoi sa proposition n'est pas publiée. Un courriel lui sera envoyé avec "
-"votre explication."
+"By clicking on « Continue », the proposal will be archived. You must explain "
+"your decision, so that the author understands why his/her proposal is not "
+"published. An e-mail will be sent to him/her with your explanation."
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/alert_publish_proposal.pt:5
@@ -3122,11 +3107,11 @@ msgid ""
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/alert_publish_proposal.pt:14
-msgid "Une fois votre proposition publiée, vous pouvez décider :"
+msgid "As soon as your proposal is published, you can decide:"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/templates/alert_proposal_publish.pt:3
-msgid "En cliquant sur « Continuer », la proposition sera publiée."
+msgid "By clicking on « Continue », the proposal will be published."
 msgstr ""
 
 #: ./novaideo/views/advertising_management/archive_advertising.py:50
@@ -3206,14 +3191,14 @@ msgid "Positions"
 msgstr ""
 
 #: ./novaideo/views/templates/comment_result.pt:53
-msgid "View in discussion"
+msgid "View in the discussion"
 msgstr ""
 
 #: ./novaideo/views/templates/amendment_bloc.pt:21
 #: ./novaideo/views/templates/amendment_result.pt:21
 #: ./novaideo/views/amendment_management/templates/see_amendment.pt:53
 #: ./novaideo/views/amendment_management/templates/description_amendments.pt:15
-msgid "Amended version by"
+msgid "Version amended by"
 msgstr ""
 
 #: ./novaideo/views/templates/amendment_bloc.pt:48
@@ -3260,8 +3245,6 @@ msgstr ""
 msgid "All results"
 msgstr ""
 
-#. Used in sentence: "<dynamic element> <dynamic element>"
-#. 
 #: ./novaideo/views/templates/live_search_result.pt:13
 #: ./novaideo/views/novaideo_view_manager/search.py:68
 #: ./novaideo/views/novaideo_view_manager/templates/search_textinput.pt:42
@@ -3283,6 +3266,8 @@ msgid "Intention"
 msgstr ""
 
 #: ./novaideo/views/templates/textarea_comment.pt:11
+#: ./novaideo/content/processes/proposal_management/definition.py:402
+#: ./novaideo/content/processes/proposal_management/definition.py:403
 msgid "Attach files"
 msgstr ""
 
@@ -3293,14 +3278,14 @@ msgstr ""
 
 #: ./novaideo/views/templates/order_smart_folders.pt:1
 msgid ""
-"Vous pouvez ordonner les dossier dynamiques en cliquant sur le bouton suivant"
-" <dynamic element>"
+"You can order the topics of interest by clicking on the following button "
+"${dynamic}"
 msgstr ""
 
 #: ./novaideo/views/templates/person_bloc.pt:42
 #: ./novaideo/views/templates/person_result.pt:42
 #: ./novaideo/content/person.py:186
-msgid "Preferences"
+msgid "Topics of interest"
 msgstr ""
 
 #: ./novaideo/views/templates/ajax_form.pt:42
@@ -3318,11 +3303,11 @@ msgstr ""
 #: ./novaideo/views/templates/panels/step3_1.pt:7
 #: ./novaideo/views/templates/panels/step3_3.pt:7
 #: ./novaideo/views/templates/panels/step3_2.pt:7
-msgid "Working group mode"
+msgid "Working mode of the group"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/step3_0.pt:13
-msgid "Composition of the working"
+msgid "Composition of the working group"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/step3_0.pt:16
@@ -3414,17 +3399,12 @@ msgstr ""
 msgid "End of ballot in"
 msgstr ""
 
-#: ./novaideo/views/templates/panels/step3_3.pt:40
-#: ./novaideo/views/templates/panels/step3_2.pt:40
-msgid "Electors"
-msgstr ""
-
 #: ./novaideo/views/templates/panels/navbar_view.pt:15
 msgid "Activate the contextual help"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/step2_0.pt:3
-msgid "other proposal(s) refer to related idea(s)"
+msgid "other proposal(s) referring to the related idea(s)"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/deadline.pt:10
@@ -3452,7 +3432,7 @@ msgid "Improvement of the proposal"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/steps.pt:70
-msgid "Support of the proposal"
+msgid "Evaluation of the proposal"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/steps.pt:78
@@ -3516,8 +3496,8 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:7
 msgid ""
-"The portions of text in green and in red are those that were spectively added"
-" to and removed from the current version of the idea."
+"The portions of text in green and in red are those that were respectively "
+"added to and removed from the current version of the idea."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/idea_sub_helps.pt:10
@@ -3550,7 +3530,7 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/create_idea.pt:2
 msgid ""
-"To note an idea, the only things you need to do are to write a text and to "
+"To note an idea, the only thing you need to do is to write a text and to "
 "define at least one keyword."
 msgstr ""
 
@@ -3625,7 +3605,7 @@ msgid ""
 "Any member may transmit a published proposal to any other member of the "
 "platform. S/he may also transmit it to any external person by providing the "
 "person's e-mail address. This person will have access to the platform, but "
-"will be unable to connect \"to it as long as s/he is not a member."
+"will be unable to connect to it as long as s/he is not a member."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_sub_helps.pt:16
@@ -3713,8 +3693,8 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/amendment_draft_explanation.pt:8
 msgid ""
-"If you wish to split an improvement in several parts, you can integrate \" "
-"\"additional improvements to the text."
+"If you wish to split an improvement in several parts, you can integrate "
+"additional improvements to the text."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/transform_idea.pt:2
@@ -3830,7 +3810,7 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_workspace_addfiles.pt:3
 msgid ""
-"These files will be accessible to the participants in the work group only."
+"These files will be accessible only to the participants in the working group."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_workspace_index.pt:2
@@ -3840,7 +3820,7 @@ msgid ""
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_workspace_index.pt:3
-msgid "I you wish to add new ones, you just need to click on \"Add files\"."
+msgid "If you wish to add new ones, you just need to click on \"Add files\"."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_draft.pt:5
@@ -3977,7 +3957,7 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_submitted_support.pt:2
 msgid ""
 "As a member of the platform, you can support or oppose a proposal that has "
-"been submitted for appraisal."
+"been submitted for evaluation."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_submitted_support.pt:5
@@ -3989,15 +3969,15 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_submitted_support.pt:8
 msgid ""
 "You have a total of seven tokens that you are free to allocate to and to take"
-" away from any published idea or any proposal submitted to appraisal. If you "
-"cannot support or oppose an idea or a proposal, this means that you have used"
-" all your seven tokens."
+" away from any published idea or any proposal submitted to evaluation. If you"
+" cannot support or oppose an idea or a proposal, this means that you have "
+"used all your seven tokens."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_submitted_support.pt:11
 msgid ""
 "You also have additional tokens for the proposals for which you were a member"
-" in the working group that voted to submit the proposal to the appraisal of "
+" in the working group that voted to submit the proposal to the evaluation of "
 "the other members of the platform. These additiona tokens can only be used "
 "for these proposals."
 msgstr ""
@@ -4014,8 +3994,8 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/idea_submitted_owner.pt:9
 msgid ""
-"Whatever the decision taken, an e-mail notification is sent to the author of "
-"the idea."
+"Whatever the decision taken, an notification is sent to the author of the "
+"idea."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/idea_submitted_owner.pt:12
@@ -4056,8 +4036,8 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/duplicate_idea.pt:11
 msgid ""
-"In order to be moderated, the duplicated copy of an idea must be different "
-"from the original idea."
+"In order to be submmitted to moderation, the duplicated copy of an idea must "
+"be different from the original idea."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:3
@@ -4081,8 +4061,8 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:15
 msgid ""
-"You will find under \"My appraisals\" the published ideas and the proposals "
-"submitted for appraisal to which you have allocated a support token or an "
+"You will find under \"My evaluations\" the published ideas and the proposals "
+"submitted for evaluation to which you have allocated a support token or an "
 "opposition token."
 msgstr ""
 
@@ -4090,7 +4070,7 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:37
 msgid ""
 "You have a total of seven tokens that you are free to allocate to and to take"
-" away from any published idea or any proposal submitted to appraisal. Each "
+" away from any published idea or any proposal submitted to evaluation. Each "
 "token can be used to support an idea or a proposal, or to oppose it. To "
 "support or oppose an idea or proposal, you must first click on it."
 msgstr ""
@@ -4098,37 +4078,37 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:21
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:40
 msgid ""
-"In addition, you may also support or oppose proposals submitted for appraisal"
-" in which you participated in the working group. In this case, these special "
-"tokens are not counted against your initial reserve of seven appraisal "
-"tokens. Once allocated, these special tokens cannot be re-used for other "
-"proposals."
+"In addition, you may also support or oppose proposals submitted for "
+"evaluation in which you participated in the working group. In this case, "
+"these special tokens are not counted against your initial reserve of seven "
+"evaluation tokens. Once allocated, these special tokens cannot be re-used for"
+" other proposals."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:26
 msgid ""
-"You will find under the tab \"My appraisals\" the published ideas that you "
+"You will find under the tab \"My evaluations\" the published ideas that you "
 "have supported or that you have opposed."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:29
 msgid ""
-"You have a total of seven appraisal tokens that you are free to allocate to "
+"You have a total of seven evaluation tokens that you are free to allocate to "
 "and to take away from any published idea or any proposal submitted to "
-"appraisal. Each token can be used to support an idea or a proposal, or to "
+"evaluation. Each token can be used to support an idea or a proposal, or to "
 "oppose it. To support or oppose an idea or proposal, you must first click on "
 "it."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:34
 msgid ""
-"You will find under the tab \"My appraisals\" the proposals submitted for "
-"appraisal that you have supported or that you have opposed."
+"You will find under the tab \"My evaluations\" the proposals submitted for "
+"evaluation that you have supported or that you have opposed."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:47
 msgid ""
-"The pictogram <dynamic element> indicates the latest warnings that you have "
+"The pictogram ${dynamic} indicates the latest warnings that you have "
 "received."
 msgstr ""
 
@@ -4138,41 +4118,41 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:51
 msgid ""
-"lorsqu'une idée ou une proposition vient d'être publiée et que l'un des mots "
-"clés correspond à vos centres d'intérêt,"
+"When an idea or a proposal has just been published and one of its keywords "
+"matches your topics of interest,"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:52
 msgid ""
-"lorsqu'il se passe quelque chose sur vos idées ou les propositions auxquelles"
-" vous contribuez ou vous avez contribué,"
+"when something happens on your ideas or on the proposals to which you "
+"contribute or have contributed,"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:53
-msgid "lorsqu'un membre vous communique une idée ou une proposition,"
+msgid "when a member sends you an idea or a proposal,"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:54
-msgid "lorsqu'il y a une réponse à l'un de vos commentaires,"
+msgid "when there is an answer to one of your comments,"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/see_my.pt:55
 msgid ""
-"lorsqu'il se passe quelque chose sur une idée, une proposition, un membre que"
-" vous avez mis en favori."
+"when something happens on an idea, a proposal or a member that you have "
+"included in your favourites."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:3
 msgid ""
 "As a member connected to the platform, you can access your content, your "
-"working groups, your favourites and your appraisals, note an idea perform a "
+"working groups, your favourites and your evaluations, note an idea perform a "
 "search, see the registered members or intervene on ideas or proposals."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:6
 msgid ""
 "As a member connected to the platform, you can access your content, your "
-"working groups, and your favourites, note an idea perform a search, see the "
+"working groups, and your favourites, note an idea, perform a search, see the "
 "registered members or intervene on ideas or proposals."
 msgstr ""
 
@@ -4208,11 +4188,10 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:17
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:21
-#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:39
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:16
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:20
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:37
-msgid "or \"Being moderated\""
+msgid "or being examined"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:18
@@ -4226,7 +4205,7 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:25
 msgid ""
 "As a member connected to the platform, you can access your content, your "
-"favourites and your appraisals, note an idea, perform a search, see the "
+"favourites and your evaluations, note an idea, perform a search, see the "
 "registered members or intervene on ideas."
 msgstr ""
 
@@ -4240,6 +4219,10 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:31
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:30
 msgid "An idea is a short, spontaneous, personal note."
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:39
+msgid "or \"Being moderated\""
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:43
@@ -4348,7 +4331,8 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_open_to_a_working_group.pt:5
 msgid ""
 "This proposal is published and open to a working group. It is visible to all "
-"users."
+"users. The associated working group is inactive, waiting for the quorum to be"
+" reached."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/proposal_open_to_a_working_group.pt:7
@@ -4399,36 +4383,34 @@ msgid ""
 "by applying filters."
 msgstr ""
 
-#. Used in sentence: "<dynamic element> <dynamic element>"
 #: ./novaideo/views/templates/panels/contextual_help_messages/advanced_search.pt:6
 msgid "These filters may bear upon:"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/advanced_search.pt:8
 msgid ""
-"les métadonnées des contenus, c'est-à-dire les types de contenu de la "
-"plateforme (idée, personne), les mots clés, les états dans lesquels ces "
-"différents contenus peuvent se trouver,"
+"the meta-data of the contents, i.e. the types of content on the platform "
+"(idea, person) the kewords, the states in which these contents may be in,"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/advanced_search.pt:9
 msgid ""
-"les métadonnées des contenus, c'est-à-dire les types de contenu de la "
-"plateforme (idée, proposition, personne), les mots clés, les états dans "
-"lesquels ces différents contenus peuvent se trouver,"
+"the meta-data of the contents, i.e. the types of content on the platform "
+"(idea, proposal, person) the kewords, the states in which these contents may "
+"be in,"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/advanced_search.pt:10
 msgid ""
-"une période entre deux dates pendant laquelle les contenus ont été créés,"
+"a period of time between two dates, during which the contents were created,"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/advanced_search.pt:11
-msgid "les contributeurs, c'est-à-dire un ou des auteurs en particulier,"
+msgid "the contributors, i.e. one or several authors specifically,"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/advanced_search.pt:12
-msgid "un ou des textes en particulier présents dans les éléments trouvés."
+msgid "one or several texts present among the elements found."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/advanced_search.pt:16
@@ -4528,9 +4510,9 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/amendment_prepare.pt:6
 msgid ""
 "As a default, if an explanation is shared by all improvements that are part "
-"of an amendment is taken over as the explanation for the amendment. If the "
-"explanation of an amendment is modified, the explanations of the attached "
-"improvements are not changed."
+"of an amendment, it is taken over as the explanation for the amendment. If "
+"the explanation of an amendment is modified, the explanations of the attached"
+" improvements are not changed."
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/amendment_prepare.pt:8
@@ -4586,111 +4568,108 @@ msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:5
 msgid ""
-"Le groupe de travail a voté pour la poursuite de l'amélioration de cette "
-"proposition."
+"The Working Group has voted to continue the improvement of this proposal."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:8
 msgid ""
-"Le groupe de travail a voté pour soumettre cette proposition en l'état aux "
-"membres de la plateforme."
+"The Working Group has voted to submit the proposal as it is to the evaluation"
+" of the other Members of the platform."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:12
 msgid ""
-"Le cycle d'amélioration de cette proposition est terminé, vous devez voter si"
-" vous voulez continuer à l'améliorer ou la soumettre en l'état aux membres de"
-" la plateforme."
+"The improvement cycle of this proposal is finished. You now must vote on "
+"whether you want to continue improving it, or to submit it as it is to the "
+"evaluation of the other other Members of the platform."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:16
 msgid ""
-"Le cycle d'amélioration de cette proposition est terminé, vous devez voter "
-"sur les amendements soumis."
+"The improvement cycle of this proposal is finished. You now must vote on the "
+"amendments that were submitted."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:20
 msgid ""
-"Le cycle d'amélioration pour cette proposition touche pratiquement à sa fin. "
-"Vous pouvez encore y apporter des améliorations, avant que le groupe de "
-"travail vote pour soumettre la proposition en l'état ou pour recommencer un "
-"nouveau cycle d'amélioration."
+"The improvement cycle for this proposal draws to its end. You can still bring"
+" improvements to it, before the Working Group decides on whether to submit "
+"the proposal as it is or to start a new improvement cycle."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:24
-msgid "Des amendments pour cette proposition viennent d'être ajoutés."
+msgid "New amendments for this proposal have just been added."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:26
 msgid ""
-"Le cycle d'amélioration associé à cette proposition a fini sans proposition "
-"d'amendements."
+"The improvement cycle related to this proposal has ended with no new "
+"amendment."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:28
 msgid ""
-"Le résultat sur les votes sur les amendements associés à cette proposition a "
-"été calculé."
+"The result of the votes on the amendments related to this proposal has been "
+"computed."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:30
 msgid ""
-"Cette proposition a fait l'objet de suggestions d'amélioration et est à "
-"relire."
+"This proposal has received improvement suggestions, and must be re-read."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:32
-msgid "Une personne a rejoint le groupe de travail lié à cette proposition."
+msgid "One new person has joined the Working Group related to this proposal."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:34
 msgid ""
-"Une personne, faisant partie de la liste d'attente, a rejoint le groupe de "
-"travail lié à cette proposition."
+"One person, which was on the Waiting List, joined the Working Group related "
+"to this proposal."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:36
-msgid "Une personne a quitté le groupe de travail lié à cette proposition."
+msgid "One person left the Working Group related to this proposal."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:38
 msgid ""
-"Le groupe de travail lié à cette proposition est en dessous du nombre minimum"
-" des participants et ne peut plus améliorer la proposition tant qu'il n'a pas"
-" atteint de nouveau le nombre minimum des participants."
+"The Working Group related to this proposal is under the quorum, i.e. the "
+"minimum number of Participants necessary for it to be considered as active. "
+"This is why the Group cannot continue improving the proposal, as long as it "
+"has not again reached this quorum."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:40
 msgid ""
-"Le groupe de travail lié à cette proposition a atteint le nombre minimum des "
-"participants et peut améliorer la proposition."
+"The Workng Group related to this Proposal has reached the minimum number of "
+"Participants for it to be considered as active. It can improve the Proposal."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:42
-msgid ""
-"Des fichiers ont été ajoutés dans l'espace de travail lié à cette "
-"proposition."
+msgid "Files have been added to the work space related to this Proposal."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:44
 msgid ""
-"Le groupe de travail lié à cette proposition a atteint le nombre maximal des "
-"participants et ne peut plus accueillir de nouveaux participants, sauf s'il y"
-" en a un qui démissionne."
+"The Working Group related to this Proposal has reached its maximum number of "
+"Participants, and cannot include new ones. Additional candidates will be "
+"placed on the Waiting List."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:47
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:53
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:51
 msgid ""
-"Vous participez actuellement à ${request.root.participations_maxi} groupes de"
-" travail, vous ne pouvez plus rejoindre d'autres groupes de travail."
+"Currently, you participate in, or are a candidate to, ${dynamic} Working "
+"Groups, which is the maximum number allowed. Therefore, you cannot join any "
+"additional Working Group."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:50
 msgid ""
-"Les suggestions d'amélioration sur cette proposition ont été entièrement "
-"acceptées ou refusées, vous pouvez suggérer de nouvelles améliorations."
+"All improvement suggestions on this Proposal have been either accepted or "
+"refused. You can now suggest new improvements."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/alerts.pt:10
@@ -4698,315 +4677,335 @@ msgid "See all alerts"
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_admin_result.pt:6
-msgid "Une nouvelle inscription (${subject.title}) vient d'être ajoutée."
+msgid "A new registration (${dynamic}) has just been added."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/small_support_result.pt:12
 #: ./novaideo/views/templates/alerts/notification_support_result.pt:6
 #: ./novaideo/views/templates/alerts/support_result.pt:11
-msgid "Une personne a soutenu cette contribution"
+msgid "One Member supported this contribution"
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/small_support_result.pt:13
 #: ./novaideo/views/templates/alerts/notification_support_result.pt:7
 #: ./novaideo/views/templates/alerts/support_result.pt:12
-msgid "Une personne s'est opposé à cette contribution"
+msgid "One Member opposed this contribution"
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/small_support_result.pt:14
 #: ./novaideo/views/templates/alerts/notification_support_result.pt:8
 #: ./novaideo/views/templates/alerts/support_result.pt:13
-msgid "Une personne a retiré son jeton de cette contribution"
+msgid "One Member withdrew his/her token from this contribution"
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:9
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:9
 msgid ""
-"Le groupe de travail a voté pour la poursuite de l'amélioration de la "
-"proposition <dynamic element>."
+"The Working Group has voted to pursue the improvement of the Proposal "
+"${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:13
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:12
 msgid ""
-"Le groupe de travail a voté pour soumettre la proposition <dynamic element> "
-"en l'état aux membres de la plateforme."
+"The Working Group has voted to submit the Proposal ${dynamic} as is to the "
+"Members of the platform."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:17
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:16
 msgid ""
-"Le cycle d'amélioration de la proposition <dynamic element> est terminé, vous"
-" devez voter si vous voulez continuer à l'améliorer ou la soumettre en l'état"
-" aux membres de la plateforme."
+"The improvement cycle of the Proposal ${dynamic} is now closed. You must now "
+"vote to decide whether you want to continue improving it, or to submit it as "
+"is to the Members of the platform."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:21
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:20
 msgid ""
-"Le cycle d'amélioration de la proposition <dynamic element> est terminé, vous"
-" devez voter sur les amendements soumis."
+"The improvement cycle of the Proposal ${dynamic} is now closed. You must now "
+"vote on the amendments submitted."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:25
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:24
 msgid ""
-"Le cycle d'amélioration pour la proposition <dynamic element> touche "
-"pratiquement à sa fin. Vous pouvez encore y apporter des améliorations, avant"
-" que le groupe de travail vote pour soumettre la proposition en l'état ou "
-"pour recommencer un nouveau cycle d'amélioration."
+"The improvement cycle of the Proposal ${dynamic} is almost finished. You can "
+"still bring in improvements, before the Working Group votes to decide whether"
+" it wants to submit it as is or to start a new improvement cycle."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:29
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:28
-msgid ""
-"Des amendments pour la proposition <dynamic element> viennent d'être ajoutés."
+msgid "Amendments for the Proposal ${dynamic} have just been added."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:31
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:30
 msgid ""
-"Le cycle d'amélioration associé à la proposition <dynamic element> a fini "
-"sans proposition d'amendements."
+"The improvement cycle related to the Proposal ${dynamic} finished with no "
+"amendment."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:33
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:32
 msgid ""
-"Le résultat sur les votes sur les amendements associés à la proposition "
-"<dynamic element> a été calculé."
+"The result of the votes on the amendments associated to the Proposal "
+"${dynamic} has been computed."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:35
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:34
 msgid ""
-"La proposition <dynamic element> a fait l'objet de suggestions d'amélioration"
-" et est à relire."
+"The Proposal ${dynamic} has received suggestions for improvement and must be "
+"re-read."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:37
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:36
 msgid ""
-"Une personne a rejoint le groupe de travail lié à la proposition <dynamic "
-"element>."
+"One Member has joined the Working Group related to the Proposal ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:39
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:38
 msgid ""
-"Une personne, faisant partie de la liste d'attente, a rejoint le groupe de "
-"travail lié à la proposition <dynamic element>."
+"One Member, which was on the waiting list, joined the Working Group related "
+"to the Proposal ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:41
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:40
 msgid ""
-"Une personne a quitté le groupe de travail lié à la proposition<dynamic "
-"element>."
+"One Member has left the Working Group related to the Proposal ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:43
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:42
 msgid ""
-"Le groupe de travail lié à la proposition <dynamic element> est en dessous du"
-" nombre minimum des participants et ne peut plus améliorer la proposition "
-"tant qu'il n'a pas atteint de nouveau le nombre minimum des participants."
+"The Working Group related to the Proposal ${dynamic} is below the quorum, "
+"i.e. the minimum number of Participants required to be considered as active. "
+"It can therefore not continue improving the Proposal until is has reached "
+"again the quorum."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:45
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:44
 msgid ""
-"Le groupe de travail lié à la proposition <dynamic element> a atteint le "
-"nombre minimum des participants et peut améliorer la proposition."
+"The Working Group related to the Proposal ${dynamic} has reached the quorum, "
+"i.e. the minimum number of Participants required to be considered as active. "
+"It can now improve the Proposal."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:47
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:46
-msgid ""
-"Des fichiers ont été ajoutés dans l'espace de travail lié à la proposition "
-"<dynamic element>."
+msgid "Files were added in the work space related to the Proposal ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:49
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:48
 msgid ""
-"Le groupe de travail lié à la proposition <dynamic element> a atteint le "
-"nombre maximal des participants et ne peut plus accueillir de nouveaux "
-"participants, sauf s'il y en a un qui démissionne."
+"The Working Group related to the Proposal ${dynamic} has reached its maximum "
+"number of Participants, and cannot include new ones. Additional candidates "
+"will be placed on the Waiting List."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:56
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:54
 msgid ""
-"Les suggestions d'amélioration sur la proposition <dynamic element> ont été "
-"entièrement acceptées ou refusées, vous pouvez suggérer de nouvelles "
-"améliorations."
+"The improvement suggestions on the Proposal ${dynamic} have all been either "
+"accepted or refused. You can now suggest new improvements."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/content_result.pt:12
-#: ./novaideo/views/templates/alerts/small_content_result.pt:12
 msgid ""
-"Le contenu <dynamic element> a été dupliqué, le contenu dupliqué est visible "
-"sous <dynamic element>."
+"The content ${dynamic} has been duplicated. The duplicated content is visible"
+" under ${obj}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/content_result.pt:15
 #: ./novaideo/views/templates/alerts/small_content_result.pt:15
 msgid ""
-"Le contenu <dynamic element> faisant partie de vos favoris a été modifié."
+"The content ${dynamic}, which is part of your favourites, has been modified."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/content_result.pt:17
 #: ./novaideo/views/templates/alerts/small_content_result.pt:16
 msgid ""
-"Le contenu <dynamic element> faisant partie de vos centres d'intérêt a été "
-"publié."
+"The content ${dynamic}, which is part of your topics of interest, has been "
+"published."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/content_result.pt:19
 #: ./novaideo/views/templates/alerts/small_content_result.pt:18
 msgid ""
-"Le membre <dynamic element> que vous avez mis en favori a publié le contenu "
-"<dynamic element>."
+"The member ${obj}, which is part of your favourites, has published the "
+"content ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/content_result.pt:23
 #: ./novaideo/views/templates/alerts/small_content_result.pt:22
-msgid "Le contenu <dynamic element> vous a été communiqué."
+msgid "The content ${dynamic} has been sent to you."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/content_result.pt:27
 #: ./novaideo/views/templates/alerts/small_content_result.pt:26
 msgid ""
-"Le compte du membre <dynamic element> que vous avez mis en favori a été "
-"désactivé."
+"The account of the Member ${dynamic}, which is part of your favourites, has "
+"been disactivated."
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/moderation_result.pt:9
+msgid "Les modérateurs ont statué sur la contribution ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/moderation_result.pt:10
 #: ./novaideo/views/templates/alerts/small_moderation_result.pt:12
 msgid ""
-"Une nouvelle signalisation vient d'être ajoutée. Les signalisations sont "
-"accessibles <dynamic element>."
+"A new content has been reported as potentially offensive. The reported "
+"contents can be reached ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/moderation_result.pt:13
+#: ./novaideo/views/templates/alerts/notification_moderation_result.pt:9
 #: ./novaideo/views/templates/alerts/small_moderation_result.pt:15
-msgid "La contribution <dynamic element> a été restorée."
+msgid "The contribution ${dynamic} has been restored."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/moderation_result.pt:16
+#: ./novaideo/views/templates/alerts/notification_moderation_result.pt:12
 #: ./novaideo/views/templates/alerts/small_moderation_result.pt:18
-msgid "La contribution <dynamic element> a été censurée."
+msgid "The contribution ${dynamic} has been censored."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/moderation_result.pt:19
 #: ./novaideo/views/templates/alerts/small_moderation_result.pt:21
 msgid ""
-"Le groupe de travail sur la proposition <dynamic element> n'est plus actif "
-"depuis quelques cycles de plus d'une semaine. Pour cette raison, le groupe de"
-" travail a été dissout et la proposition est maintenant ouverte à un groupe "
-"de travail."
+"The Woking Group on the Proposal ${dynamic} has been inactive for several "
+"cycles, each lasting more than one week. For this reason, the Group has been "
+"dissolved, and the Proposal is back to the state \"Open to a working group\"."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/comment_result.pt:22
 #: ./novaideo/views/templates/alerts/small_comment_result.pt:22
-msgid ""
-"${author or 'Une personne'} a commenté la contribution <dynamic element>."
+msgid "${aut} commented the contribution ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/comment_result.pt:28
-msgid ""
-"${author or 'Une personne'} a répondu à votre message concernant la "
-"contribution <dynamic element>."
+msgid "${aut} answered your message related to the contribution ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/comment_result.pt:36
 #: ./novaideo/views/templates/alerts/small_comment_result.pt:36
-msgid ""
-"${author or 'Une personne'} a ajouté un message à votre discussion <dynamic "
-"element>."
+msgid "${aut} added a message to your discussion ${dynamic}."
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/comment_result.pt:42
+#: ./novaideo/views/templates/alerts/small_comment_result.pt:43
+msgid "${dynamic} answered your message."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/comment_result.pt:50
 #: ./novaideo/views/templates/alerts/small_comment_result.pt:50
-msgid ""
-"${author or 'Une personne'} a ajouté un message à la discussion générale."
+msgid "${aut} added a message to the general discussion."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/comment_result.pt:57
-msgid ""
-"${author or 'Une personne'} a répondu à votre message présent dans la "
-"discussion générale."
+msgid "${aut} answered your message present in the general discussion."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/examination_result.pt:7
 #: ./novaideo/views/templates/alerts/small_examination_result.pt:7
 msgid ""
-"Le comité d'examen a statué sur la contribution <dynamic element>. La "
-"contribution est maintenant dans l'état ${object.get_subject_state(subject, "
-"current_user, True)}."
+"The Examination Committee has decided over the contribution ${dynamic}. The "
+"contribution is now in the state ${obj_state}."
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/nia_content_result.pt:12
+msgid ""
+"Cette idée vient d'être dupliquée et travaillée différemment. Vous trouverez "
+"l'idée dupliquée ici ${dynamic}."
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/nia_content_result.pt:27
+msgid ""
+"Cette proposition vient d'être dupliquée et travaillée différemment. Vous "
+"trouverez la proposition dupliquée ici ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/admin_result.pt:8
 #: ./novaideo/views/templates/alerts/small_admin_result.pt:10
 msgid ""
-"Une nouvelle inscription vient d'être ajoutée. L'inscription est visible sous"
-" <dynamic element>."
+"A new registration has just been added. The registration is visible under "
+"${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_content_result.pt:7
-msgid "Ce contenu a été dupliqué."
+msgid "This content has been duplicated."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_content_result.pt:10
-msgid "Ce contenu faisant partie de vos favoris a été modifié."
+msgid "This content, which was part of your favourites, has been modified."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_content_result.pt:11
-msgid "Ce contenu faisant partie de vos centres d'intérêt a été publié."
+msgid ""
+"This content, which was part of your topics of interest, has been published."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_content_result.pt:13
 msgid ""
-"Ce membre ${member_title} que vous avez mis en favori a publié un contenu."
+"The Member ${member_title}, which was part of your favourites, has published "
+"a content."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_content_result.pt:17
-msgid "Ce contenu vous a été communiqué."
+msgid "This content has been sent to you."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_content_result.pt:21
-msgid "Ce compte du membre que vous avez mis en favori a été désactivé."
+msgid ""
+"The account of this Member, which was part of your favourites, has been "
+"disactivated."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_moderation_result.pt:5
-msgid "Les modérateurs ont statué sur cette contribution."
+msgid "The moderators have decided on this contribution."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_moderation_result.pt:6
-msgid "Une nouvelle signalisation vient d'être ajoutée."
-msgstr ""
-
-#: ./novaideo/views/templates/alerts/notification_moderation_result.pt:9
-msgid "La contribution ${subject.get_title()} a été restorée."
-msgstr ""
-
-#: ./novaideo/views/templates/alerts/notification_moderation_result.pt:12
-msgid "La contribution ${subject.get_title()} a été censurée."
+msgid "A new content has been reported as potentially offensive."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_moderation_result.pt:15
 msgid ""
-"Le groupe de travail de cette proposition n'est plus actif depuis quelques "
-"cycles de plus d'une semaine. Pour cette raison, le groupe de travail a été "
-"dissout et la proposition est maintenant ouverte à un groupe de travail."
+"The Woking Group on this Proposal has been inactive for several cycles, each "
+"lasting more than one week. For this reason, the Group has been dissolved, "
+"and the Proposal is back to the state \"Open to a working group\"."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/notification_examination_result.pt:3
 msgid ""
-"Le comité d'examen a statué sur cette contribution. La contribution est "
-"maintenant dans l'état ${object.get_subject_state(subject, current_user, "
-"True)}."
+"The Examination Committee has decided over this contribution. The "
+"contribution is now in the state ${dynamic}."
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/small_content_result.pt:12
+msgid ""
+"The content ${obj} has been duplicated. The duplicated content is visible "
+"under ${dynamic}."
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/nia_wg_result.pt:8
+msgid "La nouvelle version apporte ${dynamic} modification(s) avec :"
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/nia_wg_result.pt:13
+msgid "${dynamic} insertion(s)"
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/nia_wg_result.pt:15
+msgid "${dynamic} suppression(s)"
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/nia_wg_result.pt:5
@@ -5014,7 +5013,7 @@ msgid ""
 "Le groupe de travail vient de produire une nouvelle version de la "
 "proposition. N'hésitez pas à discuter les modifications apportées. Vous "
 "pouvez voir les modifications en comparant la version en cours avec la "
-"dernière version produite. <dynamic element>"
+"dernière version produite. ${dynamic}"
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/nia_wg_result.pt:19
@@ -5048,11 +5047,33 @@ msgid ""
 "contenu de la proposition, vos avis ne font qu'améliorer le débat."
 msgstr ""
 
+#: ./novaideo/views/templates/alerts/nia_wg_result.pt:39
+msgid ""
+"Cette idée vient d'être utilisée par la proposition suivante ${dynamic}. "
+"N'hésitez pas à discuter le contenu de la proposition et y participer si le "
+"sujet traité vous intéresse. Vous pouvez ainsi contribuer à la proposition en"
+" apportant vos améliorations."
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/nia_wg_result.pt:46
+msgid ""
+"Cette idée vient d'être utilisée par la proposition suivante ${dynamic}. "
+"N'hésitez pas à discuter le contenu de la proposition."
+msgstr ""
+
+#: ./novaideo/views/templates/alerts/nia_wg_result.pt:53
+msgid ""
+"Cette idée vient d'être utilisée par la proposition suivante ${dynamic}. "
+"Cette proposition est soumise à l'appréciation des membres. Vous pouvez soit "
+"la soutenir, soit vous y opposer. N'hésitez pas à discuter le contenu de la "
+"proposition, vos avis ne font qu'améliorer le débat."
+msgstr ""
+
 #: ./novaideo/views/templates/alerts/nia_examination_result.pt:5
 #: ./novaideo/views/templates/alerts/nia_examination_result.pt:13
 msgid ""
-"The Examination Committee expressed a <dynamic element> opinion on this idea."
-" Consequently, it cannot be transformed into a proposal or used in existing "
+"The Examination Committee expressed a ${dynamic} opinion on this idea. "
+"Consequently, it cannot be transformed into a proposal or used in existing "
 "proposals by the members of the platform."
 msgstr ""
 
@@ -5067,28 +5088,28 @@ msgstr ""
 
 #: ./novaideo/views/templates/alerts/nia_examination_result.pt:21
 msgid ""
-"The Examination Committee expressed a <dynamic element> opinion on this idea."
-" Consequently, it can be transformed into a proposal or used in existing "
+"The Examination Committee expressed a ${dynamic} opinion on this idea. "
+"Consequently, it can be transformed into a proposal or used in existing "
 "proposals by the members of the platform."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/nia_examination_result.pt:28
 msgid ""
-"The Examination Committee expressed a <dynamic element> opinion on this "
-"proposal. This means that it has not selected it for implementation."
+"The Examination Committee expressed a ${dynamic} opinion on this proposal. "
+"This means that it has not selected it for implementation."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/nia_examination_result.pt:36
 msgid ""
-"The Examination Committee expressed a <dynamic element> opinion on this "
-"proposal. This means that, in order to be considered for implementation, you "
-"will need to re-work on it beforehand."
+"The Examination Committee expressed a ${dynamic} opinion on this proposal. "
+"This means that, in order to be considered for implementation, you will need "
+"to re-work on it beforehand."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/nia_examination_result.pt:44
 msgid ""
-"The Examination Committee expressed a <dynamic element> opinion on this "
-"proposal. This means that it is ready to implement it."
+"The Examination Committee expressed a ${dynamic} opinion on this proposal. "
+"This means that it is ready to implement it."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/nia_examination_result.pt:52
@@ -5096,22 +5117,20 @@ msgid "The explanation of the Examination Committee"
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/small_moderation_result.pt:10
-msgid "Les modérateurs ont statué sur la contribution <dynamic element>."
+msgid "The moderators have decided on the contribution ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/small_comment_result.pt:29
-msgid ""
-"${author or 'Une personne'} a répondu à votre commentaire concernant la "
-"contribution <dynamic element>."
+msgid "${aut} answered your comment regarding the contribution ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/small_comment_result.pt:56
-msgid "${author or 'Une personne'} a répondu à votre commentaire."
+msgid "${aut} answered your comment."
 msgstr ""
 
 #: ./novaideo/views/comment_management/transform_to_idea.py:32
 #: ./novaideo/content/processes/comment_management/definition.py:69
-msgid "Transform a comment into an idea"
+msgid "Transform the comment into an idea"
 msgstr ""
 
 #: ./novaideo/views/comment_management/pin.py:44
@@ -5122,7 +5141,7 @@ msgstr ""
 #: ./novaideo/views/comment_management/respond.py:26
 #: ./novaideo/content/processes/comment_management/definition.py:49
 #: ./novaideo/content/processes/comment_management/definition.py:50
-msgid "Respond"
+msgid "Answer"
 msgstr ""
 
 #: ./novaideo/views/comment_management/unpin.py:44
@@ -5165,11 +5184,11 @@ msgid "Are you sure you want to remove this comment? This cannot be undone."
 msgstr ""
 
 #: ./novaideo/views/comment_management/templates/alert_pin.pt:2
-msgid "Are you sure you want to pin this comment to this discuss?"
+msgid "Are you sure you want to pin this comment to this discussion?"
 msgstr ""
 
 #: ./novaideo/views/comment_management/templates/alert_unpin.pt:2
-msgid "Are you sure you want to unpin this comment from this discuss?"
+msgid "Are you sure you want to unpin this comment from this discussion?"
 msgstr ""
 
 #: ./novaideo/views/novaideo_process_management/update.py:52
@@ -5184,11 +5203,11 @@ msgstr ""
 
 #: ./novaideo/views/smart_folder_management/publish_smart_folder.py:58
 #: ./novaideo/content/processes/smart_folder_management/definition.py:70
-msgid "Publish the center of interest"
+msgid "Publish the topic of interest"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/see_smart_folder.py:83
-msgid "Open a folder"
+msgid "Open the folder"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/see_smart_folder.py:122
@@ -5213,56 +5232,56 @@ msgstr ""
 #: ./novaideo/content/processes/smart_folder_management/definition.py:83
 #: ./novaideo/content/processes/smart_folder_management/definition.py:86
 #: ./novaideo/content/processes/smart_folder_management/definition.py:87
-msgid "Order"
+msgid "Sort"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/order_smart_folders.py:58
 #: ./novaideo/views/smart_folder_management/order_sub_smart_folders.py:55
-msgid "Folders"
+msgid "The topics of interests"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/order_smart_folders.py:59
 #: ./novaideo/views/smart_folder_management/order_sub_smart_folders.py:56
-msgid "Drag and drop folders to order"
+msgid "Drag and drop the topics of interests to be sorted"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/order_smart_folders.py:55
 #: ./novaideo/views/smart_folder_management/order_sub_smart_folders.py:52
-msgid "folder"
+msgid "topic of interest"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/addsub_smart_folder.py:29
 #: ./novaideo/views/smart_folder_management/add_smart_folder.py:30
 #: ./novaideo/content/processes/smart_folder_management/definition.py:50
 #: ./novaideo/content/processes/smart_folder_management/definition.py:51
-msgid "Create a center of interest"
+msgid "Create a topic of interest"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/see_smart_folders.py:25
-msgid "No registered interest found"
+msgid "No topic of interest found"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/see_smart_folders.py:26
-msgid "One registered interest found"
+msgid "One topic of interest found"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/see_smart_folders.py:27
 #, python-format
-msgid "${nember} registered interests found"
+msgid "${nember} topics of interests found"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/remove_smart_folder.py:58
-msgid "Remove the center of interest"
+msgid "Remove the topic of interest"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/withdraw_smart_folder.py:58
 #: ./novaideo/content/processes/smart_folder_management/definition.py:74
-msgid "Withdraw the center of interest"
+msgid "Withdraw the topic of interest"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/edit_smart_folder.py:29
 #: ./novaideo/content/processes/smart_folder_management/definition.py:58
-msgid "Edit the center of interest"
+msgid "Edit the topic of interest"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/templates/see_smartfolder.pt:19
@@ -5451,7 +5470,7 @@ msgstr ""
 
 #: ./novaideo/views/http_views/templates/404.pt:4
 msgid ""
-"The content that you are lookinf for does not exist or not available any more"
+"The content that you are looking for does not exist or not available any more"
 " on our site."
 msgstr ""
 
@@ -5598,7 +5617,7 @@ msgid "Frequency"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:434
-msgid "You can select the frequency."
+msgid "You can select the display frequency."
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:105
@@ -5768,12 +5787,14 @@ msgid "${nember} proposals found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_proposals_to_moderate.py:41
-msgid "Proposals to moderate"
+#: ./novaideo/content/processes/novaideo_view_manager/definition.py:84
+#: ./novaideo/content/processes/novaideo_view_manager/definition.py:85
+msgid "Proposals to be moderated"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/home.py:142
 #, python-format
-msgid "Working groups (${nb})"
+msgid "The Working Groups (${nb})"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/doc_anonymous.py:32
@@ -5817,7 +5838,7 @@ msgid "You have no new alert"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:28
-msgid "You have a new alert"
+msgid "You have one new alert"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:29
@@ -5849,7 +5870,9 @@ msgid "Proposals to be examined"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_ideas_to_examine.py:41
-msgid "Ideas to examine"
+#: ./novaideo/content/processes/novaideo_view_manager/definition.py:96
+#: ./novaideo/content/processes/novaideo_view_manager/definition.py:97
+msgid "Ideas to be examined"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/templates/graph_entities.pt:3
@@ -5858,7 +5881,7 @@ msgid "Idea"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/templates/graph_entities.pt:4
-msgid "Working group"
+msgid "Working Group"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/templates/graph_entities.pt:5
@@ -5890,7 +5913,7 @@ msgid ""
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/templates/anonymous_view.pt:2
-msgid "Welcome to ${request.root.title}!"
+msgid "Welcome to ${dynamic}!"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/templates/anonymous_view.pt:3
@@ -5951,15 +5974,15 @@ msgstr ""
 #: ./novaideo/views/organization_management/remove_members.py:69
 #: ./novaideo/content/processes/organization_management/definition.py:82
 #: ./novaideo/content/processes/organization_management/definition.py:83
-msgid "Remove members"
+msgid "Remove Members"
 msgstr ""
 
 #: ./novaideo/views/organization_management/see_organization.py:29
-msgid "no member"
+msgid "no Member"
 msgstr ""
 
 #: ./novaideo/views/organization_management/see_organization.py:30
-msgid "one member"
+msgid "one Member"
 msgstr ""
 
 #: ./novaideo/views/organization_management/user_edit_organization.py:41
@@ -5996,7 +6019,7 @@ msgstr ""
 #: ./novaideo/views/organization_management/see_organizations.py:39
 #: ./novaideo/content/novaideo_application.py:212
 #: ./novaideo/content/processes/organization_management/definition.py:63
-msgid "Organizations"
+msgid "The Organizations"
 msgstr ""
 
 #: ./novaideo/views/organization_management/edit_organizations.py:32
@@ -6008,7 +6031,7 @@ msgstr ""
 #: ./novaideo/views/organization_management/add_members.py:40
 #: ./novaideo/content/processes/organization_management/definition.py:78
 #: ./novaideo/content/processes/organization_management/definition.py:79
-msgid "Add members"
+msgid "Add Members"
 msgstr ""
 
 #: ./novaideo/views/organization_management/add_members.py:27
@@ -6023,11 +6046,11 @@ msgstr ""
 #: ./novaideo/views/organization_management/creat_organizations.py:49
 #: ./novaideo/content/processes/organization_management/definition.py:54
 #: ./novaideo/content/processes/organization_management/definition.py:55
-msgid "Creat organizations"
+msgid "Create organizations"
 msgstr ""
 
 #: ./novaideo/views/organization_management/creat_organizations.py:38
-msgid "Organizations to creat"
+msgid "Organizations to create"
 msgstr ""
 
 #: ./novaideo/views/organization_management/remove_organization.py:36
@@ -6053,7 +6076,7 @@ msgid "Add reaction"
 msgstr ""
 
 #: ./novaideo/views/novaideo_abstract_process/select.py:24
-msgid "Add to my favorites"
+msgid "Add to my favourites"
 msgstr ""
 
 #: ./novaideo/views/novaideo_abstract_process/edit_deadline.py:29
@@ -6063,7 +6086,7 @@ msgid "Edit the current deadline"
 msgstr ""
 
 #: ./novaideo/views/novaideo_abstract_process/deselect.py:24
-msgid "Remove from my favorites"
+msgid "Remove from my favourites"
 msgstr ""
 
 #: ./novaideo/content/organization.py:136
@@ -6089,7 +6112,7 @@ msgid "Madam"
 msgstr ""
 
 #: ./novaideo/content/novaideo_application.py:60
-msgid "Changing an idea"
+msgid "Change an idea"
 msgstr ""
 
 #: ./novaideo/content/novaideo_application.py:61
@@ -6130,7 +6153,7 @@ msgstr ""
 #: ./novaideo/content/novaideo_application.py:72
 #: ./novaideo/content/novaideo_application.py:74
 #: ./novaideo/content/novaideo_application.py:76
-msgid "Humor"
+msgid "Humour"
 msgstr ""
 
 #: ./novaideo/content/novaideo_application.py:74
@@ -6146,7 +6169,7 @@ msgid "Set up work parameters"
 msgstr ""
 
 #: ./novaideo/content/novaideo_application.py:230
-msgid "Edit mail templates"
+msgid "Edit e-mail templates"
 msgstr ""
 
 #: ./novaideo/content/novaideo_application.py:239
@@ -6174,7 +6197,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:56
 #: ./novaideo/content/processes/__init__.py:111
 #: ./novaideo/content/processes/__init__.py:123
-msgid "Favorable"
+msgid "Positive"
 msgstr ""
 
 #: ./novaideo/content/idea.py:50 ./novaideo/content/proposal.py:55
@@ -6182,7 +6205,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:57
 #: ./novaideo/content/processes/__init__.py:112
 #: ./novaideo/content/processes/__init__.py:124
-msgid "To study"
+msgid "To be re-worked upon"
 msgstr ""
 
 #: ./novaideo/content/idea.py:51 ./novaideo/content/proposal.py:56
@@ -6190,7 +6213,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:58
 #: ./novaideo/content/processes/__init__.py:113
 #: ./novaideo/content/processes/__init__.py:125
-msgid "Unfavorable"
+msgid "Negative"
 msgstr ""
 
 #: ./novaideo/content/idea.py:86
@@ -6261,7 +6284,7 @@ msgid "Applied filters"
 msgstr ""
 
 #: ./novaideo/content/smart_folder.py:164 ./novaideo/content/comment.py:89
-msgid "Choose contents to associate."
+msgid "Choose the contents to be associated"
 msgstr ""
 
 #: ./novaideo/content/smart_folder.py:172
@@ -6313,7 +6336,7 @@ msgid "Fairly good"
 msgstr ""
 
 #: ./novaideo/content/ballot.py:123
-msgid "Passable"
+msgid "Pass"
 msgstr ""
 
 #: ./novaideo/content/ballot.py:124
@@ -6333,7 +6356,7 @@ msgid "In a suggestion box, only the ideas are managed."
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:64
-msgid "Contents to moderate"
+msgid "Contents to be moderated"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:65
@@ -6341,7 +6364,7 @@ msgid "Contents can be moderated."
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:72
-msgid "Contents to support"
+msgid "Contents to be supported"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:73
@@ -6349,7 +6372,7 @@ msgid "Contents can be supported by users."
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:80
-msgid "Contents to examine"
+msgid "Contents to be examined"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:81
@@ -6398,21 +6421,21 @@ msgid "Moderate user registration"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:136
-msgid "Trusted emails"
+msgid "Trusted email addresses"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:137
 msgid ""
-"To add email, you need to tap the « Enter » key after each email or separate "
-"them with commas."
+"To add trusted email addresses, you need to tap the « Enter » key after each "
+"email address or to separate them with commas."
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:145
-msgid "Accessible only by members"
+msgid "Accessible by Members only"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:146
-msgid "Contents can be displayed only by members."
+msgid "Contents can be displayed by Member sonly."
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:153
@@ -6420,15 +6443,15 @@ msgid "Minimum number of participants for a working group"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:159
-msgid "Maximum number of participants for a working group"
+msgid "Maximum number of Participants per Working Group"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:165
-msgid "Maximum number of working group by member"
+msgid "Maximum number of Working Groups per Member"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:171
-msgid "Minimum number of tokens by member"
+msgid "Minimum number of evaluation Tokens allocated to a Member"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:183
@@ -6441,7 +6464,7 @@ msgid "Favicon"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:191
-msgid "Only ICO file is supported."
+msgid "Only ICO files are supported."
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:197
@@ -6453,7 +6476,7 @@ msgid "Only CSS files are supported."
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:205
-msgid "Activate the social share"
+msgid "Activate the sharing on social networks"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:216
@@ -6469,7 +6492,7 @@ msgid "Template"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:290
-msgid "Mail templates"
+msgid "E-mail templates"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:314
@@ -6477,7 +6500,7 @@ msgid "Authorize the addition of keywords"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:357
-msgid "Activate the push notification"
+msgid "Activate the push notifications on the browser"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:364
@@ -6489,7 +6512,7 @@ msgid "REST API Key"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:282
-msgid "Mail template"
+msgid "E-mail template"
 msgstr ""
 
 #: ./novaideo/content/alert.py:157
@@ -6513,7 +6536,7 @@ msgid "Examination of"
 msgstr ""
 
 #: ./novaideo/content/alert.py:323
-msgid "Support of"
+msgid "Evaluation of"
 msgstr ""
 
 #: ./novaideo/content/alert.py:352
@@ -6541,23 +6564,23 @@ msgid "Frequency/days"
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:108
-msgid "Automatic subscribing"
+msgid "Automatic subscription"
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:109
-msgid "Automatic subscribing at user registration"
+msgid "Automatic subscription at user registration"
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:117
-msgid "Propose to subscribing"
+msgid "Propose for subscription"
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:118
-msgid "Allow users to subscribing"
+msgid "Allow users to subscribe manually"
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:126
-msgid "Allow unsubscribing"
+msgid "Allow unsubscription"
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:127
@@ -6581,7 +6604,7 @@ msgid "Content"
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:182
-msgid "The content to send."
+msgid "The content to be sent."
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:191
@@ -6630,8 +6653,8 @@ msgstr ""
 
 #: ./novaideo/content/proposal.py:316
 #: ./novaideo/content/processes/idea_management/behaviors.py:216
-#: ./novaideo/content/processes/proposal_management/behaviors.py:442
-#: ./novaideo/content/processes/proposal_management/behaviors.py:786
+#: ./novaideo/content/processes/proposal_management/behaviors.py:460
+#: ./novaideo/content/processes/proposal_management/behaviors.py:804
 msgid "Add related ideas"
 msgstr ""
 
@@ -6718,7 +6741,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:33
 #: ./novaideo/content/processes/__init__.py:85
 #: ./novaideo/content/processes/__init__.py:100
-msgid "Draft"
+msgid "Private"
 msgstr ""
 
 #: ./novaideo/content/processes/__init__.py:19
@@ -6772,7 +6795,7 @@ msgstr ""
 #: ./novaideo/content/processes/__init__.py:52
 #: ./novaideo/content/processes/__init__.py:102
 #: ./novaideo/content/processes/__init__.py:119
-msgid "Submitted for support"
+msgid "Submitted for evaluation"
 msgstr ""
 
 #: ./novaideo/content/processes/__init__.py:36
@@ -6875,7 +6898,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/novaideo_file_management/definition.py:61
 #: ./novaideo/content/processes/novaideo_file_management/definition.py:62
-msgid "Private"
+msgid "Privatise"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_file_management/definition.py:65
@@ -6935,14 +6958,14 @@ msgstr ""
 #: ./novaideo/content/processes/ballot_processes/__init__.py:32
 #: ./novaideo/content/processes/admin_process/behaviors.py:42
 #: ./novaideo/content/processes/admin_process/behaviors.py:72
-#: ./novaideo/content/processes/proposal_management/behaviors.py:416
-#: ./novaideo/content/processes/proposal_management/behaviors.py:478
-#: ./novaideo/content/processes/proposal_management/behaviors.py:752
-#: ./novaideo/content/processes/proposal_management/behaviors.py:823
-#: ./novaideo/content/processes/proposal_management/behaviors.py:949
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1288
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1430
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1857
+#: ./novaideo/content/processes/proposal_management/behaviors.py:434
+#: ./novaideo/content/processes/proposal_management/behaviors.py:496
+#: ./novaideo/content/processes/proposal_management/behaviors.py:770
+#: ./novaideo/content/processes/proposal_management/behaviors.py:841
+#: ./novaideo/content/processes/proposal_management/behaviors.py:967
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1306
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1448
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1875
 #: ./novaideo/content/processes/advertising_management/behaviors.py:74
 #: ./novaideo/content/processes/advertising_management/behaviors.py:113
 #: ./novaideo/content/processes/smart_folder_management/behaviors.py:70
@@ -6986,13 +7009,13 @@ msgstr ""
 #: ./novaideo/content/processes/reports_management/behaviors.py:135
 #: ./novaideo/content/processes/reports_management/behaviors.py:185
 #: ./novaideo/content/processes/admin_process/behaviors.py:110
-#: ./novaideo/content/processes/proposal_management/behaviors.py:498
-#: ./novaideo/content/processes/proposal_management/behaviors.py:583
-#: ./novaideo/content/processes/proposal_management/behaviors.py:621
-#: ./novaideo/content/processes/proposal_management/behaviors.py:662
-#: ./novaideo/content/processes/proposal_management/behaviors.py:721
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1235
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1896
+#: ./novaideo/content/processes/proposal_management/behaviors.py:516
+#: ./novaideo/content/processes/proposal_management/behaviors.py:601
+#: ./novaideo/content/processes/proposal_management/behaviors.py:639
+#: ./novaideo/content/processes/proposal_management/behaviors.py:680
+#: ./novaideo/content/processes/proposal_management/behaviors.py:739
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1253
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1914
 #: ./novaideo/content/processes/advertising_management/behaviors.py:149
 #: ./novaideo/content/processes/advertising_management/behaviors.py:183
 #: ./novaideo/content/processes/advertising_management/behaviors.py:213
@@ -7028,11 +7051,11 @@ msgid "Configure"
 msgstr ""
 
 #: ./novaideo/content/processes/newsletter_management/definition.py:65
-msgid "Redact the newsletter"
+msgid "Write the newsletter"
 msgstr ""
 
 #: ./novaideo/content/processes/newsletter_management/definition.py:66
-msgid "Redact"
+msgid "Write"
 msgstr ""
 
 #: ./novaideo/content/processes/newsletter_management/definition.py:69
@@ -7065,7 +7088,7 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/behaviors.py:169
 #: ./novaideo/content/processes/idea_management/behaviors.py:170
 #: ./novaideo/content/processes/proposal_management/definition.py:314
-msgid "Create a working group"
+msgid "Create a Working Group"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:77
@@ -7112,7 +7135,7 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/definition.py:134
 #: ./novaideo/content/processes/idea_management/behaviors.py:978
 #: ./novaideo/content/processes/proposal_management/definition.py:395
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1400
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1418
 msgid "Compare"
 msgstr ""
 
@@ -7158,7 +7181,7 @@ msgid "Save and submit"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/behaviors.py:217
-#: ./novaideo/content/processes/proposal_management/behaviors.py:443
+#: ./novaideo/content/processes/proposal_management/behaviors.py:461
 msgid "Creation"
 msgstr ""
 
@@ -7183,10 +7206,6 @@ msgstr ""
 #: ./novaideo/content/processes/invitation_management/definition.py:87
 #: ./novaideo/content/processes/invitation_management/definition.py:88
 msgid "Remind the person"
-msgstr ""
-
-#: ./novaideo/content/processes/invitation_management/behaviors.py:183
-msgid "Plus"
 msgstr ""
 
 #: ./novaideo/content/processes/user_management/definition.py:47
@@ -7254,7 +7273,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/ballot_processes/fptp/definition.py:35
 #: ./novaideo/content/processes/ballot_processes/fptp/definition.py:36
-msgid "FPTP Process"
+msgid "First Past The Post Process"
 msgstr ""
 
 #: ./novaideo/content/processes/ballot_processes/majorityjudgment/definition.py:36
@@ -7291,7 +7310,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/reports_management/definition.py:59
 #: ./novaideo/content/processes/reports_management/definition.py:60
-msgid "Restor the content"
+msgid "Restore the content"
 msgstr ""
 
 #: ./novaideo/content/processes/system_process/definition.py:55
@@ -7306,7 +7325,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/system_process/definition.py:74
 #: ./novaideo/content/processes/system_process/definition.py:75
-msgid "Deactivate users"
+msgid "Disactivate users"
 msgstr ""
 
 #: ./novaideo/content/processes/admin_process/definition.py:35
@@ -7369,8 +7388,12 @@ msgstr ""
 msgid "Two weeks"
 msgstr ""
 
+#: ./novaideo/content/processes/proposal_management/__init__.py:79
+msgid "Working mode"
+msgstr ""
+
 #: ./novaideo/content/processes/proposal_management/__init__.py:80
-msgid "Work mode for the improvement of the proposal"
+msgid "Working mode for the improvement of the proposal"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/__init__.py:90
@@ -7418,15 +7441,11 @@ msgid "Workspace management"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:225
-msgid "Reopen the working group"
+msgid "Reopen the Working Group"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:305
 msgid "Create a new proposal"
-msgstr ""
-
-#: ./novaideo/content/processes/proposal_management/definition.py:309
-msgid "Delete the proposal"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:317
@@ -7434,7 +7453,7 @@ msgid "Duplicate this proposal"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:326
-msgid "Submit the proposal to the moderation"
+msgid "Submit the Proposal to the Moderation"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:350
@@ -7450,7 +7469,7 @@ msgid "Oppose the proposal"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:366
-msgid "Withdraw token from proposal"
+msgid "Withdraw token from the proposal"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:370
@@ -7463,12 +7482,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:378
 #: ./novaideo/content/processes/proposal_management/definition.py:379
-msgid "Amendments"
-msgstr ""
-
-#: ./novaideo/content/processes/proposal_management/definition.py:402
-#: ./novaideo/content/processes/proposal_management/definition.py:403
-msgid "Attache files"
+msgid "The amendments"
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:482
@@ -7481,12 +7495,17 @@ msgstr ""
 msgid "Start work"
 msgstr ""
 
+#: ./novaideo/content/processes/proposal_management/definition.py:536
+#: ./novaideo/content/processes/proposal_management/definition.py:537
+msgid "Remove the file"
+msgstr ""
+
 #: ./novaideo/content/processes/proposal_management/behaviors.py:78
 msgid ""
-"Each participant votes for or against continuing the improvement of the "
-"proposal. If the majority is \"In favour\", a new improvement cycle begins. "
-"If not, the proposal is submitted as is to the evaluation of the other "
-"members of the platform."
+"Each participant in the working group votes for or against continuing the "
+"improvement of the proposal. If the majority is \"In favour\", a new "
+"improvement cycle begins. If not, the proposal is submitted as is to the "
+"evaluation of the other members of the platform."
 msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/behaviors.py:84
@@ -7501,23 +7520,24 @@ msgstr ""
 msgid ""
 "Voting results regarding the further improvement of the proposal will not be "
 "known until the end of the ballot. If the majority happens to vote for "
-"continuing to improve the proposal, your vote on the operating method of the "
-"working group is needed."
+"continuing to improve the proposal before submitting it to the other members "
+"of the platform, your vote on the operating method of the working group is "
+"needed."
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/behaviors.py:93
+#: ./novaideo/content/processes/proposal_management/behaviors.py:94
 msgid ""
 "Voting results regarding the further improvement of the proposal will not be "
 "known until the end of the ballot. If the majority happens to vote for "
-"continuing to improve the proposal, your vote on reopening the working group "
-"is needed."
+"continuing to improve the proposal before submitting it to the other members "
+"of the platform, your vote on reopening the working group is needed."
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1606
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1624
 msgid "open"
 msgstr ""
 
-#: ./novaideo/content/processes/proposal_management/behaviors.py:1606
+#: ./novaideo/content/processes/proposal_management/behaviors.py:1624
 msgid "closed"
 msgstr ""
 
@@ -7570,21 +7590,21 @@ msgstr ""
 
 #: ./novaideo/content/processes/smart_folder_management/definition.py:54
 #: ./novaideo/content/processes/smart_folder_management/definition.py:55
-msgid "Create a sub center of interest"
+msgid "Create a sub topic of interest"
 msgstr ""
 
 #: ./novaideo/content/processes/smart_folder_management/definition.py:62
-msgid "Remove center of interest"
+msgid "Remove topic of interest"
 msgstr ""
 
 #: ./novaideo/content/processes/smart_folder_management/definition.py:66
 #: ./novaideo/content/processes/smart_folder_management/definition.py:67
-msgid "See a center of interest"
+msgid "See a topic of interest"
 msgstr ""
 
 #: ./novaideo/content/processes/smart_folder_management/definition.py:78
 #: ./novaideo/content/processes/smart_folder_management/definition.py:79
-msgid "Registered interests"
+msgid "Registered topics of interest"
 msgstr ""
 
 #: ./novaideo/content/processes/amendment_management/definition.py:44
@@ -7682,17 +7702,7 @@ msgid "See my participations"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:76
-msgid "See my supports"
-msgstr ""
-
-#: ./novaideo/content/processes/novaideo_view_manager/definition.py:84
-#: ./novaideo/content/processes/novaideo_view_manager/definition.py:85
-msgid "Proposals to be moderated"
-msgstr ""
-
-#: ./novaideo/content/processes/novaideo_view_manager/definition.py:96
-#: ./novaideo/content/processes/novaideo_view_manager/definition.py:97
-msgid "Ideas to be examined"
+msgid "See my evaluations"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:104
@@ -7700,7 +7710,7 @@ msgid "See the history of processes"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:108
-msgid "See alerts"
+msgid "See the alerts"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:109
@@ -7708,7 +7718,7 @@ msgid "Alerts"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:112
-msgid "See the graph of dependences"
+msgid "See the graph of dependencies"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:113
@@ -7740,7 +7750,7 @@ msgid "Organizations management"
 msgstr ""
 
 #: ./novaideo/content/processes/organization_management/definition.py:50
-msgid "Upload organizations from xl file"
+msgid "Upload organizations from spreadsheet file"
 msgstr ""
 
 #: ./novaideo/content/processes/organization_management/definition.py:62
@@ -7781,19 +7791,19 @@ msgid "Add the next deadline"
 msgstr ""
 
 #: ./novaideo/adapters/__init__.py:29
-msgid "Created at"
+msgid "Created on"
 msgstr ""
 
 #: ./novaideo/adapters/__init__.py:30
-msgid "Modified at"
+msgid "Modified on"
 msgstr ""
 
 #: ./novaideo/adapters/__init__.py:31
-msgid "Examined at"
+msgid "Examined on"
 msgstr ""
 
 #: ./novaideo/adapters/__init__.py:32
-msgid "Published at"
+msgid "Published on"
 msgstr ""
 
 #: ./novaideo/web_services/export_entities.py:183
