@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-01-12 18:00+0100\n"
+"POT-Creation-Date: 2017-01-12 18:57+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -4288,7 +4288,7 @@ msgstr ""
 msgid ""
 "You also have additional tokens for the proposals for which you were a "
 "member in the working group that voted to submit the proposal to the "
-"evaluation of the other members of the platform. These additiona tokens can "
+"evaluation of the other members of the platform. These additional tokens can "
 "only be used for these proposals."
 msgstr ""
 "Vous disposez également de jetons supplémentaires pour les propositions dont "
@@ -4568,7 +4568,7 @@ msgstr "soit publiée"
 #: novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:16
 #: novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:20
 #: novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:37
-msgid "or being examined"
+msgid ", or being examined"
 msgstr ", soit examinée"
 
 #: novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:18

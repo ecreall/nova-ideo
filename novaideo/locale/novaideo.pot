@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-01-12 18:00+0100\n"
+"POT-Creation-Date: 2017-01-12 18:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3978,7 +3978,7 @@ msgstr ""
 msgid ""
 "You also have additional tokens for the proposals for which you were a member"
 " in the working group that voted to submit the proposal to the evaluation of "
-"the other members of the platform. These additiona tokens can only be used "
+"the other members of the platform. These additional tokens can only be used "
 "for these proposals."
 msgstr ""
 
@@ -4191,7 +4191,7 @@ msgstr ""
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:16
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:20
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_message.pt:37
-msgid "or being examined"
+msgid ", or being examined"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:18
