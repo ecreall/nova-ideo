@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-01-12 17:22+0100\n"
+"POT-Creation-Date: 2017-01-12 18:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5964,11 +5964,11 @@ msgid "Subscribe to the discussion"
 msgstr ""
 
 #: ./novaideo/views/channel_management/templates/alert_unsubscribe.pt:2
-msgid "Are you sure you want to unsubscribe from this discuss?"
+msgid "Are you sure you want to unsubscribe from this discussion?"
 msgstr ""
 
 #: ./novaideo/views/channel_management/templates/alert_subscribe.pt:2
-msgid "Are you sure you want to subscribe to this discuss?"
+msgid "Are you sure you want to subscribe to this discussion?"
 msgstr ""
 
 #: ./novaideo/views/organization_management/remove_members.py:69

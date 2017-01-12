@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-01-12 17:22+0100\n"
+"POT-Creation-Date: 2017-01-12 18:00+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -6644,11 +6644,11 @@ msgid "Subscribe to the discussion"
 msgstr "S'abonner à la discussion"
 
 #: novaideo/views/channel_management/templates/alert_unsubscribe.pt:2
-msgid "Are you sure you want to unsubscribe from this discuss?"
+msgid "Are you sure you want to unsubscribe from this discussion?"
 msgstr "Êtes-vous certain de vouloir vous déabonner de cette discussion ?"
 
 #: novaideo/views/channel_management/templates/alert_subscribe.pt:2
-msgid "Are you sure you want to subscribe to this discuss?"
+msgid "Are you sure you want to subscribe to this discussion?"
 msgstr "Êtes-vous certain de vouloir vous abonner à cette discussion ?"
 
 #: novaideo/views/organization_management/remove_members.py:69
@@ -7180,7 +7180,7 @@ msgstr "Modèle"
 
 #: novaideo/content/site_configuration.py:290
 msgid "E-mail templates"
-msgstr "Modèle de courriel"
+msgstr "Modèles des courriels"
 
 #: novaideo/content/site_configuration.py:314
 msgid "Authorize the addition of keywords"
