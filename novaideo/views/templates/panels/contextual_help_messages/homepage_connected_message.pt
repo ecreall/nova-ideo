@@ -17,7 +17,7 @@
             <span i18n:translate="" tal:omit-tag="" tal:condition="request.examine_ideas">, or being examined</span> 
             <span i18n:translate="">A proposal can be in either one of the following states: private, open to a working group, under improvement, or the purpose of a vote to determine whether the proposal should be further improved or not,</span> 
             <span i18n:translate="" tal:omit-tag="" tal:condition="not request.support_proposals">or published</span>
-            <span tal:omit-tag="" tal:condition="request.support_proposals">soit soumise à appréciation</span>
+            <span i18n:translate="" tal:omit-tag="" tal:condition="request.support_proposals">or submitted for evaluation</span>
             <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">, or being examined</span>.
         </p>
     </div>

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-01-13 15:11+0100\n"
+"POT-Creation-Date: 2017-01-13 17:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4200,6 +4200,10 @@ msgid ""
 "A proposal can be in either one of the following states: private, open to a "
 "working group, under improvement, or the purpose of a vote to determine "
 "whether the proposal should be further improved or not,"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:20
+msgid "or submitted for evaluation"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:25
