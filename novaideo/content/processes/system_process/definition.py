@@ -62,8 +62,8 @@ class SystemProcess(ProcessDefinition, VisualisableElement):
                 #Newsletter loop
                 nl_egblock = ExclusiveGatewayDefinition(),
                 send_newsletter = ActivityDefinition(contexts=[SendNewsLetter],
-                                       description=_("News letter"),
-                                       title=_("News letter"),
+                                       description=_("Newsletter"),
+                                       title=_("Newsletter"),
                                        groups=[]),
                 timernewsletter = IntermediateCatchEventDefinition(
                                  TimerEventDefinition(

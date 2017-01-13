@@ -32,8 +32,8 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(ReportsManagementProcess, self).__init__(**kwargs)
-        self.title = _('Reports management')
-        self.description = _('Reports management')
+        self.title = _('Reported content management')
+        self.description = _('Reported content management')
 
     def _init_definition(self):
         self.defineNodes(
@@ -44,8 +44,8 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
                                        title=_("Report"),
                                        groups=[]),
                 see_reports = ActivityDefinition(contexts=[SeeReports],
-                                       description=_("See reports"),
-                                       title=_("Reports"),
+                                       description=_("See reported contents"),
+                                       title=_("Reported contents"),
                                        groups=[]),
                 ignore = ActivityDefinition(contexts=[Ignore],
                                        description=_("Ignore reports"),

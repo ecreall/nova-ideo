@@ -69,4 +69,4 @@ class EditIdeaView(MultipleView):
                     'js_links': ['novaideo:static/js/compare_idea.js']}
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({EditIdea:EditIdeaView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({EditIdea: EditIdeaView})

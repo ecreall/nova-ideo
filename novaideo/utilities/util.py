@@ -103,7 +103,6 @@ DATE_FORMAT = {
 MIMETYPES_MANAGER = mimetypes.MimeTypes()
 
 
-
 def to_localized_time(
     date, request=None, date_from=None,
     date_only=False, format_id='digital',

@@ -16,12 +16,12 @@
   <div class="row">
     <div tal:condition="bodies" id="${id}" class="results scroll-able result-scroll">
       <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
-  	  <div class="container-fluid result-container" data-nex_url="${batch.next_url}">
-      	  <div class="row" tal:repeat="row_index range(row_len)">
-      	    <div class="col-md-6" tal:repeat="body bodies[(row_index*2): (row_index*2)+2]" style="padding-top: 10px">
+      <div class="container-fluid result-container" data-nex_url="${batch.next_url}">
+          <div class="row" tal:repeat="row_index range(row_len)">
+            <div class="col-md-6" tal:repeat="body bodies[(row_index*2): (row_index*2)+2]" style="padding-top: 10px">
                 ${structure:body}
-      	    </div>
-      	  </div>
+            </div>
+          </div>
           <button tal:condition="bodies and batch.next_url" id="${id}-btn-more" class="btn btn-default btn-xs scroll btn-more-scroll"><span i18n:translate="">More</span> <span class="glyphicon glyphicon-option-horizontal"></span></button>
       </div>
     </div>

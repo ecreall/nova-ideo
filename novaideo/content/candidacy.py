@@ -33,7 +33,7 @@ class CandidacySchema(VisualisableElementSchema):
     body = colander.SchemaNode(
         colander.String(),
         widget=RichTextWidget(),
-        title=_('Candidacy'),
+        title=_('Application'),
         )
 
 

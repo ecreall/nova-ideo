@@ -21,7 +21,7 @@ from novaideo import _
 
 
 class ReportViewStudyReport(BasicView):
-    title = _('Alert for reporting')
+    title = _('Alert for restoring')
     name = 'alertforpublication'
     template = 'novaideo:views/reports_management/templates/alert_report.pt'
 

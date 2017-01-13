@@ -122,7 +122,7 @@ class UserParamsConfigurationSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
         label=_('Moderate user registration'),
-        description=_('Moderate user registration'),
+        description=_('Moderate user registration.'),
         title='',
         missing=False
     )

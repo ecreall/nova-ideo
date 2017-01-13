@@ -66,7 +66,7 @@ class NovaIdeoViewManager(ProcessDefinition, VisualisableElement):
                                        groups=[]),
                 myselections = ActivityDefinition(contexts=[SeeMySelections],
                                        description=_("See the items that I follow"),
-                                       title=_("My following"),
+                                       title=_("My followings"),
                                        groups=[]),
                 myparticipations = ActivityDefinition(contexts=[SeeMyParticipations],
                                        description=_("See my participations"),

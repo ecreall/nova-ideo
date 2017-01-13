@@ -23,7 +23,7 @@ from novaideo import _
 
 
 class ArchiveIdeaViewStudyReport(BasicView):
-    title = _('Alert for archive')
+    title = _('Alert for archiving')
     name = 'alertforpublication'
     template = 'novaideo:views/idea_management/templates/alert_idea_archive.pt'
 

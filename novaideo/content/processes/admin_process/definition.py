@@ -20,8 +20,7 @@ from pontus.core import VisualisableElement
 from .behaviors import (
     ConfigureSite,
     ManageKeywords,
-    Extract
-    )
+    Extract)
 from novaideo import _
 
 

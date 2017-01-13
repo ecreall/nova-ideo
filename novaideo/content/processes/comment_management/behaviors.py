@@ -93,7 +93,7 @@ class Respond(InfiniteCardinality):
     style_action_class = 'comment-inline-toggle'
     style_interaction_contextual = True
     style_order = 0
-    title = _('Replay')
+    title = _('Reply')
     access_controled = True
     context = IComment
     relation_validation = respond_relation_validation

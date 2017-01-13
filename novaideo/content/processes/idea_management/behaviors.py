@@ -623,7 +623,6 @@ class PublishIdea(InfiniteCardinality):
             context.state = PersistentList(['published', 'submitted_support'])
 
         context.init_published_at()
-
         if context.originalentity:
             # Add Nia comment
             alert_comment_nia(

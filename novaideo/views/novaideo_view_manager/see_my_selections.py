@@ -32,7 +32,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeMySelectionsView(SeeMyContentsView):
-    title = _('My following')
+    title = _('My followings')
     name = 'seemyselections'
     behaviors = [SeeMySelections]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

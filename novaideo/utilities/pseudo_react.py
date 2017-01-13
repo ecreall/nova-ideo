@@ -957,14 +957,14 @@ def get_edit_folder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The centre of interest has been modified."),
+        _("The topic of interest has been modified."),
         **kwargs)
 
 
 def get_remove_folder_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
-        _("The centre of interest has been suppressed."),
+        _("The topic of interest has been suppressed."),
         **kwargs)
     result['ignore_redirect'] = not kwargs['is_source_context']
     return result
@@ -974,7 +974,7 @@ def get_publish_folder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The centre of interest has been published."),
+        _("The topic of interest has been published."),
         **kwargs)
 
 
@@ -982,7 +982,7 @@ def get_archive_folder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The centre of interest has been withdrawn."),
+        _("The topic of interest has been withdrawn."),
         **kwargs)
 
 
@@ -990,7 +990,7 @@ def get_add_subfolder_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The sub-centre of interest has been added."),
+        _("The sub-topic of interest has been added."),
         **kwargs)
 
 
@@ -1386,7 +1386,7 @@ def component_navbar_myselections(action, request, context, api, **kwargs):
     result = {
         'component-navbar-myselections.item_nb': len_selections,
         'component-navbar-myselections.title': localizer.translate(
-            _('My following')),
+            _('My followings')),
         'component-navbar-myselections.icon': 'glyphicon glyphicon-star-empty',
         'component-navbar-myselections.url': request.resource_url(
             request.root, 'seemyselections'),
