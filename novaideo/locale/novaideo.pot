@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-01-12 18:57+0100\n"
+"POT-Creation-Date: 2017-01-13 15:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -534,11 +534,11 @@ msgstr ""
 msgid "${day} ${hour}:00"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:161
+#: ./novaideo/utilities/util.py:160
 msgid "1st"
 msgstr ""
 
-#: ./novaideo/utilities/util.py:167
+#: ./novaideo/utilities/util.py:166
 #, python-format
 msgid "${name} ${day}"
 msgstr ""
@@ -661,23 +661,23 @@ msgid "The registration has been suppressed."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:960
-msgid "The centre of interest has been modified."
+msgid "The topic of interest has been modified."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:967
-msgid "The centre of interest has been suppressed."
+msgid "The topic of interest has been suppressed."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:977
-msgid "The centre of interest has been published."
+msgid "The topic of interest has been published."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:985
-msgid "The centre of interest has been withdrawn."
+msgid "The topic of interest has been withdrawn."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:993
-msgid "The sub-centre of interest has been added."
+msgid "The sub-topic of interest has been added."
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:1003
@@ -803,7 +803,7 @@ msgstr ""
 #: ./novaideo/utilities/pseudo_react.py:1389
 #: ./novaideo/views/novaideo_view_manager/see_my_selections.py:35
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:69
-msgid "My following"
+msgid "My followings"
 msgstr ""
 
 #: ./novaideo/utilities/pseudo_react.py:1419
@@ -883,9 +883,9 @@ msgstr ""
 #: ./novaideo/views/novaideo_view_manager/templates/search_result_blocs.pt:25
 #: ./novaideo/views/novaideo_view_manager/templates/home.pt:24
 #: ./novaideo/content/processes/invitation_management/behaviors.py:183
-#: ./novaideo/content/processes/admin_process/definition.py:45
-#: ./novaideo/content/processes/admin_process/definition.py:49
-#: ./novaideo/content/processes/admin_process/definition.py:53
+#: ./novaideo/content/processes/admin_process/definition.py:44
+#: ./novaideo/content/processes/admin_process/definition.py:48
+#: ./novaideo/content/processes/admin_process/definition.py:52
 #: ./novaideo/content/processes/novaideo_process_management/definition.py:42
 msgid "More"
 msgstr ""
@@ -1272,7 +1272,7 @@ msgstr ""
 #: ./novaideo/content/processes/newsletter_management/behaviors.py:153
 #: ./novaideo/content/processes/idea_management/definition.py:129
 #: ./novaideo/content/processes/idea_management/definition.py:130
-#: ./novaideo/content/processes/idea_management/behaviors.py:957
+#: ./novaideo/content/processes/idea_management/behaviors.py:956
 #: ./novaideo/content/processes/invitation_management/definition.py:56
 #: ./novaideo/content/processes/user_management/definition.py:79
 #: ./novaideo/content/processes/user_management/definition.py:80
@@ -1300,8 +1300,7 @@ msgid "Details"
 msgstr ""
 
 #: ./novaideo/views/idea_management/archive_idea.py:26
-#: ./novaideo/views/proposal_management/archive_proposal_moderation.py:26
-msgid "Alert for archive"
+msgid "Alert for archiving"
 msgstr ""
 
 #: ./novaideo/views/idea_management/archive_idea.py:52
@@ -2093,7 +2092,7 @@ msgstr ""
 #: ./novaideo/views/user_management/reset_password.py:38
 #: ./novaideo/views/user_management/reset_password.py:143
 #: ./novaideo/content/processes/newsletter_management/definition.py:70
-#: ./novaideo/content/processes/idea_management/behaviors.py:852
+#: ./novaideo/content/processes/idea_management/behaviors.py:851
 #: ./novaideo/content/processes/invitation_management/behaviors.py:112
 #: ./novaideo/content/processes/novaideo_view_manager/behaviors.py:338
 #: ./novaideo/web_services/export_entities.py:125
@@ -2422,6 +2421,7 @@ msgid "Text removed"
 msgstr ""
 
 #: ./novaideo/views/reports_management/restor.py:22
+#: ./novaideo/views/reports_management/report.py:24
 msgid "Alert for restoring"
 msgstr ""
 
@@ -2436,10 +2436,6 @@ msgstr ""
 
 #: ./novaideo/views/reports_management/censor.py:45
 msgid "Censoring reasons"
-msgstr ""
-
-#: ./novaideo/views/reports_management/report.py:24
-msgid "Alert for reporting"
 msgstr ""
 
 #: ./novaideo/views/reports_management/report.py:39
@@ -2526,8 +2522,8 @@ msgid "Send the news letter"
 msgstr ""
 
 #: ./novaideo/views/admin_process/extract.py:48
+#: ./novaideo/content/processes/admin_process/definition.py:50
 #: ./novaideo/content/processes/admin_process/definition.py:51
-#: ./novaideo/content/processes/admin_process/definition.py:52
 msgid "Extract"
 msgstr ""
 
@@ -2536,14 +2532,14 @@ msgid "Attributes to extract"
 msgstr ""
 
 #: ./novaideo/views/admin_process/configure_site_folder.py:34
-#: ./novaideo/content/processes/admin_process/definition.py:43
+#: ./novaideo/content/processes/admin_process/definition.py:42
 msgid "Configure the site"
 msgstr ""
 
 #: ./novaideo/views/admin_process/manage_keywords.py:55
 #: ./novaideo/views/admin_process/manage_keywords.py:68
+#: ./novaideo/content/processes/admin_process/definition.py:46
 #: ./novaideo/content/processes/admin_process/definition.py:47
-#: ./novaideo/content/processes/admin_process/definition.py:48
 msgid "Manage keywords"
 msgstr ""
 
@@ -2836,6 +2832,10 @@ msgstr ""
 #: ./novaideo/views/proposal_management/remove_file.py:36
 #: ./novaideo/views/proposal_management/remove_file.py:57
 msgid "Delete file"
+msgstr ""
+
+#: ./novaideo/views/proposal_management/archive_proposal_moderation.py:26
+msgid "Alert for archive"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/archive_proposal_moderation.py:74
@@ -4856,7 +4856,8 @@ msgid ""
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/moderation_result.pt:9
-msgid "Les modérateurs ont statué sur la contribution ${dynamic}."
+#: ./novaideo/views/templates/alerts/small_moderation_result.pt:10
+msgid "The moderators have decided on the contribution ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/moderation_result.pt:10
@@ -5114,10 +5115,6 @@ msgstr ""
 
 #: ./novaideo/views/templates/alerts/nia_examination_result.pt:52
 msgid "The explanation of the Examination Committee"
-msgstr ""
-
-#: ./novaideo/views/templates/alerts/small_moderation_result.pt:10
-msgid "The moderators have decided on the contribution ${dynamic}."
 msgstr ""
 
 #: ./novaideo/views/templates/alerts/small_comment_result.pt:29
@@ -5828,6 +5825,7 @@ msgid "${nember} contents found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_reported_contents.py:42
+#: ./novaideo/content/processes/reports_management/definition.py:48
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:92
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:93
 msgid "Reported contents"
@@ -6416,8 +6414,11 @@ msgid "Users can register by invitation only."
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:124
-#: ./novaideo/content/site_configuration.py:125
 msgid "Moderate user registration"
+msgstr ""
+
+#: ./novaideo/content/site_configuration.py:125
+msgid "Moderate user registration."
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:136
@@ -6544,6 +6545,8 @@ msgid "Administration"
 msgstr ""
 
 #: ./novaideo/content/newsletter.py:212
+#: ./novaideo/content/processes/system_process/definition.py:65
+#: ./novaideo/content/processes/system_process/definition.py:66
 msgid "Newsletter"
 msgstr ""
 
@@ -6695,7 +6698,7 @@ msgid "Add files to your comment"
 msgstr ""
 
 #: ./novaideo/content/candidacy.py:36
-msgid "Candidacy"
+msgid "Application"
 msgstr ""
 
 #: ./novaideo/content/person.py:268
@@ -6947,7 +6950,7 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/behaviors.py:76
 #: ./novaideo/content/processes/idea_management/behaviors.py:260
 #: ./novaideo/content/processes/idea_management/behaviors.py:349
-#: ./novaideo/content/processes/idea_management/behaviors.py:1012
+#: ./novaideo/content/processes/idea_management/behaviors.py:1011
 #: ./novaideo/content/processes/invitation_management/behaviors.py:232
 #: ./novaideo/content/processes/invitation_management/behaviors.py:263
 #: ./novaideo/content/processes/invitation_management/behaviors.py:292
@@ -7046,7 +7049,7 @@ msgid "Edit the newsletter"
 msgstr ""
 
 #: ./novaideo/content/processes/newsletter_management/definition.py:62
-#: ./novaideo/content/processes/admin_process/definition.py:44
+#: ./novaideo/content/processes/admin_process/definition.py:43
 msgid "Configure"
 msgstr ""
 
@@ -7133,7 +7136,7 @@ msgid "Compare versions"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:134
-#: ./novaideo/content/processes/idea_management/behaviors.py:978
+#: ./novaideo/content/processes/idea_management/behaviors.py:977
 #: ./novaideo/content/processes/proposal_management/definition.py:395
 #: ./novaideo/content/processes/proposal_management/behaviors.py:1418
 msgid "Compare"
@@ -7166,8 +7169,8 @@ msgstr ""
 msgid "Save and publish"
 msgstr ""
 
-#: ./novaideo/content/processes/idea_management/behaviors.py:759
-#: ./novaideo/content/processes/idea_management/behaviors.py:863
+#: ./novaideo/content/processes/idea_management/behaviors.py:758
+#: ./novaideo/content/processes/idea_management/behaviors.py:862
 #: ./novaideo/content/processes/user_management/behaviors.py:739
 #: ./novaideo/content/processes/reports_management/behaviors.py:227
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:60
@@ -7283,7 +7286,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/reports_management/definition.py:35
 #: ./novaideo/content/processes/reports_management/definition.py:36
-msgid "Reports management"
+msgid "Reported content management"
 msgstr ""
 
 #: ./novaideo/content/processes/reports_management/definition.py:43
@@ -7291,11 +7294,7 @@ msgid "Report the content"
 msgstr ""
 
 #: ./novaideo/content/processes/reports_management/definition.py:47
-msgid "See reports"
-msgstr ""
-
-#: ./novaideo/content/processes/reports_management/definition.py:48
-msgid "Reports"
+msgid "See reported contents"
 msgstr ""
 
 #: ./novaideo/content/processes/reports_management/definition.py:51
@@ -7318,18 +7317,13 @@ msgstr ""
 msgid "System process"
 msgstr ""
 
-#: ./novaideo/content/processes/system_process/definition.py:65
-#: ./novaideo/content/processes/system_process/definition.py:66
-msgid "News letter"
-msgstr ""
-
 #: ./novaideo/content/processes/system_process/definition.py:74
 #: ./novaideo/content/processes/system_process/definition.py:75
 msgid "Disactivate users"
 msgstr ""
 
+#: ./novaideo/content/processes/admin_process/definition.py:34
 #: ./novaideo/content/processes/admin_process/definition.py:35
-#: ./novaideo/content/processes/admin_process/definition.py:36
 msgid "Admin process"
 msgstr ""
 
@@ -7571,7 +7565,7 @@ msgid "Transform into an idea"
 msgstr ""
 
 #: ./novaideo/content/processes/comment_management/behaviors.py:96
-msgid "Replay"
+msgid "Reply"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_process_management/definition.py:32
