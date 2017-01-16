@@ -230,7 +230,7 @@ function init_channels_top(){
     var navbar_top_h = $('.navbar.navbar-fixed-top').height()
     navbar_top_h = navbar_top_h == undefined? 0 : navbar_top_h
     var home_top_h = $('.home-panel-container').height()
-    home_top_h = home_top_h == undefined? 0 : home_top_h - 17
+    home_top_h = home_top_h == undefined? 0 : home_top_h +3
     var navbar_h = $('nav.navbar.navbar-bottom').height()
     navbar_h = navbar_h == undefined? 0 : navbar_h
     var default_top = navbar_h + navbar_top_h - 3

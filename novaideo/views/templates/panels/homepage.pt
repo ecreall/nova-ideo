@@ -3,13 +3,13 @@
 	 style="background-image: url('${picture.url}');'">
 	<div class="container-fluid">
 		<div class="row">
-		  <div class="col-md-2"></div>
-		  <div class="col-md-4" style="margin-top: -20px;">
+		  <div class="col-md-2 col-sm-2"></div>
+		  <div class="col-md-4 col-sm-7" style="margin-top: -20px;">
 		  	<div class="home-panel-text">
 		  	${structure: text}
 		    </div>
 		  </div>
-		  <div class="col-md-6"></div>
+		  <div class="col-md-6 col-sm-3"></div>
 	    </div>
     </div>
 </div>
