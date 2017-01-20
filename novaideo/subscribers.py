@@ -261,3 +261,9 @@ def init_contents(registry):
         for type_id, c in registry.content.content_types.items()
         if core.SearchableEntity in c.mro()
     }
+
+    core.SUSTAINABLE_CONTENTS = {
+        type_id: c
+        for type_id, c in registry.content.content_types.items()
+        if core.Sustainable in c.mro()
+    }

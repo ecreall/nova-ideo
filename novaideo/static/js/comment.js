@@ -176,23 +176,29 @@ function init_comment_form_changes(form){
       related_len = select_related_contents.val().length
     };
     var len_files = $(form.find('.comment-files .form-group.deform-seq-item.uploaded')).length;
-    var result = '<div class="comment-form-changes"> <span class="glyphicon glyphicon-question-sign"></span> ' +
+    
+    var result = '<div class="comment-form-changes">'
+    if(intention){
+      result += '<span class="glyphicon glyphicon-question-sign"></span> ' +
                  intention;
+    }
     if(len_files>0){
-      result += ', <span class="glyphicon glyphicon-paperclip"></span> ' +
+      result += ' <span class="glyphicon glyphicon-paperclip"></span> ' +
                  len_files + ' ' + (len_files ==1?novaideo_translate('file'): novaideo_translate('files'));
     }
     if(related_len>0){
-       result += ', <span class="glyphicon glyphicon-link"></span> ' +
+       result += ' <span class="glyphicon glyphicon-link"></span> ' +
                  related_len + ' ' +(related_len ==1?novaideo_translate('association'): novaideo_translate('associations'));
     }
 
     result += '</div>'
-    if(form.hasClass('edit-comment-form')){
-        form.append(result)  
-    }else{
-        form.prepend(result)
-    }
+    var textarea_container = form.find('.comment-textarea-container').first()
+    textarea_container.before(result)
+    // if(form.hasClass('edit-comment-form')){
+    //     form.append(result)  
+    // }else{
+    //     form.prepend(result)
+    // }
 }
 
 $(document).on('click', '.comment-filter-action', function(){

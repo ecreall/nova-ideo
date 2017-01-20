@@ -1,0 +1,24 @@
+<div class="comment-textarea-container answer-textarea-container" i18n:domain="novaideo"
+  tal:define="emoji_form emoji_form|field.widget.emoji_form;">
+  <div class="comment-textarea-actions">
+    <span class="comment-emoji md md-insert-emoticon" i18n:attributes="title" title="Add Emoji"></span>
+    <span class="comment-add-file glyphicon glyphicon-paperclip" i18n:attributes="title" title="Attach files"></span>
+    <span class="comment-related glyphicon glyphicon-link" i18n:attributes="title" title="Associate contents"></span>
+    <span class="btn btn-success comment-submit glyphicon glyphicon-send" i18n:attributes="title" title="Submit"></span>
+  </div>
+  <textarea tal:define="rows rows|field.widget.rows;
+                        cols cols|field.widget.cols;
+                        css_class css_class|field.widget.css_class;
+                        oid oid|field.oid;
+                        name name|field.name;
+                        style style|field.widget.style;
+                        placeholder placeholder|getattr(field.widget, 'placeholder', '');"
+            tal:attributes="rows rows;
+                            cols cols;
+                            class string: form-control ${css_class or ''};
+                            style style;
+                            placeholder placeholder"
+            id="${oid}"
+            name="${name}">${cstruct}</textarea>
+  <div tal:replace="structure emoji_form" /> 
+</div>

@@ -33,6 +33,7 @@ from novaideo.views.filter import (
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
 from novaideo.content.person import Person
+from novaideo.content.question import Question
 # from novaideo.views.filter.sort import (
 #     sort_view_objects)
 
@@ -43,7 +44,8 @@ CONTENTS_MESSAGES = {
     '*': _(u"""${nember} elements found""")
 }
 
-DEFAULT_SEARCHABLE_CONTENT = [('idea', Idea),
+DEFAULT_SEARCHABLE_CONTENT = [('question', Question),
+                              ('idea', Idea),
                               ('proposal', Proposal),
                               ('person', Person)
                             ]

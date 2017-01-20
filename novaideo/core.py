@@ -45,12 +45,15 @@ from novaideo.content.interface import (
     INode,
     IEmojiable,
     IPerson,
-    ISignalableEntity)
+    ISignalableEntity,
+    ISustainable)
 
 
 BATCH_DEFAULT_SIZE = 8
 
 SEARCHABLE_CONTENTS = {}
+
+SUSTAINABLE_CONTENTS = {}
 
 NOVAIDO_ACCES_ACTIONS = {}
 
@@ -599,3 +602,41 @@ class SignalableEntity(Entity):
             self.len_reports = getattr(self, 'len_reports', 0)
             self.len_current_reports += 1
             self.len_reports += 1
+
+
+@implementer(ISustainable)
+class Sustainable(Entity):
+    """Question class"""
+
+    def __init__(self, **kwargs):
+        super(Sustainable, self).__init__(**kwargs)
+        self.set_data(kwargs)
+        self.votes_positive = OOBTree()
+        self.votes_negative = OOBTree()
+
+    def add_vote(self, user, date, kind='positive'):
+        oid = get_oid(user)
+        if kind == 'positive':
+            self.votes_positive[oid] = date
+        else:
+            self.votes_negative[oid] = date
+
+    def withdraw_vote(self, user):
+        oid = get_oid(user)
+        if oid in self.votes_positive:
+            self.votes_positive.pop(oid)
+        elif oid in self.votes_negative:
+            self.votes_negative.pop(oid)
+
+    def has_vote(self, user):
+        oid = get_oid(user)
+        return oid in self.votes_positive or \
+            oid in self.votes_negative
+
+    def has_negative_vote(self, user):
+        oid = get_oid(user)
+        return oid in self.votes_negative
+
+    def has_positive_vote(self, user):
+        oid = get_oid(user)
+        return oid in self.votes_positive

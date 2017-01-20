@@ -7,6 +7,7 @@ from pyramid.threadlocal import get_current_request
 from dace.objectofcollaboration.principal.util import has_role
 from dace.util import find_catalog
 
+from novaideo import core
 from novaideo import _, log
 
 
@@ -141,7 +142,7 @@ def sort_by_tokens(objects, reverse=False, is_oppose=False):
 @sort_config(
     name='nbsupport',
     title=_('Number of support tokens'),
-    contents=['proposal', 'idea'],
+    contents=['proposal', 'idea', 'question', 'answer'],
     order=3
 )
 class NumberSupport(object):
@@ -162,8 +163,8 @@ class NumberSupport(object):
         request = kwargs.get('request', None)
         if not request:
             request = get_current_request()
-
-        content_to_support = getattr(request, 'content_to_support', [])
+        content_to_support = list(getattr(request, 'content_to_support', []))
+        content_to_support.extend(list(core.SUSTAINABLE_CONTENTS.keys()))
         return ('all' in content_types and content_to_support) or\
             any(t in content_to_support for t in content_types)
 
@@ -171,7 +172,7 @@ class NumberSupport(object):
 @sort_config(
     name='nboppose',
     title=_('Number of opposition tokens'),
-    contents=['proposal', 'idea'],
+    contents=['proposal', 'idea', 'question', 'answer'],
     order=4
 )
 class NumberOppose(object):
@@ -193,7 +194,8 @@ class NumberOppose(object):
         if not request:
             request = get_current_request()
 
-        content_to_support = getattr(request, 'content_to_support', [])
+        content_to_support = list(getattr(request, 'content_to_support', []))
+        content_to_support.extend(list(core.SUSTAINABLE_CONTENTS.keys()))
         return ('all' in content_types and content_to_support) or\
             any(t in content_to_support for t in content_types)
 

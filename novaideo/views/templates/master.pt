@@ -98,6 +98,8 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/action_interaction.js')}?v=4"
           type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/home_add_content.js')}"
+          type="text/javascript"></script>
     <script src="${su('novaideo:static/js/novaideo.js')}?v=7"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/admin_nav.js')}"
@@ -217,7 +219,7 @@
               </div>
               <div class="inner-content ${(context.__class__.__name__ == 'Person' and request.view_name in ('index', '@@index')) and 'user-view-index'}">
                 <div tal:omit-tag="" tal:condition="not view_only">
-                 ${panel('addideaform')}
+                  ${panel('addcontenthomeform')}
                 </div>
                 <div metal:define-slot="main"></div>
               </div>
@@ -330,18 +332,20 @@
     <!--TODO footer panel-->
 
 
-    <div role="tooltip" class="action-popover-container popover fade right" style="display: none;"
-      id="action-popover-container">
+    <div role="tooltip" class="action-interation-container action-popover-container popover fade right" style="display: none;"
+      id="action-popover-container"
+      data-interaction_kind="popover">
       <div class="arrow" style="top: 50%;"></div>
       <div class="popover-content">
       </div>
     </div>
 
-    <div class="action-modal-container modal fade" 
+    <div class="action-interation-container action-modal-container modal fade" 
        role="dialog"
        id="action-modal-container"
        aria-labelledby="ModalActionsContainer" 
-       aria-hidden="true" style="text-align: justify;color: #333;">
+       aria-hidden="true" style="text-align: justify;color: #333;"
+       data-interaction_kind="modal">
       <div class="modal-dialog">
         <div class="modal-content">
            <div class="modal-header">
@@ -354,11 +358,12 @@
       </div>
    </div>
 
-   <div class="votes-modal-container modal fade" 
+   <div class="action-interation-container votes-modal-container modal fade" 
        role="dialog"
        id="votes-modal-container"
        aria-labelledby="VotesActionsContainer" 
-       aria-hidden="true" style="text-align: justify;color: #333;">
+       aria-hidden="true" style="text-align: justify;color: #333;"
+       data-interaction_kind="modal">
       <div class="modal-dialog">
         <div class="modal-content">
            <div class="modal-header">

@@ -776,7 +776,8 @@ ALL_DESCRIMINATORS = ['text-action',
                       'plus-action',
                       'body-action',
                       'communication-action',
-                      'communication-body-action']
+                      'communication-body-action',
+                      'support-action']
 
 DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_footer_actions.pt'
 
@@ -799,6 +800,8 @@ DEFAUL_ACCESS_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_acces
 FILE_TEMPLATE = 'novaideo:views/templates/up_file_result.pt'
 
 VOTE_TEMPLATE = 'novaideo:views/templates/vote_actions.pt'
+
+DEFAULT_SUPPORT_TEMPLATE = 'novaideo:views/templates/support_entity_actions.pt'
 
 
 def render_small_listing_objs(
@@ -842,6 +845,7 @@ def render_listing_obj(
         'footer_body': navbars['footer_body'],
         'wg_body': navbars['wg_body'],
         'footer_actions_body': navbars['footer_actions_body'],
+        'support_actions_body': navbars['support_actions_body'],
         'access_body': navbars['access_body'],
         'state': get_states_mapping(
             user, obj,
@@ -929,6 +933,7 @@ def render_listing_objs(
             'footer_body': navbars['footer_body'],
             'wg_body': navbars['wg_body'],
             'footer_actions_body': navbars['footer_actions_body'],
+            'support_actions_body': navbars['support_actions_body'],
             'access_body': navbars['access_body'],
             'state': get_states_mapping(user, obj,
                 getattr(obj, 'state_or_none', [None])[0])}
@@ -1017,6 +1022,7 @@ def get_actions_navbar(
     }
     actions = sorted(
         actions, key=lambda a: getattr(a, 'style_order', 0))
+    result['all_actions'] = actions
     result.update({descriminator: [] for descriminator in descriminators})
     for action in actions:
         descriminator = getattr(action, 'style_descriminator', 'None')
@@ -1073,7 +1079,7 @@ def generate_navbars(request, context, view_type='default', **args):
             args.get('global_action', []))
         actions_navbar['global-action'].extend(
             actions_navbar.pop('primary-action', []))
-    
+
     actions_navbar.setdefault('text-action', [])
     actions_navbar['text-action'].extend(
         args.get('text_action', []))
@@ -1128,6 +1134,7 @@ def generate_navbars(request, context, view_type='default', **args):
             'resources': resources,
             'all_actions': actions_navbar,
             'body_actions': actions_bodies,
+            'context_actions': actions_navbar['all_actions'],
             'footer_actions_body': communication_actions_bodies,
             'navbar_body': render_navbar_body(
                 request, context, actions_navbar, args.get('template', None),
@@ -1141,7 +1148,12 @@ def generate_navbars(request, context, view_type='default', **args):
                 request, context, actions_navbar,
                 args.get('wg_template', DEFAUL_WG_LISTING_ACTIONS_TEMPLATE),
                 ['wg-action'], view_type=view_type)
-            if 'wg-action' in actions_navbar else None
+            if 'wg-action' in actions_navbar else None,
+           'support_actions_body': render_navbar_body(
+                request, context, actions_navbar,
+                DEFAULT_SUPPORT_TEMPLATE,
+                ['support-action'], view_type=view_type)
+            if 'support-action' in actions_navbar else None,
             }
 
 
@@ -1177,7 +1189,7 @@ def generate_listing_menu(request, context, view_type='default', **args):
     tounmerge = [
         'communication-action', 'wg-action',
         'primary-action', 'communication-body-action',
-        'access-action']
+        'access-action', 'support-action']
     tounmerge = args.get('tounmerge', tounmerge)
     tomerge = [d for d in descriminators
                if d not in tounmerge and d in actions_navbar]
@@ -1200,6 +1212,8 @@ def generate_listing_menu(request, context, view_type='default', **args):
     return {'isactive': actions_navbar['ajax-action']['isactive'],
             'messages': actions_navbar['ajax-action']['messages'],
             'resources': actions_navbar['ajax-action']['resources'],
+            'all_actions': actions_navbar,
+            'context_actions': actions_navbar['all_actions'],
             'footer_actions_body': communication_actions_bodies,
             'menu_body': render_navbar_body(
                 request, context, actions_navbar,
@@ -1221,7 +1235,12 @@ def generate_listing_menu(request, context, view_type='default', **args):
                 request, context, actions_navbar,
                 args.get('wg_template', DEFAUL_WG_LISTING_ACTIONS_TEMPLATE),
                 ['wg-action'], view_type=view_type)
-            if 'wg-action' in actions_navbar else None
+            if 'wg-action' in actions_navbar else None,
+            'support_actions_body': render_navbar_body(
+                request, context, actions_navbar,
+                DEFAULT_SUPPORT_TEMPLATE,
+                ['support-action'], view_type=view_type)
+            if 'support-action' in actions_navbar else None,
             }
 
 

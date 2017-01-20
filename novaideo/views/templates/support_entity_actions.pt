@@ -1,0 +1,74 @@
+<div tal:omit-tag="" tal:define="support_action support_action|nothing">
+  <div tal:omit-tag="" tal:condition="support_action">
+    <div tal:define="
+              support_actions [a for a in support_action if a.node_id == 'support'];
+              oppose_actions [a for a in support_action if a.node_id == 'oppose'];
+              withdraw_actions [a for a in support_action if a.node_id == 'withdraw_token'];
+              support len(support_actions)>0;
+              oppose len(oppose_actions)>0;
+              withdraw len(withdraw_actions)>0;
+              active support or oppose or withdraw;
+              oid getattr(obj, '__oid__', '')"
+        class="vertical-support proposal-support ${(support or oppose) and 'my-support'}"
+        id='component-support-action-${oid}'>
+        <span class="label success"
+            tal:condition="support or withdraw"
+            title="${action.title}"
+            i18n:attributes="title"
+            tal:define="
+              action support_actions[0] if support_actions else withdraw_actions[0];
+              item ajax_actions.get(action, None);
+              icon getattr(a,'style_picto','');
+              interaction_type getattr(a,'style_interaction_type','modal');
+              interaction_args getattr(a,'style_interaction_args','');">
+            <a id="${item['action_id']}-btn" 
+                class="${getattr(a, 'node_id', '')}-btn ajax-action dace-action-${interaction_type}"
+                data-toggle="${interaction_type}"
+                data-target="#action-${interaction_type}-container"
+                data-actionid ="${item['action_id']}" 
+                data-updateurl="${item['actionurl_update']}"
+                data-after_exe_url="${item['actionurl_after']}"
+                data-toreplay="${'toreplay' in item}"
+                data-title="${item['action'].title}"
+                data-interaction_args="${interaction_args}"
+                data-view_title="${item['view_title']}"
+                data-body="${item['body']}"
+                data-icon="${icon}"
+                data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
+              <span 
+                class="token free-token token-top token-toggle ${not active and 'disabled' or 'active'} octicon octicon-triangle-up ${withdraw and oppose and 'my-token'}"></span>
+            </a>
+            <span class="support-nb">${len(obj.votes_positive)}</span>
+        </span>
+        <span class="label danger"
+            tal:condition="oppose or withdraw"
+            title="${action.title}"
+            i18n:attributes="title"
+            tal:define="
+              action oppose_actions[0] if oppose_actions else withdraw_actions[0];
+              item ajax_actions.get(action, None);
+              icon getattr(a,'style_picto','');
+              interaction_type getattr(a,'style_interaction_type','modal');
+              interaction_args getattr(a,'style_interaction_args','');">
+            <span class="support-nb">${len(obj.votes_negative)}</span>
+            <a id="${item['action_id']}-btn" 
+                class="${getattr(a, 'node_id', '')}-btn ajax-action dace-action-${interaction_type}"
+                data-toggle="${interaction_type}"
+                data-target="#action-${interaction_type}-container"
+                data-actionid ="${item['action_id']}" 
+                data-updateurl="${item['actionurl_update']}"
+                data-after_exe_url="${item['actionurl_after']}"
+                data-toreplay="${'toreplay' in item}"
+                data-title="${item['action'].title}"
+                data-interaction_args="${interaction_args}"
+                data-view_title="${item['view_title']}"
+                data-body="${item['body']}"
+                data-icon="${icon}"
+                data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
+              <span 
+                class="token free-token token-bottom token-toggle ${not active and 'disabled' or 'active'} octicon octicon-triangle-down ${withdraw and support and 'my-token'}"></span>
+            </a>
+        </span>
+    </div>
+  </div>
+</div>

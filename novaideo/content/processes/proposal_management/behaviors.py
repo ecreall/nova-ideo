@@ -1073,7 +1073,6 @@ def comm_state_validation(process, context):
 
 
 class CommentProposal(CommentIdea):
-    isSequential = False
     context = IProposal
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation

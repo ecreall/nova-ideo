@@ -138,6 +138,11 @@ class ISignalableEntity(IEntity):
     pass
 
 
+@interface(True)
+class ISustainable(IEntity):
+    pass
+
+
 @interface()
 class ISReport(IEntity):
     pass
@@ -179,6 +184,36 @@ class Iidea(IDuplicableEntity,
             ISignalableEntity):
 
     text = Attribute('text')
+
+    attached_files = Attribute('attached_files', type=FILETYPE, multiplicity='*')
+
+
+@interface()
+@interface_config(type_id='question')
+class IQuestion(IDuplicableEntity,
+                IVersionableEntity,
+                ISearchableEntity,
+                ICorrelableEntity,
+                IPresentableEntity,
+                INode,
+                ISignalableEntity,
+                ISustainable):
+    question = Attribute('question')
+
+    text = Attribute('text')
+
+    attached_files = Attribute('attached_files', type=FILETYPE, multiplicity='*')
+
+
+@interface()
+@interface_config(type_id='answer')
+class IAnswer(ICorrelableEntity,
+              IPresentableEntity,
+              INode,
+              IIdeaSource,
+              ISignalableEntity,
+              ISustainable):
+    comment = Attribute('comment')
 
     attached_files = Attribute('attached_files', type=FILETYPE, multiplicity='*')
 

@@ -29,7 +29,8 @@ from novaideo.content.interface import (
     IComment,
     IPreregistration,
     IInvitation,
-    IAlert)
+    IAlert,
+    ISustainable)
 from novaideo.dateindex import DateRecurring
 
 
@@ -900,3 +901,17 @@ class AlertSearch(SearchableObject):
     def alert_exclude_keys(self):
         users_toexclude = list(self.context.users_toexclude)
         return users_toexclude if users_toexclude else ['no_one']
+
+
+@adapter(context=ISustainable)
+@implementer(ISearchableObject)
+class SustainableSearch(SearchableObject):
+
+    def support(self):
+        return len(getattr(self.context, 'votes_positive', []))
+
+    def oppose(self):
+        return len(getattr(self.context, 'votes_negative', []))
+
+    def support_diff(self):
+        return self.support() - self.oppose()

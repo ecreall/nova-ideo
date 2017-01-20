@@ -1,0 +1,5 @@
+<div tal:condition="entities" tal:omit-tag="" i18n:domain="novaideo">
+      <div tal:repeat="object entities">
+          <div tal:replace="structure object"/>
+      </div>
+</div>

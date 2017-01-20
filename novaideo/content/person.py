@@ -282,6 +282,7 @@ class Person(User, SearchableEntity, CorrelableEntity):
     old_alerts = SharedMultipleProperty('old_alerts')
     following_channels = SharedMultipleProperty('following_channels', 'members')
     folders = SharedMultipleProperty('folders', 'author')
+    questions = SharedMultipleProperty('questions', 'author')
 
     def __init__(self, **kwargs):
         if 'locale' not in kwargs:

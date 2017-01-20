@@ -44,8 +44,14 @@ function filter(event){
   var filter_activator = $(filter_container.find('.filter-activator').first());
   var data_get = $(form).serialize();
   data_get += '&'+'op=filter_result';
-  // var target = $($('.pontus-main .panel-body').first());
-  var target_title = $($('.pontus-main .panel-heading').first());
+  var filter_container_id = filter_container.parents('div').first().attr('id')
+  var target_title = undefined;
+  if(filter_container_id){
+    target_title = filter_container.parents('.content-view').first().find('#'+filter_container_id+'-title')
+  }
+  if(target_title.length==0){
+    target_title = $('.pontus-main .panel-heading').first();
+  }
   var target = $(form.parents('.items-main-view-container'));
   var id = target.attr('id')
   var url = filter_activator.data('url');
@@ -125,8 +131,14 @@ function sort(){
       data_get += '&'+'is_sort=true';
       data_get += '&'+'view_only=1';
   }
-  // var target = $($('.pontus-main .panel-body').first());
-  var target_title = $($('.pontus-main .panel-heading').first());
+  var filter_container_id = filter_container.parents('div').first().attr('id')
+  var target_title = undefined;
+  if(filter_container_id){
+    target_title = filter_container.parents('.content-view').first().find('#'+filter_container_id+'-title')
+  }
+  if(target_title.length==0){
+    target_title = $('.pontus-main .panel-heading').first();
+  }
   var id = target.attr('id')
   data_get += '&'+sort_form.serialize();
   loading_progress()

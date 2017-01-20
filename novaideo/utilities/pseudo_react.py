@@ -993,6 +993,34 @@ def get_add_subfolder_metadata(action, request, context, api, **kwargs):
         _("The sub-topic of interest has been added."),
         **kwargs)
 
+# Question
+
+
+def get_answer_question_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Your answer has been registered"),
+        **kwargs)
+
+
+def get_support_entity_metadata(action, request, context, api, **kwargs):
+    node_id = action.node_id
+    alert_msg = None
+    if node_id == 'oppose':
+        alert_msg = _('You are now opposed to the content ${context}.',
+                      mapping={'context': context.title})
+    elif node_id == 'support':
+        alert_msg = _('Now you support the content ${context}.',
+                      mapping={'context': context.title})
+    elif node_id == 'withdraw_token':
+        alert_msg = _('Your token has been recovered from content ${context}.',
+                      mapping={'context': context.title})
+
+    return get_dirct_edit_entity_metadata(
+        action, request, context, api,
+        alert_msg,
+        **kwargs)
 
 #Ideas
 
@@ -1600,6 +1628,21 @@ METADATA_GETTERS = {
 
     'channelmanagement.subscribe': get_subscribtion_metadata,
     'channelmanagement.unsubscribe': get_subscribtion_metadata,
+
+    'questionmanagement.comment': get_comment_metadata,
+    'questionmanagement.answer': get_answer_question_metadata,
+    'questionmanagement.present': get_present_metadata,
+    'questionmanagement.support': get_support_entity_metadata,
+    'questionmanagement.oppose': get_support_entity_metadata,
+    'questionmanagement.withdraw_token': get_support_entity_metadata,
+    'questionmanagement.edit': get_edit_idea_metadata,
+
+    'answermanagement.comment': get_comment_metadata,
+    'answermanagement.present': get_present_metadata,
+    'answermanagement.support': get_support_entity_metadata,
+    'answermanagement.oppose': get_support_entity_metadata,
+    'answermanagement.withdraw_token': get_support_entity_metadata,
+    'answermanagement.edit': get_edit_idea_metadata,
 
     'ideamanagement.creat': get_create_idea_metadata,
     'ideamanagement.creatandpublish': get_create_idea_metadata,

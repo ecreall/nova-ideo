@@ -78,8 +78,6 @@ function submit_explanation(){
        var intention_form = $(form.find('.intention-bloc').first());
        var url = $(this).data('url');
        var item = $(this).data('item');
-       var commentmessageinfo = target.find('#messageinfo');
-       var commentmessagesuccess = target.find('#messagesuccess');
        var commentmessagedanger = target.find('#messagedanger');
        var comment = $(intention_form.find("textarea[name='comment']").first()).val();
        var related_ideas = $(intention_form.find("select[name='related_ideas']").first()).select2('val');

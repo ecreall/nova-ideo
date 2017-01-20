@@ -142,11 +142,20 @@ class ProposalsView(ContentView):
     title = _('The Working Groups (${nb})')
     content_type = 'proposal'
     viewid = 'home-proposals'
-    view_icon = 'icon icon novaideo-icon icon-wg'
+    view_icon = 'icon novaideo-icon icon-wg'
     counter_id = 'home-proposals-counter'
     empty_message = _("No working group created")
-    empty_icon = 'icon icon novaideo-icon icon-wg'
+    empty_icon = 'icon novaideo-icon icon-wg'
 
+
+class QuestionsView(ContentView):
+    title = _('Questions (${nb})')
+    content_type = 'question'
+    viewid = 'home-questions'
+    view_icon = 'md md-live-help'
+    counter_id = 'home-questions-counter'
+    empty_message = _("No question asked")
+    empty_icon = 'md md-live-help'
 
 # class PersonsView(ContentView):
 #     title = _('Persons')
@@ -174,7 +183,7 @@ class HomeView(MultipleView):
     viewid = 'home'
     css_class = 'simple-bloc'
     container_css_class = 'home'
-    views = (IdeasView, ProposalsView)#, PersonsView)
+    views = (IdeasView, ProposalsView, QuestionsView)#, PersonsView)
 
     def _init_views(self, views, **kwargs):
         if self.request.is_idea_box:
@@ -185,6 +194,9 @@ class HomeView(MultipleView):
 
         if self.params('view_content_type') == 'proposal':
             views = (ProposalsView, )
+
+        if self.params('view_content_type') == 'question':
+            views = (QuestionsView, )
 
         super(HomeView, self)._init_views(views, **kwargs)
 

@@ -1,0 +1,46 @@
+<div i18n:domain="novaideo" tal:condition="has_forms" class="home-add-content-container ideahomeform">
+  <div  class="home-add-content closed">
+    <tal:block tal:repeat="jslink js_links">
+              <script src="${request.static_url(jslink)}"></script>
+    </tal:block>
+    <tal:block tal:repeat="csslink css_links">
+        <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+    </tal:block>
+    <div class="similar-contents modal fade" role="dialog"
+         aria-hidden="true"
+         data-backdrop="false">
+      <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" i18n:translate="">Please ensure that the content has not already been added!</h4>
+          </div>
+          <div class="modal-body">
+            <div class="similar-contents-container">
+             </div>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs home-content-nav" role="tablist">
+        <li tal:repeat="form_data forms"
+          role="presentation" class="${form_data['id']}-class ${form_data.get('active', False) and 'active' or ''}"><a href="#${form_data['id']}" data-content_id="${form_data['id']}" aria-controls="${form_data['id']}" role="tab" data-toggle="tab">${form_data['title']}</a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content tab-home-content">
+        <div tal:repeat="form_data forms"
+          role="tabpanel" class="tab-pane ${form_data.get('active', False) and 'active' or ''}" id="${form_data['id']}"
+          data-url="${form_data['action_url']}" data-url_search="${form_data['search_url']}">
+          <span class="form-icon ${getattr(form_data['action'], 'style_picto', '')}"></span>
+           <div class="content-form ${form_data['css_class']}" data-content_id="${form_data['id']}">
+            <div tal:replace="structure form_data['form']"/>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

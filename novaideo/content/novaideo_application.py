@@ -307,6 +307,7 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
     organizations = CompositeMultipleProperty('organizations')
     invitations = CompositeMultipleProperty('invitations')
     ideas = CompositeMultipleProperty('ideas')
+    questions = CompositeMultipleProperty('questions')
     correlations = CompositeMultipleProperty('correlations')
     files = CompositeMultipleProperty('files')
     alerts = CompositeMultipleProperty('alerts')

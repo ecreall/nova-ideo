@@ -97,7 +97,10 @@ function update_direct_action(event){
 
 function update_inline_action(){
     var $this = $(this)
-    var target = $($this.parents('.search-item, .content-view').find('.actions-footer-container').first())//closest('.dace-action-inline').data('target')+'-target';
+    var target = $($this.parents('.search-item').find('.action-inline-container').first())
+    if (target.length==0){
+      target = $($this.parents('.content-view').find('.action-inline-container').first())
+    }
     var actions = $($this.parents('.actions-block').find('.dace-action-inline'));
     if($this.hasClass('activated')){
        target.slideUp();
@@ -106,23 +109,45 @@ function update_inline_action(){
     }
     actions.removeClass('activated')
     var action = $this.closest('.dace-action-inline')
+    var toreplay = action.data('toreplay');
+    if (Boolean(toreplay)){
+      var action_body =jQuery.parseJSON(action.data('body'));
+      if($(action_body).hasClass('pontus-main-view')){
+         var panel = $($(action_body).find('>.panel-body').first())
+         $(target.find('.container-body')).html(panel.html())
+      }else{
+          $(target.find('.container-body')).html(action_body);
+      }
+      try {
+         deform.processCallbacks();
+      }
+      catch(err) {};
+      return false
+    }
+    
     var url = action.data('updateurl');
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
+    loading_progress()
     $.post(url, url_attr, function(data) {
       include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
-           target.slideDown();
+           target.slideDown("slow", function() {
+              var result_scroll = target.parents(".result-scroll")
+              init_result_scroll(undefined, 1600, result_scroll.parents('div').first());
+           });
            $(target.find('.container-body')).html(action_body);
            $this.addClass('activated')
-           init_comment_scroll(target)
            target.find('.carousel').carousel()
            try {
                 deform.processCallbacks();
             }
            catch(err) {};
+           finish_progress()
+           target.data('action_id', action.attr('id'))
            focus_on_form(target)
+           init_emoji($(target.find('.emoji-container:not(.emojified)')));
         }else{
            location.reload();
            return false
@@ -265,7 +290,9 @@ function update_sidebar_action(){
            init_emoji(target.find('.emoji-container:not(.emojified)'));
            init_content_text_scroll(target.find(".content-text-scroll"))
            rebuild_scrolls(target.find('.malihu-scroll'))
-           initscroll(target.find(".result-scroll"))
+           var result_scroll = target.find(".result-scroll")
+           init_result_scroll(undefined, 1000, result_scroll.parents('div').first());
+           initscroll(result_scroll)
            finish_progress()
            focus_on_form(target)
         }else{
@@ -328,14 +355,25 @@ $(document).on('click', '.dace-action-modal', update_modal_action);
 
 $(document).on('click', '.dace-action-direct', update_direct_action);
 
+$(document).on('click', '.dace-action-inline', update_inline_action);
+
+
+function hide_action_interaction_container(action_container){
+  var interaction_type = action_container.data('interaction_kind');
+  if(interaction_type == 'modal'){action_container.modal('hide');}
+  if(interaction_type == 'inline'){action_container.slideDown();}
+  if(interaction_type == 'popover'){action_container.css('display', 'none');}
+}
+
 
 $(document).on('submit', 'form.novaideo-ajax-form', function(event){
     var $this = $(this)
+    var action_container = $this.parents('.action-interation-container').first()
+    var interaction_type = action_container.data('interaction_kind')
     var formid = $this.attr('id');
     var button = $this.find('button.active[type="submit"]').last();
-    var modal_container = $('.action-modal-container.in')
     if(button.val() == 'Cancel'){
-      modal_container.modal('hide');
+      hide_action_interaction_container(action_container)
       event.preventDefault();
       return
     }
@@ -343,7 +381,7 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
     $(button).addClass('disabled');
     var formData = new FormData($(this)[0]);
     formData.append(button.val(), button.val())
-    var action = $('#'+modal_container.data('action_id'))
+    var action = $('#'+action_container.data('action_id'))
     var action_metadata = get_action_metadata(action)
     for(key in action_metadata){
         formData.append(key, action_metadata[key])
@@ -364,7 +402,7 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
           catch(err) {};
          finish_progress()
         }else if(! (data.redirect_url && !data.ignore_redirect)){
-          modal_container.modal('hide')
+          hide_action_interaction_container(action_container)
           finish_progress()
         }
         update_components(data)

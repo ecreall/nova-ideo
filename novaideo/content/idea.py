@@ -71,7 +71,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             limit=2000,
             alert_template='novaideo:views/templates/idea_text_alert.pt',
             alert_values={'limit': 2000},
-            item_css_class='idea-text',
+            item_css_class='content-preview-form',
             placeholder=_('I have an idea!')),
         title=_("Text")
         )

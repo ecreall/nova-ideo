@@ -1,3 +1,7 @@
+form.answerform{
+    margin-top: 15px
+}
+
 .comment-menu{
     position: absolute;
     right: 0; 
@@ -41,7 +45,6 @@
 }
 
 .comment-form-changes{
-    margin-top: -23px;
     padding-top: 5px;
     font-size: 13px;
     margin-left: 2px;
@@ -77,7 +80,7 @@
     height: 100%;
 }
 
-.sidebar-right-wrapper .commentform{
+.sidebar-right-wrapper .commentform:not(.answerform){
     position: fixed;
     bottom: 0;
     width: 70%;
@@ -114,7 +117,7 @@
     margin-left: 2px
 }
 
-.commentform{
+.commentform:not(.answerform){
     background-color: white;
     height: 50px;
     padding: 10px
@@ -197,6 +200,16 @@
     right: 30%;
 }
 
+.answer-textarea-container .comment-textarea-actions{
+    top: initial;
+    position: absolute;
+    margin-top: 7px;
+}
+
+.answer-textarea-container .message-alert{
+    right: 15% !important;
+}
+
 .comment-textarea-container .comment-textarea-actions > span{
     cursor: pointer; 
     color: #9e9ea6 
@@ -260,6 +273,10 @@
     text-align: center;
 }
 
+.commentform .comment-form-group.has-error > p.help-block{
+    color: @brand-danger !important;
+}
+
 
 .comment-data .footer-actions-bodies{
     float: none;
@@ -290,6 +307,11 @@
     right: 40px;
     width: 35%;
     z-index: 1300;
+}
+
+.answerform .comment-form-group.active,
+.answerform .emoji-container-input.active{
+    position: absolute !important;
 }
 
 .emoji-container-input{

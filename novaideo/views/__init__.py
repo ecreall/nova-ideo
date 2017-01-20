@@ -86,6 +86,7 @@ class NovaideoAPI(IndexManagementJsonView):
     alert_template = 'novaideo:views/templates/alerts/alerts.pt'
     search_template = 'novaideo:views/templates/live_search_result.pt'
     search_idea_template = 'novaideo:views/templates/live_search_idea_result.pt'
+    search_question_template = 'novaideo:views/templates/live_search_question_result.pt'
 
     def find_user(self, organization=None):
         name = self.params('q')
@@ -340,6 +341,37 @@ class NovaideoAPI(IndexManagementJsonView):
         values = {'entities': result_body}
         body = self.content(args=values,
                             template=self.search_idea_template)['body']
+        return {'body': body}
+
+    def get_similar_questions(self):
+        user = get_current()
+        # text = self.params('text')
+        title = self.params('question')
+        keywords = self.params('keywords')
+        # text = text if text else ''
+        title = title if title else ''
+        keywords = keywords if keywords else []
+        if not isinstance(keywords, list):
+            keywords = [keywords]
+
+        if not keywords and not title:# and not text:
+            return {'body': ''}
+
+        title_keywords = extract_keywords(title)
+        # text_keywords = extract_keywords(text)
+        # keywords.extend(text_keywords[:5])
+        keywords.extend(title_keywords)
+        result = find_entities(
+            interfaces=[IQuestion],
+            user=user,
+            text_filter={'text_to_search': ', '.join(keywords)},
+            defined_search=True,
+            generate_text_search=True)
+        result_body = render_small_listing_objs(
+            self.request, list(result)[:30], user)
+        values = {'entities': result_body}
+        body = self.content(args=values,
+                            template=self.search_question_template)['body']
         return {'body': body}
 
     def _execute_action(self, process_id, node_id, appstruct):

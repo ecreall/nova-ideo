@@ -73,9 +73,9 @@ GROUPS_PICTO = {
  }
 
 
-def _getaction(view, process_id, action_id):
+def _getaction(process_id, action_id, request):
     root = getSite()
-    actions = getBusinessAction(root, view.request, process_id, action_id)
+    actions = getBusinessAction(root, request, process_id, action_id)
     action = None
     action_view = None
     if actions is not None:
@@ -84,6 +84,40 @@ def _getaction(view, process_id, action_id):
             action_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
 
     return action, action_view
+
+
+def _get_home_actions_bodies(process_id, action_id, request, root):
+    result = {
+        'form': None,
+        'action': None,
+        'css_links': [],
+        'js_links': []}
+
+    root = getSite()
+    resources = deepcopy(getattr(
+        request, 'resources', {'js_links': [], 'css_links': []}))
+    add_content_action, add_content_view = _getaction(
+        process_id, action_id, request)
+    if add_content_view:
+        add_content_view_instance = add_content_view(
+            root, request, behaviors=[add_content_action])
+        add_content_view_instance.viewid = 'form' + process_id + action_id + 'home'
+        add_content_view_instance.is_home_form = True
+        add_content_view_result = add_content_view_instance()
+        add_content_body = ''
+        if isinstance(add_content_view_result, dict) and \
+           'coordinates' in add_content_view_result:
+            add_content_body = add_content_view_result['coordinates'][add_content_view_instance.coordinates][0]['body']
+            result['css_links'] = [c for c in add_content_view_result.get('css_links', [])
+                                   if c not in resources['css_links']]
+            result['js_links'] = [c for c in add_content_view_result.get('js_links', [])
+                                  if c not in resources['js_links']]
+
+        update_resources(request, result)
+        result['form'] = add_content_body
+        result['action'] = add_content_action
+
+    return result
 
 
 @panel_config(
@@ -101,13 +135,13 @@ class Usermenu_panel(object):
         root = getSite()
         resources = deepcopy(getattr(
             self.request, 'resources', {'js_links': [], 'css_links': []}))
-        search_action, search_view = _getaction(self,
-                                                'novaideoviewmanager',
-                                                'search')
+        search_action, search_view = _getaction('novaideoviewmanager',
+                                                'search',
+                                                self.request)
         search_view_instance = search_view(root, self.request,
                                            behaviors=[search_action])
         posted_formid = None
-        if self.request.POST :
+        if self.request.POST:
             if '__formid__' in self.request.POST:
                 posted_formid = self.request.POST['__formid__']
 
@@ -138,11 +172,11 @@ class Usermenu_panel(object):
 
 
 @panel_config(
-    name='addideaform',
+    name='addcontenthomeform',
     context=NovaIdeoApplication,
-    renderer='templates/panels/addideaform.pt'
+    renderer='templates/panels/addcontenthomeform.pt'
     )
-class AddIdea(object):
+class AddContent(object):
 
     def __init__(self, context, request):
         self.context = context
@@ -150,40 +184,51 @@ class AddIdea(object):
 
     def __call__(self):
         result = {
-            'form': None,
+            'forms': [],
             'css_links': [],
-            'js_links': []}
-        if(self.request.view_name not in ('', 'seemycontents')):
-            return {'form': None}
+            'js_links': [],
+            'has_forms': False,
+            'view': self}
+        if self.request.view_name not in ('', 'seemycontents'):
+            return result
 
         root = getSite()
-        resources = deepcopy(getattr(
-            self.request, 'resources', {'js_links': [], 'css_links': []}))
-        add_idea_action, add_idea_view = _getaction(
-            self, 'ideamanagement', 'creat')
-        if add_idea_view:
-            add_idea_view_instance = add_idea_view(
-                root, self.request, behaviors=[add_idea_action])
-            add_idea_view_instance.viewid = 'formcreateideahome'
-            add_idea_view_instance.is_home_form = True
-            add_idea_view_result = add_idea_view_instance()
-            add_idea_body = ''
-            if isinstance(add_idea_view_result, dict) and \
-               'coordinates' in add_idea_view_result:
-                add_idea_body = add_idea_view_result['coordinates'][add_idea_view_instance.coordinates][0]['body']
-                result['css_links'] = [c for c in add_idea_view_result.get('css_links', [])
-                                       if c not in resources['css_links']]
-                result['js_links'] = [c for c in add_idea_view_result.get('js_links', [])
-                                      if c not in resources['js_links']]
-
-            update_resources(self.request, result)
-            result['form'] = add_idea_body
-            result['view'] = self
-            result['action_url'] = self.request.resource_url(
-                root, '@@ideasmanagement', query={'op': 'creat_home_idea'})
-            result['search_url'] = self.request.resource_url(
-                root, '@@novaideoapi', query={'op': 'get_similar_ideas'})
-
+        result_idea = _get_home_actions_bodies(
+            'ideamanagement', 'creat', self.request, root)
+        result['forms'].append({
+            'id': 'ideahomeform',
+            'active': True,
+            'title': _('Create an idea'),
+            'form': result_idea['form'],
+            'action': result_idea['action'],
+            'search_url': self.request.resource_url(
+                root, '@@novaideoapi', query={'op': 'get_similar_contents'}),
+            'action_url': self.request.resource_url(
+                root, '@@ideasmanagement', query={'op': 'creat_home_idea'}),
+            'css_class': 'home-add-idea'
+        })
+        has_forms = result_idea['form'] is not None
+        result['js_links'] = result_idea['js_links']
+        result['css_links'] = result_idea['css_links']
+        result_question = _get_home_actions_bodies(
+            'questionmanagement', 'creat', self.request, root)
+        result['forms'].append({
+            'id': 'questionhomeform',
+            'title': _('Ask a question'),
+            'form': result_question['form'],
+            'action': result_question['action'],
+            'search_url': self.request.resource_url(
+                root, '@@novaideoapi', query={'op': 'get_similar_contents'}),
+            'action_url': self.request.resource_url(
+                root, '@@questionsmanagement', query={'op': 'creat_home_question'}),
+            'css_class': 'home-add-question'
+        })
+        has_forms = has_forms or result_question['form'] is not None
+        result['has_forms'] = has_forms
+        result['js_links'].extend(result_idea['js_links'])
+        result['css_links'].extend(result_idea['css_links'])
+        result['js_links'] = list(set(result['js_links']))
+        result['css_links'] = list(set(result['css_links']))
         return result
 
 
@@ -209,7 +254,7 @@ class UserNavBarPanel(object):
         actions_url = OrderedDict()
         for actionclass in self.navbar_actions:
             process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
-            action, view = _getaction(self, process_id, action_id)
+            action, view = _getaction(process_id, action_id, self.request)
             if None not in (action, view):
                 actions_url[action.title] = {
                             'action': action,
@@ -747,7 +792,6 @@ class Debates_core(object):
         self.request = request
 
     def __call__(self):
-        # import pdb; pdb.set_trace()
         return {
             'is_homepage': self.request.view_name in ('index', ''),
             'picture': getattr(self.context, 'homepage_picture', None),
