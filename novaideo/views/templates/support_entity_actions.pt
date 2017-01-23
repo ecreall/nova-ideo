@@ -9,7 +9,7 @@
               withdraw len(withdraw_actions)>0;
               active support or oppose or withdraw;
               oid getattr(obj, '__oid__', '')"
-        class="vertical-support proposal-support ${(support or oppose) and 'my-support'}"
+        class="vertical-support free-support proposal-support ${(support or oppose) and 'my-support'}"
         id='component-support-action-${oid}'>
         <span class="label success"
             tal:condition="support or withdraw"
@@ -34,7 +34,8 @@
                 data-view_title="${item['view_title']}"
                 data-body="${item['body']}"
                 data-icon="${icon}"
-                data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
+                data-component_style="${getattr(item['action'], 'style_interaction_container', '')}"
+                style="display: inline-block;" >
               <span 
                 class="token free-token token-top token-toggle ${not active and 'disabled' or 'active'} octicon octicon-triangle-up ${withdraw and oppose and 'my-token'}"></span>
             </a>
@@ -64,7 +65,7 @@
                 data-view_title="${item['view_title']}"
                 data-body="${item['body']}"
                 data-icon="${icon}"
-                data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" >
+                data-component_style="${getattr(item['action'], 'style_interaction_container', '')}" style="display: inline-block;">
               <span 
                 class="token free-token token-bottom token-toggle ${not active and 'disabled' or 'active'} octicon octicon-triangle-down ${withdraw and support and 'my-token'}"></span>
             </a>

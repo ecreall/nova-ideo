@@ -54,7 +54,7 @@
       </tal:loop>
     </div>
 
-<div tal:condition="support_condition" 
+    <div tal:condition="support_condition" 
         tal:define="
               support any(t.owner is current_user for t in object.tokens_support);
               oppose any(t.owner is current_user for t in object.tokens_opposition);
@@ -81,7 +81,7 @@
               data-action="${request.resource_url(object, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
               class="token token-toggle ${not active and 'disabled' or 'active'} token-danger octicon octicon-triangle-down ${oppose and 'my-token'}"></span>
         </span>
-        </div>
+    </div>
 
 
     <div class="row object-row-content ${support_condition and 'row-md'}">

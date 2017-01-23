@@ -34,6 +34,7 @@ from .behaviors import (
     OpposeQuestion,
     SupportQuestion,
     WithdrawToken,
+    Close,
     # Answer
     DelAnswer,
     EditAnswer,
@@ -44,7 +45,9 @@ from .behaviors import (
     OpposeAnswer,
     SupportAnswer,
     WithdrawTokenAnswer,
-    SeeAnswer)
+    SeeAnswer,
+    ValidateAnswer,
+    TransformToIdea)
 from novaideo import _
 
 
@@ -109,6 +112,10 @@ class QuestionManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Withdraw my opinion"),
                                        title=_("Withdraw my opinion"),
                                        groups=[]),
+                close = ActivityDefinition(contexts=[Close],
+                                       description=_("Close the question"),
+                                       title=_("Close"),
+                                       groups=[]),
                 pg = ParallelGatewayDefinition(),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
@@ -125,6 +132,7 @@ class QuestionManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('pg', 'archive'),
                 TransitionDefinition('pg', 'support'),
+                TransitionDefinition('pg', 'close'),
                 TransitionDefinition('support', 'eg'),
                 TransitionDefinition('pg', 'oppose'),
                 TransitionDefinition('oppose', 'eg'),
@@ -139,6 +147,7 @@ class QuestionManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('associate', 'eg'),
                 TransitionDefinition('see', 'eg'),
                 TransitionDefinition('archive', 'eg'),
+                TransitionDefinition('close', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
 
@@ -196,6 +205,14 @@ class AnswerManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Withdraw my opinion"),
                                        title=_("Withdraw my opinion"),
                                        groups=[]),
+                validate = ActivityDefinition(contexts=[ValidateAnswer],
+                                       description=_("Validate th answer"),
+                                       title=_("Validate"),
+                                       groups=[]),
+                transformtoidea = ActivityDefinition(contexts=[TransformToIdea],
+                                       description=_("Transform the answer into an idea"),
+                                       title=_("Transform into an idea"),
+                                       groups=[]),
                 pg = ParallelGatewayDefinition(),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
@@ -210,6 +227,8 @@ class AnswerManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('pg', 'archive'),
                 TransitionDefinition('pg', 'support'),
+                TransitionDefinition('pg', 'validate'),
+                TransitionDefinition('pg', 'transformtoidea'),
                 TransitionDefinition('support', 'eg'),
                 TransitionDefinition('pg', 'oppose'),
                 TransitionDefinition('oppose', 'eg'),
@@ -222,5 +241,7 @@ class AnswerManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('associate', 'eg'),
                 TransitionDefinition('see', 'eg'),
                 TransitionDefinition('archive', 'eg'),
+                TransitionDefinition('validate', 'eg'),
+                TransitionDefinition('transformtoidea', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )

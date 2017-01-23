@@ -33,6 +33,10 @@ class EditQuestionFormView(FormView):
     name = 'editQuestion'
 
     def before_update(self):
+        if self.context.answers:
+            self.schema.children.remove(
+                self.schema.get('options'))
+
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',

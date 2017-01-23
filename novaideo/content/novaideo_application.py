@@ -501,13 +501,9 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
 
         new_keywords = [k for k in keys
                         if k not in self.colors_mapping]
-        for keyword in new_keywords:
-            background = random_color()
-            hover = hover_color(background)
-            self.colors_mapping[keyword] = {'color': {
-                'background': background,
-                'hover': hover
-            }}
+        colors = random_color(len(new_keywords))
+        for index, keyword in enumerate(new_keywords):
+            self.colors_mapping[keyword] = {'color': colors[index]}
 
     def get_color(self, key):
         if key in getattr(self, 'colors_mapping', {}):

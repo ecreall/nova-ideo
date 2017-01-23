@@ -879,7 +879,7 @@ $(document).ready(function(){
     $($(this).parents('.deform-seq-item').first()).addClass('uploaded')
    })
 
-  $(document).on('click', 'form button[type="submit"]', function(){
+  $(document).on('click', '.files-block form button[type="submit"]', function(){
     $($(this).parents('form').first().find('.deform-seq-item:not(.uploaded)').find('.deform-close-button')).click();
 
   })

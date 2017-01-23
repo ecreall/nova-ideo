@@ -48,7 +48,7 @@ from novaideo.utilities.util import (
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import (
     IPreregistration, IInvitation, IOrganization,
-    Iidea)
+    Iidea, IQuestion)
 from novaideo.content.organization import Organization
 from novaideo.content.proposal import Proposal
 from novaideo.core import can_access
@@ -1022,6 +1022,84 @@ def get_support_entity_metadata(action, request, context, api, **kwargs):
         alert_msg,
         **kwargs)
 
+
+def get_create_question_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The question has been asked."),
+        **kwargs)
+    result['counters-to-update'] = [
+        'component-navbar-mycontents',
+        'novideo-contents-questions',
+        'home-questions-counter'
+        ]
+    return result
+
+
+def get_remove_question_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The question has been suppressed."),
+        **kwargs)
+    result['ignore_redirect'] = not kwargs['is_source_context']
+    result['counters-to-update'] = [
+        'component-navbar-mycontents',
+        'novideo-contents-questions',
+        'home-questions-counter'
+        ]
+    return result
+
+
+def get_archive_question_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The question has been archived."),
+        **kwargs)
+    source_view_name = kwargs.get('view_name', '')
+    view_name = 'seemycontents'
+    if result.get('is_excuted') and source_view_name != view_name:
+        result['objects_to_hide'] = [
+            'listing_'+str(get_oid(context, None))]
+        result['counters-to-update'] = [
+            'home-questions-counter',
+            'person-questions-counter',
+            'novideo-contents-questions'
+        ]
+
+    return result
+
+def get_edit_question_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The question has been modified."),
+        **kwargs)
+
+
+def get_close_question_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The question has been closed."),
+        **kwargs)
+
+
+def get_edit_answer_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The answer has been modified."),
+        **kwargs)
+
+
+def get_validate_answer_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The answer has been validated."),
+        **kwargs)
+
 #Ideas
 
 def get_archive_idea_metadata(action, request, context, api, **kwargs):
@@ -1503,6 +1581,25 @@ def component_navbar_mycontents(action, request, context, api, **kwargs):
     return result
 
 
+def novideo_contents_questions(action, request, context, api, **kwargs):
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any((IQuestion.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Published qyestion')
+    if item_nb > 1:
+        title = _('Published questions')
+
+    result = {
+        'novideo-contents-questions.item_nb': item_nb,
+        'novideo-contents-questions.title': request.localizer.translate(title),
+    }
+
+    return result
+
+
 def novideo_contents_ideas(action, request, context, api, **kwargs):
     dace_catalog = find_catalog('dace')
     states_index = dace_catalog['object_states']
@@ -1591,6 +1688,21 @@ def home_proposals_counter(action, request, context, api, **kwargs):
     return {}
 
 
+def home_questions_counter(action, request, context, api, **kwargs):
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any((IQuestion.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Questions (${nb})', mapping={'nb': item_nb})
+
+    result = {
+        'home-questions-counter.title': request.localizer.translate(title),
+    }
+    return result
+
+
 def home_ideas_counter(action, request, context, api, **kwargs):
     dace_catalog = find_catalog('dace')
     states_index = dace_catalog['object_states']
@@ -1629,20 +1741,25 @@ METADATA_GETTERS = {
     'channelmanagement.subscribe': get_subscribtion_metadata,
     'channelmanagement.unsubscribe': get_subscribtion_metadata,
 
+    'questionmanagement.creat': get_create_question_metadata,
     'questionmanagement.comment': get_comment_metadata,
     'questionmanagement.answer': get_answer_question_metadata,
     'questionmanagement.present': get_present_metadata,
     'questionmanagement.support': get_support_entity_metadata,
     'questionmanagement.oppose': get_support_entity_metadata,
     'questionmanagement.withdraw_token': get_support_entity_metadata,
-    'questionmanagement.edit': get_edit_idea_metadata,
+    'questionmanagement.edit': get_edit_question_metadata,
+    'questionmanagement.delquestion': get_remove_question_metadata,
+    'questionmanagement.archive': get_archive_question_metadata,
+    'questionmanagement.close': get_close_question_metadata,
 
     'answermanagement.comment': get_comment_metadata,
     'answermanagement.present': get_present_metadata,
     'answermanagement.support': get_support_entity_metadata,
     'answermanagement.oppose': get_support_entity_metadata,
     'answermanagement.withdraw_token': get_support_entity_metadata,
-    'answermanagement.edit': get_edit_idea_metadata,
+    'answermanagement.edit': get_edit_answer_metadata,
+    'answermanagement.validate': get_validate_answer_metadata,
 
     'ideamanagement.creat': get_create_idea_metadata,
     'ideamanagement.creatandpublish': get_create_idea_metadata,
@@ -1729,5 +1846,7 @@ COUNTERS_COMPONENTS = {
    'person-ideas-counter': person_ideas_counter,
    'home-proposals-counter': home_proposals_counter,
    'home-ideas-counter': home_ideas_counter,
-   'novideo-contents-ideas': novideo_contents_ideas
+   'home-questions-counter': home_questions_counter,
+   'novideo-contents-ideas': novideo_contents_ideas,
+   'novideo-contents-questions': novideo_contents_questions
 }

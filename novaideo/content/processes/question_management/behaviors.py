@@ -11,6 +11,7 @@ Question management process definition.
 """
 import datetime
 import pytz
+import transaction
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 
@@ -44,6 +45,7 @@ from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea,
     CommentIdea,
     Associate as AssociateIdea)
+from novaideo.content.processes.idea_management.behaviors import CreateIdea
 
 
 def createquestion_roles_validation(process, context):
@@ -107,7 +109,7 @@ class AskQuestion(InfiniteCardinality):
 
 
 def del_roles_validation(process, context):
-    return has_any_roles(roles=(('Owner', context), 'Moderator'))
+    return has_any_roles(roles=('Moderator', ))
 
 
 def del_processsecurity_validation(process, context):
@@ -230,7 +232,14 @@ def answer_roles_validation(process, context):
 
 
 def answer_processsecurity_validation(process, context):
-    return global_user_processsecurity()
+    options = getattr(context, 'options', [])
+    options_condition = True
+    if options:
+        user = get_current()
+        if context.get_selected_option(user):
+            options_condition = False
+
+    return options_condition and global_user_processsecurity()
 
 
 def answer_state_validation(process, context):
@@ -295,12 +304,16 @@ class AnswerQuestion(InfiniteCardinality):
                   subject=subject, body=message)
 
     def start(self, context, request, appstruct, **kw):
+        user = get_current()
         answer = appstruct['_object_data']
         context.addtoproperty('answers', answer)
         answer.format(request)
         answer.state = PersistentList(['published'])
         answer.reindex()
-        user = get_current()
+        if getattr(answer, 'option', None) is not None:
+            answer.question.add_selected_option(user, answer.option)
+
+        transaction.commit()
         grant_roles(user=user, roles=(('Owner', answer), ))
         answer.subscribe_to_channel(user)
         answer.setproperty('author', user)
@@ -419,7 +432,7 @@ def support_processsecurity_validation(process, context):
 
 
 def support_state_validation(process, context):
-    return 'pending' in context.state
+    return 'published' in context.state
 
 
 class SupportQuestion(InfiniteCardinality):
@@ -504,6 +517,39 @@ class WithdrawToken(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return nothing
 
+
+def close_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context), 'Moderator'))
+
+
+def close_processsecurity_validation(process, context):
+    options = getattr(context, 'options', [])
+    return options and global_user_processsecurity()
+
+
+def close_state_validation(process, context):
+    return 'pending' in context.state
+
+
+class Close(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-thumbs-up'
+    style_order = 0
+    context = IQuestion
+    roles_validation = close_roles_validation
+    processsecurity_validation = close_processsecurity_validation
+    state_validation = close_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.state = PersistentList(['closed', 'published'])
+        context.reindex()
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
+
 #TODO behaviors
 
 VALIDATOR_BY_CONTEXT[Question] = {
@@ -535,7 +581,11 @@ class DelAnswer(InfiniteCardinality):
     processsecurity_validation = del_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
+        user = get_current()
         question = context.question
+        if context.option:
+            question.remove_selected_option(user)
+
         request.registry.notify(CorrelableRemoved(object=context))
         question.delfromproperty('answers', context)
         return {}
@@ -573,6 +623,9 @@ class EditAnswer(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.edited = True
         user = get_current()
+        if context.option:
+            context.question.add_selected_option(user, context.option)
+
         current_correlation = context.related_correlation
         if current_correlation and\
            not appstruct['related_contents']:
@@ -686,7 +739,7 @@ def supporta_processsecurity_validation(process, context):
 
 
 def supporta_state_validation(process, context):
-    return 'pending' in context.question.state
+    return 'published' in context.question.state
 
 
 class SupportAnswer(InfiniteCardinality):
@@ -770,6 +823,58 @@ class WithdrawTokenAnswer(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return nothing
+
+
+def validate_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context), 'Moderator'))
+
+
+def validate_processsecurity_validation(process, context):
+    options = getattr(context.question, 'options', [])
+    return not options and global_user_processsecurity()
+
+
+def validate_state_validation(process, context):
+    return 'pending' in context.question.state and 'published' in context.state
+
+
+class ValidateAnswer(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'primary-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-thumbs-up'
+    style_order = 0
+    context = IAnswer
+    roles_validation = validate_roles_validation
+    processsecurity_validation = validate_processsecurity_validation
+    state_validation = validate_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        question = context.question
+        question.state = PersistentList(['closed', 'published'])
+        context.state = PersistentList(['validated', 'published'])
+        context.reindex()
+        question.reindex()
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
+
+
+def state_validation(process, context):
+    return 'published' in context.state
+
+
+class TransformToIdea(CreateIdea):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'icon novaideo-icon icon-idea'
+    style_order = 3
+    title = _('Transform into an idea')
+    context = IAnswer
+    state_validation = state_validation
+
 
 #TODO behaviors
 

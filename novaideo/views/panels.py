@@ -86,7 +86,7 @@ def _getaction(process_id, action_id, request):
     return action, action_view
 
 
-def _get_home_actions_bodies(process_id, action_id, request, root):
+def _get_home_actions_bodies(process_id, action_id, form_id, request, root):
     result = {
         'form': None,
         'action': None,
@@ -101,7 +101,7 @@ def _get_home_actions_bodies(process_id, action_id, request, root):
     if add_content_view:
         add_content_view_instance = add_content_view(
             root, request, behaviors=[add_content_action])
-        add_content_view_instance.viewid = 'form' + process_id + action_id + 'home'
+        add_content_view_instance.viewid = form_id
         add_content_view_instance.is_home_form = True
         add_content_view_result = add_content_view_instance()
         add_content_body = ''
@@ -194,7 +194,7 @@ class AddContent(object):
 
         root = getSite()
         result_idea = _get_home_actions_bodies(
-            'ideamanagement', 'creat', self.request, root)
+            'ideamanagement', 'creat', 'formcreateideahome', self.request, root)
         result['forms'].append({
             'id': 'ideahomeform',
             'active': True,
@@ -211,7 +211,7 @@ class AddContent(object):
         result['js_links'] = result_idea['js_links']
         result['css_links'] = result_idea['css_links']
         result_question = _get_home_actions_bodies(
-            'questionmanagement', 'creat', self.request, root)
+            'questionmanagement', 'creat', 'formaskquestionhome', self.request, root)
         result['forms'].append({
             'id': 'questionhomeform',
             'title': _('Ask a question'),

@@ -110,6 +110,8 @@ class CreateIdeaView_Json(BasicView):
                        'published' not in idea.state:
                         redirect = True
                     else:
+                        result['item_target'] = 'results_contents' \
+                            if is_mycontents_view else 'results-idea'
                         body = body + render_listing_obj(
                             self.request, idea, user)
 

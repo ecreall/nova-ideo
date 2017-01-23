@@ -2002,11 +2002,12 @@
 		};
 	})());
 
-
-	if (amd) {
-		define(function(){
-			return Chart;
-		});
+    if (amd) {
+		try{
+			define(function(){
+				return Chart;
+			});
+		} catch(err){}
 	} else if (typeof module === 'object' && module.exports) {
 		module.exports = Chart;
 	}

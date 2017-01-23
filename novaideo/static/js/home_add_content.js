@@ -47,9 +47,8 @@ $(document).on('change','.home-add-content form input[name="title"], .home-add-c
       event.preventDefault();
       return
     }
-    var parent = $(form.parents('.home-add-content').first());
-    var target = $(parent.find('.similar-contents'));
-    var url = parent.data('url_search')
+    var target = form.parents('.home-add-content').first().find('.similar-contents');
+    var url = form.parents('.home-form-container').first().data('url_search')
     $.getJSON(url,{title: title, keywords: keywords}, function(data){
         if(data.body){
           $(target.find('.similar-contents-container').first()).html(data.body)
@@ -80,7 +79,7 @@ $(document).on('submit','.home-add-content .home-add-idea form', function( event
       event.preventDefault();
        return
     }
-    var parent = $($this.parents('.home-add-content').first());
+    var parent = $($this.parents('.home-form-container').first());
     var title = $this.find('input[name="title"]').val();
     var text = $this.find('textarea[name="text"]').val();
     var keywords = $($this.find('select[name="keywords"]')).val();
@@ -140,8 +139,9 @@ $(document).on('submit','.home-add-content .home-add-idea form', function( event
         success: function(data) {
           var redirect_url = data.redirect_url && !data.ignore_redirect
           if(data.status && !redirect_url){
-                $(data.new_obj_body).hide().prependTo($('.result-container')).fadeIn(1500)
-                init_result_scroll()
+            var item_target = data.item_target
+            $(data.new_obj_body).hide().prependTo($('#'+item_target+' .result-container')).fadeIn(1500)
+            init_result_scroll()
           }
           $this.find('input[name="title"]').val(data['new_title']);
           $this.find('textarea[name="text"]').val('');
@@ -179,7 +179,7 @@ $(document).on('submit','.home-add-content .home-add-question form', function( e
       event.preventDefault();
        return
     }
-    var parent = $($this.parents('.home-add-content').first());
+    var parent = $($this.parents('.home-form-container').first());
     var title = $this.find('input[name="question"]').val();
     var keywords = $($this.find('select[name="keywords"]')).val();
     if(title=='' || !keywords || keywords.length == 0){
@@ -231,8 +231,9 @@ $(document).on('submit','.home-add-content .home-add-question form', function( e
         success: function(data) {
           var redirect_url = data.redirect_url && !data.ignore_redirect
           if(data.status && !redirect_url){
-                $(data.new_obj_body).hide().prependTo($('.result-container')).fadeIn(1500)
-                init_result_scroll()
+            var item_target = data.item_target
+            $(data.new_obj_body).hide().prependTo($('#'+item_target+' .result-container')).fadeIn(1500)
+            init_result_scroll()
           }
           $this.find('input[name="question"]').val('');
           $this.find('textarea[name="text"]').val('');

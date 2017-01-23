@@ -6,9 +6,9 @@
 # author: Amen Souissi
 
 import colander
+from BTrees.OOBTree import OOBTree
 from persistent.dict import PersistentDict
 from zope.interface import implementer
-from BTrees.OOBTree import OOBTree
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -17,7 +17,7 @@ from substanced.util import renamer, get_oid
 from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
-    SequenceWidget, Select2Widget)
+    SequenceWidget)
 from pontus.file import ObjectData, File
 
 from .interface import IQuestion, IAnswer
@@ -46,6 +46,12 @@ def context_is_a_question(context, request):
     return request.registry.content.istype(context, 'question')
 
 
+class Options(colander.SequenceSchema):
+    option = colander.SchemaNode(
+        colander.String()
+        )
+
+
 class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
     """Schema for question"""
 
@@ -59,12 +65,14 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
         )
 
     options = colander.SchemaNode(
-        colander.Set(),
-        widget=Select2Widget(
-            max_len=5,
-            values=[],
-            create=True,
-            multiple=True),
+        colander.Sequence(),
+        colander.SchemaNode(
+            colander.String(),
+            name=_("Option")
+            ),
+        widget=SequenceWidget(
+            add_subitem_text_template='',
+            orderable=True),
         title=_('Options'),
         description=_("To add options, you need to tap the « Enter »"
                       " key after each keyword or separate them with commas."),
@@ -129,6 +137,8 @@ class Question(VersionableEntity, DuplicableEntity,
         super(Question, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.addtoproperty('channels', Channel())
+        self.selected_options = OOBTree()
+        self.users_options = OOBTree()
         self.urls = PersistentDict({})
         self.len_answers = 0
 
@@ -217,6 +227,32 @@ class Question(VersionableEntity, DuplicableEntity,
         self.setproperty('url_files', url_files)
         self.formatted_text = formatted_text
         self.formatted_urls = text_urls
+
+    def add_selected_option(self, user, option):
+        oid = get_oid(user)
+        self.selected_options[oid] = option
+        self.users_options.setdefault(option, [])
+        self.users_options[option].append(oid)
+
+    def remove_selected_option(self, user):
+        oid = get_oid(user)
+        if oid in self.selected_options:
+            option = self.selected_options.pop(oid)
+            self.users_options[option].remove(oid)
+
+    def get_selected_option(self, user):
+        oid = get_oid(user)
+        if oid in self.selected_options:
+            return self.selected_options.get(oid)
+
+        return None
+
+    def get_user_with_option(self, option):
+        options = getattr(self, 'options', [])
+        if options and option in self.users_options:
+            return self.users_options[option]
+
+        return []
 
 ##################################### Answer ##################################
 

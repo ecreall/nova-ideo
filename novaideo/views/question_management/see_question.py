@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -10,7 +10,7 @@ from pyramid.httpexceptions import HTTPFound
 from substanced.util import Batch, get_oid
 
 from dace.objectofcollaboration.principal.util import (
-    get_current)
+    get_current, has_any_roles)
 from dace.util import getSite, find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
@@ -140,6 +140,9 @@ class SeeQuestionView(BasicView):
     behaviors = [SeeQuestion]
     template = 'novaideo:views/question_management/templates/see_question.pt'
     viewid = 'seequestion'
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/chartjs/Chart.js',
+                                 'novaideo:static/js/analytics.js']}
 
     def update(self):
         self.execute(None)
@@ -152,6 +155,7 @@ class SeeQuestionView(BasicView):
         answers_instance = AnswersView(self.context, self.request)
         answers_result = answers_instance.update()
         answers_body = answers_result['coordinates'][AnswersView.coordinates][0]['body']
+        is_censored = 'censored' in self.context.state
         result = {}
         values = {
             'object': self.context,
@@ -163,7 +167,11 @@ class SeeQuestionView(BasicView):
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body'],
-            'support_actions_body': navbars['support_actions_body']
+            'support_actions_body': navbars['support_actions_body'],
+            'is_censored': is_censored,
+            'to_hide': is_censored and not has_any_roles(
+                user=user,
+                roles=(('Owner', self.context), 'Moderator'))
         }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
@@ -171,6 +179,7 @@ class SeeQuestionView(BasicView):
         item['isactive'] = navbars['isactive']
         result.update(navbars['resources'])
         result['coordinates'] = {self.coordinates: [item]}
+        result = merge_dicts(self.requirements_copy, result)
         return result
 
 

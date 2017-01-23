@@ -50,6 +50,7 @@ from novaideo.utilities.alerts_utility import (
 from novaideo.content.alert import InternalAlertKind
 from novaideo.views.filter import get_users_by_preferences
 from novaideo.content.proposal import Proposal
+from novaideo.content.question import Answer
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.correlation import CorrelationType
 from novaideo.content.processes.proposal_management import (
@@ -88,7 +89,7 @@ class CreateIdea(InfiniteCardinality):
         grant_roles(user=user, roles=(('Owner', idea), ))
         idea.setproperty('author', user)
         idea.subscribe_to_channel(user)
-        if isinstance(context, Comment):
+        if isinstance(context, (Comment, Answer)):
             current_correlation = context.related_correlation
             related_contents = []
             content = context.subject
@@ -103,7 +104,8 @@ class CreateIdea(InfiniteCardinality):
                 content,
                 list(related_contents),
                 {'comment': context.comment,
-                 'type': context.intention},
+                 'type': getattr(context, 'intention',
+                                 'Transformation from another content')},
                 user,
                 unique=True)
             context.setproperty('related_correlation', correlation[0])

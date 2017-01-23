@@ -36,7 +36,10 @@
         data-icon="${icon}"
         data-img="">
       </div>
-      <div tal:replace="structure support_actions_body"/>
+      <div class="validated-answer-container">
+        <div tal:replace="structure support_actions_body"/>
+        <span tal:condition="'validated' in object.state" class="glyphicon glyphicon-ok validated-answer">
+      </div>
       <div class="row object-row-content row-md">
         <div class="col col-xs-12 ${files and 'col-md-8' or 'col-md-12'}">
           <div class="object-text">

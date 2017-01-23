@@ -37,7 +37,7 @@
                       <span  class="visible-xs-inline-block">${item['action'].get_title(obj, request, nb_only=True)}</span>
                    </span>
                    <span tal:condition="view_type in ('bloc', 'popover')">${item['action'].get_title(obj, request, nb_only=True)}</span>
-                 <span>
+                 </span>
                </a>
                <script tal:condition="'toreplay' in item">       
                     $(document).ready(function(){

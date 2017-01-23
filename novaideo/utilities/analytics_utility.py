@@ -1,12 +1,24 @@
 
-import random
+import randomcolor
+
+rand_color = randomcolor.RandomColor()
 
 
-def random_color():
-    value = int(random.random() % (10 ** 8) * 255)
-    value2 = int(float('0.'+str(value+20)) * 255)
-    value3 = int(float('0.'+str(value+40)) * 255)
-    return '#%02x%02x%02x' % (value, value2, value3)
+def random_color(count=1):
+    colors = [{'background': c, 'hover': hover_color(c)}
+              for c in rand_color.generate(count=count)]
+    if count == 1:
+        return colors[0]
+
+    return colors
+
+
+def get_colors(count=1):
+    colors = COLORS[0:count]
+    if count == 1:
+        return colors[0]
+
+    return colors
 
 
 def hex_to_rgb(value):
@@ -24,3 +36,5 @@ def hover_color(color):
     value2 = value2 if value2 >= 0 else 0
     value3 = value3 if value3 >= 0 else 0
     return '#%02x%02x%02x' % (value, value2, value3)
+
+COLORS = random_color(100)

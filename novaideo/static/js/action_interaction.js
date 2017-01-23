@@ -28,7 +28,7 @@ function update_modal_action(event){
     var modal_css_class = action.data('component_style');
     var after_exe_url = action.data('after_exe_url');
     var modal_container = $('.action-modal-container')
-    modal_container.attr('class', modal_css_class+' action-modal-container modal fade')
+    modal_container.attr('class', modal_css_class+' action-modal-container action-interation-container modal fade')
     modal_container.data('after_exe_url', after_exe_url)
     if (Boolean(toreplay)){
       var action_body =jQuery.parseJSON(action.data('body'));
@@ -133,7 +133,7 @@ function update_inline_action(){
       include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
-           target.slideDown("slow", function() {
+           target.slideDown("fast", function() {
               var result_scroll = target.parents(".result-scroll")
               init_result_scroll(undefined, 1600, result_scroll.parents('div').first());
            });

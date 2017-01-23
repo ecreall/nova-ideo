@@ -29,7 +29,8 @@ requires = [
     'beautifulsoup4',
     'profilehooks',
     'metadata_parser',
-    'deform_treepy'
+    'deform_treepy',
+    'randomcolor'
     ]
 
 setup(name='novaideo',

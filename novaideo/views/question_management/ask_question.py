@@ -96,7 +96,9 @@ class AskQuestionView_Json(BasicView):
                        'published' not in question.state:
                         redirect = True
                     else:
-                        body = body + render_listing_obj(
+                        result['item_target'] = 'results_contents' \
+                            if is_mycontents_view else 'results-question'
+                        body += render_listing_obj(
                             self.request, question, user)
 
                 if not redirect:
