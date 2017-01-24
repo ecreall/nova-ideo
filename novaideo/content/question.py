@@ -224,7 +224,10 @@ class Question(VersionableEntity, DuplicableEntity,
         if oid in self.selected_options:
             option = self.selected_options.pop(oid)
             if oid in self.users_options[option]:
-                self.users_options[option].remove(oid)
+                user_options = self.users_options[option]
+                user_options.remove(oid)
+                self.users_options[option] = PersistentList(
+                    list(set(user_options)))
 
     def get_selected_option(self, user):
         oid = get_oid(user)

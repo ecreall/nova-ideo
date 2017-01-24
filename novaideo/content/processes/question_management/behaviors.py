@@ -240,7 +240,7 @@ def answer_processsecurity_validation(process, context):
     options_condition = True
     if options:
         user = get_current()
-        if context.get_selected_option(user):
+        if context.get_selected_option(user) is not None:
             options_condition = False
 
     return options_condition and global_user_processsecurity()
