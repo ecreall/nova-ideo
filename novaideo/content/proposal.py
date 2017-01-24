@@ -44,7 +44,8 @@ from novaideo.core import (
     Node,
     Emojiable,
     SignalableEntity,
-    Debatable)
+    Debatable,
+    Tokenable)
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
@@ -184,7 +185,8 @@ class Proposal(VersionableEntity,
                Node,
                Emojiable,
                SignalableEntity,
-               Debatable):
+               Debatable,
+               Tokenable):
     """Proposal class"""
 
     type_title = _('Proposal')
@@ -198,8 +200,6 @@ class Proposal(VersionableEntity,
     author = SharedUniqueProperty('author')
     organization = SharedUniqueProperty('organization')
     working_group = SharedUniqueProperty('working_group', 'proposal')
-    tokens_opposition = CompositeMultipleProperty('tokens_opposition')
-    tokens_support = CompositeMultipleProperty('tokens_support')
     amendments = CompositeMultipleProperty('amendments', 'proposal')
     corrections = CompositeMultipleProperty('corrections', 'proposal')
     attached_files = SharedMultipleProperty('attached_files')
@@ -222,12 +222,6 @@ class Proposal(VersionableEntity,
         return MultiDict([(item, c) for (item, c) in
                           self.all_source_related_contents.items()
                           if c.type == CorrelationType.weak])
-
-    @property
-    def tokens(self):
-        result = list(self.tokens_opposition)
-        result.extend(list(self.tokens_support))
-        return result
 
     @property
     def is_published(self):

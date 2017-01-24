@@ -49,7 +49,7 @@ function filter(event){
   if(filter_container_id){
     target_title = filter_container.parents('.content-view').first().find('#'+filter_container_id+'-title')
   }
-  if(target_title.length==0){
+  if(!target_title || target_title.length==0){
     target_title = $('.pontus-main .panel-heading').first();
   }
   var target = $(form.parents('.items-main-view-container'));
@@ -136,7 +136,7 @@ function sort(){
   if(filter_container_id){
     target_title = filter_container.parents('.content-view').first().find('#'+filter_container_id+'-title')
   }
-  if(target_title.length==0){
+  if(!target_title || target_title.length==0){
     target_title = $('.pontus-main .panel-heading').first();
   }
   var id = target.attr('id')

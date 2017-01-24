@@ -70,8 +70,20 @@ class ContentView(BasicView):
                   'sort_body': sort_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
+        item['isactive'] = getattr(self, 'isactive', False)
         result['coordinates'] = {self.coordinates: [item]}
         return result
+
+
+class QuestionsView(ContentView):
+    title = _('His/her questions (${nb})')
+    content_attr = 'questions'
+    content_type = 'question'
+    viewid = 'person-questions'
+    view_icon = 'icon md md-live-help'
+    counter_id = 'person-questions-counter'
+    empty_message = _("No asked questions")
+    empty_icon = 'icon md md-live-help'
 
 
 class IdeasView(ContentView):
@@ -83,6 +95,7 @@ class IdeasView(ContentView):
     counter_id = 'person-ideas-counter'
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
+    isactive = True
 
 
 class ProposalsView(ContentView):
@@ -103,7 +116,7 @@ class PersonContentsView(MultipleView):
     css_class = 'simple-bloc'
     template = 'novaideo:views/templates/multipleview.pt'
     container_css_class = 'person-view'
-    views = (IdeasView, ProposalsView)
+    views = (QuestionsView, IdeasView, ProposalsView)
 
     def _init_views(self, views, **kwargs):
         if self.request.is_idea_box:
@@ -114,6 +127,9 @@ class PersonContentsView(MultipleView):
 
         if self.params('view_content_attr') == 'proposals':
             views = (ProposalsView, )
+
+        if self.params('view_content_attr') == 'questions':
+            views = (QuestionsView, )
 
         super(PersonContentsView, self)._init_views(views, **kwargs)
 

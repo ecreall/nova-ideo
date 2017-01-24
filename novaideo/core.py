@@ -47,7 +47,8 @@ from novaideo.content.interface import (
     IPerson,
     ISignalableEntity,
     ISustainable,
-    IDebatable)
+    IDebatable,
+    ITokenable)
 
 
 BATCH_DEFAULT_SIZE = 8
@@ -627,6 +628,14 @@ class Sustainable(Entity):
         self.votes_positive = OOBTree()
         self.votes_negative = OOBTree()
 
+    @property
+    def len_support(self):
+        return len(self.votes_positive)
+
+    @property
+    def len_opposition(self):
+        return len(self.votes_negative)
+
     def add_vote(self, user, date, kind='positive'):
         oid = get_oid(user)
         if kind == 'positive':
@@ -653,3 +662,39 @@ class Sustainable(Entity):
     def has_positive_vote(self, user):
         oid = get_oid(user)
         return oid in self.votes_positive
+
+
+@implementer(ITokenable)
+class Tokenable(Entity):
+    """Question class"""
+
+    tokens_opposition = CompositeMultipleProperty('tokens_opposition')
+    tokens_support = CompositeMultipleProperty('tokens_support')
+
+    def __init__(self, **kwargs):
+        super(Tokenable, self).__init__(**kwargs)
+        self.set_data(kwargs)
+
+    @property
+    def tokens(self):
+        result = list(self.tokens_opposition)
+        result.extend(list(self.tokens_support))
+        return result
+
+    @property
+    def len_support(self):
+        return len(self.tokens_support)
+
+    @property
+    def len_opposition(self):
+        return len(self.tokens_opposition)
+
+    def get_token(self, user):
+        tokens = [t for t in getattr(user, 'tokens', []) if
+                  not t.proposal]
+        return tokens[-1] if tokens else None
+
+    def remove_tokens(self):
+        tokens = [t for t in self.tokens]
+        for token in list(tokens):
+            token.owner.addtoproperty('tokens', token)

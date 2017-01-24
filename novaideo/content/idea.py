@@ -41,7 +41,8 @@ from novaideo.core import (
     Node,
     Emojiable,
     SignalableEntity,
-    Debatable)
+    Debatable,
+    Tokenable)
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
     text_urls_format, truncate_text, get_files_data)
@@ -111,7 +112,8 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(Iidea)
 class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
-           ExaminableEntity, Node, Emojiable, SignalableEntity, Debatable):
+           ExaminableEntity, Node, Emojiable, SignalableEntity, Debatable,
+           Tokenable):
     """Idea class"""
 
     type_title = _('Idea')
@@ -126,8 +128,6 @@ class Idea(VersionableEntity, DuplicableEntity,
     organization = SharedUniqueProperty('organization')
     attached_files = CompositeMultipleProperty('attached_files')
     url_files = CompositeMultipleProperty('url_files')
-    tokens_opposition = CompositeMultipleProperty('tokens_opposition')
-    tokens_support = CompositeMultipleProperty('tokens_support')
     opinions_base = OPINIONS
 
     def __init__(self, **kwargs):
@@ -159,12 +159,6 @@ class Idea(VersionableEntity, DuplicableEntity,
         return MultiDict([(item, c) for (item, c) in
                           self.all_source_related_contents.items()
                           if c.type == CorrelationType.weak])
-
-    @property
-    def tokens(self):
-        result = list(self.tokens_opposition)
-        result.extend(list(self.tokens_support))
-        return result
 
     @property
     def authors(self):
@@ -211,11 +205,6 @@ class Idea(VersionableEntity, DuplicableEntity,
 
     def get_attached_files_data(self):
         return get_files_data(self.attached_files)
-
-    def get_token(self, user):
-        tokens = [t for t in getattr(user, 'tokens', []) if
-                  not t.proposal]
-        return tokens[-1] if tokens else None
 
     def get_node_descriminator(self):
         return 'idea'

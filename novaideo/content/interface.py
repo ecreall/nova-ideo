@@ -148,6 +148,11 @@ class ISustainable(IEntity):
     pass
 
 
+@interface(True)
+class ITokenable(IEntity):
+    pass
+
+
 @interface()
 class ISReport(IEntity):
     pass
@@ -188,7 +193,8 @@ class Iidea(IDuplicableEntity,
             IPresentableEntity,
             INode,
             ISignalableEntity,
-            IDebatable):
+            IDebatable,
+            ITokenable):
 
     text = Attribute('text')
 
@@ -302,7 +308,8 @@ class IProposal(ISearchableEntity,
                 IPresentableEntity,
                 INode,
                 ISignalableEntity,
-                IDebatable):
+                IDebatable,
+                ITokenable):
 
     text = Attribute('text')
 

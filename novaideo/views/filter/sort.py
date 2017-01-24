@@ -109,15 +109,15 @@ class sort_config(object):
 
 
 def sort_by_tokens(objects, reverse=False, is_oppose=False):
-    tokens_source = 'tokens_support'
-    tokens_target = 'tokens_opposition'
+    tokens_source = 'len_support'
+    tokens_target = 'len_opposition'
     if is_oppose:
-        tokens_source = 'tokens_opposition'
-        tokens_target = 'tokens_support'
+        tokens_source = 'len_opposition'
+        tokens_target = 'len_support'
 
     ordered_objects = [(obj,
-                        (len(getattr(obj, tokens_source, [])) -
-                         len(getattr(obj, tokens_target, []))))
+                        (getattr(obj, tokens_source, []) -
+                         getattr(obj, tokens_target, [])))
                        for obj in objects]
     groups = {}
     for obj in ordered_objects:
@@ -130,7 +130,7 @@ def sort_by_tokens(objects, reverse=False, is_oppose=False):
         sub_objects = list(groups[group_key])
         groups[group_key] = sorted(
             sub_objects,
-            key=lambda obj: len(getattr(obj[0], tokens_source, [])),
+            key=lambda obj: getattr(obj[0], tokens_source, []),
             reverse=reverse)
     groups = sorted(
         groups.items(),
