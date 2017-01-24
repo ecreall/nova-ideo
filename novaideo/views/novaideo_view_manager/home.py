@@ -40,6 +40,7 @@ class ContentView(BasicView):
     anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     content_type = 'idea'
+    isactive = False
 
     def _add_filter(self, user):
         def source(**args):
@@ -123,8 +124,8 @@ class ContentView(BasicView):
 
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
+        item['isactive'] = self.isactive
         result['coordinates'] = {self.coordinates: [item]}
-
         return result
 
 
@@ -136,6 +137,7 @@ class IdeasView(ContentView):
     counter_id = 'home-ideas-counter'
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
+    isactive = True
 
 
 class ProposalsView(ContentView):
@@ -183,7 +185,7 @@ class HomeView(MultipleView):
     viewid = 'home'
     css_class = 'simple-bloc'
     container_css_class = 'home'
-    views = (IdeasView, ProposalsView, QuestionsView)#, PersonsView)
+    views = (QuestionsView, IdeasView, ProposalsView)#, PersonsView)
 
     def _init_views(self, views, **kwargs):
         if self.request.is_idea_box:

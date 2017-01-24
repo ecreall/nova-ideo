@@ -809,7 +809,9 @@ class CommentIdea(InfiniteCardinality):
             comment.reindex()
             user = get_current()
             grant_roles(user=user, roles=(('Owner', comment), ))
-            context.subscribe_to_channel(user)
+            if getattr(self, 'subscribe_to_channel', True):
+                context.subscribe_to_channel(user)
+
             comment.setproperty('author', user)
             if appstruct['related_contents']:
                 related_contents = appstruct['related_contents']

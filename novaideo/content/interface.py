@@ -134,6 +134,11 @@ class ICommentable(IEntity):
 
 
 @interface(True)
+class IDebatable(IEntity):
+    pass
+
+
+@interface(True)
 class ISignalableEntity(IEntity):
     pass
 
@@ -168,7 +173,8 @@ class IPrivateChannel(IChannel):
 class IAmendment(ICorrelableEntity,
                  IPresentableEntity,
                  IDuplicableEntity,
-                 ISearchableEntity):
+                 ISearchableEntity,
+                 IDebatable):
 
     text = Attribute('text')
 
@@ -181,7 +187,8 @@ class Iidea(IDuplicableEntity,
             ICorrelableEntity,
             IPresentableEntity,
             INode,
-            ISignalableEntity):
+            ISignalableEntity,
+            IDebatable):
 
     text = Attribute('text')
 
@@ -197,7 +204,8 @@ class IQuestion(IDuplicableEntity,
                 IPresentableEntity,
                 INode,
                 ISignalableEntity,
-                ISustainable):
+                ISustainable,
+                IDebatable):
     question = Attribute('question')
 
     text = Attribute('text')
@@ -212,7 +220,8 @@ class IAnswer(ICorrelableEntity,
               INode,
               IIdeaSource,
               ISignalableEntity,
-              ISustainable):
+              ISustainable,
+              IDebatable):
     comment = Attribute('comment')
 
     attached_files = Attribute('attached_files', type=FILETYPE, multiplicity='*')
@@ -224,7 +233,7 @@ class IFile(ISearchableEntity):
 
 
 @interface()
-class ICorrelation(IEntity):
+class ICorrelation(IEntity, IDebatable):
     pass
 
 
@@ -266,7 +275,8 @@ class IPerson(IVisualisableElement,
               ISearchableEntity,
               ICorrelableEntity,
               IBaseUser,
-              IUser):
+              IUser,
+              IDebatable):
 
     picture = Attribute('picture', type=IMAGETYPE)
 
@@ -291,7 +301,8 @@ class IProposal(ISearchableEntity,
                 IDuplicableEntity,
                 IPresentableEntity,
                 INode,
-                ISignalableEntity):
+                ISignalableEntity,
+                IDebatable):
 
     text = Attribute('text')
 
@@ -327,7 +338,7 @@ class IOrganization(IEntity):
 
 
 @interface()
-class INovaIdeoApplication(IEntity, IApplication, IIdeaSource):
+class INovaIdeoApplication(IEntity, IApplication, IIdeaSource, IDebatable):
     pass
 
 

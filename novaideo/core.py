@@ -46,7 +46,8 @@ from novaideo.content.interface import (
     IEmojiable,
     IPerson,
     ISignalableEntity,
-    ISustainable)
+    ISustainable,
+    IDebatable)
 
 
 BATCH_DEFAULT_SIZE = 8
@@ -211,6 +212,32 @@ class Commentable(VisualisableElement, Entity):
             channel.len_comments -= 1
             if self is not channel:
                 self.len_comments -= 1
+
+
+@implementer(IDebatable)
+class Debatable(VisualisableElement, Entity):
+    """ A Debatable entity is an entity that can be comment"""
+
+    channels = CompositeMultipleProperty('channels', 'subject')
+
+    def __init__(self, **kwargs):
+        super(Debatable, self).__init__(**kwargs)
+
+    @property
+    def channel(self):
+        channels = getattr(self, 'channels', [])
+        return channels[0] if channels else None
+
+    def get_title(self, user=None):
+        return getattr(self, 'title', '')
+
+    def subscribe_to_channel(self, user):
+        channel = getattr(self, 'channel', None)
+        if channel and (user not in channel.members):
+            channel.addtoproperty('members', user)
+
+    def add_new_channel(self):
+        self.addtoproperty('channels', Channel())
 
 
 @content(
@@ -381,7 +408,6 @@ class SearchableEntity(VisualisableElement, Entity):
 
     templates = {'default': 'novaideo:templates/views/default_result.pt',
                  'bloc': 'novaideo:templates/views/default_result.pt'}
-    channels = CompositeMultipleProperty('channels', 'subject')
 
     def __init__(self, **kwargs):
         super(SearchableEntity, self).__init__(**kwargs)
@@ -401,24 +427,11 @@ class SearchableEntity(VisualisableElement, Entity):
                 getattr(self, 'description', ''),
                 ', '.join(getattr(self, 'keywords', []))]
 
-    @property
-    def channel(self):
-        channels = getattr(self, 'channels', [])
-        return channels[0] if channels else None
-
     def get_title(self, user=None):
         return getattr(self, 'title', '')
 
-    def subscribe_to_channel(self, user):
-        channel = getattr(self, 'channel', None)
-        if channel and (user not in channel.members):
-            channel.addtoproperty('members', user)
-
     def _init_presentation_text(self):
         pass
-
-    def add_new_channel(self):
-        self.addtoproperty('channels', Channel())
 
     def get_release_date(self):
         return getattr(self, 'release_date', self.modified_at)

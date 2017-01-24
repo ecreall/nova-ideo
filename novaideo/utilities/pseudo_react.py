@@ -168,14 +168,18 @@ def get_all_updated_data(action, request, context, api, **kwargs):
         #update views: listing view, index view
         result_ovtu = result.get('object_views_to_update', [])
         #include listingbloc
-        for ovtu in list(result_ovtu):
-            if ovtu.startswith('listing_'):
-                result_ovtu.append(
-                    ovtu.replace('listing_', 'listingbloc_'))
-
+        result_ovtu.extend([ovtu.replace('listing_', 'listingbloc_')
+                            for ovtu in result_ovtu
+                            if ovtu.startswith('listing_')])
         object_views_to_update = [o for o in result_ovtu
                                   if o in kwargs['object_views']]
-        for obj_id in object_views_to_update:
+        force_ovtu = result.get('force_object_views_to_update', [])
+        force_ovtu.extend([ovtu.replace('listing_', 'listingbloc_')
+                           for ovtu in force_ovtu
+                           if ovtu.startswith('listing_')])
+        object_views_to_update.extend(force_ovtu)
+        result['object_views_to_update'] = list(set(object_views_to_update))
+        for obj_id in result['object_views_to_update']:
             result.update(_render_obj_view(
                 obj_id, user, request))
 
@@ -1069,6 +1073,7 @@ def get_archive_question_metadata(action, request, context, api, **kwargs):
 
     return result
 
+
 def get_edit_question_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request,
@@ -1094,11 +1099,29 @@ def get_edit_answer_metadata(action, request, context, api, **kwargs):
 
 
 def get_validate_answer_metadata(action, request, context, api, **kwargs):
-    return get_edit_entity_metadata(
+    result = get_edit_entity_metadata(
         action, request,
         context, api,
         _("The answer has been validated."),
         **kwargs)
+    context_id = str(get_oid(context.question, None))
+    result['force_object_views_to_update'] = [
+        'listing_'+context_id,
+        'index_'+context_id]
+    return result
+
+
+def get_tranform_answer_into_idea_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The answer has been transformed into an idea."),
+        **kwargs)
+    result['counters-to-update'] = [
+        'component-navbar-mycontents',
+        'novideo-contents-ideas',
+        'home-ideas-counter'
+        ]
+    return result
 
 #Ideas
 
@@ -1760,6 +1783,7 @@ METADATA_GETTERS = {
     'answermanagement.withdraw_token': get_support_entity_metadata,
     'answermanagement.edit': get_edit_answer_metadata,
     'answermanagement.validate': get_validate_answer_metadata,
+    'answermanagement.transformtoidea': get_tranform_answer_into_idea_metadata,
 
     'ideamanagement.creat': get_create_idea_metadata,
     'ideamanagement.creatandpublish': get_create_idea_metadata,

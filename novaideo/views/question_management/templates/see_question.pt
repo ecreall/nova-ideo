@@ -1,8 +1,5 @@
-<div i18n:domain="novaideo" class="content-view component-obj-view component-index-view"
-     id="index_${oid}"
-     data-component_type="object-view"
+<div i18n:domain="novaideo"
      tal:define="
-        oid object.__oid__;
         icon getattr(object, 'icon');
         options getattr(object, 'options', []);
         selected_option object.get_selected_option(current_user)">
@@ -50,7 +47,11 @@
    </div>
   </div>
   <div tal:condition="not to_hide">
-    <div tal:replace="structure support_actions_body"/>
+    <div class="validated-answer-container">
+        <div tal:replace="structure support_actions_body"/>
+        <span tal:condition="'closed' in object.state" class="glyphicon glyphicon-ok validated-question">
+        <span tal:condition="'pending' in object.state" class="glyphicon glyphicon-time pending-question">
+    </div>
     <div id="contenttext" class="content-text ${support_actions_body and 'row-md'}"  i18n:domain="novaideo"
       tal:define="files object.get_attached_files_data();
                   len_files len(files)">
@@ -155,62 +156,6 @@
     <div id="filter-results-answers-title">
       <div class="panel-title">
         <h4>${answers_title}</h4>
-      </div>
-    </div>
-    <div class="integreted-tab-content">
-      <!-- Nav tabs -->
-      <ul tal:condition="options" class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#answers${oid}" aria-controls="answers${oid}" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-saved"></span> Answers</a></li>
-        <li role="presentation"><a id="stat${oid}-tab" href="#stat${oid}" aria-controls="stat${oid}" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-equalizer"></span> Analytics</a></li>
-      </ul>
-
-      <!-- Tab panes -->
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="answers${oid}">
-          ${structure:answers_body}
-        </div>
-        <div tal:condition="options" role="tabpanel" class="tab-pane" id="stat${oid}">
-          <div class="container-fluid analytics-container" style="max-width: 50%;">
-            <div class="analytics-study-${oid}"></div>
-            <canvas id="stat-canvas-${oid}" ></canvas>
-            <div class="legend" id="legend-doughnut-${oid}"></div>
-            <script>
-              <div tal:omit-tag="" tal:define="colors layout.get_colors(len(options))">
-                $('#stat${oid}-tab').on('shown.bs.tab', function (e) {
-                    var doughnutData = [
-                      <div tal:omit-tag="" tal:repeat="(index, item) enumerate(options)">
-                          <div tal:omit-tag=""
-                               tal:define="
-                                  val len(object.get_user_with_option(index));
-                                  glob len(object.selected_options)">
-                          {
-                              label: "${item}",
-                              fillColor: "${colors[index]['background']}",
-                              color: "${colors[index]['background']}",
-                              highlight: "${colors[index]['hover']}",
-                              value: ${(val*100/glob) if glob else 0}
-                          },
-                          </div>
-                     </div>
-
-                  ];
-                  var canvas_id = "stat-canvas-${oid}"
-                  var newcanvas = get_new_canvas(canvas_id);
-                  $(canvas_id).replaceWith(newcanvas)
-                  var ctxdoughnut = document.getElementById(canvas_id).getContext("2d");
-                  ctxdoughnut.clearRect(0, 0, 500, 500);
-                  var doughnut = new Chart(ctxdoughnut).Doughnut(doughnutData, {
-                      responsive: true,
-                      tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> %",
-                      generateLegend: true,
-                  });
-                  var doughnutlegend = doughnut.generateLegend();
-                  $('.analytics-container #legend-doughnut-${oid}').html(doughnutlegend)
-                })
-              </div>
-            </script>
-          </div>
-        </div>
       </div>
     </div>
   </div>

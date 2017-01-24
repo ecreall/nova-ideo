@@ -622,6 +622,34 @@ def disconnect(
                 graph, calculated = obj.init_graph(calculated)
 
 
+def get_files_data(files):
+    result = []
+    for picture in files:
+        if picture:
+            if picture.mimetype.startswith('image'):
+                result.append({
+                    'content': picture.url,
+                    'type': 'img'})
+
+            if picture.mimetype.startswith(
+                    'application/x-shockwave-flash'):
+                result.append({
+                    'content': picture.url,
+                    'type': 'flash'})
+
+            if picture.mimetype.startswith('text/html'):
+                blob = picture.blob.open()
+                blob.seek(0)
+                content = blob.read().decode("utf-8")
+                blob.seek(0)
+                blob.close()
+                result.append({
+                    'content': content,
+                    'type': 'html'})
+
+    return result
+
+
 def add_file_data(container, attr):
     file_ = container.get(attr, None)
     if file_ and hasattr(file_, 'get_data'):

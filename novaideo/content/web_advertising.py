@@ -30,7 +30,7 @@ from novaideo.core import (
     SearchableEntity,
     ADVERTISING_CONTAINERS)
 from novaideo.utilities import french_dates_parser as Parser
-from novaideo.utilities.util import dates
+from novaideo.utilities.util import dates, get_files_data
 from novaideo.views.widget import DateIcalWidget
 from novaideo.content import get_file_widget
 
@@ -164,23 +164,9 @@ class WebAdvertising(Advertising):
 
     def _extract_content(self):
         if self.picture:
-            if self.picture.mimetype.startswith('image'):
-                return {'content': self.picture.url,
-                        'type': 'img'}
-
-            if self.picture.mimetype.startswith(
-                           'application/x-shockwave-flash'):
-                return {'content': self.picture.url,
-                        'type': 'flash'}
-
-            if self.picture.mimetype.startswith('text/html'):
-                blob = self.picture.blob.open()
-                blob.seek(0)
-                content = blob.read().decode("utf-8")
-                blob.seek(0)
-                blob.close()
-                return {'content': content,
-                        'type': 'html'}
+            result = get_files_data([self.picture])
+            if result:
+                return result[0]
 
         html_content = getattr(self, 'html_content', '')
         if html_content:

@@ -30,7 +30,8 @@ from novaideo import _, log
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
     text_urls_format,
-    get_emoji_form)
+    get_emoji_form,
+    get_files_data)
 
 
 @colander.deferred
@@ -229,7 +230,7 @@ class Comment(Commentable, Emojiable, SignalableEntity):
         if self.related_correlation:
             return [t for t
                     in self.related_correlation.targets
-                    if not isinstance(t, Comment)]
+                    if t is not self]
         return []
 
     def get_title(self):
@@ -260,31 +261,7 @@ class Comment(Commentable, Emojiable, SignalableEntity):
         self.formatted_urls = text_urls
 
     def get_attached_files_data(self):
-        result = []
-        for picture in self.files:
-            if picture:
-                if picture.mimetype.startswith('image'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'img'})
-
-                if picture.mimetype.startswith(
-                        'application/x-shockwave-flash'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'flash'})
-
-                if picture.mimetype.startswith('text/html'):
-                    blob = picture.blob.open()
-                    blob.seek(0)
-                    content = blob.read().decode("utf-8")
-                    blob.seek(0)
-                    blob.close()
-                    result.append({
-                        'content': content,
-                        'type': 'html'})
-
-        return result
+        return get_files_data(self.files)
 
     def can_add_reaction(self, process):
         return True

@@ -15,7 +15,7 @@
          tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
       <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
       <small>
-        <span i18n:translate="">Submitted by</span>
+        <span i18n:translate="">Asked by</span>
         <a tal:attributes="href request.resource_url(author, '@@index')"
           data-oid="${getattr(author, '__oid__', '')}"
           class="toggle-popover">
@@ -41,7 +41,6 @@
           <div class="listing-access-menu">
             <div tal:replace="structure access_body"/>
           </div>
-          <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
         </h4>
       </a>
     </div>
@@ -52,7 +51,11 @@
             <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
       </tal:loop>
     </div>
-    <div tal:replace="structure support_actions_body"/>
+    <div class="validated-answer-container">
+        <div tal:replace="structure support_actions_body"/>
+        <span tal:condition="'closed' in object.state" class="glyphicon glyphicon-ok validated-question">
+        <span tal:condition="'pending' in object.state" class="glyphicon glyphicon-time pending-question">
+    </div>
     <div class="row object-row-content row-md">
       <div class="col col-xs-12 ${files and 'col-md-8' or 'col-md-12'}">
         <div class="object-text">${structure:object.presentation_text(500)}</div>

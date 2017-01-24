@@ -9,12 +9,15 @@ from pyramid.httpexceptions import HTTPFound
 
 from substanced.util import Batch, get_oid
 
+from dace.processinstance.core import (
+    ValidationError, Validator)
 from dace.objectofcollaboration.principal.util import (
     get_current, has_any_roles)
 from dace.util import getSite, find_catalog
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 from pontus.util import merge_dicts
+from pontus.view_operation import MultipleView
 
 from novaideo.content.processes import get_states_mapping
 from novaideo.core import BATCH_DEFAULT_SIZE
@@ -37,15 +40,22 @@ CONTENTS_MESSAGES = {
 }
 
 
+@view_config(
+    name='seeanswers',
+    context=Question,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
 class AnswersView(BasicView):
+    name = 'seeanswers'
+    viewid = 'seeanswers'
     template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
-    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    view_icon = 'glyphicon glyphicon-saved'
+    title = _('Answers')
     empty_message = _("No answers")
-    empty_icon = 'glyphicon glyphicon-user'
+    empty_icon = 'glyphicon glyphicon-saved'
     selected_filter = [('temporal_filter', ['negation', 'created_date']),
                        'text_filter']
-    name = 'seequestion'
-    viewid = 'seequestion'
 
     def _add_filter(self, user):
         def source(**args):
@@ -101,12 +111,13 @@ class AnswersView(BasicView):
                       default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results-answers"
         len_answers = batch.seqlen
-        index = str(len_answers)
-        if len_answers > 1:
-            index = '*'
+        index = str(len_answers) if len_answers <= 1 else '*'
+        if not self.parent:
+            self.title = _(CONTENTS_MESSAGES[index],
+                           mapping={'nember': len_answers})
+        elif index != '*':
+            self.title = _('The answer')
 
-        self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_answers})
         filter_data['filter_message'] = self.title
         filter_body = self.filter_instance.get_body(filter_data)
         result_body, result = render_listing_objs(
@@ -125,24 +136,68 @@ class AnswersView(BasicView):
                   'sort_body': sort_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
+        item['isactive'] = True
         result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
-@view_config(
-    name='seequestion',
-    context=Question,
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
-class SeeQuestionView(BasicView):
-    title = ''
-    name = 'seequestion'
-    behaviors = [SeeQuestion]
-    template = 'novaideo:views/question_management/templates/see_question.pt'
-    viewid = 'seequestion'
+class AnalyticsValidator(Validator):
+    """The validor for the Analytics view"""
+
+    @classmethod
+    def validate(cls, context, request, **kw):
+        if getattr(context, 'options', []):
+            return True
+
+        raise ValidationError(msg=_("Permission denied"))
+
+
+class AnalyticsView(BasicView):
+    name = 'seeanalyticsquestion'
+    viewid = 'seeanalyticsquestion'
+    validators = [AnalyticsValidator]
+    template = 'novaideo:views/question_management/templates/analytics_question.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    view_icon = 'glyphicon glyphicon-stats'
+
+    title = _('Analytics')
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/chartjs/Chart.js',
                                  'novaideo:static/js/analytics.js']}
+
+    def update(self):
+        result = {}
+        values = {
+            'object': self.context,
+            'tab_id': self.viewid + self.coordinates
+        }
+        body = self.content(args=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        result = merge_dicts(self.requirements_copy, result)
+        return result
+
+
+class AnswersDetailsView(MultipleView):
+    name = 'seeanswersdetails'
+    viewid = 'seeanswersdetails'
+    template = 'novaideo:views/templates/multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    css_class = 'integreted-tab-content question-details'
+    title = ''
+    views = (AnswersView, AnalyticsView)
+
+    def _activate(self, items):
+        pass
+
+
+class SeeQuestionHeaderView(BasicView):
+    title = ''
+    name = 'seequestionheader'
+    behaviors = [SeeQuestion]
+    template = 'novaideo:views/question_management/templates/see_question.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    viewid = 'seequestionheader'
 
     def update(self):
         self.execute(None)
@@ -152,18 +207,27 @@ class SeeQuestionView(BasicView):
             return HTTPFound(self.request.resource_url(getSite(), ''))
 
         user = get_current()
-        answers_instance = AnswersView(self.context, self.request)
-        answers_result = answers_instance.update()
-        answers_body = answers_result['coordinates'][AnswersView.coordinates][0]['body']
         is_censored = 'censored' in self.context.state
+        dace_catalog = find_catalog('dace')
+        container_oid = dace_catalog['containers_oids']
+        answers = find_entities(
+            interfaces=[IAnswer],
+            user=user,
+            add_query=container_oid.any([get_oid(self.context)]))
+        len_answers = len(answers.ids)
+        index = str(len_answers)
+        if len_answers > 1:
+            index = '*'
+
+        answers_title = _(CONTENTS_MESSAGES[index],
+                          mapping={'nember': len_answers})
         result = {}
         values = {
             'object': self.context,
             'state': get_states_mapping(
                 user, self.context, self.context.state[0]),
             'current_user': user,
-            'answers_body': answers_body,
-            'answers_title': answers_instance.title,
+            'answers_title': answers_title,
             'navbar_body': navbars['navbar_body'],
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body'],
@@ -179,8 +243,20 @@ class SeeQuestionView(BasicView):
         item['isactive'] = navbars['isactive']
         result.update(navbars['resources'])
         result['coordinates'] = {self.coordinates: [item]}
-        result = merge_dicts(self.requirements_copy, result)
         return result
+
+
+@view_config(
+    name='seequestion',
+    context=Question,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class SeeQuestionView(MultipleView):
+    name = 'seequestion'
+    template = 'novaideo:views/templates/entity_multipleview.pt'
+    title = ''
+    views = (SeeQuestionHeaderView, AnswersDetailsView)
+    validators = [SeeQuestion.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
@@ -188,4 +264,4 @@ DEFAULTMAPPING_ACTIONS_VIEWS.update(
 
 
 FILTER_SOURCES.update(
-    {SeeQuestionView.name: SeeQuestionView})
+    {AnswersView.name: AnswersView})

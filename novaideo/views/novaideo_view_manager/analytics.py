@@ -34,7 +34,7 @@ from novaideo.views.filter import (
     get_contents_by_dates)
 
 
-DEFAULT_CONTENT_TYPES = ['idea', 'proposal']
+DEFAULT_CONTENT_TYPES = ['idea', 'proposal', 'question']
 
 
 DATESOF = [

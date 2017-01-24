@@ -40,9 +40,11 @@ from novaideo.core import (
     Channel,
     Node,
     Emojiable,
-    SignalableEntity)
+    SignalableEntity,
+    Debatable)
 from novaideo.content import get_file_widget
-from novaideo.utilities.util import text_urls_format, truncate_text
+from novaideo.utilities.util import (
+    text_urls_format, truncate_text, get_files_data)
 
 
 OPINIONS = OrderedDict([
@@ -109,7 +111,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(Iidea)
 class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
-           ExaminableEntity, Node, Emojiable, SignalableEntity):
+           ExaminableEntity, Node, Emojiable, SignalableEntity, Debatable):
     """Idea class"""
 
     type_title = _('Idea')
@@ -208,31 +210,7 @@ class Idea(VersionableEntity, DuplicableEntity,
         }
 
     def get_attached_files_data(self):
-        result = []
-        for picture in self.attached_files:
-            if picture:
-                if picture.mimetype.startswith('image'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'img'})
-
-                if picture.mimetype.startswith(
-                        'application/x-shockwave-flash'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'flash'})
-
-                if picture.mimetype.startswith('text/html'):
-                    blob = picture.blob.open()
-                    blob.seek(0)
-                    content = blob.read().decode("utf-8")
-                    blob.seek(0)
-                    blob.close()
-                    result.append({
-                        'content': content,
-                        'type': 'html'})
-
-        return result
+        return get_files_data(self.attached_files)
 
     def get_token(self, user):
         tokens = [t for t in getattr(user, 'tokens', []) if

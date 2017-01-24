@@ -41,7 +41,8 @@ from novaideo.core import (
     SearchableEntitySchema,
     keywords_choice,
     CorrelableEntity,
-    generate_access_keys)
+    generate_access_keys,
+    Debatable)
 from .interface import (
     IPerson, IPreregistration, IAlert, IProposal, Iidea)
 from novaideo import _
@@ -262,7 +263,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     icon='icon glyphicon glyphicon-user',
     )
 @implementer(IPerson)
-class Person(User, SearchableEntity, CorrelableEntity):
+class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     """Person class"""
 
     type_title = _('Person')

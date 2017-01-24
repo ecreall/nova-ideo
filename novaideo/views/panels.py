@@ -33,7 +33,9 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMySupports)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.content.person import Person
-from novaideo.content.interface import IPerson, Iidea, IProposal, ISmartFolder
+from novaideo.content.interface import (
+    IPerson, Iidea, IProposal, ISmartFolder,
+    IQuestion)
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.core import _, SearchableEntity, can_access
 from novaideo.content.processes.user_management.behaviors import (
@@ -301,6 +303,9 @@ class NovaideoContents(object):
         query = object_provides_index.any((Iidea.__identifier__ ,)) & \
                 states_index.any(['published'])
         result['nb_idea'] = query.execute().__len__()
+        query = object_provides_index.any((IQuestion.__identifier__ ,)) & \
+                states_index.any(['published'])
+        result['nb_question'] = query.execute().__len__()
         result['nb_proposal'] = 0
         if not getattr(self.request, 'is_idea_box', False):
             query = object_provides_index.any((IProposal.__identifier__ ,)) & \
@@ -365,8 +370,6 @@ class LateralMenu(object):
 
     def __call__(self):
         root = getSite()
-        # resources = deepcopy(getattr(
-        #     self.request, 'resources', {'js_links': [], 'css_links': []}))
         try:
             navbars = generate_listing_menu(
                 self.request, root,
@@ -379,11 +382,6 @@ class LateralMenu(object):
             'css_links': [],
             'js_links': [],
             'menu_body': navbars['menu_body']}
-        # result['css_links'] = [c for c in navbars['resources'].get('css_links', [])
-        #                        if c not in resources['css_links']]
-        # result['js_links'] = [c for c in navbars['resources'].get('js_links', [])
-        #                       if c not in resources['js_links']]
-        # update_resources(self.request, result)
         return result
 
 

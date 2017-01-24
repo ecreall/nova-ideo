@@ -4,7 +4,11 @@
                 <div tal:omit-tag="" tal:condition="nb_person > 0">
                    <li class="counter" id="novideo-contents-members" data-component_type="novaideo_content_nb" tal:condition="nb_person == 1"><strong>${nb_person}</strong> <span i18n:translate="">Member</span></li>
                    <li class="counter" id="novideo-contents-members" data-component_type="novaideo_content_nb" tal:condition="nb_person > 1"><strong>${nb_person}</strong> <span i18n:translate="">Members</span></li>
-                </div>    
+                </div>
+                <div tal:omit-tag="" tal:condition="nb_question > 0">
+                   <li class="counter" id="novideo-contents-questions" data-component_type="novaideo_content_nb" tal:condition="nb_question == 1"><strong>${nb_question}</strong> <span i18n:translate="">Asked question</span></li>
+                   <li class="counter" id="novideo-contents-questions" data-component_type="novaideo_content_nb" tal:condition="nb_question > 1"><strong>${nb_question}</strong> <span i18n:translate="">Asked questions</span></li>
+                </div>   
                 <div tal:omit-tag="" tal:condition="nb_idea > 0">
                    <li class="counter" id="novideo-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published idea</span></li>
                    <li class="counter" id="novideo-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published ideas</span></li>

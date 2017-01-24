@@ -1,16 +1,30 @@
+.integreted-tab-content.question-details{
+  margin-top: 35px
+}
+
+.integreted-tab-content.question-details>ul.nav-tabs{
+  margin-top: -20px
+}
+
 .validated-answer-container{
     width: 30px;
     float: left;
 }
 
-.validated-answer{
+.validated-answer,
+.validated-question,
+.pending-question{
     color: #4eaf4e;
     font-size: 22px;
     margin-left: 5px;
     float: left;
-    margin-left: -3px;
+    margin-left: 0px;
     margin-top: 0!important;
     margin-right: 0;
+}
+
+.pending-question{
+  color: #f39200
 }
 
 .filter-results-answers-title .panel-title h4{
@@ -1034,8 +1048,17 @@ a.emoji-group-tab:hover{
   color: #333;
   line-height: 1.5;
 }
+
 .popover-person .popover-title{
   border-bottom: 3px solid #d9534f !important;
+}
+
+.popover-question .popover-title{
+  border-bottom: 3px solid @question-color !important;
+}
+
+.popover-answer .popover-title{
+  border-bottom: 3px solid @answer-color !important;
 }
 
 .popover-idea .popover-title{
@@ -1526,6 +1549,14 @@ form .btn{
 .graph-legend div .line{
     width: 50px;
     display: inline-block;
+}
+
+.graph-legend div.graph-legend-question .circle{
+  background-color: @question-color;
+}
+
+.graph-legend div.graph-legend-answer .circle{
+  background-color: @answer-color;
 }
 
 .graph-legend div.graph-legend-idea .circle{
@@ -3196,6 +3227,10 @@ ins {
     border-left: 5px solid @question-color !important;
 }
 
+.media-answer {
+    border-left: 5px solid @answer-color !important;
+}
+
 .thumbnail.right-caption > .media-file {
     border-left: 5px solid #636363 !important;
 }
@@ -3212,6 +3247,11 @@ ins {
 
 .media-bloc.media-question {
     border-top: 5px solid @question-color !important;
+    border-left: transparent !important
+}
+
+.media-bloc.media-answer {
+    border-top: 5px solid @answer-color !important;
     border-left: transparent !important
 }
 
@@ -3259,6 +3299,10 @@ ins {
 
 .thumbnail.small-result > .media-question {
     border-left: 3px solid @question-color !important;
+}
+
+.thumbnail.small-result > .media-answer {
+    border-left: 3px solid @answer-color !important;
 }
 
 

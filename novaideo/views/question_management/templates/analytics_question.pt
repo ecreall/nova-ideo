@@ -1,0 +1,43 @@
+<div class="container-fluid analytics-container" style="max-width: 50%;"
+     tal:define="
+        oid object.__oid__;
+        options getattr(object, 'options', []);">
+  <div class="analytics-study-${oid}"></div>
+  <canvas id="stat-canvas-${oid}" ></canvas>
+  <div class="legend" id="legend-doughnut-${oid}"></div>
+  <script>
+    <div tal:omit-tag="" tal:define="colors layout.get_colors(len(options))">
+      $('.nav-tabs li>a[href="#${tab_id}"]').on('shown.bs.tab', function (e) {
+          var doughnutData = [
+            <div tal:omit-tag="" tal:repeat="(index, item) enumerate(options)">
+                <div tal:omit-tag=""
+                     tal:define="
+                        val len(object.get_user_with_option(index));
+                        glob len(object.selected_options)">
+                {
+                    label: "${item}",
+                    fillColor: "${colors[index]['background']}",
+                    color: "${colors[index]['background']}",
+                    highlight: "${colors[index]['hover']}",
+                    value: ${(val*100/glob) if glob else 0}
+                },
+                </div>
+           </div>
+
+        ];
+        var canvas_id = "stat-canvas-${oid}"
+        var newcanvas = get_new_canvas(canvas_id);
+        $(canvas_id).replaceWith(newcanvas)
+        var ctxdoughnut = document.getElementById(canvas_id).getContext("2d");
+        ctxdoughnut.clearRect(0, 0, 500, 500);
+        var doughnut = new Chart(ctxdoughnut).Doughnut(doughnutData, {
+            responsive: true,
+            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> %",
+            generateLegend: true,
+        });
+        var doughnutlegend = doughnut.generateLegend();
+        $('.analytics-container #legend-doughnut-${oid}').html(doughnutlegend)
+      })
+    </div>
+  </script>
+</div>

@@ -25,7 +25,7 @@ class EditAnswerFormView(FormView):
     schema = select(AnswerSchema(factory=Answer,
                                  editable=True,
                                  omit=('related_contents',)),
-                    ['files', 'related_contents', 'options', 'comment'])
+                    ['files', 'related_contents', 'option', 'comment'])
     behaviors = [EditAnswer, Cancel]
     formid = 'formeditanswer'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
@@ -34,10 +34,10 @@ class EditAnswerFormView(FormView):
     def before_update(self):
         options = getattr(self.context.question, 'options', [])
         if options:
-            self.schema.get('options').widget = options_choice(options)
+            self.schema.get('option').widget = options_choice(options)
         else:
             self.schema.children.remove(
-                self.schema.get('options'))
+                self.schema.get('option'))
 
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',

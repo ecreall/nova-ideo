@@ -171,6 +171,7 @@ class SearchView(FormView):
         posted_formid = None
         default_content = [key[0] for key in get_default_searchable_content(self.request)]
         default_content.remove("person")
+        default_content.remove("question")
         if '__formid__' in post:
             posted_formid = post['__formid__']
 
@@ -253,6 +254,7 @@ class SearchResultView(BasicView):
             default_content = [key[0] for key in
                                get_default_searchable_content(self.request)]
             default_content.remove("person")
+            default_content.remove("question")
             filter_ = {
                 'metadata_filter': {'content_types': default_content}
             }

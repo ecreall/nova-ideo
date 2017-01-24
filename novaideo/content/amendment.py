@@ -31,7 +31,8 @@ from novaideo.core import (
     CorrelableEntity,
     Channel,
     PresentableEntity,
-    DuplicableEntity)
+    DuplicableEntity,
+    Debatable)
 from novaideo import _
 from novaideo.views.widget import (
     AddIdeaWidget,
@@ -251,7 +252,8 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
 class Amendment(CorrelableEntity,
                 SearchableEntity,
                 DuplicableEntity,
-                PresentableEntity):
+                PresentableEntity,
+                Debatable):
     """Amendment class"""
 
     type_title = _('Amendment')

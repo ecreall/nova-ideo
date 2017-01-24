@@ -8,6 +8,7 @@
 import colander
 from BTrees.OOBTree import OOBTree
 from persistent.dict import PersistentDict
+from persistent.list import PersistentList
 from zope.interface import implementer
 
 from substanced.content import content
@@ -36,10 +37,13 @@ from novaideo.core import (
     Emojiable,
     SignalableEntity,
     Sustainable,
+    Debatable,
     can_access)
 from novaideo.content import get_file_widget
-from novaideo.content.comment import CommentSchema, Comment
-from novaideo.utilities.util import text_urls_format, truncate_text
+from novaideo.content.comment import CommentSchema
+from novaideo.utilities.util import (
+    text_urls_format, truncate_text, to_localized_time,
+    get_files_data)
 
 
 def context_is_a_question(context, request):
@@ -115,7 +119,7 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
 class Question(VersionableEntity, DuplicableEntity,
                SearchableEntity, CorrelableEntity, PresentableEntity,
                ExaminableEntity, Node, Emojiable, SignalableEntity,
-               Sustainable):
+               Sustainable, Debatable):
     """Question class"""
 
     type_title = _('Question')
@@ -132,6 +136,7 @@ class Question(VersionableEntity, DuplicableEntity,
     url_files = CompositeMultipleProperty('url_files')
     related_correlation = SharedUniqueProperty('related_correlation', 'targets')
     answers = CompositeMultipleProperty('answers', 'question')
+    answer = SharedUniqueProperty('answer')
 
     def __init__(self, **kwargs):
         super(Question, self).__init__(**kwargs)
@@ -178,7 +183,7 @@ class Question(VersionableEntity, DuplicableEntity,
                 self.setproperty('organization', organization)
 
     def presentation_text(self, nb_characters=400):
-        return truncate_text(getattr(self, 'text', ""), nb_characters)
+        return truncate_text(getattr(self, 'text', ''), nb_characters)
 
     def get_more_contents_criteria(self):
         "return specific query, filter values"
@@ -190,31 +195,7 @@ class Question(VersionableEntity, DuplicableEntity,
         }
 
     def get_attached_files_data(self):
-        result = []
-        for picture in self.attached_files:
-            if picture:
-                if picture.mimetype.startswith('image'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'img'})
-
-                if picture.mimetype.startswith(
-                        'application/x-shockwave-flash'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'flash'})
-
-                if picture.mimetype.startswith('text/html'):
-                    blob = picture.blob.open()
-                    blob.seek(0)
-                    content = blob.read().decode("utf-8")
-                    blob.seek(0)
-                    blob.close()
-                    result.append({
-                        'content': content,
-                        'type': 'html'})
-
-        return result
+        return get_files_data(self.attached_files)
 
     def get_node_descriminator(self):
         return 'question'
@@ -229,16 +210,21 @@ class Question(VersionableEntity, DuplicableEntity,
         self.formatted_urls = text_urls
 
     def add_selected_option(self, user, option):
+        self.remove_selected_option(user)
         oid = get_oid(user)
         self.selected_options[oid] = option
         self.users_options.setdefault(option, [])
-        self.users_options[option].append(oid)
+        if option in self.users_options:
+            self.users_options[option].append(oid)
+        else:
+            self.users_options[option] = PersistentList([oid])
 
     def remove_selected_option(self, user):
         oid = get_oid(user)
         if oid in self.selected_options:
             option = self.selected_options.pop(oid)
-            self.users_options[option].remove(oid)
+            if oid in self.users_options[option]:
+                self.users_options[option].remove(oid)
 
     def get_selected_option(self, user):
         oid = get_oid(user)
@@ -269,11 +255,11 @@ class AnswerSchema(CommentSchema):
 @implementer(IAnswer)
 class Answer(CorrelableEntity, PresentableEntity,
              ExaminableEntity, Node, Emojiable,
-             SignalableEntity, Sustainable):
+             SignalableEntity, Sustainable, Debatable):
     """Answer class"""
 
     type_title = _('Answer')
-    icon = 'md md-live-help'
+    icon = 'glyphicon glyphicon-saved'
     templates = {'default': 'novaideo:views/templates/answer_result.pt',
                  'bloc': 'novaideo:views/templates/answer_bloc.pt',
                  'small': 'novaideo:views/templates/small_answer_result.pt',
@@ -284,7 +270,6 @@ class Answer(CorrelableEntity, PresentableEntity,
     files = CompositeMultipleProperty('files')
     url_files = CompositeMultipleProperty('url_files')
     related_correlation = SharedUniqueProperty('related_correlation', 'targets')
-    channels = CompositeMultipleProperty('channels', 'subject')
     question = SharedUniqueProperty('question', 'answers')
 
     def __init__(self, **kwargs):
@@ -293,62 +278,38 @@ class Answer(CorrelableEntity, PresentableEntity,
         self.addtoproperty('channels', Channel())
         self.urls = PersistentDict({})
 
+    def init_title(self):
+        self.title = 'Answer: {question} {date}'.format(
+            question=getattr(self.question, 'title', ''),
+            date=to_localized_time(self.created_at, translate=True))
+
     @property
     def related_contents(self):
         if self.related_correlation:
             return [t for t
                     in self.related_correlation.targets
-                    if not isinstance(t, Comment)]
+                    if t is not self]
         return []
 
     @property
     def relevant_data(self):
         return [getattr(self, 'comment', ''),
+                getattr(self, 'title', ''),
                 getattr(self.author, 'title',
                         getattr(self.author, '__name__', ''))]
 
     @property
-    def channel(self):
-        channels = getattr(self, 'channels', [])
-        return channels[0] if channels else None
+    def subject(self):
+        return self
 
-    def get_title(self, user=None):
-        return getattr(self.question, 'title', '')
-
-    def subscribe_to_channel(self, user):
-        channel = getattr(self, 'channel', None)
-        if channel and (user not in channel.members):
-            channel.addtoproperty('members', user)
+    def presentation_text(self, nb_characters=400):
+        return truncate_text(getattr(self, 'comment', ''), nb_characters)
 
     def get_related_contents(self, user):
         return [r for r in self.related_contents if can_access(user, r)]
 
     def get_attached_files_data(self):
-        result = []
-        for picture in self.files:
-            if picture:
-                if picture.mimetype.startswith('image'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'img'})
-
-                if picture.mimetype.startswith(
-                        'application/x-shockwave-flash'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'flash'})
-
-                if picture.mimetype.startswith('text/html'):
-                    blob = picture.blob.open()
-                    blob.seek(0)
-                    content = blob.read().decode("utf-8")
-                    blob.seek(0)
-                    blob.close()
-                    result.append({
-                        'content': content,
-                        'type': 'html'})
-
-        return result
+        return get_files_data(self.files)
 
     def get_node_descriminator(self):
         return 'answer'

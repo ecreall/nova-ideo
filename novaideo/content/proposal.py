@@ -43,11 +43,12 @@ from novaideo.core import (
     ExaminableEntity,
     Node,
     Emojiable,
-    SignalableEntity)
+    SignalableEntity,
+    Debatable)
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
-    connect, disconnect)
+    connect, disconnect, get_files_data)
 
 
 OPINIONS = OrderedDict([
@@ -182,7 +183,8 @@ class Proposal(VersionableEntity,
                ExaminableEntity,
                Node,
                Emojiable,
-               SignalableEntity):
+               SignalableEntity,
+               Debatable):
     """Proposal class"""
 
     type_title = _('Proposal')
@@ -278,31 +280,7 @@ class Proposal(VersionableEntity,
         }
 
     def get_attached_files_data(self):
-        result = []
-        for picture in self.attached_files:
-            if picture:
-                if picture.mimetype.startswith('image'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'img'})
-
-                if picture.mimetype.startswith(
-                        'application/x-shockwave-flash'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'flash'})
-
-                if picture.mimetype.startswith('text/html'):
-                    blob = picture.blob.open()
-                    blob.seek(0)
-                    content = blob.read().decode("utf-8")
-                    blob.seek(0)
-                    blob.close()
-                    result.append({
-                        'content': content,
-                        'type': 'html'})
-
-        return result
+        return get_files_data(self.attached_files)
 
     def set_related_ideas(self, relatedideas, user):
         current_related_ideas = list(self.related_ideas.keys())

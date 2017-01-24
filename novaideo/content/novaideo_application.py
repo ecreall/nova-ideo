@@ -32,7 +32,7 @@ from pontus.schema import omit, select
 
 from novaideo import _, DEFAULT_FILES
 from novaideo.content.file import FileEntity
-from novaideo.core import Channel, CorrelableEntity
+from novaideo.core import Channel, CorrelableEntity, Debatable
 from .organization import OrganizationSchema, Organization
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
@@ -83,6 +83,10 @@ DEFAULT_COLORS = {
     'proposal': {
         'background': '#3f6da6',
         'hover': hover_color('#3f6da6')
+    },
+    'question': {
+        'background': '#e66a11',
+        'hover': hover_color('#e66a11')
     }
 }
 
@@ -297,7 +301,7 @@ class NovaIdeoApplicationPropertySheet(PropertySheet):
     after_create='after_create',
     )
 @implementer(INovaIdeoApplication)
-class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
+class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     """Nova-Ideo class (Root)"""
 
     name = renamer()
@@ -318,7 +322,6 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
     proposal_template = CompositeUniqueProperty('proposal_template')
     advertisings = CompositeMultipleProperty('advertisings')
     news_letter_members = SharedMultipleProperty('news_letter_members')
-    channels = CompositeMultipleProperty('channels', 'subject')
     general_chanel = SharedUniqueProperty('general_chanel')
     newsletters = CompositeMultipleProperty('newsletters')
     smart_folders = CompositeMultipleProperty('smart_folders')

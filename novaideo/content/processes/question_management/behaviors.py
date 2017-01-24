@@ -78,7 +78,6 @@ class AskQuestion(InfiniteCardinality):
         question.state.extend(['pending', 'published'])
         grant_roles(user=user, roles=(('Owner', question), ))
         question.setproperty('author', user)
-        question.subscribe_to_channel(user)
         if isinstance(context, Comment):
             current_correlation = context.related_correlation
             related_contents = []
@@ -116,9 +115,13 @@ def del_processsecurity_validation(process, context):
     return global_user_processsecurity()
 
 
+def del_state_validation(process, context):
+    return 'archived' in context.state
+
+
 class DelQuestion(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'plus-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
     style_order = 6
@@ -126,6 +129,7 @@ class DelQuestion(InfiniteCardinality):
     context = IQuestion
     roles_validation = del_roles_validation
     processsecurity_validation = del_processsecurity_validation
+    state_validation = del_state_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
@@ -189,7 +193,7 @@ def decision_processsecurity_validation(process, context):
 
 class ArchiveQuestion(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'plus-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-inbox'
     style_order = 4
@@ -307,6 +311,7 @@ class AnswerQuestion(InfiniteCardinality):
         user = get_current()
         answer = appstruct['_object_data']
         context.addtoproperty('answers', answer)
+        answer.init_title()
         answer.format(request)
         answer.state = PersistentList(['published'])
         answer.reindex()
@@ -315,7 +320,6 @@ class AnswerQuestion(InfiniteCardinality):
 
         transaction.commit()
         grant_roles(user=user, roles=(('Owner', answer), ))
-        answer.subscribe_to_channel(user)
         answer.setproperty('author', user)
         if appstruct['related_contents']:
             related_contents = appstruct['related_contents']
@@ -535,9 +539,10 @@ class Close(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
-    style_picto = 'glyphicon glyphicon-thumbs-up'
+    style_picto = 'glyphicon glyphicon-off'
     style_order = 0
     context = IQuestion
+    submission_title = _('Continue')
     roles_validation = close_roles_validation
     processsecurity_validation = close_processsecurity_validation
     state_validation = close_state_validation
@@ -569,6 +574,10 @@ def dela_processsecurity_validation(process, context):
     return global_user_processsecurity()
 
 
+def dela_state_validation(process, context):
+    return 'archived' in context.state
+
+
 class DelAnswer(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
@@ -579,11 +588,12 @@ class DelAnswer(InfiniteCardinality):
     context = IAnswer
     roles_validation = del_roles_validation
     processsecurity_validation = del_processsecurity_validation
+    state_validation = dela_state_validation
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
         question = context.question
-        if context.option:
+        if getattr(context, 'option', None) is not None:
             question.remove_selected_option(user)
 
         request.registry.notify(CorrelableRemoved(object=context))
@@ -596,7 +606,7 @@ class DelAnswer(InfiniteCardinality):
 
 
 def edita_roles_validation(process, context):
-    return has_any_roles(roles=('Owner', 'Moderator'))
+    return has_any_roles(roles=(('Owner', context), 'Moderator'))
 
 
 def edita_processsecurity_validation(process, context):
@@ -604,7 +614,7 @@ def edita_processsecurity_validation(process, context):
 
 
 def edita_state_validation(process, context):
-    return "pending" in context.question.state
+    return 'pending' in context.question.state
 
 
 class EditAnswer(InfiniteCardinality):
@@ -623,7 +633,7 @@ class EditAnswer(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.edited = True
         user = get_current()
-        if context.option:
+        if getattr(context, 'option', None) is not None:
             context.question.add_selected_option(user, context.option)
 
         current_correlation = context.related_correlation
@@ -641,7 +651,7 @@ class EditAnswer(InfiniteCardinality):
                 context,
                 list(related_contents),
                 {'comment': context.comment,
-                 'type': context.intention},
+                 'type': 'Answer the question'},
                 user,
                 unique=True)
             context.setproperty('related_correlation', correlation[0])
@@ -663,6 +673,7 @@ class CommentAnswer(CommentIdea):
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
+    subscribe_to_channel = False
 
 
 def presenta_roles_validation(process, context):
@@ -842,9 +853,10 @@ class ValidateAnswer(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
-    style_picto = 'glyphicon glyphicon-thumbs-up'
+    style_picto = 'glyphicon glyphicon-ok'
     style_order = 0
     context = IAnswer
+    submission_title = _('Continue')
     roles_validation = validate_roles_validation
     processsecurity_validation = validate_processsecurity_validation
     state_validation = validate_state_validation
@@ -853,6 +865,7 @@ class ValidateAnswer(InfiniteCardinality):
         question = context.question
         question.state = PersistentList(['closed', 'published'])
         context.state = PersistentList(['validated', 'published'])
+        question.setproperty('answer', context)
         context.reindex()
         question.reindex()
         return {}
