@@ -36,7 +36,7 @@ from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
 from novaideo.utilities.util import connect, disconnect
 from novaideo.event import (
-    CorrelableRemoved)
+    CorrelableRemoved, ObjectPublished)
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.alert import InternalAlertKind
@@ -46,6 +46,7 @@ from novaideo.content.processes.idea_management.behaviors import (
     CommentIdea,
     Associate as AssociateIdea)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
+from novaideo.views.filter import get_users_by_preferences
 
 
 def createquestion_roles_validation(process, context):
@@ -101,6 +102,7 @@ class AskQuestion(InfiniteCardinality):
         question.format(request)
         question.reindex()
         request.registry.notify(ActivityExecuted(self, [question], user))
+        request.registry.notify(ObjectPublished(object=question))
         return {'newcontext': question}
 
     def redirect(self, context, request, **kw):
@@ -210,7 +212,7 @@ class ArchiveQuestion(InfiniteCardinality):
         user = context.author
         alert('internal', [root], [user],
               internal_kind=InternalAlertKind.moderation_alert,
-              subjects=[context], alert_kind='moderation')
+              subjects=[context], alert_kind='object_archive')
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('archive_content_decision')
             subject = mail_template['subject'].format(
@@ -276,8 +278,13 @@ class AnswerQuestion(InfiniteCardinality):
                           'title': request.localizer.translate(self.title)})
 
     def _get_users_to_alerts(self, context, request):
+        #@TODO OPTIMIZATION
         author = getattr(context, 'author', None)
-        return [author]
+        users = list(get_users_by_preferences(context))
+        if author not in users:
+            users.append(author)
+
+        return users
 
     def _alert_users(self, context, request, user, answer):
         root = getSite()
@@ -285,12 +292,13 @@ class AnswerQuestion(InfiniteCardinality):
         if user in users:
             users.remove(user)
 
-        mail_template = root.get_mail_template('alert_comment')
+        mail_template = root.get_mail_template('alert_answer')
         author_data = get_user_data(user, 'author', request)
         alert_data = get_entity_data(answer, 'comment', request)
         alert_data.update(author_data)
         alert('internal', [root], users,
-              internal_kind=InternalAlertKind.comment_alert,
+              internal_kind=InternalAlertKind.content_alert,
+              alert_kind='new_answer',
               subjects=[context],
               **alert_data)
         subject_data = get_entity_data(context, 'subject', request)
@@ -332,13 +340,31 @@ class AnswerQuestion(InfiniteCardinality):
                 unique=True)
             answer.setproperty('related_correlation', correlation[0])
 
-        # self._alert_users(context, request, user, answer)
+        self._alert_users(context, request, user, answer)
         context.reindex()
         user.set_read_date(answer.channel, datetime.datetime.now(tz=pytz.UTC))
         return {}
 
     def redirect(self, context, request, **kw):
         return nothing
+
+
+def answera_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def answera_processsecurity_validation(process, context):
+    return True
+
+
+class AnswerQuestionAnonymous(AnswerQuestion):
+    roles_validation = answera_roles_validation
+    processsecurity_validation = answera_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def comm_roles_validation(process, context):
@@ -361,6 +387,24 @@ class CommentQuestion(CommentIdea):
     style_order = 1
 
 
+def comma_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def comma_processsecurity_validation(process, context):
+    return True
+
+
+class CommentQuestionAnonymous(CommentQuestion):
+    roles_validation = comma_roles_validation
+    processsecurity_validation = comma_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 def present_roles_validation(process, context):
     return has_role(role=('Member',))
 
@@ -379,6 +423,24 @@ class PresentQuestion(PresentIdea):
     processsecurity_validation = present_processsecurity_validation
     state_validation = present_state_validation
     style_order = 2
+
+
+def presenta_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def presenta_processsecurity_validation(process, context):
+    return True
+
+
+class PresentQuestionAnonymous(PresentQuestion):
+    roles_validation = presenta_roles_validation
+    processsecurity_validation = presenta_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def associate_processsecurity_validation(process, context):
@@ -464,6 +526,24 @@ class SupportQuestion(InfiniteCardinality):
         return nothing
 
 
+def supportqan_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def supportqan_processsecurity_validation(process, context):
+    return True
+
+
+class SupportQuestionAnonymous(SupportQuestion):
+    roles_validation = supportqan_roles_validation
+    processsecurity_validation = supportqan_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 def oppose_processsecurity_validation(process, context):
     user = get_current()
     return not context.has_negative_vote(user) and global_user_processsecurity()
@@ -493,6 +573,16 @@ class OpposeQuestion(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return nothing
+
+
+class OpposeQuestionAnonymous(OpposeQuestion):
+    roles_validation = supportqan_roles_validation
+    processsecurity_validation = supportqan_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def withdrawt_processsecurity_validation(process, context):
@@ -676,23 +766,31 @@ class CommentAnswer(CommentIdea):
     subscribe_to_channel = False
 
 
-def presenta_roles_validation(process, context):
-    return has_role(role=('Member',))
-
-
-def presenta_processsecurity_validation(process, context):
-    return global_user_processsecurity()
-
-
-def presenta_state_validation(process, context):
-    return 'published' in context.state
-
-
 class PresentAnswer(PresentIdea):
     context = IAnswer
+    roles_validation = present_roles_validation
+    processsecurity_validation = present_processsecurity_validation
+    state_validation = present_state_validation
+
+
+class CommentAnswerAnonymous(CommentAnswer):
+    roles_validation = comma_roles_validation
+    processsecurity_validation = comma_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
+class PresentAnswerAnonymous(PresentAnswer):
     roles_validation = presenta_roles_validation
     processsecurity_validation = presenta_processsecurity_validation
-    state_validation = presenta_state_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def associatea_processsecurity_validation(process, context):
@@ -778,6 +876,24 @@ class SupportAnswer(InfiniteCardinality):
         return nothing
 
 
+def supportan_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def supportan_processsecurity_validation(process, context):
+    return True
+
+
+class SupportAnswerAnonymous(SupportAnswer):
+    roles_validation = supportan_roles_validation
+    processsecurity_validation = supportan_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 def opposea_processsecurity_validation(process, context):
     user = get_current()
     return not context.has_negative_vote(user) and global_user_processsecurity()
@@ -807,6 +923,16 @@ class OpposeAnswer(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return nothing
+
+
+class OpposeAnswerAnonymous(OpposeAnswer):
+    roles_validation = supportan_roles_validation
+    processsecurity_validation = supportan_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def withdrawta_processsecurity_validation(process, context):

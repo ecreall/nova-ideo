@@ -18,10 +18,12 @@ from pontus.widget import AjaxSelect2Widget, Length
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 
-from novaideo.content.processes.idea_management.behaviors import PresentIdea
+from novaideo.content.processes.idea_management.behaviors import (
+    PresentIdea, PresentIdeaAnonymous)
 from novaideo.content.idea import Idea
 from novaideo import _, log
 from novaideo.utilities.alerts_utility import get_user_data, get_entity_data
+from novaideo.views.core import ActionAnonymousView
 
 
 PRESENT_MESSAGE = {'0': _(u"""No person contacted"""),
@@ -210,6 +212,21 @@ class PresentIdeaView(MultipleView):
     def before_update(self):
         self.viewid = 'present'
         super(PresentIdeaView, self).before_update()
+
+
+@view_config(
+    name='presentanonymous',
+    context=Idea,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class PresentIdeaAnonymousView(ActionAnonymousView):
+    behaviors = [PresentIdeaAnonymous]
+    name = 'presentanonymous'
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {PresentIdeaAnonymous: PresentIdeaAnonymousView})
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {PresentIdea: PresentIdeaView})

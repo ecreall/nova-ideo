@@ -46,8 +46,8 @@
   <div tal:condition="not to_hide">
     <div class="validated-answer-container">
         <div tal:replace="structure support_actions_body"/>
-        <span tal:condition="'closed' in object.state" class="glyphicon glyphicon-ok validated-question">
-        <span tal:condition="'pending' in object.state" class="glyphicon glyphicon-time pending-question">
+        <span i18n:attributes="title" title="${state}" tal:condition="'closed' in object.state" class="glyphicon glyphicon-ok validated-question">
+        <span i18n:attributes="title" title="${state}" tal:condition="'pending' in object.state" class="glyphicon glyphicon-time pending-question">
     </div>
     <div id="contenttext" class="content-text ${support_actions_body and 'row-md'}"  i18n:domain="novaideo"
       tal:define="files object.get_attached_files_data();
@@ -135,6 +135,20 @@
             <li tal:repeat="option object.options"><strong>${option}</strong></li>
           </ul>
         </p>
+      </div>
+    </div>
+    <div tal:condition="answer_body" tal:define="answer object.answer">
+      <a role="button"
+         data-toggle="collapse"
+         href="#validated_answer"
+         aria-expanded="false"
+         aria-controls="validated_answer"
+         style="margin-bottom: 15px;
+                display: block;">
+        <span class="${answer.icon}"></span> <span i18n:translate="">See the validated answer</span>
+      </a>
+      <div class="collapse" id="validated_answer">
+        <div tal:replace="structure answer_body"/>
       </div>
     </div>
    </div>

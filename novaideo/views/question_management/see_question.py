@@ -24,7 +24,8 @@ from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.content.processes.question_management.behaviors import SeeQuestion
 from novaideo.content.question import Question
 from novaideo.utilities.util import (
-    generate_navbars, ObjectRemovedException, render_listing_objs)
+    generate_navbars, ObjectRemovedException, render_listing_objs,
+    render_listing_obj)
 from novaideo import _
 from novaideo.content.interface import IAnswer
 from novaideo.views.filter import (
@@ -221,6 +222,11 @@ class SeeQuestionHeaderView(BasicView):
 
         answers_title = _(CONTENTS_MESSAGES[index],
                           mapping={'nember': len_answers})
+        answer_body = None
+        if self.context.answer:
+            answer_body = render_listing_obj(
+                self.request, self.context.answer, user)
+
         result = {}
         values = {
             'object': self.context,
@@ -232,6 +238,7 @@ class SeeQuestionHeaderView(BasicView):
             'actions_bodies': navbars['body_actions'],
             'footer_body': navbars['footer_body'],
             'support_actions_body': navbars['support_actions_body'],
+            'answer_body': answer_body,
             'is_censored': is_censored,
             'to_hide': is_censored and not has_any_roles(
                 user=user,

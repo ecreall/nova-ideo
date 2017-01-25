@@ -31,6 +31,7 @@ from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
+from novaideo.content.processes.question_management.behaviors import AskQuestion
 from . import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
 
@@ -258,7 +259,7 @@ class Remove(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_action_class = 'comment-ajax-action comment-remove-action'
     style_picto = 'glyphicon glyphicon-trash'
-    style_order = 4
+    style_order = 5
     submission_title = _('Continue')
     context = IComment
     roles_validation = edit_roles_validation
@@ -338,6 +339,17 @@ class TransformToIdea(CreateIdea):
     style_picto = 'icon novaideo-icon icon-idea'
     style_order = 3
     title = _('Transform into an idea')
+    context = IComment
+    state_validation = state_validation
+
+
+class TransformToQuestion(AskQuestion):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'icon md md-live-help'
+    style_order = 4
+    title = _('Transform into a question')
     context = IComment
     state_validation = state_validation
 

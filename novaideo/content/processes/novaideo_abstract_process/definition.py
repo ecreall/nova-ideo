@@ -19,6 +19,7 @@ from pontus.core import VisualisableElement
 
 from .behaviors import (
     SelectEntity,
+    SelectEntityAnonymous,
     DeselectEntity,
     AddDeadLine,
     EditDeadLine,
@@ -40,7 +41,7 @@ class NovaIdeoAbstractProcess(ProcessDefinition, VisualisableElement):
         self.defineNodes(
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
-                select = ActivityDefinition(contexts=[SelectEntity],
+                select = ActivityDefinition(contexts=[SelectEntity, SelectEntityAnonymous],
                                     description=_("Follow"),
                                     title=_("Follow"),
                                     groups=[]),

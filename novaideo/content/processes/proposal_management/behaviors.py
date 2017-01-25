@@ -1079,6 +1079,24 @@ class CommentProposal(CommentIdea):
     state_validation = comm_state_validation
 
 
+def comma_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def comma_processsecurity_validation(process, context):
+    return True
+
+
+class CommentProposalAnonymous(CommentProposal):
+    roles_validation = comma_roles_validation
+    processsecurity_validation = comma_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 def seea_roles_validation(process, context):
     return has_role(role=('Participant', context))
 
@@ -1138,6 +1156,24 @@ class PresentProposal(PresentIdea):
     roles_validation = present_roles_validation
     processsecurity_validation = present_processsecurity_validation
     state_validation = present_state_validation
+
+
+def presenta_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def presenta_processsecurity_validation(process, context):
+    return True
+
+
+class PresentProposalAnonymous(PresentProposal):
+    roles_validation = presenta_roles_validation
+    processsecurity_validation = presenta_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def associate_processsecurity_validation(process, context):

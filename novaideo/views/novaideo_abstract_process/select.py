@@ -10,9 +10,10 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
 from novaideo.content.processes.novaideo_abstract_process.behaviors import (
-    SelectEntity)
+    SelectEntity, SelectEntityAnonymous)
 from novaideo import _
 from novaideo.core import SearchableEntity
+from novaideo.views.core import ActionAnonymousView
 
 
 @view_config(
@@ -29,6 +30,20 @@ class SelectEntityView(BasicView):
     def update(self):
         results = self.execute(None)
         return results[0]
+
+
+@view_config(
+    name='selectentityanonymous',
+    context=SearchableEntity,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class SelectEntityAnonymousView(ActionAnonymousView):
+    behaviors = [SelectEntityAnonymous]
+    name = 'selectentityanonymous'
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {SelectEntityAnonymous: SelectEntityAnonymousView})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

@@ -28,6 +28,7 @@ from .behaviors import (
     Pin,
     Unpin,
     TransformToIdea,
+    TransformToQuestion,
     SeeComment)
 from novaideo import _
 
@@ -69,6 +70,10 @@ class CommentManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Transform the comment into an idea"),
                                        title=_("Transform into an idea"),
                                        groups=[]),
+                transformtoquestion = ActivityDefinition(contexts=[TransformToQuestion],
+                                       description=_("Transform the comment into a question"),
+                                       title=_("Transform into a question"),
+                                       groups=[]),
                 see = ActivityDefinition(contexts=[SeeComment],
                                        description=_("Details"),
                                        title=_("Details"),
@@ -82,6 +87,8 @@ class CommentManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('respond', 'eg'),
                 TransitionDefinition('pg', 'transformtoidea'),
                 TransitionDefinition('transformtoidea', 'eg'),
+                TransitionDefinition('pg', 'transformtoquestion'),
+                TransitionDefinition('transformtoquestion', 'eg'),
                 TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('edit', 'eg'),
                 TransitionDefinition('pg', 'remove'),

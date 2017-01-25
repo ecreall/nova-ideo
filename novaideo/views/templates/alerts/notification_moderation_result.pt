@@ -6,6 +6,9 @@
     <span i18n:translate="" tal:condition="alert_kind == 'new_report'">
       A new content has been reported as potentially offensive.
     </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'object_archive'">
+      The contribution <span i18n:name="dynamic" >${subject.get_title()}</span> has been archived.
+    </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_restor'">
       The contribution <span i18n:name="dynamic" >${subject.get_title()}</span> has been restored.
     </span>

@@ -10,9 +10,10 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
 from novaideo.content.processes.question_management.behaviors import (
-    SupportAnswer)
+    SupportAnswer, SupportAnswerAnonymous)
 from novaideo.content.question import Answer
 from novaideo import _
+from novaideo.views.core import ActionAnonymousView
 
 
 @view_config(
@@ -29,6 +30,20 @@ class SupportAnswerView(BasicView):
     def update(self):
         results = self.execute(None)
         return results[0]
+
+
+@view_config(
+    name='supportansweranonymous',
+    context=Answer,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class SupportAnswerAnonymousView(ActionAnonymousView):
+    behaviors = [SupportAnswerAnonymous]
+    name = 'supportansweranonymous'
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {SupportAnswerAnonymous: SupportAnswerAnonymousView})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

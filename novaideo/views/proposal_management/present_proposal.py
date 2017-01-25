@@ -15,7 +15,7 @@ from pontus.form import FormView
 from pontus.schema import select
 
 from novaideo.content.processes.proposal_management.behaviors import (
-    PresentProposal)
+    PresentProposal, PresentProposalAnonymous)
 from novaideo.content.proposal import Proposal
 from novaideo import _
 from novaideo.views.idea_management.present_idea import (
@@ -23,6 +23,7 @@ from novaideo.views.idea_management.present_idea import (
     PresentIdeaSchema,
     SentToView as IdeaSentToView)
 from novaideo.utilities.alerts_utility import get_user_data, get_entity_data
+from novaideo.views.core import ActionAnonymousView
 
 
 class SentToView(IdeaSentToView):
@@ -106,6 +107,20 @@ class PresentProposalView(PresentIdeaView):
     def before_update(self):
         self.viewid = 'present'
         super(PresentProposalView, self).before_update()
+
+
+@view_config(
+    name='presentanonymous',
+    context=Proposal,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class PresentProposalAnonymousView(ActionAnonymousView):
+    behaviors = [PresentProposalAnonymous]
+    name = 'presentanonymous'
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {PresentProposalAnonymous: PresentProposalAnonymousView})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

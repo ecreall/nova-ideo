@@ -204,7 +204,7 @@ class AddContent(object):
             'form': result_idea['form'],
             'action': result_idea['action'],
             'search_url': self.request.resource_url(
-                root, '@@novaideoapi', query={'op': 'get_similar_contents'}),
+                root, '@@novaideoapi', query={'op': 'get_similar_ideas'}),
             'action_url': self.request.resource_url(
                 root, '@@ideasmanagement', query={'op': 'creat_home_idea'}),
             'css_class': 'home-add-idea'
@@ -220,7 +220,7 @@ class AddContent(object):
             'form': result_question['form'],
             'action': result_question['action'],
             'search_url': self.request.resource_url(
-                root, '@@novaideoapi', query={'op': 'get_similar_contents'}),
+                root, '@@novaideoapi', query={'op': 'get_similar_questions'}),
             'action_url': self.request.resource_url(
                 root, '@@questionsmanagement', query={'op': 'creat_home_question'}),
             'css_class': 'home-add-question'

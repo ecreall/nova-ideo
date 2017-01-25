@@ -12,6 +12,9 @@
     <span i18n:translate="" tal:condition="alert_kind == 'new_report'">
       A new content has been reported as potentially offensive. The reported contents can be reached <a i18n:name="dynamic" href="${request.resource_url(request.root, '@@seereportedcontents')}">ici</a>.
     </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'object_archive'">
+      The contribution <a i18n:name="dynamic"  href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been archived.
+    </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_restor'">
       The contribution  <a i18n:name="dynamic" href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been restored.
     </span>

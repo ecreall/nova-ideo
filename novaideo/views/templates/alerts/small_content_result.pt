@@ -27,5 +27,14 @@
       The account of the Member <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>, which is part of your favourites, has been disactivated.
     </span>
 
+    <span i18n:translate="" tal:condition="alert_kind == 'new_answer'"
+      tal:define="author_title getattr(object, 'author_title', '');
+                 author_first_name getattr(object, 'author_first_name', '');
+                 author_last_name getattr(object, 'author_last_name', '');
+                 author_parts [author_title, author_first_name, author_last_name];
+                 author ' '.join([a for a in author_parts if a]);">
+      <span i18n:name="aut" >${author or 'Une personne'}</span> answered the question <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')+'#comment-'+str(getattr(object, 'comment_oid', 'None'))}"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>, which is part of your favourites.
+    </span>
+
   </div>
 </div>

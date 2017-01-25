@@ -834,6 +834,24 @@ class CommentIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def comma_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def comma_processsecurity_validation(process, context):
+    return True
+
+
+class CommentIdeaAnonymous(CommentIdea):
+    roles_validation = comma_roles_validation
+    processsecurity_validation = comma_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 def present_roles_validation(process, context):
     return has_role(role=('Member',))
 
@@ -907,6 +925,24 @@ class PresentIdea(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def presenta_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def presenta_processsecurity_validation(process, context):
+    return True
+
+
+class PresentIdeaAnonymous(PresentIdea):
+    roles_validation = presenta_roles_validation
+    processsecurity_validation = presenta_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def associate_processsecurity_validation(process, context):

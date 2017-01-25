@@ -992,13 +992,13 @@ def update_ajax_action(
     context, request,
     process_id, node_id,
     include_resources=False):
-    seemembers_actions = getBusinessAction(
+    actions = getBusinessAction(
         context, request,
         process_id, node_id)
-    if seemembers_actions:
+    if actions:
         isactive, messages, \
             resources, ajax_actions = update_ajax_actions(
-                seemembers_actions, context, request,
+                actions, context, request,
                 include_resources)
         return ajax_actions, resources
 
@@ -1009,14 +1009,14 @@ def update_all_ajax_action(
     context, request,
     node_id, process_id=None,
     include_resources=False):
-    seemembers_actions = getAllBusinessAction(
+    actions = getAllBusinessAction(
         context, request, node_id=node_id,
         process_id=process_id,
         process_discriminator='Application')
-    if seemembers_actions:
+    if actions:
         isactive, messages, \
             resources, ajax_actions = update_ajax_actions(
-                seemembers_actions, context, request,
+                actions, context, request,
                 include_resources)
         return ajax_actions, resources
 

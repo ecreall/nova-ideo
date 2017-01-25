@@ -77,6 +77,24 @@ class SelectEntity(InfiniteCardinality):
         return nothing
 
 
+def selecta_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def selecta_processsecurity_validation(process, context):
+    return True
+
+
+class SelectEntityAnonymous(SelectEntity):
+    roles_validation = selecta_roles_validation
+    processsecurity_validation = selecta_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 def deselect_roles_validation(process, context):
     return has_role(role=('Member',))
 

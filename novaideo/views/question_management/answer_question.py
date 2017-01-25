@@ -15,11 +15,12 @@ from pontus.schema import select
 from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.question_management.behaviors import (
-    AnswerQuestion)
+    AnswerQuestion, AnswerQuestionAnonymous)
 from novaideo.content.question import (
     AnswerSchema as AnswerSchemaBase, Question, Answer)
 from novaideo import _
 from novaideo.utilities.util import get_emoji_form
+from novaideo.views.core import ActionAnonymousView
 
 
 def options_choice(options):
@@ -95,6 +96,20 @@ class AnswerQuestionView(MultipleView):
     views = (AnswerQuestionFormView, )
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/comment.js']}
+
+
+@view_config(
+    name='answerquestionanonymous',
+    context=Question,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class AnswerQuestionAnonymousView(ActionAnonymousView):
+    behaviors = [AnswerQuestionAnonymous]
+    name = 'answerquestionanonymous'
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {AnswerQuestionAnonymous: AnswerQuestionAnonymousView})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({AnswerQuestion: AnswerQuestionView})

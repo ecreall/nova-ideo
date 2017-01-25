@@ -1,0 +1,14 @@
+<div class="alert alert-info" i18n:domain="novaideo" style="margin-bottom: 5px;">
+	<p i18n:translate="">You must be logged in to perform this action and more. Please sign in or register.</p>
+	<div style="text-align: center;">
+		<div class="btn-group">
+		   <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary btn-xs" id="log-in">
+		      <i class="glyphicon glyphicon-log-in"> </i> <span i18n:translate="">Log In</span>
+		   </a>
+		   <a tal:condition="not getattr(request.root, 'only_invitation', False)"
+		      href="${request.resource_url(request.root, '@@registration')}" class="btn btn-primary btn-xs" id="registration" >
+		      <i class="glyphicon glyphicon-pencil"> </i> <span  i18n:translate="">Registration</span>
+		   </a>
+		</div>
+	</div>
+</div>

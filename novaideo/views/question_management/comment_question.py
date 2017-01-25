@@ -10,7 +10,7 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 
 from novaideo.content.processes.question_management.behaviors import (
-    CommentQuestion)
+    CommentQuestion, CommentQuestionAnonymous)
 from novaideo.content.question import Question
 from novaideo import _
 
@@ -18,6 +18,7 @@ from novaideo.views.idea_management.comment_idea import (
     CommentIdeaView,
     CommentIdeaFormView,
     CommentsView as CommentsIdeaView)
+from novaideo.views.core import ActionAnonymousView
 
 
 class CommentsView(CommentsIdeaView):
@@ -59,4 +60,17 @@ class CommentQuestionView(CommentIdeaView):
         super(CommentIdeaView, self)._init_views(views, **kwargs)
 
 
+@view_config(
+    name='commentanonymous',
+    context=Question,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class CommentQuestionAnonymousView(ActionAnonymousView):
+    behaviors = [CommentQuestionAnonymous]
+    name = 'commentanonymous'
+
+
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CommentQuestion: CommentQuestionView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CommentQuestionAnonymous: CommentQuestionAnonymousView})

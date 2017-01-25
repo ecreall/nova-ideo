@@ -20,16 +20,17 @@ from pontus.schema import select
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.util import merge_dicts
-from daceui.interfaces import IDaceUIAPI
 
-from novaideo.content.processes.idea_management.behaviors import CommentIdea
+from novaideo.content.processes.idea_management.behaviors import (
+    CommentIdea, CommentIdeaAnonymous)
 from novaideo.content.comment import CommentSchema, Comment
 from novaideo.views.filter import get_comments
 from novaideo.content.idea import Idea
 from novaideo.utilities.util import (
     date_delta, generate_listing_menu, ObjectRemovedException,
-    DEFAUL_LISTING_ACTIONS_TEMPLATE, generate_navbars)
+    generate_navbars)
 from novaideo import _, log
+from novaideo.views.core import ActionAnonymousView
 
 
 COMMENT_LEVEL = 2
@@ -210,6 +211,20 @@ class CommentIdeaView(MultipleView):
     def before_update(self):
         self.viewid = 'comment'
         super(CommentIdeaView, self).before_update()
+
+
+@view_config(
+    name='commentanonymous',
+    context=Idea,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class CommentIdeaAnonymousView(ActionAnonymousView):
+    behaviors = [CommentIdeaAnonymous]
+    name = 'commentanonymous'
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {CommentIdeaAnonymous: CommentIdeaAnonymousView})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

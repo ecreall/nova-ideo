@@ -78,8 +78,10 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
             add_subitem_text_template='',
             orderable=True),
         title=_('Options'),
-        description=_("To add options, you need to tap the « Enter »"
-                      " key after each keyword or separate them with commas."),
+        description=_("You can add options to your question. "
+                      "Users can only answer questions with options once. "
+                      "Statistics will be provided indicating the percentage "
+                      "of each option."),
         missing=[]
         )
 

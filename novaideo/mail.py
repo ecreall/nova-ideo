@@ -126,6 +126,28 @@ Bonjour,
 PRESENTATION_AMENDMENT_SUBJECT = u"""« {subject_title} »"""
 
 
+PRESENTATION_QUESTION_SUBJECT = u"""Présentation de la question « {subject_title} »""" 
+
+
+PRESENTATION_QUESTION_MESSAGE = u"""
+Bonjour,
+
+{my_first_name} {my_last_name} souhaite vous présenter la question « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette question est accessible à l'adresse : {subject_url}.
+
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
+
+PRESENTATION_ANSWER_SUBJECT = u"""Présentation de la réponse à une question « {subject_title} »""" 
+
+
+PRESENTATION_ANSWER_MESSAGE = u"""
+Bonjour,
+
+{my_first_name} {my_last_name} souhaite vous présenter la réponse à une question « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette réponse est accessible à l'adresse : {subject_url}.
+
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
+
 AMENDABLE_FIRST_SUBJECT = u"""Début du cycle d'amélioration de la proposition « {subject_title} »"""
 
 
@@ -320,6 +342,21 @@ Vous pouvez retrouver votre idée sous {subject_url}.
 
 """+ PORTAL_SIGNATURE
 
+ARCHIVECONTENT_SUBJECT = u"""Décision des modérateurs d'archiver le contenu « {subject_title} »"""
+
+
+ARCHIVECONTENT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le contenu « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+
+{explanation}
+
+Vous pouvez retrouver votre contenu sous {subject_url}.
+
+"""+ PORTAL_SIGNATURE
+
+
 ARCHIVEPROPOSAL_SUBJECT = u"""Décision des modérateurs d'archiver la proposition « {subject_title} »"""
 
 
@@ -454,6 +491,21 @@ ALERTCOMMENT_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
 Un nouveau commentaire a été fait sur {subject_type} « {subject_title} ».
+
+"{comment_content}"
+
+Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
+
+"""+ PORTAL_SIGNATURE
+
+
+ALERTANSWER_SUBJECT = u"""Nouvelle réponse sur {subject_type} « {subject_title} »"""
+
+
+ALERTANSWER_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Une nouvelle réponse a été donnée à {subject_type} « {subject_title} ».
 
 "{comment_content}"
 
@@ -705,5 +757,27 @@ DEFAULT_SITE_MAILS = {
               'title': _("Close the proposal"),
               'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
               'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE
+    },
+
+    'presentation_question': {
+              'title': _("Presentation of a question"),
+              'subject': PRESENTATION_QUESTION_SUBJECT,
+              'template': PRESENTATION_QUESTION_MESSAGE
+    },
+
+    'presentation_answer': {
+              'title': _("Presentation of an answer"),
+              'subject': PRESENTATION_ANSWER_SUBJECT,
+              'template': PRESENTATION_ANSWER_MESSAGE
+    },
+    'alert_answer': {
+              'title': _("Warning: new answer"),
+              'subject': ALERTANSWER_SUBJECT,
+              'template': ALERTANSWER_MESSAGE
+    },
+    'archive_content_decision': {
+              'title': _("Moderation: Archive the content"),
+              'subject': ARCHIVECONTENT_SUBJECT,
+              'template': ARCHIVECONTENT_MESSAGE
     }
 }

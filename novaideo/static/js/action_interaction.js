@@ -320,12 +320,10 @@ function update_popover_action(){
     $.extend(url_attr, get_action_metadata(action));
     loading_progress()
     $.post(url, url_attr, function(data) {
+      include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
            target.html(action_body);
-           init_emoji($(target.find('.emoji-container:not(.emojified)')));
-           rebuild_scrolls($(target.find('.malihu-scroll')))
-           initscroll(target.find(".result-scroll"))
            $this.addClass('activated')
            var position = $this.offset()
            popover_container.css('top', position.top-$(document).scrollTop()-(popover_container.height()/2)+'px')
@@ -336,13 +334,21 @@ function update_popover_action(){
                 deform.processCallbacks();
             }
            catch(err) {};
-           init_comment_scroll(target)
+           target.find('.carousel').carousel()
+           init_emoji(target.find('.emoji-container:not(.emojified)'));
+           init_content_text_scroll(target.find(".content-text-scroll"))
+           rebuild_scrolls(target.find('.malihu-scroll'))
+           var result_scroll = target.find(".result-scroll")
+           init_result_scroll(undefined, 1000, result_scroll.parents('div').first());
+           initscroll(result_scroll)
            finish_progress()
            focus_on_form(target)
+           target.data('action_id', action.attr('id'))
         }else{
            location.reload();
            return false
         }
+      })
     });
     return false;
 };

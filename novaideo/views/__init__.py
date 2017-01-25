@@ -6,7 +6,6 @@
 import datetime
 import pytz
 from pyramid.view import view_config
-from pyramid import renderers
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
 
@@ -29,7 +28,8 @@ from novaideo.content.interface import (
     ICorrelableEntity,
     Iidea,
     ISearchableEntity,
-    IFile)
+    IFile,
+    IQuestion)
 from novaideo.utilities.util import (
     render_small_listing_objs, extract_keywords)
 from novaideo.utilities.pseudo_react import (
@@ -346,7 +346,7 @@ class NovaideoAPI(IndexManagementJsonView):
     def get_similar_questions(self):
         user = get_current()
         # text = self.params('text')
-        title = self.params('question')
+        title = self.params('title')
         keywords = self.params('keywords')
         # text = text if text else ''
         title = title if title else ''
@@ -650,6 +650,7 @@ class NovaideoAPI(IndexManagementJsonView):
         return result
 
     def update_action(self, action=None, context=None):
+        # import pdb; pdb.set_trace()
         result = {}
         action_uid = self.params('action_uid')
         try:

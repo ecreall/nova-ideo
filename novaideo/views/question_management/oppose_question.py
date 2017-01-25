@@ -10,9 +10,10 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
 from novaideo.content.processes.question_management.behaviors import (
-    OpposeQuestion)
+    OpposeQuestion, OpposeQuestionAnonymous)
 from novaideo.content.question import Question
 from novaideo import _
+from novaideo.views.core import ActionAnonymousView
 
 
 @view_config(
@@ -29,6 +30,20 @@ class OpposeQuestionView(BasicView):
     def update(self):
         results = self.execute(None)
         return results[0]
+
+
+@view_config(
+    name='opposequestionanonymous',
+    context=Question,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class OpposeQuestionAnonymousView(ActionAnonymousView):
+    behaviors = [OpposeQuestionAnonymous]
+    name = 'opposequestionanonymous'
+
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {OpposeQuestionAnonymous: OpposeQuestionAnonymousView})
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
