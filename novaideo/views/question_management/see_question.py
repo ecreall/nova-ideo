@@ -53,7 +53,7 @@ class AnswersView(BasicView):
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     view_icon = 'glyphicon glyphicon-saved'
     title = _('Answers')
-    empty_message = _("No answers")
+    empty_message = _("No answer")
     empty_icon = 'glyphicon glyphicon-saved'
     selected_filter = [('temporal_filter', ['negation', 'created_date']),
                        'text_filter']

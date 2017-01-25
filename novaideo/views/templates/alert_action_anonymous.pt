@@ -1,6 +1,6 @@
 <div class="alert alert-info" i18n:domain="novaideo" style="margin-bottom: 5px;">
 	<p i18n:translate="">You must be logged in to perform this action and more. Please sign in or register.</p>
-	<div style="text-align: center;">
+	<div style="text-align: center; margin-top: 15px;">
 		<div class="btn-group">
 		   <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-primary btn-xs" id="log-in">
 		      <i class="glyphicon glyphicon-log-in"> </i> <span i18n:translate="">Log In</span>

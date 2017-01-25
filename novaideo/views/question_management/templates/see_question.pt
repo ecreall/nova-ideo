@@ -119,18 +119,18 @@
     </div>
     <div tal:omit-tag="" tal:condition="options">
       <div tal:condition="selected_option is None" class="alert alert-info">
-        <p>Cette question est une question à choix suggéré. Vous pouvez faire un choix parmi ceux proposés. Vous ne pouvez répondre à cette question qu'une seule foi. Une fois répondu à cette question, vous pouvez éditer votre réponse tant que la question n'est pas clôturée.</p>
+        <p i18n:translate="">Cette question est une question à choix suggéré. Vous pouvez faire un choix parmi ceux proposés. Vous ne pouvez répondre à cette question qu'une seule foi. Une fois répondu à cette question, vous pouvez éditer votre réponse tant que la question n'est pas clôturée.</p>
         <p>
-          Les choix proposés par l'auteur sont :
+          <span i18n:translate="">Les choix proposés par l'auteur sont :</span>
           <ul>
             <li tal:repeat="option object.options"><strong>${option}</strong></li>
           </ul>
         </p>
       </div>
       <div tal:condition="selected_option is not None" class="alert alert-info">
-        <p>Cette question est une question à choix suggéré. Vous ne pouvez répondre à cette question qu'une seule foi. Vous avez déjà répondu à cette question et votre choix est "<strong>${options[selected_option]}</strong>". Vous pouvez éditer votre réponse tant que la question n'est pas clôturée.</p>
+        <p i18n:translate="">Cette question est une question à choix suggéré. Vous ne pouvez répondre à cette question qu'une seule foi. Vous avez déjà répondu à cette question et votre choix est "<strong i18n:name="dynamic">${options[selected_option]}</strong>". Vous pouvez éditer votre réponse tant que la question n'est pas clôturée.</p>
         <p>
-          Les choix proposés par l'auteur sont :
+          <span i18n:translate="">Les choix proposés par l'auteur sont :</span>
           <ul>
             <li tal:repeat="option object.options"><strong>${option}</strong></li>
           </ul>

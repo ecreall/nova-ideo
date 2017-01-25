@@ -1624,9 +1624,9 @@ def novideo_contents_questions(action, request, context, api, **kwargs):
     query = object_provides_index.any((IQuestion.__identifier__, )) & \
         states_index.any(['published'])
     item_nb = query.execute().__len__()
-    title = _('Published qyestion')
+    title = _('Asked question')
     if item_nb > 1:
-        title = _('Published questions')
+        title = _('Asked questions')
 
     result = {
         'novideo-contents-questions.item_nb': item_nb,
