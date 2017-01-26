@@ -1,5 +1,9 @@
 <div tal:omit-tag="" tal:define=" items subitem['items'];
-                                  itemslen len(items)|0">
+                                  itemslen len(items)|0;
+                                  center_tabs getattr(subitem['view'], 'center_tabs', False);
+                                  class_label 'col-md' if center_tabs else 'principal-tab-item';
+                                  col_class class_label+'-'+str(int(12/itemslen)) if itemslen > 0 else class_label+'-'+'12'">
+                                  
   <div tal:omit-tag="" tal:condition="items and itemslen == 1">
            <div tal:define="item items[0]" tal:replace="item['view'].render_item(item, coordinates, None)" />
   </div>
@@ -8,7 +12,7 @@
           <li id="${getattr(item['view'], 'counter_id', '')}"
               data-component_type="tab_component"
               tal:repeat="item items"
-              tal:attributes="class item['isactive'] and 'active counter' or 'counter'"
+              tal:attributes="class item['isactive'] and 'active counter '+col_class or 'counter '+col_class"
               data-help="${getattr(item['view'], 'contextual_help', '')}">
              <a data-toggle="tab" tal:attributes="href '#'+item['id']+coordinates"
                 tal:define="icon getattr(item['view'], 'view_icon', None)">

@@ -159,11 +159,6 @@ class QuestionsView(ContentView):
     empty_message = _("No question asked")
     empty_icon = 'md md-live-help'
 
-# class PersonsView(ContentView):
-#     title = _('Persons')
-#     content_type = 'person'
-#     viewid = 'home-person'
-
 
 @view_config(
     name='index',
@@ -180,12 +175,12 @@ class HomeView(MultipleView):
     name = ''
     behaviors = [SeeHome]
     anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
-    # wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     template = 'novaideo:views/templates/multipleview.pt'
     viewid = 'home'
     css_class = 'simple-bloc'
     container_css_class = 'home'
-    views = (QuestionsView, IdeasView, ProposalsView)#, PersonsView)
+    center_tabs = True
+    views = (QuestionsView, IdeasView, ProposalsView)
 
     def _init_views(self, views, **kwargs):
         if self.request.is_idea_box:

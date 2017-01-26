@@ -116,6 +116,7 @@ class PersonContentsView(MultipleView):
     css_class = 'simple-bloc'
     template = 'novaideo:views/templates/multipleview.pt'
     container_css_class = 'person-view'
+    center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
 
     def _init_views(self, views, **kwargs):

@@ -26,7 +26,7 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs home-content-nav" role="tablist">
         <li tal:repeat="form_data forms"
-          role="presentation" class="${form_data['id']}-class ${form_data.get('active', False) and 'active' or ''}"><a href="#${form_data['id']}" data-content_id="${form_data['id']}" aria-controls="${form_data['id']}" role="tab" data-toggle="tab">${form_data['title']}</a></li>
+          role="presentation" class="${form_data['id']}-class ${form_data.get('active', False) and 'active' or ''}"><a href="#${form_data['id']}" data-content_id="${form_data['id']}" aria-controls="${form_data['id']}" role="tab" data-toggle="tab"><span class="${getattr(form_data['action'], 'style_picto', '')}"></span> ${form_data['title']}</a></li>
       </ul>
 
       <!-- Tab panes -->
