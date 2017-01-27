@@ -136,7 +136,11 @@ form.answerform{
 
 .comment-inline-form .comment-textarea-container,
 .sidebar-right-wrapper .comment-inline-form{
-    position: relative;  
+    position: relative;
+}
+
+.comment-inline-form .comment-textarea-container{
+    background-color: white;
 }
 
 .comment-inline-form .comment-textarea{
@@ -275,7 +279,7 @@ form.answerform{
 
 .commentform .comment-form-group > p.help-block{
     color: #989ba0;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 700;
     margin-bottom: 10px;
     margin-top: 0;
@@ -558,8 +562,8 @@ li.comment-text-search-container {
 }
 
 @media (max-width: 767px) {
-    .sidebar-right-wrapper .commentform{
-       width: 97% ;
+    .sidebar-right-wrapper .commentform:not(.answerform){
+       width: 100% !important;
     }
     .comment-content .content-text .row{
        margin-left: 0px;
@@ -569,18 +573,18 @@ li.comment-text-search-container {
     .commentform .comment-form-group.active{
         max-height: 250px;
         right: 10px;
-        width: 94%;
+        width: 94% !important;
     }
 }
 
 @media (max-width: 1400px) and (min-width: 768px){
-    .sidebar-right-wrapper .commentform,
+    .sidebar-right-wrapper .commentform:not(.answerform)
      {
-       width: 80%;
+       width: 80% !important;
     }
 
     .commentform .comment-form-group.active{
-        width: 75%;
+        width: 40% !important;
     }
 
     .emoji-container-input.active {
