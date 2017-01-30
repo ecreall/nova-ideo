@@ -5006,7 +5006,7 @@ msgstr ""
 
 #: novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:20
 msgid "or submitted for evaluation"
-msgstr "Soumise pour appréciation"
+msgstr "soit soumise à appréciation"
 
 # # Cette formulation d'attente de quorum me semble plus claire
 #: novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:25
