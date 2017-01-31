@@ -3,6 +3,7 @@
 
 	NovaIdeoGuideline.init = function(){
 		var tour_container = $('#novaideo-guide-tour-container');
+		NovaIdeoGuideline.logo_url = $('a.navbar-brand .globe-logo').attr('src');
         NovaIdeoGuideline.update_url = tour_container.data('update_url');
         NovaIdeoGuideline.guide = tour_container.data('guide');
         NovaIdeoGuideline.guide_value = parseInt(tour_container.data('guide_value'));

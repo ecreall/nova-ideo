@@ -7,7 +7,7 @@ $(document).ready(function(){
     });
 
     var homePage = novaideo_home_guide.addPage("index");
-    var novaideolog = 'http://0.0.0.0:6543/novaideostatic/images/novaideo_logo.png';
+    var novaideolog = NovaIdeoGuideline.logo_url;
     homePage.addStep({
         type: "overlay",
         title: "<div>"+_("Welcome to")+
@@ -270,17 +270,17 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: _("Maintenant, c'est à vous de créer l'information !"),
+        title: "<span style='color: #337ab7'>"+_("Maintenant, c'est à vous de créer l'information !")+"</span>",
         showSkip: false,
         content: (
-            "<p>"+_("Poser des questions, ajouter des idées, travailler en groupe ou débattre cela ne tient qu'à vous !")+"</p>"+
-            "<p>"+_("Nous venons de vous présenter l'essentiel pour pouvoir démarrer, bien d'autres fonctionnalités sont disponibles afin d'améliorer votre productivité.")+
+            "<p class='hidden-xs'>"+_("Poser des questions, ajouter des idées, travailler en groupe ou débattre cela ne tient qu'à vous !")+"</p>"+
+            "<p class='hidden-xs'>"+_("Nous venons de vous présenter l'essentiel pour pouvoir démarrer, bien d'autres fonctionnalités sont disponibles afin d'améliorer votre productivité.")+
             "<ul class='list-unstyled'>"+
-            "<li>"+_("Pour plus d'informations, veuillez vous connecter sur <a href='https://www.nova-ideo.com/'>nova-ideo.com</a>.")+"</li>"+
-            "<li>"+_("Pour suivre les nouveautés sur <strong>Nova-Ideo</strong>, rejoignez nous sur <a href='https://twitter.com/NovaIdeo'>twitter</a>.")+"</li>"+
-            "<li>"+_("Pour suggérer des améliorations, veuillez vous inscrire sur <a href='https://evolutions.nova-ideo.com/'>Nova-Ideo Evolutions</a>.")+"</li>"+
+                "<li>"+_("Pour plus d'informations, veuillez vous connecter sur <a href='https://www.nova-ideo.com/'>nova-ideo.com</a>.")+"</li>"+
+                "<li>"+_("Pour suivre les nouveautés sur <strong>Nova-Ideo</strong>, rejoignez nous sur <a href='https://twitter.com/NovaIdeo'>twitter</a>.")+"</li>"+
+                "<li>"+_("Pour suggérer des améliorations, veuillez vous inscrire sur <a href='https://evolutions.nova-ideo.com/'>Nova-Ideo Evolutions</a>.")+"</li>"+
             "</ul></p>"+
-            "<br/>"+
+            "<div style='margin-bottom: 10px;'><img alt='Nova-Ideo' src='"+novaideolog+"' class='globe-logo'></div>"+
             "<button class='gl-continue btn btn-primary btn-alpha-blue hide-button'>"+
               "<i class='glyphicon glyphicon-off'></i> "+
               "<strong>"+_("Merci et à bientôt !")+"</strong>"+
