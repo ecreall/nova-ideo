@@ -14,17 +14,18 @@ $(document).ready(function(){
                " <img alt='Nova-Ideo' src='"+novaideolog+"' class='globe-logo'> Nova-Ideo</div>",
         showSkip: false,
         content: (
-            "<p>"+
-              _("<strong>Nova-Ideo</strong> is a platform implementing a complete process, "+
-                "in which working groups transform ideas into complete proposals with "+
-                "a system of amendment and voting sessions. C'est le moyen pour vous exprimer par excellence.")+
+            "<p class='hidden-xs'>"+
+              _("NovaIdeo Description")+
+            "</p>"+
+            "<p style='color: #ef6e18'>"+
+              _("Ceci est une visite guidée pour vous montrer l'essentiel de <strong>Nova-Ideo</strong>. La visite ne vous prendra que quelques secondes.")+
             "</p>"+
             "<button class='gl-continue btn btn-primary btn-alpha-blue hide-button'>"+
               "<i class='glyphicon glyphicon-play'></i> "+
-              _("Amazing... Show me more!")+
+              _("Let's go!")+
             "</button>"+
             "<br/>"+
-            "<a href='#' class='gl-skip'>"+_("I don't care. Skip this.")+"</a>"
+            "<a href='#' class='gl-skip'>"+_("No thanks!")+"</a>"
         )
     });
 
@@ -33,7 +34,7 @@ $(document).ready(function(){
         title: "<span class='glyphicon glyphicon-pencil'></span> "+ _("Ask a questions, add a poll or a new idea"),
         content: (
             "<p>"+
-              _("Ce formulaire vous permet d'ajouter une idée, poser une question ou ajouter un sondage. Un sondage est une questions avec des options.")+
+              _("This form allows you to add an idea, ask a question or add a poll. A poll is a question with options.")+
             "</p>"
         ),
         showAt: ".home-add-content-container",
@@ -53,10 +54,10 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: "<span class='md md-live-help'></span> "+ _("Questions"),
+        title: "<span class='md md-live-help'></span> "+ _("The questions"),
         content: (
             "<p>"+
-              _("Vous trouvez ici les questions posées les membres de la plateforme. Vous pouvez y répondre, les soutenir ou les discuter.")+
+              _("You will find here the questions asked by the members of the platform. You can answer them, support them or discuss them.")+
             "</p>"
         ),
         showAt: "#home-questions-counter",
@@ -73,10 +74,10 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: "<span class='icon novaideo-icon icon-idea'></span> "+ _("Ideas"),
+        title: "<span class='icon novaideo-icon icon-idea'></span> "+ _("The ideas"),
         content: (
             "<p>"+
-              _("Vous trouvez ici les idées ajoutées par les membres de la plateforme. Vous pouvez les soutenir ou les discuter.")+
+              _("You will find here the ideas added by the members of the platform. You can support them or discuss them.")+
             "</p>"
         ),
         showAt: "#home-ideas-counter",
@@ -91,10 +92,10 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: "<span class='icon novaideo-icon icon-wg'></span> "+ _("Working groups"),
+        title: "<span class='icon novaideo-icon icon-wg'></span> "+ _("The working groups"),
         content: (
             "<p>"+
-              _("Vous trouvez ici les groupes de travail crée par les membres de la plateforme. Vous pouvez y participer, les soutenir ou les discuter.")+
+              _("You will find here the working groups created by the members of the platform. You can participate, support or discuss them.")+
             "</p>"
         ),
         showAt: "#home-proposals-counter",
@@ -115,7 +116,7 @@ $(document).ready(function(){
         title: "<span class='glyphicon glyphicon-list'></span> "+ _("Your contents"),
         content: (
             "<p>"+
-              _("Vous trouvez ici les liens vous permettant d'accéder à vos contenus, vos groupes de travail, vos appréciations ou vos suivies.")+
+              _("You find here the links allowing you to access your contents, your working groups, your appreciations or your followings.")+
             "</p>"
         ),
         showAt: ".access-menu ul.nav.navbar-nav",
@@ -130,10 +131,10 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: "<span class='icon glyphicon glyphicon-bell'></span> "+ _("Vos alerts"),
+        title: "<span class='icon glyphicon glyphicon-bell'></span> "+ _("Your notifications"),
         content: (
             "<p>"+
-              _("Vous trouvez ici toutes les alertes concernant votre activité.")+
+              _("You will find here all the notifications concerning your activity.")+
             "</p>"
         ),
         showAt: ".hidden-xs.alert-block",
@@ -149,10 +150,10 @@ $(document).ready(function(){
     });
 
     homePage.addStep({
-        title: "<span class=' ion-chatbubbles'></span> "+ _("Accedez à vos discussions"),
+        title: "<span class=' ion-chatbubbles'></span> "+ _("Accede to your discussions"),
         content: (
             "<p>"+
-              _("Vous trouvez ici les discussions auxquelles vous participez. <span class='gl-target-click'>Veuillez cliquer sur l'icône <span class='ion-chatbubbles'></span> pour continuer.</span>")+
+              _("You will find here the discussions you participate in. <span class='gl-target-click'>Please click on this icon <span class='ion-chatbubbles'></span> to continue.</span>")+
             "</p>"
         ),
         showAt: ".all-channels-toggle:not(.close)",
@@ -167,10 +168,10 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: "<span class=' ion-chatbubbles'></span> "+ _("Discussions générales et privées"),
+        title: "<span class=' ion-chatbubbles'></span> "+ _("General and private discussions"),
         content: (
             "<p>"+
-              _("Les discussions générales sont visibles par tous les membres et les discussions privées sont visibles que par vous et votre interlocuteur.")+
+              _("General discussions are visible by all members and private discussions are visible only by you and your interlocutor.")+
             "</p>"
         ),
         showAt: ".all-channels .all-channels-container",
@@ -189,10 +190,10 @@ $(document).ready(function(){
     var has_menu = $(".menu-toggle.top").length>0;
     if(has_menu){
         homePage.addStep({
-            title:"<span class='glyphicon glyphicon-menu-hamburger'></span> "+ _("Votre menue"),
+            title:"<span class='glyphicon glyphicon-menu-hamburger'></span> "+ _("Your menu"),
             content: (
                 "<p>"+
-                  _("Vous trouvez ici les différente actions d'ajout d'acces ou de modification. <span class='gl-target-click'>Veuillez cliquer sur l'icône <span class='glyphicon glyphicon-menu-hamburger'></span> pour continuer.</span>")+
+                  _("You will find here the different actions allowing you to add, access or modify contents. <span class='gl-target-click'>Please click on this icon <span class='glyphicon glyphicon-menu-hamburger'></span> to continue.</span>")+
                 "</p>"
             ),
             showAt: ".menu-toggle.top",
@@ -208,13 +209,13 @@ $(document).ready(function(){
         var has_configure_btn = $("#adminprocess-configure_site-btn").length > 0;
 
         homePage.addStep({
-            title: "<span class='glyphicon glyphicon-cog'></span> "+ _("Autres actions"),
+            title: "<span class='glyphicon glyphicon-cog'></span> "+ _("Other actions"),
             content: (
                 "<p>"+
-                  _("Vous trouvez dans le sous-menu <strong>Plus</strong> d'autres actions comme la configuration ou l'extraction de votre contenu. <span class='gl-target-click'>Veuillez cliquer sur le sous-menu <strong><span class='glyphicon glyphicon-cog'></span> Plus</strong> pour continuer.</span>")+
+                  _("You can find other actions in the <strong> More </strong> submenu such as configuring or extracting your content. <span class='gl-target-click'>Please click on this icon <strong><span class='glyphicon glyphicon-cog'></span> More</strong> to continue.</span>")+
                 "</p>"
             ),
-            showAt: "#Plus-btn",
+            showAt: "#More-btn",
             align: "right middle",
             continueHtml: has_configure_btn? null: NovaIdeoGuideline.end_btn,
             previousHtml: NovaIdeoGuideline.prev_btn,
@@ -224,15 +225,15 @@ $(document).ready(function(){
             showAfter: 0.5
         },
         function(){
-            return has_configure_btn && $("#Plus-btn.active-item").length == 0;
+            return has_configure_btn && $("#More-btn.active-item").length == 0;
         });
 
         homePage.addStep({
             type: "overlay",
-            title: "<span class='glyphicon glyphicon-wrench'></span> "+ _("Configurer votre application"),
+            title: "<span class='glyphicon glyphicon-wrench'></span> "+ _("Configuring your application"),
             content: (
                 "<p>"+
-                  _("Vous pouvez configurer le comportement de votre instance comme la spécification des contenus à modérer, les contenus à soutenir ou à examiner. Vous pouvez aussi configurer l'interface utilisateur en ajoutant votre logo...")+
+                  _("You can configure the behavior of your instance such as specifying content to moderate, content to support or examine. You can also configure the user interface by adding your logo...")+
                 "</p>"
             ),
             showAt: "#adminprocess-configure_site-btn",
@@ -249,10 +250,10 @@ $(document).ready(function(){
     }
 
     homePage.addStep({
-        title: "<span class='glyphicon glyphicon-info-sign'></span> "+ _("Aide contextuelle"),
+        title: "<span class='glyphicon glyphicon-info-sign'></span> "+ _("Contextual help"),
         content: (
             "<p>"+
-              _("Nous vous proposons aussi une aide contextuelle vous permettant d'avoir des informations contextualisées.")+
+              _("We also offer context-sensitive help for contextualized informations.")+
             "</p>"
         ),
         showAt: ".contextual-help-toggle-container",
@@ -270,20 +271,20 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: "<span style='color: #337ab7'>"+_("Maintenant, c'est à vous de créer l'information !")+"</span>",
+        title: "<span style='color: #337ab7'>"+_("Now it's up to you to create the information!")+"</span>",
         showSkip: false,
         content: (
-            "<p class='hidden-xs'>"+_("Poser des questions, ajouter des idées, travailler en groupe ou débattre cela ne tient qu'à vous !")+"</p>"+
-            "<p class='hidden-xs'>"+_("Nous venons de vous présenter l'essentiel pour pouvoir démarrer, bien d'autres fonctionnalités sont disponibles afin d'améliorer votre productivité.")+
+            "<p class='hidden-xs'>"+_("Ask questions, add ideas, work in groups or debate ... it's up to you!")+"</p>"+
+            "<p class='hidden-xs'>"+_("We have just presented you the essential to be able to start, many other features are available to improve your productivity.")+
             "<ul class='list-unstyled'>"+
-                "<li>"+_("Pour plus d'informations, veuillez vous connecter sur <a href='https://www.nova-ideo.com/'>nova-ideo.com</a>.")+"</li>"+
-                "<li>"+_("Pour suivre les nouveautés sur <strong>Nova-Ideo</strong>, rejoignez nous sur <a href='https://twitter.com/NovaIdeo'>twitter</a>.")+"</li>"+
-                "<li>"+_("Pour suggérer des améliorations, veuillez vous inscrire sur <a href='https://evolutions.nova-ideo.com/'>Nova-Ideo Evolutions</a>.")+"</li>"+
+                "<li>"+_("For more information, please go to <a href='https://www.nova-ideo.com/'>nova-ideo.com</a>.")+"</li>"+
+                "<li>"+_("To follow <strong> Nova-Ideo </strong>, join us on <a href='https://twitter.com/NovaIdeo'>twitter</a>.")+"</li>"+
+                "<li>"+_("To suggest improvements, please register on <a href='https://evolutions.nova-ideo.com/'>Nova-Ideo Evolutions</a>.")+"</li>"+
             "</ul></p>"+
             "<div style='margin-bottom: 10px;'><img alt='Nova-Ideo' src='"+novaideolog+"' class='globe-logo'></div>"+
             "<button class='gl-continue btn btn-primary btn-alpha-blue hide-button'>"+
               "<i class='glyphicon glyphicon-off'></i> "+
-              "<strong>"+_("Merci et à bientôt !")+"</strong>"+
+              "<strong>"+_("Thank you and see you soon!")+"</strong>"+
             "</button>"
         )
     });
