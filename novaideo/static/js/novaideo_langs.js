@@ -119,7 +119,7 @@ novaideoI18n = {
   "Your notifications": "Vos notifications",
   "You will find here the discussions you participate in. <span class='gl-target-click'>Please click on this icon <span class='ion-chatbubbles'></span> to continue.</span>": "Vous trouverez ici les discussions auxquelles vous participez. <span class='gl-target-click'>Veuillez cliquer sur cette icône <span class='ion-chatbubbles'></span> pour continuer.</span>",
   "Accede to your discussions": "Accedez à vos discussions",
-  "General and private discussions": "",
+  "General and private discussions": "Discussions générales et privées",
   "General discussions are visible by all members and private discussions are visible only by you and your interlocutor.": "Les discussions générales sont visibles par tous les membres et les discussions privées sont visibles que par vous et votre interlocuteur.",
   "Your menu": "Votre menu",
   "You will find here the different actions allowing you to add, access or modify contents. <span class='gl-target-click'>Please click on this icon <span class='glyphicon glyphicon-menu-hamburger'></span> to continue.</span>": "Vous trouverez ici les différentes actions vous permettant d'ajouter, d'accéder ou de modifier des contenus. <span class='gl-target-click'>Veuillez cliquer sur cette icône <span class='glyphicon glyphicon-menu-hamburger'></span> pour continuer.</span>",
