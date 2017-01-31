@@ -23,6 +23,7 @@ from dace.util import (
 from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from daceui.interfaces import IDaceUIAPI
+from pontus.util import merge_dicts
 
 from novaideo.utilities.util import (
     generate_listing_menu, ObjectRemovedException)
@@ -49,6 +50,7 @@ from novaideo.utilities.util import (
     get_debatescore_data)
 from novaideo.views.filter import find_entities, find_more_contents
 from novaideo.contextual_help_messages import render_contextual_help
+from novaideo.guide_tour import get_guide_tour_page
 from novaideo.steps import steps_panels
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
@@ -487,14 +489,10 @@ class ContextualHelp(object):
         self.request = request
 
     def __call__(self):
-        if not self.request.cookies.get('contextual_help', True):
-            return {'condition': False}
-
         user = get_current()
         messages = render_contextual_help(
             self.request, self.context, user, self.request.view_name)
-        return {'messages': messages,
-                'condition': True}
+        return {'messages': messages}
 
 
 @panel_config(
@@ -795,3 +793,62 @@ class Debates_core(object):
             'picture': getattr(self.context, 'homepage_picture', None),
             'text': getattr(self.context, 'homepage_text', None)
         }
+
+
+@panel_config(
+    name='guide_tour',
+    context=Entity,
+    renderer='templates/panels/guide_tour.pt'
+    )
+class GuideTour(object):
+
+    resources = {
+        'css_links': ['novaideo:static/guideline/css/guideline.css'],
+        'js_links': ['novaideo:static/guideline/js/guideline.js',
+                     'novaideo:static/guideline/js/novaideoguideline.js']
+    }
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        user = get_current()
+        guide_state = getattr(user, 'guide_tour_data', {}).get(
+            'guide_state', 'first_start')
+        if guide_state in ('pending', 'first_start'):
+            page_resources = get_guide_tour_page(
+                self.request, self.context, user, self.request.view_name)
+            if page_resources:
+                page_resources = merge_dicts(
+                    self.resources, page_resources)
+                page_resources['request'] = self.request
+                # if user is not an anonymous
+                if self.request.user:
+                    root = getSite()
+                    page_resources['update_url'] = self.request.resource_url(
+                        root,
+                        'novaideoapi', query={
+                            'op': 'update_guide_tour_data'
+                        })
+                    guide = page_resources.get('guide', None)
+                    page = page_resources.get('page', None)
+                    if guide is not None and page is not None:
+                        guide_data = user.guide_tour_data.get(
+                            guide+'_'+page, {})
+                        page_state = guide_data.get(
+                            'page_state', 'pending')
+                        if page_state == 'pending':
+                            page_resources['guide'] = guide
+                            page_resources['page'] = page
+                            page_resources['guide_value'] = guide_data.get(
+                                'guide', -1)
+                            page_resources['page_value'] = guide_data.get(
+                                'page', 0)
+                            page_resources['guide_state'] = guide_state
+                        else:
+                            return {}
+
+                return page_resources
+
+        return {}

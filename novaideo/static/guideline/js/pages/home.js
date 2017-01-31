@@ -1,5 +1,6 @@
 
 $(document).ready(function(){
+    NovaIdeoGuideline.init();
     var _ = NovaIdeoGuideline._;
     var novaideo_home_guide = new Guideline.Guide("novaideo_home", {
         memoizeLasStep: true
@@ -29,10 +30,10 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: _("Ask a questions or add a new idea"),
+        title: "<span class='glyphicon glyphicon-pencil'></span> "+ _("Ask a questions, add a poll or a new idea"),
         content: (
             "<p>"+
-              _("Ce formulaire vous permet d'ajouter une idée ou poser une question.")+
+              _("Ce formulaire vous permet d'ajouter une idée, poser une question ou ajouter un sondage. Un sondage est une questions avec des options.")+
             "</p>"
         ),
         showAt: ".home-add-content-container",
@@ -52,7 +53,7 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: _("Questions"),
+        title: "<span class='md md-live-help'></span> "+ _("Questions"),
         content: (
             "<p>"+
               _("Vous trouvez ici les questions posées les membres de la plateforme. Vous pouvez y répondre, les soutenir ou les discuter.")+
@@ -72,7 +73,7 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: _("Ideas"),
+        title: "<span class='icon novaideo-icon icon-idea'></span> "+ _("Ideas"),
         content: (
             "<p>"+
               _("Vous trouvez ici les idées ajoutées par les membres de la plateforme. Vous pouvez les soutenir ou les discuter.")+
@@ -90,7 +91,7 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: _("Working groups"),
+        title: "<span class='icon novaideo-icon icon-wg'></span> "+ _("Working groups"),
         content: (
             "<p>"+
               _("Vous trouvez ici les groupes de travail crée par les membres de la plateforme. Vous pouvez y participer, les soutenir ou les discuter.")+
@@ -111,7 +112,7 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: _("Your contents"),
+        title: "<span class='glyphicon glyphicon-list'></span> "+ _("Your contents"),
         content: (
             "<p>"+
               _("Vous trouvez ici les liens vous permettant d'accéder à vos contenus, vos groupes de travail, vos appréciations ou vos suivies.")+
@@ -129,7 +130,7 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: _("Vos alerts"),
+        title: "<span class='icon glyphicon glyphicon-bell'></span> "+ _("Vos alerts"),
         content: (
             "<p>"+
               _("Vous trouvez ici toutes les alertes concernant votre activité.")+
@@ -148,7 +149,7 @@ $(document).ready(function(){
     });
 
     homePage.addStep({
-        title: _("Accedez à vos discussions"),
+        title: "<span class=' ion-chatbubbles'></span> "+ _("Accedez à vos discussions"),
         content: (
             "<p>"+
               _("Vous trouvez ici les discussions auxquelles vous participez. <span class='gl-target-click'>Veuillez cliquer sur l'icône <span class='ion-chatbubbles'></span> pour continuer.</span>")+
@@ -166,7 +167,7 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: _("Discussions générales et privées"),
+        title: "<span class=' ion-chatbubbles'></span> "+ _("Discussions générales et privées"),
         content: (
             "<p>"+
               _("Les discussions générales sont visibles par tous les membres et les discussions privées sont visibles que par vous et votre interlocuteur.")+
@@ -188,7 +189,7 @@ $(document).ready(function(){
     var has_menu = $(".menu-toggle.top").length>0;
     if(has_menu){
         homePage.addStep({
-            title: _("Votre menue"),
+            title:"<span class='glyphicon glyphicon-menu-hamburger'></span> "+ _("Votre menue"),
             content: (
                 "<p>"+
                   _("Vous trouvez ici les différente actions d'ajout d'acces ou de modification. <span class='gl-target-click'>Veuillez cliquer sur l'icône <span class='glyphicon glyphicon-menu-hamburger'></span> pour continuer.</span>")+
@@ -207,7 +208,7 @@ $(document).ready(function(){
         var has_configure_btn = $("#adminprocess-configure_site-btn").length > 0;
 
         homePage.addStep({
-            title: _("Autres actions"),
+            title: "<span class='glyphicon glyphicon-cog'></span> "+ _("Autres actions"),
             content: (
                 "<p>"+
                   _("Vous trouvez dans le sous-menu <strong>Plus</strong> d'autres actions comme la configuration ou l'extraction de votre contenu. <span class='gl-target-click'>Veuillez cliquer sur le sous-menu <strong><span class='glyphicon glyphicon-cog'></span> Plus</strong> pour continuer.</span>")+
@@ -228,7 +229,7 @@ $(document).ready(function(){
 
         homePage.addStep({
             type: "overlay",
-            title: _("Configurer votre application"),
+            title: "<span class='glyphicon glyphicon-wrench'></span> "+ _("Configurer votre application"),
             content: (
                 "<p>"+
                   _("Vous pouvez configurer le comportement de votre instance comme la spécification des contenus à modérer, les contenus à soutenir ou à examiner. Vous pouvez aussi configurer l'interface utilisateur en ajoutant votre logo...")+
@@ -248,13 +249,13 @@ $(document).ready(function(){
     }
 
     homePage.addStep({
-        title: _("Aide contextuelle"),
+        title: "<span class='glyphicon glyphicon-info-sign'></span> "+ _("Aide contextuelle"),
         content: (
             "<p>"+
               _("Nous vous proposons aussi une aide contextuelle vous permettant d'avoir des informations contextualisées.")+
             "</p>"
         ),
-        showAt: ".contextual-help-toggle",
+        showAt: ".contextual-help-toggle-container",
         align: "left middle",
         continueHtml: NovaIdeoGuideline.end_btn,
         previousHtml: NovaIdeoGuideline.prev_btn,
@@ -262,6 +263,9 @@ $(document).ready(function(){
         showContinue: true,
         showPrevious: true,
         scrollToItem: true,
+        function(){
+            return $('.contextual-help-toggle-container').length > 0;
+        }
     });
 
     homePage.addStep({
@@ -270,6 +274,12 @@ $(document).ready(function(){
         showSkip: false,
         content: (
             "<p>"+_("Poser des questions, ajouter des idées, travailler en groupe ou débattre cela ne tient qu'à vous !")+"</p>"+
+            "<p>"+_("Nous venons de vous présenter l'essentiel pour pouvoir démarrer, bien d'autres fonctionnalités sont disponibles afin d'améliorer votre productivité.")+
+            "<ul class='list-unstyled'>"+
+            "<li>"+_("Pour plus d'informations, veuillez vous connecter sur <a href='https://www.nova-ideo.com/'>nova-ideo.com</a>.")+"</li>"+
+            "<li>"+_("Pour suivre les nouveautés sur <strong>Nova-Ideo</strong>, rejoignez nous sur <a href='https://twitter.com/NovaIdeo'>twitter</a>.")+"</li>"+
+            "<li>"+_("Pour suggérer des améliorations, veuillez vous inscrire sur <a href='https://evolutions.nova-ideo.com/'>Nova-Ideo Evolutions</a>.")+"</li>"+
+            "</ul></p>"+
             "<br/>"+
             "<button class='gl-continue btn btn-primary btn-alpha-blue hide-button'>"+
               "<i class='glyphicon glyphicon-off'></i> "+

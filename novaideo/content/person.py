@@ -11,6 +11,7 @@ from BTrees.OOBTree import OOBTree
 import colander
 import deform.widget
 from persistent.list import PersistentList
+from persistent.dict import PersistentDict
 from zope.interface import implementer
 
 from substanced.content import content
@@ -295,6 +296,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         self.set_title()
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
         self._read_at = OOBTree()
+        self.guide_tour_data = PersistentDict({})
 
     def __setattr__(self, name, value):
         super(Person, self).__setattr__(name, value)

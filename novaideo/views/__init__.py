@@ -704,3 +704,26 @@ class NovaideoAPI(IndexManagementJsonView):
             action.after_execution(context, self.request)
 
         return {}#message erreur
+
+    def update_guide_tour_data(self):
+        if self.request.user:
+            user = get_current()
+            guide_state = self.params('guide_state')
+            if guide_state:
+                user.guide_tour_data['guide_state'] = guide_state
+
+            guide = self.params('guide')
+            page = self.params('page')
+            if guide is not None and page is not None:
+                page_state = self.params('page_state')
+                guide_value = self.params('guide_value')
+                page_value = self.params('page_value')
+                guide_value = guide_value if guide_value is not None else -1
+                page_value = page_value if page_value is not None else 0
+                page_state = page_state if page_state is not None else 'pending'
+                user.guide_tour_data[guide+'_'+page] = {
+                    'guide': guide_value,
+                    'page': page_value,
+                    'page_state': page_state
+                }
+                user.guide_tour_data['guide_state'] = 'pending'

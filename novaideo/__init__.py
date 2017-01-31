@@ -632,6 +632,24 @@ def evolve_add_nia_bot(root, registry):
     add_nia_bot(root)
 
 
+def add_guide_tour_data(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+    from persistent.dict import PersistentDict
+
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if not hasattr(node, 'guide_tour_data'):
+            node.guide_tour_data = PersistentDict({})
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Guide tour data evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -673,6 +691,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_nonproductive_cycle)
     config.add_evolution_step(evolve_files)
     config.add_evolution_step(evolve_add_nia_bot)
+    config.add_evolution_step(add_guide_tour_data)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

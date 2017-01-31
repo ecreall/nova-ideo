@@ -131,14 +131,6 @@
     <script src="${su('novaideo:static/js/include.js')}"
           type="text/javascript"></script>
 
-    <link href="${request.static_url('novaideo:static/guideline/css/guideline.css')}"
-      rel="stylesheet"/>
-    <script src="${su('novaideo:static/guideline/js/guideline.js')}"
-          type="text/javascript"></script>
-    <script src="${su('novaideo:static/guideline/js/novaideoguideline.js')}"
-          type="text/javascript"></script>
-    <script src="${su('novaideo:static/guideline/js/pages/home.js')}"
-          type="text/javascript"></script>
 
     <more tal:omit-tag="" metal:define-slot="head-more"></more>
     <script tal:condition="request.locale_name == 'fr'"
@@ -403,7 +395,7 @@
          </div>
       </div>
    </div>
-
+  ${panel('guide_tour')}
   </body>
 
 </html>

@@ -1,0 +1,26 @@
+<div tal:omit-tag="" tal:define="
+	js_links js_links|nothing;
+	css_links css_links|nothing;
+	guide guide|'';
+	guide_value guide_value|'';
+	page page|'';
+	page_value page_value|'';
+	update_url update_url|'';
+	guide_state guide_state|'';
+	">
+	<div id="novaideo-guide-tour-container" tal:condition="js_links"
+		 data-guide="${guide}"
+		 data-guide_value="${guide_value}"
+		 data-page="${page}"
+		 data-page_value="${page_value}"
+		 data-update_url="${update_url}"
+		 data-guide_state="${guide_state}"
+		 >
+		 <tal:block tal:repeat="jslink js_links">
+		      <script src="${request.static_url(jslink)}"></script>
+		  </tal:block>
+		  <tal:block tal:repeat="csslink css_links">
+		      <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+		  </tal:block>
+	</div>
+</div>
