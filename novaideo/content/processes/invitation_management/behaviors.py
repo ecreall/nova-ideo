@@ -323,6 +323,13 @@ class AcceptInvitation(InfiniteCardinality):
         manager = context.manager
         root.delfromproperty('invitations', context)
         root.addtoproperty('news_letter_members', person)
+        newsletters = root.get_newsletters_automatic_registration()
+        email = getattr(person, 'email', '')
+        if newsletters and email:
+            for newsletter in newsletters:
+                newsletter.subscribe(
+                    person.first_name, person.last_name, email)
+
         context.person = person
         if manager:
             mail_template = root.get_mail_template('accept_invitation')

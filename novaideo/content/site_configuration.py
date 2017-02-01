@@ -147,11 +147,11 @@ class UserParamsConfigurationSchema(Schema):
         missing=False
     )
 
-    participants_mini = colander.SchemaNode(
-        colander.Integer(),
-        title=_('Minimum number of participants for a working group'),
-        default=3,
-        )
+    # participants_mini = colander.SchemaNode(
+    #     colander.Integer(),
+    #     title=_('Minimum number of participants for a working group'),
+    #     default=3,
+    #     )
 
     participants_maxi = colander.SchemaNode(
         colander.Integer(),
