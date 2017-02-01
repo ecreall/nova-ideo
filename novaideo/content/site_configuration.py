@@ -6,19 +6,18 @@
 
 import colander
 import deform
+from zope.interface import invariant
 
 from pontus.schema import omit, select, Schema
 from pontus.widget import (
     SequenceWidget, SimpleMappingWidget,
-    CheckboxChoiceWidget, Select2Widget, FileWidget,
+    CheckboxChoiceWidget, Select2Widget,
     RichTextWidget)
 from pontus.file import ObjectData, File
 
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo import _
 from novaideo.mail import DEFAULT_SITE_MAILS
-from novaideo.views.widget import (
-    EmailInputWidget)
 from novaideo.core_schema import ContactSchema
 from novaideo import core
 from novaideo.content import get_file_widget
@@ -306,6 +305,9 @@ class KeywordsConfSchema(Schema):
         colander.Set(),
         widget=keywords_choice,
         title='Keywords',
+        description=_("To add keywords, you need to tap the « Enter »"
+                      " key after each keyword or separate them with commas."),
+        missing=[]
         )
 
     can_add_keywords = colander.SchemaNode(
@@ -317,12 +319,22 @@ class KeywordsConfSchema(Schema):
         missing=True
     )
 
+    @invariant
+    def contact_invariant(self, appstruct):
+        can_add_keywords = appstruct.get('can_add_keywords', 'false')
+        can_add_keywords = False if can_add_keywords == 'false' else True
+        keywords = appstruct.get('keywords', colander.null)
+        if not can_add_keywords and keywords is colander.null:
+            raise colander.Invalid(
+                self, _('You must enter at least one keyword.'))
+
 
 class OtherSchema(Schema):
 
     title = colander.SchemaNode(
         colander.String(),
         title=_('Title'),
+        description=_("The title of the application"),
         missing=""
         )
 
@@ -334,7 +346,6 @@ class OtherSchema(Schema):
                     ['title', 'address', 'phone', 'surtax', 'email', 'website', 'fax']),
             ['_csrf_token_']),
         widget=SequenceWidget(
-            min_len=1,
             add_subitem_text_template=_('Add a new contact')),
         title='Contacts',
         oid='contacts'
