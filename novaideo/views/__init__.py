@@ -706,8 +706,8 @@ class NovaideoAPI(IndexManagementJsonView):
         return {}#message erreur
 
     def update_guide_tour_data(self):
-        if self.request.user:
-            user = get_current()
+        user = get_current()
+        if self.request.user and hasattr(user, 'guide_tour_data'):
             guide_state = self.params('guide_state')
             if guide_state:
                 user.guide_tour_data['guide_state'] = guide_state

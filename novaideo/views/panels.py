@@ -814,7 +814,8 @@ class GuideTour(object):
 
     def __call__(self):
         user = get_current()
-        guide_state = getattr(user, 'guide_tour_data', {}).get(
+        guide_tour_data = getattr(user, 'guide_tour_data', {})
+        guide_state = guide_tour_data.get(
             'guide_state', 'first_start')
         if guide_state in ('pending', 'first_start'):
             page_resources = get_guide_tour_page(
@@ -834,7 +835,7 @@ class GuideTour(object):
                     guide = page_resources.get('guide', None)
                     page = page_resources.get('page', None)
                     if guide is not None and page is not None:
-                        guide_data = user.guide_tour_data.get(
+                        guide_data = guide_tour_data.get(
                             guide+'_'+page, {})
                         page_state = guide_data.get(
                             'page_state', 'pending')
