@@ -119,7 +119,7 @@
     </div>
     <div tal:omit-tag="" tal:condition="options">
       <div tal:condition="selected_option is None" class="alert alert-info">
-        <p i18n:translate="">Cette question est une question à choix suggéré. Vous pouvez faire un choix parmi ceux proposés. Vous ne pouvez répondre à cette question qu'une seule foi. Une fois répondu à cette question, vous pouvez éditer votre réponse tant que la question n'est pas clôturée.</p>
+        <p i18n:translate="">Cette question est une question à choix suggéré. Vous pouvez faire un choix parmi ceux proposés. Vous ne pouvez répondre à cette question qu'une seule fois. Une fois répondu à cette question, vous pouvez éditer votre réponse tant que la question n'est pas clôturée.</p>
         <p>
           <span i18n:translate="">Les choix proposés par l'auteur sont :</span>
           <ul>
