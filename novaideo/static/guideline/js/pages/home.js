@@ -17,8 +17,8 @@ $(document).ready(function(){
             "<p class='hidden-xs'>"+
               _("NovaIdeo Description")+
             "</p>"+
-            "<p style='color: #ef6e18'>"+
-              _("Ceci est une visite guidée pour vous montrer l'essentiel de <strong>Nova-Ideo</strong>. La visite ne vous prendra que quelques secondes.")+
+            "<p style='color: #54d0ff'>"+
+              _("This is a guided tour to show you the essentials of <strong>Nova-Ideo</strong>. The visit will only take a few seconds.")+
             "</p>"+
             "<button class='gl-continue btn btn-primary btn-alpha-blue hide-button'>"+
               "<i class='glyphicon glyphicon-play'></i> "+
@@ -31,7 +31,7 @@ $(document).ready(function(){
 
     homePage.addStep({
         type: "overlay",
-        title: "<span class='glyphicon glyphicon-pencil'></span> "+ _("Ask a questions, add a poll or a new idea"),
+        title: "<span class='glyphicon glyphicon-pencil'></span> "+ _("Ask a question, add a poll or a new idea"),
         content: (
             "<p>"+
               _("This form allows you to add an idea, ask a question or add a poll. A poll is a question with options.")+
@@ -57,7 +57,7 @@ $(document).ready(function(){
         title: "<span class='md md-live-help'></span> "+ _("The questions"),
         content: (
             "<p>"+
-              _("You will find here the questions asked by the members of the platform. You can answer them, support them or discuss them.")+
+              _("You will find here the questions asked by the members of the platform. You can answer, support or discuss them.")+
             "</p>"
         ),
         showAt: "#home-questions-counter",
@@ -77,7 +77,7 @@ $(document).ready(function(){
         title: "<span class='icon novaideo-icon icon-idea'></span> "+ _("The ideas"),
         content: (
             "<p>"+
-              _("You will find here the ideas added by the members of the platform. You can support them or discuss them.")+
+              _("You will find here the ideas added by the members of the platform. You can support or discuss them.")+
             "</p>"
         ),
         showAt: "#home-ideas-counter",
@@ -116,7 +116,7 @@ $(document).ready(function(){
         title: "<span class='glyphicon glyphicon-list'></span> "+ _("Your contents"),
         content: (
             "<p>"+
-              _("You find here the links allowing you to access your contents, your working groups, your appreciations or your followings.")+
+              _("You will find here the links allowing you to access your contents, your working groups, your evaluations or your followings.")+
             "</p>"
         ),
         showAt: ".access-menu ul.nav.navbar-nav",
@@ -150,7 +150,7 @@ $(document).ready(function(){
     });
 
     homePage.addStep({
-        title: "<span class=' ion-chatbubbles'></span> "+ _("Accede to your discussions"),
+        title: "<span class=' ion-chatbubbles'></span> "+ _("Access to your discussions"),
         content: (
             "<p>"+
               _("You will find here the discussions you participate in. <span class='gl-target-click'>Please click on this icon <span class='ion-chatbubbles'></span> to continue.</span>")+
@@ -177,10 +177,8 @@ $(document).ready(function(){
         showAt: ".all-channels .all-channels-container",
         align: "right middle",
         continueHtml: NovaIdeoGuideline.next_btn,
-        previousHtml: NovaIdeoGuideline.prev_btn,
         stepControlContainer: NovaIdeoGuideline.stepControlContainer,
         showContinue: true,
-        showPrevious: true,
         showAfter: $(".all-channels.toggled").length == 0? 0: 0.5
     },
     function(){
@@ -218,9 +216,7 @@ $(document).ready(function(){
             showAt: "#More-btn",
             align: "right middle",
             continueHtml: has_configure_btn? null: NovaIdeoGuideline.end_btn,
-            previousHtml: NovaIdeoGuideline.prev_btn,
             stepControlContainer: NovaIdeoGuideline.stepControlContainer,
-            showPrevious: true,
             showContinue: !has_configure_btn,
             showAfter: 0.5
         },
@@ -239,10 +235,8 @@ $(document).ready(function(){
             showAt: "#adminprocess-configure_site-btn",
             align: "right middle",
             continueHtml: NovaIdeoGuideline.next_btn,
-            previousHtml: NovaIdeoGuideline.prev_btn,
             stepControlContainer: NovaIdeoGuideline.stepControlContainer,
             showContinue: true,
-            showPrevious: true,
         },
         function(){
             return has_configure_btn;
@@ -278,7 +272,7 @@ $(document).ready(function(){
             "<p class='hidden-xs'>"+_("We have just presented you the essential to be able to start, many other features are available to improve your productivity.")+
             "<ul class='list-unstyled'>"+
                 "<li>"+_("For more information, please go to <a href='https://www.nova-ideo.com/'>nova-ideo.com</a>.")+"</li>"+
-                "<li>"+_("To follow <strong> Nova-Ideo </strong>, join us on <a href='https://twitter.com/NovaIdeo'>twitter</a>.")+"</li>"+
+                "<li>"+_("To follow <strong>Nova-Ideo</strong>, join us on <a href='https://twitter.com/NovaIdeo'>twitter</a>.")+"</li>"+
                 "<li>"+_("To suggest improvements, please register on <a href='https://evolutions.nova-ideo.com/'>Nova-Ideo Evolutions</a>.")+"</li>"+
             "</ul></p>"+
             "<div style='margin-bottom: 10px;'><img alt='Nova-Ideo' src='"+novaideolog+"' class='globe-logo'></div>"+
