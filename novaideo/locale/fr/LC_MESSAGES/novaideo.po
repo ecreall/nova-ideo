@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-02-01 09:55+0100\n"
+"POT-Creation-Date: 2017-02-02 12:29+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -91,19 +91,19 @@ msgstr "Autre"
 msgid "Another reason? Please detail why you signal this content"
 msgstr "Une autre raison ? Veuillez détailler la raison de votre signalement."
 
-#: novaideo/__init__.py:722
+#: novaideo/__init__.py:740
 msgid "Legal notice"
 msgstr "Mentions légales"
 
-#: novaideo/__init__.py:723
+#: novaideo/__init__.py:741
 msgid "The legal notice"
 msgstr "Les mentions légales"
 
-#: novaideo/__init__.py:727
+#: novaideo/__init__.py:745
 msgid "Terms of use"
 msgstr "Conditions d'utilisation"
 
-#: novaideo/__init__.py:728
+#: novaideo/__init__.py:746
 msgid "The terms of use"
 msgstr "Les conditions d'utilisation"
 
@@ -1247,13 +1247,68 @@ msgstr "Supprimer l'infolettre"
 msgid "By clicking on « Continue »..."
 msgstr "En cliquant sur « Continuer »..."
 
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:2
+msgid ""
+"The writing system is based on the variables to allow the adaptation of the "
+"message to send to the subscribers of the newsletter. The variables are:"
+msgstr ""
+"Le système de rédaction se base sur les variables pour permettre "
+"l'adaptation du message à envoyer aux abonnées de l'infolettre. Les "
+"variables sont:"
+
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:6
+msgid "The subscriber's first name,"
+msgstr "Le prénom de l'abonné,"
+
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:7
+msgid "The subscriber's last name,"
+msgstr "Le nom de l'abonné"
+
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:8
+msgid "The application's title,"
+msgstr "Le titre de l'application,"
+
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:9
+msgid "The application's URL,"
+msgstr "L'URL de l'application,"
+
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:10
+msgid "The logo's URL,"
+msgstr "L'URL du logo de l'application,"
+
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:11
+msgid "The newsletter's title,"
+msgstr "Le titre de l'infolettre,"
+
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:12
+msgid "Unsubscribe URL,"
+msgstr "L'url de désabonnement de l'abonné,"
+
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:13
+msgid ""
+"Content automatically generated according to subscribers' preferences. The "
+"generate text contains the recently published ideas and proposals."
+msgstr ""
+"Un contenu générer automatiquement selon les préférences des abonnés. Le "
+"texte générer contient les idées et propositions récemment publiées."
+
+#: novaideo/views/newsletter_management/templates/redact_explanation.pt:15
+msgid "You can use these variables for the subject or body of your newsletter."
+msgstr ""
+"Vous pouvez utiliser ces variables pour le sujet ou le corps de votre "
+"infolettre."
+
 #: novaideo/views/newsletter_management/templates/see_newsletter.pt:16
 msgid ""
-"Selon la configuration de la newsletter, la désinscription des abonnées "
-"n'est pas autorisée. Afin de garder la cohérence du contenu et pour pouvoir "
-"envoyer la newsletter, il faut supprimer la variable \"unsubscribeurl\" du "
-"contenu de la newsletter."
+"According to the configuration of the newsletter, the unsubscription of the "
+"subscribers is not allowed. In order to keep the content consistent and to "
+"be able to send the newsletter, it is necessary to remove the variable "
+"\"unsubscribeurl\" from the content of the newsletter."
 msgstr ""
+"Selon la configuration de l'infolettre, la désinscription des abonnées n'est "
+"pas autorisée. Afin de garder la cohérence du contenu et pour pouvoir "
+"envoyer l'infolettre, il faut supprimer la variable \"unsubscribeurl\" du "
+"contenu de l'infolettre."
 
 #: novaideo/views/newsletter_management/templates/see_newsletter.pt:21
 msgid "registrations"
@@ -1556,24 +1611,31 @@ msgstr "Pièce jointe :"
 
 #: novaideo/views/question_management/templates/see_question.pt:122
 msgid ""
-"Cette question est une question à choix suggéré. Vous pouvez faire un choix "
-"parmi ceux proposés. Vous ne pouvez répondre à cette question qu'une seule "
-"fois. Une fois répondu à cette question, vous pouvez éditer votre réponse "
-"tant que la question n'est pas clôturée."
+"This question is in the form of a poll. You can select an option from those "
+"offered. You may only answer this question one time. You can edit your "
+"answer as long as the question is not closed."
 msgstr ""
+"Cette question sous la forme d'un sondage. Vous pouvez faire un choix parmi "
+"ceux proposés. Vous ne pouvez répondre à cette question qu'une seule fois. "
+"Une fois répondu à cette question, vous pouvez éditer votre réponse tant que "
+"la question n'est pas clôturée."
 
 #: novaideo/views/question_management/templates/see_question.pt:124
 #: novaideo/views/question_management/templates/see_question.pt:133
-msgid "Les choix proposés par l'auteur sont :"
-msgstr ""
+msgid "The options proposed by the author are:"
+msgstr "Les choix proposés par l'auteur sont :"
 
 #: novaideo/views/question_management/templates/see_question.pt:131
 msgid ""
+"This question is in the form of a poll. You can select an option from those "
+"offered. You may only answer this question one time. You have already "
+"answered this question and your choice is \"${dynamic}\". You can edit your "
+"answer as long as the question is not closed."
+msgstr ""
 "Cette question est une question à choix suggéré. Vous ne pouvez répondre à "
 "cette question qu'une seule fois. Vous avez déjà répondu à cette question et "
 "votre choix est \"${dynamic}\". Vous pouvez éditer votre réponse tant que la "
 "question n'est pas clôturée."
-msgstr ""
 
 #: novaideo/views/question_management/templates/see_question.pt:148
 msgid "See the validated answer"
@@ -2978,7 +3040,8 @@ msgid "Disactivate"
 msgstr "Désactiver"
 
 #: novaideo/views/system_process/send_newsletter.py:25
-msgid "Send the news letter"
+#: novaideo/content/processes/newsletter_management/definition.py:69
+msgid "Send the newsletter"
 msgstr "Envoyer l'infolettre"
 
 #: novaideo/views/admin_process/extract.py:48
@@ -3779,7 +3842,7 @@ msgstr "Signalé par"
 #: novaideo/views/templates/support_entity_actions.pt:16
 #: novaideo/views/templates/support_entity_actions.pt:46
 msgid "${action.title}"
-msgstr ""
+msgstr "${action.title}"
 
 #: novaideo/views/templates/live_search_result.pt:7
 msgid "No result found!"
@@ -5962,15 +6025,19 @@ msgstr ""
 
 #: novaideo/views/templates/alerts/nia_content_result.pt:12
 msgid ""
+"This idea has just been duplicated and worked differently. You will find the "
+"duplicated idea here ${dynamic}."
+msgstr ""
 "Cette idée vient d'être dupliquée et travaillée différemment. Vous trouverez "
 "l'idée dupliquée ici ${dynamic}."
-msgstr ""
 
 #: novaideo/views/templates/alerts/nia_content_result.pt:27
 msgid ""
+"This proposal has just been duplicated and worked differently. You will find "
+"the duplicated proposal here ${dynamic}."
+msgstr ""
 "Cette proposition vient d'être dupliquée et travaillée différemment. Vous "
 "trouverez la proposition dupliquée ici ${dynamic}."
-msgstr ""
 
 #: novaideo/views/templates/alerts/admin_result.pt:8
 #: novaideo/views/templates/alerts/small_admin_result.pt:10
@@ -6052,77 +6119,104 @@ msgstr ""
 "${dynamic}."
 
 #: novaideo/views/templates/alerts/nia_wg_result.pt:8
-msgid "La nouvelle version apporte ${dynamic} modification(s) avec :"
-msgstr ""
+msgid "The new version brings ${dynamic} modification (s) with:"
+msgstr "La nouvelle version apporte ${dynamic} modification(s) avec :"
 
 #: novaideo/views/templates/alerts/nia_wg_result.pt:13
 msgid "${dynamic} insertion(s)"
-msgstr ""
+msgstr "${dynamic} insertion(s)"
 
 #: novaideo/views/templates/alerts/nia_wg_result.pt:15
-msgid "${dynamic} suppression(s)"
-msgstr ""
+msgid "${dynamic} deletion(s)"
+msgstr "${dynamic} suppression(s)"
 
 #: novaideo/views/templates/alerts/nia_wg_result.pt:5
 msgid ""
+"The working group has just produced a new version of the proposal. Do not "
+"hesitate to discuss the changes. You can see the changes by comparing the "
+"current version with the latest version produced. ${dynamic}"
+msgstr ""
 "Le groupe de travail vient de produire une nouvelle version de la "
 "proposition. N'hésitez pas à discuter les modifications apportées. Vous "
 "pouvez voir les modifications en comparant la version en cours avec la "
 "dernière version produite. ${dynamic}"
-msgstr ""
 
 #: novaideo/views/templates/alerts/nia_wg_result.pt:19
 msgid ""
+"The cycle of improvement of this proposal has just begun. A new version will "
+"be produced at the end of this cycle. Do not hesitate to discuss the content "
+"of the proposal as it is written. Your contributions can help the working "
+"group to write the proposal. If you are not already a participant, you can "
+"participate and make a concrete contribution by making your own improvements."
+msgstr ""
 "Le cycle d'amélioration de cette proposition vient de commencer. Une "
 "nouvelle version sera produite à la fin de ce cycle. N'hésitez pas à "
 "discuter le contenu de la proposition au fur et à mesure de sa rédaction. "
 "Vos avis peuvent aider le groupe de travail à rédiger la proposition. Si "
 "vous n'êtes pas déjà participant, vous pouvez y participer et y contribuer "
 "concrètement en apportant vos améliorations."
-msgstr ""
 
-#: novaideo/views/templates/alerts/nia_wg_result.pt:23
+#: novaideo/views/templates/alerts/nia_wg_result.pt:22
 msgid ""
+"This proposal has just been published and is open to a working group. If you "
+"are interested in the proposal, you can participate and make a concrete "
+"contribution by making your own improvements."
+msgstr ""
 "Cette proposition vient d'être publiée et est ouverte à un groupe de "
 "travail. Si vous êtes intéressé par la proposition, vous pouvez y participer "
 "et y contribuer concrètement en apportant vos améliorations."
-msgstr ""
 
-#: novaideo/views/templates/alerts/nia_wg_result.pt:26
+#: novaideo/views/templates/alerts/nia_wg_result.pt:25
 msgid ""
+"This proposal is now open to a working group. If you are interested in the "
+"proposal, you can participate and make a concrete contribution by making "
+"your own improvements."
+msgstr ""
 "Cette proposition est maintenant ouverte à un groupe de travail. Si vous "
 "êtes intéressé par la proposition, vous pouvez y participer et y contribuer "
 "concrètement en apportant vos améliorations."
-msgstr ""
 
-#: novaideo/views/templates/alerts/nia_wg_result.pt:29
+#: novaideo/views/templates/alerts/nia_wg_result.pt:28
 msgid ""
+"This proposal has just been submitted to the members for evaluation. You can "
+"either support or oppose it. Do not hesitate to discuss the content of the "
+"proposal, your opinions are helpful."
+msgstr ""
 "Cette proposition vient d'être soumise à l'appréciation des membres. Vous "
 "pouvez soit la soutenir, soit vous y opposer. N'hésitez pas à discuter le "
 "contenu de la proposition, vos avis ne font qu'améliorer le débat."
-msgstr ""
 
-#: novaideo/views/templates/alerts/nia_wg_result.pt:39
+#: novaideo/views/templates/alerts/nia_wg_result.pt:38
 msgid ""
+"This idea has just been used by the following proposition ${dynamic}. Do not "
+"hesitate to discuss the content of the proposal and participate to it if you "
+"are interested in the subject. You can contribute to the proposal by making "
+"your own improvements."
+msgstr ""
 "Cette idée vient d'être utilisée par la proposition suivante ${dynamic}. "
 "N'hésitez pas à discuter le contenu de la proposition et y participer si le "
 "sujet traité vous intéresse. Vous pouvez ainsi contribuer à la proposition "
 "en apportant vos améliorations."
-msgstr ""
 
-#: novaideo/views/templates/alerts/nia_wg_result.pt:46
+#: novaideo/views/templates/alerts/nia_wg_result.pt:45
 msgid ""
+"This idea has just been used by the following proposition ${dynamic}. Do not "
+"hesitate to discuss the content of the proposal."
+msgstr ""
 "Cette idée vient d'être utilisée par la proposition suivante ${dynamic}. "
 "N'hésitez pas à discuter le contenu de la proposition."
-msgstr ""
 
-#: novaideo/views/templates/alerts/nia_wg_result.pt:53
+#: novaideo/views/templates/alerts/nia_wg_result.pt:52
 msgid ""
+"This idea has just been used by the following proposition ${dynamic}. This "
+"proposal is submitted for evaluation. You can either support or oppose it. "
+"Do not hesitate to discuss the content of the proposal, your opinions are "
+"helpful."
+msgstr ""
 "Cette idée vient d'être utilisée par la proposition suivante ${dynamic}. "
 "Cette proposition est soumise à l'appréciation des membres. Vous pouvez soit "
 "la soutenir, soit vous y opposer. N'hésitez pas à discuter le contenu de la "
 "proposition, vos avis ne font qu'améliorer le débat."
-msgstr ""
 
 #: novaideo/views/templates/alerts/nia_examination_result.pt:5
 #: novaideo/views/templates/alerts/nia_examination_result.pt:13
@@ -7590,10 +7684,6 @@ msgstr "Accessible seulement, par les membres."
 msgid "Contents can be displayed by Member sonly."
 msgstr "Les contenus ne peuvent être affichés que par les Membres."
 
-#: novaideo/content/site_configuration.py:152
-msgid "Minimum number of participants for a working group"
-msgstr "Nombre minimum de participants pour un groupe de travail"
-
 #: novaideo/content/site_configuration.py:158
 msgid "Maximum number of Participants per Working Group"
 msgstr "Nombre maximum de Participant(e)s par Groupe de Travail"
@@ -8258,10 +8348,6 @@ msgstr "Rédiger l'nfolettre"
 #: novaideo/content/processes/newsletter_management/definition.py:66
 msgid "Write"
 msgstr "Rédiger"
-
-#: novaideo/content/processes/newsletter_management/definition.py:69
-msgid "Send the newsletter"
-msgstr "Envoyer l'infolettre"
 
 #: novaideo/content/processes/newsletter_management/definition.py:89
 msgid "See the newsletter"
@@ -9117,3 +9203,6 @@ msgstr "Trouver des entités"
 #: novaideo/web_services/export_entities.py:157
 msgid "Content type"
 msgstr "Type de contenu"
+
+#~ msgid "Minimum number of participants for a working group"
+#~ msgstr "Nombre minimum de participants pour un groupe de travail"
