@@ -1570,7 +1570,7 @@ msgstr ""
 #: novaideo/views/question_management/templates/see_question.pt:131
 msgid ""
 "Cette question est une question à choix suggéré. Vous ne pouvez répondre à "
-"cette question qu'une seule foi. Vous avez déjà répondu à cette question et "
+"cette question qu'une seule fois. Vous avez déjà répondu à cette question et "
 "votre choix est \"${dynamic}\". Vous pouvez éditer votre réponse tant que la "
 "question n'est pas clôturée."
 msgstr ""
