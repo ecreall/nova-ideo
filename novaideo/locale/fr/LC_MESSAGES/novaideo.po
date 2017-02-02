@@ -1558,7 +1558,7 @@ msgstr "Pièce jointe :"
 msgid ""
 "Cette question est une question à choix suggéré. Vous pouvez faire un choix "
 "parmi ceux proposés. Vous ne pouvez répondre à cette question qu'une seule "
-"foi. Une fois répondu à cette question, vous pouvez éditer votre réponse "
+"fois. Une fois répondu à cette question, vous pouvez éditer votre réponse "
 "tant que la question n'est pas clôturée."
 msgstr ""
 
