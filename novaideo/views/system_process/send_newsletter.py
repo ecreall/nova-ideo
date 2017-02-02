@@ -22,7 +22,7 @@ from novaideo import _
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SendNewsLetterView(BasicView):
-    title = _('Send the news letter')
+    title = _('Send the newsletter')
     name = 'sendnewsletter'
     behaviors = [SendNewsLetter]
     viewid = 'sendnewsletter'

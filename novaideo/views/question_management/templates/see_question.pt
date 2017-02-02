@@ -119,18 +119,18 @@
     </div>
     <div tal:omit-tag="" tal:condition="options">
       <div tal:condition="selected_option is None" class="alert alert-info">
-        <p i18n:translate="">Cette question est une question à choix suggéré. Vous pouvez faire un choix parmi ceux proposés. Vous ne pouvez répondre à cette question qu'une seule fois. Une fois répondu à cette question, vous pouvez éditer votre réponse tant que la question n'est pas clôturée.</p>
+        <p i18n:translate="">This question is in the form of a poll. You can select an option from those offered. You may only answer this question one time. You can edit your answer as long as the question is not closed.</p>
         <p>
-          <span i18n:translate="">Les choix proposés par l'auteur sont :</span>
+          <span i18n:translate="">The options proposed by the author are:</span>
           <ul>
             <li tal:repeat="option object.options"><strong>${option}</strong></li>
           </ul>
         </p>
       </div>
       <div tal:condition="selected_option is not None" class="alert alert-info">
-        <p i18n:translate="">Cette question est une question à choix suggéré. Vous ne pouvez répondre à cette question qu'une seule fois. Vous avez déjà répondu à cette question et votre choix est "<strong i18n:name="dynamic">${options[selected_option]}</strong>". Vous pouvez éditer votre réponse tant que la question n'est pas clôturée.</p>
+        <p i18n:translate="">This question is in the form of a poll. You can select an option from those offered. You may only answer this question one time. You have already answered this question and your choice is "<strong i18n:name="dynamic">${options[selected_option]}</strong>". You can edit your answer as long as the question is not closed.</p>
         <p>
-          <span i18n:translate="">Les choix proposés par l'auteur sont :</span>
+          <span i18n:translate="">The options proposed by the author are:</span>
           <ul>
             <li tal:repeat="option object.options"><strong>${option}</strong></li>
           </ul>

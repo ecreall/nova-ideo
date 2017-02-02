@@ -3,31 +3,30 @@
                  subject object.subject;">
   <div tal:omit-tag=""  tal:condition="object.subject_type == 'proposal'">
     <span i18n:translate="" tal:condition="alert_kind == 'new_version'">
-       Le groupe de travail vient de produire une nouvelle version de la proposition. N'hésitez pas à discuter les modifications apportées. Vous pouvez voir les modifications en comparant la version en cours avec la dernière version produite.
+       The working group has just produced a new version of the proposal. Do not hesitate to discuss the changes. You can see the changes by comparing the current version with the latest version produced.
        <blockquote i18n:name="dynamic"  class="url-block" tal:define="diff_a object.diff" tal:condition="diff_a['diff']">
          <span i18n:translate="" class="url-title">
-           La nouvelle version apporte <span i18n:name="dynamic">${diff_a['diff']}</span> modification(s) avec :
+           The new version brings <span i18n:name="dynamic">${diff_a['diff']}</span> modification (s) with:
          </span>
          <div class="url-description">
           <div tal:condition="diff_a['ins']"
                style="color: #4eaf4e"><b i18n:translate=""><span i18n:name="dynamic">${diff_a['ins']}</span> insertion(s)</b></div>
           <div tal:condition="diff_a['del']"
-               style="color: #ef3128"><b i18n:translate=""><span i18n:name="dynamic">${diff_a['del']}</span> suppression(s)</b></div>
+               style="color: #ef3128"><b i18n:translate=""><span i18n:name="dynamic">${diff_a['del']}</span> deletion(s)</b></div>
          </div>
       </blockquote>
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'start_work'">
-       Le cycle d'amélioration de cette proposition vient de commencer. Une nouvelle version sera produite à la fin de ce cycle. N'hésitez pas à discuter le contenu de la proposition au fur et à mesure de sa rédaction. Vos avis peuvent aider le groupe de travail à rédiger la proposition.
-       Si vous n'êtes pas déjà participant, vous pouvez y participer et y contribuer concrètement en apportant vos améliorations.
+       The cycle of improvement of this proposal has just begun. A new version will be produced at the end of this cycle. Do not hesitate to discuss the content of the proposal as it is written. Your contributions can help the working group to write the proposal. If you are not already a participant, you can participate and make a concrete contribution by making your own improvements.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'open_to_a_working_group'">
-       Cette proposition vient d'être publiée et est ouverte à un groupe de travail. Si vous êtes intéressé par la proposition, vous pouvez y participer et y contribuer concrètement en apportant vos améliorations.
+       This proposal has just been published and is open to a working group. If you are interested in the proposal, you can participate and make a concrete contribution by making your own improvements.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'exclusion_open_to_a_wg'">
-       Cette proposition est maintenant ouverte à un groupe de travail. Si vous êtes intéressé par la proposition, vous pouvez y participer et y contribuer concrètement en apportant vos améliorations.
+       This proposal is now open to a working group. If you are interested in the proposal, you can participate and make a concrete contribution by making your own improvements.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'submitted_support'">
-       Cette proposition vient d'être soumise à l'appréciation des membres. Vous pouvez soit la soutenir, soit vous y opposer. N'hésitez pas à discuter le contenu de la proposition, vos avis ne font qu'améliorer le débat.
+      This proposal has just been submitted to the members for evaluation. You can either support or oppose it. Do not hesitate to discuss the content of the proposal, your opinions are helpful.
     </span>
   </div>
   <div tal:omit-tag=""  tal:condition="object.subject_type == 'idea'">
@@ -37,25 +36,25 @@
             proposal object.proposal;
          ">
          <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'amendable'">
-          Cette idée vient d'être utilisée par la proposition suivante <a 
+          This idea has just been used by the following proposition <a 
             i18n:name="dynamic"
             data-oid="${getattr(proposal, '__oid__', '')}"
             class="alert-link toggle-popover"
-            target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. N'hésitez pas à discuter le contenu de la proposition et y participer si le sujet traité vous intéresse. Vous pouvez ainsi contribuer à la proposition en apportant vos améliorations.
+            target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. Do not hesitate to discuss the content of the proposal and participate to it if you are interested in the subject. You can contribute to the proposal by making your own improvements.
          </span>
          <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'published'">
-          Cette idée vient d'être utilisée par la proposition suivante <a 
+          This idea has just been used by the following proposition <a 
             i18n:name="dynamic" 
             data-oid="${getattr(proposal, '__oid__', '')}"
             class="alert-link toggle-popover"
-            target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. N'hésitez pas à discuter le contenu de la proposition.
+            target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. Do not hesitate to discuss the content of the proposal.
          </span>
          <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'submitted_support'">
-          Cette idée vient d'être utilisée par la proposition suivante <a 
+          This idea has just been used by the following proposition <a 
             i18n:name="dynamic" 
             data-oid="${getattr(proposal, '__oid__', '')}"
             class="alert-link toggle-popover"
-            target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. Cette proposition est soumise à l'appréciation des membres. Vous pouvez soit la soutenir, soit vous y opposer. N'hésitez pas à discuter le contenu de la proposition, vos avis ne font qu'améliorer le débat.
+            target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. This proposal is submitted for evaluation. You can either support or oppose it. Do not hesitate to discuss the content of the proposal, your opinions are helpful.
          </span>
       </span>
     </span>

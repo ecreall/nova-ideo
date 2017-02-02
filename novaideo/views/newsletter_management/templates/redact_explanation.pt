@@ -1,18 +1,18 @@
-<div class="alert alert-info">
-   <p>
-     Le système de rédaction se base sur les variables pour permettre l'adaptation du message à envoyer aux abonnées de la newsletter. Les variables sont:
+<div class="alert alert-info" i18n:domain="novaideo">
+   <p i18n:translate="">
+     The writing system is based on the variables to allow the adaptation of the message to send to the subscribers of the newsletter. The variables are:
    </p>
    <ul>
-   	<li><strong>{first_name}:</strong> Le prénom de l'abonné,</li>
-   	<li><strong>{last_name}:</strong> Le nom de l'abonné</li>
-   	<li><strong>{application_title}:</strong> Le titre de l'application,</li>
-   	<li><strong>{application_url}:</strong> L'url de l'application,</li>
-   	<li><strong>{logo}:</strong> L'url du logo de l'application,</li>
-   	<li><strong>{newsletter_title}:</strong> Le titre de la newsletter,</li>
-   	<li><strong>{unsubscribeurl}:</strong> L'url de désabonnement de l'abonné,</li>
-   	<li><strong>{content}:</strong> Un contenu générer automatiquement selon les préférences des abonnés. Le texte générer contient les idées et propositions récemment publiées.</li>
+   	<li><strong>{first_name}:</strong> <span i18n:translate="">The subscriber's first name,</span></li>
+   	<li><strong>{last_name}:</strong> <span i18n:translate="">The subscriber's last name,</span></li>
+   	<li><strong>{application_title}:</strong> <span i18n:translate="">The application's title,</span></li>
+   	<li><strong>{application_url}:</strong> <span i18n:translate="">The application's URL,</span></li>
+   	<li><strong>{logo}:</strong> <span i18n:translate="">The logo's URL,</span></li>
+   	<li><strong>{newsletter_title}:</strong> <span i18n:translate="">The newsletter's title,</span></li>
+   	<li><strong>{unsubscribeurl}:</strong> <span i18n:translate="">Unsubscribe URL,</span></li>
+   	<li><strong>{content}:</strong> <span i18n:translate="">Content automatically generated according to subscribers' preferences. The generate text contains the recently published ideas and proposals.</span></li>
    </ul>
-   <p>
-     Vous pouvez utiliser ces variables pour le sujet ou le corps de votre newsletter. 
+   <p i18n:translate="">
+     You can use these variables for the subject or body of your newsletter.
    </p>
 </div>

@@ -14,7 +14,7 @@
     validate_content object.validate_content();
     content getattr(object, 'content', '')">
     <div tal:condition="not validate_content and content" class="alert alert-danger" i18n:translate="">
-      Selon la configuration de la newsletter, la désinscription des abonnées n'est pas autorisée. Afin de garder la cohérence du contenu et pour pouvoir envoyer la newsletter, il faut supprimer la variable "unsubscribeurl" du contenu de la newsletter.
+      According to the configuration of the newsletter, the unsubscription of the subscribers is not allowed. In order to keep the content consistent and to be able to send the newsletter, it is necessary to remove the variable "unsubscribeurl" from the content of the newsletter.
     </div>
     <h3 class="content-title"><span class="${icon}"></span> ${object.title} 
       <small style="color:gray" tal:condition="len_subscribed">(${len_subscribed} 

@@ -10,7 +10,7 @@
             duplication object.duplication;
             author duplication.author
          ">
-       Cette idée vient d'être dupliquée et travaillée différemment. Vous trouverez l'idée dupliquée ici <a 
+       This idea has just been duplicated and worked differently. You will find the duplicated idea here <a 
             i18n:name="dynamic" 
             data-oid="${getattr(duplication, '__oid__', '')}"
             class="alert-link toggle-popover"
@@ -25,7 +25,7 @@
             duplication object.duplication;
             author duplication.author
          ">
-       Cette proposition vient d'être dupliquée et travaillée différemment. Vous trouverez la proposition dupliquée ici <a 
+       This proposal has just been duplicated and worked differently. You will find the duplicated proposal here <a 
             i18n:name="dynamic" 
             data-oid="${getattr(duplication, '__oid__', '')}"
             class="alert-link toggle-popover"
