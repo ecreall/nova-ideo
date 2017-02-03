@@ -13,6 +13,7 @@ from novaideo.views.filter import (
 from novaideo.utilities.util import (
     deepcopy)
 from novaideo.views.filter.util import QUERY_OPERATORS
+from novaideo.core import can_access
 
 
 def get_adapted_filter(folder, user):
@@ -38,7 +39,7 @@ def get_folder_content(folder, user,
             filter_op='or',
             **args)
 
-    oids = [get_oid(c) for c in folder.contents]
+    oids = [get_oid(c) for c in folder.contents if can_access(user, c)]
     if args:
         contents = find_entities(
             user=user,
