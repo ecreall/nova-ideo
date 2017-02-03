@@ -134,6 +134,10 @@ class CssWidget(TextInputWidget):
                     ('stylepicker', None))
 
 
+class ReCAPTCHAWidget(deform.widget.TextInputWidget):
+    template = 'novaideo:views/templates/recaptcha_input.pt'
+
+
 default_resource_registry.set_js_resources('stylepicker', None,
                'novaideo:static/bgrins-spectrum/spectrum.js',
                'novaideo:static/js/style_picker.js')

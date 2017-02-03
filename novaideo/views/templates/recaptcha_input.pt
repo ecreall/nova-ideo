@@ -1,0 +1,39 @@
+<span tal:define="oid oid|field.oid;
+	              name name|field.name;"
+      tal:omit-tag="">
+    <script src="https://www.google.com/recaptcha/api.js?onload=grecaptchaCallback&render=explicit"
+	        async defer>
+	</script>
+	<div id="${oid}-recaptcha" class="g-recaptcha"></div>
+	<input type="hidden" name="${name}" value=""
+           id="${oid}"/>
+	<script type="text/javascript">
+	  $('#${oid}').parents('form').first().addClass('recaptcha-form');
+	  $(document).on('submit', '.recaptcha-form', function(event){
+	      if(!$(this).hasClass('not-robot')){
+	        alert_component({
+	          alert_msg: novaideo_translate("Please, validate the captcha."),
+	          alert_type: 'error'
+	        })
+            event.preventDefault();
+	      }
+	  })
+	  var responseCallback = function(response){
+	      var input = $('#${oid}');
+	      input.parents('form').first().addClass('not-robot');
+	      input.val(response)
+	  };
+	  var expiredCallback = function(){
+	      var input = $('#${oid}');
+	      input.parents('form').first().removeClass('not-robot');
+	      input.val('')
+	  };
+	  var grecaptchaCallback = function() {
+	    grecaptcha.render('${oid}-recaptcha', {
+          'sitekey' : '6Ldf4RMUAAAAACoURx-Ek0JcPYmOl0eoszHUN0XS',
+          'callback' : responseCallback,
+          'expired-callback': expiredCallback,
+        });
+	  };
+	</script>
+</span>

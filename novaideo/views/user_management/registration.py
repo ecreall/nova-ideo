@@ -5,6 +5,7 @@
 # author: Amen Souissi
 
 import colander
+from zope.interface import invariant
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -13,7 +14,7 @@ from pontus.form import FormView
 from pontus.view import BasicView
 from pontus.schema import select
 
-from novaideo.views.widget import TOUCheckboxWidget
+from novaideo.views.widget import TOUCheckboxWidget, ReCAPTCHAWidget
 from novaideo.content.processes.user_management.behaviors import (
     Registration)
 from novaideo.content.person import PersonSchema, Preregistration
@@ -39,6 +40,21 @@ class RegistrationSchema(PersonSchema):
         missing=False
     )
 
+    captcha = colander.SchemaNode(
+        colander.String(),
+        widget=ReCAPTCHAWidget(),
+        label=_('I have read and accept the terms and conditions.'),
+        title='',
+        missing=''
+    )
+
+    @invariant
+    def captcha_invariant(self, appstruct):
+        captcha = appstruct.get('captcha', '')
+        if not captcha:
+            raise colander.Invalid(
+                self, _('Invalid captcha'))
+
 
 @view_config(
     name='registration',
@@ -49,12 +65,14 @@ class RegistrationView(FormView):
 
     title = _('Your registration')
     schema = select(RegistrationSchema(factory=Preregistration,
-                                       editable=True),
+                                       editable=True,
+                                       omit=['captcha']),
                     ['user_title',
                      'first_name',
                      'last_name',
                      'email',
-                     'accept_conditions'])
+                     'accept_conditions',
+                     'captcha'])
     behaviors = [Registration, Cancel]
     formid = 'formregistration'
     name = 'registration'
