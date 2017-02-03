@@ -68,7 +68,8 @@ novaideoI18n = {
   "This is a guided tour to show you the essentials of <strong>Nova-Ideo</strong>. The visit will only take a few seconds.": "This is a guided tour to show you the essentials of <strong>Nova-Ideo</strong>. The visit will only take a few seconds.",
   "NovaIdeo Description" : ("<strong>Nova-Ideo</strong> is a platform implementing a complete process, "+
                             "in which working groups transform ideas into complete proposals with "+
-                            "a system of amendment and voting sessions.")
+                            "a system of amendment and voting sessions."),
+  "Please, validate the captcha.": "Please, validate the captcha."
 },
 
 'fr':{
@@ -140,7 +141,8 @@ novaideoI18n = {
   "This is a guided tour to show you the essentials of <strong>Nova-Ideo</strong>. The visit will only take a few seconds.": "Ceci est une visite guidée pour vous montrer l'essentiel de <strong>Nova-Ideo</strong>. La visite ne vous prendra que quelques secondes.",
   "NovaIdeo Description" : ("<strong>Nova-Ideo</strong> est une plateforme mettant en œuvre un processus complet par lequel des "+
                             "groupes de travail transforment des idées en propositions abouties grâce à "+
-                            "un système de sessions d'amendements et de votes.")
+                            "un système de sessions d'amendements et de votes."),
+  "Please, validate the captcha.": "Veuillez valider le captcha."
 }
 }
 
