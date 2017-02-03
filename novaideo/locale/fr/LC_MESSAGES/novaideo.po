@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-02-02 12:29+0100\n"
+"POT-Creation-Date: 2017-02-03 12:01+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1350,7 +1350,7 @@ msgstr "Prochain envoi"
 #: novaideo/views/proposal_management/create_proposal.py:126
 #: novaideo/views/proposal_management/templates/header_proposal.pt:90
 #: novaideo/views/templates/idea_bloc.pt:25
-#: novaideo/views/templates/question_result.pt:24
+#: novaideo/views/templates/question_result.pt:26
 #: novaideo/views/templates/comment_result.pt:34
 #: novaideo/views/templates/amendment_bloc.pt:25
 #: novaideo/views/templates/idea_result.pt:25
@@ -1359,7 +1359,7 @@ msgstr "Prochain envoi"
 #: novaideo/views/templates/small_idea_result.pt:27
 #: novaideo/views/templates/small_proposal_result.pt:27
 #: novaideo/views/templates/small_question_result.pt:27
-#: novaideo/views/templates/amendment_result.pt:25
+#: novaideo/views/templates/amendment_result.pt:20
 #: novaideo/views/amendment_management/templates/see_amendment.pt:57
 #: novaideo/views/amendment_management/templates/description_amendments.pt:19
 #: novaideo/views/work_mode_processes/wiki_work_mode_process/correct_proposal.py:122
@@ -1466,15 +1466,18 @@ msgstr "Explication"
 
 #: novaideo/views/question_management/see_question.py:38
 #: novaideo/views/question_management/see_question.py:56
+#: novaideo/views/templates/question_result.pt:65
 msgid "No answer"
 msgstr "Aucune réponse"
 
 #: novaideo/views/question_management/see_question.py:39
+#: novaideo/views/templates/question_result.pt:66
 msgid "One answer"
 msgstr "Une réponse"
 
 # python-format
 #: novaideo/views/question_management/see_question.py:40
+#: novaideo/views/templates/question_result.pt:67
 #, python-format
 msgid "${nember} answers"
 msgstr "${nember} réponses"
@@ -1562,7 +1565,7 @@ msgid "Discuss the question"
 msgstr "Discuter la question"
 
 #: novaideo/views/question_management/templates/see_question.pt:24
-#: novaideo/views/templates/question_result.pt:18
+#: novaideo/views/templates/question_result.pt:20
 #: novaideo/views/templates/small_question_result.pt:23
 msgid "Asked by"
 msgstr "posée par"
@@ -1586,8 +1589,8 @@ msgstr "Ce contenu ne respecte pas la charte d'utilisation."
 
 #: novaideo/views/question_management/templates/see_question.pt:49
 #: novaideo/views/question_management/templates/see_question.pt:50
-#: novaideo/views/templates/question_result.pt:56
-#: novaideo/views/templates/question_result.pt:57
+#: novaideo/views/templates/question_result.pt:58
+#: novaideo/views/templates/question_result.pt:59
 msgid "${state}"
 msgstr "${state}"
 
@@ -1610,32 +1613,40 @@ msgid "Attachment:"
 msgstr "Pièce jointe :"
 
 #: novaideo/views/question_management/templates/see_question.pt:122
+#: novaideo/views/templates/question_result.pt:71
 msgid ""
 "This question is in the form of a poll. You can select an option from those "
-"offered. You may only answer this question one time. You can edit your "
-"answer as long as the question is not closed."
+"offered. You may only answer this question one time."
 msgstr ""
-"Cette question sous la forme d'un sondage. Vous pouvez faire un choix parmi "
-"ceux proposés. Vous ne pouvez répondre à cette question qu'une seule fois. "
-"Une fois répondu à cette question, vous pouvez éditer votre réponse tant que "
-"la question n'est pas clôturée."
+"Cette question est sous la forme d'un sondage. Vous pouvez faire un choix "
+"parmi ceux proposés. Vous ne pouvez répondre à cette question qu'une seule "
+"fois."
+
+#: novaideo/views/question_management/templates/see_question.pt:122
+#: novaideo/views/question_management/templates/see_question.pt:131
+#: novaideo/views/templates/question_result.pt:71
+#: novaideo/views/templates/question_result.pt:80
+msgid "You can edit your answer as long as the question is not closed."
+msgstr ""
+"Vous pouvez éditer votre réponse tant que la question n'est pas clôturée."
 
 #: novaideo/views/question_management/templates/see_question.pt:124
 #: novaideo/views/question_management/templates/see_question.pt:133
+#: novaideo/views/templates/question_result.pt:73
+#: novaideo/views/templates/question_result.pt:82
 msgid "The options proposed by the author are:"
 msgstr "Les choix proposés par l'auteur sont :"
 
 #: novaideo/views/question_management/templates/see_question.pt:131
+#: novaideo/views/templates/question_result.pt:80
 msgid ""
 "This question is in the form of a poll. You can select an option from those "
 "offered. You may only answer this question one time. You have already "
-"answered this question and your choice is \"${dynamic}\". You can edit your "
-"answer as long as the question is not closed."
+"answered this question and your choice is \"${dynamic}\"."
 msgstr ""
-"Cette question est une question à choix suggéré. Vous ne pouvez répondre à "
+"Cette question est sous la forme d'un sondage. Vous ne pouvez répondre à "
 "cette question qu'une seule fois. Vous avez déjà répondu à cette question et "
-"votre choix est \"${dynamic}\". Vous pouvez éditer votre réponse tant que la "
-"question n'est pas clôturée."
+"votre choix est \"${dynamic}\"."
 
 #: novaideo/views/question_management/templates/see_question.pt:148
 msgid "See the validated answer"
@@ -2210,7 +2221,7 @@ msgstr "Le contenu a été envoyé à ${external_len} personnes externes"
 #: novaideo/views/idea_management/templates/see_idea.pt:13
 #: novaideo/views/proposal_management/templates/see_proposal.pt:14
 #: novaideo/views/templates/idea_bloc.pt:65
-#: novaideo/views/templates/proposal_bloc.pt:65
+#: novaideo/views/templates/proposal_bloc.pt:63
 #: novaideo/views/templates/idea_result.pt:65
 #: novaideo/views/templates/proposal_result.pt:68
 msgid "${support and 'Withdraw my token' or 'Support'}"
@@ -2219,7 +2230,7 @@ msgstr "${support and 'Retirer mon jeton' or 'Soutenir'}"
 #: novaideo/views/idea_management/templates/see_idea.pt:23
 #: novaideo/views/proposal_management/templates/see_proposal.pt:24
 #: novaideo/views/templates/idea_bloc.pt:75
-#: novaideo/views/templates/proposal_bloc.pt:75
+#: novaideo/views/templates/proposal_bloc.pt:73
 #: novaideo/views/templates/idea_result.pt:75
 #: novaideo/views/templates/proposal_result.pt:78
 msgid "${oppose and 'Withdraw my token' or 'Oppose'}"
@@ -3794,19 +3805,19 @@ msgid "View in the discussion"
 msgstr "Voir dans la discussion"
 
 #: novaideo/views/templates/amendment_bloc.pt:21
-#: novaideo/views/templates/amendment_result.pt:21
+#: novaideo/views/templates/amendment_result.pt:16
 #: novaideo/views/amendment_management/templates/see_amendment.pt:53
 #: novaideo/views/amendment_management/templates/description_amendments.pt:15
 msgid "Version amended by"
 msgstr "Version amendée par"
 
 #: novaideo/views/templates/amendment_bloc.pt:48
-#: novaideo/views/templates/amendment_result.pt:48
+#: novaideo/views/templates/amendment_result.pt:44
 msgid "Amended version of"
 msgstr "Version amendée de"
 
 #: novaideo/views/templates/amendment_bloc.pt:59
-#: novaideo/views/templates/amendment_result.pt:59
+#: novaideo/views/templates/amendment_result.pt:55
 #: novaideo/views/amendment_management/submit.py:84
 #: novaideo/views/amendment_management/submit.py:121
 #: novaideo/views/amendment_management/submit.py:82
@@ -3816,7 +3827,7 @@ msgid "Justification"
 msgstr "Justification"
 
 #: novaideo/views/templates/amendment_bloc.pt:65
-#: novaideo/views/templates/amendment_result.pt:65
+#: novaideo/views/templates/amendment_result.pt:61
 #: novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:13
 #: novaideo/views/amendment_management/templates/readonly/explanation_inline_item.pt:6
 #: novaideo/content/proposal.py:159 novaideo/content/amendment.py:109
@@ -9203,6 +9214,3 @@ msgstr "Trouver des entités"
 #: novaideo/web_services/export_entities.py:157
 msgid "Content type"
 msgstr "Type de contenu"
-
-#~ msgid "Minimum number of participants for a working group"
-#~ msgstr "Nombre minimum de participants pour un groupe de travail"
