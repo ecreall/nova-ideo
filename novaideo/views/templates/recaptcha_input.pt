@@ -30,7 +30,7 @@
 	  };
 	  var grecaptchaCallback = function() {
 	    grecaptcha.render('${oid}-recaptcha', {
-          'sitekey' : '6Ldf4RMUAAAAACoURx-Ek0JcPYmOl0eoszHUN0XS',
+          'sitekey' : '6Lc4RhQUAAAAANtsjEq6PUN3Sa6HrdDW2EKn-Ynl',
           'callback' : responseCallback,
           'expired-callback': expiredCallback,
         });
