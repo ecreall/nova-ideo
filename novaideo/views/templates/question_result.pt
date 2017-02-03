@@ -7,7 +7,9 @@
                  author object.author;
                  files object.get_attached_files_data();
                  len_files len(files);
-                 oid object.__oid__;">
+                 oid object.__oid__;
+                 options getattr(object, 'options', []);
+                 selected_option object.get_selected_option(current_user)">
   <div class="media-body media-question" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="author-block">
       <img class="author-img img-circle" 
@@ -28,13 +30,13 @@
     <div class="separator"></div>
     
     <div class="content-col">
-    <div class="object-menu pull-right">
-      <div tal:replace="structure menu_body"/>
-    </div>
-    <div class="object-title-block view-item-title"
+    <div class="object-title-block view-item-title pull-left"
       data-title="${object.title}"
       data-icon="${icon}"
       data-img="">
+      <div class="object-menu pull-right">
+        <div tal:replace="structure menu_body"/>
+      </div>
       <a tal:attributes="href url">
         <h4>
           <span class="icon ${icon}"></span>  ${object.title} 
@@ -59,6 +61,31 @@
     <div class="row object-row-content row-md">
       <div class="col col-xs-12 ${files and 'col-md-8' or 'col-md-12'}">
         <div class="object-text">${structure:object.presentation_text(500)}</div>
+        <div class="alert-success alert-discret" tal:define="len_answers object.len_answers">
+          <strong tal:condition="len_answers==0" i18n:translate="">No answer</strong>
+          <strong tal:condition="len_answers==1" i18n:translate="">One answer</strong>
+          <strong tal:condition="len_answers>1" i18n:translate="" ><span i18n:name="nember">${len_answers}</span> answers</strong>
+        </div>
+        <div tal:omit-tag="" tal:condition="options">
+          <div tal:condition="selected_option is None" class="alert alert-info alert-discret">
+            <p><span i18n:translate="">This question is in the form of a poll. You can select an option from those offered. You may only answer this question one time.</span> <span tal:condition="'pending' in object.state" i18n:translate="">You can edit your answer as long as the question is not closed.</span></p>
+            <p>
+              <span i18n:translate="">The options proposed by the author are:</span>
+              <ul>
+                <li tal:repeat="option options"><strong>${option}</strong></li>
+              </ul>
+            </p>
+          </div>
+          <div tal:condition="selected_option is not None" class="alert alert-info alert-discret">
+            <p><span i18n:translate="">This question is in the form of a poll. You can select an option from those offered. You may only answer this question one time. You have already answered this question and your choice is "<strong i18n:name="dynamic">${options[selected_option]}</strong>".</span> <span tal:condition="'pending' in object.state" i18n:translate="">You can edit your answer as long as the question is not closed.</span></p>
+            <p>
+              <span i18n:translate="">The options proposed by the author are:</span>
+              <ul>
+                <li tal:repeat="option options"><strong>${option}</strong></li>
+              </ul>
+            </p>
+          </div>
+        </div>
       </div>
       <div class="col col-xs-12 col-md-4" tal:condition="files">
           <div class="file-slider">

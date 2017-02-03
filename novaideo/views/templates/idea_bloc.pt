@@ -29,13 +29,13 @@
     <div class="separator"></div>
     
     <div class="content-col">
-    <div class="object-menu pull-right">
-      <div tal:replace="structure menu_body"/>
-    </div>
-    <div class="object-title-block view-item-title"
+    <div class="object-title-block view-item-title pull-left"
       data-title="${object.title}"
       data-icon="${icon}"
       data-img="">
+      <div class="object-menu pull-right">
+        <div tal:replace="structure menu_body"/>
+      </div>
       <a tal:attributes="href url">
         <h4>
           <span class="icon ${icon}"></span>  ${object.title} 

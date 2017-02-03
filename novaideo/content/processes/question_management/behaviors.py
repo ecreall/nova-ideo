@@ -1006,7 +1006,7 @@ def state_validation(process, context):
 
 class TransformToIdea(CreateIdea):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
+    style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_picto = 'icon novaideo-icon icon-idea'
     style_order = 3

@@ -7,11 +7,6 @@
                  author object.author;
                  oid object.__oid__;">
   <div class="media-body media-amendment" tal:define="author_picture getattr(author, 'picture', None)">
-    <a href="${url}">
-      <h4 tal:condition="state">
-        <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
-      </h4>
-    </a>
     <div class="author-block">
       <img class="author-img img-circle" 
          tal:condition="author_picture is not None" 
@@ -26,22 +21,23 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
-
-    <div class="object-title-block view-item-title"
+    <div class="separator"></div>
+    <div class="object-title-block view-item-title pull-left"
         data-title="${object.title}"
         data-icon="${icon}"
         data-img="">
+      <div class="object-menu pull-right">
+        <div tal:replace="structure menu_body"/>
+      </div>
       <a tal:attributes="href url">
         <h4>
           <span class="icon ${icon}"></span> ${object.title}
           <div class="listing-access-menu">
             <div tal:replace="structure access_body"/>
           </div>
+          <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
         </h4>
       </a>
-    </div>
-    <div class="object-menu pull-right">
-      <div tal:replace="structure menu_body"/>
     </div>
     <div class="object-description">
       <small>

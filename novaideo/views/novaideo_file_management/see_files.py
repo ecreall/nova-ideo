@@ -43,7 +43,7 @@ class SeeFilesView(BasicView):
         user = get_current()
         objects = find_entities(
             user=user, interfaces=[IFile],
-            sort_on='modified_at', reverse=True)
+            sort_on='release_date', reverse=True)
         batch = Batch(objects, self.request, default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#results_files"
         len_result = batch.seqlen
