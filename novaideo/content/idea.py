@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -8,7 +8,6 @@
 import datetime
 import pytz
 import colander
-from webob.multidict import MultiDict
 from persistent.dict import PersistentDict
 from collections import OrderedDict
 from persistent.list import PersistentList
@@ -148,17 +147,22 @@ class Idea(VersionableEntity, DuplicableEntity,
     @property
     def related_proposals(self):
         """Return all proposals that uses this idea"""
-        return MultiDict([(item, c) for (item, c) in
-                          self.all_target_related_contents.items()
-                          if c.type == CorrelationType.solid and
-                          'related_proposals' in c.tags])
+        return [proposal[0] for proposal in self.get_related_contents(
+            CorrelationType.solid, ['related_proposals'])]
 
     @property
     def related_contents(self):
         """Return all related contents"""
-        return MultiDict([(item, c) for (item, c) in
-                          self.all_source_related_contents.items()
-                          if c.type == CorrelationType.weak])
+        return [content[0] for content in self.all_related_contents]
+
+    @property
+    def transformed_from(self):
+        """Return all related contents"""
+        transformed_from = [correlation[1].context for correlation
+                            in self.get_related_contents(
+                                CorrelationType.solid, ['transformation'])
+                            if correlation[1].context]
+        return transformed_from[0] if transformed_from else None
 
     @property
     def authors(self):

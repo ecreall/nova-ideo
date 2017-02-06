@@ -24,8 +24,8 @@ class EditAnswerFormView(FormView):
     title = _('Edit the answer')
     schema = select(AnswerSchema(factory=Answer,
                                  editable=True,
-                                 omit=('related_contents',)),
-                    ['files', 'related_contents', 'option', 'comment'])
+                                 omit=('associated_contents',)),
+                    ['files', 'associated_contents', 'option', 'comment'])
     behaviors = [EditAnswer, Cancel]
     formid = 'formeditanswer'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'

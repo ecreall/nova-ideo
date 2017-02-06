@@ -41,7 +41,7 @@ class StepsPanel(object):
         return self.context
 
     def _get_step1_informations(self, context, request):
-        proposal_nember = len(list(dict(context.related_proposals).keys()))
+        proposal_nember = len(context.related_proposals)
         duplicates_len = len(context.duplicates)
         return renderers.render(self.step1_0_template,
                                 {'context': context,
@@ -50,8 +50,8 @@ class StepsPanel(object):
                                 request)
 
     def _get_step2_informations(self, context, request):
-        related_ideas = list(dict(context.related_ideas).keys())
-        related_proposals = [list(dict(idea.related_proposals).keys())
+        related_ideas = context.related_ideas
+        related_proposals = [idea.related_proposals
                              for idea in related_ideas]
         related_proposals = [item for sublist in related_proposals
                              for item in sublist]

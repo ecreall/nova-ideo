@@ -667,6 +667,31 @@ def init_guide_tour_data(root, registry):
     log.info('Guide tour data evolved.')
 
 
+def evolve_related_correlation(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IComment, IAnswer
+
+    contents = find_entities(
+        interfaces=[IComment, IAnswer]
+        )
+    root = getSite()
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if node.related_correlation:
+            targets = node.related_correlation.targets
+            if node in targets:
+                targets.remove(node)
+
+            node.set_associated_contents(
+                targets, node.related_correlation.author)
+            root.delfromproperty('correlations', node.related_correlation)
+
+        node.reindex()
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Related correlations evolved')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -710,6 +735,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_add_nia_bot)
     config.add_evolution_step(add_guide_tour_data)
     config.add_evolution_step(init_guide_tour_data)
+    config.add_evolution_step(evolve_related_correlation)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

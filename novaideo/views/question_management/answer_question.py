@@ -60,8 +60,8 @@ class AnswerQuestionFormView(FormView):
     title = _('Answer the question')
     schema = select(AnswerSchema(factory=Answer,
                                  editable=True,
-                                 omit=('related_contents',)),
-                    ['files', 'related_contents', 'option', 'comment'])
+                                 omit=('associated_contents',)),
+                    ['files', 'associated_contents', 'option', 'comment'])
     behaviors = [AnswerQuestion, Cancel]
     formid = 'formanswerquestion'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'

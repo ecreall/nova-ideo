@@ -41,7 +41,7 @@ from novaideo import _, nothing, log
 from novaideo.content.idea import Idea
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
-from novaideo.utilities.util import connect, disconnect
+from novaideo.utilities.util import connect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
     ObjectModified)
@@ -90,25 +90,28 @@ class CreateIdea(InfiniteCardinality):
         idea.setproperty('author', user)
         idea.subscribe_to_channel(user)
         if isinstance(context, (Comment, Answer)):
-            current_correlation = context.related_correlation
-            related_contents = []
             content = context.subject
-            if current_correlation:
-                related_contents = getattr(current_correlation, 'targets', [])
-                disconnect(content, related_contents)
-                related_contents.append(idea)
-            else:
-                related_contents = [idea]
-
-            correlation = connect(
+            correlations = connect(
                 content,
-                list(related_contents),
+                [idea],
                 {'comment': context.comment,
                  'type': getattr(context, 'intention',
                                  'Transformation from another content')},
                 user,
-                unique=True)
-            context.setproperty('related_correlation', correlation[0])
+                ['transformation'],
+                CorrelationType.solid)
+            for correlation in correlations:
+                correlation.setproperty('context', context)
+
+            context_type = context.__class__.__name__.lower()
+            # Add Nia comment
+            alert_comment_nia(
+                idea, request, root,
+                internal_kind=InternalAlertKind.content_alert,
+                subject_type='idea',
+                alert_kind='transformation_'+context_type,
+                content=context
+                )
 
         idea.format(request)
         idea.reindex()
@@ -561,6 +564,18 @@ class PublishIdeaModeration(InfiniteCardinality):
                 duplication=context
                 )
 
+        transformed_from = context.transformed_from
+        if transformed_from:
+            context_type = transformed_from.__class__.__name__.lower()
+            # Add Nia comment
+            alert_comment_nia(
+                transformed_from, request, root,
+                internal_kind=InternalAlertKind.content_alert,
+                subject_type=context_type,
+                alert_kind='transformation_idea',
+                idea=context
+                )
+
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('publish_idea_decision')
             subject = mail_template['subject'].format(
@@ -633,6 +648,18 @@ class PublishIdea(InfiniteCardinality):
                 subject_type='idea',
                 alert_kind='duplicated',
                 duplication=context
+                )
+        
+        transformed_from = context.transformed_from
+        if transformed_from:
+            context_type = transformed_from.__class__.__name__.lower()
+            # Add Nia comment
+            alert_comment_nia(
+                transformed_from, request, root,
+                internal_kind=InternalAlertKind.content_alert,
+                subject_type=context_type,
+                alert_kind='transformation_idea',
+                idea=context
                 )
 
         context.reindex()
@@ -813,16 +840,9 @@ class CommentIdea(InfiniteCardinality):
                 context.subscribe_to_channel(user)
 
             comment.setproperty('author', user)
-            if appstruct['related_contents']:
-                related_contents = appstruct['related_contents']
-                correlation = connect(
-                    context,
-                    list(related_contents),
-                    {'comment': comment.comment,
-                     'type': comment.intention},
-                    user,
-                    unique=True)
-                comment.setproperty('related_correlation', correlation[0])
+            if appstruct.get('associated_contents', []):
+                comment.set_associated_contents(
+                    appstruct['associated_contents'], user)
 
             self._alert_users(context, request, user, comment)
             context.reindex()

@@ -121,6 +121,7 @@ class Correlation(Debatable):
     name = renamer()
     source = SharedUniqueProperty('source', 'source_correlations')
     targets = SharedMultipleProperty('targets', 'target_correlations')
+    context = SharedUniqueProperty('context', 'contextualized_correlations')
     author = SharedUniqueProperty('author')
     comments = CompositeMultipleProperty('comments')
 

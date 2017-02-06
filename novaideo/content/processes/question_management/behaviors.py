@@ -34,11 +34,10 @@ from novaideo.content.question import Question
 from novaideo.content.question import Answer
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
-from novaideo.utilities.util import connect, disconnect
 from novaideo.event import (
     CorrelableRemoved, ObjectPublished)
 from novaideo.utilities.alerts_utility import (
-    alert, get_user_data, get_entity_data)
+    alert, get_user_data, get_entity_data, alert_comment_nia)
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.comment import Comment
 from novaideo.content.processes.idea_management.behaviors import (
@@ -47,6 +46,8 @@ from novaideo.content.processes.idea_management.behaviors import (
     Associate as AssociateIdea)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from novaideo.views.filter import get_users_by_preferences
+from novaideo.content.correlation import CorrelationType
+from novaideo.utilities.util import connect
 
 
 def createquestion_roles_validation(process, context):
@@ -80,24 +81,37 @@ class AskQuestion(InfiniteCardinality):
         grant_roles(user=user, roles=(('Owner', question), ))
         question.setproperty('author', user)
         if isinstance(context, Comment):
-            current_correlation = context.related_correlation
-            related_contents = []
+            related_contents = [question]
             content = context.subject
-            if current_correlation:
-                related_contents = getattr(current_correlation, 'targets', [])
-                disconnect(content, related_contents)
-                related_contents.append(question)
-            else:
-                related_contents = [question]
-
-            correlation = connect(
+            correlations = connect(
                 content,
                 list(related_contents),
                 {'comment': context.comment,
                  'type': context.intention},
                 user,
-                unique=True)
-            context.setproperty('related_correlation', correlation[0])
+                ['transformation'],
+                CorrelationType.solid)
+            for correlation in correlations:
+                correlation.setproperty('context', context)
+
+            context_type = context.__class__.__name__.lower()
+            # Add Nia comment
+            alert_comment_nia(
+                question, request, root,
+                internal_kind=InternalAlertKind.content_alert,
+                subject_type='question',
+                alert_kind='transformation',
+                content=context
+                )
+
+            # Add Nia comment
+            alert_comment_nia(
+                context, request, root,
+                internal_kind=InternalAlertKind.content_alert,
+                subject_type=context_type,
+                alert_kind='transformation_question',
+                question=question
+                )
 
         question.format(request)
         question.reindex()
@@ -329,16 +343,9 @@ class AnswerQuestion(InfiniteCardinality):
         transaction.commit()
         grant_roles(user=user, roles=(('Owner', answer), ))
         answer.setproperty('author', user)
-        if appstruct['related_contents']:
-            related_contents = appstruct['related_contents']
-            correlation = connect(
-                context,
-                list(related_contents),
-                {'comment': answer.comment,
-                 'type': 'Answer the question'},
-                user,
-                unique=True)
-            answer.setproperty('related_correlation', correlation[0])
+        if appstruct.get('associated_contents', []):
+            answer.set_associated_contents(
+                appstruct['associated_contents'], user)
 
         self._alert_users(context, request, user, answer)
         context.reindex()
@@ -726,25 +733,9 @@ class EditAnswer(InfiniteCardinality):
         if getattr(context, 'option', None) is not None:
             context.question.add_selected_option(user, context.option)
 
-        current_correlation = context.related_correlation
-        if current_correlation and\
-           not appstruct['related_contents']:
-            targets = getattr(current_correlation, 'targets', [])
-            disconnect(context, targets)
-        elif appstruct['related_contents']:
-            if current_correlation:
-                targets = getattr(current_correlation, 'targets', [])
-                disconnect(context, targets)
-
-            related_contents = appstruct['related_contents']
-            correlation = connect(
-                context,
-                list(related_contents),
-                {'comment': context.comment,
-                 'type': 'Answer the question'},
-                user,
-                unique=True)
-            context.setproperty('related_correlation', correlation[0])
+        if appstruct.get('associated_contents', []):
+            context.set_associated_contents(
+                appstruct['associated_contents'], user)
 
         context.format(request)
         context.reindex()

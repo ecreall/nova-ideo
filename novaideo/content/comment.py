@@ -14,7 +14,8 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer, get_oid
 
 from dace.descriptors import (
-    SharedUniqueProperty, CompositeMultipleProperty)
+    SharedUniqueProperty, CompositeMultipleProperty,
+    SharedMultipleProperty)
 from dace.util import getSite, get_obj
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
@@ -25,13 +26,15 @@ from pontus.file import ObjectData, File
 
 from .interface import IComment
 from novaideo.core import (
-    Commentable, Emojiable, can_access, SignalableEntity)
+    Commentable, Emojiable, can_access, SignalableEntity,
+    CorrelableEntity)
 from novaideo import _, log
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
     text_urls_format,
     get_emoji_form,
-    get_files_data)
+    get_files_data, connect, disconnect)
+from novaideo.content.correlation import CorrelationType
 
 
 @colander.deferred
@@ -53,7 +56,7 @@ def relatedcontents_choice(node, kw):
     if isinstance(context, Comment) and\
        context.related_correlation:
         values = [(get_oid(t), t.title) for
-                  t in context.related_contents]
+                  t in context.associated_contents]
 
     def title_getter(id):
         try:
@@ -83,7 +86,7 @@ def relatedcontents_choice(node, kw):
 class RelatedContentsSchema(Schema):
     """Schema for associtation"""
 
-    related_contents = colander.SchemaNode(
+    associated_contents = colander.SchemaNode(
         colander.Set(),
         widget=relatedcontents_choice,
         title=_('Associated contents'),
@@ -133,7 +136,7 @@ class CommentSchema(VisualisableElementSchema):
         default=_('Remark')
         )
 
-    related_contents = colander.SchemaNode(
+    associated_contents = colander.SchemaNode(
         colander.Set(),
         widget=relatedcontents_choice,
         title=_('Associated contents'),
@@ -170,7 +173,7 @@ class CommentSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IComment)
-class Comment(Commentable, Emojiable, SignalableEntity):
+class Comment(Commentable, CorrelableEntity, Emojiable, SignalableEntity):
     """Comment class"""
     icon = 'icon ion-chatbubbles'
     templates = {'default': 'novaideo:views/templates/comment_result.pt'}
@@ -179,6 +182,8 @@ class Comment(Commentable, Emojiable, SignalableEntity):
     files = CompositeMultipleProperty('files')
     url_files = CompositeMultipleProperty('url_files')
     related_correlation = SharedUniqueProperty('related_correlation', 'targets')
+    contextualized_correlations = SharedMultipleProperty(
+        'contextualized_correlations', 'context')
 
     def __init__(self, **kwargs):
         super(Comment, self).__init__(**kwargs)
@@ -227,11 +232,36 @@ class Comment(Commentable, Emojiable, SignalableEntity):
 
     @property
     def related_contents(self):
-        if self.related_correlation:
-            return [t for t
-                    in self.related_correlation.targets
-                    if t is not self]
-        return []
+        subject = self.subject
+        return [content[0] for content in self.contextualized_contents
+                if content[0] is not subject]
+
+    @property
+    def associated_contents(self):
+        subject = self.subject
+        return [content[0] for content in self.contextualized_contents
+                if content[0] is not subject and not getattr(content[1], 'tags', [])]
+
+    def set_associated_contents(self, associated_contents, user):
+        subject = self.subject
+        current_associated_contents = self.associated_contents
+        associated_contents_to_add = [i for i in associated_contents
+                                      if i not in current_associated_contents]
+        associated_contents_to_del = [i for i in current_associated_contents
+                                      if i not in associated_contents and
+                                      i not in associated_contents_to_add]
+        correlations = connect(
+            subject,
+            associated_contents_to_add,
+            {'comment': _('Add related contents'),
+             'type': _('Edit the comment')},
+            author=user,)
+        for correlation in correlations:
+            correlation.setproperty('context', self)
+
+        disconnect(
+            subject,
+            associated_contents_to_del)
 
     def get_title(self):
         return self.subject.title

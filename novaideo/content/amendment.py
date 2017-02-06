@@ -57,17 +57,17 @@ def relatedideas_choice(node, kw):
     request = node.bindings['request']
     used_ideas = context.get_used_ideas()
     root = getSite()
-    ideas = list(context.proposal.related_ideas.keys())
+    ideas = context.proposal.related_ideas
     ideas.extend(used_ideas)
     ideas = set(ideas)
     values = [(i, i.title) for i in ideas]
     ajax_url = request.resource_url(root, '@@novaideoapi',
-                                    query={'op': 'find_ideas'}
-                               )
-    return AjaxSelect2Widget(values=values,
-                        ajax_url=ajax_url,
-                        css_class="search-idea-form",
-                        multiple=True)
+                                    query={'op': 'find_ideas'})
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        css_class="search-idea-form",
+        multiple=True)
 
 
 class RelatedExplanationSchema(Schema):

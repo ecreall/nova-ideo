@@ -39,16 +39,15 @@ class RelatedContentsView(BasicView):
 
     def _correlation_action(self, correlation):
         dace_ui_api = get_current_registry().getUtility(
-                                               IDaceUIAPI,'dace_ui_api')
-        correlation_actions = dace_ui_api.get_actions([correlation], 
-                                                      self.request, 
-                                                      'correlationmanagement', 
-                                                      'comment')
+            IDaceUIAPI, 'dace_ui_api')
+        correlation_actions = dace_ui_api.get_actions(
+            [correlation],  self.request,  'correlationmanagement',
+            'comment')
         correlation_action = {}
         action_updated, messages, \
-        resources, actions = dace_ui_api.update_actions(
-                                        self.request, correlation_actions)
-        if actions: 
+            resources, actions = dace_ui_api.update_actions(
+                self.request, correlation_actions)
+        if actions:
             correlation_action['correlationaction'] = actions[0]
 
         return correlation_action, resources, messages, action_updated
@@ -66,33 +65,18 @@ class RelatedContentsView(BasicView):
 
     def update(self):
         user = get_current()
-        correlations = [c for c in self.context.source_correlations \
-                        if c.type == 0 and can_access(user, c)]
-        target_correlations = [c for c in self.context.target_correlations \
-                               if c.type == 0 and can_access(user, c)]
+        correlations = [(content, c) for content, c in
+                        self.context.all_related_contents
+                        if c.type == 0 and can_access(user, content)]
         relatedcontents = []
         all_messages = {}
         isactive = False
         all_resources = {}
         all_resources['js_links'] = []
         all_resources['css_links'] = []
-        for correlation in correlations:
-            contents = correlation.targets
-            for content in contents:
-                correlation_data, resources, \
-                messages, action_updated = self._correlation_action(correlation)
-                correlation_data.update({'content': content,
-                                         'url': content.url,
-                                         'correlation': correlation})
-                relatedcontents.append(correlation_data)
-                isactive = action_updated or isactive
-                self._update_data(messages, resources,
-                                  all_messages, all_resources)
-
-        for correlation in target_correlations:
-            content = correlation.source
+        for content, correlation in correlations:
             correlation_data, resources, \
-            messages, action_updated = self._correlation_action(correlation)
+                messages, action_updated = self._correlation_action(correlation)
             correlation_data.update({'content': content,
                                      'url': content.url,
                                      'correlation': correlation})
@@ -106,44 +90,44 @@ class RelatedContentsView(BasicView):
             index = '*'
 
         message = (_(ASSOCIATION_MESSAGES[index]),
-                  len_contents,
-                  index)
+                   len_contents,
+                   index)
         self.message = message
         result = {}
         values = {
-                'relatedcontents': relatedcontents,
-                'current_user': user,
-                'message': message
-               }
+            'relatedcontents': relatedcontents,
+            'current_user': user,
+            'message': message
+        }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         item['messages'] = all_messages
         item['isactive'] = isactive
         result.update(all_resources)
-        result  = merge_dicts(self.requirements_copy, result)
+        result = merge_dicts(self.requirements_copy, result)
         return result
 
 
 class AssociateFormView(FormView):
 
     title = _('Associate contents')
-    schema = select(CorrelationSchema(factory=Correlation, 
+    schema = select(CorrelationSchema(factory=Correlation,
                                       editable=True),
                     ['targets', 'intention', 'comment'])
     behaviors = [Associate]
     formid = 'formassociate'
     name = 'associateform'
 
-
     def before_update(self):
         target = self.schema.get('targets')
         target.title = _("Related contents")
-        formwidget = deform.widget.FormWidget(css_class='controled-form', 
-                                activable=True,
-                                button_css_class="pull-right",
-                                picto_css_class="glyphicon glyphicon-link",
-                                button_title=_("Associate contents"))
+        formwidget = deform.widget.FormWidget(
+            css_class='controled-form',
+            activable=True,
+            button_css_class="pull-right",
+            picto_css_class="glyphicon glyphicon-link",
+            button_title=_("Associate contents"))
         formwidget.template = 'novaideo:views/templates/ajax_form.pt'
         self.schema.widget = formwidget
 
@@ -169,4 +153,4 @@ class AssociateView(MultipleView):
         return message
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({Associate:AssociateView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({Associate: AssociateView})

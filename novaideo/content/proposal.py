@@ -8,7 +8,6 @@ import datetime
 import pytz
 import colander
 from collections import OrderedDict
-from webob.multidict import MultiDict
 from persistent.list import PersistentList
 from zope.interface import implementer
 
@@ -213,15 +212,12 @@ class Proposal(VersionableEntity,
 
     @property
     def related_ideas(self):
-        return MultiDict([(item, c) for (item, c) in self.all_source_related_contents.items()
-                if c.type == CorrelationType.solid and
-                'related_ideas' in c.tags])
+        return [idea[0] for idea in self.get_related_contents(
+            CorrelationType.solid, ['related_ideas'])]
 
     @property
     def related_contents(self):
-        return MultiDict([(item, c) for (item, c) in
-                          self.all_source_related_contents.items()
-                          if c.type == CorrelationType.weak])
+        return [content[0] for content in self.all_related_contents]
 
     @property
     def is_published(self):
@@ -277,7 +273,7 @@ class Proposal(VersionableEntity,
         return get_files_data(self.attached_files)
 
     def set_related_ideas(self, relatedideas, user):
-        current_related_ideas = list(self.related_ideas.keys())
+        current_related_ideas = self.related_ideas
         related_ideas_to_add = [i for i in relatedideas
                                 if i not in current_related_ideas]
         related_ideas_to_del = [i for i in current_related_ideas
@@ -319,7 +315,7 @@ class Proposal(VersionableEntity,
             copy_of_proposal.addtoproperty('attached_files', file_)
 
         copy_of_proposal.set_related_ideas(
-            list(self.related_ideas.keys()), user)
+            self.related_ideas, user)
         copy_of_proposal.reindex()
         return copy_of_proposal
 

@@ -127,7 +127,7 @@
                 </div>
 
               </div>
-              <div tal:condition="attached_files or comment.related_correlation is not None" class="attached-files">
+              <div tal:condition="attached_files or contents" class="attached-files">
                 <small>
                  <blockquote class="attached-contents">
                     <dl >

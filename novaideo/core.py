@@ -504,6 +504,40 @@ class CorrelableEntity(Entity):
         result.extend([c.source for c in self.target_correlations])
         return list(set(result))
 
+    @property
+    def all_source_related_contents(self):
+        lists_targets = [(c.targets, c) for c in self.source_correlations]
+        return [(target, c) for targets, c in lists_targets
+                for target in targets]
+
+    @property
+    def all_target_related_contents(self):
+        return [(c.source, c) for c in self.target_correlations]
+
+    @property
+    def all_related_contents(self):
+        related_contents = self.all_source_related_contents
+        related_contents.extend(self.all_target_related_contents)
+        return related_contents
+
+    @property
+    def contextualized_contents(self):
+        lists_contents = [(c.targets, c) for c in
+                          self.contextualized_correlations]
+        lists_contents = [(target, c) for targets, c in lists_contents
+                          for target in targets]
+        lists_contents.extend([(c.source, c) for c in
+                               self.contextualized_correlations])
+        return lists_contents
+
+    def get_related_contents(self, type_=None, tags=[]):
+        if type_ is None and not tags:
+            return self.all_related_contents
+
+        return [(content, c) for content, c in self.all_related_contents
+                if (type_ is None or c.type == type_) and
+                (not tags or any(t in tags for t in c.tags))]
+
 
 class ExaminableEntity(Entity):
     """
@@ -511,7 +545,6 @@ class ExaminableEntity(Entity):
     """
 
     opinions_base = {}
-
 
     @property
     def opinion_value(self):
@@ -525,16 +558,6 @@ class Node(Entity):
     def __init__(self, **kwargs):
         super(Node, self).__init__(**kwargs)
         self.graph = PersistentDict()
-
-    @property
-    def all_source_related_contents(self):
-        lists_targets = [(c.targets, c) for c in self.source_correlations]
-        return MultiDict([(target, c) for targets, c in lists_targets
-                          for target in targets])
-
-    @property
-    def all_target_related_contents(self):
-        return MultiDict([(c.source, c) for c in self.target_correlations])
 
     def get_node_id(self):
         return str(self.__oid__).replace('-', '_')
@@ -563,13 +586,13 @@ class Node(Entity):
         if oid in calculated:
             return {}, newcalculated
 
-        all_target_contents = [r for r in self.all_target_related_contents.items()
+        all_target_contents = [r for r in self.all_target_related_contents
                                if isinstance(r[0], Node)]
         targets = [{'id': t.get_node_id(),
                     'type': c.type_name,
                     'oid': getattr(t, '__oid__', 0)}
                    for (t, c) in all_target_contents]
-        all_source_contents = [r for r in self.all_source_related_contents.items()
+        all_source_contents = [r for r in self.all_source_related_contents
                                if r[0] not in all_target_contents
                                and isinstance(r[0], Node)]
         targets.extend([{'id': t.get_node_id(),

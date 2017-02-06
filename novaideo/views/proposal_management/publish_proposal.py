@@ -36,7 +36,7 @@ class PublishProposalStudyReport(BasicView):
         modes = list(root.get_work_modes().keys())
         not_published_ideas = []
         if not self.request.moderate_ideas:
-            not_published_ideas = [i for i in self.context.related_ideas.keys()
+            not_published_ideas = [i for i in self.context.related_ideas
                                    if 'published' not in i.state]
         values = {'context': self.context,
                   'not_published_ideas': not_published_ideas,

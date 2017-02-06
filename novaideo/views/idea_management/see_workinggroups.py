@@ -49,7 +49,7 @@ class SeeRelatedWorkingGroupsView(BasicView):
         self.execute(None)
         user = get_current()
         objects = [proposal for proposal
-                   in dict(self.context.related_proposals).keys()
+                   in self.context.related_proposals
                    if proposal.working_group and
                    'archived' not in proposal.state and
                    'censored' not in proposal.state and

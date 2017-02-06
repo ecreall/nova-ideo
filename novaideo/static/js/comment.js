@@ -170,7 +170,7 @@ function init_comment_form_changes(form){
     var select_itention = $(form.find("select[name=\'intention\']"))
     var intention = select_itention.val();
     intention = select_itention.find('option[value="'+intention+'"]').text()
-    var select_related_contents = $(form.find("select[name='related_contents']").first());
+    var select_related_contents = $(form.find("select[name='associated_contents']").first());
     var related_len = 0;
     if(select_related_contents.val()){
       related_len = select_related_contents.val().length
@@ -235,7 +235,7 @@ $(document).on('submit','.commentform:not(.comment-inline-form)', function( even
     var button = $this.find('button[type="submit"]').last();
     var select_itention = $($this.find("select[name=\'intention\']"))
     var intention = select_itention.val();
-    var select_related_contents = $($this.find("select[name='related_contents']").first());
+    var select_related_contents = $($this.find("select[name='associated_contents']").first());
     var textarea = $this.find('textarea');
     var comment = textarea.val();
     var parent = $($this.parents('.comment-view-block').first());
@@ -319,7 +319,7 @@ $(document).on('submit','.respondform', function( event ) {
     var intention = select_itention.val();
     var textarea = $this.find('textarea');
     var comment = textarea.val();
-    var select_related_contents = $($this.find("select[name='related_contents']").first());
+    var select_related_contents = $($this.find("select[name='associated_contents']").first());
     var parent = $($this.parents('.views-container').get(1));
     var parentform = parent.find('.commentform');
     

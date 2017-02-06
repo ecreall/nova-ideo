@@ -26,7 +26,7 @@ from dace.processinstance.activity import (
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.content.interface import IComment
 from novaideo import _, nothing
-from novaideo.utilities.util import connect, disconnect
+from novaideo.utilities.util import disconnect
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.alert import InternalAlertKind
@@ -119,16 +119,9 @@ class Respond(InfiniteCardinality):
         if not is_discuss and content and content is not root:
             content.subscribe_to_channel(user)
 
-        if appstruct['related_contents']:
-            related_contents = appstruct['related_contents']
-            correlation = connect(
-                content,
-                list(related_contents),
-                {'comment': comment.comment,
-                 'type': comment.intention},
-                user,
-                unique=True)
-            comment.setproperty('related_correlation', correlation[0])
+        if appstruct.get('associated_contents', []):
+            comment.set_associated_contents(
+                appstruct['associated_contents'], user)
 
         author = getattr(content, 'author', None)
         authors = getattr(content, 'authors', [author] if author else [])
@@ -218,27 +211,10 @@ class Edit(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.edited = True
-        content = context.subject
         user = get_current()
-        current_correlation = context.related_correlation
-        if current_correlation and\
-           not appstruct['related_contents']:
-            targets = getattr(current_correlation, 'targets', [])
-            disconnect(content, targets)
-        elif appstruct['related_contents']:
-            if current_correlation:
-                targets = getattr(current_correlation, 'targets', [])
-                disconnect(content, targets)
-
-            related_contents = appstruct['related_contents']
-            correlation = connect(
-                content,
-                list(related_contents),
-                {'comment': context.comment,
-                 'type': context.intention},
-                user,
-                unique=True)
-            context.setproperty('related_correlation', correlation[0])
+        if appstruct.get('associated_contents', []):
+            context.set_associated_contents(
+                appstruct['associated_contents'], user)
 
         context.format(request)
         context.reindex()

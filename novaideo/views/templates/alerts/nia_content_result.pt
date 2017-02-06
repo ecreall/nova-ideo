@@ -17,6 +17,40 @@
             target="_blank" href="${request.resource_url(duplication, '@@index')}" class="alert-link"><span class="${getattr(duplication, 'icon', '')}"></span> ${duplication.title}</a>.
      </span>
     </span>
+
+    <span  tal:condition="alert_kind == 'transformation_comment'">
+      <span i18n:translate="" tal:omit-tag=""
+        tal:define="
+            comment object.content;
+            subject comment.subject;
+         ">
+       This idea is the result of a transformation of this <a 
+            i18n:name="dynamic" 
+            class="alert-link"
+            target="_blank" href="${comment.get_url(request)}" class="alert-link"><span class="${getattr(comment, 'icon', '')}"></span> <span i18n:translate="">comment</span></a> related to the following content <a 
+            i18n:name="subject" 
+            data-oid="${getattr(subject, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(subject, '@@index')}" class="alert-link"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.
+     </span>
+    </span>
+
+    <span  tal:condition="alert_kind == 'transformation_answer'">
+      <span i18n:translate="" tal:omit-tag=""
+        tal:define="
+            answer object.content;
+            subject answer.question;
+         ">
+       This idea is the result of a transformation of this <a 
+            i18n:name="dynamic" 
+            class="alert-link"
+            target="_blank" href="${answer.get_url(request)}" class="alert-link"><span class="${getattr(answer, 'icon', '')}"></span> <span i18n:translate="" i18n:context="question">answer</span></a> related to the following question <a 
+            i18n:name="subject" 
+            data-oid="${getattr(subject, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(subject, '@@index')}" class="alert-link"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.
+     </span>
+    </span>
   </div>
   <div tal:omit-tag=""  tal:condition="object.subject_type == 'proposal'">
     <span tal:condition="alert_kind == 'duplicated'">
@@ -33,4 +67,67 @@
      </span>
     </span>
   </div>
+
+  <div tal:omit-tag=""  tal:condition="object.subject_type == 'question'">
+    <span  tal:condition="alert_kind == 'transformation'">
+      <span i18n:translate="" tal:omit-tag=""
+        tal:define="
+            comment object.content;
+            subject comment.subject;
+         ">
+       This question is the result of a transformation of this <a 
+            i18n:name="dynamic" 
+            class="alert-link"
+            target="_blank" href="${comment.get_url(request)}" class="alert-link"><span class="${getattr(comment, 'icon', '')}"></span> <span i18n:translate="">comment</span></a> related to the following content <a 
+            i18n:name="subject" 
+            data-oid="${getattr(subject, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(subject, '@@index')}" class="alert-link"><span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}</a>.
+     </span>
+    </span>
+  </div>
+
+  <div tal:omit-tag=""  tal:condition="object.subject_type == 'comment'">
+    <span tal:condition="alert_kind == 'transformation_question'">
+      <span i18n:translate="" tal:omit-tag=""
+        tal:define="
+            question object.question;
+         ">
+       This comment has just been transformed into a question. You will find the question here <a
+            i18n:name="dynamic" 
+            data-oid="${getattr(question, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(question, '@@index')}" class="alert-link"><span class="${getattr(question, 'icon', '')}"></span> ${question.title}</a>. You can answer, support or discuss it.
+     </span>
+    </span>
+    <span tal:condition="alert_kind == 'transformation_idea'">
+      <span i18n:translate="" tal:omit-tag=""
+        tal:define="
+            idea object.idea;
+         ">
+       This comment has just been transformed into an idea. You will find the idea here <a
+            i18n:name="dynamic" 
+            data-oid="${getattr(idea, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(idea, '@@index')}" class="alert-link"><span class="${getattr(idea, 'icon', '')}"></span> ${idea.title}</a>. You can discuss it.
+     </span>
+    </span>
+  </div>
+
+  <div tal:omit-tag=""  tal:condition="object.subject_type == 'answer'">
+    <span tal:condition="alert_kind == 'transformation_idea'">
+      <span i18n:translate="" tal:omit-tag=""
+        tal:define="
+            idea object.idea;
+         ">
+       This answer has just been transformed into an idea. You will find the idea here <a
+            i18n:name="dynamic" 
+            data-oid="${getattr(idea, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            target="_blank" href="${request.resource_url(idea, '@@index')}" class="alert-link"><span class="${getattr(idea, 'icon', '')}"></span> ${idea.title}</a>. You can discuss it.
+     </span>
+    </span>
+  </div>
+
+
 </div>

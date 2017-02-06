@@ -113,7 +113,7 @@ class ProposalHeaderView(BasicView):
            tinymce_js not in resources['js_links']:
             resources['js_links'].append(tinymce_js)
 
-        related_ideas = list(self.context.related_ideas.keys())
+        related_ideas = self.context.related_ideas
         not_published_ideas = [i for i in related_ideas
                                if 'published' not in i.state]
         not_favorable_ideas = []

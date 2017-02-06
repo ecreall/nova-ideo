@@ -8,7 +8,7 @@
 import json
 import requests
 from persistent.list import PersistentList
-from urllib.request import urlopen
+# from urllib.request import urlopen
 
 from substanced.util import get_oid
 
@@ -21,7 +21,7 @@ from novaideo.ips.mailer import mailer_send
 #     arango_server, create_collection)
 from novaideo.content.alert import INTERNAL_ALERTS
 from novaideo.utilities.util import connect
-from novaideo.content.comment import Comment 
+from novaideo.content.comment import Comment, Commentable
 from novaideo import log, _
 
 
@@ -117,7 +117,11 @@ def alert_comment_nia(context, request, root, **kwargs):
             intention=_('Remark'),
             comment=comment_text
             )
-        channel.addtoproperty('comments', comment)
+        if isinstance(context, Commentable):
+            context.addtoproperty('comments', comment)
+        else:
+            channel.addtoproperty('comments', comment)
+
         channel.add_comment(comment)
         comment.format(request, True)
         comment.formatted_comment = '<div class="bot-message">' + \

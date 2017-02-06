@@ -48,8 +48,8 @@ class SeeRelatedIdeasView(BasicView):
     def update(self):
         self.execute(None)
         user = get_current()
-        objects = [content for content, correlation in
-                   self.context.related_ideas.items()
+        objects = [content for content in
+                   self.context.related_ideas
                    if can_access(user, content)]
         objects = sorted(
             objects,

@@ -26,13 +26,13 @@ class EditView(FormView):
     title = _('Edit')
     schema = select(CommentSchema(factory=Comment,
                                   editable=True,
-                                  omit=('related_contents',)),
-                    ['comment', 'intention', 'files', 'related_contents'])
+                                  omit=('associated_contents',)),
+                    ['comment', 'intention', 'files', 'associated_contents'])
     behaviors = [Edit]
     formid = 'formedit'
     name = 'edit'
-    requirements = {'css_links':[],
-                    'js_links':['novaideo:static/js/comment.js']}
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/comment.js']}
 
     def default_data(self):
         return self.context

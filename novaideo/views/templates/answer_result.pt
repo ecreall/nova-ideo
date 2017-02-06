@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-      <div tal:condition="files or object.related_correlation is not None" class="attached-files">
+      <div tal:condition="files or contents" class="attached-files">
         <small>
           <blockquote class="attached-contents">
             <dl >
@@ -104,7 +104,7 @@
                 </dd>
               </div>
               <div tal:omit-tag=""
-                   tal:condition="object.related_correlation is not None">
+                   tal:condition="contents">
                 <div tal:omit-tag="" tal:define="
                      contents_len len(contents)">
                   <dt tal:condition="contents_len > 1"><span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Associated contents:</span>

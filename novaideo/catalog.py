@@ -863,7 +863,8 @@ class IdeaSearch(SearchableObject):
 class CommentSearch(SearchableObject):
 
     def related_contents(self):
-        related_contents = getattr(self.context.related_correlation, 'targets', [])
+        related_contents = getattr(
+            self.context.related_correlation, 'targets', [])
         ids = list(set([get_oid(i, None) for i in related_contents]))
         if None in ids:
             ids.remove(None)

@@ -180,9 +180,8 @@ def confirm_proposal(
                 alert_kind='start_work',
                 duplication=context
                 )
-    
-    related_ideas = [idea for idea, correlation in
-                     context.related_ideas.items()]
+
+    related_ideas = context.related_ideas
     for idea in related_ideas:
         # Add Nia comment
         alert_comment_nia(
@@ -199,7 +198,7 @@ def confirm_proposal(
     not_published_ideas = []
     if not getattr(root, 'moderate_ideas', False) and\
        'idea' not in getattr(root, 'content_to_examine', []):
-        not_published_ideas = [i for i in context.related_ideas.keys()
+        not_published_ideas = [i for i in context.related_ideas
                                if 'published' not in i.state]
         publish_ideas(not_published_ideas, request)
 
@@ -564,12 +563,12 @@ def pu_sub_processsecurity_validation(process, context):
     not_published_ideas = False
     if getattr(root, 'moderate_ideas', False):
         not_published_ideas = any('published' not in i.state
-                                  for i in context.related_ideas.keys())
+                                  for i in context.related_ideas)
 
     not_favorable_ideas = False
     if 'idea' in getattr(root, 'content_to_examine', []):
         not_favorable_ideas = any('favorable' not in i.state
-                                  for i in context.related_ideas.keys())
+                                  for i in context.related_ideas)
 
     return not (not_published_ideas or not_favorable_ideas) and \
            len(user.active_working_groups) < root.participations_maxi and \

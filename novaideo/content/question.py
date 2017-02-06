@@ -15,12 +15,15 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer, get_oid
 
-from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
+from dace.descriptors import (
+    SharedUniqueProperty, CompositeMultipleProperty,
+    SharedMultipleProperty)
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
     SequenceWidget)
 from pontus.file import ObjectData, File
 
+from novaideo.content.correlation import CorrelationType
 from .interface import IQuestion, IAnswer
 from novaideo import _
 from novaideo.views.widget import LimitedTextAreaWidget
@@ -43,7 +46,7 @@ from novaideo.content import get_file_widget
 from novaideo.content.comment import CommentSchema
 from novaideo.utilities.util import (
     text_urls_format, truncate_text, to_localized_time,
-    get_files_data)
+    get_files_data, connect, disconnect)
 
 
 def context_is_a_question(context, request):
@@ -152,6 +155,15 @@ class Question(VersionableEntity, DuplicableEntity,
     @property
     def authors(self):
         return [self.author]
+
+    @property
+    def transformed_from(self):
+        """Return all related contents"""
+        transformed_from = [correlation[1].context for correlation
+                            in self.get_related_contents(
+                                CorrelationType.solid, ['transformation'])
+                            if correlation[1].context]
+        return transformed_from[0] if transformed_from else None
 
     @property
     def relevant_data(self):
@@ -275,6 +287,8 @@ class Answer(CorrelableEntity, PresentableEntity,
     files = CompositeMultipleProperty('files')
     url_files = CompositeMultipleProperty('url_files')
     related_correlation = SharedUniqueProperty('related_correlation', 'targets')
+    contextualized_correlations = SharedMultipleProperty(
+        'contextualized_correlations', 'context')
     question = SharedUniqueProperty('question', 'answers')
 
     def __init__(self, **kwargs):
@@ -290,11 +304,36 @@ class Answer(CorrelableEntity, PresentableEntity,
 
     @property
     def related_contents(self):
-        if self.related_correlation:
-            return [t for t
-                    in self.related_correlation.targets
-                    if t is not self]
-        return []
+        subject = self.subject
+        return [content[0] for content in self.contextualized_contents
+                if content[0] is not subject]
+
+    @property
+    def associated_contents(self):
+        subject = self.subject
+        return [content[0] for content in self.contextualized_contents
+                if content[0] is not subject and not getattr(content[1], 'tags', [])]
+
+    def set_associated_contents(self, associated_contents, user):
+        subject = self.subject
+        current_associated_contents = self.associated_contents
+        associated_contents_to_add = [i for i in associated_contents
+                                      if i not in current_associated_contents]
+        associated_contents_to_del = [i for i in current_associated_contents
+                                      if i not in associated_contents and
+                                      i not in associated_contents_to_add]
+        correlations = connect(
+            subject,
+            associated_contents_to_add,
+            {'comment': _('Add related contents'),
+             'type': _('Edit the comment')},
+            author=user)
+        for correlation in correlations:
+            correlation.setproperty('context', self)
+
+        disconnect(
+            subject,
+            associated_contents_to_del)
 
     @property
     def relevant_data(self):

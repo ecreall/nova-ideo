@@ -241,7 +241,7 @@ class NovaideoAPI(IndexManagementJsonView):
         return {'items': [], 'total_count': 0}
 
     def find_correlable_entity(self):
-        return self.find_entity(interfaces=[ICorrelableEntity])
+        return self.find_entity(interfaces=[ISearchableEntity])
 
     def find_smart_folder_contents(self):
         return self.find_entity(interfaces=[ISearchableEntity, IFile], states=[])
