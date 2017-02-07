@@ -38,7 +38,7 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=9"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=10"
             rel="stylesheet"/>
     </div>
     <link href="${su('daceui:static/css/dace_ui.css')}"
@@ -100,7 +100,7 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/home_add_content.js')}"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo.js')}?v=8"
+    <script src="${su('novaideo:static/js/novaideo.js')}?v=9"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/admin_nav.js')}"
           type="text/javascript"></script>
