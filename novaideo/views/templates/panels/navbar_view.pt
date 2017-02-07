@@ -6,7 +6,7 @@
         <div class="container-fluid">
           <div class="navbar-collapse">
             <ul tal:condition="actions"  class="nav navbar-nav">
-              <li class="menu-item">
+              <li class="menu-item" i18n:attributes="title" title="Home">
                   <a class="home-link ${is_root and 'active'}" href="${request.resource_url(request.virtual_root, '')}">
                      <span class="glyphicon glyphicon-home"></span>
                   </a>
