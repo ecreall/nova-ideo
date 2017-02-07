@@ -792,16 +792,9 @@ class Discuss(InfiniteCardinality):
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
-            if appstruct['related_contents']:
-                related_contents = appstruct['related_contents']
-                correlation = connect(
-                    context,
-                    list(related_contents),
-                    {'comment': comment.comment,
-                     'type': comment.intention},
-                    user,
-                    unique=True)
-                comment.setproperty('related_correlation', correlation[0])
+            if appstruct.get('associated_contents', []):
+                comment.set_associated_contents(
+                    appstruct['associated_contents'], user)
 
             self._alert_users(context, request, user, comment, channel)
             context.reindex()
@@ -871,16 +864,9 @@ class GeneralDiscuss(InfiniteCardinality):
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
-            if appstruct['related_contents']:
-                related_contents = appstruct['related_contents']
-                correlation = connect(
-                    context,
-                    list(related_contents),
-                    {'comment': comment.comment,
-                     'type': comment.intention},
-                    user,
-                    unique=True)
-                comment.setproperty('related_correlation', correlation[0])
+            if appstruct.get('associated_contents', []):
+                comment.set_associated_contents(
+                    appstruct['associated_contents'], user)
 
             self._alert_users(context, request, user, comment, channel)
             context.reindex()
