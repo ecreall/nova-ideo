@@ -257,26 +257,29 @@ class UserNavBarPanel(object):
 
         actions_url = OrderedDict()
         for actionclass in self.navbar_actions:
-            process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
+            process_id, action_id = tuple(
+                actionclass.node_definition.id.split('.'))
             action, view = _getaction(process_id, action_id, self.request)
             if None not in (action, view):
                 actions_url[action.title] = {
-                            'action': action,
-                            'action_id': action_id,
-                            'icon': action.style_picto,
-                            'url': action.url(root),
-                            'view_name': getattr(view,'name', None)}
+                    'action': action,
+                    'action_id': action_id,
+                    'icon': action.style_picto,
+                    'url': action.url(root),
+                    'view_name': getattr(view, 'name', None)}
             else:
                 actions_url[actionclass.node_definition.title] = {
-                            'action': None,
-                            'action_id': action_id,
-                            'icon': actionclass.style_picto,
-                            'url': None,
-                            'view_name': getattr(view,'name', None)}
+                    'action': None,
+                    'action_id': action_id,
+                    'icon': actionclass.style_picto,
+                    'url': None,
+                    'view_name': getattr(view, 'name', None)}
         result = {}
         result['actions'] = actions_url
         result['view'] = self
         result['has_contextual_help'] = has_contextual_help
+        result['is_root'] = root is self.context and \
+            self.request.view_name in ('', 'index', '@@index')
         return result
 
 

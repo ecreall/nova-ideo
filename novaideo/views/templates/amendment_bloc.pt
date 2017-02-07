@@ -26,50 +26,52 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
-
-    <div class="object-title-block view-item-title pull-left"
-        data-title="${object.title}"
-        data-icon="${icon}"
-        data-img="">
-      <div class="object-menu pull-right">
-        <div tal:replace="structure menu_body"/>
-      </div>
-      <a tal:attributes="href url">
-        <h4>
-          <span class="icon ${icon}"></span> ${object.title}
-          <div class="listing-access-menu">
-            <div tal:replace="structure access_body"/>
-          </div>
-        </h4>
-      </a>
-    </div>
-    <div class="object-description">
-      <small>
-        <span i18n:translate="">Amended version of</span> 
-        <a tal:attributes="href request.resource_url(object.proposal, '@@index')">
-          <span class="icon ${object.proposal.icon}"></span> ${object.proposal.title}
+    <div class="support-col"></div>
+    <div class="content-col">
+      <div class="object-title-block view-item-title pull-left"
+          data-title="${object.title}"
+          data-icon="${icon}"
+          data-img="">
+        <div class="object-menu pull-right">
+          <div tal:replace="structure menu_body"/>
+        </div>
+        <a tal:attributes="href url">
+          <h4>
+            <span class="icon ${icon}"></span> ${object.title}
+            <div class="listing-access-menu">
+              <div tal:replace="structure access_body"/>
+            </div>
+          </h4>
         </a>
-      </small>
-    </div>  
-    <div class="object-text">${object.presentation_text(200)}</div>
-    <dl>
-      <div tal:omit-tag=""
-        tal:condition="getattr(object, 'justification', '')"
-        tal:define="justification getattr(object, 'justification', '')">
-        <dt  i18n:translate="">Justification</dt>
-        <dd >
-            ${justification}
-        </dd>
-      </div> 
-      <div tal:omit-tag="" tal:condition="object.related_ideas">
-        <dt  i18n:translate="">Related ideas</dt>
-         <dd>
-          <tal:loop repeat="idea object.related_ideas">
-             <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a><tal:separator condition="not: repeat['idea'].end">, </tal:separator>
-          </tal:loop>
-        </dd>
       </div>
-    </dl>
+      <div class="object-description">
+        <small>
+          <span i18n:translate="">Amended version of</span> 
+          <a tal:attributes="href request.resource_url(object.proposal, '@@index')">
+            <span class="icon ${object.proposal.icon}"></span> ${object.proposal.title}
+          </a>
+        </small>
+      </div>  
+      <div class="object-text">${object.presentation_text(200)}</div>
+      <dl>
+        <div tal:omit-tag=""
+          tal:condition="getattr(object, 'justification', '')"
+          tal:define="justification getattr(object, 'justification', '')">
+          <dt  i18n:translate="">Justification</dt>
+          <dd >
+              ${justification}
+          </dd>
+        </div> 
+        <div tal:omit-tag="" tal:condition="object.related_ideas">
+          <dt  i18n:translate="">Related ideas</dt>
+           <dd>
+            <tal:loop repeat="idea object.related_ideas">
+               <a tal:attributes="href request.resource_url(idea, '@@index')">${idea.title}</a><tal:separator condition="not: repeat['idea'].end">, </tal:separator>
+            </tal:loop>
+          </dd>
+        </div>
+      </dl>
+    </div>
     <div class="search-item-footer">
       <div class="actions-block">
         <div tal:replace="structure footer_body"/>

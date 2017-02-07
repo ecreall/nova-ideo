@@ -170,8 +170,8 @@ class CommentIdeaFormView(FormView):
     title = _('Discuss the idea')
     schema = select(CommentSchema(factory=Comment,
                                   editable=True,
-                                  omit=('related_contents',)),
-                    ['comment', 'intention', 'files', 'related_contents'])
+                                  omit=('associated_contents',)),
+                    ['comment', 'intention', 'files', 'associated_contents'])
     behaviors = [CommentIdea]
     formid = 'formcommentidea'
     name = 'commentideaform'

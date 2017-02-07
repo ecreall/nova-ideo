@@ -11,7 +11,7 @@
                  oid object.__oid__;">
   <div class="media-body" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="separator"></div>
-    <div class="author-block pull-left">
+    <div class="author-block">
       <img class="author-img img-circle" 
          tal:condition="author_picture is not None" 
          tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
@@ -27,6 +27,12 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
+    <div class="support-col">
+       <div class="validated-answer-container">
+        <div tal:replace="structure support_actions_body"/>
+        <span tal:condition="'validated' in object.state" class="glyphicon glyphicon-ok validated-answer">
+      </div>
+    </div>
     <div class="content-col">
       <div class="object-menu pull-right">
         <div tal:replace="structure menu_body"/>
@@ -36,11 +42,7 @@
         data-icon="${icon}"
         data-img="">
       </div>
-      <div class="validated-answer-container">
-        <div tal:replace="structure support_actions_body"/>
-        <span tal:condition="'validated' in object.state" class="glyphicon glyphicon-ok validated-answer">
-      </div>
-      <div class="row object-row-content row-md">
+      <div class="row object-row-content">
         <div class="col col-xs-12 ${files and 'col-md-8' or 'col-md-12'}">
           <div class="object-text">
             ${structure:getattr(object, 'formatted_comment', object.comment)}

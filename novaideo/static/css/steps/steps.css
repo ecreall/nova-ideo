@@ -127,17 +127,11 @@
     line-height: 20px;
 }
 
-.nav {
-    list-style: outside none none;
-}
-
 .nav-steps {
+    list-style: outside none none;
     font-size: 1em;
     height: 40px;
     margin-top: 5px;
-}
-
-.nav {
     list-style: outside none none;
     margin-bottom: 20px;
     margin-left: 0;

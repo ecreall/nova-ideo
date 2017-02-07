@@ -6,9 +6,9 @@
         <div class="container-fluid">
           <div class="navbar-collapse">
             <ul tal:condition="actions"  class="nav navbar-nav">
-              <li class="menu-item hidden-xs">
-                  <a class="home-link ${request.view_name in ('', 'index', '@@index') and 'active'}" href="${request.resource_url(request.virtual_root, '')}">
-                     <span class="hidden-xs glyphicon glyphicon-home"></span>
+              <li class="menu-item">
+                  <a class="home-link ${is_root and 'active'}" href="${request.resource_url(request.virtual_root, '')}">
+                     <span class="glyphicon glyphicon-home"></span>
                   </a>
                </li>
                <li tal:repeat="(k, a) actions.items()" class="menu-item counter" data-component_type="navbar_component" id="component-navbar-${actions[k]['action_id']}">

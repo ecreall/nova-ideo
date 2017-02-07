@@ -32,18 +32,21 @@
         </h4>
       </a>
     </div>
-    <div class="user-function" >
-      <span tal:condition="getattr(object, 'function', '')">${object.function}, </span>
-      <span tal:condition="getattr(object, 'organization', None)" >
-          <a i18n:attributes="title" style="color: #555C63" title="Organization" tal:attributes="href request.resource_url(object.organization, '@@index')"><span class="glyphicon glyphicon-home"></span> ${object.organization.title}</a>
-      </span>
-    </div>
-    <div class="object-text">${object.presentation_text(300)}</div>
-    <div i18n:attributes="title" title="Topics of interest" tal:condition="keywords" class="keywords-result">
-      <span class="glyphicon glyphicon-tags"></span> 
-      <tal:loop repeat="k keywords">
-            <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
-      </tal:loop>
+    <div class="support-col"></div>
+    <div class="content-col">
+      <div class="user-function" >
+        <span tal:condition="getattr(object, 'function', '')">${object.function}, </span>
+        <span tal:condition="getattr(object, 'organization', None)" >
+            <a i18n:attributes="title" style="color: #555C63" title="Organization" tal:attributes="href request.resource_url(object.organization, '@@index')"><span class="glyphicon glyphicon-home"></span> ${object.organization.title}</a>
+        </span>
+      </div>
+      <div class="object-text">${object.presentation_text(300)}</div>
+      <div i18n:attributes="title" title="Topics of interest" tal:condition="keywords" class="keywords-result">
+        <span class="glyphicon glyphicon-tags"></span> 
+        <tal:loop repeat="k keywords">
+              <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+        </tal:loop>
+      </div>
     </div>
     <div class="search-item-footer">
       <div class="actions-block">
