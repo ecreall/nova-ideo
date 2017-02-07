@@ -3,8 +3,8 @@
         oid object.__oid__;
         options getattr(object, 'options', []);">
   <div class="analytics-study-${oid}"></div>
+  <div class="legend pull-right" id="legend-doughnut-${oid}"></div>
   <canvas id="stat-canvas-${oid}" ></canvas>
-  <div class="legend" id="legend-doughnut-${oid}"></div>
   <script>
     <div tal:omit-tag="" tal:define="colors layout.get_colors(len(options))">
       $('.nav-tabs li>a[href="#${tab_id}"]').on('shown.bs.tab', function (e) {
