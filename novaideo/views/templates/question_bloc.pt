@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="content-col">
-      <div class="object-title-block view-item-title pull-left"
+      <div class="object-title-block view-item-title"
         data-title="${object.title}"
         data-icon="${icon}"
         data-img="">
