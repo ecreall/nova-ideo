@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-02-06 17:52+0100\n"
+"POT-Creation-Date: 2017-02-07 14:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -139,7 +139,7 @@ msgid "Phone"
 msgstr ""
 
 #: ./novaideo/core_schema.py:75
-#: ./novaideo/views/templates/organization_result.pt:58
+#: ./novaideo/views/templates/organization_result.pt:61
 #: ./novaideo/views/organization_management/templates/see_organization.pt:54
 msgid "Surcharge"
 msgstr ""
@@ -958,7 +958,7 @@ msgstr ""
 msgid "Oppose"
 msgstr ""
 
-#: ./novaideo/views/panels.py:393
+#: ./novaideo/views/panels.py:396
 #: ./novaideo/views/novaideo_view_manager/templates/search_result.pt:21
 #: ./novaideo/views/novaideo_view_manager/templates/search_result_blocs.pt:25
 #: ./novaideo/views/novaideo_view_manager/templates/home.pt:24
@@ -990,7 +990,7 @@ msgstr ""
 msgid "Ask a question"
 msgstr ""
 
-#: ./novaideo/views/panels.py:691
+#: ./novaideo/views/panels.py:694
 #: ./novaideo/views/templates/panels/more_contents.pt:2
 msgid "My topics of interest"
 msgstr ""
@@ -1339,6 +1339,7 @@ msgstr ""
 #: ./novaideo/views/templates/idea_result.pt:25
 #: ./novaideo/views/templates/report_result.pt:23
 #: ./novaideo/views/templates/answer_result.pt:26
+#: ./novaideo/views/templates/question_bloc.pt:26
 #: ./novaideo/views/templates/small_idea_result.pt:27
 #: ./novaideo/views/templates/small_proposal_result.pt:27
 #: ./novaideo/views/templates/small_question_result.pt:27
@@ -1450,16 +1451,19 @@ msgstr ""
 #: ./novaideo/views/question_management/see_question.py:38
 #: ./novaideo/views/question_management/see_question.py:56
 #: ./novaideo/views/templates/question_result.pt:65
+#: ./novaideo/views/templates/question_bloc.pt:65
 msgid "No answer"
 msgstr ""
 
 #: ./novaideo/views/question_management/see_question.py:39
 #: ./novaideo/views/templates/question_result.pt:66
+#: ./novaideo/views/templates/question_bloc.pt:66
 msgid "One answer"
 msgstr ""
 
 #: ./novaideo/views/question_management/see_question.py:40
 #: ./novaideo/views/templates/question_result.pt:67
+#: ./novaideo/views/templates/question_bloc.pt:67
 #, python-format
 msgid "${nember} answers"
 msgstr ""
@@ -1548,6 +1552,7 @@ msgstr ""
 
 #: ./novaideo/views/question_management/templates/see_question.pt:24
 #: ./novaideo/views/templates/question_result.pt:20
+#: ./novaideo/views/templates/question_bloc.pt:20
 #: ./novaideo/views/templates/small_question_result.pt:23
 msgid "Asked by"
 msgstr ""
@@ -1571,8 +1576,10 @@ msgstr ""
 
 #: ./novaideo/views/question_management/templates/see_question.pt:49
 #: ./novaideo/views/question_management/templates/see_question.pt:50
-#: ./novaideo/views/templates/question_result.pt:58
-#: ./novaideo/views/templates/question_result.pt:59
+#: ./novaideo/views/templates/question_result.pt:33
+#: ./novaideo/views/templates/question_result.pt:34
+#: ./novaideo/views/templates/question_bloc.pt:33
+#: ./novaideo/views/templates/question_bloc.pt:34
 msgid "${state}"
 msgstr ""
 
@@ -1581,7 +1588,7 @@ msgstr ""
 #: ./novaideo/views/idea_management/templates/see_idea.pt:92
 #: ./novaideo/views/proposal_management/templates/see_proposal.pt:88
 #: ./novaideo/views/templates/comment_result.pt:117
-#: ./novaideo/views/templates/answer_result.pt:96
+#: ./novaideo/views/templates/answer_result.pt:98
 msgid "Attachments:"
 msgstr ""
 
@@ -1590,12 +1597,13 @@ msgstr ""
 #: ./novaideo/views/idea_management/templates/see_idea.pt:93
 #: ./novaideo/views/proposal_management/templates/see_proposal.pt:89
 #: ./novaideo/views/templates/comment_result.pt:118
-#: ./novaideo/views/templates/answer_result.pt:98
+#: ./novaideo/views/templates/answer_result.pt:100
 msgid "Attachment:"
 msgstr ""
 
 #: ./novaideo/views/question_management/templates/see_question.pt:122
 #: ./novaideo/views/templates/question_result.pt:71
+#: ./novaideo/views/templates/question_bloc.pt:71
 msgid ""
 "This question is in the form of a poll. You can select an option from those "
 "offered. You may only answer this question one time."
@@ -1605,6 +1613,8 @@ msgstr ""
 #: ./novaideo/views/question_management/templates/see_question.pt:131
 #: ./novaideo/views/templates/question_result.pt:71
 #: ./novaideo/views/templates/question_result.pt:80
+#: ./novaideo/views/templates/question_bloc.pt:71
+#: ./novaideo/views/templates/question_bloc.pt:80
 msgid "You can edit your answer as long as the question is not closed."
 msgstr ""
 
@@ -1612,11 +1622,14 @@ msgstr ""
 #: ./novaideo/views/question_management/templates/see_question.pt:133
 #: ./novaideo/views/templates/question_result.pt:73
 #: ./novaideo/views/templates/question_result.pt:82
+#: ./novaideo/views/templates/question_bloc.pt:73
+#: ./novaideo/views/templates/question_bloc.pt:82
 msgid "The options proposed by the author are:"
 msgstr ""
 
 #: ./novaideo/views/question_management/templates/see_question.pt:131
 #: ./novaideo/views/templates/question_result.pt:80
+#: ./novaideo/views/templates/question_bloc.pt:80
 msgid ""
 "This question is in the form of a poll. You can select an option from those "
 "offered. You may only answer this question one time. You have already "
@@ -2065,13 +2078,13 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:150
 #: ./novaideo/views/templates/comment_result.pt:130
-#: ./novaideo/views/templates/answer_result.pt:110
+#: ./novaideo/views/templates/answer_result.pt:112
 msgid "Associated contents:"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/comments.pt:151
 #: ./novaideo/views/templates/comment_result.pt:131
-#: ./novaideo/views/templates/answer_result.pt:112
+#: ./novaideo/views/templates/answer_result.pt:114
 msgid "Associated content:"
 msgstr ""
 
@@ -2164,19 +2177,19 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:13
 #: ./novaideo/views/proposal_management/templates/see_proposal.pt:14
-#: ./novaideo/views/templates/idea_bloc.pt:65
-#: ./novaideo/views/templates/proposal_bloc.pt:63
-#: ./novaideo/views/templates/idea_result.pt:65
-#: ./novaideo/views/templates/proposal_result.pt:68
+#: ./novaideo/views/templates/idea_bloc.pt:38
+#: ./novaideo/views/templates/proposal_bloc.pt:39
+#: ./novaideo/views/templates/idea_result.pt:38
+#: ./novaideo/views/templates/proposal_result.pt:42
 msgid "${support and 'Withdraw my token' or 'Support'}"
 msgstr ""
 
 #: ./novaideo/views/idea_management/templates/see_idea.pt:23
 #: ./novaideo/views/proposal_management/templates/see_proposal.pt:24
-#: ./novaideo/views/templates/idea_bloc.pt:75
-#: ./novaideo/views/templates/proposal_bloc.pt:73
-#: ./novaideo/views/templates/idea_result.pt:75
-#: ./novaideo/views/templates/proposal_result.pt:78
+#: ./novaideo/views/templates/idea_bloc.pt:48
+#: ./novaideo/views/templates/proposal_bloc.pt:49
+#: ./novaideo/views/templates/idea_result.pt:48
+#: ./novaideo/views/templates/proposal_result.pt:52
 msgid "${oppose and 'Withdraw my token' or 'Oppose'}"
 msgstr ""
 
@@ -2273,8 +2286,8 @@ msgstr ""
 
 #: ./novaideo/views/invitation_management/templates/see_invitation.pt:26
 #: ./novaideo/views/templates/invitation_result.pt:23
-#: ./novaideo/views/templates/person_bloc.pt:38
-#: ./novaideo/views/templates/person_result.pt:38
+#: ./novaideo/views/templates/person_bloc.pt:40
+#: ./novaideo/views/templates/person_result.pt:40
 #: ./novaideo/content/person.py:250 ./novaideo/adapters/__init__.py:28
 msgid "Organization"
 msgstr ""
@@ -3607,13 +3620,13 @@ msgstr ""
 msgid "modified on"
 msgstr ""
 
-#: ./novaideo/views/templates/organization_result.pt:27
+#: ./novaideo/views/templates/organization_result.pt:30
 #: ./novaideo/views/organization_management/templates/see_organization.pt:23
 #: ./novaideo/content/organization.py:163
 msgid "The managers"
 msgstr ""
 
-#: ./novaideo/views/templates/organization_result.pt:28
+#: ./novaideo/views/templates/organization_result.pt:31
 #: ./novaideo/views/organization_management/templates/see_organization.pt:24
 msgid "The manager"
 msgstr ""
@@ -3659,13 +3672,13 @@ msgstr ""
 msgid "Version amended by"
 msgstr ""
 
-#: ./novaideo/views/templates/amendment_bloc.pt:48
-#: ./novaideo/views/templates/amendment_result.pt:44
+#: ./novaideo/views/templates/amendment_bloc.pt:49
+#: ./novaideo/views/templates/amendment_result.pt:45
 msgid "Amended version of"
 msgstr ""
 
-#: ./novaideo/views/templates/amendment_bloc.pt:59
-#: ./novaideo/views/templates/amendment_result.pt:55
+#: ./novaideo/views/templates/amendment_bloc.pt:60
+#: ./novaideo/views/templates/amendment_result.pt:56
 #: ./novaideo/views/amendment_management/submit.py:84
 #: ./novaideo/views/amendment_management/submit.py:121
 #: ./novaideo/views/amendment_management/submit.py:82
@@ -3674,8 +3687,8 @@ msgstr ""
 msgid "Justification"
 msgstr ""
 
-#: ./novaideo/views/templates/amendment_bloc.pt:65
-#: ./novaideo/views/templates/amendment_result.pt:61
+#: ./novaideo/views/templates/amendment_bloc.pt:66
+#: ./novaideo/views/templates/amendment_result.pt:62
 #: ./novaideo/views/amendment_management/templates/readonly/explanation_modal_item.pt:13
 #: ./novaideo/views/amendment_management/templates/readonly/explanation_inline_item.pt:6
 #: ./novaideo/content/proposal.py:158 ./novaideo/content/amendment.py:109
@@ -3735,8 +3748,8 @@ msgid ""
 "${dynamic}"
 msgstr ""
 
-#: ./novaideo/views/templates/person_bloc.pt:42
-#: ./novaideo/views/templates/person_result.pt:42
+#: ./novaideo/views/templates/person_bloc.pt:44
+#: ./novaideo/views/templates/person_result.pt:44
 #: ./novaideo/content/person.py:188
 msgid "Topics of interest"
 msgstr ""
@@ -3862,6 +3875,12 @@ msgstr ""
 #: ./novaideo/views/templates/panels/step3_3.pt:25
 #: ./novaideo/views/templates/panels/step3_2.pt:25
 msgid "End of ballot in"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/navbar_view.pt:9
+#: ./novaideo/content/processes/novaideo_view_manager/definition.py:60
+#: ./novaideo/content/processes/novaideo_view_manager/definition.py:61
+msgid "Home"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/navbar_view.pt:20
@@ -8349,11 +8368,6 @@ msgstr ""
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:48
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:49
 msgid "User access manager"
-msgstr ""
-
-#: ./novaideo/content/processes/novaideo_view_manager/definition.py:60
-#: ./novaideo/content/processes/novaideo_view_manager/definition.py:61
-msgid "Home"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:64
