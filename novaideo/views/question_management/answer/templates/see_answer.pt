@@ -1,4 +1,4 @@
-<div i18n:domain="novaideo">
+<div i18n:domain="novaideo" class="content-view">
   <div tal:replace="structure answer_body"/>
   <a role="button"
      data-toggle="collapse"

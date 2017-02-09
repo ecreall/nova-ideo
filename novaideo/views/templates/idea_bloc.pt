@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item result-item view-item component-obj-view component-listing-view"
+<div class="thumbnail right-caption span4 search-item search-item-bloc result-item view-item component-obj-view component-listing-view"
      id="listingbloc_${oid}"
      data-component_type="object-view"
      i18n:domain="novaideo"
@@ -146,6 +146,11 @@
         </div>
       </div>
     </div>
-
+  </div>
+  <div class="action-interation-container action-slider-container"
+         data-interaction_kind="slider">
+      <button class="btn btn-primary action-slider-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      <div class="container-body">
+      </div>
   </div>
 </div>

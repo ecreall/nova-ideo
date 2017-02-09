@@ -1,4 +1,4 @@
-<div class="thumbnail right-caption span4 search-item result-item question-item view-item component-obj-view component-listing-view"
+<div class="thumbnail right-caption span4 search-item result-item search-item-bloc question-item view-item component-obj-view component-listing-view"
      id="listing_${oid}"
      data-component_type="object-view"
      i18n:domain="novaideo"

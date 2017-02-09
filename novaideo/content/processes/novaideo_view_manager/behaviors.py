@@ -449,5 +449,20 @@ class SeeGraph(InfiniteCardinality):
         return {}
 
 
+class SeeDependencies(InfiniteCardinality):
+    style_descriminator = 'plus-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
+    style_picto = 'glyphicon glyphicon-link'
+    style_order = 0
+    isSequential = False
+    context = INode
+    processsecurity_validation = seegraph_processsecurity_validation
+    roles_validation = seegraph_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 
 #TODO behaviors

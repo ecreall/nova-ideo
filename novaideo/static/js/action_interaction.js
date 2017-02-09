@@ -158,6 +158,111 @@ function update_inline_action(){
 };
 
 
+function _close_slider(slider){
+  slider.find('.container-body').css({
+      display: 'none'})
+ slider.stop().animate({
+      width: 0,   
+  }, 400, function(){
+    slider.css({
+      height: 0,
+      display: 'none'})
+  });
+ $(slider.find('.container-body')).html("");
+ var id = slider.data('action_id')
+ $('[id="'+id+'"]').removeClass('activated')
+}
+
+
+function update_slider_action(){
+    var $this = $(this)
+    var item = $this.parents('.search-item').first();
+    var target = $(item.find('>.action-slider-container').first())
+    var is_content_view = false;
+    if (target.length==0){
+      item = $this.parents('.content-view').first()
+      is_content_view = true;
+      target = $(item.find('>.action-slider-container').first())
+    }
+    var is_sidebar = item.parents('.sidebar-container').length>0
+    var actions = $($this.parents('.actions-block').find('.dace-action-slider'));
+    if($this.hasClass('activated')){
+       actions.removeClass('activated');
+       _close_slider(target)
+       return
+    }
+    actions.removeClass('activated')
+    var action = $this.closest('.dace-action-slider')
+    var toreplay = action.data('toreplay');
+    if (Boolean(toreplay)){
+      var action_body =jQuery.parseJSON(action.data('body'));
+      if($(action_body).hasClass('pontus-main-view')){
+         var panel = $($(action_body).find('>.panel-body').first())
+         $(target.find('.container-body')).html(panel.html())
+      }else{
+          $(target.find('.container-body')).html(action_body);
+      }
+      try {
+         deform.processCallbacks();
+      }
+      catch(err) {};
+      return false
+    }
+    
+    var url = action.data('updateurl');
+    var url_attr = {tomerge:'True', coordinates:'main'}
+    $.extend( url_attr, get_action_metadata(action));
+    loading_progress()
+    $.post(url, url_attr, function(data) {
+      include_resources(data['resources'], function(){
+       var action_body = data['body'];
+       if (action_body){
+          var width = is_content_view? item.outerWidth()+30:item.outerWidth();
+          width = is_sidebar && is_content_view? width-10: width;
+          var height = is_content_view? item.outerHeight()+15:item.outerHeight();
+          target.css({
+            height,
+            display: 'block'})
+          target.stop().animate({
+              width,
+          }, 400, function(){
+             target.find('.container-body').css({
+              display: 'block'})
+             $(target.find('.container-body')).html(action_body);
+            
+             $this.addClass('activated')
+             target.find('.carousel').carousel()
+             try {
+                  deform.processCallbacks();
+              }
+             catch(err) {};
+             target.data('action_id', action.attr('id'))
+             init_emoji($(target.find('.emoji-container:not(.emojified)')));
+             init_content_text_scroll(target.find(".content-text-scroll"))
+             var result_scroll = target.find(".result-scroll")
+             var height_scroll = is_content_view && is_sidebar? $(window).height()-30:item.outerHeight()-30
+             init_result_scroll(undefined, height_scroll, result_scroll.parents('div').first());
+             initscroll(result_scroll)
+             rebuild_scrolls(target.find('.malihu-scroll'))
+             finish_progress()
+             focus_on_form(target)
+           });
+        }else{
+           location.reload();
+           return false
+        }
+     })
+    });
+    return false;
+};
+
+function close_slider_action(){
+  var target = $($(this).parents('.action-slider-container').first())
+  _close_slider(target)
+}
+
+
+
 function _update_sidebar_nav_items(target){
   var current_items = $(target.find('.sidebar-container-item'))
   var sidebar_state = current_items.length<=1? 'closed': ''
@@ -363,12 +468,17 @@ $(document).on('click', '.dace-action-direct', update_direct_action);
 
 $(document).on('click', '.dace-action-inline', update_inline_action);
 
+$(document).on('click', '.dace-action-slider', update_slider_action);
+$(document).on('click', '.action-slider-btn', close_slider_action);
+
+
 
 function hide_action_interaction_container(action_container){
   var interaction_type = action_container.data('interaction_kind');
   if(interaction_type == 'modal'){action_container.modal('hide');}
   if(interaction_type == 'inline'){action_container.slideDown();}
   if(interaction_type == 'popover'){action_container.css('display', 'none');}
+  if(interaction_type == 'slider'){_close_slider(action_container)}
 }
 
 

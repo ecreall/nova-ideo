@@ -268,8 +268,8 @@ function initscroll(result_scrolls){
         enable: true
       },
       callbacks:{
-        onTotalScroll:function(){
-          $(this).trigger('scroll');
+        onTotalScroll:function(event){
+          $(this).triggerHandler('scroll');
         }
       }
     });
@@ -638,9 +638,9 @@ $(document).on('click', '.sidebar-background.toggled', function(){
 
 $(document).on('click', '.sidebar-right-background.toggled', function(){
   $(".menu-right-toggle.close").click()
-  $('.dace-action-sidebar.activated').click()
+  $('.dace-action-sidebar.activated').removeClass('activated')
   $('body').removeClass('modal-open')
-
+  $('.sidebar-right-wrapper .sidebar-container>.container-body').html("")
 })
 
 $(document).on('click', '.smartfolder-nav li > span.icon-state', function(event){
@@ -705,8 +705,9 @@ $(document).ready(function(){
         $('.sidebar-right-background').toggleClass("toggled");
         $('body').toggleClass('modal-open')
         if(!open){
-          $('.dace-action-sidebar.activated').click()
+          $('.dace-action-sidebar.activated').removeClass('activated')
           $(bar.find(".comment-form-group.active")).removeClass('active')
+          $('.sidebar-right-wrapper .sidebar-container>.container-body').html("")
 
         }
     });
@@ -800,8 +801,8 @@ $(document).ready(function(){
                 var popover = $(data['body'])
                 $this.append(popover);
                 var position = $this.offset()
-                popover.css('top', position.top-$(document).scrollTop()-(popover.height()/2)+'px')
-                popover.css('left', position.left+$this.width()-2+'px')
+                popover.css('top', position.top-$(document).scrollTop()-(popover.outerHeight()/2)+5+'px')
+                popover.css('left', position.left+$this.outerWidth()-10+'px')
                 popover.css('display', 'block')
               }
             });
@@ -812,10 +813,10 @@ $(document).ready(function(){
     });
 
    $(document).on('mouseleave', '.toggle-popover.active', function(){
-        var $this = $(this);
-        var oid = $this.data('oid');
-        $this.removeClass('active')
-        $('.comme-popover').remove()
+      var $this = $(this);
+      var oid = $this.data('oid');
+      $this.removeClass('active')
+      $('.comme-popover').remove()
     });
 
   $(document).on('click', 'a.popover-title-link, .popover-content>.popover-text a', function(event){

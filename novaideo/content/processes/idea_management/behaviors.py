@@ -1258,6 +1258,7 @@ def seewgs_state_validation(process, context):
 class SeeRelatedWorkingGroups(InfiniteCardinality):
     style_descriminator = 'listing-primary-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
     style_picto = 'glyphicon glyphicon-link'
     style_order = 2
     context = Iidea

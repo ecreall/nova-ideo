@@ -8,7 +8,9 @@
   <div class="media-body media-idea small-media" tal:define="author_picture getattr(author, 'picture', None)">
     <span tal:condition="state" class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
     <div class="object-title-block" >
-      <a tal:condition="not censored" tal:attributes="href url">
+      <a data-oid="${getattr(object, '__oid__', '')}"
+         class="toggle-popover"
+         tal:condition="not censored" tal:attributes="href url">
         <h5>
           <span class="icon ${icon}"></span>  ${object.title}
         </h5>
