@@ -615,12 +615,13 @@ class Node(Entity):
 
     def get_all_sub_nodes(self):
         oid = self.get_node_id()
-        return [get_obj(self.graph[id_]['oid']) for id_ in self.graph
-                if id_ != oid]
+        return set([get_obj(self.graph[id_]['oid']) for id_ in self.graph
+                    if id_ != oid])
 
     def get_sub_nodes(self):
         oid = self.get_node_id()
-        return [get_obj(node['oid']) for node in self.graph[oid]['targets']]
+        return set([get_obj(node['oid']) for
+                    node in self.graph[oid]['targets']])
 
 
 @implementer(ISignalableEntity)
