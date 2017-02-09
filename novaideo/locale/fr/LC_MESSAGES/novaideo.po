@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-02-07 14:25+0100\n"
+"POT-Creation-Date: 2017-02-09 11:08+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -873,25 +873,25 @@ msgstr "Vous soutenez maintenant le contenu ${context}."
 
 #: novaideo/utilities/pseudo_react.py:1531
 #: novaideo/views/novaideo_view_manager/see_my_selections.py:35
-#: novaideo/content/processes/novaideo_view_manager/definition.py:69
+#: novaideo/content/processes/novaideo_view_manager/definition.py:70
 msgid "My followings"
 msgstr "Mes suivis"
 
 #: novaideo/utilities/pseudo_react.py:1561
 #: novaideo/views/novaideo_view_manager/see_my_supports.py:36
-#: novaideo/content/processes/novaideo_view_manager/definition.py:77
+#: novaideo/content/processes/novaideo_view_manager/definition.py:78
 msgid "My evaluations"
 msgstr "Mes appréciations"
 
 #: novaideo/utilities/pseudo_react.py:1597
 #: novaideo/views/novaideo_view_manager/see_my_contents.py:42
-#: novaideo/content/processes/novaideo_view_manager/definition.py:65
+#: novaideo/content/processes/novaideo_view_manager/definition.py:66
 msgid "My contents"
 msgstr "Mes contenus"
 
 #: novaideo/utilities/pseudo_react.py:1665
 #: novaideo/views/novaideo_view_manager/see_my_participations.py:36
-#: novaideo/content/processes/novaideo_view_manager/definition.py:73
+#: novaideo/content/processes/novaideo_view_manager/definition.py:74
 msgid "My working groups"
 msgstr "Mes groupes de travail"
 
@@ -1349,6 +1349,7 @@ msgstr "Prochain envoi"
 #: novaideo/views/idea_management/templates/header_idea.pt:37
 #: novaideo/views/proposal_management/create_proposal.py:126
 #: novaideo/views/proposal_management/templates/header_proposal.pt:90
+#: novaideo/views/templates/small_answer_result.pt:29
 #: novaideo/views/templates/idea_bloc.pt:25
 #: novaideo/views/templates/question_result.pt:26
 #: novaideo/views/templates/comment_result.pt:34
@@ -1357,9 +1358,9 @@ msgstr "Prochain envoi"
 #: novaideo/views/templates/report_result.pt:23
 #: novaideo/views/templates/answer_result.pt:26
 #: novaideo/views/templates/question_bloc.pt:26
-#: novaideo/views/templates/small_idea_result.pt:27
-#: novaideo/views/templates/small_proposal_result.pt:27
-#: novaideo/views/templates/small_question_result.pt:27
+#: novaideo/views/templates/small_idea_result.pt:29
+#: novaideo/views/templates/small_proposal_result.pt:29
+#: novaideo/views/templates/small_question_result.pt:29
 #: novaideo/views/templates/amendment_result.pt:20
 #: novaideo/views/amendment_management/templates/see_amendment.pt:57
 #: novaideo/views/amendment_management/templates/description_amendments.pt:19
@@ -1493,7 +1494,7 @@ msgstr "Les réponses"
 #: novaideo/views/question_management/see_question.py:164
 #: novaideo/views/novaideo_view_manager/analytics.py:503
 #: novaideo/content/site_configuration.py:357
-#: novaideo/content/processes/novaideo_view_manager/definition.py:117
+#: novaideo/content/processes/novaideo_view_manager/definition.py:122
 msgid "Analytics"
 msgstr "Statistiques"
 
@@ -1571,7 +1572,7 @@ msgstr "Discuter la question"
 #: novaideo/views/question_management/templates/see_question.pt:24
 #: novaideo/views/templates/question_result.pt:20
 #: novaideo/views/templates/question_bloc.pt:20
-#: novaideo/views/templates/small_question_result.pt:23
+#: novaideo/views/templates/small_question_result.pt:25
 msgid "Asked by"
 msgstr "posée par"
 
@@ -1582,12 +1583,13 @@ msgstr "posée par"
 #: novaideo/views/proposal_management/templates/header_proposal.pt:101
 #: novaideo/views/templates/idea_list_element.pt:25
 #: novaideo/views/templates/proposal_popover.pt:21
+#: novaideo/views/templates/small_answer_result.pt:34
 #: novaideo/views/templates/proposal_list_element.pt:25
 #: novaideo/views/templates/answer_popover.pt:21
-#: novaideo/views/templates/small_idea_result.pt:32
+#: novaideo/views/templates/small_idea_result.pt:34
 #: novaideo/views/templates/question_popover.pt:21
-#: novaideo/views/templates/small_proposal_result.pt:32
-#: novaideo/views/templates/small_question_result.pt:32
+#: novaideo/views/templates/small_proposal_result.pt:34
+#: novaideo/views/templates/small_question_result.pt:34
 #: novaideo/views/templates/idea_popover.pt:21
 msgid "This content does not respect the terms of use."
 msgstr "Ce contenu ne respecte pas la charte d'utilisation."
@@ -1676,11 +1678,12 @@ msgstr ""
 #: novaideo/views/question_management/templates/header_question.pt:28
 #: novaideo/views/idea_management/templates/header_idea.pt:33
 #: novaideo/views/proposal_management/templates/header_proposal.pt:86
+#: novaideo/views/templates/small_answer_result.pt:25
 #: novaideo/views/templates/idea_bloc.pt:19
 #: novaideo/views/templates/idea_result.pt:19
 #: novaideo/views/templates/answer_result.pt:20
-#: novaideo/views/templates/small_idea_result.pt:23
-#: novaideo/views/templates/small_proposal_result.pt:23
+#: novaideo/views/templates/small_idea_result.pt:25
+#: novaideo/views/templates/small_proposal_result.pt:25
 msgid "Submitted by"
 msgstr "Initiée par"
 
@@ -3237,8 +3240,8 @@ msgstr "${nember} membres"
 #: novaideo/content/organization.py:156
 #: novaideo/content/processes/proposal_management/definition.py:384
 #: novaideo/content/processes/proposal_management/definition.py:385
-#: novaideo/content/processes/novaideo_view_manager/definition.py:100
 #: novaideo/content/processes/novaideo_view_manager/definition.py:101
+#: novaideo/content/processes/novaideo_view_manager/definition.py:102
 msgid "Members"
 msgstr "Membres"
 
@@ -4043,8 +4046,8 @@ msgid "End of ballot in"
 msgstr "Fin du vote dans"
 
 #: novaideo/views/templates/panels/navbar_view.pt:9
-#: novaideo/content/processes/novaideo_view_manager/definition.py:60
 #: novaideo/content/processes/novaideo_view_manager/definition.py:61
+#: novaideo/content/processes/novaideo_view_manager/definition.py:62
 msgid "Home"
 msgstr "Accueil"
 
@@ -6922,6 +6925,30 @@ msgstr "Pourcentage du cumul par états."
 msgid "Total number of contents, classified per type and per date."
 msgstr "Nombre total des contenus classé par types par date."
 
+#: novaideo/views/novaideo_view_manager/see_dependencies.py:28
+#: novaideo/views/novaideo_view_manager/see_dependencies.py:76
+msgid "No association"
+msgstr "Aucune association"
+
+#: novaideo/views/novaideo_view_manager/see_dependencies.py:29
+msgid "One association"
+msgstr "Une association"
+
+# python-format
+#: novaideo/views/novaideo_view_manager/see_dependencies.py:30
+#, python-format
+msgid "${nember} associations"
+msgstr "${nember} associations"
+
+#: novaideo/views/novaideo_view_manager/see_dependencies.py:45
+msgid "The associations"
+msgstr "Les associations"
+
+#: novaideo/views/novaideo_view_manager/see_dependencies.py:46
+#: novaideo/content/processes/novaideo_view_manager/definition.py:117
+msgid "See the associations"
+msgstr "Voir les associations"
+
 #: novaideo/views/novaideo_view_manager/see_my_selections.py:24
 msgid "No followed element was found"
 msgstr "Aucun élément suivi"
@@ -6954,8 +6981,8 @@ msgid "${nember} ideas found"
 msgstr "${nember} idées trouvées"
 
 #: novaideo/views/novaideo_view_manager/see_ideas_to_moderate.py:41
-#: novaideo/content/processes/novaideo_view_manager/definition.py:88
 #: novaideo/content/processes/novaideo_view_manager/definition.py:89
+#: novaideo/content/processes/novaideo_view_manager/definition.py:90
 msgid "Ideas to be moderated"
 msgstr "Les idées à modérer"
 
@@ -6985,12 +7012,12 @@ msgstr ""
 "${nember} propositions appréciées et ${tokens} jeton(s) d'appréciation "
 "restant(s)"
 
-#: novaideo/views/novaideo_view_manager/see_dependences.py:29
+#: novaideo/views/novaideo_view_manager/see_graph.py:29
 msgid "Graph of dependences"
 msgstr "Le graphe de dépendances"
 
 #: novaideo/views/novaideo_view_manager/see_history.py:29
-#: novaideo/content/processes/novaideo_view_manager/definition.py:105
+#: novaideo/content/processes/novaideo_view_manager/definition.py:106
 #: novaideo/content/processes/novaideo_view_manager/behaviors.py:313
 msgid "History of processes"
 msgstr "Historique des processus"
@@ -6998,8 +7025,8 @@ msgstr "Historique des processus"
 #: novaideo/views/novaideo_view_manager/search.py:159
 #: novaideo/views/novaideo_view_manager/search.py:135
 #: novaideo/views/channel_management/templates/channel_navbar_actions.pt:16
-#: novaideo/content/processes/novaideo_view_manager/definition.py:56
 #: novaideo/content/processes/novaideo_view_manager/definition.py:57
+#: novaideo/content/processes/novaideo_view_manager/definition.py:58
 msgid "Search"
 msgstr "Rechercher"
 
@@ -7036,8 +7063,8 @@ msgstr "Services à contacter"
 
 #: novaideo/views/novaideo_view_manager/contact.py:104
 #: novaideo/views/novaideo_view_manager/contact.py:132
-#: novaideo/content/processes/novaideo_view_manager/definition.py:120
-#: novaideo/content/processes/novaideo_view_manager/definition.py:121
+#: novaideo/content/processes/novaideo_view_manager/definition.py:125
+#: novaideo/content/processes/novaideo_view_manager/definition.py:126
 msgid "Contact"
 msgstr "Contact"
 
@@ -7075,8 +7102,8 @@ msgid "${nember} proposals found"
 msgstr "${nember} propositions trouvées"
 
 #: novaideo/views/novaideo_view_manager/see_proposals_to_moderate.py:41
-#: novaideo/content/processes/novaideo_view_manager/definition.py:84
 #: novaideo/content/processes/novaideo_view_manager/definition.py:85
+#: novaideo/content/processes/novaideo_view_manager/definition.py:86
 msgid "Proposals to be moderated"
 msgstr "Les propositions à modérer"
 
@@ -7122,8 +7149,8 @@ msgstr "${nember} contenus trouvés"
 
 #: novaideo/views/novaideo_view_manager/see_reported_contents.py:42
 #: novaideo/content/processes/reports_management/definition.py:48
-#: novaideo/content/processes/novaideo_view_manager/definition.py:92
 #: novaideo/content/processes/novaideo_view_manager/definition.py:93
+#: novaideo/content/processes/novaideo_view_manager/definition.py:94
 msgid "Reported contents"
 msgstr "Contenus signalés"
 
@@ -7159,14 +7186,14 @@ msgid "I have participated in ${nember} working groups so far"
 msgstr "${nember} groupes de travail auxquels j'ai participé"
 
 #: novaideo/views/novaideo_view_manager/see_ordered_proposals.py:41
-#: novaideo/content/processes/novaideo_view_manager/definition.py:80
 #: novaideo/content/processes/novaideo_view_manager/definition.py:81
+#: novaideo/content/processes/novaideo_view_manager/definition.py:82
 msgid "Proposals to be examined"
 msgstr "Les Propositions à examiner"
 
 #: novaideo/views/novaideo_view_manager/see_ideas_to_examine.py:41
-#: novaideo/content/processes/novaideo_view_manager/definition.py:96
 #: novaideo/content/processes/novaideo_view_manager/definition.py:97
+#: novaideo/content/processes/novaideo_view_manager/definition.py:98
 msgid "Ideas to be examined"
 msgstr "Les idées à examiner"
 
@@ -8311,13 +8338,13 @@ msgstr "Ajouter"
 #: novaideo/content/processes/user_management/definition.py:149
 #: novaideo/content/processes/advertising_management/definition.py:61
 #: novaideo/content/processes/smart_folder_management/definition.py:80
-#: novaideo/content/processes/novaideo_view_manager/definition.py:82
-#: novaideo/content/processes/novaideo_view_manager/definition.py:86
-#: novaideo/content/processes/novaideo_view_manager/definition.py:90
-#: novaideo/content/processes/novaideo_view_manager/definition.py:94
-#: novaideo/content/processes/novaideo_view_manager/definition.py:98
-#: novaideo/content/processes/novaideo_view_manager/definition.py:102
-#: novaideo/content/processes/novaideo_view_manager/definition.py:118
+#: novaideo/content/processes/novaideo_view_manager/definition.py:83
+#: novaideo/content/processes/novaideo_view_manager/definition.py:87
+#: novaideo/content/processes/novaideo_view_manager/definition.py:91
+#: novaideo/content/processes/novaideo_view_manager/definition.py:95
+#: novaideo/content/processes/novaideo_view_manager/definition.py:99
+#: novaideo/content/processes/novaideo_view_manager/definition.py:103
+#: novaideo/content/processes/novaideo_view_manager/definition.py:123
 #: novaideo/content/processes/organization_management/definition.py:64
 msgid "See"
 msgstr "Voir"
@@ -9170,48 +9197,52 @@ msgstr "Corriger un item"
 msgid "Change without validation"
 msgstr "Modification sans validation"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:48
 #: novaideo/content/processes/novaideo_view_manager/definition.py:49
+#: novaideo/content/processes/novaideo_view_manager/definition.py:50
 msgid "User access manager"
 msgstr "Gestionnaire de l'accès des utilisateurs"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:64
+#: novaideo/content/processes/novaideo_view_manager/definition.py:65
 msgid "See my contents"
 msgstr "Voir mes contenus"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:68
+#: novaideo/content/processes/novaideo_view_manager/definition.py:69
 msgid "See the items that I follow"
 msgstr "Voir mes suivis"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:72
+#: novaideo/content/processes/novaideo_view_manager/definition.py:73
 msgid "See my participations"
 msgstr "Voir mes participations"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:76
+#: novaideo/content/processes/novaideo_view_manager/definition.py:77
 msgid "See my evaluations"
 msgstr "Mes appréciations"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:104
+#: novaideo/content/processes/novaideo_view_manager/definition.py:105
 msgid "See the history of processes"
 msgstr "Voir l'historique des processus"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:108
+#: novaideo/content/processes/novaideo_view_manager/definition.py:109
 msgid "See the alerts"
 msgstr "Voir les alertes"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:109
+#: novaideo/content/processes/novaideo_view_manager/definition.py:110
 msgid "Alerts"
 msgstr "Les alertes"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:112
+#: novaideo/content/processes/novaideo_view_manager/definition.py:113
 msgid "See the graph of dependencies"
 msgstr "Voir le graphe de dépendances"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:113
-msgid "View dependencies"
-msgstr "Voir les dépendances"
+#: novaideo/content/processes/novaideo_view_manager/definition.py:114
+msgid "View the graph of dependencies"
+msgstr "Voir le graphe de dépendances"
 
-#: novaideo/content/processes/novaideo_view_manager/definition.py:116
+#: novaideo/content/processes/novaideo_view_manager/definition.py:118
+msgid "View associations"
+msgstr "Voir les associations"
+
+#: novaideo/content/processes/novaideo_view_manager/definition.py:121
 msgid "See analytics"
 msgstr "Voir les statistiques"
 
@@ -9299,3 +9330,6 @@ msgstr "Trouver des entités"
 #: novaideo/web_services/export_entities.py:157
 msgid "Content type"
 msgstr "Type de contenu"
+
+#~ msgid "View dependencies"
+#~ msgstr "Voir les dépendances"
