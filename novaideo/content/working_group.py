@@ -70,6 +70,10 @@ class WorkingGroup(VisualisableElement, Entity):
 
         return None
 
+    @property
+    def challenge(self):
+        return getattr(self.proposal, 'challenge', None)
+
     def get_state(self, request, user):
         return get_states_mapping(
             user, self,

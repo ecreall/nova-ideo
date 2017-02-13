@@ -225,6 +225,10 @@ class Comment(Commentable, CorrelableEntity, Emojiable, SignalableEntity):
         return self.channel.get_subject()
 
     @property
+    def challenge(self):
+        return getattr(self.subject, 'challenge', None)
+
+    @property
     def relevant_data(self):
         return [getattr(self, 'comment', ''),
                 getattr(self.author, 'title',

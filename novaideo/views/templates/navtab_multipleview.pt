@@ -1,0 +1,10 @@
+<ul class="challenge-nav-tabs nav nav-tabs">
+    <li tal:repeat="tab tabs" data-help="">
+      <div class="tab-nav-container">
+       <a data-toggle="tab" href="#${tab['id']}">
+        ${tab['title']}
+        </a>
+        <small>${tab['description']}</small>
+      </div>
+    </li>
+</ul>

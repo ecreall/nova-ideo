@@ -1,0 +1,70 @@
+<div class="thumbnail right-caption span4 search-item search-item-bloc result-item view-item component-obj-view component-listing-view"
+     id="listingbloc_${oid}"
+     data-component_type="object-view"
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(object, '@@index');
+                 icon getattr(object, 'icon');
+                 author object.author;
+                 oid object.__oid__;
+                 challenge_image object.image
+                 ">
+  <span tal:condition="getattr(object, 'is_restricted', False)"
+        class="challenge-restricted ion-person-stalker"
+        title="Is restricted"
+        i18n:attributes=""></span>
+  <img src="${getattr(challenge_image, 'large', challenge_image).url}" role="presentation" class="challenge-img">
+  <div class="caption media-bloc media-challenge" tal:define="author_picture getattr(author, 'picture', None)">
+    <div class="media-challenge-body">
+      <div class="">
+        <div class="object-title-block view-item-title"
+          data-title="${object.title}"
+          data-icon="${icon}"
+          data-img="">
+          <div class="object-menu pull-right">
+            <div tal:replace="structure menu_body"/>
+          </div>
+          <a tal:attributes="href url">
+            <h4>
+              <span class="icon ${icon}"></span>  ${object.title} 
+            </h4>
+          </a>
+        </div>
+        <div class="author-block">
+          <small>
+            <span i18n:translate="">Submitted by</span>
+            <a tal:attributes="href request.resource_url(author, '@@index')"
+              data-oid="${getattr(author, '__oid__', '')}"
+              class="toggle-popover">
+              ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+            </a>
+          </small>
+        </div>
+        
+        <div class="keywords-result">
+          <span class="glyphicon glyphicon-tags"></span> 
+          <tal:loop repeat="k object.keywords">
+                <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+          </tal:loop>
+        </div>
+
+        <div class="row object-row-content">
+          <div class="col col-xs-12 col-md-12">
+            <div class="object-text">${structure:object.presentation_text(150)}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-item-footer">
+        <div class="actions-block">
+          <div tal:replace="structure footer_body"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="action-interation-container action-slider-container"
+         data-interaction_kind="slider">
+      <button class="btn btn-primary action-slider-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      <div class="container-body">
+      </div>
+  </div>
+</div>

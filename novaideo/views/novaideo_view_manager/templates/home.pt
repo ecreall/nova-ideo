@@ -21,7 +21,9 @@
 	    <div class="col-md-12 result-container " data-nex_url="${batch.next_url}">
 	      <div tal:condition="not bodies and empty_message" class="result-empty-message"><span tal:condition="empty_icon" class="${empty_icon}"></span> ${empty_message}</div>
 	      <div tal:condition="bodies" tal:omit-tag="" tal:repeat="body bodies"> ${structure:body}</div>
-	      <button tal:condition="bodies and batch.next_url" id="${id}-btn-more" class="btn btn-default btn-xs scroll btn-more-scroll"><span i18n:translate="">More</span> <span class="glyphicon glyphicon-option-horizontal"></span></button>
+	      <div class="btn-more-scroll-container">
+            <span tal:condition="bodies and batch.next_url" id="${id}-btn-more" class="scroll btn-more-scroll"><span i18n:translate="">More</span> <span class="more-icon glyphicon glyphicon-option-horizontal"></span></span>
+          </div>
 	    </div>
 	  </div>
 	</div>

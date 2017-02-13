@@ -4,17 +4,15 @@
 # licence: AGPL
 # author: Amen Souissi
 
-import pytz
-import datetime
 import deform
 from pyramid.view import view_config
 from substanced.util import get_oid
 from pyramid import renderers
-from pyramid.httpexceptions import HTTPFound
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import get_obj
 from dace.objectofcollaboration.principal.util import get_current
+from dace.objectofcollaboration.object import Object
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
@@ -39,7 +37,8 @@ class CreateIdeaView(FormView):
 
     title = _('Create an idea')
     schema = select(IdeaSchema(factory=Idea, editable=True),
-                    ['title',
+                    ['challenge',
+                     'title',
                      'text',
                      'keywords',
                      'attached_files'])
@@ -63,7 +62,7 @@ class CreateIdeaView(FormView):
 
 
 @view_config(name='ideasmanagement',
-             context=NovaIdeoApplication,
+             context=Object,
              xhr=True,
              renderer='json')
 class CreateIdeaView_Json(BasicView):

@@ -1,3 +1,215 @@
+.challenge-restricted{
+    position: absolute;
+    right: 16px;
+    font-size: 25px;
+    padding: 0px 5px 7px 15px;
+    color: #fff;
+    background-color: #54902a;
+    border-bottom-left-radius: 3em;
+    -webkit-box-shadow: #000 0 0 4px;
+    box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.5);
+    top: 6px;
+}
+
+.challenge-container .challenge-restricted{
+  right: 0px;
+  top: 40px;
+}
+
+.invitedusers-input.closed{
+  display: none
+}
+
+.content-collapsible{
+    overflow: hidden;
+}
+
+.content-more{
+    background: rgba(0, 0, 0, 0) linear-gradient(to bottom, rgba(250, 250, 250, 0.3), #fff) repeat scroll 0 0;
+    height: 90px;
+    margin-top: -90px;
+    position: absolute;
+    width: 95%;
+    text-align: center;
+    display: none
+}
+
+.content-more.active{
+    display: block
+}
+
+.content-more .content-more-message{
+    margin-top: 40px;
+    color: #ef6e18;
+}
+
+.content-more span.open{
+    font-size: 26px;
+    text-shadow: 0 1px 3px gray;
+    display: block;
+    cursor: s-resize;
+}
+
+.content-more .content-more-message:hover{
+    color: #54902a
+}
+
+.challenge-header{
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../images/background_challenge_w.svg");
+}
+
+.challenges-bloc>.panel-heading{
+    margin-bottom: -30px;
+    margin-top: 20px;
+    color: gray;
+    font-weight: bold;
+    text-shadow: 0 1px #fff;
+}
+
+.items-main-view-container{
+    padding-top: 10px;
+}
+
+.items-main-view-container>.row{
+    padding-top: 5px;
+}
+
+.nav-tabs {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 0;
+}
+
+.btn-more-scroll-container{
+  text-align: center;
+}
+
+#results-home-challenges,
+{
+  height: inherit !important;    
+}
+
+.media-challenge .view-item-title h4{
+    text-overflow: ellipsis;
+    width: 75%;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    clear: both;
+    position: absolute;
+}
+
+.media-challenge-body .search-item-footer {
+    height: inherit;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.media-challenge-body .search-item-footer .actions-block{
+  position: relative !important
+}
+
+.challenge-container .keywords-result,
+.challenge-container .challenge-description{
+      margin-left: 40px;
+      color: #222
+}
+
+.challenge-container .keywords-result a,
+.challenge-container .author-block,
+.challenge-container .author-block a{
+  color: #222
+}
+
+.challenge-container .keywords-result a:hover{
+  color: #4580c5
+}
+
+
+
+.challenge-detail{
+    padding-right: 15px;
+    padding-left: 15px;
+    background-color: white;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .23);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+
+.challenge-detail nav ul.nav.navbar-nav{
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.challenge-detail nav{ 
+  min-height: inherit !important;
+}
+
+.challenges-container{
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  margin-top: -15px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../images/background_challenge_w.svg");
+}
+
+.challenge-container .novaideo-contents span{
+   color: #4580c5;
+}
+
+.challenge-container .challenge-title{
+  margin-top: 15px;
+  color: #222222;
+}
+
+.challenge-header .challenge-img{
+    box-shadow: 0 1px 35px white;
+    border-radius: 6px;
+}
+
+.challenge-img{
+    display: block;
+    height: auto;
+    width: 100%;
+}
+
+.search-item-bloc .media-challenge{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.media-challenge-body{
+    padding-left: 10px;
+    padding-right: 6px;
+}
+
+.media-challenge-body .object-text{
+    font-size: 14px
+}
+
+.media-challenge-body .object-row-content{
+    padding-left: 10px;
+    padding-right: 20px;
+}
+
+.media-challenge-body .author-block,
+challenge-container .author-block{
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.challenge-container{
+   padding-bottom: 60px !important;
+    padding-top: 40px;
+}
+
 .content-view>.answer-item .separator{
   background: none !important
 }
@@ -29,6 +241,8 @@
 .action-slider-container>.container-body{
     padding: 15px;
     padding-left: 30px;
+    height: 100%;
+    overflow: auto;
 }
 
 .sidebar-container .content-view>.action-slider-container{
@@ -250,6 +464,7 @@ a.answer-btn{
     width: 20px;
     font-size: 15px;
     color: #3f6da6;
+    vertical-align: super;
 }
 
 .smartfolder-nav li.opened{
@@ -266,7 +481,9 @@ a.answer-btn{
     text-overflow: ellipsis;
     white-space: nowrap;
     word-break: break-all;
-    padding: 0px !important
+    padding: 0px !important;
+    width: 75%;
+    display: inline-block;
 }
 
 .smartfolder-nav .smartfolder-nav{
@@ -736,9 +953,31 @@ a.answer-btn{
   background-color: #ec971f !important;
 }
 
-.btn-more-scroll{
-  left: 50%;
-  margin-bottom: 20px;
+.btn-more-scroll,
+.btn-more-all{
+    margin-bottom: 20px;
+    display: inline-block;
+    position: relative;
+    margin-top: 10px;
+    cursor: pointer;
+    color: #ef6e18;
+}
+
+.btn-more-all,
+.btn-more-all a{
+  color: gray
+}
+
+.btn-more-all:hover,
+.btn-more-all a:hover,
+.btn-more-scroll:hover,
+.btn-more-scroll:active,
+.btn-more-scroll:focus{
+  color: #b95817
+}
+
+.btn-more-scroll span.more-icon{
+    vertical-align: middle;
 }
 
 .novaideo-loading-indicator{
@@ -1147,6 +1386,10 @@ a.emoji-group-tab:hover{
 
 .popover-answer .popover-title{
   border-bottom: 3px solid @answer-color !important;
+}
+
+.popover-challenge .popover-title{
+  border-bottom: 3px solid @challenge-color !important;
 }
 
 .popover-idea .popover-title{
@@ -1804,6 +2047,7 @@ form .btn{
 .result-container{
   padding-right: 0px;
   padding-left: 0px;
+  overflow-x: hidden;
 }
 
 .nav-tabs>li.active>a,
@@ -1826,6 +2070,10 @@ form .btn{
     font-size: 14px;
     border: none;
     border-bottom: 3px solid transparent;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
 }
 
 .integreted-tab-content .nav-tabs>li>a{
@@ -2035,7 +2283,7 @@ form .btn{
     border-style: solid;
     border-width: 1px 1px 1px 5px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
-    margin: 5px 0px;
+    margin: 5px 0px 25px 0px;
     padding: 1px 15px;
     z-index: 1031;
 }
@@ -2188,7 +2436,8 @@ ul.btn-sub-menu li{
 }
 
 .object-menu{
-    position: relative
+    position: relative;
+    margin-left: 5px
 }
 
 .listing-object-menu .dropdown-toggle{
@@ -2641,7 +2890,7 @@ button.navbar-toggle
     background-image: none;
     border: 0 none;
     border-radius: 0;
-    box-shadow: 0 0 4px black;
+    box-shadow: 0 0 2px rgb(0, 0, 0, .20);
     margin-bottom: 15px;
     margin-top: -20px;
     min-height: 53px;
@@ -3013,7 +3262,7 @@ a:hover, a:focus {
 
 .result-scroll {
     border: 0;
-    height: 1600px;
+    height: inherit !important;
     padding: 0;
 }
 
@@ -3218,6 +3467,7 @@ ins {
 .search-item .object-title-block{
   width: 100%;
   margin-top: 5px;
+  min-height: 35px;
 }
 
 .content-user-img > img{
@@ -3280,6 +3530,10 @@ ins {
     border-left: 5px solid @idea-color !important;
 }
 
+.media-challenge {
+    border-left: 5px solid @challenge-color !important;
+}
+
 .media-person {
     border-left: 5px solid #d9534f !important;
 }
@@ -3318,6 +3572,11 @@ ins {
     border-left: transparent !important
 }
 
+.media-bloc.media-challenge {
+    border-top: 5px solid @challenge-color !important;
+    border-left: transparent !important
+}
+
 .media-bloc.media-question {
     border-top: 5px solid @question-color !important;
     border-left: transparent !important
@@ -3352,6 +3611,10 @@ ins {
 .thumbnail.right-caption > .media-bloc.media-file {
     border-top: 5px solid #636363 !important;
     border-left: transparent !important
+}
+
+.thumbnail.small-result > .media-challenge {
+    border-left: 3px solid @challenge-color !important;
 }
 
 .thumbnail.small-result > .media-idea {
@@ -4042,10 +4305,17 @@ small .proposal-support .token{
 .novaideo-contents li {
     color: gray;
     font-size: 13px;
-    line-height: 44px;
     list-style: outside none none;
-    margin-right: 20px;
+    margin-right: 10px;
+    padding-right: 10px;
     display: inline-block;
+    margin-bottom: 5px;
+    border-right: 1px solid #ddd;
+    display: inline-block;
+}
+
+.novaideo-contents li:last-child {
+  border-right: none !important;
 }
 
 .novaideo-contents strong {
@@ -4055,10 +4325,11 @@ small .proposal-support .token{
 }
 
 .novaideo-contents-list{
-   margin: -10px auto 10px;
+   margin: 10px auto 10px;
   max-height: 34px;
   text-align: center;
   width: 100%;
+
 }
 
 .alert-wg-closed{

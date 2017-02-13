@@ -1,4 +1,4 @@
-<div tal:omit-tag="" tal:define=" item subitem|nothing; hasparent (parent is not None)">
+<div tal:omit-tag="" tal:define=" item subitem|nothing; hasparent (parent is not None)" i18n:domain="novaideo">
     <div tal:omit-tag="" tal:condition="item">
     <div tal:omit-tag="hasparent" class="${getattr(item['view'], 'css_class', '')}" >
          <div tal:condition="not hasparent" class="panel-heading" tal:define="title getattr(item['view'], 'breadcrumb', item['view'].title)"><div tal:condition="title" class="panel-title">${structure:title}</div></div>

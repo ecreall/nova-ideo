@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -13,7 +13,7 @@ from pontus.form import FormView
 from pontus.schema import select
 from pontus.view_operation import MultipleView
 
-from novaideo.content.processes.idea_management.behaviors import  EditIdea
+from novaideo.content.processes.idea_management.behaviors import EditIdea
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo import _
 from .compare_idea import CompareIdeaView
@@ -22,11 +22,12 @@ from .compare_idea import CompareIdeaView
 class EditIdeaFormView(FormView):
 
     title = _('Edit the idea')
-    schema = select(IdeaSchema(), ['title',
-                                  'text',
-                                  'keywords',
-                                  'attached_files',
-                                  'note'])
+    schema = select(IdeaSchema(), ['challenge',
+                                   'title',
+                                   'text',
+                                   'keywords',
+                                   'attached_files',
+                                   'note'])
     behaviors = [EditIdea, Cancel]
     formid = 'formeditidea'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'

@@ -1498,6 +1498,13 @@ class AttachFiles(InfiniteCardinality):
 
 def get_access_key(obj):
     if 'draft' not in obj.state:
+        challenge = getattr(obj, 'challenge', None)
+        is_restricted = getattr(challenge, 'is_restricted', False)
+        if is_restricted:
+            return serialize_roles(
+                (('ChallengeParticipant', challenge),
+                 'SiteAdmin', 'Admin', 'Moderator'))
+
         return ['always']
     else:
         return serialize_roles(
@@ -1505,7 +1512,13 @@ def get_access_key(obj):
 
 
 def seeproposal_processsecurity_validation(process, context):
-    return access_user_processsecurity(process, context) and \
+    challenge = getattr(context, 'challenge', None)
+    is_restricted = getattr(challenge, 'is_restricted', False)
+    can_access = True
+    if is_restricted:
+        can_access = has_role(role=('ChallengeParticipant', challenge))
+
+    return can_access and access_user_processsecurity(process, context) and \
            ('draft' not in context.state or \
             has_any_roles(roles=(('Owner', context), 'SiteAdmin', 'Moderator')))
 

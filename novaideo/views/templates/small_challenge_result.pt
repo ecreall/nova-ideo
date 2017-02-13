@@ -1,0 +1,39 @@
+<div class="thumbnail right-caption span4 small-result" 
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(object, '@@index');
+                 icon getattr(object, 'icon');
+                 author object.author;
+                 censored 'censored' in object.state
+                 ">
+  <div class="media-body media-challenge small-media" tal:define="author_picture getattr(author, 'picture', None)">
+    <span tal:condition="state" class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
+    <div class="object-title-block" >
+      <a data-oid="${getattr(object, '__oid__', '')}"
+         class="toggle-popover"
+         tal:condition="not censored" tal:attributes="href url">
+        <h5>
+          <span class="icon ${icon}"></span>  ${object.title}
+        </h5>
+      </a>
+    </div>
+    <div class="author-block">
+      <img class="author-img img-circle" 
+         tal:condition="author_picture is not None" 
+         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="20"/>
+      <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="20"/>
+      <small>
+        <span i18n:translate="">Submitted by</span>
+        <a tal:attributes="href request.resource_url(author, '@@index')">
+          ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+        </a>
+        <span i18n:translate="">the</span>
+        <span tal:replace="layout.to_localized_time(object.created_at)"/>
+      </small>
+    </div>
+    <div tal:condition="censored">
+     <div class="alert-terms-of-use" i18n:translate="">
+        This content does not respect the terms of use.
+     </div>
+    </div>
+  </div>
+</div>

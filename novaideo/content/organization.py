@@ -13,6 +13,7 @@ from substanced.util import renamer
 
 from dace.util import get_obj
 from dace.objectofcollaboration.entity import Entity
+from dace.objectofcollaboration.principal import Group
 from dace.descriptors import SharedMultipleProperty, CompositeUniqueProperty
 from dace.objectofcollaboration.principal.util import (
     get_users_with_role, grant_roles, revoke_roles)
@@ -170,7 +171,7 @@ class OrganizationSchema(VisualisableElementSchema):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IOrganization)
-class Organization(VisualisableElement, Entity):
+class Organization(VisualisableElement, Group):
     """Organization class"""
 
     templates = {

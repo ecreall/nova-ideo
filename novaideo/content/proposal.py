@@ -202,6 +202,7 @@ class Proposal(VersionableEntity,
     amendments = CompositeMultipleProperty('amendments', 'proposal')
     corrections = CompositeMultipleProperty('corrections', 'proposal')
     attached_files = SharedMultipleProperty('attached_files')
+    challenge = SharedUniqueProperty('challenge', 'proposals')
     opinions_base = OPINIONS
 
     def __init__(self, **kwargs):

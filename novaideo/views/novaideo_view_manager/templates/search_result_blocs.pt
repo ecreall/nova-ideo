@@ -22,7 +22,9 @@
                 ${structure:body}
             </div>
           </div>
-          <button tal:condition="bodies and batch.next_url" id="${id}-btn-more" class="btn btn-default btn-xs scroll btn-more-scroll"><span i18n:translate="">More</span> <span class="glyphicon glyphicon-option-horizontal"></span></button>
+          <div class="btn-more-scroll-container">
+            <span tal:condition="bodies and batch.next_url" id="${id}-btn-more" class="scroll btn-more-scroll"><span i18n:translate="">More</span> <span class="more-icon glyphicon glyphicon-option-horizontal"></span></span>
+          </div>
       </div>
     </div>
   </div>

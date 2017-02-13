@@ -64,11 +64,11 @@
 }
 
 .nav-steps li .step-content.active:after {
-    border-left-color: steelblue;
+    border-left-color: #3f6da6;
 }
 
 .nav-steps li .step-content.active {
-    background: none repeat scroll 0 0 steelblue;
+    background: none repeat scroll 0 0 #3f6da6;
     color: #fff;
 }
 
@@ -94,7 +94,7 @@
 
 .nav-steps li .step-content:after {
     border-bottom: 25px inset transparent;
-    border-left: 20px solid #565656;
+    border-left: 20px solid #373a35;
     border-top: 25px inset transparent;
     content: "";
     height: 0;
@@ -110,7 +110,7 @@
 }
 
 .nav-steps li .step-content {
-    background: none repeat scroll 0 0 #565656;
+    background: none repeat scroll 0 0 #373a35;
     color: #ffffff;
     display: inline-block;
     margin-right: 5px;
@@ -144,7 +144,7 @@ ul, ol {
 
 .nav-steps li .step-content:hover {
     background-color: #dddddd;
-    color: #565656;
+    color: #373a35;
 }
 
 .nav-steps li.active{

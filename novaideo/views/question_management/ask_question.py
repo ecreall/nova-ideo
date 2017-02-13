@@ -7,6 +7,7 @@
 import deform
 from pyramid.view import view_config
 
+from dace.objectofcollaboration.object import Object
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
@@ -33,7 +34,8 @@ class AskQuestionView(FormView):
 
     title = _('Ask a question')
     schema = select(QuestionSchema(factory=Question, editable=True),
-                    ['title',
+                    ['challenge',
+                     'title',
                      'text',
                      'options',
                      'keywords',
@@ -58,7 +60,7 @@ class AskQuestionView(FormView):
 
 
 @view_config(name='questionsmanagement',
-             context=NovaIdeoApplication,
+             context=Object,
              xhr=True,
              renderer='json')
 class AskQuestionView_Json(BasicView):

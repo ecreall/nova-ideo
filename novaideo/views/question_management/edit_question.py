@@ -22,7 +22,8 @@ class EditQuestionFormView(FormView):
 
     title = _('Edit the question')
     schema = select(QuestionSchema(),
-                    ['title',
+                    ['challenge',
+                     'title',
                      'text',
                      'options',
                      'keywords',

@@ -1,0 +1,10 @@
+<div tal:condition="subitem|nothing"   tal:define="
+      items subitem['items'];
+      itemslen len(items)|0;
+      subitem_view  subitem['view'] if itemslen > 1 else None"
+      class="tab-content" id="${subitem_view.viewid}"
+      style="margin-top: 0;">
+  <div id="${item['view'].viewid}" class="tab-pane fade" tal:condition="items" tal:repeat="item items">
+      <div  tal:replace="item['view'].render_item(item, coordinates, subitem_view)" />   
+  </div>
+</div>

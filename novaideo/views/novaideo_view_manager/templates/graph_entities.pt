@@ -17,7 +17,8 @@
                       idea: "#54902a",
                       proposal: "#3f6da6",
                       question: "#e66a11",
-                      answer: "#9e785c"
+                      answer: "#9e785c",
+                      challenge: "#ddb722"
                   };
                   var G = new jsnx.Graph();
                   <div tal:omit-tag="" tal:repeat="node valid_nodes">

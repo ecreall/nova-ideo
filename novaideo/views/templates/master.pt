@@ -180,7 +180,9 @@
         </div>
         <!-- bar  -->
         ${panel('homepage')}
+        ${panel('challenge')}
         ${panel('usernavbar', True if contextual_help else False)}
+        ${panel('challenges')}
         <div class="container-fluid">
           <div class="novaideo-info row"
                tal:define="content panel('novaideo_contents');
@@ -199,8 +201,8 @@
             <div tal:condition="not view_only" class="col-md-2 column ui-sortable novaideo-left">
               ${panel('channels')}
               ${adminnavbar}
-              ${panel('navigation_bar')}
                <div metal:define-slot="left"></div>
+              ${panel('navigation_bar')}
             </div>
             <div class="col-md-7 column ui-sortable novaideo-main">
               <div class="above-content" style="text-align: center;">
@@ -220,7 +222,7 @@
                 </div>
               </div>
               <div class="inner-content ${(context.__class__.__name__ == 'Person' and request.view_name in ('index', '@@index')) and 'user-view-index'}">
-                <div tal:omit-tag="" tal:condition="not view_only">
+                <div tal:omit-tag="" tal:condition="not view_only and request.context is request.root">
                   ${panel('addcontenthomeform')}
                 </div>
                 <div metal:define-slot="main"></div>

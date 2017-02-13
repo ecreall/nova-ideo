@@ -1,10 +1,8 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
-
-from zope.interface import Interface
 
 from dace.interfaces import (
     Attribute, IUser, IEntity as IEntityO, IApplication,
@@ -155,6 +153,17 @@ class ITokenable(IEntity):
 
 @interface()
 class ISReport(IEntity):
+    pass
+
+
+@interface()
+@interface_config(type_id='idea')
+class IChallenge(ISearchableEntity,
+                 ICorrelableEntity,
+                 IPresentableEntity,
+                 INode,
+                 ISignalableEntity,
+                 IDebatable):
     pass
 
 

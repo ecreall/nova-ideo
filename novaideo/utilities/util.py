@@ -29,12 +29,14 @@ from pyramid.threadlocal import get_current_registry, get_current_request
 from substanced.util import get_oid
 
 import html_diff_wrapper
+from pontus.util import update_resources
 from pontus.index import Index
 from pontus.file import OBJECT_OID
 from pontus.util import merge_dicts, get_view
 from dace.objectofcollaboration.principal.util import get_current
-from dace.util import getSite, getAllBusinessAction
+from dace.util import getSite, getAllBusinessAction, getBusinessAction
 from daceui.interfaces import IDaceUIAPI
+from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 
 from .ical_date_utility import getDatesFromString, set_recurrence
 from novaideo.content.ballot import DEFAULT_BALLOT_GROUP
@@ -1414,6 +1416,52 @@ def diff_analytics(context, version, attrs):
         'ins': ins_,
         'del': del_
     }
+
+
+def get_action_view(process_id, action_id, request):
+    root = getSite()
+    actions = getBusinessAction(root, request, process_id, action_id)
+    action = None
+    action_view = None
+    if actions is not None:
+        action = actions[0]
+        if action.__class__ in DEFAULTMAPPING_ACTIONS_VIEWS:
+            action_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+
+    return action, action_view
+
+
+def get_home_actions_bodies(process_id, action_id, form_id, request, context):
+    result = {
+        'form': None,
+        'action': None,
+        'css_links': [],
+        'js_links': []}
+
+    resources = deepcopy(getattr(
+        request, 'resources', {'js_links': [], 'css_links': []}))
+    add_content_action, add_content_view = get_action_view(
+        process_id, action_id, request)
+    if add_content_view:
+        add_content_view_instance = add_content_view(
+            context, request, behaviors=[add_content_action])
+        add_content_view_instance.viewid = form_id
+        add_content_view_instance.is_home_form = True
+        add_content_view_result = add_content_view_instance()
+        add_content_body = ''
+        if isinstance(add_content_view_result, dict) and \
+           'coordinates' in add_content_view_result:
+            add_content_body = add_content_view_result['coordinates'][add_content_view_instance.coordinates][0]['body']
+            result['css_links'] = [c for c in add_content_view_result.get('css_links', [])
+                                   if c not in resources['css_links']]
+            result['js_links'] = [c for c in add_content_view_result.get('js_links', [])
+                                  if c not in resources['js_links']]
+
+        update_resources(request, result)
+        result['form'] = add_content_body
+        result['action'] = add_content_action
+
+    return result
 
 #add unrecognized mimetype
 

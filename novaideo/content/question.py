@@ -21,9 +21,10 @@ from dace.descriptors import (
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
     SequenceWidget)
-from pontus.file import ObjectData, File
+from pontus.file import ObjectData, File, Object as ObjectType
 
 from novaideo.content.correlation import CorrelationType
+from novaideo.content.idea import challenge_choice
 from .interface import IQuestion, IAnswer
 from novaideo import _
 from novaideo.views.widget import LimitedTextAreaWidget
@@ -65,6 +66,13 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
     name = NameSchemaNode(
         editing=context_is_a_question,
         )
+
+    challenge = colander.SchemaNode(
+        ObjectType(),
+        widget=challenge_choice,
+        missing=None,
+        title=_("Challenge")
+    )
 
     title = colander.SchemaNode(
         colander.String(),
@@ -142,6 +150,7 @@ class Question(VersionableEntity, DuplicableEntity,
     related_correlation = SharedUniqueProperty('related_correlation', 'targets')
     answers = CompositeMultipleProperty('answers', 'question')
     answer = SharedUniqueProperty('answer')
+    challenge = SharedUniqueProperty('challenge', 'questions')
 
     def __init__(self, **kwargs):
         super(Question, self).__init__(**kwargs)
@@ -313,6 +322,10 @@ class Answer(CorrelableEntity, PresentableEntity,
         subject = self.subject
         return [content[0] for content in self.contextualized_contents
                 if content[0] is not subject and not getattr(content[1], 'tags', [])]
+
+    @property
+    def challenge(self):
+        return getattr(self.question, 'challenge', None)
 
     def set_associated_contents(self, associated_contents, user):
         subject = self.subject
