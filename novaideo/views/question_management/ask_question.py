@@ -12,7 +12,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select
+from pontus.schema import select, omit
 from pontus.view import BasicView
 
 from novaideo.utilities.util import render_listing_obj
@@ -23,6 +23,7 @@ from novaideo.content.processes.question_management.behaviors import (
 from novaideo.content.question import QuestionSchema, Question
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _, log
+from ..filter import get_pending_challenges
 
 
 @view_config(
@@ -45,6 +46,12 @@ class AskQuestionView(FormView):
     name = 'askquestion'
 
     def before_update(self):
+        user = get_current(self.request)
+        has_challenges = len(get_pending_challenges(user)) > 0
+        if not has_challenges:
+            self.schema = omit(
+                self.schema, ['challenge'])
+
         if not getattr(self, 'is_home_form', False):
             self.action = self.request.resource_url(
                 self.context, 'novaideoapi',
@@ -57,6 +64,12 @@ class AskQuestionView(FormView):
                 self.context, 'askquestion')
             self.schema.widget = deform.widget.FormWidget(
                 css_class='material-form deform')
+
+    def bind(self):
+        if getattr(self, 'is_home_form', False):
+            return {'is_home_form': True}
+
+        return {}
 
 
 @view_config(name='questionsmanagement',

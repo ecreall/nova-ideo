@@ -67,7 +67,7 @@ class SeeChallengesView(BasicView):
             url=url,
             source=source,
             select=[('metadata_filter', ['negation', 'states', 'keywords']),
-                    'contribution_filter', ('temporal_filter', ['negation', 'created_date']),
+                    'contribution_filter', 'temporal_filter',
                     'text_filter', 'other_filter'])
 
     def update(self):
@@ -149,11 +149,16 @@ class SeeChallengesHomeView(BasicView):
         batch.target = "#results-home-challenges"
         len_result = batch.seqlen
         user = get_current()
-        result_body, result = render_listing_objs(
-            self.request, batch, user, 'bloc')
+        if len_result == 0:
+            self.no_challenges = True
+            result = {}
+            result_body = []
+        else:
+            result_body, result = render_listing_objs(
+                self.request, batch, user, 'bloc')
+
         values = {
             'bodies': result_body,
-            'length': len_result,
             'batch': batch
         }
         body = self.content(args=values, template=self.template)['body']

@@ -1,0 +1,32 @@
+<div id="popover-${oid}" class="comme-popover popover right popover-person view-item"
+	  role="tooltip"
+	  tal:define="url request.resource_url(object, '@@index');
+                 icon getattr(object, 'icon');"
+    i18n:domain="novaideo">
+	<div style="top: 50%;" class="arrow">
+	</div>
+    <a class="popover-title-link" href="${request.resource_url(object, '@@index')}">
+      <h4 class="popover-title view-item-title"
+        data-title="${object.title}"
+        data-icon="${icon}"
+        data-img=""
+        >
+      	<span class="icon ${icon}"></span> ${getattr(object, 'title', object.name)}
+      </h4>
+    </a>
+    <div class="popover-content">
+      <div class="popover-text">
+        <div>
+          ${structure:object.presentation_text(200)}
+        </div>
+      </div>
+      <div class="popover-footer">
+        <div class="listing-access-menu pull-right">
+            <div tal:replace="structure access_body"/>
+        </div>
+        <div class="actions-block">
+          <div tal:replace="structure footer_body"/>
+	      </div>
+      </div>
+    </div>
+</div>

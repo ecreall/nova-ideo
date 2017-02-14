@@ -17,7 +17,7 @@ from dace.util import (
     find_catalog, getAllBusinessAction, getBusinessAction,
     getSite, get_obj, find_service)
 from dace.objectofcollaboration.principal.util import (
-    get_current)
+    get_current, get_users_with_role)
 from dace.objectofcollaboration.object import Object
 from pontus.view import BasicView
 
@@ -89,16 +89,10 @@ class NovaideoAPI(IndexManagementJsonView):
     search_idea_template = 'novaideo:views/templates/live_search_idea_result.pt'
     search_question_template = 'novaideo:views/templates/live_search_question_result.pt'
 
-    def find_user(self, organization=None):
+    def find_user(self, query=None):
         name = self.params('q')
         if name:
             page_limit, current_page, start, end = self._get_pagin_data()
-            query = None
-            if organization:
-                novaideo_index = find_catalog('novaideo')
-                organization_index = novaideo_index['organizations']
-                query = organization_index.any([get_oid(organization)])
-
             if is_all_values_key(name):
                 result = find_entities(interfaces=[IPerson],
                                        metadata_filter={'states': ['active']},
@@ -128,7 +122,10 @@ class NovaideoAPI(IndexManagementJsonView):
         return {'items': [], 'total_count': 0}
 
     def find_organization_user(self):
-        return self.find_user(self.context)
+        novaideo_index = find_catalog('novaideo')
+        organization_index = novaideo_index['organizations']
+        query = organization_index.any([get_oid(self.context)])
+        return self.find_user(query)
 
     def find_entities(self):
         name = self.params('text_to_search')
@@ -229,6 +226,9 @@ class NovaideoAPI(IndexManagementJsonView):
 
     def find_challenges(self):
         return self.find_entity(interfaces=[IChallenge], states=['pending'])
+
+    def find_all_challenges(self):
+        return self.find_entity(interfaces=[IChallenge])
 
     def filter_result(self):
         filter_source = self.params('filter_source')

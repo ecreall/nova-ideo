@@ -20,7 +20,8 @@ from dace.objectofcollaboration.principal.util import (
     has_role,
     has_any_roles,
     grant_roles,
-    get_current)
+    get_current,
+    revoke_roles)
 from dace.processinstance.activity import InfiniteCardinality, ActionType
 from dace.processinstance.core import ActivityExecuted
 
@@ -58,10 +59,10 @@ def createchallenge_processsecurity_validation(process, context):
 
 class CreateChallenge(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'admin-action'
+    style_descriminator = 'lateral-action'
     style_picto = 'ion-trophy'
-    style_order = 0
-    title = _('Create an challenge')
+    style_order = 1
+    title = _('Create a challenge')
     unavailable_link = 'docanonymous'
     submission_title = _('Save')
     context = INovaIdeoApplication
@@ -310,7 +311,9 @@ class PublishChallenge(InfiniteCardinality):
             alert('email', [root.get_site_sender()], [author.email],
                   subject=subject, body=message)
 
-        request.registry.notify(ObjectPublished(object=context))
+        if not getattr(context, 'is_restricted', False):
+            request.registry.notify(ObjectPublished(object=context))
+
         request.registry.notify(ActivityExecuted(
             self, [context], user))
         return {}
@@ -400,7 +403,8 @@ class EditChallenge(InfiniteCardinality):
 
 def comm_roles_validation(process, context):
     is_restricted = getattr(context, 'is_restricted', False)
-    return (is_restricted and has_role(role=('ChallengeParticipant', context))) or \
+    return (is_restricted and has_role(
+            role=('ChallengeParticipant', context))) or \
         has_role(role=('Member',))
 
 
@@ -537,9 +541,121 @@ class SeeChallenges(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'ion-trophy'
-    style_order = 3
+    style_order = -10
     isSequential = False
     context = INovaIdeoApplication
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context))
+
+
+def addmember_roles_validation(process, context):
+    return has_role(role=('Moderator',)) or \
+        (has_role(role=('Owner', context)) and
+         has_role(role=('ChallengeParticipant', context)))
+
+
+def addmember_processsecurity_validation(process, context):
+    return getattr(context, 'is_restricted', False) and \
+        global_user_processsecurity()
+
+
+def addmember_state_validation(process, context):
+    return "pending" in context.state
+
+
+class AddMembers(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'typcn typcn-user-add'
+    style_interaction = 'ajax-action'
+    style_order = 2
+    submission_title = _('Continue')
+    context = IChallenge
+    roles_validation = addmember_roles_validation
+    processsecurity_validation = addmember_processsecurity_validation
+    state_validation = addmember_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        members = appstruct['members']
+        for member in members:
+            if member not in context.invited_users:
+                context.addtoproperty('invited_users', member)
+                grant_roles(
+                    user=member, roles=(('ChallengeParticipant', context),))
+
+            member.reindex()
+
+        context.reindex()
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
+
+
+def rmmembers_processsecurity_validation(process, context):
+    return getattr(context, 'is_restricted', False) and context.invited_users and \
+        global_user_processsecurity()
+
+
+class RemoveMembers(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_picto = 'typcn typcn-user-delete'
+    style_interaction = 'ajax-action'
+    style_order = 3
+    submission_title = _('Continue')
+    context = IChallenge
+    roles_validation = addmember_roles_validation
+    processsecurity_validation = rmmembers_processsecurity_validation
+    state_validation = addmember_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        members = appstruct['members']
+        for member in members:
+            if member in context.invited_users:
+                context.delfromproperty('invited_users', member)
+                revoke_roles(
+                    user=member,
+                    roles=(('ChallengeParticipant', context), ))
+
+            member.reindex()
+
+        context.reindex()
+        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
+
+
+def seemember_roles_validation(process, context):
+    return has_role(role=('ChallengeParticipant', context))
+
+
+def seemember_processsecurity_validation(process, context):
+    return getattr(context, 'is_restricted', False) and \
+        global_user_processsecurity()
+
+
+class SeeMembers(InfiniteCardinality):
+    style_descriminator = 'listing-primary-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
+    style_picto = 'ion-person-stalker'
+    style_order = -1
+    isSequential = False
+    context = IChallenge
+    roles_validation = seemember_roles_validation
+    processsecurity_validation = seemember_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         return {}

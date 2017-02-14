@@ -7,9 +7,10 @@
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select
+from pontus.schema import select, omit
 from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.proposal_management.behaviors import (
@@ -18,13 +19,15 @@ from novaideo.content.proposal import Proposal, ProposalSchema
 from novaideo import _
 from .edit_proposal import IdeaManagementView
 from .create_proposal import ideas_choice, add_file_data
+from ..filter import get_pending_challenges
 
 
 class DuplicateProposalFormView(FormView):
     title = _('Duplicate')
     name = 'duplicateproposal'
     schema = select(ProposalSchema(),
-                    ['title',
+                    ['challenge',
+                     'title',
                      'description',
                      'keywords',
                      'text',
@@ -51,6 +54,12 @@ class DuplicateProposalFormView(FormView):
         return data
 
     def before_update(self):
+        user = get_current(self.request)
+        has_challenges = len(get_pending_challenges(user)) > 0
+        if not has_challenges:
+            self.schema = omit(
+                self.schema, ['challenge'])
+
         ideas_widget = ideas_choice(self.context, self.request)
         ideas_widget.item_css_class = 'hide-bloc'
         ideas_widget.css_class = 'controlled-items'

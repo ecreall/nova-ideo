@@ -27,7 +27,6 @@ from novaideo.core import can_access
 from .create_proposal import ideas_choice, AddIdeaFormView
 
 
-
 class RelatedIdeasView(BasicView):
     title = _('Related Ideas')
     name = 'relatedideas'

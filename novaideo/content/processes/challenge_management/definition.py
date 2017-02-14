@@ -35,7 +35,10 @@ from .behaviors import (
     Associate,
     SeeChallenge,
     SeeChallenges,
-    ArchiveChallenge)
+    ArchiveChallenge,
+    AddMembers,
+    RemoveMembers,
+    SeeMembers)
 from novaideo import _
 
 
@@ -100,6 +103,18 @@ class Challengemanagement(ProcessDefinition, VisualisableElement):
                                        description=_("The challenges"),
                                        title=_("The challenges"),
                                        groups=[_('See')]),
+                add_members = ActivityDefinition(contexts=[AddMembers],
+                                       description=_("Add Participants"),
+                                       title=_("Add Participants"),
+                                       groups=[]),
+                remove_members = ActivityDefinition(contexts=[RemoveMembers],
+                                       description=_("Remove Participants"),
+                                       title=_("Remove Participants"),
+                                       groups=[]),
+                see_members = ActivityDefinition(contexts=[SeeMembers],
+                                       description=_("See Participants"),
+                                       title=_("See Participants"),
+                                       groups=[]),
                 pg = ParallelGatewayDefinition(),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
@@ -118,6 +133,9 @@ class Challengemanagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('pg', 'seechallenges'),
                 TransitionDefinition('pg', 'archive'),
+                TransitionDefinition('pg', 'add_members'),
+                TransitionDefinition('pg', 'remove_members'),
+                TransitionDefinition('pg', 'see_members'),
                 TransitionDefinition('creat', 'eg'),
                 TransitionDefinition('creatandpublish', 'eg'),
                 TransitionDefinition('submit', 'eg'),
@@ -130,5 +148,8 @@ class Challengemanagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('see', 'eg'),
                 TransitionDefinition('seechallenges', 'eg'),
                 TransitionDefinition('archive', 'eg'),
+                TransitionDefinition('add_members', 'eg'),
+                TransitionDefinition('remove_members', 'eg'),
+                TransitionDefinition('see_members', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )

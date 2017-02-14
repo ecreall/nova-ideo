@@ -9,7 +9,8 @@
                  len_files len(files);
                  oid object.__oid__;
                  options getattr(object, 'options', []);
-                 selected_option object.get_selected_option(current_user)">
+                 selected_option object.get_selected_option(current_user);
+                 challenge getattr(object, 'challenge', None)">
   <div class="media-body media-question" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="author-block">
       <img class="author-img img-circle" 
@@ -52,6 +53,17 @@
         </a>
       </div>
       
+      <div tal:condition="challenge" class="challenge-block">
+        <small i18n:attributes="" title="Associated to this challenge">
+          <span class="${challenge.icon}"></span>
+          <a data-oid="${getattr(challenge, '__oid__', '')}"
+             class="toggle-popover"
+             href="${request.resource_url(challenge, '@@index')}">
+            ${challenge.title}
+          </a>
+        </small>
+      </div>
+
       <div class="keywords-result">
         <span class="glyphicon glyphicon-tags"></span> 
         <tal:loop repeat="k object.keywords">

@@ -118,6 +118,10 @@ class PublishFormView(CreateProposalFormView):
         if files:
             data['add_files']['attached_files'] = files
 
+        challenge = getattr(self.context, 'challenge', None)
+        if challenge:
+            data['challenge'] = challenge
+
         return data
 
     def before_update(self):

@@ -23,7 +23,7 @@ from dace.descriptors import (
 from pontus.widget import (
     RichTextWidget, AjaxSelect2Widget,
     Length, SequenceWidget, Select2Widget)
-from pontus.file import ObjectData, File
+from pontus.file import ObjectData, File, Object as ObjectType
 from pontus.core import VisualisableElementSchema
 from pontus.schema import omit, Schema
 
@@ -59,6 +59,37 @@ OPINIONS = OrderedDict([
 
 
 @colander.deferred
+def challenge_choice(node, kw):
+    request = node.bindings['request']
+    root = getSite()
+    values = [('', _('- Select -'))]
+
+    def title_getter(id):
+        try:
+            obj = get_obj(int(id), None)
+            if obj:
+                return obj.title
+            else:
+                return id
+        except Exception as e:
+            log.warning(e)
+            return id
+
+    ajax_url = request.resource_url(
+        root, '@@novaideoapi',
+        query={'op': 'find_challenges'})
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        ajax_item_template="related_item_template",
+        title_getter=title_getter,
+        multiple=False,
+        page_limit=20,
+        add_clear=True,
+        item_css_class='challenge-input')
+
+
+@colander.deferred
 def ideas_choice(node, kw):
     context = node.bindings['context']
     request = node.bindings['request']
@@ -82,6 +113,7 @@ def ideas_choice(node, kw):
         values=values,
         ajax_url=ajax_url,
         multiple=True,
+        add_clear=True,
         title_getter=title_getter,
         )
 
@@ -136,6 +168,15 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
     name = NameSchemaNode(
         editing=context_is_a_proposal,
         )
+
+    challenge = colander.SchemaNode(
+        ObjectType(),
+        widget=challenge_choice,
+        missing=None,
+        title=_("Challenge (optional)"),
+        description=_("You can select and/or modify the challenge associated to this proposal. "
+                      "For an open proposal, do not select anything in the « Challenge » field.")
+    )
 
     description = colander.SchemaNode(
         colander.String(),

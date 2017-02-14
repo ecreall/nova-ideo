@@ -22,8 +22,7 @@ from .compare_idea import CompareIdeaView
 class EditIdeaFormView(FormView):
 
     title = _('Edit the idea')
-    schema = select(IdeaSchema(), ['challenge',
-                                   'title',
+    schema = select(IdeaSchema(), ['title',
                                    'text',
                                    'keywords',
                                    'attached_files',

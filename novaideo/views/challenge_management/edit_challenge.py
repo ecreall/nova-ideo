@@ -27,6 +27,7 @@ class EditChallengeFormView(FormView):
                      'keywords',
                      'image',
                      'text',
+                     'deadline',
                      'attached_files'])
     behaviors = [EditChallenge, Cancel]
     formid = 'formeditchallenge'

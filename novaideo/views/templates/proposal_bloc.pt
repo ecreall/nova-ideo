@@ -10,7 +10,8 @@
                  oid object.__oid__;
                  len_members len(object.working_group.members);
                  wg_state object.working_group.get_state(request, current_user);
-                 submitted request.support_proposals and 'submitted_support' in object.state;">
+                 submitted request.support_proposals and 'submitted_support' in object.state;
+                 challenge getattr(object, 'challenge', None)">
   <div class="media-body media-proposal media-bloc" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="wg-block">
         <h5>
@@ -75,6 +76,18 @@
             </h4>
           </a>
       </div>
+
+      <div tal:condition="challenge" class="challenge-block">
+        <small i18n:attributes="" title="Associated to this challenge">
+          <span class="${challenge.icon}"></span>
+          <a data-oid="${getattr(challenge, '__oid__', '')}"
+             class="toggle-popover"
+             href="${request.resource_url(challenge, '@@index')}">
+            ${challenge.title}
+          </a>
+        </small>
+      </div>
+
       <div class="keywords-result">
         <span class="glyphicon glyphicon-tags"></span> 
         <tal:loop repeat="k object.keywords">

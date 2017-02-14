@@ -1,0 +1,136 @@
+<div tal:define="
+     name name|field.name;
+     style field.widget.style;
+     oid oid|field.oid;
+     css_class css_class|field.widget.css_class;
+     optgroup_class optgroup_class|field.widget.optgroup_class;
+     multiple multiple|field.widget.multiple;
+     root field.get_root();
+     id oid+'-'+getattr(root, 'formid', root.oid);
+     ajax_url ajax_url|field.widget.ajax_url;
+     dependencies getattr(field.widget, 'dependencies', []);
+     ajax_item_template getattr(field.widget, 'ajax_item_template', 'default_item_template');
+     ajax_selection_template getattr(field.widget, 'ajax_selection_template', 'default_selection_template');
+     minimum_input_length getattr(field.widget, 'minimum_input_length', 1);
+     page_limit getattr(field.widget, 'page_limit', 30);
+     add_clear  getattr(field.widget, 'add_clear', False);
+     is_challenge_content getattr(field.widget, 'is_challenge_content', False);
+     challenge getattr(field.widget, 'challenge', None);
+     "
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n" 
+    i18n:domain="pontus"
+     tal:omit-tag="">
+
+   <style tal:condition="not is_challenge_content">
+      #select2-${id}-results>.select2-results__option .option-container .create-message-container:first-child{
+           display: none;
+       }
+     <div tal:omit-tag="" tal:condition="getattr(field.widget, 'create', False)">
+       #select2-${id}-results>.select2-results__option:first-child .option-container .create-message-container:first-child{
+           display: block !important;
+       }
+     </div>
+   </style>
+  <div tal:condition="is_challenge_content and challenge" class="challenge-block">
+    <small>
+      <span class="${challenge.icon}"></span>
+        ${challenge.title}
+    </small>
+  </div>
+  <input type="hidden" name="__start__" value="${name}:sequence"
+         tal:condition="multiple" />
+
+  <select tal:attributes="
+          name name;
+          id id;
+          class string:form-control ${css_class} ;
+          data-placeholder field.widget.placeholder|None;
+          multiple multiple;"
+          data-context="${','.join(dependencies)}"
+          data-url="${ajax_url}"
+          style="${is_challenge_content and 'display: none'}">
+    <tal:loop tal:repeat="item values">
+      <optgroup tal:condition="isinstance(item, optgroup_class)"
+                tal:attributes="label item.label">
+        <option tal:repeat="(value, description) item.options"
+                tal:attributes="
+                selected (multiple and value in cstruct or value == cstruct) and 'selected';
+                label field.widget.long_label_generator and description;
+                value value"
+                tal:content="field.widget.long_label_generator and field.widget.long_label_generator(item.label, description) or description"/>
+      </optgroup>
+
+      <option tal:condition="not isinstance(item, optgroup_class)"
+              tal:attributes="
+              selected (multiple and item[0] in cstruct or item[0] == cstruct) and 'selected';
+              value item[0]">${item[1]}</option>
+    </tal:loop>
+  </select>
+  <div tal:omit-tag="" tal:condition="not is_challenge_content">
+    <script src="${field.widget.request.static_url('pontus:static/select2/dist/js/i18n/'+field.widget.request.locale_name+'.js')}"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+     deform.addCallback(
+       '${id}',
+       function(oid) {
+          var language = '<tal:block i18n:translate="language-code">en</tal:block>';
+          var ajax_options = {ajax: {
+                                    url: "${ajax_url}",
+                                    dataType: 'json',
+                                    delay: 400,
+                                    data: function (params) {
+                                          var contextData = get_context_data('#'+oid);
+                                          var data = {
+                                              q: params.term,
+                                              page: params.page,
+                                              pageLimit: ${page_limit}
+                                          };
+                                           
+                                          $.extend(data, contextData); 
+                                          return data;
+                                        },
+                                    processResults: function (data, params) {
+                                           // parse the results into the format expected by Select2
+                                          // since we are using custom formatting functions we do not need to
+                                          // alter the remote JSON data, except to indicate that infinite
+                                          // scrolling can be used
+                                          params.page = params.page || 1;
+                                          return {
+                                             results: data.items,
+                                             pagination: {
+                                                 more: (params.page * ${page_limit}) < data.total_count
+                                              }
+                                          };
+                                    },
+                                    cache: true
+                                },
+                                minimumInputLength: ${minimum_input_length},
+                                templateResult: select2_ajax_templates['${ajax_item_template}'] || select2_ajax_templates.default_item_template,
+                                templateSelection: select2_ajax_templates['${ajax_selection_template}'] || select2_ajax_templates.default_select_template,
+                          };
+         <div tal:omit-tag="" tal:condition="field.widget.create" >
+         var init_ops = {tokenSeparators: [","], 
+                         containerCssClass: 'form-control',
+                         tags: true,
+                         language: language
+                        };
+         </div>
+         <div tal:omit-tag="" tal:condition="not field.widget.create" >
+          var init_ops = {containerCssClass: 'form-control', language: language};
+         </div>
+         <div tal:omit-tag="" tal:condition="getattr(field.widget, 'disabled', False)" >
+          init_ops['disabled'] = true;
+         </div>
+         $.extend(init_ops, ajax_options)
+         $('#' + oid).select2(init_ops);
+         $('#' + oid).trigger('select2-started')
+        <div tal:omit-tag="" tal:condition="add_clear" >
+          add_clear_btn($('#' + oid), "${getattr(field.widget, 'clear_title', "Clear")}")
+        </div>
+       }
+     );
+    </script>
+  </div>
+  <input type="hidden" name="__end__" value="${name}:sequence"
+         tal:condition="multiple" />
+</div>

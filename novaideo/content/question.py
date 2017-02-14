@@ -71,7 +71,9 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
         ObjectType(),
         widget=challenge_choice,
         missing=None,
-        title=_("Challenge")
+        title=_("Challenge"),
+        description=_("You can select and/or modify the challenge associated to this question. "
+                      "For an open question, do not select anything in the « Challenge » field.")
     )
 
     title = colander.SchemaNode(

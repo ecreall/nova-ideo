@@ -1,4 +1,4 @@
-<div i18n:domain="novaideo" tal:condition="is_homepage">
+<div i18n:domain="novaideo" tal:condition="condition">
   <div class="container-fluid challenges-container" tal:condition="challenges">      
 	<div class="row">
 	    <div class="col-md-2 col-xs-12 col-sm-1"></div>

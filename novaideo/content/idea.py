@@ -60,6 +60,7 @@ OPINIONS = OrderedDict([
 @colander.deferred
 def challenge_choice(node, kw):
     request = node.bindings['request']
+    is_home_form = node.bindings.get('is_home_form', False)
     request_context = request.context
     challenge = getattr(request_context, 'challenge', None)
     root = getSite()
@@ -81,13 +82,23 @@ def challenge_choice(node, kw):
     ajax_url = request.resource_url(
         root, '@@novaideoapi',
         query={'op': 'find_challenges'})
+    item_css_class = 'challenge-input'
+    is_challenge_content = is_home_form and challenge
+    if is_challenge_content:
+        item_css_class += ' challenge-content'
+
     return AjaxSelect2Widget(
+        template='novaideo:views/idea_management/templates/ajax_select2.pt',
         values=values,
         ajax_url=ajax_url,
         ajax_item_template="related_item_template",
         title_getter=title_getter,
+        challenge=challenge,
+        is_challenge_content=is_challenge_content,
         multiple=False,
-        page_limit=20)
+        add_clear=True,
+        page_limit=20,
+        item_css_class=item_css_class)
 
 
 def context_is_a_idea(context, request):
@@ -105,7 +116,9 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         ObjectType(),
         widget=challenge_choice,
         missing=None,
-        title=_("Challenge")
+        title=_("Challenge (optional)"),
+        description=_("You can select and/or modify the challenge associated to this idea. "
+                      "For an open idea, do not select anything in the « Challenge » field.")
     )
 
     text = colander.SchemaNode(

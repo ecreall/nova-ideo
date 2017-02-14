@@ -102,7 +102,6 @@ def users_to_invite(node, kw):
         values=values,
         ajax_url=ajax_url,
         ajax_item_template="related_item_template",
-        # css_class="search-idea-form",
         item_css_class='invitedusers-input '+state,
         title_getter=title_getter,
         multiple=True,
@@ -126,13 +125,15 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
         widget=LimitedTextAreaWidget(rows=5,
                                      cols=30,
                                      limit=300),
-        title=_("Abstract")
+        title=_("Abstract"),
+        description=_("Describe in a few words the challenge.")
         )
 
     text = colander.SchemaNode(
         colander.String(),
         widget=RichTextWidget(),
-        title=_("Text")
+        title=_("Text"),
+        description=_("You can describe in detail the challenge.")
         )
 
     image = colander.SchemaNode(
@@ -142,7 +143,6 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
         description=_('You see a square on the top left of the image if it exceeds the maximum'
                       ' size allowed. Move and enlarge it if necessary, to determine an area of'
                       ' interest. Several images will be generated from this area.'),
-        missing=None
         )
 
     attached_files = colander.SchemaNode(
@@ -178,6 +178,13 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
                       'If you want to see the members or organizations... already '
                       'registered on the platform, enter a *'),
         missing=[],
+    )
+
+    deadline = colander.SchemaNode(
+        colander.Date(),
+        title=_('Deadline'),
+        description=_("If your challenge is punctual, you can add a deadline for participation."),
+        missing=None
     )
 
 

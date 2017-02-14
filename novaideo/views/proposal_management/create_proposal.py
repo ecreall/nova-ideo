@@ -195,7 +195,8 @@ class CreateProposalFormView(FormView):
     title = _('Create a proposal')
     schema = select(ProposalSchema(factory=Proposal, editable=True,
                                omit=['related_ideas', 'add_files']),
-                    ['title',
+                    ['challenge',
+                     'title',
                      'description',
                      'keywords',
                      'text',

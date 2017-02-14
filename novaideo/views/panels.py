@@ -836,17 +836,20 @@ class ChallengesPanel(object):
     def __call__(self):
         is_homepage = self.request.view_name in ('index', '')
         if not is_homepage:
-            return {'is_homepage': False}
+            return {'condition': False}
 
         challenges_view = SeeChallengesHomeView(self.context, self.request)
         try:
             challenges_view_result = challenges_view()
+            if getattr(challenges_view, 'no_challenges', False):
+                return {'condition': False}
+
         except Exception as error:
             log.warning(error)
-            return {'is_homepage': False}
+            return {'condition': False}
 
         challenges = ''
-        result = {'is_homepage': True, 'css_links': [], 'js_links': []}
+        result = {'condition': True, 'css_links': [], 'js_links': []}
         if isinstance(challenges_view_result, dict) and \
            'coordinates' in challenges_view_result:
             search_render = challenges_view_result['coordinates'][challenges_view.coordinates][0]

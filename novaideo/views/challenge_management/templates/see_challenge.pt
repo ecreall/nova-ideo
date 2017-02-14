@@ -94,4 +94,10 @@
         <div tal:replace="structure footer_body"/>
     </div>
   </div>
+  <div class="action-interation-container action-slider-container"
+         data-interaction_kind="slider" style="top: 0;">
+      <button class="btn btn-primary action-slider-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      <div class="container-body">
+      </div>
+    </div>
 </div>

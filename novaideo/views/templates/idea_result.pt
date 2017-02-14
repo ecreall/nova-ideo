@@ -8,7 +8,8 @@
                  files object.get_attached_files_data();
                  len_files len(files);
                  oid object.__oid__;
-                 support_condition request.support_ideas and 'published' in object.state and 'examined' not in object.state">
+                 support_condition request.support_ideas and 'published' in object.state and 'examined' not in object.state;
+                 challenge getattr(object, 'challenge', None)">
   <div class="media-body media-idea" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="author-block">
       <img class="author-img img-circle" 
@@ -75,7 +76,18 @@
           </h4>
         </a>
       </div>
-      
+
+      <div tal:condition="challenge" class="challenge-block">
+        <small i18n:attributes="" title="Associated to this challenge">
+          <span class="${challenge.icon}"></span>
+          <a data-oid="${getattr(challenge, '__oid__', '')}"
+             class="toggle-popover"
+             href="${request.resource_url(challenge, '@@index')}">
+            ${challenge.title}
+          </a>
+        </small>
+      </div>
+
       <div class="keywords-result">
         <span class="glyphicon glyphicon-tags"></span> 
         <tal:loop repeat="k object.keywords">

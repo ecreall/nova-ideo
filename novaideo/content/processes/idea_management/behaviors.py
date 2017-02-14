@@ -209,6 +209,10 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 grant_roles(user=user, roles=(('Owner', proposal), ))
                 grant_roles(user=user, roles=(('Participant', proposal), ))
                 proposal.setproperty('author', user)
+                challenge = idea.challenge
+                if challenge:
+                    proposal.setproperty('challenge', challenge)
+
                 wg = WorkingGroup()
                 root.addtoproperty('working_groups', wg)
                 wg.init_workspace()

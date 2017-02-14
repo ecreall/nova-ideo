@@ -34,6 +34,7 @@ class CreateChallengeView(FormView):
                      'text',
                      'is_restricted',
                      'invited_users',
+                     'deadline',
                      'attached_files'])
     behaviors = [CrateAndPublish, CreateChallenge, Cancel]
     formid = 'formcreatechallenge'

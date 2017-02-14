@@ -1147,6 +1147,14 @@ def get_tranform_answer_into_idea_metadata(action, request, context, api, **kwar
 # Challenges
 
 
+def get_edit_challenge_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The data relating to the challenge have been updated."),
+        **kwargs)
+
+
 def get_archive_challenge_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
@@ -1910,7 +1918,8 @@ METADATA_GETTERS = {
     'challengemanagement.publish': get_publish_challenge_metadata,
     'challengemanagement.comment': get_comment_metadata,
     'challengemanagement.present': get_present_metadata,
-
+    'challengemanagement.add_members': get_edit_challenge_metadata,
+    'challengemanagement.remove_members': get_edit_challenge_metadata,
 
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
