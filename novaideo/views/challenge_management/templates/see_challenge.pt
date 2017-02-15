@@ -1,3 +1,27 @@
+<div tal:omit-tag="" tal:define="deadline getattr(challenge, 'deadline', None);">
+  <div tal:condition="deadline"
+       tal:define="expired challenge.is_expired;"
+       style="margin-bottom: 30px;">
+    <div class="progress progress-striped"
+         title="${layout.to_localized_time(deadline)}">
+       <div tal:define="percent (challenge.duration - challenge.remaining_duration) * 100 / challenge.duration"
+            class="progress-bar ${expired and 'progress-bar-danger' or 'progress-bar-success'} "
+            role="progressbar"
+            aria-valuenow="${percent}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            style="width: ${percent if percent else 1}%;">
+       </div>
+    </div>
+    <small class="deadline-text-challenge deadline-text-danger" tal:condition="expired">
+      <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">The challenge is expired</span>
+    </small>
+    <small class="deadline-text-challenge deadline-text-success" tal:condition="not expired">
+      <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">${challenge.remaining_duration} day(s) before the end of the challenge.</span>
+    </small>
+  </div>
+</div>
+
 <div 
   class="challenge-detail content-view component-obj-view component-index-view"
   id="index_${oid}"
@@ -12,7 +36,7 @@
         data-icon="${challenge.icon}"
         data-img=""></div>
    <div tal:condition="getattr(challenge, 'is_restricted', False)" class="alert alert-info alert-discret">
-    <span class="ion-person-stalker"><span> <span i18n:translate="">This challenge is restricted and accessible only for a set of users. Only the concerned members can add contents in this challenge. The added contents can be seen only by the concerned members.</span>
+    <span class="ion-locked" style="font-size: 20px;"></span> <span i18n:translate="">This challenge is restricted and accessible only for a set of users. Only the concerned members can add contents in this challenge. The added contents can be seen only by the concerned members.</span>
    </div>
    <div id="contenttext" class="content-text"
     tal:define="files challenge.get_attached_files_data();

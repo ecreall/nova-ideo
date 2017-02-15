@@ -25,6 +25,7 @@ from pontus.core import VisualisableElement
 from .behaviors import (
     SendNewsLetter,
     DeactivateUsers,
+    ManageContents,
     INACTIVITY_DURATION
     )
 from novaideo import _
@@ -40,6 +41,13 @@ def calculate_next_date_newsletter(process):
 
 def calculate_next_date_block1(process):
     next_date = datetime.timedelta(days=INACTIVITY_DURATION) + \
+        datetime.datetime.today()
+    return datetime.datetime.combine(
+        next_date, datetime.time(0, 0, 0, tzinfo=pytz.UTC))
+
+
+def calculate_next_date_block2(process):
+    next_date = datetime.timedelta(days=1) + \
         datetime.datetime.today()
     return datetime.datetime.combine(
         next_date, datetime.time(0, 0, 0, tzinfo=pytz.UTC))
@@ -77,6 +85,15 @@ class SystemProcess(ProcessDefinition, VisualisableElement):
                 timerblock1 = IntermediateCatchEventDefinition(
                                  TimerEventDefinition(
                                    time_date=calculate_next_date_block1)),
+                #Loop 2
+                egblock2 = ExclusiveGatewayDefinition(),
+                manage_contents = ActivityDefinition(contexts=[ManageContents],
+                                       description=_("Manage contents"),
+                                       title=_("Manage contents"),
+                                       groups=[]),
+                timerblock2 = IntermediateCatchEventDefinition(
+                                 TimerEventDefinition(
+                                   time_date=calculate_next_date_block2)),
                 end = EndEventDefinition(),
         )
         self.defineTransitions(
@@ -91,4 +108,9 @@ class SystemProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('egblock1', 'manage_users'),
                 TransitionDefinition('manage_users', 'timerblock1'),
                 TransitionDefinition('timerblock1', 'egblock1'),
+                #Loop 2
+                TransitionDefinition('pg', 'egblock2'),
+                TransitionDefinition('egblock2', 'manage_contents'),
+                TransitionDefinition('manage_contents', 'timerblock2'),
+                TransitionDefinition('timerblock2', 'egblock2'),
         )

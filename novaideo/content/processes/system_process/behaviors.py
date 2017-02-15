@@ -23,7 +23,8 @@ from novaideo.content.processes.\
     newsletter_management.behaviors import send_newsletter_content
 from novaideo.content.interface import (
     INovaIdeoApplication,
-    IPerson)
+    IPerson,
+    IChallenge)
     # IProposal,
     # Iidea)
 from novaideo.views.filter import find_entities
@@ -76,6 +77,27 @@ class DeactivateUsers(ElementaryAction):
 
         # request.registry.notify(ActivityExecuted(
         #     self, all_deactivated, get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class ManageContents(ElementaryAction):
+    context = INovaIdeoApplication
+    actionType = ActionType.system
+    roles_validation = system_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        challenges = find_entities(
+            interfaces=[IChallenge],
+            metadata_filter={
+                'states': ['pending']})
+        for challenge in challenges:
+            if challenge.is_expired:
+                challenge.state = PersistentList(['closed', 'published'])
+                challenge.reindex()
+
         return {}
 
     def redirect(self, context, request, **kw):

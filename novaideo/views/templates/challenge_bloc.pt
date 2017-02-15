@@ -6,14 +6,30 @@
                  icon getattr(object, 'icon');
                  author object.author;
                  oid object.__oid__;
-                 challenge_image object.image
+                 challenge_image object.image;
+                 deadline getattr(object, 'deadline', None)
                  ">
   <span tal:condition="getattr(object, 'is_restricted', False)"
-        class="challenge-restricted ion-person-stalker"
+        class="challenge-restricted ion-locked"
         title="Is restricted"
         i18n:attributes=""></span>
   <img src="${getattr(challenge_image, 'large', challenge_image).url}" role="presentation" class="challenge-img">
+
   <div class="caption media-bloc media-challenge" tal:define="author_picture getattr(author, 'picture', None)">
+    <div class="challenge-progress progress progress-striped"
+         tal:condition="deadline"
+         title="${layout.to_localized_time(deadline)}">
+       <div tal:define="expired object.is_expired;
+                        percent (object.duration - object.remaining_duration) * 100 / object.duration"
+            class="progress-bar ${expired and 'progress-bar-danger' or 'progress-bar-success'} "
+            role="progressbar"
+            aria-valuenow="${percent}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            style="width: ${percent if percent else 1}%;">
+          <span class="sr-only">${percent}% Complete</span>
+       </div>
+    </div>
     <div class="media-challenge-body">
       <div class="">
         <div class="object-title-block view-item-title"
@@ -25,7 +41,7 @@
           </div>
           <a tal:attributes="href url">
             <h4>
-              <span class="icon ${icon}"></span>  ${object.title} 
+              <span class="icon ${icon}"></span>  ${object.title}
             </h4>
           </a>
         </div>

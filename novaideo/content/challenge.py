@@ -225,6 +225,11 @@ class Challenge(
         self.addtoproperty('channels', Channel())
         self.urls = PersistentDict({})
 
+    def __setattr__(self, name, value):
+        super(Challenge, self).__setattr__(name, value)
+        if name in ('deadline', 'published_at') and value:
+            self.init_total_days()
+
     @property
     def related_contents(self):
         return [content[0] for content in self.all_related_contents]
@@ -248,6 +253,35 @@ class Challenge(
     def init_support_history(self):
         if not hasattr(self, '_support_history'):
             setattr(self, '_support_history', PersistentList())
+
+    @property
+    def is_expired(self):
+        if 'closed' in self.state:
+            return True
+
+        deadline = getattr(self, 'deadline', None)
+        if deadline is not None:
+            now = datetime.datetime.now(tz=pytz.UTC)
+            return now.date() >= deadline
+
+        return False
+
+    @property
+    def remaining_duration(self):
+        deadline = getattr(self, 'deadline', None)
+        duration = getattr(self, 'duration', None)
+        if deadline is not None and duration is not None:
+            now = datetime.datetime.now(tz=pytz.UTC)
+            return (deadline - now.date()).days
+
+        return None
+
+    def init_total_days(self):
+        deadline = getattr(self, 'deadline', None)
+        published_at = getattr(self, 'published_at', None)
+        if deadline is not None and published_at is not None:
+            duration = (deadline - published_at.date()).days
+            setattr(self, 'duration', duration)
 
     def get_attached_files_data(self):
         return get_files_data(self.attached_files)

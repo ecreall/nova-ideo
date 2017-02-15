@@ -277,11 +277,9 @@ function initscroll(result_scrolls){
       var result_scroll = $(this);
       var id = result_scroll.attr('id')
       if(result_scroll.hasClass('results-bloc')){
-        $(result_scroll).find('img').last().load(function(){
-          var items = result_scroll.find('>.result-container>.scroll-items-container>.scroll-item')
-          var max_height = max(map(height_of, items));
-          items.height(max_height);
-        })
+        var items = result_scroll.find('>.result-container>.scroll-items-container>.scroll-item')
+        var max_height = max(map(height_of, items));
+        items.height(max_height);
       }
       $(result_scroll).infinitescroll({
         behavior: 'local',
