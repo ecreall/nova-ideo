@@ -157,7 +157,6 @@ function object_view_component(data){
 				        init_content_text_scroll(new_comp.find(".content-text-scroll"))
 				        rebuild_scrolls(new_comp.find(".malihu-scroll"))
 				        var result_scroll = new_comp.find(".result-scroll")
-			            init_result_scroll(undefined, 1000, result_scroll.parents('div').first());
 			            initscroll(result_scroll)
 				        init_emoji($(new_comp.find('.emoji-container:not(.emojified)')));
              
@@ -183,7 +182,6 @@ function contextual_help_component(data){
 			original_component.html(data[component_id+'.body'])
 			rebuild_scrolls(original_component.find('.malihu-scroll'))
 			var result_scroll = original_component.find(".result-scroll")
-            init_result_scroll(undefined, 1000, result_scroll.parents('div').first());
             initscroll(result_scroll)
 			init_emoji($(original_component.find('.emoji-container:not(.emojified)')));
 			init_contextual_help()

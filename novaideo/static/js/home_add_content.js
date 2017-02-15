@@ -141,7 +141,6 @@ $(document).on('submit','.home-add-content .home-add-idea form', function( event
           if(data.status && !redirect_url){
             var item_target = data.item_target
             $(data.new_obj_body).hide().prependTo($('#'+item_target+' .result-container')).fadeIn(1500)
-            init_result_scroll()
           }
           $this.find('input[name="title"]').val(data['new_title']);
           $this.find('textarea[name="text"]').val('');
@@ -233,7 +232,6 @@ $(document).on('submit','.home-add-content .home-add-question form', function( e
           if(data.status && !redirect_url){
             var item_target = data.item_target
             $(data.new_obj_body).hide().prependTo($('#'+item_target+' .result-container')).fadeIn(1500)
-            init_result_scroll()
           }
           $this.find('input[name="question"]').val('');
           $this.find('textarea[name="text"]').val('');

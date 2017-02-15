@@ -59,7 +59,7 @@ class SeeRelatedIdeasView(BasicView):
         batch = Batch(objects, self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results_related_ideas"
+        batch.target = "#results_related_ideas" + str(self.context.__oid__)
         len_result = batch.seqlen
         index = str(len_result)
         if len_result > 1:

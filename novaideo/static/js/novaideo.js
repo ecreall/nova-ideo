@@ -1,3 +1,21 @@
+function height_of(e){
+  var height = $(e).height();
+  if (height == null){
+    return 0
+  };
+  return height
+}
+
+function map(f, l){
+    return l.map(function(){
+        return f(this)
+    })
+}
+
+function max(l){
+  return  jQuery.makeArray(l.sort()).reverse()[0]
+}
+
 //see: http://stackoverflow.com/questions/946534/insert-text-into-textarea-with-jquery/946556#946556
 jQuery.fn.extend({
   insertAtCaret: function(myValue){
@@ -258,24 +276,12 @@ function initscroll(result_scrolls){
     $.each(result_scrolls, function(index){
       var result_scroll = $(this);
       var id = result_scroll.attr('id')
-      var to_infinite = result_scroll
-      // if (!window.matchMedia("(max-width: 767px)").matches) {
-      //   result_scroll.mCustomScrollbar({
-      //   theme:"dark",
-      //   scrollInertia: 100,
-      //   mouseWheelPixels: 90,
-      //   scrollButtons:{
-      //     enable: true
-      //   },
-      //   callbacks:{
-      //     onTotalScroll:function(event){
-      //       $(this).triggerHandler('scroll');
-      //     }
-      //   }
-      // });
-      //   to_infinite = result_scroll.find('.mCSB_container').first()
-      // }
-      $(to_infinite).infinitescroll({
+      if(result_scroll.hasClass('results-bloc')){
+        var items = result_scroll.find('>.result-container>.scroll-items-container>.scroll-item')
+        var max_height = max(map(height_of, items));
+        items.height(max_height);
+      }
+      $(result_scroll).infinitescroll({
         behavior: 'local',
         bufferPx: 0,
         binder: result_scroll,
@@ -321,15 +327,24 @@ function initscroll(result_scrolls){
           msgText: ""
         }
       },
-      function(arrayOfNewElems){
-        init_emoji($('.emoji-container:not(.emojified)'));
+      function(elements){
         var $this = $(this)
-        var new_content = $($(this).find('.result-container').last())
-        rebuild_scrolls(new_content.find(".malihu-scroll"))
-        var next = new_content.data('nex_url')
-        if(next){
-          var currentbtn = $($this.find('.btn-more-scroll').last())
-          $this.find('.btn-more-scroll').not(currentbtn).parents('.btn-more-scroll-container').remove()
+        var current_content = $this.find('.result-container').first()
+        var scroll_items_container = $(current_content.find('>.scroll-items-container').first())
+        var new_content = $($this.find('.result-container').last())
+        var items = $(elements).find('>.scroll-items-container>.scroll-item')
+        var nex_url =  new_content.data('nex_url')
+        scroll_items_container.append(items)
+        if($this.hasClass('results-bloc')){
+          $this.load(function(){
+            var max_height = max(map(height_of, items));
+            items.height(max_height);
+          })
+        }
+        new_content.remove()
+        if(nex_url){
+          current_content.data('nex_url', nex_url)
+          current_content.attr('nex_url', nex_url)
         }else{
          $this.find('.btn-more-scroll').parents('.btn-more-scroll-container').remove()
         }
@@ -363,32 +378,6 @@ function init_content_text_scroll(texts){
   }
 };
 
-function init_result_scroll(event, default_top, element){
- //  if(default_top == undefined){
- //    default_top = 1600
- //  }
- //  var result_scrolls = element? $(element.find('.result-scroll')): $('.result-scroll');
- //  for(var i = 0; i<= result_scrolls.length; i++){
- //    var result_scroll = $(result_scrolls[i]);
- //    var items = $(result_scroll.find('.result-item, .small-result'));
- //    var last_child = items.last()
- //    if (last_child.length > 0){
- //        var top = last_child.offset().top - result_scroll.offset().top  + last_child.height()
- //        if(items.length < 8){
- //          top += 50
- //        }else{
- //          top -= 10
- //        }
- //        if (top < default_top){
- //         result_scroll.height(top);
- //        }else{
- //          result_scroll.height(default_top);
- //        }
- //    }else{
- //         result_scroll.height(100);
- //    }
- // }
-};
 
 function init_morecontent_scroll(){
   var result_scrolls = $('.more-content-carousel');
@@ -593,8 +582,6 @@ $(document).on('click', '.working-group-toggle', function(){
         btn.addClass(' ion-ios7-arrow-down');
         wg_section_body.addClass('hide-bloc');
       };
-      
-      init_result_scroll();
         
   });
 
@@ -663,17 +650,13 @@ $(document).on('click', '.smartfolder-nav li > span.icon-state', function(event)
 })
 
 
-$(document).on('shown.bs.modal', '.modal', function () {
-    init_result_scroll(undefined, 1000, $(this));
-});
-
-
 // $(document).on('click', '.more-text .activator', function (event) {
 //     $(this).parents('.more-text').first().toggleClass('open');
 //     event.stopPropagation()
 // });
 
-$(document).on('click', '.content-more span.open', function () {
+
+$(document).on('click', '.content-more-message', function () {
     var more_btn = $(this).parents('.content-more').first();
     var content = more_btn.siblings('.content-collapsible')
     more_btn.removeClass('active')
@@ -751,8 +734,6 @@ $(document).ready(function(){
 
   init_content_text_scroll();
 
-  init_result_scroll();
-
   init_morecontent_scroll();
 
   initscroll();
@@ -771,7 +752,6 @@ $(document).ready(function(){
 
   $(document).on('shown.bs.collapse', '.panel-collapse', function () {
     $(this).siblings().find('a span.glyphicon-plus').attr('class', 'glyphicon glyphicon-minus');
-    init_result_scroll(undefined, 1000, $(this));
   });
 
   // more_content($('.more-content-carousel.verticla'), true);
@@ -798,7 +778,6 @@ $(document).ready(function(){
 
   scroll_to_panel()
 
-  $(document).on('shown.bs.tab', '.nav-tabs',init_result_scroll)
 
   $(document).on('show.bs.modal', '.similar-ideas', function(){
       $('body').addClass('similar-ideas-modal-open')

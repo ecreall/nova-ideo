@@ -1,3 +1,7 @@
+.challenge-col{
+  min-width: 290px
+}
+
 .challenge-col>.search-item-bloc>.action-slider-container {
   top: 0px
 }
@@ -52,8 +56,7 @@
     background-color: #54902a;
     border-bottom-left-radius: 3em;
     -webkit-box-shadow: #000 0 0 4px;
-    box-shadow: -1px 1px 2px rgba(0, 0, 0, 0.5);
-    top: 6px;
+    box-shadow: -1px 1px 1px rgba(0,0,0,.25);
 }
 
 .challenge-container .challenge-restricted{
@@ -86,13 +89,13 @@
 .content-more .content-more-message{
     margin-top: 40px;
     color: #ef6e18;
+    cursor: s-resize;
 }
 
 .content-more span.open{
     font-size: 26px;
     text-shadow: 0 1px 3px gray;
     display: block;
-    cursor: s-resize;
 }
 
 .content-more .content-more-message:hover{
@@ -139,6 +142,7 @@
 
 .media-challenge .view-item-title h4{
     text-overflow: ellipsis;
+    min-height: 36px;
     width: 75%;
     overflow: hidden;
     white-space: nowrap;
@@ -274,17 +278,13 @@ challenge-container .author-block{
 .action-slider-container {
     display: none;
     position:absolute;
-    right:0;
+    right:16px;
     background-color:white;
     color:#fff;
     box-shadow: -2px 0px 3px rgba(0,0,0,.15);
     z-index: 1047;
     border: 1px solid #337ab7;
     border-radius: 3px;
-}
-
-.search-item-bloc>.action-slider-container{
-  margin-right: 15px
 }
 
 .action-slider-container>.container-body{
@@ -297,11 +297,11 @@ challenge-container .author-block{
 .sidebar-container .content-view>.action-slider-container{
     height: 100% !important;
     position: fixed !important;
+    right: 0!important;
     z-index: 2000
 }
 
 .panel-body>.content-view>.action-slider-container{
-  margin-right: 15px;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
@@ -2397,7 +2397,10 @@ form .btn{
 
 ul.btn-sub-menu,
 .btn-sub-menu-container{
-    margin: 0px !important;
+    margin-bottom: -5px;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
 }
 
 ul.btn-sub-menu{
@@ -2531,14 +2534,9 @@ ul.btn-sub-menu li{
     background-color: transparent;
 }
 
-.pontus-main .row{
+.items-main-view-container>.row{
   margin-left: 0px;
   margin-right: 0px;
-}
-
-.user-view-index .tab-content .row:first-child{
-    margin-left: 0px !important;
-    margin-right: 0px !important;
 }
 
 .pontus-main .tab-content .row:first-child{
@@ -3264,8 +3262,6 @@ a:hover, a:focus {
 
 .thumbnail.right-caption > img, .thumbnail.right-caption > a:not(.content-user-img){
   float: left;
-  margin-right: 9px;
-  margin-top: -5px
 }
 .thumbnail.right-caption{float: none;}
 .thumbnail.right-caption>.caption{padding: 4px;}
@@ -4890,7 +4886,7 @@ span.circle{
   }
 
   .access-menu .nav>li, .access-menu  .nav>li>a{
-    display: inline-block!important;
+    display: inline-block;
     font-size: 15px!important;
     margin-right: 6%;
   }

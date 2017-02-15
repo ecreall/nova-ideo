@@ -14,11 +14,11 @@
       </div>
   </div>
   <div class="row">
-    <div tal:condition="bodies" id="${id}" class="results scroll-able result-scroll">
+    <div tal:condition="bodies" id="${id}" class="results-bloc results scroll-able result-scroll">
       <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
       <div class="container-fluid result-container" data-nex_url="${batch.next_url}">
-          <div class="row">
-            <div class="challenge-col col-lg-4 col-md-5 col-sm-6 col-xs-12" tal:repeat="body bodies" style="padding-top: 10px">
+          <div tal:condition="bodies" class="row scroll-items-container">
+            <div class="scroll-item challenge-col col-lg-3 col-md-5 col-sm-6 col-xs-12" tal:repeat="body bodies">
                 ${structure:body}
             </div>
           </div>

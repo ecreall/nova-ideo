@@ -25,7 +25,7 @@ from novaideo.views.filter.sort import (
 
 BATCH_DEFAULT_SIZE = 8
 
-BATCH_HOME_DEFAULT_SIZE = 3
+BATCH_HOME_DEFAULT_SIZE = 4
 
 
 CONTENTS_MESSAGES = {

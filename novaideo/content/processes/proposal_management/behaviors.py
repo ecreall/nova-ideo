@@ -1125,6 +1125,7 @@ def seem_processsecurity_validation(process, context):
 class SeeMembers(InfiniteCardinality):
     style_descriminator = 'listing-wg-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
     style_picto = 'fa fa-users'
     isSequential = False
     context = IProposal
@@ -1195,6 +1196,7 @@ def seeideas_state_validation(process, context):
 class SeeRelatedIdeas(InfiniteCardinality):
     style_descriminator = 'listing-primary-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
     # style_interaction_container = 'modal-l'
     style_picto = 'glyphicon glyphicon-link'
     context = IProposal
