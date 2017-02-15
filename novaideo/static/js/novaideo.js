@@ -277,7 +277,7 @@ function initscroll(result_scrolls){
       var result_scroll = $(this);
       var id = result_scroll.attr('id')
       if(result_scroll.hasClass('results-bloc')){
-        $(result_scroll).find('img').first().load(function(){
+        $(result_scroll).find('img').last().load(function(){
           var items = result_scroll.find('>.result-container>.scroll-items-container>.scroll-item')
           var max_height = max(map(height_of, items));
           items.height(max_height);
@@ -338,7 +338,7 @@ function initscroll(result_scrolls){
         var nex_url =  new_content.data('nex_url')
         scroll_items_container.append(items)
         if($this.hasClass('results-bloc')){
-          $(current_content).find('img').first().load(function(){
+          $(current_content).find('img').last().load(function(){
             var max_height = max(map(height_of, items));
             items.height(max_height);
           })
