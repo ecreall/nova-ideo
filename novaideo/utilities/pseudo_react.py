@@ -1155,15 +1155,20 @@ def get_edit_challenge_metadata(action, request, context, api, **kwargs):
         **kwargs)
 
 
+def get_submit_challenge_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The challenge has been submitted to moderation."),
+        **kwargs)
+
+
 def get_archive_challenge_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
         _("The challenge has been archived."),
         **kwargs)
-    result['objects_to_hide'] = [
-        'listing_'+str(get_oid(context, None))]
-
     return result
 
 
@@ -1920,6 +1925,7 @@ METADATA_GETTERS = {
     'challengemanagement.present': get_present_metadata,
     'challengemanagement.add_members': get_edit_challenge_metadata,
     'challengemanagement.remove_members': get_edit_challenge_metadata,
+    'challengemanagement.submit': get_submit_challenge_metadata,
 
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,

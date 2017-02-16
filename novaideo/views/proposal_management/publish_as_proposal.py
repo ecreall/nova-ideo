@@ -119,7 +119,7 @@ class PublishFormView(CreateProposalFormView):
             data['add_files']['attached_files'] = files
 
         challenge = getattr(self.context, 'challenge', None)
-        if challenge and not challenge.is_expired:
+        if challenge and challenge.can_add_content:
             data['challenge'] = challenge
 
         return data

@@ -8,9 +8,9 @@ function related_item_template(item){
    markup += '</div>'+
              '<div clas="col-sm-10">' +
                '<div class="clearfix">' +
-                  '<div class="col-sm-3">' + item.text + '</div>';
+                  '<div class="col-sm-8">' + item.text + '</div>';
    if (item.description) {
-      markup += '<div class="col-sm-8">' + item.description + '</div>';
+      markup += '<div class="col-sm-3">' + item.description + '</div>';
     };
    markup += '</div></div></div>';
    return markup

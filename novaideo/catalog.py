@@ -13,7 +13,8 @@ from substanced.catalog import (
     )
 
 from dace.util import Adapter, adapter
-
+from dace.objectofcollaboration.principal.util import (
+    get_objects_with_role)
 # from novaideo.utilities.tree_utility import (
 #     get_branches, tree_to_keywords)
 from novaideo import get_access_keys
@@ -803,6 +804,11 @@ class PersonSearch(SearchableObject):
             return [get_oid(organization)]
 
         return []
+
+    def challenges(self):
+        challenges = get_objects_with_role(
+            self.context, 'ChallengeParticipant')
+        return [get_oid(challenge) for challenge in challenges]
 
 
 @adapter(context=IPreregistration)

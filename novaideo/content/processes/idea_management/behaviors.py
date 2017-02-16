@@ -83,7 +83,6 @@ class CreateIdea(InfiniteCardinality):
         root = getSite()
         user = get_current(request)
         idea = appstruct['_object_data']
-        root.merge_keywords(idea.keywords)
         root.addtoproperty('ideas', idea)
         idea.state.append('to work')
         grant_roles(user=user, roles=(('Owner', idea), ))
@@ -380,7 +379,6 @@ class EditIdea(InfiniteCardinality):
 
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
-        root.merge_keywords(appstruct['keywords'])
         copy_of_idea.state = PersistentList(['version', 'archived'])
         copy_of_idea.setproperty('author', user)
         note = appstruct.pop('note', '')
@@ -553,6 +551,7 @@ class PublishIdeaModeration(InfiniteCardinality):
             context.state = PersistentList(['published', 'submitted_support'])
 
         context.init_published_at()
+        root.merge_keywords(context.keywords)
         context.reindex()
         user = context.author
         alert('internal', [root], [user],
@@ -653,7 +652,7 @@ class PublishIdea(InfiniteCardinality):
                 alert_kind='duplicated',
                 duplication=context
                 )
-        
+
         transformed_from = context.transformed_from
         if transformed_from:
             context_type = transformed_from.__class__.__name__.lower()
@@ -665,7 +664,7 @@ class PublishIdea(InfiniteCardinality):
                 alert_kind='transformation_idea',
                 idea=context
                 )
-
+        root.merge_keywords(context.keywords)
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(

@@ -279,7 +279,7 @@ class ParticipateView(BasicView):
             'css_links': []
         }
         contents_forms = {'has_forms': False}
-        if not self.context.is_expired:
+        if self.context.can_add_content:
             contents_forms = get_contents_forms(self.request)
             resources = {
                 'js_links': contents_forms.pop('js_links'),

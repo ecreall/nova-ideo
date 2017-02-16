@@ -12,9 +12,9 @@ from pyramid.request import Request
 from pyramid.threadlocal import manager
 
 from substanced.event import RootAdded
-from substanced.util import find_service
+from substanced.util import find_service, get_oid
 
-from dace.util import getSite
+from dace.util import getSite, find_catalog
 from pontus.file import File
 
 from novaideo import core
@@ -97,7 +97,14 @@ def mysubscriber_object_published(event):
     content = event.object
     keywords = content.keywords
     request = get_current_request()
-    users = get_users_by_keywords(keywords)
+    challenge = getattr(content, 'challenge', None)
+    query = None
+    if getattr(challenge, 'is_restricted', False):
+        novaideo_catalog = find_catalog('novaideo')
+        challenges_index = novaideo_catalog['challenges']
+        query = challenges_index.any([get_oid(challenge)])
+
+    users = get_users_by_keywords(keywords, query)
     root = request.root
     mail_template = root.get_mail_template('alert_new_content')
     subject_data = get_entity_data(content, 'subject', request)

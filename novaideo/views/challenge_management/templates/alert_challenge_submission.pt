@@ -1,0 +1,4 @@
+<div class="alert alert-info" i18n:domain="novaideo">
+	 <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+	<p i18n:translate="">By clicking on « Continue », the challenge will be  suubmitted for publication, and will be the purpose of an a priori moderation. The moderators can decide either to publish it, or to stop its process and to store it in the archive. If your challenge is published, you won't be able to further edit it.</p>
+</div>

@@ -42,7 +42,8 @@
         </div>
         <a tal:attributes="href url">
           <h4>
-            <span class="icon ${icon}"></span>  ${object.title} 
+            <span class="icon ${icon}"></span>  ${object.title}
+            <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
           </h4>
         </a>
       </div>

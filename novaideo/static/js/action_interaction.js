@@ -218,10 +218,10 @@ function update_slider_action(){
           width = is_sidebar && is_content_view? width-10: width;
           var height = is_content_view? item.outerHeight()+15:item.outerHeight();
           target.css({
-            height,
+            height: height,
             display: 'block'})
           target.stop().animate({
-              width,
+              width: width,
           }, 400, function(){
              target.find('.container-body').css({
               display: 'block'})

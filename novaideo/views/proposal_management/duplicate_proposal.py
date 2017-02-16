@@ -52,7 +52,7 @@ class DuplicateProposalFormView(FormView):
             data['add_files']['attached_files'] = files
 
         challenge = self.context.challenge
-        if challenge and challenge.is_expired:
+        if challenge and not challenge.can_add_content:
             data['challenge'] = ''
 
         return data

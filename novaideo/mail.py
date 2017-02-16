@@ -559,6 +559,31 @@ Vous êtes maintenant désabonné de la newsletter {newsletter_title}.
 """ + PORTAL_SIGNATURE
 
 
+PUBLISHEDCHALLENGE_SUBJECT = u"""Décision des modérateurs de publier le challenge « {subject_title} »"""
+
+
+PUBLISHEDCHALLENGE_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le challenge « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}.
+
+"""+ PORTAL_SIGNATURE
+
+ARCHIVECHALLENGE_SUBJECT = u"""Décision des modérateurs d'archiver le challenge « {subject_title} »"""
+
+
+ARCHIVECHALLENGE_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le challenge « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+
+{explanation}
+
+Vous pouvez retrouver votre challenge sous {subject_url}.
+
+"""+ PORTAL_SIGNATURE
+
+
 FIRST_INVITATION = {
     'subject': FIRST_INVITATION_SUBJECT,
     'template': FIRST_INVITATION_MESSAGE
@@ -779,5 +804,15 @@ DEFAULT_SITE_MAILS = {
               'title': _("Moderation: Archive the content"),
               'subject': ARCHIVECONTENT_SUBJECT,
               'template': ARCHIVECONTENT_MESSAGE
+    },
+    'archive_challenge_decision': {
+              'title': _("Moderation: Archive the challenge"),
+              'subject': ARCHIVECHALLENGE_SUBJECT,
+              'template': ARCHIVECHALLENGE_MESSAGE
+    },
+    'publish_challenge_decision': {
+              'title': _("Moderation: Publish the challenge"),
+              'subject': PUBLISHEDCHALLENGE_SUBJECT,
+              'template': PUBLISHEDCHALLENGE_MESSAGE
     }
 }

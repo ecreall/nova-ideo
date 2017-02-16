@@ -145,14 +145,25 @@ class CreateIdeaView_Json(BasicView):
         try:
             behavior = self.behaviors_instances['Create_an_idea']
             values = {'title': self.params('title'),
-                      'text': self.params('text'),
-                      'keywords': self.params('keywords')}
+                      'text': self.params('text')}
+            keywords = self.params('keywords')
+            if not isinstance(keywords, (list, tuple)):
+                keywords = [keywords]
+
+            values['keywords'] = keywords
+            challenge = self.params('challenge')
+            if challenge:
+                try:
+                    challenge = get_obj(int(challenge))
+                    values['challenge'] = challenge
+                except:
+                    pass
+
             idea = Idea()
             idea.set_data(values)
             appstruct = {'_object_data': idea}
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
-            user = get_current()
             new_title = ''#self._get_new_title(user)
             data = {'title': idea.title,
                     'oid': str(oid),

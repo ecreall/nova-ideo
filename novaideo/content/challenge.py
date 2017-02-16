@@ -227,7 +227,7 @@ class Challenge(
 
     def __setattr__(self, name, value):
         super(Challenge, self).__setattr__(name, value)
-        if name in ('deadline', 'published_at') and value:
+        if name in ('deadline', 'published_at', 'created_at') and value:
             self.init_total_days()
 
     @property
@@ -260,6 +260,10 @@ class Challenge(
         return False
 
     @property
+    def can_add_content(self):
+        return not self.is_expired and 'pending' in self.state
+
+    @property
     def remaining_duration(self):
         deadline = getattr(self, 'deadline', None)
         duration = getattr(self, 'duration', None)
@@ -279,9 +283,10 @@ class Challenge(
 
     def init_total_days(self):
         deadline = getattr(self, 'deadline', None)
-        published_at = getattr(self, 'published_at', None)
-        if deadline is not None and published_at is not None:
-            duration = (deadline - published_at.date()).days
+        date = getattr(self, 'published_at', None)
+        date = date if date else getattr(self, 'created_at', None)
+        if deadline is not None and date is not None:
+            duration = (deadline - date.date()).days
             setattr(self, 'duration', duration)
 
     def get_attached_files_data(self):

@@ -1315,14 +1315,15 @@ def get_entities_by_title(interfaces, title, **args):
         **args)
 
 
-def get_users_by_keywords(keywords):
+def get_users_by_keywords(keywords, query=None):
     if not keywords:
         return []
 
     return find_entities(
         metadata_filter={'content_types': ['person'],
                          'states': ['active'],
-                         'keywords': keywords})
+                         'keywords': keywords},
+        add_query=query)
 
 
 def get_users_by_preferences(content):

@@ -86,29 +86,29 @@ class CreateChallenge(InfiniteCardinality):
 
         challenge.setproperty('author', user)
         challenge.subscribe_to_channel(user)
-        if isinstance(context, (Comment, Answer)):
-            content = context.subject
-            correlations = connect(
-                content,
-                [challenge],
-                {'comment': context.comment,
-                 'type': getattr(context, 'intention',
-                                 'Transformation from another content')},
-                user,
-                ['transformation'],
-                CorrelationType.solid)
-            for correlation in correlations:
-                correlation.setproperty('context', context)
+        # if isinstance(context, (Comment, Answer)):
+        #     content = context.subject
+        #     correlations = connect(
+        #         content,
+        #         [challenge],
+        #         {'comment': context.comment,
+        #          'type': getattr(context, 'intention',
+        #                          'Transformation from another content')},
+        #         user,
+        #         ['transformation'],
+        #         CorrelationType.solid)
+        #     for correlation in correlations:
+        #         correlation.setproperty('context', context)
 
-            context_type = context.__class__.__name__.lower()
-            # Add Nia comment
-            alert_comment_nia(
-                challenge, request, root,
-                internal_kind=InternalAlertKind.content_alert,
-                subject_type='challenge',
-                alert_kind='transformation_'+context_type,
-                content=context
-                )
+        #     context_type = context.__class__.__name__.lower()
+        #     # Add Nia comment
+        #     alert_comment_nia(
+        #         challenge, request, root,
+        #         internal_kind=InternalAlertKind.content_alert,
+        #         subject_type='challenge',
+        #         alert_kind='transformation_'+context_type,
+        #         content=context
+        #         )
 
         challenge.format(request)
         challenge.reindex()
@@ -213,7 +213,7 @@ def archive_state_validation(process, context):
 
 class ArchiveChallenge(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
-    style_descriminator = 'plus-action'
+    style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-inbox'
     style_order = 4
@@ -286,17 +286,17 @@ class PublishChallenge(InfiniteCardinality):
         alert('internal', [root], [author],
               internal_kind=InternalAlertKind.moderation_alert,
               subjects=[context], alert_kind='moderation')
-        transformed_from = context.transformed_from
-        if transformed_from:
-            context_type = transformed_from.__class__.__name__.lower()
-            # Add Nia comment
-            alert_comment_nia(
-                transformed_from, request, root,
-                internal_kind=InternalAlertKind.content_alert,
-                subject_type=context_type,
-                alert_kind='transformation_challenge',
-                idea=context
-                )
+        # transformed_from = context.transformed_from
+        # if transformed_from:
+        #     context_type = transformed_from.__class__.__name__.lower()
+        #     # Add Nia comment
+        #     alert_comment_nia(
+        #         transformed_from, request, root,
+        #         internal_kind=InternalAlertKind.content_alert,
+        #         subject_type=context_type,
+        #         alert_kind='transformation_challenge',
+        #         idea=context
+        #         )
 
         if user is not author and getattr(author, 'email', ''):
             mail_template = root.get_mail_template('publish_challenge_decision')
@@ -311,9 +311,7 @@ class PublishChallenge(InfiniteCardinality):
             alert('email', [root.get_site_sender()], [author.email],
                   subject=subject, body=message)
 
-        if not getattr(context, 'is_restricted', False):
-            request.registry.notify(ObjectPublished(object=context))
-
+        request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
             self, [context], user))
         return {}
