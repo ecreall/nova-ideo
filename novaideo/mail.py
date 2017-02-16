@@ -584,6 +584,17 @@ Vous pouvez retrouver votre challenge sous {subject_url}.
 """+ PORTAL_SIGNATURE
 
 
+PRESENTATION_CHALLENGE_SUBJECT = u"""Présentation du challenge « {subject_title} »""" 
+
+
+PRESENTATION_CHALLENGE_MESSAGE = u"""
+Bonjour,
+
+{my_first_name} {my_last_name} souhaite vous présenter le challenge « {subject_title} » figurant sur la plateforme {novaideo_title}. Ce challenge est accessible à l'adresse : {subject_url}.
+
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
+
 FIRST_INVITATION = {
     'subject': FIRST_INVITATION_SUBJECT,
     'template': FIRST_INVITATION_MESSAGE
@@ -814,5 +825,11 @@ DEFAULT_SITE_MAILS = {
               'title': _("Moderation: Publish the challenge"),
               'subject': PUBLISHEDCHALLENGE_SUBJECT,
               'template': PUBLISHEDCHALLENGE_MESSAGE
+    },
+
+    'presentation_challenge': {
+              'title': _("Presentation of a challenge"),
+              'subject': PRESENTATION_CHALLENGE_SUBJECT,
+              'template': PRESENTATION_CHALLENGE_MESSAGE
     }
 }
