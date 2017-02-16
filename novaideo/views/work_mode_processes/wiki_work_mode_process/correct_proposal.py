@@ -75,7 +75,8 @@ class AddIdeaSchema(Schema):
                                  widget=SimpleMappingtWidget(
                                     mapping_css_class='hide-bloc new-idea-form',
                                     ajax=False)),
-                    ['title',
+                    ['challenge',
+                     'title',
                      'text',
                      'keywords'])
 
@@ -121,7 +122,12 @@ class AddIdeaFormView(FormView):
                 getattr(user, 'title', user.name)+' '+\
                 localizer.translate(_('the'))+' '+\
                 time
-        return {'new_idea': {'title': title}}
+        challenge = getattr(self.context, 'challenge', '')
+        if challenge and not challenge.can_add_content:
+            challenge = ''
+
+        return {'new_idea': {'title': title,
+                             'challenge': challenge}}
 
 
 class RelatedIdeasView(BasicView):

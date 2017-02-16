@@ -1,0 +1,38 @@
+<div class="items-main-view-container" 
+   id="items-main-view-container-${id}"
+   tal:define="batch_value batch|nothing;
+               id (batch_value and batch_value.target.replace('#', '')) or 'results'"
+   i18n:domain="novaideo">
+  <div tal:omit-tag="" tal:define="sortbody sort_body|nothing">
+    <div id="sort-${id}" tal:condition="sortbody">
+      ${structure: sortbody}
+      </div>
+  </div>
+  <div tal:omit-tag="" tal:define="filterbody filter_body|nothing">
+    <div id="filter-${id}" tal:condition="filterbody">
+      ${structure: filterbody}
+      </div>
+  </div>
+  <div class="row">
+    <div tal:condition="bodies" id="${id}" class="results-bloc results scroll-able result-scroll">
+      <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
+      <div class="container-fluid result-container" data-nex_url="${batch.next_url}">
+          <div tal:condition="bodies" class="row scroll-items-container">
+            <div class="scroll-item challenge-col col-lg-3 col-md-5 col-sm-6 col-xs-12" tal:repeat="body bodies">
+                ${structure:body}
+            </div>
+          </div>
+          <div class="btn-more-scroll-container">
+            <span id="results-home-challenges-btn-all" class="btn-more-all pull-right">
+              <a i18n:translate="" href="${request.resource_url(request.virtual_root, '@@seechallenges')}">All challenges</a>
+            </span>
+
+            <span tal:condition="bodies and batch.next_url" id="${id}-btn-more" class="scroll btn-more-scroll">
+              <span i18n:translate="">More challenges</span> <span class="more-icon glyphicon glyphicon-option-horizontal"></span>
+            </span>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+

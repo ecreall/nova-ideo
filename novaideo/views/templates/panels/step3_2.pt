@@ -1,6 +1,5 @@
 <div class="step-metadata" i18n:domain="novaideo"
    tal:define="work_mode getattr(getattr(context.working_group, 'work_mode', None), 'title', None)">
-  <div class="step-title"><span class="step-icon glyphicon glyphicon-stats"></span></div>
   <dl>
     <div tal:omit-tag="" tal:condition="work_mode">
      <dt>

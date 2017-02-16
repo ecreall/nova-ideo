@@ -13,7 +13,8 @@ from substanced.catalog import (
     )
 
 from dace.util import Adapter, adapter
-
+from dace.objectofcollaboration.principal.util import (
+    get_objects_with_role)
 # from novaideo.utilities.tree_utility import (
 #     get_branches, tree_to_keywords)
 from novaideo import get_access_keys
@@ -136,6 +137,9 @@ class ISearchableObject(Interface):
         pass
 
     def support_diff():
+        pass
+
+    def challenges():
         pass
 
 
@@ -560,6 +564,19 @@ class NovaideoCatalogViews(object):
 
         return support_diff
 
+    @indexview()
+    def challenges(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        challenges = adapter.challenges()
+        if challenges is None:
+            return default
+
+        return challenges
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -600,6 +617,7 @@ class NovaideoIndexes(object):
     support = Field()
     oppose = Field()
     support_diff = Field()
+    challenges = Keyword()
 
 
 @adapter(context=IEntity)
@@ -759,6 +777,10 @@ class SearchableObject(Adapter):
     def support_diff(self):
         return 0
 
+    def challenges(self):
+        challenge = getattr(self.context, 'challenge', None)
+        return [get_oid(challenge)] if challenge else []
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
@@ -782,6 +804,11 @@ class PersonSearch(SearchableObject):
             return [get_oid(organization)]
 
         return []
+
+    def challenges(self):
+        challenges = get_objects_with_role(
+            self.context, 'ChallengeParticipant')
+        return [get_oid(challenge) for challenge in challenges]
 
 
 @adapter(context=IPreregistration)

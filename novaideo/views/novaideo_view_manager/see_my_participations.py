@@ -39,7 +39,7 @@ class SeeMyParticipationsView(SeeMyContentsView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seemyparticipations'
     contents_messages = CONTENTS_MESSAGES
-    selected_filter = [('metadata_filter', ['keywords', 'states']),
+    selected_filter = [('metadata_filter', ['keywords', 'states', 'challenges']),
                        ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
     include_archived = False

@@ -285,6 +285,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     following_channels = SharedMultipleProperty('following_channels', 'members')
     folders = SharedMultipleProperty('folders', 'author')
     questions = SharedMultipleProperty('questions', 'author')
+    challenges = SharedMultipleProperty('challenges', 'author')
 
     def __init__(self, **kwargs):
         if 'locale' not in kwargs:
@@ -374,6 +375,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         result = [i for i in list(self.ideas) if i is i.current_version]
         result.extend(self.proposals)
         result.extend(self.questions)
+        result.extend(self.challenges)
         return result
 
     @property
@@ -486,6 +488,14 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
                       if a.has_args(**kwargs)]
 
         return alerts
+
+    @property
+    def user_groups(self):
+        groups = list(self.groups)
+        if self.organization:
+            groups.append(self.organization)
+
+        return groups
 
 
 @content(

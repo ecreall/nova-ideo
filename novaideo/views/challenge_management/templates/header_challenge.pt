@@ -1,0 +1,57 @@
+<div tal:omit-tag=""  i18n:domain="novaideo"
+  tal:define="
+    icon getattr(idea, 'icon');">
+  <div tal:replace="structure navbar_body"/>
+  <div class="media-body content-title-body">
+    <div tal:condition="cant_publish or cant_submit" role="alert" class="alert alert-info alert-dismissible">
+       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <span class="glyphicon glyphicon-info-sign pull-right"></span>
+        <span  i18n:translate="">In order for your duplicated idea to be published, you must modify it berforehand, so that it be different from the original idea.</span>
+    </div>
+    <h4 tal:condition="state">
+      <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
+    </h4>
+    <h3 class="content-title"
+        data-title="${idea.title}"
+        data-icon="${icon}"
+        data-img=""
+      >
+      <span tal:omit-tag="" tal:condition="not to_hide"><span class="icon ${icon}"></span> ${idea.title}</span>
+    </h3>
+    <div class="object-description"
+      tal:define="author idea.author;
+                  original idea.originalentity;
+                  current_version idea.current_version;
+                  is_current idea is current_version">
+     <small tal:define="author_picture getattr(author, 'picture', None)">
+        <div class="author-block">
+          <img class="author-img img-circle" 
+             tal:condition="author_picture is not None" 
+             tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+          <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
+          <span>
+            <span i18n:translate="">Submitted by</span>
+            <a tal:attributes="href request.resource_url(author, '@@index')">
+              ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+            </a>
+            <span i18n:translate="">the</span>
+            <span tal:replace="layout.to_localized_time(idea.created_at)"/>
+          </span>
+        </div>
+        <span tal:omit-tag="" tal:condition="original is not None"><span i18n:translate="">, duplicated from the idea</span> <a tal:attributes="href request.resource_url(original, '@@index')">${original.title}</a></span>
+        <span tal:omit-tag="" tal:condition="current_version and not is_current"><span i18n:translate="">, previous version of the current version of the idea</span> <a tal:attributes="href request.resource_url(current_version, '@@index')">${current_version.title}</a></span>
+     </small>
+     <div class="keywords-result" style="margin-top: 10px">
+      <span class="glyphicon glyphicon-tags"></span> 
+      <tal:loop repeat="k idea.keywords">
+            <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+      </tal:loop>
+  </div>
+    </div>
+  </div>
+  <div tal:condition="is_censored">
+   <div class="alert-terms-of-use" i18n:translate="">
+    This content does not respect the terms of use.
+   </div>
+  </div>
+</div>

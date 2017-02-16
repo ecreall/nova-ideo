@@ -4,20 +4,18 @@
 # licence: AGPL
 # author: Amen Souissi
 
-import pytz
-import datetime
 import deform
 from pyramid.view import view_config
 from substanced.util import get_oid
 from pyramid import renderers
-from pyramid.httpexceptions import HTTPFound
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import get_obj
 from dace.objectofcollaboration.principal.util import get_current
+from dace.objectofcollaboration.object import Object
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select
+from pontus.schema import select, omit
 from pontus.view import BasicView
 
 from novaideo.utilities.util import render_listing_obj
@@ -27,6 +25,7 @@ from novaideo.content.processes.idea_management.behaviors import (
     CreateIdea, CrateAndPublish, CrateAndPublishAsProposal)
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
+from ..filter import get_pending_challenges
 from novaideo import _, log
 
 
@@ -39,7 +38,8 @@ class CreateIdeaView(FormView):
 
     title = _('Create an idea')
     schema = select(IdeaSchema(factory=Idea, editable=True),
-                    ['title',
+                    ['challenge',
+                     'title',
                      'text',
                      'keywords',
                      'attached_files'])
@@ -48,6 +48,12 @@ class CreateIdeaView(FormView):
     name = 'createidea'
 
     def before_update(self):
+        user = get_current(self.request)
+        has_challenges = len(get_pending_challenges(user)) > 0
+        if not has_challenges:
+            self.schema = omit(
+                self.schema, ['challenge'])
+
         if not getattr(self, 'is_home_form', False):
             self.action = self.request.resource_url(
                 self.context, 'novaideoapi',
@@ -61,9 +67,15 @@ class CreateIdeaView(FormView):
             self.schema.widget = deform.widget.FormWidget(
                 css_class='material-form deform')
 
+    def bind(self):
+        if getattr(self, 'is_home_form', False):
+            return {'is_home_form': True}
+
+        return {}
+
 
 @view_config(name='ideasmanagement',
-             context=NovaIdeoApplication,
+             context=Object,
              xhr=True,
              renderer='json')
 class CreateIdeaView_Json(BasicView):
@@ -133,14 +145,25 @@ class CreateIdeaView_Json(BasicView):
         try:
             behavior = self.behaviors_instances['Create_an_idea']
             values = {'title': self.params('title'),
-                      'text': self.params('text'),
-                      'keywords': self.params('keywords')}
+                      'text': self.params('text')}
+            keywords = self.params('keywords')
+            if not isinstance(keywords, (list, tuple)):
+                keywords = [keywords]
+
+            values['keywords'] = keywords
+            challenge = self.params('challenge')
+            if challenge:
+                try:
+                    challenge = get_obj(int(challenge))
+                    values['challenge'] = challenge
+                except:
+                    pass
+
             idea = Idea()
             idea.set_data(values)
             appstruct = {'_object_data': idea}
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
-            user = get_current()
             new_title = ''#self._get_new_title(user)
             data = {'title': idea.title,
                     'oid': str(oid),

@@ -193,6 +193,7 @@ def confirm_proposal(
             proposal=context
             )
 
+    root.merge_keywords(context.keywords)
     context.modified_at = datetime.datetime.now(tz=pytz.UTC)
     context.init_published_at()
     not_published_ideas = []
@@ -440,7 +441,6 @@ class CreateProposal(InfiniteCardinality):
         user = get_current(request)
         related_ideas = appstruct.pop('related_ideas')
         proposal = appstruct['_object_data']
-        root.merge_keywords(proposal.keywords)
         proposal.text = html_diff_wrapper.normalize_text(proposal.text)
         root.addtoproperty('proposals', proposal)
         proposal.state.append('draft')
@@ -774,7 +774,6 @@ class DuplicateProposal(InfiniteCardinality):
         root = getSite()
         user = get_current()
         related_ideas = appstruct.pop('related_ideas')
-        root.merge_keywords(appstruct['keywords'])
         copy_of_proposal = copy(
             context, (root, 'proposals'),
             omit=('created_at', 'modified_at',
@@ -853,7 +852,6 @@ class EditProposal(InfiniteCardinality):
         add_attached_files(appstruct, context)
         context.text = html_diff_wrapper.normalize_text(context.text)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        root.merge_keywords(context.keywords)
         context.reindex()
         request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
@@ -1125,6 +1123,7 @@ def seem_processsecurity_validation(process, context):
 class SeeMembers(InfiniteCardinality):
     style_descriminator = 'listing-wg-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
     style_picto = 'fa fa-users'
     isSequential = False
     context = IProposal
@@ -1195,6 +1194,7 @@ def seeideas_state_validation(process, context):
 class SeeRelatedIdeas(InfiniteCardinality):
     style_descriminator = 'listing-primary-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
     # style_interaction_container = 'modal-l'
     style_picto = 'glyphicon glyphicon-link'
     context = IProposal
@@ -1498,6 +1498,13 @@ class AttachFiles(InfiniteCardinality):
 
 def get_access_key(obj):
     if 'draft' not in obj.state:
+        challenge = getattr(obj, 'challenge', None)
+        is_restricted = getattr(challenge, 'is_restricted', False)
+        if is_restricted:
+            return serialize_roles(
+                (('ChallengeParticipant', challenge),
+                 'SiteAdmin', 'Admin', 'Moderator'))
+
         return ['always']
     else:
         return serialize_roles(
@@ -1505,7 +1512,13 @@ def get_access_key(obj):
 
 
 def seeproposal_processsecurity_validation(process, context):
-    return access_user_processsecurity(process, context) and \
+    challenge = getattr(context, 'challenge', None)
+    is_restricted = getattr(challenge, 'is_restricted', False)
+    can_access = True
+    if is_restricted:
+        can_access = has_role(role=('ChallengeParticipant', challenge))
+
+    return can_access and access_user_processsecurity(process, context) and \
            ('draft' not in context.state or \
             has_any_roles(roles=(('Owner', context), 'SiteAdmin', 'Moderator')))
 

@@ -17,7 +17,7 @@ from dace.util import (
     find_catalog, getAllBusinessAction, getBusinessAction,
     getSite, get_obj, find_service)
 from dace.objectofcollaboration.principal.util import (
-    get_current)
+    get_current, get_users_with_role)
 from dace.objectofcollaboration.object import Object
 from pontus.view import BasicView
 
@@ -25,11 +25,12 @@ from novaideo.views.novaideo_view_manager.search import (
     get_default_searchable_content)
 from novaideo.content.interface import (
     IPerson,
-    ICorrelableEntity,
     Iidea,
     ISearchableEntity,
     IFile,
-    IQuestion)
+    IQuestion,
+    IChallenge,
+    IOrganization)
 from novaideo.utilities.util import (
     render_small_listing_objs, extract_keywords)
 from novaideo.utilities.pseudo_react import (
@@ -88,16 +89,10 @@ class NovaideoAPI(IndexManagementJsonView):
     search_idea_template = 'novaideo:views/templates/live_search_idea_result.pt'
     search_question_template = 'novaideo:views/templates/live_search_question_result.pt'
 
-    def find_user(self, organization=None):
+    def find_user(self, query=None):
         name = self.params('q')
         if name:
             page_limit, current_page, start, end = self._get_pagin_data()
-            query = None
-            if organization:
-                novaideo_index = find_catalog('novaideo')
-                organization_index = novaideo_index['organizations']
-                query = organization_index.any([get_oid(organization)])
-
             if is_all_values_key(name):
                 result = find_entities(interfaces=[IPerson],
                                        metadata_filter={'states': ['active']},
@@ -127,36 +122,10 @@ class NovaideoAPI(IndexManagementJsonView):
         return {'items': [], 'total_count': 0}
 
     def find_organization_user(self):
-        return self.find_user(self.context)
-
-    def find_base_review(self):
-        name = self.params('q')
-        if name:
-            user = get_current()
-            page_limit, current_page, start, end = self._get_pagin_data()
-            if is_all_values_key(name):
-                result = find_entities(
-                    user=user,
-                    interfaces=[IBaseReview])
-            else:
-                result = find_entities(
-                    user=user,
-                    interfaces=[IBaseReview],
-                    text_filter={'text_to_search': name})
-
-            total_count = len(result)
-            if total_count >= start:
-                result = list(result)[start:end]
-            else:
-                result = list(result)[:end]
-
-            entries = [{'id': str(get_oid(e)),
-                        'text': e.title,
-                        'icon': e.icon} for e in result]
-            result = {'items': entries, 'total_count': total_count}
-            return result
-
-        return {'items': [], 'total_count': 0}
+        novaideo_index = find_catalog('novaideo')
+        organization_index = novaideo_index['organizations']
+        query = organization_index.any([get_oid(self.context)])
+        return self.find_user(query)
 
     def find_entities(self):
         name = self.params('text_to_search')
@@ -243,6 +212,9 @@ class NovaideoAPI(IndexManagementJsonView):
     def find_correlable_entity(self):
         return self.find_entity(interfaces=[ISearchableEntity])
 
+    def find_groups(self):
+        return self.find_entity(interfaces=[IOrganization, IPerson], states=['published', 'active'])
+
     def find_smart_folder_contents(self):
         return self.find_entity(interfaces=[ISearchableEntity, IFile], states=[])
 
@@ -251,6 +223,12 @@ class NovaideoAPI(IndexManagementJsonView):
         is_workable_index = novaideo_index['is_workable']
         query = is_workable_index.eq(True)
         return self.find_entity(interfaces=[Iidea], states=[], query=query)
+
+    def find_challenges(self):
+        return self.find_entity(interfaces=[IChallenge], states=['pending'])
+
+    def find_all_challenges(self):
+        return self.find_entity(interfaces=[IChallenge])
 
     def filter_result(self):
         filter_source = self.params('filter_source')

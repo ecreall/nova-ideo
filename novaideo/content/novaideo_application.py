@@ -306,6 +306,7 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
 
     name = renamer()
     preregistrations = CompositeMultipleProperty('preregistrations')
+    challenges = CompositeMultipleProperty('challenges')
     working_groups = CompositeMultipleProperty('working_groups')
     proposals = CompositeMultipleProperty('proposals')
     organizations = CompositeMultipleProperty('organizations')

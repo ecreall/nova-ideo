@@ -1,5 +1,7 @@
 <div i18n:domain="novaideo" tal:condition="has_forms" class="home-add-content-container ideahomeform">
-  <div  class="home-add-content closed">
+  <div  class="home-add-content closed"
+    tal:define="js_links js_links|[];
+                css_links css_links|[]">
     <tal:block tal:repeat="jslink js_links">
               <script src="${request.static_url(jslink)}"></script>
     </tal:block>

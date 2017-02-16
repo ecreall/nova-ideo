@@ -1,0 +1,4 @@
+<div class="alert alert-danger" i18n:domain="novaideo">
+    <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+   <p i18n:translate="">By clicking on « Continue », the challenge will be stored in the archive, and its development process will be stopped. You should explain your decision, so that the author of the challenge understand why it is not published. An e-mail will be sent to him/her with your explanation.</p>
+</div>

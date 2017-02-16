@@ -16,17 +16,20 @@ from pyramid.threadlocal import get_current_request
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
-from substanced.util import renamer
+from substanced.util import renamer, get_oid
 
-from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
+from dace.util import getSite, get_obj
+from dace.descriptors import (
+    SharedUniqueProperty, CompositeMultipleProperty)
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
-    SequenceWidget)
-from pontus.file import ObjectData, File
+    SequenceWidget,
+    AjaxSelect2Widget)
+from pontus.file import ObjectData, File, Object as ObjectType
 
 from .interface import Iidea
 from novaideo.content.correlation import CorrelationType
-from novaideo import _
+from novaideo import _, log
 from novaideo.views.widget import LimitedTextAreaWidget
 from novaideo.core import (
     VersionableEntity,
@@ -54,6 +57,50 @@ OPINIONS = OrderedDict([
 ])
 
 
+@colander.deferred
+def challenge_choice(node, kw):
+    request = node.bindings['request']
+    is_home_form = node.bindings.get('is_home_form', False)
+    request_context = request.context
+    challenge = getattr(request_context, 'challenge', None)
+    root = getSite()
+    values = [('', _('- Select -'))]
+    if challenge is not None and challenge.can_add_content:
+        values = [(get_oid(challenge), challenge.title)]
+
+    def title_getter(id):
+        try:
+            obj = get_obj(int(id), None)
+            if obj:
+                return obj.title
+            else:
+                return id
+        except Exception as e:
+            log.warning(e)
+            return id
+
+    ajax_url = request.resource_url(
+        root, '@@novaideoapi',
+        query={'op': 'find_challenges'})
+    item_css_class = 'challenge-input'
+    is_challenge_content = is_home_form and challenge
+    if is_challenge_content:
+        item_css_class += ' challenge-content'
+
+    return AjaxSelect2Widget(
+        template='novaideo:views/idea_management/templates/ajax_select2.pt',
+        values=values,
+        ajax_url=ajax_url,
+        ajax_item_template="related_item_template",
+        title_getter=title_getter,
+        challenge=challenge,
+        is_challenge_content=is_challenge_content,
+        multiple=False,
+        add_clear=True,
+        page_limit=20,
+        item_css_class=item_css_class)
+
+
 def context_is_a_idea(context, request):
     return request.registry.content.istype(context, 'idea')
 
@@ -64,6 +111,15 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
     name = NameSchemaNode(
         editing=context_is_a_idea,
         )
+
+    challenge = colander.SchemaNode(
+        ObjectType(),
+        widget=challenge_choice,
+        missing=None,
+        title=_("Challenge (optional)"),
+        description=_("You can select and/or modify the challenge associated to this idea. "
+                      "For an open idea, do not select anything in the « Challenge » field.")
+    )
 
     text = colander.SchemaNode(
         colander.String(),
@@ -127,6 +183,7 @@ class Idea(VersionableEntity, DuplicableEntity,
     organization = SharedUniqueProperty('organization')
     attached_files = CompositeMultipleProperty('attached_files')
     url_files = CompositeMultipleProperty('url_files')
+    challenge = SharedUniqueProperty('challenge', 'ideas')
     opinions_base = OPINIONS
 
     def __init__(self, **kwargs):

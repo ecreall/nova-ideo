@@ -42,7 +42,7 @@
       </ul>
       <div  class="fixed-action-btn">
         <a class="btn-sub-menu-control">
-            <i class="octicon octicon-checklist" ></i>
+            <i class="ion-plus-circled" ></i>
         </a>
       </div>
     </div>

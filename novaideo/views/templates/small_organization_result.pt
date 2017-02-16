@@ -1,0 +1,17 @@
+<div class="thumbnail right-caption span4 small-result" 
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(object, '@@index');
+                 icon getattr(object, 'icon');
+                 ">
+  <div class="media-body media-person small-media">
+    <div class="object-title-block" >
+      <a data-oid="${getattr(object, '__oid__', '')}"
+         class="toggle-popover"
+         tal:attributes="href url">
+        <h5>
+          <span class="icon ${icon}"></span>  ${object.title}
+        </h5>
+      </a>
+    </div>
+  </div>
+</div>

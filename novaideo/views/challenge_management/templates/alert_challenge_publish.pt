@@ -1,0 +1,5 @@
+<div class="alert alert-info" i18n:domain="novaideo" >
+	 <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+	<p i18n:translate="">By clicking on « Continue », the challenge will be published, and you won't be able to edit it further.</p>
+</div>
+

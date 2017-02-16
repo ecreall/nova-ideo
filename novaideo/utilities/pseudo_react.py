@@ -1048,7 +1048,9 @@ def get_create_question_metadata(action, request, context, api, **kwargs):
     result['counters-to-update'] = [
         'component-navbar-mycontents',
         'novideo-contents-questions',
-        'home-questions-counter'
+        'home-questions-counter',
+        'challenge-contents-questions',
+        'challenge-questions-counter'
         ]
     return result
 
@@ -1063,6 +1065,8 @@ def get_remove_question_metadata(action, request, context, api, **kwargs):
         'component-navbar-mycontents',
         'novideo-contents-questions',
         'home-questions-counter'
+        'challenge-contents-questions',
+        'challenge-questions-counter'
         ]
     return result
 
@@ -1081,7 +1085,9 @@ def get_archive_question_metadata(action, request, context, api, **kwargs):
         result['counters-to-update'] = [
             'home-questions-counter',
             'person-questions-counter',
-            'novideo-contents-questions'
+            'novideo-contents-questions',
+            'challenge-contents-questions',
+            'challenge-questions-counter'
         ]
 
     return result
@@ -1132,11 +1138,58 @@ def get_tranform_answer_into_idea_metadata(action, request, context, api, **kwar
     result['counters-to-update'] = [
         'component-navbar-mycontents',
         'novideo-contents-ideas',
-        'home-ideas-counter'
+        'home-ideas-counter',
+        'challenge-contents-ideas',
+        'challenge-ideas-counter'
         ]
     return result
 
+# Challenges
+
+
+def get_edit_challenge_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The data relating to the challenge have been updated."),
+        **kwargs)
+
+
+def get_submit_challenge_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The challenge has been submitted to moderation."),
+        **kwargs)
+
+
+def get_archive_challenge_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The challenge has been archived."),
+        **kwargs)
+    return result
+
+
+def get_publish_challenge_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The challenge has been published."),
+        **kwargs)
+
+
+def get_remove_challenge_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The challenge has been suppressed."),
+        **kwargs)
+    result['ignore_redirect'] = not kwargs['is_source_context']
+    return result
+
 #Ideas
+
 
 def get_archive_idea_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
@@ -1151,6 +1204,7 @@ def get_archive_idea_metadata(action, request, context, api, **kwargs):
             'listing_'+str(get_oid(context, None))]
         result['counters-to-update'] = [
             'home-ideas-counter',
+            'challenge-ideas-counter',
             'person-ideas-counter',
             'novideo-contents-ideas'
         ]
@@ -1245,7 +1299,9 @@ def get_create_idea_metadata(action, request, context, api, **kwargs):
     result['counters-to-update'] = [
         'component-navbar-mycontents',
         'novideo-contents-ideas',
-        'home-ideas-counter'
+        'home-ideas-counter',
+        'challenge-contents-ideas',
+        'challenge-ideas-counter'
         ]
     return result
 
@@ -1655,6 +1711,58 @@ def novideo_contents_ideas(action, request, context, api, **kwargs):
     return result
 
 
+def challenge_contents_questions(action, request, context, api, **kwargs):
+    source_context = kwargs.get('source_context', None)
+    if not source_context:
+        return {}
+
+    novaideo_index = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    challenges = novaideo_index['challenges']
+    query = challenges.any([source_context.__oid__]) & \
+        object_provides_index.any((IQuestion.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Asked question')
+    if item_nb > 1:
+        title = _('Asked questions')
+
+    result = {
+        'challenge-contents-questions.item_nb': item_nb,
+        'challenge-contents-questions.title': request.localizer.translate(title),
+    }
+
+    return result
+
+
+def challenge_contents_ideas(action, request, context, api, **kwargs):
+    source_context = kwargs.get('source_context', None)
+    if not source_context:
+        return {}
+
+    novaideo_index = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    challenges = novaideo_index['challenges']
+    query = challenges.any([source_context.__oid__]) & \
+        object_provides_index.any((Iidea.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Published idea')
+    if item_nb > 1:
+        title = _('Published ideas')
+
+    result = {
+        'challenge-contents-ideas.item_nb': item_nb,
+        'challenge-contents-ideas.title': request.localizer.translate(title),
+    }
+
+    return result
+
+
 def component_navbar_myparticipations(action, request, context, api, **kwargs):
     user = kwargs.get('user', None)
     localizer = request.localizer
@@ -1754,12 +1862,70 @@ def home_ideas_counter(action, request, context, api, **kwargs):
     return result
 
 
+def challenge_proposals_counter(action, request, context, api, **kwargs):
+    #TODO
+    return {}
+
+
+def challenge_questions_counter(action, request, context, api, **kwargs):
+    source_context = kwargs.get('source_context', None)
+    if not source_context:
+        return {}
+
+    novaideo_index = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    challenges = novaideo_index['challenges']
+    query = challenges.any([source_context.__oid__]) & \
+        object_provides_index.any((IQuestion.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Questions (${nb})', mapping={'nb': item_nb})
+
+    result = {
+        'challenge-questions-counter.title': request.localizer.translate(title),
+    }
+    return result
+
+
+def challenge_ideas_counter(action, request, context, api, **kwargs):
+    source_context = kwargs.get('source_context', None)
+    if not source_context:
+        return {}
+
+    novaideo_index = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    challenges = novaideo_index['challenges']
+    query = challenges.any([source_context.__oid__]) & \
+        object_provides_index.any((Iidea.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Ideas (${nb})', mapping={'nb': item_nb})
+
+    result = {
+        'challenge-ideas-counter.title': request.localizer.translate(title),
+    }
+    return result
+
+
 METADATA_GETTERS = {
     'smartfoldermanagement.edit_smart_folder': get_edit_folder_metadata,
     'smartfoldermanagement.remove_smart_folder': get_remove_folder_metadata,
     'smartfoldermanagement.publish_smart_folder': get_publish_folder_metadata,
     'smartfoldermanagement.withdraw_smart_folder': get_archive_folder_metadata,
     'smartfoldermanagement.addsub_smart_folder': get_add_subfolder_metadata,
+
+    'challengemanagement.delchallenge': get_remove_challenge_metadata,
+    'challengemanagement.archive': get_archive_challenge_metadata,
+    'challengemanagement.publish': get_publish_challenge_metadata,
+    'challengemanagement.comment': get_comment_metadata,
+    'challengemanagement.present': get_present_metadata,
+    'challengemanagement.add_members': get_edit_challenge_metadata,
+    'challengemanagement.remove_members': get_edit_challenge_metadata,
+    'challengemanagement.submit': get_submit_challenge_metadata,
 
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
@@ -1886,5 +2052,10 @@ COUNTERS_COMPONENTS = {
    'home-ideas-counter': home_ideas_counter,
    'home-questions-counter': home_questions_counter,
    'novideo-contents-ideas': novideo_contents_ideas,
-   'novideo-contents-questions': novideo_contents_questions
+   'novideo-contents-questions': novideo_contents_questions,
+   'challenge-contents-ideas': challenge_contents_ideas,
+   'challenge-contents-questions': challenge_contents_questions,
+   'challenge-proposals-counter': challenge_proposals_counter,
+   'challenge-ideas-counter': challenge_ideas_counter,
+   'challenge-questions-counter': challenge_questions_counter,
 }

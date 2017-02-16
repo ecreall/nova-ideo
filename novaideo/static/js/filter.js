@@ -100,7 +100,6 @@ function filter(event){
             }
             catch(err) {};
             initscroll();
-            init_result_scroll();
         }
         finish_progress()
     });
@@ -177,7 +176,6 @@ function sort(){
                   deform.processCallbacks();
               }
               catch(err) {};
-              init_result_scroll();
               initscroll();
           }
 
@@ -189,7 +187,6 @@ function sort(){
                   deform.processCallbacks();
               }
               catch(err) {};
-              init_result_scroll();
               initscroll();
           }
         }

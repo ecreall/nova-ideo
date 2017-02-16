@@ -83,7 +83,6 @@ class CreateIdea(InfiniteCardinality):
         root = getSite()
         user = get_current(request)
         idea = appstruct['_object_data']
-        root.merge_keywords(idea.keywords)
         root.addtoproperty('ideas', idea)
         idea.state.append('to work')
         grant_roles(user=user, roles=(('Owner', idea), ))
@@ -209,6 +208,10 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 grant_roles(user=user, roles=(('Owner', proposal), ))
                 grant_roles(user=user, roles=(('Participant', proposal), ))
                 proposal.setproperty('author', user)
+                challenge = idea.challenge
+                if challenge:
+                    proposal.setproperty('challenge', challenge)
+
                 wg = WorkingGroup()
                 root.addtoproperty('working_groups', wg)
                 wg.init_workspace()
@@ -376,7 +379,6 @@ class EditIdea(InfiniteCardinality):
 
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
-        root.merge_keywords(appstruct['keywords'])
         copy_of_idea.state = PersistentList(['version', 'archived'])
         copy_of_idea.setproperty('author', user)
         note = appstruct.pop('note', '')
@@ -549,6 +551,7 @@ class PublishIdeaModeration(InfiniteCardinality):
             context.state = PersistentList(['published', 'submitted_support'])
 
         context.init_published_at()
+        root.merge_keywords(context.keywords)
         context.reindex()
         user = context.author
         alert('internal', [root], [user],
@@ -649,7 +652,7 @@ class PublishIdea(InfiniteCardinality):
                 alert_kind='duplicated',
                 duplication=context
                 )
-        
+
         transformed_from = context.transformed_from
         if transformed_from:
             context_type = transformed_from.__class__.__name__.lower()
@@ -661,7 +664,7 @@ class PublishIdea(InfiniteCardinality):
                 alert_kind='transformation_idea',
                 idea=context
                 )
-
+        root.merge_keywords(context.keywords)
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
@@ -993,6 +996,13 @@ class Associate(InfiniteCardinality):
 
 def get_access_key(obj):
     if 'published' in obj.state:
+        challenge = getattr(obj, 'challenge', None)
+        is_restricted = getattr(challenge, 'is_restricted', False)
+        if is_restricted:
+            return serialize_roles(
+                (('ChallengeParticipant', challenge),
+                 'SiteAdmin', 'Admin', 'Moderator'))
+
         return ['always']
     else:
         return serialize_roles(
@@ -1000,7 +1010,13 @@ def get_access_key(obj):
 
 
 def seeidea_processsecurity_validation(process, context):
-    return access_user_processsecurity(process, context) and \
+    challenge = getattr(context, 'challenge', None)
+    is_restricted = getattr(challenge, 'is_restricted', False)
+    can_access = True
+    if is_restricted:
+        can_access = has_role(role=('ChallengeParticipant', challenge))
+
+    return can_access and access_user_processsecurity(process, context) and \
            ('published' in context.state or 'censored' in context.state or\
             has_any_roles(roles=(('Owner', context), 'Moderator')))
 

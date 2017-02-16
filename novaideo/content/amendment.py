@@ -286,6 +286,10 @@ class Amendment(CorrelableEntity,
     def authors(self):
         return [self.author]
 
+    @property
+    def challenge(self):
+        return getattr(self.proposal, 'challenge', None)
+
     def _init_presentation_text(self):
         self._presentation_text = html_to_text(
             getattr(self, 'text', ''))

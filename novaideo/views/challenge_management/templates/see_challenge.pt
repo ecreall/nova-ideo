@@ -1,0 +1,127 @@
+<div i18n:domain="novaideo" tal:omit-tag="" tal:define="deadline getattr(challenge, 'deadline', None);">
+  <div tal:condition="deadline"
+       tal:define="expired challenge.is_expired;"
+       style="margin-bottom: 30px;">
+    <div class="progress progress-striped"
+         title="${layout.to_localized_time(deadline)}">
+       <div tal:define="percent (challenge.duration - challenge.remaining_duration) * 100 / challenge.duration"
+            class="progress-bar ${expired and 'progress-bar-danger' or 'progress-bar-success'} "
+            role="progressbar"
+            aria-valuenow="${percent}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            style="width: ${percent if percent else 1}%;">
+       </div>
+    </div>
+    <small class="deadline-text-challenge deadline-text-danger" tal:condition="expired">
+      <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">The challenge is expired</span>
+    </small>
+    <small class="deadline-text-challenge deadline-text-success" tal:condition="not expired">
+      <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate=""><span i18n:name="days" >${challenge.remaining_duration}</span> day(s) before the end of the challenge.</span>
+    </small>
+  </div>
+</div>
+
+<div 
+  class="challenge-detail content-view component-obj-view component-index-view"
+  id="index_${oid}"
+  data-component_type="object-view"
+  tal:define="
+      oid challenge.__oid__"
+  i18n:domain="novaideo">
+  <div tal:replace="structure navbar_body"/>
+  <div class="content-collapsible" tal:condition="not to_hide">
+   <div class="content-title"
+        data-title="${challenge.title}"
+        data-icon="${challenge.icon}"
+        data-img=""></div>
+   <div tal:condition="getattr(challenge, 'is_restricted', False)" class="alert alert-info alert-discret">
+    <span class="ion-locked" style="font-size: 20px;"></span> <span i18n:translate="">This challenge is restricted and accessible only for a set of users. Only the concerned members can add contents in this challenge. The added contents can be seen only by the concerned members.</span>
+   </div>
+   <div id="contenttext" class="content-text"
+    tal:define="files challenge.get_attached_files_data();
+                len_files len(files)">
+    <div tal:omit-tag="not files">
+        <div class="img-carousel-container pull-right" tal:condition="files">
+            <div class="file-slider">
+              <div id="filecarousel" data-ride="carousel" data-interval="3000" class="carousel slide"> 
+                <div role="listbox" class="carousel-inner">
+                      <div tal:repeat="(i, source) enumerate(files)" class="item ${i==0 and 'active'}">
+                         <a tal:condition="source['type'] == 'img'" href="${source['content']}" target="_blank">
+                           <div 
+                            class="img-content"
+                            data-holder-rendered="true"
+                            style="
+                              background: rgba(0, 0, 0, 0) url(${source['content']}) no-repeat scroll center center / cover">
+                           </div>
+                         </a>
+                         <object tal:condition="source['type'] == 'flash'" width="300" height="90" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=11,2,202,451" >
+                          <param name="movie" value="${source['content']}">
+                          <param name="quality" value="high">
+                          <embed src="${source['content']}" quality="high" class="img-content" 
+                            type="application/x-shockwave-flash" 
+                                      pluginspage="http://www.macromedia.com/go/getflashplayer">
+                          </embed>
+                         </object>
+                      </div>
+                </div>
+                <div tal:omit-tag="" tal:condition="len_files>1">
+                  <a class="left carousel-control" href="#filecarousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="right carousel-control" href="#filecarousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
+              </div>
+         </div>
+        </div>
+        <div class="text-container" tal:omit-tag="not files">
+          <div class="object-text">
+            <div>
+              ${structure:text}
+            </div>
+            <div>
+              ${structure:getattr(challenge, 'formatted_urls', '')}
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div tal:condition="files" id="idea_files" class="attached-files" i18n:domain="novaideo">
+    <small>
+     <blockquote class="attached-contents" tal:define="file_len len(files)">
+       <dl>
+         <dt tal:condition="file_len>1" i18n:translate="">Attachments:</dt>
+         <dt tal:condition="file_len==1" i18n:translate="">Attachment:</dt>
+         <dd>
+            <tal:loop repeat="f layout.render_files(challenge.attached_files)">
+              <div tal:replace="structure f"/>
+            </tal:loop>
+         </dd>
+      </dl>
+     </blockquote>
+    </small>
+  </div>
+ </div>
+  <div class="content-more">
+    <div class="content-more-message">
+       <span i18n:translate="">More details</span>
+       <span class="open glyphicon glyphicon-chevron-down" title="More details" i18n:attributes="title"></span>
+    </div>
+  </div>
+  <div class="content-footer">
+    <div class="actions-block">
+        <div tal:replace="structure footer_body"/>
+    </div>
+  </div>
+  <div class="action-interation-container action-slider-container"
+         data-interaction_kind="slider" style="top: 0;">
+      <button class="btn btn-primary action-slider-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      <div class="container-body">
+      </div>
+    </div>
+</div>

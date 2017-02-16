@@ -46,7 +46,7 @@
       <tal:loop repeat="k idea.keywords">
             <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
       </tal:loop>
-  </div>
+     </div>
     </div>
   </div>
   <div tal:condition="is_censored">

@@ -1,0 +1,74 @@
+<div class="challenge-header" tal:define="challenge challenge|nothing" i18n:domain="novaideo">
+	<div class="container home-panel-container challenge-container" tal:condition="challenge">
+	<span tal:condition="getattr(challenge, 'is_restricted', False)"
+        class="challenge-restricted ion-locked"
+        title="Is restricted"
+        i18n:attributes="title"></span>  
+	  <div class="row" tal:define="
+		author challenge.author;
+		author_picture getattr(author, 'picture', None);
+		challenge_image challenge.image;
+		deadline getattr(challenge, 'deadline', None)">
+	    <div class="col-md-5 col-xs-12 col-sm-5">                  
+	      <img title="${challenge.title}" alt="${challenge.title}" class="challenge-img" src="${getattr(challenge_image, 'xlarge', challenge_image).url}" width="750" height="500">
+	    </div>
+	    <div class="col-md-7 col-xs-12 col-sm-7">
+	        <h1 class="challenge-title" >
+	        	<a href="${request.resource_url(challenge, '@@index')}">
+	        		<span class="icon ${challenge.icon}"></span> ${challenge.title}
+	        	</a>
+	        </h1>
+        	<div tal:omit-tag="" tal:condition="deadline">
+		       <div tal:define="expired challenge.is_expired;"
+		            class="challenge-deadline ${expired and 'expired'}">
+		          <span class="glyphicon glyphicon-calendar"></span> 
+		          <span tal:condition="not expired" i18n:translate="">The end of the challenge is planned on</span>
+		          <span tal:condition="expired" i18n:translate="">The challenge ended on the</span>
+		          <span tal:replace="layout.to_localized_time(deadline)"/>
+		       </div>
+		    </div>
+	        <div class="author-block">
+		      <img class="author-img img-circle" 
+		         tal:condition="author_picture is not None" 
+		         tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
+		      <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
+		      <small style="display: inline-block;">
+		        <span i18n:translate="">Submitted by</span>
+		        <a tal:attributes="href request.resource_url(author, '@@index')"
+		          data-oid="${getattr(author, '__oid__', '')}"
+		          class="toggle-popover">
+		          ${((author is current_user) and 'Vous') or getattr(author, 'title', author.name)}
+		        </a>
+		        <span i18n:translate="">the</span>
+		        <span tal:replace="layout.to_localized_time(challenge.created_at)"/>
+		      </small>
+		    </div>
+		    <div class="keywords-result">
+	          <span class="glyphicon glyphicon-tags"></span> 
+	          <tal:loop repeat="k challenge.keywords">
+	                <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+	          </tal:loop>
+	        </div>
+		    <div class="challenge-description">${challenge.description}</div>
+		    <nav class="hidden-xs novaideo-contents" style="margin-top: 10px">
+			    <div class="novaideo-contents-list">
+			            <ul>
+			                <div tal:omit-tag="" tal:condition="nb_question > 0">
+			                   <li class="counter" id="challenge-contents-questions" data-component_type="novaideo_content_nb" tal:condition="nb_question == 1"><strong>${nb_question}</strong> <span i18n:translate="">Asked question</span></li>
+			                   <li class="counter" id="challenge-contents-questions" data-component_type="novaideo_content_nb" tal:condition="nb_question > 1"><strong>${nb_question}</strong> <span i18n:translate="">Asked questions</span></li>
+			                </div>   
+			                <div tal:omit-tag="" tal:condition="nb_idea > 0">
+			                   <li class="counter" id="challenge-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea == 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published idea</span></li>
+			                   <li class="counter" id="challenge-contents-ideas" data-component_type="novaideo_content_nb" tal:condition="nb_idea > 1"><strong>${nb_idea}</strong> <span i18n:translate="">Published ideas</span></li>
+			                </div> 
+			                <div tal:omit-tag="" tal:condition="nb_proposal > 0">
+			                   <li class="counter" id="challenge-contents-proposals" data-component_type="novaideo_content_nb" tal:condition="nb_proposal == 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposal</span></li>
+			                   <li class="counter" id="challenge-contents-proposals" data-component_type="novaideo_content_nb" tal:condition="nb_proposal > 1"><strong>${nb_proposal}</strong> <span i18n:translate="">Published proposals</span></li>
+			                </div>                    
+			            </ul>
+			    </div>
+			</nav>
+	    </div>
+	 </div>
+  </div>
+</div>

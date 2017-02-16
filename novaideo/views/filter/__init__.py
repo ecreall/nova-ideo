@@ -22,7 +22,7 @@ from pyramid.threadlocal import (
 from substanced.util import get_oid
 
 from dace.objectofcollaboration.principal.util import Anonymous
-from dace.util import getSite, find_catalog, get_obj
+from dace.util import getSite, find_catalog, get_obj, request_memoize
 from dace.objectofcollaboration.principal.util import (
     get_current, has_any_roles)
 from pontus.widget import (
@@ -32,7 +32,8 @@ from pontus.form import FormView
 
 from novaideo import _
 from novaideo import core
-from novaideo.content.interface import IComment
+from novaideo.content.interface import (
+    IComment, IChallenge)
 from novaideo.content.processes import (
     FLATTENED_STATES_MEMBER_MAPPING,
     get_content_types_states)
@@ -318,6 +319,29 @@ def connected_date_query(node, **args):
     return query
 
 
+def challenges_query(node, **args):
+    value = None
+    if 'metadata_filter' in args:
+        value = args['metadata_filter']
+
+    if value is None:
+        return None
+
+    challenges = value.get('challenges', [])
+    if not challenges:
+        return None
+
+    novaideo_catalog = None
+    if 'novaideo' in args:
+        novaideo_catalog = args['novaideo']
+    else:
+        novaideo_catalog = find_catalog('novaideo')
+
+    #index
+    challenges_index = novaideo_catalog['challenges']
+    return challenges_index.any([get_oid(v) for v in challenges])
+
+
 def authors_query(node, **args):
     value = None
     if 'contribution_filter' in args:
@@ -439,6 +463,38 @@ def states_analyzer(node, source, validated, validated_value):
     result = dict([(k, v) for k, v in result
                    if v != 0 and k in FLATTENED_STATES_MEMBER_MAPPING])
     return {'states': result}
+
+
+def challenges_analyzer(node, source, validated, validated_value):
+    """Return for example
+    dict([('7422658066368290778', 1))])
+    7422658066368290778 is the oid of the Challenge object
+    """
+    validated_value_ = []
+    if 'metadata_filter' in validated:
+        validated_value_ = validated['metadata_filter'].pop(
+            'challenges', [])
+
+    objects = source(**validated)
+
+    index = find_catalog('novaideo')['challenges']
+    intersection = index.family.IF.intersection
+    object_ids = getattr(objects, 'ids', objects)
+    if isinstance(object_ids, (list, types.GeneratorType)):
+        object_ids = index.family.IF.Set(object_ids)
+
+    result = {}
+    for challenge in validated_value_:
+        challenge_oid = get_oid(challenge)
+        oids = index._fwd_index.get(challenge_oid)
+        if oids:
+            count = len(intersection(oids, object_ids))
+        else:
+            count = 0
+
+        result[str(challenge_oid)] = count
+
+    return {'challenges': result}
 
 
 def authors_analyzer(node, source, validated, validated_value):
@@ -738,6 +794,37 @@ def authors_choices(node, kw):
 
 
 @colander.deferred
+def challenges_choices(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    analyzed_data = node.bindings.get('analyzed_data', {})
+    challenges_data = analyzed_data.get('challenges', {})
+    values = []
+
+    def title_getter(oid):
+        challenge = None
+        try:
+            challenge = get_obj(int(oid))
+        except Exception:
+            return oid
+
+        title = getattr(challenge, 'title', challenge.__name__)
+        if challenges_data:
+            title += ' ('+str(challenges_data.get(oid, 0))+')'
+
+        return title
+
+    ajax_url = request.resource_url(context,
+                                    '@@novaideoapi',
+                                    query={'op': 'find_all_challenges'})
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        multiple=True,
+        title_getter=title_getter)
+
+
+@colander.deferred
 def keyword_widget(node, kw):
     root = getSite()
     values = [(i, i) for i in sorted(root.keywords)]
@@ -786,6 +873,17 @@ class MetadataFilter(Schema):
         query=states_query,
         analyzer=states_analyzer
     )
+
+    challenges = colander.SchemaNode(
+        colander.Set(),
+        widget=challenges_choices,
+        title=_('Challenges'),
+        description=_('You can select the challenge to be displayed.'),
+        default=[],
+        missing=[],
+        query=challenges_query,
+        analyzer=challenges_analyzer
+        )
 
 
 class CreatedDates(Schema):
@@ -1217,14 +1315,15 @@ def get_entities_by_title(interfaces, title, **args):
         **args)
 
 
-def get_users_by_keywords(keywords):
+def get_users_by_keywords(keywords, query=None):
     if not keywords:
         return []
 
     return find_entities(
         metadata_filter={'content_types': ['person'],
                          'states': ['active'],
-                         'keywords': keywords})
+                         'keywords': keywords},
+        add_query=query)
 
 
 def get_users_by_preferences(content):
@@ -1413,3 +1512,13 @@ def get_comments(channel, filters, text_to_search='', filtered=False):
         add_query=query,
         sort_on='created_at')
     return objects
+
+
+@request_memoize
+def get_pending_challenges(user, query=None):
+    return find_entities(
+        interfaces=[IChallenge],
+        metadata_filter={
+            'states': ['pending']},
+        user=user,
+        add_query=query)

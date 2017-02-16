@@ -133,10 +133,7 @@ function update_inline_action(){
       include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
-           target.slideDown("fast", function() {
-              var result_scroll = target.parents(".result-scroll")
-              init_result_scroll(undefined, 1600, result_scroll.parents('div').first());
-           });
+           target.slideDown("fast");
            $(target.find('.container-body')).html(action_body);
            $this.addClass('activated')
            target.find('.carousel').carousel()
@@ -221,10 +218,10 @@ function update_slider_action(){
           width = is_sidebar && is_content_view? width-10: width;
           var height = is_content_view? item.outerHeight()+15:item.outerHeight();
           target.css({
-            height,
+            height: height,
             display: 'block'})
           target.stop().animate({
-              width,
+              width: width,
           }, 400, function(){
              target.find('.container-body').css({
               display: 'block'})
@@ -241,7 +238,6 @@ function update_slider_action(){
              init_content_text_scroll(target.find(".content-text-scroll"))
              var result_scroll = target.find(".result-scroll")
              var height_scroll = is_content_view && is_sidebar? $(window).height()-30:item.outerHeight()-30
-             init_result_scroll(undefined, height_scroll, result_scroll.parents('div').first());
              initscroll(result_scroll)
              rebuild_scrolls(target.find('.malihu-scroll'))
              finish_progress()
@@ -396,7 +392,6 @@ function update_sidebar_action(){
            init_content_text_scroll(target.find(".content-text-scroll"))
            rebuild_scrolls(target.find('.malihu-scroll'))
            var result_scroll = target.find(".result-scroll")
-           init_result_scroll(undefined, 1000, result_scroll.parents('div').first());
            initscroll(result_scroll)
            finish_progress()
            focus_on_form(target)
@@ -444,7 +439,6 @@ function update_popover_action(){
            init_content_text_scroll(target.find(".content-text-scroll"))
            rebuild_scrolls(target.find('.malihu-scroll'))
            var result_scroll = target.find(".result-scroll")
-           init_result_scroll(undefined, 1000, result_scroll.parents('div').first());
            initscroll(result_scroll)
            finish_progress()
            focus_on_form(target)

@@ -7,12 +7,15 @@ import deform
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
+from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select
+from pontus.schema import select, omit
+
 from novaideo.content.processes.idea_management.behaviors import DuplicateIdea
 from novaideo.content.idea import Idea, IdeaSchema
 from novaideo import _
+from ..filter import get_pending_challenges
 
 
 def add_file_data(file_):
@@ -30,7 +33,8 @@ def add_file_data(file_):
 class DuplicateIdeaView(FormView):
     title = _('Duplicate the idea')
     name = 'duplicateidea'
-    schema = select(IdeaSchema(), ['title',
+    schema = select(IdeaSchema(), ['challenge',
+                                   'title',
                                    'text',
                                    'keywords',
                                    'attached_files',
@@ -40,6 +44,12 @@ class DuplicateIdeaView(FormView):
     item_template = 'novaideo:views/idea_management/templates/panel_item.pt'
 
     def before_update(self):
+        user = get_current(self.request)
+        has_challenges = len(get_pending_challenges(user)) > 0
+        if not has_challenges:
+            self.schema = omit(
+                self.schema, ['challenge'])
+
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',
             query={'op': 'update_action_view',
@@ -57,6 +67,10 @@ class DuplicateIdeaView(FormView):
 
         if files:
             data['attached_files'] = files
+
+        challenge = self.context.challenge
+        if challenge and not challenge.can_add_content:
+            data['challenge'] = ''
 
         return data
 
