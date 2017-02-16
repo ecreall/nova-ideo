@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-02-16 18:36+0100\n"
+"POT-Creation-Date: 2017-02-16 19:08+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -205,84 +205,84 @@ msgstr ""
 "Pour ajouter des mots clés, vous devez taper sur la touche « Entrée » après "
 "chaque mot clé ou les séparer par des virgules."
 
-#: novaideo/mail.py:595
+#: novaideo/mail.py:606
 msgid "Invitation"
 msgstr "Invitation"
 
-#: novaideo/mail.py:600
+#: novaideo/mail.py:611
 #: novaideo/views/invitation_management/refuse_invitatio.py:25
 #: novaideo/content/processes/invitation_management/definition.py:75
 #: novaideo/content/processes/invitation_management/definition.py:76
 msgid "Refuse the invitation"
 msgstr "Refuser l'invitation"
 
-#: novaideo/mail.py:605
+#: novaideo/mail.py:616
 #: novaideo/content/processes/invitation_management/definition.py:71
 #: novaideo/content/processes/invitation_management/definition.py:72
 msgid "Accept the invitation"
 msgstr "Accepter l'invitation"
 
-#: novaideo/mail.py:610
+#: novaideo/mail.py:621
 msgid "Reset the password"
 msgstr "Réinitialiser le mot de passe"
 
-#: novaideo/mail.py:615
+#: novaideo/mail.py:626
 #: novaideo/views/user_management/confirmregistration.py:47
 msgid "Registration confirmation"
 msgstr "Confirmation de l'inscription"
 
-#: novaideo/mail.py:620
+#: novaideo/mail.py:631
 msgid "Pre-registration of users"
 msgstr "Préinscription des utilisateurs"
 
-#: novaideo/mail.py:626
+#: novaideo/mail.py:637
 msgid "Presentation of an idea"
 msgstr "Présentation d'une idée"
 
-#: novaideo/mail.py:632
+#: novaideo/mail.py:643
 msgid "Presentation of a proposal"
 msgstr "Présentation d'une proposition"
 
-#: novaideo/mail.py:637
+#: novaideo/mail.py:648
 msgid "Presentation of an amendment"
 msgstr "Présentaation d'un amendement"
 
-#: novaideo/mail.py:642 novaideo/mail.py:647
+#: novaideo/mail.py:653 novaideo/mail.py:658
 msgid "Start of the improvement cycle"
 msgstr "Début du cycle d'amélioration"
 
-#: novaideo/mail.py:652
+#: novaideo/mail.py:663
 msgid "Inactivity alert"
 msgstr "Alerte d'inactivité"
 
-#: novaideo/mail.py:657
+#: novaideo/mail.py:668
 msgid "End of the improvement cycle"
 msgstr "Fin du cycle d'amélioration"
 
-#: novaideo/mail.py:662
+#: novaideo/mail.py:673
 msgid "Result of the ballot (amendments)"
 msgstr "Résultats du vote (amendements)"
 
-#: novaideo/mail.py:667
+#: novaideo/mail.py:678
 msgid "Publication of the proposal"
 msgstr "Publication de la proposition"
 
-#: novaideo/mail.py:672
+#: novaideo/mail.py:683
 msgid "Start of the ballot (publication of the proposal)"
 msgstr "Debut du vote (publication de la proposition)"
 
-#: novaideo/mail.py:677
+#: novaideo/mail.py:688
 msgid "Start of the ballot (amendments)"
 msgstr "Debut du vote (amendements)"
 
-#: novaideo/mail.py:682 novaideo/views/proposal_management/withdraw.py:23
+#: novaideo/mail.py:693 novaideo/views/proposal_management/withdraw.py:23
 #: novaideo/views/smart_folder_management/withdraw_smart_folder.py:37
 #: novaideo/content/processes/proposal_management/definition.py:353
 #: novaideo/content/processes/smart_folder_management/definition.py:75
 msgid "Withdraw"
 msgstr "Retirer"
 
-#: novaideo/mail.py:687
+#: novaideo/mail.py:698
 msgid ""
 "Automatic addition of a participant in the working group that was on the "
 "waiting list"
@@ -290,105 +290,109 @@ msgstr ""
 "Ajout automatique d'un participant au groupe de travail qui était sur liste "
 "d'attente"
 
-#: novaideo/mail.py:692
+#: novaideo/mail.py:703
 msgid "Participation in the working group"
 msgstr "Participation au groupe de travail"
 
-#: novaideo/mail.py:697
+#: novaideo/mail.py:708
 msgid "Resignation from the working group"
 msgstr "Démission du groupe de travail"
 
-#: novaideo/mail.py:702
+#: novaideo/mail.py:713
 msgid "Registration on the waiting list"
 msgstr "Inscription sur la liste d'attente"
 
-#: novaideo/mail.py:707
+#: novaideo/mail.py:718
 msgid "Alert (new content)"
 msgstr "Alerte (contenu ajouté)"
 
-#: novaideo/mail.py:712
+#: novaideo/mail.py:723
 msgid "Alert (content modified)"
 msgstr "Alerte (contenu modifié)"
 
-#: novaideo/mail.py:717
+#: novaideo/mail.py:728
 msgid "Moderation: Archive the idea"
 msgstr "Modération : Archiver l'idée"
 
-#: novaideo/mail.py:722
+#: novaideo/mail.py:733
 msgid "Moderation: Opinion on the proposal"
 msgstr "Modération : Opinion sur la proposition"
 
-#: novaideo/mail.py:727
+#: novaideo/mail.py:738
 msgid "Moderation: Opinion on the idea"
 msgstr "Modération : Opinion sur l'idée"
 
-#: novaideo/mail.py:732
+#: novaideo/mail.py:743
 msgid "Moderation: Publish the idea"
 msgstr "Modération : Publier l'idée"
 
-#: novaideo/mail.py:737
+#: novaideo/mail.py:748
 msgid "Moderation: Archive the proposal"
 msgstr "Modération : Archiver la proposition"
 
-#: novaideo/mail.py:742
+#: novaideo/mail.py:753
 msgid "Moderation: Publish the proposal"
 msgstr "Modération : Publier la proposition"
 
-#: novaideo/mail.py:747
+#: novaideo/mail.py:758
 msgid "Moderation: Delete the proposal"
 msgstr "Modération : Supprimer la proposition"
 
-#: novaideo/mail.py:752
+#: novaideo/mail.py:763
 msgid "Warning: new comment"
 msgstr "Alerte : nouveau Commentaire"
 
-#: novaideo/mail.py:757
+#: novaideo/mail.py:768
 msgid "Warning: new discussion"
 msgstr "Alerte : nouvelle discussion"
 
-#: novaideo/mail.py:762
+#: novaideo/mail.py:773
 msgid "Alert: answer"
 msgstr "Alerte : réponse"
 
-#: novaideo/mail.py:767
+#: novaideo/mail.py:778
 msgid "Subscription to the newsletter"
 msgstr "Abonnement à l'infolettre"
 
-#: novaideo/mail.py:772
+#: novaideo/mail.py:783
 msgid "Unsubscription from the newsletter"
 msgstr "Désabonnement de l'infolettre"
 
-#: novaideo/mail.py:777
+#: novaideo/mail.py:788
 msgid "New registration"
 msgstr "Nouvelle inscription"
 
-#: novaideo/mail.py:782
+#: novaideo/mail.py:793
 msgid "Close the proposal"
 msgstr "Cloturer la proposition"
 
-#: novaideo/mail.py:788
+#: novaideo/mail.py:799
 msgid "Presentation of a question"
 msgstr "Présentation d'une question"
 
-#: novaideo/mail.py:794
+#: novaideo/mail.py:805
 msgid "Presentation of an answer"
 msgstr "Présentation d'une réponse"
 
-#: novaideo/mail.py:799
+#: novaideo/mail.py:810
 msgid "Warning: new answer"
 msgstr "Alerte : nouvelle réponse"
 
-#: novaideo/mail.py:804
+#: novaideo/mail.py:815
 msgid "Moderation: Archive the content"
 msgstr "Modération : Archiver le contenu"
 
-#: novaideo/mail.py:809
+#: novaideo/mail.py:820
 msgid "Moderation: Archive the challenge"
 msgstr "Modération : Archiver le challenge"
 
-#: novaideo/mail.py:814
+#: novaideo/mail.py:825
 msgid "Moderation: Publish the challenge"
 msgstr "Modération : Publier le challenge"
+
+#: novaideo/mail.py:831
+msgid "Presentation of a challenge"
+msgstr "Présentation d'un challenge"
 
 #: novaideo/utilities/util.py:61
 #, python-format
