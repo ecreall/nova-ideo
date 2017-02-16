@@ -53,7 +53,7 @@
             <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">The challenge is expired</span>
           </small>
           <small class="deadline-text-challenge deadline-text-success" tal:condition="not expired">
-            <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">${object.remaining_duration} day(s) before the end of the challenge.</span>
+            <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate=""><span i18n:name="days" >${object.remaining_duration}</span> day(s) before the end of the challenge.</span>
           </small>
         </div>
         <small tal:condition="is_restricted" class="restricted">

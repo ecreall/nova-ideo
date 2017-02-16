@@ -3,7 +3,7 @@
 	<span tal:condition="getattr(challenge, 'is_restricted', False)"
         class="challenge-restricted ion-locked"
         title="Is restricted"
-        i18n:attributes=""></span>  
+        i18n:attributes="title"></span>  
 	  <div class="row" tal:define="
 		author challenge.author;
 		author_picture getattr(author, 'picture', None);

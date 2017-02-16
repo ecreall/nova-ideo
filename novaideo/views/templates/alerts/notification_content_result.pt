@@ -29,5 +29,6 @@
                   author ' '.join([a for a in author_parts if a]);">
       <span i18n:name="aut" >${author or 'Une personne'}</span> answered the question <span i18n:name="title"> ${subject.title}</span>, which is part of your favourites.
     </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'published_in_challenge'">This content has been published in a challenge, which is part of your favourites.</span>
   </div>
 </div>

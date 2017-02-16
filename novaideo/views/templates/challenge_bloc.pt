@@ -12,7 +12,7 @@
   <span tal:condition="getattr(object, 'is_restricted', False)"
         class="challenge-restricted ion-locked"
         title="Is restricted"
-        i18n:attributes=""></span>
+        i18n:attributes="title"></span>
   <img src="${getattr(challenge_image, 'large', challenge_image).url}" role="presentation" class="challenge-img">
 
   <div class="caption media-bloc media-challenge" tal:define="author_picture getattr(author, 'picture', None)">

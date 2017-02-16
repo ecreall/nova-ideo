@@ -1,4 +1,4 @@
-<div tal:omit-tag="" tal:define="deadline getattr(challenge, 'deadline', None);">
+<div i18n:domain="novaideo" tal:omit-tag="" tal:define="deadline getattr(challenge, 'deadline', None);">
   <div tal:condition="deadline"
        tal:define="expired challenge.is_expired;"
        style="margin-bottom: 30px;">
@@ -17,7 +17,7 @@
       <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">The challenge is expired</span>
     </small>
     <small class="deadline-text-challenge deadline-text-success" tal:condition="not expired">
-      <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">${challenge.remaining_duration} day(s) before the end of the challenge.</span>
+      <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate=""><span i18n:name="days" >${challenge.remaining_duration}</span> day(s) before the end of the challenge.</span>
     </small>
   </div>
 </div>
@@ -109,7 +109,7 @@
  </div>
   <div class="content-more">
     <div class="content-more-message">
-       <span>More details</span>
+       <span i18n:translate="">More details</span>
        <span class="open glyphicon glyphicon-chevron-down" title="More details" i18n:attributes="title"></span>
     </div>
   </div>

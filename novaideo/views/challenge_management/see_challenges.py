@@ -154,6 +154,7 @@ class SeeChallengesHomeView(BasicView):
             result = {}
             result_body = []
         else:
+            self.title = self.request.localizer.translate(self.title)
             result_body, result = render_listing_objs(
                 self.request, batch, user, 'bloc')
 
