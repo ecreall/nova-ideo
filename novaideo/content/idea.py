@@ -65,7 +65,7 @@ def challenge_choice(node, kw):
     challenge = getattr(request_context, 'challenge', None)
     root = getSite()
     values = [('', _('- Select -'))]
-    if challenge is not None:
+    if challenge is not None and not challenge.is_expired:
         values = [(get_oid(challenge), challenge.title)]
 
     def title_getter(id):

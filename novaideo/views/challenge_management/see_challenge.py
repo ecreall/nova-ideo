@@ -274,11 +274,18 @@ class ParticipateView(BasicView):
     title = _('Participate')
 
     def update(self):
-        contents_forms = get_contents_forms(self.request)
         resources = {
-            'js_links': contents_forms.pop('js_links'),
-            'css_links': contents_forms.pop('css_links')
+            'js_links': [],
+            'css_links': []
         }
+        contents_forms = {'has_forms': False}
+        if not self.context.is_expired:
+            contents_forms = get_contents_forms(self.request)
+            resources = {
+                'js_links': contents_forms.pop('js_links'),
+                'css_links': contents_forms.pop('css_links')
+            }
+
         result = {}
         body = self.content(args=contents_forms, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

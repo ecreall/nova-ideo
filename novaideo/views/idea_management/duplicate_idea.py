@@ -68,6 +68,10 @@ class DuplicateIdeaView(FormView):
         if files:
             data['attached_files'] = files
 
+        challenge = self.context.challenge
+        if challenge and challenge.is_expired:
+            data['challenge'] = ''
+
         return data
 
 

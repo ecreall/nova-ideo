@@ -42,21 +42,21 @@
     <div class="col-md-2"></div>
 	  <div class="steps col-md-10">
       <ul class="nav nav-steps">
-         <li class="0 first ${(current_step == 1)  and 'active'}">
+         <li class="0 first ${(current_step == 1)  and 'active'} glyphicon glyphicon-shopping-cart">
             <span class="${(current_step == 1)  and 'active'} step-content" data-step="message-step-1">
               <div class="step-text">
                 <span i18n:translate="" >Collection of the idea</span>
               </div>
             </span>
          </li>
-         <li class="1 ${(current_step == 2)  and 'active'}">
+         <li class="1 ${(current_step == 2)  and 'active'} glyphicon glyphicon-pencil">
             <span class="${(current_step == 2)  and 'active'} step-content" data-step="message-step-2">
               <div class="step-text">
                 <span i18n:translate="" >Writing of the proposal</span>
               </div>
             </span>
          </li>
-         <li class="2 ${(current_step == 3)  and 'active'}">
+         <li class="2 ${(current_step == 3)  and 'active'} glyphicon glyphicon-repeat">
                <span class="${(current_step == 3)  and 'active'} step-content" data-step="message-step-3">
                  <div class="step-text" >
                    <span i18n:translate="" >Improvement of the proposal</span>
@@ -64,7 +64,7 @@
                  </div>
                </span>
          </li>
-         <li tal:condition="request.support_proposals" class="3 ${(current_step == 4)  and 'active'}">
+         <li tal:condition="request.support_proposals" class="3 ${(current_step == 4)  and 'active'} glyphicon glyphicon-sort">
                <span class="${(current_step == 4)  and 'active'} step-content" data-step="message-step-4">
                  <div class="step-text">
                    <span i18n:translate="" >Evaluation of the proposal</span>
@@ -72,7 +72,7 @@
                  </div>
                </span>
          </li>
-         <li tal:condition="request.examine_proposals" class="4 last ${(current_step == 5)  and 'active'}">
+         <li tal:condition="request.examine_proposals" class="4 last ${(current_step == 5)  and 'active'} glyphicon glyphicon-check">
                <span class="${(current_step == 5)  and 'active'} step-content" data-step="message-step-5">
                  <div class="step-text">
                    <span i18n:translate="" >Examination of the proposal</span>

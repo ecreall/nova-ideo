@@ -1,5 +1,4 @@
 <div style="text-align: center;" i18n:domain="novaideo">
-    <div class="step-title"><span class="step-icon glyphicon glyphicon-sort"></span></div>
     <dl >
        <dt i18n:translate="">Total appreciations</dt>
        <dd>

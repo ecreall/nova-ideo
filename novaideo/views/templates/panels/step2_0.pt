@@ -1,4 +1,3 @@
 <div class="step-metadata" i18n:domain="novaideo">
-	  <div class="step-title"><span class="step-icon glyphicon glyphicon-pencil"></span></div>
-      <div>${proposal_nember} <strong i18n:translate="">other proposal(s) referring to the related idea(s)</strong></div>
+	  <div>${proposal_nember} <strong i18n:translate="">other proposal(s) referring to the related idea(s)</strong></div>
 </div>

@@ -247,13 +247,6 @@ class Challenge(
                             if correlation[1].context]
         return transformed_from[0] if transformed_from else None
 
-    def init_published_at(self):
-        setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
-
-    def init_support_history(self):
-        if not hasattr(self, '_support_history'):
-            setattr(self, '_support_history', PersistentList())
-
     @property
     def is_expired(self):
         if 'closed' in self.state:
@@ -272,9 +265,17 @@ class Challenge(
         duration = getattr(self, 'duration', None)
         if deadline is not None and duration is not None:
             now = datetime.datetime.now(tz=pytz.UTC)
-            return (deadline - now.date()).days
+            remaining = (deadline - now.date()).days
+            return remaining if remaining >= 0 else 0
 
         return None
+
+    def init_published_at(self):
+        setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
+
+    def init_support_history(self):
+        if not hasattr(self, '_support_history'):
+            setattr(self, '_support_history', PersistentList())
 
     def init_total_days(self):
         deadline = getattr(self, 'deadline', None)

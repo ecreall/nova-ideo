@@ -51,6 +51,10 @@ class DuplicateProposalFormView(FormView):
         if files:
             data['add_files']['attached_files'] = files
 
+        challenge = self.context.challenge
+        if challenge and challenge.is_expired:
+            data['challenge'] = ''
+
         return data
 
     def before_update(self):

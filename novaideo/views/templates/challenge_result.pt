@@ -8,6 +8,9 @@
                  files object.get_all_attached_files_data();
                  len_files len(files);
                  oid object.__oid__;
+                 deadline getattr(object, 'deadline', None);
+                 expired object.is_expired;
+                 is_restricted getattr(object, 'is_restricted', False)
                  ">
   <div class="media-body media-challenge" tal:define="author_picture getattr(author, 'picture', None)">
     <div class="author-block">
@@ -43,7 +46,19 @@
           </h4>
         </a>
       </div>
-      
+      <div tal:condition="deadline or is_restricted" class="challenge-status">
+        <div tal:omit-tag="" tal:condition="deadline">
+          <small class="deadline-text-challenge deadline-text-danger" tal:condition="expired">
+            <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">The challenge is expired</span>
+          </small>
+          <small class="deadline-text-challenge deadline-text-success" tal:condition="not expired">
+            <span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">${object.remaining_duration} day(s) before the end of the challenge.</span>
+          </small>
+        </div>
+        <small tal:condition="is_restricted" class="restricted">
+          <span class="ion-locked"></span> <span i18n:translate="">This challenge is restricted</span>
+        </small>
+      </div>
       <div class="keywords-result">
         <span class="glyphicon glyphicon-tags"></span> 
         <tal:loop repeat="k object.keywords">
