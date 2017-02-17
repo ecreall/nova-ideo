@@ -19,6 +19,8 @@ from dace.objectofcollaboration.principal.util import (
 from dace.util import (
     getAllBusinessAction, find_catalog,
     get_obj)
+from pontus.view import ViewError
+from pontus.util import merge_dicts
 
 from novaideo import _, nothing, log
 from novaideo.views.idea_management.comment_idea import (
@@ -51,7 +53,7 @@ from novaideo.content.interface import (
     Iidea, IQuestion)
 from novaideo.content.organization import Organization
 from novaideo.content.proposal import Proposal
-from novaideo.core import can_access
+from novaideo.core import can_access, ON_LOAD_VIEWS
 
 
 def _get_resources_to_include(request, resources, currents):
@@ -217,6 +219,51 @@ def get_all_updated_data(action, request, context, api, **kwargs):
 def get_components_data(action, view, **kwargs):
     kwargs['action_id'] = action
     return kwargs
+
+
+def load_components(request, context, api, **kwargs):
+    result = {'action': 'loading-action', 'view': api}
+    current_resources = api.params('included_resources')
+    current_resources = json.loads(current_resources) \
+        if current_resources else []
+
+    loading_components = api.params('loading_components')
+    loading_components = json.loads(loading_components) if \
+        loading_components else []
+    source_path = api.params('source_path')
+    source_context = None
+    if source_path:
+        source_path = '/'.join(source_path.split('/')[:-1])
+        try:
+            source_context = find_resource(request.root, source_path)
+        except Exception:
+            source_context = context
+
+    loaded_views = []
+    resources = {}
+    for loading_component in loading_components:
+        loaded_views.append(loading_component)
+        view = ON_LOAD_VIEWS.get(loading_component, None)
+        if view:
+            try:
+                view_instance = view(source_context, request)
+                view_result = view_instance()
+                body = view_result['coordinates'][view_instance.coordinates][0]['body']
+                view_resources = {
+                    'css_links': view_result['css_links'],
+                    'js_links': view_result['js_links']
+                }
+                resources = merge_dicts(view_resources, resources)
+                result[loading_component] = body
+            except ViewError as error:
+                result[loading_component] = error.render(request)
+        else:
+            result[loading_component] = ''
+
+    result['loaded_views'] = loaded_views
+    result['resources'] = _get_resources_to_include(
+        request, resources, current_resources)
+    return result
 
 
 def get_default_action_metadata(action, request, context, api, **kwargs):

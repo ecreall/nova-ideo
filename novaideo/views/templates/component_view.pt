@@ -1,0 +1,7 @@
+<div class="on-load-view" data-component_type="on-load-view" id="${id}"
+    i18n:domain="novaideo">
+  <div class="on-load-view-container">
+      <img class="" src="${request.static_url('novaideo:static/images/progress.gif')}"/>
+ 	  <span i18n:translate="">Loading...</span>
+    </div>
+</div>

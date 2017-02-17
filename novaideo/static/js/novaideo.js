@@ -45,6 +45,17 @@ jQuery.fn.extend({
   }
 });
 
+function components_loading_progress(){
+  $(".components-loading-progress").rotate({
+    angle:0,
+    animateTo:360,
+    callback: components_loading_progress,
+    easing: function (x,t,b,c,d){        // t: current time, b: begInnIng value, c: change In value, d: duration
+      return c*(t/d)+b;
+    }
+  });
+}
+
 function loading_progress(){
     $('img.novaideo-loading-indicator').removeClass('hide-bloc');
 }
@@ -314,6 +325,7 @@ function initscroll(result_scrolls){
               var sort_form = $(sort.find('form').first()).serialize();
               data_get += '&'+sort_form;
            }
+           data_get += '&load_view=load';
 
            var f = function(currPage) {
               var next_path = $($('#'+id+' .result-container').first().parents('div').first().find('>.result-container').last()).data('nex_url')
@@ -699,7 +711,7 @@ $(document).ready(function(){
         $('.sidebar-background').toggleClass("toggled");
     });
 
-  $(".all-channels-toggle").click(function(e) {
+  $(document).on('click', ".all-channels-toggle", function(e) {
         e.preventDefault();
         $(".all-channels").toggleClass("toggled");
         reset_cookie_channels_bar()
@@ -737,8 +749,6 @@ $(document).ready(function(){
   init_morecontent_scroll();
 
   initscroll();
-
-  init_channels_scroll();
 
   init_channels_top()
 
@@ -900,12 +910,18 @@ $(document).ready(function(){
 
   $(document).on('click', '.file-slider:not(.full) .carousel-inner a', display_carousel)
 
-  alert_user_unread_messages()
-  update_unread_messages_alerts()
   
   $(document).on('click', '.alert-messages-scroll', scroll_to_unread_message);
-  
+
 });
+
+$(document).on('component_loaded', function(event, component_id){
+    if(component_id == 'novaideo_see_channels'){
+      init_channels_scroll();
+      alert_user_unread_messages()
+      update_unread_messages_alerts()
+    }
+})
 
 
 var alert_unread_messages_bottom_pt = '<div class="alert-messages-scroll down">'+

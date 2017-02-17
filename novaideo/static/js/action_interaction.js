@@ -21,6 +21,27 @@ function get_action_metadata(action){
 }
 
 
+function load_views(){
+  var body = $(document.body)
+  var loading_components = $('[data-component_type="on-load-view"]')
+        .map(function(){return $(this).attr('id')}).get()
+  data = {
+    source_path: window.location.pathname,
+    view_name: body.data('view_name'),
+    'loading_components': JSON.stringify(loading_components),
+    included_resources: JSON.stringify(includejs_resources),
+    'op': 'load_views',
+    'load_view': 'load'
+  }
+  var url = body.data('api_url')
+  $.post(url, data, function(data) {
+    include_resources(data['resources'], function(){
+         update_components(data)
+    })
+  });
+}
+
+
 function update_modal_action(event){
     var action = $(this).closest('.dace-action-modal')
     var toreplay = action.data('toreplay');
@@ -560,4 +581,8 @@ $(document).on('click', '.sidebar-nav-items .item.closed',function(event){
       var $this = $(this)
       var to_open = $('#'+$this.data('target'))
       open_sidebar_container_item(to_open)
-});             
+});
+
+$(document).on('resources_loaded', function(){
+  load_views()
+})

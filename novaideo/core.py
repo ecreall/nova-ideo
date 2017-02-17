@@ -61,6 +61,8 @@ NOVAIDO_ACCES_ACTIONS = {}
 
 ADVERTISING_CONTAINERS = {}
 
+ON_LOAD_VIEWS = {}
+
 
 def get_searchable_content(request=None):
     if request is None:

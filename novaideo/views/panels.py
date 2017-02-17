@@ -18,7 +18,7 @@ from pontus.util import update_resources
 from dace.processinstance.core import ValidationError
 from dace.objectofcollaboration.entity import Entity
 from dace.util import (
-    getBusinessAction, getSite,
+    getSite,
     find_catalog, getAllBusinessAction,
     get_obj)
 from dace.objectofcollaboration.principal.util import get_current
@@ -33,7 +33,6 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMyParticipations,
     SeeMySupports)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
-from novaideo.content.person import Person
 from novaideo.content.interface import (
     IPerson, Iidea, IProposal, ISmartFolder,
     IQuestion)
@@ -46,7 +45,6 @@ from novaideo.utilities.util import (
     render_navbar_body,
     deepcopy,
     FOOTER_NAVBAR_TEMPLATE,
-    update_all_ajax_action,
     get_debatescore_data,
     get_action_view)
 from novaideo.views.filter import find_entities, find_more_contents
@@ -57,10 +55,11 @@ from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
 from novaideo.content.smart_folder import SmartFolder
 from novaideo.fr_lexicon import normalize_title
-from novaideo.content.challenge import Challenge
 from novaideo.content.processes.challenge_management.behaviors import (
     SeeChallenge)
-from novaideo.views.challenge_management.see_challenges import SeeChallengesHomeView
+from novaideo.views.challenge_management.see_challenges import (
+    SeeChallengesHomeView)
+from novaideo.views.channel_management.see_channels import SeeChannels
 from novaideo.views.challenge_management.see_challenge import get_contents_forms
 from novaideo import _, log
 
@@ -524,51 +523,35 @@ class Channels(object):
         self.context = context
         self.request = request
 
-    def _get_channels_bodies(self, root, user, channels, action_id):
-        result_body = []
-        for channel in channels:
-            subject = channel.get_subject(user)
-            actions_call, action_resources = update_all_ajax_action(
-                subject, self.request, action_id)
-            if actions_call:
-                object_values = {
-                    'object': channel,
-                    'current_user': user,
-                    'action_call': actions_call[0]}
-                body = renderers.render(
-                    channel.templates.get('default'),
-                    object_values,
-                    self.request)
-                result_body.append(body)
-
-        return result_body
-
     def __call__(self):
-        user = get_current(self.request)
-        result = {}
-        users_result_body = []
-        others_result_body = []
-        general_result_body = []
+        result = {
+            'condition': False
+        }
         if self.request.user:
-            root = getSite()
-            general_channel = root.channel
-            channels = getattr(user, 'following_channels', [])
-            user_channel = [c for c in channels
-                            if isinstance(c.__parent__, Person)]
-            generals = [general_channel]
-            others = [c for c in channels if c not in user_channel]
-            users_result_body = self._get_channels_bodies(
-                root, user, user_channel, 'discuss')
-            others_result_body = self._get_channels_bodies(
-                root, user, others, 'comment')
-            general_result_body = self._get_channels_bodies(
-                root, user, generals, 'general_discuss')
-            general_result_body.extend(others_result_body)
+            channels_view = SeeChannels(self.context, self.request)
+            try:
+                channels_view_result = channels_view()
+            except Exception as error:
+                log.warning(error)
+                return {'condition': False}
 
-        result.update({
-            'users_channels': users_result_body,
-            'others_channels': general_result_body,
-        })
+            channels = ''
+            result = {'condition': True, 'css_links': [], 'js_links': []}
+            if isinstance(channels_view_result, dict) and \
+               'coordinates' in channels_view_result:
+                search_render = channels_view_result['coordinates'][channels_view.coordinates][0]
+                result['css_links'] = [c for c in channels_view_result['css_links']
+                                       if c not in resources['css_links']]
+                result['js_links'] = [c for c in channels_view_result['js_links']
+                                      if c not in resources['js_links']]
+                channels = channels_view.render_item(
+                    search_render,
+                    channels_view.coordinates,
+                    None)
+
+            result['channels'] = channels
+            update_resources(self.request, result)
+
         return result
 
 

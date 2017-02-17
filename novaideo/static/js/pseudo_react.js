@@ -386,6 +386,26 @@ function alert_component(data){
 }
 
 
+function loading_component(data){
+	var components = $('[data-component_type="on-load-view"]')
+	var components_to_update = components.map(function(){
+		if($.inArray($(this).attr('id'), data['loaded_views']) >= 0){
+			return $(this)
+		}
+	})
+	$.each(components_to_update, function(index){
+		var original_components = $(this)
+		var component_id = original_components.attr('id')
+		original_components.replaceWith(data[component_id])
+		try {
+	        deform.processCallbacks();
+	    }catch(err) {};
+	    initscroll();
+	    $(document).trigger('component_loaded', [component_id])
+	})
+}
+
+
 var pseudo_react_components = {
 	'support_action': [nav_bar_component, view_title_component,
 	                   removed_items_component, object_view_component, alert_component,
@@ -404,7 +424,8 @@ var pseudo_react_components = {
 	                    process_steps_component],
 	'dropdown_action': [dropdown_action_component, list_channels_component,
 	                    alert_component, contextual_help_component,
-	                    process_steps_component]
+	                    process_steps_component],
+	'loading-action': [loading_component]
 }
 
 function update_components(data){

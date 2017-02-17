@@ -19,13 +19,14 @@ from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_view_manager.behaviors import SeeHome
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
-from novaideo.core import BATCH_DEFAULT_SIZE
+from novaideo.core import BATCH_DEFAULT_SIZE, ON_LOAD_VIEWS
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES,
     merge_with_filter_view, find_entities)
+from novaideo.views.core import ComponentView
 from novaideo.views.filter.sort import (
     sort_view_objects)
-from .search import get_default_searchable_content
+# from .search import get_default_searchable_content
 
 
 CONTENTS_MESSAGES = {
@@ -57,7 +58,8 @@ class ContentView(BasicView):
             return objects
 
         url = self.request.resource_url(
-            self.context, '@@novaideoapi')
+            self.context, '@@novaideoapi',
+            query={'view_content_type': self.content_type})
         select = [('metadata_filter', ['states', 'keywords', 'challenges']), 'geographic_filter',
                   'contribution_filter',
                   ('temporal_filter', ['negation', 'created_date']),
@@ -160,6 +162,10 @@ class QuestionsView(ContentView):
     empty_icon = 'md md-live-help'
 
 
+class HomeComponentView(ComponentView):
+    component_id = 'novaideoapp_home'
+
+
 @view_config(
     name='index',
     context=NovaIdeoApplication,
@@ -181,19 +187,25 @@ class HomeView(MultipleView):
     container_css_class = 'home'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
+    component_id = 'novaideoapp_home'
 
     def _init_views(self, views, **kwargs):
-        if self.request.is_idea_box:
-            views = (IdeasView, )
+        if self.params('load_view'):
+            if self.request.is_idea_box:
+                views = (IdeasView, )
 
-        if self.params('view_content_type') == 'idea':
-            views = (IdeasView, )
+            if self.params('view_content_type') == 'idea':
+                views = (IdeasView, )
 
-        if self.params('view_content_type') == 'proposal':
-            views = (ProposalsView, )
+            if self.params('view_content_type') == 'proposal':
+                views = (ProposalsView, )
 
-        if self.params('view_content_type') == 'question':
-            views = (QuestionsView, )
+            if self.params('view_content_type') == 'question':
+                views = (QuestionsView, )
+        else:
+            views = (HomeComponentView, )
+            self.wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+            self.template = 'pontus:templates/views_templates/simple_multipleview.pt'
 
         super(HomeView, self)._init_views(views, **kwargs)
 
@@ -216,6 +228,11 @@ class HomeView(MultipleView):
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeHome: HomeView})
+
+
+ON_LOAD_VIEWS.update({
+    HomeView.component_id: HomeView
+    })
 
 
 FILTER_SOURCES.update(

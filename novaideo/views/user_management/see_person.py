@@ -21,13 +21,14 @@ from pontus.view_operation import MultipleView
 from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.user_management.behaviors import SeePerson
 from novaideo.content.person import Person
-from novaideo.core import BATCH_DEFAULT_SIZE, can_access
+from novaideo.core import BATCH_DEFAULT_SIZE, can_access, ON_LOAD_VIEWS
 from novaideo.content.processes import get_states_mapping
 from novaideo.utilities.util import (
     generate_navbars, ObjectRemovedException)
 from novaideo import _
 from novaideo.views.filter.sort import (
     sort_view_objects)
+from novaideo.views.core import ComponentView
 
 
 class ContentView(BasicView):
@@ -49,9 +50,12 @@ class ContentView(BasicView):
             objects = list(filter(lambda o: can_access(current_user, o) and
                                        'archived' not in o.state,
                              getattr(user, self.content_attr, [])))
-
+        sort_url = self.request.resource_url(
+            self.context, '@@seeperson',
+            query={'view_content_attr': self.content_attr})
         objects, sort_body = sort_view_objects(
-            self, objects, [self.content_type], user)
+            self, objects, [self.content_type], user,
+            sort_url=sort_url)
         url = self.request.resource_url(
             self.context, '@@seeperson',
             query={'view_content_attr': self.content_attr})
@@ -109,6 +113,10 @@ class ProposalsView(ContentView):
     empty_icon = 'icon icon novaideo-icon icon-wg'
 
 
+class PersonComponentView(ComponentView):
+    component_id = 'person_see_person'
+
+
 class PersonContentsView(MultipleView):
     title = 'person-contents'
     name = 'see-person-contents'
@@ -118,19 +126,25 @@ class PersonContentsView(MultipleView):
     container_css_class = 'person-view'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
+    component_id = 'person_see_person'
 
     def _init_views(self, views, **kwargs):
-        if self.request.is_idea_box:
-            views = (IdeasView, )
+        if self.params('load_view'):
+            if self.request.is_idea_box:
+                views = (IdeasView, )
 
-        if self.params('view_content_attr') == 'ideas':
-            views = (IdeasView, )
+            if self.params('view_content_attr') == 'ideas':
+                views = (IdeasView, )
 
-        if self.params('view_content_attr') == 'proposals':
-            views = (ProposalsView, )
+            if self.params('view_content_attr') == 'proposals':
+                views = (ProposalsView, )
 
-        if self.params('view_content_attr') == 'questions':
-            views = (QuestionsView, )
+            if self.params('view_content_attr') == 'questions':
+                views = (QuestionsView, )
+        else:
+            views = (PersonComponentView, )
+            self.wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+            self.template = 'pontus:templates/views_templates/simple_multipleview.pt'
 
         super(PersonContentsView, self)._init_views(views, **kwargs)
 
@@ -185,3 +199,8 @@ class SeePersonView(BasicView):
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {SeePerson: SeePersonView})
+
+
+ON_LOAD_VIEWS.update({
+    PersonContentsView.component_id: PersonContentsView
+    })

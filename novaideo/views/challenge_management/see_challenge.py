@@ -24,12 +24,13 @@ from novaideo.content.challenge import Challenge
 from novaideo.utilities.util import (
     generate_navbars, ObjectRemovedException, get_home_actions_bodies)
 from novaideo import _
-from novaideo.core import BATCH_DEFAULT_SIZE
+from novaideo.core import BATCH_DEFAULT_SIZE, ON_LOAD_VIEWS
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES,
     merge_with_filter_view, find_entities)
 from novaideo.views.filter.sort import (
     sort_view_objects)
+from novaideo.views.core import ComponentView
 
 
 CONTENTS_MESSAGES = {
@@ -115,7 +116,8 @@ class ContentView(BasicView):
             return objects
 
         url = self.request.resource_url(
-            self.context, '@@novaideoapi')
+            self.context, '@@novaideoapi',
+            query={'view_content_type': self.content_type})
         select = [('metadata_filter', ['states', 'keywords']), 'geographic_filter',
                   'contribution_filter',
                   ('temporal_filter', ['negation', 'created_date']),
@@ -295,6 +297,10 @@ class ParticipateView(BasicView):
         return result
 
 
+class ChallengeComponentView(ComponentView):
+    component_id = 'challenge_see_challenge'
+
+
 class ChallengeContentsView(MultipleView):
     title = ''
     name = 'seechallengecontents'
@@ -302,19 +308,25 @@ class ChallengeContentsView(MultipleView):
     viewid = 'challengecontents'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
+    component_id = 'challenge_see_challenge'
 
     def _init_views(self, views, **kwargs):
-        if self.request.is_idea_box:
-            views = (IdeasView, )
+        if self.params('load_view'):
+            if self.request.is_idea_box:
+                views = (IdeasView, )
 
-        if self.params('view_content_type') == 'idea':
-            views = (IdeasView, )
+            if self.params('view_content_type') == 'idea':
+                views = (IdeasView, )
 
-        if self.params('view_content_type') == 'proposal':
-            views = (ProposalsView, )
+            if self.params('view_content_type') == 'proposal':
+                views = (ProposalsView, )
 
-        if self.params('view_content_type') == 'question':
-            views = (QuestionsView, )
+            if self.params('view_content_type') == 'question':
+                views = (QuestionsView, )
+        else:
+            views = (ChallengeComponentView, )
+            self.wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+            self.template = 'pontus:templates/views_templates/simple_multipleview.pt'
 
         super(ChallengeContentsView, self)._init_views(views, **kwargs)
 
@@ -353,3 +365,8 @@ DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeChallenge: ChallengeView})
 
 FILTER_SOURCES.update(
     {"challenge": ChallengeView})
+
+
+ON_LOAD_VIEWS.update({
+    ChallengeContentsView.component_id: ChallengeContentsView
+    })

@@ -45,7 +45,8 @@ def get_adapted_sort(content_types, user, intersect=None, **kwargs):
 
 def sort_view_objects(
     view, objects, content_types,
-    user, default_sort='release_date', intersect=[]):
+    user, default_sort='release_date', intersect=[],
+    sort_url=None):
     current_sort = default_sort
     sort = view.params('sort')
     reverse = view.params('reverse_sort')
@@ -63,7 +64,8 @@ def sort_view_objects(
         view.request, content_types, user,
         sorts=adapted_sorts,
         current_sort=current_sort,
-        reverse=reverse)
+        reverse=reverse,
+        sort_url=sort_url)
 
     return objects, sort_body
 
@@ -71,7 +73,8 @@ def sort_view_objects(
 def render_adapted_sort(
     request, content_types, user,
     template=SORT_TEMPLATE, sorts=None,
-    current_sort=None, reverse=False):
+    current_sort=None, reverse=False,
+    sort_url=None):
     if not sorts:
         sorts = get_adapted_sort(content_types, user, request=request)
 
@@ -79,7 +82,8 @@ def render_adapted_sort(
         template,
         {'options': sorts,
          'current': current_sort,
-         'reverse': reverse},
+         'reverse': reverse,
+         'sort_url': sort_url},
         request)
 
 

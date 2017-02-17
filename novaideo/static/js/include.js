@@ -64,5 +64,6 @@ function update_resources(){
 }
 
 $(document).ready(function(){
-  update_resources()
+  update_resources();
+  $(document).trigger('resources_loaded')
 })

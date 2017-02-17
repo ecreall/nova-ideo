@@ -1,0 +1,28 @@
+<div class="all-blocks" tal:condition="users_channels or others_channels"
+ i18n:domain="novaideo">
+	<div class="all-channels-toggle close pull-right">
+      <span class="ion-chevron-left"></span>
+    </div>
+    <div class="all-channels-container">
+		<div tal:condition="others_channels" class="channels-block">
+			<div class="channel-title">
+				<span i18n:translate="">Channels</span>
+				<span class="channel-len">(${len(others_channels)})</span>
+			</div>
+			<div class="channels-container">
+				<div tal:omit-tag=""
+					 tal:repeat="body others_channels"> ${structure:body}</div>
+			</div>
+		</div>
+		<div tal:condition="users_channels" class="channels-block">
+			<div class="channel-title">
+				<span i18n:translate="">Private discussions</span>
+				<span class="channel-len">(${len(users_channels)})</span>
+			</div>
+			<div class="channels-container">
+				<div tal:omit-tag=""
+					 tal:repeat="body users_channels"> ${structure:body}</div>
+			</div>
+		</div>
+	</div>
+</div>

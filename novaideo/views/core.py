@@ -21,3 +21,20 @@ class ActionAnonymousView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
+
+
+class ComponentView(BasicView):
+    title = ''
+    template = 'novaideo:views/templates/component_view.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    component_id = ''
+
+    def update(self):
+        self.execute(None)
+        result = {}
+        body = self.content(
+            args={'id': self.component_id},
+            template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        return result

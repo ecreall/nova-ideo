@@ -34,7 +34,7 @@ from novaideo.content.interface import (
 from novaideo.utilities.util import (
     render_small_listing_objs, extract_keywords)
 from novaideo.utilities.pseudo_react import (
-    get_components_data, get_all_updated_data)
+    get_components_data, get_all_updated_data, load_components)
 from novaideo.views.filter import find_entities, FILTER_SOURCES
 from novaideo import _
 from novaideo.core import can_access
@@ -573,6 +573,14 @@ class NovaideoAPI(IndexManagementJsonView):
                 pass
 
         return {'body': ''}
+
+    def load_views(self):
+        result = {}
+        result.update(get_components_data(
+            **load_components(
+                self.request,
+                self.context, self)))
+        return result
 
     def _get_start_action(self):
         action = None

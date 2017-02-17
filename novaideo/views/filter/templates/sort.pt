@@ -1,5 +1,5 @@
 <div class="sort-container" i18n:domain="novaideo">
-  <form class="sort-form">
+  <form class="sort-form" data-url="${sort_url or ''}">
   <span class="glyphicon glyphicon-sort"></span> Trier par :
     <select class="sort-input" name="sort">
       <option i18n:attributes="title" title="${sort['description'] or sort['title']}" tal:repeat="(value, sort) options"
