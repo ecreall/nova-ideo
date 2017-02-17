@@ -54,7 +54,7 @@
       </div>
 
       <div tal:condition="challenge" class="challenge-block">
-        <small i18n:attributes="" title="Associated to this challenge">
+        <small i18n:attributes="title" title="Associated to this challenge">
           <span class="${challenge.icon}"></span>
           <a data-oid="${getattr(challenge, '__oid__', '')}"
              class="toggle-popover"

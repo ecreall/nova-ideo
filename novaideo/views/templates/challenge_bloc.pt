@@ -40,7 +40,7 @@
             <div tal:replace="structure menu_body"/>
           </div>
           <a tal:attributes="href url">
-            <h4>
+            <h4 title="${object.title}">
               <span class="icon ${icon}"></span>  ${object.title}
             </h4>
           </a>
