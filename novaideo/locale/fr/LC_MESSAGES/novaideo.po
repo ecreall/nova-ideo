@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-02-16 19:08+0100\n"
+"POT-Creation-Date: 2017-02-17 10:23+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -3889,6 +3889,15 @@ msgstr "Les responsables"
 #: novaideo/views/organization_management/templates/see_organization.pt:24
 msgid "The manager"
 msgstr "Le responsable"
+
+#: novaideo/views/templates/idea_bloc.pt:80
+#: novaideo/views/templates/proposal_bloc.pt:81
+#: novaideo/views/templates/question_result.pt:57
+#: novaideo/views/templates/idea_result.pt:81
+#: novaideo/views/templates/question_bloc.pt:57
+#: novaideo/views/templates/proposal_result.pt:84
+msgid "Associated to this challenge"
+msgstr "Associée à ce challenge"
 
 #: novaideo/views/templates/challenge_bloc.pt:14
 #: novaideo/views/templates/panels/challenge.pt:5
