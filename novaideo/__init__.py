@@ -692,6 +692,18 @@ def evolve_related_correlation(root, registry):
     log.info('Related correlations evolved')
 
 
+def publish_organizations(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IOrganization
+
+    contents = find_entities(interfaces=[IOrganization])
+    for org in contents:
+        org.state = PersistentList(['published'])
+        org.reindex()
+
+    log.info('Orgnaizations evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -736,6 +748,7 @@ def main(global_config, **settings):
     config.add_evolution_step(add_guide_tour_data)
     config.add_evolution_step(init_guide_tour_data)
     config.add_evolution_step(evolve_related_correlation)
+    config.add_evolution_step(publish_organizations)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
