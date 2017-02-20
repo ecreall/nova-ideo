@@ -18,6 +18,7 @@ from novaideo import _
 from novaideo.views.filter import (
     FILTER_SOURCES)
 from .see_my_contents import SeeMyContentsView
+from novaideo.views.core import asyn_component_config
 
 
 CONTENTS_MESSAGES = {
@@ -26,6 +27,7 @@ CONTENTS_MESSAGES = {
     '*': _(u"""${nember} followed elements were found""")}
 
 
+@asyn_component_config(id='novaideoapp_seemyselections')
 @view_config(
     name='seemyselections',
     context=NovaIdeoApplication,

@@ -18,6 +18,7 @@ from novaideo import _
 from novaideo.views.filter import (
     FILTER_SOURCES)
 from .see_my_contents import SeeMyContentsView
+from novaideo.views.core import asyn_component_config
 
 
 CONTENTS_MESSAGES = {
@@ -27,6 +28,7 @@ CONTENTS_MESSAGES = {
 }
 
 
+@asyn_component_config(id='novaideoapp_seemysupports')
 @view_config(
     name='seemysupports',
     context=NovaIdeoApplication,

@@ -11,16 +11,12 @@ from dace.util import getSite
 from dace.objectofcollaboration.entity import Entity
 from pontus.view import BasicView
 
-from novaideo.core import ON_LOAD_VIEWS
 from novaideo.content.person import Person
 from novaideo.utilities.util import update_all_ajax_action
-from novaideo.views.core import ComponentView
+from novaideo.views.core import asyn_component_config
 
 
-class ChannelsComponentView(ComponentView):
-    component_id = 'novaideo_see_channels'
-
-
+@asyn_component_config(id='novaideo_see_channels')
 @view_config(
     name='seechannels',
     context=Entity,
@@ -34,7 +30,6 @@ class SeeChannels(BasicView):
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     css_class = 'simple-bloc'
     container_css_class = 'home'
-    component_id = 'novaideo_see_channels'
 
     def _get_channels_bodies(self, root, user, channels, action_id):
         result_body = []
@@ -56,10 +51,6 @@ class SeeChannels(BasicView):
         return result_body
 
     def update(self):
-        if not self.params('load_view'):
-            return ChannelsComponentView(
-                self.context, self.request).update()
-
         user = get_current(self.request)
         result = {}
         users_result_body = []
@@ -89,8 +80,3 @@ class SeeChannels(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
-
-
-ON_LOAD_VIEWS.update({
-    SeeChannels.component_id: SeeChannels
-    })

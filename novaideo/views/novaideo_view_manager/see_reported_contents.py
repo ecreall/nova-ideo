@@ -24,6 +24,7 @@ from novaideo.views.filter import (
 from novaideo.views.filter.sort import (
     sort_view_objects)
 from novaideo.content.interface import ISignalableEntity
+from novaideo.views.core import asyn_component_config
 
 
 CONTENTS_MESSAGES = {
@@ -33,6 +34,7 @@ CONTENTS_MESSAGES = {
     }
 
 
+@asyn_component_config(id='novaideoap_seereportedcontents')
 @view_config(
     name='seereportedcontents',
     context=NovaIdeoApplication,

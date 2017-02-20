@@ -248,7 +248,8 @@ def load_components(request, context, api, **kwargs):
             try:
                 view_instance = view(source_context, request)
                 view_result = view_instance()
-                body = view_result['coordinates'][view_instance.coordinates][0]['body']
+                item = view_result['coordinates'][view_instance.coordinates][0]
+                body = view_instance.render_item(item, view_instance.coordinates, None)
                 view_resources = {
                     'css_links': view_result['css_links'],
                     'js_links': view_result['js_links']

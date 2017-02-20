@@ -21,14 +21,14 @@ from pontus.view_operation import MultipleView
 from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.user_management.behaviors import SeePerson
 from novaideo.content.person import Person
-from novaideo.core import BATCH_DEFAULT_SIZE, can_access, ON_LOAD_VIEWS
+from novaideo.core import BATCH_DEFAULT_SIZE, can_access
 from novaideo.content.processes import get_states_mapping
 from novaideo.utilities.util import (
     generate_navbars, ObjectRemovedException)
 from novaideo import _
 from novaideo.views.filter.sort import (
     sort_view_objects)
-from novaideo.views.core import ComponentView
+from novaideo.views.core import asyn_component_config
 
 
 class ContentView(BasicView):
@@ -113,20 +113,17 @@ class ProposalsView(ContentView):
     empty_icon = 'icon icon novaideo-icon icon-wg'
 
 
-class PersonComponentView(ComponentView):
-    component_id = 'person_see_person'
-
-
+@asyn_component_config(id='person_see_person')
 class PersonContentsView(MultipleView):
-    title = 'person-contents'
+    title = ''
     name = 'see-person-contents'
     viewid = 'person-contents'
     css_class = 'simple-bloc'
     template = 'novaideo:views/templates/multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     container_css_class = 'person-view'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
-    component_id = 'person_see_person'
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
@@ -141,10 +138,6 @@ class PersonContentsView(MultipleView):
 
             if self.params('view_content_attr') == 'questions':
                 views = (QuestionsView, )
-        else:
-            views = (PersonComponentView, )
-            self.wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
-            self.template = 'pontus:templates/views_templates/simple_multipleview.pt'
 
         super(PersonContentsView, self)._init_views(views, **kwargs)
 
@@ -199,8 +192,3 @@ class SeePersonView(BasicView):
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {SeePerson: SeePersonView})
-
-
-ON_LOAD_VIEWS.update({
-    PersonContentsView.component_id: PersonContentsView
-    })

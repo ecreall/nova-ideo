@@ -19,13 +19,13 @@ from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_view_manager.behaviors import SeeHome
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
-from novaideo.core import BATCH_DEFAULT_SIZE, ON_LOAD_VIEWS
+from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES,
     merge_with_filter_view, find_entities)
-from novaideo.views.core import ComponentView
 from novaideo.views.filter.sort import (
     sort_view_objects)
+from novaideo.views.core import asyn_component_config
 # from .search import get_default_searchable_content
 
 
@@ -162,10 +162,7 @@ class QuestionsView(ContentView):
     empty_icon = 'md md-live-help'
 
 
-class HomeComponentView(ComponentView):
-    component_id = 'novaideoapp_home'
-
-
+@asyn_component_config(id='novaideoapp_home')
 @view_config(
     name='index',
     context=NovaIdeoApplication,
@@ -182,12 +179,12 @@ class HomeView(MultipleView):
     behaviors = [SeeHome]
     anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
     template = 'novaideo:views/templates/multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'home'
     css_class = 'simple-bloc'
     container_css_class = 'home'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
-    component_id = 'novaideoapp_home'
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
@@ -202,10 +199,6 @@ class HomeView(MultipleView):
 
             if self.params('view_content_type') == 'question':
                 views = (QuestionsView, )
-        else:
-            views = (HomeComponentView, )
-            self.wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
-            self.template = 'pontus:templates/views_templates/simple_multipleview.pt'
 
         super(HomeView, self)._init_views(views, **kwargs)
 
@@ -228,11 +221,6 @@ class HomeView(MultipleView):
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeHome: HomeView})
-
-
-ON_LOAD_VIEWS.update({
-    HomeView.component_id: HomeView
-    })
 
 
 FILTER_SOURCES.update(

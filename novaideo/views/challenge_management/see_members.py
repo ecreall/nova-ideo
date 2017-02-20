@@ -21,6 +21,7 @@ from novaideo.utilities.util import (
     render_small_listing_objs, render_listing_objs)
 from novaideo import _
 
+
 BATCH_DEFAULT_SIZE = 8
 
 WG_MESSAGES = {

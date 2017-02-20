@@ -22,8 +22,11 @@ from novaideo.views.filter import (
     get_filter, FILTER_SOURCES, merge_with_filter_view, find_entities)
 from novaideo.views.filter.sort import (
     sort_view_objects)
+from novaideo.views.core import asyn_component_config
+
 
 BATCH_DEFAULT_SIZE = 8
+
 
 BATCH_HOME_DEFAULT_SIZE = 4
 
@@ -35,6 +38,7 @@ CONTENTS_MESSAGES = {
     }
 
 
+@asyn_component_config(id='novaideoap_seechallenges')
 @view_config(
     name='seechallenges',
     context=NovaIdeoApplication,

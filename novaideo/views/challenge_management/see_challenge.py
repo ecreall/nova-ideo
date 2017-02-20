@@ -19,18 +19,19 @@ from pontus.util import merge_dicts
 from pontus.view_operation import MultipleView
 
 from novaideo.utilities.util import render_listing_objs
-from novaideo.content.processes.challenge_management.behaviors import SeeChallenge
+from novaideo.content.processes.challenge_management.behaviors import (
+    SeeChallenge)
 from novaideo.content.challenge import Challenge
 from novaideo.utilities.util import (
     generate_navbars, ObjectRemovedException, get_home_actions_bodies)
 from novaideo import _
-from novaideo.core import BATCH_DEFAULT_SIZE, ON_LOAD_VIEWS
+from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.views.filter import (
     get_filter, FILTER_SOURCES,
     merge_with_filter_view, find_entities)
 from novaideo.views.filter.sort import (
     sort_view_objects)
-from novaideo.views.core import ComponentView
+from novaideo.views.core import asyn_component_config
 
 
 CONTENTS_MESSAGES = {
@@ -297,18 +298,15 @@ class ParticipateView(BasicView):
         return result
 
 
-class ChallengeComponentView(ComponentView):
-    component_id = 'challenge_see_challenge'
-
-
+@asyn_component_config(id='challenge_see_challenge')
 class ChallengeContentsView(MultipleView):
     title = ''
     name = 'seechallengecontents'
     template = 'novaideo:views/templates/multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'challengecontents'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
-    component_id = 'challenge_see_challenge'
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
@@ -323,10 +321,6 @@ class ChallengeContentsView(MultipleView):
 
             if self.params('view_content_type') == 'question':
                 views = (QuestionsView, )
-        else:
-            views = (ChallengeComponentView, )
-            self.wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
-            self.template = 'pontus:templates/views_templates/simple_multipleview.pt'
 
         super(ChallengeContentsView, self)._init_views(views, **kwargs)
 
@@ -365,8 +359,3 @@ DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeChallenge: ChallengeView})
 
 FILTER_SOURCES.update(
     {"challenge": ChallengeView})
-
-
-ON_LOAD_VIEWS.update({
-    ChallengeContentsView.component_id: ChallengeContentsView
-    })

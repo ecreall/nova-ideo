@@ -394,9 +394,11 @@ function loading_component(data){
 		}
 	})
 	$.each(components_to_update, function(index){
-		var original_components = $(this)
-		var component_id = original_components.attr('id')
-		original_components.replaceWith(data[component_id])
+		var original_components = $(this);
+		var component_id = original_components.attr('id');
+		var container = original_components.parents('.async-component-container').first();
+		container = container.length>0?container: original_components;
+		container.replaceWith(data[component_id])
 		try {
 	        deform.processCallbacks();
 	    }catch(err) {};
