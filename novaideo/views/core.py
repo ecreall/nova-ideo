@@ -52,9 +52,7 @@ class ComponentView(BasicView):
 
 class asyn_component_config(object):
     """ A function, class or method decorator which allows a
-    developer to create advertising banner registrations.
-
-    Advertising banner is a panel. See pyramid_layout.panel_config.
+    developer to create async component (view or sub-view).
     """
     def __init__(self, id, loading_component=ComponentView):
         self.component_id = id
