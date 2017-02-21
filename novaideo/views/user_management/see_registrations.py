@@ -51,7 +51,8 @@ class SeeRegistrationsView(BasicView):
         user = get_current()
         objects = find_entities(
             user=user,
-            interfaces=[IPreregistration])
+            interfaces=[IPreregistration],
+            sort_on='release_date')
         batch = Batch(
             objects, self.request,
             default_size=BATCH_DEFAULT_SIZE)
@@ -76,4 +77,6 @@ class SeeRegistrationsView(BasicView):
         result['coordinates'] = {self.coordinates: [item]}
         return result
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeRegistrations: SeeRegistrationsView})
+
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {SeeRegistrations: SeeRegistrationsView})
