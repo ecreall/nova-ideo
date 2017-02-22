@@ -348,23 +348,25 @@ class UserEditOrganization(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         organization = appstruct['organization']
-        is_manager = appstruct['ismanager']
-        context.set_organization(organization)
-        if is_manager:
-            grant_roles(
-                user=context,
-                roles=(('OrganizationResponsible',
-                        organization),))
-        else:
-            revoke_roles(
-                user=context,
-                roles=(('OrganizationResponsible',
-                        organization),))
+        if organization:
+            is_manager = appstruct['ismanager']
+            context.set_organization(organization)
+            if is_manager:
+                grant_roles(
+                    user=context,
+                    roles=(('OrganizationResponsible',
+                            organization),))
+            else:
+                revoke_roles(
+                    user=context,
+                    roles=(('OrganizationResponsible',
+                            organization),))
 
-        context.reindex()
-        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            context.reindex()
+            context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+            request.registry.notify(ActivityExecuted(
+                self, [context], get_current()))
+
         return {}
 
     def redirect(self, context, request, **kw):
