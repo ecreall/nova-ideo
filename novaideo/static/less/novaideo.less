@@ -71,7 +71,7 @@
     padding: 15px 25px;
     background-position: center;
     background-repeat: repeat-x;
-    background-image: url(../images/background_challenge_w.svg);
+    background-image: url(../images/background_challenge.svg);
     -webkit-background-size: cover;
     background-size: cover;
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
@@ -172,7 +172,7 @@
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("../images/background_challenge_w.svg");
+  background-image: url("../images/background_challenge.svg");
 }
 
 .challenges-bloc>.panel-heading{
@@ -272,7 +272,7 @@
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url("../images/background_challenge_w.svg");
+  background-image: url("../images/background_challenge.svg");
 }
 
 .challenge-container .novaideo-contents span{
@@ -2267,7 +2267,7 @@ form .btn{
 }
 
 .user-panel{
-  margin-top: -51px;
+  margin-top: -16px;
 }
 
 .user-panel-container{
@@ -2279,7 +2279,9 @@ form .btn{
   margin-top: 15px;
   padding-left: 10px;
   padding-bottom: 15px;
+  text-align: center;
 }
+
 .user-img-container>img{
   position: unset;
   width: 80px;
@@ -2289,6 +2291,7 @@ form .btn{
   color: white;
   font-size: 13px;
   margin-left: -20px;
+  min-height: 100px;
 }
 
 .user-data-detail{
@@ -2303,7 +2306,7 @@ form .btn{
 
 .user-data-container a,
 .user-data-container small{
-  color: white
+  color: white !important
 }
 
 .user-data-addon {
@@ -3626,6 +3629,7 @@ ins {
 
 .user-panel-container .user-function{
     color: white;
+    margin-top: -10px;
 }
 
 .author-block{
@@ -4883,6 +4887,16 @@ span.circle{
 }
 
 @media (max-width: 767px) {
+  .challenge-deadline{
+    display: block;
+    float: none;
+  }
+
+  .result-container{
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
     .navbar-nav {
        margin: 0!important
     }

@@ -51,13 +51,13 @@ class ContentView(BasicView):
                                        'archived' not in o.state,
                              getattr(user, self.content_attr, [])))
         sort_url = self.request.resource_url(
-            self.context, '@@seeperson',
+            self.context, '@@index',
             query={'view_content_attr': self.content_attr})
         objects, sort_body = sort_view_objects(
             self, objects, [self.content_type], user,
             sort_url=sort_url)
         url = self.request.resource_url(
-            self.context, '@@seeperson',
+            self.context, '@@index',
             query={'view_content_attr': self.content_attr})
         batch = Batch(objects,
                       self.request,
@@ -142,19 +142,13 @@ class PersonContentsView(MultipleView):
         super(PersonContentsView, self)._init_views(views, **kwargs)
 
 
-@view_config(
-    name='seeperson',
-    context=Person,
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
-class SeePersonView(BasicView):
+class DetailsView(BasicView):
     title = ''
-    name = 'seeperson'
+    name = 'seepersondetails'
     behaviors = [SeePerson]
     template = 'novaideo:views/user_management/templates/see_person.pt'
-    viewid = 'seeperson'
-    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc user-view-index'
+    viewid = 'seepersondetails'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
 
     def update(self):
         self.execute(None)
@@ -165,11 +159,8 @@ class SeePersonView(BasicView):
 
         user = self.context
         current_user = get_current()
-        contents = PersonContentsView(self.context, self.request).update()
-        contents_body = contents['coordinates'][PersonContentsView.coordinates][0]['body']
         values = {
             'user': user,
-            'contents': contents_body,
             'proposals': None,
             'state': get_states_mapping(
                 current_user, user,
@@ -180,7 +171,6 @@ class SeePersonView(BasicView):
             'is_portal_manager': has_role(role=('PortalManager',))
         }
         result = {}
-        result = merge_dicts(contents, result, ('css_links', 'js_links'))
         result = merge_dicts(navbars['resources'], result, ('css_links', 'js_links'))
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
@@ -188,6 +178,27 @@ class SeePersonView(BasicView):
         item['isactive'] = navbars['isactive']
         result['coordinates'] = {self.coordinates: [item]}
         return result
+
+
+@view_config(
+    name='index',
+    context=Person,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+@view_config(
+    name='',
+    context=Person,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class SeePersonView(MultipleView):
+    title = ''
+    name = 'seeperson'
+    template = 'novaideo:views/templates/entity_multipleview.pt'
+    viewid = 'seeperson'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
+    views = (DetailsView, PersonContentsView)
+    validators = [SeePerson.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

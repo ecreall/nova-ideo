@@ -76,6 +76,7 @@ def _get_resources_to_include(request, resources, currents):
 def _render_obj_view(id_, user, request):
     if request.POST:
         request.POST.clear()
+        request.POST['load_view'] = 'load'
 
     request.invalidate_cache = True
     type_, oid = id_.split('_')
@@ -679,6 +680,7 @@ def get_respond_metadata(action, request, context, api, **kwargs):
     body = None
     if 'view_data' in kwargs:
         request.POST.clear()
+        request.POST['load_view'] = 'load'
         comments = [context.comments[-1]]
         result_view = CommentsView(context, request)
         result_view.comments = comments

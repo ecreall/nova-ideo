@@ -1,14 +1,11 @@
 <div i18n:domain="novaideo"
-  class="content-view component-obj-view component-index-view"
-  id="index_${oid}"
-  data-component_type="object-view"
   tal:define="
       oid user.__oid__;
       user_picture user.picture;
       profil_picture getattr(user_picture, 'profil', user_picture);
       default_img request.static_url('novaideo:static/images/user100.png');">
 <div class="user-panel" style="
-  background: transparent url(${getattr(user_picture, 'blur', user_picture).url if user_picture else request.static_url('novaideo:static/images/user100_blur.png')}) no-repeat scroll center center / cover ;">
+  background: transparent url(${getattr(user_picture, 'blur', user_picture).url if user_picture else request.static_url('novaideo:static/images/background_user.svg')}) no-repeat scroll center center / cover ;">
   <div class="user-panel-container" style="
     ">
     <div class="row">
@@ -74,8 +71,5 @@
       <div class="container-body">
       </div>
   </div>
-</div>
-<div>
-  ${structure:contents}
 </div>
 </div>

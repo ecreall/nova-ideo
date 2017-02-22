@@ -17,7 +17,8 @@ function get_action_metadata(action){
             counters: JSON.stringify(counters),
             included_resources: JSON.stringify(includejs_resources),
             contextual_help: JSON.stringify(contextual_help),
-            steps_navbars: JSON.stringify(steps_navbars)}
+            steps_navbars: JSON.stringify(steps_navbars),
+            load_view: 'load'}
 }
 
 

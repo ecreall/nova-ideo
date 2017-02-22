@@ -1,67 +1,88 @@
-<div class="content-view component-obj-view component-index-view"
-  id="index_${oid}"
-  data-component_type="object-view"
+<div i18n:domain="novaideo"
   tal:define="
-      oid object.__oid__"
-  i18n:domain="novaideo">
-
-<div tal:replace="structure navbar_body"/>
-<div class="media user-media">
-  <div class="media-body">
-    <img class="pull-right" tal:condition="object.logo" tal:attributes="src object.logo.url"  width="100"/>
-    <h3 class="media-heading">
-      <strong>
-          <span class="${getattr(object, 'icon', '')}" ></span> ${object.title} 
-          <small class="organization-member-len" i18n:translate="">${members_len}</small>
-      </strong>
-    </h3>
-    <div style="margin-left: 30px;">
-      <p class="text-muted" tal:condition="object.description">
-               <small  >${object.description}</small>
-      </p>
-      <dl tal:define="managers object.managers">
-        <dt tal:condition="managers and len(managers)>1"  i18n:translate="">The managers</dt>
-        <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
-        <dd tal:condition="managers">
-          <div class="working-group-section">
-              <tal:loop repeat="m managers">
-                <a tal:attributes="href request.resource_url(m, '@@index')"
-                  data-oid="${getattr(m, '__oid__', '')}"
-                  class="toggle-popover"
-                  tal:define="picture getattr(m, 'picture', None);
-                              profil_picture getattr(picture, 'profil', None)">
-                  <img class="author-img img-circle" 
-                    tal:condition="profil_picture is not None"
-                     tal:attributes="src profil_picture.url"  width="25"/>
-                  <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
-                  ${getattr(m, 'title', m.name)}</a>
-             </tal:loop>
+      oid organization.__oid__;
+      organization_picture organization.logo;
+      profil_picture getattr(organization_picture, 'profil', organization_picture);">
+<div class="user-panel" style="
+  background: transparent url(${request.static_url('novaideo:static/images/background_organization.svg')}) no-repeat scroll center center / cover ;">
+  <div class="user-panel-container" style="
+    ">
+    <div class="row">
+        <div class="col-md-2">
+          <div class="user-img-container">
+            <img tal:condition="organization_picture" class="" src="${profil_picture.url}">
+          </div>
+        </div>
+        <div class="col-md-9">
+        <div class="user-data-container">
+          <h3 class="view-item-title"
+            data-title="${getattr(organization, 'title', organization.name)}"
+            data-icon=""
+            data-img="${getattr(profil_picture, 'url', '')}">
+            <strong>
+                <span class="${getattr(organization, 'icon', '')}" ></span> ${organization.title}
+            </strong>
+          </h3>
+          <div class="user-data-addon">
+              <div>
+                <dl tal:define="managers organization.managers">
+                  <dt tal:condition="managers and len(managers)>1"  i18n:translate="">The managers</dt>
+                  <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
+                  <dd tal:condition="managers">
+                    <div class="working-group-section">
+                        <tal:loop repeat="m managers">
+                          <a tal:attributes="href request.resource_url(m, '@@index')"
+                            data-oid="${getattr(m, '__oid__', '')}"
+                            class="toggle-popover"
+                            tal:define="picture getattr(m, 'picture', None);
+                                        profil_picture getattr(picture, 'profil', None)">
+                            <img class="author-img img-circle" 
+                              tal:condition="profil_picture is not None"
+                               tal:attributes="src profil_picture.url"  width="25"/>
+                            <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+                            ${getattr(m, 'title', m.name)}</a>
+                       </tal:loop>
+                      </div>
+                  </dd>
+                </dl>
             </div>
-        </dd>
-      </dl>
+          </div>
+        </div>
+      </div>
     </div>
-    <div tal:repeat="contact getattr(object, 'contacts', [])">
-        <blockquote >
-             <h4><span class="md md-headset-mic"></span> ${contact.get('title', '')}</h4>
-             <small tal:condition="contact.get('address', None)"><span class="glyphicon glyphicon-map-marker"></span>  ${contact['address']}</small>
-             <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
-               <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
-               <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
-             </small>
-             <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
-             <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
-              <span class="glyphicon glyphicon-earphone"></span>  ${contact['phone']} 
-              <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surcharge</span>: ${surtax})</span></small>
-             <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</small>
-        </blockquote>
-    </div>
-    
   </div>
 </div>
-<div tal:replace="structure footer_body"/>
-<h4 tal:condition="object.members"><span class="ion-person-stalker"></span> <span i18n:translate="">Members</span></h4>
-<div tal:condition="object.members">
-  ${structure:members_body}
+<div class="user-data-detail">
+  <div class="navbar-user-entity">
+    <div tal:replace="structure navbar_body"/>
+  </div>
+  <div class="object-text" tal:condition="organization.description">
+    ${organization.description}
+  </div>
+  <div tal:repeat="contact getattr(organization, 'contacts', [])">
+    <blockquote >
+         <h4><span class="md md-headset-mic"></span> ${contact.get('title', '')}</h4>
+         <small tal:condition="contact.get('address', None)"><span class="glyphicon glyphicon-map-marker"></span>  ${contact['address']}</small>
+         <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+           <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+           <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+         </small>
+         <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+         <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
+          <span class="glyphicon glyphicon-earphone"></span>  ${contact['phone']} 
+          <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surcharge</span>: ${surtax})</span></small>
+         <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</small>
+    </blockquote>
+  </div>
+
+  <div class="content-footer">
+    <div class="actions-block">
+        <div tal:replace="structure footer_body"/>
+    </div>
+  </div>
+  <div class="actions-footer-container" style="display: none;">
+      <div class="container-body">
+      </div>
+  </div>
 </div>
 </div>
-${panel('social_share_toggle')}
