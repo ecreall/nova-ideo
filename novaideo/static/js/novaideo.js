@@ -45,6 +45,73 @@ jQuery.fn.extend({
   }
 });
 
+//code adapted from http://bootsnipp.com/snippets/featured/jquery-checkbox-buttons
+$(function () {
+    $('.search-choices .checkbox-inline').each(function () {
+
+        // Settings
+        var $widget = $(this),
+            $checkbox = $widget.find('input:checkbox'),
+            $button = $('#search-choice-'+$checkbox.attr('value')),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        // Event Handlers
+        $button.on('click', function () {
+            $checkbox.prop('checked', !$checkbox.is(':checked'));
+            $checkbox.triggerHandler('change');
+            updateDisplay();
+        });
+        $checkbox.on('change', function () {
+            updateDisplay();
+        });
+
+        // Actions
+        function updateDisplay() {
+            var isChecked = $checkbox.is(':checked');
+
+            // Set the button's state
+            $button.data('state', (isChecked) ? "on" : "off");
+
+            // Set the button's icon
+            $button.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+            // Update the button's color
+            if (isChecked) {
+                $button
+                    .addClass('active');
+                $('#'+$button.attr('id')+'-icon').removeClass('hide-bloc')
+            }
+            else {
+                $button
+                    .removeClass('active')
+                $('#'+$button.attr('id')+'-icon').addClass('hide-bloc')
+            }
+        }
+
+        // Initialization
+        function init() {
+
+            updateDisplay();
+
+            // Inject the icon if applicable
+            if ($button.find('.state-icon').length == 0) {
+                $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+            }
+        }
+        init();
+    });
+});
+
 function components_loading_progress(){
   $(".components-loading-progress").rotate({
     angle:0,
@@ -77,7 +144,6 @@ function get_component_title(data){
   return result
 }
 
-
 function focus_on_form(container){
     setTimeout(function(){
      var form = $(container.find('form')).first()
@@ -101,7 +167,6 @@ function get_new_emoji(){
     emoji.init_env();
     return emoji
 }
-
 
 function init_emoji(nodes){
     // emojify.setConfig(
@@ -206,25 +271,9 @@ function close_explanation(event){
     explanation.addClass('closed');
 };
 
-$(document).on('click', function(event){
-    if(!event.open_explanation){
-      var parents = $($(event.target).parents('.proposal-explanation:not(.closed)'))
-      if(parents.length == 0){
-         $('.proposal-explanation:not(.closed)').addClass('closed');
-      }
-    }
-    var parents = $($(event.target).parents('.alerts-content'))
-    if(parents.length == 0){
-      $('.alerts-content').addClass('hide-bloc')
-      $('.alert-block.opened').removeClass('opened')
-    }
-});
-
-
 function set_visited(){
     $.cookie('visited', 'true', {path: '/',  expires: 1});
 }
-
 
 function reset_cookie_channels_bar(){
   var $this = $('.all-channels');
@@ -365,19 +414,9 @@ function initscroll(result_scrolls){
   })
 };
 
-
 function open_node_url(){
     window.open($($(this).parents('.node').first().find('.node-shape').first()).attr('url'))
 }
-
-
-$(document).on('dblclick', 'g.node .node-shape, g.node text', open_node_url)
-
-
-$(document).on('click', '.btn-more-scroll', function(){
-  var result_scroll = $($(this).parents('.result-scroll').first())
-  result_scroll.triggerHandler('scroll')
-})
 
 function init_content_text_scroll(texts){
   var default_top = 600
@@ -389,7 +428,6 @@ function init_content_text_scroll(texts){
     }
   }
 };
-
 
 function init_morecontent_scroll(){
   var result_scrolls = $('.more-content-carousel');
@@ -406,54 +444,6 @@ function init_morecontent_scroll(){
     }
  }
 };
-
-
-function more_content(elements, isvertical){
-    try{
-      elements.slick({
-        vertical: isvertical,
-        centerMode: true,
-        dots: false,
-        slidesToShow: 5,
-        slidesToScroll: 5,
-        // autoplay: true,
-        // autoplaySpeed: 8000,
-        // infinite: true,
-        responsive: [
-            {
-              breakpoint: 1024,
-              settings: {
-                slidesToShow: 5,
-                slidesToScroll: 5,
-                // infinite: true,
-                dots: false
-              }
-            },
-            {
-              breakpoint: 600,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 2
-              }
-            },
-            {
-              breakpoint: 480,
-              settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-              }
-            }
-            // You can unslick at a given breakpoint now by adding:
-            // settings: "unslick"
-            // instead of a settings object
-         ]
-       });
-  }
-  catch(err) {
-  }
-
-}
-
 
 function scroll_to_panel(){
   var url = document.location.toString();
@@ -515,7 +505,6 @@ function display_carousel(){
   return false
 }
 
-
 function get_comment_author_bloc(element){
   var comment_data = $(element.parents('.comment-data').first())
   var clone = $(comment_data.clone())
@@ -524,7 +513,6 @@ function get_comment_author_bloc(element){
   return clone
 }
 
-
 function alert_user_unread_messages(){
   var is_unread = $('.all-channels.toggled .unread-comments-len').length > 0
   if (is_unread){
@@ -532,7 +520,6 @@ function alert_user_unread_messages(){
     setTimeout(function(){alert.show().fadeOut(4000)}, 1000);
   }
 }
-
 
 function unsubscribe_user_from_alerts(alerts){
     var alert_content = $(alerts.find('.alerts-content'))
@@ -546,7 +533,6 @@ function unsubscribe_user_from_alerts(alerts){
       }
 }
 
-
 function init_collapsible_contents(){
     $.each($('.content-collapsible'), function(index){
          var collapsible = $(this);
@@ -557,6 +543,113 @@ function init_collapsible_contents(){
     });
 }
 
+var alert_unread_messages_bottom_pt = '<div class="alert-messages-scroll down">'+
+  '<span class="fa fa-long-arrow-down"></span> <span>'+novaideo_translate('Unread messages')+'</span> '+
+  '<span class="fa fa-long-arrow-down"></span></div>'
+
+var alert_unread_messages_top_pt = '<div class="alert-messages-scroll top">'+
+  '<span class="fa fa-long-arrow-up"></span> <span>'+novaideo_translate('Unread messages')+'</span> '+
+  '<span class="fa fa-long-arrow-up"></span></div>'
+
+function scroll_to_unread_message(){
+  var target = $($(this).data('target'))
+  var channel_action = $(target.parents('.channel-action').first())
+  var scrollable = $(channel_action.parents('.channels-container').first())
+  //scroll if mCS
+  scrollable.mCustomScrollbar("scrollTo",channel_action,{
+        scrollInertia: 200,
+        callbacks:{
+          onScroll:function(){
+            update_unread_messages_alerts()
+          }
+        }
+      })
+  //scroll if not mCS
+  var top = scrollable.scrollTop() + channel_action.position().top-100;      
+  scrollable.animate({ scrollTop: top}, 1000);
+
+}
+
+function update_unread_messages_alerts(){
+  var channels = $('.channels-container')
+  channels.each(function(){
+     var has_unread = has_hidden_unread_messages($(this))
+     $($(this).parents('.channels-block').find('.alert-messages-scroll')).remove()
+     if(has_unread.top){
+       var alert_obj = $(alert_unread_messages_top_pt)
+       alert_obj.data('target', '#'+result.target_bottom)
+       alert_obj.attr('data-target', '#'+result.target_bottom)
+       alert_obj.insertAfter($(this))
+     }
+     if(has_unread.bottom){
+       var alert_obj = $(alert_unread_messages_bottom_pt)
+       alert_obj.data('target', '#'+result.target_top)
+       alert_obj.attr('data-target', '#'+result.target_top)
+       alert_obj.insertBefore($(this))
+     }
+  })
+}
+
+function has_hidden_unread_messages(channel){
+  var unread = $(channel.find('.channel-action .unread-comments-len'))
+  result = {'top': false, 'bottom': false}
+  if (unread.length > 0){
+   for(var i=0; i< unread.length; i++){
+     var element = $($(unread[i]).parents('.channel-action').first())
+     var is_visible = is_visible_into_view(element, channel)
+     result.top = result.top || !is_visible.top
+     result.bottom = result.bottom || !is_visible.bottom
+     if(!result.target){
+      if(!is_visible.top ){
+        result.target_bottom = $(element.find('a').first()).attr('id')
+      }
+      if(!is_visible.bottom ){
+        result.target_top = $(element.find('a').first()).attr('id')
+      }
+     }
+   }
+  }
+  return result
+}
+
+function is_visible_into_view(elem, scrollable){
+    var docViewTop = 0
+    var elemTop = 0
+    var mCSB_container = $(scrollable.find(".mCSB_container"))
+    if(mCSB_container.length > 0){
+      docViewTop = (parseInt(mCSB_container.css('top').replace('px', '')) * -1);
+      elemTop =  $(elem).offset().top - mCSB_container.offset().top;
+    }else{
+      docViewTop = scrollable.scrollTop();
+      elemTop =  $(elem).position().top;
+    }
+    var docViewBottom = docViewTop + scrollable.height();
+    var elemBottom = elemTop + $(elem).height();
+
+    return {'bottom': (elemBottom <= docViewBottom),
+            'top': (elemTop >= docViewTop)}
+}
+
+$(document).on('click', function(event){
+    if(!event.open_explanation){
+      var parents = $($(event.target).parents('.proposal-explanation:not(.closed)'))
+      if(parents.length == 0){
+         $('.proposal-explanation:not(.closed)').addClass('closed');
+      }
+    }
+    var parents = $($(event.target).parents('.alerts-content'))
+    if(parents.length == 0){
+      $('.alerts-content').addClass('hide-bloc')
+      $('.alert-block.opened').removeClass('opened')
+    }
+});
+
+$(document).on('dblclick', 'g.node .node-shape, g.node text', open_node_url)
+
+$(document).on('click', '.btn-more-scroll', function(){
+  var result_scroll = $($(this).parents('.result-scroll').first())
+  result_scroll.triggerHandler('scroll')
+})
 
 $(document).on('click', '.full-screen-btn.small', function(){
     var $this = $(this)
@@ -661,13 +754,6 @@ $(document).on('click', '.smartfolder-nav li > span.icon-state', function(event)
     }
 })
 
-
-// $(document).on('click', '.more-text .activator', function (event) {
-//     $(this).parents('.more-text').first().toggleClass('open');
-//     event.stopPropagation()
-// });
-
-
 $(document).on('click', '.content-more-message', function () {
     var more_btn = $(this).parents('.content-more').first();
     var content = more_btn.siblings('.content-collapsible')
@@ -682,39 +768,201 @@ $(document).on('change', '.is-restricted-input input', function(){
   $(form.find('.invitedusers-input')).toggleClass('closed')
 })
 
+$(document).on('click','form .btn[type="submit"]', function( event ) {
+  var $this = $(this)
+  $this.parents('form').find('.btn[type="submit"]').removeClass('active')
+  $this.addClass('active')
+})
+
+$(document).on('submit','form.vote-form', send_vote)
+
+$(document).on('click', ".all-channels-toggle", function(e) {
+      e.preventDefault();
+      $(".all-channels").toggleClass("toggled");
+      reset_cookie_channels_bar()
+});
+
+$(document).on('hide.bs.collapse', '.panel-collapse', function () {
+  $(this).siblings().find('a span.glyphicon-minus').attr('class', 'glyphicon glyphicon-plus');
+});
+
+$(document).on('shown.bs.collapse', '.panel-collapse', function () {
+  $(this).siblings().find('a span.glyphicon-plus').attr('class', 'glyphicon glyphicon-minus');
+});
+
+$(document).on('click', '.alert-block:not(.opened)>span.icon', function(event){
+      var $this = $(this).parents('.alert-block').first();
+      var url = $this.data('url');
+      var alert_content = $($this.find('.alerts-content').first());
+      var target = $(alert_content.find('.content').first());
+      alert_content.find('.loading-indicator').removeClass('hide-bloc')
+      alert_content.removeClass('hide-bloc');
+      $.getJSON(url,{}, function(data) {
+        if(data['body']){
+          target.html(data['body']);
+          alert_content.find('.loading-indicator').addClass('hide-bloc')
+          $this.addClass('opened')
+          unsubscribe_user_from_alerts($this)
+        }
+      });
+      event.stopPropagation()
+
+  });
+
+$(document).on('show.bs.modal', '.similar-ideas', function(){
+    $('body').addClass('similar-ideas-modal-open')
+})
+
+$(document).on('hidden.bs.modal', '.similar-ideas', function(){
+    $('body').removeClass('similar-ideas-modal-open')
+})
+
+$(document).on('click', 'ul.judgment-radio .radio', function(){
+    $($(this).find('input')).prop( "checked", true );
+})
+
+$(document).on('mouseover', '.toggle-popover:not(.active)', function(){
+    var $this = $(this);
+     $('.comme-popover').remove()
+    $this.addClass('active')
+    var body = $(document.body)
+    var url = body.data('api_url')
+    var oid = $this.data('oid');
+    setTimeout(function(){
+      var has_popover = $this.find('.popover').length > 0
+      if($this.hasClass('active') && !has_popover){
+        $.getJSON(url,{oid: oid, op: 'get_entity_popover'}, function(data) {
+          if(data['body']){
+            var popover = $(data['body'])
+            $this.append(popover);
+            var position = $this.offset()
+            popover.css('top', position.top-$(document).scrollTop()-(popover.outerHeight()/2)+5+'px')
+            popover.css('left', position.left+$this.outerWidth()-10+'px')
+            popover.css('display', 'block')
+          }
+        });
+      }
+    }, 900);
+    
+
+});
+
+$(document).on('mouseleave', '.toggle-popover.active', function(){
+  var $this = $(this);
+  var oid = $this.data('oid');
+  $this.removeClass('active')
+  $('.comme-popover').remove()
+});
+
+$(document).on('click', 'a.popover-title-link, .popover-content>.popover-text a', function(event){
+    event.stopPropagation()
+})
+
+$(document).on('click', 'a.emoji-group-tab', function(){
+    var $this = $(this);
+    $('a.emoji-group-tab').removeClass('active')
+    $this.addClass('active')
+    var group_id = $this.data('group_id')
+    var container = $($this.parents('.emoji-anchors').siblings('.emoji-groups').first())
+    var group = $(container.find('#'+group_id).first())
+    var mCSB_container = $(container.find('.mCSB_container').first())
+    if(mCSB_container.length>0){
+      container.mCustomScrollbar('scrollTo',group.position().top);
+    }else{
+      var top = container.scrollTop()+group.position().top -20;       
+      container.animate({ scrollTop: top}, 800);
+    }
+})
+
+$(document).on('mouseover', '.emoji-groups .emoji-outer', function(){
+    var $this = $(this);
+    var groups = $($this.parents('.emoji-groups').first());
+    var preview = $(groups.siblings('.emoji-preview').first())
+    var img = $($this.find('.emoji-inner').first())
+    preview.find('.emoji-preview-img').html(img.clone())
+    preview.find('.emoji-preview-title').html(img.attr('title').replace(/-|_/g, ' '))
+    preview.find('.emoji-preview-symbol').html(':'+img.attr('title')+':')
+
+  });
+
+$(document).on('mouseleave', '.emoji-groups .emoji-outer', function(){
+  var $this = $(this);
+  var groups = $($this.parents('.emoji-groups').first());
+  var preview = $(groups.siblings('.emoji-preview').first())
+  preview.find('.emoji-preview-img').html('')
+  preview.find('.emoji-preview-title').html('Emoji')
+  preview.find('.emoji-preview-symbol').html('')
+
+});
+
+$(document).on('click', '.files-block .deform-seq-add', function(){
+  $($(this).parents('.files-block').first().find('input[type="file"]').last()).click()
+})
+
+$(document).on('change', '.files-block input[type="file"]', function(){
+  $($(this).parents('.deform-seq-item').first()).addClass('uploaded')
+ })
+
+$(document).on('click', '.files-block form button[type="submit"]', function(){
+  $($(this).parents('form').first().find('.deform-seq-item:not(.uploaded)').find('.deform-close-button')).click();
+
+})
+
+$(document).on('click', 'a.channel-action', function(){
+  var channel_action = $($(this).parents('div.channel-action').first())
+  $(channel_action.find('.unread-comments-len')).remove()
+  channel_action.removeClass('unread-comments')
+  update_unread_messages_alerts()
+});
+
+$(document).on('click', '.file-slider:not(.full) .carousel-inner a', display_carousel)
+
+
+$(document).on('click', '.alert-messages-scroll', scroll_to_unread_message);
+
+
+$(document).on('component_loaded', function(event, component_id){
+    if(component_id == 'novaideo_see_channels'){
+      init_channels_scroll();
+      alert_user_unread_messages()
+      update_unread_messages_alerts()
+    }
+})
+
+$(window).load(function(){
+    initscroll();
+})
+
+$(window).scroll(function(){
+  init_channels_top()
+})
 
 $(document).ready(function(){
   
   init_collapsible_contents()
 
+  init_emoji($('.emoji-container:not(.emojified)'));
+
+  rebuild_scrolls()
+  
+  set_visited();
+
+  init_content_text_scroll();
+
+  init_morecontent_scroll();
+
+  init_channels_top()
+
+  scroll_to_panel()
+
   $.notify.addStyle('bootstrap', {
     html: "<div><span data-notify-html='icon'/> <span data-notify-text='text'/></div>"
   });
-
-
-  init_emoji($('.emoji-container:not(.emojified)'));
-  
-  
-  $('.hidden-js').css('display', 'none');
-
-  $(document).on('click','form .btn[type="submit"]', function( event ) {
-    var $this = $(this)
-    $this.parents('form').find('.btn[type="submit"]').removeClass('active')
-    $this.addClass('active')
-  })
-
-  $(document).on('submit','form.vote-form', send_vote)
 
   $(".menu-toggle").click(function(e) {
         e.preventDefault();
         $(".bar-wrapper").toggleClass("toggled");
         $('.sidebar-background').toggleClass("toggled");
-    });
-
-  $(document).on('click', ".all-channels-toggle", function(e) {
-        e.preventDefault();
-        $(".all-channels").toggleClass("toggled");
-        reset_cookie_channels_bar()
     });
 
    $(".menu-right-toggle").click(function(e) {
@@ -736,106 +984,9 @@ $(document).ready(function(){
 
   $('input, textarea').placeholder();
 
-  rebuild_scrolls()
-  
-  $(window).scroll(function(){
-    init_channels_top()
-  })
-
-  set_visited();
-
-  init_content_text_scroll();
-
-  init_morecontent_scroll();
-
-  initscroll();
-
-  init_channels_top()
-
   $('nav a nav-control').on('click', function(){
       $(".navbar-toggle").click();
   });
-
-  $(document).on('hide.bs.collapse', '.panel-collapse', function () {
-    $(this).siblings().find('a span.glyphicon-minus').attr('class', 'glyphicon glyphicon-plus');
-  });
-
-  $(document).on('shown.bs.collapse', '.panel-collapse', function () {
-    $(this).siblings().find('a span.glyphicon-plus').attr('class', 'glyphicon glyphicon-minus');
-  });
-
-  // more_content($('.more-content-carousel.verticla'), true);
-  // more_content($('.more-content-carousel:not(.vertical)'), false);
-
-  $(document).on('click', '.alert-block:not(.opened)>span.icon', function(event){
-        var $this = $(this).parents('.alert-block').first();
-        var url = $this.data('url');
-        var alert_content = $($this.find('.alerts-content').first());
-        var target = $(alert_content.find('.content').first());
-        alert_content.find('.loading-indicator').removeClass('hide-bloc')
-        alert_content.removeClass('hide-bloc');
-        $.getJSON(url,{}, function(data) {
-          if(data['body']){
-            target.html(data['body']);
-            alert_content.find('.loading-indicator').addClass('hide-bloc')
-            $this.addClass('opened')
-            unsubscribe_user_from_alerts($this)
-          }
-        });
-        event.stopPropagation()
-
-    });
-
-  scroll_to_panel()
-
-
-  $(document).on('show.bs.modal', '.similar-ideas', function(){
-      $('body').addClass('similar-ideas-modal-open')
-  })
-  $(document).on('hidden.bs.modal', '.similar-ideas', function(){
-      $('body').removeClass('similar-ideas-modal-open')
-  })
-
-  $(document).on('click', 'ul.judgment-radio .radio', function(){
-      $($(this).find('input')).prop( "checked", true );
-  })
-
-   $(document).on('mouseover', '.toggle-popover:not(.active)', function(){
-        var $this = $(this);
-         $('.comme-popover').remove()
-        $this.addClass('active')
-        var body = $(document.body)
-        var url = body.data('api_url')
-        var oid = $this.data('oid');
-        setTimeout(function(){
-          var has_popover = $this.find('.popover').length > 0
-          if($this.hasClass('active') && !has_popover){
-            $.getJSON(url,{oid: oid, op: 'get_entity_popover'}, function(data) {
-              if(data['body']){
-                var popover = $(data['body'])
-                $this.append(popover);
-                var position = $this.offset()
-                popover.css('top', position.top-$(document).scrollTop()-(popover.outerHeight()/2)+5+'px')
-                popover.css('left', position.left+$this.outerWidth()-10+'px')
-                popover.css('display', 'block')
-              }
-            });
-          }
-        }, 900);
-        
-
-    });
-
-   $(document).on('mouseleave', '.toggle-popover.active', function(){
-      var $this = $(this);
-      var oid = $this.data('oid');
-      $this.removeClass('active')
-      $('.comme-popover').remove()
-    });
-
-  $(document).on('click', 'a.popover-title-link, .popover-content>.popover-text a', function(event){
-      event.stopPropagation()
-  })
 
   $('.btn-sub-menu-container').hover(function(){
     var $this = $(this)
@@ -849,237 +1000,5 @@ $(document).ready(function(){
       $($this.find('ul.btn-sub-menu li')).fadeOut( "fast" )
     })
 
-  $(document).on('click', 'a.emoji-group-tab', function(){
-      var $this = $(this);
-      $('a.emoji-group-tab').removeClass('active')
-      $this.addClass('active')
-      var group_id = $this.data('group_id')
-      var container = $($this.parents('.emoji-anchors').siblings('.emoji-groups').first())
-      var group = $(container.find('#'+group_id).first())
-      var mCSB_container = $(container.find('.mCSB_container').first())
-      if(mCSB_container.length>0){
-        container.mCustomScrollbar('scrollTo',group.position().top);
-      }else{
-        var top = container.scrollTop()+group.position().top -20;       
-        container.animate({ scrollTop: top}, 800);
-      }
-  })
-
-  $(document).on('mouseover', '.emoji-groups .emoji-outer', function(){
-      var $this = $(this);
-      var groups = $($this.parents('.emoji-groups').first());
-      var preview = $(groups.siblings('.emoji-preview').first())
-      var img = $($this.find('.emoji-inner').first())
-      preview.find('.emoji-preview-img').html(img.clone())
-      preview.find('.emoji-preview-title').html(img.attr('title').replace(/-|_/g, ' '))
-      preview.find('.emoji-preview-symbol').html(':'+img.attr('title')+':')
-
-    });
-
-   $(document).on('mouseleave', '.emoji-groups .emoji-outer', function(){
-      var $this = $(this);
-      var groups = $($this.parents('.emoji-groups').first());
-      var preview = $(groups.siblings('.emoji-preview').first())
-      preview.find('.emoji-preview-img').html('')
-      preview.find('.emoji-preview-title').html('Emoji')
-      preview.find('.emoji-preview-symbol').html('')
-
-    });
-
-  $(document).on('click', '.files-block .deform-seq-add', function(){
-    $($(this).parents('.files-block').first().find('input[type="file"]').last()).click()
-  })
-
-  $(document).on('change', '.files-block input[type="file"]', function(){
-    $($(this).parents('.deform-seq-item').first()).addClass('uploaded')
-   })
-
-  $(document).on('click', '.files-block form button[type="submit"]', function(){
-    $($(this).parents('form').first().find('.deform-seq-item:not(.uploaded)').find('.deform-close-button')).click();
-
-  })
-
-  $(document).on('click', 'a.channel-action', function(){
-    var channel_action = $($(this).parents('div.channel-action').first())
-    $(channel_action.find('.unread-comments-len')).remove()
-    channel_action.removeClass('unread-comments')
-    update_unread_messages_alerts()
-  });
-
   focus_on_form($('.pontus-main'))
-
-  $(document).on('click', '.file-slider:not(.full) .carousel-inner a', display_carousel)
-
-  
-  $(document).on('click', '.alert-messages-scroll', scroll_to_unread_message);
-
 });
-
-$(document).on('component_loaded', function(event, component_id){
-    if(component_id == 'novaideo_see_channels'){
-      init_channels_scroll();
-      alert_user_unread_messages()
-      update_unread_messages_alerts()
-    }
-})
-
-
-var alert_unread_messages_bottom_pt = '<div class="alert-messages-scroll down">'+
-  '<span class="fa fa-long-arrow-down"></span> <span>'+novaideo_translate('Unread messages')+'</span> '+
-  '<span class="fa fa-long-arrow-down"></span></div>'
-
-var alert_unread_messages_top_pt = '<div class="alert-messages-scroll top">'+
-  '<span class="fa fa-long-arrow-up"></span> <span>'+novaideo_translate('Unread messages')+'</span> '+
-  '<span class="fa fa-long-arrow-up"></span></div>'
-
-
-function scroll_to_unread_message(){
-  var target = $($(this).data('target'))
-  var channel_action = $(target.parents('.channel-action').first())
-  var scrollable = $(channel_action.parents('.channels-container').first())
-  //scroll if mCS
-  scrollable.mCustomScrollbar("scrollTo",channel_action,{
-        scrollInertia: 200,
-        callbacks:{
-          onScroll:function(){
-            update_unread_messages_alerts()
-          }
-        }
-      })
-  //scroll if not mCS
-  var top = scrollable.scrollTop() + channel_action.position().top-100;      
-  scrollable.animate({ scrollTop: top}, 1000);
-
-}
-
-function update_unread_messages_alerts(){
-  var channels = $('.channels-container')
-  channels.each(function(){
-     var has_unread = has_hidden_unread_messages($(this))
-     $($(this).parents('.channels-block').find('.alert-messages-scroll')).remove()
-     if(has_unread.top){
-       var alert_obj = $(alert_unread_messages_top_pt)
-       alert_obj.data('target', '#'+result.target_bottom)
-       alert_obj.attr('data-target', '#'+result.target_bottom)
-       alert_obj.insertAfter($(this))
-     }
-     if(has_unread.bottom){
-       var alert_obj = $(alert_unread_messages_bottom_pt)
-       alert_obj.data('target', '#'+result.target_top)
-       alert_obj.attr('data-target', '#'+result.target_top)
-       alert_obj.insertBefore($(this))
-     }
-  })
-}
-
-
-function has_hidden_unread_messages(channel){
-  var unread = $(channel.find('.channel-action .unread-comments-len'))
-  result = {'top': false, 'bottom': false}
-  if (unread.length > 0){
-   for(var i=0; i< unread.length; i++){
-     var element = $($(unread[i]).parents('.channel-action').first())
-     var is_visible = is_visible_into_view(element, channel)
-     result.top = result.top || !is_visible.top
-     result.bottom = result.bottom || !is_visible.bottom
-     if(!result.target){
-      if(!is_visible.top ){
-        result.target_bottom = $(element.find('a').first()).attr('id')
-      }
-      if(!is_visible.bottom ){
-        result.target_top = $(element.find('a').first()).attr('id')
-      }
-     }
-   }
-  }
-  return result
-}
-
-
-function is_visible_into_view(elem, scrollable)
-{
-    var docViewTop = 0
-    var elemTop = 0
-    var mCSB_container = $(scrollable.find(".mCSB_container"))
-    if(mCSB_container.length > 0){
-      docViewTop = (parseInt(mCSB_container.css('top').replace('px', '')) * -1);
-      elemTop =  $(elem).offset().top - mCSB_container.offset().top;
-    }else{
-      docViewTop = scrollable.scrollTop();
-      elemTop =  $(elem).position().top;
-    }
-    var docViewBottom = docViewTop + scrollable.height();
-    var elemBottom = elemTop + $(elem).height();
-
-    return {'bottom': (elemBottom <= docViewBottom),
-            'top': (elemTop >= docViewTop)}
-}
-
-
-//code adapted from http://bootsnipp.com/snippets/featured/jquery-checkbox-buttons
-$(function () {
-    $('.search-choices .checkbox-inline').each(function () {
-
-        // Settings
-        var $widget = $(this),
-            $checkbox = $widget.find('input:checkbox'),
-            $button = $('#search-choice-'+$checkbox.attr('value')),
-            color = $button.data('color'),
-            settings = {
-                on: {
-                    icon: 'glyphicon glyphicon-check'
-                },
-                off: {
-                    icon: 'glyphicon glyphicon-unchecked'
-                }
-            };
-
-        // Event Handlers
-        $button.on('click', function () {
-            $checkbox.prop('checked', !$checkbox.is(':checked'));
-            $checkbox.triggerHandler('change');
-            updateDisplay();
-        });
-        $checkbox.on('change', function () {
-            updateDisplay();
-        });
-
-        // Actions
-        function updateDisplay() {
-            var isChecked = $checkbox.is(':checked');
-
-            // Set the button's state
-            $button.data('state', (isChecked) ? "on" : "off");
-
-            // Set the button's icon
-            $button.find('.state-icon')
-                .removeClass()
-                .addClass('state-icon ' + settings[$button.data('state')].icon);
-
-            // Update the button's color
-            if (isChecked) {
-                $button
-                    .addClass('active');
-                $('#'+$button.attr('id')+'-icon').removeClass('hide-bloc')
-            }
-            else {
-                $button
-                    .removeClass('active')
-                $('#'+$button.attr('id')+'-icon').addClass('hide-bloc')
-            }
-        }
-
-        // Initialization
-        function init() {
-
-            updateDisplay();
-
-            // Inject the icon if applicable
-            if ($button.find('.state-icon').length == 0) {
-                $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
-            }
-        }
-        init();
-    });
-});
-
