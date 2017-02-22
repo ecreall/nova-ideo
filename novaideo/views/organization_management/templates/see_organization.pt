@@ -56,7 +56,7 @@
   <div class="navbar-user-entity">
     <div tal:replace="structure navbar_body"/>
   </div>
-  <div class="object-text" tal:condition="organization.description">
+  <div class="user-description" tal:condition="organization.description">
     ${organization.description}
   </div>
   <div tal:repeat="contact getattr(organization, 'contacts', [])">
