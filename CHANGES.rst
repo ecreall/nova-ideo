@@ -4,7 +4,12 @@ Changelog
 1.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- When anonymous, use the browser language for the language of the user
+  interface.
+
+- Add Challenge feature.
+
+- Add Questions feature.
 
 
 1.2 (2017-01-06)
