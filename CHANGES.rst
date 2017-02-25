@@ -1,13 +1,13 @@
 Changelog
 =========
 
-1.3 (unreleased)
+1.3 (2017-02-25)
 ----------------
 
 - When anonymous, use the browser language for the language of the user
   interface.
 
-- Add Challenge feature.
+- Add Challenges feature.
 
 - Add Questions feature.
 
