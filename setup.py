@@ -34,7 +34,7 @@ requires = [
     ]
 
 setup(name='novaideo',
-      version='1.3',
+      version='1.4.dev0',
       description='Nova-Ideo is a participatory innovation tool, the merger of the box ideas and collaborative portal.',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
