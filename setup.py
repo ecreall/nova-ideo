@@ -30,7 +30,10 @@ requires = [
     'profilehooks',
     'metadata_parser',
     'deform_treepy',
-    'randomcolor'
+    'randomcolor',
+    'yampy2',
+    'Twisted',
+    'autobahn'
     ]
 
 setup(name='novaideo',
