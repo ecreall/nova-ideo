@@ -46,6 +46,18 @@
         The improvement cycle of the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> is now closed. You must now vote on the amendments submitted.
     </span>
 
+    <span tal:condition="alert_kind == 'amendment_result'">
+        <span i18n:translate="" >The vote on amendments is ended.</span>
+        <span tal:condition="getattr(object, 'ballots', [])">
+          <span i18n:translate="">The results of the ballots are available here:</span>
+          <ul>
+            <tal:loop repeat="(title, url) object.ballots">
+              <li><a href="${url}">${title}</a></li>
+            </tal:loop>
+          </ul>
+        </span>
+    </span>
+
     <span i18n:translate="" tal:condition="alert_kind == 'alert_end_work'">
       The improvement cycle of the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> is almost finished. You can still bring in improvements, before the Working Group votes to decide whether it wants to submit it as is or to start a new improvement cycle.
     </span>

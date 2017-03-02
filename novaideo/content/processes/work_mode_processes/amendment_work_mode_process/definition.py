@@ -85,6 +85,10 @@ class SubProcess(OriginSubProcess):
             if vote_processes:
                 close_votes(None, request, vote_processes)
 
+        ballots = getattr(process, 'ballots', [])
+        for ballot in ballots:
+            ballot.finish_ballot()
+
         super(SubProcess, self).stop()
 
 
@@ -140,7 +144,7 @@ class SubProcessDefinitionAmendments(OriginSubProcessDefinition):
             ballot = Ballot('MajorityJudgment', electors,
                             group, AMENDMENTS_VOTE_DEFAULT_DURATION,
                             group=VOTE_AMENDMENT_GROUP,
-                            subjects=[proposal])
+                            subjects=group)
             working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_AMENDMENTS_MESSAGE
             ballot.title = _('Vote on amendments (group ${nbi})',
