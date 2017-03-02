@@ -1,0 +1,10 @@
+<div tal:omit-tag="" tal:define="true_value object.report.ballottype.true_val;
+	            false_value object.report.ballottype.false_val;
+	            value true_value if object.value else false_value"
+	  i18n:domain="novaideo">
+  <tr class="scroll-item ${object.value and 'success' or 'danger'}" >
+	<th scope="row">${getattr(object, 'uid', '')}</th>
+	<td><span tal:replace="layout.to_localized_time(object.created_at)"/></td>
+	<td>${value}</td>
+  </tr>
+</div>

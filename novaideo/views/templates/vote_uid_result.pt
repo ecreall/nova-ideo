@@ -1,0 +1,11 @@
+<div class="alert alert-success" i18n:domain="novaideo">
+	<p>
+		<span i18n:translate="">Dans un souci de transparence, nous vous invitons à sauvegarder les données suivantes. Ces données vont vous permettre de vérifier le bon déroulement du scrutin correspondant.</span>
+	    <ul>
+		    <li i18n:translate=""><strong i18n:name="ballot_uid">${getattr(ballot, 'uid', '')}</strong> : L'identifiant du scrutin est unique. Cet identifiant vous permettra de récupérer les données associer à ce scrutin.</li>
+		    
+		    <li i18n:translate=""><strong i18n:name="vote_uid">${vote_uid}</strong> : L'identifiant de votre bulletin de vote est unique. Cet identifiant vous permettra de récupérer les données associer à ce bulletin.</li>
+	    </ul>
+    </p>
+    <p><strong i18n:translate="">Ces identifiants ne peuvent être récupérés ultérieurement. Veillez les sauvegarder sur votre ordinateur.</strong></p>
+</div>

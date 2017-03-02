@@ -28,6 +28,7 @@ novaideoI18n = {
   "assciations": "assciations",
   "Save": "Save",
   "Cancel": "Cancel",
+  "Your vote has been validated": "Your vote has been validated",
   "Next": "Next",
   "Previous": "Previous",
   "End": "End",

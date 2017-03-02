@@ -1,0 +1,8 @@
+<div i18n:domain="novaideo">
+	<div tal:condition="ballot.is_finished">
+	${structure:body}
+	</div>
+	<div  i18n:translate="" tal:condition="not ballot.is_finished">
+	  The ballot is not finished
+	</div>
+</div>

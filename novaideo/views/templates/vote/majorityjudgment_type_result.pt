@@ -1,0 +1,47 @@
+<div i18n:domain="novaideo"
+     tal:define="
+          options ballot_type.get_options();
+          results ballot.report.calculate_votes();
+          median_notes dict(ballot_type.get_vote_values(ballot_type.get_median_notes(results)));
+          ballot_result ballot_type.get_vote_values(results);
+          electeds ballot.report.get_electeds();
+          elected electeds[0] if electeds else None">
+   <div class="analytics-study" tal:condition="elected">
+      <span i18n:translate="">The result of the ballot is:</span>
+      <a target="_blank" 
+           href="${request.resource_url(elected, '@@index')}">
+         <span class="${getattr(elected, 'icon', '')}"></span> ${elected.title}
+      </a>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th i18n:translate="">Entity</th>
+          <th i18n:translate="" tal:repeat="option options">
+            ${option}
+          </th>
+          <th i18n:translate="" class="info">The median note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="(item, value) ballot_result">
+          <div tal:omit-tag=""
+            tal:define="median_note median_notes.get(item, 0);
+                        median_judgment ballot_type.get_judgment(median_note)">
+            <th scope="row">
+              <a target="_blank" 
+                 href="${request.resource_url(item, '@@index')}">
+                 <span class="${getattr(item, 'icon', '')}"></span> ${item.title}
+              </a>
+            </th>
+            <td i18n:translate="" tal:repeat="option options" class="${median_judgment==option and 'success'}">
+              ${value.get(option)}
+            </td>
+            <td class="info">
+              <span class="badge badg-primary" i18n:translate="">${median_note}</span> 
+              <span i18n:translate="">${median_judgment}</span>
+            </td>
+          </div>
+        </tr>
+      </table>
+</div>

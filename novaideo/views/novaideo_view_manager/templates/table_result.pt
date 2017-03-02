@@ -1,0 +1,46 @@
+<div class="items-main-view-container"
+     id="items-main-view-container-${id}"
+	 tal:define="batch_value batch|nothing;
+	             id (batch_value and batch_value.target.replace('#', '')) or 'results';
+	             empty_message empty_message|None;
+	             empty_icon empty_icon|nothing"
+	 i18n:domain="novaideo">
+	<div tal:omit-tag="" tal:define="sortbody sort_body|nothing">
+		<div id="sort-${id}" tal:condition="sortbody">
+			${structure: sortbody}
+	    </div>
+	</div>
+	<div tal:omit-tag="" tal:define="filterbody filter_body|nothing" i18n:domain="novaideo">
+		<div id="filter-${id}" tal:condition="filterbody">
+			${structure: filterbody}
+	    </div>
+	</div>
+	<div class="row">
+	  <div  id="${id}" class="results scroll-able result-scroll">
+	    <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
+	    <div class="container-fluid result-container" data-nex_url="${batch.next_url}">
+	      <div tal:condition="not bodies and empty_message"
+	      	   class="result-empty-message">
+	      	   <span tal:condition="empty_icon" class="${empty_icon}"></span> ${empty_message}
+	      </div>
+	      <table tal:condition="bodies" class="table table-striped table-hover">
+          	<thead>
+          		<tr>
+          			<th i18n:translate="">Vote identifier</th>
+          			<th i18n:translate="">Date</th>
+          			<th i18n:translate="">Value</th>
+          		</tr>
+            </thead>
+            <tbody class="scroll-items-container">
+	            <tr tal:omit-tag="" tal:repeat="body bodies">
+	                ${structure:body}
+	            </tr>
+	         </tbody>
+	      </table>
+	      <div class="btn-more-scroll-container">
+            <span tal:condition="bodies and batch.next_url" id="${id}-btn-more" class="scroll btn-more-scroll"><span i18n:translate="">More</span> <span class="more-icon glyphicon glyphicon-option-horizontal"></span></span>
+          </div>
+	    </div>
+	  </div>
+	</div>
+</div>

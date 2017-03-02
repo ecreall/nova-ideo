@@ -9,6 +9,9 @@
       The Working Group has voted to submit the proposal as it is to the evaluation of the other Members of the platform.
     </span>
 
+    <span i18n:translate="" tal:condition="alert_kind == 'first_start_work'">The Working Group related to this Proposal has reached the quorum, i.e. the minimum number of Participants required to be considered as active. It can now improve the Proposal.</span>
+
+
     <span i18n:translate="" tal:condition="alert_kind == 'end_work'">
         The improvement cycle of this proposal is finished. You now must vote on whether you want to continue improving it, or to submit it as it is to the evaluation of the other other Members of the platform.
     </span>

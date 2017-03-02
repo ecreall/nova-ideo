@@ -1,0 +1,40 @@
+<div tal:define="
+	    report ballot.report;
+	    run ballot.run_at;
+	    finish  ballot.finished_at;
+	    is_finished ballot.is_finished;
+	    false_value ballot.report.ballottype.false_val;
+	    true_value ballot.report.ballottype.true_val;"
+	 i18n:domain="novaideo">
+	<h3>${ballot.title} <small>(${getattr(ballot.ballot_box, 'vote_len', 0)} <span i18n:translate="">vote(s)</span>)</small></h3>
+	<div>
+		<p>
+			<span i18n:translate="">Ce vote est de type referendum permettant aux électeurs de donner un avis positif ou négatif par rapport au sujet de vote</span> <strong>"${ballot.title}"</strong>. <span i18n:translate="">The ballot started on</span> <span tal:replace="layout.to_localized_time(run)"/>.
+			<span tal:condition="finish is not None">
+				<span tal:condition="not is_finished" i18n:translate="">The end of the ballot is planned on</span><span tal:condition="is_finished">The ballot is ended on</span> <span tal:replace="layout.to_localized_time(finish)"/>.
+			</span>
+	    </p>
+	    <p>
+           <strong i18n:translate="">The proposed choices are:</strong>
+           <ul class="list-unstyled">
+           	 <li>
+           	 	${true_value}
+           	 </li>
+           	 <li>
+           	 	${false_value}
+           	 </li>
+           </ul>
+        </p>
+        <p tal:condition="ballot.subjects">
+           <strong i18n:translate="">The data associated with this ballot are:</strong>
+           <ul class="list-unstyled">
+           	 <li tal:repeat="subject ballot.subjects">
+           	 	<a target="_blank" href="${request.resource_url(subject, '@@index')}"
+           	 	   class="alert-link">
+           	 	   <span class="${getattr(subject, 'icon', '')}"></span> ${subject.title}
+           	 	</a>
+           	 </li>
+           </ul>
+        </p>
+   </div>
+</div>

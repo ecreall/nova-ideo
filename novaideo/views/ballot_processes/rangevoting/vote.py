@@ -85,11 +85,13 @@ class VoteFormView(FormView):
         if define_node_op:
             define_node_op(self.schema)
 
-        formwidget = deform.widget.FormWidget(css_class='vote-form')
         self.action = self.request.resource_url(
-            self.context, 'rangevotingvote',
-            query={'action_uid': getattr(vote_actions[0], '__oid__', '')})
-        self.schema.widget = formwidget
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Vote.node_definition.id,
+                   'action_uid': getattr(vote_actions[0], '__oid__', '')})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform vote-form')
 
 
 @view_config(

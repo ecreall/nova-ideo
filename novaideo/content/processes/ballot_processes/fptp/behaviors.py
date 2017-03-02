@@ -31,9 +31,11 @@ class Vote(VoteBase):
         ballot = self.process.ballot
         report = ballot.report
         votefactory = report.ballottype.vote_factory
-        ballot.ballot_box.addtoproperty('votes', votefactory(subject_id))
+        vote_instance = votefactory(subject_id)
+        ballot.ballot_box.addtoproperty('votes', vote_instance)
         report.addtoproperty('voters', user)
-        return {}
+        return {'vote_uid': vote_instance.uid,
+                'ballot': ballot}
 
 
 #TODO behaviors

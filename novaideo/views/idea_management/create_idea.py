@@ -174,7 +174,8 @@ class CreateIdeaView_Json(BasicView):
                     }
             result = data
             return result
-        except Exception:
+        except Exception as error:
+            log.warning(error)
             return {}
 
     def get_idea(self):

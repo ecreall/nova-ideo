@@ -184,11 +184,13 @@ class VoteFormView(FormView):
         judgment_nd.widget = judgments_widget
         self.schema.get('candidates').children[0].editable = False
         self.schema.view = self
-        formwidget = deform.widget.FormWidget(css_class='vote-form')
         self.action = self.request.resource_url(
-            self.context, 'voteforamendments',
-            query={'action_uid': getattr(vote_action, '__oid__', '')})
-        self.schema.widget = formwidget
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Vote.node_definition.id,
+                   'action_uid': getattr(vote_action, '__oid__', '')})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform vote-form')
 
     def default_data(self):
         ballot_report = None

@@ -171,7 +171,6 @@ def confirm_proposal(
 
             working_group.improvement_cycle_proc.execute_action(
                 context, request, 'votingpublication', {})
-
             # Add Nia comment
             alert_comment_nia(
                 context, request, root,
@@ -1648,7 +1647,11 @@ class Work(ElementaryAction):
     roles_validation = decision_roles_validation
     state_validation = work_state_validation
 
-    def _send_mails(self, context, request, subject_template, message_template):
+    def _send_mails(self, context, request, message_id):
+        root = getSite()
+        mail_template = root.get_mail_template(message_id)
+        subject_template = mail_template['subject']
+        message_template = mail_template['template']
         working_group = context.working_group
         duration = to_localized_time(
             calculate_improvement_cycle_date(self.process),
@@ -1658,9 +1661,32 @@ class Work(ElementaryAction):
         subject = subject_template.format(subject_title=context.title)
         localizer = request.localizer
         root = request.root
+        #Get ballots
+        vp_ballot = getattr(working_group, 'vp_ballot', '')
+        wmc_ballot = getattr(working_group, 'work_mode_configuration_ballot', '')
+        rc_ballot = getattr(working_group, 'reopening_configuration_ballot', '')
+        dc_ballot = getattr(working_group, 'duration_configuration_ballot', '')
+        # Get ballot URLs
+        ballot_oid = get_oid(vp_ballot, '')
+        vp_ballot_url = request.resource_url(
+            root, '@@seeballot', query={'id': ballot_oid})
+        ballot_oid = get_oid(wmc_ballot, '')
+        wmc_ballot_url = request.resource_url(
+            root, '@@seeballot', query={'id': ballot_oid})
+        ballot_oid = get_oid(rc_ballot, '')
+        rc_ballot_url = request.resource_url(
+            root, '@@seeballot', query={'id': ballot_oid})
+        ballot_oid = get_oid(dc_ballot, '')
+        dc_ballot_url = request.resource_url(
+            root, '@@seeballot', query={'id': ballot_oid})
+
         alert('internal', [root], members,
               internal_kind=InternalAlertKind.working_group_alert,
-              subjects=[context], alert_kind='start_work')
+              subjects=[context], alert_kind=message_id,
+              vp_ballot=vp_ballot_url,
+              wmc_ballot=wmc_ballot_url,
+              rc_ballot=rc_ballot_url,
+              dc_ballot=dc_ballot_url)
         subject_data = get_entity_data(context, 'subject', request)
         for member in [m for m in members if getattr(m, 'email', '')]:
             email_data = get_user_data(member, 'recipient', request)
@@ -1676,7 +1702,6 @@ class Work(ElementaryAction):
                   subject=subject, body=message)
 
     def start(self, context, request, appstruct, **kw):
-        root = getSite()
         working_group = context.working_group
         context.state.remove('votes for publishing')
         #Only for amendments work mode
@@ -1696,16 +1721,14 @@ class Work(ElementaryAction):
         context.state.insert(0, 'amendable')
         #The first improvement cycle is started
         if working_group.first_improvement_cycle:
-            mail_template = root.get_mail_template('first_start_work')
             self._send_mails(
                 context, request,
-                mail_template['subject'], mail_template['template'])
+                'first_start_work')
             working_group.first_improvement_cycle = False
         else:
-            mail_template = root.get_mail_template('start_work')
             self._send_mails(
                 context, request,
-                mail_template['subject'], mail_template['template'])
+                'start_work')
 
         context.reindex()
         working_group.reindex()

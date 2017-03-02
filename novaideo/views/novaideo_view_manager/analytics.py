@@ -237,7 +237,6 @@ class ContentsByKeywordsSchema(Schema):
         missing=None
         )
 
-
     dates = omit(PublicationDates(
         widget=SimpleMappingWidget(css_class="filter-block"
                                              " object-well"

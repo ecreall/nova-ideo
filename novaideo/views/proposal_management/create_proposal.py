@@ -1,12 +1,11 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 import colander
 import deform
 import datetime
-import pytz
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 
@@ -17,7 +16,7 @@ from dace.util import getSite
 from dace.processinstance.core import Behavior
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select, Schema
+from pontus.schema import select, Schema, omit
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.file import Object as ObjectType
@@ -31,6 +30,7 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.utilities.util import to_localized_time
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo import _, log
+from ..filter import get_pending_challenges
 
 
 def add_file_data(file_):
@@ -214,6 +214,12 @@ class CreateProposalFormView(FormView):
     name = 'createproposal'
 
     def before_update(self):
+        user = get_current(self.request)
+        has_challenges = len(get_pending_challenges(user)) > 0
+        if not has_challenges:
+            self.schema = omit(
+                self.schema, ['challenge'])
+
         ideas_widget = ideas_choice(self.context, self.request)
         ideas_widget.item_css_class = 'hide-bloc'
         ideas_widget.css_class = 'controlled-items'

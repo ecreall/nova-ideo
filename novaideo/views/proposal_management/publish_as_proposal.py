@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -8,11 +8,13 @@ from pyramid.view import view_config
 from pyramid import renderers
 from substanced.util import get_oid
 
+from dace.objectofcollaboration.principal.util import get_current
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 from pontus.default_behavior import Cancel
 from pontus.view_operation import MultipleView
 from pontus.widget import Select2Widget
+from pontus.schema import omit
 
 from novaideo.content.processes.proposal_management.behaviors import (
     PublishAsProposal)
@@ -24,6 +26,7 @@ from .create_proposal import (
     add_file_data,
     IdeaManagementView as IdeaManagementViewOr)
 from novaideo import _, log
+from ..filter import get_pending_challenges
 
 
 class RelatedIdeasView(BasicView):
@@ -125,6 +128,12 @@ class PublishFormView(CreateProposalFormView):
         return data
 
     def before_update(self):
+        user = get_current(self.request)
+        has_challenges = len(get_pending_challenges(user)) > 0
+        if not has_challenges:
+            self.schema = omit(
+                self.schema, ['challenge'])
+
         ideas_widget = ideas_choice(self.context, self.request)
         ideas_widget.item_css_class = 'hide-bloc'
         ideas_widget.css_class = 'controlled-items'
