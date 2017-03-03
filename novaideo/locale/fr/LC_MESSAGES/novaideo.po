@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-03-03 13:14+0100\n"
+"POT-Creation-Date: 2017-03-03 15:54+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1362,7 +1362,6 @@ msgstr "Tous les"
 #: novaideo/views/newsletter_management/templates/see_newsletter.pt:38
 #: novaideo/views/templates/newsletter_result.pt:35
 #: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:8
-#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:11
 msgid "days"
 msgstr "jours"
 
@@ -1958,7 +1957,7 @@ msgstr "Entête de l'idée"
 #: novaideo/content/processes/proposal_management/definition.py:408
 #: novaideo/content/processes/proposal_management/definition.py:409
 #: novaideo/content/processes/proposal_management/behaviors.py:1532
-#: novaideo/content/processes/proposal_management/behaviors.py:1922
+#: novaideo/content/processes/proposal_management/behaviors.py:1934
 #: novaideo/content/processes/advertising_management/definition.py:55
 #: novaideo/content/processes/advertising_management/definition.py:56
 #: novaideo/content/processes/advertising_management/behaviors.py:53
@@ -4261,9 +4260,8 @@ msgstr "Groupe de travail ouvert"
 #: novaideo/views/templates/panels/step3_1.pt:17
 #: novaideo/views/templates/panels/step3_3.pt:17
 #: novaideo/views/templates/panels/step3_2.pt:17
+#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:11
 #: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:14
-#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:17
-#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:20
 msgid "participants"
 msgstr "participants"
 
@@ -6015,8 +6013,8 @@ msgstr ""
 "supplémentaires seront placé(e)s en Liste d'Attente."
 
 #: novaideo/views/templates/alerts/notification_wg_alert_result.pt:50
-#: novaideo/views/templates/alerts/wg_alert_result.pt:89
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:88
+#: novaideo/views/templates/alerts/wg_alert_result.pt:92
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:91
 msgid ""
 "Currently, you participate in, or are a candidate to, ${dynamic} Working "
 "Groups, which is the maximum number allowed. Therefore, you cannot join any "
@@ -6070,9 +6068,9 @@ msgstr ""
 "proposition ${dynamic}."
 
 #: novaideo/views/templates/alerts/wg_alert_result.pt:17
-#: novaideo/views/templates/alerts/wg_alert_result.pt:52
+#: novaideo/views/templates/alerts/wg_alert_result.pt:55
 #: novaideo/views/templates/alerts/small_wg_alert_result.pt:17
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:52
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:55
 msgid "The results of the ballots are available here:"
 msgstr "Les résultats des scrutins sont disponibles ici :"
 
@@ -6089,9 +6087,9 @@ msgid "Reopen the Working Group"
 msgstr "Réouvrir le Groupe de Travail"
 
 #: novaideo/views/templates/alerts/wg_alert_result.pt:35
-#: novaideo/views/templates/alerts/wg_alert_result.pt:81
+#: novaideo/views/templates/alerts/wg_alert_result.pt:84
 #: novaideo/views/templates/alerts/small_wg_alert_result.pt:35
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:81
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:84
 msgid ""
 "The Working Group related to the Proposal ${dynamic} has reached the quorum, "
 "i.e. the minimum number of Participants required to be considered as active. "
@@ -6101,8 +6099,8 @@ msgstr ""
 "c'est-à-dire le nombre minimum de Participant(e)s nécessaire pour être "
 "considéré comme actif. Il peut améliorer la proposition."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:37
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:37
+#: novaideo/views/templates/alerts/wg_alert_result.pt:38
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:38
 msgid ""
 "The Working Group has voted to submit the Proposal ${dynamic} as is to the "
 "Members of the platform."
@@ -6110,8 +6108,18 @@ msgstr ""
 "Le groupe de travail a voté pour soumettre la Proposition ${dynamic} en "
 "l'état aux Membres de la plateforme."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:41
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:41
+#: novaideo/views/templates/alerts/wg_alert_result.pt:40
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:40
+msgid "The results of the ballot are available"
+msgstr "Les résultats du scrutin sont disponibles"
+
+#: novaideo/views/templates/alerts/wg_alert_result.pt:40
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:40
+msgid "here"
+msgstr "ici"
+
+#: novaideo/views/templates/alerts/wg_alert_result.pt:44
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:44
 msgid ""
 "The improvement cycle of the Proposal ${dynamic} is now closed. You must now "
 "vote to decide whether you want to continue improving it, or to submit it as "
@@ -6121,8 +6129,8 @@ msgstr ""
 "à présent voter pour décider si vous voulez continuer à l'améliorer ou la "
 "soumettre en l'état aux Membres de la plateforme."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:45
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:45
+#: novaideo/views/templates/alerts/wg_alert_result.pt:48
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:48
 msgid ""
 "The improvement cycle of the Proposal ${dynamic} is now closed. You must now "
 "vote on the amendments submitted."
@@ -6130,13 +6138,13 @@ msgstr ""
 "Le cycle d'amélioration de la proposition ${dynamic} est terminé, vous devez "
 "voter sur les amendements soumis."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:50
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:50
+#: novaideo/views/templates/alerts/wg_alert_result.pt:53
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:53
 msgid "The vote on amendments is ended."
 msgstr "Le vote sur les amendements est terminé."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:61
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:61
+#: novaideo/views/templates/alerts/wg_alert_result.pt:64
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:64
 msgid ""
 "The improvement cycle of the Proposal ${dynamic} is almost finished. You can "
 "still bring in improvements, before the Working Group votes to decide "
@@ -6147,14 +6155,14 @@ msgstr ""
 "de travail vote pour soumettre la proposition en l'état ou pour recommencer "
 "un nouveau cycle d'amélioration."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:65
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:65
+#: novaideo/views/templates/alerts/wg_alert_result.pt:68
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:68
 msgid "Amendments for the Proposal ${dynamic} have just been added."
 msgstr ""
 "Des amendements pour la proposition ${dynamic} viennent d'être ajoutés."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:67
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:67
+#: novaideo/views/templates/alerts/wg_alert_result.pt:70
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:70
 msgid ""
 "The improvement cycle related to the Proposal ${dynamic} finished with no "
 "amendment."
@@ -6162,8 +6170,8 @@ msgstr ""
 "Le cycle d'amélioration associé à la Proposition ${dynamic} a fini sans "
 "amendement."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:69
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:69
+#: novaideo/views/templates/alerts/wg_alert_result.pt:72
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:72
 msgid ""
 "The result of the votes on the amendments associated to the Proposal "
 "${dynamic} has been computed."
@@ -6171,8 +6179,8 @@ msgstr ""
 "Le résultat sur les votes sur les amendements associés à la Proposition "
 "${dynamic} a été calculé."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:71
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:71
+#: novaideo/views/templates/alerts/wg_alert_result.pt:74
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:74
 msgid ""
 "The Proposal ${dynamic} has received suggestions for improvement and must be "
 "re-read."
@@ -6180,15 +6188,15 @@ msgstr ""
 "La proposition ${dynamic} a fait l'objet de suggestions d'amélioration et "
 "est à relire."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:73
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:73
+#: novaideo/views/templates/alerts/wg_alert_result.pt:76
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:76
 msgid ""
 "One Member has joined the Working Group related to the Proposal ${dynamic}."
 msgstr ""
 "Un Membre a rejoint le Groupe de Travail lié à la Proposition ${dynamic}."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:75
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:75
+#: novaideo/views/templates/alerts/wg_alert_result.pt:78
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:78
 msgid ""
 "One Member, which was on the waiting list, joined the Working Group related "
 "to the Proposal ${dynamic}."
@@ -6196,15 +6204,15 @@ msgstr ""
 "Un Membre, qui était en liste d'attente, a rejoint le Groupe de Travail lié "
 "à la Proposition ${dynamic}."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:77
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:77
+#: novaideo/views/templates/alerts/wg_alert_result.pt:80
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:80
 msgid ""
 "One Member has left the Working Group related to the Proposal ${dynamic}."
 msgstr ""
 "Un Membre a quitté le Groupe de Travail lié à la Proposition ${dynamic}."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:79
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:79
+#: novaideo/views/templates/alerts/wg_alert_result.pt:82
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:82
 msgid ""
 "The Working Group related to the Proposal ${dynamic} is below the quorum, i."
 "e. the minimum number of Participants required to be considered as active. "
@@ -6216,15 +6224,15 @@ msgstr ""
 "être considéré comme actif.Il ne peut donc plus améliorer la Proposition "
 "tant qu'il n'a pas atteint de nouveau le quorum."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:83
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:83
+#: novaideo/views/templates/alerts/wg_alert_result.pt:86
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:86
 msgid "Files were added in the work space related to the Proposal ${dynamic}."
 msgstr ""
 "Des fichiers ont été ajoutés dans l'espace de travail lié à la proposition "
 "${dynamic}."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:85
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:85
+#: novaideo/views/templates/alerts/wg_alert_result.pt:88
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:88
 msgid ""
 "The Working Group related to the Proposal ${dynamic} has reached its maximum "
 "number of Participants, and cannot include new ones. Additional candidates "
@@ -6234,8 +6242,8 @@ msgstr ""
 "maximal de Participant(e)s et ne peut plus en accueillir de nouveaux. Les "
 "candidat(e)s supplémentaires seront placé(e)s en Liste d'Attente."
 
-#: novaideo/views/templates/alerts/wg_alert_result.pt:92
-#: novaideo/views/templates/alerts/small_wg_alert_result.pt:91
+#: novaideo/views/templates/alerts/wg_alert_result.pt:95
+#: novaideo/views/templates/alerts/small_wg_alert_result.pt:94
 msgid ""
 "The improvement suggestions on the Proposal ${dynamic} have all been either "
 "accepted or refused. You can now suggest new improvements."
@@ -7791,29 +7799,21 @@ msgid "Vote duration"
 msgstr "Durée du vote"
 
 #: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:10
-msgid "Time constant"
-msgstr "Constante de temps"
-
-#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:13
-msgid "Minimum number of participants for a working group"
-msgstr "Nombre minimum de Participant(e)s pour un Groupe de Travail"
-
-#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:16
 #: novaideo/content/site_configuration.py:174
 msgid "Maximum number of Participants per Working Group"
 msgstr "Nombre maximum de Participant(e)s par Groupe de Travail"
 
-#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:19
+#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:13
 #: novaideo/content/site_configuration.py:180
 msgid "Maximum number of Working Groups per Member"
 msgstr "Nombre maximum de Groupe de Travail par Membre"
 
-#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:22
+#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:16
 #: novaideo/content/site_configuration.py:186
 msgid "Minimum number of evaluation Tokens allocated to a Member"
 msgstr "Nombre minimum de jetons d'évaluation par Membre"
 
-#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:23
+#: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:17
 msgid "tokens"
 msgstr "jetons"
 
@@ -9090,7 +9090,7 @@ msgstr "Voir"
 #: novaideo/content/processes/proposal_management/behaviors.py:963
 #: novaideo/content/processes/proposal_management/behaviors.py:1339
 #: novaideo/content/processes/proposal_management/behaviors.py:1481
-#: novaideo/content/processes/proposal_management/behaviors.py:1945
+#: novaideo/content/processes/proposal_management/behaviors.py:1957
 #: novaideo/content/processes/advertising_management/behaviors.py:74
 #: novaideo/content/processes/advertising_management/behaviors.py:113
 #: novaideo/content/processes/smart_folder_management/behaviors.py:70
@@ -9147,7 +9147,7 @@ msgstr "Enregistrer"
 #: novaideo/content/processes/proposal_management/behaviors.py:678
 #: novaideo/content/processes/proposal_management/behaviors.py:737
 #: novaideo/content/processes/proposal_management/behaviors.py:1286
-#: novaideo/content/processes/proposal_management/behaviors.py:1984
+#: novaideo/content/processes/proposal_management/behaviors.py:1996
 #: novaideo/content/processes/advertising_management/behaviors.py:149
 #: novaideo/content/processes/advertising_management/behaviors.py:183
 #: novaideo/content/processes/advertising_management/behaviors.py:213
@@ -9765,11 +9765,11 @@ msgstr ""
 "nécessaire que vous ayez préalablement voté sur la réouverture du groupe de "
 "travail"
 
-#: novaideo/content/processes/proposal_management/behaviors.py:1697
+#: novaideo/content/processes/proposal_management/behaviors.py:1701
 msgid "open"
 msgstr "ouvert"
 
-#: novaideo/content/processes/proposal_management/behaviors.py:1697
+#: novaideo/content/processes/proposal_management/behaviors.py:1701
 msgid "closed"
 msgstr "fermé"
 
@@ -10090,6 +10090,12 @@ msgstr "Trouver des entités"
 #: novaideo/web_services/export_entities.py:157
 msgid "Content type"
 msgstr "Type de contenu"
+
+#~ msgid "Time constant"
+#~ msgstr "Constante de temps"
+
+#~ msgid "Minimum number of participants for a working group"
+#~ msgstr "Nombre minimum de Participant(e)s pour un Groupe de Travail"
 
 #~ msgid "As soon as your proposal is published, you can decide:"
 #~ msgstr "Une fois votre proposition publiée, vous pouvez décider :"
