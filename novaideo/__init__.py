@@ -104,7 +104,7 @@ AVAILABLE_LANGUAGES = ['en', 'fr']
 
 def my_locale_negotiator(request):
     locale = default_locale_negotiator(request)
-    if locale is None and request.accept_language:
+    if locale is None and getattr(request, 'accept_language', None):
         locale = request.accept_language.best_match(AVAILABLE_LANGUAGES)
 
     return locale

@@ -34,8 +34,11 @@
 
     <span i18n:translate="" tal:condition="alert_kind == 'first_start_work'">The Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has reached the quorum, i.e. the minimum number of Participants required to be considered as active. It can now improve the Proposal.</span>
     
-    <span i18n:translate="" tal:condition="alert_kind == 'submit_proposal'">
-      The Working Group has voted to submit the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> as is to the Members of the platform.
+    <span tal:condition="alert_kind == 'submit_proposal'">
+      <span i18n:translate="">The Working Group has voted to submit the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> as is to the Members of the platform.</span>
+      <span tal:condition="getattr(object, 'ballot', '')">
+        <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
+      </span>
     </span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'end_work'">
