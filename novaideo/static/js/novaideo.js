@@ -131,7 +131,6 @@ function finish_progress(){
     $('img.novaideo-loading-indicator').addClass('hide-bloc');
 }
 
-
 function get_component_title(data){
   var result = '<div class="view-item-title">'
   if (data.img){
@@ -198,52 +197,6 @@ function update_notification_id(id, url){
    });
 }
 
-function send_vote(event){
-  var $this = $(this)
-  var panel = $($this.parents('.panel').first())
-  var modal = $(panel.parents('.modal').first())
-  var group = $($this.parents('.panel-group'))
-  var button = $($this.find('button').first())
-  var formData = new FormData($this[0]);
-  formData.append(button.val(), button.val())
-  var url = $this.attr('action')
-  button.addClass('disabled');
-  loading_progress()
-  $.ajax({
-      url: url,
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function(data) {
-        var has_error = $(data).find('.amendment-body .has-error').length > 0
-        if(!has_error){
-          var panel_to_remove = panel.find('.panel-collapse').first().attr('id')
-          var source_body = $('<div>'+jQuery.parseJSON($('#'+modal.data('source')).data('body'))+'</div>')
-          source_body.find('#'+panel_to_remove).parents('.panel').remove()
-          panel.remove()
-          $('#'+modal.data('source')).data('body', JSON.stringify(source_body.html()))
-          var votes = $(group.find('.panel-title.collapsed'))
-          alert_component({
-            alert_msg: novaideo_translate("Your vote has been validated"),
-            alert_type: 'success'
-          })
-          if(votes.length>0){
-            $(votes.first()).click()
-            finish_progress()
-          }else{
-             modal.modal('hide')
-             location.reload();
-          }
-        }else{
-          button.removeClass('disabled');
-          //TODO display errors
-          finish_progress()
-        }
-       }
-  });
-  event.preventDefault();
-}
 
 function collapse_current_collpsein(){
   var current_btn = $(this);
@@ -391,9 +344,9 @@ function initscroll(result_scrolls){
       function(elements){
         var $this = $(this)
         var current_content = $this.find('.result-container').first()
-        var scroll_items_container = $(current_content.find('>.scroll-items-container').first())
+        var scroll_items_container = $(current_content.find('.scroll-items-container').first())
         var new_content = $($this.find('.result-container').last())
-        var items = $(elements).find('>.scroll-items-container>.scroll-item')
+        var items = $(elements).find('.scroll-items-container').first().find('>.scroll-item')
         var nex_url =  new_content.data('nex_url')
         scroll_items_container.append(items)
         if($this.hasClass('results-bloc')){
@@ -761,7 +714,6 @@ $(document).on('click', '.content-more-message', function () {
     content.css('height', 'inherit');
 });
 
-
 $(document).on('change', '.is-restricted-input input', function(){
   var $this = $(this)
   var form = $this.parents('form').first()
@@ -774,7 +726,6 @@ $(document).on('click','form .btn[type="submit"]', function( event ) {
   $this.addClass('active')
 })
 
-$(document).on('submit','form.vote-form', send_vote)
 
 $(document).on('click', ".all-channels-toggle", function(e) {
       e.preventDefault();
@@ -807,7 +758,7 @@ $(document).on('click', '.alert-block:not(.opened)>span.icon', function(event){
       });
       event.stopPropagation()
 
-  });
+});
 
 $(document).on('show.bs.modal', '.similar-ideas', function(){
     $('body').addClass('similar-ideas-modal-open')
@@ -917,16 +868,14 @@ $(document).on('click', 'a.channel-action', function(){
 
 $(document).on('click', '.file-slider:not(.full) .carousel-inner a', display_carousel)
 
-
 $(document).on('click', '.alert-messages-scroll', scroll_to_unread_message);
 
-
 $(document).on('component_loaded', function(event, component_id){
-    if(component_id == 'novaideo_see_channels'){
-      init_channels_scroll();
-      alert_user_unread_messages()
-      update_unread_messages_alerts()
-    }
+  if(component_id == 'novaideo_see_channels'){
+    init_channels_scroll();
+    alert_user_unread_messages()
+    update_unread_messages_alerts()
+  }
 })
 
 $(window).load(function(){
@@ -938,7 +887,7 @@ $(window).scroll(function(){
 })
 
 $(document).ready(function(){
-  
+
   init_collapsible_contents()
 
   init_emoji($('.emoji-container:not(.emojified)'));

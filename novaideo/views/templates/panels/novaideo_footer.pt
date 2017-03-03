@@ -11,7 +11,7 @@
                       <span>
                         <a id="logo" href="https://www.nova-ideo.com/"></a>
                         <a href="${request.resource_url(request.virtual_root.ml_file, '@@index')}" i18n:translate="">Legal notice</a>
-                        - <a i18n:translate="" href="${request.resource_url(request.virtual_root, '@@novaideoconfig')}">Kuneagi parameters</a>
+                        - <a i18n:translate="" href="${request.resource_url(request.virtual_root, '@@novaideoconfig')}">Nova-Ideo parameters</a>
                         - 
                         <a href="http://www.pylonsproject.org/" title="" i18n:translate="">Réalisé avec Pyramid &amp; Python</a>
                         -  Copyright © 2016-2017

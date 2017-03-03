@@ -5,8 +5,9 @@
 	    is_finished ballot.is_finished;
 	    options ballot_type.get_options()"
 	 i18n:domain="novaideo">
-	<h3>${ballot.title} <small>(${getattr(ballot.ballot_box, 'vote_len', 0)} <span i18n:translate="">vote(s)</span>)</small></h3>
-	<div>
+	  <span class="badge badg-primary pull-right" ><span i18n:translate="">Identifier:</span> ${ballot.uid}</span> 
+  <h3>${ballot.title} <small>(${getattr(ballot.ballot_box, 'vote_len', 0)} <span i18n:translate="">vote(s)</span>)</small></h3>
+	<div class="ballot-detail">
 		<p>
 			<span i18n:translate="">Ce vote est de type jugement majoritaire permettant aux électeurs de donner une mention aux différents candidats.</span> <span i18n:translate="">The ballot started on</span> <span tal:replace="layout.to_localized_time(run)"/>.
 			<span tal:condition="finish is not None">

@@ -5,9 +5,10 @@
 	    is_finished ballot.is_finished;
 	    false_value ballot.report.ballottype.false_val;
 	    true_value ballot.report.ballottype.true_val;"
-	 i18n:domain="novaideo">
-	<h3>${ballot.title} <small>(${getattr(ballot.ballot_box, 'vote_len', 0)} <span i18n:translate="">vote(s)</span>)</small></h3>
-	<div>
+   i18n:domain="novaideo">
+  <span class="badge badg-primary pull-right" ><span i18n:translate="">Identifier:</span> ${ballot.uid}</span> 
+  <h3>${ballot.title} <small>(${getattr(ballot.ballot_box, 'vote_len', 0)} <span i18n:translate="">vote(s)</span>)</small></h3>
+	<div class="ballot-detail">
 		<p>
 			<span i18n:translate="">Ce vote est de type referendum permettant aux électeurs de donner un avis positif ou négatif par rapport au sujet de vote</span> <strong>"${ballot.title}"</strong>. <span i18n:translate="">The ballot started on</span> <span tal:replace="layout.to_localized_time(run)"/>.
 			<span tal:condition="finish is not None">
