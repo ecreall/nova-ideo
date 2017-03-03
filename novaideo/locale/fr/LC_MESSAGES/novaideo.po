@@ -7773,9 +7773,9 @@ msgstr "Valeur"
 
 #: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:2
 msgid ""
-"Here are the numeric parameters of the current implementation of KuneAgi:"
+"Here are the numeric parameters of the current implementation of Nova-Ideo:"
 msgstr ""
-"Voici les paramètres numériques de l'implémentation actuelle de KuneAgi"
+"Voici les paramètres numériques de l'implémentation actuelle de Nova-Ideo :"
 
 #: novaideo/views/novaideo_view_manager/templates/novaideo_config.pt:4
 #: novaideo/content/site_configuration.py:103
