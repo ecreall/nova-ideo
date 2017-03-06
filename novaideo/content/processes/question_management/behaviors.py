@@ -183,11 +183,9 @@ class EditQuestion(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        root = getSite()
         user = get_current(request)
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
-        root.merge_keywords(appstruct['keywords'])
         context.set_data(appstruct)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.format(request)

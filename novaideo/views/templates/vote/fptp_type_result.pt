@@ -1,0 +1,50 @@
+<div  tal:define="
+        oid ballot.__oid__;
+        ballot_result ballot.report.calculate_votes();
+        electeds ballot.report.get_electeds();
+        elected electeds[0] if electeds else None;
+        options ballot_type.report.subjects;
+        glob len(options)"
+        i18n:domain="novaideo">
+  <div class="analytics-study">
+    <span i18n:translate="">The result of the ballot is:</span> <strong>${ballot_type.get_option(elected)}</strong>
+  </div>
+  <div class="container-fluid analytics-container" style="max-width: 50%;">
+    <div class="legend pull-right" id="legend-doughnut-${oid}"></div>
+    <canvas id="stat-canvas-${oid}" ></canvas>
+    <script>
+      <div tal:omit-tag="" tal:define="colors layout.get_colors(len(options))">
+        $('.nav-tabs li>a[href="#${tab_id}"]').on('shown.bs.tab', function (e) {
+            var doughnutData = [
+              <div tal:omit-tag="" tal:repeat="(index, item) enumerate(options)">
+                  <div tal:omit-tag=""
+                       tal:define="
+                          val ballot_result.get(ballot_type.get_option_id(item), 0)">
+                  {
+                      label: "${ballot_type.get_option(item)}",
+                      fillColor: "${colors[index]['background']}",
+                      color: "${colors[index]['background']}",
+                      highlight: "${colors[index]['hover']}",
+                      value: ${(val*100/glob) if glob else 0}
+                  },
+                  </div>
+             </div>
+
+          ];
+          var canvas_id = "stat-canvas-${oid}"
+          var newcanvas = get_new_canvas(canvas_id);
+          $(canvas_id).replaceWith(newcanvas)
+          var ctxdoughnut = document.getElementById(canvas_id).getContext("2d");
+          ctxdoughnut.clearRect(0, 0, 500, 500);
+          var doughnut = new Chart(ctxdoughnut).Doughnut(doughnutData, {
+              responsive: true,
+              tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> %",
+              generateLegend: true,
+          });
+          var doughnutlegend = doughnut.generateLegend();
+          $('.analytics-container #legend-doughnut-${oid}').html(doughnutlegend)
+        })
+      </div>
+    </script>
+  </div>
+</div>

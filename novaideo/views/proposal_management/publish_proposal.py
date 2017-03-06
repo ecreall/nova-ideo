@@ -122,8 +122,14 @@ class PublishProposalFormView(FormView):
                     'js_links': ['novaideo:static/js/proposal_management.js']}
 
     def before_update(self):
+        root = getSite()
         if getattr(self.context.working_group, 'work_mode', None):
             self.schema = select(PublishProposalSchema(), ['vote', 'elected'])
+
+        can_submit_directly = getattr(root, 'can_submit_directly', False)
+        if not can_submit_directly:
+            self.schema = select(
+                PublishProposalSchema(), ['work_mode', 'elected'])
 
         duration_ballot = self.context.working_group.duration_configuration_ballot
         vp_ballot = self.context.working_group.vp_ballot
@@ -139,8 +145,10 @@ class PublishProposalFormView(FormView):
             elected_node.default = group_default
 
         elected_node.widget = subjects_widget
-        vote_widget = vote_choice(vp_ballot_report)
-        self.schema.get('vote').widget = vote_widget
+        if can_submit_directly:
+            vote_widget = vote_choice(vp_ballot_report)
+            self.schema.get('vote').widget = vote_widget
+
         self.schema.view = self
         self.action = self.request.resource_url(
             self.context, 'novaideoapi',

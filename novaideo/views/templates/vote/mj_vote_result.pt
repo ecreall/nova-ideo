@@ -1,0 +1,21 @@
+<div tal:omit-tag="" tal:define="
+	ballottype object.report.ballottype;
+	value ballottype.get_vote_value(object.value)"
+	 i18n:domain="novaideo">
+  <tr class="scroll-item" >
+	<th scope="row">${getattr(object, 'uid', '')}</th>
+	<td><span tal:replace="layout.to_localized_time(object.created_at)"/></td>
+	<td>
+        <ul class="list-group">
+		  <li tal:repeat="(obj, judgement) value" class="list-group-item">
+		    <span class="badge" i18n:translate="">${judgement}</span>
+		    <a target="_blank" 
+		       href="${request.resource_url(obj, '@@index')}">
+		 	   <span class="${getattr(obj, 'icon', '')}"></span> ${obj.title}
+		 	</a>
+		  </li>
+		</ul>
+    </td>
+  </tr>
+</div>
+

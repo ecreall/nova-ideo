@@ -1,0 +1,7 @@
+<div tal:omit-tag="" i18n:domain="novaideo">
+  <tr class="scroll-item" >
+	<th scope="row">${getattr(object, 'uid', '')}</th>
+	<td><span tal:replace="layout.to_localized_time(object.created_at)"/></td>
+	<td i18n:translate="">${object.report.ballottype.get_option(object.value)}</td>
+  </tr>
+</div>

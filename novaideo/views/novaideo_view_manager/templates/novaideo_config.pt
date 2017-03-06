@@ -1,0 +1,19 @@
+<div i18n:domain="novaideo">
+<p i18n:translate="">Here are the numeric parameters of the current implementation of Nova-Ideo:</p>
+<dl class="">
+  <dt i18n:translate="">Number of non-productive cycles</dt>
+  <dd>${getattr(root, 'nonproductive_cycle_nb', 3)} <span i18n:translate="">cycles</span></dd>
+
+  <dt i18n:translate="">Vote duration</dt>
+  <dd>${getattr(root, 'duration_moderation_vote', 7)} <span i18n:translate="">days</span></dd>
+
+  <dt i18n:translate="">Maximum number of Participants per Working Group</dt>
+  <dd>${getattr(root, 'participants_maxi', 12)} <span i18n:translate="">participants</span></dd>
+
+  <dt i18n:translate="">Maximum number of Working Groups per Member</dt>
+  <dd>${getattr(root, 'participations_maxi', 5)} <span i18n:translate="">participants</span></dd>
+
+  <dt i18n:translate="">Minimum number of evaluation Tokens allocated to a Member</dt>
+  <dd>${getattr(root, 'tokens_mini', 7)} <span i18n:translate="">tokens</span></dd>
+</dl>
+</div>

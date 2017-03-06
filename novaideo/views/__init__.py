@@ -598,17 +598,28 @@ class NovaideoAPI(IndexManagementJsonView):
         return action
 
     def _update_action_view(self, node_id=None, process_id=None):
-        if not node_id:
-            node_process = self.params('node_id').split('.')
-            process_id = node_process[0]
-            node_id = node_process[1]
+        action_uid = self.params('action_uid')
+        action = None
+        try:
+            action = get_obj(int(action_uid))
+        except Exception:
+            pass
 
-        node_actions = getAllBusinessAction(
-            self.context, self.request,
-            process_id=process_id, node_id=node_id,
-            process_discriminator='Application')
-        if node_actions:
-            action = node_actions[0]
+        if action is None:
+            if not node_id:
+                node_process = self.params('node_id').split('.')
+                process_id = node_process[0]
+                node_id = node_process[1]
+
+            node_actions = getAllBusinessAction(
+                self.context, self.request,
+                process_id=process_id, node_id=node_id,
+                process_discriminator='Application')
+            if node_actions:
+                action = node_actions[0]
+
+        if action is not None:
+            action_id = action.process_id + '.' + action.node_id
             node_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
             node_view_instance = node_view(
                 self.context, self.request,
@@ -618,21 +629,25 @@ class NovaideoAPI(IndexManagementJsonView):
             return {
                 'status': True,
                 'action_obj': action,
+                'action_uid': action_id,
                 'view_data': (node_view_instance, view_result)}
 
         return {
             'status': False,
             'action_obj': None,
+            'action_uid': None,
             'view_data': None}
 
     def update_action_view(self):
         result = self._update_action_view()
         action = result.pop('action_obj')
+        action_uid = result.pop('action_uid')
         view_data = result.pop('view_data')
         result.update(get_components_data(
             **get_all_updated_data(
                 action, self.request,
-                self.context, self, view_data=view_data)))
+                self.context, self, view_data=view_data,
+                action_uid=action_uid)))
         return result
 
     def update_action(self, action=None, context=None):

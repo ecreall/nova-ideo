@@ -6,12 +6,39 @@
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
     
-     <span i18n:translate="" tal:condition="alert_kind == 'start_work'">
-      The Working Group has voted to pursue the improvement of the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
+     <span tal:condition="alert_kind == 'start_work'"
+           tal:define="
+              vp_ballot getattr(object, 'vp_ballot', '');
+              wmc_ballot getattr(object, 'wmc_ballot', '');
+              rc_ballot getattr(object, 'rc_ballot', '');
+              dc_ballot getattr(object, 'dc_ballot', '');" >
+      <span i18n:translate="">The Working Group has voted to pursue the improvement of the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+      <span tal:condition="vp_ballot or wmc_ballot or rc_ballot or dc_ballot">
+        <span i18n:translate="">The results of the ballots are available here:</span>
+        <ul>
+          <li tal:condition="vp_ballot">
+           <a i18n:translate="" href="${vp_ballot}">Vote for continuing to improve the proposal or not</a>
+          </li>
+          <li tal:condition="wmc_ballot">
+            <a i18n:translate="" href="${wmc_ballot}">Work mode</a>
+          </li>
+          <li tal:condition="rc_ballot">
+           <a i18n:translate="" href="${rc_ballot}">Reopen the Working Group</a>
+          </li>
+          <li tal:condition="dc_ballot">
+            <a i18n:translate="" href="${dc_ballot}">Duration of the amendment cycle</a>
+          </li>
+        </ul>
+      </span>
     </span>
+
+    <span i18n:translate="" tal:condition="alert_kind == 'first_start_work'">The Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has reached the quorum, i.e. the minimum number of Participants required to be considered as active. It can now improve the Proposal.</span>
     
-    <span i18n:translate="" tal:condition="alert_kind == 'submit_proposal'">
-      The Working Group has voted to submit the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> as is to the Members of the platform.
+    <span tal:condition="alert_kind == 'submit_proposal'">
+      <span i18n:translate="">The Working Group has voted to submit the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> as is to the Members of the platform.</span>
+      <span tal:condition="getattr(object, 'ballot', '')">
+        <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
+      </span>
     </span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'end_work'">
@@ -20,6 +47,18 @@
 
     <span i18n:translate="" tal:condition="alert_kind == 'voting_amendment'">
         The improvement cycle of the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> is now closed. You must now vote on the amendments submitted.
+    </span>
+
+    <span tal:condition="alert_kind == 'amendment_result'">
+        <span i18n:translate="" >The vote on amendments is ended.</span>
+        <span tal:condition="getattr(object, 'ballots', [])">
+          <span i18n:translate="">The results of the ballots are available here:</span>
+          <ul>
+            <tal:loop repeat="(title, url) object.ballots">
+              <li><a href="${url}">${title}</a></li>
+            </tal:loop>
+          </ul>
+        </span>
     </span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'alert_end_work'">
@@ -56,7 +95,7 @@
     <span i18n:translate="" tal:condition="alert_kind == 'correction_validated'">
         The improvement suggestions on the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> have all been either accepted or refused. You can now suggest new improvements.
     </span>
-    
+
   </div>
   <span tal:condition="object.is_to_alert(current_user)" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 </div>

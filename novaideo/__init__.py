@@ -15,6 +15,7 @@ from pyramid.exceptions import ConfigurationError
 from pyramid.i18n import TranslationStringFactory
 from pyramid.session import SignedCookieSessionFactory
 from pyramid.threadlocal import get_current_request
+from pyramid.i18n import default_locale_negotiator
 
 from substanced.db import root_factory
 
@@ -24,7 +25,7 @@ from pontus.file import File
 
 from novaideo.content.bot import Bot
 
-from zope.processlifetime import IDatabaseOpenedWithRoot
+#from zope.processlifetime import IDatabaseOpenedWithRoot
 # from .twitter import start_ioloop
 
 
@@ -98,8 +99,15 @@ def ajax_api(request):
     return 'novaideoapi'
 
 
+AVAILABLE_LANGUAGES = ['en', 'fr']
+
+
 def my_locale_negotiator(request):
-    return request.accept_language.best_match(('en', 'fr'), 'fr')
+    locale = default_locale_negotiator(request)
+    if locale is None and getattr(request, 'accept_language', None):
+        locale = request.accept_language.best_match(AVAILABLE_LANGUAGES)
+
+    return locale
 
 
 def moderate_ideas(request):
@@ -759,7 +767,7 @@ def main(global_config, **settings):
                            'novaideo:static',
                            cache_max_age=86400)
     # config.add_subscriber(start_ioloop, IDatabaseOpenedWithRoot)
-    #    config.set_locale_negotiator(my_locale_negotiator)
+    config.set_locale_negotiator(my_locale_negotiator)
     settings = config.registry.settings
     secret = settings.get('novaideo.secret')
     if secret is None:

@@ -75,4 +75,3 @@ $(document).on('click','.new-idea-form button.ajax-button.validate-btn', functio
          finish_progress()
     });
 });
-keywords

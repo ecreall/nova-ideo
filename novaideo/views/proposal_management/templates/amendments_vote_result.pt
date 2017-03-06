@@ -1,20 +1,26 @@
-<div>
-<br/>
-<span i18n:translate="">Les résultats du vote sur les amendements liés à la proposition</span> "<a tal:attributes="href request.resource_url(subject, '@@index')">${subject.title}</a>"" <span i18n:translate="">sont les suivants</span>:
-  <ul>
-    <tal:loop repeat="group amendments_vote_result">
-      <li>${structure:group}</li>
-   </tal:loop>
-  </ul> 
+<div tal:omit-tag="" i18n:domain="novaideo">
+	<div>
+		<br/>
+		<span i18n:translate="">Les résultats du vote sur les amendements liés à la proposition</span> "<a tal:attributes="href request.resource_url(subject, '@@index')">${subject.title}</a>" <span i18n:translate="">sont les suivants :</span>
+		<ul>
+		   <tal:loop repeat="(title, url) ballots">
+		      <li><a href="${url}">${title}</a></li>
+		   </tal:loop>
+		</ul> 
+	</div>
+	<br/>
+	<div>
+		<span tal:condition="len(electeds)>1" i18n:translate="">
+			Les amendements retenus après calcul sont
+		</span>
+		<span tal:condition="len(electeds)==1" i18n:translate="">
+			L'amendement retenu après calcul est :
+		</span>
+		<ul>
+			<tal:loop repeat="elected electeds">
+			  <li>  ${elected.title} </li>
+			</tal:loop>
+		</ul>
+	</div>
+	<br/>
 </div>
-<br/>
-<div>
-<span tal:condition="len(electeds)>1" i18n:translate="">Les amendements retenus après calcul sont</span>
-<span tal:condition="len(electeds)==1" i18n:translate="">L'amendement retenu après calcul est</span> :
-  <ul>
-  <tal:loop repeat="elected electeds">
-    <li>  ${elected.title} </li>
-  </tal:loop>
-</ul>
-</div>
-<br/>

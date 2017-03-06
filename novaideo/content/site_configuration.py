@@ -105,6 +105,22 @@ class WorkParamsConfigurationSchema(Schema):
         default=3,
         )
 
+    can_submit_directly = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Allow direct submission of proposal'),
+        description=_('Members can submit directly the proposal.'),
+        title='',
+        missing=False
+    )
+
+    # period_validity_decision = colander.SchemaNode(
+    #     colander.Int(),
+    #     title=_('Period of validity of the decision'),
+    #     default=3,
+    #     missing=3
+    # )
+
 
 class UserParamsConfigurationSchema(Schema):
 

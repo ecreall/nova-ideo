@@ -239,11 +239,11 @@ def init_application(event):
     root.init_channels()
     # other init functions
     init_contents(registry)
-    
+
     #run with ws server
     from novaideo.web_socket.server import run_ws
     run_ws(app)
-    
+
     #invite initial user if first deployment
     if getattr(root, 'first_invitation_to_add', False):
         # LOGO_FILENAME='marianne.svg' for example

@@ -1,4 +1,5 @@
-<div  i18n:domain="novaideo" id="publication-data" data-is_unique="${'true' if is_unique_choice else 'false'}">
+<div  i18n:domain="novaideo" id="publication-data" data-is_unique="${'true' if is_unique_choice else 'false'}"
+  tal:define="can_submit_directly getattr(request.root, 'can_submit_directly', False)">
  <div class="alert alert-info">
   <p i18n:translate="">By clicking on « Continue », your proposal will be submitted to moderation before publication. The moderators can decide either to publish it, or to archive it.
   </p>
@@ -13,6 +14,7 @@
         </ol>
     </div>
  	<span class="glyphicon glyphicon-info-sign pull-right"></span>
+  <div tal:omit-tag="" tal:condition="can_submit_directly">
     <div>
       <p i18n:translate="">As soon as your proposal has been accepted and published by the moderators, you can decide:</p>
       <ul>
@@ -23,7 +25,15 @@
    <p i18n:translate="">
     If you choose to improve it with other Members, which is the default choice, you must specify the duration of the improvement cycle. The default value for this duration is one week.
    </p>
-
+  </div>
+  <div tal:omit-tag="" tal:condition="not can_submit_directly">
+    <div>
+      <p i18n:translate="">As soon as your proposal has been accepted and published by the moderators, you must improve it with other Members in a Working Group, and then submit it to the evaluation of all Members.</p>
+    </div>
+    <p i18n:translate="">
+      To improve the proposal, you must specify the duration of the improvement cycle. The default value for this duration is one week.
+    </p>
+  </div>
  </div>
  <div tal:condition="len(request.root.get_work_modes()) > 1" class="alert alert-warning">
   <span class="glyphicon glyphicon-warning-sign pull-right"></span>

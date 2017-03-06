@@ -22,6 +22,12 @@
     <span i18n:translate="" tal:condition="alert_kind == 'object_closed'">
       The Woking Group on the Proposal <a i18n:name="dynamic"  href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been inactive for several cycles, each lasting more than one week. For this reason, the Group has been dissolved, and the Proposal is back to the state "Open to a working group".
     </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'moderate_content'">
+      A new content has just been added. The content is visible under <a i18n:name="dynamic"   href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>. You are invited to moderate it.
+    </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'moderate_report'">
+      A content has just been reported as potentially offensive. The content is visible under <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>. You are invited to moderate it.
+    </span>
   </div>
   <span tal:condition="object.is_to_alert(current_user)" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>
 </div>

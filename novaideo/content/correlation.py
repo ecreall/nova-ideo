@@ -123,6 +123,7 @@ class Correlation(Debatable):
     targets = SharedMultipleProperty('targets', 'target_correlations')
     context = SharedUniqueProperty('context', 'contextualized_correlations')
     author = SharedUniqueProperty('author')
+    channels = CompositeMultipleProperty('channels', 'subject')
     comments = CompositeMultipleProperty('comments')
 
     def __init__(self, **kwargs):
@@ -138,6 +139,11 @@ class Correlation(Debatable):
         result = list(self.targets)
         result .append(self.source)
         return result
+
+    @property
+    def channel(self):
+        channels = getattr(self, 'channels', [])
+        return channels[0] if channels else None
 
     @property
     def type_name(self):

@@ -14,6 +14,8 @@ from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 from pyramid import renderers
 
+from substanced.util import get_oid
+
 import html_diff_wrapper
 from dace.util import (
     getSite,
@@ -244,7 +246,6 @@ class AmendmentsResult(ElementaryAction):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
     style_order = 7
-    amendments_group_result_template = 'novaideo:views/proposal_management/templates/amendments_group_result.pt'
     amendments_vote_result_template = 'novaideo:views/proposal_management/templates/amendments_vote_result.pt'
     context = IProposal
     processs_relation_id = 'proposal'
@@ -253,29 +254,25 @@ class AmendmentsResult(ElementaryAction):
     state_validation = ar_state_validation
 
     def _send_ballot_result(self, context, request, electeds, members):
-        amendments_vote_result = []
+        root = request.root
         working_group = context.working_group
-        for group_nb, ballot in enumerate(working_group.amendments_ballots):
-            judgments = ballot.report.ballottype.judgments
-            sorted_judgments = sorted(
-                list(judgments.keys()), key=lambda o: judgments[o])
-            values = {'group_nb': group_nb,
-                      'report': ballot.report,
-                      'sorted_judgments': sorted_judgments,
-                      'get_obj': get_obj}
-            group_body = renderers.render(
-                self.amendments_group_result_template, values, request)
-            amendments_vote_result.append(group_body)
-
-        values = {'amendments_vote_result': amendments_vote_result,
+        ballots_urls = [(ballot.title, request.resource_url(
+                        root, '@@seeballot', query={'id': get_oid(ballot)}))
+                        for ballot in working_group.amendments_ballots]
+        values = {'ballots': ballots_urls,
                   'electeds': electeds,
                   'subject': context}
         result_body = renderers.render(
             self.amendments_vote_result_template, values, request)
-        root = request.root
         mail_template = root.get_mail_template('vote_amendment_result')
         subject = mail_template['subject'].format(
             subject_title=context.title)
+        alert(
+            'internal', [root], members,
+            internal_kind=InternalAlertKind.working_group_alert,
+            subjects=[context],
+            alert_kind='amendment_result',
+            ballots=ballots_urls)
         for member in members:
             if getattr(member, 'email', ''):
                 recipientdata = get_user_data(member, 'recipient', request)

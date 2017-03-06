@@ -1,4 +1,4 @@
-<div class="container-fluid" tal:define="accessible_to_anonymous request.accessible_to_anonymous">
+<div i18n:domain="novaideo" class="container-fluid" tal:define="accessible_to_anonymous request.accessible_to_anonymous">
     <div class="row clearfix">
       <div class="${accessible_to_anonymous and 'col-md-2' or 'col-md-3'}">
       </div>
@@ -10,10 +10,11 @@
                     <div class="colophonWrapper">
                       <span>
                         <a id="logo" href="https://www.nova-ideo.com/"></a>
-                        <a href="${request.resource_url(request.virtual_root.ml_file, '@@index')}">Mentions légales</a>
+                        <a href="${request.resource_url(request.virtual_root.ml_file, '@@index')}" i18n:translate="">Legal notice</a>
+                        - <a i18n:translate="" href="${request.resource_url(request.virtual_root, '@@novaideoconfig')}">Nova-Ideo parameters</a>
                         - 
-                        <a href="http://www.pylonsproject.org/" title="">Réalisé avec Pyramid &amp; Python</a>
-                        -  Copyright © 2015-2016
+                        <a href="http://www.pylonsproject.org/" title="" i18n:translate="">Réalisé avec Pyramid &amp; Python</a>
+                        -  Copyright © 2016-2017
                           <a href="http://www.ecreall.com">Ecréall</a>
                       </span>
                    </div>

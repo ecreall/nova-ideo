@@ -3,28 +3,51 @@
      <dt  i18n:translate="">Purpose of the ballot</dt>
      <dd>
       <div>
-        <span class="glyphicon glyphicon-info-sign pull-right"></span>
-        ${ballot_report.description}
+        ${structure:description}
       </div>
      </dd>
      <div tal:omit-tag="" tal:condition="ballot_report is not None">
-       <dt tal:condition="ballot_report.electors"  i18n:translate="">Participants in the ballot</dt>
-       <dd tal:condition="ballot_report.electors">
-         <tal:loop repeat="e ballot_report.electors">
-           <a tal:attributes="href request.resource_url(e, '@@index')">${getattr(e, 'title', e.name)}</a>
-           <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
-         </tal:loop>
-       </dd>
-       <dt tal:condition="ballot_report.voters" i18n:translate="">Participants having participated in the ballot</dt>
-       <dd tal:condition="ballot_report.voters">
-         <tal:loop repeat="e ballot_report.voters">
-          ${getattr(e, 'title', e.name)}
-          <tal:separator condition="not: repeat['e'].end">, </tal:separator> 
-         </tal:loop>
-       </dd>
+      <div tal:omit-tag="" tal:condition="not getattr(ballot_report, 'secret_ballot', False)">
+         <dt tal:condition="ballot_report.electors"  i18n:translate="">Participants in the ballot</dt>
+         <dd tal:condition="ballot_report.electors">
+            <div class="working-group-section">
+              <tal:loop repeat="m ballot_report.electors">
+                <a tal:attributes="href request.resource_url(m, '@@index')"
+                  data-oid="${getattr(m, '__oid__', '')}"
+                  class="toggle-popover"
+                  tal:define="picture getattr(m, 'picture', None);
+                              profil_picture getattr(picture, 'profil', None)">
+                  <img class="author-img img-circle" 
+                    tal:condition="profil_picture is not None"
+                     tal:attributes="src profil_picture.url"  width="25"/>
+                  <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+                  ${getattr(m, 'title', m.name)}
+                </a>
+             </tal:loop>
+            </div>
+         </dd>
+         <dt tal:condition="ballot_report.voters" i18n:translate="">Participants having participated in the ballot</dt>
+         <dd tal:condition="ballot_report.voters">
+           <div class="working-group-section">
+              <tal:loop repeat="m ballot_report.voters">
+                <a tal:attributes="href request.resource_url(m, '@@index')"
+                  data-oid="${getattr(m, '__oid__', '')}"
+                  class="toggle-popover"
+                  tal:define="picture getattr(m, 'picture', None);
+                              profil_picture getattr(picture, 'profil', None)">
+                  <img class="author-img img-circle" 
+                    tal:condition="profil_picture is not None"
+                     tal:attributes="src profil_picture.url"  width="25"/>
+                  <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+                  ${getattr(m, 'title', m.name)}
+                </a>
+             </tal:loop>
+            </div>
+         </dd>
+       </div>
        <dt i18n:translate="">Duration</dt>
        <dd tal:define="run ballot_report.ballot.run_at; finish  ballot_report.ballot.finished_at">
-          <span i18n:translate="">The ballot starts on</span> <span tal:replace="layout.to_localized_time(run)"/>. <span tal:condition="finish is not None"><span i18n:translate="">The end of the ballot is planned on</span> <span tal:replace="layout.to_localized_time(finish)"/>.</span>
+          <span i18n:translate="">The ballot started on</span> <span tal:replace="layout.to_localized_time(run)"/>. <span tal:condition="finish is not None"><span i18n:translate="">The end of the ballot is planned on</span> <span tal:replace="layout.to_localized_time(finish)"/>.</span>
        </dd>
      </div>
  </dl>

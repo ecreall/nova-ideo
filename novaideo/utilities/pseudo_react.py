@@ -55,6 +55,8 @@ from novaideo.content.organization import Organization
 from novaideo.content.proposal import Proposal
 from novaideo.core import can_access, ON_LOAD_VIEWS
 
+VOTE_TEMPLATE = 'novaideo:views/templates/vote_uid_result.pt'
+
 
 def _get_resources_to_include(request, resources, currents):
     result = []
@@ -133,9 +135,12 @@ def get_all_updated_data(action, request, context, api, **kwargs):
     result = {'action': None, 'view': api}
     if not action:
         return result
+    action_uid = kwargs.get('action_uid', None)
+    if action_uid is None:
+        action_uid = action.process_id + '.' + action.node_id
 
     metadatagetter = METADATA_GETTERS.get(
-        action.process_id + '.' + action.node_id, None)
+        action_uid, None)
     current_resources = api.params('included_resources')
     current_resources = json.loads(current_resources) \
         if current_resources else []
@@ -1619,6 +1624,47 @@ def get_private_file_metadata(action, request, context, api, **kwargs):
         _("The file has been made private."),
         **kwargs)
 
+# Votes
+
+def get_vote_metadata(
+    action, request, context, api,
+    msg=None, viewname=None, **kwargs):
+    alert_msg = None
+    redirect_url = None
+    is_excuted = False
+    vote_body = ''
+    body = None
+    if 'view_data' in kwargs:
+        view_instance, view_result = kwargs['view_data']
+        if view_result:
+            if isinstance(view_result, HTTPFound) or getattr(view_result, 'is_nothing', False):
+                is_excuted = True
+                alert_msg = msg
+                if isinstance(view_result, HTTPFound):
+                    redirect_url = view_result.headers['location']
+                else:
+                    vote_uid = getattr(view_result, 'vote_uid', '')
+                    vote_body = renderers.render(
+                        VOTE_TEMPLATE,
+                        {'ballot': getattr(view_result, 'ballot', ''),
+                         'vote_uid': getattr(view_result, 'vote_uid', '')},
+                        request)
+            else:
+                body = view_result['coordinates'][view_instance.coordinates][0]['body']
+
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': redirect_url,
+        'view_name': viewname,
+        'new_body': json.dumps(body) if body else None,
+        'vote_body': json.dumps(vote_body) if vote_body else None
+    }
+    result['alert_msg'] = request.localizer.translate(alert_msg) if alert_msg else None
+    result['alert_type'] = 'success'
+    result['is_excuted'] = is_excuted
+    return result
+
 #Counters
 
 def component_navbar_myselections(action, request, context, api, **kwargs):
@@ -2087,7 +2133,12 @@ METADATA_GETTERS = {
     'organizationmanagement.user_edit_organization': get_user_edit_organization_metadata,
 
     'novaideofilemanagement.publish': get_publish_file_metadata,
-    'novaideofilemanagement.private': get_private_file_metadata
+    'novaideofilemanagement.private': get_private_file_metadata,
+
+    'fptpprocess.vote': get_vote_metadata,
+    'referendumprocess.vote': get_vote_metadata,
+    'majorityjudgmentprocess.vote': get_vote_metadata,
+    'rangevotingprocess.vote': get_vote_metadata,
 }
 
 

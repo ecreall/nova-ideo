@@ -11,13 +11,14 @@
       activate_push_notification getattr(request.root, 'activate_push_notification', False);
       app_id getattr(request.root, 'app_id', None);
       view_only 'view_only' in request.POST or 'view_only' in  request.GET;
-      view_title view.title">
+      root_title getattr(request.root, 'title', '');
+      view_title getattr(view, 'title', '')">
   <head tal:condition="not view_only">
 
     <more tal:omit-tag="" metal:define-slot="head-first"></more>
 
     <meta charset="utf-8"/>
-    <title metal:define-slot="page-title">${view_title if view_title else getattr(request.root, 'title', '')}</title>
+    <title metal:define-slot="page-title">${view_title if view_title else root_title}</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0"/>
 
@@ -128,11 +129,17 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/include.js')}"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/ws.js')}"
+          
+
+    <script src="${su('deform:static/pickadate/picker.js')}"
+          type="text/javascript"></script>
+    <script src="${su('deform:static/pickadate/picker.date.js')}"
+          type="text/javascript"></script>
+    <script src="${su('deform:static/pickadate/picker.time.js')}"
           type="text/javascript"></script>
 
-
     <more tal:omit-tag="" metal:define-slot="head-more"></more>
+    
     <script tal:condition="request.locale_name == 'fr'"
             src="${request.static_url('deform:static/pickadate/translations/fr_FR.js')}"
             type="text/javascript"></script>

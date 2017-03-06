@@ -94,6 +94,7 @@ def email_validator(node, kw):
                 _('${email} email address already in use',
                   mapping={'email': kw}))
 
+
 @colander.deferred
 def default_contacts(node, kw):
     context = node.bindings['context']
@@ -128,8 +129,8 @@ def locale_missing(node, kw):
 
 @colander.deferred
 def conditions_widget(node, kw):
-    root = getSite()
-    terms_of_use = root.get('terms_of_use')
+    request = node.bindings['request']
+    terms_of_use = request.root.get('terms_of_use')
     return TOUCheckboxWidget(tou_file=terms_of_use)
 
 
@@ -253,7 +254,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     accept_conditions = colander.SchemaNode(
         colander.Boolean(),
         widget=conditions_widget,
-        label=_('I have read and accept the terms and conditions'),
+        label=_('I have read and accept the terms and conditions of use'),
         title='',
         missing=False
     )
@@ -534,7 +535,7 @@ class Preregistration(VisualisableElement, Entity):
         email = getattr(self, 'email', None)
         if email and trusted_emails:
             return any(
-                email.find(t)>=0 for t in trusted_emails)
+                email.find(t) >= 0 for t in trusted_emails)
 
         return True
 

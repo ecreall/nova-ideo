@@ -130,7 +130,6 @@ function update_replay(url){
                 deform.processCallbacks();
             }
            catch(err) {
-            alert(err)
            };
         }else{
            location.reload();

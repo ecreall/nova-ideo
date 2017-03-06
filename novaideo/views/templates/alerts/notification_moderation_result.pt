@@ -18,5 +18,11 @@
     <span i18n:translate="" tal:condition="alert_kind == 'object_closed'">
       The Woking Group on this Proposal has been inactive for several cycles, each lasting more than one week. For this reason, the Group has been dissolved, and the Proposal is back to the state "Open to a working group".
     </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'moderate_content'">
+      This new content has been added. You are invited to moderate it.
+    </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'moderate_report'">
+      This content has just been reported as potentially offensive. You are invited to moderate it.
+    </span>
   </div>
 </div>

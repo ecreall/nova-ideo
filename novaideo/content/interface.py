@@ -4,6 +4,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+from zope.interface import Interface
+
 from dace.interfaces import (
     Attribute, IUser, IEntity as IEntityO, IApplication,
     IMachine)

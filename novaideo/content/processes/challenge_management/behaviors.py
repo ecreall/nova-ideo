@@ -73,7 +73,6 @@ class CreateChallenge(InfiniteCardinality):
         root = getSite()
         user = get_current(request)
         challenge = appstruct['_object_data']
-        root.merge_keywords(challenge.keywords)
         root.addtoproperty('challenges', challenge)
         challenge.state.append('private')
         grant_roles(user=user, roles=(('Owner', challenge), ))
@@ -280,6 +279,7 @@ class PublishChallenge(InfiniteCardinality):
         root = getSite()
         context.state = PersistentList(['published', 'pending'])
         context.init_published_at()
+        root.merge_keywords(context.keywords)
         context.reindex()
         user = get_current(request)
         author = context.author

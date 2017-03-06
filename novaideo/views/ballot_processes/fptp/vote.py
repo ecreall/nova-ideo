@@ -86,22 +86,24 @@ class VoteFormView(FormView):
             ballot_report = vote_actions[0].process.ballot.report
         except Exception:
             return
-        
+
         subjects_widget = subjects_choice(ballot_report)
         elected_node = self.schema.get('elected')
         elected_node.title = getattr(ballot_report.ballottype,
-                                    'group_title', _('Choices'))
+                                     'group_title', _('Choices'))
         group_default = getattr(ballot_report.ballottype, 'group_default', None)
         if group_default:
             elected_node.default = group_default
 
         elected_node.widget = subjects_widget
         self.schema.view = self
-        formwidget = deform.widget.FormWidget(css_class='vote-form')
         self.action = self.request.resource_url(
-            self.context, 'votefptp',
-            query={'action_uid': getattr(vote_actions[0], '__oid__', '')})
-        self.schema.widget = formwidget
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Vote.node_definition.id,
+                   'action_uid': getattr(vote_actions[0], '__oid__', '')})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform vote-form')
 
 
 @view_config(
