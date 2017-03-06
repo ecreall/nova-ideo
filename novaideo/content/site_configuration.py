@@ -114,12 +114,12 @@ class WorkParamsConfigurationSchema(Schema):
         missing=False
     )
 
-    period_validity_decision = colander.SchemaNode(
-        colander.Int(),
-        title=_('Period of validity of the decision'),
-        default=3,
-        missing=3
-    )
+    # period_validity_decision = colander.SchemaNode(
+    #     colander.Int(),
+    #     title=_('Period of validity of the decision'),
+    #     default=3,
+    #     missing=3
+    # )
 
 
 class UserParamsConfigurationSchema(Schema):
