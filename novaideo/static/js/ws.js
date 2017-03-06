@@ -1,53 +1,85 @@
 
-var sock = null;
-var ellog = null;
 
-window.onload = function() {
+(function(){
+   var NovaIdeoWS = window.NovaIdeoWS = window.NovaIdeoWS || {};
 
-   ellog = document.getElementById('log');
+   NovaIdeoWS.sock = null;
 
-   var wsuri;
-   if (window.location.protocol === "file:") {
-      wsuri = "ws://127.0.0.1:8080/ws";
-   } else {
-      wsuri = "ws://" + window.location.hostname + ":8080/ws";
-   }
+   NovaIdeoWS.ws_events_handlers = {
+      'connection': connection,
+      'disconnection': disconnection
+   };
 
-   if ("WebSocket" in window) {
-      sock = new WebSocket(wsuri);
-   } else if ("MozWebSocket" in window) {
-      sock = new MozWebSocket(wsuri);
-   } else {
-      log("Browser does not support WebSocket!");
-   }
+   NovaIdeoWS.connect_to_ws_server = function(){
+      var wsuri;
+      var wsuri = "ws://" + window.location.hostname + ":8080/ws";
 
-   if (sock) {
-      sock.onopen = function() {
-         log("Connected to " + wsuri);
+      if ("WebSocket" in window) {
+         NovaIdeoWS.sock = new WebSocket(wsuri);
+      } else if ("MozWebSocket" in window) {
+         NovaIdeoWS.sock = new MozWebSocket(wsuri);
+      } else {
+         log("Browser does not support WebSocket!");
       }
 
-      sock.onclose = function(e) {
-         log("Connection closed (wasClean = " + e.wasClean + ", code = " + e.code + ", reason = '" + e.reason + "')");
-         sock = null;
+      if (NovaIdeoWS.sock) {
+         NovaIdeoWS.sock.onopen = function() {
+         }
+
+         NovaIdeoWS.sock.onclose = function(e) {
+            NovaIdeoWS.sock = null;
+         }
+
+         NovaIdeoWS.sock.onmessage = function(e) {
+            var data = JSON.parse(e.data)
+            // data is a list of events. event = {'event': 'event_id': 'params': {'params_id': value, ...}}
+            NovaIdeoWS.call_events_handlers(data)
+         }
       }
+   };
+   
+   NovaIdeoWS.trigger_event = function(event) {
+      NovaIdeoWS.send_events([event])
+   };
 
-      sock.onmessage = function(e) {
-         log("Got echo: " + e.data);
+   NovaIdeoWS.trigger_events = function(events) {
+      // events is a list of events. event = {'event': 'event_id': 'params': {'params_id': value, ...}}
+      if (NovaIdeoWS.sock) {
+         var msg = JSON.stringify(events);
+         NovaIdeoWS.sock.send(msg);
       }
-   }
-};
+   };
 
-function send() {
-   var msg = 'test amen';
-   if (sock) {
-      sock.send(msg);
-      log("Sent: " + msg);
-   } else {
-      log("Not connected.");
-   }
-};
+   NovaIdeoWS.call_events_handlers = function(events){
+       $.each(events, function(index){
+          var event_id = this.event
+          var op = NovaIdeoWS.ws_events_handlers[event_id]
+          op(this.params) 
+      })
+   };
 
-function log(m) {
-   ellog.innerHTML += m + '\n';
-   ellog.scrollTop = ellog.scrollHeight;
-};
+   NovaIdeoWS.on = function(event_id, callback){
+      NovaIdeoWS.ws_events_handlers[event_id] = callback
+   };
+
+
+})();
+
+
+function connection(params){
+   var id = params.id
+   $('.user-connection-status[data-oid="'+id+'"]').addClass('connected')
+}
+
+function disconnection(params){
+   var id = params.id
+   $('.user-connection-status[data-oid="'+id+'"]').removeClass('connected')
+}
+
+NovaIdeoWS.on('connection', connection)
+
+NovaIdeoWS.on('disconnection', disconnection)
+
+$(document).on('component_loaded', function() {
+   NovaIdeoWS.connect_to_ws_server()
+});

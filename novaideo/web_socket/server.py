@@ -25,6 +25,7 @@
 ###############################################################################
 
 import sys
+import json
 
 from twisted.python import log
 from twisted.internet import reactor
@@ -40,6 +41,8 @@ from autobahn.twisted.websocket import WebSocketClientFactory, \
     WebSocketClientProtocol, \
     connectWS
 
+from .util import get_request, get_user
+
 
 class BroadcastClientProtocol(WebSocketClientProtocol):
 
@@ -50,7 +53,6 @@ class BroadcastClientProtocol(WebSocketClientProtocol):
 
     def sendHello(self):
         self.sendMessage("Hello from Python!".encode('utf8'))
-        reactor.callLater(2, self.sendHello)
 
     def onOpen(self):
         self.sendHello()
@@ -70,8 +72,8 @@ class BroadcastServerProtocol(WebSocketServerProtocol):
 
     def onMessage(self, payload, isBinary):
         if not isBinary:
-            msg = "{} from {}".format(payload.decode('utf8'), self.peer)
-            self.factory.broadcast(msg)
+            events = json.loads(payload.decode('utf8'))
+            self.factory.call_events_handlers(events)
 
     def connectionLost(self, reason):
         WebSocketServerProtocol.connectionLost(self, reason)
@@ -87,45 +89,67 @@ class BroadcastServerFactory(WebSocketServerFactory):
 
     def __init__(self, url):
         WebSocketServerFactory.__init__(self, url)
-        self.clients = []
-        self.tickcount = 0
-        # self.tick()
+        self.clients = {}
+        # reactor.callLater(1, self.tick)
 
-    def tick(self):
-        self.tickcount += 1
-        self.broadcast("tick %d from server" % self.tickcount)
-        reactor.callLater(1, self.tick)
+    def call_events_handlers(self, events):
+        for event in events:
+            event_id = event.get('event', None)
+            if event_id is not None:
+                operation = getattr(self, 'event_'+event_id, None)
+                if operation is not None:
+                    params = event.get('params', {})
+                    operation(**params)
+
+    def signal_new_connection(self, user, client):
+        msg = json.dumps([{
+            'event': 'connection',
+            'params': {
+                'id': str(user.__oid__)
+            }
+        }])
+        self.broadcast(msg, [user])
+
+    def signal_connected_users(self, user, client):
+        events = []
+        for connected_user in self.clients:
+            events.append({
+                'event': 'connection',
+                'params': {
+                    'id': str(connected_user.__oid__)
+                }
+            })
+
+        msg = json.dumps(events)
+        client.sendMessage(msg.encode('utf8'))
 
     def register(self, client):
-        if client not in self.clients:
-            print("registered client {}".format(client.peer))
-            self.clients.append(client)
+        user = get_user(get_request(client))
+        if user and user not in self.clients:
+            self.clients[user] = client
+            self.signal_new_connection(user, client)
+            self.signal_connected_users(user, client)
+
+    def signal_new_dicconnection(self, user, client):
+        msg = json.dumps([{
+            'event': 'disconnection',
+            'params': {
+                'id': str(user.__oid__)
+            }
+        }])
+        self.broadcast(msg, [user])
 
     def unregister(self, client):
-        if client in self.clients:
-            print("unregistered client {}".format(client.peer))
-            self.clients.remove(client)
+        user = get_user(get_request(client))
+        if user and user in self.clients:
+            self.clients.pop(user)
+            self.signal_new_dicconnection(user, client)
 
-    def broadcast(self, msg):
-        print("broadcasting message '{}' ..".format(msg))
-        for c in self.clients:
-            c.sendMessage(msg.encode('utf8'))
-            print("message sent to {}".format(c.peer))
-
-
-class BroadcastPreparedServerFactory(BroadcastServerFactory):
-
-    """
-    Functionally same as above, but optimized broadcast using
-    prepareMessage and sendPreparedMessage.
-    """
-
-    def broadcast(self, msg):
-        print("broadcasting prepared message '{}' ..".format(msg))
-        preparedMsg = self.prepareMessage(msg)
-        for c in self.clients:
-            c.sendPreparedMessage(preparedMsg)
-            print("prepared message sent to {}".format(c.peer))
+    def broadcast(self, msg, exclude=[]):
+        for user in self.clients:
+            if user not in exclude:
+                client = self.clients[user]
+                client.sendMessage(msg.encode('utf8'))
 
 
 def run_ws(app):

@@ -38,6 +38,7 @@ function load_views(){
   $.post(url, data, function(data) {
     include_resources(data['resources'], function(){
          update_components(data)
+         $(document).trigger('component_loaded')
     })
   });
 }
