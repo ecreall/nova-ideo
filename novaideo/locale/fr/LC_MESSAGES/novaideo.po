@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-03-03 15:54+0100\n"
+"POT-Creation-Date: 2017-03-06 11:21+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -4115,7 +4115,7 @@ msgstr ""
 
 #: novaideo/views/templates/vote_uid_result.pt:10
 msgid ""
-"Ces identifiants ne peuvent être récupérés ultérieurement. Veillez les "
+"Ces identifiants ne peuvent être récupérés ultérieurement. Veuillez les "
 "sauvegarder sur votre ordinateur."
 msgstr ""
 
@@ -5899,9 +5899,9 @@ msgid ""
 "minimum number of Participants required to be considered as active. It can "
 "now improve the Proposal."
 msgstr ""
-"Le Groupe de Travail lié à la Proposition ${dynamic} a atteint le quorum, "
-"c'est-à-dire le nombre minimum de Participant(e)s nécessaire pour être "
-"considéré comme actif. Il peut améliorer la proposition."
+"Le Groupe de Travail lié à cette Proposition a atteint le quorum, c'est-à-"
+"dire le nombre minimum de Participant(e)s nécessaire pour être considéré "
+"comme actif. Il peut améliorer la proposition."
 
 #: novaideo/views/templates/alerts/notification_wg_alert_result.pt:15
 msgid ""
@@ -8495,10 +8495,6 @@ msgstr "Autoriser la soumission directe de la proposition"
 msgid "Members can submit directly the proposal."
 msgstr "Les membres peuvent soumettre directement la proposition."
 
-#: novaideo/content/site_configuration.py:119
-msgid "Period of validity of the decision"
-msgstr "Période de validité de la décision"
-
 #: novaideo/content/site_configuration.py:130
 msgid "By invitation only"
 msgstr "Seulement sous invitation"
@@ -10090,6 +10086,9 @@ msgstr "Trouver des entités"
 #: novaideo/web_services/export_entities.py:157
 msgid "Content type"
 msgstr "Type de contenu"
+
+#~ msgid "Period of validity of the decision"
+#~ msgstr "Période de validité de la décision"
 
 #~ msgid "Time constant"
 #~ msgstr "Constante de temps"

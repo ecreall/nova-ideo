@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-03-03 15:54+0100\n"
+"POT-Creation-Date: 2017-03-06 11:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3944,7 +3944,7 @@ msgstr ""
 
 #: ./novaideo/views/templates/vote_uid_result.pt:10
 msgid ""
-"Ces identifiants ne peuvent être récupérés ultérieurement. Veillez les "
+"Ces identifiants ne peuvent être récupérés ultérieurement. Veuillez les "
 "sauvegarder sur votre ordinateur."
 msgstr ""
 
@@ -7666,10 +7666,6 @@ msgstr ""
 
 #: ./novaideo/content/site_configuration.py:112
 msgid "Members can submit directly the proposal."
-msgstr ""
-
-#: ./novaideo/content/site_configuration.py:119
-msgid "Period of validity of the decision"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:130
