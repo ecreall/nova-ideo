@@ -42,4 +42,5 @@ class AddOrganizationsView(FormView):
     name = 'add_organizations'
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({AddOrganizations:AddOrganizationsView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {AddOrganizations: AddOrganizationsView})
