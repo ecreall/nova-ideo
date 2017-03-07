@@ -40,9 +40,9 @@
                <img class="author-img img-circle" tal:condition="profil_picture is not None"
                 tal:attributes="src profil_picture.url"  width="25"/>
                <span data-oid="${getattr(subject, '__oid__', '')}"
-                     class="user-connection-status" >
-                     <span class="fa fa-circle"></span>
-              </span>
+                     class="user-connection-status">
+                  <span class="fa fa-circle"></span>
+               </span>
              </div>
              <span title='${title}'>${title}</span>
           </div>

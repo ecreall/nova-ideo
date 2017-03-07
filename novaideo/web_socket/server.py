@@ -26,6 +26,7 @@
 
 import sys
 import json
+import transaction
 
 from twisted.python import log
 from twisted.internet import reactor
@@ -41,7 +42,11 @@ from autobahn.twisted.websocket import WebSocketClientFactory, \
     WebSocketClientProtocol, \
     connectWS
 
+from dace.util import get_obj
+
 from .util import get_request, get_user
+from novaideo.views.idea_management.comment_idea import (
+    CommentsView)
 
 
 class BroadcastClientProtocol(WebSocketClientProtocol):
@@ -68,15 +73,19 @@ class BroadcastClientProtocol(WebSocketClientProtocol):
 class BroadcastServerProtocol(WebSocketServerProtocol):
 
     def onOpen(self):
+        transaction.begin()
         self.factory.register(self)
 
     def onMessage(self, payload, isBinary):
         if not isBinary:
+            transaction.begin()
             events = json.loads(payload.decode('utf8'))
-            self.factory.call_events_handlers(events)
+            self.factory.call_events_handlers(self, events)
+            transaction.commit()
 
     def connectionLost(self, reason):
         WebSocketServerProtocol.connectionLost(self, reason)
+        transaction.begin()
         self.factory.unregister(self)
 
 
@@ -92,14 +101,75 @@ class BroadcastServerFactory(WebSocketServerFactory):
         self.clients = {}
         # reactor.callLater(1, self.tick)
 
-    def call_events_handlers(self, events):
+    def call_events_handlers(self, client, events):
         for event in events:
             event_id = event.get('event', None)
             if event_id is not None:
                 operation = getattr(self, 'event_'+event_id, None)
                 if operation is not None:
                     params = event.get('params', {})
-                    operation(**params)
+                    operation(client, **params)
+
+    def event_new_answer(self, client, context_oid, channel_oid, comment_oid):
+        request = get_request(client)
+        context = get_obj(int(context_oid))
+        current_user = get_user(request)
+        comment = get_obj(int(comment_oid))
+        for user in self.clients:
+            if user is not current_user:
+                request.user = user
+                result_view = CommentsView(context, request)
+                result_view.ignore_unread = True
+                result_view.comments = [comment]
+                body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+                events = [{
+                    'event': 'new_answer',
+                    'params': {
+                        'body': body,
+                        'channel_oid': str(channel_oid)
+                    }
+                }]
+                msg = json.dumps(events)
+                self.clients[user].sendMessage(msg.encode('utf8'))
+
+    def event_new_comment(self, client, context_oid, channel_oid, comment_oid):
+        request = get_request(client)
+        context = get_obj(int(context_oid))
+        current_user = get_user(request)
+        channel = get_obj(int(channel_oid))
+        comment = channel.comments[-1]
+        for user in self.clients:
+            if user is not current_user:
+                request.user = user
+                result_view = CommentsView(context, request)
+                result_view.ignore_unread = True
+                result_view.comments = [comment]
+                body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+                events = [{
+                    'event': 'new_comment',
+                    'params': {
+                        'body': body,
+                        'channel_oid': str(channel_oid)
+                    }
+                }]
+                msg = json.dumps(events)
+                self.clients[user].sendMessage(msg.encode('utf8'))
+
+    def event_remove_comment(self, client, channel_oid, comment_oid):
+        request = get_request(client)
+        current_user = get_user(request)
+        for user in self.clients:
+            if user is not current_user:
+                events = [{
+                    'event': 'remove_comment',
+                    'params': {
+                        'channel_oid': str(channel_oid),
+                        'comment_oid': str(comment_oid)
+
+                    }
+                }]
+                msg = json.dumps(events)
+                self.clients[user].sendMessage(msg.encode('utf8'))
 
     def signal_new_connection(self, user, client):
         msg = json.dumps([{

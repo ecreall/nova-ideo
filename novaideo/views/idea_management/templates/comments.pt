@@ -1,14 +1,17 @@
-<div class="comments-container">
+<div class="comments-container"
+     tal:define="layout layout|getattr(request, 'layout', None);
+                 ignore_unread getattr(view, 'ignore_unread', False)">
   <div class="comment-loading hide-bloc"
     tal:condition="origin">
     <img src="${request.static_url('novaideo:static/images/progress_bar.gif')}" width="30" alt="loading"/></div>
-  <ul class="${(origin and 'commentulorigin') or 'commentul'}"
+  <ul class="${(origin and 'commentulorigin channel') or 'commentul'}"
       i18n:domain="novaideo"
+      data-channel_oid="${(origin and origin.__oid__) or ''}"
       data-nex_url="${(origin and batch.next_url)}"
       data-origin_url="${(origin and batch.origin_url)}"
       >
     <tal:loop repeat="comment_data enumerate(comments)">
-      <li class="view-item commentli ${repeat['comment_data'].end>0 and 'last' or ''} ${ (i>=level and not origin) and 'hide-bloc' or ''} component-obj-view component-listing-view" 
+      <li class="view-item commentli ${ (i>=level and not origin) and 'hide-bloc' or ''} component-obj-view component-listing-view" 
           id="comment_${oid}"
           data-component_type="object-view"
           data-association="${(contents and 'true') or 'false'}"
@@ -46,8 +49,8 @@
                   data-oid="${getattr(author, '__oid__', '')}"
                   class="toggle-popover"
                   tal:attributes="href request.resource_url(author, '@@index')">${getattr(author, 'title', author.name)}</a>
-                <div title="${layout.to_localized_time(comment.created_at)}" class="${is_unread_comment and 'unread-comment' or ''} comment-detail-container">
-                  <span tal:condition="is_unread_comment" class="unread-comment-tag" i18n:translate="">New comment</span>
+                <div title="${layout.to_localized_time(comment.created_at)}" class="${not ignore_unread and is_unread_comment and 'unread-comment' or ''} comment-detail-container">
+                  <span tal:condition="not ignore_unread and is_unread_comment" class="unread-comment-tag" i18n:translate="">New comment</span>
                   <div  tal:omit-tag="" tal:condition="diff">
                     <span i18n:translate="">For</span>  
                     <span tal:condition="'days' in diff">${diff['days']} <span i18n:translate="">day(s)</span></span> 

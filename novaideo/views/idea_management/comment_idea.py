@@ -133,7 +133,7 @@ class CommentsView(BasicView):
         batch.target = "#" + self.action_id + "_results"
         batch.origin_url = url
         body, resources = self._rendre_comments(
-            batch, current_user, True, batch,
+            batch, current_user, channel, batch,
             unread_comments, filtered)
         item = self.adapt_item(body, self.viewid)
         try:

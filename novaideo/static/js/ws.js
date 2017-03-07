@@ -39,7 +39,7 @@
    };
    
    NovaIdeoWS.trigger_event = function(event) {
-      NovaIdeoWS.send_events([event])
+      NovaIdeoWS.trigger_events([event])
    };
 
    NovaIdeoWS.trigger_events = function(events) {
@@ -79,6 +79,41 @@ function disconnection(params){
 NovaIdeoWS.on('connection', connection)
 
 NovaIdeoWS.on('disconnection', disconnection)
+
+NovaIdeoWS.on('new_comment', function(params){
+   var body = params.body;
+   var channel_oid = params.channel_oid;
+   var channel = $('.channel[data-channel_oid="'+channel_oid+'"]').last()
+   var preview = channel.find('>.commentli.comment-preview').first()
+   var new_comment = $($(body).find('li.commentli').first())
+   new_comment.insertBefore(preview);
+   comment_scroll_to(new_comment, true)
+   init_emoji($(new_comment.find('.emoji-container:not(.emojified)')));
+})
+
+
+NovaIdeoWS.on('new_answer', function(params){
+   var body = params.body;
+   var comment_oid = params.channel_oid;
+   var comment = $('.channel li[data-comment_id="'+comment_oid+'"]').last()
+   var preview = comment.find('>.comments-container>ul.commentul>.commentli.comment-preview').first()
+   var new_comment = $($(body).find('li.commentli').first())
+   new_comment.insertBefore(preview);
+   comment_scroll_to(new_comment, true)
+   init_emoji($(new_comment.find('.emoji-container:not(.emojified)')));
+})
+
+
+NovaIdeoWS.on('remove_comment', function(params){
+   var channel_oid = params.channel_oid;
+   var comment_oid = params.comment_oid;
+   var channel = $('.channel[data-channel_oid="'+channel_oid+'"]').last()
+   var comment = channel.find('.commentli[data-comment_id="'+comment_oid+'"]')
+   comment.addClass('deletion-process')
+   comment.animate({height: 0, opacity: 0}, 'slow', function() {
+      comment.remove();
+   });
+})
 
 $(document).on('component_loaded', function() {
    NovaIdeoWS.connect_to_ws_server()

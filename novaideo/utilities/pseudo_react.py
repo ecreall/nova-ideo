@@ -18,7 +18,7 @@ from dace.objectofcollaboration.principal.util import (
     get_current)
 from dace.util import (
     getAllBusinessAction, find_catalog,
-    get_obj)
+    get_obj, getSite)
 from pontus.view import ViewError
 from pontus.util import merge_dicts
 
@@ -546,8 +546,13 @@ def get_deactivate_profile_metadata(action, request, context, api, **kwargs):
 
 def get_comment_metadata(action, request, context, api, **kwargs):
     body = None
+    comment_oid = None
+    channel_oid = None
     if 'view_data' in kwargs:
-        comments = [context.channel.comments[-1]]
+        channel = context.channel
+        comments = [channel.comments[-1]]
+        comment_oid = comments[0].__oid__
+        channel_oid = channel.__oid__
         result_view = CommentsView(context, request)
         result_view.comments = comments
         body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
@@ -563,6 +568,9 @@ def get_comment_metadata(action, request, context, api, **kwargs):
         'action_title': request.localizer.translate(action.title),
         'action_icon': getattr(action, 'style_picto', ''),
         'new_body': body,
+        'comment_oid': str(comment_oid),
+        'channel_oid': str(channel_oid),
+        'context_oid': str(contextoid),
         'object_views_to_update': [
             'listing_'+contextoid,
             'comment_'+contextoid]
@@ -617,6 +625,9 @@ def get_remove_comment_metadata(action, request, context, api, **kwargs):
     result['object_views_to_update'] = [
         'listing_'+str(kwargs.get('comment_oid', None)),
         'comment_'+str(kwargs.get('comment_oid', None))]
+    result.update({
+        'comment_oid': str(kwargs.get('comment_oid')),
+        'channel_oid': str(get_oid(channel, None))})
     comment_parent = kwargs.get('comment_parent', None)
     if comment_parent:
         parent_oid = str(get_oid(comment_parent, None))
@@ -629,9 +640,13 @@ def get_remove_comment_metadata(action, request, context, api, **kwargs):
 
 def get_general_discuss_metadata(action, request, context, api, **kwargs):
     body = None
+    comment_oid = None
+    channel_oid = None
     if 'view_data' in kwargs:
         channel = context.channel
         comments = [channel.comments[-1]]
+        comment_oid = comments[0].__oid__
+        channel_oid = channel.__oid__
         result_view = GeneralCommentsView(context, request)
         result_view.comments = comments
         body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
@@ -641,6 +656,9 @@ def get_general_discuss_metadata(action, request, context, api, **kwargs):
         'action': 'footer_action',
         'view': api,
         'new_body': body,
+        'comment_oid': str(comment_oid),
+        'channel_oid': str(channel_oid),
+        'context_oid': str(contextoid),
         'object_views_to_update': [
             'listing_'+contextoid,
             'comment_'+contextoid,
@@ -652,10 +670,14 @@ def get_general_discuss_metadata(action, request, context, api, **kwargs):
 def get_discuss_metadata(action, request, context, api, **kwargs):
     body = None
     channel = None
+    comment_oid = None
+    channel_oid = None
     if 'view_data' in kwargs:
         user = kwargs.get('user', None)
         channel = context.get_channel(user)
         comments = [channel.comments[-1]]
+        comment_oid = comments[0].__oid__
+        channel_oid = channel.__oid__
         result_view = DiscussCommentsView(context, request)
         result_view.comments = comments
         body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
@@ -674,6 +696,9 @@ def get_discuss_metadata(action, request, context, api, **kwargs):
         'action_title': request.localizer.translate(action.title),
         'action_icon': getattr(action, 'style_picto', ''),
         'new_body': body,
+        'comment_oid': str(comment_oid),
+        'channel_oid': str(channel_oid),
+        'context_oid': str(contextoid),
         'object_views_to_update': [
             'listing_'+contextoid,
             'comment_'+contextoid]
@@ -683,16 +708,21 @@ def get_discuss_metadata(action, request, context, api, **kwargs):
 
 def get_respond_metadata(action, request, context, api, **kwargs):
     body = None
+    comment_oid = None
+    channel_oid = None
     if 'view_data' in kwargs:
         request.POST.clear()
         request.POST['load_view'] = 'load'
         comments = [context.comments[-1]]
+        comment_oid = comments[0].__oid__
+        channel_oid = context.__oid__
         result_view = CommentsView(context, request)
         result_view.comments = comments
         body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
 
     channel = context.channel
     subject = channel.subject
+    subject = subject if subject else getSite()
     result = {
         'action': 'footer_action',
         'view': api,
@@ -712,11 +742,16 @@ def get_respond_metadata(action, request, context, api, **kwargs):
             result.update({
                 'components': [actionoid + '-' + contextoid],
                 'action_item_nb': channel.len_comments,
+                'context_oid': str(contextoid),
                 'action_title': request.localizer.translate(action.title),
                 'action_icon': getattr(action, 'style_picto', ''),
             })
 
     contextoid = str(get_oid(context))
+    result.update({
+        'comment_oid': str(comment_oid),
+        'channel_oid': str(channel_oid),
+        'context_oid': str(contextoid)})
     result['object_views_to_update'] = [
         'listing_'+contextoid,
         'comment_'+contextoid]

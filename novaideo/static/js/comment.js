@@ -36,12 +36,15 @@ function comment_scroll_to(element, animate){
   comment_scroll.animate({ scrollTop: top}, 1000);
   if (animate){
     var to_animate = $(element.find('.comment-data').first())
-    to_animate.animate({
-        backgroundColor: "#bca"
-      }, 2000 );
-    to_animate.animate({
-        backgroundColor: "white"
-      }, 2000 );
+     if(to_animate.length>0){
+       to_animate.animate({
+            backgroundColor: "#eef4ea"
+       }, 1000, function(){
+          to_animate.animate({
+            backgroundColor: "white"
+       }, 1000 );
+       });
+     }
   }
 };
 
@@ -283,6 +286,14 @@ $(document).on('submit','.commentform:not(.comment-inline-form)', function( even
                  deform.processCallbacks();
                 }
                catch(err) {};
+               NovaIdeoWS.trigger_event({
+                  'event': 'new_comment',
+                  'params':{
+                    'comment_oid': data.comment_oid,
+                    'channel_oid': data.channel_oid,
+                    'context_oid': data.context_oid
+                  }
+               })
             }else{
               alert_component({
                   alert_msg: novaideo_translate("Your comment is not integrated"),
@@ -368,6 +379,14 @@ $(document).on('submit','.respondform', function( event ) {
                  deform.processCallbacks();
                 }
              catch(err) {};
+             NovaIdeoWS.trigger_event({
+                  'event': 'new_answer',
+                  'params':{
+                    'comment_oid': data.comment_oid,
+                    'channel_oid': data.channel_oid,
+                    'context_oid': data.context_oid
+                  }
+               })
           }else{
             alert_component({
                   alert_msg: novaideo_translate("Your comment is not integrated"),
@@ -659,6 +678,13 @@ $(document).on('submit', '.comment-remove-form', function(event){
         success: function(data) {
           $($this.parents('.modal').first()).modal('hide')
           update_components(data)
+          NovaIdeoWS.trigger_event({
+              'event': 'remove_comment',
+              'params':{
+                'comment_oid': data.comment_oid,
+                'channel_oid': data.channel_oid
+              }
+           })
       }})
 
     event.preventDefault();
