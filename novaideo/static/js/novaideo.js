@@ -924,8 +924,9 @@ $(document).ready(function(){
         if(!open){
           $('.dace-action-sidebar.activated').removeClass('activated')
           $(bar.find(".comment-form-group.active")).removeClass('active')
-          $('.sidebar-right-wrapper .sidebar-container>.container-body').html("")
-
+          var body = $('.sidebar-right-wrapper .sidebar-container>.container-body')
+          $(document).trigger({type: 'sidebar-closed', items: body.html()})
+          body.html("")
         }
     });
 

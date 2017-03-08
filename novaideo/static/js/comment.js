@@ -383,6 +383,7 @@ $(document).on('submit','.respondform', function( event ) {
                   'event': 'new_answer',
                   'params':{
                     'comment_oid': data.comment_oid,
+                    'comment_parent_oid': data.comment_parent_oid,
                     'channel_oid': data.channel_oid,
                     'context_oid': data.context_oid
                   }
@@ -446,6 +447,14 @@ $(document).on('submit','.edit-comment-form', function( event ) {
                   alert_msg: novaideo_translate("Your comment is integrated"),
                   alert_type: 'success'
                 })
+             NovaIdeoWS.trigger_event({
+                  'event': 'edit_comment',
+                  'params':{
+                    'comment_oid': data.comment_oid,
+                    'channel_oid': data.channel_oid,
+                    'context_oid': data.context_oid
+                  }
+               })
           }else{
             alert_component({
                   alert_msg: novaideo_translate("Your comment is not integrated"),

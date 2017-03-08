@@ -16,6 +16,7 @@
        <a id="${item['action_id']}-btn" 
             class="toggle-popover channel-action ajax-action dace-action-${interaction_type} media-${subjectclassname}"
             data-oid="${getattr(subject, '__oid__', '')}"
+            data-channel_oid="${object.__oid__}"
             data-toggle="${interaction_type}"
             data-target="#action-${interaction_type}-container"
             data-actionid ="${item['action_id']}" 

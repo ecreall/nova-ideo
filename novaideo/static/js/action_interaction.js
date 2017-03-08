@@ -334,6 +334,8 @@ function open_sidebar_container_item(to_open, interaction_args){
   current_item.attr('data-scroll', scrollTop)
   var item = $('.sidebar-nav-items .item[data-target="'+to_open.attr('id')+'"]')
   $('.sidebar-nav-items .item').not(item).addClass('closed')
+  var to_close = $('.sidebar-container-item').not(to_open)
+  $(document).trigger({type: 'sidebar-items-closed', items: to_close})
   item.removeClass('closed')
   var current_scroll = item.data('scroll')
   function complete() {
@@ -378,8 +380,10 @@ function update_sidebar_action(){
            var container_body = $(target.find('>.container-body').first())
            var wrapped = _wrap_action_body(action, action_body)
            var current_item = null
+           var item = null
            if(closed){
              container_body.html(wrapped);
+             item = wrapped
            }else{
              current_item = $(container_body.find('#sidebar-'+action.attr('id')+''))
              if(current_item.length>0){
@@ -388,6 +392,7 @@ function update_sidebar_action(){
                container_body.append($(wrapped).addClass('closed'));
                current_item = $(container_body.find('#sidebar-'+action.attr('id')+''))
              }
+             item = current_item
            }
            _update_sidebar_nav_items(container_body)
            if(current_item){
@@ -418,6 +423,7 @@ function update_sidebar_action(){
            initscroll(result_scroll)
            finish_progress()
            focus_on_form(target)
+           $(document).trigger({type: 'sidebar-opened', item: item})
         }else{
            location.reload();
            return false

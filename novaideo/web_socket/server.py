@@ -99,7 +99,7 @@ class BroadcastServerFactory(WebSocketServerFactory):
     def __init__(self, url):
         WebSocketServerFactory.__init__(self, url)
         self.clients = {}
-        # reactor.callLater(1, self.tick)
+        self.opened_channels = {}
 
     def call_events_handlers(self, client, events):
         for event in events:
@@ -110,29 +110,82 @@ class BroadcastServerFactory(WebSocketServerFactory):
                     params = event.get('params', {})
                     operation(client, **params)
 
-    def event_new_answer(self, client, context_oid, channel_oid, comment_oid):
+    def event_channel_opened(
+        self, client, channel_oid):
         request = get_request(client)
-        context = get_obj(int(context_oid))
         current_user = get_user(request)
-        comment = get_obj(int(comment_oid))
+        self.opened_channels.setdefault(
+            current_user, {'opened': [], 'hidden': []})
+        self.opened_channels[current_user]['opened'].append(channel_oid)
+        if channel_oid in self.opened_channels[current_user]['hidden']:
+            self.opened_channels[current_user]['hidden'].remove(channel_oid)
+
+    def event_all_channels_closed(
+        self, client):
+        request = get_request(client)
+        current_user = get_user(request)
+        if current_user in self.opened_channels:
+            self.opened_channels.pop(current_user)
+
+    def event_channel_hidden(
+        self, client, channel_oid):
+        request = get_request(client)
+        current_user = get_user(request)
+        if current_user in self.opened_channels and \
+           channel_oid in self.opened_channels[current_user]['opened']:
+            self.opened_channels[current_user]['opened'].remove(channel_oid)
+            self.opened_channels[current_user]['hidden'].append(channel_oid)
+
+    def event_typing_comment(
+        self, client, channel_oid):
+        request = get_request(client)
+        current_user = get_user(request)
+        channel = get_obj(int(channel_oid))
         for user in self.clients:
             if user is not current_user:
-                request.user = user
-                result_view = CommentsView(context, request)
-                result_view.ignore_unread = True
-                result_view.comments = [comment]
-                body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-                events = [{
-                    'event': 'new_answer',
-                    'params': {
-                        'body': body,
-                        'channel_oid': str(channel_oid)
-                    }
-                }]
-                msg = json.dumps(events)
-                self.clients[user].sendMessage(msg.encode('utf8'))
+                channels = getattr(user, 'following_channels', [])
+                channels.append(request.root.channel)
+                opened = self.opened_channels.get(user, {}).get('opened', [])
+                hidden = self.opened_channels.get(user, {}).get('hidden', [])
+                if channel in channels and \
+                   (channel_oid in hidden or channel_oid in opened):
+                    events = [{
+                        'event': 'typing_comment',
+                        'params': {
+                            'channel_oid': str(channel_oid),
+                            'user_oid': str(current_user.__oid__),
+                            'user_name': current_user.first_name
+                        }
+                    }]
+                    msg = json.dumps(events)
+                    self.clients[user].sendMessage(msg.encode('utf8'))
 
-    def event_new_comment(self, client, context_oid, channel_oid, comment_oid):
+    def event_stop_typing_comment(
+        self, client, channel_oid):
+        request = get_request(client)
+        current_user = get_user(request)
+        channel = get_obj(int(channel_oid))
+        for user in self.clients:
+            if user is not current_user:
+                channels = getattr(user, 'following_channels', [])
+                channels.append(request.root.channel)
+                opened = self.opened_channels.get(user, {}).get('opened', [])
+                hidden = self.opened_channels.get(user, {}).get('hidden', [])
+                if channel in channels and \
+                   (channel_oid in hidden or channel_oid in opened):
+                    events = [{
+                        'event': 'stop_typing_comment',
+                        'params': {
+                            'channel_oid': str(channel_oid),
+                            'user_oid': str(current_user.__oid__)
+                        }
+                    }]
+                    msg = json.dumps(events)
+                    self.clients[user].sendMessage(msg.encode('utf8'))
+
+    def event_new_comment(
+        self, client, context_oid,
+        channel_oid, comment_oid):
         request = get_request(client)
         context = get_obj(int(context_oid))
         current_user = get_user(request)
@@ -140,36 +193,125 @@ class BroadcastServerFactory(WebSocketServerFactory):
         comment = channel.comments[-1]
         for user in self.clients:
             if user is not current_user:
-                request.user = user
-                result_view = CommentsView(context, request)
-                result_view.ignore_unread = True
-                result_view.comments = [comment]
-                body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
-                events = [{
-                    'event': 'new_comment',
-                    'params': {
-                        'body': body,
-                        'channel_oid': str(channel_oid)
-                    }
-                }]
-                msg = json.dumps(events)
-                self.clients[user].sendMessage(msg.encode('utf8'))
+                channels = getattr(user, 'following_channels', [])
+                channels.append(request.root.channel)
+                opened = self.opened_channels.get(user, {}).get('opened', [])
+                hidden = self.opened_channels.get(user, {}).get('hidden', [])
+                if channel in channels:
+                    body = ''
+                    channel_opened = channel_oid in hidden or channel_oid in opened
+                    if channel_opened:
+                        request.user = user
+                        result_view = CommentsView(context, request)
+                        result_view.ignore_unread = channel_oid in opened
+                        result_view.comments = [comment]
+                        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+
+                    events = [{
+                        'event': 'new_comment',
+                        'params': {
+                            'body': body,
+                            'channel_hidden': channel_oid in hidden,
+                            'user_oid': str(current_user.__oid__),
+                            'channel_oid': str(channel_oid)
+                        }
+                    }]
+                    msg = json.dumps(events)
+                    self.clients[user].sendMessage(msg.encode('utf8'))
+
+    def event_edit_comment(
+        self, client, context_oid,
+        channel_oid, comment_oid):
+        request = get_request(client)
+        context = get_obj(int(context_oid))
+        current_user = get_user(request)
+        comment = get_obj(int(comment_oid))
+        channel = get_obj(int(channel_oid))
+        for user in self.clients:
+            if user is not current_user:
+                channels = getattr(user, 'following_channels', [])
+                channels.append(request.root.channel)
+                opened = self.opened_channels.get(user, {}).get('opened', [])
+                hidden = self.opened_channels.get(user, {}).get('hidden', [])
+                if channel in channels:
+                    body = ''
+                    channel_opened = channel_oid in hidden or channel_oid in opened
+                    if channel_opened:
+                        request.user = user
+                        result_view = CommentsView(context, request)
+                        result_view.ignore_unread = channel_oid in opened
+                        result_view.comments = [comment]
+                        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+
+                    events = [{
+                        'event': 'edit_comment',
+                        'params': {
+                            'body': body,
+                            'channel_hidden': channel_oid in hidden,
+                            'channel_oid': str(channel_oid),
+                            'comment_oid': str(comment_oid),
+                            'user_oid': str(current_user.__oid__)
+                        }
+                    }]
+                    msg = json.dumps(events)
+                    self.clients[user].sendMessage(msg.encode('utf8'))
+
+    def event_new_answer(
+        self, client, context_oid,
+        channel_oid, comment_oid,
+        comment_parent_oid):
+        request = get_request(client)
+        context = get_obj(int(context_oid))
+        current_user = get_user(request)
+        comment = get_obj(int(comment_oid))
+        channel = get_obj(int(channel_oid))
+        for user in self.clients:
+            if user is not current_user:
+                channels = getattr(user, 'following_channels', [])
+                channels.append(request.root.channel)
+                opened = self.opened_channels.get(user, {}).get('opened', [])
+                hidden = self.opened_channels.get(user, {}).get('hidden', [])
+                if channel in channels:
+                    body = ''
+                    channel_opened = channel_oid in hidden or channel_oid in opened
+                    if channel_opened:
+                        request.user = user
+                        result_view = CommentsView(context, request)
+                        result_view.ignore_unread = channel_oid in opened
+                        result_view.comments = [comment]
+                        body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
+
+                    events = [{
+                        'event': 'new_answer',
+                        'params': {
+                            'body': body,
+                            'channel_hidden': channel_oid in hidden,
+                            'comment_parent_oid': str(comment_parent_oid),
+                            'channel_oid': str(channel_oid),
+                            'user_oid': str(current_user.__oid__)
+                        }
+                    }]
+                    msg = json.dumps(events)
+                    self.clients[user].sendMessage(msg.encode('utf8'))
 
     def event_remove_comment(self, client, channel_oid, comment_oid):
         request = get_request(client)
         current_user = get_user(request)
+        channel = get_obj(int(channel_oid))
         for user in self.clients:
             if user is not current_user:
-                events = [{
-                    'event': 'remove_comment',
-                    'params': {
-                        'channel_oid': str(channel_oid),
-                        'comment_oid': str(comment_oid)
-
-                    }
-                }]
-                msg = json.dumps(events)
-                self.clients[user].sendMessage(msg.encode('utf8'))
+                channels = getattr(user, 'following_channels', [])
+                channels.append(request.root.channel)
+                if channel in channels:
+                    events = [{
+                        'event': 'remove_comment',
+                        'params': {
+                            'channel_oid': str(channel_oid),
+                            'comment_oid': str(comment_oid)
+                        }
+                    }]
+                    msg = json.dumps(events)
+                    self.clients[user].sendMessage(msg.encode('utf8'))
 
     def signal_new_connection(self, user, client):
         msg = json.dumps([{
@@ -213,6 +355,9 @@ class BroadcastServerFactory(WebSocketServerFactory):
         user = get_user(get_request(client))
         if user and user in self.clients:
             self.clients.pop(user)
+            if user in self.opened_channels:
+                self.opened_channels.pop(user)
+
             self.signal_new_dicconnection(user, client)
 
     def broadcast(self, msg, exclude=[]):

@@ -584,13 +584,19 @@ def get_edit_comment_metadata(action, request, context, api, **kwargs):
         status = True
 
     contextoid = str(get_oid(context, None))
+    comment_oid = context.__oid__
+    channel_oid = context.channel.__oid__
     result = {
         'action': 'footer_action',
         'view': api,
         'status': status,
         'object_views_to_update': [
             'listing_'+contextoid,
-            'comment_'+contextoid]
+            'comment_'+contextoid],
+
+        'comment_oid': str(comment_oid),
+        'channel_oid': str(channel_oid),
+        'context_oid': str(contextoid)
         }
 
     return result
@@ -710,12 +716,13 @@ def get_respond_metadata(action, request, context, api, **kwargs):
     body = None
     comment_oid = None
     channel_oid = None
+    comment_parent_oid = None
     if 'view_data' in kwargs:
         request.POST.clear()
         request.POST['load_view'] = 'load'
         comments = [context.comments[-1]]
         comment_oid = comments[0].__oid__
-        channel_oid = context.__oid__
+        comment_parent_oid = context.__oid__
         result_view = CommentsView(context, request)
         result_view.comments = comments
         body = result_view.update()['coordinates'][result_view.coordinates][0]['body']
@@ -737,21 +744,21 @@ def get_respond_metadata(action, request, context, api, **kwargs):
         if comment_actions:
             action = comment_actions[0]
             actionoid = str(getattr(action, '__oid__', 'entityoid'))
-            contextoid = str(getattr(
-                subject, '__oid__', 'entityoid'))
             result.update({
                 'components': [actionoid + '-' + contextoid],
                 'action_item_nb': channel.len_comments,
-                'context_oid': str(contextoid),
                 'action_title': request.localizer.translate(action.title),
                 'action_icon': getattr(action, 'style_picto', ''),
             })
 
     contextoid = str(get_oid(context))
+    channel_oid = channel.__oid__
     result.update({
         'comment_oid': str(comment_oid),
         'channel_oid': str(channel_oid),
-        'context_oid': str(contextoid)})
+        'context_oid': str(contextoid),
+        'comment_parent_oid': str(comment_parent_oid),
+    })
     result['object_views_to_update'] = [
         'listing_'+contextoid,
         'comment_'+contextoid]
