@@ -303,7 +303,7 @@ function user_stop_typing(){
    var channel_oid = channel.data('channel_oid')
    var index = $.inArray(channel_oid, NovaIdeoWS.typing_in_process)
    if(index>=0){
-      NovaIdeoWS.typing_in_process = NovaIdeoWS.typing_in_process.splice(index, 1);
+      NovaIdeoWS.typing_in_process.splice(index, 1);
       NovaIdeoWS.trigger_event({
          'event': 'stop_typing_comment',
          'params':{
@@ -313,6 +313,6 @@ function user_stop_typing(){
    }
 }
 
-$(document).on('change keyup paste', '.comment-textarea-container textarea', user_typing)
+$(document).on('keypress paste', '.comment-textarea-container textarea', user_typing)
 
 $(document).on('blur', '.comment-textarea-container textarea', user_stop_typing)
