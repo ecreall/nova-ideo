@@ -27,8 +27,7 @@ from deform_treepy.widget import (
     DictSchemaType)
 
 from .interface import ISmartFolder
-from novaideo import _, VIEW_TYPES, log
-from novaideo.content.person import _LOCALES, _LOCALES_TITLES
+from novaideo import _, VIEW_TYPES, log, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
 from novaideo.views.widget import (
     CssWidget,
     TextInputWidget,
@@ -106,7 +105,7 @@ def relatedcontents_choice(node, kw):
 
 @colander.deferred
 def locale_widget(node, kw):
-    locales = [(l, _LOCALES_TITLES.get(l, l)) for l in _LOCALES]
+    locales = [(l, LANGUAGES_TITLES.get(l, l)) for l in AVAILABLE_LANGUAGES]
     sorted_locales = sorted(locales)
     sorted_locales.insert(0, ('', _('- Select -')))
     return Select2Widget(values=sorted_locales)

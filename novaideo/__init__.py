@@ -38,8 +38,6 @@ _ = TranslationStringFactory('novaideo')
 
 DEFAULT_SESSION_TIMEOUT = 25200
 
-DEFAULT_LOCALE = 'fr'
-
 ANALYTICS_DEFAUT_CONTENTS = ['idea', 'proposal']
 
 
@@ -74,6 +72,19 @@ VIEW_TYPES = {'default': _('Default view'),
 ACCESS_ACTIONS = {}
 
 
+def get_locales():
+    dir_ = os.listdir(os.path.join(os.path.dirname(__file__),
+                                   '.', 'locale'))
+    return list(filter(lambda x: not x.endswith('.pot'), dir_)) + ['en']
+
+
+AVAILABLE_LANGUAGES = get_locales()
+
+
+LANGUAGES_TITLES = {'en': 'English',
+                    'fr': 'Français'}
+
+
 def get_access_keys(context):
     declared = context.__provides__.declared
     if declared:
@@ -98,9 +109,6 @@ def get_time_zone(request):
 
 def ajax_api(request):
     return 'novaideoapi'
-
-
-AVAILABLE_LANGUAGES = ['en', 'fr']
 
 
 def my_locale_negotiator(request):

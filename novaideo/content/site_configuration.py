@@ -16,12 +16,12 @@ from pontus.widget import (
 from pontus.file import ObjectData, File
 
 from novaideo.content.processes.proposal_management import WORK_MODES
-from novaideo import _
+from novaideo import _, AVAILABLE_LANGUAGES
 from novaideo.mail import DEFAULT_SITE_MAILS
 from novaideo.core_schema import ContactSchema
 from novaideo import core
 from novaideo.content import get_file_widget
-from .person import locale_widget, locale_missing, _LOCALES
+from .person import locale_widget, locale_missing
 
 
 @colander.deferred
@@ -270,7 +270,7 @@ class MailTemplate(Schema):
         colander.String(),
         title=_('Language'),
         widget=locale_widget,
-        validator=colander.OneOf(_LOCALES),
+        validator=colander.OneOf(AVAILABLE_LANGUAGES),
     )
 
     subject = colander.SchemaNode(
@@ -310,6 +310,7 @@ class MailSeqTemplate(Schema):
                     ['_csrf_token_']),
         widget=SequenceWidget(
             min_len=1,
+            max_len=len(AVAILABLE_LANGUAGES),
             add_subitem_text_template=_('Add a new language')),
         title=_('E-mail languages'),
         )
@@ -379,6 +380,14 @@ class OtherSchema(Schema):
         description=_("The title of the application"),
         missing=""
         )
+
+    locale = colander.SchemaNode(
+        colander.String(),
+        title=_('Locale'),
+        widget=locale_widget,
+        missing=locale_missing,
+        validator=colander.OneOf(AVAILABLE_LANGUAGES),
+    )
 
     contacts = colander.SchemaNode(
         colander.Sequence(),

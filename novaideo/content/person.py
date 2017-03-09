@@ -46,7 +46,7 @@ from novaideo.core import (
     Debatable)
 from .interface import (
     IPerson, IPreregistration, IAlert, IProposal, Iidea)
-from novaideo import _, DEFAULT_LOCALE
+from novaideo import _, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
 from novaideo.file import Image
 from novaideo.views.widget import (
     TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
@@ -100,22 +100,9 @@ def default_contacts(node, kw):
     return prop
 
 
-def get_locales():
-    dir_ = os.listdir(os.path.join(os.path.dirname(__file__),
-                                   '..', 'locale'))
-    return list(filter(lambda x: not x.endswith('.pot'), dir_)) + ['en']
-
-
-_LOCALES = get_locales()
-
-
-_LOCALES_TITLES = {'en': 'English',
-                   'fr': 'Français'}
-
-
 @colander.deferred
 def locale_widget(node, kw):
-    locales = [(l, _LOCALES_TITLES.get(l, l)) for l in _LOCALES]
+    locales = [(l, LANGUAGES_TITLES.get(l, l)) for l in AVAILABLE_LANGUAGES]
     sorted_locales = sorted(locales)
     return Select2Widget(values=sorted_locales)
 
@@ -232,7 +219,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         title=_('Locale'),
         widget=locale_widget,
         missing=locale_missing,
-        validator=colander.OneOf(_LOCALES),
+        validator=colander.OneOf(AVAILABLE_LANGUAGES),
     )
 
     password = colander.SchemaNode(
@@ -287,9 +274,6 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     challenges = SharedMultipleProperty('challenges', 'author')
 
     def __init__(self, **kwargs):
-        if 'locale' not in kwargs:
-            kwargs['locale'] = DEFAULT_LOCALE
-
         super(Person, self).__init__(**kwargs)
         kwargs.pop('password')
         self.set_data(kwargs)
@@ -498,7 +482,11 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
 
     @property
     def user_locale(self):
-        return getattr(self, 'locale', DEFAULT_LOCALE)
+        locale = getattr(self, 'locale', None)
+        if not locale:
+            locale = getSite(self).locale
+
+        return locale
 
 
 @content(

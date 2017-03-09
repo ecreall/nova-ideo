@@ -23,14 +23,14 @@ from dace.objectofcollaboration.application import Application
 from dace.descriptors import (
     CompositeMultipleProperty, CompositeUniqueProperty,
     SharedMultipleProperty, SharedUniqueProperty)
-from pontus.core import VisualisableElement, VisualisableElementSchema
+from pontus.core import VisualisableElementSchema
 from pontus.widget import (
     SequenceWidget,
     SimpleMappingWidget)
 from pontus.file import ObjectData as ObjectDataOrigine, OBJECT_DATA
 from pontus.schema import omit, select
 
-from novaideo import _, DEFAULT_FILES, DEFAULT_LOCALE
+from novaideo import _, DEFAULT_FILES
 from novaideo.content.file import FileEntity
 from novaideo.core import Channel, CorrelableEntity, Debatable
 from .organization import OrganizationSchema, Organization
@@ -484,14 +484,17 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
                 info_file.state = PersistentList(['draft'])
                 setattr(self, information['name'], info_file)
 
-    def get_mail_template(self, id, locale=DEFAULT_LOCALE):
+    def get_mail_template(self, id, locale=None):
+        if locale is None:
+            locale = self.locale
+
         mail = getattr(self, '_mail_templates', {}).get(id, None)
         if not mail:
             mail = DEFAULT_SITE_MAILS.get(id, None)
 
         template = mail.get('languages').get(locale, None)
         if not template:
-            template = mail.get('languages').get(DEFAULT_LOCALE, None)
+            template = mail.get('languages').get(self.locale, None)
 
         return template
 
