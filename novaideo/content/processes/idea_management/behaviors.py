@@ -486,7 +486,8 @@ class ArchiveIdea(InfiniteCardinality):
               internal_kind=InternalAlertKind.moderation_alert,
               subjects=[context], alert_kind='moderation')
         if getattr(user, 'email', ''):
-            mail_template = root.get_mail_template('archive_idea_decision')
+            mail_template = root.get_mail_template(
+                'archive_idea_decision', user.user_to_alert)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             email_data = get_user_data(user, 'recipient', request)
@@ -580,7 +581,8 @@ class PublishIdeaModeration(InfiniteCardinality):
                 )
 
         if getattr(user, 'email', ''):
-            mail_template = root.get_mail_template('publish_idea_decision')
+            mail_template = root.get_mail_template(
+                'publish_idea_decision', user.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             email_data = get_user_data(user, 'recipient', request)
@@ -806,7 +808,6 @@ class CommentIdea(InfiniteCardinality):
         if user in users:
             users.remove(user)
 
-        mail_template = root.get_mail_template('alert_comment')
         author_data = get_user_data(user, 'author', request)
         alert_data = get_entity_data(comment, 'comment', request)
         alert_data.update(author_data)
@@ -816,9 +817,11 @@ class CommentIdea(InfiniteCardinality):
               **alert_data)
         subject_data = get_entity_data(context, 'subject', request)
         alert_data.update(subject_data)
-        subject = mail_template['subject'].format(
-            **subject_data)
         for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'alert_comment', user_to_alert.user_locale)
+            subject = mail_template['subject'].format(
+                **subject_data)
             email_data = get_user_data(user_to_alert, 'recipient', request)
             email_data.update(alert_data)
             message = mail_template['template'].format(
@@ -1115,7 +1118,8 @@ class MakeOpinion(InfiniteCardinality):
             subject_type='idea'
             )
         if getattr(member, 'email', ''):
-            mail_template = root.get_mail_template('opinion_idea')
+            mail_template = root.get_mail_template(
+                'opinion_idea', member.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             localizer = request.localizer

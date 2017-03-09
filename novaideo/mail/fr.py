@@ -5,9 +5,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
-from novaideo import _
-
-""" The contents of e-mails"""
+from . import add_mail_template
 
 PORTAL_SIGNATURE = """Cordialement,
                                                                                 
@@ -600,236 +598,187 @@ FIRST_INVITATION = {
     'template': FIRST_INVITATION_MESSAGE
 }
 
+mail_locale = 'fr'
 
-DEFAULT_SITE_MAILS = {
-    'invitation': {
-              'title': _("Invitation"),
-              'subject': INVITATION_SUBJECT,
-              'template': INVITATION_MESSAGE
-    },
-    'refuse_invitation': {
-              'title': _("Refuse the invitation"),
-              'subject': REFUSE_INVITATION_SUBJECT,
-              'template': REFUSE_INVITATION_MESSAGE
-    },
-    'accept_invitation': {
-              'title': _("Accept the invitation"),
-              'subject': ACCEPT_INVITATION_SUBJECT,
-              'template': ACCEPT_INVITATION_MESSAGE
-    },
-    'reset_password': {
-              'title': _("Reset the password"),
-              'subject': RESETPW_SUBJECT,
-              'template': RESETPW_MESSAGE
-    },
-    'registration_confiramtion': {
-              'title': _("Registration confirmation"),
-              'subject': CONFIRMATION_SUBJECT,
-              'template': CONFIRMATION_MESSAGE
-    },
-    'preregistration': {
-              'title': _("Pre-registration of users"),
-              'subject': PREREGISTRATION_SUBJECT,
-              'template': PREREGISTRATION_MESSAGE
-    },
+add_mail_template('invitation', {'locale': mail_locale,
+                   'subject': INVITATION_SUBJECT,
+                   'template': INVITATION_MESSAGE})
 
-    'presentation_idea': {
-              'title': _("Presentation of an idea"),
-              'subject': PRESENTATION_IDEA_SUBJECT,
-              'template': PRESENTATION_IDEA_MESSAGE
-    },
+add_mail_template('refuse_invitation', {'locale': mail_locale,
+                   'subject': REFUSE_INVITATION_SUBJECT,
+                   'template': REFUSE_INVITATION_MESSAGE})
 
-    'presentation_proposal': {
-              'title': _("Presentation of a proposal"),
-              'subject': PRESENTATION_PROPOSAL_SUBJECT,
-              'template': PRESENTATION_PROPOSAL_MESSAGE
-    },
-    'presentation_amendment': {
-              'title': _('Presentation of an amendment'),
-              'subject': PRESENTATION_AMENDMENT_SUBJECT,
-              'template': PRESENTATION_AMENDMENT_MESSAGE
-    },
-    'first_start_work': {
-              'title': _('Start of the improvement cycle'),
-              'subject': AMENDABLE_FIRST_SUBJECT,
-              'template': AMENDABLE_FIRST_MESSAGE
-    },
-    'start_work': {
-              'title': _('Start of the improvement cycle'),
-              'subject': AMENDABLE_SUBJECT,
-              'template': AMENDABLE_MESSAGE
-    },
-    'alert_amendment': {
-              'title': _("Inactivity alert"),
-              'subject': ALERT_SUBJECT,
-              'template': ALERT_MESSAGE
-    },
-    'alert_end': {
-              'title': _("End of the improvement cycle"),
-              'subject': ALERT_END_SUBJECT,
-              'template': ALERT_END_MESSAGE
-    },
-    'vote_amendment_result': {
-              'title': _("Result of the ballot (amendments)"),
-              'subject': RESULT_VOTE_AMENDMENT_SUBJECT,
-              'template': RESULT_VOTE_AMENDMENT_MESSAGE
-    },
-    'publish_proposal': {
-              'title': _("Publication of the proposal"),
-              'subject': PUBLISHPROPOSAL_SUBJECT,
-              'template': PUBLISHPROPOSAL_MESSAGE
-    },
-    'start_vote_publishing': {
-              'title': _("Start of the ballot (publication of the proposal)"),
-              'subject': VOTINGPUBLICATION_SUBJECT,
-              'template': VOTINGPUBLICATION_MESSAGE
-    },
-    'start_vote_amendments': {
-              'title': _("Start of the ballot (amendments)"),
-              'subject': VOTINGAMENDMENTS_SUBJECT,
-              'template': VOTINGAMENDMENTS_MESSAGE
-    },
-    'withdeaw': {
-              'title': _("Withdraw"),
-              'subject': WITHDRAW_SUBJECT,
-              'template': WITHDRAW_MESSAGE
-    },
-    'wg_wating_list_participation': {
-              'title': _("Automatic addition of a participant in the working group that was on the waiting list"),
-              'subject': PARTICIPATE_WL_SUBJECT,
-              'template': PARTICIPATE_WL_MESSAGE
-    },
-    'wg_participation': {
-              'title': _("Participation in the working group"),
-              'subject': PARTICIPATE_SUBJECT,
-              'template': PARTICIPATE_MESSAGE
-    },
-    'wg_resign': {
-              'title': _("Resignation from the working group"),
-              'subject': RESIGN_SUBJECT,
-              'template': RESIGN_MESSAGE
-    },
-    'wating_list': {
-              'title': _("Registration on the waiting list"),
-              'subject': WATINGLIST_SUBJECT,
-              'template': WATINGLIST_MESSAGE
-    },
-    'alert_new_content': {
-              'title': _("Alert (new content)"),
-              'subject': NEWCONTENT_SUBJECT,
-              'template': NEWCONTENT_MESSAGE
-    },
-    'alert_content_modified': {
-              'title': _("Alert (content modified)"),
-              'subject': CONTENTMODIFIEF_SUBJECT,
-              'template': CONTENTMODIFIEF_MESSAGE
-    },
-    'archive_idea_decision': {
-              'title': _("Moderation: Archive the idea"),
-              'subject': ARCHIVEIDEA_SUBJECT,
-              'template': ARCHIVEIDEA_MESSAGE
-    },
-    'opinion_proposal': {
-              'title': _("Moderation: Opinion on the proposal"),
-              'subject': ALERTOPINION_SUBJECT,
-              'template': ALERTOPINION_MESSAGE
-    },
-    'opinion_idea': {
-              'title': _("Moderation: Opinion on the idea"),
-              'subject': ALERTOPINIONIDEA_SUBJECT,
-              'template': ALERTOPINIONIDEA_MESSAGE
-    },
-    'publish_idea_decision': {
-              'title': _("Moderation: Publish the idea"),
-              'subject': PUBLISHEDIDEA_SUBJECT,
-              'template': PUBLISHEDIDEA_MESSAGE
-    },
-    'archive_proposal_decision': {
-              'title': _("Moderation: Archive the proposal"),
-              'subject': ARCHIVEPROPOSAL_SUBJECT,
-              'template': ARCHIVEPROPOSAL_MESSAGE
-    },
-    'publish_proposal_decision': {
-              'title': _("Moderation: Publish the proposal"),
-              'subject': PUBLISHEDPROPOSAL_SUBJECT,
-              'template': PUBLISHEDPROPOSAL_MESSAGE
-    },
-    'delete_proposal': {
-              'title': _("Moderation: Delete the proposal"),
-              'subject': PROPOSALREMOVED_SUBJECT,
-              'template': PROPOSALREMOVED_MESSAGE
-    },
-    'alert_comment': {
-              'title': _("Warning: new comment"),
-              'subject': ALERTCOMMENT_SUBJECT,
-              'template': ALERTCOMMENT_MESSAGE
-    },
-    'alert_discuss': {
-              'title': _("Warning: new discussion"),
-              'subject': ALERTDISCUSS_SUBJECT,
-              'template': ALERTDISCUSS_MESSAGE
-    },
-    'alert_respons': {
-              'title': _("Alert: answer"),
-              'subject': ALERTRESPONS_SUBJECT,
-              'template': ALERTRESPONS_MESSAGE
-    },
-    'newsletter_subscription': {
-              'title': _("Subscription to the newsletter"),
-              'subject': NEWSLETTER_SUBSCRIPTION_SUBJECT,
-              'template': NEWSLETTER_SUBSCRIPTION_MESSAGE
-    },
-    'newsletter_unsubscription': {
-              'title': _("Unsubscription from the newsletter"),
-              'subject': NEWSLETTER_UNSUBSCRIPTION_SUBJECT,
-              'template': NEWSLETTER_UNSUBSCRIPTION_MESSAGE
-    },
-    'moderate_preregistration': {
-              'title': _("New registration"),
-              'subject': ADMIN_PREREGISTRATION_SUBJECT,
-              'template': ADMIN_PREREGISTRATION_MESSAGE
-    },
-    'close_proposal': {
-              'title': _("Close the proposal"),
-              'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
-              'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE
-    },
+add_mail_template('accept_invitation', {'locale': mail_locale,
+                   'subject': ACCEPT_INVITATION_SUBJECT,
+                   'template': ACCEPT_INVITATION_MESSAGE})
 
-    'presentation_question': {
-              'title': _("Presentation of a question"),
-              'subject': PRESENTATION_QUESTION_SUBJECT,
-              'template': PRESENTATION_QUESTION_MESSAGE
-    },
+add_mail_template('reset_password', {'locale': mail_locale,
+                   'subject': RESETPW_SUBJECT,
+                   'template': RESETPW_MESSAGE})
 
-    'presentation_answer': {
-              'title': _("Presentation of an answer"),
-              'subject': PRESENTATION_ANSWER_SUBJECT,
-              'template': PRESENTATION_ANSWER_MESSAGE
-    },
-    'alert_answer': {
-              'title': _("Warning: new answer"),
-              'subject': ALERTANSWER_SUBJECT,
-              'template': ALERTANSWER_MESSAGE
-    },
-    'archive_content_decision': {
-              'title': _("Moderation: Archive the content"),
-              'subject': ARCHIVECONTENT_SUBJECT,
-              'template': ARCHIVECONTENT_MESSAGE
-    },
-    'archive_challenge_decision': {
-              'title': _("Moderation: Archive the challenge"),
-              'subject': ARCHIVECHALLENGE_SUBJECT,
-              'template': ARCHIVECHALLENGE_MESSAGE
-    },
-    'publish_challenge_decision': {
-              'title': _("Moderation: Publish the challenge"),
-              'subject': PUBLISHEDCHALLENGE_SUBJECT,
-              'template': PUBLISHEDCHALLENGE_MESSAGE
-    },
+add_mail_template('registration_confiramtion', {'locale': mail_locale,
+                   'subject': CONFIRMATION_SUBJECT,
+                   'template': CONFIRMATION_MESSAGE})
 
-    'presentation_challenge': {
-              'title': _("Presentation of a challenge"),
-              'subject': PRESENTATION_CHALLENGE_SUBJECT,
-              'template': PRESENTATION_CHALLENGE_MESSAGE
-    }
-}
+add_mail_template('preregistration', {'locale': mail_locale,
+                   'subject': PREREGISTRATION_SUBJECT,
+                   'template': PREREGISTRATION_MESSAGE})
+
+
+add_mail_template('presentation_idea', {'locale': mail_locale,
+                    'subject': PRESENTATION_IDEA_SUBJECT,
+                   'template': PRESENTATION_IDEA_MESSAGE})
+
+
+add_mail_template('presentation_proposal', {'locale': mail_locale,
+                   'subject': PRESENTATION_PROPOSAL_SUBJECT,
+                   'template': PRESENTATION_PROPOSAL_MESSAGE})
+
+add_mail_template('presentation_amendment', {'locale': mail_locale,
+                   'subject': PRESENTATION_AMENDMENT_SUBJECT,
+                   'template': PRESENTATION_AMENDMENT_MESSAGE})
+
+add_mail_template('first_start_work', {'locale': mail_locale,
+                   'subject': AMENDABLE_FIRST_SUBJECT,
+                   'template': AMENDABLE_FIRST_MESSAGE})
+
+add_mail_template('start_work', {'locale': mail_locale,
+                   'subject': AMENDABLE_SUBJECT,
+                   'template': AMENDABLE_MESSAGE})
+
+add_mail_template('alert_amendment', {'locale': mail_locale,
+                   'subject': ALERT_SUBJECT,
+                   'template': ALERT_MESSAGE})
+
+add_mail_template('alert_end', {'locale': mail_locale,
+                   'subject': ALERT_END_SUBJECT,
+                   'template': ALERT_END_MESSAGE})
+
+add_mail_template('vote_amendment_result', {'locale': mail_locale,
+                   'subject': RESULT_VOTE_AMENDMENT_SUBJECT,
+                   'template': RESULT_VOTE_AMENDMENT_MESSAGE})
+
+add_mail_template('publish_proposal', {'locale': mail_locale,
+                    'subject': PUBLISHPROPOSAL_SUBJECT,
+                   'template': PUBLISHPROPOSAL_MESSAGE})
+
+add_mail_template('start_vote_publishing', {'locale': mail_locale,
+                   'subject': VOTINGPUBLICATION_SUBJECT,
+                   'template': VOTINGPUBLICATION_MESSAGE})
+
+add_mail_template('start_vote_amendments', {'locale': mail_locale,
+                   'subject': VOTINGAMENDMENTS_SUBJECT,
+                   'template': VOTINGAMENDMENTS_MESSAGE})
+
+add_mail_template('withdeaw', {'locale': mail_locale,
+                   'subject': WITHDRAW_SUBJECT,
+                   'template': WITHDRAW_MESSAGE})
+
+add_mail_template('wg_wating_list_participation', {'locale': mail_locale,
+                   'subject': PARTICIPATE_WL_SUBJECT,
+                   'template': PARTICIPATE_WL_MESSAGE})
+
+add_mail_template('wg_participation', {'locale': mail_locale,
+                   'subject': PARTICIPATE_SUBJECT,
+                   'template': PARTICIPATE_MESSAGE})
+
+add_mail_template('wg_resign', {'locale': mail_locale,
+                   'subject': RESIGN_SUBJECT,
+                  'template': RESIGN_MESSAGE})
+
+add_mail_template('wating_list', {'locale': mail_locale,
+                  'subject': WATINGLIST_SUBJECT,
+                  'template': WATINGLIST_MESSAGE})
+
+add_mail_template('alert_new_content', {'locale': mail_locale,
+                  'subject': NEWCONTENT_SUBJECT,
+                  'template': NEWCONTENT_MESSAGE})
+
+add_mail_template('alert_content_modified', {'locale': mail_locale,
+                  'subject': CONTENTMODIFIEF_SUBJECT,
+                  'template': CONTENTMODIFIEF_MESSAGE})
+
+add_mail_template('archive_idea_decision', {'locale': mail_locale,
+                  'subject': ARCHIVEIDEA_SUBJECT,
+                  'template': ARCHIVEIDEA_MESSAGE})
+
+add_mail_template('opinion_proposal', {'locale': mail_locale,
+                  'subject': ALERTOPINION_SUBJECT,
+                  'template': ALERTOPINION_MESSAGE})
+
+add_mail_template('opinion_idea', {'locale': mail_locale,
+                  'subject': ALERTOPINIONIDEA_SUBJECT,
+                  'template': ALERTOPINIONIDEA_MESSAGE})
+
+add_mail_template('publish_idea_decision', {'locale': mail_locale,
+                  'subject': PUBLISHEDIDEA_SUBJECT,
+                  'template': PUBLISHEDIDEA_MESSAGE})
+
+add_mail_template('archive_proposal_decision', {'locale': mail_locale,
+                  'subject': ARCHIVEPROPOSAL_SUBJECT,
+                  'template': ARCHIVEPROPOSAL_MESSAGE})
+
+add_mail_template('publish_proposal_decision', {'locale': mail_locale,
+                  'subject': PUBLISHEDPROPOSAL_SUBJECT,
+                  'template': PUBLISHEDPROPOSAL_MESSAGE})
+
+add_mail_template('delete_proposal', {'locale': mail_locale,
+                  'subject': PROPOSALREMOVED_SUBJECT,
+                  'template': PROPOSALREMOVED_MESSAGE})
+
+add_mail_template('alert_comment', {'locale': mail_locale,
+                  'subject': ALERTCOMMENT_SUBJECT,
+                  'template': ALERTCOMMENT_MESSAGE})
+
+add_mail_template('alert_discuss', {'locale': mail_locale,
+                   'subject': ALERTDISCUSS_SUBJECT,
+                   'template': ALERTDISCUSS_MESSAGE})
+
+add_mail_template('alert_respons', {'locale': mail_locale,
+                   'subject': ALERTRESPONS_SUBJECT,
+                   'template': ALERTRESPONS_MESSAGE})
+
+add_mail_template('newsletter_subscription', {'locale': mail_locale,
+                   'subject': NEWSLETTER_SUBSCRIPTION_SUBJECT,
+                        'template': NEWSLETTER_SUBSCRIPTION_MESSAGE})
+
+add_mail_template('newsletter_unsubscription', {'locale': mail_locale,
+                   'subject': NEWSLETTER_UNSUBSCRIPTION_SUBJECT,
+                   'template': NEWSLETTER_UNSUBSCRIPTION_MESSAGE})
+
+add_mail_template('moderate_preregistration', {'locale': mail_locale,
+                   'subject': ADMIN_PREREGISTRATION_SUBJECT,
+                   'template': ADMIN_PREREGISTRATION_MESSAGE})
+
+add_mail_template('close_proposal', {'locale': mail_locale,
+                    'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
+                   'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE})
+
+
+add_mail_template('presentation_question', {'locale': mail_locale,
+                   'subject': PRESENTATION_QUESTION_SUBJECT,
+                   'template': PRESENTATION_QUESTION_MESSAGE})
+
+add_mail_template('presentation_answer', {'locale': mail_locale,
+                   'subject': PRESENTATION_ANSWER_SUBJECT,
+                   'template': PRESENTATION_ANSWER_MESSAGE})
+
+add_mail_template('alert_answer', {'locale': mail_locale,
+                   'subject': ALERTANSWER_SUBJECT,
+                   'template': ALERTANSWER_MESSAGE})
+
+add_mail_template('archive_content_decision', {'locale': mail_locale,
+                   'subject': ARCHIVECONTENT_SUBJECT,
+                   'template': ARCHIVECONTENT_MESSAGE})
+
+add_mail_template('archive_challenge_decision', {'locale': mail_locale,
+                   'subject': ARCHIVECHALLENGE_SUBJECT,
+                   'template': ARCHIVECHALLENGE_MESSAGE})
+
+add_mail_template('publish_challenge_decision', {'locale': mail_locale,
+                   'subject': PUBLISHEDCHALLENGE_SUBJECT,
+                   'template': PUBLISHEDCHALLENGE_MESSAGE})
+
+add_mail_template('presentation_challenge', {'locale': mail_locale,
+             'subject': PRESENTATION_CHALLENGE_SUBJECT,
+             'template': PRESENTATION_CHALLENGE_MESSAGE})

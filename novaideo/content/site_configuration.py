@@ -16,11 +16,12 @@ from pontus.widget import (
 from pontus.file import ObjectData, File
 
 from novaideo.content.processes.proposal_management import WORK_MODES
-from novaideo import _
+from novaideo import _, AVAILABLE_LANGUAGES
 from novaideo.mail import DEFAULT_SITE_MAILS
 from novaideo.core_schema import ContactSchema
 from novaideo import core
 from novaideo.content import get_file_widget
+from .person import locale_widget, locale_missing
 
 
 @colander.deferred
@@ -241,33 +242,6 @@ class HomepageConfigurationSchema(Schema):
         )
 
 
-class MailTemplate(Schema):
-
-    mail_id = colander.SchemaNode(
-        colander.String(),
-        widget=deform.widget.HiddenWidget(),
-        title=_('Mail id'),
-        )
-
-    title = colander.SchemaNode(
-        colander.String(),
-        widget=deform.widget.TextInputWidget(template='readonly/textinput'),
-        title=_('Title'),
-        missing=""
-        )
-
-    subject = colander.SchemaNode(
-        colander.String(),
-        title=_('Subject'),
-        )
-
-    template = colander.SchemaNode(
-        colander.String(),
-        widget=deform.widget.TextAreaWidget(rows=4, cols=60),
-        title=_("Template")
-        )
-
-
 @colander.deferred
 def templates_widget(node, kw):
     len_templates = len(DEFAULT_SITE_MAILS)
@@ -283,21 +257,74 @@ def templates_default(node, kw):
         template = DEFAULT_SITE_MAILS[temp_id].copy()
         template['mail_id'] = temp_id
         template['title'] = localizer.translate(template['title'])
+        template['languages'] = list(template['languages'].values())
         values.append(template)
 
     values = sorted(values, key=lambda e: e['mail_id'])
     return values
 
 
+class MailTemplate(Schema):
+
+    locale = colander.SchemaNode(
+        colander.String(),
+        title=_('Language'),
+        widget=locale_widget,
+        validator=colander.OneOf(AVAILABLE_LANGUAGES),
+    )
+
+    subject = colander.SchemaNode(
+        colander.String(),
+        title=_('Subject'),
+        )
+
+    template = colander.SchemaNode(
+        colander.String(),
+        widget=deform.widget.TextAreaWidget(rows=4, cols=60),
+        title=_("Template")
+        )
+
+
+class MailSeqTemplate(Schema):
+
+    mail_id = colander.SchemaNode(
+        colander.String(),
+        widget=deform.widget.HiddenWidget(),
+        title=_('Mail id'),
+        )
+
+    title = colander.SchemaNode(
+        colander.String(),
+        widget=deform.widget.TextInputWidget(template='readonly/textinput'),
+        title=_('Title'),
+        missing=""
+        )
+
+    languages = colander.SchemaNode(
+        colander.Sequence(),
+        omit(select(MailTemplate(name='language',
+                                 title=_('language'),
+                                 widget=SimpleMappingWidget(
+                                         css_class="object-well default-well mail-template-well mail-template-block")),
+                        ['locale', 'subject', 'template']),
+                    ['_csrf_token_']),
+        widget=SequenceWidget(
+            min_len=1,
+            max_len=len(AVAILABLE_LANGUAGES),
+            add_subitem_text_template=_('Add a new language')),
+        title=_('E-mail languages'),
+        )
+
+
 class MailTemplatesConfigurationSchema(Schema):
 
     mail_templates = colander.SchemaNode(
         colander.Sequence(),
-        omit(select(MailTemplate(name='template',
+        omit(select(MailSeqTemplate(name='template',
                                  title=_('E-mail template'),
                                  widget=SimpleMappingWidget(
                                          css_class="object-well default-well mail-template-well mail-template-block")),
-                        ['mail_id', 'title', 'subject', 'template']),
+                        ['mail_id', 'title', 'languages']),
                     ['_csrf_token_']),
         widget=templates_widget,
         default=templates_default,
@@ -353,6 +380,14 @@ class OtherSchema(Schema):
         description=_("The title of the application"),
         missing=""
         )
+
+    locale = colander.SchemaNode(
+        colander.String(),
+        title=_('Locale'),
+        widget=locale_widget,
+        missing=locale_missing,
+        validator=colander.OneOf(AVAILABLE_LANGUAGES),
+    )
 
     contacts = colander.SchemaNode(
         colander.Sequence(),

@@ -38,7 +38,6 @@ _ = TranslationStringFactory('novaideo')
 
 DEFAULT_SESSION_TIMEOUT = 25200
 
-
 ANALYTICS_DEFAUT_CONTENTS = ['idea', 'proposal']
 
 
@@ -73,6 +72,19 @@ VIEW_TYPES = {'default': _('Default view'),
 ACCESS_ACTIONS = {}
 
 
+def get_locales():
+    dir_ = os.listdir(os.path.join(os.path.dirname(__file__),
+                                   '.', 'locale'))
+    return list(filter(lambda x: not x.endswith('.pot'), dir_)) + ['en']
+
+
+AVAILABLE_LANGUAGES = get_locales()
+
+
+LANGUAGES_TITLES = {'en': 'English',
+                    'fr': 'Français'}
+
+
 def get_access_keys(context):
     declared = context.__provides__.declared
     if declared:
@@ -97,9 +109,6 @@ def get_time_zone(request):
 
 def ajax_api(request):
     return 'novaideoapi'
-
-
-AVAILABLE_LANGUAGES = ['en', 'fr']
 
 
 def my_locale_negotiator(request):
@@ -712,6 +721,25 @@ def publish_organizations(root, registry):
     log.info('Orgnaizations evolved.')
 
 
+def evolve_mails_languages(root, registry):
+    result = []
+    for mail in getattr(root, 'mail_templates', []):
+        if 'languages' not in mail:
+            mail['languages'] = [{
+                'locale': 'fr',
+                'template': mail['template'],
+                'subject': mail['subject']
+            }]
+            mail.pop('template')
+            mail.pop('subject')
+            result.append(mail)
+        else:
+            result.append(mail)
+
+    root.mail_templates = PersistentList(result)
+    log.info('Emails evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -757,6 +785,7 @@ def main(global_config, **settings):
     config.add_evolution_step(init_guide_tour_data)
     config.add_evolution_step(evolve_related_correlation)
     config.add_evolution_step(publish_organizations)
+    config.add_evolution_step(evolve_mails_languages)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

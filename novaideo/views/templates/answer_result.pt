@@ -41,7 +41,7 @@
         data-title="${object.title}"
         data-icon="${icon}"
         data-img=""
-        style="display: none">
+        style="display: none;">
       </div>
       <div class="row object-row-content">
         <div class="col col-xs-12 ${files and 'col-md-8' or 'col-md-12'}">

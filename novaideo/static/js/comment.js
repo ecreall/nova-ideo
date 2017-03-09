@@ -36,7 +36,7 @@ function comment_scroll_to(element, animate){
   comment_scroll.animate({ scrollTop: top}, 1000);
   if (animate){
     var to_animate = $(element.find('.comment-data').first())
-     if(to_animate.length>0){
+    if(to_animate.length>0){
        to_animate.animate({
             backgroundColor: "#eef4ea"
        }, 1000, function(){

@@ -43,7 +43,7 @@ from novaideo.content.person import (
     Person, PersonSchema, DEADLINE_PREREGISTRATION)
 from novaideo.utilities.util import (
     to_localized_time, gen_random_token, connect)
-from novaideo import _, nothing
+from novaideo import _, nothing, my_locale_negotiator
 from novaideo.core import (
     access_action, serialize_roles, PrivateChannel)
 from novaideo.views.filter import get_users_by_preferences
@@ -58,8 +58,10 @@ from novaideo.role import get_authorized_roles
 def accept_preregistration(request, preregistration, root):
     if getattr(preregistration, 'email', ''):
         deadline_date = preregistration.get_deadline_date()
+        locale = my_locale_negotiator(request)
         url = request.resource_url(preregistration, "")
-        mail_template = root.get_mail_template('preregistration')
+        mail_template = root.get_mail_template(
+            'preregistration', getattr(preregistration, 'locale', locale))
         email_data = get_user_data(preregistration, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
@@ -365,6 +367,7 @@ class Registration(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         preregistration = appstruct['_object_data']
         preregistration.__name__ = gen_random_token()
+        preregistration.locale = my_locale_negotiator(request)
         root = getSite()
         root.addtoproperty('preregistrations', preregistration)
         deadline = DEADLINE_PREREGISTRATION * 1000
@@ -383,11 +386,12 @@ class Registration(InfiniteCardinality):
                 'internal', [root], admins,
                 internal_kind=InternalAlertKind.admin_alert,
                 subjects=[preregistration], alert_kind='new_registration')
-            mail_template = root.get_mail_template('moderate_preregistration')
-            subject = mail_template['subject'].format(
-                novaideo_title=root.title)
             url = request.resource_url(preregistration, '@@index')
             for admin in [a for a in admins if getattr(a, 'email', '')]:
+                mail_template = root.get_mail_template(
+                    'moderate_preregistration', admin.user_locale)
+                subject = mail_template['subject'].format(
+                    novaideo_title=root.title)
                 email_data = get_user_data(admin, 'recipient', request)
                 message = mail_template['template'].format(
                     url=url,
@@ -495,6 +499,8 @@ class ConfirmRegistration(InfiniteCardinality):
                 if value is not colander.null}
         data.pop('title')
         root = getSite()
+        locale = my_locale_negotiator(request)
+        data['locale'] = locale
         person = Person(**data)
         principals = find_service(root, 'principals')
         name = person.first_name + ' ' + person.last_name
@@ -528,7 +534,8 @@ class ConfirmRegistration(InfiniteCardinality):
 
         transaction.commit()
         if email:
-            mail_template = root.get_mail_template('registration_confiramtion')
+            mail_template = root.get_mail_template(
+                'registration_confiramtion', person.user_locale)
             subject = mail_template['subject'].format(
                 novaideo_title=root.title)
             recipientdata = get_user_data(person, 'recipient', request)
@@ -750,7 +757,6 @@ class Discuss(InfiniteCardinality):
     def _alert_users(self, context, request, user, comment, channel):
         root = getSite()
         users = self._get_users_to_alerts(context, request, user, channel)
-        mail_template = root.get_mail_template('alert_discuss')
         author_data = get_user_data(user, 'author', request)
         alert_data = get_entity_data(comment, 'comment', request)
         alert_data.update(author_data)
@@ -761,9 +767,11 @@ class Discuss(InfiniteCardinality):
               **alert_data)
         subject_data = get_entity_data(user, 'subject', request)
         alert_data.update(subject_data)
-        subject = mail_template['subject'].format(
-            **subject_data)
         for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'alert_discuss', user_to_alert.user_locale)
+            subject = mail_template['subject'].format(
+                **subject_data)
             email_data = get_user_data(user_to_alert, 'recipient', request)
             email_data.update(alert_data)
             message = mail_template['template'].format(
