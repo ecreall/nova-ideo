@@ -38,6 +38,7 @@ _ = TranslationStringFactory('novaideo')
 
 DEFAULT_SESSION_TIMEOUT = 25200
 
+DEFAULT_LOCALE = 'fr'
 
 ANALYTICS_DEFAUT_CONTENTS = ['idea', 'proposal']
 
@@ -712,6 +713,25 @@ def publish_organizations(root, registry):
     log.info('Orgnaizations evolved.')
 
 
+def evolve_mails_languages(root, registry):
+    result = []
+    for mail in getattr(root, 'mail_templates', []):
+        if 'languages' not in mail:
+            mail['languages'] = [{
+                'locale': 'fr',
+                'template': mail['template'],
+                'subject': mail['subject']
+            }]
+            mail.pop('template')
+            mail.pop('subject')
+            result.append(mail)
+        else:
+            result.append(mail)
+
+    root.mail_templates = PersistentList(result)
+    log.info('Emails evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -757,6 +777,7 @@ def main(global_config, **settings):
     config.add_evolution_step(init_guide_tour_data)
     config.add_evolution_step(evolve_related_correlation)
     config.add_evolution_step(publish_organizations)
+    config.add_evolution_step(evolve_mails_languages)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

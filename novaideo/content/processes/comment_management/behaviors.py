@@ -145,11 +145,12 @@ class Respond(InfiniteCardinality):
               **alert_data)
         subject_data = get_entity_data(content, 'subject', request)
         alert_data.update(subject_data)
-        mail_template = root.get_mail_template(
-            'alert_discuss' if is_discuss else 'alert_comment')
-        subject = mail_template['subject'].format(
-            **subject_data)
+        mail_id = 'alert_discuss' if is_discuss else 'alert_comment'
         for user_to_alert in [u for u in authors if getattr(u, 'email', '')]:
+            mail_template = root.get_mail_template(
+                mail_id, user_to_alert.user_locale)
+            subject = mail_template['subject'].format(
+                **subject_data)
             email_data = get_user_data(user_to_alert, 'recipient', request)
             email_data.update(alert_data)
             message = mail_template['template'].format(
@@ -170,7 +171,8 @@ class Respond(InfiniteCardinality):
                 email_data = get_user_data(comment_author, 'recipient', request)
                 email_data.update(alert_data)
                 mail_template = root.get_mail_template(
-                    'alert_discuss' if is_discuss else 'alert_respons')
+                    'alert_discuss' if is_discuss else 'alert_respons',
+                    comment_author.user_locale)
                 subject = mail_template['subject'].format(
                     **subject_data)
                 message = mail_template['template'].format(

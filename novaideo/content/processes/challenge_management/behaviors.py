@@ -232,7 +232,8 @@ class ArchiveChallenge(InfiniteCardinality):
               internal_kind=InternalAlertKind.moderation_alert,
               subjects=[context], alert_kind='moderation')
         if getattr(user, 'email', ''):
-            mail_template = root.get_mail_template('archive_challenge_decision')
+            mail_template = root.get_mail_template(
+                'archive_challenge_decision', user.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             email_data = get_user_data(user, 'recipient', request)
@@ -299,7 +300,8 @@ class PublishChallenge(InfiniteCardinality):
         #         )
 
         if user is not author and getattr(author, 'email', ''):
-            mail_template = root.get_mail_template('publish_challenge_decision')
+            mail_template = root.get_mail_template(
+                'publish_challenge_decision', user.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             email_data = get_user_data(author, 'recipient', request)

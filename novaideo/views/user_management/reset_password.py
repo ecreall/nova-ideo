@@ -56,7 +56,8 @@ class Send(Behavior):
                 raise ValueError('User does not possess a valid email address.')
 
             root = request.root
-            mail_template = root.get_mail_template('reset_password')
+            mail_template = root.get_mail_template(
+                'reset_password', user.user_locale)
             subject = mail_template['subject'].format(
                 novaideo_title=request.root.title)
             localizer = request.localizer
@@ -114,7 +115,7 @@ class ResetRequestViewStudyReport(BasicView):
         values = {'context': self.context}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        result['coordinates'] = {self.coordinates:[item]}
+        result['coordinates'] = {self.coordinates: [item]}
         return result
 
 

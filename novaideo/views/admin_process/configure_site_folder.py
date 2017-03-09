@@ -54,7 +54,7 @@ class ConfigureSiteView(FormView):
     def default_data(self):
         localizer = self.request.localizer
         data = self.context.get_data(self.schema)
-        templates = [self.context.get_mail_template(mail_id)
+        templates = [self.context.get_mail(mail_id)
                      for mail_id in DEFAULT_SITE_MAILS]
         for template in templates:
             template['title'] = localizer.translate(

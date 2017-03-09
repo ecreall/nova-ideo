@@ -46,15 +46,13 @@ from novaideo.core import (
     Debatable)
 from .interface import (
     IPerson, IPreregistration, IAlert, IProposal, Iidea)
-from novaideo import _
+from novaideo import _, DEFAULT_LOCALE
 from novaideo.file import Image
 from novaideo.views.widget import (
     TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
 
 
 DEADLINE_PREREGISTRATION = 86400*2  # 2 days
-
-DEFAULT_LOCALE = 'fr'
 
 
 @colander.deferred
@@ -497,6 +495,10 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
             groups.append(self.organization)
 
         return groups
+
+    @property
+    def user_locale(self):
+        return getattr(self, 'locale', DEFAULT_LOCALE)
 
 
 @content(

@@ -83,14 +83,15 @@ class Alert(ElementaryAction):
         #improvement_cycle TODO no improve
         members = context.working_group.members
         root = request.root
-        mail_template = root.get_mail_template('alert_amendment')
-        subject = mail_template['subject'].format(subject_title=context.title)
         alert('internal', [root], members,
               internal_kind=InternalAlertKind.working_group_alert,
               subjects=[context], alert_kind='no_amendment')
         subject_data = get_entity_data(context, 'subject', request)
         for member in members:
             if getattr(member, 'email', ''):
+                mail_template = root.get_mail_template(
+                    'alert_amendment', member.user_locale)
+                subject = mail_template['subject'].format(subject_title=context.title)
                 email_data = get_user_data(member, 'recipient', request)
                 email_data.update(subject_data)
                 message = mail_template['template'].format(
@@ -196,14 +197,15 @@ class VotingAmendments(ElementaryAction):
         context.reindex()
         members = wg.members
         root = request.root
-        mail_template = root.get_mail_template('start_vote_amendments')
-        subject = mail_template['subject'].format(subject_title=context.title)
         alert('internal', [root], members,
               internal_kind=InternalAlertKind.working_group_alert,
               subjects=[context], alert_kind='voting_amendment')
         subject_data = get_entity_data(context, 'subject', request)
         for member in members:
             if getattr(member, 'email', ''):
+                mail_template = root.get_mail_template(
+                    'start_vote_amendments', member.user_locale)
+                subject = mail_template['subject'].format(subject_title=context.title)
                 email_data = get_user_data(member, 'recipient', request)
                 email_data.update(subject_data)
                 message = mail_template['template'].format(
@@ -264,9 +266,6 @@ class AmendmentsResult(ElementaryAction):
                   'subject': context}
         result_body = renderers.render(
             self.amendments_vote_result_template, values, request)
-        mail_template = root.get_mail_template('vote_amendment_result')
-        subject = mail_template['subject'].format(
-            subject_title=context.title)
         alert(
             'internal', [root], members,
             internal_kind=InternalAlertKind.working_group_alert,
@@ -275,6 +274,10 @@ class AmendmentsResult(ElementaryAction):
             ballots=ballots_urls)
         for member in members:
             if getattr(member, 'email', ''):
+                mail_template = root.get_mail_template(
+                    'vote_amendment_result', member.user_locale)
+                subject = mail_template['subject'].format(
+                    subject_title=context.title)
                 recipientdata = get_user_data(member, 'recipient', request)
                 message = mail_template['template'].format(
                     message_result=result_body,

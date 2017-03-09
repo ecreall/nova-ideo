@@ -226,7 +226,8 @@ class ArchiveQuestion(InfiniteCardinality):
               internal_kind=InternalAlertKind.moderation_alert,
               subjects=[context], alert_kind='object_archive')
         if getattr(user, 'email', ''):
-            mail_template = root.get_mail_template('archive_content_decision')
+            mail_template = root.get_mail_template(
+                'archive_content_decision', user.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             email_data = get_user_data(user, 'recipient', request)
@@ -304,7 +305,6 @@ class AnswerQuestion(InfiniteCardinality):
         if user in users:
             users.remove(user)
 
-        mail_template = root.get_mail_template('alert_answer')
         author_data = get_user_data(user, 'author', request)
         alert_data = get_entity_data(answer, 'comment', request)
         alert_data.update(author_data)
@@ -315,9 +315,11 @@ class AnswerQuestion(InfiniteCardinality):
               **alert_data)
         subject_data = get_entity_data(context, 'subject', request)
         alert_data.update(subject_data)
-        subject = mail_template['subject'].format(
-            **subject_data)
         for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'alert_answer', user_to_alert.user_locale)
+            subject = mail_template['subject'].format(
+                **subject_data)
             email_data = get_user_data(user_to_alert, 'recipient', request)
             email_data.update(alert_data)
             message = mail_template['template'].format(
