@@ -54,7 +54,8 @@ form.answerform{
     padding-top: 5px;
     font-size: 13px;
     margin-left: 2px;
-    color: gray
+    color: gray;
+    background: white;
 }
 
 .edit-comment-form .comment-form-changes {
@@ -96,7 +97,7 @@ form.answerform{
 
 .sidebar-right-wrapper .commentform.comment-inline-form{
   position: relative !important;
-  width: 100%;
+  width: 100% !important;
 }
 
 
@@ -445,8 +446,8 @@ form.answerform{
   border: none !important;
 }
 
-.commentulorigin > .commentli.last{
-    margin-bottom:20px !important;
+ul.commentulorigin:last-child{
+   padding-bottom: 35px;
 }
 
 .commentli p {
@@ -546,7 +547,7 @@ li.comment-text-search-container {
 }
 
 .comment-data:hover:not(.replay-active){
-    background-color: #f4f4f4;
+    background-color: #f4f4f4 !important;
     .footer-actions-bodies a,
     .primary-actions a,
     .listing-object-menu .dropdown-toggle{
@@ -584,7 +585,7 @@ li.comment-text-search-container {
 }
 
 @media (max-width: 1400px) and (min-width: 768px){
-    .sidebar-right-wrapper .commentform:not(.answerform)
+    .sidebar-right-wrapper .commentform:not(.comment-inline-form)
      {
        width: 80% !important;
     }
