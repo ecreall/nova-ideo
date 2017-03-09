@@ -25,7 +25,7 @@ from novaideo.views.core import ActionAnonymousView
 
 def options_choice(options):
     values = sorted(list(enumerate(options)), key=lambda e: e[0])
-    return deform.widget.RadioChoiceWidget(values=values, inline=True,)
+    return deform.widget.RadioChoiceWidget(values=values)
 
 
 @colander.deferred
