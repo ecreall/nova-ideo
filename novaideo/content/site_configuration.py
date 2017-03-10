@@ -312,7 +312,7 @@ class MailSeqTemplate(Schema):
             min_len=1,
             max_len=len(AVAILABLE_LANGUAGES),
             add_subitem_text_template=_('Add a new language')),
-        title=_('E-mail languages'),
+        title=_('Languages'),
         )
 
 
