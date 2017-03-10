@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-03-10 11:30+0100\n"
+"POT-Creation-Date: 2017-03-10 11:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7747,7 +7747,7 @@ msgid "Mail id"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:315
-msgid "E-mail languages"
+msgid "Languages"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:332
