@@ -286,14 +286,11 @@ $(document).on('submit','.commentform:not(.comment-inline-form)', function( even
                  deform.processCallbacks();
                 }
                catch(err) {};
-               NovaIdeoWS.trigger_event({
-                  'event': 'new_comment',
-                  'params':{
-                    'comment_oid': data.comment_oid,
-                    'channel_oid': data.channel_oid,
-                    'context_oid': data.context_oid
-                  }
-               })
+               $(document).trigger({
+                    type: 'comment-added',
+                    comment_oid: data.comment_oid,
+                    channel_oid: data.channel_oid,
+                    context_oid: data.context_oid})
             }else{
               alert_component({
                   alert_msg: novaideo_translate("Your comment is not integrated"),
@@ -379,15 +376,12 @@ $(document).on('submit','.respondform', function( event ) {
                  deform.processCallbacks();
                 }
              catch(err) {};
-             NovaIdeoWS.trigger_event({
-                  'event': 'new_answer',
-                  'params':{
-                    'comment_oid': data.comment_oid,
-                    'comment_parent_oid': data.comment_parent_oid,
-                    'channel_oid': data.channel_oid,
-                    'context_oid': data.context_oid
-                  }
-               })
+             $(document).trigger({
+                  type: 'answer-added',
+                  comment_oid: data.comment_oid,
+                  comment_parent_oid: data.comment_parent_oid,
+                  channel_oid: data.channel_oid,
+                  context_oid: data.context_oid})
           }else{
             alert_component({
                   alert_msg: novaideo_translate("Your comment is not integrated"),
@@ -447,14 +441,11 @@ $(document).on('submit','.edit-comment-form', function( event ) {
                   alert_msg: novaideo_translate("Your comment is integrated"),
                   alert_type: 'success'
                 })
-             NovaIdeoWS.trigger_event({
-                  'event': 'edit_comment',
-                  'params':{
-                    'comment_oid': data.comment_oid,
-                    'channel_oid': data.channel_oid,
-                    'context_oid': data.context_oid
-                  }
-               })
+             $(document).trigger({
+                  type: 'comment-edited',
+                  comment_oid: data.comment_oid,
+                  channel_oid: data.channel_oid,
+                  context_oid: data.context_oid})
           }else{
             alert_component({
                   alert_msg: novaideo_translate("Your comment is not integrated"),
@@ -687,13 +678,10 @@ $(document).on('submit', '.comment-remove-form', function(event){
         success: function(data) {
           $($this.parents('.modal').first()).modal('hide')
           update_components(data)
-          NovaIdeoWS.trigger_event({
-              'event': 'remove_comment',
-              'params':{
-                'comment_oid': data.comment_oid,
-                'channel_oid': data.channel_oid
-              }
-           })
+          $(document).trigger({
+              type: 'comment-removed',
+              comment_oid: data.comment_oid,
+              channel_oid: data.channel_oid})
       }})
 
     event.preventDefault();

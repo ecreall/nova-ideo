@@ -244,9 +244,6 @@ def init_application(event):
         root.locale = registry.settings.get('pyramid.default_locale_name')
 
     init_contents(registry)
-    #run with ws server
-    from novaideo.web_socket.server import run_ws
-    run_ws(app)
 
     #invite initial user if first deployment
     if getattr(root, 'first_invitation_to_add', False):
@@ -272,8 +269,13 @@ def init_application(event):
 
         del root.first_invitation_to_add
 
+    root.connected_users = []
+    root.opened_channels = {}
     transaction.commit()
-    manager.pop()
+    # manager.pop()
+    #run with ws server
+    from novaideo.web_socket.server import run_ws
+    run_ws(app)
 
 
 def init_contents(registry):

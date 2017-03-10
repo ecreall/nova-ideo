@@ -758,6 +758,8 @@ class Discuss(InfiniteCardinality):
     def _alert_users(self, context, request, user, comment, channel):
         root = getSite()
         users = self._get_users_to_alerts(context, request, user, channel)
+        connected_users = getattr(root, 'connected_users', [])
+        users = [u for u in users if u not in connected_users]
         author_data = get_user_data(user, 'author', request)
         alert_data = get_entity_data(comment, 'comment', request)
         alert_data.update(author_data)

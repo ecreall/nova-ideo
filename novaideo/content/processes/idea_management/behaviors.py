@@ -808,6 +808,8 @@ class CommentIdea(InfiniteCardinality):
         if user in users:
             users.remove(user)
 
+        connected_users = getattr(root, 'connected_users', [])
+        users = [u for u in users if u not in connected_users]
         author_data = get_user_data(user, 'author', request)
         alert_data = get_entity_data(comment, 'comment', request)
         alert_data.update(author_data)

@@ -218,6 +218,55 @@ NovaIdeoWS.on('edit_comment', function(params){
    }
 })
 
+function user_typing(){
+   var input = $(this)
+   var channel = input.parents('.comment-view-block').first()
+       .find('ul.channel').first()
+   var val = input.val()
+   var channel_oid = channel.data('channel_oid')
+   if(val.length == 0){
+      var index = $.inArray(channel_oid, NovaIdeoWS.typing_in_process)
+      if(index>=0){
+          NovaIdeoWS.typing_in_process = NovaIdeoWS.typing_in_process.splice(index, 1);
+      }
+      NovaIdeoWS.trigger_event({
+         'event': 'stop_typing_comment',
+         'params':{
+            'channel_oid': channel.data('channel_oid')
+         }
+      })
+   }else if($.inArray(channel_oid, NovaIdeoWS.typing_in_process)<0 && val.length >= 1){
+    NovaIdeoWS.typing_in_process.push(channel_oid)
+    NovaIdeoWS.trigger_event({
+         'event': 'typing_comment',
+         'params':{
+            'channel_oid': channel.data('channel_oid')
+         }
+      })
+   }
+}
+
+function user_stop_typing(){
+   var input = $(this)
+   var channel = input.parents('.comment-view-block').first()
+       .find('ul.channel').first()
+   var channel_oid = channel.data('channel_oid')
+   var index = $.inArray(channel_oid, NovaIdeoWS.typing_in_process)
+   if(index>=0){
+      NovaIdeoWS.typing_in_process.splice(index, 1);
+      NovaIdeoWS.trigger_event({
+         'event': 'stop_typing_comment',
+         'params':{
+            'channel_oid': channel_oid
+         }
+       })
+   }
+}
+
+$(document).on('keypress paste', '.comment-textarea-container textarea', user_typing)
+
+$(document).on('blur', '.comment-textarea-container textarea', user_stop_typing)
+
 $(document).on('component_loaded', function() {
    NovaIdeoWS.connect_to_ws_server()
 });
@@ -268,51 +317,46 @@ $(document).on('sidebar-items-closed', function(event){
    }
 })
 
-function user_typing(){
-   var input = $(this)
-   var channel = input.parents('.comment-view-block').first()
-       .find('ul.channel').first()
-   var val = input.val()
-   var channel_oid = channel.data('channel_oid')
-   if(val.length == 0){
-      var index = $.inArray(channel_oid, NovaIdeoWS.typing_in_process)
-      if(index>=0){
-          NovaIdeoWS.typing_in_process = NovaIdeoWS.typing_in_process.splice(index, 1);
-      }
-      NovaIdeoWS.trigger_event({
-         'event': 'stop_typing_comment',
-         'params':{
-            'channel_oid': channel.data('channel_oid')
-         }
-      })
-   }else if($.inArray(channel_oid, NovaIdeoWS.typing_in_process)<0 && val.length >= 1){
-    NovaIdeoWS.typing_in_process.push(channel_oid)
+$(document).on('comment-removed', function(event){
     NovaIdeoWS.trigger_event({
-         'event': 'typing_comment',
-         'params':{
-            'channel_oid': channel.data('channel_oid')
-         }
-      })
-   }
-}
+        'event': 'remove_comment',
+        'params':{
+          'comment_oid': event.comment_oid,
+          'channel_oid': event.channel_oid
+        }
+     })
+})
 
-function user_stop_typing(){
-   var input = $(this)
-   var channel = input.parents('.comment-view-block').first()
-       .find('ul.channel').first()
-   var channel_oid = channel.data('channel_oid')
-   var index = $.inArray(channel_oid, NovaIdeoWS.typing_in_process)
-   if(index>=0){
-      NovaIdeoWS.typing_in_process.splice(index, 1);
-      NovaIdeoWS.trigger_event({
-         'event': 'stop_typing_comment',
-         'params':{
-            'channel_oid': channel_oid
-         }
-       })
-   }
-}
+$(document).on('comment-edited', function(event){
+    NovaIdeoWS.trigger_event({
+      'event': 'edit_comment',
+      'params':{
+        'comment_oid': event.comment_oid,
+        'channel_oid': event.channel_oid,
+        'context_oid': event.context_oid
+      }
+   })
+})
 
-$(document).on('keypress paste', '.comment-textarea-container textarea', user_typing)
+$(document).on('answer-added', function(event){
+   NovaIdeoWS.trigger_event({
+        'event': 'new_answer',
+        'params':{
+          'comment_oid': event.comment_oid,
+          'comment_parent_oid': event.comment_parent_oid,
+          'channel_oid': event.channel_oid,
+          'context_oid': event.context_oid
+        }
+     })
+})
 
-$(document).on('blur', '.comment-textarea-container textarea', user_stop_typing)
+$(document).on('comment-added', function(event){
+  NovaIdeoWS.trigger_event({
+      'event': 'new_comment',
+      'params':{
+        'comment_oid': event.comment_oid,
+        'channel_oid': event.channel_oid,
+        'context_oid': event.context_oid
+      }
+   })
+})

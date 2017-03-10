@@ -49,32 +49,28 @@ from novaideo.views.idea_management.comment_idea import (
     CommentsView)
 
 
-class BroadcastClientProtocol(WebSocketClientProtocol):
+class NovaIdeoClientProtocol(WebSocketClientProtocol):
 
     """
-    Simple client that connects to a WebSocket server, send a HELLO
-    message every 2 seconds and print everything it receives.
+    Simple client that connects to a WebSocket server
     """
-
-    def sendHello(self):
-        self.sendMessage("Hello from Python!".encode('utf8'))
 
     def onOpen(self):
-        self.sendHello()
+        pass
 
     def onMessage(self, payload, isBinary):
-        if not isBinary:
-            print("Text message received: {}".format(payload.decode('utf8')))
+        pass
 
 
 # Our WebSocket Server protocol
 
 
-class BroadcastServerProtocol(WebSocketServerProtocol):
+class NovaIdeoServerProtocol(WebSocketServerProtocol):
 
     def onOpen(self):
         transaction.begin()
         self.factory.register(self)
+        transaction.commit()
 
     def onMessage(self, payload, isBinary):
         if not isBinary:
@@ -87,13 +83,13 @@ class BroadcastServerProtocol(WebSocketServerProtocol):
         WebSocketServerProtocol.connectionLost(self, reason)
         transaction.begin()
         self.factory.unregister(self)
+        transaction.commit()
 
 
-class BroadcastServerFactory(WebSocketServerFactory):
+class NovaIdeoServerFactory(WebSocketServerFactory):
 
     """
-    Simple broadcast server broadcasting any message it receives to all
-    currently connected clients.
+    NovaIdeo server factory (based on events)
     """
 
     def __init__(self, url):
@@ -102,45 +98,68 @@ class BroadcastServerFactory(WebSocketServerFactory):
         self.opened_channels = {}
 
     def call_events_handlers(self, client, events):
+        request = get_request(client)
+        current_user = get_user(request)
+        messages = {}
         for event in events:
             event_id = event.get('event', None)
             if event_id is not None:
                 operation = getattr(self, 'event_'+event_id, None)
                 if operation is not None:
                     params = event.get('params', {})
-                    operation(client, **params)
+                    params['request'] = request
+                    params['current_user'] = current_user
+                    try:
+                        _messages = operation(client, **params)
+                        for user, _events in _messages.items():
+                            messages.setdefault(user, [])
+                            messages[user].extend(_events)
+                    except Exception:
+                        pass
+
+        for user, events in messages.items():
+            msg = json.dumps(events)
+            self.clients[user].sendMessage(msg.encode('utf8'))
 
     def event_channel_opened(
-        self, client, channel_oid):
-        request = get_request(client)
-        current_user = get_user(request)
+        self, client, channel_oid, **kwargs):
+        request = kwargs.get('request')
+        root = request.root
+        current_user = kwargs.get('current_user')
         self.opened_channels.setdefault(
             current_user, {'opened': [], 'hidden': []})
         self.opened_channels[current_user]['opened'].append(channel_oid)
         if channel_oid in self.opened_channels[current_user]['hidden']:
             self.opened_channels[current_user]['hidden'].remove(channel_oid)
 
+        root.opened_channels = dict(self.opened_channels)
+
     def event_all_channels_closed(
-        self, client):
-        request = get_request(client)
-        current_user = get_user(request)
+        self, client, **kwargs):
+        request = kwargs.get('request')
+        root = request.root
+        current_user = kwargs.get('current_user')
         if current_user in self.opened_channels:
             self.opened_channels.pop(current_user)
+            root.opened_channels = dict(self.opened_channels)
 
     def event_channel_hidden(
-        self, client, channel_oid):
-        request = get_request(client)
-        current_user = get_user(request)
+        self, client, channel_oid, **kwargs):
+        request = kwargs.get('request')
+        root = request.root
+        current_user = kwargs.get('current_user')
         if current_user in self.opened_channels and \
            channel_oid in self.opened_channels[current_user]['opened']:
             self.opened_channels[current_user]['opened'].remove(channel_oid)
             self.opened_channels[current_user]['hidden'].append(channel_oid)
+            root.opened_channels = dict(self.opened_channels)
 
     def event_typing_comment(
-        self, client, channel_oid):
-        request = get_request(client)
-        current_user = get_user(request)
+        self, client, channel_oid, **kwargs):
+        request = kwargs.get('request')
+        current_user = kwargs.get('current_user')
         channel = get_obj(int(channel_oid))
+        messages = {}
         for user in self.clients:
             if user is not current_user:
                 channels = getattr(user, 'following_channels', [])
@@ -157,14 +176,16 @@ class BroadcastServerFactory(WebSocketServerFactory):
                             'user_name': current_user.first_name
                         }
                     }]
-                    msg = json.dumps(events)
-                    self.clients[user].sendMessage(msg.encode('utf8'))
+                    messages[user] = events
+
+        return messages
 
     def event_stop_typing_comment(
-        self, client, channel_oid):
-        request = get_request(client)
-        current_user = get_user(request)
+        self, client, channel_oid, **kwargs):
+        request = kwargs.get('request')
+        current_user = kwargs.get('current_user')
         channel = get_obj(int(channel_oid))
+        messages = {}
         for user in self.clients:
             if user is not current_user:
                 channels = getattr(user, 'following_channels', [])
@@ -180,17 +201,19 @@ class BroadcastServerFactory(WebSocketServerFactory):
                             'user_oid': str(current_user.__oid__)
                         }
                     }]
-                    msg = json.dumps(events)
-                    self.clients[user].sendMessage(msg.encode('utf8'))
+                    messages[user] = events
+
+        return messages
 
     def event_new_comment(
         self, client, context_oid,
-        channel_oid, comment_oid):
-        request = get_request(client)
+        channel_oid, **kwargs):
+        request = kwargs.get('request')
+        current_user = kwargs.get('current_user')
         context = get_obj(int(context_oid))
-        current_user = get_user(request)
         channel = get_obj(int(channel_oid))
         comment = channel.comments[-1]
+        messages = {}
         for user in self.clients:
             if user is not current_user:
                 channels = getattr(user, 'following_channels', [])
@@ -216,17 +239,19 @@ class BroadcastServerFactory(WebSocketServerFactory):
                             'channel_oid': str(channel_oid)
                         }
                     }]
-                    msg = json.dumps(events)
-                    self.clients[user].sendMessage(msg.encode('utf8'))
+                    messages[user] = events
+
+        return messages
 
     def event_edit_comment(
         self, client, context_oid,
-        channel_oid, comment_oid):
-        request = get_request(client)
+        channel_oid, comment_oid, **kwargs):
+        request = kwargs.get('request')
+        current_user = kwargs.get('current_user')
         context = get_obj(int(context_oid))
-        current_user = get_user(request)
         comment = get_obj(int(comment_oid))
         channel = get_obj(int(channel_oid))
+        messages = {}
         for user in self.clients:
             if user is not current_user:
                 channels = getattr(user, 'following_channels', [])
@@ -253,18 +278,20 @@ class BroadcastServerFactory(WebSocketServerFactory):
                             'user_oid': str(current_user.__oid__)
                         }
                     }]
-                    msg = json.dumps(events)
-                    self.clients[user].sendMessage(msg.encode('utf8'))
+                    messages[user] = events
+
+        return messages
 
     def event_new_answer(
         self, client, context_oid,
         channel_oid, comment_oid,
-        comment_parent_oid):
-        request = get_request(client)
+        comment_parent_oid, **kwargs):
+        request = kwargs.get('request')
+        current_user = kwargs.get('current_user')
         context = get_obj(int(context_oid))
-        current_user = get_user(request)
         comment = get_obj(int(comment_oid))
         channel = get_obj(int(channel_oid))
+        messages = {}
         for user in self.clients:
             if user is not current_user:
                 channels = getattr(user, 'following_channels', [])
@@ -291,13 +318,17 @@ class BroadcastServerFactory(WebSocketServerFactory):
                             'user_oid': str(current_user.__oid__)
                         }
                     }]
-                    msg = json.dumps(events)
-                    self.clients[user].sendMessage(msg.encode('utf8'))
+                    messages[user] = events
 
-    def event_remove_comment(self, client, channel_oid, comment_oid):
-        request = get_request(client)
-        current_user = get_user(request)
+        return messages
+
+    def event_remove_comment(
+        self, client, channel_oid,
+        comment_oid, **kwargs):
+        request = kwargs.get('request')
+        current_user = kwargs.get('current_user')
         channel = get_obj(int(channel_oid))
+        messages = {}
         for user in self.clients:
             if user is not current_user:
                 channels = getattr(user, 'following_channels', [])
@@ -310,8 +341,9 @@ class BroadcastServerFactory(WebSocketServerFactory):
                             'comment_oid': str(comment_oid)
                         }
                     }]
-                    msg = json.dumps(events)
-                    self.clients[user].sendMessage(msg.encode('utf8'))
+                    messages[user] = events
+
+        return messages
 
     def signal_new_connection(self, user, client):
         msg = json.dumps([{
@@ -335,14 +367,17 @@ class BroadcastServerFactory(WebSocketServerFactory):
         msg = json.dumps(events)
         client.sendMessage(msg.encode('utf8'))
 
-    def register(self, client):
-        user = get_user(get_request(client))
+    def register(self, client, **kwargs):
+        request = get_request(client)
+        root = request.root
+        user = get_user(request)
         if user and user not in self.clients:
             self.clients[user] = client
             self.signal_new_connection(user, client)
             self.signal_connected_users(user, client)
+            root.connected_users = list(self.clients.keys())
 
-    def signal_new_dicconnection(self, user, client):
+    def signal_new_dicconnection(self, user, client, **kwargs):
         msg = json.dumps([{
             'event': 'disconnection',
             'params': {
@@ -351,14 +386,18 @@ class BroadcastServerFactory(WebSocketServerFactory):
         }])
         self.broadcast(msg, [user])
 
-    def unregister(self, client):
-        user = get_user(get_request(client))
+    def unregister(self, client, **kwargs):
+        request = get_request(client)
+        root = request.root
+        user = get_user(request)
         if user and user in self.clients:
             self.clients.pop(user)
             if user in self.opened_channels:
                 self.opened_channels.pop(user)
+                root.opened_channels = dict(self.opened_channels)
 
             self.signal_new_dicconnection(user, client)
+            root.connected_users = list(self.clients.keys())
 
     def broadcast(self, msg, exclude=[]):
         for user in self.clients:
@@ -371,23 +410,23 @@ def run_ws(app):
     log.startLogging(sys.stdout)
 
     # create a Twisted Web resource for our WebSocket server
-    wsFactory = BroadcastServerFactory(u"ws://127.0.0.1:8080")
-    wsFactory.protocol = BroadcastServerProtocol
-    wsResource = WebSocketResource(wsFactory)
+    ws_factory = NovaIdeoServerFactory(u"ws://127.0.0.1:8080")
+    ws_factory.protocol = NovaIdeoServerProtocol
+    ws_resource = WebSocketResource(ws_factory)
+    # root.ws_factory = ws_factory
 
     # create a Twisted Web WSGI resource for our app server
-    wsgiResource = WSGIResource(reactor, reactor.getThreadPool(), app)
+    wsgi_resource = WSGIResource(reactor, reactor.getThreadPool(), app)
 
     # create a root resource serving everything via WSGI/Flask, but
     # the path "/ws" served by our WebSocket stuff
-    rootResource = WSGIRootResource(wsgiResource, {b'ws': wsResource})
+    rootResource = WSGIRootResource(wsgi_resource, {b'ws': ws_resource})
 
     factory = WebSocketClientFactory(u"ws://127.0.0.1:8080")
-    factory.protocol = BroadcastClientProtocol
+    factory.protocol = NovaIdeoClientProtocol
     connectWS(factory)
 
     # create a Twisted Web Site and run everything
     site = Site(rootResource)
-
     reactor.listenTCP(8080, site)
     reactor.run()
