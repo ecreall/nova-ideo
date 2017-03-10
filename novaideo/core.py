@@ -231,6 +231,9 @@ class Debatable(VisualisableElement, Entity):
         channels = getattr(self, 'channels', [])
         return channels[0] if channels else None
 
+    def get_channel(self, user):
+        return self.channel
+
     def get_title(self, user=None):
         return getattr(self, 'title', '')
 

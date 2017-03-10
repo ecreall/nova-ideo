@@ -345,7 +345,12 @@ def get_access_key(obj):
 
 def seecomment_processsecurity_validation(process, context):
     if 'published' in context.state:
-        subject = context.subject
+        user = get_current()
+        subject = context.channel.get_subject(user)
+        channel = subject.get_channel(user)
+        if channel is not context.channel:
+            return False
+
         see_action = VALIDATOR_BY_CONTEXT.get(
             subject.__class__, {}).get('see', None)
         return see_action.processsecurity_validation(
