@@ -599,7 +599,8 @@ class Remind(InfiniteCardinality):
             datetime.datetime.now(tz=pytz.UTC))
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
-        mail_template = root.get_mail_template('preregistration')
+        mail_template = root.get_mail_template(
+            'preregistration', getattr(context, 'locale', root.locale))
         email_data = get_user_data(context, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
