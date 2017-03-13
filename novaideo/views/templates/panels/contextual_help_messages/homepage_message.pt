@@ -1,5 +1,5 @@
 <div   class="contextual-help-item principal-help"  i18n:domain="novaideo">
-    <div tal:omit-tag="" tal:condition="not request.is_idea_box" >
+    <div tal:omit-tag="" tal:condition="'proposal' in request.content_to_manage" >
         <p i18n:translate="" tal:condition="not (request.support_ideas or request.support_proposals)">
             To write down an idea, access your content, or intervene on an idea or a proposal, you must beforehand be registered and connected.
         </p>
@@ -20,7 +20,7 @@
             <span i18n:translate="" tal:omit-tag="" tal:condition="'proposal' in request.content_to_examine">, or being examined</span>.
         </p>
     </div>
-    <div  tal:omit-tag="" tal:condition="request.is_idea_box">
+    <div  tal:omit-tag="" tal:condition="'proposal' not in request.content_to_manage">
         <p i18n:translate="">
             To write down an idea, access your content, or intervene on an idea or a proposal, you must beforehand be registered and connected.
         </p>

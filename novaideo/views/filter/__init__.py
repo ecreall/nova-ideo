@@ -1084,6 +1084,7 @@ class FilterView(FormView):
                               ('temporal_filter', ['negation', 'created_date']),
                               'contribution_filter', 'text_filter'])
 
+
     def calculate_posted_filter(self):
         form, reqts = self._build_form()
         form.formid = self.viewid + '_' + form.formid
@@ -1145,8 +1146,15 @@ def get_filter(view, url, omit=(),
     if source:
         filter_instance.analyze_data(source)
 
+    if 'challenge' not in view.request.content_to_manage:
+        metadata_filter = filter_instance.schema.get('metadata_filter')
+        if metadata_filter:
+            challenges = metadata_filter.get('challenges')
+            if challenges:
+                metadata_filter.children.remove(challenges)
+
     filter_form = filter_instance.update()
-    filter_body = filter_form['coordinates']\
+    filter_body = filter_form['coordinates'] \
                              [filter_instance.coordinates][0]['body']
     filter_data = {'filter_body': filter_body,
                    'filter_url': url,

@@ -289,6 +289,9 @@ class Challenge(
             duration = (deadline - date.date()).days
             setattr(self, 'duration', duration)
 
+    def is_managed(self, root):
+        return root.manage_challenges
+
     def get_attached_files_data(self):
         return get_files_data(self.attached_files)
 

@@ -37,9 +37,6 @@ class ContentView(BasicView):
     content_attr = 'ideas'
 
     def update(self):
-        if self.request.is_idea_box:
-            self.title = ''
-
         user = self.context
         current_user = get_current()
         objects = []
@@ -127,9 +124,14 @@ class PersonContentsView(MultipleView):
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
-            if self.request.is_idea_box:
-                views = (IdeasView, )
+            views = [IdeasView]
+            if 'question' in self.request.content_to_manage:
+                views = [QuestionsView, IdeasView]
 
+            if 'proposal' in self.request.content_to_manage:
+                views.append(ProposalsView)
+
+            views = tuple(views)
             if self.params('view_content_attr') == 'ideas':
                 views = (IdeasView, )
 

@@ -1263,7 +1263,7 @@ class WithdrawToken(InfiniteCardinality):
 
 def seewgs_state_validation(process, context):
     request = get_current_request()
-    if getattr(request, 'is_idea_box', False):
+    if 'proposal' not in request.content_to_manage:
         return False
 
     condition = False
@@ -1291,6 +1291,7 @@ class SeeRelatedWorkingGroups(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return nothing
+
 #TODO behaviors
 
 VALIDATOR_BY_CONTEXT[Idea] = {

@@ -165,7 +165,7 @@ class StepsPanel(object):
     def __call__(self, context, request):
         self.context = context
         self.request = request
-        if getattr(self.request, 'is_idea_box', False):
+        if 'proposal' not in self.request.content_to_manage:
             return {'condition': False}
 
         result = {}

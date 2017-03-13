@@ -157,7 +157,7 @@ class AddContent(object):
 class UserNavBarPanel(object):
 
     navbar_actions = [SeeMyContents, SeeMyParticipations,
-                      SeeMySelections, SeeMySupports]
+                      SeeMySelections]
 
     def __init__(self, context, request):
         self.context = context
@@ -165,8 +165,11 @@ class UserNavBarPanel(object):
 
     def __call__(self, has_contextual_help=False):
         root = getSite()
-        if getattr(self.request, 'is_idea_box', False):
+        if 'proposal' not in self.request.content_to_manage:
             self.navbar_actions = [SeeMyContents, SeeMySelections]
+
+        if self.request.support_ideas or self.request.support_proposals:
+            self.navbar_actions.append(SeeMySupports)
 
         actions_url = OrderedDict()
         for actionclass in self.navbar_actions:
@@ -221,11 +224,14 @@ class NovaideoContents(object):
         query = object_provides_index.any((Iidea.__identifier__,)) & \
             states_index.any(['published'])
         result['nb_idea'] = query.execute().__len__()
-        query = object_provides_index.any((IQuestion.__identifier__,)) & \
-            states_index.any(['published'])
-        result['nb_question'] = query.execute().__len__()
+        result['nb_question'] = 0
+        if 'question' in self.request.content_to_manage:
+            query = object_provides_index.any((IQuestion.__identifier__,)) & \
+                states_index.any(['published'])
+            result['nb_question'] = query.execute().__len__()
+
         result['nb_proposal'] = 0
-        if not getattr(self.request, 'is_idea_box', False):
+        if 'proposal' in self.request.content_to_manage:
             query = object_provides_index.any((IProposal.__identifier__,)) & \
                 states_index.notany(['archived', 'draft'])
             result['nb_proposal'] = query.execute().__len__()
@@ -770,7 +776,7 @@ class ChallengePanel(object):
     def __call__(self):
         # TODO Add communication actions
         challenge = getattr(self.context, 'challenge', None)
-        if challenge is None:
+        if challenge is None or 'challenge' not in self.request.content_to_manage:
             return {}
 
         try:
@@ -791,12 +797,15 @@ class ChallengePanel(object):
             object_provides_index.any((Iidea.__identifier__,)) & \
             states_index.any(['published'])
         result['nb_idea'] = query.execute().__len__()
-        query = challenges.any([challenge.__oid__]) & \
-            object_provides_index.any((IQuestion.__identifier__,)) & \
-            states_index.any(['published'])
-        result['nb_question'] = query.execute().__len__()
+        result['nb_question'] = 0
+        if 'question' not in self.request.content_to_manage:
+            query = challenges.any([challenge.__oid__]) & \
+                object_provides_index.any((IQuestion.__identifier__,)) & \
+                states_index.any(['published'])
+            result['nb_question'] = query.execute().__len__()
+
         result['nb_proposal'] = 0
-        if not getattr(self.request, 'is_idea_box', False):
+        if 'proposal' not in self.request.content_to_manage:
             query = challenges.any([challenge.__oid__]) & \
                 object_provides_index.any((IProposal.__identifier__,)) & \
                 states_index.notany(['archived', 'draft'])
@@ -818,7 +827,7 @@ class ChallengesPanel(object):
 
     def __call__(self):
         is_homepage = self.request.view_name in ('index', '')
-        if not is_homepage:
+        if not is_homepage or 'challenge' not in self.request.content_to_manage:
             return {'condition': False}
 
         challenges_view = SeeChallengesHomeView(self.context, self.request)

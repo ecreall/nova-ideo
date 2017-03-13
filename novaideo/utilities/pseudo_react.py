@@ -1672,10 +1672,9 @@ def component_navbar_myselections(action, request, context, api, **kwargs):
     source_view_name = kwargs.get('view_name', '')
     localizer = request.localizer
     selections = [o for o in getattr(user, 'selections', [])
-                  if 'archived' not in o.state]
-    if getattr(request, 'is_idea_box', False):
-        selections = [s for s in selections
-                      if not isinstance(s, Proposal)]
+                  if 'archived' not in o.state
+                  and (not hasattr(o, 'is_managed') or
+                       o.is_managed(request.root))]
     len_selections = len(selections)
     result = {
         'component-navbar-myselections.item_nb': len_selections,
@@ -1739,10 +1738,9 @@ def component_navbar_mycontents(action, request, context, api, **kwargs):
     user = kwargs.get('user', None)
     localizer = request.localizer
     source_view_name = kwargs.get('view_name', '')
-    contents = [o for o in getattr(user, 'contents', [])]
-    if getattr(request, 'is_idea_box', False):
-        contents = [s for s in contents
-                    if not isinstance(s, Proposal)]
+    contents = [o for o in getattr(user, 'contents', [])
+                if not hasattr(o, 'is_managed') or
+                o.is_managed(request.root)]
     item_nb = len(contents)
     result = {
         'component-navbar-mycontents.item_nb': item_nb,

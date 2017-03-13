@@ -42,34 +42,35 @@ CONTENTS_MESSAGES = {
 
 
 def get_contents_forms(request):
-        result = {
-            'forms': [],
-            'css_links': [],
-            'js_links': [],
-            'has_forms': False}
-        if request.view_name not in ('', 'index', 'seemycontents'):
-            return result
+    result = {
+        'forms': [],
+        'css_links': [],
+        'js_links': [],
+        'has_forms': False}
+    if request.view_name not in ('', 'index', 'seemycontents'):
+        return result
 
-        root = getSite()
-        result_idea = get_home_actions_bodies(
-            'ideamanagement', 'creat', 'formcreateideahome',
-            request, root)
-        result['forms'].append({
-            'id': 'ideahomeform',
-            'active': True,
-            'title': _('Create an idea'),
-            'form': result_idea['form'],
-            'action': result_idea['action'],
-            'search_url': request.resource_url(
-                root, '@@novaideoapi', query={'op': 'get_similar_ideas'}),
-            'action_url': request.resource_url(
-                root, '@@ideasmanagement',
-                query={'op': 'creat_home_idea'}),
-            'css_class': 'home-add-idea'
-        })
-        has_forms = result_idea['form'] is not None
-        result['js_links'] = result_idea['js_links']
-        result['css_links'] = result_idea['css_links']
+    root = getSite()
+    result_idea = get_home_actions_bodies(
+        'ideamanagement', 'creat', 'formcreateideahome',
+        request, root)
+    result['forms'].append({
+        'id': 'ideahomeform',
+        'active': True,
+        'title': _('Create an idea'),
+        'form': result_idea['form'],
+        'action': result_idea['action'],
+        'search_url': request.resource_url(
+            root, '@@novaideoapi', query={'op': 'get_similar_ideas'}),
+        'action_url': request.resource_url(
+            root, '@@ideasmanagement',
+            query={'op': 'creat_home_idea'}),
+        'css_class': 'home-add-idea'
+    })
+    has_forms = result_idea['form'] is not None
+    result['js_links'] = result_idea['js_links']
+    result['css_links'] = result_idea['css_links']
+    if 'question' in request.content_to_manage:
         result_question = get_home_actions_bodies(
             'questionmanagement', 'creat',
             'formaskquestionhome', request, root)
@@ -86,12 +87,13 @@ def get_contents_forms(request):
             'css_class': 'home-add-question'
         })
         has_forms = has_forms or result_question['form'] is not None
-        result['has_forms'] = has_forms
-        result['js_links'].extend(result_idea['js_links'])
-        result['css_links'].extend(result_idea['css_links'])
-        result['js_links'] = list(set(result['js_links']))
-        result['css_links'] = list(set(result['css_links']))
-        return result
+        result['js_links'].extend(result_question['js_links'])
+        result['css_links'].extend(result_question['css_links'])
+
+    result['has_forms'] = has_forms
+    result['js_links'] = list(set(result['js_links']))
+    result['css_links'] = list(set(result['css_links']))
+    return result
 
 
 class ContentView(BasicView):
@@ -132,9 +134,6 @@ class ContentView(BasicView):
             filterid=self.content_type)
 
     def update(self):
-        if self.request.is_idea_box:
-            self.title = ''
-
         user = get_current()
         filter_form, filter_data = self._add_filter(user)
         default_content = [self.content_type]
@@ -310,9 +309,14 @@ class ChallengeContentsView(MultipleView):
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
-            if self.request.is_idea_box:
-                views = (IdeasView, )
+            views = [IdeasView]
+            if 'question' in self.request.content_to_manage:
+                views = [QuestionsView, IdeasView]
 
+            if 'proposal' in self.request.content_to_manage:
+                views.append(ProposalsView)
+
+            views = tuple(views)
             if self.params('view_content_type') == 'idea':
                 views = (IdeasView, )
 

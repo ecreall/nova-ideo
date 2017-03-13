@@ -53,7 +53,7 @@
         </a>
       </div>
       
-      <div tal:condition="challenge" class="challenge-block">
+      <div tal:condition="'challenge' in request.content_to_manage and challenge" class="challenge-block">
         <small i18n:attributes="title" title="Associated to this challenge">
           <span class="${challenge.icon}"></span>
           <a data-oid="${getattr(challenge, '__oid__', '')}"

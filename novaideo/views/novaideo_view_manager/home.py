@@ -45,9 +45,6 @@ class ContentView(BasicView):
 
     def _add_filter(self, user):
         def source(**args):
-            # default_content = [key[0] for key in
-            #                    get_default_searchable_content(self.request)]
-            # default_content.remove("person")
             default_content = [self.content_type]
             filter_ = {
                 'metadata_filter': {
@@ -73,14 +70,8 @@ class ContentView(BasicView):
             filterid=self.content_type)
 
     def update(self):
-        if self.request.is_idea_box:
-            self.title = ''
-
         user = get_current()
         filter_form, filter_data = self._add_filter(user)
-        # default_content = [key[0] for key in
-        #                    get_default_searchable_content(self.request)]
-        # default_content.remove("person")
         default_content = [self.content_type]
         validated = {
             'metadata_filter':
@@ -188,9 +179,14 @@ class HomeView(MultipleView):
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
-            if self.request.is_idea_box:
-                views = (IdeasView, )
+            views = [IdeasView]
+            if 'question' in self.request.content_to_manage:
+                views = [QuestionsView, IdeasView]
 
+            if 'proposal' in self.request.content_to_manage:
+                views.append(ProposalsView)
+
+            views = tuple(views)
             if self.params('view_content_type') == 'idea':
                 views = (IdeasView, )
 

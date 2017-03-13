@@ -418,7 +418,7 @@ def createproposal_roles_validation(process, context):
 
 def createproposal_processsecurity_validation(process, context):
     request = get_current_request()
-    if getattr(request, 'is_idea_box', False):
+    if 'proposal' not in request.content_to_manage:
         return False
 
     return global_user_processsecurity()
@@ -477,7 +477,7 @@ class CreateProposal(InfiniteCardinality):
 
 def pap_processsecurity_validation(process, context):
     request = get_current_request()
-    if getattr(request, 'is_idea_box', False):
+    if 'proposal' not in request.content_to_manage:
         return False
 
     condition = False
@@ -1065,6 +1065,10 @@ def comm_roles_validation(process, context):
 
 
 def comm_processsecurity_validation(process, context):
+    root = getSite(context)
+    if not root.manage_proposals:
+        return False
+
     return global_user_processsecurity()
 
 

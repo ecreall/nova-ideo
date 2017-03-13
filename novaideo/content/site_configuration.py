@@ -16,7 +16,7 @@ from pontus.widget import (
 from pontus.file import ObjectData, File
 
 from novaideo.content.processes.proposal_management import WORK_MODES
-from novaideo import _, AVAILABLE_LANGUAGES
+from novaideo import _, AVAILABLE_LANGUAGES, DEFAULT_CONTENT_TO_MANAGE
 from novaideo.mail import DEFAULT_SITE_MAILS
 from novaideo.core_schema import ContactSchema
 from novaideo import core
@@ -46,16 +46,28 @@ def content_types_choices(node, kw):
     return CheckboxChoiceWidget(values=sorted(values), multiple=True)
 
 
+@colander.deferred
+def content_manage_choices(node, kw):
+    content_to_manage = DEFAULT_CONTENT_TO_MANAGE
+    request = node.bindings['request']
+    localizer = request.localizer
+    values = [(key, localizer.translate(
+              getattr(c, 'type_title', c.__class__.__name__)))
+              for key, c in list(core.SEARCHABLE_CONTENTS.items())
+              if key in content_to_manage]
+    return CheckboxChoiceWidget(values=sorted(values), multiple=True)
+
+
 class WorkParamsConfigurationSchema(Schema):
     """Schema for site configuration."""
 
-    is_idea_box = colander.SchemaNode(
-        colander.Boolean(),
-        widget=deform.widget.CheckboxWidget(),
-        label=_('Is a suggestion box'),
-        description=_('In a suggestion box, only the ideas are managed.'),
-        title='',
-        missing=False
+    content_to_manage = colander.SchemaNode(
+        colander.Set(),
+        widget=content_manage_choices,
+        title=_('Contents to be managed with the ideas'),
+        description=_('Content that can be created by members. Ideas are included by default.'),
+        default=DEFAULT_CONTENT_TO_MANAGE,
+        missing=DEFAULT_CONTENT_TO_MANAGE
     )
 
     content_to_moderate = colander.SchemaNode(

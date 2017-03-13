@@ -72,6 +72,9 @@ VIEW_TYPES = {'default': _('Default view'),
 ACCESS_ACTIONS = {}
 
 
+DEFAULT_CONTENT_TO_MANAGE = ['challenge', 'question', 'proposal']
+
+
 def get_locales():
     dir_ = os.listdir(os.path.join(os.path.dirname(__file__),
                                    '.', 'locale'))
@@ -143,16 +146,16 @@ def support_proposals(request):
     return getattr(request.root, 'support_proposals', False)
 
 
-def is_idea_box(request):
-    return getattr(request.root, 'is_idea_box', False)
-
-
 def content_to_examine(request):
     return getattr(request.root, 'content_to_examine', [])
 
 
 def content_to_support(request):
     return getattr(request.root, 'content_to_support', [])
+
+
+def content_to_manage(request):
+    return getattr(request.root, 'content_to_manage', DEFAULT_CONTENT_TO_MANAGE)
 
 
 def accessible_to_anonymous(request):
@@ -166,7 +169,7 @@ def accessible_to_anonymous(request):
 
 
 def analytics_default_content_types(request):
-    if request.is_idea_box:
+    if 'proposal' not in request.content_to_manage:
         return ['idea']
     else:
         return list(ANALYTICS_DEFAUT_CONTENTS)
@@ -176,14 +179,14 @@ def searchable_contents(request):
     from novaideo.core import SEARCHABLE_CONTENTS
     searchable_contents = dict(SEARCHABLE_CONTENTS)
     modes = request.root.get_work_modes()
-    # searchable_contents.pop('webadvertising')
-    # searchable_contents.pop('file')
-    if 'amendment' not in modes:
+    content_to_manage = request.content_to_manage
+    if 'amendment' not in modes or 'proposal' not in content_to_manage:
         searchable_contents.pop('amendment')
 
-    if getattr(request, 'is_idea_box', False):
-        searchable_contents.pop('proposal')
-        return searchable_contents
+    for content_type in DEFAULT_CONTENT_TO_MANAGE:
+        if content_type not in content_to_manage and \
+           content_type in searchable_contents:
+            searchable_contents.pop(content_type)
 
     return searchable_contents
 
@@ -754,10 +757,10 @@ def main(global_config, **settings):
     config.add_request_method(support_proposals, reify=True)
     config.add_request_method(content_to_examine, reify=True)
     config.add_request_method(content_to_support, reify=True)
-    config.add_request_method(is_idea_box, reify=True)
     config.add_request_method(accessible_to_anonymous, reify=True)
     config.add_request_method(searchable_contents, reify=True)
     config.add_request_method(analytics_default_content_types, reify=True)
+    config.add_request_method(content_to_manage, reify=True)
     config.add_evolution_step(evolve_wg)
     config.add_evolution_step(evolve_states_ideas)
     config.add_evolution_step(evolve_state_files)
