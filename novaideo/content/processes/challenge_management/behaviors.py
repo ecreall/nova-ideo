@@ -408,7 +408,7 @@ def comm_roles_validation(process, context):
 
 
 def comm_processsecurity_validation(process, context):
-    root = getSite(context)
+    root = getSite()
     if not root.manage_challenges:
         return False
 
