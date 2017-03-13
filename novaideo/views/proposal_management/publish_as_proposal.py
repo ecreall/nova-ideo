@@ -129,8 +129,8 @@ class PublishFormView(CreateProposalFormView):
 
     def before_update(self):
         user = get_current(self.request)
-        has_challenges = len(get_pending_challenges(user)) > 0
-        if not has_challenges:
+        if 'challenge' not in self.request.content_to_manage or \
+           not len(get_pending_challenges(user)) > 0:
             self.schema = omit(
                 self.schema, ['challenge'])
 

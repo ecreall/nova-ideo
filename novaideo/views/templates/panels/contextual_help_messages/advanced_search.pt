@@ -5,8 +5,8 @@
 	<p>
 		<span i18n:translate="">These filters may bear upon:</span>
 		<ul>
-			<li i18n:translate="" tal:condition="request.is_idea_box" >the meta-data of the contents, i.e. the types of content on the platform (idea, person) the kewords, the states in which these contents may be in,</li>
-			<li i18n:translate="" tal:condition="not request.is_idea_box">the meta-data of the contents, i.e. the types of content on the platform (idea, proposal, person) the kewords, the states in which these contents may be in,</li>
+			<li i18n:translate="" tal:condition="'proposal' not in request.content_to_manage" >the meta-data of the contents, i.e. the types of content on the platform (idea, person) the kewords, the states in which these contents may be in,</li>
+			<li i18n:translate="" tal:condition="'proposal' in request.content_to_manage">the meta-data of the contents, i.e. the types of content on the platform (idea, proposal, person) the kewords, the states in which these contents may be in,</li>
 			<li i18n:translate="">a period of time between two dates, during which the contents were created,</li>
 			<li i18n:translate="">the contributors, i.e. one or several authors specifically,</li>
 			<li i18n:translate="">one or several texts present among the elements found.</li>

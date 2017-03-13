@@ -34,15 +34,11 @@ from novaideo import _, nothing
 from novaideo.content.challenge import Challenge
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
-from novaideo.utilities.util import connect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved)
 from novaideo.utilities.alerts_utility import (
-    alert, get_user_data, get_entity_data, alert_comment_nia)
+    alert, get_user_data, get_entity_data)
 from novaideo.content.alert import InternalAlertKind
-from novaideo.content.question import Answer
-from novaideo.content.correlation import CorrelationType
-from novaideo.content.comment import Comment
 from novaideo.content.processes.idea_management.behaviors import (
     PresentIdea,
     CommentIdea,
@@ -54,6 +50,9 @@ def createchallenge_roles_validation(process, context):
 
 
 def createchallenge_processsecurity_validation(process, context):
+    if not context.manage_challenges:
+        return False
+
     return global_user_processsecurity()
 
 
@@ -409,6 +408,10 @@ def comm_roles_validation(process, context):
 
 
 def comm_processsecurity_validation(process, context):
+    root = getSite()
+    if not root.manage_challenges:
+        return False
+
     return global_user_processsecurity()
 
 

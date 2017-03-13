@@ -87,11 +87,9 @@ class SeeMyContents(InfiniteCardinality):
 
     def contents_nb(self, request, context):
         user = get_current()
-        contents = [o for o in getattr(user, 'contents', [])]
-        if getattr(request, 'is_idea_box', False):
-            return len([s for s in contents
-                        if not isinstance(s, Proposal)])
-
+        contents = [o for o in getattr(user, 'contents', [])
+                    if not hasattr(o, 'is_managed') or
+                    o.is_managed(request.root)]
         return len(contents)
 
     def start(self, context, request, appstruct, **kw):
@@ -115,11 +113,9 @@ class SeeMySelections(InfiniteCardinality):
     def contents_nb(self, request, context):
         user = get_current()
         selections = [o for o in getattr(user, 'selections', [])
-                      if 'archived' not in o.state]
-        if getattr(request, 'is_idea_box', False):
-            return len([s for s in selections
-                        if not isinstance(s, Proposal)])
-
+                      if 'archived' not in o.state
+                      and (not hasattr(o, 'is_managed') or
+                           o.is_managed(request.root))]
         return len(selections)
 
     def start(self, context, request, appstruct, **kw):
@@ -128,7 +124,7 @@ class SeeMySelections(InfiniteCardinality):
 
 def seemypa_processsecurity_validation(process, context):
     user = get_current()
-    if getattr(context, 'is_idea_box', False):
+    if not context.manage_proposals:
         return False
 
     return getattr(user, 'participations', []) and \
@@ -152,12 +148,15 @@ class SeeMyParticipations(InfiniteCardinality):
 
 def seemysu_processsecurity_validation(process, context):
     user = get_current()
-    if getattr(context, 'is_idea_box', False):
-        return False
+    if context.support_ideas or \
+       (context.support_proposals and context.manage_proposals):
+        root = getSite(context)
+        supports = [o for o in getattr(user, 'supports', [])
+                    if 'archived' not in o.state
+                    and o.is_managed(root)]
+        return supports and global_user_processsecurity()
 
-    supports = [o for o in getattr(user, 'supports', [])
-                if 'archived' not in o.state]
-    return supports and global_user_processsecurity()
+    return False
 
 
 class SeeMySupports(InfiniteCardinality):
@@ -182,10 +181,10 @@ def seeproposals_roles_validation(process, context):
 
 
 def seeproposals_processsecurity_validation(process, context):
-    if getattr(context, 'is_idea_box', False):
+    if not context.manage_proposals:
         return False
 
-    return 'proposal' in getattr(context, 'content_to_examine', [] ) and\
+    return 'proposal' in getattr(context, 'content_to_examine', []) and\
            global_user_processsecurity()
 
 

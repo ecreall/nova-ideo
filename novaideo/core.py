@@ -433,6 +433,9 @@ class SearchableEntity(VisualisableElement, Entity):
                 getattr(self, 'description', ''),
                 ', '.join(getattr(self, 'keywords', []))]
 
+    def is_managed(self, root):
+        return True
+
     def get_title(self, user=None):
         return getattr(self, 'title', '')
 

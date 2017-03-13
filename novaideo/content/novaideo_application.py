@@ -30,7 +30,7 @@ from pontus.widget import (
 from pontus.file import ObjectData as ObjectDataOrigine, OBJECT_DATA
 from pontus.schema import omit, select
 
-from novaideo import _, DEFAULT_FILES
+from novaideo import _, DEFAULT_FILES, DEFAULT_CONTENT_TO_MANAGE
 from novaideo.content.file import FileEntity
 from novaideo.core import Channel, CorrelableEntity, Debatable
 from .organization import OrganizationSchema, Organization
@@ -437,6 +437,18 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     @property
     def support_ideas(self):
         return 'idea' in getattr(self, 'content_to_support', [])
+
+    @property
+    def manage_challenges(self):
+        return 'challenge' in getattr(self, 'content_to_manage', DEFAULT_CONTENT_TO_MANAGE)
+
+    @property
+    def manage_questions(self):
+        return 'question' in getattr(self, 'content_to_manage', DEFAULT_CONTENT_TO_MANAGE)
+
+    @property
+    def manage_proposals(self):
+        return 'proposal' in getattr(self, 'content_to_manage', DEFAULT_CONTENT_TO_MANAGE)
 
     @property
     def titles(self):

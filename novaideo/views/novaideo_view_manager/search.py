@@ -19,12 +19,11 @@ from pontus.view import BasicView
 from pontus.widget import CheckboxChoiceWidget
 from pontus.schema import Schema
 from pontus.form import FormView
-from pontus.util import merge_dicts
 
 from novaideo.utilities.util import render_listing_objs
 from novaideo.content.processes.novaideo_view_manager.behaviors import Search
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo import _
+from novaideo import _, DEFAULT_CONTENT_TO_MANAGE
 from .widget import SearchTextInputWidget, SearchFormWidget
 from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.views.filter import (
@@ -44,22 +43,21 @@ CONTENTS_MESSAGES = {
     '*': _(u"""${nember} elements found""")
 }
 
-DEFAULT_SEARCHABLE_CONTENT = [('question', Question),
-                              ('idea', Idea),
-                              ('proposal', Proposal),
-                              ('person', Person)
-                            ]
+DEFAULT_SEARCHABLE_CONTENT = [
+    ('question', Question),
+    ('idea', Idea),
+    ('proposal', Proposal),
+    ('person', Person)
+]
 
 
 def get_default_searchable_content(request=None):
     if request is None:
         request = get_current_request()
 
-    if getattr(request, 'is_idea_box', False):
-        return [c for c in DEFAULT_SEARCHABLE_CONTENT
-                if c[0] != 'proposal']
-
-    return DEFAULT_SEARCHABLE_CONTENT
+    return [c for c in DEFAULT_SEARCHABLE_CONTENT
+            if c[0] not in DEFAULT_CONTENT_TO_MANAGE or
+            c[0] in request.content_to_manage]
 
 
 @view_config(
@@ -171,7 +169,9 @@ class SearchView(FormView):
         posted_formid = None
         default_content = [key[0] for key in get_default_searchable_content(self.request)]
         default_content.remove("person")
-        default_content.remove("question")
+        if 'question' in default_content:
+            default_content.remove("question")
+
         if '__formid__' in post:
             posted_formid = post['__formid__']
 
@@ -254,7 +254,9 @@ class SearchResultView(BasicView):
             default_content = [key[0] for key in
                                get_default_searchable_content(self.request)]
             default_content.remove("person")
-            default_content.remove("question")
+            if 'question' in default_content:
+                default_content.remove("question")
+
             filter_ = {
                 'metadata_filter': {'content_types': default_content}
             }

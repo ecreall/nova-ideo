@@ -55,6 +55,10 @@ def createquestion_roles_validation(process, context):
 
 
 def createquestion_processsecurity_validation(process, context):
+    root = getSite(context)
+    if not getattr(root, 'manage_questions', False):
+        return False
+
     return global_user_processsecurity()
 
 
@@ -251,6 +255,10 @@ def answer_roles_validation(process, context):
 
 
 def answer_processsecurity_validation(process, context):
+    root = getSite()
+    if not getattr(root, 'manage_questions', False):
+        return False
+
     options = getattr(context, 'options', [])
     options_condition = True
     if options:
@@ -379,6 +387,10 @@ def comm_roles_validation(process, context):
 
 
 def comm_processsecurity_validation(process, context):
+    root = getSite()
+    if not getattr(root, 'manage_questions', False):
+        return False
+
     return global_user_processsecurity()
 
 

@@ -38,9 +38,6 @@ class ContentView(BasicView):
     content_attr = 'ideas'
 
     def update(self):
-        if self.request.is_idea_box:
-            self.title = ''
-
         current_user = get_current()
         validated = {
             'metadata_filter':
@@ -142,9 +139,14 @@ class OrganizationContentsView(MultipleView):
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
-            if self.request.is_idea_box:
-                views = (IdeasView, )
+            views = [MembersView, IdeasView]
+            if 'question' in self.request.content_to_manage:
+                views = [MembersView, QuestionsView, IdeasView]
 
+            if 'proposal' in self.request.content_to_manage:
+                views.append(ProposalsView)
+
+            views = tuple(views)
             if self.params('view_content_attr') == 'ideas':
                 views = (IdeasView, )
 

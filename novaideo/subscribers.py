@@ -244,7 +244,6 @@ def init_application(event):
         root.locale = registry.settings.get('pyramid.default_locale_name')
 
     init_contents(registry)
-
     #invite initial user if first deployment
     if getattr(root, 'first_invitation_to_add', False):
         # LOGO_FILENAME='marianne.svg' for example

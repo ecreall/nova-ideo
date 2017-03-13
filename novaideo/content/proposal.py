@@ -302,6 +302,9 @@ class Proposal(VersionableEntity,
         if not hasattr(self, '_support_history'):
             setattr(self, '_support_history', PersistentList())
 
+    def is_managed(self, root):
+        return root.manage_proposals
+
     def get_more_contents_criteria(self):
         "return specific query, filter values"
         return None, {

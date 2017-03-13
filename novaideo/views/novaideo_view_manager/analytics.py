@@ -168,7 +168,7 @@ def content_types_choices(node, kw):
 @colander.deferred
 def default_content_types(node, kw):
     request = node.bindings['request']
-    if request.is_idea_box:
+    if 'proposal' not in request.content_to_manage:
         return ['idea']
 
     return ['proposal']
@@ -312,7 +312,7 @@ def content_type_choices(node, kw):
 @colander.deferred
 def default_content_type(node, kw):
     request = node.bindings['request']
-    if request.is_idea_box:
+    if 'proposal' not in request.content_to_manage:
         return 'idea'
 
     return 'proposal'
@@ -325,7 +325,7 @@ def default_states(node, kw):
                   'favorable', 'to_study', 'unfavorable',
                   'to work']
     default = get_content_types_states(['proposal'])['proposal']
-    if request.is_idea_box:
+    if 'proposal' not in request.content_to_manage:
         default = get_content_types_states(['idea'])['idea']
 
     [default.pop(s) for s in to_exclude if s in default]
@@ -602,7 +602,7 @@ class AnalyticsAPIJsonView(BasicView):
         formview.calculate_posted_filter()
         validated = getattr(formview, 'validated', {})
         default_content = 'proposal'
-        if self.request.is_idea_box:
+        if 'proposal' not in self.request.content_to_manage:
             default_content = 'idea'
 
         states = validated.get('states', [])

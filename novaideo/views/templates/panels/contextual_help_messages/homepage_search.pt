@@ -1,9 +1,9 @@
-<div  tal:condition="not request.is_idea_box" class="contextual-help-item principal-help"  i18n:domain="novaideo">
+<div  tal:condition="'proposal' in request.content_to_manage" class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">When you search words, your result contains all ideas whose title or keywords contain one of these words, all proposals whose title, summary or keywords contain one of these words, and all members whose given name, family name or topics of interest contain one of these words.</p>
 
     <p i18n:translate="">It is also possible to search only on ideas, on proposals, on members, or on a combination of these three elements.</p>
 </div>
-<div  tal:condition="request.is_idea_box" class="contextual-help-item principal-help"  i18n:domain="novaideo">
+<div  tal:condition="'proposal' not in request.content_to_manage" class="contextual-help-item principal-help"  i18n:domain="novaideo">
     <p i18n:translate="">When you search words, your result contains all ideas whose title or keywords contain one of these words, and all members whose given name, family name or topics of interest contain one of these words.</p>
 
     <p i18n:translate="">It is also possible to search only on ideas, on members, or on a combination of these two elements.</p>
