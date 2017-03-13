@@ -1084,7 +1084,6 @@ class FilterView(FormView):
                               ('temporal_filter', ['negation', 'created_date']),
                               'contribution_filter', 'text_filter'])
 
-
     def calculate_posted_filter(self):
         form, reqts = self._build_form()
         form.formid = self.viewid + '_' + form.formid
