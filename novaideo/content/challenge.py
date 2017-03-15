@@ -42,7 +42,7 @@ from novaideo.core import (
     SignalableEntity,
     Debatable)
 from novaideo.content.correlation import CorrelationType
-from novaideo.views.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget
 from novaideo import _, log
 from novaideo.file import Image
 from novaideo.utilities.util import (

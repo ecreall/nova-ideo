@@ -28,7 +28,7 @@ from deform_treepy.widget import (
 
 from .interface import ISmartFolder
 from novaideo import _, VIEW_TYPES, log, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
-from novaideo.views.widget import (
+from novaideo.widget import (
     CssWidget,
     TextInputWidget,
     BootstrapIconInputWidget

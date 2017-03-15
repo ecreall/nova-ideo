@@ -31,7 +31,7 @@ from novaideo.core import (
     ADVERTISING_CONTAINERS)
 from novaideo.utilities import french_dates_parser as Parser
 from novaideo.utilities.util import dates, get_files_data
-from novaideo.views.widget import DateIcalWidget
+from novaideo.widget import DateIcalWidget
 from novaideo.content import get_file_widget
 
 

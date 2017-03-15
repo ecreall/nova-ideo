@@ -20,7 +20,7 @@ from pontus.widget import CheckboxChoiceWidget
 
 from .interface import ISReport
 from novaideo import _, REPORTING_REASONS
-from novaideo.views.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget
 
 REASON_TEMPLATE = 'novaideo:views/reports_management/templates/reason.pt'
 

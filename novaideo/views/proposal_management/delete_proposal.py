@@ -19,7 +19,7 @@ from pontus.view_operation import MultipleView
 from novaideo.content.processes.proposal_management.behaviors import (
     DeleteProposal)
 from novaideo.content.proposal import Proposal
-from novaideo.views.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget
 from novaideo import _
 
 

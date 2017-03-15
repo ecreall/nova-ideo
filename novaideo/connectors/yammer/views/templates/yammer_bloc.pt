@@ -1,0 +1,45 @@
+
+<div class="thumbnail right-caption span4 search-item search-connector search-item-bloc result-item view-item component-obj-view component-listing-view"
+     id="listingbloc_${oid}"
+     data-component_type="object-view"
+     i18n:domain="novaideo"
+     tal:define="icon getattr(object, 'icon');
+                 oid object.__oid__;
+                 ">
+    <div class="connector-img">
+       <img src="${request.static_url('novaideo:static/connectors/yammer/images/yammer.png')}" role="presentation" width="120">
+    </div>
+
+  <div class="caption media-bloc">
+    <div class="media-challenge-body">
+      <div class="">
+        <div class="object-title-block view-item-title">
+          <div class="object-menu pull-right">
+            <div tal:replace="structure menu_body"/>
+          </div>
+          <h4 >
+            <span class="icon ${icon}"></span>  Yammer connector
+          </h4>
+        </div>
+        
+        <div class="row object-row-content">
+          <div class="col col-xs-12 col-md-12">
+            <div class="object-text">The yammer connector</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-item-footer">
+        <div class="actions-block">
+          <div tal:replace="structure footer_body"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="action-interation-container action-slider-container"
+         data-interaction_kind="slider">
+      <button class="btn btn-primary action-slider-btn"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      <div class="container-body">
+      </div>
+  </div>
+</div>

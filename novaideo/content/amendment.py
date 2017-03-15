@@ -34,7 +34,7 @@ from novaideo.core import (
     DuplicableEntity,
     Debatable)
 from novaideo import _
-from novaideo.views.widget import (
+from novaideo.widget import (
     AddIdeaWidget,
     LimitedTextAreaWidget,
     SimpleMappingtWidget)

@@ -44,7 +44,7 @@ from novaideo.views.filter.util import (
     deepcopy, get_node_query,
     get_filters_query, QUERY_OPERATORS, get_analyzed_data,
     merge_with_filter_view)
-from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.widget import SimpleMappingtWidget
 from novaideo import log
 from .sort import sort_on as filter_sort
 

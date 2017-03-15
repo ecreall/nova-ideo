@@ -1,0 +1,23 @@
+<div class="items-main-view-container" 
+   id="items-main-view-container-${id}"
+   tal:define="id 'connectors-actions'"
+   i18n:domain="novaideo">
+  <div tal:condition="bodies" class="row">
+    <div class="alert alert-info">
+    Click <a class="alert-link" href="${request.resource_url(request.root, '@@seeconnectors')}">here</a> to view the registered connectors.
+  </div>
+    <div  id="${id}" class="results-bloc results scroll-able result-scroll">
+      <div class="container-fluid result-container">
+          <div class="row scroll-items-container">
+            <div class="scroll-item col-md-6" tal:repeat="body bodies" style="padding-top: 10px">
+                ${structure:body}
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div tal:condition="not bodies" class="alert alert-warning">
+    No available connectors. Click <a class="alert-link" href="${request.resource_url(request.root, '@@seeconnectors')}">here</a> to view the registered connectors.
+  </div>
+</div>
+

@@ -23,7 +23,7 @@ from pontus.core import VisualisableElementSchema, VisualisableElement
 
 from .interface import ICorrection
 from novaideo import _
-from novaideo.views.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget
 
 
 def context_is_a_correction(context, request):

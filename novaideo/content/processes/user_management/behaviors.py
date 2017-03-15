@@ -51,7 +51,8 @@ from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.content.processes import global_user_processsecurity
+from novaideo.content.processes import (
+    global_user_processsecurity, access_user_processsecurity)
 from novaideo.role import get_authorized_roles
 
 
@@ -83,11 +84,6 @@ def initialize_tokens(person, tokens_nb):
         person.addtoproperty('tokens_ref', token)
         person.addtoproperty('tokens', token)
         token.setproperty('owner', person)
-
-
-def access_user_processsecurity(process, context):
-    request = get_current_request()
-    return request.accessible_to_anonymous
 
 
 def login_roles_validation(process, context):
