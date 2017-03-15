@@ -11,6 +11,7 @@ import pytz
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
 
+from pyramid.threadlocal import get_current_request
 from pyramid.security import remember
 from pyramid.httpexceptions import HTTPFound
 
@@ -19,7 +20,6 @@ from substanced.event import LoggedIn
 from substanced.util import find_service
 
 from dace.processinstance.activity import InfiniteCardinality
-from dace.interfaces import IEntity
 from dace.objectofcollaboration.principal.util import (
     has_role,
     has_any_roles,
@@ -146,11 +146,11 @@ class LogIn(InfiniteCardinality):
                 'logged': False}
 
 
-def createidea_roles_validation(process, context):
+def create_roles_validation(process, context):
     return has_role(role=('SiteAdmin',))
 
 
-def createidea_processsecurity_validation(process, context):
+def create_processsecurity_validation(process, context):
     request = get_current_request()
     client_id = request.registry.settings.get('yammer.client_id', None)
     if not client_id:
@@ -170,8 +170,8 @@ class CreateConnector(InfiniteCardinality):
     title = _('Add a Yammer connector')
     submission_title = _('Save')
     context = INovaIdeoApplication
-    roles_validation = createidea_roles_validation
-    processsecurity_validation = createidea_processsecurity_validation
+    roles_validation = create_roles_validation
+    processsecurity_validation = create_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
