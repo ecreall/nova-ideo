@@ -115,7 +115,6 @@ class LoginView(BasicView):
 
         # Pass this through FBO views (e.g., forbidden) which use its macros.
         template = get_renderer('novaideo:views/user_management/templates/login.pt').implementation()
-        # from novaideo.connectors.yammer import auth_url
         login_bodies = []
         try:
             login_navbars = generate_navbars(

@@ -41,11 +41,6 @@ class Connector(VersionableEntity, Entity):
     type_title = _('Connector')
     connector_id = 'connector'
     icon = 'icon fa fa-plug'
-    templates = {'default': 'novaideo:views/templates/idea_result.pt',
-                 'bloc': 'novaideo:views/templates/idea_bloc.pt',
-                 'small': 'novaideo:views/templates/small_idea_result.pt',
-                 'popover': 'novaideo:views/templates/idea_popover.pt'}
-    template = 'novaideo:views/templates/idea_list_element.pt'
     name = renamer()
 
     def __init__(self, **kwargs):

@@ -5,10 +5,6 @@
 # licence: AGPL
 # author: Amen Souissi
 
-"""
-This module represent all of behaviors used in the
-Idea management process definition.
-"""
 from pyramid.httpexceptions import HTTPFound
 
 from dace.processinstance.activity import InfiniteCardinality

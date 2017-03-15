@@ -18,13 +18,6 @@ from novaideo import _
 from novaideo.utilities.util import generate_navbars, ObjectRemovedException
 
 
-CONTENTS_MESSAGES = {
-    '0': _(u"""No connector found"""),
-    '1': _(u"""One connector found"""),
-    '*': _(u"""${nember} connectors found""")
-    }
-
-
 @view_config(
     name='addconnectors',
     context=NovaIdeoApplication,

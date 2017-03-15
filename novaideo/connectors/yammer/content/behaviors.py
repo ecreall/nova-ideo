@@ -5,10 +5,6 @@
 # licence: AGPL
 # author: Amen Souissi
 
-"""
-This module represent all of behaviors used in the
-Idea management process definition.
-"""
 import transaction
 import datetime
 import pytz
@@ -155,6 +151,11 @@ def createidea_roles_validation(process, context):
 
 
 def createidea_processsecurity_validation(process, context):
+    request = get_current_request()
+    client_id = request.registry.settings.get('yammer.client_id', None)
+    if not client_id:
+        return False
+
     yammer_connectors = list(getSite().get_connectors('yammer'))
     return not yammer_connectors and \
         global_user_processsecurity()
