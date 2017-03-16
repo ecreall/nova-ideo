@@ -151,7 +151,9 @@ class Edit(InfiniteCardinality):
         changepassword = appstruct['change_password']['changepassword']
         current_user_password = appstruct['change_password']['currentuserpassword']
         user = get_current()
-        if changepassword and user.check_password(current_user_password):
+        user_password = getattr(user, 'password', None)
+        if changepassword and \
+           (not user_password or user.check_password(current_user_password)):
             password = appstruct['change_password']['password']
             context.set_password(password)
 
