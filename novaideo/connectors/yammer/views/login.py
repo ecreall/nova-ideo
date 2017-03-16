@@ -64,7 +64,6 @@ class LoginView(BasicView):
             access_token = access_data.access_token.token
             user_info = access_data.user
             user_networks = user_info.get('network_domains')
-            import pdb; pdb.set_trace()
             if not trusted_networks or \
                any(n in trusted_networks for n in user_networks):
                 source_data = {
