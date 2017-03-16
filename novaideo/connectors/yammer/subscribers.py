@@ -41,3 +41,16 @@ def mysubscriber_object_published(event):
             yammer.messages.create(
                 msg,
                 topics=keywords)
+            # msg = {
+            #     "actor":{
+            #         "name":author.title,
+            #         "email":getattr(author, 'email', '')
+            #         },
+            #     "action":"create",
+            #     "object": {
+            #         "url":request.resource_url(content, '@@index'),
+            #         "title":content.title
+            #         },
+            #     "type": "url"
+            #     }
+            # yammer.client.post('/activity', activity=msg)

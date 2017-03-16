@@ -8,7 +8,7 @@ import deform
 from deform.widget import default_resource_registry
 
 
-class YammerNotificationWidget(deform.widget.CheckboxWidget):
+class YammerNotificationWidget(deform.widget.TextInputWidget):
     template = 'novaideo:connectors/yammer/views/templates/yammer_notification.pt'
     requirements = ( ('yammer_notification', None), )
 
