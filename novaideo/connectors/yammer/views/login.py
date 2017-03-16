@@ -57,36 +57,42 @@ class LoginView(BasicView):
 
         came_from = request.session.setdefault(
             'novaideo.came_from', referrer)
+        error_message = _("Failed login")
         if yammer_connector and code:
+            trusted_networks = getattr(yammer_connector, 'networks', [])
             access_data = yammer_connector.authenticator.fetch_access_data(code)
             access_token = access_data.access_token.token
             user_info = access_data.user
-            source_data = {
-                'app_name': 'yammer',
-                'user_id': user_info.get('id'),
-                'network_domains': user_info.get('network_domains'),
-                'access_token': access_token
-            }
-            user_data = {
-                'first_name': user_info.get('first_name'),
-                'last_name': user_info.get('last_name'),
-                'email': user_info.get('email')
-            }
-
-            result = self.execute({
-                'source_data': source_data,
-                'user_data': user_data,
-                'came_from': came_from
+            user_networks = user_info.get('network_domains')
+            import pdb; pdb.set_trace()
+            if not trusted_networks or \
+               any(n in trusted_networks for n in user_networks):
+                source_data = {
+                    'app_name': 'yammer',
+                    'user_id': user_info.get('id'),
+                    'network_domains': user_networks,
+                    'access_token': access_token
+                }
+                user_data = {
+                    'first_name': user_info.get('first_name'),
+                    'last_name': user_info.get('last_name'),
+                    'email': user_info.get('email')
+                }
+                result = self.execute({
+                    'source_data': source_data,
+                    'user_data': user_data,
+                    'came_from': came_from
                 })
-
-            if result[0].get('logged', False):
-                return result[0].get('redirect')
+                if result[0].get('logged', False):
+                    return result[0].get('redirect')
+            elif trusted_networks:
+                error_message = _("You don't have the right to login  with this account.")
 
             error = True
 
         if error:
             error = ViewError()
-            error.principalmessage = _("Failed login")
+            error.principalmessage = error_message
             message = error.render_message(request)
             messages.update({error.type: [message]})
             self.finished_successfully = False
