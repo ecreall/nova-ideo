@@ -11,12 +11,12 @@
       <div class="">
         <div class="object-title-block view-item-title">
           <h4 >
-	          <span class="icon ${icon}"></span>  Yammer connector
+	          <span class="icon ${icon}"></span>  <span i18n:translate="">Yammer connector</span>
 	       </h4>        
 	   </div>
         <div class="row object-row-content">
           <div class="col col-xs-12 col-md-12">
-            <div class="object-text">The yammer connector</div>
+            <div class="object-text" i18n:translate="">The Yammer connector</div>
             
           </div>
         </div>

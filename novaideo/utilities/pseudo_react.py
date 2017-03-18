@@ -1683,7 +1683,7 @@ def get_remove_connector_metadata(action, request, context, api, **kwargs):
 
     view_title = request.localizer.translate(
         _(CONNECTORS_CONTENTS_MESSAGES[index],
-          mapping={'nember': len_result}))
+          mapping={'number': len_result}))
     result['view_title'] = view_title
     result['view_name'] = 'seeconnectors'
     return result

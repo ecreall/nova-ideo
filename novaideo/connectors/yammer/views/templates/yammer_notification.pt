@@ -4,7 +4,7 @@
        id="${oid|field.oid}"/>       
   <div class="alert alert-info" id="yammer-connected-user">
       <div i18n:translate="">
-        Les notifications seront soumises seulement si le compte de l'auteur est connecté à un compte Yammer. Vous pouvez initialiser un compte par défaut en cliquant sur le bouton ci-dessous dans le cas ou l'auteur ne possède pas de compte Yammer. Si vous sélectionnez l'option "Notifier seulement à partir du compte par défaut", toutes les notifications seront soumises sous le nom du compte par défaut.
+        The notifications will be submitted only if the account of the author is connected to a Yammer account. You can set a default account by clicking the button below in case the author does not have a Yammer account. If you select the option "Notify only from the default account", all notifications will be submitted under the default account name.
       </div>
       <a class="btn btn-xs btn-primary" id="yammer-login">
         <span i18n:translate="">Initialize the default notification account</span>

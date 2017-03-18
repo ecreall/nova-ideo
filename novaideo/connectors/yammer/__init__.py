@@ -49,8 +49,8 @@ class AuthSchema(Schema):
     log_in = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Log in with a yammer account'),
-        description=_('Users can log in with their yammer account.'),
+        label=_('Login with a Yammer account'),
+        description=_('Users can login with their Yammer account.'),
         title='',
         missing=False
     )

@@ -85,7 +85,7 @@ class LoginView(BasicView):
                 if result[0].get('logged', False):
                     return result[0].get('redirect')
             elif trusted_networks:
-                error_message = _("You don't have the right to login  with this account.")
+                error_message = _("You don't have the right to login with this account.")
 
             error = True
 

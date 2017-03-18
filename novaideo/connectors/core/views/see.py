@@ -25,7 +25,7 @@ from novaideo import _
 CONTENTS_MESSAGES = {
     '0': _(u"""No connector found"""),
     '1': _(u"""One connector found"""),
-    '*': _(u"""${nember} connectors found""")
+    '*': _(u"""${number} connectors found""")
     }
 
 
@@ -61,7 +61,7 @@ class SeeConnectorsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         user = get_current()
         result_body, result = render_listing_objs(
             self.request, batch, user, view_type='bloc')
