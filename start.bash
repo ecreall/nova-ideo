@@ -37,5 +37,10 @@ mkdir -p var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 chmod 700 var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 chown u1000 var var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 sed -e 's@dace$@dace.wosystem@' -e 's@^substanced.catalogs.autosync = .*@substanced.catalogs.autosync = false@' production-heroku.ini > production-script.ini
+
+# If this is not debian jessie (which includes varnish 4.0), assuming a more
+# recent debian or ubuntu with varnish >= 4.1, replace deprecated fetch by miss in vcl_hit
+grep -q jessie /etc/apt/sources.list || sed -i -e 's@.*replace by miss if varnish.*@    return (miss);@' /app/etc/varnish.vcl
 /usr/sbin/varnishd -P /app/var/varnishd.pid -a 0.0.0.0:5000 -f /app/etc/varnish.vcl -s malloc,256m -t 0
+
 exec ./start_all.bash production-heroku.ini $TIMEOUT

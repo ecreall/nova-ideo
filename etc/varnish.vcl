@@ -154,7 +154,7 @@ sub vcl_hit {
     }
 
     // fetch & deliver once we get the result
-    return (fetch);
+    return (fetch);  // replace by miss if varnish >= 4.1
 }
 
 sub vcl_miss {

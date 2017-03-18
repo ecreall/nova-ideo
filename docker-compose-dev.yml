@@ -19,7 +19,6 @@ services:
     volumes:
       - ./var:/app/var
       - ./cache:/app/cache
-      - ./etc/varnish.vcl:/app/etc/varnish.vcl:ro
       - ./novaideo:/app/novaideo
   nginx:
     image: undownding/nginx-http2
