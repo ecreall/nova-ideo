@@ -18,6 +18,9 @@ do_buildout() {
     docker attach "$id"
     test "$(docker wait "$id")" -eq 0
     docker commit "$id" "$IMAGE" > /dev/null
+    # some files in cache/eggs/Chameleon-2.22-py3.4.egg/chameleon/tests/inputs/ are only readable by u1000, remove them
+    # else you can't do the tar from outside
+    docker run --rm -v $CACHE_PATH:/app/cache -u u1000 $IMAGE rm -rf /app/cache/eggs/Chameleon-2.22-py3.4.egg/chameleon/tests
     # copy cache in docker image
     id=$(cd $CACHE_PATH/.. && tar -c cache | docker run -i -a stdin -u u1000 "$IMAGE" /bin/bash -c "mkdir -p /app/cache && tar -xC /app")
     test "$(docker wait "$id")" -eq 0
@@ -35,10 +38,9 @@ case "$1" in
   buildout)
     do_buildout
     ;;
-  test|coverage-test|coverage-report)
-    cmd=$1
+  test)
     shift
-    docker-compose $options run --rm novaideo bin/$cmd $@
+    docker-compose $options run --rm novaideo bin/test $@
     ;;
   *)
     if [ -z "$1" ]; then
