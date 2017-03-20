@@ -1,4 +1,4 @@
-FROM python:3.4
+FROM python:3.6
 LABEL novaideo=master
 
 ARG userid=1000
@@ -20,7 +20,7 @@ RUN addgroup --quiet --gid $userid "u1000" && \
         --quiet \
         --home "/app" \
         "u1000"
-RUN pip3 install zc.buildout==2.5.3
+RUN pip3 install zc.buildout==2.9.2 setuptools==34.3.2
 
 # grab gosu for easy step-down from root
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
