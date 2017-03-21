@@ -17,7 +17,7 @@ from pontus.widget import RadioChoiceWidget
 from novaideo.content.processes.idea_management.behaviors import (
     MakeOpinion)
 from novaideo.content.idea import Idea, OPINIONS
-from novaideo.views.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget
 from novaideo import _
 
 

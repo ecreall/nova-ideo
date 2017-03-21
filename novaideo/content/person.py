@@ -48,7 +48,7 @@ from .interface import (
     IPerson, IPreregistration, IAlert, IProposal, Iidea)
 from novaideo import _, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
 from novaideo.file import Image
-from novaideo.views.widget import (
+from novaideo.widget import (
     TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
 
 
@@ -275,7 +275,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
 
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)
-        kwargs.pop('password')
+        kwargs.pop('password', None)
         self.set_data(kwargs)
         self.set_title()
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)

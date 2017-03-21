@@ -28,7 +28,7 @@ from novaideo.content.processes.proposal_management.behaviors import (
 from novaideo.content.proposal import ProposalSchema, Proposal
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.utilities.util import to_localized_time
-from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.widget import SimpleMappingtWidget
 from novaideo import _, log
 from ..filter import get_pending_challenges
 

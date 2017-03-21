@@ -16,7 +16,7 @@ from pontus.schema import select, Schema
 
 from novaideo.content.processes.user_management.behaviors import Edit
 from novaideo.content.person import PersonSchema, Person
-from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.widget import SimpleMappingtWidget
 from novaideo import _
 
 
@@ -25,8 +25,9 @@ class Password_validator(object):
         """ Returns a ``colander.Function`` validator that uses the context (user)
         to validate the password."""
         user = get_current()
+        user_password = getattr(user, 'password', None)
         if value['changepassword'] and \
-           not user.check_password(value['currentuserpassword']):
+           user_password and not user.check_password(value['currentuserpassword']):
             raise colander.Invalid(
                 node.get('currentuserpassword'),
                 _(' Invalid current password'))

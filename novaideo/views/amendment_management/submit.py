@@ -21,14 +21,13 @@ from pontus.widget import TextInputWidget
 from novaideo.content.processes.amendment_management.behaviors import (
     SubmitAmendment)
 from novaideo.content.amendment import Amendment, Intention
-from novaideo.views.widget import (
+from novaideo.widget import (
     DragDropSelect2Widget,
     DragDropSequenceWidget,
     DragDropMappingWidget,
     LimitedTextAreaWidget)
 from novaideo import _
 from novaideo.utilities.amendment_viewer import IAmendmentViewer
-
 
 
 def get_default_explanations_groups(context):

@@ -39,7 +39,7 @@ from .invitation import InvitationSchema, Invitation
 from novaideo.utilities.analytics_utility import hover_color, random_color
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo.mail import DEFAULT_SITE_MAILS
-from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.widget import SimpleMappingtWidget
 from novaideo.content.site_configuration import (
     WorkParamsConfigurationSchema,
     MailTemplatesConfigurationSchema,
@@ -326,6 +326,7 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     general_chanel = SharedUniqueProperty('general_chanel')
     newsletters = CompositeMultipleProperty('newsletters')
     smart_folders = CompositeMultipleProperty('smart_folders')
+    connectors = CompositeMultipleProperty('connectors')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
@@ -565,3 +566,8 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
 
     def get_title(self, user=None):
         return getattr(self, 'title', '')
+
+    def get_connectors(self, connector_id):
+        return filter(
+            lambda c: c.connector_id == connector_id,
+            self.connectors)
