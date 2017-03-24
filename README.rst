@@ -86,6 +86,10 @@ run::
 
     ./run.sh down
 
+To execute the tests::
+
+    ./run.sh test -s novaideo
+
 
 Allow your gmail account to be used to send emails
 --------------------------------------------------

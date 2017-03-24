@@ -11,9 +11,9 @@ do_buildout() {
     # when buildout restart itself infinitely because of setuptools upgrade,
     # see https://github.com/buildout/buildout/issues/312
     if [ ! -z "$SSH_AUTH_SOCK" ]; then
-        id=$(docker run -m 100m --memory-swappiness 0 -d -v $CACHE_PATH:/app/cache -v $SSH_AUTH_SOCK:/app/cache/auth.sock -e SSH_AUTH_SOCK=/app/cache/auth.sock -u u1000 $IMAGE ./bin/buildout -c heroku.cfg)
+        id=$(docker run -m 1000m --memory-swappiness 0 -d -v $CACHE_PATH:/app/cache -v $SSH_AUTH_SOCK:/app/cache/auth.sock -e SSH_AUTH_SOCK=/app/cache/auth.sock -u u1000 $IMAGE ./bin/buildout -c heroku.cfg)
     else
-        id=$(docker run -m 100m --memory-swappiness 0 -d -v $CACHE_PATH:/app/cache -v /tmp/deploy_id_rsa:/app/.ssh/id_rsa -u u1000 $IMAGE ./bin/buildout -c heroku.cfg)
+        id=$(docker run -m 1000m --memory-swappiness 0 -d -v $CACHE_PATH:/app/cache -v /tmp/deploy_id_rsa:/app/.ssh/id_rsa -u u1000 $IMAGE ./bin/buildout -c heroku.cfg)
     fi
     docker attach "$id"
     test "$(docker wait "$id")" -eq 0
@@ -32,7 +32,7 @@ case "$1" in
     mkdir -p cache
     chmod o+rwx cache
     docker-compose $options pull
-    docker-compose $options build --pull
+    docker-compose $options build #--pull # don't pull because we may have a custom base image
     do_buildout
     ;;
   buildout)

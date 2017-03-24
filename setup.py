@@ -7,6 +7,7 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = [
+    'babel',
     'dogpile.cache',
     'ecreall_dace',
     'ecreall_pontus',
@@ -37,7 +38,7 @@ requires = [
     ]
 
 setup(name='novaideo',
-      version='1.3.dev0',
+      version='1.4.dev0',
       description='Nova-Ideo is a participatory innovation tool, the merger of the box ideas and collaborative portal.',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
