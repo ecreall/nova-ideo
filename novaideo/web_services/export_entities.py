@@ -31,7 +31,7 @@ from novaideo.views.filter import (
     MetadataFilter, metadata_filter_query,
     metadata_filter_analyzer,
     metadata_filter_data)
-from novaideo.views.widget import (
+from novaideo.widget import (
     SimpleMappingtWidget)
 
 

@@ -11,7 +11,7 @@
 
    NovaIdeoWS.connect_to_ws_server = function(){
       var wsuri;
-      var wsuri = "ws://" + window.location.hostname + ":8080/ws";
+      var wsuri = "ws://" + window.location.hostname + ":8080/ws?source_path="+window.location.pathname;
 
       if ("WebSocket" in window) {
          NovaIdeoWS.sock = new WebSocket(wsuri);
@@ -44,7 +44,13 @@
    NovaIdeoWS.trigger_events = function(events) {
       // events is a list of events. event = {'event': 'event_id': 'params': {'params_id': value, ...}}
       if (NovaIdeoWS.sock) {
-         var msg = JSON.stringify(events);
+         msg = {
+            source: {
+                source_path: window.location.pathname
+            },
+            events: events
+         }
+         var msg = JSON.stringify(msg);
          NovaIdeoWS.sock.send(msg);
       }
    };
@@ -216,6 +222,80 @@ NovaIdeoWS.on('edit_comment', function(params){
        });
      }
    }
+})
+
+NovaIdeoWS.on('new_idea', function(params){
+   var idea_id = params.id;
+   var home_component = $('.async-new-contents-component')
+   var alert_new_idea = home_component.find('>.alert-new-idea').first()
+   if(alert_new_idea.length>0){
+      var ideas_ln = alert_new_idea.find('.new-content-id').length;
+      ideas_ln+=1
+      alert_new_idea.replaceWith('<div data-content_type="idea" class="alert-new-content alert-new-idea"><span class="icon novaideo-icon icon-idea"></span> '+novaideo_translate('View new ideas')+' (<strong class="ideas-nb">'+ideas_ln+'</strong>)</div>')
+   }else{
+       home_component.prepend('<div data-content_type="idea" class="alert-new-content alert-new-idea"><span class="icon novaideo-icon icon-idea"></span> '+novaideo_translate('View new idea')+'</div>')
+   }
+   alert_new_idea = home_component.find('>.alert-new-idea').first()
+   alert_new_idea.append('<span class="new-content-id" data-content_id="'+idea_id+'"></span>')
+})
+
+NovaIdeoWS.on('new_question', function(params){
+   var question_id = params.id;
+   var home_component = $('.async-new-contents-component')
+   var alert_new_question = home_component.find('>.alert-new-question').first()
+   if(alert_new_question.length>0){
+      var questions_ln = alert_new_question.find('.new-content-id').length;
+      questions_ln+=1
+      alert_new_question.replaceWith('<div data-content_type="question" class="alert-new-content alert-new-question"><span class="md md-live-help"></span>  '+novaideo_translate('View new questions')+' (<strong class="questions-nb">'+questions_ln+'</strong>)</div>')
+   }else{
+       home_component.prepend('<div data-content_type="question" class="alert-new-content alert-new-question"><span class="md md-live-help"></span>  '+novaideo_translate('View new question')+'</div>')
+   }
+   alert_new_question = home_component.find('>.alert-new-question').first()
+   alert_new_question.append('<span class="new-content-id" data-content_id="'+question_id+'"></span>')
+})
+
+NovaIdeoWS.on('new_wg', function(params){
+   var wg_id = params.id;
+   var home_component = $('.async-new-contents-component')
+   var alert_new_wg = home_component.find('>.alert-new-wg').first()
+   if(alert_new_wg.length>0){
+      var wgs_ln = alert_new_wg.find('.new-content-id').length;
+      wgs_ln+=1
+      alert_new_wg.replaceWith('<div data-content_type="proposal"  class="alert-new-content alert-new-wg"><span class="icon novaideo-icon icon-wg"></span> '+novaideo_translate('View new working groups')+' (<strong class="wgs-nb">'+wgs_ln+'</strong>)</div>')
+   }else{
+       home_component.prepend('<div data-content_type="proposal" class="alert-new-content alert-new-wg"><span class="icon novaideo-icon icon-wg"></span> '+novaideo_translate('View new working group')+'</div>')
+   }
+   alert_new_wg = home_component.find('>.alert-new-wg').first()
+   alert_new_wg.append('<span class="new-content-id" data-content_id="'+wg_id+'"></span>')
+})
+
+
+$(document).on('click', '.alert-new-content', function (argument) {
+  var $this = $(this)
+  var content_type = $this.data('content_type')
+  var container = $this.parents('.async-new-contents-component').first()
+  var items_container = container.find('#results-'+content_type+'>.result-container>.scroll-items-container').first()
+  if(items_container.length>0){
+    var ids = jQuery.makeArray($this.find('.new-content-id').map(function(){
+              return $(this).data('content_id')
+           })
+       )
+    var url = $(document.body).data('api_url')
+    var data = {
+      ids: ids,
+      op: 'render_listing_contents'
+    }
+    loading_progress()
+    $.post(url, data, function(data) {
+      if(data.body){
+       $($(data.body).find('.scroll-item')).hide().prependTo(items_container).fadeIn(1500)
+       $this.slideUp("slow", function(){
+         $this.remove()
+       })
+      }
+      finish_progress()
+    });
+  }
 })
 
 function user_typing(){

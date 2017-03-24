@@ -32,7 +32,8 @@ from novaideo.content.interface import (
     IChallenge,
     IOrganization)
 from novaideo.utilities.util import (
-    render_small_listing_objs, extract_keywords)
+    render_small_listing_objs, extract_keywords,
+    render_listing_objs)
 from novaideo.utilities.pseudo_react import (
     get_components_data, get_all_updated_data, load_components)
 from novaideo.views.filter import find_entities, FILTER_SOURCES
@@ -88,6 +89,7 @@ class NovaideoAPI(IndexManagementJsonView):
     search_template = 'novaideo:views/templates/live_search_result.pt'
     search_idea_template = 'novaideo:views/templates/live_search_idea_result.pt'
     search_question_template = 'novaideo:views/templates/live_search_question_result.pt'
+    update_items_template = 'novaideo:views/templates/update_items_result.pt'
 
     def find_user(self, query=None):
         name = self.params('q')
@@ -729,3 +731,25 @@ class NovaideoAPI(IndexManagementJsonView):
                     'page_state': page_state
                 }
                 user.guide_tour_data['guide_state'] = 'pending'
+
+    def render_listing_contents(self):
+        ids = self.params('ids')
+        if ids and not isinstance(ids, (tuple, list)):
+            ids = [ids]
+
+        body = ''
+        if ids:
+            try:
+                user = get_current()
+                objects = [get_obj(int(i)) for i in ids]
+                result = render_listing_objs(
+                    self.request, objects, user)
+                body = self.content(
+                    args={
+                        'bodies': result[0]
+                    },
+                    template=self.update_items_template)['body']
+            except Exception:
+                pass
+
+        return {'body': body}

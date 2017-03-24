@@ -1,0 +1,14 @@
+<div class="items-main-view-container"
+	 i18n:domain="novaideo">
+	<div class="row">
+	  <div tal:condition="bodies" class="results scroll-able result-scroll">
+	    <div class="container-fluid result-container ">
+	      <div tal:condition="bodies" class="row scroll-items-container">
+            <div class="scroll-item col-md-12" tal:repeat="body bodies">
+                ${structure:body}
+            </div>
+          </div>
+	    </div>
+	  </div>
+	</div>
+</div>

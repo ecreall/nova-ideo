@@ -95,7 +95,7 @@ class ContentView(BasicView):
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
         self.title = _(self.title, mapping={'nb': batch.seqlen})
-        batch.target = "#results"+"-"+ self.content_type
+        batch.target = "#results-" + self.content_type
         filter_instance = getattr(self, 'filter_instance', None)
         filter_body = None
         if filter_instance:
@@ -173,7 +173,7 @@ class HomeView(MultipleView):
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'home'
     css_class = 'simple-bloc'
-    container_css_class = 'home'
+    container_css_class = 'home async-new-contents-component'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
 

@@ -51,8 +51,10 @@ from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.content.processes import global_user_processsecurity
+from novaideo.content.processes import (
+    global_user_processsecurity, access_user_processsecurity)
 from novaideo.role import get_authorized_roles
+from novaideo.web_socket.util import get_connected_users
 
 
 def accept_preregistration(request, preregistration, root):
@@ -83,11 +85,6 @@ def initialize_tokens(person, tokens_nb):
         person.addtoproperty('tokens_ref', token)
         person.addtoproperty('tokens', token)
         token.setproperty('owner', person)
-
-
-def access_user_processsecurity(process, context):
-    request = get_current_request()
-    return request.accessible_to_anonymous
 
 
 def login_roles_validation(process, context):
@@ -155,7 +152,9 @@ class Edit(InfiniteCardinality):
         changepassword = appstruct['change_password']['changepassword']
         current_user_password = appstruct['change_password']['currentuserpassword']
         user = get_current()
-        if changepassword and user.check_password(current_user_password):
+        user_password = getattr(user, 'password', None)
+        if changepassword and \
+           (not user_password or user.check_password(current_user_password)):
             password = appstruct['change_password']['password']
             context.set_password(password)
 
@@ -758,8 +757,8 @@ class Discuss(InfiniteCardinality):
     def _alert_users(self, context, request, user, comment, channel):
         root = getSite()
         users = self._get_users_to_alerts(context, request, user, channel)
-        connected_users = getattr(root, 'connected_users', [])
-        users = [u for u in users if u not in connected_users]
+        connected_users = get_connected_users()
+        users = [u for u in users if u.__oid__ not in connected_users]
         author_data = get_user_data(user, 'author', request)
         alert_data = get_entity_data(comment, 'comment', request)
         alert_data.update(author_data)

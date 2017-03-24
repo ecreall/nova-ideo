@@ -60,7 +60,7 @@ from novaideo.utilities.util import (
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved)
 from novaideo.content.processes.proposal_management import WORK_MODES
-from novaideo.core import access_action, serialize_roles
+from novaideo.core import access_action, serialize_roles, can_access
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.workspace import Workspace
 from novaideo.views.filter import get_users_by_preferences
@@ -750,6 +750,24 @@ class PublishProposal(InfiniteCardinality):
         context.state.remove('draft')
         not_published_ideas = confirm_proposal(
             context, request, user, appstruct, root)
+        is_restricted = getattr(context.challenge, 'is_restricted', False)
+        def _condition(u):
+            return can_access(u, context)
+
+        alert(
+            'real_time', recipients=None, exclude=[user],
+            event='new_wg',
+            params={
+                'id': str(context.__oid__)},
+            filter={
+                'contexts': [
+                    (root, ''), (root, 'index'),
+                    (context.author, 'index'),
+                    (context.organization, 'index'),
+                    (context.challenge, 'index')],
+                'condition': _condition if is_restricted else None
+            }
+        )
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
             self, not_published_ideas, user))

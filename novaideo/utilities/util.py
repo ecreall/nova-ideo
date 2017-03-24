@@ -1091,6 +1091,7 @@ def generate_navbars(request, context, view_type='default', **args):
         return getAllBusinessAction(
             context, request,
             process_id=args.get('process_id', None),
+            node_id=args.get('node_id', None),
             process_discriminator='Application')
 
     root = request.root
@@ -1192,6 +1193,7 @@ def generate_listing_menu(request, context, view_type='default', **args):
         return getAllBusinessAction(
             context, request,
             process_id=args.get('process_id', None),
+            node_id=args.get('node_id', None),
             process_discriminator='Application')
 
     #find actions descriminated by descriminators

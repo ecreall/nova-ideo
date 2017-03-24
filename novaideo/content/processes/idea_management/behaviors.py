@@ -40,7 +40,7 @@ from ..user_management.behaviors import (
 from novaideo import _, nothing, log
 from novaideo.content.idea import Idea
 from ..comment_management import VALIDATOR_BY_CONTEXT
-from novaideo.core import access_action, serialize_roles
+from novaideo.core import access_action, serialize_roles, can_access
 from novaideo.utilities.util import connect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
@@ -56,6 +56,7 @@ from novaideo.content.correlation import CorrelationType
 from novaideo.content.processes.proposal_management import (
     init_proposal_ballots, add_attached_files)
 from novaideo.content.comment import Comment
+from novaideo.web_socket.util import get_connected_users
 
 
 def createidea_roles_validation(process, context):
@@ -667,10 +668,29 @@ class PublishIdea(InfiniteCardinality):
                 idea=context
                 )
         root.merge_keywords(context.keywords)
+        user = get_current(request)
+        is_restricted = getattr(context.challenge, 'is_restricted', False)
+        def _condition(u):
+            return can_access(u, context)
+
+        alert(
+            'real_time', recipients=None, exclude=[user],
+            event='new_idea',
+            params={
+                'id': str(context.__oid__)},
+            filter={
+                'contexts': [
+                    (root, ''), (root, 'index'),
+                    (context.author, 'index'),
+                    (context.organization, 'index'),
+                    (context.challenge, 'index')],
+                'condition': _condition if is_restricted else None
+            }
+        )
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -808,8 +828,8 @@ class CommentIdea(InfiniteCardinality):
         if user in users:
             users.remove(user)
 
-        connected_users = getattr(root, 'connected_users', [])
-        users = [u for u in users if u not in connected_users]
+        connected_users = get_connected_users()
+        users = [u for u in users if u.__oid__ not in connected_users]
         author_data = get_user_data(user, 'author', request)
         alert_data = get_entity_data(comment, 'comment', request)
         alert_data.update(author_data)

@@ -29,7 +29,7 @@ from pontus.schema import omit, select, Schema
 from .interface import INewsletter
 from novaideo import _, log
 from novaideo.content import get_file_widget
-from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.widget import SimpleMappingtWidget
 from novaideo.utilities.util import gen_random_token
 
 

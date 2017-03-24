@@ -19,6 +19,14 @@
          <input type="submit" name="form.submitted"
                 class="btn btn-primary btn-block" i18n:attributes="value"
                 value="Log In" />
+        
+        <div tal:condition="logins">
+          <div class="or-logins" i18n:translate="" >Or</div>
+          <div tal:repeat="body logins">
+                ${structure:body}
+            </div>
+        </div>
+        
 
          <p id="password-reset-link"
               metal:define-macro="password-reset-link">

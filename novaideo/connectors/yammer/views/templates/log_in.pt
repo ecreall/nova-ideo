@@ -1,0 +1,9 @@
+<div tal:omit-tag="" tal:define="yammer_connectors list(request.root.get_connectors('yammer'));
+	             yammer_connector yammer_connectors[0] if yammer_connectors else None">
+	<a  tal:condition="yammer_connector" tal:attributes="href yammer_connector.get_login_url(request)" 
+		 class="btn btn-primary" style="width: 100%; background-color: #0093be;">
+		<img src="${request.static_url('novaideo:static/connectors/yammer/images/yammer_btn.png')}" role="presentation" width="35" 
+			 style="float: left;
+                    margin-left: -15px;"> ${action.title}        
+	</a>
+</div>

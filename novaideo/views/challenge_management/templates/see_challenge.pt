@@ -4,7 +4,7 @@
        style="margin-bottom: 30px;">
     <div class="progress progress-striped"
          title="${layout.to_localized_time(deadline)}">
-       <div tal:define="percent (challenge.duration - challenge.remaining_duration) * 100 / challenge.duration"
+       <div tal:define="percent (challenge.duration - challenge.remaining_duration) * 100 / challenge.duration if challenge.duration else 100"
             class="progress-bar ${expired and 'progress-bar-danger' or 'progress-bar-success'} "
             role="progressbar"
             aria-valuenow="${percent}"

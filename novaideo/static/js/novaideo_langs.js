@@ -70,7 +70,14 @@ novaideoI18n = {
   "NovaIdeo Description" : ("<strong>Nova-Ideo</strong> is a platform implementing a complete process, "+
                             "in which working groups transform ideas into complete proposals with "+
                             "a system of amendment and voting sessions."),
-  "Please, validate the captcha.": "Please, validate the captcha."
+  "Please, validate the captcha.": "Please, validate the captcha.",
+  "View new working groups": "View new working groups",
+  "View new working group": "View new working group",
+  "View new ideas": "View new ideas",
+  "View new idea": "View new idea",
+  "View new questions": "View new questions",
+  "View new question": "View new question",
+  "is typing a message": "is typing a message"
 },
 
 'fr':{
@@ -143,8 +150,15 @@ novaideoI18n = {
   "NovaIdeo Description" : ("<strong>Nova-Ideo</strong> est une plateforme mettant en œuvre un processus complet par lequel des "+
                             "groupes de travail transforment des idées en propositions abouties grâce à "+
                             "un système de sessions d'amendements et de votes."),
-  "Please, validate the captcha.": "Veuillez valider le captcha."
-}
+  "Please, validate the captcha.": "Veuillez valider le captcha.",
+  "View new working groups": "Voir les nouveaux groupes de travail",
+  "View new working group": "Voir le nouveau groupe de travail",
+  "View new ideas": "Voir les nouvelles idées",
+  "View new idea": "Voir la nouvelle idée",
+  "View new questions": "Voir les nouvelles questions",
+  "View new question": "Voir la nouvelle question",
+  "is typing a message": "est en train de taper un message"
+ }
 }
 
 //TODO add Translation class see tinymce langs...

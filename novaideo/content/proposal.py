@@ -30,7 +30,8 @@ from pontus.schema import omit, Schema
 from .interface import IProposal
 from novaideo.content.correlation import CorrelationType
 from novaideo import _, log
-from novaideo.views.widget import LimitedTextAreaWidget
+from novaideo.widget import (
+    LimitedTextAreaWidget, SimpleMappingtWidget)
 from novaideo.core import (
     SearchableEntity,
     Channel,
@@ -45,7 +46,6 @@ from novaideo.core import (
     SignalableEntity,
     Debatable,
     Tokenable)
-from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
     connect, disconnect, get_files_data)

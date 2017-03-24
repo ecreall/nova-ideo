@@ -268,8 +268,6 @@ def init_application(event):
 
         del root.first_invitation_to_add
 
-    root.connected_users = []
-    root.opened_channels = {}
     transaction.commit()
     # manager.pop()
     #run with ws server

@@ -23,6 +23,7 @@ from novaideo.content.alert import INTERNAL_ALERTS
 from novaideo.utilities.util import connect
 from novaideo.content.comment import Comment, Commentable
 from novaideo import log, _
+from novaideo.web_socket.util import get_ws_factory
 
 
 # SLACK_CHANNELS = {
@@ -217,10 +218,22 @@ def alert_internal(senders=[], recipients=[], exclude=[], **kwargs):
                     excluded_ids = [getattr(user, 'notification_ids', [])
                                     for user in exclude]
                     excluded_ids = [item for sublist in excluded_ids
-                                   for item in sublist]
+                                    for item in sublist]
                     send_notification(players_ids, excluded_ids)
             else:
                 send_notification('all')
+
+
+def alert_real_time(senders=[], recipients=[], exclude=[], **kwargs):
+    """
+        recipients: ['mail@mail.com']
+    """
+    factory = get_ws_factory()
+    event = json.dumps([{
+        'event': kwargs.pop('event', ''),
+        'params': kwargs.pop('params', '')
+    }])
+    factory.send_message(event, recipients, exclude, kwargs.pop('filter', {}))
 
 
 def alert(kind="", senders=[], recipients=[], exclude=[], **kwargs):
@@ -240,5 +253,6 @@ ALERTS = {
     'internal': alert_internal,
     # 'slack': alert_slack,
     # 'arango': alert_arango,
-    'email': alert_email
+    'email': alert_email,
+    'real_time': alert_real_time
 }

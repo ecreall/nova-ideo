@@ -33,7 +33,7 @@ from novaideo import _, nothing
 from novaideo.content.question import Question
 from novaideo.content.question import Answer
 from ..comment_management import VALIDATOR_BY_CONTEXT
-from novaideo.core import access_action, serialize_roles
+from novaideo.core import access_action, serialize_roles, can_access
 from novaideo.event import (
     CorrelableRemoved, ObjectPublished)
 from novaideo.utilities.alerts_utility import (
@@ -119,6 +119,24 @@ class AskQuestion(InfiniteCardinality):
 
         question.format(request)
         question.reindex()
+        is_restricted = getattr(question.challenge, 'is_restricted', False)
+        def _condition(u):
+            return can_access(u, question)
+
+        alert(
+            'real_time', recipients=None, exclude=[user],
+            event='new_question',
+            params={
+                'id': str(question.__oid__)},
+            filter={
+                'contexts': [
+                    (root, ''), (root, 'index'),
+                    (question.author, 'index'),
+                    (question.organization, 'index'),
+                    (question.challenge, 'index')],
+                'condition': _condition if is_restricted else None
+            }
+        )
         request.registry.notify(ActivityExecuted(self, [question], user))
         request.registry.notify(ObjectPublished(object=question))
         return {'newcontext': question}

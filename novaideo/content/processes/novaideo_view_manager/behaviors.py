@@ -18,10 +18,9 @@ from dace.processinstance.core import PROCESS_HISTORY_KEY
 
 from novaideo.content.interface import (
     INovaIdeoApplication,
-    INode, IBallot)
-from novaideo.content.proposal import Proposal
+    INode)
 from novaideo import _, nothing
-from ..user_management.behaviors import (
+from novaideo.content.processes import (
     global_user_processsecurity, access_user_processsecurity)
 from novaideo.core import access_action
 from novaideo.utilities.alerts_utility import alert

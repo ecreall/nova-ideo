@@ -5,7 +5,9 @@
 # author: Amen Souissi
 
 from pyramid.threadlocal import get_current_request
-from pyramid.traversal import ResourceTreeTraverser
+from pyramid.traversal import ResourceTreeTraverser, find_resource
+
+from twisted.internet import reactor
 
 from dace.util import get_obj
 
@@ -20,7 +22,7 @@ from novaideo import (
     support_proposals,
     content_to_examine,
     content_to_support,
-    is_idea_box,
+    content_to_manage,
     accessible_to_anonymous,
     searchable_contents,
     analytics_default_content_types,
@@ -33,7 +35,7 @@ def add_request_method(callable, request):
     setattr(request, name, callable(request))
 
 
-def get_request(client):
+def get_request(client, **kwargs):
     request = get_current_request()
     cookie = client.http_headers.get('cookie', None)
     host = client.http_headers.get('host', None)
@@ -43,8 +45,29 @@ def get_request(client):
 
     request.environ['HTTP_HOST'] = host
     request.environ['SERVER_NAME'] = client.http_request_host
+    url = client.http_headers.get('origin')
+    view_name = ''
+    source_path = kwargs.get('source', {}).get('source_path', None)
+    if not source_path:
+        source_path = client.http_request_params.get('source_path', None)
+        source_path = source_path[0] if source_path else None
+
     resources = ResourceTreeTraverser(request.root)(request)
-    request.context = resources.get('context', None)
+    if source_path:
+        url += source_path
+        try:
+            source_path_parts = source_path.split('/')
+            view_name = source_path_parts[-1]
+            source_path = '/'.join(source_path_parts[:-1])
+            context = find_resource(request.root, source_path)
+        except Exception:
+            context = resources.get('context', None)
+    else:
+        context = resources.get('context', None)
+
+    request.context_url = url
+    request.view_name = view_name
+    request.context = context
     request.layout = GlobalLayout(request.context, request)
     add_request_method(ajax_api, request)
     add_request_method(get_time_zone, request)
@@ -56,10 +79,11 @@ def get_request(client):
     add_request_method(support_proposals, request)
     add_request_method(content_to_examine, request)
     add_request_method(content_to_support, request)
-    add_request_method(is_idea_box, request)
+    add_request_method(content_to_manage, request)
     add_request_method(accessible_to_anonymous, request)
     add_request_method(searchable_contents, request)
     add_request_method(analytics_default_content_types, request)
+    request.user = get_user(request)
     return request
 
 
@@ -69,3 +93,11 @@ def get_user(request):
         return get_obj(authenticated_userid)
 
     return None
+
+
+def get_ws_factory():
+    return reactor.ws_factory
+
+
+def get_connected_users():
+    return reactor.ws_factory.clients

@@ -60,7 +60,7 @@ class ContentView(BasicView):
                       self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results"+"-"+ self.content_attr
+        batch.target = "#results-" + self.content_type
         self.title = _(self.title, mapping={'nb': batch.seqlen})
         result_body, result = render_listing_objs(
             self.request, batch, current_user)
@@ -115,7 +115,7 @@ class PersonContentsView(MultipleView):
     title = ''
     name = 'see-person-contents'
     viewid = 'person-contents'
-    css_class = 'simple-bloc'
+    css_class = 'simple-bloc async-new-contents-component'
     template = 'novaideo:views/templates/multipleview.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     container_css_class = 'person-view'
