@@ -1,7 +1,7 @@
 <div tal:omit-tag="" i18n:domain="novaideo">
 	<div>
 		<br/>
-		<span i18n:translate="">Les résultats du vote sur les amendements liés à la proposition</span> "<a tal:attributes="href request.resource_url(subject, '@@index')">${subject.title}</a>" <span i18n:translate="">sont les suivants :</span>
+		<span i18n:translate="">The result of the ballot on the amendments related to the proposal</span> "<a tal:attributes="href request.resource_url(subject, '@@index')">${subject.title}</a>" <span i18n:translate="">are the following:</span>
 		<ul>
 		   <tal:loop repeat="(title, url) ballots">
 		      <li><a href="${url}">${title}</a></li>
@@ -11,10 +11,10 @@
 	<br/>
 	<div>
 		<span tal:condition="len(electeds)>1" i18n:translate="">
-			Les amendements retenus après calcul sont
+			The amendments retained after calculation are:
 		</span>
 		<span tal:condition="len(electeds)==1" i18n:translate="">
-			L'amendement retenu après calcul est :
+			The amendment adopted after calculation is:
 		</span>
 		<ul>
 			<tal:loop repeat="elected electeds">

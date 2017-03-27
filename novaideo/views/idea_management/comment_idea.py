@@ -132,8 +132,9 @@ class CommentsView(BasicView):
                       default_size=BATCH_DEFAULT_SIZE)
         batch.target = "#" + self.action_id + "_results"
         batch.origin_url = url
+        origin = channel if channel else True
         body, resources = self._rendre_comments(
-            batch, current_user, channel, batch,
+            batch, current_user, origin, batch,
             unread_comments, filtered)
         item = self.adapt_item(body, self.viewid)
         try:

@@ -6,7 +6,7 @@
     <img src="${request.static_url('novaideo:static/images/progress_bar.gif')}" width="30" alt="loading"/></div>
   <ul class="${(origin and 'commentulorigin channel') or 'commentul'}"
       i18n:domain="novaideo"
-      data-channel_oid="${(origin and origin.__oid__) or ''}"
+      data-channel_oid="${getattr(origin, '__oid__', '')}"
       data-nex_url="${(origin and batch.next_url)}"
       data-origin_url="${(origin and batch.origin_url)}"
       >
