@@ -24,6 +24,7 @@ def mysubscriber_object_published(event):
         only_from_default = getattr(
             yammer_connector, 'only_from_default', False)
         default_access_token = getattr(yammer_connector, 'access_token', '')
+        access_token = None
         if only_from_default and default_access_token:
             access_token = default_access_token
         elif default_access_token:
