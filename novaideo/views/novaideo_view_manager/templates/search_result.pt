@@ -17,9 +17,11 @@
 	  <div tal:condition="bodies" id="${id}" class="results scroll-able result-scroll">
 	    <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('novaideo:views/templates/batching.pt', 'batching')"/>
 	    <div class="container-fluid result-container " data-nex_url="${batch.next_url}">
-	      <div tal:condition="bodies" class="row scroll-items-container">
-            <div class="scroll-item col-md-12" tal:repeat="body bodies">
-                ${structure:body}
+	      <div class="row scroll-items-container">
+            <div tal:omit-tag="" tal:condition="bodies" >
+	            <div class="scroll-item col-md-12" tal:repeat="body bodies">
+	                ${structure:body}
+	            </div>
             </div>
           </div>
 	      <div class="btn-more-scroll-container">

@@ -140,7 +140,9 @@ $(document).on('submit','.home-add-content .home-add-idea form', function( event
           var redirect_url = data.redirect_url && !data.ignore_redirect
           if(data.status && !redirect_url){
             var item_target = data.item_target
-            $(data.new_obj_body).hide().prependTo($('#'+item_target+' .result-container')).fadeIn(1500)
+            var result_container = $('#'+item_target+' .result-container').first()
+            result_container.find('.result-empty-message').first().remove()
+            $(data.new_obj_body).hide().prependTo(result_container).fadeIn(1500)
           }
           $this.find('input[name="title"]').val(data['new_title']);
           $this.find('textarea[name="text"]').val('');
@@ -231,7 +233,9 @@ $(document).on('submit','.home-add-content .home-add-question form', function( e
           var redirect_url = data.redirect_url && !data.ignore_redirect
           if(data.status && !redirect_url){
             var item_target = data.item_target
-            $(data.new_obj_body).hide().prependTo($('#'+item_target+' .result-container')).fadeIn(1500)
+            var result_container = $('#'+item_target+' .result-container').first()
+            result_container.find('.result-empty-message').first().remove()
+            $(data.new_obj_body).hide().prependTo(result_container).fadeIn(1500)
           }
           $this.find('input[name="question"]').val('');
           $this.find('textarea[name="text"]').val('');
