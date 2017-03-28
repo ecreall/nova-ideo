@@ -100,4 +100,4 @@ def get_ws_factory():
 
 
 def get_connected_users():
-    return reactor.ws_factory.clients
+    return reactor.ws_factory.users

@@ -96,6 +96,10 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         WebSocketServerFactory.__init__(self, url)
         self.clients = {}
 
+    @property
+    def users(self):
+        return [v['user'] for v in self.clients.values()]
+
     def call_events_handlers(self, client, **kwargs):
         request = get_request(client, **kwargs)
         messages = {}
@@ -110,37 +114,34 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                     params['current_user'] = getattr(request.user, '__oid__', '')
                     try:
                         _messages = operation(client, **params)
-                        for user, _events in _messages.items():
-                            messages.setdefault(user, [])
-                            messages[user].extend(_events)
+                        for client, _events in _messages.items():
+                            messages.setdefault(client, [])
+                            messages[client].extend(_events)
                     except Exception:
                         pass
 
-        for user, events in messages.items():
+        for client, events in messages.items():
             msg = json.dumps(events)
-            self.clients[user]['client'].sendMessage(msg.encode('utf8'))
+            client.sendMessage(msg.encode('utf8'))
 
     def event_channel_opened(
         self, client, channel_oid, **kwargs):
-        current_user = kwargs.get('current_user')
-        self.clients[current_user]['channels']['opened'].append(channel_oid)
-        if channel_oid in self.clients[current_user]['channels']['hidden']:
-            self.clients[current_user]['channels']['hidden'].remove(channel_oid)
+        self.clients[client]['channels']['opened'].append(channel_oid)
+        if channel_oid in self.clients[client]['channels']['hidden']:
+            self.clients[client]['channels']['hidden'].remove(channel_oid)
 
     def event_all_channels_closed(
         self, client, **kwargs):
-        current_user = kwargs.get('current_user')
-        if current_user in self.clients:
-            self.clients[current_user]['channels']['opened'] = []
-            self.clients[current_user]['channels']['hidden'] = []
+        if client in self.clients:
+            self.clients[client]['channels']['opened'] = []
+            self.clients[client]['channels']['hidden'] = []
 
     def event_channel_hidden(
         self, client, channel_oid, **kwargs):
-        current_user = kwargs.get('current_user')
-        if current_user in self.clients and \
-           channel_oid in self.clients[current_user]['channels']['opened']:
-            self.clients[current_user]['channels']['opened'].remove(channel_oid)
-            self.clients[current_user]['channels']['hidden'].append(channel_oid)
+        if client in self.clients and \
+           channel_oid in self.clients[client]['channels']['opened']:
+            self.clients[client]['channels']['opened'].remove(channel_oid)
+            self.clients[client]['channels']['hidden'].append(channel_oid)
 
     def event_typing_comment(
         self, client, channel_oid, **kwargs):
@@ -149,13 +150,13 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         current_user_oid = kwargs.get('current_user')
         channel = get_obj(int(channel_oid))
         messages = {}
-        for user in self.clients:
-            if user != current_user_oid:
-                user_obj = get_obj(user)
-                channels = getattr(user_obj, 'following_channels', [])
+        for client_ in self.clients:
+            if client_ != client:
+                user = get_obj(self.clients[client_]['user'])
+                channels = getattr(user, 'following_channels', [])
                 channels.append(request.root.channel)
-                opened = self.clients[user]['channels']['opened']
-                hidden = self.clients[user]['channels']['hidden']
+                opened = self.clients[client_]['channels']['opened']
+                hidden = self.clients[client_]['channels']['hidden']
                 if channel in channels or \
                    (channel_oid in hidden or channel_oid in opened):
                     events = [{
@@ -166,7 +167,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                             'user_name': current_user.first_name
                         }
                     }]
-                    messages[user] = events
+                    messages[client_] = events
 
         return messages
 
@@ -176,13 +177,13 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         current_user_oid = kwargs.get('current_user')
         channel = get_obj(int(channel_oid))
         messages = {}
-        for user in self.clients:
-            if user != current_user_oid:
-                user_obj = get_obj(user)
-                channels = getattr(user_obj, 'following_channels', [])
+        for client_ in self.clients:
+            if client_ != client:
+                user = get_obj(self.clients[client_]['user'])
+                channels = getattr(user, 'following_channels', [])
                 channels.append(request.root.channel)
-                opened = self.clients[user]['channels']['opened']
-                hidden = self.clients[user]['channels']['hidden']
+                opened = self.clients[client_]['channels']['opened']
+                hidden = self.clients[client_]['channels']['hidden']
                 if channel in channels or \
                    (channel_oid in hidden or channel_oid in opened):
                     events = [{
@@ -192,7 +193,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                             'user_oid': str(current_user_oid)
                         }
                     }]
-                    messages[user] = events
+                    messages[client_] = events
 
         return messages
 
@@ -205,18 +206,18 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         channel = get_obj(int(channel_oid))
         comment = channel.comments[-1]
         messages = {}
-        for user in self.clients:
-            if user != current_user_oid:
-                user_obj = get_obj(user)
-                channels = getattr(user_obj, 'following_channels', [])
+        for client_ in self.clients:
+            if client_ != client:
+                user = get_obj(self.clients[client_]['user'])
+                channels = getattr(user, 'following_channels', [])
                 channels.append(request.root.channel)
-                opened = self.clients[user]['channels']['opened']
-                hidden = self.clients[user]['channels']['hidden']
+                opened = self.clients[client_]['channels']['opened']
+                hidden = self.clients[client_]['channels']['hidden']
                 channel_opened = channel_oid in hidden or channel_oid in opened
                 if channel in channels or channel_opened:
                     body = ''
                     if channel_opened:
-                        request.user = user_obj
+                        request.user = user
                         result_view = CommentsView(context, request)
                         result_view.ignore_unread = channel_oid in opened
                         result_view.comments = [comment]
@@ -231,7 +232,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                             'channel_oid': str(channel_oid)
                         }
                     }]
-                    messages[user] = events
+                    messages[client_] = events
 
         return messages
 
@@ -244,18 +245,18 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         comment = get_obj(int(comment_oid))
         channel = get_obj(int(channel_oid))
         messages = {}
-        for user in self.clients:
-            if user != current_user_oid:
-                user_obj = get_obj(user)
-                channels = getattr(user_obj, 'following_channels', [])
+        for client_ in self.clients:
+            if client_ != client:
+                user = get_obj(self.clients[client_]['user'])
+                channels = getattr(user, 'following_channels', [])
                 channels.append(request.root.channel)
-                opened = self.clients[user]['channels']['opened']
-                hidden = self.clients[user]['channels']['hidden']
+                opened = self.clients[client_]['channels']['opened']
+                hidden = self.clients[client_]['channels']['hidden']
                 channel_opened = channel_oid in hidden or channel_oid in opened
                 if channel in channels or channel_opened:
                     body = ''
                     if channel_opened:
-                        request.user = user_obj
+                        request.user = user
                         result_view = CommentsView(context, request)
                         result_view.ignore_unread = channel_oid in opened
                         result_view.comments = [comment]
@@ -271,7 +272,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                             'user_oid': str(current_user_oid)
                         }
                     }]
-                    messages[user] = events
+                    messages[client_] = events
 
         return messages
 
@@ -285,18 +286,18 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         comment = get_obj(int(comment_oid))
         channel = get_obj(int(channel_oid))
         messages = {}
-        for user in self.clients:
-            if user != current_user_oid:
-                user_obj = get_obj(user)
-                channels = getattr(user_obj, 'following_channels', [])
+        for client_ in self.clients:
+            if client_ != client:
+                user = get_obj(self.clients[client_]['user'])
+                channels = getattr(user, 'following_channels', [])
                 channels.append(request.root.channel)
-                opened = self.clients[user]['channels']['opened']
-                hidden = self.clients[user]['channels']['hidden']
+                opened = self.clients[client_]['channels']['opened']
+                hidden = self.clients[client_]['channels']['hidden']
                 channel_opened = channel_oid in hidden or channel_oid in opened
                 if channel in channels or channel_opened:
                     body = ''
                     if channel_opened:
-                        request.user = user_obj
+                        request.user = user
                         result_view = CommentsView(context, request)
                         result_view.ignore_unread = channel_oid in opened
                         result_view.comments = [comment]
@@ -312,7 +313,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                             'user_oid': str(current_user_oid)
                         }
                     }]
-                    messages[user] = events
+                    messages[client_] = events
 
         return messages
 
@@ -320,16 +321,15 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
         self, client, channel_oid,
         comment_oid, **kwargs):
         request = kwargs.get('request')
-        current_user_oid = kwargs.get('current_user')
         channel = get_obj(int(channel_oid))
         messages = {}
-        for user in self.clients:
-            if user != current_user_oid:
-                user_obj = get_obj(user)
-                channels = getattr(user_obj, 'following_channels', [])
+        for client_ in self.clients:
+            if client_ != client:
+                user = get_obj(self.clients[client_]['user'])
+                channels = getattr(user, 'following_channels', [])
                 channels.append(request.root.channel)
-                opened = self.clients[user]['channels']['opened']
-                hidden = self.clients[user]['channels']['hidden']
+                opened = self.clients[client_]['channels']['opened']
+                hidden = self.clients[client_]['channels']['hidden']
                 channel_opened = channel_oid in hidden or channel_oid in opened
                 if channel in channels or channel_opened:
                     events = [{
@@ -339,7 +339,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                             'comment_oid': str(comment_oid)
                         }
                     }]
-                    messages[user] = events
+                    messages[client_] = events
 
         return messages
 
@@ -358,7 +358,7 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
             events.append({
                 'event': 'connection',
                 'params': {
-                    'id': str(connected_user)
+                    'id': str(self.clients[connected_user]['user'])
                 }
             })
 
@@ -368,11 +368,11 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
     def register(self, client, **kwargs):
         request = get_request(client)
         user = getattr(request.user, '__oid__', '')
-        if user and user not in self.clients:
+        if client and client not in self.clients:
             view_name = request.view_name.replace('@', '')
             context_oid = getattr(request.context, '__oid__', '')
-            self.clients[user] = {
-                'client': client,
+            self.clients[client] = {
+                'user': user,
                 'context': context_oid,
                 'view_name': view_name,
                 'user_context': str(context_oid)+view_name,
@@ -396,8 +396,8 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
     def unregister(self, client, **kwargs):
         request = get_request(client)
         user = getattr(request.user, '__oid__', '')
-        if user and user in self.clients:
-            self.clients.pop(user)
+        if client and client in self.clients:
+            self.clients.pop(client)
             self.signal_new_dicconnection(user, client)
 
     def filter_users(self, users=None, filter_={}):
@@ -407,17 +407,21 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                'contexts': [(context, view_name), ...]
             }
         """
+        clients = []
+        connected_users = self.users
         if users is None:
-            users = list(self.clients.keys())
+            clients = list(self.clients.keys())
         else:
             users = [getattr(u, '__oid__', u) for u in users]
-            users = [u for u in users in u in self.clients]
+            users = [u for u in users in u in connected_users]
+            clients = [c for c in self.clients
+                       if self.clients[c]['user'] in users]
 
         filter_.setdefault('channels', None)
         filter_.setdefault('contexts', None)
         condition = filter_.get('condition', None)
         if filter_['channels'] is None and filter_['contexts'] is None:
-            return users
+            return clients
 
         if filter_['channels'] is not None:
             filter_['channels'] = [str(getattr(c, '__oid__', c)) for c in filter_['channels']]
@@ -430,14 +434,15 @@ class NovaIdeoServerFactory(WebSocketServerFactory):
                      (filter_['channels'] is None or any(ch in self.clients[u]['channels']['opened'] or
                       ch in self.clients[u]['channels']['hidden']
                       for ch in filter_['channels'])) and
-                     (condition is None or condition(get_obj(int(u)))), users)
+                     (condition is None or condition(get_obj(int(self.clients[u]['user'])))), clients)
 
     def send_message(self, msg, users=None, exclude=[], filter_={}):
-        users = self.filter_users(users, filter_)
+        clients = self.filter_users(users, filter_)
         exclude = [getattr(e, '__oid__', e) for e in exclude]
-        for user in users:
-            if user in self.clients and user not in exclude:
-                self.clients[user]['client'].sendMessage(msg.encode('utf8'))
+        for client in clients:
+            if client in self.clients and \
+               self.clients[client]['user'] not in exclude:
+                client.sendMessage(msg.encode('utf8'))
 
 
 def run_ws(app):

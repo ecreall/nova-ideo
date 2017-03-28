@@ -736,6 +736,7 @@ def get_respond_metadata(action, request, context, api, **kwargs):
         'action': 'footer_action',
         'view': api,
         'new_body': body}
+    contextoid = str(get_oid(context))
     if subject:
         comment_actions = getAllBusinessAction(
             subject, request, node_id='comment',
@@ -753,7 +754,6 @@ def get_respond_metadata(action, request, context, api, **kwargs):
                 'action_icon': getattr(action, 'style_picto', ''),
             })
 
-    contextoid = str(get_oid(context))
     channel_oid = channel.__oid__
     result.update({
         'comment_oid': str(comment_oid),

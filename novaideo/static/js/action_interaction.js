@@ -26,21 +26,25 @@ function load_views(){
   var body = $(document.body)
   var loading_components = $('[data-component_type="on-load-view"]')
         .map(function(){return $(this).attr('id')}).get()
-  data = {
-    source_path: window.location.pathname,
-    view_name: body.data('view_name'),
-    'loading_components': JSON.stringify(loading_components),
-    included_resources: JSON.stringify(includejs_resources),
-    'op': 'load_views',
-    'load_view': 'load'
-  }
-  var url = body.data('api_url')
-  $.post(url, data, function(data) {
-    include_resources(data['resources'], function(){
-         update_components(data)
-         $(document).trigger('component_loaded')
-    })
-  });
+  if(loading_components.length>0){
+      data = {
+        source_path: window.location.pathname,
+        view_name: body.data('view_name'),
+        'loading_components': JSON.stringify(loading_components),
+        included_resources: JSON.stringify(includejs_resources),
+        'op': 'load_views',
+        'load_view': 'load'
+      }
+      var url = body.data('api_url')
+      $.post(url, data, function(data) {
+        include_resources(data['resources'], function(){
+             update_components(data)
+             $(document).trigger('components_loaded')
+        })
+      });
+    }else{
+      $(document).trigger('components_loaded')
+    }
 }
 
 

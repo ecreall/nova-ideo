@@ -77,7 +77,8 @@ novaideoI18n = {
   "View new idea": "View new idea",
   "View new questions": "View new questions",
   "View new question": "View new question",
-  "is typing a message": "is typing a message"
+  "is typing a message": "is typing a message",
+  "are typing a message": "are typing a message"
 },
 
 'fr':{
@@ -157,7 +158,8 @@ novaideoI18n = {
   "View new idea": "Voir la nouvelle idée",
   "View new questions": "Voir les nouvelles questions",
   "View new question": "Voir la nouvelle question",
-  "is typing a message": "est en train de taper un message"
+  "is typing a message": "est en train de taper un message",
+  "are typing a message": "sont en train de taper un message"
  }
 }
 

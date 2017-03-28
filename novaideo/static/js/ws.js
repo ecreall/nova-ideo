@@ -10,15 +10,17 @@
    NovaIdeoWS.typing_in_process = [];
 
    NovaIdeoWS.connect_to_ws_server = function(){
-      var wsuri;
-      var wsuri = "ws://" + window.location.hostname + ":8080/ws?source_path="+window.location.pathname;
-
-      if ("WebSocket" in window) {
-         NovaIdeoWS.sock = new WebSocket(wsuri);
-      } else if ("MozWebSocket" in window) {
-         NovaIdeoWS.sock = new MozWebSocket(wsuri);
-      } else {
-         log("Browser does not support WebSocket!");
+      if(!NovaIdeoWS.sock){
+        var wsuri;
+        var wsuri = "ws://" + window.location.hostname + ":8080/ws?source_path="+window.location.pathname;
+         
+        if ("WebSocket" in window) {
+           NovaIdeoWS.sock = new WebSocket(wsuri);
+        } else if ("MozWebSocket" in window) {
+           NovaIdeoWS.sock = new MozWebSocket(wsuri);
+        } else {
+           log("Browser does not support WebSocket!");
+        }
       }
 
       if (NovaIdeoWS.sock) {
@@ -120,6 +122,24 @@ NovaIdeoWS.on('connection', connection)
 
 NovaIdeoWS.on('disconnection', disconnection)
 
+function update_typing_message(messages_container){
+  var users = messages_container.find('.user-typing');
+  var typing_message = '';
+  if(users.length>0){
+    typing_message = jQuery.makeArray(users.map(function(){
+      return '<strong>'+$(this).data("name")+'</strong> ';
+    })).join();
+    var message = users.length>1? novaideo_translate("are typing a message"): novaideo_translate("is typing a message");
+    typing_message = '<span class="typing-users-container"><span class="typing-users">'+typing_message+'</span> '+message+' <i class="ion-more typing-icon"></i></span>';
+  }
+  var current_message_container = messages_container.find('.typing-users-container');
+  if(current_message_container.length>0){
+    current_message_container.replaceWith(typing_message);
+  }else{
+    messages_container.append(typing_message);
+  }
+}
+
 NovaIdeoWS.on('typing_comment', function(params){
    var channel_oid = params.channel_oid;
    var channel = $('.channel[data-channel_oid="'+channel_oid+'"]').last()
@@ -131,7 +151,8 @@ NovaIdeoWS.on('typing_comment', function(params){
       var current = messages_container.find('#'+user_oid)
       if(current.length == 0){
        messages_container.append(
-         '<span id="'+user_oid+'"><strong>'+user_name+'</strong> '+novaideo_translate("is typing a message")+' <i class="ion-more typing-icon"></i></span>') 
+         '<span class="user-typing" id="'+user_oid+'" data-name="'+user_name+'"></span>') 
+       update_typing_message(messages_container)
       }
    }
 })
@@ -146,6 +167,7 @@ function stop_typing_comment(params){
       var current = messages_container.find('#'+user_oid)
       if(current.length > 0){
        current.remove()
+       update_typing_message(messages_container)
       }
    }
 }
@@ -274,7 +296,8 @@ $(document).on('click', '.alert-new-content', function (argument) {
   var $this = $(this)
   var content_type = $this.data('content_type')
   var container = $this.parents('.async-new-contents-component').first()
-  var items_container = container.find('#results-'+content_type+'>.result-container>.scroll-items-container').first()
+  var result_container = container.find('#results-'+content_type+'>.result-container')
+  var items_container = result_container.find('>.scroll-items-container').first()
   if(items_container.length>0){
     var ids = jQuery.makeArray($this.find('.new-content-id').map(function(){
               return $(this).data('content_id')
@@ -289,6 +312,7 @@ $(document).on('click', '.alert-new-content', function (argument) {
     $.post(url, data, function(data) {
       if(data.body){
        $($(data.body).find('.scroll-item')).hide().prependTo(items_container).fadeIn(1500)
+       result_container.find('.result-empty-message').first().remove()
        $this.slideUp("slow", function(){
          $this.remove()
        })
@@ -347,7 +371,7 @@ $(document).on('keypress paste', '.comment-textarea-container textarea', user_ty
 
 $(document).on('blur', '.comment-textarea-container textarea', user_stop_typing)
 
-$(document).on('component_loaded', function() {
+$(document).on('components_loaded', function() {
    NovaIdeoWS.connect_to_ws_server()
 });
 
