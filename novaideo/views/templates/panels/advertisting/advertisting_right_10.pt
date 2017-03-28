@@ -13,7 +13,7 @@
                       pluginspage="http://www.macromedia.com/go/getflashplayer">
 					</embed>
 			   </object>
-	           <div tal:condition="source['type'] == 'html'" style="height: 90px; width: 100%px">
+	           <div tal:condition="source['type'] == 'html'" style="height: 90px; width: 100%">
 					${structure:source['content']}
 			   </div>
 	        </div>
