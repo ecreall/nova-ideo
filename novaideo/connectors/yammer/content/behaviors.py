@@ -230,7 +230,7 @@ class Remove(InfiniteCardinality):
     style_picto = 'icon glyphicon glyphicon-trash'
     style_order = 1000
     title = _('Remove')
-    submission_title = _('Save')
+    submission_title = _('Continue')
     context = IYammerConnector
     roles_validation = remove_roles_validation
     processsecurity_validation = remove_processsecurity_validation

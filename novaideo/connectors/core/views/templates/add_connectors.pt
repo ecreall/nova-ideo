@@ -4,7 +4,7 @@
    i18n:domain="novaideo">
   <div tal:condition="bodies" class="row">
     <div i18n:translate="" class="alert alert-info">
-    Click <a i18n:name="here" class="alert-link" href="${request.resource_url(request.root, '@@seeconnectors')}"><span i18n:translate="">here</span></a> to view the registered connectors.
+    Click <a i18n:translate="" i18n:name="here" class="alert-link" href="${request.resource_url(request.root, '@@seeconnectors')}">here</a> to view the registered connectors.
   </div>
     <div  id="${id}" class="results-bloc results scroll-able result-scroll">
       <div class="container-fluid result-container">
@@ -17,7 +17,7 @@
     </div>
   </div>
   <div i18n:translate="" tal:condition="not bodies" class="alert alert-warning">
-    No available connectors. Click <a i18n:name="here" class="alert-link" href="${request.resource_url(request.root, '@@seeconnectors')}"><span i18n:translate="">here</span></a> to view the registered connectors.
+    No available connectors. Click <a i18n:translate="" i18n:name="here" class="alert-link" href="${request.resource_url(request.root, '@@seeconnectors')}">here</a> to view the registered connectors.
   </div>
 </div>
 
