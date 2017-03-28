@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-03-27 11:32+0200\n"
+"POT-Creation-Date: 2017-03-28 16:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -824,9 +824,9 @@ msgstr ""
 
 #: ./novaideo/views/panels.py:316
 #: ./novaideo/views/novaideo_view_manager/templates/table_result.pt:41
-#: ./novaideo/views/novaideo_view_manager/templates/search_result.pt:26
+#: ./novaideo/views/novaideo_view_manager/templates/search_result.pt:28
 #: ./novaideo/views/novaideo_view_manager/templates/search_result_blocs.pt:26
-#: ./novaideo/views/novaideo_view_manager/templates/home.pt:32
+#: ./novaideo/views/novaideo_view_manager/templates/home.pt:34
 #: ./novaideo/content/processes/invitation_management/behaviors.py:183
 #: ./novaideo/content/processes/admin_process/definition.py:44
 #: ./novaideo/content/processes/admin_process/definition.py:48
@@ -5356,6 +5356,10 @@ msgstr ""
 msgid "The results of the ballot are available"
 msgstr ""
 
+#. 
+#. Used in sentence: "Click ${here} to view the registered connectors."
+#. Used in sentence: "No available connectors. Click ${here} to view the
+#. registered connectors."
 #: ./novaideo/views/templates/alerts/wg_alert_result.pt:40
 #: ./novaideo/views/templates/alerts/small_wg_alert_result.pt:40
 #: ./novaideo/connectors/core/views/templates/add_connectors.pt:7
@@ -9385,10 +9389,12 @@ msgstr ""
 msgid "Add new connectors"
 msgstr ""
 
+#. Canonical text for ${here} is: "here"
 #: ./novaideo/connectors/core/views/templates/add_connectors.pt:6
 msgid "Click ${here} to view the registered connectors."
 msgstr ""
 
+#. Canonical text for ${here} is: "here"
 #: ./novaideo/connectors/core/views/templates/add_connectors.pt:19
 msgid ""
 "No available connectors. Click ${here} to view the registered connectors."
