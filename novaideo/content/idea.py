@@ -30,7 +30,7 @@ from pontus.file import ObjectData, File, Object as ObjectType
 from .interface import Iidea
 from novaideo.content.correlation import CorrelationType
 from novaideo import _, log
-from novaideo.views.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget
 from novaideo.core import (
     VersionableEntity,
     DuplicableEntity,

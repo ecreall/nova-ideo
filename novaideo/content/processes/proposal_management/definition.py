@@ -161,9 +161,9 @@ class SubProcessFirstVote(OriginSubProcess):
             if vote_processes:
                 close_votes(None, request, vote_processes)
 
-        ballots = getattr(process, 'ballots', [])
-        for ballot in ballots:
-            ballot.finish_ballot()
+            ballots = getattr(process, 'ballots', [])
+            for ballot in ballots:
+                ballot.finish_ballot()
 
         super(SubProcessFirstVote, self).stop()
 

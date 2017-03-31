@@ -14,7 +14,7 @@ from pontus.widget import TextInputWidget
 
 from novaideo import _
 
-from novaideo.views.widget import EmailInputWidget
+from novaideo.widget import EmailInputWidget
 
 
 PHONE_PATTERN = re.compile(r'^(0|\+([0-9]{2,3})[-. ]?|00([0-9]{2,3})[-. ]?)[1-9]?([-. ]?([0-9]{2})){4}$')

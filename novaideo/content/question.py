@@ -27,7 +27,7 @@ from novaideo.content.correlation import CorrelationType
 from novaideo.content.idea import challenge_choice
 from .interface import IQuestion, IAnswer
 from novaideo import _
-from novaideo.views.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget
 from novaideo.core import (
     VersionableEntity,
     DuplicableEntity,

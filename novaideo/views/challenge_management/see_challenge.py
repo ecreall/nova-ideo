@@ -163,7 +163,7 @@ class ContentView(BasicView):
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
         self.title = _(self.title, mapping={'nb': batch.seqlen})
-        batch.target = "#results"+"-"+ self.content_type
+        batch.target = "#results-" + self.content_type
         filter_instance = getattr(self, 'filter_instance', None)
         filter_body = None
         if filter_instance:
@@ -304,6 +304,7 @@ class ChallengeContentsView(MultipleView):
     template = 'novaideo:views/templates/multipleview.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'challengecontents'
+    css_class = 'simple-bloc'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
 

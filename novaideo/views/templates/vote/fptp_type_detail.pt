@@ -9,7 +9,7 @@
   <h3>${ballot.title} <small>(${getattr(ballot.ballot_box, 'vote_len', 0)} <span i18n:translate="">vote(s)</span>)</small></h3> 
 	<div class="ballot-detail">
 		<p>
-			<span i18n:translate="">Ce vote est de type uninominal majoritaire permettant aux électeurs de faire un choix parmis plusieurs.</span> <span i18n:translate="">The ballot started on</span> <span tal:replace="layout.to_localized_time(run)"/>.
+			<span i18n:translate="">This vote is a first-past-the-post vote allowing voters to make a choice among several.</span> <span i18n:translate="">The ballot started on</span> <span tal:replace="layout.to_localized_time(run)"/>.
 			<span tal:condition="finish is not None">
 				<span tal:condition="not is_finished" i18n:translate="">The end of the ballot is planned on</span><span tal:condition="is_finished">The ballot is ended on</span> <span tal:replace="layout.to_localized_time(finish)"/>.
 			</span>

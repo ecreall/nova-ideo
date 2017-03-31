@@ -21,7 +21,7 @@ from pontus.schema import Schema
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     Contact)
 from novaideo import _
-from novaideo.views.widget import EmailInputWidget
+from novaideo.widget import EmailInputWidget
 
 
 @colander.deferred

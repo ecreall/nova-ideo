@@ -22,20 +22,20 @@ class TestProposalManagement(FunctionalTests): #pylint: disable=R0904
 
     def test_sort_proposal(self):
         proposal1 = Proposal()
-        proposal1.tokens_support = [1, 1, 1] #+3
-        proposal1.tokens_opposition = [1, 1] #-2
+        proposal1.len_support = 3
+        proposal1.len_opposition = 2
 
         proposal2 = Proposal()
-        proposal2.tokens_support = [1, 1, 1, 1]#+4
-        proposal2.tokens_opposition = [1, 1, 1]#-3
+        proposal2.len_support = 4
+        proposal2.len_opposition = 3
 
         proposal3 = Proposal()
-        proposal3.tokens_support = [1, 1]#+2
-        proposal3.tokens_opposition = [1, 1]#-2
+        proposal3.len_support = 2
+        proposal3.len_opposition = 2
 
         proposal4 = Proposal()
-        proposal4.tokens_support = [1, 1, 1, 1]#+4
-        proposal4.tokens_opposition = [1, 1, 1, 1, 1]#-5
+        proposal4.len_support = 4
+        proposal4.len_opposition = 5
 
         proposals = [proposal3, proposal2, proposal4, proposal1]
         ordered_proposals = sort_by_tokens(proposals, True)

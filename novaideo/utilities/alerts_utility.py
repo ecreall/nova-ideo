@@ -217,7 +217,7 @@ def alert_internal(senders=[], recipients=[], exclude=[], **kwargs):
                     excluded_ids = [getattr(user, 'notification_ids', [])
                                     for user in exclude]
                     excluded_ids = [item for sublist in excluded_ids
-                                   for item in sublist]
+                                    for item in sublist]
                     send_notification(players_ids, excluded_ids)
             else:
                 send_notification('all')

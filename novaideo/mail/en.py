@@ -1,597 +1,555 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
-# author: Amen Souissi
+# author: Amen Souissi, *
 
 from . import add_mail_template
 
-PORTAL_SIGNATURE = """Cordialement,
-                                                                                
-La Plateforme {novaideo_title}
+""" The contents of e-mails"""
+
+PORTAL_SIGNATURE = """Kind regards,
+
+The {novaideo_title} platform.
 """
 
-PORTAL_PRESENTATION = u"""{novaideo_title} est une plateforme participative qui permet à tout membre d'initier des idées pouvant être utilisées dans des propositions améliorées par des groupes de travail. Une fois améliorées, ces propositions peuvent être soumises à l'appréciation des membres et faire l'objet d'une décision d'un comité d'examen.
+PORTAL_PRESENTATION = u"""{novaideo_title} is a participatory platform with which any member can initiate ideas. These ideas can then be improved in spontaneous working groups. Once improved and adopted by the working group, these proposals are subject to the appreciation of all members, and be the purpose of the decision of an examination committee.
 
 """
 
-FIRST_INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
+FIRST_INVITATION_SUBJECT = u"""Invitation to join the Nova-Ideo participatory platform"""
 
 FIRST_INVITATION_MESSAGE = u"""
-Bonjour,
+Dear,
 
-Nous vous remercions de l'intérêt que vous portez à Nova-Ideo.
 
-{recipient_first_name} vous êtes invité à rejoindre la plateforme participative Nova-Ideo en tant que administrateur du site.
+We thank you for your interest in Nova-Ideo.
 
-Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
+{recipient_first_name} your are invited to join the the Nova-Ideo participatory platform as the site administrator.
 
-Nous vous rappellons que Nova-Ideo est une solution d'innovation participative en ligne qui permet de répondre aux problèmes suivants :
-- Vous souhaitez mettre en place une solution d'innovation participative ;
-- Vous avez déjà une boite à idées, mais soit elle est vide, soit si pleine qu'il est impossible de trouver les bonnes idées ;
-- Vous n'avez pas de temps à passer à gérer les idées et manquez ainsi de nombreuses opportunités, et créez de la déception chez ceux qui ont des idées.
+In order to validate your invitation, you must click on the following link {invitation_url} and follow the instructions.
 
-Nova-Ideo permet de recueillir les idées d'un collectif, de trouver les bonnes idées et de les transformer en propositions applicables reflétant tous les points de vue.
+We remind you that Nova-Ideo is an on-line participatory innovation solution, which addresses the following problems:
+- you want to implement a participatory innovation solution;
+- you already have an "ideas box", and it is either empty, or so full that it is impossible to find the good ideas;
+- you have no time to manage ideas. Thereby, you miss many opportunities, and create disappointment among those who have good ideas.
 
-Pour cela Nova-Ideo utilise le crowdsourcing en faisant travailler la "foule" sur la transformation des idées en propositions.
+With Nova-Ideo, you will: collect the ideas of a set of people, find the good ones and transform them into implementable proposals that reflect all points of view.
 
-Nova-Ideo fusionne le meilleur de la boite à idées, du portail collaboratif et des outils de communication internes et propose des solutions d'innovation sociale à la pointe comme l'utilisation du jugement majoritaire ou l'organisation de la rareté des soutiens/rejets.
+To do so, Nova-Ideo uses crowdsourcing, by having the "crowd" to work on the transformation of ideas into full proposals.
 
-Consultez notre page https://www.nova-ideo.com et notamment sa page Documentation https://www.nova-ideo.com/documentation
+Nova-Ideo merges the best of the "ideas box", of the collaborative portal, and of internal communication tools. It proposes cutting-edge social innovation solutions such as the majority judgement or the management of the rarity of supports/rejections.
 
-Suivez notre compte twitter : https://twitter.com/NovaIdeo
+Look at our web page https://www.nova-ideo.com and specifically its Documentation page https://www.nova-ideo.com/documentation
 
-Vous pouvez consulter notre présentation détaillée de Nova-Ideo http://fr.slideshare.net/MichaelLaunay/20160911-novaideo-linnovation-participative-en-ligne
+Follow our Twitter account: https://twitter.com/NovaIdeo
 
-Le code de Nova-Ideo sous licence libre AGPL V3 est accessible sur : https://github.com/ecreall/nova-ideo
+You can look at our detailed presentation of Nova-Ideo http://fr.slideshare.net/MichaelLaunay/20160911-novaideo-linnovation-participative-en-ligne
 
-La vidéo filmée lors du PyConFR expliquant d'où vient Nova-Ideo et pourquoi il est libre : http://video-pyconfr2015.paulla.asso.fr/112_-_Michael_Launay_-_Nova-Ideo,_une_boite_a_idees_collaborative.html
+The source code of Nova-Ideo is available under the free AGPL V3 licence is available at: https://github.com/ecreall/nova-ideo
 
-Nous réalisons également une série de vidéos expliquant l'administration et le fonctionnement de Nova-Ideo accessible depuis la page Documentation de notre site https://www.nova-ideo.com/documentation .
+The video recording of the the PyConFR conference explaining where Nova-Ideo comes from, and why it is free: http://video-pyconfr2015.paulla.asso.fr/112_-_Michael_Launay_-_Nova-Ideo,_une_boite_a_idees_collaborative.html
 
-Nous pouvons adapter Nova-Ideo à vos besoins spécifiques, alors n'hésitez pas à nous contacter, nous répondrons à vos questions !
+We currently develope a seris of videos explaining the administration and the operation of Nova-Ideo. It can be accessed from the Documentation part of our site https://www.nova-ideo.com/documentation.
 
-Vous pouvez aussi faire part de vos remarques et proposer des évolutions en créant un compte sur https://evolutions.nova-ideo.com
+We can adapt Nova-Ideo to your specific needs. Do not hesitate to contact us. We will answer your questions!
 
-Cordialement
-L'équipe d'Ecréall
-Services et Solutions en Logiciels Libres
+You can also send us your observations and propose evolutions for the software, by creating an account on https://evolutions.nova-ideo.com
+
+With kind regards.
+
+The Ecréall team
+Services and Solutions in Free, Libre and Open Source Software
 Parc scientifique de la Haute Borne
 Bâtiment Hub Innovation
 11, rue de l'Harmonie
 59650 Villeneuve d'Ascq
+France
 site : http://www.ecreall.com
-tél : 03 20 79 32 90
-mob : 06 16 85 91 12
-Fax : 09 56 94 39 44
+tél : +33 (0)3 20 79 32 90
+mob : +33 (0)6 16 85 91 12
+Fax : +33 (0)9 56 94 39 44
 """
 
 
-INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
+INVITATION_SUBJECT = u"""Invitation to join the {novaideo_title} participatory platform"""
 
 INVITATION_MESSAGE = u"""
-Bonjour,
+Dear,
 
-{recipient_first_name} vous êtes invité à rejoindre la plateforme participative {novaideo_title} en tant que {roles}.
+{recipient_first_name} your are invited to join the the {novaideo_title} participatory platform as {roles}.
 
-Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
+In order to validate your invitation, you must click on the following link {invitation_url} and follow the instructions.
 
 """ + PORTAL_SIGNATURE
 
-
-PRESENTATION_IDEA_SUBJECT = u"""Présentation de l'idée « {subject_title} »""" 
+PRESENTATION_IDEA_SUBJECT = u"""Presentation of the idea "{subject_title}"""
 
 
 PRESENTATION_IDEA_MESSAGE = u"""
-Bonjour,
+Dear,
 
-{my_first_name} {my_last_name} souhaite vous présenter l'idée « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette idée est accessible à l'adresse : {subject_url}.
-
-""" +  PORTAL_PRESENTATION + PORTAL_SIGNATURE
-
-
-CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription à la plateforme participative {novaideo_title}"""
-
-CONFIRMATION_MESSAGE = u"""
-Bienvenue sur la plateforme {novaideo_title}, nous vous confirmons votre inscription à la plateforme participative {novaideo_title}. 
-
-Faites-nous part de vos idées en vous connectant à l'adresse {login_url}.
-
-""" + PORTAL_SIGNATURE
-
-
-PRESENTATION_PROPOSAL_SUBJECT = u"""Présentation de la proposition « {subject_title} »""" 
-
-
-PRESENTATION_PROPOSAL_MESSAGE = u"""
-Bonjour,
-
-{my_first_name} {my_last_name} souhaite vous présenter la proposition « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette proposition est accessible à l'adresse : {subject_url}.
+{my_first_name} {my_last_name} wishes to present to you the idea "{subject_title}" on the {novaideo_title} platform. You can access this idea at: {subject_url}.
 
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
+CONFIRMATION_SUBJECT = u"""Confirmation of your registration on the {novaideo_title} participatory platform"""
+
+CONFIRMATION_MESSAGE = u"""
+Welcome on the {novaideo_title} platform!
+
+We confirm hereby that you are registered on the {novaideo_title} participatory platform.
+
+Share your ideas with us by connecting to the {login_url} address!
+
+""" + PORTAL_SIGNATURE
+
+PRESENTATION_PROPOSAL_SUBJECT = u"""Presentation of the proposal "{subject_title}""" 
+
+
+PRESENTATION_PROPOSAL_MESSAGE = u"""
+Dear,
+
+{my_first_name} {my_last_name} wishes to present to you the proposal "{subject_title}" on the {novaideo_title} platform. You can access this proposal at: {subject_url}.
+
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
 PRESENTATION_AMENDMENT_MESSAGE = u"""
-Bonjour,
+Dear,
 
-{my_first_name} {my_last_name} souhaite vous présenter l'amendement « {subject_title} » figurant sur la plateforme {novaideo_title} sous {subject_url}.
+{my_first_name} {my_last_name} wishes to present to you the amendment "{subject_title}" on the {novaideo_title} platform. You can access this amendment at: {subject_url}.
 
-""" + \
- PORTAL_PRESENTATION + PORTAL_SIGNATURE
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
 PRESENTATION_AMENDMENT_SUBJECT = u"""« {subject_title} »"""
 
 
-PRESENTATION_QUESTION_SUBJECT = u"""Présentation de la question « {subject_title} »""" 
+PRESENTATION_QUESTION_SUBJECT = u"""Presentation of the question "{subject_title}"""
 
 
 PRESENTATION_QUESTION_MESSAGE = u"""
-Bonjour,
+Dear,
 
-{my_first_name} {my_last_name} souhaite vous présenter la question « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette question est accessible à l'adresse : {subject_url}.
+{my_first_name} {my_last_name} wishes to present to you the question "{subject_title}" on the {novaideo_title} platform. You can access this question at: {subject_url}.
 
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
-
-PRESENTATION_ANSWER_SUBJECT = u"""Présentation de la réponse à une question « {subject_title} »""" 
+PRESENTATION_ANSWER_SUBJECT = u"""Presentation of an answer to the question "{subject_title}"""
 
 
 PRESENTATION_ANSWER_MESSAGE = u"""
-Bonjour,
+Dear,
 
-{my_first_name} {my_last_name} souhaite vous présenter la réponse à une question « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette réponse est accessible à l'adresse : {subject_url}.
+{my_first_name} {my_last_name} wishes to present to you an answer to the question "{subject_title}" on the {novaideo_title} platform. You can access this answer at: {subject_url}.
 
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
-
-AMENDABLE_FIRST_SUBJECT = u"""Début du cycle d'amélioration de la proposition « {subject_title} »"""
-
+AMENDABLE_FIRST_SUBJECT = u"""Start of the improvement cycle of the proposal "{subject_title}"""
 
 AMENDABLE_FIRST_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Vous êtes dorénavant trois participants au groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}, vous pouvez commencer à l'améliorer. 
+You are now three participants in the working group on the proposal "{subject_title}", which is accessible at {subject_url}. You can start improving it.
 
-Chaque participant peut faire des suggestions d'amélioration que les autres participants peuvent soit accepter, soit refuser. Lorsque le cycle d'amélioration est terminé, l'ensemble des participants votent soit pour continuer à améliorer la proposition, soit pour la soumettre à l'appréciation des membres de la plateforme.
+Each participant can suggest improvements, which the other participants can either accept, or refuse. Once the improvement cycle is finished, all participants vote, either to continue improving the proposal, or to submit it to the assessment of the members of the platform.
 
-Le cycle d'amélioration se termine le {duration}.
+The improvement cycle ends on {duration}.
 
 """ + PORTAL_SIGNATURE
 
-AMENDABLE_SUBJECT = u"""Début du cycle d'amélioration de la proposition « {subject_title} »"""
+AMENDABLE_SUBJECT = u"""Start of the improvement cycle of the proposal "{subject_title}"""
 
 
 AMENDABLE_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} a voté à la majorité pour continuer à améliorer la proposition.
+The working group on the proposal "{subject_title}", which is accessible at {subject_url}, voted in majority to continue improving it.
 
-Chaque participant peut faire des suggestions d'amélioration que les autres participants peuvent soit accepter, soit refuser. Lorsque le cycle d'amélioration est terminé, l'ensemble des participants votent soit pour continuer à améliorer la proposition, soit pour la soumettre à l'appréciation des membres de la plateforme.
+Each participant can suggest improvements, which the other participants can either accept, or refuse. Once the improvement cycle is finished, all participants vote, either to continue improving the proposal, or to submit it to the assessment of the members of the platform.
 
-Le cycle d'amélioration se termine le {duration}.
+The improvement cycle ends on {duration}.
 
 """ + PORTAL_SIGNATURE
 
-ALERT_SUBJECT = u"""Fin du cycle d'amélioration de la proposition « {subject_title} » sans aucune amélioration"""
+ALERT_SUBJECT = u"""End of the improvement cycle of the proposal "{subject_title}" with no improvemt"""
 
 ALERT_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Alors que le cycle d'amélioration est terminé, aucune amélioration n'a été apportée à la proposition « {subject_title} » qui se trouve sous {subject_url}. Vous allez devoir procéder au vote pour soumettre la proposition en l'état ou pour recommencer un nouveau cycle d'amélioration. 
+While the improvement cycle is finished, no improvement was brought to the proposal "{subject_title}", which can be accessed at {subject_url}. You will need to vote on whether you want to submit the proposal as it is, or to start again a new improvement cycle.
 
 """ + PORTAL_SIGNATURE
 
-ALERT_END_SUBJECT = u"""Dernières améliorations avant la fin du cycle d'amélioration de la proposition « {subject_title} »"""
+ALERT_END_SUBJECT = u"""Last improvements before the end of the end of the improvement cycle of the proposal "{subject_title}"""
 
 ALERT_END_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Le cycle d'amélioration pour la proposition « {subject_title} » qui se trouve sous {subject_url} touche pratiquement à sa fin. Vous pouvez encore y apporter des améliorations, avant que le groupe de travail vote pour soumettre la proposition en l'état ou pour recommencer un nouveau cycle d'amélioration.
+The improvement cycle of the proposal "{subject_title}", which can be accessed at {subject_url}, is almost to an end. You can still improve it, before the working group votes to submit the proposal as it is or to start again a new improvement cycle.
 
 """ + PORTAL_SIGNATURE
 
-
-RESULT_VOTE_AMENDMENT_SUBJECT = u"""Les résultats du vote sur les amendements liés à la proposition « {subject_title} » """
+RESULT_VOTE_AMENDMENT_SUBJECT = u"""The results of the vote on the amendements related to the proposal "{subject_title}" """
 
 RESULT_VOTE_AMENDMENT_MESSAGE = u"""
 <div>
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
 {message_result}
 </div>
 """ + PORTAL_SIGNATURE
 
-
-PUBLISHPROPOSAL_SUBJECT = u"""Décision de soumettre la proposition « {subject_title} » à l'appréciation des membres de la plateforme"""
+PUBLISHPROPOSAL_SUBJECT = u"""Decision to submit the proposal "{subject_title}" to the assessment of the members of the platform"""
 
 PUBLISHPROPOSAL_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} a voté à la majorité pour soumettre la proposition à l'appréciation des membres de la plateforme.
+The working group on the proposal "{subject_title}", which can be accessed at {subject_url}, voted in majority to submit the proposal to the assessment of the other members of the platform.
 
-Chaque membre de la plateforme peut dorénavant soutenir ou s'opposer à la proposition et le Comité d'examen peut l'examiner.
+Every member of the platform can now suppport or oppose the proposal and the Examination Committee can evaluate it.
 
 """ + PORTAL_SIGNATURE
 
-
-SYSTEM_CLOSE_PROPOSAL_SUBJECT = u"""Décision de cloturer la proposition « {subject_title} » à l'appréciation des membres de la plateforme"""
+SYSTEM_CLOSE_PROPOSAL_SUBJECT = u"""Decision to close the proposal "{subject_title}"""
 
 SYSTEM_CLOSE_PROPOSAL_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} n'est plus actif depuis quelques cycles de plus d'une semaine.
-Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant ouverte à un groupe de travail.
+The working group on the proposal "{subject_title}", which can be accessed at {subject_url}, has not been active over several cycles, each lasting more than a week.
+
+For this reason, the working group has been dissolved, and the proposal is now back to the stage "expecting the working group to reach the quorum".
 
 """ + PORTAL_SIGNATURE
 
-
-VOTINGPUBLICATION_SUBJECT = u"""Début du vote pour améliorer la proposition « {subject_title} » ou la soumettre à l'appréciation des membres de la plateforme """
+VOTINGPUBLICATION_SUBJECT = u"""Start of the vote to improve the proposal "{subject_title}" or to submit it to the assessment of the members of the platform"""
 
 VOTINGPUBLICATION_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Le cycle d'amélioration de la proposition « {subject_title} » qui se trouve sous {subject_url} est terminé, vous êtes invité à prendre part au vote pour améliorer la proposition ou la soumettre à l'appréciation des membres de la plateforme.
+The improvement cycle of the proposal "{subject_title}", which can be accessed at {subject_url}, is now finished. You are invited to participate in the vote to decide whether the proposal should be further improved, or whether it should be submitted to the assessment of the members of the platform.
 
-Vous disposez de 24 heures pour voter, après quoi le vote sera dépouillé en tenant compte du choix de la majorité des votants. Si aucun vote n'a lieu, un nouveau cycle d'amélioration commence pour une semaine.
+You have 24 hours to vote. After this period of time, the ballots will be counted, and the outcome will be decided by the majority of expressed votes. If no ballot is cast, a new improvement cycle starts for one week.
 
 """ + PORTAL_SIGNATURE
 
-
-VOTINGAMENDMENTS_SUBJECT = u"""Début des votes sur les amendements portant sur la proposition « {subject_title} »"""
+VOTINGAMENDMENTS_SUBJECT = u"""Start of the votes on the amendments to the proposal "{subject_title}"""
 
 VOTINGAMENDMENTS_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Les votes sur les amendements portant sur la proposition « {subject_title} » qui se trouve sous {subject_url} ont commencé. Merci de prendre part aux votes.
+The votes on the amendments to the proposal "{subject_title}", which can be accessed at {subject_url}, have started. You are kindly requested to  participate in the votes.
 
 """ + PORTAL_SIGNATURE
 
-WITHDRAW_SUBJECT = u"""Retrait de la liste d'attente du groupe de travail de la proposition « {subject_title} »"""
+WITHDRAW_SUBJECT = u"""Withdrawal from the waiting list of the working group related to the proposal "{subject_title}"""
 
 WITHDRAW_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Vous ne faites plus partie de la liste d'attente du groupe de travail de la proposition {subject_title} » qui se trouve sous {subject_url}, suite à votre retrait de cette liste d'attente. 
+You are not any more on the waiting list of the working group related to the proposal {subject_title}, which can be accessed at {subject_url}, following your decision to withdraw from this waiting list.
 
-Vous pourrez à tout moment chercher à rejoindre à nouveau le groupe de travail de la proposition, si elle est encore en cours d'amélioration.
+You can attempt at any time to join again the working group related to the proposal, if it still is being improved.
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_WL_SUBJECT = u"""Participation au groupe de travail de la proposition « {subject_title} »"""
+PARTICIPATE_WL_SUBJECT = u"""Participation in the working group related to the proposal "{subject_title}"""
 
 PARTICIPATE_WL_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Vous faites partie du groupe de travail de la proposition {subject_title} » qui se trouve sous {subject_url}, suite au départ de l'un des participants. 
+A participant has left the working group related to the proposal {subject_title}, which can be accessed at {subject_url}. His/her departure has opened a free place for you in the working group. You are now part of the working group related to the proposal {subject_title}.
 
-Vous pouvez en tant que participant au groupe de travail améliorer la proposition et vous pourrez, à la fin du cycle d'amélioration, voter pour continuer à l'améliorer ou la soumettre à l'appréciation des membres de la plateforme.
+As a participant in the working group, you can improve the proposal, and at the end of the improvement cycle, vote on whether to continue improving it or to submit it to the assessment of the members of the platform.
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_SUBJECT = u"""Votre participation au groupe de travail de la proposition « {subject_title} »"""
+PARTICIPATE_SUBJECT = u"""Your participation in the working group related to the proposal "{subject_title}"""
 
 PARTICIPATE_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Vous faites partie du groupe de travail de la proposition {subject_title} qui se trouve sous {subject_url}.
+You are part of the working group related to the proposal {subject_title}, which can be accessed at {subject_url}.
 
-Vous pouvez en tant que participant au groupe de travail améliorer la proposition, s'il elle est en cours d'amélioration, et vous pourrez, à la fin du cycle d'amélioration, voter pour continuer à l'améliorer ou la soumettre à l'appréciation des membres de la plateforme.
+As a participant in the working group, you can improve the proposal, and at the end of the improvement cycle, vote on whether to continue improving it or to submit it to the assessment of the members of the platform.
 
 """ + PORTAL_SIGNATURE
 
-RESIGN_SUBJECT = u"""Votre départ du groupe de travail de la proposition « {subject_title} »"""
+RESIGN_SUBJECT = u"""Your departure from the working group related to the proposal "{subject_title}"""
 
 RESIGN_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Nous vous confirmons que vous ne faites plus partie du groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
+We hereby confirm that you are not any more  participant in the working group related to the proposal "{subject_title}", which can be accessed at {subject_url}.
 
-Vous pourrez à tout moment le rejoindre de nouveau, si vous ne faites pas partie déjà de cinq autres groupes de travail, qui est le nombre maximum de groupes de travail auxquels un membre a le droit de participer simultanément.
+You will be able to join it again at any time, if you are not already a participant in five working groups, which is the maximum number of working groups in which a member can simultaneously participate at any time.
 
 """ + PORTAL_SIGNATURE
 
-WATINGLIST_SUBJECT = u"""Inscription sur la liste d'attente du groupe de travail de la proposition « {subject_title} »"""
+WATINGLIST_SUBJECT = u"""Registration in the waiting list of the working group related to the proposal "{subject_title}"""
 
 WATINGLIST_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Vous souhaitez participer au groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}, mais le nombre de participants a déjà atteint 12 personnes, qui est le nombre maximum de participants dans un groupe de travail.
+You wish to participate in the working group related to the proposal "{subject_title}", which can be accessed at {subject_url}. However, the number of participants has already reached 12, which is the maximum number of participants in a working group.
 
-Vous êtes sur la liste d'attente de ce groupe de travail et vous en ferez automatiquement partie, dès qu'une place se sera libérée.
+You are therefore on the waiting list of this working group, and will automatically become a participant in it, as soon as a place is free.
 
 """ + PORTAL_SIGNATURE
 
-
-NEWCONTENT_SUBJECT = u"""{subject_type} « {subject_title} qui contient un des mots clés faisant partie de vos centres d'intérêt vient d'être publiée."""
-
+NEWCONTENT_SUBJECT = u"""{subject_type} "{subject_title}", which contains a keyword among your topics of interest, has just been published."""
 
 NEWCONTENT_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-{subject_type} « {subject_title} » qui contient un des mots clés faisant partie de vos centres d'intérêt vient d'être publiée. Vous pouvez la consulter sous {subject_url}.
+{subject_type} "{subject_title}", which contains a keyword among your topics of interest, has just been published. You can access it at the following URL {subject_url}.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-CONTENTMODIFIEF_SUBJECT = u"""{subject_type} « {subject_title} » qui fait partie de vos favoris vient de changer d'état"""
-
+CONTENTMODIFIEF_SUBJECT = u"""{subject_type} "subject_title}", which is among your favourites, has changed its status"""
 
 CONTENTMODIFIEF_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-{subject_type} « {subject_title} » qui fait partie de vos favoris vient de passer de l'état {state_source} à l'état {state_target}. Vous pouvez la consulter sous {subject_url}.
+{subject_type} "subject_title}", which is among your favourites, has just switched from the status {state_source} to the status {state_target}. You can access it at the following URL {subject_url}.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-ARCHIVEIDEA_SUBJECT = u"""Décision des modérateurs d'archiver l'idée « {subject_title} »"""
-
+ARCHIVEIDEA_SUBJECT = u"""Decision by the moderators to archive the idea "{subject_title}"""
 
 ARCHIVEIDEA_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-L'idée « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+The idea "{subject_title}" has just been archived by the moderators, for the following reason:
 
 {explanation}
 
-Vous pouvez retrouver votre idée sous {subject_url}.
+You can access your idea at the following URL {subject_url}.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-ARCHIVECONTENT_SUBJECT = u"""Décision des modérateurs d'archiver le contenu « {subject_title} »"""
+ARCHIVECONTENT_SUBJECT = u"""Decision by the moderators to archive the content "{subject_title}"""
 
 
 ARCHIVECONTENT_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Le contenu « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+The content "{subject_title}" has just been archived by the moderators, for the following reason:
 
 {explanation}
 
-Vous pouvez retrouver votre contenu sous {subject_url}.
+You can access your content at the following URL {subject_url}.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-ARCHIVEPROPOSAL_SUBJECT = u"""Décision des modérateurs d'archiver la proposition « {subject_title} »"""
-
+ARCHIVEPROPOSAL_SUBJECT = u"""Decision by the moderators to archive the proposal "{subject_title}"""
 
 ARCHIVEPROPOSAL_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-La proposition « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+The proposal "{subject_title}" has just been archived by the moderators, for the following reason:
 
 {explanation}
 
-Vous pouvez retrouver votre proposition sous {subject_url}.
+You can access your proposal at the following URL {subject_url}.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-ALERTOPINION_SUBJECT = u"""Avis du Comité d'examen sur la proposition « {subject_title} »"""
-
+ALERTOPINION_SUBJECT = u"""Opinion of the Examination Committee on the proposal "{subject_title}"""
 
 ALERTOPINION_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Le Comité d'examen a émis un avis « {opinion} » sur la proposition « {subject_title} » avec l'explication suivante : « {explanation} ».
+The Examination Committee has expressed the following opinion "{opinion}" on the proposal "{subject_title}", with the following explanation:  "{explanation}".
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-ALERTOPINIONIDEA_SUBJECT = u"""Avis d'un Examinateur sur l'idée « {subject_title} »"""
-
+ALERTOPINIONIDEA_SUBJECT = u"""Opinion of an Examiner on the idea "{subject_title}"""
 
 ALERTOPINIONIDEA_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Un Examinateur a émis un avis « {opinion} » sur l'idée « {subject_title} » avec l'explication suivante : « {explanation} ».
+An Examiner has expressed the following opinion "{opinion}" on the idea "{subject_title}", with the following explanation:  "{explanation}".
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-PUBLISHEDIDEA_SUBJECT = u"""Décision des modérateurs de publier l'idée « {subject_title} »"""
-
+PUBLISHEDIDEA_SUBJECT = u"""Decision by the moderators to publish the idea "{subject_title}"""
 
 PUBLISHEDIDEA_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-L'idée « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}. Cette idée peut maintenant être utilisée par n'importe quel membre de la plateforme pour une proposition.
+The idea "{subject_title}", which is accessible at the URL {subject_url}, has just been published by the moderators. This idea can now be used by any member of the platform to build a proposal.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-PUBLISHEDPROPOSAL_SUBJECT = u"""Décision des modérateurs de publier la proposition « {subject_title} »"""
-
+PUBLISHEDPROPOSAL_SUBJECT = u"""Decision by the moderators to publish the proposal "{subject_title}"""
 
 PUBLISHEDPROPOSAL_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-La proposition « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}.
+The proposal "{subject_title}", which can be accessed at {subject_url}, has just been published by the moderators. The working group is created, and is waiting to reach the quorum.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-PROPOSALREMOVED_SUBJECT = u"""Suppression de la proposition « {subject_title} »"""
-
+PROPOSALREMOVED_SUBJECT = u"""Suppression of proposal "{subject_title}"""
 
 PROPOSALREMOVED_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-La proposition « {subject_title} » viens d'être supprimée par les modérateurs pour le motif suivant:
+The proposal "{subject_title}" has just been suppressed by the moderators for the following reason:
 
 « {explanation} »
 
-"""+ PORTAL_SIGNATURE 
+""" + PORTAL_SIGNATURE
 
-
-REFUSE_INVITATION_SUBJECT = u"""Refus de {user_first_name} {user_last_name} de rejoindre la plateforme {novaideo_title}"""
-
+REFUSE_INVITATION_SUBJECT = u"""{user_first_name} {user_last_name} has refused to join the platform {novaideo_title}"""
 
 REFUSE_INVITATION_MESSAGE = u"""
-Bonjour,
+Dear,
 
-Nous vous signalons que {user_first_name} {user_last_name} a refusé votre invitation de rejoindre la plateforme {novaideo_title}.
+We inform you that {user_first_name} {user_last_name} has refused your invitation to join the platform {novaideo_title}.
 
-"""+ PORTAL_SIGNATURE 
+""" + PORTAL_SIGNATURE
 
-
-ACCEPT_INVITATION_SUBJECT = u"""Acceptation de {user_first_name} {user_last_name} de rejoindre la plateforme {novaideo_title}"""
-
+ACCEPT_INVITATION_SUBJECT = u"""{user_first_name} {user_last_name} has accepted to join the platform {novaideo_title}"""
 
 ACCEPT_INVITATION_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-{user_first_name} {user_last_name} a accepté votre invitation de rejoindre la plateforme {novaideo_title}.
+We inform you that {user_first_name} {user_last_name} has accepted your invitation to join the platform {novaideo_title}.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-RESETPW_SUBJECT = u"""Votre nouveau mot de passe sur la plateforme {novaideo_title}"""
-
+RESETPW_SUBJECT = u"""Your new password on the platform {novaideo_title}"""
 
 RESETPW_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Vous souhaitez avoir un nouveau votre mot de passe sur la plateforme {novaideo_title}, merci de cliquer sur l'adresse {reseturl} et de saisir votre nouveau mot de passe.
+You have asked for a new password on the platform {novaideo_title}. Please click on the following URL {reseturl} and provide your new password.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
-
+PREREGISTRATION_SUBJECT = u"""Finalise your registration on the {novaideo_title} participatory platform"""
 
 PREREGISTRATION_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Vous avez été inscrit à la plateforme participative {novaideo_title}. Vous devez cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
+You have registered on the {novaideo_title} participatory platform.
+
+In order to finalise your registration, you must now click on the following link {url}. This link is valid for 48 hours. You must therefore complete your registration on or before {deadline_date}.
+
+We are happy to count you among our members. We hope that your participation will be for you a positive and rewarding experience, in a fully democractic framework. Welcome!
 
 """+ PORTAL_SIGNATURE
 
-
-ADMIN_PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
-
+ADMIN_PREREGISTRATION_SUBJECT = u"""Registration on the participatory platform {novaideo_title}"""
 
 ADMIN_PREREGISTRATION_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Une nouvelle inscription à la plateforme participative {novaideo_title} vient d'être ajoutée. L'inscription est sous {url}. Vous devez donner votre avis pour la modérer.
+A new registration on the participatory platform {novaideo_title} has been recorded. It can be visualised at the following URL {url}. As a moderator, you must decide on whether or not you want to accept it.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_title} »"""
-
+ALERTCOMMENT_SUBJECT = u"""New comment on {subject_type} "{subject_title}"""
 
 ALERTCOMMENT_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Un nouveau commentaire a été fait sur {subject_type} « {subject_title} ».
+A new comment has been added on the {subject_type} "{subject_title}".
 
 "{comment_content}"
 
-Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
+You can access it at the following URL {comment_url} and answer it.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-ALERTANSWER_SUBJECT = u"""Nouvelle réponse sur {subject_type} « {subject_title} »"""
-
+ALERTANSWER_SUBJECT = u"""New answer given to {subject_type} "{subject_title}"""
 
 ALERTANSWER_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Une nouvelle réponse a été donnée à {subject_type} « {subject_title} ».
+A new answer was given to {subject_type} "{subject_title}".
 
 "{comment_content}"
 
-Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
+You can access it at the following URL {comment_url} and answer it.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-ALERTDISCUSS_SUBJECT = u"""Nouveau message ajouté à votre discussion avec « {subject_title} »"""
-
+ALERTDISCUSS_SUBJECT = u"""New message added to your discussion with "subject_title}"""
 
 ALERTDISCUSS_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Un nouveau message a été ajouté à votre discussion avec « {subject_title} ».
+A new message has been added to your discussion with "{subject_title}".
 
 "{comment_content}"
 
-Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
+You can access it at the following URL {comment_url} and answer it.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-ALERTRESPONS_SUBJECT = u"""Une personne a donné une réponse à un commentaire sur {subject_type} « {subject_title} »"""
-
+ALERTRESPONS_SUBJECT = u"""A person has given an answer to a comment on the {subject_type} "{subject_title}"""
 
 ALERTRESPONS_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Une personne a donné une réponse à un commentaire sur {subject_type} « {subject_title} » qui se trouve sous {comment_url}.
+A person has given an answer to a comment on the {subject_type} "{subject_title}, which can be accessed at the following URL{comment_url}.
 
 "{comment_content}"
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-NEWSLETTER_SUBSCRIPTION_SUBJECT = u"""Inscription newsletter"""
+NEWSLETTER_SUBSCRIPTION_SUBJECT = u"""Subscription to the newsletter"""
 
 NEWSLETTER_SUBSCRIPTION_MESSAGE = u"""
-Bonjour {first_name} {last_name},
+Dear {first_name} {last_name},
 
-Vous êtes maintenant abonné à la newsletter {newsletter_title}.
+Your subscription to the newsletter {newsletter_title} is now confirmed.
 
 """ + PORTAL_SIGNATURE
 
-NEWSLETTER_UNSUBSCRIPTION_SUBJECT = u"""Désinscription de la newsletter"""
+NEWSLETTER_UNSUBSCRIPTION_SUBJECT = u"""Unsubscription from the newsletter"""
 
 NEWSLETTER_UNSUBSCRIPTION_MESSAGE = u"""
-Bonjour {first_name} {last_name},
+Dear {first_name} {last_name},
 
-Vous êtes maintenant désabonné de la newsletter {newsletter_title}.
+Your subscription to the newsletter {newsletter_title} is now cancelled.
 
 """ + PORTAL_SIGNATURE
 
-
-PUBLISHEDCHALLENGE_SUBJECT = u"""Décision des modérateurs de publier le challenge « {subject_title} »"""
-
+PUBLISHEDCHALLENGE_SUBJECT = u"""Decision by the moderators to publish the challenge "{subject_title}"""
 
 PUBLISHEDCHALLENGE_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Le challenge « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}.
+The challenge "{subject_title}", which can be accessed at {subject_url}, has just been published by the moderators.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-ARCHIVECHALLENGE_SUBJECT = u"""Décision des modérateurs d'archiver le challenge « {subject_title} »"""
-
+ARCHIVECHALLENGE_SUBJECT = u"""Decision by the moderators to archive the challenge "{subject_title}"""
 
 ARCHIVECHALLENGE_MESSAGE = u"""
-Bonjour {recipient_first_name},
+Dear {recipient_first_name},
 
-Le challenge « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+The challenge "{subject_title}" has just been archived by the moderators, for the following reason:
 
 {explanation}
 
-Vous pouvez retrouver votre challenge sous {subject_url}.
+You can access your challenge at the following URL {subject_url}.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-
-PRESENTATION_CHALLENGE_SUBJECT = u"""Présentation du challenge « {subject_title} »""" 
-
+PRESENTATION_CHALLENGE_SUBJECT = u"""Presentation of the challenge "{subject_title}""" 
 
 PRESENTATION_CHALLENGE_MESSAGE = u"""
-Bonjour,
+Dear,
 
-{my_first_name} {my_last_name} souhaite vous présenter le challenge « {subject_title} » figurant sur la plateforme {novaideo_title}. Ce challenge est accessible à l'adresse : {subject_url}.
-
+{my_first_name} {my_last_name} wishes to present to you the challenge "{subject_title}" on the {novaideo_title} platform. You can access this challenge at: {subject_url}.
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
-
 
 FIRST_INVITATION = {
     'subject': FIRST_INVITATION_SUBJECT,

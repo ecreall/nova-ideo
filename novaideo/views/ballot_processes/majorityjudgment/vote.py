@@ -26,7 +26,7 @@ from novaideo.content.processes.ballot_processes.majorityjudgment.behaviors impo
     Vote)
 from novaideo.content.proposal import Proposal
 from novaideo import _, log
-from novaideo.views.widget import InLineWidget, ObjectWidget
+from novaideo.widget import InLineWidget, ObjectWidget
 
 
 OMITED_TEXT_TAG = '[...]'

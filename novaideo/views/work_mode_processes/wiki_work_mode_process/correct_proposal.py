@@ -32,7 +32,7 @@ from novaideo.content.proposal import ProposalSchema, Proposal
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo import _
 from novaideo.core import can_access
-from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.widget import SimpleMappingtWidget
 from novaideo.views.proposal_management.create_proposal import ideas_choice
 from novaideo.utilities.util import to_localized_time
 

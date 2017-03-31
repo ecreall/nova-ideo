@@ -16,7 +16,7 @@ from pontus.schema import Schema
 from novaideo.content.processes.invitation_management.behaviors import (
     AcceptInvitation)
 from novaideo.content.invitation import Invitation
-from novaideo.views.widget import TOUCheckboxWidget
+from novaideo.widget import TOUCheckboxWidget
 from novaideo import _
 
 

@@ -15,7 +15,7 @@ from pontus.view import BasicView
 from pontus.default_behavior import Cancel
 from pontus.schema import Schema
 
-from novaideo.views.widget import LimitedTextAreaWidget
+from novaideo.widget import LimitedTextAreaWidget
 from novaideo.content.processes.question_management.behaviors import (
     ArchiveQuestion)
 from novaideo.content.question import Question

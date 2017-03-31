@@ -23,9 +23,11 @@
 	      	   class="result-empty-message">
 	      	   <span tal:condition="empty_icon" class="${empty_icon}"></span> ${empty_message}
 	      </div>
-	      <div tal:condition="bodies" class="row scroll-items-container">
-            <div class="scroll-item col-md-12" tal:repeat="body bodies">
-                ${structure:body}
+	      <div  class="row scroll-items-container">
+	      	<div tal:omit-tag="" tal:condition="bodies" >
+	            <div class="scroll-item col-md-12" tal:repeat="body bodies">
+	                ${structure:body}
+	            </div>
             </div>
           </div>
 	      <div class="btn-more-scroll-container">
