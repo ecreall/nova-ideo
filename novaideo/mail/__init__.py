@@ -34,12 +34,10 @@ DEFAULT_SITE_MAILS = {
         'title': _("Pre-registration of users"),
         'languages': {}
     },
-
     'presentation_idea': {
         'title': _("Presentation of an idea"),
         'languages': {}
     },
-
     'presentation_proposal': {
         'title': _("Presentation of a proposal"),
         'languages': {}
@@ -164,12 +162,10 @@ DEFAULT_SITE_MAILS = {
         'title': _("Close the proposal"),
         'languages': {}
     },
-
     'presentation_question': {
         'title': _("Presentation of a question"),
         'languages': {}
     },
-
     'presentation_answer': {
         'title': _("Presentation of an answer"),
         'languages': {}
@@ -190,7 +186,6 @@ DEFAULT_SITE_MAILS = {
         'title': _("Moderation: Publish the challenge"),
         'languages': {}
     },
-
     'presentation_challenge': {
         'title': _("Presentation of a challenge"),
         'languages': {}

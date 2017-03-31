@@ -1268,7 +1268,8 @@ class Withdraw(InfiniteCardinality):
         working_group.delfromproperty('wating_list', user)
         if getattr(user, 'email', ''):
             root = getSite()
-            mail_template = root.get_mail_template('withdeaw', user.user_locale)
+            mail_template = root.get_mail_template(
+                'withdeaw', user.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             email_data = get_user_data(user, 'recipient', request)
@@ -1719,7 +1720,8 @@ class Work(ElementaryAction):
               dc_ballot=dc_ballot_url)
         subject_data = get_entity_data(context, 'subject', request)
         for member in [m for m in members if getattr(m, 'email', '')]:
-            mail_template = root.get_mail_template(message_id, member.user_locale)
+            mail_template = root.get_mail_template(
+                message_id, member.user_locale)
             subject_template = mail_template['subject']
             message_template = mail_template['template']
             subject = subject_template.format(subject_title=context.title)

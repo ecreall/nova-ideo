@@ -113,16 +113,19 @@ PRESENTATION_PROPOSAL_MESSAGE = u"""
 Dear,
 
 {my_first_name} {my_last_name} wishes to present to you the proposal "{subject_title}" on the {novaideo_title} platform. You can access this proposal at: {subject_url}.
+
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 PRESENTATION_AMENDMENT_MESSAGE = u"""
 Dear,
 
 {my_first_name} {my_last_name} wishes to present to you the amendment "{subject_title}" on the {novaideo_title} platform. You can access this amendment at: {subject_url}.
+
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-PRESENTATION_AMENDMENT_SUBJECT = u""""{subject_title}"""
+PRESENTATION_AMENDMENT_SUBJECT = u"""« {subject_title} »"""
+
 
 PRESENTATION_QUESTION_SUBJECT = u"""Presentation of the question "{subject_title}"""
 
@@ -143,7 +146,6 @@ Dear,
 {my_first_name} {my_last_name} wishes to present to you an answer to the question "{subject_title}" on the {novaideo_title} platform. You can access this answer at: {subject_url}.
 
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
-
 
 AMENDABLE_FIRST_SUBJECT = u"""Start of the improvement cycle of the proposal "{subject_title}"""
 
@@ -204,7 +206,6 @@ PUBLISHPROPOSAL_SUBJECT = u"""Decision to submit the proposal "{subject_title}" 
 
 PUBLISHPROPOSAL_MESSAGE = u"""
 Dear {recipient_first_name},
-
 
 The working group on the proposal "{subject_title}", which can be accessed at {subject_url}, voted in majority to submit the proposal to the assessment of the other members of the platform.
 
@@ -299,7 +300,6 @@ You are therefore on the waiting list of this working group, and will automatica
 """ + PORTAL_SIGNATURE
 
 NEWCONTENT_SUBJECT = u"""{subject_type} "{subject_title}", which contains a keyword among your topics of interest, has just been published."""
-
 
 NEWCONTENT_MESSAGE = u"""
 Dear {recipient_first_name},
@@ -440,8 +440,9 @@ You have registered on the {novaideo_title} participatory platform.
 
 In order to finalise your registration, you must now click on the following link {url}. This link is valid for 48 hours. You must therefore complete your registration on or before {deadline_date}.
 
-""" + PORTAL_SIGNATURE
+We are happy to count you among our members. We hope that your participation will be for you a positive and rewarding experience, in a fully democractic framework. Welcome!
 
+"""+ PORTAL_SIGNATURE
 
 ADMIN_PREREGISTRATION_SUBJECT = u"""Registration on the participatory platform {novaideo_title}"""
 

@@ -273,7 +273,6 @@ class DuplicateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        root.merge_keywords(appstruct['keywords'])
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         copy_of_idea = copy(
