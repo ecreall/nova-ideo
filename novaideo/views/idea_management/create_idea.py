@@ -140,7 +140,7 @@ class CreateIdeaView_Json(BasicView):
                     'error': str(error)}
 
         return {'status': False,
-                'error': 'none'}
+                'error': str(add_idea_view_result)}
 
     def creat_idea(self):
         behavior = None
