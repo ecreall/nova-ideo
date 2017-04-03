@@ -136,7 +136,8 @@ class CreateIdeaView_Json(BasicView):
 
         except Exception as error:
             log.warning(error)
-            return {'status': False}
+            return {'status': False,
+                    'error': str(error)}
 
         return {'status': False}
 
