@@ -730,12 +730,19 @@ def evolve_mails_languages(root, registry):
             mail['languages'] = [{
                 'locale': 'fr',
                 'template': mail['template'],
-                'subject': mail['subject']
+                'subject': mail['subject'],
+                'mail_id': mail['mail_id']
             }]
             mail.pop('template')
             mail.pop('subject')
+            en_template = root.get_mail_template(mail['mail_id'], 'en')
+            mail['languages'].append(en_template)
             result.append(mail)
         else:
+            if all(m['locale'] != 'en' for m in mail['languages']):
+                en_template = root.get_mail_template(mail['mail_id'], 'en')
+                mail['languages'].append(en_template)
+
             result.append(mail)
 
     root.mail_templates = PersistentList(result)
