@@ -135,11 +135,12 @@ class CreateIdeaView_Json(BasicView):
                 return result
 
         except Exception as error:
-            log.warning(error)
+            # log.warning(error)
             return {'status': False,
                     'error': str(error)}
 
-        return {'status': False}
+        return {'status': False,
+                'error': 'none'}
 
     def creat_idea(self):
         behavior = None
