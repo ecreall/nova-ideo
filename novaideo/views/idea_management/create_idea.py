@@ -37,12 +37,13 @@ from novaideo import _, log
 class CreateIdeaView(FormView):
 
     title = _('Create an idea')
-    schema = select(IdeaSchema(factory=Idea, editable=True),
+    schema = omit(select(IdeaSchema(factory=Idea, editable=True),
                     ['challenge',
                      'title',
                      'text',
                      'keywords',
-                     'attached_files'])
+                     'attached_files']),
+                  ["_csrf_token_"])
     behaviors = [CrateAndPublishAsProposal, CrateAndPublish, CreateIdea, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'
@@ -135,12 +136,10 @@ class CreateIdeaView_Json(BasicView):
                 return result
 
         except Exception as error:
-            # log.warning(error)
-            return {'status': False,
-                    'error': str(error)}
+            log.warning(error)
+            return {'status': False}
 
-        return {'status': False,
-                'error': str(add_idea_view_result)}
+        return {'status': False}
 
     def creat_idea(self):
         behavior = None
