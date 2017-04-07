@@ -386,7 +386,8 @@ class RefuseInvitation(InfiniteCardinality):
         if manager:
             root = getSite()
             mail_template = root.get_mail_template(
-                'refuse_invitation', manager.user_locale)
+                'refuse_invitation',
+                getattr(manager, 'user_locale', root.locale))
             localizer = request.localizer
             email_data = get_user_data(context, 'user', request)
             novaideo_title = request.root.title
