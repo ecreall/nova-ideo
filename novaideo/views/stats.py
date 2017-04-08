@@ -19,13 +19,13 @@ def site_data(context, request):
     states_index = dace_catalog['object_states']
     object_provides_index = dace_catalog['object_provides']
 
-    latest_content_created_date = object_provides_index.any(
+    latest_content = object_provides_index.any(
         (IPerson.__identifier__,
          Iidea.__identifier__,
          IQuestion.__identifier__,
          IProposal.__identifier__,
          IChallenge.__identifier__)).execute(
-        ).sort(created_at_index, reverse=True).first().created_at
+        ).sort(created_at_index, reverse=True).first()
 
     query = object_provides_index.any((IPerson.__identifier__,)) & \
         states_index.notany(['deactivated'])
@@ -59,7 +59,7 @@ def site_data(context, request):
     logo = getattr(root, 'picture', None)
     result["logoUrl"] = logo.url if logo else \
         request.static_url('novaideo:static/images/novaideo_logo.png')
-    result["latestContentCreatedDate"] = latest_content_created_date.strftime('%Y-%m-%d')
+    result["latestContentCreatedDate"] = latest_content.created_at.strftime('%Y-%m-%d') if latest_content is not None else None
     result["creationDate"] = root.created_at.strftime('%Y-%m-%d')
     result["title"] = root.title
     result["url"] = request.resource_url(root, '')
