@@ -159,7 +159,7 @@ class ISReport(IEntity):
 
 
 @interface()
-@interface_config(type_id='idea')
+@interface_config(type_id='challenge')
 class IChallenge(ISearchableEntity,
                  ICorrelableEntity,
                  IPresentableEntity,
