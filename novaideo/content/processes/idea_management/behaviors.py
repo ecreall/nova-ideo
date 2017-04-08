@@ -487,7 +487,7 @@ class ArchiveIdea(InfiniteCardinality):
               subjects=[context], alert_kind='moderation')
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template(
-                'archive_idea_decision', user.user_to_alert)
+                'archive_idea_decision', user.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             email_data = get_user_data(user, 'recipient', request)

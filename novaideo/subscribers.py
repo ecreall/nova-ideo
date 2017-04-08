@@ -83,6 +83,7 @@ def mysubscriber(event):
     novaideo_title = settings.get('novaideo.title')
     root.title = novaideo_title
     root.init_files()
+    root.init_channels()
     catalogs = find_service(root, 'catalogs')
     catalogs.add_catalog('novaideo')
     site_type = os.getenv('INITIAL_SITE_TYPE', 'public')
@@ -237,8 +238,6 @@ def init_application(event):
     manager.push({'registry': registry, 'request': request})
     root = app.root_factory(request)
     request.root = root
-    root.init_files()
-    root.init_channels()
     # other init functions
     if getattr(root, 'locale', None) is None:
         root.locale = registry.settings.get('pyramid.default_locale_name')

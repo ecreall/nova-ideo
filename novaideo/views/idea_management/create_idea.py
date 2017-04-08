@@ -37,12 +37,13 @@ from novaideo import _, log
 class CreateIdeaView(FormView):
 
     title = _('Create an idea')
-    schema = select(IdeaSchema(factory=Idea, editable=True),
+    schema = omit(select(IdeaSchema(factory=Idea, editable=True),
                     ['challenge',
                      'title',
                      'text',
                      'keywords',
-                     'attached_files'])
+                     'attached_files']),
+                  ["_csrf_token_"])
     behaviors = [CrateAndPublishAsProposal, CrateAndPublish, CreateIdea, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'

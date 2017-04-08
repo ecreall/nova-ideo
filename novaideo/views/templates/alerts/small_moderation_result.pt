@@ -1,7 +1,8 @@
 <div i18n:domain="novaideo"
     tal:define="
       icon object.icon;
-      new_alert object.is_to_alert(current_user)">
+      new_alert object.is_to_alert(current_user)"
+    tal:condition="object.subjects">
   <div tal:define="
   	    subject object.subjects[0];
   	    alert_kind getattr(object, 'alert_kind', '');"
