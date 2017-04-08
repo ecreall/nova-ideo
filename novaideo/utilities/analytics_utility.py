@@ -7,9 +7,6 @@ rand_color = randomcolor.RandomColor()
 def random_color(count=1):
     colors = [{'background': c, 'hover': hover_color(c)}
               for c in rand_color.generate(count=count)]
-    if count == 1:
-        return colors[0]
-
     return colors
 
 
