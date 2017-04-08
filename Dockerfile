@@ -20,7 +20,7 @@ RUN addgroup --quiet --gid $userid "u1000" && \
         --quiet \
         --home "/app" \
         "u1000"
-RUN pip3 install zc.buildout==2.9.3 setuptools==32.2.0 && pip3 uninstall appdirs packaging pyparsing six || true
+RUN pip3 install zc.buildout==2.9.3 setuptools==32.2.0 && pip3 uninstall -y six || true
 
 # grab gosu for easy step-down from root
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
