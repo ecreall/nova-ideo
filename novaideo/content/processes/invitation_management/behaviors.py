@@ -333,7 +333,8 @@ class AcceptInvitation(InfiniteCardinality):
         context.person = person
         if manager:
             mail_template = root.get_mail_template(
-                'accept_invitation', manager.user_locale)
+                'accept_invitation',
+                getattr(manager, 'user_locale', root.locale))
             localizer = request.localizer
             email_data = get_user_data(person, 'user', request)
             novaideo_title = request.root.title
