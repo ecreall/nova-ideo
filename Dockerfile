@@ -1,4 +1,4 @@
-FROM python:3.4
+FROM python:3.6
 LABEL novaideo=master
 
 ARG userid=1000
