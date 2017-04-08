@@ -4,10 +4,12 @@ codep() {
   set -eo monitor
   trap 'kill $(jobs -p) &> /dev/null' EXIT
   trap 'exit 2' CHLD
+  first_child="$1"
+  shift
   for child in "$@"; do
     $child &
   done
-  wait
+  $first_child
 }
 
 [[ "$0" == "$BASH_SOURCE" ]] && codep "$@"
