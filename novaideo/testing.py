@@ -49,6 +49,11 @@ class BaseFunctionalTests(object):
         self.request = request = testing.DummyRequest()
         self.config = testing.setUp(registry=app.registry, request=request)
         self.registry = self.config.registry
+        from .catalog import NovaideoIndexes, Text, Lexicon, Splitter, CaseNormalizer, StopWordRemover
+        # lexicon is a persistent object, we need to be sure it's a fresh one
+        # between tests
+        NovaideoIndexes.relevant_data = Text(
+            lexicon=Lexicon(Splitter(), CaseNormalizer(), StopWordRemover()))
         self.root = root_factory(request)
         request.root = self.root
 
