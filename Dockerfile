@@ -1,5 +1,4 @@
 FROM python:3.6
-LABEL novaideo=master
 
 ARG userid=1000
 ARG run_buildout=true
