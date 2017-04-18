@@ -407,6 +407,7 @@
       </div>
    </div>
   ${panel('guide_tour')}
+  ${panel('analytics_panel')}
   </body>
 
 </html>
