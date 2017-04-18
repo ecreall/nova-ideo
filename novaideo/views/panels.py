@@ -858,3 +858,19 @@ class ChallengesPanel(object):
         result['view'] = self
         update_resources(self.request, result)
         return result
+
+
+@panel_config(
+    name='analytics_panel',
+    context=Entity,
+    renderer='templates/panels/analytics_panel.pt'
+    )
+class AnalyticsPanel(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        user = self.request.user
+        return {'userid': get_oid(user) if user else 'anonymous'}

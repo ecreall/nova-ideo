@@ -1,0 +1,8 @@
+ <div tal:omit-tag="" tal:define="analytics getattr(request.root, 'analytics', None)">
+	<script type="text/javascript">
+		var piwik_userid = "${userid}";
+	</script>
+	<span tal:omit-tag="" tal:condition="analytics">
+        ${structure:analytics}
+    </span>
+  </div>
