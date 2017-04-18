@@ -152,7 +152,7 @@ AMENDABLE_FIRST_SUBJECT = u"""Start of the improvement cycle of the proposal "{s
 AMENDABLE_FIRST_MESSAGE = u"""
 Dear {recipient_first_name},
 
-You are now three participants in the working group on the proposal "{subject_title}", which is accessible at {subject_url}. You can start improving it.
+The working group on the proposal "{subject_title}", which is accessible at {subject_url} reached the quorum. You can start improving it.
 
 Each participant can suggest improvements, which the other participants can either accept, or refuse. Once the improvement cycle is finished, all participants vote, either to continue improving the proposal, or to submit it to the assessment of the members of the platform.
 
