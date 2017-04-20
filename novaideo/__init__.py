@@ -810,6 +810,7 @@ def main(global_config, **settings):
     config.add_translation_dirs('dace:locale/')
     config.add_translation_dirs('deform:locale/')
     config.add_translation_dirs('colander:locale/')
+    config.include('.graphql')
     config.scan()
     config.add_static_view('novaideostatic',
                            'novaideo:static',

@@ -31,7 +31,9 @@ requires = [
     'profilehooks',
     'metadata_parser',
     'deform_treepy',
-    'randomcolor'
+    'randomcolor',
+    'graphene',
+    'graphql-wsgi',
     ]
 
 setup(name='novaideo',
