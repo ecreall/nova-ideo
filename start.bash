@@ -14,6 +14,7 @@ SECRET="${SECRET:-mybigsecret}"
 APPLICATION_URL="${APPLICATION_URL:-https://mynovaideo.example.com}"
 TIMEOUT="${TIMEOUT:-300}"
 WORKERS="${WORKERS:-1}"
+DEFAULT_LOCALE="${DEFAULT_LOCALE:-en}"
 export TMPDIR="/app/var/tmp"
 sed -i \
     -e "s|MAIL_HOST|$MAIL_HOST|" \
@@ -26,6 +27,7 @@ sed -i \
     -e "s|SECRET|$SECRET|" \
     -e "s|APPLICATION_URL|$APPLICATION_URL|" \
     -e "s|WORKERS|$WORKERS|" \
+    -e "s|DEFAULT_LOCALE|$DEFAULT_LOCALE|" \
     production-heroku.ini
 if [ -z "$MAIL_USERNAME" ]; then
     sed -i -e "s|mail.username =.*||" production-heroku.ini
