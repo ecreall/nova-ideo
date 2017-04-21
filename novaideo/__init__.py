@@ -759,6 +759,10 @@ def evolve_mails_languages(root, registry):
     log.info('Emails evolved.')
 
 
+def evolve_reset_default_locale_to_fr(root, registry):
+    root.locale = 'fr'
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -805,6 +809,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_related_correlation)
     config.add_evolution_step(publish_organizations)
     config.add_evolution_step(evolve_mails_languages)
+    config.add_evolution_step(evolve_reset_default_locale_to_fr)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
