@@ -68,9 +68,10 @@ $(document).ready(function(){
         showContinue: true,
         showPrevious: true,
         scrollToItem: true,
+    },
+    function(){
+        return $("#home-questions-counter").length>0;
     });
-
-    
 
     homePage.addStep({
         type: "overlay",

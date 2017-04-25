@@ -6,6 +6,8 @@
 
 import os
 import transaction
+from ZODB.POSException import ConflictError
+
 from pyramid.events import subscriber, ApplicationCreated
 from pyramid.threadlocal import get_current_registry, get_current_request
 from pyramid.request import Request
@@ -90,6 +92,7 @@ def mysubscriber(event):
     root.only_for_members = site_type.lower() != 'public'
     #invit initial user
     root.first_invitation_to_add = True
+    root.locale = settings.get('pyramid.default_locale_name')
     add_nia_bot(root)
 
 
@@ -237,13 +240,23 @@ def init_application(event):
     request.registry = registry
     manager.push({'registry': registry, 'request': request})
     root = app.root_factory(request)
+    # A transaction.commit() just happened here if this is the first time we
+    # start. This is just after all RootAdded subscribers are executed.
     request.root = root
     # other init functions
     if getattr(root, 'locale', None) is None:
-        root.locale = registry.settings.get('pyramid.default_locale_name')
+        try:
+            # This code is actually an evolve step for old novaideo instances.
+            # The root.locale is set in the RootAdded subscriber above
+            # for new instances.
+            root.locale = registry.settings.get('pyramid.default_locale_name')
+            transaction.commit()
+        except ConflictError:
+            # We have a conflict error in case of serveral workers, just abort
+            transaction.abort()
 
-    init_contents(registry)
-    #invite initial user if first deployment
+    init_contents(registry)  # there is no changes in ZODB here
+    # invite initial user if first deployment
     if getattr(root, 'first_invitation_to_add', False):
         # LOGO_FILENAME='marianne.svg' for example
         logo = os.getenv('LOGO_FILENAME', '')
@@ -266,6 +279,8 @@ def init_application(event):
                 first_name, last_name, email)
 
         del root.first_invitation_to_add
+        # This is a change in ZODB, but it's ok, it is executed only the first
+        # time when we only have one worker.
 
     transaction.commit()
     # manager.pop()
