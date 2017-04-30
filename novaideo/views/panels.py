@@ -156,23 +156,22 @@ class AddContent(object):
     )
 class UserNavBarPanel(object):
 
-    navbar_actions = [SeeMyContents, SeeMyParticipations,
-                      SeeMySelections]
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
 
     def __call__(self, has_contextual_help=False):
         root = getSite()
+        navbar_actions = [SeeMyContents, SeeMyParticipations,
+                          SeeMySelections]
         if 'proposal' not in self.request.content_to_manage:
-            self.navbar_actions = [SeeMyContents, SeeMySelections]
+            navbar_actions = [SeeMyContents, SeeMySelections]
 
         if self.request.support_ideas or self.request.support_proposals:
-            self.navbar_actions.append(SeeMySupports)
+            navbar_actions.append(SeeMySupports)
 
         actions_url = OrderedDict()
-        for actionclass in self.navbar_actions:
+        for actionclass in navbar_actions:
             process_id, action_id = tuple(
                 actionclass.node_definition.id.split('.'))
             action, view = get_action_view(process_id, action_id, self.request)
