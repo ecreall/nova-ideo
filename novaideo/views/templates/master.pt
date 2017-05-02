@@ -146,6 +146,8 @@
             type="text/javascript"></script>
     <script src="${su('novaideo:static/js/templates.js')}"
           type="text/javascript"></script>
+    <script src="${request.static_url('pontus:static/select2/dist/js/i18n/'+request.locale_name+'.js')}"
+            type="text/javascript"></script>
 
 
     ${panel('debatescore')}
