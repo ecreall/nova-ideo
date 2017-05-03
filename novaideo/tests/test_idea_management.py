@@ -17,12 +17,7 @@ from novaideo.content.idea import Idea
 class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
     """Test Vote integration"""
 
-    def setUp(self):
-        super(TestIdeaManagement, self).setUp()
-
-    def test_creat_idea_default_conf(self):
-        # SetUp the default Nova-Ideo configuration
-        self.default_request_setUp()
+    def test_create_idea_default_conf(self):
         context = self.request.root
         idea = Idea(
             title="Idea title",
@@ -34,11 +29,11 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             process_id='ideamanagement',
             node_id='creat')
         self.assertEqual(len(actions), 1)
-        creat_action = actions[0]
-        self.assertEqual(creat_action.node_id, 'creat')
-        self.assertEqual(creat_action.process_id, 'ideamanagement')
-        # Excute the action
-        creat_action.execute(
+        create_action = actions[0]
+        self.assertEqual(create_action.node_id, 'creat')
+        self.assertEqual(create_action.process_id, 'ideamanagement')
+        # Execute the action
+        create_action.execute(
             context, self.request, {'_object_data': idea})
         ideas = context.ideas
         self.assertEqual(len(ideas), 1)
@@ -53,9 +48,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             node_id='creat')
         self.assertEqual(len(actions), 1)
 
-    def test_creat_and_publish_idea_default_conf(self):
-        # SetUp the default Nova-Ideo configuration
-        self.default_request_setUp()
+    def test_create_and_publish_idea_default_conf(self):
         context = self.request.root
         idea = Idea(
             title="Idea title",
@@ -67,11 +60,11 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             process_id='ideamanagement',
             node_id='creatandpublish')
         self.assertEqual(len(actions), 1)
-        creat_action = actions[0]
-        self.assertEqual(creat_action.node_id, 'creatandpublish')
-        self.assertEqual(creat_action.process_id, 'ideamanagement')
-        # Excute the action
-        creat_action.execute(
+        create_action = actions[0]
+        self.assertEqual(create_action.node_id, 'creatandpublish')
+        self.assertEqual(create_action.process_id, 'ideamanagement')
+        # Execute the action
+        create_action.execute(
             context, self.request, {'_object_data': idea})
         ideas = context.ideas
         self.assertEqual(len(ideas), 1)
