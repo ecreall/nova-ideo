@@ -77,7 +77,6 @@ class FunctionalTests(BaseFunctionalTests, unittest.TestCase):
 
     def setUp(self):
         super(FunctionalTests, self).setUp()
-        self.default_request_setUp()
 
     def default_novaideo_config(self):
         self.request.get_time_zone = pytz.timezone('Europe/Paris')
