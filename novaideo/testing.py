@@ -51,6 +51,7 @@ class BaseFunctionalTests(object):
         self.app = app = main({}, **settings)
         self.db = app.registry._zodb_databases['']
         self.request = request = testing.DummyRequest()
+        self.request.invalidate_cache = True
         self.config = testing.setUp(registry=app.registry, request=request)
         self.registry = self.config.registry
         from .catalog import (
@@ -76,9 +77,8 @@ class FunctionalTests(BaseFunctionalTests, unittest.TestCase):
 
     def setUp(self):
         super(FunctionalTests, self).setUp()
-        self.default_request_setUp()
 
-    def default_request_setUp(self):
+    def default_novaideo_config(self):
         self.request.get_time_zone = pytz.timezone('Europe/Paris')
         self.request.moderate_ideas = False
         self.request.moderate_proposals = False
@@ -86,14 +86,40 @@ class FunctionalTests(BaseFunctionalTests, unittest.TestCase):
         self.request.examine_proposals = False
         self.request.support_ideas = True
         self.request.support_proposals = True
+        self.request.root.content_to_support = ['idea', 'proposal']
         self.request.content_to_examine = []
         self.request.content_to_support = ['idea', 'proposal']
         self.request.accessible_to_anonymous = True
         self.request.content_to_manage = [
             'question', 'idea', 'proposal']
+        self.request.root.content_to_manage = [
+            'challenge', 'question', 'idea', 'proposal']
         self.request.searchable_contents = searchable_contents(
             self.request)
         self.request.user = self.request.root['principals']['users']['admin']
+        self.request.user.email = None
+
+    def moderation_novaideo_config(self):
+        self.request.get_time_zone = pytz.timezone('Europe/Paris')
+        self.request.moderate_ideas = True
+        self.request.moderate_proposals = True
+        self.request.root.content_to_moderate = ['idea', 'proposal']
+        self.request.examine_ideas = False
+        self.request.examine_proposals = False
+        self.request.support_ideas = True
+        self.request.support_proposals = True
+        self.request.root.content_to_support = ['idea', 'proposal']
+        self.request.content_to_examine = []
+        self.request.content_to_support = ['idea', 'proposal']
+        self.request.accessible_to_anonymous = True
+        self.request.content_to_manage = [
+            'challenge', 'question', 'idea', 'proposal']
+        self.request.root.content_to_manage = [
+            'challenge', 'question', 'idea', 'proposal']
+        self.request.searchable_contents = searchable_contents(
+            self.request)
+        self.request.user = self.request.root['principals']['users']['admin']
+        self.request.user.email = None
 
 
 class RobotLayer(BaseFunctionalTests, Layer):
