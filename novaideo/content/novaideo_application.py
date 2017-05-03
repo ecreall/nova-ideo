@@ -77,16 +77,19 @@ DEFAULT_AMENDMENT_INTENTIONS = [_('Irony'), _('Humour'), _('Remark')]
 
 DEFAULT_COLORS = {
     'idea': {
-        'background': '#54902a',
-        'hover': hover_color('#54902a')
+        'color': {
+            'background': '#54902a',
+            'hover': hover_color('#54902a')}
     },
     'proposal': {
-        'background': '#3f6da6',
-        'hover': hover_color('#3f6da6')
+        'color': {
+            'background': '#3f6da6',
+            'hover': hover_color('#3f6da6')}
     },
     'question': {
-        'background': '#e66a11',
-        'hover': hover_color('#e66a11')
+        'color': {
+            'background': '#e66a11',
+            'hover': hover_color('#e66a11')}
     }
 }
 
