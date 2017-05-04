@@ -13,6 +13,7 @@ from dace.util import getAllBusinessAction
 
 from novaideo.testing import FunctionalTests
 from novaideo.content.idea import Idea
+from novaideo.content.comment import Comment
 from novaideo.tests.example.app import add_user
 
 
@@ -651,3 +652,52 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             })
         self.assertEqual(idea_result.len_contacted, 1)
         self.assertIn(bob, idea_result.persons_contacted)
+
+    def test_comment(self):
+        # SetUp the default Nova-Ideo configuration
+        self.default_novaideo_config()
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        bob = add_user({
+            'first_name': 'Bob',
+            'last_name': 'Bob',
+            'email': 'bob@example.com'
+        }, self.request)
+        self.request.user = alice
+        context = self.request.root
+        idea = Idea(
+            title="Idea title",
+            text="Idea text",
+            keywords=["keyword 1", "keyword 2"])
+        # Find the 'creat' action of the idea management process
+        actions = getAllBusinessAction(
+            context, self.request,
+            process_id='ideamanagement',
+            node_id='creatandpublish')
+        actions[0].execute(
+            context, self.request, {'_object_data': idea})
+        idea_result = context.ideas[0]
+        self.assertTrue(idea_result.channel is not None)
+        self.assertEqual(idea_result.channel.len_comments, 0)
+        # comment
+        self.request.user = bob
+        comment = Comment(
+            comment='The comment',
+            intention='Remark'
+        )
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='comment')
+        actions[0].execute(
+            idea_result, self.request, {
+                '_object_data': comment,
+            })
+        self.assertEqual(idea_result.channel.len_comments, 1)
+        self.assertIn(comment, idea_result.channel.comments)
+        self.assertIn('published', comment.state)
+        self.assertIs(bob, comment.author)
+        self.assertEqual(len(bob.following_channels), 1)
+        self.assertIn(idea_result.channel, bob.following_channels)
