@@ -110,6 +110,13 @@ class FunctionalTests(BaseFunctionalTests, unittest.TestCase):
         self.request.support_ideas = False
         self.request.support_proposals = False
         self.request.root.content_to_support = []
+
+    def examination_novaideo_config(self):
+        self.default_novaideo_config()
+        self.request.examine_ideas = True
+        self.request.examine_proposals = True
+        self.request.content_to_examine = ['idea', 'proposal']
+        self.request.root.content_to_examine = ['idea', 'proposal']
             
 
 class RobotLayer(BaseFunctionalTests, Layer):
