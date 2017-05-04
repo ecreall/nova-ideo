@@ -550,7 +550,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
                             for a in actions_ids))
 
     def test_duplicate(self):
-        # SetUp the 'moderation' Nova-Ideo configuration
+        # SetUp the default Nova-Ideo configuration
         self.default_novaideo_config()
         context = self.request.root
         idea = Idea(
@@ -612,7 +612,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
                             for a in actions_ids))
 
     def test_present(self):
-        # SetUp the 'moderation' Nova-Ideo configuration
+        # SetUp the default Nova-Ideo configuration
         self.default_novaideo_config()
         alice = add_user({
             'first_name': 'Alice',
