@@ -548,3 +548,65 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(len(actions_ids), 7)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
+
+    def test_duplicate(self):
+        # SetUp the 'moderation' Nova-Ideo configuration
+        self.default_novaideo_config()
+        context = self.request.root
+        idea = Idea(
+            title="Idea title",
+            text="Idea text",
+            keywords=["keyword 1", "keyword 2"])
+        # Find the 'creat' action of the idea management process
+        actions = getAllBusinessAction(
+            context, self.request,
+            process_id='ideamanagement',
+            node_id='creatandpublish')
+        actions[0].execute(
+            context, self.request, {'_object_data': idea})
+        idea_result = context.ideas[0]
+        # duplicate
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='duplicate')
+        actions[0].execute(
+            idea_result, self.request, {
+                'title': 'Duplicated idea',
+                'text': 'Idea text',
+                'keywords': ['dup 1'],
+                'attached_files': []
+            })
+        self.assertTrue(len(context.ideas), 2)
+        new_idea = context.ideas[1]
+        self.assertIn('to work', new_idea.state)
+        self.assertEqual('Duplicated idea', new_idea.title)
+        self.assertEqual('Idea text', new_idea.text)
+        keywords = ['dup 1']
+        self.assertTrue(all(a in keywords
+                            for a in new_idea.keywords))
+        self.assertIs(idea_result, new_idea.originalentity)
+        self.assertIn(new_idea, idea_result.duplicates)
+        # new idea actions: can't publish ==> the same text
+        actions = getAllBusinessAction(
+            new_idea, self.request,
+            process_id='ideamanagement')
+        expected_actions = ['duplicate', 'edit', 'abandon', 'associate', 'see']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 5)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
+        # edit the text of the new idea
+        new_idea.text = 'Duplicated text'
+        # new idea actions: can publish
+        actions = getAllBusinessAction(
+            new_idea, self.request,
+            process_id='ideamanagement')
+        expected_actions = [
+            'duplicate', 'edit',
+            'abandon', 'associate',
+            'see', 'publish']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 6)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
