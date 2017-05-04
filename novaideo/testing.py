@@ -100,27 +100,17 @@ class FunctionalTests(BaseFunctionalTests, unittest.TestCase):
         self.request.user.email = None
 
     def moderation_novaideo_config(self):
-        self.request.get_time_zone = pytz.timezone('Europe/Paris')
+        self.default_novaideo_config()
         self.request.moderate_ideas = True
         self.request.moderate_proposals = True
         self.request.root.content_to_moderate = ['idea', 'proposal']
-        self.request.examine_ideas = False
-        self.request.examine_proposals = False
-        self.request.support_ideas = True
-        self.request.support_proposals = True
-        self.request.root.content_to_support = ['idea', 'proposal']
-        self.request.content_to_examine = []
-        self.request.content_to_support = ['idea', 'proposal']
-        self.request.accessible_to_anonymous = True
-        self.request.content_to_manage = [
-            'challenge', 'question', 'idea', 'proposal']
-        self.request.root.content_to_manage = [
-            'challenge', 'question', 'idea', 'proposal']
-        self.request.searchable_contents = searchable_contents(
-            self.request)
-        self.request.user = self.request.root['principals']['users']['admin']
-        self.request.user.email = None
-
+    
+    def no_support_novaideo_config(self):
+        self.default_novaideo_config()
+        self.request.support_ideas = False
+        self.request.support_proposals = False
+        self.request.root.content_to_support = []
+            
 
 class RobotLayer(BaseFunctionalTests, Layer):
 

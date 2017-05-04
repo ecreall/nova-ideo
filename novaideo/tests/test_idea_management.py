@@ -7,15 +7,17 @@
 
 """Tests for Idea management process
 """
+from substanced.util import get_oid
 
 from dace.util import getAllBusinessAction
 
 from novaideo.testing import FunctionalTests
 from novaideo.content.idea import Idea
+from novaideo.tests.example.app import add_user
 
 
 class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
-    """Test Vote integration"""
+    """Test Idea management process"""
 
     def setUp(self):
         super(TestIdeaManagement, self).setUp()
@@ -72,7 +74,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             process_id='ideamanagement',
             node_id='creat')
         self.assertEqual(len(actions), 1)
-        # Can publish
+        # Owner actions
         actions = getAllBusinessAction(
             idea_result, self.request,
             process_id='ideamanagement')
@@ -84,6 +86,17 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(len(actions_ids), 6)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
+        # Other member actions
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        self.request.user = alice
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 0)
 
     def test_create_and_publish_idea_default_conf(self):
         # SetUp the default Nova-Ideo configuration
@@ -134,6 +147,23 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(len(actions_ids), 7)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
+        # Other member actions
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        self.request.user = alice
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        expected_actions = [
+            'seeworkinggroups', 'duplicate',
+            'comment', 'present', 'associate',
+            'see', 'support', 'oppose']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 8)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
 
     def test_create_idea_moderation_conf(self):
         # SetUp the 'moderation' Nova-Ideo configuration
@@ -175,6 +205,17 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(len(actions_ids), 5)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
+        # Other member actions
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        self.request.user = alice
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 0)
 
     def test_publish_idea_moderation_conf(self):
         # SetUp the 'moderation' Nova-Ideo configuration
@@ -206,6 +247,201 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
             'see', 'moderationarchive']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 7)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
+
+    def test_create_and_publish_idea_moderation_conf(self):
+        # SetUp the 'moderation' Nova-Ideo configuration
+        self.moderation_novaideo_config()
+        context = self.request.root
+        idea = Idea(
+            title="Idea title",
+            text="Idea text",
+            keywords=["keyword 1", "keyword 2"])
+        # Find the 'creat' action of the idea management process
+        actions = getAllBusinessAction(
+            context, self.request,
+            process_id='ideamanagement',
+            node_id='creatandpublish')
+        self.assertEqual(len(actions), 1)
+        create_action = actions[0]
+        self.assertEqual(create_action.node_id, 'creatandpublish')
+        self.assertEqual(create_action.process_id, 'ideamanagement')
+        # Execute the action
+        create_action.execute(
+            context, self.request, {'_object_data': idea})
+        ideas = context.ideas
+        self.assertEqual(len(ideas), 1)
+        idea_result = ideas[0]
+        self.assertIs(idea_result, idea)
+        self.assertIs(idea_result.author, self.request.user)
+        self.assertIn('submitted', idea_result.state)
+        # Test the merge of keywords
+        self.assertEqual(len(context.keywords), 0)
+        # Admin (Owner) actions
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        # User == sd Admin (No tokens, he can't support)
+        expected_actions = [
+            'duplicate', 'associate', 'see',
+            'publish_moderation', 'archive']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 5)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
+        # Other member actions
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        self.request.user = alice
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 0)
+    
+    def test_support_no_support_novaideo_config(self):
+        # SetUp the 'no_support' Nova-Ideo configuration
+        self.no_support_novaideo_config()
+        context = self.request.root
+        idea = Idea(
+            title="Idea title",
+            text="Idea text",
+            keywords=["keyword 1", "keyword 2"])
+        # Find the 'creat' action of the idea management process
+        actions = getAllBusinessAction(
+            context, self.request,
+            process_id='ideamanagement',
+            node_id='creatandpublish')
+        # Execute the action
+        actions[0].execute(
+            context, self.request, {'_object_data': idea})
+        idea_result = context.ideas[0]
+        # Members can't support the published idea
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        self.request.user = alice
+        alice_oid = get_oid(alice)
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        expected_actions = [
+            'seeworkinggroups', 'duplicate',
+            'comment', 'present', 'associate', 'see']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 6)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
+        
+
+    def test_support_withdraw_oppose_idea(self):
+        # SetUp the default Nova-Ideo configuration
+        self.default_novaideo_config()
+        context = self.request.root
+        idea = Idea(
+            title="Idea title",
+            text="Idea text",
+            keywords=["keyword 1", "keyword 2"])
+        # Find the 'creat' action of the idea management process
+        actions = getAllBusinessAction(
+            context, self.request,
+            process_id='ideamanagement',
+            node_id='creatandpublish')
+        # Execute the action
+        actions[0].execute(
+            context, self.request, {'_object_data': idea})
+        idea_result = context.ideas[0]
+        # Other member actions
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        self.request.user = alice
+        alice_oid = get_oid(alice)
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='support')
+        support_action = actions[0]
+        support_action.execute(
+            idea_result, self.request, {})
+        self.assertEqual(idea_result.len_support, 1)
+        self.assertIs(idea_result.tokens_support[0].owner, alice)
+        self.assertEqual(idea_result.len_opposition, 0)
+        self.assertEqual(len(alice.supports), 1)
+        self.assertEqual(len(idea_result._support_history), 1)
+        # _support_history = [(user_oid, date, type[1, 0, -1])]
+        self.assertIs(idea_result._support_history[0][0], alice_oid)
+        # 1 == support
+        self.assertEqual(idea_result._support_history[0][2], 1)
+        # Alice can't support. Alice can withdraw the token
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        expected_actions = [
+            'seeworkinggroups', 'duplicate',
+            'comment', 'present', 'associate',
+            'see', 'withdraw_token']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 7)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
+        # Withdraw
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='withdraw_token')
+        withdraw_token_action = actions[0]
+        withdraw_token_action.execute(
+            idea_result, self.request, {})
+        self.assertEqual(idea_result.len_support, 0)
+        self.assertEqual(idea_result.len_opposition, 0)
+        self.assertEqual(len(alice.supports), 0)
+        self.assertEqual(len(idea_result._support_history), 2)
+        self.assertIs(idea_result._support_history[1][0], alice_oid)
+        # -1 == withdraw
+        self.assertEqual(idea_result._support_history[1][2], -1)
+        # Alice can support and can oppose
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        expected_actions = [
+            'seeworkinggroups', 'duplicate',
+            'comment', 'present', 'associate',
+            'see', 'support', 'oppose']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 8)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
+        # oppose
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='oppose')
+        oppose_action = actions[0]
+        oppose_action.execute(
+            idea_result, self.request, {})
+        self.assertEqual(idea_result.len_support, 0)
+        self.assertEqual(idea_result.len_opposition, 1)
+        self.assertEqual(len(alice.supports), 1)
+        self.assertEqual(len(idea_result._support_history), 3)
+        self.assertIs(idea_result._support_history[2][0], alice_oid)
+        # 0 == oppose
+        self.assertEqual(idea_result._support_history[2][2], 0)
+        # Alice can't support and cant oppose. Alice can withdraw the token
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        expected_actions = [
+            'seeworkinggroups', 'duplicate',
+            'comment', 'present', 'associate',
+            'see', 'withdraw_token']
         actions_ids = [a.node_id for a in actions]
         self.assertEqual(len(actions_ids), 7)
         self.assertTrue(all(a in expected_actions
