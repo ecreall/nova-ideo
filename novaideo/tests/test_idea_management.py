@@ -238,6 +238,8 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         }, self.request)
         self.request.user = alice
         idea_result = self.create_idea()
+        self.assertEqual(len(alice.ideas), 1)
+        self.assertEqual(len(alice.contents), 1)
         actions = getAllBusinessAction(
             idea_result, self.request,
             process_id='ideamanagement',
@@ -279,6 +281,8 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         delidea_action.execute(
             idea_result, self.request, {})
         self.assertEqual(len(self.request.root.ideas), 0)
+        self.assertEqual(len(alice.ideas), 0)
+        self.assertEqual(len(alice.contents), 0)
 
     def test_submit_idea_moderation_conf(self):
         # SetUp the 'moderation' Nova-Ideo configuration
