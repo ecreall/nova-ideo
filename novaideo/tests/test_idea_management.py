@@ -181,6 +181,104 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(len(actions_ids), 6)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
+    def test_edit_idea(self):
+        # SetUp the 'moderation' Nova-Ideo configuration
+        self.default_novaideo_config()
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        self.request.user = alice
+        idea_result = self.create_idea()
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='edit')
+        # Edit the idea
+        edit_action = actions[0]
+        edit_action.execute(
+            idea_result, self.request, {
+                'title': 'Edited idea',
+                'text': 'Edited idea text',
+                'keywords': ['edit 1'],
+                'attached_files': []
+            })
+        self.assertIn('to work', idea_result.state)
+        self.assertEqual('Edited idea', idea_result.title)
+        self.assertEqual('Edited idea text', idea_result.text)
+        keywords = ['edit 1']
+        self.assertTrue(all(a in keywords
+                            for a in idea_result.keywords))
+        # New version
+        version = idea_result.version
+        self.assertTrue(version is not None)
+        self.assertIn('version', version.state)
+        self.assertIn('archived', version.state)
+        self.assertEqual('Idea title', version.title)
+        self.assertEqual('Idea text', version.text)
+        keywords = ["keyword 1", "keyword 2"]
+        self.assertTrue(all(a in keywords
+                            for a in version.keywords))
+        # version actions
+        actions = getAllBusinessAction(
+            version, self.request,
+            process_id='ideamanagement')
+        expected_actions = ['duplicate', 'associate', 'see']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 3)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
+
+    def test_abandon_recuperate_del_idea(self):
+        # SetUp the 'moderation' Nova-Ideo configuration
+        self.default_novaideo_config()
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        self.request.user = alice
+        idea_result = self.create_idea()
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='abandon')
+        # abandon the idea
+        abandon_action = actions[0]
+        abandon_action.execute(
+            idea_result, self.request, {})
+        self.assertIn('archived', idea_result.state)
+        # actions
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        expected_actions = ['delidea', 'recuperate', 'associate', 'see']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 4)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
+        # recuperate
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='recuperate')
+        # recuperate the idea
+        recuperate_action = actions[0]
+        recuperate_action.execute(
+            idea_result, self.request, {})
+        self.assertIn('to work', idea_result.state)
+        # abandon
+        abandon_action.execute(
+            idea_result, self.request, {})
+        # delete
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='delidea')
+        # recuperate the idea
+        delidea_action = actions[0]
+        delidea_action.execute(
+            idea_result, self.request, {})
+        self.assertEqual(len(self.request.root.ideas), 0)
 
     def test_submit_idea_moderation_conf(self):
         # SetUp the 'moderation' Nova-Ideo configuration
