@@ -610,3 +610,44 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertEqual(len(actions_ids), 6)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
+
+    def test_present(self):
+        # SetUp the 'moderation' Nova-Ideo configuration
+        self.default_novaideo_config()
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        bob = add_user({
+            'first_name': 'Bob',
+            'last_name': 'Bob',
+            'email': 'bob@example.com'
+        }, self.request)
+        self.request.user = alice
+        context = self.request.root
+        idea = Idea(
+            title="Idea title",
+            text="Idea text",
+            keywords=["keyword 1", "keyword 2"])
+        # Find the 'creat' action of the idea management process
+        actions = getAllBusinessAction(
+            context, self.request,
+            process_id='ideamanagement',
+            node_id='creatandpublish')
+        actions[0].execute(
+            context, self.request, {'_object_data': idea})
+        idea_result = context.ideas[0]
+        # present
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='present')
+        actions[0].execute(
+            idea_result, self.request, {
+                'members': [bob],
+                'subject': 'Subject',
+                'message': 'Message',
+                'send_to_me': False,
+            })
+        self.assertEqual(idea_result.len_contacted, 1)
+        self.assertIn(bob, idea_result.persons_contacted)
