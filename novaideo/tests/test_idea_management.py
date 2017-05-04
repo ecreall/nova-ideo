@@ -182,7 +182,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
     def test_edit_idea(self):
-        # SetUp the 'moderation' Nova-Ideo configuration
+        # SetUp the default Nova-Ideo configuration
         self.default_novaideo_config()
         alice = add_user({
             'first_name': 'Alice',
@@ -230,7 +230,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
                             for a in actions_ids))
 
     def test_abandon_recuperate_del_idea(self):
-        # SetUp the 'moderation' Nova-Ideo configuration
+        # SetUp the default Nova-Ideo configuration
         self.default_novaideo_config()
         alice = add_user({
             'first_name': 'Alice',
@@ -274,7 +274,7 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement',
             node_id='delidea')
-        # recuperate the idea
+        # delete the idea
         delidea_action = actions[0]
         delidea_action.execute(
             idea_result, self.request, {})
