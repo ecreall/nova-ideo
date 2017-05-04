@@ -355,6 +355,39 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
 
+    def test_archive_idea_moderation_conf(self):
+        # SetUp the 'moderation' Nova-Ideo configuration
+        self.moderation_novaideo_config()
+        idea_result = self.create_idea()
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='submit')
+        # Submit the idea
+        submit_action = actions[0]
+        submit_action.execute(
+            idea_result, self.request, {})
+        # Archive the idea
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='archive')
+        publish_action = actions[0]
+        publish_action.execute(
+            idea_result, self.request, {
+                'explanation': 'test'
+            })
+        self.assertIn('archived', idea_result.state)
+        # Actions
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        expected_actions = ['delidea', 'recuperate', 'associate', 'see']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 4)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
+
     def test_create_and_publish_idea_moderation_conf(self):
         # SetUp the 'moderation' Nova-Ideo configuration
         self.moderation_novaideo_config()
@@ -701,3 +734,80 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertIs(bob, comment.author)
         self.assertEqual(len(bob.following_channels), 1)
         self.assertIn(idea_result.channel, bob.following_channels)
+
+    def test_examine_examination_config(self):
+        self.examination_novaideo_config()
+        alice = add_user({
+            'first_name': 'Alice',
+            'last_name': 'Alice'
+        }, self.request)
+        # Bob is an Examiner
+        bob = add_user({
+            'first_name': 'Bob',
+            'last_name': 'Bob',
+            'email': 'bob@example.com'
+        }, self.request, ('Examiner', ))
+        self.request.user = alice
+        context = self.request.root
+        idea = Idea(
+            title="Idea title",
+            text="Idea text",
+            keywords=["keyword 1", "keyword 2"])
+        # Find the 'creat' action of the idea management process
+        actions = getAllBusinessAction(
+            context, self.request,
+            process_id='ideamanagement',
+            node_id='creatandpublish')
+        actions[0].execute(
+            context, self.request, {'_object_data': idea})
+        idea_result = context.ideas[0]
+        # Alice support the idea
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='support')
+        support_action = actions[0]
+        support_action.execute(
+            idea_result, self.request, {})
+        self.assertEqual(idea_result.len_support, 1)
+        self.assertEqual(len(alice.supports), 1)
+        # Alice can't examine
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        actions_ids = [a.node_id for a in actions]
+        self.assertFalse('makeitsopinion' in actions_ids)
+        # Bob can examine
+        self.request.user = bob
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        actions_ids = [a.node_id for a in actions]
+        self.assertTrue('makeitsopinion' in actions_ids)
+        # makeitsopinion
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement',
+            node_id='makeitsopinion')
+        actions[0].execute(
+            idea_result, self.request, {
+                '_csrf_token_': 'none',
+                'opinion': 'to_study',
+                'explanation': 'test'})
+        self.assertIn('examined', idea_result.state)
+        self.assertIn('published', idea_result.state)
+        self.assertIn('to_study', idea_result.state)
+        self.assertEqual(idea_result.len_support, 0)
+        self.assertEqual(len(alice.supports), 0)
+        # actions: can't support
+        self.request.user = alice
+        actions = getAllBusinessAction(
+            idea_result, self.request,
+            process_id='ideamanagement')
+        expected_actions = [
+            'duplicate', 'comment',
+            'present', 'associate', 'see']
+        actions_ids = [a.node_id for a in actions]
+        self.assertEqual(len(actions_ids), 5)
+        self.assertTrue(all(a in expected_actions
+                            for a in actions_ids))
