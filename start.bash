@@ -1,4 +1,5 @@
 #!/bin/bash
+sed -i 's@/tmp/build@/app@' develop-eggs/* bin/*
 # MAIL_HOST may be defined if you did a postfix:mail link and it will be
 # something like tcp://172.17.0.3:25, we don't want that.
 # We want the default 'mail', so we use MAILER_HOST environment variable.
@@ -42,8 +43,6 @@ sed -e 's@dace$@dace.wosystem@' -e 's@^substanced.catalogs.autosync = .*@substan
 # If this is not debian jessie (which includes varnish 4.0), assuming a more
 # recent debian or ubuntu with varnish >= 4.1, replace deprecated fetch by miss in vcl_hit
 grep -q jessie /etc/apt/sources.list || sed -i -e 's@.*replace by miss if varnish.*@    return (miss);@' /app/etc/varnish.vcl
-mkdir /dev/varnish
-# /var/lib/varnish is a symlink to /dev/varnish (tmpfs)
 /usr/sbin/varnishd -P /app/var/varnishd.pid -a 0.0.0.0:5000 -f /app/etc/varnish.vcl -s malloc,256m -t 0
 
 exec ./start_all.bash production-heroku.ini $TIMEOUT

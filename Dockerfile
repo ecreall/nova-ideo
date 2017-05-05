@@ -3,13 +3,8 @@ FROM python:3.6
 ARG userid=1000
 ARG run_buildout=true
 
-# Modify /var/lib/varnish to be on a tmpfs (/dev is a rw tmpfs)
-# This is for the 82MB shared memory file named "_.vsm".
-# /dev/varnish is created in start.bash
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y varnish curl git libzmq3-dev libyaml-dev && \
-    rm -rf /var/lib/varnish && \
-    ln -s /dev/varnish /var/lib/varnish && \
     rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --quiet --gid $userid "u1000" && \
@@ -43,15 +38,7 @@ COPY . /app/
 COPY start.bash /start
 RUN chown -R u1000:u1000 /app
 
-# compile all pyc in sys.path
-RUN python -m compileall
 USER u1000
-# compile all pyc in in the /app folder
-RUN python -m compileall /app
-# all the pyc files in the image take 5MB. It's better to have them in the
-# image instead of having them generated when the container starts. Think
-# about 100 containers started in parallel... less disk write, and we gain
-# 495MB of disk space.
 WORKDIR /app
 
 RUN mkdir -p -m 700 /app/.ssh && \
