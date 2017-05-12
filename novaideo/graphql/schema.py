@@ -108,10 +108,9 @@ class Idea(Node, graphene.ObjectType):
     class Meta(object):
         interfaces = (relay.Node, )
 
-    title = graphene.String()
-
     state = graphene.List(graphene.String)
     title = graphene.String()
+    presentation_text = graphene.String()
     text = graphene.String()
     keywords = graphene.List(graphene.String)
     author = graphene.Field(Person)
@@ -124,9 +123,9 @@ class Idea(Node, graphene.ObjectType):
             return True
 
         return isinstance(root, SDIdea)
-
-    def resolve_author(self, args, context, info):  #pylint: disable=W0613
-        return self.author
+    
+    def resolve_presentation_text(self, args, context, info):
+        return self.presentation_text()
 
     def resolve_tokens_opposition(self, args, context, info):  #pylint: disable=W0613
         return len(self.tokens_opposition)
