@@ -72,6 +72,35 @@ class Node(object):
             raise
 
 
+class File(Node, graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    url = graphene.String()
+    mimetype = graphene.String()
+
+
+class Person(Node, graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    function = graphene.String()
+    description = graphene.String()
+    picture = graphene.Field(File)
+    first_name = graphene.String()
+    last_name = graphene.String()
+    title = graphene.String()
+    user_title = graphene.String()
+    locale = graphene.String()
+#    email = graphene.String()
+#    email should be visible only by user with Admin or Site Administrator role
+
+    def resolve_picture(self, args, context, info):  #pylint: disable=W0613
+        return self.picture
+
+
 class Idea(Node, graphene.ObjectType):
 
     """Nova-Ideo ideas."""
@@ -81,6 +110,14 @@ class Idea(Node, graphene.ObjectType):
 
     title = graphene.String()
 
+    state = graphene.List(graphene.String)
+    title = graphene.String()
+    text = graphene.String()
+    keywords = graphene.List(graphene.String)
+    author = graphene.Field(Person)
+    tokens_opposition = graphene.Int()
+    tokens_support = graphene.Int()
+
     @classmethod
     def is_type_of(cls, root, context, info):  #pylint: disable=W0613
         if isinstance(root, cls):
@@ -88,8 +125,14 @@ class Idea(Node, graphene.ObjectType):
 
         return isinstance(root, SDIdea)
 
-    def resolve_oid(self, args, info):  #pylint: disable=W0613
-        return str(getattr(self._root, '__oid__', None))
+    def resolve_author(self, args, context, info):  #pylint: disable=W0613
+        return self.author
+
+    def resolve_tokens_opposition(self, args, context, info):  #pylint: disable=W0613
+        return len(self.tokens_opposition)
+
+    def resolve_tokens_support(self, args, context, info):  #pylint: disable=W0613
+        return len(self.tokens_support)
 
 
 class ResolverLazyList(object):
