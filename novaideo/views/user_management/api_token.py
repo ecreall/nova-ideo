@@ -18,7 +18,7 @@ from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.user_management.behaviors import GetAPIToken
 from novaideo.content.person import PersonSchema, Person
-from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.widget import SimpleMappingtWidget
 from novaideo import _
 
 

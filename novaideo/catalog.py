@@ -569,6 +569,11 @@ class NovaideoCatalogViews(object):
 
     @indexview()
     def challenges(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
         challenges = adapter.challenges()
         if challenges is None:
             return default
