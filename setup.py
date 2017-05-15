@@ -31,7 +31,9 @@ requires = [
     'profilehooks',
     'metadata_parser',
     'deform_treepy',
-    'randomcolor'
+    'randomcolor',
+    'keas.kmi',
+    'cipher.encryptingstorage',
     ]
 
 setup(name='novaideo',
