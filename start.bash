@@ -41,8 +41,13 @@ if [ -z "$MAIL_PASSWORD" ]; then
     sed -i -e "s|mail.password =.*||" production-heroku.ini
 fi
 mkdir -p var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
+# create a CACHEDIR.TAG file in cache directories to not backup them
+# see http://www.brynosaurus.com/cachedir/spec.html
+test -f var/tmp/CACHEDIR.TAG || echo "Signature: 8a477f597d28d172789f06886806bc55" > var/tmp/CACHEDIR.TAG
+test -f var/tmp_uploads/CACHEDIR.TAG || echo "Signature: 8a477f597d28d172789f06886806bc55" > var/tmp_uploads/CACHEDIR.TAG
 chmod 700 var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
-chown u1000 var var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
+chmod 600 var/tmp/CACHEDIR.TAG var/tmp_uploads/CACHEDIR.TAG
+chown u1000 var var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp var/tmp/CACHEDIR.TAG var/tmp_uploads/CACHEDIR.TAG
 sed -e 's@dace$@dace.wosystem@' -e 's@^substanced.catalogs.autosync = .*@substanced.catalogs.autosync = false@' production-heroku.ini > production-script.ini
 
 # If this is not debian jessie (which includes varnish 4.0), assuming a more
