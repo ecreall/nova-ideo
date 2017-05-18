@@ -1,10 +1,32 @@
 # -*- coding: utf-8 -*-
 """GraphQL view."""
+from dace.objectofcollaboration.principal.util import has_role
+from dace.util import find_catalog
 from graphql_wsgi import graphql_wsgi
-from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.request import Response
+from pyramid.view import view_config
 
+from novaideo.content.interface import IPerson
 from .schema import schema
+
+
+def auth_user(token, request):
+    current_user = None
+    novaideo_catalog = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    identifier_index = novaideo_catalog['api_token']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any([IPerson.__identifier__]) &\
+        identifier_index.eq(token)
+    users = list(query.execute().all())
+    user = users[0] if users else None
+    if (has_role(user=user, role=('SiteAdmin', )) or
+            'active' in getattr(user, 'state', [])):
+        current_user = user
+        request.user = current_user
+
+    return current_user
 
 
 @view_config(
@@ -13,9 +35,16 @@ from .schema import schema
 )
 @view_config(
     request_method='POST',
-    route_name='graphql'
+    route_name='graphql',
+    renderer='json'
 )
 def graphqlview(context, request):  #pylint: disable=W0613
+    token = request.headers.get('X-Api-Key', '')
+    if not auth_user(token, request):
+        response = HTTPUnauthorized()
+        response.content_type = 'application/json'
+        return response
+
     if request.method == 'OPTIONS':
         response = Response(status=200, body=b'')
         response.headerlist = []  # we have to reset headerlist
