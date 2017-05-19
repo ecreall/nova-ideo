@@ -32,6 +32,8 @@ requires = [
     'metadata_parser',
     'deform_treepy',
     'randomcolor',
+    'graphene',
+    'graphql-wsgi',
     'keas.kmi',
     'cipher.encryptingstorage',
     ]

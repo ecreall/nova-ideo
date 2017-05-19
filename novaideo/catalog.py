@@ -142,6 +142,9 @@ class ISearchableObject(Interface):
     def challenges():
         pass
 
+    def api_token():
+        pass
+
 
 @indexview_defaults(catalog_name='novaideo')
 class NovaideoCatalogViews(object):
@@ -577,6 +580,19 @@ class NovaideoCatalogViews(object):
 
         return challenges
 
+    @indexview()
+    def api_token(self, default):
+        adapter = get_current_registry().queryAdapter(
+            self.resource, ISearchableObject)
+        if adapter is None:
+            return default
+
+        api_token = adapter.api_token()
+        if api_token is None:
+            return default
+
+        return api_token
+
 
 @catalog_factory('novaideo')
 class NovaideoIndexes(object):
@@ -618,6 +634,7 @@ class NovaideoIndexes(object):
     oppose = Field()
     support_diff = Field()
     challenges = Keyword()
+    api_token = Field()
 
 
 @adapter(context=IEntity)
@@ -781,6 +798,9 @@ class SearchableObject(Adapter):
         challenge = getattr(self.context, 'challenge', None)
         return [get_oid(challenge)] if challenge else []
 
+    def api_token(self):
+        return None
+
 
 @adapter(context=IPerson)
 @implementer(ISearchableObject)
@@ -809,6 +829,9 @@ class PersonSearch(SearchableObject):
         challenges = get_objects_with_role(
             self.context, 'ChallengeParticipant')
         return [get_oid(challenge) for challenge in challenges]
+
+    def api_token(self):
+        return getattr(self.context, 'api_token', None)
 
 
 @adapter(context=IPreregistration)
