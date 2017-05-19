@@ -34,6 +34,8 @@ requires = [
     'randomcolor',
     'graphene',
     'graphql-wsgi',
+    'keas.kmi',
+    'cipher.encryptingstorage',
     ]
 
 setup(name='novaideo',
