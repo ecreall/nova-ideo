@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """GraphQL view."""
+import json
 from dace.objectofcollaboration.principal.util import has_role
 from dace.util import find_catalog
 from graphql_wsgi import graphql_wsgi
@@ -40,10 +41,10 @@ def auth_user(token, request):
 )
 def graphqlview(context, request):  #pylint: disable=W0613
     token = request.headers.get('X-Api-Key', '')
-    if not auth_user(token, request):
-        response = HTTPUnauthorized()
-        response.content_type = 'application/json'
-        return response
+    # if not auth_user(token, request):
+    #     response = HTTPUnauthorized()
+    #     response.content_type = 'application/json'
+    #     return response
 
     if request.method == 'OPTIONS':
         response = Response(status=200, body=b'')
@@ -62,3 +63,34 @@ def graphqlview(context, request):  #pylint: disable=W0613
         )
 
     return response
+
+
+@view_config(request_method='POST', name='api_token', renderer='json')
+def get_api_token(context, request):
+    login_data = json.loads(request.body.decode())
+    login = login_data.get('login', None)
+    password = login_data.get('password', None)
+    if login and password:
+        novaideo_catalog = find_catalog('novaideo')
+        dace_catalog = find_catalog('dace')
+        identifier_index = novaideo_catalog['identifier']
+        object_provides_index = dace_catalog['object_provides']
+        query = object_provides_index.any([IPerson.__identifier__]) &\
+                identifier_index.any([login])
+        users = list(query.execute().all())
+        user = users[0] if users else None
+        valid_check = user and user.check_password(password)
+        if valid_check and \
+           (has_role(user=user, role=('SiteAdmin', )) or \
+           'active' in getattr(user, 'state', [])):
+           return {
+               'status': True,
+               'token': user.api_token
+            }
+    
+    return {
+        'status': False,
+        'token': None
+     }
+           
+        
