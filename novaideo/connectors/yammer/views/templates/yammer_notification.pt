@@ -1,0 +1,17 @@
+<div i18n:domain="novaideo">
+  <script type="text/javascript" data-app-id="${field.widget.app_id}" src="https://c64.assets-yammer.com/assets/platform_js_sdk.js"></script>
+  <input type="hidden" name="${name|field.name}" value="${cstruct}" 
+       id="${oid|field.oid}"/>       
+  <div class="alert alert-info" id="yammer-connected-user">
+      <div i18n:translate="">
+        The notifications will be submitted only if the account of the author is connected to a Yammer account. You can set a default account by clicking the button below in case the author does not have a Yammer account. If you select the option "Notify only from the default account", all notifications will be submitted under the default account name.
+      </div>
+      <a class="btn btn-xs btn-primary" id="yammer-login">
+        <span i18n:translate="">Initialize the default notification account</span>
+      </a>
+      <a class="btn btn-xs btn-danger" id="yammer-remove" style="${not cstruct and 'display: none'}">
+        <span i18n:translate="">Remove the default notification account</span>
+      </a>
+      <strong id="yammer-user"></strong>
+  </div>
+</div>

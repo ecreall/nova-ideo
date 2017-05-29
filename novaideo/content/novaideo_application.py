@@ -329,6 +329,7 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     general_chanel = SharedUniqueProperty('general_chanel')
     newsletters = CompositeMultipleProperty('newsletters')
     smart_folders = CompositeMultipleProperty('smart_folders')
+    connectors = CompositeMultipleProperty('connectors')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
@@ -568,3 +569,8 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
 
     def get_title(self, user=None):
         return getattr(self, 'title', '')
+
+    def get_connectors(self, connector_id):
+        return filter(
+            lambda c: c.connector_id == connector_id,
+            self.connectors)

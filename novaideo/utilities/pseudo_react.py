@@ -44,6 +44,8 @@ from novaideo.views.invitation_management.see_invitations import (
     CONTENTS_MESSAGES as INVITATION_CONTENTS_MESSAGES)
 from novaideo.views.organization_management.see_organizations import (
     CONTENTS_MESSAGES as ORGANIZATION_CONTENTS_MESSAGES)
+from novaideo.connectors.core.views.see import (
+    CONTENTS_MESSAGES as CONNECTORS_CONTENTS_MESSAGES)
 from novaideo.utilities.util import (
     update_all_ajax_action, render_listing_obj,
     render_index_obj, render_view_obj, render_view_comment)
@@ -1665,6 +1667,30 @@ def get_vote_metadata(
     result['is_excuted'] = is_excuted
     return result
 
+# Connectors
+
+
+def get_remove_connector_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The connector has been suppressed."),
+        **kwargs)
+    result['ignore_redirect'] = True
+    root = request.root
+    len_result = len(root.connectors)
+    index = str(len_result)
+    if len_result > 1:
+        index = '*'
+
+    view_title = request.localizer.translate(
+        _(CONNECTORS_CONTENTS_MESSAGES[index],
+          mapping={'number': len_result}))
+    result['view_title'] = view_title
+    result['view_name'] = 'seeconnectors'
+    return result
+
+
+
 #Counters
 
 def component_navbar_myselections(action, request, context, api, **kwargs):
@@ -2137,6 +2163,8 @@ METADATA_GETTERS = {
     'referendumprocess.vote': get_vote_metadata,
     'majorityjudgmentprocess.vote': get_vote_metadata,
     'rangevotingprocess.vote': get_vote_metadata,
+
+    'yammerprocess.remove': get_remove_connector_metadata,
 }
 
 

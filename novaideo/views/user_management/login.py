@@ -28,6 +28,8 @@ from novaideo.content.interface import IPerson
 from novaideo import _
 from novaideo.content.processes.user_management.behaviors import LogIn
 from novaideo.content.novaideo_application import NovaIdeoApplication
+from novaideo.utilities.util import generate_navbars
+from novaideo.connectors.core import CONNECTOR_PROCESSES
 
 
 @view_config(
@@ -113,12 +115,24 @@ class LoginView(BasicView):
 
         # Pass this through FBO views (e.g., forbidden) which use its macros.
         template = get_renderer('novaideo:views/user_management/templates/login.pt').implementation()
+        login_bodies = []
+        try:
+            login_navbars = generate_navbars(
+                request, request.root,
+                process_id=CONNECTOR_PROCESSES,
+                node_id='login',
+                descriminators=['body-action'])
+            login_bodies = login_navbars['body_actions']
+        except Exception:
+            pass
+
         values = dict(
             url=request.resource_url(request.virtual_root, 'login'),
             came_from=came_from,
             login=login,
             password=password,
             login_template=template,
+            logins=login_bodies
             )
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)

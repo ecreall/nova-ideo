@@ -1,0 +1,32 @@
+<div class="thumbnail right-caption span4 search-item search-connector search-item-bloc result-item view-item"
+     i18n:domain="novaideo"
+     tal:define="icon getattr(action, 'style_picto', '');
+                 ">
+    <div class="connector-img">
+       <img src="${request.static_url('novaideo:static/connectors/yammer/images/yammer.png')}" role="presentation" width="120">
+    </div>
+
+  <div class="caption media-bloc">
+    <div class="media-challenge-body">
+      <div class="">
+        <div class="object-title-block view-item-title">
+          <h4 >
+	          <span class="icon ${icon}"></span>  <span i18n:translate="">Yammer connector</span>
+	       </h4>        
+	   </div>
+        <div class="row object-row-content">
+          <div class="col col-xs-12 col-md-12">
+            <div class="object-text" i18n:translate="">The Yammer connector</div>
+            
+          </div>
+        </div>
+      </div>
+        <div class="actions-block" style="text-align: center;">
+          <a  tal:attributes="href action.url(context)" 
+			   class="btn btn-primary btn-xs">
+			    <span class="${getattr(action, 'style_picto', '')}"></span> ${action.title}        
+			</a>
+        </div>
+    </div>
+  </div>
+</div>
