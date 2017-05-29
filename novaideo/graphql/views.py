@@ -41,10 +41,10 @@ def auth_user(token, request):
 )
 def graphqlview(context, request):  #pylint: disable=W0613
     token = request.headers.get('X-Api-Key', '')
-    # if not auth_user(token, request):
-    #     response = HTTPUnauthorized()
-    #     response.content_type = 'application/json'
-    #     return response
+    if not auth_user(token, request):
+        response = HTTPUnauthorized()
+        response.content_type = 'application/json'
+        return response
 
     if request.method == 'OPTIONS':
         response = Response(status=200, body=b'')
