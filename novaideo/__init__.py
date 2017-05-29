@@ -770,9 +770,13 @@ def evolve_user_management_process(root, registry):
     from dace import process_definitions_evolve
     process_definitions_evolve(root, registry)
     runtime = root['runtime']
-    proc = runtime['usermanagement']
-    runtime.delfromproperty('processes', proc)
-    log.info('user_management process evolved.')
+    try:
+        proc = runtime['usermanagement']
+        runtime.delfromproperty('processes', proc)
+        log.info('user_management process evolved.')
+    except KeyError as e:
+        pass 
+
 
 
 def main(global_config, **settings):
