@@ -89,8 +89,8 @@ def get_entity_data(entity, id, request=None):
     def default_get_url(request):
         request.resource_url(entity, '@@index')
 
-    entity_type = request.localizer.translate(
-        _("The " + entity.__class__.__name__.lower()))
+    title = "The " + entity.__class__.__name__.lower()
+    entity_type = request.localizer.translate(_(title))
     return {
         id+'_title': getattr(entity, 'title', ''),
         id+'_content': getattr(

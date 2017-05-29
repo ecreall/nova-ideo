@@ -496,7 +496,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, 'novaideoapi',
                 query={'op': previous_action + '_idea'})
             result['title'] = localizer.translate(
-                _('Oppose' if previous_action == 'oppose' else 'Support'))
+                _('Oppose') if previous_action == 'oppose' else _('Support'))
             result['withdraw'] = True
 
         user = get_current()
@@ -517,7 +517,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, 'novaideoapi',
                 query={'op': previous_action + '_proposal'})
             result['title'] = localizer.translate(
-                _('Oppose' if previous_action == 'oppose' else 'Support'))
+                _('Oppose') if previous_action == 'oppose' else _('Support'))
             result['withdraw'] = True
 
         user = get_current()
