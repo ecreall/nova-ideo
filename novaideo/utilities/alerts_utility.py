@@ -148,12 +148,16 @@ def alert_email(senders=[], recipients=[], exclude=[], **kwargs):
     """
         recipients: ['mail@mail.com']
     """
+    admin_example_mail = 'admin@example.com'
     sender = senders[0]
     subject = kwargs.get('subject', '')
     mail = kwargs.get('body', None)
     html = kwargs.get('html', None)
     attachments = kwargs.get('attachments', [])
-    if mail or html:
+    if admin_example_mail in recipients:
+        recipients.remove(admin_example_mail)
+
+    if recipients and (mail or html):
         mailer_send(
             subject=subject, body=mail,
             html=html, attachments=attachments,
