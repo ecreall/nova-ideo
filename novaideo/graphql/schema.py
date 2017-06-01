@@ -47,11 +47,12 @@ def get_entities(interfaces, states, args, info):  #pylint: disable=W0613
         sort_on=None,
         interfaces=interfaces,
         metadata_filter={'states': states},
+        text_filter={'text_to_search': args.get('filter', '')}
     )
     catalog = find_catalog('novaideo')
     release_date_index = catalog['release_date']
     return list(release_date_index.sort(
-        list(rs.ids), limit=limit, sort_type=STABLE))  #pylint: disable=E1101
+        list(rs.ids), limit=limit, sort_type=STABLE, reverse=True))  #pylint: disable=E1101
 
 
 
@@ -107,7 +108,8 @@ class Idea(Node, graphene.ObjectType):
 
     class Meta(object):
         interfaces = (relay.Node, )
-
+   
+    created_at = graphene.String()
     state = graphene.List(graphene.String)
     title = graphene.String()
     presentation_text = graphene.String()
@@ -123,7 +125,10 @@ class Idea(Node, graphene.ObjectType):
             return True
 
         return isinstance(root, SDIdea)
-    
+
+    def resolve_created_at(self, args, context, info):
+        return self.created_at.isoformat()
+
     def resolve_presentation_text(self, args, context, info):
         return self.presentation_text()
 
@@ -190,6 +195,7 @@ class Query(graphene.ObjectType):
     node = relay.Node.Field()
     ideas = relay.ConnectionField(
         Idea,
+        filter=graphene.String()
     )
 
     def resolve_ideas(self, args, context, info):  #pylint: disable=W0613

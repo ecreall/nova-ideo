@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
 """GraphQL view."""
 import json
+import datetime
+import pytz
 from dace.objectofcollaboration.principal.util import has_role
 from dace.util import find_catalog
 from graphql_wsgi import graphql_wsgi
 from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.request import Response
 from pyramid.view import view_config
+from pyramid.security import remember
+
+from substanced.util import get_oid
+from substanced.event import LoggedIn
 
 from novaideo.content.interface import IPerson
 from .schema import schema
@@ -83,10 +89,17 @@ def get_api_token(context, request):
         if valid_check and \
            (has_role(user=user, role=('SiteAdmin', )) or \
            'active' in getattr(user, 'state', [])):
-           return {
-               'status': True,
-               'token': user.api_token
-            }
+            headers = remember(request, get_oid(user))
+            request.registry.notify(LoggedIn(login, user, context, request))
+            user.last_connection = datetime.datetime.now(tz=pytz.UTC)
+            if hasattr(user, 'reindex'):
+                user.reindex()
+
+            request.response.headerlist.extend(headers)
+            return {
+                'status': True,
+                'token': user.api_token
+             }
     
     return {
         'status': False,
