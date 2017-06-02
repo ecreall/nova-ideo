@@ -15,19 +15,12 @@ from substanced.util import get_oid
 from substanced.event import LoggedIn
 
 from novaideo.content.interface import IPerson
-from .schema import schema
+from .schema import schema, get_user_by_token
 
 
 def auth_user(token, request):
     current_user = None
-    novaideo_catalog = find_catalog('novaideo')
-    dace_catalog = find_catalog('dace')
-    identifier_index = novaideo_catalog['api_token']
-    object_provides_index = dace_catalog['object_provides']
-    query = object_provides_index.any([IPerson.__identifier__]) &\
-        identifier_index.eq(token)
-    users = list(query.execute().all())
-    user = users[0] if users else None
+    user = get_user_by_token(token)
     if (has_role(user=user, role=('SiteAdmin', )) or
             'active' in getattr(user, 'state', [])):
         current_user = user
@@ -47,8 +40,8 @@ def auth_user(token, request):
 )
 def graphqlview(context, request):  #pylint: disable=W0613
     token = request.headers.get('X-Api-Key', '')
-    is_prevate = getattr(request.root, 'only_for_members', False)
-    if is_prevate and  not auth_user(token, request):
+    is_private = getattr(request.root, 'only_for_members', False)
+    if is_private and not auth_user(token, request):
         response = HTTPUnauthorized()
         response.content_type = 'application/json'
         return response

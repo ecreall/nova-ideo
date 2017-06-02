@@ -11,9 +11,21 @@ from dace.util import get_obj, find_catalog
 
 from novaideo.views.filter import find_entities
 from novaideo.content.idea import Idea as SDIdea
-from novaideo.content.interface import Iidea
+from novaideo.content.interface import Iidea, IPerson
 from novaideo.utilities.util import html_to_text
 from novaideo import log
+
+
+def get_user_by_token(token):
+    current_user = None
+    novaideo_catalog = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    identifier_index = novaideo_catalog['api_token']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any([IPerson.__identifier__]) &\
+        identifier_index.eq(token)
+    users = list(query.execute().all())
+    return users[0] if users else None
 
 
 def get_entities(interfaces, states, args, info):  #pylint: disable=W0613
@@ -198,10 +210,14 @@ class Query(graphene.ObjectType):
         Idea,
         filter=graphene.String()
     )
+    account =  graphene.Field(Person)
 
     def resolve_ideas(self, args, context, info):  #pylint: disable=W0613
         oids = get_entities([Iidea], ['published'], args, info)
         return ResolverLazyList(oids, Idea)
+
+    def resolve_account(self, args, context, info):  #pylint: disable=W0613
+        return context.user
 
 
 schema = graphene.Schema(query=Query)
