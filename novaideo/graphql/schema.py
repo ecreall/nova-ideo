@@ -12,6 +12,7 @@ from dace.util import get_obj, find_catalog
 from novaideo.views.filter import find_entities
 from novaideo.content.idea import Idea as SDIdea
 from novaideo.content.interface import Iidea
+from novaideo.utilities.util import html_to_text
 from novaideo import log
 
 
@@ -130,7 +131,7 @@ class Idea(Node, graphene.ObjectType):
         return self.created_at.isoformat()
 
     def resolve_presentation_text(self, args, context, info):
-        return self.presentation_text()
+        return html_to_text(self.presentation_text(300))
 
     def resolve_tokens_opposition(self, args, context, info):  #pylint: disable=W0613
         return len(self.tokens_opposition)
