@@ -93,6 +93,12 @@ class File(Node, graphene.ObjectType):
 
     url = graphene.String()
     mimetype = graphene.String()
+    is_image = graphene.Boolean()
+
+    def resolve_is_image(self, args, context, info):  #pylint: disable=W0613
+        return self.mimetype.startswith('image') or \
+            self.mimetype.startswith(
+                    'application/x-shockwave-flash')
 
 
 class Person(Node, graphene.ObjectType):
@@ -131,6 +137,7 @@ class Idea(Node, graphene.ObjectType):
     author = graphene.Field(Person)
     tokens_opposition = graphene.Int()
     tokens_support = graphene.Int()
+    attached_files = graphene.List(File)
 
     @classmethod
     def is_type_of(cls, root, context, info):  #pylint: disable=W0613
@@ -150,6 +157,9 @@ class Idea(Node, graphene.ObjectType):
 
     def resolve_tokens_support(self, args, context, info):  #pylint: disable=W0613
         return len(self.tokens_support)
+
+    def resolve_attached_files(self, args, context, info):  #pylint: disable=W0613
+        return self.attached_files
 
 
 class ResolverLazyList(object):
