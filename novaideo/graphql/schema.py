@@ -117,9 +117,6 @@ class Person(Node, graphene.ObjectType):
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
 
-    def resolve_picture(self, args, context, info):  #pylint: disable=W0613
-        return self.picture
-
 
 class Idea(Node, graphene.ObjectType):
 
@@ -157,9 +154,6 @@ class Idea(Node, graphene.ObjectType):
 
     def resolve_tokens_support(self, args, context, info):  #pylint: disable=W0613
         return len(self.tokens_support)
-
-    def resolve_attached_files(self, args, context, info):  #pylint: disable=W0613
-        return self.attached_files
 
 
 class ResolverLazyList(object):

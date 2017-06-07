@@ -9,7 +9,7 @@ from graphql_wsgi import graphql_wsgi
 from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.request import Response
 from pyramid.view import view_config
-from pyramid.security import remember
+from pyramid.security import remember, forget
 
 from substanced.util import get_oid
 from substanced.event import LoggedIn
@@ -65,8 +65,8 @@ def graphqlview(context, request):  #pylint: disable=W0613
     return response
 
 
-@view_config(request_method='POST', name='api_token', renderer='json')
-def get_api_token(context, request):
+@view_config(request_method='POST', name='json_login', renderer='json')
+def login(context, request):
     login_data = json.loads(request.body.decode())
     login = login_data.get('login', None)
     password = login_data.get('password', None)
@@ -101,3 +101,13 @@ def get_api_token(context, request):
      }
            
         
+@view_config(request_method='POST', name='json_logout')
+def logout(context, request):
+    headers = forget(request)
+    data = {
+        'status': True
+     }
+    return Response(json=data, status=200, headerlist=headers)
+           
+        
+
