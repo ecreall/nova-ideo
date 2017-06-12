@@ -135,6 +135,7 @@ class Idea(Node, graphene.ObjectType):
     tokens_opposition = graphene.Int()
     tokens_support = graphene.Int()
     attached_files = graphene.List(File)
+    user_token = graphene.String()
 
     @classmethod
     def is_type_of(cls, root, context, info):  #pylint: disable=W0613
@@ -154,6 +155,19 @@ class Idea(Node, graphene.ObjectType):
 
     def resolve_tokens_support(self, args, context, info):  #pylint: disable=W0613
         return len(self.tokens_support)
+    
+    def resolve_user_token(self, args, context, info):  #pylint: disable=W0613
+        user = context.user
+        if not user:
+            return None
+        # @TODO optimization
+        if any(t.owner is user for t in self.tokens_support):
+            return 'support'
+        
+        if any(t.owner is user for t in self.tokens_opposition):
+            return 'oppose'
+        
+        return None
 
 
 class ResolverLazyList(object):
