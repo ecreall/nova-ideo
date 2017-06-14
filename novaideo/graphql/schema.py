@@ -76,15 +76,6 @@ class Node(object):
         oid = int(id)
         return get_obj(oid)
 
-    def __getattr__(self, name):
-        try:
-            return super(Node, self).__getattr__(name)  #pylint: disable=E1101
-        except Exception:
-            log.exception(
-                "Error in node %s id:%s attr:%s",
-                self.__class__.__name__, self.id, name)
-            raise
-
 
 class File(Node, graphene.ObjectType):
 
@@ -118,6 +109,24 @@ class Person(Node, graphene.ObjectType):
 #    email should be visible only by user with Admin or Site Administrator role
 
 
+
+class Url(Node, graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    url = graphene.String()
+    domain = graphene.String()
+    title = graphene.String()
+    description = graphene.String()
+    image_url = graphene.String()
+    site_name = graphene.String()
+    favicon = graphene.String()
+    image = graphene.Field(File)
+    author_avatar = graphene.String()
+    author_name = graphene.String()
+
+
 class Idea(Node, graphene.ObjectType):
 
     """Nova-Ideo ideas."""
@@ -136,6 +145,7 @@ class Idea(Node, graphene.ObjectType):
     tokens_support = graphene.Int()
     attached_files = graphene.List(File)
     user_token = graphene.String()
+    urls = graphene.List(Url)
 
     @classmethod
     def is_type_of(cls, root, context, info):  #pylint: disable=W0613
@@ -155,6 +165,9 @@ class Idea(Node, graphene.ObjectType):
 
     def resolve_tokens_support(self, args, context, info):  #pylint: disable=W0613
         return len(self.tokens_support)
+    
+    def resolve_urls(self, args, context, info):  #pylint: disable=W0613
+        return [Url(**url) for url in list(getattr(self, 'urls', {}).values())]
     
     def resolve_user_token(self, args, context, info):  #pylint: disable=W0613
         user = context.user
