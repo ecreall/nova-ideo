@@ -44,5 +44,6 @@ class TestGraphQLSchema(FunctionalTests):
         self.assertIsNone(result.errors)
         edges = result.data['ideas']['edges']
         self.assertEqual(len(edges), 2)
-        self.assertEqual(edges[0]['node']['title'], 'My great idea')
-        self.assertEqual(edges[1]['node']['title'], 'My other idea')
+        ideas = [e['node']['title'] for e in edges]
+        self.assertIn('My great idea', ideas)
+        self.assertIn('My other idea', ideas)
