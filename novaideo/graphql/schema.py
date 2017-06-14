@@ -146,6 +146,7 @@ class Idea(Node, graphene.ObjectType):
     attached_files = graphene.List(File)
     user_token = graphene.String()
     urls = graphene.List(Url)
+    opinion = graphene.String()
 
     @classmethod
     def is_type_of(cls, root, context, info):  #pylint: disable=W0613
@@ -167,7 +168,7 @@ class Idea(Node, graphene.ObjectType):
         return len(self.tokens_support)
     
     def resolve_urls(self, args, context, info):  #pylint: disable=W0613
-        return [Url(**url) for url in list(getattr(self, 'urls', {}).values())]
+        return [Url(**url) for url in getattr(self, 'urls', {}).values()]
     
     def resolve_user_token(self, args, context, info):  #pylint: disable=W0613
         user = context.user
@@ -182,6 +183,8 @@ class Idea(Node, graphene.ObjectType):
         
         return None
 
+    def resolve_opinion(self, args, context, info):  #pylint: disable=W0613
+        return getattr(self, 'opinion', {}).get('explanation', '')
 
 class ResolverLazyList(object):
 
