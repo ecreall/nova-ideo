@@ -95,9 +95,14 @@ Allow your gmail account to be used to send emails
 --------------------------------------------------
 
 To allow your gmail account to be used to send emails, you need to enable
-`less secure apps <https://support.google.com/accounts/answer/6010255>`__ and
-do the `captcha <https://support.google.com/accounts/answer/6009563>`__.
+`less secure apps <https://support.google.com/accounts/answer/6010255>`__ (
+less secure means we use a login and password and not OAuth 2.0) and
+do maybe the `captcha <https://support.google.com/accounts/answer/6009563>`__.
 Look at the logs in the terminal if you have an error when sending a mail.
+
+If you have a G suite account, to be able to enable less secure apps for a
+specific account, the G suite administrator needs to first `enable it
+<https://support.google.com/a/answer/6260879>`__
 
 Be careful to not commit your gmail password!
 The ini file doesn't support the use of % character in your password.
