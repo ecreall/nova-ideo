@@ -3,6 +3,7 @@
 import json
 import datetime
 import pytz
+import uuid
 from dace.objectofcollaboration.principal.util import has_role
 from dace.util import find_catalog
 from graphql_wsgi import graphql_wsgi
@@ -90,6 +91,10 @@ def login(context, request):
                 user.reindex()
 
             request.response.headerlist.extend(headers)
+            if getattr(user, 'api_token', None) is None:
+                user.api_token = uuid.uuid4().hex
+                user.reindex()
+                
             return {
                 'status': True,
                 'token': user.api_token
