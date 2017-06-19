@@ -71,6 +71,11 @@ def login(context, request):
     login_data = json.loads(request.body.decode())
     login = login_data.get('login', None)
     password = login_data.get('password', None)
+    token = login_data.get('token', None)
+    loged_user = None
+    if token:
+        loged_user = auth_user(token, request)
+
     if login and password:
         novaideo_catalog = find_catalog('novaideo')
         dace_catalog = find_catalog('dace')
@@ -84,21 +89,22 @@ def login(context, request):
         if valid_check and \
            (has_role(user=user, role=('SiteAdmin', )) or \
            'active' in getattr(user, 'state', [])):
-            headers = remember(request, get_oid(user))
-            request.registry.notify(LoggedIn(login, user, context, request))
-            user.last_connection = datetime.datetime.now(tz=pytz.UTC)
-            if hasattr(user, 'reindex'):
-                user.reindex()
+            loged_user = user
+            if getattr(loged_user, 'api_token', None) is None:
+                loged_user.api_token = uuid.uuid4().hex
 
-            request.response.headerlist.extend(headers)
-            if getattr(user, 'api_token', None) is None:
-                user.api_token = uuid.uuid4().hex
-                user.reindex()
-                
-            return {
-                'status': True,
-                'token': user.api_token
-             }
+    if loged_user:
+        headers = remember(request, get_oid(loged_user))
+        request.registry.notify(LoggedIn(login, loged_user, context, request))
+        loged_user.last_connection = datetime.datetime.now(tz=pytz.UTC)
+        request.response.headerlist.extend(headers)
+        if hasattr(loged_user, 'reindex'):
+            loged_user.reindex()
+
+        return {
+            'status': True,
+            'token': loged_user.api_token
+         }
     
     return {
         'status': False,
