@@ -68,7 +68,6 @@ def get_entities(interfaces, states, args, info):  #pylint: disable=W0613
         list(rs.ids), limit=limit, sort_type=STABLE, reverse=True))  #pylint: disable=E1101
 
 
-
 class Node(object):
 
     @classmethod
@@ -97,7 +96,6 @@ class Action(Node, graphene.ObjectType):
     def resolve_counter(self, args, context, info):  #pylint: disable=W0613
         action = self.action
         request = get_current_request()
-        localizer = request.localizer
         if hasattr(action, 'get_title'):
             return action.get_title(self.context, request, True)
 
@@ -134,7 +132,7 @@ class File(Node, graphene.ObjectType):
     def resolve_is_image(self, args, context, info):  #pylint: disable=W0613
         return self.mimetype.startswith('image') or \
             self.mimetype.startswith(
-                    'application/x-shockwave-flash')   
+                'application/x-shockwave-flash')
 
 
 class Person(Node, graphene.ObjectType):
@@ -177,7 +175,7 @@ class Idea(Node, graphene.ObjectType):
 
     class Meta(object):
         interfaces = (relay.Node, )
-   
+
     created_at = graphene.String()
     state = graphene.List(graphene.String)
     title = graphene.String()
@@ -191,7 +189,7 @@ class Idea(Node, graphene.ObjectType):
     user_token = graphene.String()
     urls = graphene.List(Url)
     opinion = graphene.String()
-    actions  = graphene.List(Action)
+    actions = graphene.List(Action)
 
     @classmethod
     def is_type_of(cls, root, context, info):  #pylint: disable=W0613
@@ -211,10 +209,10 @@ class Idea(Node, graphene.ObjectType):
 
     def resolve_tokens_support(self, args, context, info):  #pylint: disable=W0613
         return len(self.tokens_support)
-    
+
     def resolve_urls(self, args, context, info):  #pylint: disable=W0613
         return [Url(**url) for url in getattr(self, 'urls', {}).values()]
-    
+
     def resolve_user_token(self, args, context, info):  #pylint: disable=W0613
         user = context.user
         if not user:
@@ -222,10 +220,10 @@ class Idea(Node, graphene.ObjectType):
         # @TODO optimization
         if any(t.owner is user for t in self.tokens_support):
             return 'support'
-        
+
         if any(t.owner is user for t in self.tokens_opposition):
             return 'oppose'
-        
+
         return None
 
     def resolve_opinion(self, args, context, info):  #pylint: disable=W0613

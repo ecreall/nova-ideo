@@ -72,7 +72,7 @@ def login(context, request):
     login = login_data.get('login', None)
     password = login_data.get('password', None)
     token = login_data.get('token', None)
-    logoutged_user = None
+    logged_user = None
     if token:
         logged_user = auth_user(token, request)
 
@@ -82,7 +82,7 @@ def login(context, request):
         identifier_index = novaideo_catalog['identifier']
         object_provides_index = dace_catalog['object_provides']
         query = object_provides_index.any([IPerson.__identifier__]) &\
-                identifier_index.any([login])
+            identifier_index.any([login])
         users = list(query.execute().all())
         user = users[0] if users else None
         valid_check = user and user.check_password(password)
@@ -104,21 +104,18 @@ def login(context, request):
         return {
             'status': True,
             'token': logged_user.api_token
-         }
-    
+        }
+
     return {
         'status': False,
         'token': None
-     }
-           
-        
+    }
+
+
 @view_config(request_method='POST', name='json_logout')
 def logout(context, request):
     headers = forget(request)
     data = {
         'status': True
-     }
+    }
     return Response(json=data, status=200, headerlist=headers)
-           
-        
-
