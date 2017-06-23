@@ -72,9 +72,9 @@ def login(context, request):
     login = login_data.get('login', None)
     password = login_data.get('password', None)
     token = login_data.get('token', None)
-    loged_user = None
+    logoutged_user = None
     if token:
-        loged_user = auth_user(token, request)
+        logged_user = auth_user(token, request)
 
     if login and password:
         novaideo_catalog = find_catalog('novaideo')
@@ -89,21 +89,21 @@ def login(context, request):
         if valid_check and \
            (has_role(user=user, role=('SiteAdmin', )) or \
            'active' in getattr(user, 'state', [])):
-            loged_user = user
-            if getattr(loged_user, 'api_token', None) is None:
-                loged_user.api_token = uuid.uuid4().hex
+            logged_user = user
+            if getattr(logged_user, 'api_token', None) is None:
+                logged_user.api_token = uuid.uuid4().hex
 
-    if loged_user:
-        headers = remember(request, get_oid(loged_user))
-        request.registry.notify(LoggedIn(login, loged_user, context, request))
-        loged_user.last_connection = datetime.datetime.now(tz=pytz.UTC)
+    if logged_user:
+        headers = remember(request, get_oid(logged_user))
+        request.registry.notify(LoggedIn(login, logged_user, context, request))
+        logged_user.last_connection = datetime.datetime.now(tz=pytz.UTC)
         request.response.headerlist.extend(headers)
-        if hasattr(loged_user, 'reindex'):
-            loged_user.reindex()
+        if hasattr(logged_user, 'reindex'):
+            logged_user.reindex()
 
         return {
             'status': True,
-            'token': loged_user.api_token
+            'token': logged_user.api_token
          }
     
     return {

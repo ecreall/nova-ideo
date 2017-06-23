@@ -77,6 +77,51 @@ class Node(object):
         return get_obj(oid)
 
 
+class Action(Node, graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    process_id = graphene.String()
+    node_id = graphene.String()
+    title = graphene.String()
+    counter = graphene.Int()
+    style = graphene.String()
+    style_descriminator = graphene.String()
+    style_picto = graphene.String()
+    style_order = graphene.Int()
+
+    def resolve_title(self, args, context, info):  #pylint: disable=W0613
+        return get_current_request().localizer.translate(self.action.title)
+
+    def resolve_counter(self, args, context, info):  #pylint: disable=W0613
+        action = self.action
+        request = get_current_request()
+        localizer = request.localizer
+        if hasattr(action, 'get_title'):
+            return action.get_title(self.context, request, True)
+
+        return None
+
+    def resolve_process_id(self, args, context, info):  #pylint: disable=W0613
+        return self.action.process_id
+
+    def resolve_node_id(self, args, context, info):  #pylint: disable=W0613
+        return self.action.node_id
+
+    def resolve_style(self, args, context, info):  #pylint: disable=W0613
+        return getattr(self.action, 'style', '')
+
+    def resolve_style_descriminator(self, args, context, info):  #pylint: disable=W0613
+        return getattr(self.action, 'style_descriminator', '')
+
+    def resolve_style_picto(self, args, context, info):  #pylint: disable=W0613
+        return getattr(self.action, 'style_picto', '')
+
+    def resolve_style_order(self, args, context, info):  #pylint: disable=W0613
+        return getattr(self.action, 'style_order', 100)
+
+
 class File(Node, graphene.ObjectType):
 
     class Meta(object):
@@ -89,7 +134,7 @@ class File(Node, graphene.ObjectType):
     def resolve_is_image(self, args, context, info):  #pylint: disable=W0613
         return self.mimetype.startswith('image') or \
             self.mimetype.startswith(
-                    'application/x-shockwave-flash')
+                    'application/x-shockwave-flash')   
 
 
 class Person(Node, graphene.ObjectType):
@@ -107,7 +152,6 @@ class Person(Node, graphene.ObjectType):
     locale = graphene.String()
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
-
 
 
 class Url(Node, graphene.ObjectType):
@@ -147,6 +191,7 @@ class Idea(Node, graphene.ObjectType):
     user_token = graphene.String()
     urls = graphene.List(Url)
     opinion = graphene.String()
+    actions  = graphene.List(Action)
 
     @classmethod
     def is_type_of(cls, root, context, info):  #pylint: disable=W0613
@@ -185,6 +230,7 @@ class Idea(Node, graphene.ObjectType):
 
     def resolve_opinion(self, args, context, info):  #pylint: disable=W0613
         return getattr(self, 'opinion', {}).get('explanation', '')
+
 
 class ResolverLazyList(object):
 
