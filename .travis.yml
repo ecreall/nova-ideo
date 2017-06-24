@@ -9,8 +9,8 @@ before_install:
   - docker-compose -v
   - ./run.sh rebuild
 script:
-  - ./run.sh test -s novaideo
   - ./run.sh test -s dace
+  - ./run.sh test -s novaideo
   - ./run.sh test -s pontus
   - ./run.sh test -s html_diff_wrapper
   - ./run.sh test -s deform_treepy
