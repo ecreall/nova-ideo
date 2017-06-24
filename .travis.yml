@@ -7,9 +7,7 @@ cache:
 before_install:
   - docker info
   - docker-compose -v
-  - ls -l cache/
-  - ls -ld cache/src/ecreall_dace/.git
-  - rm -rf cache/src/*
+  - echo $UID
   - ./run.sh rebuild
 script:
   - ./run.sh test -s dace

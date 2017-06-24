@@ -28,6 +28,7 @@ case "$1" in
   rebuild)
     mkdir -p cache
     chmod o+rwx cache
+    export userid=$UID
     docker-compose $options pull
     docker-compose $options build #--pull # don't pull because we may have a custom base image
     do_buildout
