@@ -1,7 +1,7 @@
 sudo: required
 services:
   - docker
-cache:                                                                          
+cache:
   directories:
     - cache
 before_install:
@@ -17,3 +17,8 @@ script:
 notifications:
   email:
     - novaideo-travis@ecreall.com
+  slack:
+    rooms:
+      secure: E0/+3PHQ+8F/mgWE8Zu2dWcJL/f8F53TZ317N/j0mRfHrr6JdR64rBD7+ADTB0/vwpcdMmyHXeG/w5S80RMPuMJTN1Hc48prnbu4XzjEhWZ7zj++swbvJ1N6Dl53K7I3aMCVOhWGsEa6wldzW+6Pyc0ENYjZt6ge6RzkuviWY3I=
+    on_success: change
+    on_failure: always
