@@ -14,6 +14,7 @@ from novaideo.content.idea import Idea as SDIdea
 from novaideo.content.interface import Iidea, IPerson
 from novaideo.utilities.util import html_to_text
 from novaideo import log
+from .mutations import Mutations
 
 
 def get_user_by_token(token):
@@ -298,7 +299,7 @@ class Query(graphene.ObjectType):
         return context.user
 
 
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(query=Query, mutation=Mutations)
 
 
 if __name__ == '__main__':
