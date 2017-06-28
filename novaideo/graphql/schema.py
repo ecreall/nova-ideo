@@ -7,14 +7,15 @@ from hypatia.interfaces import STABLE
 from pyramid.threadlocal import get_current_request
 from substanced.objectmap import find_objectmap
 
-from dace.util import get_obj, find_catalog
+from dace.util import get_obj, find_catalog, getAllBusinessAction
+from dace.objectofcollaboration.entity import ActionCall
 
 from novaideo.views.filter import find_entities
 from novaideo.content.idea import Idea as SDIdea
 from novaideo.content.interface import Iidea, IPerson
 from novaideo.utilities.util import html_to_text
 from novaideo import log
-from .mutations import Mutations
+from .mutations import Mutations, get_context
 
 
 def get_user_by_token(token):
@@ -77,6 +78,15 @@ class Node(object):
         return get_obj(oid)
 
 
+class RootConfig(Node, graphene.ObjectType):
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    keywords = graphene.List(graphene.String)
+    can_add_keywords = graphene.Boolean()
+
+
 class Action(Node, graphene.ObjectType):
 
     class Meta(object):
@@ -92,7 +102,7 @@ class Action(Node, graphene.ObjectType):
     style_order = graphene.Int()
 
     def resolve_title(self, args, context, info):  #pylint: disable=W0613
-        return get_current_request().localizer.translate(self.action.title)
+        return context.localizer.translate(self.action.title)
 
     def resolve_counter(self, args, context, info):  #pylint: disable=W0613
         action = self.action
@@ -290,6 +300,13 @@ class Query(graphene.ObjectType):
         filter=graphene.String()
     )
     account =  graphene.Field(Person)
+    actions = relay.ConnectionField(
+        Action,
+        process_id=graphene.String(),
+        node_id=graphene.String(),
+        context=graphene.String()
+    )
+    config = graphene.Field(RootConfig)
 
     def resolve_ideas(self, args, context, info):  #pylint: disable=W0613
         oids = get_entities([Iidea], ['published'], args, info)
@@ -297,6 +314,18 @@ class Query(graphene.ObjectType):
 
     def resolve_account(self, args, context, info):  #pylint: disable=W0613
         return context.user
+
+    def resolve_actions(self, args, context, info):  #pylint: disable=W0613
+        obj = get_context(args.get('context', ''))
+        process_id = args.get('process_id', '')
+        node_id = args.get('node_id', '')
+        return [ActionCall(a, obj) for a in getAllBusinessAction(
+            obj, context,
+            process_id=process_id, node_id=node_id,
+            process_discriminator='Application')]
+
+    def resolve_config(self, args, context, info):  #pylint: disable=W0613
+        return context.root
 
 
 schema = graphene.Schema(query=Query, mutation=Mutations)
