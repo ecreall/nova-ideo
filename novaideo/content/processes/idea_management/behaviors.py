@@ -839,7 +839,7 @@ class CommentIdea(InfiniteCardinality):
             comment.format(request)
             comment.state = PersistentList(['published'])
             comment.reindex()
-            user = get_current()
+            user = appstruct.get('user', get_current())
             grant_roles(user=user, roles=(('Owner', comment), ))
             if getattr(self, 'subscribe_to_channel', True):
                 context.subscribe_to_channel(user)

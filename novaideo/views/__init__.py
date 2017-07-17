@@ -79,6 +79,7 @@ class IndexManagementJsonView(BasicView):
         return {}
 
 
+import yampy
 @view_config(name='novaideoapi',
              context=Object,
              xhr=True,
@@ -88,6 +89,31 @@ class NovaideoAPI(IndexManagementJsonView):
     search_template = 'novaideo:views/templates/live_search_result.pt'
     search_idea_template = 'novaideo:views/templates/live_search_idea_result.pt'
     search_question_template = 'novaideo:views/templates/live_search_question_result.pt'
+
+    def find_yammer_messages(self):
+        root = self.request.root
+        yammer_connectors = list(root.get_connectors('yammer'))
+        yammer_connector = yammer_connectors[0] if yammer_connectors else None
+        access_token = getattr(
+            get_current(), 'source_data', {}).get(
+            'access_token', None)
+        if yammer_connector and access_token:
+            page_limit, current_page, start, end = self._get_pagin_data()
+            yammer = yampy.Yammer(access_token=access_token)
+            messages = yammer.messages.all(threaded=True)
+            messages = messages['messages']
+            if len(messages) >= start:
+                messages = messages[start:end]
+            else:
+                messages = messages[:end]
+
+            entries = [{'id': e['id'],
+                        'text': e['body']['plain']}
+                       for e in messages]
+            result = {'items': entries, 'total_count': len(messages)}
+            return result
+
+        return {'items': [], 'total_count': 0}
 
     def find_user(self, query=None):
         name = self.params('q')

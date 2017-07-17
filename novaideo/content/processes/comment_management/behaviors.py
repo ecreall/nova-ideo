@@ -107,7 +107,7 @@ class Respond(InfiniteCardinality):
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
         comment.format(request)
-        user = get_current()
+        user = appstruct.get('user', get_current())
         comment.setproperty('author', user)
         comment.state = PersistentList(['published'])
         grant_roles(user=user, roles=(('Owner', comment), ))
