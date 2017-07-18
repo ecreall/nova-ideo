@@ -849,7 +849,9 @@ class CommentIdea(InfiniteCardinality):
                 comment.set_associated_contents(
                     appstruct['associated_contents'], user)
 
-            self._alert_users(context, request, user, comment)
+            if appstruct.get('alert', True):
+                self._alert_users(context, request, user, comment)
+
             context.reindex()
             user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
 

@@ -1,5 +1,5 @@
 <div i18n:domain="novaideo">
   <div i18n:translate="" class="alert alert-warning">
-      @TODO
+      The selected messages will be transformed into ideas. This process can take several minutes, depending on the number of selected messages.
   </div>
 </div>

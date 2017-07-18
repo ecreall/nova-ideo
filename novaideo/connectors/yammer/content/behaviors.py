@@ -8,6 +8,7 @@
 import transaction
 import datetime
 import pytz
+import io
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
 
@@ -28,6 +29,7 @@ from dace.objectofcollaboration.principal.util import (
     get_current)
 from dace.util import name_chooser, find_catalog, getSite, getAllBusinessAction
 from dace.processinstance.core import PROCESS_HISTORY_KEY
+from pontus.file import File
 
 from novaideo import _, my_locale_negotiator
 from novaideo.content.interface import IPerson, INovaIdeoApplication, Iidea
@@ -127,6 +129,23 @@ def _get_repleis(request, messages, sourc_id, access_token):
     return result
 
 
+def upload_files(yammer, files):
+    result = []
+    for file_ in files:
+        try:
+            buf = io.BytesIO(
+                yammer.client.request(
+                    'get', file_['download_url']).content)
+            buf.seek(0)
+            result.append(File(
+                fp=buf, mimetype=file_.get('content_type', None),
+                filename=file_.get('original_name', None)))
+        except Exception:
+            continue
+
+    return result
+
+
 def get_message_data(request, message_or_id, access_token, include_topics=False, include_replies=False):
     yammer = yampy.Yammer(access_token=access_token)
     message = {}
@@ -158,6 +177,8 @@ def get_message_data(request, message_or_id, access_token, include_topics=False,
             'source_data': source_data,
             'user_data': user_data,
         }, False)
+        # get files
+        attached_files = upload_files(yammer, message['attachments'])
         # get keywords
         keywords = []
         thread_id = message['thread_id']
@@ -166,6 +187,7 @@ def get_message_data(request, message_or_id, access_token, include_topics=False,
             keywords = [t['name'] for t in thread['references']
                         if t['type'] == 'topic']
 
+        # get replies
         replies_result = {}
         if include_replies and thread_id:
             replies = yammer.messages.in_thread(thread_id)
@@ -177,6 +199,7 @@ def get_message_data(request, message_or_id, access_token, include_topics=False,
             'title': content_body[:50]+' ...',
             'text': content_body,
             'keywords': keywords,
+            'attached_files': attached_files,
             'author': user
         }, replies_result
 
@@ -307,7 +330,7 @@ class Remove(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'icon glyphicon glyphicon-trash'
-    style_order = 1000
+    style_order = 1002
     title = _('Remove')
     submission_title = _('Continue')
     context = IYammerConnector
@@ -339,7 +362,7 @@ class Import(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'icon glyphicon glyphicon-import'
-    style_order = 1000
+    style_order = 1001
     title = _('Import')
     submission_title = _('Continue')
     context = IYammerConnector
@@ -371,13 +394,15 @@ class Import(InfiniteCardinality):
                 comment_data = reply['data']
                 comment = Comment(
                     intention=_('Remark'),
-                    comment=comment_data.pop('text')
+                    comment=comment_data.pop('text'),
+                    files=comment_data.pop('attached_files')
                 )
                 if comment_action:
                     comment_action.execute(
                         source, request, {
                             '_object_data': comment,
-                            'user': comment_data.pop('author')
+                            'user': comment_data.pop('author'),
+                            'alert': False,
                         })
 
                 sub_replies = reply['replies']
@@ -427,4 +452,4 @@ class Import(InfiniteCardinality):
         return {}
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(request.root, "@@seeconnectors"))
+        return HTTPFound(request.resource_url(request.root, ""))
