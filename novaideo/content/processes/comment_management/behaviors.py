@@ -107,7 +107,7 @@ class Respond(InfiniteCardinality):
         comment = appstruct['_object_data']
         context.addtoproperty('comments', comment)
         comment.format(request)
-        user = get_current()
+        user = appstruct.get('user', get_current())
         comment.setproperty('author', user)
         comment.state = PersistentList(['published'])
         grant_roles(user=user, roles=(('Owner', comment), ))
@@ -123,64 +123,65 @@ class Respond(InfiniteCardinality):
             comment.set_associated_contents(
                 appstruct['associated_contents'], user)
 
-        author = getattr(content, 'author', None)
-        authors = getattr(content, 'authors', [author] if author else [])
-        comment_author = getattr(context, 'author', None)
+        if appstruct.get('alert', True):
+            author = getattr(content, 'author', None)
+            authors = getattr(content, 'authors', [author] if author else [])
+            comment_author = getattr(context, 'author', None)
 
-        if user in authors:
-            authors.remove(user)
+            if user in authors:
+                authors.remove(user)
 
-        if comment_author in authors:
-            authors.remove(comment_author)
+            if comment_author in authors:
+                authors.remove(comment_author)
 
-        comment_kind = 'general_discuss' if not channel.get_subject(user) \
-            else 'discuss' if is_discuss else 'comment'
-        author_data = get_user_data(user, 'author', request)
-        alert_data = get_entity_data(comment, 'comment', request)
-        alert_data.update(author_data)
-        alert('internal', [root], authors,
-              internal_kind=InternalAlertKind.comment_alert,
-              subjects=[channel],
-              comment_kind=comment_kind,
-              **alert_data)
-        subject_data = get_entity_data(content, 'subject', request)
-        alert_data.update(subject_data)
-        mail_id = 'alert_discuss' if is_discuss else 'alert_comment'
-        for user_to_alert in [u for u in authors if getattr(u, 'email', '')]:
-            mail_template = root.get_mail_template(
-                mail_id, user_to_alert.user_locale)
-            subject = mail_template['subject'].format(
-                **subject_data)
-            email_data = get_user_data(user_to_alert, 'recipient', request)
-            email_data.update(alert_data)
-            message = mail_template['template'].format(
-                novaideo_title=root.title,
-                **email_data
-            )
-            alert('email', [root.get_site_sender()], [user_to_alert.email],
-                  subject=subject, body=message)
-
-        if comment_author is not user:
-            alert('internal', [root], [comment_author],
+            comment_kind = 'general_discuss' if not channel.get_subject(user) \
+                else 'discuss' if is_discuss else 'comment'
+            author_data = get_user_data(user, 'author', request)
+            alert_data = get_entity_data(comment, 'comment', request)
+            alert_data.update(author_data)
+            alert('internal', [root], authors,
                   internal_kind=InternalAlertKind.comment_alert,
-                  subjects=[channel], is_respons=True,
+                  subjects=[channel],
                   comment_kind=comment_kind,
-                  **alert_data
-                  )
-            if getattr(comment_author, 'email', ''):
-                email_data = get_user_data(comment_author, 'recipient', request)
-                email_data.update(alert_data)
+                  **alert_data)
+            subject_data = get_entity_data(content, 'subject', request)
+            alert_data.update(subject_data)
+            mail_id = 'alert_discuss' if is_discuss else 'alert_comment'
+            for user_to_alert in [u for u in authors if getattr(u, 'email', '')]:
                 mail_template = root.get_mail_template(
-                    'alert_discuss' if is_discuss else 'alert_respons',
-                    comment_author.user_locale)
+                    mail_id, user_to_alert.user_locale)
                 subject = mail_template['subject'].format(
                     **subject_data)
+                email_data = get_user_data(user_to_alert, 'recipient', request)
+                email_data.update(alert_data)
                 message = mail_template['template'].format(
                     novaideo_title=root.title,
                     **email_data
                 )
-                alert('email', [root.get_site_sender()], [comment_author.email],
+                alert('email', [root.get_site_sender()], [user_to_alert.email],
                       subject=subject, body=message)
+
+            if comment_author is not user:
+                alert('internal', [root], [comment_author],
+                      internal_kind=InternalAlertKind.comment_alert,
+                      subjects=[channel], is_respons=True,
+                      comment_kind=comment_kind,
+                      **alert_data
+                      )
+                if getattr(comment_author, 'email', ''):
+                    email_data = get_user_data(comment_author, 'recipient', request)
+                    email_data.update(alert_data)
+                    mail_template = root.get_mail_template(
+                        'alert_discuss' if is_discuss else 'alert_respons',
+                        comment_author.user_locale)
+                    subject = mail_template['subject'].format(
+                        **subject_data)
+                    message = mail_template['template'].format(
+                        novaideo_title=root.title,
+                        **email_data
+                    )
+                    alert('email', [root.get_site_sender()], [comment_author.email],
+                          subject=subject, body=message)
 
         user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))
         return {'newcontext': comment.subject}

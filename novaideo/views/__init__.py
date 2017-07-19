@@ -17,7 +17,7 @@ from dace.util import (
     find_catalog, getAllBusinessAction, getBusinessAction,
     getSite, get_obj, find_service)
 from dace.objectofcollaboration.principal.util import (
-    get_current, get_users_with_role)
+    get_current)
 from dace.objectofcollaboration.object import Object
 from pontus.view import BasicView
 

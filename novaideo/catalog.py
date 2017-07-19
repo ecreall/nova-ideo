@@ -771,7 +771,16 @@ class SearchableObject(Adapter):
         return False
 
     def identifier(self):
-        return []
+        identifiers = [str(get_oid(self.context))]
+        source_id = getattr(self.context, 'source_data', {}).get('id', None)
+        app_name = getattr(self.context, 'source_data', {}).get('app_name', None)
+        if source_id:
+            identifiers.extend([
+                app_name+'_'+source_id,
+                app_name
+                ])
+
+        return identifiers
 
     def is_pinned(self):
         return False

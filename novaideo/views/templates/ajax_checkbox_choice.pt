@@ -1,0 +1,35 @@
+<div tal:define="css_class css_class|field.widget.css_class;
+                 style style|field.widget.style;
+                 url url|field.widget.url;
+                 limit limit|field.widget.limit;
+                 page page|field.widget.page;
+                 oid oid|field.oid;">
+  ${field.start_sequence()}
+	  <div id="${oid}" class="results scroll-able checkbox-scroll malihu-scroll" style="height: 300px !important; overflow: auto !important;">
+	    <div class="container-fluid result-container " data-url="${url}" data-page="${page}" data-limit="${limit}">
+	      <div class="scroll-items-container">
+		    <div tal:repeat="choice field.widget.values"
+		       class="scroll-item checkbox ${choice[0] in cstruct and 'imported'}">
+		      <label for="${oid}-${repeat.choice.index}"
+		             tal:define="(value, title) choice">
+		        <input tal:attributes="checked value in cstruct;
+		                               class css_class;
+		                               style style"
+		               type="checkbox"
+		               name="checkbox"
+		               value="${value}"
+		               id="${oid}-${repeat.choice.index}"/>
+		        ${structure:title}
+		      </label>
+		    </div>
+          </div>
+	      <div class="btn-more-scroll-container">
+            <span tal:condition="url" id="${oid}-btn-more" class="scroll btn-more-scroll active"><span i18n:translate="">More</span> <span class="more-icon glyphicon glyphicon-option-horizontal"></span></span>
+          </div>
+	    </div>
+	  </div>
+  ${field.end_sequence()}
+</div>
+
+
+	

@@ -4,11 +4,13 @@
 # licence: AGPL
 # author: Amen Souissi
 
+from persistent.dict import PersistentDict
+
 from pyramid.events import subscriber
 from pyramid.threadlocal import get_current_request
+import yampy
 
 from novaideo.event import ObjectPublished
-import yampy
 
 
 @subscriber(ObjectPublished)
@@ -27,7 +29,7 @@ def mysubscriber_object_published(event):
         access_token = None
         if only_from_default and default_access_token:
             access_token = default_access_token
-        elif default_access_token:
+        else:
             access_token = getattr(
                 author, 'source_data', {}).get(
                 'access_token', default_access_token)
@@ -37,11 +39,18 @@ def mysubscriber_object_published(event):
             # Post a new messages
             msg = '{title} \n\n {text} \n\n {url}'.format(
                 title=content.title,
-                text=content.presentation_text(150),
+                text=content.text[:150]+'...',
                 url=request.resource_url(content, '@@index'))
-            yammer.messages.create(
+            message_data = yammer.messages.create(
                 msg,
                 topics=keywords)
+            if isinstance(message_data, dict) and \
+               message_data.get('messages', []):
+                content.source_data = PersistentDict({
+                    'app_name': 'yammer',
+                    'id': str(message_data['messages'][0]['id'])
+                })
+                content.reindex()
             # msg = {
             #     "actor":{
             #         "name":author.title,

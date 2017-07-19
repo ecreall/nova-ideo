@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-05-29 11:00+0200\n"
+"POT-Creation-Date: 2017-07-19 12:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,20 +100,20 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: ./novaideo/__init__.py:854
+#: ./novaideo/__init__.py:858
 #: ./novaideo/views/templates/panels/novaideo_footer.pt:13
 msgid "Legal notice"
 msgstr ""
 
-#: ./novaideo/__init__.py:855
+#: ./novaideo/__init__.py:859
 msgid "The legal notice"
 msgstr ""
 
-#: ./novaideo/__init__.py:859
+#: ./novaideo/__init__.py:863
 msgid "Terms of use"
 msgstr ""
 
-#: ./novaideo/__init__.py:860
+#: ./novaideo/__init__.py:864
 msgid "The terms of use"
 msgstr ""
 
@@ -701,72 +701,76 @@ msgstr ""
 msgid "The connector has been suppressed."
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1708
+#: ./novaideo/utilities/pseudo_react.py:1696
+msgid "The messages has been imported."
+msgstr ""
+
+#: ./novaideo/utilities/pseudo_react.py:1715
 #: ./novaideo/views/novaideo_view_manager/see_my_selections.py:37
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:71
 msgid "My followings"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1738
+#: ./novaideo/utilities/pseudo_react.py:1745
 #: ./novaideo/views/novaideo_view_manager/see_my_supports.py:38
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:79
 msgid "My evaluations"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1773
+#: ./novaideo/utilities/pseudo_react.py:1780
 #: ./novaideo/views/novaideo_view_manager/see_my_contents.py:44
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:67
 msgid "My contents"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1803
-#: ./novaideo/utilities/pseudo_react.py:1848
+#: ./novaideo/utilities/pseudo_react.py:1810
+#: ./novaideo/utilities/pseudo_react.py:1855
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:9
 #: ./novaideo/views/templates/panels/challenge.pt:57
 msgid "Asked question"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1805
-#: ./novaideo/utilities/pseudo_react.py:1850
+#: ./novaideo/utilities/pseudo_react.py:1812
+#: ./novaideo/utilities/pseudo_react.py:1857
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:10
 #: ./novaideo/views/templates/panels/challenge.pt:58
 msgid "Asked questions"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1822
-#: ./novaideo/utilities/pseudo_react.py:1874
+#: ./novaideo/utilities/pseudo_react.py:1829
+#: ./novaideo/utilities/pseudo_react.py:1881
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:13
 #: ./novaideo/views/templates/panels/challenge.pt:61
 msgid "Published idea"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1824
-#: ./novaideo/utilities/pseudo_react.py:1876
+#: ./novaideo/utilities/pseudo_react.py:1831
+#: ./novaideo/utilities/pseudo_react.py:1883
 #: ./novaideo/views/templates/panels/novaideo_contents.pt:14
 #: ./novaideo/views/templates/panels/challenge.pt:62
 msgid "Published ideas"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1893
+#: ./novaideo/utilities/pseudo_react.py:1900
 #: ./novaideo/views/novaideo_view_manager/see_my_participations.py:38
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:75
 msgid "My working groups"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1926
+#: ./novaideo/utilities/pseudo_react.py:1933
 #: ./novaideo/views/user_management/see_person.py:103
 #, python-format
 msgid "His/her working groups (${nb})"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1943
+#: ./novaideo/utilities/pseudo_react.py:1950
 #: ./novaideo/views/user_management/see_person.py:91
 #, python-format
 msgid "His/her ideas (${nb})"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1962
-#: ./novaideo/utilities/pseudo_react.py:2004
+#: ./novaideo/utilities/pseudo_react.py:1969
+#: ./novaideo/utilities/pseudo_react.py:2011
 #: ./novaideo/views/challenge_management/see_challenge.py:215
 #: ./novaideo/views/novaideo_view_manager/home.py:147
 #: ./novaideo/views/organization_management/see_organization.py:84
@@ -774,8 +778,8 @@ msgstr ""
 msgid "Questions (${nb})"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1977
-#: ./novaideo/utilities/pseudo_react.py:2026
+#: ./novaideo/utilities/pseudo_react.py:1984
+#: ./novaideo/utilities/pseudo_react.py:2033
 #: ./novaideo/views/challenge_management/see_challenge.py:194
 #: ./novaideo/views/novaideo_view_manager/home.py:126
 #: ./novaideo/views/organization_management/see_organization.py:95
@@ -788,6 +792,7 @@ msgstr ""
 #: ./novaideo/content/novaideo_application.py:72
 #: ./novaideo/content/novaideo_application.py:76
 #: ./novaideo/content/comment.py:136
+#: ./novaideo/connectors/yammer/content/behaviors.py:396
 msgid "Remark"
 msgstr ""
 
@@ -1052,8 +1057,8 @@ msgstr ""
 #: ./novaideo/content/processes/comment_management/definition.py:59
 #: ./novaideo/content/processes/smart_folder_management/definition.py:63
 #: ./novaideo/content/processes/organization_management/definition.py:75
-#: ./novaideo/connectors/yammer/content/definition.py:56
-#: ./novaideo/connectors/yammer/content/behaviors.py:232
+#: ./novaideo/connectors/yammer/content/definition.py:57
+#: ./novaideo/connectors/yammer/content/behaviors.py:334
 msgid "Remove"
 msgstr ""
 
@@ -1396,6 +1401,7 @@ msgstr ""
 #: ./novaideo/views/challenge_management/del_challenge.py:21
 #: ./novaideo/views/organization_management/withdraw_user.py:22
 #: ./novaideo/views/organization_management/remove_organization.py:22
+#: ./novaideo/connectors/yammer/views/import_messages.py:28
 #: ./novaideo/connectors/yammer/views/remove.py:21
 msgid "Alert for deletion"
 msgstr ""
@@ -1714,7 +1720,7 @@ msgstr ""
 #: ./novaideo/content/processes/question_management/behaviors.py:845
 #: ./novaideo/content/processes/idea_management/definition.py:131
 #: ./novaideo/content/processes/idea_management/definition.py:132
-#: ./novaideo/content/processes/idea_management/behaviors.py:1034
+#: ./novaideo/content/processes/idea_management/behaviors.py:1036
 #: ./novaideo/content/processes/invitation_management/definition.py:56
 #: ./novaideo/content/processes/user_management/definition.py:80
 #: ./novaideo/content/processes/user_management/definition.py:81
@@ -2478,7 +2484,7 @@ msgstr ""
 #: ./novaideo/views/user_management/reset_password.py:38
 #: ./novaideo/views/user_management/reset_password.py:144
 #: ./novaideo/content/processes/newsletter_management/definition.py:70
-#: ./novaideo/content/processes/idea_management/behaviors.py:898
+#: ./novaideo/content/processes/idea_management/behaviors.py:900
 #: ./novaideo/content/processes/invitation_management/behaviors.py:112
 #: ./novaideo/content/processes/novaideo_view_manager/behaviors.py:336
 #: ./novaideo/web_services/export_entities.py:125
@@ -8282,7 +8288,7 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/behaviors.py:77
 #: ./novaideo/content/processes/idea_management/behaviors.py:268
 #: ./novaideo/content/processes/idea_management/behaviors.py:356
-#: ./novaideo/content/processes/idea_management/behaviors.py:1089
+#: ./novaideo/content/processes/idea_management/behaviors.py:1091
 #: ./novaideo/content/processes/invitation_management/behaviors.py:232
 #: ./novaideo/content/processes/invitation_management/behaviors.py:263
 #: ./novaideo/content/processes/invitation_management/behaviors.py:292
@@ -8321,8 +8327,8 @@ msgstr ""
 #: ./novaideo/content/processes/organization_management/behaviors.py:344
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:191
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:219
-#: ./novaideo/connectors/yammer/content/behaviors.py:171
-#: ./novaideo/connectors/yammer/content/behaviors.py:205
+#: ./novaideo/connectors/yammer/content/behaviors.py:273
+#: ./novaideo/connectors/yammer/content/behaviors.py:307
 #: ./novaideo/connectors/core/content/behaviors.py:33
 #: ./novaideo/connectors/core/content/behaviors.py:59
 msgid "Save"
@@ -8365,10 +8371,10 @@ msgstr ""
 #: ./novaideo/content/processes/advertising_management/behaviors.py:149
 #: ./novaideo/content/processes/advertising_management/behaviors.py:183
 #: ./novaideo/content/processes/advertising_management/behaviors.py:213
-#: ./novaideo/content/processes/comment_management/behaviors.py:209
-#: ./novaideo/content/processes/comment_management/behaviors.py:241
-#: ./novaideo/content/processes/comment_management/behaviors.py:273
-#: ./novaideo/content/processes/comment_management/behaviors.py:299
+#: ./novaideo/content/processes/comment_management/behaviors.py:210
+#: ./novaideo/content/processes/comment_management/behaviors.py:242
+#: ./novaideo/content/processes/comment_management/behaviors.py:274
+#: ./novaideo/content/processes/comment_management/behaviors.py:300
 #: ./novaideo/content/processes/smart_folder_management/behaviors.py:155
 #: ./novaideo/content/processes/smart_folder_management/behaviors.py:187
 #: ./novaideo/content/processes/smart_folder_management/behaviors.py:211
@@ -8385,7 +8391,8 @@ msgstr ""
 #: ./novaideo/content/processes/organization_management/behaviors.py:258
 #: ./novaideo/content/processes/organization_management/behaviors.py:302
 #: ./novaideo/content/processes/organization_management/behaviors.py:395
-#: ./novaideo/connectors/yammer/content/behaviors.py:233
+#: ./novaideo/connectors/yammer/content/behaviors.py:335
+#: ./novaideo/connectors/yammer/content/behaviors.py:367
 msgid "Continue"
 msgstr ""
 
@@ -8400,8 +8407,8 @@ msgstr ""
 
 #: ./novaideo/content/processes/newsletter_management/definition.py:62
 #: ./novaideo/content/processes/admin_process/definition.py:43
-#: ./novaideo/connectors/yammer/content/definition.py:52
-#: ./novaideo/connectors/yammer/content/behaviors.py:204
+#: ./novaideo/connectors/yammer/content/definition.py:53
+#: ./novaideo/connectors/yammer/content/behaviors.py:306
 msgid "Configure"
 msgstr ""
 
@@ -8515,7 +8522,7 @@ msgstr ""
 #: ./novaideo/content/processes/question_management/definition.py:223
 #: ./novaideo/content/processes/question_management/behaviors.py:1029
 #: ./novaideo/content/processes/comment_management/definition.py:71
-#: ./novaideo/content/processes/comment_management/behaviors.py:319
+#: ./novaideo/content/processes/comment_management/behaviors.py:320
 msgid "Transform into an idea"
 msgstr ""
 
@@ -8525,7 +8532,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/question_management/behaviors.py:297
 #: ./novaideo/content/processes/idea_management/behaviors.py:791
-#: ./novaideo/content/processes/idea_management/behaviors.py:909
+#: ./novaideo/content/processes/idea_management/behaviors.py:911
 #: ./novaideo/content/processes/user_management/behaviors.py:778
 #: ./novaideo/content/processes/reports_management/behaviors.py:227
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:60
@@ -8577,7 +8584,7 @@ msgid "Compare versions"
 msgstr ""
 
 #: ./novaideo/content/processes/idea_management/definition.py:136
-#: ./novaideo/content/processes/idea_management/behaviors.py:1055
+#: ./novaideo/content/processes/idea_management/behaviors.py:1057
 #: ./novaideo/content/processes/proposal_management/definition.py:405
 #: ./novaideo/content/processes/proposal_management/behaviors.py:1463
 msgid "Compare"
@@ -8999,7 +9006,7 @@ msgid "Transform the comment into a question"
 msgstr ""
 
 #: ./novaideo/content/processes/comment_management/definition.py:75
-#: ./novaideo/content/processes/comment_management/behaviors.py:330
+#: ./novaideo/content/processes/comment_management/behaviors.py:331
 msgid "Transform into a question"
 msgstr ""
 
@@ -9311,8 +9318,22 @@ msgstr ""
 msgid "Yammer"
 msgstr ""
 
+#: ./novaideo/connectors/yammer/views/import_messages.py:88
+msgid "Messages to import"
+msgstr ""
+
+#: ./novaideo/connectors/yammer/views/import_messages.py:89
+msgid "Select the messages to import from your Yammer networks"
+msgstr ""
+
+#: ./novaideo/connectors/yammer/views/import_messages.py:95
+#: ./novaideo/connectors/yammer/views/import_messages.py:117
+#: ./novaideo/connectors/yammer/content/definition.py:60
+msgid "Import messages from Yammer"
+msgstr ""
+
 #: ./novaideo/connectors/yammer/views/configure.py:26
-#: ./novaideo/connectors/yammer/content/definition.py:51
+#: ./novaideo/connectors/yammer/content/definition.py:52
 msgid "Configure the Yammer connector"
 msgstr ""
 
@@ -9321,14 +9342,14 @@ msgid "You don't have the right to login with this account."
 msgstr ""
 
 #: ./novaideo/connectors/yammer/views/create.py:27
-#: ./novaideo/connectors/yammer/content/definition.py:47
 #: ./novaideo/connectors/yammer/content/definition.py:48
-#: ./novaideo/connectors/yammer/content/behaviors.py:170
+#: ./novaideo/connectors/yammer/content/definition.py:49
+#: ./novaideo/connectors/yammer/content/behaviors.py:272
 msgid "Add a Yammer connector"
 msgstr ""
 
 #: ./novaideo/connectors/yammer/views/remove.py:35
-#: ./novaideo/connectors/yammer/content/definition.py:55
+#: ./novaideo/connectors/yammer/content/definition.py:56
 msgid "Remove the Yammer connector"
 msgstr ""
 
@@ -9367,17 +9388,28 @@ msgstr ""
 msgid "Are you sure you want to remove this connector? This cannot be undone."
 msgstr ""
 
-#: ./novaideo/connectors/yammer/content/definition.py:35
+#: ./novaideo/connectors/yammer/views/templates/alert_import.pt:2
+msgid ""
+"The selected messages will be transformed into ideas. This process can take "
+"several minutes, depending on the number of selected messages."
+msgstr ""
+
 #: ./novaideo/connectors/yammer/content/definition.py:36
+#: ./novaideo/connectors/yammer/content/definition.py:37
 msgid "Yammer process"
 msgstr ""
 
-#: ./novaideo/connectors/yammer/content/definition.py:43
 #: ./novaideo/connectors/yammer/content/definition.py:44
+#: ./novaideo/connectors/yammer/content/definition.py:45
 msgid "Login with Yammer"
 msgstr ""
 
-#: ./novaideo/connectors/yammer/content/behaviors.py:122
+#: ./novaideo/connectors/yammer/content/definition.py:61
+#: ./novaideo/connectors/yammer/content/behaviors.py:366
+msgid "Import"
+msgstr ""
+
+#: ./novaideo/connectors/yammer/content/behaviors.py:224
 msgid "Log in with Yammer"
 msgstr ""
 

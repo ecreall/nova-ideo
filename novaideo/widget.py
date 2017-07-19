@@ -138,6 +138,14 @@ class ReCAPTCHAWidget(deform.widget.TextInputWidget):
     template = 'novaideo:views/templates/recaptcha_input.pt'
 
 
+class AjaxCheckBoxWidget(deform.widget.CheckboxChoiceWidget):
+    template = 'novaideo:views/templates/ajax_checkbox_choice.pt'
+    requirements = (('ajax_checkbox', None),)
+
+
+default_resource_registry.set_js_resources('ajax_checkbox', None,
+               'novaideo:static/js/ajax_checkbox_choice.js')
+
 default_resource_registry.set_js_resources('stylepicker', None,
                'novaideo:static/bgrins-spectrum/spectrum.js',
                'novaideo:static/js/style_picker.js')
