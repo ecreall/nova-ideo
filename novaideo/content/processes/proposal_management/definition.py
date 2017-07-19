@@ -185,8 +185,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         if not getattr(working_group, 'first_improvement_cycle', True):
             electors = working_group.members
 
-        subjects = [proposal]
-        ballot = Ballot('Referendum', electors, subjects, VP_DEFAULT_DURATION,
+        contexts = [proposal]
+        ballot = Ballot('Referendum', electors, contexts, VP_DEFAULT_DURATION,
                         true_val=_("Submit the proposal as is"),
                         false_val=_("Continue to improve the proposal"),
                         group=VOTE_PUBLISHING_GROUP,
@@ -224,9 +224,9 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
         if not getattr(working_group, 'first_improvement_cycle', True) and \
            'closed' in working_group.state:
-            subjects = [working_group]
+            contexts = [working_group]
             ballot = Ballot('Referendum', electors,
-                            subjects, VP_DEFAULT_DURATION,
+                            contexts, VP_DEFAULT_DURATION,
                             group=VOTE_PUBLISHING_GROUP,
                             subjects=[proposal])
             working_group.addtoproperty('ballots', ballot)
