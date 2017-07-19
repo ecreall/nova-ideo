@@ -17,7 +17,8 @@ $(document).on('click', '.checkbox-scroll .btn-more-scroll.active', function(){
         var items = data.items.map(function(item, index){
               return  '<div class="scroll-item checkbox '+(item.imported ? 'imported' : '')+'">'+
                         '<label for="'+item.id+'">'+
-                          '<input type="checkbox"  name="checkbox" value="'+item.id+'" id="'+item.id+'" checked="'+item.imported+'"/>'+
+                          '<input type="checkbox"  name="checkbox" value="'+item.id+'" id="'+item.id+'"'+
+                           (item.imported ? 'checked="true"': '')+'"/>'+
                           item.text +
                         '</label>'+
                       '</div>'
