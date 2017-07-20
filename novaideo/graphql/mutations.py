@@ -51,7 +51,7 @@ class CreateIdea(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         idea_schema = select(
-            IdeaSchema(), ['title', 'text', 'keywords'])
+            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
         args = dict(args)
         idea_schema.deserialize(args)
         context, request, action, args = get_execution_data(
@@ -76,6 +76,7 @@ class CreateAndPublishIdea(graphene.Mutation):
         title = graphene.String()
         text = graphene.String()
         keywords = graphene.List(graphene.String)
+        attached_files = graphene.List(graphene.String)  # this is the identifiers of the part in a multipart POST
 
     status = graphene.Boolean()
     idea = graphene.Field('novaideo.graphql.schema.Idea')
@@ -84,8 +85,33 @@ class CreateAndPublishIdea(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         idea_schema = select(
-            IdeaSchema(), ['title', 'text', 'keywords'])
+            IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
+        # colander wants: [{'fp': <_io.BufferedRandom name=17>, 'filename': 'sgt_pepper.jpg', 'mimetype': 'image/jpeg', 'size': -1, 'uid': 'L24PZAIYB4'}]
         args = dict(args)
+        attached_files = args.pop('attached_files', None)
+        # if attached_files is not None:
+        #     for file in attached_files:
+        #         filename = os.path.basename(context.POST[file].filename)
+        #         import pdb; pdb.set_trace()
+            # filename = os.path.basename(context.POST[image].filename)
+            # mime_type = context.POST[image].type
+            # uploaded_file = context.POST[image].file
+            # uploaded_file.seek(0)
+            # data = uploaded_file.read()
+            # document = models.File(
+            #     discussion=discussion,
+            #     mime_type=mime_type,
+            #     title=filename,
+            #     data=data)
+            # attachment = models.IdeaAttachment(
+            #     document=document,
+            #     idea=saobj,
+            #     discussion=discussion,
+            #     creator_id=context.authenticated_userid,
+            #     title=filename,
+            #     attachmentPurpose="EMBED_ATTACHMENT"
+            # )
+
         idea_schema.deserialize(args)
         context, request, action, args = get_execution_data(
             CreateAndPublishIdea.action_id, args)
