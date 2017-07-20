@@ -78,7 +78,7 @@ class Node(object):
         return get_obj(oid)
 
 
-class RootConfig(Node, graphene.ObjectType):
+class Root(Node, graphene.ObjectType):
 
     class Meta(object):
         interfaces = (relay.Node, )
@@ -299,14 +299,14 @@ class Query(graphene.ObjectType):
         Idea,
         filter=graphene.String()
     )
-    account =  graphene.Field(Person)
+    account = graphene.Field(Person)
     actions = relay.ConnectionField(
         Action,
         process_id=graphene.String(),
         node_id=graphene.String(),
         context=graphene.String()
     )
-    config = graphene.Field(RootConfig)
+    root = graphene.Field(Root)
 
     def resolve_ideas(self, args, context, info):  #pylint: disable=W0613
         oids = get_entities([Iidea], ['published'], args, info)
@@ -324,7 +324,7 @@ class Query(graphene.ObjectType):
             process_id=process_id, node_id=node_id,
             process_discriminator='Application')]
 
-    def resolve_config(self, args, context, info):  #pylint: disable=W0613
+    def resolve_root(self, args, context, info):  #pylint: disable=W0613
         return context.root
 
 
