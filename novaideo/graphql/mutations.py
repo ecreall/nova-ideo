@@ -1,9 +1,11 @@
 import graphene
+import urllib
 from pyramid.threadlocal import get_current_request
 
 from pontus.schema import select
 from dace.objectofcollaboration.principal.util import has_role
 from dace.util import get_obj, find_catalog, getSite, getAllBusinessAction
+from pontus.file import File
 
 from novaideo.content.interface import IPerson
 from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
@@ -37,12 +39,19 @@ def get_execution_data(action_id, args):
     return context, request, action, args
 
 
+class Upload(graphene.InputObjectType):
+    name = graphene.String()
+    type = graphene.String()
+    uri = graphene.String()
+
+
 class CreateIdea(graphene.Mutation):
 
     class Input:
         title = graphene.String()
         text = graphene.String()
         keywords = graphene.List(graphene.String)
+        attached_files = graphene.List(Upload)
 
     status = graphene.Boolean()
     idea = graphene.Field('novaideo.graphql.schema.Idea')
@@ -53,7 +62,22 @@ class CreateIdea(graphene.Mutation):
         idea_schema = select(
             IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
         args = dict(args)
-        idea_schema.deserialize(args)
+        attached_files = args.pop('attached_files', None)
+        uploaded_files = []
+        if attached_files:
+            for index, file_ in enumerate(attached_files):
+                file_storage = context.POST.get(
+                    'variables.attachedFiles.'+str(index))
+                fp = file_storage.file
+                fp.seek(0)
+                uploaded_files.append({
+                    'fp': fp,
+                    'filename': urllib.parse.unquote(file_storage.filename)})
+
+        args['attached_files'] = uploaded_files
+        args = idea_schema.deserialize(args)
+        args['attached_files'] = [f['_object_data']
+                                  for f in args['attached_files']]
         context, request, action, args = get_execution_data(
             CreateIdea.action_id, args)
         new_idea = None
@@ -76,7 +100,7 @@ class CreateAndPublishIdea(graphene.Mutation):
         title = graphene.String()
         text = graphene.String()
         keywords = graphene.List(graphene.String)
-        attached_files = graphene.List(graphene.String)  # this is the identifiers of the part in a multipart POST
+        attached_files = graphene.List(Upload) # this is the identifiers of the part in a multipart POST
 
     status = graphene.Boolean()
     idea = graphene.Field('novaideo.graphql.schema.Idea')
@@ -86,33 +110,23 @@ class CreateAndPublishIdea(graphene.Mutation):
     def mutate(root, args, context, info):
         idea_schema = select(
             IdeaSchema(), ['title', 'text', 'keywords', 'attached_files'])
-        # colander wants: [{'fp': <_io.BufferedRandom name=17>, 'filename': 'sgt_pepper.jpg', 'mimetype': 'image/jpeg', 'size': -1, 'uid': 'L24PZAIYB4'}]
         args = dict(args)
         attached_files = args.pop('attached_files', None)
-        # if attached_files is not None:
-        #     for file in attached_files:
-        #         filename = os.path.basename(context.POST[file].filename)
-        #         import pdb; pdb.set_trace()
-            # filename = os.path.basename(context.POST[image].filename)
-            # mime_type = context.POST[image].type
-            # uploaded_file = context.POST[image].file
-            # uploaded_file.seek(0)
-            # data = uploaded_file.read()
-            # document = models.File(
-            #     discussion=discussion,
-            #     mime_type=mime_type,
-            #     title=filename,
-            #     data=data)
-            # attachment = models.IdeaAttachment(
-            #     document=document,
-            #     idea=saobj,
-            #     discussion=discussion,
-            #     creator_id=context.authenticated_userid,
-            #     title=filename,
-            #     attachmentPurpose="EMBED_ATTACHMENT"
-            # )
+        uploaded_files = []
+        if attached_files:
+            for index, file_ in enumerate(attached_files):
+                file_storage = context.POST.get(
+                    'variables.attachedFiles.'+str(index))
+                fp = file_storage.file
+                fp.seek(0)
+                uploaded_files.append({
+                    'fp': fp,
+                    'filename': urllib.parse.unquote(file_storage.filename)})
 
-        idea_schema.deserialize(args)
+        args['attached_files'] = uploaded_files
+        args = idea_schema.deserialize(args)
+        args['attached_files'] = [f['_object_data']
+                                  for f in args['attached_files']]
         context, request, action, args = get_execution_data(
             CreateAndPublishIdea.action_id, args)
         new_idea = None
