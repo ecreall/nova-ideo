@@ -32,11 +32,12 @@ def get_action(action_id, context, request):
 
 
 def get_execution_data(action_id, args):
+    data = dict(args)
     context = get_context(
-        args.pop('context') if 'context' in args else None)
+        data.pop('context') if 'context' in data else None)
     request = get_current_request()
     action = get_action(action_id, context, request)
-    return context, request, action, args
+    return context, request, action, data
 
 
 class Upload(graphene.InputObjectType):
@@ -142,6 +143,94 @@ class CreateAndPublishIdea(graphene.Mutation):
         status = new_idea is not None
         return CreateAndPublishIdea(idea=new_idea, status=status)
 
+
+class Support(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.support'
+    withdraw_action_id = 'ideamanagement.withdraw_token'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        data = dict(args)
+        context, request, w_action, args = get_execution_data(
+            Support.withdraw_action_id, data)
+        if w_action:
+            w_action.execute(context, request, {})
+
+        context, request, action, args = get_execution_data(
+            Support.action_id, data)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception("Authorization failed")
+
+        return Support(idea=context, status=status)
+
+
+class Oppose(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.oppose'
+    withdraw_action_id = 'ideamanagement.withdraw_token'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        data = dict(args)
+        context, request, w_action, args = get_execution_data(
+            Oppose.withdraw_action_id, data)
+        if w_action:
+            w_action.execute(context, request, {})
+
+        context, request, action, args = get_execution_data(
+            Oppose.action_id, data)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception("Authorization failed")
+
+        return Oppose(idea=context, status=status)
+
+
+class WithdrawToken(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'ideamanagement.withdraw_token'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            WithdrawToken.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception("Authorization failed")
+
+        return WithdrawToken(idea=context, status=status)
+
+
 class Mutations(graphene.ObjectType):
     create_idea = CreateIdea.Field()
     create_and_publish = CreateAndPublishIdea.Field()
+    support_idea = Support.Field()
+    oppose_idea = Oppose.Field()
+    withdraw_token_idea = WithdrawToken.Field()

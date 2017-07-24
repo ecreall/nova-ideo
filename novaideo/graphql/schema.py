@@ -201,9 +201,10 @@ class Idea(Node, graphene.ObjectType):
     urls = graphene.List(Url)
     opinion = graphene.String()
     actions = graphene.List(Action)
+    oid = graphene.String()
 
     @classmethod
-    def is_type_of(cls, root, context, info):  #pylint: disable=W0613
+    def is_type_of(cls, root, context, info):  # pylint: disable=W0613
         if isinstance(root, cls):
             return True
 
@@ -215,16 +216,16 @@ class Idea(Node, graphene.ObjectType):
     def resolve_presentation_text(self, args, context, info):
         return html_to_text(self.presentation_text(300))
 
-    def resolve_tokens_opposition(self, args, context, info):  #pylint: disable=W0613
+    def resolve_tokens_opposition(self, args, context, info):  # pylint: disable=W0613
         return len(self.tokens_opposition)
 
-    def resolve_tokens_support(self, args, context, info):  #pylint: disable=W0613
+    def resolve_tokens_support(self, args, context, info):  # pylint: disable=W0613
         return len(self.tokens_support)
 
-    def resolve_urls(self, args, context, info):  #pylint: disable=W0613
+    def resolve_urls(self, args, context, info):  # pylint: disable=W0613
         return [Url(**url) for url in getattr(self, 'urls', {}).values()]
 
-    def resolve_user_token(self, args, context, info):  #pylint: disable=W0613
+    def resolve_user_token(self, args, context, info):  # pylint: disable=W0613
         user = context.user
         if not user:
             return None
@@ -237,8 +238,11 @@ class Idea(Node, graphene.ObjectType):
 
         return None
 
-    def resolve_opinion(self, args, context, info):  #pylint: disable=W0613
+    def resolve_opinion(self, args, context, info):  # pylint: disable=W0613
         return getattr(self, 'opinion', {}).get('explanation', '')
+
+    def resolve_oid(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self, '__oid__', None)
 
 
 class ResolverLazyList(object):
