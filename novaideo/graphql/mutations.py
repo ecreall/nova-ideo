@@ -101,7 +101,14 @@ class CreateAndPublishIdea(graphene.Mutation):
         title = graphene.String()
         text = graphene.String()
         keywords = graphene.List(graphene.String)
-        attached_files = graphene.List(Upload) # this is the identifiers of the part in a multipart POST
+        attached_files = graphene.List(Upload)
+        # the Upload object type deserialization currently doesn't work,
+        # it fails silently, so we actually get a list of None.
+        # So if we uploaded 3 files, we get attached_files = [None, None, None]
+        # We retrieve the files with the hard coded
+        # variables.attachedFiles.{0,1,2} below.
+        # This code will not work if batched mode is
+        # implemented in graphql-wsgi and batched mode is enabled on apollo.
 
     status = graphene.Boolean()
     idea = graphene.Field('novaideo.graphql.schema.Idea')
