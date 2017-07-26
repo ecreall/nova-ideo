@@ -63,6 +63,5 @@ RUN $run_buildout && bin/buildout -c heroku.cfg || true
 
 USER root
 EXPOSE 5000
-VOLUME /app/var
 
 CMD ["/start"]
