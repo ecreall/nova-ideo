@@ -6,6 +6,7 @@ from graphql_relay.connection.arrayconnection import cursor_to_offset
 from hypatia.interfaces import STABLE
 from pyramid.threadlocal import get_current_request
 from substanced.objectmap import find_objectmap
+from substanced.util import get_oid
 
 from dace.util import get_obj, find_catalog, getAllBusinessAction
 from dace.objectofcollaboration.entity import ActionCall
@@ -30,7 +31,7 @@ def get_user_by_token(token):
     return users[0] if users else None
 
 
-def get_entities(interfaces, states, args, info):  #pylint: disable=W0613
+def get_entities(interfaces, states, args, info, intersect=None):  #pylint: disable=W0613
     try:
         after = cursor_to_offset(args.get('after'))
         first = args.get('first')
@@ -62,7 +63,8 @@ def get_entities(interfaces, states, args, info):  #pylint: disable=W0613
         sort_on=None,
         interfaces=interfaces,
         metadata_filter={'states': states},
-        text_filter={'text_to_search': args.get('filter', '')}
+        text_filter={'text_to_search': args.get('filter', '')},
+        intersect=intersect
     )
     catalog = find_catalog('novaideo')
     release_date_index = catalog['release_date']
@@ -100,11 +102,16 @@ class Action(Node, graphene.ObjectType):
     style_descriminator = graphene.String()
     style_picto = graphene.String()
     style_order = graphene.Int()
+    submission_title = graphene.String()
 
-    def resolve_title(self, args, context, info):  #pylint: disable=W0613
+    def resolve_title(self, args, context, info):  # pylint: disable=W0613
         return context.localizer.translate(self.action.title)
 
-    def resolve_counter(self, args, context, info):  #pylint: disable=W0613
+    def resolve_submission_title(self, args, context, info):  # pylint: disable=W0613
+        submission_title = getattr(self.action, 'submission_title', '')
+        return context.localizer.translate(submission_title) if submission_title else submission_title
+
+    def resolve_counter(self, args, context, info):  # pylint: disable=W0613
         action = self.action
         request = get_current_request()
         if hasattr(action, 'get_title'):
@@ -112,22 +119,22 @@ class Action(Node, graphene.ObjectType):
 
         return None
 
-    def resolve_process_id(self, args, context, info):  #pylint: disable=W0613
+    def resolve_process_id(self, args, context, info):  # pylint: disable=W0613
         return self.action.process_id
 
-    def resolve_node_id(self, args, context, info):  #pylint: disable=W0613
+    def resolve_node_id(self, args, context, info):  # pylint: disable=W0613
         return self.action.node_id
 
-    def resolve_style(self, args, context, info):  #pylint: disable=W0613
+    def resolve_style(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style', '')
 
-    def resolve_style_descriminator(self, args, context, info):  #pylint: disable=W0613
+    def resolve_style_descriminator(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style_descriminator', '')
 
-    def resolve_style_picto(self, args, context, info):  #pylint: disable=W0613
+    def resolve_style_picto(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style_picto', '')
 
-    def resolve_style_order(self, args, context, info):  #pylint: disable=W0613
+    def resolve_style_order(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style_order', 100)
 
 
@@ -159,8 +166,35 @@ class Person(Node, graphene.ObjectType):
     title = graphene.String()
     user_title = graphene.String()
     locale = graphene.String()
+    contents = relay.ConnectionField(
+        lambda: Idea,
+        filter=graphene.String()
+    )
+    followed_ideas = relay.ConnectionField(
+        lambda: Idea,
+        filter=graphene.String()
+    )
+    supported_ideas = relay.ConnectionField(
+        lambda: Idea,
+        filter=graphene.String()
+    )
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
+
+    def resolve_contents(self, args, context, info):  # pylint: disable=W0613
+        user_ideas = [get_oid(o) for o in getattr(self, 'contents', [])]
+        oids = get_entities([Iidea], [], args, info, intersect=user_ideas)
+        return ResolverLazyList(oids, Idea)
+
+    def resolve_followed_ideas(self, args, context, info):  # pylint: disable=W0613
+        user_ideas = [get_oid(o) for o in getattr(self, 'selections', [])]
+        oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
+        return ResolverLazyList(oids, Idea)
+
+    def resolve_supported_ideas(self, args, context, info):  # pylint: disable=W0613
+        user_ideas = [get_oid(o) for o in getattr(self, 'supports', [])]
+        oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
+        return ResolverLazyList(oids, Idea)
 
 
 class Url(Node, graphene.ObjectType):
@@ -307,28 +341,39 @@ class Query(graphene.ObjectType):
     actions = relay.ConnectionField(
         Action,
         process_id=graphene.String(),
-        node_id=graphene.String(),
+        node_ids=graphene.List(graphene.String),
         context=graphene.String()
     )
     root = graphene.Field(Root)
 
-    def resolve_ideas(self, args, context, info):  #pylint: disable=W0613
+    def resolve_ideas(self, args, context, info):  # pylint: disable=W0613
         oids = get_entities([Iidea], ['published'], args, info)
         return ResolverLazyList(oids, Idea)
 
-    def resolve_account(self, args, context, info):  #pylint: disable=W0613
+    def resolve_account(self, args, context, info):  # pylint: disable=W0613
         return context.user
 
-    def resolve_actions(self, args, context, info):  #pylint: disable=W0613
+    def resolve_actions(self, args, context, info):  # pylint: disable=W0613
         obj = get_context(args.get('context', ''))
         process_id = args.get('process_id', '')
-        node_id = args.get('node_id', '')
-        return [ActionCall(a, obj) for a in getAllBusinessAction(
-            obj, context,
-            process_id=process_id, node_id=node_id,
-            process_discriminator='Application')]
+        node_ids = args.get('node_ids', '')
+        if not node_ids:
+            return [ActionCall(a, obj) for a in getAllBusinessAction(
+                    obj, context,
+                    process_id=process_id,
+                    process_discriminator='Application')]
 
-    def resolve_root(self, args, context, info):  #pylint: disable=W0613
+        result = []
+        for node_id in node_ids:
+            result.extend(
+                [ActionCall(a, obj) for a in getAllBusinessAction(
+                 obj, context,
+                 process_id=process_id, node_id=node_id,
+                 process_discriminator='Application')])
+
+        return result
+
+    def resolve_root(self, args, context, info):  # pylint: disable=W0613
         return context.root
 
 
