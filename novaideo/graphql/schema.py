@@ -13,9 +13,11 @@ from dace.objectofcollaboration.entity import ActionCall
 
 from novaideo.views.filter import find_entities
 from novaideo.content.idea import Idea as SDIdea
+from novaideo.content.comment import Comment as SDComment
 from novaideo.content.interface import Iidea, IPerson
 from novaideo.utilities.util import html_to_text
 from novaideo import log
+from novaideo.views.filter import get_comments
 from .mutations import Mutations, get_context
 
 
@@ -70,6 +72,28 @@ def get_entities(interfaces, states, args, info, intersect=None):  #pylint: disa
     release_date_index = catalog['release_date']
     return list(release_date_index.sort(
         list(rs.ids), limit=limit, sort_type=STABLE, reverse=True))  #pylint: disable=E1101
+
+
+def get_all_comments(container, args):
+    try:
+        after = cursor_to_offset(args.get('after'))
+        first = args.get('first')
+        if after is None:
+            limit = first
+        else:
+            limit = after + 1 + first
+
+        limit = limit + 1  # retrieve one more so the hasNextPage works
+    except Exception:  # FIXME:
+        limit = None
+
+    filter_ = args.get('filter', '')
+    comments = get_comments(
+        container, [], filter_, filter_)
+    catalog = find_catalog('novaideo')
+    release_date_index = catalog['release_date']
+    return list(release_date_index.sort(
+        list(comments.ids), limit=limit, sort_type=STABLE, reverse=True))
 
 
 class Node(object):
@@ -214,7 +238,97 @@ class Url(Node, graphene.ObjectType):
     author_name = graphene.String()
 
 
-class Idea(Node, graphene.ObjectType):
+class Comment(Node, graphene.ObjectType):
+
+    """Nova-Ideo ideas."""
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    created_at = graphene.String()
+    state = graphene.List(graphene.String)
+    text = graphene.String()
+    author = graphene.Field(Person)
+    attached_files = graphene.List(File)
+    urls = graphene.List(Url)
+    actions = graphene.List(Action)
+    oid = graphene.String()
+    comments = relay.ConnectionField(
+        lambda: Comment,
+        filter=graphene.String())
+    len_comments = graphene.Int()
+
+    @classmethod
+    def is_type_of(cls, root, context, info):  # pylint: disable=W0613
+        if isinstance(root, cls):
+            return True
+
+        return isinstance(root, SDComment)
+
+    def resolve_created_at(self, args, context, info):
+        return self.created_at.isoformat()
+
+    def resolve_text(self, args, context, info):
+        return self.comment
+
+    def resolve_urls(self, args, context, info):  # pylint: disable=W0613
+        return [Url(**url) for url in getattr(self, 'urls', {}).values()]
+
+    def resolve_oid(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self, '__oid__', None)
+
+    def resolve_attached_files(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self, 'files', [])
+
+    def resolve_comments(self, args, context, info):  # pylint: disable=W0613
+        return ResolverLazyList(
+            get_all_comments(self, args),
+            Comment)
+
+    def resolve_len_comments(self, args, context, info):
+        return self.len_comments
+
+
+class Channel(Node, graphene.ObjectType):
+
+    """Nova-Ideo ideas."""
+
+    class Meta(object):
+        interfaces = (relay.Node, )
+
+    comments = relay.ConnectionField(
+        Comment,
+        filter=graphene.String())
+
+    def resolve_comments(self, args, context, info):
+        return ResolverLazyList(
+            get_all_comments(self, args),
+            Comment)
+
+
+class Debatable(graphene.AbstractType):
+
+    channel = graphene.Field(Channel)
+    comments = relay.ConnectionField(
+        Comment,
+        filter=graphene.String())
+    len_comments = graphene.Int()
+
+    def resolve_channel(self, args, context, info):
+        return self.get_channel(getattr(context, 'user', None))
+
+    def resolve_comments(self, args, context, info):
+        channel = self.get_channel(getattr(context, 'user', None))
+        return ResolverLazyList(
+            get_all_comments(channel, args),
+            Comment)
+
+    def resolve_len_comments(self, args, context, info):
+        channel = self.get_channel(getattr(context, 'user', None))
+        return channel.len_comments if channel else 0
+
+
+class Idea(Node, Debatable, graphene.ObjectType):
 
     """Nova-Ideo ideas."""
 
