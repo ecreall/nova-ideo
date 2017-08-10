@@ -20,13 +20,13 @@ function includejs(url, callback){
 }
 
 
-function includecss(url){
+function includecss(url, callback){
     var link = document.createElement("link")
     link.type = "text/css";
     link.rel="stylesheet";
     link.href = url;
     document.getElementsByTagName("head")[0].appendChild(link);
-    resource_included += 1
+    callback()
 }
 
 
@@ -45,7 +45,7 @@ function include_resources(urls, callback){
               type = parts[0],
               url = parts[1];
           if(type == 'css'){
-            includecss(url)
+            includecss(url, global_callback)
           }
 
           if(type == 'js'){

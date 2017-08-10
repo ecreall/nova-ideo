@@ -1732,6 +1732,13 @@ def get_remove_connector_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_import_connector_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The messages has been imported."),
+        **kwargs)
+    return result
+
 
 #Counters
 
@@ -2207,6 +2214,7 @@ METADATA_GETTERS = {
     'rangevotingprocess.vote': get_vote_metadata,
 
     'yammerprocess.remove': get_remove_connector_metadata,
+    'yammerprocess.import_messages': get_import_connector_metadata,
 }
 
 

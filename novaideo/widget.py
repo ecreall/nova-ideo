@@ -1,5 +1,5 @@
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -137,6 +137,14 @@ class CssWidget(TextInputWidget):
 class ReCAPTCHAWidget(deform.widget.TextInputWidget):
     template = 'novaideo:views/templates/recaptcha_input.pt'
 
+
+class AjaxCheckBoxWidget(deform.widget.CheckboxChoiceWidget):
+    template = 'novaideo:views/templates/ajax_checkbox_choice.pt'
+    requirements = (('ajax_checkbox', None),)
+
+
+default_resource_registry.set_js_resources('ajax_checkbox', None,
+               'novaideo:static/js/ajax_checkbox_choice.js')
 
 default_resource_registry.set_js_resources('stylepicker', None,
                'novaideo:static/bgrins-spectrum/spectrum.js',

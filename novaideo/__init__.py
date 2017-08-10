@@ -759,6 +759,25 @@ def evolve_mails_languages(root, registry):
     log.info('Emails evolved.')
 
 
+def evolve_colors(root, registry):
+    from novaideo.content.novaideo_application import DEFAULT_COLORS
+    from persistent.dict import PersistentDict
+    root.colors_mapping = PersistentDict(DEFAULT_COLORS)
+    log.info('Colors evolved.')
+
+
+def evolve_user_management_process(root, registry):
+    from dace import process_definitions_evolve
+    process_definitions_evolve(root, registry)
+    runtime = root['runtime']
+    try:
+        proc = runtime['usermanagement']
+        runtime.delfromproperty('processes', proc)
+        log.info('user_management process evolved.')
+    except KeyError as e:
+        pass 
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -805,11 +824,14 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_related_correlation)
     config.add_evolution_step(publish_organizations)
     config.add_evolution_step(evolve_mails_languages)
+    config.add_evolution_step(evolve_colors)
+    config.add_evolution_step(evolve_user_management_process)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
     config.add_translation_dirs('deform:locale/')
     config.add_translation_dirs('colander:locale/')
+    config.include('.graphql')
     config.scan()
     config.add_static_view('novaideostatic',
                            'novaideo:static',

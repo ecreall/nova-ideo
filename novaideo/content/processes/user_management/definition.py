@@ -1,5 +1,5 @@
 # Copyright (c) 2014 by Ecreall under licence AGPL terms
-# avalaible on http://www.gnu.org/licenses/agpl.html
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -26,6 +26,7 @@ from .behaviors import (
     GeneralDiscuss,
     Activate,
     Deactivate,
+    GetAPIToken,
     SeePerson,
     AssignRoles,
     ConfirmRegistration,
@@ -83,6 +84,10 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Discuss"),
                                        title=_("Discuss"),
                                        groups=[]),
+                get_api_token = ActivityDefinition(contexts=[GetAPIToken],
+                                       description=_("Get API token"),
+                                       title=_("Get API token"),
+                                       groups=[]),
                 general_discuss = ActivityDefinition(contexts=[GeneralDiscuss],
                                        description=_("Discuss"),
                                        title=_("Discuss"),
@@ -102,6 +107,8 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('general_discuss', 'eg'),
                 TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('edit', 'eg'),
+                TransitionDefinition('pg', 'get_api_token'),
+                TransitionDefinition('get_api_token', 'eg'),
                 TransitionDefinition('pg', 'deactivate'),
                 TransitionDefinition('deactivate', 'eg'),
                 TransitionDefinition('pg', 'activate'),

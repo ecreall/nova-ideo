@@ -22,7 +22,8 @@ from .behaviors import (
     LogIn,
     CreateConnector,
     Configure,
-    Remove)
+    Remove,
+    Import)
 from novaideo import _
 
 
@@ -55,6 +56,10 @@ class YammerProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Remove the Yammer connector"),
                                        title=_("Remove"),
                                        groups=[]),
+                import_messages = ActivityDefinition(contexts=[Import],
+                                       description=_("Import messages from Yammer"),
+                                       title=_("Import"),
+                                       groups=[]),
                 pg = ParallelGatewayDefinition(),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
@@ -69,6 +74,8 @@ class YammerProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('configure', 'eg'),
                 TransitionDefinition('pg', 'remove'),
                 TransitionDefinition('remove', 'eg'),
+                TransitionDefinition('pg', 'import_messages'),
+                TransitionDefinition('import_messages', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
 

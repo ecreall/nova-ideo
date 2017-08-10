@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 # Copyright (c) 2015 by Ecreall under licence AGPL terms
-# avalaible on http://www.gnu.org/licenses/agpl.html
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -90,8 +90,8 @@ def get_entity_data(entity, id, request=None):
     def default_get_url(request):
         request.resource_url(entity, '@@index')
 
-    entity_type = request.localizer.translate(
-        _("The " + entity.__class__.__name__.lower()))
+    title = "The " + entity.__class__.__name__.lower()
+    entity_type = request.localizer.translate(_(title))
     return {
         id+'_title': getattr(entity, 'title', ''),
         id+'_content': getattr(
@@ -149,12 +149,16 @@ def alert_email(senders=[], recipients=[], exclude=[], **kwargs):
     """
         recipients: ['mail@mail.com']
     """
+    admin_example_mail = 'admin@example.com'
     sender = senders[0]
     subject = kwargs.get('subject', '')
     mail = kwargs.get('body', None)
     html = kwargs.get('html', None)
     attachments = kwargs.get('attachments', [])
-    if mail or html:
+    if admin_example_mail in recipients:
+        recipients.remove(admin_example_mail)
+
+    if recipients and (mail or html):
         mailer_send(
             subject=subject, body=mail,
             html=html, attachments=attachments,

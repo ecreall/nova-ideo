@@ -90,6 +90,9 @@ function update_modal_action(event){
              try {
                   deform.processCallbacks();
              }catch(err) {};
+             var result_scroll = modal_container.find(".result-scroll")
+             initscroll(result_scroll)
+             rebuild_scrolls(modal_container.find('.malihu-scroll'))
              finish_progress()
              focus_on_form(modal_container)
              modal_container.data('action_id', action.attr('id'))

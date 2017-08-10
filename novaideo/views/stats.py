@@ -53,9 +53,8 @@ def site_data(context, request):
             states_index.any(['published'])
         counts['challenges'] = len(query.execute())
 
+    result = {'counts': counts}
     root = request.root
-    result = {}
-    result['counts'] = counts
     logo = getattr(root, 'picture', None)
     result["logoUrl"] = logo.url if logo else \
         request.static_url('novaideo:static/images/novaideo_logo.png')
@@ -66,4 +65,15 @@ def site_data(context, request):
     result["description"] = root.description
     result["type"] = 'private' if \
         getattr(root, 'only_for_members', False) else 'public'
+    config = {}
+    config["moderate_proposals"] = root.moderate_proposals
+    config["moderate_ideas"] = root.moderate_ideas
+    config["examine_proposals"] = root.examine_proposals
+    config["examine_ideas"] = root.examine_ideas
+    config["support_proposals"] = root.support_proposals
+    config["support_ideas"] = root.support_ideas
+    config["manage_challenges"] = root.manage_challenges
+    config["manage_questions"] = root.manage_questions
+    config["manage_proposals"] = root.manage_proposals
+    result['config'] = config
     return result

@@ -24,6 +24,9 @@ do_buildout() {
     docker commit --change 'USER root' --change='CMD ["/start"]' "$id" "$IMAGE"
 }
 
+# build args variables:
+export userid=$UID
+
 case "$1" in
   rebuild)
     mkdir -p cache

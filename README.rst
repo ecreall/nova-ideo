@@ -46,9 +46,9 @@ To run in development mode without docker::
     bin/runzeo -C etc/zeo.conf  # It starts in foreground, there is no output.  Use Ctrl+C to stop it.
     bin/pserve development.ini  # in another terminal
 
-The application is on http://localhost:6543
+The application is on http://127.0.0.1:6543
 
-I'll use $DOMAIN for http://localhost:6543 in the rest of the documentation.
+I'll use $DOMAIN for http://127.0.0.1:6543 in the rest of the documentation.
 
 To send emails with gmail smtp, you need to uncomment some lines and configure
 the mail and password in development.ini
@@ -95,9 +95,14 @@ Allow your gmail account to be used to send emails
 --------------------------------------------------
 
 To allow your gmail account to be used to send emails, you need to enable
-`less secure apps <https://support.google.com/accounts/answer/6010255>`__ and
-do the `captcha <https://support.google.com/accounts/answer/6009563>`__.
+`less secure apps <https://support.google.com/accounts/answer/6010255>`__ (
+less secure means we use a login and password and not OAuth 2.0) and
+do maybe the `captcha <https://support.google.com/accounts/answer/6009563>`__.
 Look at the logs in the terminal if you have an error when sending a mail.
+
+If you have a G suite account, to be able to enable less secure apps for a
+specific account, the G suite administrator needs to first `enable it
+<https://support.google.com/a/answer/6260879>`__
 
 Be careful to not commit your gmail password!
 The ini file doesn't support the use of % character in your password.

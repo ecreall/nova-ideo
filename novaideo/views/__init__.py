@@ -1,5 +1,5 @@
 # Copyright (c) 2015 by Ecreall under licence AGPL terms
-# avalaible on http://www.gnu.org/licenses/agpl.html
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi, Sophie Jazwiecki
@@ -17,7 +17,7 @@ from dace.util import (
     find_catalog, getAllBusinessAction, getBusinessAction,
     getSite, get_obj, find_service)
 from dace.objectofcollaboration.principal.util import (
-    get_current, get_users_with_role)
+    get_current)
 from dace.objectofcollaboration.object import Object
 from pontus.view import BasicView
 
@@ -499,7 +499,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, 'novaideoapi',
                 query={'op': previous_action + '_idea'})
             result['title'] = localizer.translate(
-                _('Oppose' if previous_action == 'oppose' else 'Support'))
+                _('Oppose') if previous_action == 'oppose' else _('Support'))
             result['withdraw'] = True
 
         user = get_current()
@@ -520,7 +520,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, 'novaideoapi',
                 query={'op': previous_action + '_proposal'})
             result['title'] = localizer.translate(
-                _('Oppose' if previous_action == 'oppose' else 'Support'))
+                _('Oppose') if previous_action == 'oppose' else _('Support'))
             result['withdraw'] = True
 
         user = get_current()

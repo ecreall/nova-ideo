@@ -1,12 +1,13 @@
 # -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 
 import colander
 import transaction
+import uuid
 import datetime
 import pytz
 from persistent.list import PersistentList
@@ -169,6 +170,38 @@ class Edit(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class GetAPIToken(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'plus-action'
+    style_picto = 'glyphicon glyphicon-wrench'
+    style_order = 1
+    title = _('Get API token')
+    submission_title = _('Get a new API token')
+    context = IPerson
+    roles_validation = edit_roles_validation
+    processsecurity_validation = edit_processsecurity_validation
+    state_validation = edit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        password = appstruct['password']
+        if context.check_password(password):
+            context.api_token = uuid.uuid4().hex
+            context.reindex()
+            return {
+                'api_token': context.api_token
+            }
+
+        return {}
+
+    def redirect(self, context, request, **kw):
+        query = {}
+        if 'api_token' not in kw:
+            query['invalid_password'] = True
+
+        return HTTPFound(request.resource_url(
+            context, "@@get_api_token", query=query))
 
 
 def deactivate_roles_validation(process, context):

@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -156,8 +156,6 @@ class AddContent(object):
     )
 class UserNavBarPanel(object):
 
-    navbar_actions = [SeeMyContents, SeeMyParticipations,
-                      SeeMySelections]
 
     def __init__(self, context, request):
         self.context = context
@@ -165,14 +163,19 @@ class UserNavBarPanel(object):
 
     def __call__(self, has_contextual_help=False):
         root = getSite()
+        navbar_actions = [SeeMyContents, SeeMyParticipations,
+                          SeeMySelections]
         if 'proposal' not in self.request.content_to_manage:
-            self.navbar_actions = [SeeMyContents, SeeMySelections]
+            navbar_actions = [SeeMyContents, SeeMySelections]
+
+        if self.request.support_ideas or self.request.support_proposals:
+            navbar_actions.append(SeeMySupports)
 
         if self.request.support_ideas or self.request.support_proposals:
             self.navbar_actions.append(SeeMySupports)
 
         actions_url = OrderedDict()
-        for actionclass in self.navbar_actions:
+        for actionclass in navbar_actions:
             process_id, action_id = tuple(
                 actionclass.node_definition.id.split('.'))
             action, view = get_action_view(process_id, action_id, self.request)

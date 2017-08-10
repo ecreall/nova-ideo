@@ -1,0 +1,4 @@
+<div class="display-api-token" i18n:domain="novaideo">
+    <span tal:condition="api_token" i18n:translate="">Your API token is <strong i18n:name="api_token">${api_token}</strong>. You can generate a new token below:</span>
+    <span tal:condition="not:api_token" i18n:translate="">You don't have an API token yet, you can generate a token below:</span>
+</div>

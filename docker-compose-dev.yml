@@ -5,6 +5,7 @@ services:
       context: .
       args:
         run_buildout: "false"
+        userid: ${userid}
     stdin_open: true
     tty: true
     environment:
