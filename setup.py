@@ -34,7 +34,7 @@ requires = [
     'randomcolor',
     'yampy2',
     'Twisted',
-    'autobahn'
+    'autobahn',
     'graphene',
     'graphql-wsgi',
     'keas.kmi',
