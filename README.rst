@@ -61,7 +61,15 @@ You first need to install the `docker engine
 <https://docs.docker.com/engine/installation/linux/>`__ and
 `docker-compose <https://docs.docker.com/compose/install/>`__.
 
-To run in development mode with docker::
+There is a current limitation for the `run.sh` script,
+The folder needs to be named nova-ideo or novaideo.
+And your user needs to be in the docker group::
+
+    usermod -a -G docker your_user
+
+You need to log out and log in again for this to take effect.
+
+To run in development mode with docker, as your regular user::
 
     ./run.sh rebuild
     ./run.sh
