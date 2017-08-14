@@ -449,7 +449,7 @@ def run_ws(app):
     log.startLogging(sys.stdout)
 
     # create a Twisted Web resource for our WebSocket server
-    ws_factory = NovaIdeoServerFactory(u"ws://127.0.0.1:8181")
+    ws_factory = NovaIdeoServerFactory(u"ws://127.0.0.1:8080")
     ws_factory.protocol = NovaIdeoServerProtocol
     ws_resource = WebSocketResource(ws_factory)
 
@@ -460,12 +460,12 @@ def run_ws(app):
     # the path "/ws" served by our WebSocket stuff
     rootResource = WSGIRootResource(wsgi_resource, {b'ws': ws_resource})
 
-    factory = WebSocketClientFactory(u"ws://127.0.0.1:8181")
+    factory = WebSocketClientFactory(u"ws://127.0.0.1:8080")
     factory.protocol = NovaIdeoClientProtocol
     connectWS(factory)
 
     # create a Twisted Web Site and run everything
     site = Site(rootResource)
-    reactor.listenTCP(8181, site)
+    reactor.listenTCP(8080, site)
     reactor.ws_factory = ws_factory
     reactor.run()

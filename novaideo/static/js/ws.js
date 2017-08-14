@@ -12,7 +12,7 @@
    NovaIdeoWS.connect_to_ws_server = function(){
       if(!NovaIdeoWS.sock){
         var wsuri;
-        var wsuri = "ws://" + window.location.hostname + ":8181/ws?source_path="+window.location.pathname;
+        var wsuri = "ws://" + window.location.hostname + ":8080/ws?source_path="+window.location.pathname;
          
         if ("WebSocket" in window) {
            NovaIdeoWS.sock = new WebSocket(wsuri);
