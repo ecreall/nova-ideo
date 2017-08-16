@@ -96,6 +96,26 @@ def get_all_comments(container, args):
         list(comments.ids), limit=limit, sort_type=STABLE, reverse=True))
 
 
+def get_actions(context, request, args):
+    process_id = args.get('process_id', '')
+    node_ids = args.get('node_ids', '')
+    if not node_ids:
+        return [ActionCall(a, context) for a in getAllBusinessAction(
+                context, request,
+                process_id=process_id,
+                process_discriminator='Application')]
+
+    result = []
+    for node_id in node_ids:
+        result.extend(
+            [ActionCall(a, context) for a in getAllBusinessAction(
+             context, request,
+             process_id=process_id, node_id=node_id,
+             process_discriminator='Application')])
+
+    return result
+
+
 class Node(object):
 
     @classmethod
@@ -251,7 +271,10 @@ class Comment(Node, graphene.ObjectType):
     author = graphene.Field(Person)
     attached_files = graphene.List(File)
     urls = graphene.List(Url)
-    actions = graphene.List(Action)
+    actions = graphene.List(
+        Action,
+        process_id=graphene.String(),
+        node_ids=graphene.List(graphene.String))
     oid = graphene.String()
     comments = relay.ConnectionField(
         lambda: Comment,
@@ -287,6 +310,9 @@ class Comment(Node, graphene.ObjectType):
 
     def resolve_len_comments(self, args, context, info):
         return self.len_comments
+
+    def resolve_actions(self, args, context, info):  # pylint: disable=W0613
+        return get_actions(self, context, args)
 
 
 class Channel(Node, graphene.ObjectType):
@@ -348,7 +374,10 @@ class Idea(Node, Debatable, graphene.ObjectType):
     user_token = graphene.String()
     urls = graphene.List(Url)
     opinion = graphene.String()
-    actions = graphene.List(Action)
+    actions = graphene.List(
+        Action,
+        process_id=graphene.String(),
+        node_ids=graphene.List(graphene.String))
     oid = graphene.String()
 
     @classmethod
@@ -391,6 +420,9 @@ class Idea(Node, Debatable, graphene.ObjectType):
 
     def resolve_oid(self, args, context, info):  # pylint: disable=W0613
         return getattr(self, '__oid__', None)
+
+    def resolve_actions(self, args, context, info):  # pylint: disable=W0613
+        return get_actions(self, context, args)
 
 
 class ResolverLazyList(object):
@@ -468,24 +500,7 @@ class Query(graphene.ObjectType):
         return context.user
 
     def resolve_actions(self, args, context, info):  # pylint: disable=W0613
-        obj = get_context(args.get('context', ''))
-        process_id = args.get('process_id', '')
-        node_ids = args.get('node_ids', '')
-        if not node_ids:
-            return [ActionCall(a, obj) for a in getAllBusinessAction(
-                    obj, context,
-                    process_id=process_id,
-                    process_discriminator='Application')]
-
-        result = []
-        for node_id in node_ids:
-            result.extend(
-                [ActionCall(a, obj) for a in getAllBusinessAction(
-                 obj, context,
-                 process_id=process_id, node_id=node_id,
-                 process_discriminator='Application')])
-
-        return result
+        return get_actions(get_context(args.get('context', '')), context, args)
 
     def resolve_root(self, args, context, info):  # pylint: disable=W0613
         return context.root
