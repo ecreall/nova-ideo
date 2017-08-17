@@ -874,6 +874,7 @@ class CommentIdeaAnonymous(CommentIdea):
     processsecurity_validation = comma_processsecurity_validation
     style_interaction = 'ajax-action'
     style_interaction_type = 'popover'
+    behavior_id = 'comment_anonymous'
 
     def start(self, context, request, appstruct, **kw):
         return {}

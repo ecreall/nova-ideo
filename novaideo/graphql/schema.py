@@ -140,6 +140,7 @@ class Action(Node, graphene.ObjectType):
 
     process_id = graphene.String()
     node_id = graphene.String()
+    behavior_id = graphene.String()
     title = graphene.String()
     counter = graphene.Int()
     style = graphene.String()
@@ -168,6 +169,9 @@ class Action(Node, graphene.ObjectType):
 
     def resolve_node_id(self, args, context, info):  # pylint: disable=W0613
         return self.action.node_id
+
+    def resolve_behavior_id(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self.action, 'behavior_id', self.action.__class__.__name__)
 
     def resolve_style(self, args, context, info):  # pylint: disable=W0613
         return getattr(self.action, 'style', '')
@@ -280,6 +284,7 @@ class Comment(Node, graphene.ObjectType):
         lambda: Comment,
         filter=graphene.String())
     len_comments = graphene.Int()
+    root_oid = graphene.String()
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -313,6 +318,10 @@ class Comment(Node, graphene.ObjectType):
 
     def resolve_actions(self, args, context, info):  # pylint: disable=W0613
         return get_actions(self, context, args)
+
+    def resolve_root_oid(self, args, context, info):  # pylint: disable=W0613
+        return getattr(self.subject, '__oid__', None)
+        
 
 
 class Channel(Node, graphene.ObjectType):
