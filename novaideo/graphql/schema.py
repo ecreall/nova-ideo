@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import datetime
+import pytz
 import graphene
 from graphene import relay
 from graphql_relay.connection.arrayconnection import cursor_to_offset
@@ -226,6 +228,7 @@ class Person(Node, graphene.ObjectType):
         lambda: Idea,
         filter=graphene.String()
     )
+    channels = relay.ConnectionField(lambda: Channel)
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
 
@@ -243,6 +246,10 @@ class Person(Node, graphene.ObjectType):
         user_ideas = [get_oid(o) for o in getattr(self, 'supports', [])]
         oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
         return ResolverLazyList(oids, Idea)
+
+    def resolve_channels(self, args, context, info):  # pylint: disable=W0613
+        return [c for c in getattr(self, 'following_channels', [])
+                if not c.is_discuss()]
 
 
 class Url(Node, graphene.ObjectType):
@@ -334,11 +341,20 @@ class Channel(Node, graphene.ObjectType):
     comments = relay.ConnectionField(
         Comment,
         filter=graphene.String())
+    
+    subject = graphene.Field(lambda: Idea)
+    unread_comments = graphene.List(Comment)
 
     def resolve_comments(self, args, context, info):
         return ResolverLazyList(
             get_all_comments(self, args),
             Comment)
+
+    def resolve_unread_comments(self, args, context, info):
+        now = datetime.datetime.now(tz=pytz.UTC)
+        return ResolverLazyList(
+            self.get_comments_between(
+                context.user.get_read_date(self), now), Comment)
 
 
 class Debatable(graphene.AbstractType):
