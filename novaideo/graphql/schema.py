@@ -248,8 +248,8 @@ class Person(Node, graphene.ObjectType):
         return ResolverLazyList(oids, Idea)
 
     def resolve_channels(self, args, context, info):  # pylint: disable=W0613
-        return [c for c in getattr(self, 'following_channels', [])
-                if not c.is_discuss()]
+        return sorted([c for c in getattr(self, 'following_channels', [])
+                if not c.is_discuss()], key=lambda e: getattr(e, 'created_at'), reverse=True)
 
 
 class Url(Node, graphene.ObjectType):
@@ -292,6 +292,7 @@ class Comment(Node, graphene.ObjectType):
         filter=graphene.String())
     len_comments = graphene.Int()
     root_oid = graphene.String()
+    channel = graphene.Field(lambda: Channel)
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -310,7 +311,7 @@ class Comment(Node, graphene.ObjectType):
         return [Url(**url) for url in getattr(self, 'urls', {}).values()]
 
     def resolve_oid(self, args, context, info):  # pylint: disable=W0613
-        return getattr(self, '__oid__', None)
+        return get_oid(self, None)
 
     def resolve_attached_files(self, args, context, info):  # pylint: disable=W0613
         return getattr(self, 'files', [])
@@ -327,7 +328,7 @@ class Comment(Node, graphene.ObjectType):
         return get_actions(self, context, args)
 
     def resolve_root_oid(self, args, context, info):  # pylint: disable=W0613
-        return getattr(self.subject, '__oid__', None)
+        return get_oid(self.subject, None)
         
 
 
@@ -344,6 +345,10 @@ class Channel(Node, graphene.ObjectType):
     
     subject = graphene.Field(lambda: Idea)
     unread_comments = graphene.List(Comment)
+    oid = graphene.String()
+
+    def resolve_oid(self, args, context, info):  # pylint: disable=W0613
+        return get_oid(self, None)
 
     def resolve_comments(self, args, context, info):
         return ResolverLazyList(
@@ -364,6 +369,10 @@ class Debatable(graphene.AbstractType):
         Comment,
         filter=graphene.String())
     len_comments = graphene.Int()
+    oid = graphene.String()
+
+    def resolve_oid(self, args, context, info):  # pylint: disable=W0613
+        return get_oid(self, None)
 
     def resolve_channel(self, args, context, info):
         return self.get_channel(getattr(context, 'user', None))
@@ -403,7 +412,6 @@ class Idea(Node, Debatable, graphene.ObjectType):
         Action,
         process_id=graphene.String(),
         node_ids=graphene.List(graphene.String))
-    oid = graphene.String()
 
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -443,8 +451,6 @@ class Idea(Node, Debatable, graphene.ObjectType):
     def resolve_opinion(self, args, context, info):  # pylint: disable=W0613
         return getattr(self, 'opinion', {}).get('explanation', '')
 
-    def resolve_oid(self, args, context, info):  # pylint: disable=W0613
-        return getattr(self, '__oid__', None)
 
     def resolve_actions(self, args, context, info):  # pylint: disable=W0613
         return get_actions(self, context, args)
