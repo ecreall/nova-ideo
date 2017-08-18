@@ -356,6 +356,9 @@ class Channel(Node, graphene.ObjectType):
             Comment)
 
     def resolve_unread_comments(self, args, context, info):
+        if not context.user:
+            return []
+
         now = datetime.datetime.now(tz=pytz.UTC)
         return ResolverLazyList(
             self.get_comments_between(
