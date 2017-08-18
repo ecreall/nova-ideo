@@ -1,3 +1,5 @@
+import datetime
+import pytz
 import graphene
 import urllib
 from pyramid.threadlocal import get_current_request
@@ -11,11 +13,14 @@ from novaideo.content.interface import IPerson
 from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
 from novaideo.content.comment import Comment as CommentClass, CommentSchema
 
-def get_context(oid):
+
+_marker = object()
+
+def get_context(oid, default=None):
     try:
         return get_obj(int(oid))
     except:
-        return getSite()
+        return default or getSite()
 
 
 def get_action(action_id, context, request):
@@ -295,6 +300,26 @@ class CommentObject(graphene.Mutation):
         return CommentObject(comment=new_comment, status=status)
 
 
+class MarkCommentsAsRead(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        data = dict(args)
+        channel = get_context(data.get('context'), _marker)
+        status = False
+        if context.user and channel is not _marker:
+            now = datetime.datetime.now(tz=pytz.UTC)
+            context.user.set_read_date(channel, now)
+            status = True
+
+        return MarkCommentsAsRead(status=status)
+
+
 class Mutations(graphene.ObjectType):
     create_idea = CreateIdea.Field()
     create_and_publish = CreateAndPublishIdea.Field()
@@ -302,3 +327,4 @@ class Mutations(graphene.ObjectType):
     oppose_idea = Oppose.Field()
     withdraw_token_idea = WithdrawToken.Field()
     comment_object = CommentObject.Field()
+    mark_comments_as_read = MarkCommentsAsRead.Field()
