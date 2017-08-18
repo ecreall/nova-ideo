@@ -90,6 +90,7 @@ class SelectEntityAnonymous(SelectEntity):
     processsecurity_validation = selecta_processsecurity_validation
     style_interaction = 'ajax-action'
     style_interaction_type = 'popover'
+    behavior_id = 'select_anonymous'
 
     def start(self, context, request, appstruct, **kw):
         return {}

@@ -320,11 +320,61 @@ class MarkCommentsAsRead(graphene.Mutation):
         return MarkCommentsAsRead(status=status)
 
 
+class Select(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'novaideoabstractprocess.select'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            Select.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception("Authorization failed")
+
+        return Select(idea=context, status=status)
+
+
+class Deselect(graphene.Mutation):
+
+    class Input:
+        context = graphene.String()
+
+    status = graphene.Boolean()
+    idea = graphene.Field('novaideo.graphql.schema.Idea')
+    action_id = 'novaideoabstractprocess.deselect'
+
+    @staticmethod
+    def mutate(root, args, context, info):
+        args = dict(args)
+        context, request, action, args = get_execution_data(
+            Deselect.action_id, args)
+        status = False
+        if action:
+            action.execute(context, request, {})
+            status = True
+        else:
+            raise Exception("Authorization failed")
+
+        return Deselect(idea=context, status=status)
+
+
 class Mutations(graphene.ObjectType):
     create_idea = CreateIdea.Field()
     create_and_publish = CreateAndPublishIdea.Field()
     support_idea = Support.Field()
     oppose_idea = Oppose.Field()
+    select = Select.Field()
+    deselect = Deselect.Field()
     withdraw_token_idea = WithdrawToken.Field()
     comment_object = CommentObject.Field()
     mark_comments_as_read = MarkCommentsAsRead.Field()
