@@ -15,8 +15,10 @@ from dace.objectofcollaboration.entity import ActionCall
 
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.views.filter import find_entities
+from novaideo.content.person import Person as SDPerson
 from novaideo.content.idea import Idea as SDIdea
 from novaideo.content.comment import Comment as SDComment
+from novaideo.core import Channel as SDChannel
 from novaideo.content.interface import Iidea, IPerson
 from novaideo.utilities.util import html_to_text
 from novaideo import log
@@ -273,6 +275,7 @@ class Person(Node, Entity, graphene.ObjectType):
         filter=graphene.String()
     )
     channels = relay.ConnectionField(lambda: Channel)
+    discussions = relay.ConnectionField(lambda: Channel)
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
 
@@ -298,6 +301,12 @@ class Person(Node, Entity, graphene.ObjectType):
             key=lambda e: getattr(e, 'created_at'), reverse=True)
         channels.insert(0, context.root.channel)
         return channels
+
+    def resolve_discussions(self, args, context, info):  # pylint: disable=W0613
+        return sorted(
+            [c for c in getattr(self, 'following_channels', [])
+             if c.is_discuss()],
+            key=lambda e: getattr(e, 'created_at'), reverse=True)
 
 
 class Url(Node, graphene.ObjectType):
@@ -393,7 +402,15 @@ class Channel(Node, Entity, graphene.ObjectType):
     
     subject = graphene.Field(lambda: DebatableUnion)
     unread_comments = graphene.List(Comment)
+    len_comments = graphene.Int()
     
+    @classmethod
+    def is_type_of(cls, root, context, info):  # pylint: disable=W0613
+        if isinstance(root, cls):
+            return True
+
+        return isinstance(root, SDChannel)
+
     def resolve_comments(self, args, context, info):
         return ResolverLazyList(
             get_all_comments(self, args),
@@ -409,7 +426,7 @@ class Channel(Node, Entity, graphene.ObjectType):
                 context.user.get_read_date(self), now), Comment)
 
     def resolve_subject(self, args, context, info):  # pylint: disable=W0613
-        return self.subject or context.root
+        return self.get_subject(getattr(context, 'user', None))
 
     def resolve_title(self, args, context, info):  # pylint: disable=W0613
         return context.localizer.translate(self.get_title(context.user))
@@ -475,7 +492,7 @@ class Idea(Node, Debatable, graphene.ObjectType):
 
 class DebatableUnion(graphene.Union):
     class Meta:
-        types = (Idea, Root) # TODO add Question...
+        types = (Idea, Root, Person) # TODO add Question...
 
     @classmethod
     def resolve_type(cls, instance, context, info):
@@ -484,6 +501,9 @@ class DebatableUnion(graphene.Union):
 
         if isinstance(instance, NovaIdeoApplication):
             return Root
+
+        if isinstance(instance, SDPerson):
+            return Person
 
         raise Exception()
 
