@@ -778,6 +778,29 @@ def evolve_user_management_process(root, registry):
         pass 
 
 
+def evolve_idea_management_process(root, registry):
+    from dace import process_definitions_evolve
+    process_definitions_evolve(root, registry)
+    runtime = root['runtime']
+    try:
+        proc = runtime['ideamanagement']
+        runtime.delfromproperty('processes', proc)
+        log.info('ideamanagement process evolved.')
+    except KeyError as e:
+        pass 
+
+
+def evolve_abstract_process(root, registry):
+    from dace import process_definitions_evolve
+    process_definitions_evolve(root, registry)
+    runtime = root['runtime']
+    try:
+        proc = runtime['novaideoabstractprocess']
+        runtime.delfromproperty('processes', proc)
+        log.info('novaideoabstractprocess process evolved.')
+    except KeyError as e:
+        pass 
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -827,6 +850,8 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_mails_languages)
     config.add_evolution_step(evolve_colors)
     config.add_evolution_step(evolve_user_management_process)
+    config.add_evolution_step(evolve_idea_management_process)
+    config.add_evolution_step(evolve_abstract_process)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
