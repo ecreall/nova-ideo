@@ -7,6 +7,7 @@
 
 import json
 import requests
+import re
 from persistent.list import PersistentList
 # from urllib.request import urlopen
 
@@ -15,6 +16,7 @@ from substanced.util import get_oid
 from pyramid.threadlocal import get_current_request
 
 from dace.objectofcollaboration.principal.util import get_current
+import html_diff_wrapper
 
 from novaideo.ips.mailer import mailer_send
 # from novaideo.content.resources import (
@@ -113,6 +115,8 @@ def alert_comment_nia(context, request, root, **kwargs):
         alert = alert_class(**kwargs)
         alert.subject = context
         comment_text = alert.render('nia', None, request).strip()
+        # remove spaces and new lines between tags
+        comment_text = re.sub('>[\n|\r|\s]*<', '><', comment_text)
         comment = Comment(
             intention=_('Remark'),
             comment=comment_text

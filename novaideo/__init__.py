@@ -8,6 +8,7 @@
 import pytz
 import os
 import logging
+import re
 from persistent.list import PersistentList
 
 from pyramid.config import Configurator
@@ -802,6 +803,24 @@ def evolve_abstract_process(root, registry):
         pass 
 
 
+def evolve_nia_comments(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IComment
+    nia = root['principals']['users'].get('nia', None)
+    if nia:
+        request = get_current_request()
+        contents = find_entities(
+            interfaces=[IComment],
+            contribution_filter={
+                'authors': [nia]
+            }
+        )
+        for comment in contents:
+            comment.comment = re.sub('>[\n|\r|\s]*<', '><', comment.comment)
+
+        log.info('Nia Comments evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -852,6 +871,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_user_management_process)
     config.add_evolution_step(evolve_idea_management_process)
     config.add_evolution_step(evolve_abstract_process)
+    config.add_evolution_step(evolve_nia_comments)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

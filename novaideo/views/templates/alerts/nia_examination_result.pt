@@ -46,7 +46,7 @@
 		    </p>
 	    </div>
     </div>
-    <p>
+    <div>
 		<blockquote class="url-block">
 	       <span class="url-title">
 	         <span class="glyphicon glyphicon-comment"></span> <span i18n:translate="">The explanation of the Examination Committee</span>
@@ -55,6 +55,6 @@
 	       	${subject.opinion['explanation']}
 	       </div>
 	   </blockquote>
-    </p>
+    </div>
   </div>
 </div>
