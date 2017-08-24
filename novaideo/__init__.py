@@ -821,6 +821,18 @@ def evolve_nia_comments(root, registry):
         log.info('Nia Comments evolved.')
 
 
+def evolve_state_pontusFiles(root, registry):
+    from novaideo.views.filter import find_entities
+    from pontus.interfaces import IFile
+
+    contents = find_entities(interfaces=[IFile])
+    for file_ in contents:
+        if file_:
+            file_.generate_variants()
+
+    log.info('Pontus files evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -872,6 +884,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_idea_management_process)
     config.add_evolution_step(evolve_abstract_process)
     config.add_evolution_step(evolve_nia_comments)
+    config.add_evolution_step(evolve_state_pontusFiles)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

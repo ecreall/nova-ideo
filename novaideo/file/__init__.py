@@ -16,17 +16,8 @@ from novaideo import log
     )
 class Image(PontusImage, Entity):
 
-    variants = CompositeMultipleProperty('variants')
-
     def __init__(self, fp, mimetype=None, filename=None, **kwargs):
         super(Image, self).__init__(fp, mimetype, filename, **kwargs)
-
-    def set_data(self, appstruct, omit=('_csrf_token_', '__objectoid__')):
-        super(Image, self).set_data(appstruct, omit)
-        try:
-            self.generate_variants()
-        except Exception as e:
-            log.warning(e)
 
     def generate_variants(self):
         dimension = self.get_area_of_interest_dimension()
@@ -34,7 +25,7 @@ class Image(PontusImage, Entity):
         self.setproperty('variants', [])
         for img in results:
             img_val = PontusImage(img['fp'], self.mimetype,
-                                  self.filename)
+                                  self.filename, elementary=True)
             img_val.__name__ = img['id']
             self.addtoproperty('variants', img_val)
             try:
