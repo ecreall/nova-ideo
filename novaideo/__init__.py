@@ -825,6 +825,8 @@ def evolve_state_pontusFiles(root, registry):
     from novaideo.views.filter import find_entities
     from pontus.interfaces import IFile
 
+    request = get_current_request()
+    request.root = root  # needed when executing the step via sd_evolve script
     contents = find_entities(interfaces=[IFile])
     for file_ in contents:
         if file_:
