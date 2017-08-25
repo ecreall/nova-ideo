@@ -101,9 +101,13 @@ def generate_images(fp, filename,
         ext = os.path.splitext(filename)[1].lower()
         img.save(buf, Image.EXTENSION.get(ext, 'jpeg'))
         buf.seek(0)
-        img_data = img_format.copy()
-        img_data['fp'] = buf
-        result.append(img_data)
+        try:
+            img_data = img_format.copy()
+            img_data['fp'] = buf
+            result.append(img_data)
+        except Exception as e:
+            log.warning(e)
+
 
     result.append(blur_img(fp, filename))
     return result
