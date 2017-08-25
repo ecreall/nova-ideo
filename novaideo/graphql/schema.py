@@ -83,9 +83,13 @@ class Action(Node, graphene.ObjectType):
     style_picto = graphene.String()
     style_order = graphene.Int()
     submission_title = graphene.String()
+    description = graphene.String()
 
     def resolve_title(self, args, context, info):  # pylint: disable=W0613
         return context.localizer.translate(self.action.title)
+
+    def resolve_description(self, args, context, info):  # pylint: disable=W0613
+        return context.localizer.translate(self.action.description)
 
     def resolve_submission_title(self, args, context, info):  # pylint: disable=W0613
         submission_title = getattr(self.action, 'submission_title', '')
