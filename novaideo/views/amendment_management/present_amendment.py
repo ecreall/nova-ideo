@@ -87,8 +87,9 @@ class PresentAmendmentFormView(FormView):
         self.schema.widget = formwidget
 
     def bind(self):
+        user = get_current(self.request)
         root = self.request.root
-        mail_template = root.get_mail_template('presentation_amendment')
+        mail_template = root.get_mail_template('presentation_amendment', user.user_locale)
         return {'mail_template': mail_template}
 
 
