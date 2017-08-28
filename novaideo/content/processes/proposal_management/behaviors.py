@@ -870,7 +870,7 @@ def support_roles_validation(process, context):
 def support_processsecurity_validation(process, context):
     user = get_current()
     request = get_current_request()
-    if not request.support_ideas:
+    if not request.support_proposals:
         return False
 
     return user not in [t.owner for t in context.tokens_support] and \
@@ -926,7 +926,7 @@ class SupportProposal(InfiniteCardinality):
 def oppose_processsecurity_validation(process, context):
     user = get_current()
     request = get_current_request()
-    if not request.support_ideas:
+    if not request.support_proposals:
         return False
 
     return user not in [t.owner for t in context.tokens_opposition] and \
