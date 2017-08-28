@@ -70,12 +70,9 @@ function token_component(data){
            $this.addClass('my-token')
            var new_nb = parseInt(support_nb.text()) + 1
            support_nb.text(new_nb)
-           if (data.change){
-             opposit_token.removeClass('my-token')
-             var opposit_new_nb = parseInt(opposit_support_nb.text()) - 1
-             opposit_support_nb.text(opposit_new_nb)
-             opposit_token.data('action', data.opposit_action)
-           }
+           opposit_token.removeClass('my-token')
+           opposit_support_nb.text(data.opposition_counter)
+           opposit_token.data('action', data.opposit_action)
           }else{
             original_component.removeClass('my-support')
             $this.removeClass('my-token')

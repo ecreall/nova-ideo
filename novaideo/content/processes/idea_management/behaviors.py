@@ -1154,8 +1154,9 @@ def support_processsecurity_validation(process, context):
     if not request.support_ideas:
         return False
 
-    return context.get_token(user) and  \
-           not (user in [t.owner for t in context.tokens]) and \
+    return user not in [t.owner for t in context.tokens_support] and \
+           (context.get_token(user) or  \
+           user in [t.owner for t in context.tokens_opposition]) and \
            global_user_processsecurity()
 
 
@@ -1176,9 +1177,18 @@ class SupportIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current(request)
+        context.init_support_history()
+        user_tokens = [t for t in context.tokens
+                       if t.owner is user]
+        if user_tokens:
+            token = user_tokens[-1]
+            context.delfromproperty(token.__property__, token)
+            user.addtoproperty('tokens', token)
+            context._support_history.append(
+                (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
+
         token = context.get_token(user)
         context.addtoproperty('tokens_support', token)
-        context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
         context.reindex()
@@ -1194,6 +1204,18 @@ class SupportIdea(InfiniteCardinality):
         return nothing
 
 
+def oppose_processsecurity_validation(process, context):
+    user = get_current()
+    request = get_current_request()
+    if not request.support_ideas:
+        return False
+
+    return user not in [t.owner for t in context.tokens_opposition] and \
+           (context.get_token(user) or  \
+           user in [t.owner for t in context.tokens_support]) and \
+           global_user_processsecurity()
+
+
 class OpposeIdea(InfiniteCardinality):
     # style = 'button' #TODO add style abstract class
     # style_descriminator = 'text-action'
@@ -1201,14 +1223,23 @@ class OpposeIdea(InfiniteCardinality):
     # style_order = 5
     context = Iidea
     roles_validation = support_roles_validation
-    processsecurity_validation = support_processsecurity_validation
+    processsecurity_validation = oppose_processsecurity_validation
     state_validation = support_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
+        user = get_current(request)
+        context.init_support_history()
+        user_tokens = [t for t in context.tokens
+                       if t.owner is user]
+        if user_tokens:
+            token = user_tokens[-1]
+            context.delfromproperty(token.__property__, token)
+            user.addtoproperty('tokens', token)
+            context._support_history.append(
+                (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
+
         token = context.get_token(user)
         context.addtoproperty('tokens_opposition', token)
-        context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
         context.reindex()
