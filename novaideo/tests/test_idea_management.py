@@ -523,9 +523,9 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         expected_actions = [
             'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
-            'see', 'withdraw_token']
+            'see', 'withdraw_token', 'oppose']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 7)
+        self.assertEqual(len(actions_ids), 8)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
         # Withdraw
@@ -577,9 +577,9 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         expected_actions = [
             'seeworkinggroups', 'duplicate',
             'comment', 'present', 'associate',
-            'see', 'withdraw_token']
+            'see', 'withdraw_token', 'support']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 7)
+        self.assertEqual(len(actions_ids), 8)
         self.assertTrue(all(a in expected_actions
                             for a in actions_ids))
 
