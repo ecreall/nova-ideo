@@ -8,6 +8,7 @@ from pontus.schema import select
 from novaideo.content.idea import Idea as IdeaClass, IdeaSchema
 from novaideo.content.comment import Comment as CommentClass, CommentSchema
 from .util import get_context, get_action, get_execution_data
+from novaideo import _
 
 _marker = object()
 
@@ -61,7 +62,8 @@ class CreateIdea(graphene.Mutation):
             }
             action.execute(context, request, appstruct)
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         status = new_idea is not None
         return CreateIdea(idea=new_idea, status=status)
@@ -117,7 +119,8 @@ class CreateAndPublishIdea(graphene.Mutation):
             }
             action.execute(context, request, appstruct)
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         status = new_idea is not None
         return CreateAndPublishIdea(idea=new_idea, status=status)
@@ -148,7 +151,8 @@ class Support(graphene.Mutation):
             action.execute(context, request, {})
             status = True
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         return Support(idea=context, status=status)
 
@@ -178,7 +182,8 @@ class Oppose(graphene.Mutation):
             action.execute(context, request, {})
             status = True
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         return Oppose(idea=context, status=status)
 
@@ -202,7 +207,8 @@ class WithdrawToken(graphene.Mutation):
             action.execute(context, request, {})
             status = True
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         return WithdrawToken(idea=context, status=status)
 
@@ -260,7 +266,8 @@ class CommentObject(graphene.Mutation):
             }
             action.execute(context, request, appstruct)
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         status = new_comment is not None
         return CommentObject(comment=new_comment, status=status)
@@ -305,7 +312,8 @@ class Select(graphene.Mutation):
             action.execute(context, request, {})
             status = True
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         return Select(idea=context, status=status)
 
@@ -329,7 +337,8 @@ class Deselect(graphene.Mutation):
             action.execute(context, request, {})
             status = True
         else:
-            raise Exception("Authorization failed")
+            raise Exception(
+                request.localizer.translate(_("Authorization failed")))
 
         return Deselect(idea=context, status=status)
 
