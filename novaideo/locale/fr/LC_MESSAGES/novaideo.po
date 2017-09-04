@@ -1405,7 +1405,7 @@ msgstr "Répondre"
 #: novaideo/content/invitation.py:34
 #, python-format
 msgid "You do not have the right to assign these/this role(s): ${roles}"
-msgstr "Vous n'avez pas le droit d'attribuer ce/ces rôle(s): $ {roles}"
+msgstr "Vous n'avez pas le droit d'attribuer ce/ces rôle(s): ${roles}"
 
 #: novaideo/content/invitation.py:60
 #: novaideo/views/user_management/assign_roles.py:44
