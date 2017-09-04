@@ -139,7 +139,7 @@ class File(Node, graphene.ObjectType):
                 'application/x-shockwave-flash')
 
 
-class Person(Node, graphene.ObjectType):
+class Person(Node, Debatable, graphene.ObjectType):
 
     class Meta(object):
         interfaces = (relay.Node, IEntity)
@@ -168,10 +168,16 @@ class Person(Node, graphene.ObjectType):
     available_tokens = graphene.Int()
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
+    @classmethod
+    def is_type_of(cls, root, context, info):  # pylint: disable=W0613
+        if isinstance(root, cls):
+            return True
+
+        return isinstance(root, SDPerson)
 
     def resolve_contents(self, args, context, info):  # pylint: disable=W0613
         user_ideas = [get_oid(o) for o in getattr(self, 'contents', [])]
-        oids = get_entities([Iidea], [], args, info, intersect=user_ideas)
+        oids = get_entities([Iidea], [], args, info, user=context.user, intersect=user_ideas)
         return ResolverLazyList(oids, Idea)
 
     def resolve_followed_ideas(self, args, context, info):  # pylint: disable=W0613
@@ -280,7 +286,7 @@ class Comment(Node, graphene.ObjectType):
         return get_actions(self, context, args)
 
     def resolve_root_oid(self, args, context, info):  # pylint: disable=W0613
-        return get_oid(self.subject, None)
+        return get_oid(self.channel.get_subject(getattr(context, 'user', None)), None)
         
 
 
@@ -298,6 +304,7 @@ class Channel(Node, graphene.ObjectType):
     subject = graphene.Field(lambda: EntityUnion)
     unread_comments = graphene.List(Comment)
     len_comments = graphene.Int()
+    is_discuss = graphene.Boolean()
     
     @classmethod
     def is_type_of(cls, root, context, info):  # pylint: disable=W0613
@@ -325,6 +332,9 @@ class Channel(Node, graphene.ObjectType):
 
     def resolve_title(self, args, context, info):  # pylint: disable=W0613
         return context.localizer.translate(self.get_title(context.user))
+
+    def resolve_is_discuss(self, args, context, info):  # pylint: disable=W0613
+        return self.is_discuss()
 
 
 class Idea(Node, Debatable, graphene.ObjectType):
