@@ -132,6 +132,7 @@ class Support(graphene.Mutation):
         context = graphene.String()
 
     status = graphene.Boolean()
+    user = graphene.Field('novaideo.graphql.schema.Person')
     idea = graphene.Field('novaideo.graphql.schema.Idea')
     action_id = 'ideamanagement.support'
     withdraw_action_id = 'ideamanagement.withdraw_token'
@@ -154,7 +155,7 @@ class Support(graphene.Mutation):
             raise Exception(
                 request.localizer.translate(_("Authorization failed")))
 
-        return Support(idea=context, status=status)
+        return Support(user=request.user, idea=context, status=status)
 
 
 class Oppose(graphene.Mutation):
@@ -163,6 +164,7 @@ class Oppose(graphene.Mutation):
         context = graphene.String()
 
     status = graphene.Boolean()
+    user = graphene.Field('novaideo.graphql.schema.Person')
     idea = graphene.Field('novaideo.graphql.schema.Idea')
     action_id = 'ideamanagement.oppose'
     withdraw_action_id = 'ideamanagement.withdraw_token'
@@ -185,7 +187,7 @@ class Oppose(graphene.Mutation):
             raise Exception(
                 request.localizer.translate(_("Authorization failed")))
 
-        return Oppose(idea=context, status=status)
+        return Oppose(user=request.user, idea=context, status=status)
 
 
 class WithdrawToken(graphene.Mutation):
@@ -194,6 +196,7 @@ class WithdrawToken(graphene.Mutation):
         context = graphene.String()
 
     status = graphene.Boolean()
+    user = graphene.Field('novaideo.graphql.schema.Person')
     idea = graphene.Field('novaideo.graphql.schema.Idea')
     action_id = 'ideamanagement.withdraw_token'
 
@@ -210,7 +213,7 @@ class WithdrawToken(graphene.Mutation):
             raise Exception(
                 request.localizer.translate(_("Authorization failed")))
 
-        return WithdrawToken(idea=context, status=status)
+        return WithdrawToken(user=request.user, idea=context, status=status)
 
 
 class CommentObject(graphene.Mutation):

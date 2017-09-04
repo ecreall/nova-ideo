@@ -140,7 +140,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Support"),
                                        groups=[]),
                 oppose = ActivityDefinition(contexts=[OpposeIdea],
-                                       description=_("Oppose an idea"),
+                                       description=_("Oppose the idea"),
                                        title=_("Oppose"),
                                        groups=[]),
                 withdraw_token = ActivityDefinition(contexts=[WithdrawToken],

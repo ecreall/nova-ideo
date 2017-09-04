@@ -165,6 +165,7 @@ class Person(Node, graphene.ObjectType):
     )
     channels = relay.ConnectionField(lambda: Channel)
     discussions = relay.ConnectionField(lambda: Channel)
+    available_tokens = graphene.Int()
 #    email = graphene.String()
 #    email should be visible only by user with Admin or Site Administrator role
 
@@ -196,6 +197,11 @@ class Person(Node, graphene.ObjectType):
             [c for c in getattr(self, 'following_channels', [])
              if c.is_discuss()],
             key=lambda e: getattr(e, 'created_at'), reverse=True)
+
+    def resolve_available_tokens(self, args, context, info):  # pylint: disable=W0613
+        return len([t for t in getattr(self, 'tokens', []) if
+                    not t.proposal])
+
 
 
 class Url(Node, graphene.ObjectType):
