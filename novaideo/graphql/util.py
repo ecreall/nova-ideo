@@ -23,7 +23,7 @@ def get_user_by_token(token):
     return users[0] if users else None
 
 
-def get_entities(interfaces, states, args, info, intersect=None):  #pylint: disable=W0613
+def get_entities(interfaces, states, args, info, user=None, intersect=None):  #pylint: disable=W0613
     try:
         after = cursor_to_offset(args.get('after'))
         first = args.get('first')
@@ -53,6 +53,7 @@ def get_entities(interfaces, states, args, info, intersect=None):  #pylint: disa
     # reality it should rarely happen.
     rs = find_entities(
         sort_on=None,
+        user=user,
         interfaces=interfaces,
         metadata_filter={'states': states},
         text_filter={'text_to_search': args.get('filter', '')},
