@@ -2059,7 +2059,7 @@ msgstr "Modifier"
 #: novaideo/content/processes/user_management/definition.py:89
 #: novaideo/views/user_management/api_token.py:71
 msgid "Get API token"
-msgstr ""
+msgstr "Obtenez un jeton d'API"
 
 #: novaideo/content/processes/user_management/behaviors.py:180
 msgid "Get a new API token"
@@ -3799,8 +3799,8 @@ msgid "Support the idea"
 msgstr "Soutenir l'idée"
 
 #: novaideo/content/processes/idea_management/definition.py:143
-msgid "Oppose an idea"
-msgstr "S'opposer à une idée"
+msgid "Oppose the idea"
+msgstr "S'opposer à l'idée"
 
 #: novaideo/content/processes/idea_management/definition.py:147
 msgid "Withdraw token from idea"
@@ -4094,7 +4094,7 @@ msgstr "Votre mot de passe est incorrect. Veuillez réessayer"
 
 #: novaideo/views/user_management/api_token.py:50
 msgid "Please enter your password to generate a new API token"
-msgstr ""
+msgstr "Entrez votre mot de passe pour générer un nouveau jeton d'API"
 
 #: novaideo/views/user_management/api_token.py:58
 msgid "Edit the API token"
