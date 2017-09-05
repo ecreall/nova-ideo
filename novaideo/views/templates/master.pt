@@ -12,7 +12,8 @@
       app_id getattr(request.root, 'app_id', None);
       view_only 'view_only' in request.POST or 'view_only' in  request.GET;
       root_title getattr(request.root, 'title', '');
-      view_title getattr(view, 'title', '')">
+      view_title getattr(view, 'title', '');
+      select2_resource 'pontus:static/select2/dist/js/select2.js'">
   <head tal:condition="not view_only">
 
     <more tal:omit-tag="" metal:define-slot="head-first"></more>
@@ -146,9 +147,11 @@
             type="text/javascript"></script>
     <script src="${su('novaideo:static/js/templates.js')}"
           type="text/javascript"></script>
-      <script src="${request.static_url('pontus:static/select2/dist/js/select2.js')}"
+    <div tal:omit-tag="" tal:condition="select2_resource not in request.resources['js_links']">
+      <script src="${request.static_url(select2_resource)}"
         type="text/javascript"></script>
-  <script src="${request.static_url('pontus:static/select2/dist/js/i18n/'+request.locale_name+'.js')}"
+    </div>
+    <script src="${request.static_url('pontus:static/select2/dist/js/i18n/'+request.locale_name+'.js')}"
         type="text/javascript"></script>
 
 
