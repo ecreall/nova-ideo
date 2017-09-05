@@ -12,6 +12,7 @@ from dace.util import get_obj
 
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.person import Person as SDPerson
+from novaideo.content.bot import Bot as SDBot
 from novaideo.content.idea import Idea as SDIdea
 from novaideo.content.comment import Comment as SDComment
 from novaideo.core import Channel as SDChannel
@@ -40,15 +41,24 @@ class Debatable(graphene.AbstractType):
     len_comments = graphene.Int()
 
     def resolve_channel(self, args, context, info):
+        if not hasattr(self, 'get_channel'):
+            return None
+
         return self.get_channel(getattr(context, 'user', None))
 
     def resolve_comments(self, args, context, info):
+        if not hasattr(self, 'get_channel'):
+            return []
+
         channel = self.get_channel(getattr(context, 'user', None))
         return ResolverLazyList(
             get_all_comments(channel, args),
             Comment)
 
     def resolve_len_comments(self, args, context, info):
+        if not hasattr(self, 'get_channel'):
+            return 0
+
         channel = self.get_channel(getattr(context, 'user', None))
         return channel.len_comments if channel else 0
 
@@ -173,7 +183,7 @@ class Person(Node, Debatable, graphene.ObjectType):
         if isinstance(root, cls):
             return True
 
-        return isinstance(root, SDPerson)
+        return isinstance(root, (SDPerson, SDBot))
 
     def resolve_contents(self, args, context, info):  # pylint: disable=W0613
         user_ideas = [get_oid(o) for o in getattr(self, 'contents', [])]
