@@ -9,14 +9,14 @@ import deform
 import colander
 from pyramid.view import view_config
 
-from dace.util import getSite
+from dace.util import getSite, get_obj
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.entity import Entity
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.schema import Schema, select
-from pontus.widget import Select2Widget, RadioChoiceWidget
+from pontus.widget import AjaxSelect2Widget, Select2Widget, RadioChoiceWidget
 from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.proposal_management.behaviors import (
@@ -59,7 +59,7 @@ def subjects_choice(ballot_report):
     values = [(i, get_title(i)) for i in subjects]
     return Select2Widget(
         values=values,
-        item_css_class='work-duration')
+        item_css_class='publish-proposal-opt work-duration')
 
 
 @colander.deferred
@@ -71,7 +71,7 @@ def mode_choice(node, kw):
     values = [(key, value.title) for key, value in modes]
     return RadioChoiceWidget(
         values=values,
-        item_css_class='work-mode')
+        item_css_class='publish-proposal-opt work-mode')
 
 
 @colander.deferred
@@ -86,6 +86,45 @@ def vote_choice(ballot_report):
               (False, getattr(ballot_report.ballottype,
                              'false_val', _('In favour')))]
     return RadioChoiceWidget(values=values)
+
+
+@colander.deferred
+def emails_validator(node, kw):
+    new_emails = [e for e in kw if isinstance(e, str)]
+    validator = colander.Email()
+    for email in new_emails:
+        validator(node, email)
+
+
+@colander.deferred
+def members_choice(node, kw):
+    context = node.bindings['context']
+    request = node.bindings['request']
+    values = []
+    ajax_url = request.resource_url(context,
+                                    '@@novaideoapi',
+                                    query={'op': 'find_user'})
+
+    def title_getter(oid):
+        try:
+            obj = get_obj(int(oid), None)
+            if obj:
+                return obj.title
+            else:
+                return oid
+        except Exception as e:
+            log.warning(e)
+            return oid
+
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        multiple=True,
+        create=False,
+        ajax_item_template="user_item_template",
+        title_getter=title_getter,
+        item_css_class='publish-proposal-opt'
+        )
 
 
 class PublishProposalSchema(Schema):
@@ -109,6 +148,16 @@ class PublishProposalSchema(Schema):
         title=_('Duration of the amendment cycle'),
     )
 
+    members_to_invite = colander.SchemaNode(
+        colander.Set(),
+        widget=members_choice,
+        validator=colander.All(emails_validator),
+        title=_('Members to invite'),
+        description= _('You can invite members to join the workgroup'),
+        default=[],
+        missing=[]
+        )
+
 
 class PublishProposalFormView(FormView):
     title = _('Submit')
@@ -124,12 +173,12 @@ class PublishProposalFormView(FormView):
     def before_update(self):
         root = getSite()
         if getattr(self.context.working_group, 'work_mode', None):
-            self.schema = select(PublishProposalSchema(), ['vote', 'elected'])
+            self.schema = select(PublishProposalSchema(), ['vote', 'elected', 'members_to_invite'])
 
         can_submit_directly = getattr(root, 'can_submit_directly', False)
         if not can_submit_directly:
             self.schema = select(
-                PublishProposalSchema(), ['work_mode', 'elected'])
+                PublishProposalSchema(), ['work_mode', 'elected', 'members_to_invite'])
 
         duration_ballot = self.context.working_group.duration_configuration_ballot
         vp_ballot = self.context.working_group.vp_ballot

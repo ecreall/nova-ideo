@@ -21,8 +21,7 @@ $(document).on('click', ".publish-proposal-form input[type='radio'][value='True'
   // if(_is_unique()){
     var $this = $(this);
     if($this.prop('checked')){
-          $('.work-duration').addClass('hide-bloc')
-          $('.work-mode').addClass('hide-bloc')
+          $('.publish-proposal-opt').addClass('hide-bloc')
     }
   // }
 })
@@ -31,8 +30,7 @@ $(document).on('click', ".publish-proposal-form input[type='radio'][value='False
   // if(_is_unique()){
     var $this = $(this);
     if($this.prop('checked')){
-          $('.work-duration').removeClass('hide-bloc')
-          $('.work-mode').removeClass('hide-bloc')
+          $('.publish-proposal-opt').addClass('hide-bloc')
     }
   // }
 })

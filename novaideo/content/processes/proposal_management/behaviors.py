@@ -748,6 +748,33 @@ class PublishProposal(InfiniteCardinality):
         user = get_current(request)
         root = getSite()
         context.state.remove('draft')
+        # Share the proposal with the specified members 
+        # we need to execute the 'present' action
+        members_to_invite = appstruct.get('members_to_invite', [])
+        if(members_to_invite):
+            present_actions = self.process.get_actions('present')
+            present_action = present_actions[0] if present_actions else None
+            if present_action:
+                mail_template = root.get_mail_template(
+                    'presentation_proposal', user.user_locale)
+                email_data = get_user_data(user, 'my', request)
+                email_data.update(get_entity_data(context, 'subject', request))
+                message = mail_template['template'].format(
+                    recipient_title='',
+                    recipient_first_name='',
+                    recipient_last_name='',
+                    novaideo_title=root.title,
+                    **email_data
+                )
+                data = {
+                    'members': members_to_invite,
+                    'send_to_me': False,
+                    'subject': mail_template['subject'].format(
+                        subject_title=context.title),
+                    'message': message,
+                }
+                result = present_action.start(context, request, data, **kw)
+
         not_published_ideas = confirm_proposal(
             context, request, user, appstruct, root)
         request.registry.notify(ObjectPublished(object=context))
