@@ -40,7 +40,7 @@ from ..user_management.behaviors import (
 from novaideo import _, nothing, log
 from novaideo.content.idea import Idea
 from ..comment_management import VALIDATOR_BY_CONTEXT
-from novaideo.core import access_action, serialize_roles
+from novaideo.core import access_action, serialize_roles, Evaluations
 from novaideo.utilities.util import connect
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved,
@@ -476,10 +476,8 @@ class ArchiveIdea(InfiniteCardinality):
         root = getSite()
         explanation = appstruct['explanation']
         context.state = PersistentList(['archived'])
+        context.remove_tokens(True)
         context.reindex()
-        for token in list(context.tokens):
-            token.owner.addtoproperty('tokens', token)
-
         user = context.author
         alert('internal', [root], [user],
               internal_kind=InternalAlertKind.moderation_alert,
@@ -1101,10 +1099,8 @@ class MakeOpinion(InfiniteCardinality):
         context.state = PersistentList(
             ['examined', 'published', context.opinion['opinion']])
         context.init_examined_at()
+        context.remove_tokens()
         context.reindex()
-        for token in list(context.tokens):
-            token.owner.addtoproperty('tokens', token)
-
         member = context.author
         root = getSite()
         users = list(get_users_by_preferences(context))
@@ -1154,9 +1150,9 @@ def support_processsecurity_validation(process, context):
     if not request.support_ideas:
         return False
 
-    return user not in [t.owner for t in context.tokens_support] and \
-           (context.get_token(user) or  \
-           user in [t.owner for t in context.tokens_opposition]) and \
+    return context.evaluation(user) != Evaluations.support and \
+           (context.user_has_token(user) or  \
+            context.evaluation(user) == Evaluations.oppose) and \
            global_user_processsecurity()
 
 
@@ -1178,17 +1174,14 @@ class SupportIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current(request)
         context.init_support_history()
-        user_tokens = [t for t in context.tokens
-                       if t.owner is user]
-        if user_tokens:
-            token = user_tokens[-1]
-            context.delfromproperty(token.__property__, token)
-            user.addtoproperty('tokens', token)
+        if context.evaluation(user):
+            user.remove_token(context)
+            context.remove_token(user)
             context._support_history.append(
                 (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
 
-        token = context.get_token(user)
-        context.addtoproperty('tokens_support', token)
+        user.add_token(context, Evaluations.support, request.root)
+        context.add_token(user, Evaluations.support)
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 1))
         context.reindex()
@@ -1210,9 +1203,9 @@ def oppose_processsecurity_validation(process, context):
     if not request.support_ideas:
         return False
 
-    return user not in [t.owner for t in context.tokens_opposition] and \
-           (context.get_token(user) or  \
-           user in [t.owner for t in context.tokens_support]) and \
+    return context.evaluation(user) != Evaluations.oppose and \
+           (context.user_has_token(user) or  \
+            context.evaluation(user) == Evaluations.support) and \
            global_user_processsecurity()
 
 
@@ -1229,17 +1222,14 @@ class OpposeIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current(request)
         context.init_support_history()
-        user_tokens = [t for t in context.tokens
-                       if t.owner is user]
-        if user_tokens:
-            token = user_tokens[-1]
-            context.delfromproperty(token.__property__, token)
-            user.addtoproperty('tokens', token)
+        if context.evaluation(user):
+            user.remove_token(context)
+            context.remove_token(user)
             context._support_history.append(
                 (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))
 
-        token = context.get_token(user)
-        context.addtoproperty('tokens_opposition', token)
+        user.add_token(context, Evaluations.oppose, request.root)
+        context.add_token(user, Evaluations.oppose)
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), 0))
         context.reindex()
@@ -1256,8 +1246,7 @@ class OpposeIdea(InfiniteCardinality):
 
 
 def withdrawt_processsecurity_validation(process, context):
-    user = get_current()
-    return any((t.owner is user) for t in context.tokens) and \
+    return context.evaluation(get_current()) and \
            global_user_processsecurity()
 
 
@@ -1273,11 +1262,8 @@ class WithdrawToken(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         user = get_current(request)
-        user_tokens = [t for t in context.tokens
-                       if t.owner is user]
-        token = user_tokens[-1]
-        context.delfromproperty(token.__property__, token)
-        user.addtoproperty('tokens', token)
+        user.remove_token(context)
+        context.remove_token(user)
         context.init_support_history()
         context._support_history.append(
             (get_oid(user), datetime.datetime.now(tz=pytz.UTC), -1))

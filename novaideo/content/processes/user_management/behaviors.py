@@ -39,7 +39,6 @@ from dace.processinstance.core import ActivityExecuted, PROCESS_HISTORY_KEY
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.content.interface import (
     INovaIdeoApplication, IPerson, IPreregistration)
-from novaideo.content.token import Token
 from novaideo.content.person import (
     Person, PersonSchema, DEADLINE_PREREGISTRATION)
 from novaideo.utilities.util import (
@@ -78,13 +77,6 @@ def accept_preregistration(request, preregistration, root):
         alert('email', [root.get_site_sender()], [preregistration.email],
               subject=subject, body=message)
 
-
-def initialize_tokens(person, tokens_nb):
-    for i in range(tokens_nb):
-        token = Token(title='Token_'+str(i))
-        person.addtoproperty('tokens_ref', token)
-        person.addtoproperty('tokens', token)
-        token.setproperty('owner', person)
 
 
 def login_roles_validation(process, context):
@@ -541,7 +533,6 @@ class ConfirmRegistration(InfiniteCardinality):
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
-        initialize_tokens(person, root.tokens_mini)
         get_socket().send_pyobj(
             ('stop',
              'persistent_' + str(get_oid(context))))

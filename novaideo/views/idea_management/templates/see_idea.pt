@@ -1,15 +1,15 @@
 <div 
-  tal:define="support_condition request.support_ideas and 'published' in idea.state and 'examined' not in idea.state;
+  tal:define="support_condition request.support_ideas and 'published' in idea.state;
+  examined 'examined' in idea.state;
   oid idea.__oid__;">
   <div tal:condition="not to_hide">
   <div tal:condition="support_condition" 
         tal:define="
-              tokens_support idea.tokens_support;
-              tokens_opposition idea.tokens_opposition;
-              support any(t.owner is current_user for t in tokens_support);
-              oppose any(t.owner is current_user for t in tokens_opposition);
-              active support or oppose or idea.get_token(current_user)"
-        class="vertical-support proposal-support ${(support or oppose) and 'my-support'}"
+              evaluation idea.evaluation(current_user);
+              support evaluation == 'support';
+              oppose evaluation == 'oppose';
+              active support or oppose or idea.user_has_token(current_user, request.root)"
+        class="vertical-support proposal-support ${(support or oppose) and 'my-support'} ${examined and 'disabled'}"
         id='component-support-action-${oid}'>
         <span class="label success"
             title="${support and 'Withdraw my token' or 'Support'}"
@@ -19,14 +19,14 @@
             <span 
               data-action="${request.resource_url(idea, 'novaideoapi', query={'op': action, 'action': 'support'})}" 
               class="token token-toggle ${not active and 'disabled' or 'active'} token-success octicon octicon-triangle-up ${support and 'my-token'}"></span>
-            <span class="support-nb">${len(tokens_support)}</span>
+            <span class="support-nb">${idea.len_allocated_tokens.get('support', 0)}</span>
         </span>
         <span class="label danger"
             title="${oppose and 'Withdraw my token' or 'Oppose'}"
             i18n:attributes="title"
           tal:define="
               action 'withdraw_token_idea' if oppose else 'oppose_idea'">
-            <span class="support-nb">${len(tokens_opposition)}</span>
+            <span class="support-nb">${idea.len_allocated_tokens.get('oppose', 0)}</span>
             <span 
               data-action="${request.resource_url(idea, 'novaideoapi', query={'op': action, 'action': 'oppose'})}"
               class="token token-toggle ${not active and 'disabled' or 'active'} token-danger octicon octicon-triangle-down ${oppose and 'my-token'}"></span>
@@ -107,7 +107,7 @@
     <div class="actions-block">
         <div tal:replace="structure footer_body"/>
     </div>
-    <div tal:condition="'idea' in request.content_to_examine and  'examined' in idea.state" class="proposal-opinion pull-right"  title="${idea.opinion_value}" style="margin-top: -55px">
+    <div tal:condition="'idea' in request.content_to_examine and examined" class="proposal-opinion pull-right"  title="${idea.opinion_value}" style="margin-top: -55px">
       <div class="proposal-explanation closed">
         <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <div class="text malihu-scroll">

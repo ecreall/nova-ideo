@@ -9,6 +9,7 @@ import pytz
 import os
 import logging
 import re
+from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 
 from pyramid.config import Configurator
@@ -655,7 +656,6 @@ def evolve_add_nia_bot(root, registry):
 def add_guide_tour_data(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
-    from persistent.dict import PersistentDict
 
     contents = find_entities(
         interfaces=[IPerson]
@@ -673,7 +673,6 @@ def add_guide_tour_data(root, registry):
 def init_guide_tour_data(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
-    from persistent.dict import PersistentDict
 
     contents = find_entities(
         interfaces=[IPerson]
@@ -762,7 +761,6 @@ def evolve_mails_languages(root, registry):
 
 def evolve_colors(root, registry):
     from novaideo.content.novaideo_application import DEFAULT_COLORS
-    from persistent.dict import PersistentDict
     root.colors_mapping = PersistentDict(DEFAULT_COLORS)
     log.info('Colors evolved.')
 
@@ -835,6 +833,47 @@ def evolve_state_pontusFiles(root, registry):
     log.info('Pontus files evolved.')
 
 
+def evolve_person_tokens(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson, ITokenable
+    from BTrees.OOBTree import OOBTree
+
+    request = get_current_request()
+    request.root = root  # needed when executing the step via sd_evolve script
+    contents = find_entities(
+        interfaces=[ITokenable]
+        )
+    for index, node in enumerate(contents):
+        if not hasattr(node, 'allocated_tokens'):
+            node.allocated_tokens = OOBTree()
+            node.len_allocated_tokens = PersistentDict({})
+
+
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if not hasattr(node, 'allocated_tokens'):
+            node.allocated_tokens = OOBTree()
+            node.len_allocated_tokens = PersistentDict({})
+            node.reserved_tokens = PersistentList([])
+            supports = [t for t in node.tokens_ref
+                        if t.__parent__ is not node]
+            for token in supports:
+                obj = token.__parent__
+                evaluation = 'oppose' if token in obj.tokens_opposition else 'support'
+                node.add_token(obj, evaluation, root)
+                obj.add_token(node, evaluation)
+                if token.proposal:
+                    node.add_reserved_token(obj)
+
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Persons evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -887,6 +926,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_abstract_process)
     config.add_evolution_step(evolve_nia_comments)
     config.add_evolution_step(evolve_state_pontusFiles)
+    config.add_evolution_step(evolve_person_tokens)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

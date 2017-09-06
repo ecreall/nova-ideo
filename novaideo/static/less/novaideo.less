@@ -4108,22 +4108,35 @@ small .proposal-support .token{
     cursor: pointer;
 }
 
-.token.token-toggle.disabled{
-  cursor: default
+.token.token-toggle.disabled,
+.proposal-support.disabled .token.token-toggle{
+  cursor: default !important
 }
 
-.token-success.token-toggle.active:hover{
+.proposal-support:not(.disabled) .token-success.token-toggle.active:hover{
     background-color: #469a46;
     color: white !important;
 }
 
-.token-danger.token-toggle.active:hover{
+.proposal-support:not(.disabled) .token-danger.token-toggle.active:hover{
     background-color: #d46217;
     color: white !important;
 }
 
 .token-success{
     background-color: #4eaf4e
+}
+
+.proposal-support.disabled .token{
+  background-color: #a9a9a9
+}
+
+
+.proposal-support.disabled .my-token{
+  color: #a9a9a9 !important;
+  border: solid 1px #a9a9a9 !important;
+  box-shadow: 0px 0px 5px #a9a9a9 !important;
+  background-color: white !important;
 }
 
 .my-token.token-success{
@@ -4166,6 +4179,10 @@ small .proposal-support .token{
 
 .proposal-support .danger {
     margin-left: 2px
+}
+
+.proposal-support.disabled .support-nb{
+    color: #a9a9a9 !important
 }
 
 .proposal-support .danger .support-nb{

@@ -40,7 +40,7 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=13"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=14"
             rel="stylesheet"/>
     </div>
     <link href="${su('daceui:static/css/dace_ui.css')}"

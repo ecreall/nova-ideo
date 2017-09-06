@@ -1738,19 +1738,20 @@ def component_navbar_mysupports(action, request, context, api, **kwargs):
     user = kwargs.get('user', None)
     localizer = request.localizer
     source_view_name = kwargs.get('view_name', '')
-    item_nb = len(getattr(user, 'supports', []))
+    root = request.root
+    item_nb = user.get_len_evaluations()
     result = {
         'component-navbar-mysupports.item_nb': item_nb,
-        'component-navbar-mysupports.all_item_nb': len(getattr(user, 'tokens_ref', [])),
+        'component-navbar-mysupports.all_item_nb': user.get_len_tokens(root=root),
         'component-navbar-mysupports.title': localizer.translate(_("My evaluations")),
         'component-navbar-mysupports.icon': 'ion-ios7-circle-filled',
         'component-navbar-mysupports.url': request.resource_url(
-            request.root, 'seemysupports')
+            root, 'seemysupports')
     }
 
     view_name = 'seemysupports'
     if source_view_name == view_name:
-        len_tokens = len(getattr(user, 'tokens', []))
+        len_tokens = user.get_len_free_tokens(root=root)
         index = str(item_nb)
         if item_nb > 1:
             index = '*'

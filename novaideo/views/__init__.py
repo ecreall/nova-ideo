@@ -371,7 +371,7 @@ class NovaideoAPI(IndexManagementJsonView):
     def oppose_idea(self):
         localizer = self.request.localizer
         user = get_current()
-
+        root = self.request.root
         result = self._execute_action('ideamanagement', 'oppose', {})
         if result.get('state'):
             result['action'] = self.request.resource_url(
@@ -385,7 +385,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['opposit_title'] = localizer.translate(_('Support'))
             result['opposition_counter'] = self.context.len_support
 
-        result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None), self.request, self.context, self)))
@@ -394,6 +394,7 @@ class NovaideoAPI(IndexManagementJsonView):
     def oppose_proposal(self):
         localizer = self.request.localizer
         result = self._execute_action('proposalmanagement', 'oppose', {})
+        root = self.request.root
         if result.get('state'):
             result['action'] = self.request.resource_url(
                 self.context, 'novaideoapi',
@@ -407,7 +408,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['opposition_counter'] = self.context.len_support
 
         user = get_current()
-        result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),
@@ -417,6 +418,7 @@ class NovaideoAPI(IndexManagementJsonView):
     def support_idea(self):
         localizer = self.request.localizer
         result = self._execute_action('ideamanagement', 'support', {})
+        root = self.request.root
         if result.get('state'):
             result['action'] = self.request.resource_url(
                 self.context, 'novaideoapi',
@@ -430,7 +432,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['opposition_counter'] = self.context.len_opposition
 
         user = get_current()
-        result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),
@@ -440,6 +442,7 @@ class NovaideoAPI(IndexManagementJsonView):
     def support_proposal(self):
         localizer = self.request.localizer
         result = self._execute_action('proposalmanagement', 'support', {})
+        root = self.request.root
         if result.get('state'):
             result['action'] = self.request.resource_url(
                 self.context, 'novaideoapi',
@@ -453,7 +456,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['opposition_counter'] = self.context.len_opposition
 
         user = get_current()
-        result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),
@@ -463,6 +466,7 @@ class NovaideoAPI(IndexManagementJsonView):
     def withdraw_token_idea(self):
         localizer = self.request.localizer
         result = self._execute_action('ideamanagement', 'withdraw_token', {})
+        root = self.request.root
         if result.get('state'):
             previous_action = self.params('action')
             result['action'] = self.request.resource_url(
@@ -473,7 +477,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['withdraw'] = True
 
         user = get_current()
-        result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),
@@ -484,6 +488,7 @@ class NovaideoAPI(IndexManagementJsonView):
         localizer = self.request.localizer
         result = self._execute_action(
             'proposalmanagement', 'withdraw_token', {})
+        root = self.request.root
         if result.get('state'):
             previous_action = self.params('action')
             result['action'] = self.request.resource_url(
@@ -494,7 +499,7 @@ class NovaideoAPI(IndexManagementJsonView):
             result['withdraw'] = True
 
         user = get_current()
-        result['hastoken'] = True if getattr(user, 'tokens', []) else False
+        result['hastoken'] = True if user.get_len_free_tokens(root=root) else False
         result.update(get_components_data(
             **get_all_updated_data(
                 result.pop('action_obj', None),

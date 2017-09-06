@@ -42,8 +42,6 @@ from novaideo.utilities.util import html_to_text
 
 def create_user(request, appstruct):
     if appstruct and 'user_data' in appstruct:
-        from novaideo.content.processes.user_management.behaviors import (
-            initialize_tokens)
         from novaideo.content.person import Person
         source_data = appstruct.get('source_data', {})
         data = appstruct.get('user_data', {})
@@ -60,7 +58,6 @@ def create_user(request, appstruct):
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
-        initialize_tokens(person, root.tokens_mini)
         person.init_annotations()
         person.annotations.setdefault(
             PROCESS_HISTORY_KEY, PersistentList())

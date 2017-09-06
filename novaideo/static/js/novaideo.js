@@ -644,7 +644,7 @@ $(document).on('click', '.working-group-toggle', function(){
   });
 
 
-$(document).on('click', '.proposal-support .token:not(.disabled)', function(){
+$(document).on('click', '.proposal-support:not(.disabled) .token:not(.disabled)', function(){
    var $this = $(this)
    var action_url = $this.data('action')
    var url_attr = get_action_metadata($($this.parents('.proposal-support').first()))

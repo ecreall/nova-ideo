@@ -65,9 +65,7 @@ class IdeaAdapter(Adapter):
         self.context.state_befor_censor = PersistentList(
             list(self.context.state))
         self.context.state = PersistentList(['censored'])
-        for token in list(self.context.tokens):
-            token.owner.addtoproperty('tokens', token)
-
+        context.remove_tokens(True)
         members = [self.context.author]
         alert(
             'internal', [request.root], members,
@@ -94,7 +92,7 @@ class ProposalAdapter(Adapter):
     """
     def censor(self, request):
         self.context.state = PersistentList(['censored'])
-        self.context.remove_tokens()
+        self.context.remove_tokens(True)
         end_work(self.context, request)
         working_group = self.context.working_group
         members = working_group.members

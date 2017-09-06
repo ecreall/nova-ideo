@@ -146,15 +146,9 @@ class StepsPanel(object):
 
     def _get_step4_informations(self, context, request):
         user = get_current()
-        support = 0
-        if any(t.owner is user for t in context.tokens_support):
-            support = 1
-        elif any(t.owner is user for t in context.tokens_opposition):
-            support = -1
-
         return renderers.render(self.step4_0_template,
                                 {'context': context,
-                                 'support': support},
+                                 'support': context.evaluation(user)},
                                 request)
 
     def _get_step5_informations(self, context, request):

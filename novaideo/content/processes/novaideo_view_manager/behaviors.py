@@ -150,9 +150,7 @@ def seemysu_processsecurity_validation(process, context):
     if context.support_ideas or \
        (context.support_proposals and context.manage_proposals):
         root = getSite(context)
-        supports = [o for o in getattr(user, 'supports', [])
-                    if 'archived' not in o.state
-                    and o.is_managed(root)]
+        supports = user.evaluated_objs() if hasattr(user, 'evaluated_objs') else []
         return supports and global_user_processsecurity()
 
     return False
@@ -167,9 +165,11 @@ class SeeMySupports(InfiniteCardinality):
 
     def contents_nb(self, request, context):
         user = get_current()
-        len_supports = len([o for o in getattr(user, 'supports', [])
-                            if 'archived' not in o.state])
-        return str(len_supports)+'/'+str(len(getattr(user, 'tokens_ref', [])))
+        root = request.root
+        if not hasattr(user, 'get_len_evaluations'):
+            return '0/0'
+
+        return str(user.get_len_evaluations())+'/'+str(user.get_len_tokens(root=root))
 
     def start(self, context, request, appstruct, **kw):
         return {}

@@ -22,8 +22,7 @@ from novaideo.content.interface import INovaIdeoApplication, IInvitation
 from novaideo.content.invitation import Invitation
 from novaideo import _, nothing
 from novaideo.content.processes.user_management.behaviors import (
-    global_user_processsecurity,
-    initialize_tokens)
+    global_user_processsecurity)
 from novaideo.core import access_action, serialize_roles
 from novaideo.utilities.util import gen_random_token
 from novaideo.content.person import Person
@@ -319,7 +318,6 @@ class AcceptInvitation(InfiniteCardinality):
         person.state.append('active')
         grant_roles(person, roles)
         grant_roles(person, (('Owner', person),))
-        initialize_tokens(person, root.tokens_mini)
         manager = context.manager
         root.delfromproperty('invitations', context)
         root.addtoproperty('news_letter_members', person)

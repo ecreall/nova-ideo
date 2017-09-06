@@ -196,7 +196,7 @@ class Person(Node, Debatable, graphene.ObjectType):
         return ResolverLazyList(oids, Idea)
 
     def resolve_supported_ideas(self, args, context, info):  # pylint: disable=W0613
-        user_ideas = [get_oid(o) for o in getattr(self, 'supports', [])]
+        user_ideas = self.evaluated_objs() if hasattr(self, 'evaluated_objs') else []
         oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
         return ResolverLazyList(oids, Idea)
 
@@ -215,8 +215,10 @@ class Person(Node, Debatable, graphene.ObjectType):
             key=lambda e: getattr(e, 'created_at'), reverse=True)
 
     def resolve_available_tokens(self, args, context, info):  # pylint: disable=W0613
-        return len([t for t in getattr(self, 'tokens', []) if
-                    not t.proposal])
+        if hasattr(self, 'get_len_free_tokens'):
+            return self.get_len_free_tokens(context.root, True)
+        
+        return 0
 
 
 
@@ -380,26 +382,16 @@ class Idea(Node, Debatable, graphene.ObjectType):
         return html_to_text(self.presentation_text(300))
 
     def resolve_tokens_opposition(self, args, context, info):  # pylint: disable=W0613
-        return len(self.tokens_opposition)
+        return self.len_opposition
 
     def resolve_tokens_support(self, args, context, info):  # pylint: disable=W0613
-        return len(self.tokens_support)
+        return self.len_support
 
     def resolve_urls(self, args, context, info):  # pylint: disable=W0613
         return [Url(**url) for url in getattr(self, 'urls', {}).values()]
 
     def resolve_user_token(self, args, context, info):  # pylint: disable=W0613
-        user = context.user
-        if not user:
-            return None
-        # @TODO optimization
-        if any(t.owner is user for t in self.tokens_support):
-            return 'support'
-
-        if any(t.owner is user for t in self.tokens_opposition):
-            return 'oppose'
-
-        return None
+        return self.evaluation(context.user)
 
     def resolve_opinion(self, args, context, info):  # pylint: disable=W0613
         return getattr(self, 'opinion', {}).get('explanation', '')

@@ -248,9 +248,6 @@ class Idea(VersionableEntity, DuplicableEntity,
     def init_examined_at(self):
         setattr(self, 'examined_at', datetime.datetime.now(tz=pytz.UTC))
 
-    def init_support_history(self):
-        if not hasattr(self, '_support_history'):
-            setattr(self, '_support_history', PersistentList())
 
     def presentation_text(self, nb_characters=400):
         return truncate_text(getattr(self, 'text', ""), nb_characters)

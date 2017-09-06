@@ -297,11 +297,6 @@ class Proposal(VersionableEntity,
     def init_examined_at(self):
         setattr(self, 'examined_at', datetime.datetime.now(tz=pytz.UTC))
 
-    def init_support_history(self):
-        # [(user_oid, date, support_type), ...], support_type = {1:support, 0:oppose, -1:withdraw}
-        if not hasattr(self, '_support_history'):
-            setattr(self, '_support_history', PersistentList())
-
     def is_managed(self, root):
         return root.manage_proposals
 
@@ -364,32 +359,13 @@ class Proposal(VersionableEntity,
         copy_of_proposal.reindex()
         return copy_of_proposal
 
-    def get_token(self, user):
-        tokens = [t for t in getattr(user, 'tokens', []) if
-                  not t.proposal or t.proposal is self]
-        proposal_tokens = [t for t in tokens if t.proposal is self]
-        if proposal_tokens:
-            return proposal_tokens[0]
-
-        return tokens[-1] if tokens else None
-
-    def remove_tokens(self):
-        tokens = [t for t in self.tokens if not t.proposal]
-        proposal_tokens = [t for t in self.tokens if t.proposal]
-        for token in list(tokens):
-            token.owner.addtoproperty('tokens', token)
-
-        for proposal_token in list(proposal_tokens):
-            proposal_token.owner.delfromproperty('tokens_ref', proposal_token)
-            self.__delitem__(proposal_token.__name__)
-
-        members = self.working_group.members
-        for member in members:
-            to_remove = [t for t in member.tokens
-                         if t.proposal is self]
-            if to_remove:
-                token = to_remove[0]
-                token.owner.delfromproperty('tokens_ref', token)
+    def remove_tokens(self, force=False):
+        evaluators = self.evaluators()
+        for user in evaluators:
+            user.remove_token(self)
+            user.remove_reserved_token(self)
+            if force:
+                self.remove_token(user)
 
     def get_node_descriminator(self):
         return 'proposal'

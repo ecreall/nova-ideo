@@ -880,10 +880,10 @@ class ProposalSearch(SearchableObject):
         return True if self.context.attached_files else False
 
     def support(self):
-        return len(getattr(self.context, 'tokens_support', []))
+        return getattr(self.context, 'len_support', 0)
 
     def oppose(self):
-        return len(getattr(self.context, 'tokens_opposition', []))
+        return getattr(self.context, 'len_opposition', 0)
 
     def support_diff(self):
         return self.support() - self.oppose()
@@ -908,10 +908,10 @@ class IdeaSearch(SearchableObject):
         return True if self.context.attached_files else False
 
     def support(self):
-        return len(getattr(self.context, 'tokens_support', []))
+        return getattr(self.context, 'len_support', 0)
 
     def oppose(self):
-        return len(getattr(self.context, 'tokens_opposition', []))
+        return getattr(self.context, 'len_opposition', 0)
 
     def support_diff(self):
         return self.support() - self.oppose()

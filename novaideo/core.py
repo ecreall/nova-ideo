@@ -64,6 +64,11 @@ ADVERTISING_CONTAINERS = {}
 ON_LOAD_VIEWS = {}
 
 
+class Evaluations():
+    support = 'support'
+    oppose = 'oppose'
+
+
 def get_searchable_content(request=None):
     if request is None:
         request = get_current_request()
@@ -715,27 +720,59 @@ class Tokenable(Entity):
     def __init__(self, **kwargs):
         super(Tokenable, self).__init__(**kwargs)
         self.set_data(kwargs)
+        self.allocated_tokens = OOBTree()
+        self.len_allocated_tokens = PersistentDict({})
 
-    @property
-    def tokens(self):
-        result = list(self.tokens_opposition)
-        result.extend(list(self.tokens_support))
-        return result
+    def add_token(self, user, evaluation_type):
+        user_oid = get_oid(user)
+        if user_oid in self.allocated_tokens:
+            self.remove_token(user)
+
+        self.allocated_tokens[user_oid] = evaluation_type
+        self.len_allocated_tokens.setdefault(evaluation_type, 0)
+        self.len_allocated_tokens[evaluation_type] += 1
+
+    def remove_token(self, user):
+        user_oid = get_oid(user)
+        if user_oid in self.allocated_tokens:
+            evaluation_type = self.allocated_tokens.pop(user_oid)
+            self.len_allocated_tokens.setdefault(evaluation_type, 0)
+            self.len_allocated_tokens[evaluation_type] -= 1
+
+    def evaluators(self, evaluation_type=None):
+        if evaluation_type:
+            return [get_obj(key) for value, key
+                    in self.allocated_tokens.byValue(evaluation_type)]
+
+        return [get_obj(key) for key
+                in self.allocated_tokens.keys()]
+
+    def evaluation(self, user):
+        user_oid = get_oid(user)
+        return self.allocated_tokens.get(user_oid, None)
+
+    def remove_tokens(self, force=False):
+        evaluators = self.evaluators()
+        for user in evaluators:
+            user.remove_token(self)
+            if force:
+                self.remove_token(user)
+
+    def user_has_token(self, user, root=None):
+        if hasattr(user, 'has_token'):
+            return user.has_token(self, root)
+
+        return False
+
+    def init_support_history(self):
+        # [(user_oid, date, support_type), ...], support_type = {1:support, 0:oppose, -1:withdraw}
+        if not hasattr(self, '_support_history'):
+            setattr(self, '_support_history', PersistentList())
 
     @property
     def len_support(self):
-        return len(self.tokens_support)
+        return self.len_allocated_tokens.get(Evaluations.support, 0)
 
     @property
     def len_opposition(self):
-        return len(self.tokens_opposition)
-
-    def get_token(self, user):
-        tokens = [t for t in getattr(user, 'tokens', []) if
-                  not t.proposal]
-        return tokens[-1] if tokens else None
-
-    def remove_tokens(self):
-        tokens = [t for t in self.tokens]
-        for token in list(tokens):
-            token.owner.addtoproperty('tokens', token)
+        return self.len_allocated_tokens.get(Evaluations.oppose, 0)
