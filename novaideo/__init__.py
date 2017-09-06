@@ -835,13 +835,13 @@ def evolve_state_pontusFiles(root, registry):
 
 def evolve_person_tokens(root, registry):
     from novaideo.views.filter import find_entities
-    from novaideo.content.interface import IPerson, ITokenable
+    from novaideo.content.interface import IPerson, Iidea, IProposal
     from BTrees.OOBTree import OOBTree
 
     request = get_current_request()
     request.root = root  # needed when executing the step via sd_evolve script
     contents = find_entities(
-        interfaces=[ITokenable]
+        interfaces=[Iidea, IProposal]
         )
     for index, node in enumerate(contents):
         if not hasattr(node, 'allocated_tokens'):
@@ -862,16 +862,55 @@ def evolve_person_tokens(root, registry):
                         if t.__parent__ is not node]
             for token in supports:
                 obj = token.__parent__
-                evaluation = 'oppose' if token in obj.tokens_opposition else 'support'
-                node.add_token(obj, evaluation, root)
-                obj.add_token(node, evaluation)
-                if token.proposal:
-                    node.add_reserved_token(obj)
+                if obj.__parent__:
+                    evaluation = 'oppose' if token in obj.tokens_opposition else 'support'
+                    node.add_token(obj, evaluation, root)
+                    obj.add_token(node, evaluation)
+                    if token.proposal:
+                        node.add_reserved_token(obj)
+
+                    node.reindex()
 
 
         log.info(str(index) + "/" + len_entities)
 
     log.info('Persons evolved.')
+
+
+def evolve_examined_tokens(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import Iidea, IProposal
+    from BTrees.OOBTree import OOBTree
+
+    request = get_current_request()
+    request.root = root  # needed when executing the step via sd_evolve script
+
+    contents = find_entities(
+        interfaces=[Iidea, IProposal],
+        metadata_filter={'states': ['examined']}
+        )
+    evaluations = {
+        1: 'support',
+        -1: 'withdraw',
+        0: 'oppose'
+    }
+    for index, node in enumerate(contents):
+        if hasattr(node, '_support_history'):
+            history = sorted(node._support_history, key=lambda e: e[1])
+            node.allocated_tokens = OOBTree()
+            node.len_allocated_tokens = PersistentDict({})
+            for value in history:
+                user, date, evaluation = value
+                user = get_obj(user)
+                evaluation = evaluations[evaluation]
+                if evaluation == 'withdraw':
+                    node.remove_token(user)
+                else:
+                    node.add_token(user, evaluation)
+
+            node.reindex()
+
+    log.info('Tokens evolved.')
 
 
 def main(global_config, **settings):
@@ -927,6 +966,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_nia_comments)
     config.add_evolution_step(evolve_state_pontusFiles)
     config.add_evolution_step(evolve_person_tokens)
+    config.add_evolution_step(evolve_examined_tokens)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
