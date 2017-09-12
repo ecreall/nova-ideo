@@ -251,10 +251,15 @@ def load_components(request, context, api, **kwargs):
     resources = {}
     for loading_component in loading_components:
         loaded_views.append(loading_component)
-        view = ON_LOAD_VIEWS.get(loading_component, None)
+        source_view = ON_LOAD_VIEWS.get(loading_component, None)
+        delegate = getattr(source_view, 'delegate', None)
+        view_id = delegate or loading_component
+        view = ON_LOAD_VIEWS.get(view_id, None) or source_view
         if view:
             try:
-                view_instance = view(source_context, request)
+                view_instance = view(
+                    source_context, request,
+                    delegated_by=getattr(source_view, 'component_id', None))
                 view_result = view_instance()
                 item = view_result['coordinates'][view_instance.coordinates][0]
                 body = view_instance.render_item(item, view_instance.coordinates, None)

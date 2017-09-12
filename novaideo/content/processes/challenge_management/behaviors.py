@@ -60,7 +60,7 @@ class CreateChallenge(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'lateral-action'
     style_picto = 'ion-trophy'
-    style_order = 1
+    style_order = 2
     title = _('Create a challenge')
     unavailable_link = 'docanonymous'
     submission_title = _('Save')
@@ -544,7 +544,7 @@ class SeeChallenges(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'ion-trophy'
-    style_order = -10
+    style_order = 0
     isSequential = False
     context = INovaIdeoApplication
 

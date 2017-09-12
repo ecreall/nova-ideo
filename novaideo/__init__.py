@@ -20,7 +20,7 @@ from pyramid.threadlocal import get_current_request
 
 from substanced.db import root_factory
 
-from dace.util import getSite, find_service
+from dace.util import getSite, find_service, get_obj
 from dace.objectofcollaboration.principal.util import grant_roles
 from pontus.file import File
 

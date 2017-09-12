@@ -37,7 +37,7 @@ class AddOrganizations(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
-    style_order = 1
+    style_order = 5
     submission_title = _('Save')
     isSequential = False
     context = INovaIdeoApplication
@@ -73,7 +73,7 @@ class CreatOrganizations(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
-    style_order = 2
+    style_order = 5
     submission_title = _('Save')
     isSequential = False
     context = INovaIdeoApplication
@@ -148,7 +148,7 @@ class SeeOrganizations(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-home'
-    style_order = 3
+    style_order = 6
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeorgs_roles_validation

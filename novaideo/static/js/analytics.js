@@ -15,9 +15,9 @@ function generate_analytics_study(values){
     for(key in values) {
         result += "<li>";
         if(values[key]>1){
-             result += values[key]+ novaideo_translate(" contenus de type ")+ key;
+             result += values[key]+' '+ key;
         }else{
-             result += values[key]+ novaideo_translate(" contenu de type ")+ key;
+             result += values[key]+' '+ key;
         }
         result += "</li>"
     };

@@ -67,7 +67,7 @@ class AskQuestion(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_interaction = 'ajax-action'
     style_picto = 'md md-live-help'
-    style_order = 0
+    style_order = 1
     title = _('Ask a question')
     unavailable_link = 'docanonymous'
     submission_title = _('Ask')

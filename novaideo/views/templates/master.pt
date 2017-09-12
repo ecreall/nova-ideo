@@ -139,6 +139,8 @@
           type="text/javascript"></script>
     <script src="${su('deform:static/pickadate/picker.time.js')}"
           type="text/javascript"></script>
+    <script src="${request.static_url('novaideo:static/chartjs/Chart.min.js')}"
+        type="text/javascript"></script>
 
     <more tal:omit-tag="" metal:define-slot="head-more"></more>
     

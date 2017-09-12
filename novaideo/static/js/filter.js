@@ -50,7 +50,11 @@ function filter(event){
     target_title = filter_container.parents('.content-view').first().find('#'+filter_container_id+'-title')
   }
   if(!target_title || target_title.length==0){
-    target_title = $('.pontus-main .panel-heading').first();
+    var title_target_id = filter_container.parents('.view-filter-container').first().data('title-target')
+    target_title = $('[data-title_view_id="'+title_target_id+'"] ').first();
+  }
+  if(!target_title || target_title.length==0){
+    target_title = $('.pontus-main .panel-heading .panel-title h4').first();
   }
   var target = $(form.parents('.items-main-view-container'));
   var id = target.attr('id')
@@ -65,6 +69,7 @@ function filter(event){
       data_get += '&'+sort_form.serialize();
   }
   data_get += '&load_view=load';
+  data_get += '&on_demand=load';
   loading_progress()
   //window.setTimeout(function(){
   $.post(url,data_get, function(data) {
@@ -78,10 +83,9 @@ function filter(event){
         }
         if(data['body']){
             var result_body = $('<div>'+data['body']+'</div>')
-            var source_tab_id = $(target.parents('.tab-pane').first()).attr('id')
+            // var source_tab_id = $(target.parents('.tab-pane').first()).attr('id')
             // update tab title
-            var source_tab = $('.pontus-main ul.nav.nav-tabs > li > a[href="#'+source_tab_id+'"]')
-            var tab = result_body.find('ul.nav.nav-tabs > li > a[href="#'+source_tab_id+'"]').first()
+            // var source_tab = $('.pontus-main ul.nav.nav-tabs > li > a[href="#'+source_tab_id+'"] .tab-title')
             var result_target = result_body.find('#'+id)
             var filter_container_target = result_target.find('.filter-container')
             init_filter_text_input(filter_container_target)
@@ -90,10 +94,14 @@ function filter(event){
             }else{
               close_filter(filter_container_target)
             }
-            source_tab.html(tab.html())
             // update view title
             var new_title =  filter_container_target.find('.filter-activator').first().data('filter_message');
-            target_title.html("<div class=\"panel-title\"><h4>"+new_title+"</h4></div>");
+            if(target_title.length>0){
+                target_title.html(new_title)
+            }
+            // else{
+            //     source_tab.html(new_title)
+            // }
             // update results
             target.html(result_target.html());
            try {
@@ -143,6 +151,7 @@ function sort(){
   var id = target.attr('id')
   data_get += '&'+sort_form.serialize();
   data_get += '&load_view=load';
+  data_get += '&on_demand=load';
   
   loading_progress()
   //window.setTimeout(function(){

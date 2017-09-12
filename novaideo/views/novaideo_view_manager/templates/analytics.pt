@@ -1,4 +1,4 @@
-<script tal:define="barid 'canvas-bar-'+id;
+<script tal:define="barid 'canvas-bar-'+id if 'bar' in charts else 'canvas-bar_stacked-'+id;
                     doughnutid 'canvas-doughnut-'+id;
                     lineid 'canvas-line-'+id"
         data-has_value="${has_value and 'true' or 'false'}">
@@ -9,76 +9,70 @@
     <div tal:omit-tag="" tal:condition="has_value">
         $('.analytics-container .analytics-study-${id}').html(generate_analytics_study({${','.join(["\"{key}\":{value}".format(key=key, value=value['len']) for key, value in analytics.items()])}}))
     </div>
-    <div tal:omit-tag="" tal:condition="has_value and 'bar' in charts">
+    <div tal:omit-tag="" tal:condition="has_value and 'bar' in charts or 'bar_stacked' in charts">
         var barChartData = {
         labels: [${','.join(["\""+translation+"\"" for a, translation in labels.items()])}],
         datasets: [
             <div tal:omit-tag="" tal:repeat="(item, value) analytics.items()">
                 {
                     label: "${item}",
-                    fillColor: "${value['color']['background']}",
-                    strokeColor: "${value['color']['background']}",
-                    highlightFill: "${value['color']['hover']}",
-                    highlightStroke: "${value['color']['hover']}",
+                    backgroundColor: "${value['color']['background']}",
                     data: [${','.join([str(value['data'].get(a, 0)) for a in labels])}]
                 },
            </div>
         ]
         };
+
         var newcanvas = get_new_canvas("${barid}");
         $('#${barid}').replaceWith(newcanvas)
         var ctx = document.getElementById("${barid}").getContext("2d");
-
         ctx.clearRect(0, 0, 1500, 1500);
-        var bar = new Chart(ctx).Bar(barChartData, {
+        var bar = new Chart(ctx, {type: 'bar', data: barChartData, options: {
                     responsive: true,
                     generateLegend: true,
                     hoverMode: 'label',
                     hoverAnimationDuration: 400,
-                    stacked: false,
+                    stacked: ${'bar' in charts and 'false' or 'true'},
                     scales: {
                         yAxes: [{
-                            type: "linear", // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                            type: "linear",
                             display: true,
                             position: "left",
+                            stacked: ${'bar' in charts and 'false' or 'true'},
                             id: "y-axis-1",
                         }],
+                        xAxes: [{
+                            stacked: ${'bar' in charts and 'false' or 'true'},
+                        }],
                     }
-                }
+                }}
             );
-        var barlegend = bar.generateLegend();
-        $('.analytics-container #legend-bar-${id}').html(barlegend);
         $('.analytics-container .chart-container-bar-${id}').addClass("object-well well")
     </div>
     <div tal:omit-tag="" tal:condition="has_value and 'doughnut' in charts">
-        var doughnutData = [
-            <div tal:omit-tag="" tal:repeat="(item, translation) labels.items()"
-                tal:define="glob sum([sum([value['data'].get(i, 0) for key, value in analytics.items()]) for i in labels])">
-                <div tal:omit-tag=""
-                     tal:define="color view.get_color(item);
-                                 val sum([value['data'].get(item, 0) for key, value in analytics.items()])">
-                {
-                    label: "${translation}",
-                    fillColor: "${color['color']['background']}",
-                    color: "${color['color']['background']}",
-                    highlight: "${color['color']['hover']}",
-                    value: ${(val*100/glob) if glob else 0}
-                },
-                </div>
-           </div>
+        <div tal:omit-tag="" 
+             tal:define="glob sum([sum([value['data'].get(i, 0) for _, value in analytics.items()]) for i in labels])">
+            var doughnutData = {
+                labels: [${','.join(["\""+translation+"\"" for a, translation in labels.items()])}],
+                datasets: [
+                        {
+                            data: [${','.join(["\""+str((sum([value['data'].get(item, 0) for _, value in analytics.items()])*100/glob) if glob else 0)+"\"" for item, _ in labels.items()])}],
 
-        ];
+                            backgroundColor: [${','.join(["\""+view.get_color(item)['color']['background']+"\"" for item, _ in labels.items()])}],
+                        },
+                ]
+            };
+        </div>
+
         var newcanvas = get_new_canvas("${doughnutid}");
         $('#${doughnutid}').replaceWith(newcanvas)
         var ctxdoughnut = document.getElementById("${doughnutid}").getContext("2d");
         ctxdoughnut.clearRect(0, 0, 1500, 1500);
-        var doughnut = new Chart(ctxdoughnut).Doughnut(doughnutData, {
+        var doughnut = new Chart(ctxdoughnut, {type: 'doughnut',data: doughnutData, options:{
             responsive: true,
             tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> %",
             generateLegend: true,
-        });
-        var doughnutlegend = doughnut.generateLegend();
-        $('.analytics-container #legend-doughnut-${id}').html(doughnutlegend)
+        }});
         $('.analytics-container .chart-container-doughnut-${id}').addClass("object-well well")
     </div>
     <div tal:omit-tag="" tal:condition="has_value and 'line' in charts">
@@ -88,12 +82,7 @@
             <div tal:omit-tag="" tal:repeat="(item, value) analytics.items()">
                 {
                     label: "${item}",
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "${value['color']['background']}",
-                    pointColor: "${value['color']['background']}",
-                    pointStrokeColor: "${value['color']['background']}",
-                    pointHighlightFill: "${value['color']['hover']}",
-                    pointHighlightStroke: "${value['color']['hover']}",
+                    borderColor: "${value['color']['background']}",
                     data: [${','.join([str(value['data'].get(a, 0)) for a in labels])}]
                 },
            </div>
@@ -104,7 +93,7 @@
         var ctx = document.getElementById("${lineid}").getContext("2d");
 
         ctx.clearRect(0, 0, 1500, 1500);
-        var line = new Chart(ctx).Line(lineChartData, {
+        var line = new Chart(ctx, {type: 'line', data: lineChartData, options: {
                     responsive: true,
                     generateLegend: true,
                     hoverMode: 'label',
@@ -118,10 +107,8 @@
                             id: "y-axis-1",
                         }],
                     }
-                }
+                }}
             );
-        var linelegend = line.generateLegend();
-        $('.analytics-container #legend-line-${id}').html(linelegend);
         $('.analytics-container .chart-container-line-${id}').addClass("object-well well")
     </div>
 </script>

@@ -325,6 +325,7 @@ def group_actions(actions):
     for group_id, group in groups.items():
         groups[group_id] = sorted(
             group, key=lambda e: getattr(e[1], 'style_order', 0))
+
     groups = sorted(list(groups.items()),
                     key=lambda g: GROUPS_PICTO.get(g[0], ("default", 0))[0])
     return groups

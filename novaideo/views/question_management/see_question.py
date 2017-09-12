@@ -134,7 +134,8 @@ class AnswersView(BasicView):
                   'empty_message': self.empty_message,
                   'empty_icon': self.empty_icon,
                   'filter_body': filter_body,
-                  'sort_body': sort_body}
+                  'sort_body': sort_body,
+                  'view': self}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['isactive'] = True
@@ -163,8 +164,7 @@ class AnalyticsView(BasicView):
 
     title = _('Analytics')
     requirements = {'css_links': [],
-                    'js_links': ['novaideo:static/chartjs/Chart.js',
-                                 'novaideo:static/js/analytics.js']}
+                    'js_links': ['novaideo:static/js/analytics.js']}
 
     def update(self):
         result = {}

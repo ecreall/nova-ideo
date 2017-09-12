@@ -35,54 +35,64 @@ from novaideo.views.filter import (
 class ContentView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/home.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    content_attr = 'ideas'
+    content_id = 'organization-ideas'
+    isactive = False
+    hasparent=True
 
     def update(self):
-        current_user = get_current()
-        validated = {
-            'metadata_filter':
-                {'content_types': [self.content_type],
-                 'states': ['active', 'published']}
-        }
-        novaideo_catalog = find_catalog('novaideo')
-        organizations_index = novaideo_catalog['organizations']
-        query = organizations_index.any([self.context.__oid__])
-        objects = find_entities(
-            user=current_user,
-            filters=[validated],
-            add_query=query)
-        sort_url = self.request.resource_url(
-            self.context, '@@index',
-            query={'view_content_attr': self.content_attr})
-        objects, sort_body = sort_view_objects(
-            self, objects, [self.content_type], current_user,
-            sort_url=sort_url)
-        url = self.request.resource_url(
-            self.context, '@@index',
-            query={'view_content_attr': self.content_attr})
-        batch = Batch(objects,
-                      self.request,
-                      url=url,
-                      default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results-" + self.content_type
-        self.title = _(self.title, mapping={'nb': batch.seqlen})
-        result_body, result = render_listing_objs(
-            self.request, batch, current_user)
-        values = {'bodies': result_body,
-                  'batch': batch,
-                  'empty_message': self.empty_message,
-                  'empty_icon': self.empty_icon,
-                  'sort_body': sort_body}
-        body = self.content(args=values, template=self.template)['body']
+        body = ''
+        result = {}
+        if self.isactive or self.params('on_demand') == 'load':
+            current_user = get_current()
+            validated = {
+                'metadata_filter':
+                    {'content_types': [self.content_type],
+                     'states': ['active', 'published']}
+            }
+            novaideo_catalog = find_catalog('novaideo')
+            organizations_index = novaideo_catalog['organizations']
+            query = organizations_index.any([self.context.__oid__])
+            objects = find_entities(
+                user=current_user,
+                filters=[validated],
+                add_query=query)
+            sort_url = self.request.resource_url(
+                self.context, '@@index',
+                query={'view_content_attr': self.content_id})
+            objects, sort_body = sort_view_objects(
+                self, objects, [self.content_type], current_user,
+                sort_url=sort_url)
+            url = self.request.resource_url(
+                self.context, '@@index',
+                query={'view_content_attr': self.content_id})
+            batch = Batch(objects,
+                          self.request,
+                          url=url,
+                          default_size=BATCH_DEFAULT_SIZE)
+            batch.target = "#results-" + self.content_type
+            self.title = _(self.title, mapping={'nb': batch.seqlen})
+            result_body, result = render_listing_objs(
+                self.request, batch, current_user)
+            values = {'bodies': result_body,
+                      'batch': batch,
+                      'empty_message': self.empty_message,
+                      'empty_icon': self.empty_icon,
+                      'sort_body': sort_body}
+            body = self.content(args=values, template=self.template)['body']
+
         item = self.adapt_item(body, self.viewid)
         item['isactive'] = getattr(self, 'isactive', False)
         result['coordinates'] = {self.coordinates: [item]}
         return result
 
 
+@asyn_component_config(
+    id='organization-questions',
+    on_demand=True,
+    delegate='organization_see_organization')
 class QuestionsView(ContentView):
-    title = _('Questions (${nb})')
-    content_attr = 'questions'
+    title = _('Questions')
+    content_id = 'organization-questions'
     content_type = 'question'
     viewid = 'organization-questions'
     view_icon = 'icon md md-live-help'
@@ -91,9 +101,13 @@ class QuestionsView(ContentView):
     empty_icon = 'icon md md-live-help'
 
 
+@asyn_component_config(
+    id='organization-ideas',
+    on_demand=True,
+    delegate='organization_see_organization')
 class IdeasView(ContentView):
-    title = _('Ideas (${nb})')
-    content_attr = 'ideas'
+    title = _('Ideas')
+    content_id = 'organization-ideas'
     content_type = 'idea'
     viewid = 'organization-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
@@ -102,9 +116,13 @@ class IdeasView(ContentView):
     empty_icon = 'icon novaideo-icon icon-idea'
 
 
+@asyn_component_config(
+    id='organization-proposals',
+    on_demand=True,
+    delegate='organization_see_organization')
 class ProposalsView(ContentView):
-    title = _('Working groups (${nb})')
-    content_attr = 'proposals'
+    title = _('Working groups')
+    content_id = 'organization-proposals'
     content_type = 'proposal'
     viewid = 'organization-proposals'
     view_icon = 'icon icon novaideo-icon icon-wg'
@@ -114,8 +132,8 @@ class ProposalsView(ContentView):
 
 
 class MembersView(ContentView):
-    title = _('Members (${nb})')
-    content_attr = 'members'
+    title = _('Members')
+    content_id = 'organization-members'
     content_type = 'person'
     viewid = 'organization-members'
     view_icon = 'icon ion-person-stalker'
@@ -139,6 +157,7 @@ class OrganizationContentsView(MultipleView):
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
+            delegated_by = kwargs.get('delegated_by', None)
             views = [MembersView, IdeasView]
             if 'question' in self.request.content_to_manage:
                 views = [MembersView, QuestionsView, IdeasView]
@@ -147,16 +166,17 @@ class OrganizationContentsView(MultipleView):
                 views.append(ProposalsView)
 
             views = tuple(views)
-            if self.params('view_content_attr') == 'ideas':
+            view_id = self.params('view_content_id')
+            if 'organization-ideas' in (delegated_by, view_id):
                 views = (IdeasView, )
 
-            if self.params('view_content_attr') == 'proposals':
+            if 'organization-proposals' in (delegated_by, view_id):
                 views = (ProposalsView, )
 
-            if self.params('view_content_attr') == 'questions':
+            if 'organization-questions' in (delegated_by, view_id):
                 views = (QuestionsView, )
 
-            if self.params('view_content_attr') == 'members':
+            if 'organization-members' in (delegated_by, view_id):
                 views = (MembersView, )
 
         super(OrganizationContentsView, self)._init_views(views, **kwargs)

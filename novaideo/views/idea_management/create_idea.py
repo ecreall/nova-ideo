@@ -8,6 +8,7 @@ import deform
 from pyramid.view import view_config
 from substanced.util import get_oid
 from pyramid import renderers
+from pyramid.traversal import find_resource
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import get_obj
@@ -24,6 +25,7 @@ from novaideo.utilities.pseudo_react import (
 from novaideo.content.processes.idea_management.behaviors import (
     CreateIdea, CrateAndPublish, CrateAndPublishAsProposal)
 from novaideo.content.idea import IdeaSchema, Idea
+from novaideo.content.challenge import Challenge
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from ..filter import get_pending_challenges
 from novaideo import _, log
@@ -89,6 +91,14 @@ class CreateIdeaView_Json(BasicView):
             view_name = self.params('source_path')
             view_name = view_name if view_name else ''
             is_mycontents_view = view_name.endswith('seemycontents')
+            context = self.context
+            try:
+                source_path = '/'.join(view_name.split('/')[:-1])
+                context = find_resource(self.context, source_path)
+            except Exception as error:
+                log.warning(error)
+
+            is_challenge = isinstance(context, Challenge)
             redirect = False
             for action_id in self.behaviors_instances:
                 if action_id in self.request.POST:
@@ -123,8 +133,13 @@ class CreateIdeaView_Json(BasicView):
                        'published' not in idea.state:
                         redirect = True
                     else:
-                        result['item_target'] = 'results_contents' \
-                            if is_mycontents_view else 'results-idea'
+                        if is_mycontents_view:
+                            result['item_target'] = 'results_contents'
+                        elif is_challenge:
+                            result['item_target'] = 'results-challenge-ideas'
+                        else:
+                            result['item_target'] = 'results-home-ideas'
+
                         body = body + render_listing_obj(
                             self.request, idea, user)
 

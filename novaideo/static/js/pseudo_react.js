@@ -217,7 +217,7 @@ function tab_component_component(data){
 		var component_id = original_components.attr('id')
 		if (original_components.length > 0){
 			var original_component = $(original_components[0])
-			$(original_component.find('>a>span').last()).text(data[component_id+'.title'])
+			$(original_component.find('>span').last()).text(data[component_id+'.title'])
 		}
 	})
 }

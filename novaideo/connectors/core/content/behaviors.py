@@ -28,7 +28,7 @@ class SeeConnectors(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'icon fa fa-plug'
-    style_order = 0
+    style_order = 7
     title = _('Registered connectors')
     submission_title = _('Save')
     context = INovaIdeoApplication
@@ -54,7 +54,7 @@ class AddConnectors(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'icon fa fa-plug'
-    style_order = 0
+    style_order = 6
     title = _('Connectors')
     submission_title = _('Save')
     context = INovaIdeoApplication

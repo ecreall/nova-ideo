@@ -173,7 +173,7 @@ def createnewsletter_processsecurity_validation(process, context):
 class CreateNewsletter(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-envelope'
-    style_order = 5
+    style_order = 9
     title = _('Create a newsletter')
     submission_title = _('Save')
     context = INovaIdeoApplication

@@ -2,7 +2,7 @@
     Ces graphiques sont produit à partir d'un échantiont présentant:
     <ul>
     	<li tal:repeat="(item, value) results.items()">
-         ${value['len']} contenus de type ${item}
+         ${value['len']} ${item}
     	</li>
     </ul>
 </div>

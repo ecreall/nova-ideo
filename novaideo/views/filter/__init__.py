@@ -1521,6 +1521,63 @@ def get_comments(channel, filters, text_to_search='', filtered=False):
     return objects
 
 
+def get_organizations_by_evaluations(
+    filter_, user, root,
+    date_from, date_to):
+    novaideo_catalog = find_catalog('novaideo')
+    date_index = novaideo_catalog['published_at']
+    query = None
+    if date_from:
+        date_from = datetime.datetime.combine(
+            date_from,
+            datetime.datetime.min.time())
+        date_from = date_from.replace(tzinfo=pytz.UTC)
+        query = date_index.gt(date_from)
+
+    if date_to:
+        date_to = datetime.datetime.combine(
+            date_to,
+            datetime.datetime.min.time())
+        date_to = date_to.replace(tzinfo=pytz.UTC)
+        if query is None:
+            query = date_index.lt(date_to)
+        else:
+            query = query & date_index.lt(date_to)
+
+    objects = find_entities(
+        user=user,
+        add_query=query,
+        **filter_)
+
+    index = find_catalog('novaideo')['organizations']
+    support = find_catalog('novaideo')['support']
+    oppose = find_catalog('novaideo')['oppose']
+    intersection = index.family.IF.intersection
+    object_ids = getattr(objects, 'ids', objects)
+    if isinstance(object_ids, (list, types.GeneratorType)):
+        object_ids = index.family.IF.Set(object_ids)
+    # calculate sum of support / sum of opposition
+    result = {}
+    for struct_id, oids in index._fwd_index.items():
+        struct = get_obj(struct_id)
+        if struct:
+            structoids = intersection(oids, object_ids)
+            support_nb = 0
+            for nb, supportoids in support._fwd_index.items():
+                support_nb += nb * len(intersection(supportoids, structoids))
+
+            oppose_nb = 0
+            for nb, opposeoids in oppose._fwd_index.items():
+                oppose_nb += nb * len(intersection(opposeoids, structoids))
+
+            result[struct_id] = {
+                'support': support_nb,
+                'opposition': oppose_nb
+            }
+
+    return result, object_ids.__len__()
+
+
 @request_memoize
 def get_pending_challenges(user, query=None):
     return find_entities(

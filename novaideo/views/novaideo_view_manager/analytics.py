@@ -31,7 +31,7 @@ from novaideo import core, _, log
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.views.filter import (
     get_contents_by_keywords, get_contents_by_states,
-    get_contents_by_dates)
+    get_contents_by_dates, get_organizations_by_evaluations)
 
 
 DEFAULT_CONTENT_TYPES = ['idea', 'proposal', 'question']
@@ -489,8 +489,59 @@ class ContentsByDatesView(MultipleView):
     views = (ContentsByDatesForm, ContentsByDates)
 
 
+#****************************** Evaluations by organization **************************
 
-#****************************** Content by states ***********************************
+class EvaluationsByOrganizations(BasicView):
+    title = _('Evaluations by organizations')
+    name = 'evaluation_by_organizations'
+    # validators = [Search.get_validator()]
+    template = 'novaideo:views/novaideo_view_manager/templates/charts.pt'
+    viewid = 'evaluation_by_organizations'
+
+    def update(self):
+        result = {}
+        values = {
+            'id': 'evaluations',
+            'row_len': 1,
+            'charts': [
+                {
+                    'id': 'bar_stacked',
+                    'title': _('Total des soutiens classé par organizations')
+                }
+            ]
+        }
+        body = self.content(args=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        return result
+
+
+class EvaluationsByOrganizationsForm(AnalyticsForm):
+    title = _('Evaluations by organizations')
+    schema = ContentsByKeywordsSchema()
+    formid = 'evaluation_by_organizations_form'
+    name = 'evaluation_by_organizations_form'
+
+    def before_update(self):
+        if len(self.request.analytics_default_content_types) == 1:
+            self.schema = omit(self.schema, ['content_types'])
+
+        formwidget = deform.widget.FormWidget(
+            css_class='analytics-form filter-form well')
+        formwidget.template = 'novaideo:views/templates/ajax_form.pt'
+        formwidget.ajax_url = self.request.resource_url(
+            self.context, '@@analyticsapi', query={'op': 'evaluations_by_organizations'})
+        self.schema.widget = formwidget
+
+
+class EvaluationsByOrganizationsView(MultipleView):
+    title = _('Evaluations by organizations')
+    name = 'evaluation_by_organizations_view'
+    template = 'novaideo:views/templates/row_merged_multiple_view.pt'
+    views = (EvaluationsByOrganizationsForm, EvaluationsByOrganizations)
+
+
+#****************************** Ajax API ***********************************
 
 
 @view_config(
@@ -503,10 +554,10 @@ class AnalyticsView(MultipleView):
     name = 'analytics'
     validators = [SeeAnalytics.get_validator()]
     template = 'novaideo:views/templates/resizable_multipleview.pt'
-    views = (ContentsByStatesView, ContentsByKeywordsView, ContentsByDatesView)
+    views = (ContentsByStatesView, ContentsByKeywordsView,
+             ContentsByDatesView, EvaluationsByOrganizationsView)
     requirements = {'css_links': [],
-                    'js_links': ['novaideo:static/chartjs/Chart.js',
-                                 'novaideo:static/js/analytics.js']}
+                    'js_links': ['novaideo:static/js/analytics.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
@@ -739,6 +790,73 @@ class AnalyticsAPIJsonView(BasicView):
             'charts': ['line'],
             'study': study,
             'id': 'dates'}
+        body = self.content(
+            args=values, template=self.analytics_template)['body']
+        return {'body': body}
+
+    def evaluations_by_organizations(self):
+        results = {}
+        user = get_current()
+        root = self.request.root
+        formview = EvaluationsByOrganizationsForm(self.context, self.request)
+        formview.calculate_posted_filter()
+        validated = getattr(formview, 'validated', {})
+        default_contents = self.request.analytics_default_content_types
+        states = validated.get('states', [])
+        keywords = validated.get('keywords', [])
+        types = validated.get('content_types', default_contents)
+        author = validated.get('author', None)
+        poles = validated.get('poles', [])
+        organizations = validated.get('organizations', [])
+        regions = validated.get('regions', [])
+        date_date = validated.get('dates', {})
+        date_from = date_date.get('date_from', None)
+        date_to = date_date.get('date_to', None)
+        contribution_filter = {'authors': [],
+                               'poles': poles,
+                               'organizations': organizations,
+                               'regions': regions}
+        if author is not None:
+            contribution_filter['authors'] = [author]
+
+        localizer = self.request.localizer
+        has_value = False
+        filter_ = {
+            'metadata_filter': {
+                'content_types': types,
+                'states': states,
+                'keywords': keywords
+            },
+            'contribution_filter': contribution_filter
+        }
+        data = get_organizations_by_evaluations(
+            filter_, user, root, date_from, date_to)
+
+        has_value = has_value or data[1] > 0
+        support_title = localizer.translate(_('Support', context='analytics'))
+        items = data[0].items()
+        results[support_title] = {
+            'data': dict([(pid, v['support']) for pid, v in items]),
+            'len': sum([v['support'] for pid, v in items]),
+            'color': {'background': '#4eaf4e'},
+            }
+        opposition_title = localizer.translate(_('Opposition'))
+        results[opposition_title] = {
+            'data': dict([(pid, v['opposition']) for pid, v in items]),
+            'len': sum([v['opposition'] for pid, v in items]),
+            'color': {'background':  '#ef6e18'},
+            }
+        labels = {pid: get_obj(pid).title for pid,_ in items}
+        study = self.content(
+            args={'results': results}, template=self.analytics_study)['body']
+        values = {
+            'has_value': has_value,
+            'analytics': results,
+            'labels': labels,
+            'view': self,
+            'charts': ['bar_stacked'],
+            'study': study,
+            'id': 'evaluations'}
         body = self.content(
             args=values, template=self.analytics_template)['body']
         return {'body': body}

@@ -190,7 +190,7 @@ def seeproposals_processsecurity_validation(process, context):
 class SeeOrderedProposal(InfiniteCardinality):
     style_descriminator = 'lateral-action'
     style_picto = 'novaideo-icon icon-proposal-ex'
-    style_order = -2
+    style_order = 2
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeproposals_roles_validation
@@ -215,7 +215,7 @@ def seeindeas_processsecurity_validation(process, context):
 class SeeIdeasToExamine(InfiniteCardinality):
     style_descriminator = 'lateral-action'
     style_picto = 'novaideo-icon icon-idea-ex'
-    style_order = -4
+    style_order = 1
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeindeas_roles_validation
@@ -385,7 +385,7 @@ def seeusers_processsecurity_validation(process, context):
 class SeeUsers(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-user'
-    style_order = 0
+    style_order = 8
     isSequential = False
     context = INovaIdeoApplication
     roles_validation = seeusers_roles_validation

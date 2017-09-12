@@ -102,6 +102,7 @@ class ContentView(BasicView):
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     content_type = 'idea'
     isactive = False
+    hasparent=True
 
     def _add_filter(self, user):
         def source(**args):
@@ -120,7 +121,7 @@ class ContentView(BasicView):
 
         url = self.request.resource_url(
             self.context, '@@novaideoapi',
-            query={'view_content_type': self.content_type})
+            query={'view_content_id': self.content_id})
         select = [('metadata_filter', ['states', 'keywords']), 'geographic_filter',
                   'contribution_filter',
                   ('temporal_filter', ['negation', 'created_date']),
@@ -131,59 +132,64 @@ class ContentView(BasicView):
             source=source,
             select=select,
             filter_source="challenge",
-            filterid=self.content_type)
+            filterid=self.viewid)
 
     def update(self):
-        user = get_current()
-        filter_form, filter_data = self._add_filter(user)
-        default_content = [self.content_type]
-        validated = {
-            'metadata_filter':
-                {'content_types': default_content,
-                'states': ['active', 'published']}
-        }
-        args = {}
-        args = merge_with_filter_view(self, args)
-        args['request'] = self.request
-        novaideo_index = find_catalog('novaideo')
-        challenges = novaideo_index['challenges']
-        query = challenges.any([self.context.__oid__])
-        objects = find_entities(
-            user=user,
-            filters=[validated],
-            add_query=query,
-            **args)
-        objects, sort_body = sort_view_objects(
-            self, objects, [self.content_type], user)
-        url = self.request.resource_url(
-            self.context, '',
-            query={'view_content_type': self.content_type})
-        batch = Batch(objects,
-                      self.request,
-                      url=url,
-                      default_size=BATCH_DEFAULT_SIZE)
-        self.title = _(self.title, mapping={'nb': batch.seqlen})
-        batch.target = "#results-" + self.content_type
-        filter_instance = getattr(self, 'filter_instance', None)
-        filter_body = None
-        if filter_instance:
-            filter_data['filter_message'] = self.title
-            filter_body = filter_instance.get_body(filter_data)
-        result_body, result = render_listing_objs(
-            self.request, batch, user)
-        values = {'bodies': result_body,
-                  'batch': batch,
-                  'empty_message': self.empty_message,
-                  'empty_icon': self.empty_icon,
-                  'filter_body': filter_body,
-                  'sort_body': sort_body}
-        if filter_form:
-            result = merge_dicts(
-                {'css_links': filter_form['css_links'],
-                 'js_links': filter_form['js_links']
-                }, result)
+        body = ''
+        result = {}
+        if self.isactive or self.params('on_demand') == 'load':
+            user = get_current()
+            filter_form, filter_data = self._add_filter(user)
+            default_content = [self.content_type]
+            validated = {
+                'metadata_filter':
+                    {'content_types': default_content,
+                    'states': ['active', 'published']}
+            }
+            args = {}
+            args = merge_with_filter_view(self, args)
+            args['request'] = self.request
+            novaideo_index = find_catalog('novaideo')
+            challenges = novaideo_index['challenges']
+            query = challenges.any([self.context.__oid__])
+            objects = find_entities(
+                user=user,
+                filters=[validated],
+                add_query=query,
+                **args)
+            objects, sort_body = sort_view_objects(
+                self, objects, [self.content_type], user)
+            url = self.request.resource_url(
+                self.context, '',
+                query={'view_content_id': self.content_id})
+            batch = Batch(objects,
+                          self.request,
+                          url=url,
+                          default_size=BATCH_DEFAULT_SIZE)
+            self.title = _(self.title, mapping={'nb': batch.seqlen})
+            batch.target = "#results-" + self.content_id
+            filter_instance = getattr(self, 'filter_instance', None)
+            filter_body = None
+            if filter_instance:
+                filter_data['filter_message'] = self.title
+                filter_body = filter_instance.get_body(filter_data)
+            result_body, result = render_listing_objs(
+                self.request, batch, user)
+            values = {'bodies': result_body,
+                      'batch': batch,
+                      'empty_message': self.empty_message,
+                      'empty_icon': self.empty_icon,
+                      'filter_body': filter_body,
+                      'sort_body': sort_body,
+                      'view': self}
+            if filter_form:
+                result = merge_dicts(
+                    {'css_links': filter_form['css_links'],
+                     'js_links': filter_form['js_links']
+                    }, result)
 
-        body = self.content(args=values, template=self.template)['body']
+            body = self.content(args=values, template=self.template)['body']
+
         item = self.adapt_item(body, self.viewid)
         item['isactive'] = self.isactive
         result['coordinates'] = {self.coordinates: [item]}
@@ -191,8 +197,9 @@ class ContentView(BasicView):
 
 
 class IdeasView(ContentView):
-    title = _('Ideas (${nb})')
+    title = _('Ideas')
     content_type = 'idea'
+    content_id = 'challenge-ideas'
     viewid = 'challenge-ideas'
     view_icon = 'icon novaideo-icon icon-idea'
     counter_id = 'challenge-ideas-counter'
@@ -201,9 +208,14 @@ class IdeasView(ContentView):
     isactive = True
 
 
+@asyn_component_config(
+    id='challenge-proposals',
+    on_demand=True,
+    delegate='challenge_see_challenge')
 class ProposalsView(ContentView):
-    title = _('The Working Groups (${nb})')
+    title = _('The Working Groups')
     content_type = 'proposal'
+    content_id = 'challenge-proposals'
     viewid = 'challenge-proposals'
     view_icon = 'icon novaideo-icon icon-wg'
     counter_id = 'challenge-proposals-counter'
@@ -211,9 +223,14 @@ class ProposalsView(ContentView):
     empty_icon = 'icon novaideo-icon icon-wg'
 
 
+@asyn_component_config(
+    id='challenge-questions',
+    on_demand=True,
+    delegate='challenge_see_challenge')
 class QuestionsView(ContentView):
-    title = _('Questions (${nb})')
+    title = _('Questions')
     content_type = 'question'
+    content_id = 'challenge-questions'
     viewid = 'challenge-questions'
     view_icon = 'md md-live-help'
     counter_id = 'challenge-questions-counter'
@@ -310,6 +327,7 @@ class ChallengeContentsView(MultipleView):
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
+            delegated_by = kwargs.get('delegated_by', None)
             views = [IdeasView]
             if 'question' in self.request.content_to_manage:
                 views = [QuestionsView, IdeasView]
@@ -318,13 +336,14 @@ class ChallengeContentsView(MultipleView):
                 views.append(ProposalsView)
 
             views = tuple(views)
-            if self.params('view_content_type') == 'idea':
+            view_id = self.params('view_content_id')
+            if 'challenge-ideas' in (delegated_by, view_id):
                 views = (IdeasView, )
 
-            if self.params('view_content_type') == 'proposal':
+            if 'challenge-proposals' in (delegated_by, view_id):
                 views = (ProposalsView, )
 
-            if self.params('view_content_type') == 'question':
+            if 'challenge-questions' in (delegated_by, view_id):
                 views = (QuestionsView, )
 
         super(ChallengeContentsView, self)._init_views(views, **kwargs)

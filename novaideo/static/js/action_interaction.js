@@ -22,9 +22,10 @@ function get_action_metadata(action){
 }
 
 
-function load_views(){
+function load_views(on_demand, element){
   var body = $(document.body)
-  var loading_components = $('[data-component_type="on-load-view"]')
+  var components = element ? element.find('[data-component_type="on-load-view"]') : $('[data-component_type="on-load-view"]')
+  var loading_components = components
         .map(function(){return $(this).attr('id')}).get()
   if(loading_components.length>0){
       data = {
@@ -33,7 +34,8 @@ function load_views(){
         'loading_components': JSON.stringify(loading_components),
         included_resources: JSON.stringify(includejs_resources),
         'op': 'load_views',
-        'load_view': 'load'
+        'load_view': 'load',
+        'on_demand': on_demand ? 'load': ''
       }
       var url = body.data('api_url')
       $.post(url, data, function(data) {
@@ -594,4 +596,8 @@ $(document).on('click', '.sidebar-nav-items .item.closed',function(event){
 
 $(document).on('resources_loaded', function(){
   load_views()
+})
+
+$(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+  load_views(true, $($(this).attr('href'))) // newly activated tab
 })

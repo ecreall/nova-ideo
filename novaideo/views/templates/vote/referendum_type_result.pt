@@ -17,33 +17,26 @@
 	  <script>
 	    <div tal:omit-tag="">
 	      $('.nav-tabs li>a[href="#${tab_id}"]').on('shown.bs.tab', function (e) {
-	          var doughnutData = [
-	            {
-	                label: "${true_value}",
-	                fillColor: "#54902a",
-	                color: "#54902a",
-	                highlight: "#447521",
-	                value: ${(len_true*100/len_vote) if len_vote else 0}
-	            },
-	            {
-	                label: "${false_value}",
-	                fillColor: "#d4492f",
-	                color: "#d4492f",
-	                highlight: "#b53f29",
-	                value: ${(len_false*100/len_vote) if len_vote else 0}
-	            }
-	        ];
+	        var doughnutData = {
+                labels: ["${true_value}", "${false_value}"],
+                datasets: [
+                    {
+                        data: [${(len_true*100/len_vote) if len_vote else 0}, ${(len_false*100/len_vote) if len_vote else 0}],
+
+                        backgroundColor: ["#54902a", "#d4492f"],
+                    },
+                ]
+            };
 	        var canvas_id = "stat-canvas-${oid}"
 	        var newcanvas = get_new_canvas(canvas_id);
 	        $(canvas_id).replaceWith(newcanvas)
 	        var ctxdoughnut = document.getElementById(canvas_id).getContext("2d");
 	        ctxdoughnut.clearRect(0, 0, 500, 500);
-	        var doughnut = new Chart(ctxdoughnut).Doughnut(doughnutData, {
+	        var doughnut = new Chart(ctxdoughnut, {type: 'doughnut',data: doughnutData, options:{
 	            responsive: true,
 	            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %> %",
 	            generateLegend: true,
-	        });
-	        var doughnutlegend = doughnut.generateLegend();
+	        }});
 	        $('.analytics-container #legend-doughnut-${oid}').html(doughnutlegend)
 	      })
 	    </div>

@@ -328,6 +328,7 @@ function initscroll(result_scrolls){
               data_get += '&'+sort_form;
            }
            data_get += '&load_view=load';
+           data_get += '&on_demand=load';
 
            var f = function(currPage) {
               var next_path = $($('#'+id+' .result-container').first().parents('div').first().find('>.result-container').last()).data('nex_url')
