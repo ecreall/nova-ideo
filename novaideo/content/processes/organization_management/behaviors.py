@@ -124,6 +124,7 @@ class EditOrganizations(InfiniteCardinality):
             for manager in organization.managers:
                 if manager not in members:
                     organization.addtoproperty('members', manager)
+                    manager.init_contents_organizations()
 
             organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
             organization.reindex()
@@ -214,6 +215,7 @@ class EditOrganization(InfiniteCardinality):
         for manager in organization.managers:
             if manager not in members:
                 organization.addtoproperty('members', manager)
+                manager.init_contents_organizations()
 
         organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
         organization.reindex()
@@ -267,6 +269,7 @@ class AddMembers(InfiniteCardinality):
             new_member = False
             if member not in context.members:
                 context.addtoproperty('members', member)
+                member.init_contents_organizations()
                 new_member = True
 
             if are_managers and (new_member or not has_role(
