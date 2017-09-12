@@ -828,7 +828,10 @@ def evolve_state_pontusFiles(root, registry):
     contents = find_entities(interfaces=[IFile])
     for file_ in contents:
         if file_:
-            file_.generate_variants()
+            try:
+                file_.generate_variants()
+            except Exception as error:
+                log.warning(error)
 
     log.info('Pontus files evolved.')
 
