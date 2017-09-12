@@ -224,8 +224,8 @@ class SeeReports(InfiniteCardinality):
         if nb_only:
             return str(len_reports)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_reports,
+        return _("${title} (${number})",
+                 mapping={'number': len_reports,
                           'title': request.localizer.translate(self.title)})
 
     def start(self, context, request, appstruct, **kw):

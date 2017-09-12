@@ -26,7 +26,7 @@ from novaideo import _
 CONTENTS_MESSAGES = {
     '0': _(u"""No organization found"""),
     '1': _(u"""One organization found"""),
-    '*': _(u"""${nember} organizations found""")
+    '*': _(u"""${number} organizations found""")
     }
 
 
@@ -61,7 +61,7 @@ class SeeOrganizationsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         user = get_current()
         result_body, result = render_listing_objs(
             self.request, batch, user)

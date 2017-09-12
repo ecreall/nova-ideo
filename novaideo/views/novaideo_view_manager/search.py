@@ -40,7 +40,7 @@ from novaideo.content.question import Question
 CONTENTS_MESSAGES = {
     '0': _(u"""No element found"""),
     '1': _(u"""One element found"""),
-    '*': _(u"""${nember} elements found""")
+    '*': _(u"""${number} elements found""")
 }
 
 DEFAULT_SEARCHABLE_CONTENT = [
@@ -284,7 +284,7 @@ class SearchResultView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body, result = render_listing_objs(
             self.request, batch, user)
         values = {'bodies': result_body,

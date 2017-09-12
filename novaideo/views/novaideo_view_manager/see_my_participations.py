@@ -24,7 +24,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""I have participated in no working group so far"""),
     '1': _(u"""I have participated in one working group so far"""),
-    '*': _(u"""I have participated in ${nember} working groups so far""")
+    '*': _(u"""I have participated in ${number} working groups so far""")
 }
 
 

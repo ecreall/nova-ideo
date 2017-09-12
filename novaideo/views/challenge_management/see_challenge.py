@@ -37,7 +37,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""No element found"""),
     '1': _(u"""One element found"""),
-    '*': _(u"""${nember} elements found""")
+    '*': _(u"""${number} elements found""")
 }
 
 
@@ -102,7 +102,7 @@ class ContentView(BasicView):
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     content_type = 'idea'
     isactive = False
-    hasparent=True
+    hasparent = True
 
     def _add_filter(self, user):
         def source(**args):

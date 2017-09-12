@@ -25,7 +25,7 @@ from novaideo import _
 CONTENTS_MESSAGES = {
     '0': _(u"""No announcement found"""),
     '1': _(u"""One announcement found"""),
-    '*': _(u"""${nember} announcements found""")
+    '*': _(u"""${number} announcements found""")
     }
 
 
@@ -60,7 +60,7 @@ class SeeAdvertisingsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body = []
         for obj in batch:
             object_values = {'object': obj,

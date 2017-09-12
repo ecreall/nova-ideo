@@ -24,7 +24,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""No followed element was found"""),
     '1': _(u"""One followed element was found"""),
-    '*': _(u"""${nember} followed elements were found""")}
+    '*': _(u"""${number} followed elements were found""")}
 
 
 @asyn_component_config(id='novaideoapp_seemyselections')

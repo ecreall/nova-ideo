@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-09-12 11:32+0200\n"
+"POT-Creation-Date: 2017-09-12 12:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2056,7 +2056,7 @@ msgstr ""
 #: ./novaideo/content/processes/idea_management/behaviors.py:789
 #: ./novaideo/content/processes/idea_management/behaviors.py:910
 #, python-format
-msgid "${title} (${nember})"
+msgid "${title} (${number})"
 msgstr ""
 
 #: ./novaideo/content/processes/user_management/definition.py:48
@@ -4100,7 +4100,7 @@ msgstr ""
 
 #: ./novaideo/views/user_management/see_registrations.py:30
 #, python-format
-msgid "${nember} registrations found"
+msgid "${number} registrations found"
 msgstr ""
 
 #: ./novaideo/views/user_management/discuss.py:27
@@ -4326,7 +4326,7 @@ msgstr ""
 #: ./novaideo/views/reports_management/see_reports.py:33
 #: ./novaideo/views/challenge_management/see_challenge.py:40
 #, python-format
-msgid "${nember} elements found"
+msgid "${number} elements found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/search.py:68
@@ -4363,7 +4363,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_my_contents.py:33
 #, python-format
-msgid "I have contributed to ${nember} contents so far"
+msgid "I have contributed to ${number} contents so far"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_my_participations.py:25
@@ -4376,7 +4376,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_my_participations.py:27
 #, python-format
-msgid "I have participated in ${nember} working groups so far"
+msgid "I have participated in ${number} working groups so far"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:27
@@ -4389,7 +4389,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:29
 #, python-format
-msgid "You have ${nember} new alerts"
+msgid "You have ${number} new alerts"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_alerts.py:39
@@ -4413,7 +4413,7 @@ msgstr ""
 #: ./novaideo/views/novaideo_view_manager/see_my_supports.py:27
 #, python-format
 msgid ""
-"You have evaluated ${nember} contents so far. You have ${tokens} remaining "
+"You have evaluated ${number} contents so far. You have ${tokens} remaining "
 "evaluation tokens"
 msgstr ""
 
@@ -4428,7 +4428,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_users.py:39
 #, python-format
-msgid "${nember} members were found"
+msgid "${number} members were found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_users.py:167
@@ -4448,7 +4448,7 @@ msgstr ""
 #: ./novaideo/views/novaideo_view_manager/see_ordered_proposals.py:32
 #: ./novaideo/views/novaideo_view_manager/see_proposals_to_moderate.py:32
 #, python-format
-msgid "${nember} proposals found"
+msgid "${number} proposals found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/home.py:137
@@ -4490,7 +4490,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_dependencies.py:30
 #, python-format
-msgid "${nember} associations"
+msgid "${number} associations"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_dependencies.py:45
@@ -4507,7 +4507,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_my_selections.py:27
 #, python-format
-msgid "${nember} followed elements were found"
+msgid "${number} followed elements were found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_ideas_to_examine.py:30
@@ -4523,7 +4523,7 @@ msgstr ""
 #: ./novaideo/views/novaideo_view_manager/see_ideas_to_examine.py:32
 #: ./novaideo/views/novaideo_view_manager/see_ideas_to_moderate.py:32
 #, python-format
-msgid "${nember} ideas found"
+msgid "${number} ideas found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/nova_idei_config.py:33
@@ -4561,7 +4561,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_reported_contents.py:33
 #, python-format
-msgid "${nember} contents found"
+msgid "${number} contents found"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_ballot.py:31
@@ -4575,7 +4575,7 @@ msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_ballot.py:33
 #, python-format
-msgid "${nember} votes"
+msgid "${number} votes"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/see_ballot.py:74
@@ -5138,7 +5138,7 @@ msgstr ""
 #: ./novaideo/views/templates/question_bloc.pt:79
 #: ./novaideo/views/question_management/see_question.py:40
 #, python-format
-msgid "${nember} answers"
+msgid "${number} answers"
 msgstr ""
 
 #: ./novaideo/views/templates/question_result.pt:83
@@ -7465,7 +7465,7 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/see_amendments.py:31
 #, python-format
-msgid "${nember} amended versions"
+msgid "${number} amended versions"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/see_amendments.py:47
@@ -7513,7 +7513,7 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/see_related_ideas.py:29
 #, python-format
-msgid "${nember} related ideas"
+msgid "${number} related ideas"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/see_related_ideas.py:45
@@ -7564,7 +7564,7 @@ msgstr ""
 
 #: ./novaideo/views/proposal_management/see_members.py:31
 #, python-format
-msgid "${nember} members"
+msgid "${number} members"
 msgstr ""
 
 #: ./novaideo/views/proposal_management/see_members.py:43
@@ -7981,7 +7981,7 @@ msgstr ""
 
 #: ./novaideo/views/newsletter_management/see_newsletters.py:28
 #, python-format
-msgid "${nember} newsletters found"
+msgid "${number} newsletters found"
 msgstr ""
 
 #: ./novaideo/views/newsletter_management/templates/see_newsletter.pt:16
@@ -8058,7 +8058,7 @@ msgstr ""
 
 #: ./novaideo/views/invitation_management/see_invitations.py:34
 #, python-format
-msgid "${nember} invitations found"
+msgid "${number} invitations found"
 msgstr ""
 
 #: ./novaideo/views/invitation_management/upload_users.py:27
@@ -8349,7 +8349,7 @@ msgstr ""
 
 #: ./novaideo/views/smart_folder_management/see_smart_folders.py:27
 #, python-format
-msgid "${nember} topics of interests found"
+msgid "${number} topics of interests found"
 msgstr ""
 
 #: ./novaideo/views/smart_folder_management/order_sub_smart_folders.py:52
@@ -8563,7 +8563,7 @@ msgstr ""
 
 #: ./novaideo/views/advertising_management/see_advertisings.py:28
 #, python-format
-msgid "${nember} announcements found"
+msgid "${number} announcements found"
 msgstr ""
 
 #: ./novaideo/views/challenge_management/present_challenge.py:74
@@ -8596,7 +8596,7 @@ msgstr ""
 
 #: ./novaideo/views/challenge_management/see_challenges.py:37
 #, python-format
-msgid "${nember} challenges found"
+msgid "${number} challenges found"
 msgstr ""
 
 #: ./novaideo/views/challenge_management/see_challenges.py:48
@@ -8623,7 +8623,7 @@ msgstr ""
 
 #: ./novaideo/views/challenge_management/see_members.py:30
 #, python-format
-msgid "${nember} participants"
+msgid "${number} participants"
 msgstr ""
 
 #: ./novaideo/views/challenge_management/see_members.py:45
@@ -8750,7 +8750,7 @@ msgstr ""
 
 #: ./novaideo/views/organization_management/see_organizations.py:29
 #, python-format
-msgid "${nember} organizations found"
+msgid "${number} organizations found"
 msgstr ""
 
 #: ./novaideo/views/organization_management/see_organization.py:124
@@ -8837,7 +8837,7 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/compare_idea.py:29
 #, python-format
-msgid "${nember} available versions"
+msgid "${number} available versions"
 msgstr ""
 
 #: ./novaideo/views/idea_management/compare_idea.py:34
@@ -8870,7 +8870,7 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/see_workinggroups.py:29
 #, python-format
-msgid "${nember} related working groups"
+msgid "${number} related working groups"
 msgstr ""
 
 #: ./novaideo/views/idea_management/edit_idea.py:48

@@ -76,7 +76,7 @@
           <div class="alert-success alert-discret" tal:define="len_answers object.len_answers">
             <strong tal:condition="len_answers==0" i18n:translate="">No answer</strong>
             <strong tal:condition="len_answers==1" i18n:translate="">One answer</strong>
-            <strong tal:condition="len_answers>1" i18n:translate="" ><span i18n:name="nember">${len_answers}</span> answers</strong>
+            <strong tal:condition="len_answers>1" i18n:translate="" ><span i18n:name="number">${len_answers}</span> answers</strong>
           </div>
           <div tal:omit-tag="" tal:condition="options">
             <div tal:condition="selected_option is None" class="alert alert-info alert-discret">

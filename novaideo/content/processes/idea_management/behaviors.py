@@ -786,8 +786,8 @@ class CommentIdea(InfiniteCardinality):
         if nb_only:
             return str(len_comments)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_comments,
+        return _("${title} (${number})",
+                 mapping={'number': len_comments,
                           'title': request.localizer.translate(self.title)})
 
     def _get_users_to_alerts(self, context, request, channel):
@@ -907,8 +907,8 @@ class PresentIdea(InfiniteCardinality):
         if nb_only:
             return str(len_members)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_members,
+        return _("${title} (${number})",
+                 mapping={'number': len_members,
                           'title': request.localizer.translate(self.title)})
 
     def start(self, context, request, appstruct, **kw):

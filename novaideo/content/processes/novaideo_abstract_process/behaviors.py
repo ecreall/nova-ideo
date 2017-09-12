@@ -57,8 +57,8 @@ class SelectEntity(InfiniteCardinality):
         if nb_only:
             return str(len_selections)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_selections,
+        return _("${title} (${number})",
+                 mapping={'number': len_selections,
                           'title': request.localizer.translate(self.title)})
 
     def start(self, context, request, appstruct, **kw):
@@ -124,8 +124,8 @@ class DeselectEntity(InfiniteCardinality):
         if nb_only:
             return str(len_selections)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_selections,
+        return _("${title} (${number})",
+                 mapping={'number': len_selections,
                           'title': request.localizer.translate(self.title)})
 
     def start(self, context, request, appstruct, **kw):

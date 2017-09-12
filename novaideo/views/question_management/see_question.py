@@ -37,7 +37,7 @@ from novaideo.views.filter.sort import (
 CONTENTS_MESSAGES = {
     '0': _(u"""No answer"""),
     '1': _(u"""One answer"""),
-    '*': _(u"""${nember} answers""")
+    '*': _(u"""${number} answers""")
 }
 
 
@@ -115,7 +115,7 @@ class AnswersView(BasicView):
         index = str(len_answers) if len_answers <= 1 else '*'
         if not self.parent:
             self.title = _(CONTENTS_MESSAGES[index],
-                           mapping={'nember': len_answers})
+                           mapping={'number': len_answers})
         elif index != '*':
             self.title = _('The answer')
 
@@ -221,7 +221,7 @@ class SeeQuestionHeaderView(BasicView):
             index = '*'
 
         answers_title = _(CONTENTS_MESSAGES[index],
-                          mapping={'nember': len_answers})
+                          mapping={'number': len_answers})
         answer_body = None
         if self.context.answer:
             answer_body = render_listing_obj(

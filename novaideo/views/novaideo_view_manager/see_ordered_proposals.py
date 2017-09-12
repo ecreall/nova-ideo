@@ -29,7 +29,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""No proposal found"""),
     '1': _(u"""One proposal found"""),
-    '*': _(u"""${nember} proposals found""")
+    '*': _(u"""${number} proposals found""")
     }
 
 
@@ -101,7 +101,7 @@ class SeeOrderedProposalView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         filter_data['filter_message'] = self.title
         filter_body = self.filter_instance.get_body(filter_data)
         result_body, result = render_listing_objs(

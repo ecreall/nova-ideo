@@ -28,7 +28,7 @@ BATCH_DEFAULT_SIZE = 30
 MEMBERS_MESSAGES = {
     '0': _(u"""No member"""),
     '1': _(u"""One member"""),
-    '*': _(u"""${nember} members""")
+    '*': _(u"""${number} members""")
 }
 
 
@@ -62,7 +62,7 @@ class SeeMembersView(BasicView):
         result_body = render_small_listing_objs(
             self.request, batch, user)
         result = {}
-        self.title = _(MEMBERS_MESSAGES[index], mapping={'nember': len_result})
+        self.title = _(MEMBERS_MESSAGES[index], mapping={'number': len_result})
         values = {
             'bodies': result_body,
             'batch': batch,

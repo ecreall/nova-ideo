@@ -30,7 +30,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""I have contributed to no content so far"""),
     '1': _(u"""I have contributed to one content so far"""),
-    '*': _(u"""I have contributed to ${nember} contents so far""")
+    '*': _(u"""I have contributed to ${number} contents so far""")
     }
 
 
@@ -57,7 +57,7 @@ class SeeMyContentsView(BasicView):
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],
-                       mapping={'nember': args.get('len_result')})
+                       mapping={'number': args.get('len_result')})
 
     def _add_filter(self, user):
         def source(**args):

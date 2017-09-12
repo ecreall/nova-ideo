@@ -41,11 +41,11 @@ class StepsPanel(object):
         return self.context
 
     def _get_step1_informations(self, context, request):
-        proposal_nember = len(context.related_proposals)
+        proposal_number = len(context.related_proposals)
         duplicates_len = len(context.duplicates)
         return renderers.render(self.step1_0_template,
                                 {'context': context,
-                                 'proposal_nember': proposal_nember,
+                                 'proposal_number': proposal_number,
                                  'duplicates_len': duplicates_len},
                                 request)
 
@@ -62,7 +62,7 @@ class StepsPanel(object):
 
         return renderers.render(self.step2_0_template,
                                 {'context': context,
-                                 'proposal_nember': len_related_proposals},
+                                 'proposal_number': len_related_proposals},
                                 request)
 
     def _get_step3_informations(self, context, request):

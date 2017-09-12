@@ -27,7 +27,7 @@ from novaideo.content.interface import IPreregistration
 CONTENTS_MESSAGES = {
         '0': _(u"""No registration found"""),
         '1': _(u"""One registration found"""),
-        '*': _(u"""${nember} registrations found""")
+        '*': _(u"""${number} registrations found""")
         }
 
 
@@ -63,7 +63,7 @@ class SeeRegistrationsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body, result = render_listing_objs(
             self.request, batch, user)
 

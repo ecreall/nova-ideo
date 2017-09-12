@@ -28,7 +28,7 @@ BATCH_DEFAULT_SIZE = 8
 AMENDMENTS_MESSAGES = {
     '0': _(u"""No amended version"""),
     '1': _(u"""One amended version"""),
-    '*': _(u"""${nember} amended versions""")}
+    '*': _(u"""${number} amended versions""")}
 
 
 @view_config(
@@ -67,7 +67,7 @@ class SeeAmendmentsView(BasicView):
             index = '*'
 
         self.title = _(AMENDMENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body, result = render_listing_objs(
             self.request, batch, user)
         values = {

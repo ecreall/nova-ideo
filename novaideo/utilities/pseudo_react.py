@@ -868,7 +868,7 @@ def get_remove_invitation_metadata(action, request, context, api, **kwargs):
 
     view_title = request.localizer.translate(
         _(INVITATION_CONTENTS_MESSAGES[index],
-          mapping={'nember': len_result}))
+          mapping={'number': len_result}))
     result = {
         'action': 'redirect_action',
         'view': api,
@@ -1023,7 +1023,7 @@ def get_remove_registration_metadata(action, request, context, api, **kwargs):
 
     view_title = request.localizer.translate(
         _(REGISTRATION_CONTENTS_MESSAGES[index],
-          mapping={'nember': len_result}))
+          mapping={'number': len_result}))
     result['ignore_redirect'] = not kwargs['is_source_context']
     result['view_title'] = view_title
     return result
@@ -1594,7 +1594,7 @@ def get_remove_organization_metadata(action, request, context, api, **kwargs):
 
     view_title = request.localizer.translate(
         _(ORGANIZATION_CONTENTS_MESSAGES[index],
-          mapping={'nember': len_result}))
+          mapping={'number': len_result}))
     result['view_title'] = view_title
     return result
 
@@ -1730,7 +1730,7 @@ def component_navbar_myselections(action, request, context, api, **kwargs):
 
         view_title = localizer.translate(
                 _(SELECT_CONTENTS_MESSAGES[index],
-                  mapping={'nember': len_selections}))
+                  mapping={'number': len_selections}))
         result.update({
             'view_title': view_title,
             'view_name': view_name
@@ -1763,7 +1763,7 @@ def component_navbar_mysupports(action, request, context, api, **kwargs):
 
         view_title = localizer.translate(
             _(CONTENTS_MESSAGES[index],
-              mapping={'nember': item_nb,
+              mapping={'number': item_nb,
                        'tokens': len_tokens}))
         result.update({
             'view_title': view_title,
@@ -1797,7 +1797,7 @@ def component_navbar_mycontents(action, request, context, api, **kwargs):
 
         view_title = localizer.translate(
             _(MY_CONTENTS_MESSAGES[index],
-              mapping={'nember': item_nb}))
+              mapping={'number': item_nb}))
         result.update({
             'view_title': view_title,
             'view_name': view_name
@@ -1917,7 +1917,7 @@ def component_navbar_myparticipations(action, request, context, api, **kwargs):
 
         view_title = localizer.translate(
             _(MY_PARTICIPATIONS_MESSAGES[index],
-              mapping={'nember': item_nb}))
+              mapping={'number': item_nb}))
         result.update({
             'view_title': view_title,
             'view_name': view_name

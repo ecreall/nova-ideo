@@ -25,7 +25,7 @@ from novaideo import _
 CONTENTS_MESSAGES = {
     '0': _(u"""No newsletter found"""),
     '1': _(u"""One newsletter found"""),
-    '*': _(u"""${nember} newsletters found""")
+    '*': _(u"""${number} newsletters found""")
     }
 
 
@@ -55,7 +55,7 @@ class SeeNewslettersView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
 
         user = get_current()
         result_body, result = render_listing_objs(

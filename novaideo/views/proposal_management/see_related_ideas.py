@@ -26,7 +26,7 @@ BATCH_DEFAULT_SIZE = 8
 ADDIDEAS_MESSAGES = {
     '0': _(u"""No related ideas"""),
     '1': _(u"""One related idea"""),
-    '*': _(u"""${nember} related ideas""")}
+    '*': _(u"""${number} related ideas""")}
 
 
 @view_config(
@@ -74,7 +74,7 @@ class SeeRelatedIdeasView(BasicView):
                 self.request, batch, user)
 
         self.title = _(ADDIDEAS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         values = {
             'bodies': result_body,
             'batch': batch

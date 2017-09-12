@@ -36,7 +36,7 @@ class ContentView(BasicView):
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     content_attr = 'ideas'
     isactive = False
-    hasparent=True
+    hasparent = True
 
     def update(self):
         body = ''

@@ -36,7 +36,7 @@ from novaideo.views.core import asyn_component_config
 CONTENTS_MESSAGES = {
     '0': _(u"""No member"""),
     '1': _(u"""One member was found"""),
-    '*': _(u"""${nember} members were found""")
+    '*': _(u"""${number} members were found""")
     }
 
 
@@ -62,7 +62,7 @@ class SeeUsersView(BasicView):
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],
-                 mapping={'nember': args.get('len_result')})
+                 mapping={'number': args.get('len_result')})
 
     def _add_filter(self, user, is_manager):
         def source(**args):
@@ -179,7 +179,7 @@ class SeeInactiveUsersView(BasicView):
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],
-                 mapping={'nember': args.get('len_result')})
+                 mapping={'number': args.get('len_result')})
 
     def _add_filter(self, user, alert_date_min):
         def source(**args):

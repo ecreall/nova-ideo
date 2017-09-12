@@ -294,8 +294,8 @@ class AnswerQuestion(InfiniteCardinality):
         if nb_only:
             return str(len_answers)
 
-        return _("${title} (${nember})",
-                 mapping={'nember': len_answers,
+        return _("${title} (${number})",
+                 mapping={'number': len_answers,
                           'title': request.localizer.translate(self.title)})
 
     def _get_users_to_alerts(self, context, request):

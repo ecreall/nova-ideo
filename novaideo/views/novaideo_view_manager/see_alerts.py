@@ -26,7 +26,7 @@ BATCH_DEFAULT_SIZE = 30
 CONTENTS_MESSAGES = {
     '0': _(u"""You have no new alert"""),
     '1': _(u"""You have one new alert"""),
-    '*': _(u"""You have ${nember} new alerts""")
+    '*': _(u"""You have ${number} new alerts""")
     }
 
 
@@ -65,7 +65,7 @@ class SeeAlertsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         result_body = []
         for obj in batch:
             render_dict = {

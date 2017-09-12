@@ -34,7 +34,7 @@ BATCH_HOME_DEFAULT_SIZE = 4
 CONTENTS_MESSAGES = {
     '0': _(u"""No challenge found"""),
     '1': _(u"""One challenge found"""),
-    '*': _(u"""${nember} challenges found""")
+    '*': _(u"""${number} challenges found""")
     }
 
 
@@ -102,7 +102,7 @@ class SeeChallengesView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         filter_data['filter_message'] = self.title
         filter_body = self.filter_instance.get_body(filter_data)
         result_body, result = render_listing_objs(
