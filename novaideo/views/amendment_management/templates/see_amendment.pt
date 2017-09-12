@@ -10,7 +10,7 @@
     <div tal:condition="to_submit" role="alert" class="alert alert-info alert-dismissible">
        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
        <span class="glyphicon glyphicon-info-sign pull-right"></span>
-        <span  i18n:translate="">You have now provided explanations to all of your improvements. You can now prepare the amendments that you will submit to the other participants.</span> 
+        <span  i18n:translate="">You have now provided explanations to all of your improvements. You can now prepare the amendments that you will submit to the other participants.</span>
     </div>
     <div tal:omit-tag="" tal:condition="'explanation' in amendment.state and (not_favorable_ideas or not_published_ideas)">
       <div role="alert" class="alert alert-info alert-dismissible">
@@ -46,8 +46,8 @@
                   author_picture getattr(author, 'picture', None)">
       <small>
         <div class="author-block">
-          <img class="author-img img-circle" 
-             tal:condition="author_picture is not None" 
+          <img class="author-img img-circle"
+             tal:condition="author_picture is not None"
              tal:attributes="src getattr(author_picture, 'profil', author_picture).url"  width="35"/>
           <img class="author-img img-circle" tal:condition="author_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="35"/>
             <span i18n:translate="">Version amended by</span>
@@ -65,7 +65,7 @@
     <div tal:condition="justification" class="well object-well proposal-well">
       <dl>
           <dt>
-            <span class="glyphicon glyphicon-comment"></span> 
+            <span class="glyphicon glyphicon-comment"></span>
             <span i18n:translate="">Justification</span></dt>
           <dd tal:condition="justification">${justification}</dd>
       </dl>

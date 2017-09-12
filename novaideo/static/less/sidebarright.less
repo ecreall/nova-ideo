@@ -7,286 +7,276 @@
 /* Toggle Styles */
 
 .bar-right-wrapper {
-    padding-right: 800px;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+  padding-right: 800px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .bar-right-wrapper.toggled {
-    padding-right: 0px;
+  padding-right: 0px;
 }
 
 .sidebar-right-wrapper {
-    background-color: white;
-    box-shadow: 2px 0 10px black;
-    height: 100%;
-    right: 800px;
-    margin-right: -800px;
-    overflow-y: auto;
-    position: fixed;
-    top: 0;
-    width: 70%;
-    z-index: 1048;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+  background-color: white;
+  box-shadow: 2px 0 10px black;
+  height: 100%;
+  right: 800px;
+  margin-right: -800px;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  width: 70%;
+  z-index: 1048;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .sidebar-right-nav .navbar-entity .navbar-entity-content {
-    margin-left: 0px !important;
-    margin-right: 0px !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
 }
 
-
-.sidebar-right-nav .navbar-entity{
-    position: fixed;
-    width: 70%;
-    padding-right: 10px;
-    margin-top: -11px !important;
-    z-index: 1999;
+.sidebar-right-nav .navbar-entity {
+  position: fixed;
+  width: 70%;
+  padding-right: 10px;
+  margin-top: -11px !important;
+  z-index: 1999;
 }
 
-.sidebar-right-nav .navbar-entity > .container-fluid{
-    padding-left: 0px;
-    padding-right: 0px;
-    margin-left: -15px;
+.sidebar-right-nav .navbar-entity > .container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-left: -15px;
 }
 
-.sidebar-right-nav .navbar-entity ul.nav.navbar-nav{
-  padding-right: 20px
+.sidebar-right-nav .navbar-entity ul.nav.navbar-nav {
+  padding-right: 20px;
 }
 
 .sidebar-right-nav .content-view > .media-body,
-.sidebar-right-nav .content-view  nav:first-of-type + .media-body{
-  padding-top: 25px
+.sidebar-right-nav .content-view  nav:first-of-type + .media-body {
+  padding-top: 25px;
 }
 
-
-
 .bar-right-wrapper.toggled .sidebar-right-wrapper {
-    right: -600px;
+  right: -600px;
 }
 
 #page-content-wrapper {
-    width: 100%;
-    position: absolute;
-    padding: 15px;
+  width: 100%;
+  position: absolute;
+  padding: 15px;
 }
 
 .bar-right-wrapper.toggled #page-content-wrapper {
-    position: absolute;
-    margin-right: -800px;
+  position: absolute;
+  margin-right: -800px;
 }
 
 /* Sidebar-right Styles */
 
-
-.sidebar-right-background.toggled{
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    top: 0px;
-    right: 0px;
-    opacity: 1;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    will-change: opacity;
-    transform: translateZ(0px);
-    transition: right 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-    z-index: 1047;
-    pointer-events: auto;
-    background-color: rgba(0, 0, 0, 0.541176);
+.sidebar-right-background.toggled {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  opacity: 1;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  will-change: opacity;
+  transform: translateZ(0px);
+  transition: right 0ms cubic-bezier(0.23, 1, 0.32, 1) 0ms,
+    opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  z-index: 1047;
+  pointer-events: auto;
+  background-color: rgba(0, 0, 0, 0.541176);
 }
 
-.menu-right-toggle{
-    cursor: pointer;
+.menu-right-toggle {
+  cursor: pointer;
 }
 
-.menu-right-toggle.close{
-    margin: 12px 0px;
-    color: white;
-    float: left !important
+.menu-right-toggle.close {
+  margin: 12px 0px;
+  color: white;
+  float: left !important;
 }
 
-.menu-right-toggle.top{
-    color: @novaideo-sidebar-right-color;
-    float: right;
-    font-size: 24px;
-    height: 100%;
-    padding: 6px 10px;
+.menu-right-toggle.top {
+  color: @novaideo-sidebar-right-color;
+  float: right;
+  font-size: 24px;
+  height: 100%;
+  padding: 6px 10px;
 }
 
 .sidebar-right-nav {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    margin: 0;
-    padding: 10px;
-    list-style: none;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  margin: 0;
+  padding: 10px;
+  list-style: none;
 }
 
 .sidebar-right-nav > .sidebar-right-brand {
-    height: 35px;
-    font-size: 18px;
+  height: 35px;
+  font-size: 18px;
 }
 
-
-.sidebar-title{
-    position: fixed;
-    background-color: @novaideo-color;
-    margin-left: -10px;
-    margin-top: -10px;
-    padding: 0px 10px;
-    box-shadow: 2px 0 4px #000;
-    width: 70%;
-    text-align: center;
-    z-index: 2000;
-    max-height: 45px;
-    height: 45px;
+.sidebar-title {
+  position: fixed;
+  background-color: @novaideo-color;
+  margin-left: -10px;
+  margin-top: -10px;
+  padding: 0px 10px;
+  box-shadow: 2px 0 4px #000;
+  width: 70%;
+  text-align: center;
+  z-index: 2000;
+  max-height: 45px;
+  height: 45px;
 }
 
-.sidebar-title .object-title-block a{
-    color: white;
-    text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+.sidebar-title .object-title-block a {
+  color: white;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
 }
 
-.sidebar-title .object-title-block{
-    width: 100%;
-     display: inline;
+.sidebar-title .object-title-block {
+  width: 100%;
+  display: inline;
 }
 
-.sidebar-title .view-item-title{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.sidebar-title .view-item-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-
-.sidebar-right-nav .sidebar-container>.container-body:first-child{
-    padding: 10px 0px 10px 15px;
-    border-top: none;
-    box-shadow: none;
-    margin: 0px -6px -5px -10px;
+.sidebar-right-nav .sidebar-container > .container-body:first-child {
+  padding: 10px 0px 10px 15px;
+  border-top: none;
+  box-shadow: none;
+  margin: 0px -6px -5px -10px;
 }
 
 .sidebar-container-item.closed,
 .sidebar-nav-items.closed,
-.bar-right-wrapper.toggled .sidebar-nav-items{
-    display:none
+.bar-right-wrapper.toggled .sidebar-nav-items {
+  display: none;
 }
 
-
-.sidebar-nav-items{
-    position: fixed;
-    bottom: 75px;
-    right: 25px;
-    display: block;
-    z-index: 2000;
+.sidebar-nav-items {
+  position: fixed;
+  bottom: 75px;
+  right: 25px;
+  display: block;
+  z-index: 2000;
 }
 
-
-.sidebar-nav-items .item{
-    padding: 5px;
-    border-radius: 3px;
-    color: #fff;
-    box-shadow: -1px 1px 3px gray;
-    cursor: pointer;
-    font-size: 14px;
-    background-color: #373a35;
-
+.sidebar-nav-items .item {
+  padding: 5px;
+  border-radius: 3px;
+  color: #fff;
+  box-shadow: -1px 1px 3px gray;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: #373a35;
 }
 
-.sidebar-nav-items.desabled .item{
-    display: none
+.sidebar-nav-items.desabled .item {
+  display: none;
 }
 
 .sidebar-nav-items .item:hover,
-.sidebar-nav-items .item:not(.closed){
-    background-color: #dc6510 !important;
+.sidebar-nav-items .item:not(.closed) {
+  background-color: #dc6510 !important;
 }
 
-.sidebar-nav-items> .item-activator{
-    font-size: 16px;
-    margin-right: 0px;
-    background-color: #dc6510;
-    border-radius: 50%;
-    padding: 9px 9.5px;
-    color: #fff;
-    margin-top: 0px;
-    box-shadow: -1px 1px 5px gray;
-    cursor: pointer;
-    float: right;
+.sidebar-nav-items > .item-activator {
+  font-size: 16px;
+  margin-right: 0px;
+  background-color: #dc6510;
+  border-radius: 50%;
+  padding: 9px 9.5px;
+  color: #fff;
+  margin-top: 0px;
+  box-shadow: -1px 1px 5px gray;
+  cursor: pointer;
+  float: right;
 }
 
-.sidebar-nav-items> .item-activator:hover{
-    background-color: #b7520a
+.sidebar-nav-items > .item-activator:hover {
+  background-color: #b7520a;
 }
 
-.sidebar-title .object-title-block a h4{
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        width: 90%;
+.sidebar-title .object-title-block a h4 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 90%;
 }
 
-.sidebar-title .channel-item-title{
-    color: white;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 90%;
+.sidebar-title .channel-item-title {
+  color: white;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 90%;
 }
 
 .sidebar-title .menu-right-toggle,
-.sidebar-title .entity-title{
-    display: inline;
+.sidebar-title .entity-title {
+  display: inline;
 }
 
-.sidebar-title .menu-right-toggle{
-     padding: 0px 10px;
+.sidebar-title .menu-right-toggle {
+  padding: 0px 10px;
 }
-
 
 .sidebar-right-brand .entity-title .view-item-title,
-.sidebar-right-brand .entity-title .content-title{
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
-    padding: 0px !important;
-    color: white !important;
-    font-size: 17px !important;
-    font-weight: 100 !important;
-    background-color: transparent;
-    border: none !important;
-    border-bottom: none !important;
+.sidebar-right-brand .entity-title .content-title {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+  padding: 0px !important;
+  color: white !important;
+  font-size: 17px !important;
+  font-weight: 100 !important;
+  background-color: transparent;
+  border: none !important;
+  border-bottom: none !important;
 }
 
-.sidebar-right-nav .sidebar-container-item{
-    float:left;
-    width: 100%
+.sidebar-right-nav .sidebar-container-item {
+  float: left;
+  width: 100%;
 }
 
 @media (max-width: 767px) {
-    .sidebar-right-nav .navbar-entity,
-    .sidebar-right-wrapper,
-    .sidebar-title{
-      width: 100% ;
-    }
+  .sidebar-right-nav .navbar-entity,
+  .sidebar-right-wrapper,
+  .sidebar-title {
+    width: 100%;
+  }
 
-    .sidebar-title .channel-item-title, .sidebar-title .object-title-block a h4{
-      width: 83% ;
-    }
-   
+  .sidebar-title .channel-item-title,
+  .sidebar-title .object-title-block a h4 {
+    width: 83%;
+  }
 }
 
-@media (max-width: 1400px) and (min-width: 768px){
-    .sidebar-right-nav .navbar-entity,
-    .sidebar-right-wrapper,
-    .sidebar-title
-     {
-       width: 80%;
-    }
+@media (max-width: 1400px) and (min-width: 768px) {
+  .sidebar-right-nav .navbar-entity,
+  .sidebar-right-wrapper,
+  .sidebar-title {
+    width: 80%;
+  }
 }
