@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-06 16:11+0200\n"
+"POT-Creation-Date: 2017-09-12 11:32+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -147,20 +147,20 @@ msgstr "La vue en blocs"
 msgid "General"
 msgstr "Générale"
 
-#: novaideo/__init__.py:958
+#: novaideo/__init__.py:998
 #: novaideo/views/templates/panels/novaideo_footer.pt:13
 msgid "Legal notice"
 msgstr "Mentions légales"
 
-#: novaideo/__init__.py:959
+#: novaideo/__init__.py:999
 msgid "The legal notice"
 msgstr "Les mentions légales"
 
-#: novaideo/__init__.py:963
+#: novaideo/__init__.py:1003
 msgid "Terms of use"
 msgstr "Conditions d'utilisation"
 
-#: novaideo/__init__.py:964
+#: novaideo/__init__.py:1004
 msgid "The terms of use"
 msgstr "Les conditions d'utilisation"
 
@@ -207,7 +207,7 @@ msgstr "Examinateur"
 
 #: novaideo/web_services/export_entities.py:119
 #: novaideo/views/novaideo_view_manager/doc_anonymous.py:25
-#: novaideo/views/question_management/see_question.py:153
+#: novaideo/views/question_management/see_question.py:154
 #: novaideo/views/smart_folder_management/see_smart_folder.py:134
 msgid "Permission denied"
 msgstr "Permission refusée"
@@ -1016,8 +1016,8 @@ msgstr "Ajouter un contact"
 
 #: novaideo/content/site_configuration.py:420
 #: novaideo/content/processes/novaideo_view_manager/definition.py:123
-#: novaideo/views/novaideo_view_manager/analytics.py:502
-#: novaideo/views/question_management/see_question.py:164
+#: novaideo/views/novaideo_view_manager/analytics.py:553
+#: novaideo/views/question_management/see_question.py:165
 msgid "Analytics"
 msgstr "Statistiques"
 
@@ -1239,7 +1239,7 @@ msgstr "Les raisons du signalement"
 #: novaideo/content/processes/correlation_management/behaviors.py:80
 #: novaideo/views/proposal_management/see_proposal.py:169
 #: novaideo/views/reports_management/see_reports.py:112
-#: novaideo/views/challenge_management/see_challenge.py:230
+#: novaideo/views/challenge_management/see_challenge.py:247
 #: novaideo/views/idea_management/see_idea.py:91
 #: novaideo/views/correlation_management/see_correlation.py:21
 msgid "Details"
@@ -1716,6 +1716,7 @@ msgstr "Les filtres ou les contenus associés doivent être spécifiés"
 #: novaideo/views/proposal_management/see_members.py:41
 #: novaideo/views/challenge_management/add_members.py:57
 #: novaideo/views/organization_management/remove_members.py:57
+#: novaideo/views/organization_management/see_organization.py:135
 msgid "Members"
 msgstr "Membres"
 
@@ -1757,7 +1758,7 @@ msgstr "Détailler"
 #: novaideo/content/processes/question_management/behaviors.py:71
 #: novaideo/content/processes/question_management/definition.py:77
 #: novaideo/content/processes/question_management/definition.py:78
-#: novaideo/views/question_management/ask_question.py:36
+#: novaideo/views/question_management/ask_question.py:38
 #: novaideo/views/challenge_management/see_challenge.py:79
 msgid "Ask a question"
 msgstr "Poser une question"
@@ -2241,7 +2242,7 @@ msgstr "Voir mes contenus"
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:67
 #: novaideo/views/novaideo_view_manager/see_my_contents.py:44
-#: novaideo/utilities/pseudo_react.py:1781
+#: novaideo/utilities/pseudo_react.py:1786
 msgid "My contents"
 msgstr "Mes contenus"
 
@@ -2251,7 +2252,7 @@ msgstr "Voir mes suivis"
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:71
 #: novaideo/views/novaideo_view_manager/see_my_selections.py:37
-#: novaideo/utilities/pseudo_react.py:1715
+#: novaideo/utilities/pseudo_react.py:1720
 msgid "My followings"
 msgstr "Mes suivis"
 
@@ -2261,7 +2262,7 @@ msgstr "Voir mes participations"
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:75
 #: novaideo/views/novaideo_view_manager/see_my_participations.py:38
-#: novaideo/utilities/pseudo_react.py:1901
+#: novaideo/utilities/pseudo_react.py:1906
 msgid "My working groups"
 msgstr "Mes groupes de travail"
 
@@ -2271,7 +2272,7 @@ msgstr "Mes appréciations"
 
 #: novaideo/content/processes/novaideo_view_manager/definition.py:79
 #: novaideo/views/novaideo_view_manager/see_my_supports.py:38
-#: novaideo/utilities/pseudo_react.py:1746
+#: novaideo/utilities/pseudo_react.py:1751
 msgid "My evaluations"
 msgstr "Mes appréciations"
 
@@ -2852,7 +2853,7 @@ msgstr "Archiver"
 #: novaideo/content/processes/proposal_management/definition.py:352
 #: novaideo/content/processes/proposal_management/definition.py:353
 #: novaideo/views/proposal_management/participate.py:24
-#: novaideo/views/challenge_management/see_challenge.py:276
+#: novaideo/views/challenge_management/see_challenge.py:293
 msgid "Participate"
 msgstr "Participer"
 
@@ -3723,7 +3724,7 @@ msgstr "Retirer de l'organisation"
 #: novaideo/content/processes/idea_management/definition.py:72
 #: novaideo/views/templates/add_idea_widget.pt:10
 #: novaideo/views/challenge_management/see_challenge.py:60
-#: novaideo/views/idea_management/create_idea.py:39
+#: novaideo/views/idea_management/create_idea.py:41
 msgid "Create an idea"
 msgstr "Noter une idée"
 
@@ -4030,7 +4031,7 @@ msgstr "Modération : Publier le challenge"
 msgid "Presentation of a challenge"
 msgstr "Présentation d'un challenge"
 
-#: novaideo/views/panels.py:597
+#: novaideo/views/panels.py:598
 #: novaideo/views/templates/panels/more_contents.pt:2
 msgid "My topics of interest"
 msgstr "Mes centres d'intérêt"
@@ -4195,37 +4196,32 @@ msgstr "Discussion privée"
 msgid "General discussion"
 msgstr "Discussion générale"
 
-#: novaideo/views/user_management/see_person.py:80
-#, python-format
-msgid "His/her questions (${nb})"
-msgstr "Ses questions (${nb})"
+#: novaideo/views/user_management/see_person.py:90
+msgid "His/her questions"
+msgstr "Ses questions"
 
-#: novaideo/views/user_management/see_person.py:86
-#: novaideo/views/organization_management/see_organization.py:90
+#: novaideo/views/user_management/see_person.py:97
+#: novaideo/views/organization_management/see_organization.py:100
 msgid "No asked questions"
 msgstr "Pas de question posées"
 
-#: novaideo/views/user_management/see_person.py:91
-#: novaideo/utilities/pseudo_react.py:1951
-#, python-format
-msgid "His/her ideas (${nb})"
-msgstr "Ses idées (${nb})"
+#: novaideo/views/user_management/see_person.py:102
+msgid "His/her ideas"
+msgstr "Ses idées"
 
-#: novaideo/views/user_management/see_person.py:97
-#: novaideo/views/novaideo_view_manager/home.py:131
-#: novaideo/views/challenge_management/see_challenge.py:199
-#: novaideo/views/organization_management/see_organization.py:101
+#: novaideo/views/user_management/see_person.py:109
+#: novaideo/views/novaideo_view_manager/home.py:143
+#: novaideo/views/challenge_management/see_challenge.py:206
+#: novaideo/views/organization_management/see_organization.py:115
 msgid "No registered ideas"
 msgstr "Pas d'idées enregistrées"
 
-#: novaideo/views/user_management/see_person.py:103
-#: novaideo/utilities/pseudo_react.py:1934
-#, python-format
-msgid "His/her working groups (${nb})"
-msgstr "Ses groupes de travail (${nb})"
+#: novaideo/views/user_management/see_person.py:119
+msgid "His/her working groups"
+msgstr "Ses groupes de travail"
 
-#: novaideo/views/user_management/see_person.py:109
-#: novaideo/views/organization_management/see_organization.py:112
+#: novaideo/views/user_management/see_person.py:126
+#: novaideo/views/organization_management/see_organization.py:130
 msgid "Belongs to no working group"
 msgstr "N'appartient à aucun groupe de travail"
 
@@ -4562,38 +4558,31 @@ msgstr "Une proposition trouvée"
 msgid "${nember} proposals found"
 msgstr "${nember} propositions trouvées"
 
-#: novaideo/views/novaideo_view_manager/home.py:126
-#: novaideo/views/challenge_management/see_challenge.py:194
-#: novaideo/views/organization_management/see_organization.py:95
-#: novaideo/utilities/pseudo_react.py:1985
-#: novaideo/utilities/pseudo_react.py:2034
-#, python-format
-msgid "Ideas (${nb})"
-msgstr "Les idées (${nb})"
-
 #: novaideo/views/novaideo_view_manager/home.py:137
-#: novaideo/views/challenge_management/see_challenge.py:205
-#, python-format
-msgid "The Working Groups (${nb})"
-msgstr "Les Groupes de Travail (${nb})"
+#: novaideo/views/challenge_management/see_challenge.py:200
+#: novaideo/views/organization_management/see_organization.py:109
+msgid "Ideas"
+msgstr "Les idées"
 
-#: novaideo/views/novaideo_view_manager/home.py:142
-#: novaideo/views/challenge_management/see_challenge.py:210
+#: novaideo/views/novaideo_view_manager/home.py:153
+#: novaideo/views/challenge_management/see_challenge.py:216
+msgid "The Working Groups"
+msgstr "Les groupes de travail"
+
+#: novaideo/views/novaideo_view_manager/home.py:159
+#: novaideo/views/challenge_management/see_challenge.py:222
 #: novaideo/views/idea_management/see_workinggroups.py:84
 msgid "No working group created"
 msgstr "Aucun groupe de travail créé"
 
-#: novaideo/views/novaideo_view_manager/home.py:147
-#: novaideo/views/challenge_management/see_challenge.py:215
-#: novaideo/views/organization_management/see_organization.py:84
-#: novaideo/utilities/pseudo_react.py:1970
-#: novaideo/utilities/pseudo_react.py:2012
-#, python-format
-msgid "Questions (${nb})"
-msgstr "Les questions (${nb})"
+#: novaideo/views/novaideo_view_manager/home.py:168
+#: novaideo/views/challenge_management/see_challenge.py:231
+#: novaideo/views/organization_management/see_organization.py:94
+msgid "Questions"
+msgstr "Les questions"
 
-#: novaideo/views/novaideo_view_manager/home.py:152
-#: novaideo/views/challenge_management/see_challenge.py:220
+#: novaideo/views/novaideo_view_manager/home.py:174
+#: novaideo/views/challenge_management/see_challenge.py:237
 msgid "No question asked"
 msgstr "Aucune question posée"
 
@@ -4848,6 +4837,25 @@ msgstr "Fréquence"
 msgid "You can select the display frequency."
 msgstr "Vous pouvez sélectionner la fréquence d'affichage."
 
+#: novaideo/views/novaideo_view_manager/analytics.py:495
+#: novaideo/views/novaideo_view_manager/analytics.py:520
+#: novaideo/views/novaideo_view_manager/analytics.py:538
+msgid "Evaluations by organizations"
+msgstr "Soutiens par organisations"
+
+#: novaideo/views/novaideo_view_manager/analytics.py:509
+msgid "Total des soutiens classé par organizations"
+msgstr ""
+
+#: novaideo/views/novaideo_view_manager/analytics.py:836
+msgctxt "analytics"
+msgid "Support"
+msgstr "Soutien"
+
+#: novaideo/views/novaideo_view_manager/analytics.py:843
+msgid "Opposition"
+msgstr "Opposition"
+
 #: novaideo/views/novaideo_view_manager/templates/ballotresult.pt:5
 msgid "The ballot is not finished"
 msgstr "Le scrutin n'est pas fini"
@@ -4960,10 +4968,10 @@ msgstr "Par"
 #: novaideo/views/templates/small_proposal_result.pt:29
 #: novaideo/views/templates/challenge_result.pt:28
 #: novaideo/views/templates/small_challenge_result.pt:29
-#: novaideo/views/templates/idea_result.pt:26
+#: novaideo/views/templates/idea_result.pt:27
 #: novaideo/views/templates/small_idea_result.pt:29
 #: novaideo/views/templates/question_result.pt:27
-#: novaideo/views/templates/idea_bloc.pt:26
+#: novaideo/views/templates/idea_bloc.pt:27
 #: novaideo/views/templates/question_bloc.pt:27
 #: novaideo/views/templates/small_question_result.pt:29
 #: novaideo/views/templates/answer_result.pt:26
@@ -5082,46 +5090,46 @@ msgstr "Version amendée de"
 msgid "Justification"
 msgstr "Justification"
 
-#: novaideo/views/templates/proposal_result.pt:22
-#: novaideo/views/templates/proposal_bloc.pt:19
+#: novaideo/views/templates/proposal_result.pt:23
+#: novaideo/views/templates/proposal_bloc.pt:20
 #: novaideo/views/proposal_management/templates/header_proposal.pt:128
 msgid "${wg_state} working group without members"
 msgstr "Groupe de travail ${wg_state} sans membres"
 
-#: novaideo/views/templates/proposal_result.pt:25
-#: novaideo/views/templates/proposal_bloc.pt:22
+#: novaideo/views/templates/proposal_result.pt:26
+#: novaideo/views/templates/proposal_bloc.pt:23
 #: novaideo/views/proposal_management/templates/header_proposal.pt:131
 msgid "${wg_state} working group with 1 member"
 msgstr "Groupe de travail ${wg_state} avec 1 membre"
 
-#: novaideo/views/templates/proposal_result.pt:28
-#: novaideo/views/templates/proposal_bloc.pt:25
+#: novaideo/views/templates/proposal_result.pt:29
+#: novaideo/views/templates/proposal_bloc.pt:26
 #: novaideo/views/proposal_management/templates/header_proposal.pt:134
 msgid "${wg_state} working group with ${len_members} members"
 msgstr "Groupe de travail ${wg_state} avec ${len_members} membres"
 
-#: novaideo/views/templates/proposal_result.pt:44
-#: novaideo/views/templates/idea_result.pt:40
-#: novaideo/views/templates/idea_bloc.pt:40
-#: novaideo/views/templates/proposal_bloc.pt:41
-#: novaideo/views/proposal_management/templates/see_proposal.pt:15
+#: novaideo/views/templates/proposal_result.pt:45
+#: novaideo/views/templates/idea_result.pt:41
+#: novaideo/views/templates/idea_bloc.pt:41
+#: novaideo/views/templates/proposal_bloc.pt:42
+#: novaideo/views/proposal_management/templates/see_proposal.pt:16
 msgid "${support and 'Withdraw my token' or 'Support'}"
 msgstr "${support and 'Retirer mon jeton' or 'Soutenir'}"
 
-#: novaideo/views/templates/proposal_result.pt:54
-#: novaideo/views/templates/idea_result.pt:50
-#: novaideo/views/templates/idea_bloc.pt:50
-#: novaideo/views/templates/proposal_bloc.pt:51
-#: novaideo/views/proposal_management/templates/see_proposal.pt:25
+#: novaideo/views/templates/proposal_result.pt:55
+#: novaideo/views/templates/idea_result.pt:51
+#: novaideo/views/templates/idea_bloc.pt:51
+#: novaideo/views/templates/proposal_bloc.pt:52
+#: novaideo/views/proposal_management/templates/see_proposal.pt:26
 msgid "${oppose and 'Withdraw my token' or 'Oppose'}"
 msgstr "${oppose and 'Retirer mon jeton' or 'M'opposer'}"
 
-#: novaideo/views/templates/proposal_result.pt:85
-#: novaideo/views/templates/idea_result.pt:82
+#: novaideo/views/templates/proposal_result.pt:86
+#: novaideo/views/templates/idea_result.pt:83
 #: novaideo/views/templates/question_result.pt:57
-#: novaideo/views/templates/idea_bloc.pt:81
+#: novaideo/views/templates/idea_bloc.pt:82
 #: novaideo/views/templates/question_bloc.pt:57
-#: novaideo/views/templates/proposal_bloc.pt:82
+#: novaideo/views/templates/proposal_bloc.pt:83
 msgid "Associated to this challenge"
 msgstr "Associée à ce challenge"
 
@@ -5169,9 +5177,9 @@ msgstr "Arrière-plan"
 #: novaideo/views/templates/small_proposal_result.pt:25
 #: novaideo/views/templates/challenge_result.pt:22
 #: novaideo/views/templates/small_challenge_result.pt:25
-#: novaideo/views/templates/idea_result.pt:20
+#: novaideo/views/templates/idea_result.pt:21
 #: novaideo/views/templates/small_idea_result.pt:25
-#: novaideo/views/templates/idea_bloc.pt:20
+#: novaideo/views/templates/idea_bloc.pt:21
 #: novaideo/views/templates/answer_result.pt:20
 #: novaideo/views/templates/small_answer_result.pt:25
 #: novaideo/views/templates/panels/challenge.pt:36
@@ -5337,21 +5345,21 @@ msgstr "Annuler"
 
 #: novaideo/views/templates/answer_result.pt:99
 #: novaideo/views/templates/comment_result.pt:117
-#: novaideo/views/proposal_management/templates/see_proposal.pt:89
+#: novaideo/views/proposal_management/templates/see_proposal.pt:90
 #: novaideo/views/question_management/templates/see_question.pt:109
 #: novaideo/views/challenge_management/templates/see_challenge.pt:98
 #: novaideo/views/idea_management/templates/comments.pt:137
-#: novaideo/views/idea_management/templates/see_idea.pt:93
+#: novaideo/views/idea_management/templates/see_idea.pt:94
 msgid "Attachments:"
 msgstr "Pièces jointes :"
 
 #: novaideo/views/templates/answer_result.pt:101
 #: novaideo/views/templates/comment_result.pt:118
-#: novaideo/views/proposal_management/templates/see_proposal.pt:90
+#: novaideo/views/proposal_management/templates/see_proposal.pt:91
 #: novaideo/views/question_management/templates/see_question.pt:110
 #: novaideo/views/challenge_management/templates/see_challenge.pt:99
 #: novaideo/views/idea_management/templates/comments.pt:138
-#: novaideo/views/idea_management/templates/see_idea.pt:94
+#: novaideo/views/idea_management/templates/see_idea.pt:95
 msgid "Attachment:"
 msgstr "Pièce jointe :"
 
@@ -5605,29 +5613,29 @@ msgstr "Veuillez vérifier si le contenu n'a pas été déjà ajouté !"
 
 #: novaideo/views/templates/panels/novaideo_contents.pt:9
 #: novaideo/views/templates/panels/challenge.pt:57
-#: novaideo/utilities/pseudo_react.py:1811
-#: novaideo/utilities/pseudo_react.py:1856
+#: novaideo/utilities/pseudo_react.py:1816
+#: novaideo/utilities/pseudo_react.py:1861
 msgid "Asked question"
 msgstr "Question posée"
 
 #: novaideo/views/templates/panels/novaideo_contents.pt:10
 #: novaideo/views/templates/panels/challenge.pt:58
-#: novaideo/utilities/pseudo_react.py:1813
-#: novaideo/utilities/pseudo_react.py:1858
+#: novaideo/utilities/pseudo_react.py:1818
+#: novaideo/utilities/pseudo_react.py:1863
 msgid "Asked questions"
 msgstr "Questions posées"
 
 #: novaideo/views/templates/panels/novaideo_contents.pt:13
 #: novaideo/views/templates/panels/challenge.pt:61
-#: novaideo/utilities/pseudo_react.py:1830
-#: novaideo/utilities/pseudo_react.py:1882
+#: novaideo/utilities/pseudo_react.py:1835
+#: novaideo/utilities/pseudo_react.py:1887
 msgid "Published idea"
 msgstr "Idée publiée"
 
 #: novaideo/views/templates/panels/novaideo_contents.pt:14
 #: novaideo/views/templates/panels/challenge.pt:62
-#: novaideo/utilities/pseudo_react.py:1832
-#: novaideo/utilities/pseudo_react.py:1884
+#: novaideo/utilities/pseudo_react.py:1837
+#: novaideo/utilities/pseudo_react.py:1889
 msgid "Published ideas"
 msgstr "Idées publiées"
 
@@ -8274,7 +8282,7 @@ msgid "See members"
 msgstr "Voir les membres"
 
 #: novaideo/views/proposal_management/see_members.py:69
-#: novaideo/views/organization_management/see_organization.py:123
+#: novaideo/views/organization_management/see_organization.py:141
 msgid "No members"
 msgstr "Aucun membre"
 
@@ -9606,15 +9614,9 @@ msgstr "Une organisation trouvée"
 msgid "${nember} organizations found"
 msgstr "${nember} organisations trouvées"
 
-#: novaideo/views/organization_management/see_organization.py:106
-#, python-format
-msgid "Working groups (${nb})"
-msgstr "Les Groupes de Travail (${nb})"
-
-#: novaideo/views/organization_management/see_organization.py:117
-#, python-format
-msgid "Members (${nb})"
-msgstr "Les membres (${nb})"
+#: novaideo/views/organization_management/see_organization.py:124
+msgid "Working groups"
+msgstr "Les groupes de travail"
 
 #: novaideo/views/organization_management/remove_organization.py:57
 msgid "Organization deletion"
@@ -10047,284 +10049,284 @@ msgstr "1er"
 msgid "${name} ${day}"
 msgstr "${name} ${day}"
 
-#: novaideo/utilities/pseudo_react.py:361
+#: novaideo/utilities/pseudo_react.py:366
 msgid "You are not any more a susbscriber in the discussion"
 msgstr "Vous n'êtes plus abonné à la discussion."
 
-#: novaideo/utilities/pseudo_react.py:366
+#: novaideo/utilities/pseudo_react.py:371
 msgid "You are now a subscriber in the discussion."
 msgstr "Vous êtes maintenant abonné à la discussion."
 
-#: novaideo/utilities/pseudo_react.py:430
+#: novaideo/utilities/pseudo_react.py:435
 #, python-format
 msgid "${context} is not any more part of the content that you follow."
 msgstr "${context} ne fait maintenant plus partie de vos suivis."
 
-#: novaideo/utilities/pseudo_react.py:435
+#: novaideo/utilities/pseudo_react.py:440
 #, python-format
 msgid "${context} is now part of the content that you follow."
 msgstr "${context} fait maintenant partie de vos suivis."
 
-#: novaideo/utilities/pseudo_react.py:494
-#: novaideo/utilities/pseudo_react.py:1085
+#: novaideo/utilities/pseudo_react.py:499
+#: novaideo/utilities/pseudo_react.py:1090
 #, python-format
 msgid "You are now opposed to the content ${context}."
 msgstr "Vous êtes maintenant opposé au contenu ${context}."
 
-#: novaideo/utilities/pseudo_react.py:497
-#: novaideo/utilities/pseudo_react.py:1088
+#: novaideo/utilities/pseudo_react.py:502
+#: novaideo/utilities/pseudo_react.py:1093
 #, python-format
 msgid "Now you support the content ${context}."
 msgstr "Vous soutenez maintenant le contenu ${context}."
 
-#: novaideo/utilities/pseudo_react.py:500
-#: novaideo/utilities/pseudo_react.py:1091
+#: novaideo/utilities/pseudo_react.py:505
+#: novaideo/utilities/pseudo_react.py:1096
 #, python-format
 msgid "Your token has been recovered from content ${context}."
 msgstr "Votre jeton est bien récupéré du contenu ${context}."
 
-#: novaideo/utilities/pseudo_react.py:531
+#: novaideo/utilities/pseudo_react.py:536
 msgid "The profile has been disactivated."
 msgstr "Le profil a bien été désactivé."
 
-#: novaideo/utilities/pseudo_react.py:616
+#: novaideo/utilities/pseudo_react.py:621
 msgid "The comment has now been suppressed."
 msgstr "Le commentaire est maintenant supprimé."
 
-#: novaideo/utilities/pseudo_react.py:731
+#: novaideo/utilities/pseudo_react.py:736
 msgid "The comment has been transformed into an idea."
 msgstr "Le commentaire a bien été tranformé en une idée."
 
-#: novaideo/utilities/pseudo_react.py:744
+#: novaideo/utilities/pseudo_react.py:749
 msgid "The comment has been transformed into a question."
 msgstr "Le commentaire a bien été tranformé en une question."
 
-#: novaideo/utilities/pseudo_react.py:801
+#: novaideo/utilities/pseudo_react.py:806
 #, python-format
 msgid "The member ${context} has been withdrawn from the organisation."
 msgstr "Le membre ${context} est bien retiré de l'organisation."
 
-#: novaideo/utilities/pseudo_react.py:821
+#: novaideo/utilities/pseudo_react.py:826
 msgid "The comment has been pinned down."
 msgstr "Le commentaire a bien été épinglé."
 
-#: novaideo/utilities/pseudo_react.py:835
+#: novaideo/utilities/pseudo_react.py:840
 msgid "The comment has been detached."
 msgstr "Le commentaire a bien été détaché."
 
-#: novaideo/utilities/pseudo_react.py:877
+#: novaideo/utilities/pseudo_react.py:882
 msgid "The invitation has been suppressed."
 msgstr "L'invitation a bien été supprimée."
 
-#: novaideo/utilities/pseudo_react.py:885
+#: novaideo/utilities/pseudo_react.py:890
 msgid "The invitation has been modified."
 msgstr "L'invitation a bien été modifiée."
 
-#: novaideo/utilities/pseudo_react.py:893
+#: novaideo/utilities/pseudo_react.py:898
 #, python-format
 msgid "The invitee ${context} has been reminded."
 msgstr "L'invité(e) ${context} a bien été rappelé(e)."
 
-#: novaideo/utilities/pseudo_react.py:901
+#: novaideo/utilities/pseudo_react.py:906
 #, python-format
 msgid "The invitee ${context} has been refused."
 msgstr "L'invité(e) ${context} a bien été réfusé(e)."
 
-#: novaideo/utilities/pseudo_react.py:910
+#: novaideo/utilities/pseudo_react.py:915
 msgid ""
 "The content has been reported as potentially contrary to the Moderation "
 "rules."
 msgstr "Le contenu a bien été signalé."
 
-#: novaideo/utilities/pseudo_react.py:927
+#: novaideo/utilities/pseudo_react.py:932
 msgid "The reports have been ignored."
 msgstr "Les signalisations ont bien été ignorées."
 
-#: novaideo/utilities/pseudo_react.py:944
+#: novaideo/utilities/pseudo_react.py:949
 msgid "The content has been censored."
 msgstr "Le contenu a bien été censuré."
 
-#: novaideo/utilities/pseudo_react.py:972
+#: novaideo/utilities/pseudo_react.py:977
 msgid "The content has been restored."
 msgstr "Le contenu a bien été restauré."
 
-#: novaideo/utilities/pseudo_react.py:992
+#: novaideo/utilities/pseudo_react.py:997
 #, python-format
 msgid "The registered person ${context} has been reminded."
 msgstr "L'inscrit(e) ${context} a bien été rappelé(e)."
 
-#: novaideo/utilities/pseudo_react.py:1000
+#: novaideo/utilities/pseudo_react.py:1005
 #, python-format
 msgid "The registration of ${context} has been accepted."
 msgstr "L'inscription de ${context} a bien été acceptée."
 
-#: novaideo/utilities/pseudo_react.py:1008
+#: novaideo/utilities/pseudo_react.py:1013
 msgid "The registration has been suppressed."
 msgstr "L'inscription a bien été supprimée."
 
-#: novaideo/utilities/pseudo_react.py:1034
+#: novaideo/utilities/pseudo_react.py:1039
 msgid "The topic of interest has been modified."
 msgstr "Le centre d'intérêt a bien été modifié."
 
-#: novaideo/utilities/pseudo_react.py:1041
+#: novaideo/utilities/pseudo_react.py:1046
 msgid "The topic of interest has been suppressed."
 msgstr "Le centre d'intérêt a bien été supprimé."
 
-#: novaideo/utilities/pseudo_react.py:1051
+#: novaideo/utilities/pseudo_react.py:1056
 msgid "The topic of interest has been published."
 msgstr "Le centre d'intérêt a bien été publié."
 
-#: novaideo/utilities/pseudo_react.py:1059
+#: novaideo/utilities/pseudo_react.py:1064
 msgid "The topic of interest has been withdrawn."
 msgstr "Le centre d'intérêt a bien été retiré."
 
-#: novaideo/utilities/pseudo_react.py:1067
+#: novaideo/utilities/pseudo_react.py:1072
 msgid "The sub-topic of interest has been added."
 msgstr "Le sous centre d'intérêt a bien été ajouté."
 
-#: novaideo/utilities/pseudo_react.py:1077
+#: novaideo/utilities/pseudo_react.py:1082
 msgid "Your answer has been registered"
 msgstr "Votre réponse est bien pris en compte"
 
-#: novaideo/utilities/pseudo_react.py:1103
+#: novaideo/utilities/pseudo_react.py:1108
 msgid "The question has been asked."
 msgstr "La question a bien été posée."
 
-#: novaideo/utilities/pseudo_react.py:1118
+#: novaideo/utilities/pseudo_react.py:1123
 msgid "The question has been suppressed."
 msgstr "La question a bien été supprimée."
 
-#: novaideo/utilities/pseudo_react.py:1135
+#: novaideo/utilities/pseudo_react.py:1140
 msgid "The question has been archived."
 msgstr "La question a bien été archivée."
 
-#: novaideo/utilities/pseudo_react.py:1157
+#: novaideo/utilities/pseudo_react.py:1162
 msgid "The question has been modified."
 msgstr "La question a bien été modifiée."
 
-#: novaideo/utilities/pseudo_react.py:1165
+#: novaideo/utilities/pseudo_react.py:1170
 msgid "The question has been closed."
 msgstr "La question a bien été cloturée."
 
-#: novaideo/utilities/pseudo_react.py:1173
+#: novaideo/utilities/pseudo_react.py:1178
 msgid "The answer has been modified."
 msgstr "La réponse a bien été modifiée."
 
-#: novaideo/utilities/pseudo_react.py:1181
+#: novaideo/utilities/pseudo_react.py:1186
 msgid "The answer has been validated."
 msgstr "La réponse a bien été validée."
 
-#: novaideo/utilities/pseudo_react.py:1193
+#: novaideo/utilities/pseudo_react.py:1198
 msgid "The answer has been transformed into an idea."
 msgstr "La réponse a bien été tranformé en une idée."
 
-#: novaideo/utilities/pseudo_react.py:1211
+#: novaideo/utilities/pseudo_react.py:1216
 msgid "The data relating to the challenge have been updated."
 msgstr "Les données du challenge ont été mis à jour."
 
-#: novaideo/utilities/pseudo_react.py:1219
+#: novaideo/utilities/pseudo_react.py:1224
 msgid "The challenge has been submitted to moderation."
 msgstr "Le challenge a bien été soumise à modération."
 
-#: novaideo/utilities/pseudo_react.py:1227
+#: novaideo/utilities/pseudo_react.py:1232
 msgid "The challenge has been archived."
 msgstr "Le challenge a bien été archivé."
 
-#: novaideo/utilities/pseudo_react.py:1236
+#: novaideo/utilities/pseudo_react.py:1241
 msgid "The challenge has been published."
 msgstr "Le challenge a bien été publié."
 
-#: novaideo/utilities/pseudo_react.py:1243
+#: novaideo/utilities/pseudo_react.py:1248
 msgid "The challenge has been suppressed."
 msgstr "Le challenge a bien été supprimé."
 
-#: novaideo/utilities/pseudo_react.py:1255
-#: novaideo/utilities/pseudo_react.py:1312
+#: novaideo/utilities/pseudo_react.py:1260
+#: novaideo/utilities/pseudo_react.py:1317
 msgid "The idea has been archived."
 msgstr "L'idée a bien été archivée."
 
-#: novaideo/utilities/pseudo_react.py:1276
+#: novaideo/utilities/pseudo_react.py:1281
 msgid "The idea has been submitted to moderation."
 msgstr "L'idée a bien été soumise à modération."
 
-#: novaideo/utilities/pseudo_react.py:1284
+#: novaideo/utilities/pseudo_react.py:1289
 msgid "The idea has been published."
 msgstr "L'idée a bien été publiée."
 
-#: novaideo/utilities/pseudo_react.py:1292
+#: novaideo/utilities/pseudo_react.py:1297
 msgid "The idea has been examined."
 msgstr "L'idée a bien été examinée."
 
-#: novaideo/utilities/pseudo_react.py:1304
-#: novaideo/utilities/pseudo_react.py:1335
+#: novaideo/utilities/pseudo_react.py:1309
+#: novaideo/utilities/pseudo_react.py:1340
 msgid "The idea has been modified."
 msgstr "L'idée a bien été modifiée."
 
-#: novaideo/utilities/pseudo_react.py:1327
+#: novaideo/utilities/pseudo_react.py:1332
 msgid "The idea has been recovered."
 msgstr "L'idée a bien été récupérée."
 
-#: novaideo/utilities/pseudo_react.py:1342
+#: novaideo/utilities/pseudo_react.py:1347
 msgid "The idea has been suppressed."
 msgstr "L'idée a bien été supprimée."
 
-#: novaideo/utilities/pseudo_react.py:1354
+#: novaideo/utilities/pseudo_react.py:1359
 msgid "The idea has been created."
 msgstr "L'idée a bien été créée."
 
-#: novaideo/utilities/pseudo_react.py:1372
+#: novaideo/utilities/pseudo_react.py:1377
 msgid "The proposal has been submitted to moderation."
 msgstr "La proposition a bien été soumise à modération."
 
-#: novaideo/utilities/pseudo_react.py:1380
+#: novaideo/utilities/pseudo_react.py:1385
 msgid "The content submitted to moderation has been published."
 msgstr "Le contenu soumis à modération a bien été publié."
 
-#: novaideo/utilities/pseudo_react.py:1388
+#: novaideo/utilities/pseudo_react.py:1393
 msgid "The content submitted to moderation has been archived."
 msgstr "Le contenu soumis à modération a bien été archivé."
 
-#: novaideo/utilities/pseudo_react.py:1396
+#: novaideo/utilities/pseudo_react.py:1401
 msgid "The proposal has been examined."
 msgstr "La proposition a bien été examinée."
 
-#: novaideo/utilities/pseudo_react.py:1408
+#: novaideo/utilities/pseudo_react.py:1413
 msgid "The proposal has been published."
 msgstr "La proposition a bien été publiée."
 
-#: novaideo/utilities/pseudo_react.py:1419
+#: novaideo/utilities/pseudo_react.py:1424
 msgid "The proposal has been suppressed."
 msgstr "La proposition a bien été supprimée."
 
-#: novaideo/utilities/pseudo_react.py:1433
+#: novaideo/utilities/pseudo_react.py:1438
 msgid "You are now on the waiting list."
 msgstr "Vous êtes maintenant sur la liste d'attente."
 
-#: novaideo/utilities/pseudo_react.py:1436
+#: novaideo/utilities/pseudo_react.py:1441
 msgid "You are now a member of the Working Group."
 msgstr "Vous êtes maintenant membre du groupe de travail."
 
-#: novaideo/utilities/pseudo_react.py:1457
+#: novaideo/utilities/pseudo_react.py:1462
 msgid "Your validation has been registered."
 msgstr "Votre validation est bien pris en compte"
 
-#: novaideo/utilities/pseudo_react.py:1476
+#: novaideo/utilities/pseudo_react.py:1481
 msgid "You are not any more a member of the Working Group."
 msgstr "Vous n'êtes plus maintenant membre du groupe de travail."
 
-#: novaideo/utilities/pseudo_react.py:1495
+#: novaideo/utilities/pseudo_react.py:1500
 msgid "The files have been added in the working space."
 msgstr "Les fichiers ont bien été ajoutés dans l'espace de  travail."
 
-#: novaideo/utilities/pseudo_react.py:1503
+#: novaideo/utilities/pseudo_react.py:1508
 msgid "The file has been suppressed from the working space."
 msgstr "Le fichier à bien été supprimé de l'espace de  travail."
 
-#: novaideo/utilities/pseudo_react.py:1513
+#: novaideo/utilities/pseudo_react.py:1518
 msgid "The files have been attached to the proposal."
 msgstr "Les fichiers ont bien été attachés à la proposition."
 
-#: novaideo/utilities/pseudo_react.py:1528
+#: novaideo/utilities/pseudo_react.py:1533
 #, python-format
 msgid ""
 "The information associated to the organisation of the user ${context} have "
@@ -10333,42 +10335,64 @@ msgstr ""
 "Les données associées à l'organisation de l'utilisateur ${context} ont bien "
 "été modifiées."
 
-#: novaideo/utilities/pseudo_react.py:1544
+#: novaideo/utilities/pseudo_react.py:1549
 #, python-format
 msgid "The user ${context} has changed his/her organisation."
 msgstr "L'utilisateur ${context} a bien changé d'organisation."
 
-#: novaideo/utilities/pseudo_react.py:1572
+#: novaideo/utilities/pseudo_react.py:1577
 msgid "The data relating to the organisation have been updated."
 msgstr "Les données de l'organisation ont été mis à jour."
 
-#: novaideo/utilities/pseudo_react.py:1579
+#: novaideo/utilities/pseudo_react.py:1584
 msgid "The organisation has been suppressed."
 msgstr "L'organisation a bien été supprimée."
 
-#: novaideo/utilities/pseudo_react.py:1601
+#: novaideo/utilities/pseudo_react.py:1606
 msgid "The role of the user has been modified."
 msgstr "Le rôle de l'utilisateur a bien été modifié."
 
-#: novaideo/utilities/pseudo_react.py:1609
+#: novaideo/utilities/pseudo_react.py:1614
 msgid "The processes have been updated."
 msgstr "Les processus sont bien mis à jour."
 
-#: novaideo/utilities/pseudo_react.py:1618
+#: novaideo/utilities/pseudo_react.py:1623
 msgid "The file has been published."
 msgstr "Le fichier a bien été publié."
 
-#: novaideo/utilities/pseudo_react.py:1626
+#: novaideo/utilities/pseudo_react.py:1631
 msgid "The file has been made private."
 msgstr "Le fichier a bien été privatisé."
 
-#: novaideo/utilities/pseudo_react.py:1676
+#: novaideo/utilities/pseudo_react.py:1681
 msgid "The connector has been suppressed."
 msgstr "Le connecteur a bien été supprimé."
 
-#: novaideo/utilities/pseudo_react.py:1696
+#: novaideo/utilities/pseudo_react.py:1701
 msgid "The messages has been imported."
 msgstr "Les messages ont été importés."
+
+#: novaideo/utilities/pseudo_react.py:1939
+#, python-format
+msgid "His/her working groups (${nb})"
+msgstr "Ses groupes de travail (${nb})"
+
+#: novaideo/utilities/pseudo_react.py:1956
+#, python-format
+msgid "His/her ideas (${nb})"
+msgstr "Ses idées (${nb})"
+
+#: novaideo/utilities/pseudo_react.py:1975
+#: novaideo/utilities/pseudo_react.py:2017
+#, python-format
+msgid "Questions (${nb})"
+msgstr "Les questions (${nb})"
+
+#: novaideo/utilities/pseudo_react.py:1990
+#: novaideo/utilities/pseudo_react.py:2039
+#, python-format
+msgid "Ideas (${nb})"
+msgstr "Les idées (${nb})"
 
 #: novaideo/adapters/__init__.py:29
 msgid "Created on"
@@ -10385,6 +10409,15 @@ msgstr "Examiné(e) le"
 #: novaideo/adapters/__init__.py:32
 msgid "Published on"
 msgstr "Publié(e) le"
+
+#~ msgid "The Working Groups (${nb})"
+#~ msgstr "Les Groupes de Travail (${nb})"
+
+#~ msgid "Working groups (${nb})"
+#~ msgstr "Les Groupes de Travail (${nb})"
+
+#~ msgid "Members (${nb})"
+#~ msgstr "Les membres (${nb})"
 
 #~ msgid ""
 #~ "The image size is not valid: the allowed size is ${width} x ${height} px."
