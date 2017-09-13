@@ -1,3 +1,7 @@
+.question-container{
+    display: inline-block;  
+}
+
 .checkbox-scroll .scroll-item.checkbox {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
@@ -444,7 +448,7 @@ challenge-container .author-block {
   opacity: 0.4;
 }
 
-.support-col {
+.content-body-left{
   margin-left: -3px;
   margin-right: 0;
   margin-top: 0px !important;
@@ -492,7 +496,6 @@ span.md {
   font-size: 22px;
   float: left;
   margin-left: 4px;
-  margin-top: 40px !important;
   margin-right: 0;
 }
 
@@ -2823,6 +2826,7 @@ a.ajax-action {
 
 .attached-files {
   margin-top: 40px;
+  margin-left: 38px;
 }
 
 .more-contents-panel-s {
@@ -4024,6 +4028,11 @@ ins {
   height: 42px;
 }
 
+.content-body {
+  float:left;
+  width: 100%;
+}
+
 .content-text {
   margin-left: 19px;
   margin-right: 19px;
@@ -4058,17 +4067,12 @@ ins {
   border-radius: 13px;
 }
 
-.proposal-support {
-  margin-bottom: -30px;
-  margin-top: 3px;
-  margin-right: 10px;
-}
-
 .vertical-support.proposal-support {
-  float: left;
   width: 30px;
+  height: 110px;
   margin-top: 0px !important;
   margin-right: 0px;
+  margin-bottom: 20px
 }
 
 .proposal-support .label .glyphicon {
@@ -4679,17 +4683,7 @@ small .proposal-support .token {
   margin-bottom: 4px;
   margin-right: 4px;
   padding: 3px;
-  margin-top: -35px;
   cursor: pointer;
-}
-
-.search-item .proposal-opinion {
-  margin-top: -15px;
-  margin-right: 20px;
-}
-
-.search-item .media-bloc .proposal-opinion {
-  margin-right: -20px !important;
 }
 
 #messages .proposal-opinion {
@@ -4769,11 +4763,11 @@ span.circle {
   min-width: 300px;
   padding: 15px 5px 10px 10px;
   position: absolute;
-  right: 47px;
   z-index: 1025;
-  bottom: 2px;
   font-size: 13px;
   cursor: auto !important;
+  margin-left: 20px;
+  margin-top: -5px;
 }
 
 .proposal-explanation.closed {
@@ -5295,6 +5289,7 @@ span.circle {
   margin-top: 0;
   position: relative;
   width: 96%;
+  float: left;
 }
 
 .search-item-footer .actions-block li > a,
@@ -5335,10 +5330,6 @@ span.circle {
 .search-item  .search-item-footer .actions-block {
   position: absolute;
   bottom: 0;
-}
-
-.content-footer {
-  margin-top: 35px;
 }
 
 .actions-block > ul {

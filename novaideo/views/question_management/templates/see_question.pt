@@ -163,7 +163,7 @@
     <div class="container-body">
     </div>
   </div>
-  <div style="margin-top: 40px" tal:condition="object.answers">
+  <div style="float: left; margin-top: 20px;" tal:condition="object.answers">
     <div id="filter-results-answers-title">
       <div class="panel-title">
         <h4>${answers_title}</h4>

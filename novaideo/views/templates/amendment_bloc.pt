@@ -26,7 +26,7 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
-    <div class="support-col"></div>
+    <div class="content-body-left"></div>
     <div class="content-col">
       <div class="object-title-block view-item-title"
           data-title="${object.title}"

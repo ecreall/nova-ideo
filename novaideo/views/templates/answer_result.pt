@@ -27,7 +27,7 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
-    <div class="support-col">
+    <div class="content-body-left">
        <div class="validated-answer-container">
         <div tal:replace="structure support_actions_body"/>
         <span tal:condition="'validated' in object.state" class="glyphicon glyphicon-ok validated-answer">

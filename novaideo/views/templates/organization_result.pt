@@ -21,7 +21,7 @@
       </a>
     </div>
 
-    <div class="support-col"></div>
+    <div class="content-body-left"></div>
     <div class="content-col">  
       <p class="text-muted" tal:condition="object.description">
                <small  >${object.description}</small>

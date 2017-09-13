@@ -29,7 +29,7 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
-    <div class="support-col">
+    <div class="content-body-left">
     </div>
 
     <div class="content-col">

@@ -199,6 +199,7 @@ class SeeQuestionHeaderView(BasicView):
     template = 'novaideo:views/question_management/templates/see_question.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'seequestionheader'
+    css_class = 'question-container'
 
     def update(self):
         self.execute(None)

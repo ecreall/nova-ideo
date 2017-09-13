@@ -1,5 +1,5 @@
 <div class="thumbnail right-caption span4 search-item result-item search-item-bloc question-item view-item component-obj-view component-listing-view"
-     id="listing_${oid}"
+     id="listingbloc_${oid}"
      data-component_type="object-view"
      i18n:domain="novaideo"
      tal:define="url request.resource_url(object, '@@index');
@@ -28,7 +28,7 @@
         <span tal:replace="layout.to_localized_time(object.created_at)"/>
       </small>
     </div>
-    <div class="support-col">
+    <div class="content-body-left">
        <div class="validated-answer-container">
           <div tal:replace="structure support_actions_body"/>
           <span i18n:attributes="title" title="${state}" tal:condition="'closed' in object.state" class="glyphicon glyphicon-ok validated-question">

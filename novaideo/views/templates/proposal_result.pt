@@ -31,7 +31,7 @@
           </span>
         </h5>
     </div>
-    <div class="support-col">
+    <div class="content-body-left">
       <div tal:condition="submitted or examined"
           tal:define="
               evaluation object.evaluation(current_user);
@@ -62,6 +62,17 @@
                 class="token token-toggle ${not active and 'disabled' or 'active'} token-danger octicon octicon-triangle-down ${oppose and 'my-token'}"></span>
           </span>
         </div>
+        <div tal:condition="examined" class="proposal-opinion pull-right"  title="${object.opinion_value}" >
+          <div class="proposal-explanation closed">
+            <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+             <div class="text malihu-scroll">
+             ${object.opinion['explanation']}
+             </div>
+          </div>
+          <div class="circle red ${(object.opinion['opinion'] != 'unfavorable') and 'off' or 'on' }"></div>
+          <div class="circle orange ${(object.opinion['opinion'] != 'to_study') and 'off' or 'on' }"></div>
+          <div class="circle green ${(object.opinion['opinion'] != 'favorable') and 'off' or 'on'}"></div>
+      </div>
     </div>
     <div class="content-col">
       <div class="object-title-block view-item-title"
@@ -147,17 +158,6 @@
         ">
       <div class="actions-block">
         <div tal:replace="structure footer_body"/>
-      </div>
-      <div tal:condition="examined" class="proposal-opinion pull-right"  title="${object.opinion_value}" >
-          <div class="proposal-explanation closed">
-            <button type="button" class="close" data-dismiss="proposal-explanation"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-             <div class="text malihu-scroll">
-             ${object.opinion['explanation']}
-             </div>
-          </div>
-          <div class="circle red ${(object.opinion['opinion'] != 'unfavorable') and 'off' or 'on' }"></div>
-          <div class="circle orange ${(object.opinion['opinion'] != 'to_study') and 'off' or 'on' }"></div>
-          <div class="circle green ${(object.opinion['opinion'] != 'favorable') and 'off' or 'on'}"></div>
       </div>
      <div class="footer-actions-bodies">
         <div tal:repeat="a footer_actions_body" >
