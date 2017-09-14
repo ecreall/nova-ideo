@@ -93,9 +93,9 @@ function filter(event) {
     }
     if (data["body"]) {
       var result_body = $("<div>" + data["body"] + "</div>")
-      // var source_tab_id = $(target.parents('.tab-pane').first()).attr('id')
+      var source_tab_id = $(target.parents('.tab-pane').first()).attr('id')
       // update tab title
-      // var source_tab = $('.pontus-main ul.nav.nav-tabs > li > a[href="#'+source_tab_id+'"] .tab-title')
+      var source_tab = $('.pontus-main ul.nav.nav-tabs > li > a[href="#'+source_tab_id+'"] .tab-title')
       var result_target = result_body.find("#" + id)
       var filter_container_target = result_target.find(".filter-container")
       init_filter_text_input(filter_container_target)
@@ -112,9 +112,9 @@ function filter(event) {
       if (target_title.length > 0) {
         target_title.html(new_title)
       }
-      // else{
-      //     source_tab.html(new_title)
-      // }
+      else{
+          source_tab.html(new_title)
+      }
       // update results
       target.html(result_target.html())
       try {

@@ -1,12 +1,13 @@
 <div tal:omit-tag="" i18n:domain="novaideo"
    tal:define="
      editoid 'edit_item_text_area';
-     icon getattr(proposal, 'icon');">
+     icon getattr(proposal, 'icon');
+     working_group proposal.working_group">
   <div tal:replace="structure vote_actions_body"/>
   <div tal:replace="structure navbar_body"/>
   <div class="media-body content-title-body">
     <div tal:condition="'open to a working group' in proposal.state" role="alert" class="alert alert-info alert-dismissible">
-      <div tal:omit-tag="" tal:define="participants_mini getattr(getattr(proposal.working_group, 'work_mode', None), 'participants_mini', 3)">
+      <div tal:omit-tag="" tal:define="participants_mini getattr(getattr(working_group, 'work_mode', None), 'participants_mini', 3)">
          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
          <span class="glyphicon glyphicon-warning-sign pull-right"></span>
          <p i18n:translate="">This Proposal is published. It is visible to all Members. The related Working Group is inactive, waiting for the quorum to be reached.</p>
@@ -120,24 +121,27 @@
                 <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
               </tal:loop>
             </dd>
-            <div tal:omit-tag="" tal:condition="proposal.working_group">
+            <div tal:omit-tag="" tal:condition="working_group" tal:define="
+                   members getattr(working_group, 'members', []);
+                   sponsors getattr(working_group, 'sponsors', []);
+                   len_members len(members);
+                   len_sponsors len(sponsors);">
               <dt tal:define="
-                   len_members len(proposal.working_group.members);
-                   wg_state proposal.working_group.get_state(request, current_user)">
+                   wg_state working_group.get_state(request, current_user)">
                 <span class="icon novaideo-icon icon-wg"></span> 
                 <span tal:condition="len_members == 0" i18n:translate="">
-                  <b i18n:name="wg_state">${wg_state}</b> working group without members
+                  <b i18n:name="wg_state">${wg_state}</b> Working group without members
                 </span>
                 <span tal:condition="len_members == 1" i18n:translate="">
-                  <b i18n:name="wg_state">${wg_state}</b> working group with 1 member
+                  <b i18n:name="wg_state">${wg_state}</b> Working group with 1 member
                 </span>
                 <span tal:condition="len_members > 1" i18n:translate="">
-                  <b i18n:name="wg_state">${wg_state}</b> working group with <b i18n:name="len_members">${len_members}</b> members
+                  <b i18n:name="wg_state">${wg_state}</b> Working group with <b i18n:name="len_members">${len_members}</b> members
                 </span>
               </dt>
     	         <dd>
                   <div class="working-group-section">
-                    <tal:loop repeat="m proposal.working_group.members">
+                    <tal:loop repeat="m members">
                       <a tal:attributes="href request.resource_url(m, '@@index')"
                         data-oid="${getattr(m, '__oid__', '')}"
                         class="toggle-popover"
@@ -161,8 +165,8 @@
               </dd>
             </div>
         </dl>
-        <div class="pull-right" tal:condition="is_participant and proposal.working_group and proposal.working_group.workspace" style="margin-top: -20px">
-          <a href="${request.resource_url(proposal.working_group.workspace, '@@index')}">
+        <div class="pull-right" tal:condition="is_participant and working_group and working_group.workspace" style="margin-top: -20px">
+          <a href="${request.resource_url(working_group.workspace, '@@index')}">
             <span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Workspace</span>
           </a>
         </div>

@@ -175,7 +175,7 @@ def alert_internal(senders=[], recipients=[], exclude=[], **kwargs):
     """
     kind = kwargs.pop('internal_kind', None)
     alert_class = INTERNAL_ALERTS.get(kind, None)
-    if alert_class:
+    if alert_class and recipients:
         subjects = kwargs.pop('subjects', [])
         sender = senders[0]
         alert = alert_class(**kwargs)
@@ -235,6 +235,7 @@ def alert(kind="", senders=[], recipients=[], exclude=[], **kwargs):
     alert_op = ALERTS.get(kind, None)
     if alert_op:
         try:
+            recipients = list(set(recipients)) if isinstance(recipients, (list, set)) else recipients
             return alert_op(senders, recipients, exclude, **kwargs)
         except Exception as error:
             log.warning(error)

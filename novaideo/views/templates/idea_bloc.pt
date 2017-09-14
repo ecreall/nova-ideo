@@ -154,7 +154,7 @@
       <div class="actions-block">
         <div tal:replace="structure footer_body"/>
       </div>
-      
+  
       <div class="footer-actions-bodies">
         <div tal:repeat="a footer_actions_body" >
           <div tal:replace="structure a"/>

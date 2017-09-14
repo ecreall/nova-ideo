@@ -1339,7 +1339,7 @@ class Resign(InfiniteCardinality):
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
     style_order = 2
-    style_picto = 'typcn typcn-user-delete'
+    style_picto = 'octicon octicon-sign-out'
     style_css_class = 'btn-danger'
     submission_title = _('Continue')
     isSequential = False

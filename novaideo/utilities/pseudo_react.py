@@ -270,7 +270,7 @@ def load_components(request, context, api, **kwargs):
                 resources = merge_dicts(view_resources, resources)
                 result[loading_component] = body
             except ViewError as error:
-                result[loading_component] = error.render(request)
+                result[loading_component] = error.render_message(request)
         else:
             result[loading_component] = ''
 

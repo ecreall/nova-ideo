@@ -5,6 +5,7 @@
 # author: Amen Souissi, Sophie Jazwiecki
 import datetime
 import pytz
+import itertools
 from pyramid.view import view_config
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
@@ -102,13 +103,11 @@ class NovaideoAPI(IndexManagementJsonView):
                                        text_filter={'text_to_search': name},
                                        metadata_filter={'states': ['active']},
                                        add_query=query)
+            resultlen = len(result)
+            if resultlen < start:
+                start = resultlen
 
-            result = [res for res in result]
-            if len(result) >= start:
-                result = result[start:end]
-            else:
-                result = result[:end]
-
+            result = list(itertools.islice(result, start, end))
             default_img_url = self.request.static_url(
                 'novaideo:static/images/user100.png')
             entries = [{'id': str(get_oid(e)),
@@ -116,7 +115,7 @@ class NovaideoAPI(IndexManagementJsonView):
                         'img_url': e.get_picture_url(
                             'profil', default_img_url)}
                        for e in result]
-            result = {'items': entries, 'total_count': len(result)}
+            result = {'items': entries, 'total_count': resultlen}
             return result
 
         return {'items': [], 'total_count': 0}
@@ -192,19 +191,18 @@ class NovaideoAPI(IndexManagementJsonView):
                     user=user,
                     text_filter={'text_to_search': name},
                     add_query=query)
+            
+            resultlen = len(result)
+            if resultlen < start:
+                start = resultlen
 
-            total_count = len(result)
-            if total_count >= start:
-                result = list(result)[start:end]
-            else:
-                result = list(result)[:end]
-
+            result = list(itertools.islice(result, start, end))
             entries = [{'id': str(get_oid(e)),
                         'text': e.title,
                         'icon': getattr(
                             e, 'icon', 'glyphicon glyphicon-question-sign')}
                        for e in result]
-            result = {'items': entries, 'total_count': total_count}
+            result = {'items': entries, 'total_count': resultlen}
             return result
 
         return {'items': [], 'total_count': 0}
