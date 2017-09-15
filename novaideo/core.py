@@ -748,7 +748,7 @@ class Tokenable(Entity):
                 in self.allocated_tokens.keys()]
 
     def evaluation(self, user):
-        user_oid = get_oid(user)
+        user_oid = get_oid(user, None)
         return self.allocated_tokens.get(user_oid, None)
 
     def remove_tokens(self, force=False):
