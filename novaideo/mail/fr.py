@@ -67,6 +67,19 @@ mob : 06 16 85 91 12
 Fax : 09 56 94 39 44
 """
 
+FIRST_INVITATION_SMS_MESSAGE = u"""
+Bonjour,
+
+Nous vous remercions de l'intérêt que vous portez à Nova-Ideo.
+
+{recipient_first_name} vous êtes invité à rejoindre la plateforme participative Nova-Ideo en tant que administrateur du site.
+
+Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
+
+Cordialement
+L'équipe d'Ecréall
+"""
+
 
 INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
 
@@ -596,6 +609,11 @@ Bonjour,
 FIRST_INVITATION = {
     'subject': FIRST_INVITATION_SUBJECT,
     'template': FIRST_INVITATION_MESSAGE
+}
+
+FIRST_INVITATION_SMS = {
+    'subject': FIRST_INVITATION_SUBJECT,
+    'template': FIRST_INVITATION_SMS_MESSAGE
 }
 
 mail_locale = 'fr'

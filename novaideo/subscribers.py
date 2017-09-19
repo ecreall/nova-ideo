@@ -12,7 +12,10 @@ from pyramid.events import subscriber, ApplicationCreated
 from pyramid.threadlocal import get_current_registry, get_current_request
 from pyramid.request import Request
 from pyramid.threadlocal import manager
+from pyramid.interfaces import IRequest
 
+from pyramid_sms.twilio import TwilioService
+from pyramid_sms.interfaces import ISMSService
 from substanced.event import RootAdded
 from substanced.util import find_service, get_oid
 
@@ -33,14 +36,16 @@ from novaideo.role import APPLICATION_ROLES
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.utilities.util import gen_random_token
-from novaideo.mail.fr import FIRST_INVITATION
+# from novaideo.mail.fr import FIRST_INVITATION
+from novaideo.mail.fr import FIRST_INVITATION_SMS
 
 
 _CONTENT_TRANSLATION = [_("The proposal"),
                         _("The idea")]
 
 
-def _invite_first_user(root, registry, title, first_name, last_name, email):
+def _invite_first_user(root, request, title, first_name, last_name, phone):
+    registry = request.registry
     first_user_roles = ['SiteAdmin']
     settings = registry.settings
     application_url = settings.get('application.url')
@@ -62,18 +67,20 @@ def _invite_first_user(root, registry, title, first_name, last_name, email):
     roles_translate = [APPLICATION_ROLES.get(r, r)
                        for r in invitation.roles]
     url = application_url + '/' + invitation.__name__
-    subject = FIRST_INVITATION['subject'].format(
-        novaideo_title=novaideo_title
-    )
-    message = FIRST_INVITATION['template'].format(
+    # subject = FIRST_INVITATION['subject'].format(
+    #     novaideo_title=novaideo_title
+    # )
+    message = FIRST_INVITATION_SMS['template'].format(
         recipient_title='',
         recipient_first_name=invitation.first_name,
         recipient_last_name=invitation.last_name,
         invitation_url=url,
         roles=", ".join(roles_translate),
         novaideo_title=novaideo_title)
-    alert('email', [root.get_site_sender()], [invitation.email],
-          subject=subject, body=message)
+    alert('sms', [], [phone],
+          request=request, message=message)
+    # alert('email', [root.get_site_sender()], [invitation.email],
+    #       subject=subject, body=message)
 
 
 @subscriber(RootAdded)
@@ -239,6 +246,11 @@ def init_application(event):
     request = Request.blank('/application_created') # path is meaningless
     request.registry = registry
     manager.push({'registry': registry, 'request': request})
+    # Set up sms service backend
+    registry.registerAdapter(
+        factory=TwilioService,
+        required=(IRequest,),
+        provided=ISMSService)
     root = app.root_factory(request)
     # A transaction.commit() just happened here if this is the first time we
     # start. This is just after all RootAdded subscribers are executed.
@@ -272,11 +284,12 @@ def init_application(event):
         title = os.getenv('INITIAL_USER_TITLE', '')
         first_name = os.getenv('INITIAL_USER_FIRSTNAME', '')
         last_name = os.getenv('INITIAL_USER_LASTNAME', '')
-        email = os.getenv('INITIAL_USER_EMAIL', '')
-        if first_name and last_name and email:
+        # email = os.getenv('INITIAL_USER_EMAIL', '')
+        phone = os.getenv('INITIAL_USER_PHONE', '')
+        if first_name and last_name and phone:
             _invite_first_user(
-                root, registry, title,
-                first_name, last_name, email)
+                root, request, title,
+                first_name, last_name, phone)
 
         del root.first_invitation_to_add
         # This is a change in ZODB, but it's ok, it is executed only the first

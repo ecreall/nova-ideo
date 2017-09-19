@@ -11,9 +11,11 @@ import re
 from persistent.list import PersistentList
 # from urllib.request import urlopen
 
-from substanced.util import get_oid
-
 from pyramid.threadlocal import get_current_request
+
+from substanced.util import get_oid
+from pyramid_sms.utils import normalize_us_phone_number
+from pyramid_sms.outgoing import send_sms
 
 from dace.objectofcollaboration.principal.util import get_current
 import html_diff_wrapper
@@ -168,6 +170,17 @@ def alert_email(senders=[], recipients=[], exclude=[], **kwargs):
             recipients=recipients, sender=sender)
 
 
+def alert_sms(senders=[], recipients=[], exclude=[], **kwargs):
+    """
+        recipients: ['+33....']
+    """
+    message = kwargs.get('message', None)
+    request = kwargs.get('request', get_current_request())
+    for recipient in recipients:
+        to = normalize_us_phone_number(recipient)
+        send_sms(request, to, message)
+
+
 def alert_internal(senders=[], recipients=[], exclude=[], **kwargs):
     """
         recipients: [user1, user2],
@@ -249,5 +262,6 @@ ALERTS = {
     'internal': alert_internal,
     # 'slack': alert_slack,
     # 'arango': alert_arango,
-    'email': alert_email
+    'email': alert_email,
+    'sms': alert_sms
 }
