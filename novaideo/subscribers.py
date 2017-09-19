@@ -36,15 +36,14 @@ from novaideo.role import APPLICATION_ROLES
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.utilities.util import gen_random_token
-# from novaideo.mail.fr import FIRST_INVITATION
-from novaideo.mail.fr import FIRST_INVITATION_SMS
+from novaideo.mail.fr import FIRST_INVITATION, FIRST_INVITATION_SMS
 
 
 _CONTENT_TRANSLATION = [_("The proposal"),
                         _("The idea")]
 
 
-def _invite_first_user(root, request, title, first_name, last_name, phone):
+def _invite_first_user(root, request, title, first_name, last_name, email, phone):
     registry = request.registry
     first_user_roles = ['SiteAdmin']
     settings = registry.settings
@@ -67,9 +66,7 @@ def _invite_first_user(root, request, title, first_name, last_name, phone):
     roles_translate = [APPLICATION_ROLES.get(r, r)
                        for r in invitation.roles]
     url = application_url + '/' + invitation.__name__
-    # subject = FIRST_INVITATION['subject'].format(
-    #     novaideo_title=novaideo_title
-    # )
+    #send sms
     message = FIRST_INVITATION_SMS['template'].format(
         recipient_title='',
         recipient_first_name=invitation.first_name,
@@ -77,10 +74,21 @@ def _invite_first_user(root, request, title, first_name, last_name, phone):
         invitation_url=url,
         roles=", ".join(roles_translate),
         novaideo_title=novaideo_title)
-    alert('sms', [], [phone],
+    alert('sms', recipients=[phone],
           request=request, message=message)
-    # alert('email', [root.get_site_sender()], [invitation.email],
-    #       subject=subject, body=message)
+    # send email
+    subject = FIRST_INVITATION['subject'].format(
+        novaideo_title=novaideo_title
+    )
+    message = FIRST_INVITATION['template'].format(
+        recipient_title='',
+        recipient_first_name=invitation.first_name,
+        recipient_last_name=invitation.last_name,
+        invitation_url=url,
+        roles=", ".join(roles_translate),
+        novaideo_title=novaideo_title)
+    alert('email', [root.get_site_sender()], [invitation.email],
+          subject=subject, body=message)
 
 
 @subscriber(RootAdded)
@@ -284,12 +292,12 @@ def init_application(event):
         title = os.getenv('INITIAL_USER_TITLE', '')
         first_name = os.getenv('INITIAL_USER_FIRSTNAME', '')
         last_name = os.getenv('INITIAL_USER_LASTNAME', '')
-        # email = os.getenv('INITIAL_USER_EMAIL', '')
+        email = os.getenv('INITIAL_USER_EMAIL', '')
         phone = os.getenv('INITIAL_USER_PHONE', '')
         if first_name and last_name and phone:
             _invite_first_user(
                 root, request, title,
-                first_name, last_name, phone)
+                first_name, last_name, email, phone)
 
         del root.first_invitation_to_add
         # This is a change in ZODB, but it's ok, it is executed only the first
