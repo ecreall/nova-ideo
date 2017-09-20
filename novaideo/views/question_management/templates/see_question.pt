@@ -43,7 +43,7 @@
     This content does not respect the terms of use.
    </div>
   </div>
-  <div tal:condition="not to_hide">
+  <div class="content-body" tal:condition="not to_hide">
     <div class="validated-answer-container">
         <div tal:replace="structure support_actions_body"/>
         <span i18n:attributes="title" title="${state}" tal:condition="'closed' in object.state" class="glyphicon glyphicon-ok validated-question">
