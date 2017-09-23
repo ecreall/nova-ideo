@@ -350,6 +350,13 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         return [get_obj(key) for key
                 in self.allocated_tokens.keys()]
 
+    def evaluated_objs_ids(self, evaluation_type=None):
+        if evaluation_type:
+            return [key for value, key
+                    in self.allocated_tokens.byValue(evaluation_type)]
+        
+        return list(self.allocated_tokens.keys())
+
     def init_contents_organizations(self):
         novaideo_catalog = find_catalog('novaideo')
         dace_catalog = find_catalog('dace')

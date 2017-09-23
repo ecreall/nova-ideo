@@ -196,7 +196,7 @@ class Person(Node, Debatable, graphene.ObjectType):
         return ResolverLazyList(oids, Idea)
 
     def resolve_supported_ideas(self, args, context, info):  # pylint: disable=W0613
-        user_ideas = self.evaluated_objs() if hasattr(self, 'evaluated_objs') else []
+        user_ideas = self.evaluated_objs_ids() if hasattr(self, 'evaluated_objs_ids') else []
         oids = get_entities([Iidea], ['published'], args, info, intersect=user_ideas)
         return ResolverLazyList(oids, Idea)
 
