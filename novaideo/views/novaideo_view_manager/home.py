@@ -194,7 +194,7 @@ class HomeView(MultipleView):
     template = 'novaideo:views/templates/multipleview.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'home'
-    css_class = 'simple-bloc'
+    css_class = 'simple-bloc home-bloc'
     container_css_class = 'home'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)

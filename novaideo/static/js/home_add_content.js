@@ -325,4 +325,14 @@ $(document).ready(function() {
     var content_id = $(this).data("content_id")
     container.attr("class", content_id + " home-add-content-container")
   })
+  
+  //show the questions tab when question form is shown
+  $('a[href="#questionhomeform"]').click(function(e) {
+    $(".home-bloc>ul.nav-tabs>#home-questions-counter a").click()
+  })
+
+  //show the ideas tab when idea form is shown
+  $('a[href="#ideahomeform"]').click(function(e) {
+    $(".home-bloc>ul.nav-tabs>#home-ideas-counter a").click()
+  })
 })
