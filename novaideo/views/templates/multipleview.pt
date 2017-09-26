@@ -15,7 +15,8 @@
               tal:attributes="class item['isactive'] and 'active counter '+col_class or 'counter '+col_class"
               data-help="${getattr(item['view'], 'contextual_help', '')}">
              <a data-toggle="tab" tal:attributes="href '#'+item['id']+coordinates"
-                tal:define="icon getattr(item['view'], 'view_icon', None)">
+                tal:define="icon getattr(item['view'], 'view_icon', None)"
+                title="${item['view'].title}">
               <span tal:condition="icon" class="${icon}"></span> <span class="tab-title">${item['view'].title}</span></a>
           </li>
       </ul>
