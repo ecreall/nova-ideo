@@ -289,17 +289,17 @@ def init_application(event):
                     fp=buf, filename=logo, mimetype='image/svg+xml')
                 root.setproperty('picture', log_file)
 
-        title = os.getenv('INITIAL_USER_TITLE', '') or 'M'
-        first_name = os.getenv('INITIAL_USER_FIRSTNAME', '') or 'Amen'
-        last_name = os.getenv('INITIAL_USER_LASTNAME', '') or 'SOUISSI'
-        email = os.getenv('INITIAL_USER_EMAIL', '') or 'amensouissi@ecreall.com'
-        phone = os.getenv('INITIAL_USER_PHONE', '') or '+33651441656'
+        title = os.getenv('INITIAL_USER_TITLE', '')
+        first_name = os.getenv('INITIAL_USER_FIRSTNAME', '')
+        last_name = os.getenv('INITIAL_USER_LASTNAME', '')
+        email = os.getenv('INITIAL_USER_EMAIL', '')
+        phone = os.getenv('INITIAL_USER_PHONE', '')
         if first_name and last_name and phone:
             _invite_first_user(
                 root, request, title,
                 first_name, last_name, email, phone)
 
-        # del root.first_invitation_to_add
+        del root.first_invitation_to_add
         # This is a change in ZODB, but it's ok, it is executed only the first
         # time when we only have one worker.
 
