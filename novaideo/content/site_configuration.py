@@ -360,8 +360,8 @@ class KeywordsConfSchema(Schema):
         colander.Set(),
         widget=keywords_choice,
         title='Keywords',
-        description=_("To add keywords, you need to tap the « Enter »"
-                      " key after each keyword or separate them with commas."),
+        description=_("To add keywords, you need to separate them by commas "
+                      "and then tap the « Enter » key to validate your selection."),
         missing=[]
         )
 
