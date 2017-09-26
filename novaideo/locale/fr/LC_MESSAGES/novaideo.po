@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-12 12:24+0200\n"
+"POT-Creation-Date: 2017-09-26 13:09+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -147,20 +147,20 @@ msgstr "La vue en blocs"
 msgid "General"
 msgstr "Générale"
 
-#: novaideo/__init__.py:998
+#: novaideo/__init__.py:1001
 #: novaideo/views/templates/panels/novaideo_footer.pt:13
 msgid "Legal notice"
 msgstr "Mentions légales"
 
-#: novaideo/__init__.py:999
+#: novaideo/__init__.py:1002
 msgid "The legal notice"
 msgstr "Les mentions légales"
 
-#: novaideo/__init__.py:1003
+#: novaideo/__init__.py:1006
 msgid "Terms of use"
 msgstr "Conditions d'utilisation"
 
-#: novaideo/__init__.py:1004
+#: novaideo/__init__.py:1007
 msgid "The terms of use"
 msgstr "Les conditions d'utilisation"
 
@@ -171,7 +171,7 @@ msgstr "Canal"
 #: novaideo/core.py:410 novaideo/views/novaideo_view_manager/analytics.py:226
 #: novaideo/views/admin_process/manage_keywords.py:44
 #: novaideo/views/proposal_management/templates/diff_result.pt:8
-#: novaideo/views/proposal_management/templates/header_proposal.pt:116
+#: novaideo/views/proposal_management/templates/header_proposal.pt:117
 #: novaideo/views/idea_management/templates/diff_result.pt:7
 #: novaideo/adapters/__init__.py:26
 msgid "Keywords"
@@ -179,11 +179,11 @@ msgstr "Mots clés"
 
 #: novaideo/core.py:411 novaideo/content/site_configuration.py:363
 msgid ""
-"To add keywords, you need to tap the « Enter » key after each keyword or "
-"separate them with commas."
+"To add keywords, you need to separate them by commas and then tap the « "
+"Enter » key to validate your selection."
 msgstr ""
-"Pour ajouter des mots clés, vous devez taper sur la touche « Entrée » après "
-"chaque mot clé ou les séparer par des virgules."
+"Pour ajouter des mots-clés, vous devez les séparer par des virgules, puis "
+"appuyez sur la touche «Entrée» pour valider votre sélection."
 
 #: novaideo/role.py:117 novaideo/views/templates/panels/novaideo_contents.pt:5
 msgid "Member"
@@ -299,8 +299,8 @@ msgstr "Connecteurs enregistrés"
 #: novaideo/content/processes/organization_management/behaviors.py:41
 #: novaideo/content/processes/organization_management/behaviors.py:77
 #: novaideo/content/processes/organization_management/behaviors.py:114
-#: novaideo/content/processes/organization_management/behaviors.py:206
-#: novaideo/content/processes/organization_management/behaviors.py:344
+#: novaideo/content/processes/organization_management/behaviors.py:207
+#: novaideo/content/processes/organization_management/behaviors.py:347
 #: novaideo/content/processes/idea_management/behaviors.py:77
 #: novaideo/content/processes/idea_management/behaviors.py:268
 #: novaideo/content/processes/idea_management/behaviors.py:356
@@ -540,10 +540,10 @@ msgstr "Supprimer"
 #: novaideo/content/processes/challenge_management/behaviors.py:343
 #: novaideo/content/processes/challenge_management/behaviors.py:579
 #: novaideo/content/processes/challenge_management/behaviors.py:616
-#: novaideo/content/processes/organization_management/behaviors.py:238
-#: novaideo/content/processes/organization_management/behaviors.py:258
-#: novaideo/content/processes/organization_management/behaviors.py:302
-#: novaideo/content/processes/organization_management/behaviors.py:395
+#: novaideo/content/processes/organization_management/behaviors.py:240
+#: novaideo/content/processes/organization_management/behaviors.py:260
+#: novaideo/content/processes/organization_management/behaviors.py:305
+#: novaideo/content/processes/organization_management/behaviors.py:398
 #: novaideo/content/processes/idea_management/behaviors.py:321
 #: novaideo/content/processes/idea_management/behaviors.py:432
 #: novaideo/content/processes/idea_management/behaviors.py:469
@@ -717,7 +717,7 @@ msgstr "Cibles"
 #: novaideo/content/correction.py:45 novaideo/content/amendment.py:228
 #: novaideo/content/challenge.py:128 novaideo/content/proposal.py:187
 #: novaideo/views/proposal_management/templates/diff_result.pt:6
-#: novaideo/views/proposal_management/templates/header_proposal.pt:109
+#: novaideo/views/proposal_management/templates/header_proposal.pt:110
 msgid "Abstract"
 msgstr "Résumé"
 
@@ -752,7 +752,7 @@ msgstr "Pièces jointes"
 #: novaideo/content/workspace.py:64
 #: novaideo/content/processes/proposal_management/definition.py:542
 #: novaideo/content/processes/proposal_management/definition.py:543
-#: novaideo/views/proposal_management/templates/header_proposal.pt:166
+#: novaideo/views/proposal_management/templates/header_proposal.pt:170
 msgid "Workspace"
 msgstr "Espace de travail"
 
@@ -1229,7 +1229,7 @@ msgstr "Les raisons du signalement"
 #: novaideo/content/processes/challenge_management/behaviors.py:531
 #: novaideo/content/processes/challenge_management/definition.py:99
 #: novaideo/content/processes/challenge_management/definition.py:100
-#: novaideo/content/processes/organization_management/behaviors.py:177
+#: novaideo/content/processes/organization_management/behaviors.py:178
 #: novaideo/content/processes/organization_management/definition.py:71
 #: novaideo/content/processes/idea_management/behaviors.py:1035
 #: novaideo/content/processes/idea_management/definition.py:131
@@ -2043,7 +2043,7 @@ msgstr "Se déconnecter"
 #: novaideo/content/processes/question_management/definition.py:183
 #: novaideo/content/processes/smart_folder_management/definition.py:59
 #: novaideo/content/processes/challenge_management/definition.py:76
-#: novaideo/content/processes/organization_management/behaviors.py:205
+#: novaideo/content/processes/organization_management/behaviors.py:206
 #: novaideo/content/processes/organization_management/definition.py:60
 #: novaideo/content/processes/organization_management/definition.py:67
 #: novaideo/content/processes/organization_management/definition.py:68
@@ -2882,8 +2882,8 @@ msgstr "Soutenir la proposition"
 
 #: novaideo/content/processes/proposal_management/definition.py:365
 #: novaideo/content/processes/idea_management/definition.py:140
-#: novaideo/views/__init__.py:385 novaideo/views/__init__.py:407
-#: novaideo/views/__init__.py:476 novaideo/views/__init__.py:498
+#: novaideo/views/__init__.py:383 novaideo/views/__init__.py:405
+#: novaideo/views/__init__.py:474 novaideo/views/__init__.py:496
 #: novaideo/views/proposal_management/support_proposal.py:24
 #: novaideo/views/question_management/support_question.py:25
 #: novaideo/views/question_management/answer/support_answer.py:25
@@ -2904,8 +2904,8 @@ msgstr "S'opposer à la proposition"
 
 #: novaideo/content/processes/proposal_management/definition.py:373
 #: novaideo/content/processes/idea_management/definition.py:144
-#: novaideo/views/__init__.py:431 novaideo/views/__init__.py:455
-#: novaideo/views/__init__.py:476 novaideo/views/__init__.py:498
+#: novaideo/views/__init__.py:429 novaideo/views/__init__.py:453
+#: novaideo/views/__init__.py:474 novaideo/views/__init__.py:496
 #: novaideo/views/proposal_management/oppose_proposal.py:24
 #: novaideo/views/question_management/oppose_question.py:25
 #: novaideo/views/question_management/answer/oppose_answer.py:25
@@ -2919,8 +2919,8 @@ msgstr "Retirer son jeton de la proposition"
 
 #: novaideo/content/processes/proposal_management/definition.py:377
 #: novaideo/content/processes/idea_management/definition.py:148
-#: novaideo/views/__init__.py:381 novaideo/views/__init__.py:403
-#: novaideo/views/__init__.py:427 novaideo/views/__init__.py:451
+#: novaideo/views/__init__.py:379 novaideo/views/__init__.py:401
+#: novaideo/views/__init__.py:425 novaideo/views/__init__.py:449
 #: novaideo/views/proposal_management/withdraw_token.py:24
 #: novaideo/views/question_management/withdraw_token.py:24
 #: novaideo/views/question_management/answer/withdraw_token.py:24
@@ -4981,7 +4981,7 @@ msgstr "Par"
 #: novaideo/views/templates/amendment_result.pt:20
 #: novaideo/views/templates/panels/challenge.pt:42
 #: novaideo/views/proposal_management/create_proposal.py:127
-#: novaideo/views/proposal_management/templates/header_proposal.pt:90
+#: novaideo/views/proposal_management/templates/header_proposal.pt:91
 #: novaideo/views/newsletter_management/templates/newsletter_history.pt:13
 #: novaideo/views/amendment_management/templates/description_amendments.pt:19
 #: novaideo/views/amendment_management/templates/see_amendment.pt:57
@@ -5092,19 +5092,16 @@ msgstr "Justification"
 
 #: novaideo/views/templates/proposal_result.pt:23
 #: novaideo/views/templates/proposal_bloc.pt:20
-#: novaideo/views/proposal_management/templates/header_proposal.pt:128
 msgid "${wg_state} working group without members"
 msgstr "Groupe de travail ${wg_state} sans membres"
 
 #: novaideo/views/templates/proposal_result.pt:26
 #: novaideo/views/templates/proposal_bloc.pt:23
-#: novaideo/views/proposal_management/templates/header_proposal.pt:131
 msgid "${wg_state} working group with 1 member"
 msgstr "Groupe de travail ${wg_state} avec 1 membre"
 
 #: novaideo/views/templates/proposal_result.pt:29
 #: novaideo/views/templates/proposal_bloc.pt:26
-#: novaideo/views/proposal_management/templates/header_proposal.pt:134
 msgid "${wg_state} working group with ${len_members} members"
 msgstr "Groupe de travail ${wg_state} avec ${len_members} membres"
 
@@ -5112,7 +5109,7 @@ msgstr "Groupe de travail ${wg_state} avec ${len_members} membres"
 #: novaideo/views/templates/idea_result.pt:41
 #: novaideo/views/templates/idea_bloc.pt:41
 #: novaideo/views/templates/proposal_bloc.pt:42
-#: novaideo/views/proposal_management/templates/see_proposal.pt:16
+#: novaideo/views/proposal_management/templates/see_proposal.pt:17
 msgid "${support and 'Withdraw my token' or 'Support'}"
 msgstr "${support and 'Retirer mon jeton' or 'Soutenir'}"
 
@@ -5120,16 +5117,16 @@ msgstr "${support and 'Retirer mon jeton' or 'Soutenir'}"
 #: novaideo/views/templates/idea_result.pt:51
 #: novaideo/views/templates/idea_bloc.pt:51
 #: novaideo/views/templates/proposal_bloc.pt:52
-#: novaideo/views/proposal_management/templates/see_proposal.pt:26
+#: novaideo/views/proposal_management/templates/see_proposal.pt:27
 msgid "${oppose and 'Withdraw my token' or 'Oppose'}"
 msgstr "${oppose and 'Retirer mon jeton' or 'M'opposer'}"
 
-#: novaideo/views/templates/proposal_result.pt:86
-#: novaideo/views/templates/idea_result.pt:83
+#: novaideo/views/templates/proposal_result.pt:97
+#: novaideo/views/templates/idea_result.pt:94
 #: novaideo/views/templates/question_result.pt:57
-#: novaideo/views/templates/idea_bloc.pt:82
+#: novaideo/views/templates/idea_bloc.pt:93
 #: novaideo/views/templates/question_bloc.pt:57
-#: novaideo/views/templates/proposal_bloc.pt:83
+#: novaideo/views/templates/proposal_bloc.pt:94
 msgid "Associated to this challenge"
 msgstr "Associée à ce challenge"
 
@@ -5149,7 +5146,7 @@ msgstr "Chargement..."
 #: novaideo/views/templates/challenge_popover.pt:21
 #: novaideo/views/templates/small_answer_result.pt:34
 #: novaideo/views/templates/idea_list_element.pt:25
-#: novaideo/views/proposal_management/templates/header_proposal.pt:101
+#: novaideo/views/proposal_management/templates/header_proposal.pt:102
 #: novaideo/views/question_management/templates/header_question.pt:48
 #: novaideo/views/question_management/templates/see_question.pt:42
 #: novaideo/views/challenge_management/templates/header_challenge.pt:53
@@ -5183,7 +5180,7 @@ msgstr "Arrière-plan"
 #: novaideo/views/templates/answer_result.pt:20
 #: novaideo/views/templates/small_answer_result.pt:25
 #: novaideo/views/templates/panels/challenge.pt:36
-#: novaideo/views/proposal_management/templates/header_proposal.pt:86
+#: novaideo/views/proposal_management/templates/header_proposal.pt:87
 #: novaideo/views/question_management/templates/header_question.pt:28
 #: novaideo/views/challenge_management/templates/header_challenge.pt:33
 #: novaideo/views/idea_management/templates/header_idea.pt:33
@@ -5345,21 +5342,21 @@ msgstr "Annuler"
 
 #: novaideo/views/templates/answer_result.pt:99
 #: novaideo/views/templates/comment_result.pt:117
-#: novaideo/views/proposal_management/templates/see_proposal.pt:90
+#: novaideo/views/proposal_management/templates/see_proposal.pt:103
 #: novaideo/views/question_management/templates/see_question.pt:109
 #: novaideo/views/challenge_management/templates/see_challenge.pt:98
 #: novaideo/views/idea_management/templates/comments.pt:137
-#: novaideo/views/idea_management/templates/see_idea.pt:94
+#: novaideo/views/idea_management/templates/see_idea.pt:107
 msgid "Attachments:"
 msgstr "Pièces jointes :"
 
 #: novaideo/views/templates/answer_result.pt:101
 #: novaideo/views/templates/comment_result.pt:118
-#: novaideo/views/proposal_management/templates/see_proposal.pt:91
+#: novaideo/views/proposal_management/templates/see_proposal.pt:104
 #: novaideo/views/question_management/templates/see_question.pt:110
 #: novaideo/views/challenge_management/templates/see_challenge.pt:99
 #: novaideo/views/idea_management/templates/comments.pt:138
-#: novaideo/views/idea_management/templates/see_idea.pt:95
+#: novaideo/views/idea_management/templates/see_idea.pt:108
 msgid "Attachment:"
 msgstr "Pièce jointe :"
 
@@ -8529,7 +8526,7 @@ msgstr "Texte ajouté à la version en cours"
 msgid "Text removed from the current version"
 msgstr "Texte supprimé de la version en cours"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:12
+#: novaideo/views/proposal_management/templates/header_proposal.pt:13
 msgid ""
 "This Proposal is published. It is visible to all Members. The related "
 "Working Group is inactive, waiting for the quorum to be reached."
@@ -8537,7 +8534,7 @@ msgstr ""
 "Cette Proposition est publiée. Elle est visible par l'ensemble des Membres. "
 "Le Groupe de Travail associé est en attente d'atteinte du quorum."
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:14
+#: novaideo/views/proposal_management/templates/header_proposal.pt:15
 msgid ""
 "To improve it, the Working Group must gather at least ${participants_mini} "
 "participants."
@@ -8545,7 +8542,7 @@ msgstr ""
 "Pour l'améliorer, il faut que le groupe de travail réunisse au moins "
 "${participants_mini} participant(e)s."
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:21
+#: novaideo/views/proposal_management/templates/header_proposal.pt:22
 msgid ""
 "You have reached the limit of the number of working groups in which you can "
 "participate simultaneously. In order to submit your proposal, please quit "
@@ -8555,11 +8552,11 @@ msgstr ""
 "pouvez participer simultanément. Afin de pouvoir soumettre votre "
 "proposition, veuillez démissionner de l'un de"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:21
+#: novaideo/views/proposal_management/templates/header_proposal.pt:22
 msgid "your current working groups"
 msgstr "vos groupes de travail actuels"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:24
+#: novaideo/views/proposal_management/templates/header_proposal.pt:25
 msgid ""
 "In order for you to publish you proposal, all ideas related to it must have "
 "been previously approved by the Moderation."
@@ -8567,7 +8564,7 @@ msgstr ""
 "Pour que vous puissiez publier votre proposition, il faut que l'ensemble de "
 "ses idées liées soit préalablement approuvé par la Modération."
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:26
+#: novaideo/views/proposal_management/templates/header_proposal.pt:27
 msgid ""
 "In order for you to submit you proposal, all ideas related to it must have "
 "been previously approved by the Moderation."
@@ -8575,7 +8572,7 @@ msgstr ""
 "Pour que vous puissiez soumettre votre proposition, il faut que l'ensemble "
 "de ses idées liées soit préalablement approuvé par la Modération."
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:29
+#: novaideo/views/proposal_management/templates/header_proposal.pt:30
 msgid ""
 "You can access below the ideas related to the proposal that have not been "
 "approved by the Moderation."
@@ -8583,12 +8580,12 @@ msgstr ""
 "Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont "
 "pas été approuvées par la Modération."
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:31
+#: novaideo/views/proposal_management/templates/header_proposal.pt:32
 msgid "These ideas must afterwards be favourably examined by an Examiner."
 msgstr ""
 "Ces idées doivent être ensuite examinées favorablement par un Examinateur."
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:40
+#: novaideo/views/proposal_management/templates/header_proposal.pt:41
 msgid ""
 "For you to be allowed to publish your proposal, all of its related ideas "
 "must have been favourably examined by an Examiner."
@@ -8596,7 +8593,7 @@ msgstr ""
 "Pour que vous puissiez publier votre proposition, il faut que l'ensemble de "
 "ses idées liées soit préalablement examiné favorablement par un Examinateur."
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:42
+#: novaideo/views/proposal_management/templates/header_proposal.pt:43
 msgid ""
 "For you to be allowed to submit your proposal, all of its related ideas must "
 "have been favourably examined by an Examiner."
@@ -8605,7 +8602,7 @@ msgstr ""
 "de ses idées liées soit préalablement examiné favorablement par un "
 "Examinateur."
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:44
+#: novaideo/views/proposal_management/templates/header_proposal.pt:45
 msgid ""
 "You can access below the ideas related to the proposal that were not "
 "favourably examined."
@@ -8613,50 +8610,62 @@ msgstr ""
 "Vous pouvez accéder ci-dessous aux idées liées à la proposition qui n'ont "
 "pas été examinée favorablement."
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:57
+#: novaideo/views/proposal_management/templates/header_proposal.pt:58
 msgid "Display all differences"
 msgstr "Afficher toutes les différences"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:57
+#: novaideo/views/proposal_management/templates/header_proposal.pt:58
 msgid "Display"
 msgstr "Afficher"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:58
+#: novaideo/views/proposal_management/templates/header_proposal.pt:59
 msgid "Hide all differences"
 msgstr "Cacher toutes les différences"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:58
+#: novaideo/views/proposal_management/templates/header_proposal.pt:59
 msgid "Hide"
 msgstr "Cacher"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:59
+#: novaideo/views/proposal_management/templates/header_proposal.pt:60
 msgid "Accept all improvements"
 msgstr "Accepter toutes les améliorations"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:59
+#: novaideo/views/proposal_management/templates/header_proposal.pt:60
 msgid "Accept all"
 msgstr "Accepter tout"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:60
+#: novaideo/views/proposal_management/templates/header_proposal.pt:61
 msgid "Reject all improvements"
 msgstr "Rejeter toutes les améliorations"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:60
+#: novaideo/views/proposal_management/templates/header_proposal.pt:61
 msgid "Reject all"
 msgstr "Rejeter tout"
 
 #. Default: en
-#: novaideo/views/proposal_management/templates/header_proposal.pt:64
+#: novaideo/views/proposal_management/templates/header_proposal.pt:65
 msgid "language-code"
 msgstr "fr"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:95
+#: novaideo/views/proposal_management/templates/header_proposal.pt:96
 msgid ", duplicated from the proposal"
 msgstr ", dupliquée à partir de la proposition"
 
-#: novaideo/views/proposal_management/templates/header_proposal.pt:96
+#: novaideo/views/proposal_management/templates/header_proposal.pt:97
 msgid ", previous version of the current version of the proposal"
 msgstr ", version passée de la version en cours de la proposition"
+
+#: novaideo/views/proposal_management/templates/header_proposal.pt:132
+msgid "${wg_state} Working group without members"
+msgstr "Groupe de travail ${wg_state} sans membres"
+
+#: novaideo/views/proposal_management/templates/header_proposal.pt:135
+msgid "${wg_state} Working group with 1 member"
+msgstr "Groupe de travail ${wg_state} avec 1 membre"
+
+#: novaideo/views/proposal_management/templates/header_proposal.pt:138
+msgid "${wg_state} Working group with ${len_members} members"
+msgstr "Groupe de travail ${wg_state} avec ${len_members} membres"
 
 #: novaideo/views/proposal_management/templates/alert_proposal_publish.pt:3
 msgid "By clicking on « Continue », the proposal will be published."

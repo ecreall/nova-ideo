@@ -78,6 +78,7 @@ class asyn_component_config(object):
                     component.title = ob.title
                     component.viewid = ob.viewid
                     component.view_icon = getattr(ob, 'view_icon', '')
+                    component.counter_id = getattr(ob, 'counter_id', '')
                     component.css_class = ob.css_class + ' async-component-container'
                     component.container_css_class = ob.container_css_class + \
                         ' async-component'
