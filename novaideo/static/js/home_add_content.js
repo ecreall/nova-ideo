@@ -328,11 +328,11 @@ $(document).ready(function() {
   
   //show the questions tab when question form is shown
   $('a[href="#questionhomeform"]').click(function(e) {
-    $(".home-bloc>ul.nav-tabs>#home-questions-counter a").click()
+    $('.contents-bloc>ul.nav-tabs>li[id$="-questions-counter"] a').click()
   })
 
   //show the ideas tab when idea form is shown
   $('a[href="#ideahomeform"]').click(function(e) {
-    $(".home-bloc>ul.nav-tabs>#home-ideas-counter a").click()
+    $('.contents-bloc>ul.nav-tabs>li[id$="-ideas-counter"] a').click()
   })
 })

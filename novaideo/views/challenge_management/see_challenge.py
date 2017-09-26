@@ -321,7 +321,7 @@ class ChallengeContentsView(MultipleView):
     template = 'novaideo:views/templates/multipleview.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'challengecontents'
-    css_class = 'simple-bloc'
+    css_class = 'simple-bloc contents-bloc'
     center_tabs = True
     views = (QuestionsView, IdeasView, ProposalsView)
 
