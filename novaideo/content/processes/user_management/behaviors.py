@@ -78,7 +78,6 @@ def accept_preregistration(request, preregistration, root):
               subject=subject, body=message)
 
 
-
 def login_roles_validation(process, context):
     return has_any_roles(roles=('Anonymous', 'Collaborator'))
 

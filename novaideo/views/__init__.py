@@ -627,7 +627,6 @@ class NovaideoAPI(IndexManagementJsonView):
         return result
 
     def update_action(self, action=None, context=None):
-        # import pdb; pdb.set_trace()
         result = {}
         action_uid = self.params('action_uid')
         try:

@@ -9,7 +9,7 @@
   <div class="analytics-study">
     <span i18n:translate="">The result of the ballot is:</span> <strong>${ballot_type.get_option(elected)}</strong>
   </div>
-  <div class="container-fluid analytics-container" style="max-width: 50%;">
+  <div tal:condition="ballot_result" class="container-fluid analytics-container" style="max-width: 50%;">
     <div class="legend pull-right" id="legend-doughnut-${oid}"></div>
     <canvas id="stat-canvas-${oid}" ></canvas>
     <script>

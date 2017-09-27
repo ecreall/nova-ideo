@@ -232,7 +232,7 @@ class NovaideoContents(object):
         result['nb_proposal'] = 0
         if 'proposal' in self.request.content_to_manage:
             query = object_provides_index.any((IProposal.__identifier__,)) & \
-                states_index.notany(['archived', 'draft'])
+                states_index.notany(['archived', 'draft', 'submitted'])
             result['nb_proposal'] = query.execute().__len__()
 
         result['condition'] = True
