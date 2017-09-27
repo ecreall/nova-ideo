@@ -29,7 +29,7 @@ class BaseFunctionalTests(object):
         dbpath = os.path.join(self.tmpdir, 'test.db')
         uri = 'file://' + dbpath + '?blobstorage_dir=' + self.tmpdir
         settings = {'zodbconn.uri': uri,
-                    'sms.service': 'pyramid_sms.twilio.TwilioService',
+                    'sms.service': 'pyramid_sms.ovh.OvhService',
                     'substanced.secret': 'sosecret',
                     'substanced.initial_login': 'admin',
                     'substanced.initial_password': 'admin',
