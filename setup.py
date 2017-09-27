@@ -36,7 +36,9 @@ requires = [
     'graphql-wsgi',
     'keas.kmi',
     'cipher.encryptingstorage',
-    'yampy2'
+    'yampy2',
+    'ovh',
+    'pyramid-sms'
     ]
 
 setup(name='novaideo',
