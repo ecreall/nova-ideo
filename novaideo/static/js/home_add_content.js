@@ -325,7 +325,7 @@ $(document).ready(function() {
     var content_id = $(this).data("content_id")
     container.attr("class", content_id + " home-add-content-container")
   })
-  
+
   //show the questions tab when question form is shown
   $('a[href="#questionhomeform"]').click(function(e) {
     $('.contents-bloc>ul.nav-tabs>li[id$="-questions-counter"] a').click()

@@ -116,7 +116,8 @@ function update_modal_action(event) {
         $(modal_container.find(".modal-title")).text(title)
         modal_container.css("opacity", "1")
         // set the modal backdrop option to 'static' if the modal contain a form
-        modal_container.data('bs.modal').options.backdrop = modal_container.find('form').length > 0 ? 'static': true
+        modal_container.data("bs.modal").options.backdrop =
+          modal_container.find("form").length > 0 ? "static" : true
         modal_container.modal("show")
         modal_container.find(".carousel").carousel()
         try {
