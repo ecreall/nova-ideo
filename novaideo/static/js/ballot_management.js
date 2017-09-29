@@ -1,3 +1,14 @@
+function render_end_vote() {
+  return (
+    '<div class="alert alert-info" role="alert">' +
+    novaideo_translate("voteFinished") +
+    ' <button class="reload-btn btn btn-xs btn-primary">' +
+    novaideo_translate("Finish") +
+    "</button>" +
+    "</div>"
+  )
+}
+
 function send_vote(event) {
   var $this = $(this)
   var panel = $($this.parents(".panel").first())
@@ -59,6 +70,8 @@ function send_vote(event) {
         var votes = $(group.find(".panel-title.collapsed"))
         if (votes.length > 0) {
           $(votes.first()).click()
+        } else {
+          modal.find(".modal-body>.panel-group").append(render_end_vote())
         }
       } else {
         source_body
@@ -105,6 +118,10 @@ function show_votes_modal(id) {
 }
 
 $(document).on("submit", "form.vote-form", send_vote)
+
+$(document).on("click", ".reload-btn", function() {
+  location.reload()
+})
 
 $(document).on("click", ".vote-action", function() {
   show_votes_modal($(this).data("action_id"))

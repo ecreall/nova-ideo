@@ -167,7 +167,7 @@ function init_correction_textarea(oid, lg) {
     jqoid.show()
     jqoid_preload.remove()
     tinyMCE.init({
-      language: lg == 'fr'? 'fr_FR': lg,
+      language: lg == "fr" ? "fr_FR" : lg,
       body_class: "form-control",
       plugins: ["textcolor"],
       theme_advanced_resizing_advanced_toolbar_location: "top",

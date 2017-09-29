@@ -94,7 +94,11 @@ novaideoI18n = {
       "in which working groups transform ideas into complete proposals with " +
       "a system of amendment and voting sessions.",
     "Please, validate the captcha.": "Please, validate the captcha.",
-    "Click here to collapse or to expand this section": "Click here to collapse or to expand this section",
+    "Click here to collapse or to expand this section":
+      "Click here to collapse or to expand this section",
+    voteFinished:
+      "You have finished your vote. Please keep the associated informations with each ballot.",
+    Finish: "Finish"
   },
 
   fr: {
@@ -192,7 +196,11 @@ novaideoI18n = {
       "groupes de travail transforment des idées en propositions abouties grâce à " +
       "un système de sessions d'amendements et de votes.",
     "Please, validate the captcha.": "Veuillez valider le captcha.",
-    "Click here to collapse or to expand this section": "Cliquez ici pour réduire ou étendre cette section",
+    "Click here to collapse or to expand this section":
+      "Cliquez ici pour réduire ou étendre cette section",
+    voteFinished:
+      "Vous avez fini de voter. Veuillez conserver les informations associées à chaque scrutin.",
+    Finish: "Terminer"
   }
 }
 
