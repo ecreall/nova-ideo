@@ -87,7 +87,7 @@
            </div>
           </div>
           <div class="text-container" tal:omit-tag="not files">
-            <div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} correction-container correction-container-text">
+            <div id="contenttext" class="${(filigrane and 'filigrane-project') or ''} collapsible-text correction-container correction-container-text">
               ${structure:text}
             </div>
           </div>

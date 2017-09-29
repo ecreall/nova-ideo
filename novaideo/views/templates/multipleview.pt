@@ -21,8 +21,10 @@
           </li>
       </ul>
       <div tal:attributes="id (subitem['id']+'_multipleform'+coordinates)" class="tab-content">
-          <div tal:repeat="item items" tal:attributes="id item['id']+coordinates;
-                                                       class 'tab-pane fade'+(item['isactive'] and ' in active' or '')">
+          <div tal:repeat="item items"
+               tal:attributes="id item['id']+coordinates;
+                              class 'tab-pane fade'+(item['isactive'] and ' in active' or '')+' '+(getattr(item['view'], 'expandable', False) and ' full' or '') ">
+                <span data-target=".tab-pane" tal:condition="getattr(item['view'], 'expandable', False)" class="full-screen-btn glyphicon glyphicon-resize-full pull-right small"></span>
               <div tal:replace="item['view'].render_item(item, coordinates, subitem['view'])" />   
           </div>
       </div>

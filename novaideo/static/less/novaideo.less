@@ -1,4 +1,21 @@
 
+.collapsible-container{
+    min-height: 25px  
+}
+
+.collapsible-activator{  
+    float: right;
+    font-size: 17px;
+    margin-right: 10px;
+    color: #54902a;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.collapsible-activator.activated{  
+    color: #ef6e18;
+}
+
 .question-container{
     display: inline-block;  
 }
@@ -1962,8 +1979,16 @@ form .btn {
   left: 0;
   top: 0;
   bottom: 0;
-  z-index: 1050;
-  overflow: auto;
+  z-index: 2000;
+  overflow: auto !important;
+  background-color: white;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.full-screen .content-text{
+  height: auto !important;
 }
 
 .full-screen.full .col-md-4 {
@@ -2680,8 +2705,6 @@ ul.btn-sub-menu li {
 
 .correction-navbar.navbar {
   min-height: 30px;
-  margin-left: 19px;
-  margin-right: 19px;
 }
 
 .correction-navbar.navbar > ul {
@@ -4035,12 +4058,10 @@ ins {
 }
 
 .content-text {
-  margin-left: 19px;
-  margin-right: 19px;
+  padding-left: 19px;
 }
 
 .content-text.row-md {
-  margin-left: 38px !important;
   min-height: 80px;
 }
 
@@ -5011,8 +5032,8 @@ span.circle {
   }
 
   .content-text {
-    margin-left: 0px;
-    margin-right: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   .user-data-container > h3 > span {
     display: block !important;

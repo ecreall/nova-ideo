@@ -73,14 +73,13 @@ function edit_item(form) {
 }
 
 function correct_handler(event) {
-  var correction = $($(this).parents("#correction").first())
+  var $this = $(this)
+  var correction = $this.parents("#correction").first()
   var correction_attr = correction.data("content")
-  var target = $(
-    $(this).parents(".correction-container-" + correction_attr).first()
-  )
-  var url = $(this).data("url")
+  var target = $this.parents(".correction-container-" + correction_attr).first()
+  var url = $this.data("url")
   dict_post = {}
-  dict_post["vote"] = Boolean($(this).data("favour"))
+  dict_post["vote"] = Boolean($this.data("favour"))
   dict_post["item"] = parseInt(correction.data("item"))
   dict_post["content"] = correction_attr
   dict_post["correction_id"] = parseInt(correction.data("correction"))
@@ -90,9 +89,10 @@ function correct_handler(event) {
       var correction_id = "#correction_" + correction_attr
       var content = $(data["body"]).find(correction_id)
       if (content) {
-        $(target).html($(content).html())
+        target.html($(content).html())
       }
       update_components(data)
+      init_collapsible(target)
     }
   })
 }
@@ -167,7 +167,7 @@ function init_correction_textarea(oid, lg) {
     jqoid.show()
     jqoid_preload.remove()
     tinyMCE.init({
-      language: lg,
+      language: lg == 'fr'? 'fr_FR': lg,
       body_class: "form-control",
       plugins: ["textcolor"],
       theme_advanced_resizing_advanced_toolbar_location: "top",

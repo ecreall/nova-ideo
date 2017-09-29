@@ -167,6 +167,7 @@ class DetailProposalView(BasicView):
     template = 'novaideo:views/proposal_management/templates/see_proposal.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     title = _('Details')
+    expandable = True
 
     def update(self):
         navbars = self.get_binding('navbars')

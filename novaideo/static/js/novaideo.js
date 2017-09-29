@@ -286,6 +286,18 @@ function init_channels_top() {
   })
 }
 
+function init_collapsible(element){
+  var collapsibles = element ? element.find(":header"): $(".collapsible-text :header")
+  collapsibles.each(function(){
+    var $this = $(this)
+    var tagName = $this.prop("tagName").toLowerCase()
+    var elements = $this.nextUntil( tagName )
+    $this.wrap('<div class="collapsible-container"></div>')
+    $('<span class="glyphicon glyphicon-triangle-top collapsible-activator" title="'+novaideo_translate('Click here to collapse or to expand this section')+'""></span>').insertBefore($this)
+    elements.insertAfter($this)
+  })
+}
+
 function initscroll(result_scrolls) {
   result_scrolls = result_scrolls ? result_scrolls : $(".result-scroll")
   $.each(result_scrolls, function(index) {
@@ -655,22 +667,26 @@ $(document).on("click", ".btn-more-scroll", function() {
 
 $(document).on("click", ".full-screen-btn.small", function() {
   var $this = $(this)
-  $(".pontus-main").addClass("full-screen")
+  var target_class = $this.data('target')
+  var target = target_class? $this.parent(target): $(".pontus-main") 
+  target.addClass("full-screen")
   $this
     .removeClass("glyphicon glyphicon-resize-full")
     .addClass("glyphicon glyphicon-resize-small")
   $this.removeClass("small").addClass("full")
-  $(".pontus-main").removeClass("small").addClass("full")
+  target.removeClass("small").addClass("full")
 })
 
 $(document).on("click", ".full-screen-btn.full", function() {
   var $this = $(this)
-  $(".pontus-main").removeClass("full-screen")
+  var target_class = $this.data('target')
+  var target = target_class? $this.parent(target): $(".pontus-main") 
+  target.removeClass("full-screen")
   $this
     .removeClass("glyphicon glyphicon-resize-small")
     .addClass("glyphicon glyphicon-resize-full")
   $this.removeClass("full").addClass("small")
-  $(".pontus-main").removeClass("full").addClass("small")
+  target.removeClass("full").addClass("small")
 })
 
 $(document).on("click", ".proposal-opinion", activate_explanation)
@@ -969,6 +985,26 @@ $(document).on("component_loaded", function(event, component_id) {
   }
 })
 
+$(document).on(
+  "click",
+  ".collapsible-activator:not(.activated)",
+  function(event, component_id) {
+   var activator = $(this)
+   activator.nextAll().not(activator.next()).slideUp("fast")
+   activator.addClass('activated glyphicon-triangle-bottom')
+   activator.removeClass('glyphicon-triangle-top')
+})
+
+$(document).on(
+  "click",
+  ".collapsible-activator.activated",
+  function(event, component_id) {
+   var activator = $(this)
+   activator.nextAll().not(activator.next()).slideDown()
+   activator.removeClass('activated glyphicon-triangle-bottom')
+   activator.addClass('glyphicon-triangle-top')
+})
+
 $(window).load(function() {
   initscroll()
 })
@@ -1043,6 +1079,8 @@ $(document).ready(function() {
       $($this.find("ul.btn-sub-menu li")).fadeOut("fast")
     }
   )
+
+  init_collapsible()
 
   focus_on_form($(".pontus-main"))
 })

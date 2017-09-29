@@ -4,7 +4,7 @@
         (function () {
               var scripts = [
                   <span tal:omit-tag="" tal:condition="request.locale_name in available_locales">
-                    '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jQuery.socialshareprivacy.min.'+request.locale_name+'.js')}',
+                    '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.'+request.locale_name+'.js')}',
                   </span>
                   '${request.static_url('novaideo:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.js')}',
                   

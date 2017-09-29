@@ -503,6 +503,7 @@ function update_sidebar_action() {
         target.find(".carousel").carousel()
         init_emoji(target.find(".emoji-container:not(.emojified)"))
         init_content_text_scroll(target.find(".content-text-scroll"))
+        init_collapsible(target)
         rebuild_scrolls(target.find(".malihu-scroll"))
         var result_scroll = target.find(".result-scroll")
         initscroll(result_scroll)
