@@ -6,8 +6,11 @@
     </div>
   </div>
   <div class="alerts-footer">
-	 <a href="${request.resource_url(request.root, '@@seealerts')}" class="all-alerts-btn pull-right btn btn-primary btn-xs">
-	    	<span class="icon glyphicon glyphicon-bell"></span> <span i18n:translate="">See all alerts</span>
-	    </a>
+    <a href="${request.resource_url(request.root, '@@seealerts')}" class="all-alerts-btn btn btn-primary btn-xs">
+  	    	<span class="icon glyphicon glyphicon-bell"></span> <span i18n:translate="">All alerts</span>
+  	  </a>
+      <a href="${request.resource_url(user, '@@extractalerts')}" class="all-alerts-btn btn btn-primary btn-xs">
+          <span class="icon glyphicon glyphicon-export"></span> <span i18n:translate="">Extract</span>
+      </a>
   </div>
 </div>

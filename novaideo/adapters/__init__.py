@@ -30,7 +30,7 @@ EXTRACTION_ATTR = {
     'modified_at': {'title': _('Modified on'), 'order': 9},
     'examined_at': {'title': _('Examined on'), 'order': 10},
     'published_at': {'title': _('Published on'), 'order': 11},
-    'content': {'title': _('Content'), 'order': 12},
+    'content': {'title': _('Content'), 'order': 12}
 }
 
 

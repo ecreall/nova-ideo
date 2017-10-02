@@ -1,0 +1,5 @@
+  <div class="pull-right" style="margin-top: -30px;">
+    <a href="${request.resource_url(user, '@@extractalerts')}" class="btn btn-primary btn-xs">
+          <span class="icon glyphicon glyphicon-export"></span> <span i18n:translate="">Extract</span>
+    </a>
+  </div>

@@ -277,7 +277,7 @@ class NovaideoAPI(IndexManagementJsonView):
                                 template=obj.templates['small'])['body']
             result_body.append(body)
 
-        values = {'bodies': result_body}
+        values = {'bodies': result_body, 'user': user}
         body = self.content(args=values, template=self.alert_template)['body']
         return {'body': body}
 

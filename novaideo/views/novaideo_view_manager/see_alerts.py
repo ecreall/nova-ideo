@@ -40,6 +40,7 @@ class SeeAlertsView(BasicView):
     name = 'seealerts'
     behaviors = [SeeAlerts]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
+    addon_template = 'novaideo:views/novaideo_view_manager/templates/addon_alerts.pt'
     viewid = 'seealerts'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     css_class = 'simple-bloc'
@@ -75,10 +76,13 @@ class SeeAlertsView(BasicView):
             body = self.content(args=render_dict,
                                 template=obj.templates['default'])['body']
             result_body.append(body)
-
+        
+        addon = self.content(
+            args={'user': user}, template=self.addon_template)['body'] if result_body else ''
         result = {}
         values = {'bodies': result_body,
-                  'batch': batch}
+                  'batch': batch,
+                  'addon': addon}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
