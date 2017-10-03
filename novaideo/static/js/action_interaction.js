@@ -115,10 +115,10 @@ function update_modal_action(event) {
         $(modal_container.find(".modal-body")).html(action_body)
         $(modal_container.find(".modal-title")).text(title)
         modal_container.css("opacity", "1")
+        modal_container.modal("show")
         // set the modal backdrop option to 'static' if the modal contain a form
         modal_container.data("bs.modal").options.backdrop =
           modal_container.find("form").length > 0 ? "static" : true
-        modal_container.modal("show")
         modal_container.find(".carousel").carousel()
         try {
           deform.processCallbacks()
