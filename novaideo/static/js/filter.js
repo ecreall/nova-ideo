@@ -2,8 +2,8 @@ function open_filter(filter_container) {
   filter_container.removeClass("closed").addClass("open")
   filter_container
     .find(".filter-btn")
-    .removeClass("md-expand-more closed")
-    .addClass("md-expand-less open")
+    .removeClass("closed")
+    .addClass("open")
   filter_container.find(".filter-form").css("display", "block")
 }
 
@@ -11,8 +11,8 @@ function close_filter(filter_container) {
   filter_container.removeClass("open").addClass("closed")
   filter_container
     .find(".filter-btn")
-    .removeClass("md-expand-less open")
-    .addClass("md-expand-more closed")
+    .removeClass("open")
+    .addClass("closed")
   filter_container.find(".filter-form").css("display", "none")
 }
 
@@ -261,8 +261,4 @@ $(document).on("click", ".sort-container .sort-form .reverse-icon", function() {
   }
   $this.toggleClass("on")
   input.change()
-  $this.rotate({
-    angle: 0,
-    animateTo: 360
-  })
 })

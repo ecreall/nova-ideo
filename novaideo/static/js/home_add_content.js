@@ -327,12 +327,46 @@ $(document).ready(function() {
   })
 
   //show the questions tab when question form is shown
-  $('a[href="#questionhomeform"]').click(function(e) {
-    $('.contents-bloc>ul.nav-tabs>li[id$="-questions-counter"] a').click()
+  $('a[href="#questionhomeform"]').click(function(e, system) {
+    if (!system) {
+      $('.contents-bloc>ul.nav-tabs>li[id$="-questions-counter"] a').trigger(
+        "click",
+        true
+      )
+    }
   })
 
   //show the ideas tab when idea form is shown
-  $('a[href="#ideahomeform"]').click(function(e) {
-    $('.contents-bloc>ul.nav-tabs>li[id$="-ideas-counter"] a').click()
+  $('a[href="#ideahomeform"]').click(function(e, system) {
+    if (!system) {
+      $('.contents-bloc>ul.nav-tabs>li[id$="-ideas-counter"] a').trigger(
+        "click",
+        true
+      )
+    }
   })
+})
+
+//show the question form when questions tab is shown
+$(
+  document
+).on(
+  "click",
+  '.contents-bloc>ul.nav-tabs>li[id$="-questions-counter"] a',
+  function(e, system) {
+    if (!system) {
+      $('a[href="#questionhomeform"]').trigger("click", true)
+    }
+  }
+)
+//show the idea form when ideas tab is shown
+$(
+  document
+).on("click", '.contents-bloc>ul.nav-tabs>li[id$="-ideas-counter"] a', function(
+  e,
+  system
+) {
+  if (!system) {
+    $('a[href="#ideahomeform"]').trigger("click", true)
+  }
 })

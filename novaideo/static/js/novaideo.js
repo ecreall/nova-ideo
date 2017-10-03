@@ -309,13 +309,13 @@ function initscroll(result_scrolls) {
   $.each(result_scrolls, function(index) {
     var result_scroll = $(this)
     var id = result_scroll.attr("id")
-    if (result_scroll.hasClass("results-bloc")) {
-      var items = result_scroll.find(
-        ">.result-container>.scroll-items-container>.scroll-item"
-      )
-      var max_height = max(map(height_of, items))
-      items.height(max_height)
-    }
+    // if (result_scroll.hasClass("results-bloc")) {
+    //   var items = result_scroll.find(
+    //     ">.result-container>.scroll-items-container>.scroll-item"
+    //   )
+    //   var max_height = max(map(height_of, items))
+    //   items.height(max_height)
+    // }
     $(result_scroll).infinitescroll(
       {
         behavior: "local",
@@ -388,12 +388,12 @@ function initscroll(result_scrolls) {
           .find(">.scroll-item")
         var nex_url = new_content.data("nex_url")
         scroll_items_container.append(items)
-        if ($this.hasClass("results-bloc")) {
-          $(current_content).find("img").last().load(function() {
-            var max_height = max(map(height_of, items))
-            items.height(max_height)
-          })
-        }
+        // if ($this.hasClass("results-bloc")) {
+        //   $(current_content).find("img").last().load(function() {
+        //     var max_height = max(map(height_of, items))
+        //     items.height(max_height)
+        //   })
+        // }
         new_content.remove()
         if (nex_url) {
           current_content.data("nex_url", nex_url)
