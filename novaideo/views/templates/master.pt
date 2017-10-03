@@ -98,7 +98,7 @@
             type="text/javascript"></script>
     <script src="${su('novaideo:static/js/novaideo_langs.js')}?v=2"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/action_interaction.js')}?v=9"
+    <script src="${su('novaideo:static/js/action_interaction.js')}?v=10"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/home_add_content.js')}?v=2"
           type="text/javascript"></script>
