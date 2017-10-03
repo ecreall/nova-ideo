@@ -25,7 +25,7 @@ from substanced.event import LoggedIn
 from substanced.util import find_service
 
 from dace.util import (
-    getSite, name_chooser,
+    getSite, name_chooser, name_normalizer,
     push_callback_after_commit, get_socket)
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.objectofcollaboration.principal.util import (
@@ -971,7 +971,7 @@ class ExtractAlerts(InfiniteCardinality):
         date = to_localized_time(now, request=request, translate=True)
         file_name = 'Alerts_Extraction_{user}_{date}_{app}'.format(
             date=date, user=user_title, app=root.title)
-        file_name = file_name.replace(' ', '-')
+        file_name = name_normalizer(file_name.replace(' ', '-'))
         csv_file = kw.get('file', '')
         response = request.response
         response.content_type = 'application/vnd.ms-excel;charset=windows-1252'
