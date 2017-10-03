@@ -765,7 +765,7 @@ def evolve_colors(root, registry):
     log.info('Colors evolved.')
 
 
-def evolve_user_management_process(root, registry):
+def evolve_usermanagement_process(root, registry):
     from dace import process_definitions_evolve
     process_definitions_evolve(root, registry)
     runtime = root['runtime']
@@ -963,7 +963,7 @@ def main(global_config, **settings):
     config.add_evolution_step(publish_organizations)
     config.add_evolution_step(evolve_mails_languages)
     config.add_evolution_step(evolve_colors)
-    config.add_evolution_step(evolve_user_management_process)
+    config.add_evolution_step(evolve_usermanagement_process)
     config.add_evolution_step(evolve_idea_management_process)
     config.add_evolution_step(evolve_abstract_process)
     config.add_evolution_step(evolve_nia_comments)
