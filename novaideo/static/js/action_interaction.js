@@ -300,7 +300,6 @@ function update_slider_action() {
           } catch (err) {}
           target.data("action_id", action.attr("id"))
           init_emoji($(target.find(".emoji-container:not(.emojified)")))
-          init_content_text_scroll(target.find(".content-text-scroll"))
           var result_scroll = target.find(".result-scroll")
           var height_scroll =
             is_content_view && is_sidebar
@@ -503,7 +502,6 @@ function update_sidebar_action() {
         $this.addClass("activated")
         target.find(".carousel").carousel()
         init_emoji(target.find(".emoji-container:not(.emojified)"))
-        init_content_text_scroll(target.find(".content-text-scroll"))
         init_collapsible(target.find(".collapsible-text"))
         rebuild_scrolls(target.find(".malihu-scroll"))
         var result_scroll = target.find(".result-scroll")
@@ -557,7 +555,6 @@ function update_popover_action() {
         } catch (err) {}
         target.find(".carousel").carousel()
         init_emoji(target.find(".emoji-container:not(.emojified)"))
-        init_content_text_scroll(target.find(".content-text-scroll"))
         rebuild_scrolls(target.find(".malihu-scroll"))
         var result_scroll = target.find(".result-scroll")
         initscroll(result_scroll)

@@ -23,8 +23,8 @@ $(document).on("submit", ".compareform", function(event) {
       var content = $(data).find(".compare-result")
       if (content) {
         target.html($(content).html())
-        init_content_text_scroll(target.find(".content-text-scroll"))
         rebuild_scrolls(target.find(".malihu-scroll"))
+        init_collapsible(target.find(".collapsible-text"))
       } else {
         location.reload()
         return false

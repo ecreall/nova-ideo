@@ -190,7 +190,6 @@ function object_view_component(data) {
               deform.processCallbacks()
             } catch (err) {}
             var new_comp = parent.find("#" + component_id).first()
-            init_content_text_scroll(new_comp.find(".content-text-scroll"))
             init_collapsible(new_comp.find(".collapsible-text"))
             rebuild_scrolls(new_comp.find(".malihu-scroll"))
             var result_scroll = new_comp.find(".result-scroll")

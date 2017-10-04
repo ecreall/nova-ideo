@@ -49,7 +49,7 @@
     <div tal:omit-tag="" tal:define="
         files proposal.get_attached_files_data();
         len_files len(files);">
-      <div class="content-text content-text-scroll malihu-scroll ${(submitted or examined) and 'row-md'}">
+      <div class="content-text ${(submitted or examined) and 'row-md'}">
           <div class="img-carousel-container pull-right" tal:condition="files">
               <div class="file-slider">
                 <div id="filecarousel${oid}" data-ride="carousel" data-interval="3000" class="carousel slide"> 
