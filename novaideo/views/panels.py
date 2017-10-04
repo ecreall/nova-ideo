@@ -46,13 +46,15 @@ from novaideo.utilities.util import (
     deepcopy,
     FOOTER_NAVBAR_TEMPLATE,
     get_debatescore_data,
-    get_action_view)
+    get_action_view,
+    render_listing_obj)
 from novaideo.views.filter import find_entities, find_more_contents
 from novaideo.contextual_help_messages import render_contextual_help
 from novaideo.guide_tour import get_guide_tour_page
 from novaideo.steps import steps_panels
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
+from novaideo.content.question import Question
 from novaideo.content.smart_folder import SmartFolder
 from novaideo.fr_lexicon import normalize_title
 from novaideo.content.processes.challenge_management.behaviors import (
@@ -700,6 +702,37 @@ class Debates_core(object):
             'picture': getattr(self.context, 'homepage_picture', None),
             'text': getattr(self.context, 'homepage_text', None)
         }
+
+
+@panel_config(
+    name='personcard',
+    context=Entity,
+    renderer='templates/panels/person_card.pt'
+    )
+class PersonCard(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        result = {'card': None}
+        is_index_view = self.request.view_name in ('index', '')
+        is_root = self.context is self.request.root
+        is_valid = is_root or isinstance(self.context, (Question, Idea, Proposal))
+        if not is_index_view or not is_valid:
+            return result
+
+        user = self.request.user
+        author = getattr(self.context, 'author', None)
+        user_to_display = user if is_root else author
+        if not user_to_display:
+            return result
+
+        result['card'] = render_listing_obj(
+            self.request, user_to_display, user,
+            view_type='card') if user_to_display else None
+        return result
 
 
 @panel_config(

@@ -259,7 +259,8 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     templates = {'default': 'novaideo:views/templates/person_result.pt',
                  'bloc': 'novaideo:views/templates/person_bloc.pt',
                  'small': 'novaideo:views/templates/small_person_result.pt',
-                 'popover': 'novaideo:views/templates/person_popover.pt'}
+                 'popover': 'novaideo:views/templates/person_popover.pt',
+                 'card': 'novaideo:views/templates/person_card.pt',}
     name = renamer()
     tokens = CompositeMultipleProperty('tokens')
     tokens_ref = SharedMultipleProperty('tokens_ref')

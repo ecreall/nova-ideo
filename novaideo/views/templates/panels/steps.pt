@@ -39,8 +39,8 @@
   </div>
   <div class="hidden-xs container-fluid">
   <div class="steps-container row">
-    <div class="col-md-2"></div>
-	  <div class="steps col-md-10">
+    <div class="col-md-3"></div>
+	  <div class="steps col-md-7">
       <ul class="nav nav-steps">
          <li class="0 first ${(current_step == 1)  and 'active'} glyphicon glyphicon-shopping-cart">
             <span class="${(current_step == 1)  and 'active'} step-content" data-step="message-step-1">

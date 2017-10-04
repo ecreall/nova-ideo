@@ -40,7 +40,7 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=16"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=17"
             rel="stylesheet"/>
     </div>
     <link href="${su('daceui:static/css/dace_ui.css')}"
@@ -53,13 +53,13 @@
                      to_support request.support_proposals;
                      tosupport_toexamine to_examine and to_support">
       <link tal:condition="tosupport_toexamine"
-              href="${su('novaideo:static/css/steps/steps_5.css')}"
+              href="${su('novaideo:static/css/steps/steps_5.css')}?v=2"
               rel="stylesheet"/>
       <link tal:condition="not tosupport_toexamine and (to_examine or to_support)" 
-              href="${su('novaideo:static/css/steps/steps_4.css')}"
+              href="${su('novaideo:static/css/steps/steps_4.css')}?v=2"
               rel="stylesheet"/>
       <link tal:condition="not (to_examine or to_support)"
-              href="${su('novaideo:static/css/steps/steps_3.css')}"
+              href="${su('novaideo:static/css/steps/steps_3.css')}?v=2"
               rel="stylesheet"/>
     </div>
 
@@ -102,13 +102,13 @@
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/home_add_content.js')}?v=2"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo.js')}?v=14"
+    <script src="${su('novaideo:static/js/novaideo.js')}?v=15"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/admin_nav.js')}"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/filter.js')}?v=6"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/steps.js')}"
+    <script src="${su('novaideo:static/js/steps.js')}?v=2"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/contextual_help.js')}"
           type="text/javascript"></script>
@@ -204,7 +204,7 @@
           <div class="novaideo-info row"
                tal:define="content panel('novaideo_contents');
                            deadline panel('deadline')" >
-            <div tal:condition="content or deadline" class="col-md-7 col-md-offset-2">
+            <div tal:condition="content or deadline" class="col-md-7 column col-md-push-3">
               ${content}
               ${deadline}
             </div>
@@ -215,11 +215,12 @@
         <metal:slot metal:define-slot="outer-content">
           <div class="container-fluid">
           <div class="row clearfix novaideo-content">
-            <div tal:condition="not view_only" class="col-md-2 column ui-sortable novaideo-left">
+            <div tal:condition="not view_only" class="col-md-3 column ui-sortable novaideo-left">
               ${panel('channels')}
               ${adminnavbar}
-               <div metal:define-slot="left"></div>
+              ${panel('personcard')}
               ${panel('navigation_bar')}
+               <div metal:define-slot="left"></div>
             </div>
             <div class="col-md-7 column ui-sortable novaideo-main">
               <div class="above-content" style="text-align: center;">
@@ -248,7 +249,7 @@
               <div class="below-content"></div>
             </div>
 
-            <div tal:condition="not view_only" class="col-md-3 column ui-sortable novaideo-right">
+            <div tal:condition="not view_only" class="col-md-2 column ui-sortable novaideo-right">
                  <div class="menu-right-toggle top hide-bloc">
                   <span class="glyphicon glyphicon-menu-hamburger" style=""></span>
                 </div>

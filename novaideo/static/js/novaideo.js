@@ -286,6 +286,28 @@ function init_channels_top() {
   })
 }
 
+function init_card_position() {
+    var card = $('.person-card-container:first')
+    if (card.length > 0){
+      var min_top = 50
+      var offset_top = card.offset().top
+      var offset_left = card.offset().left
+      if (!card.hasClass('fixed')){
+        card.data('initial_top', offset_top)
+      }else{
+        offset_top = card.data('initial_top')
+      }
+      var top = offset_top - $(window).scrollTop()
+      if(top<=min_top){
+        card.addClass('fixed')
+        card.css("top", min_top + "px")
+        card.css("left", offset_left + "px")
+      }else{
+        card.removeClass('fixed')
+      }
+    }
+}
+
 function init_collapsible(element) {
   var collapsibles = element
     ? element.find(":header")
@@ -1008,6 +1030,10 @@ $(window).scroll(function() {
   init_channels_top()
 })
 
+$(window).scroll(function() {
+  init_card_position()
+})
+
 $(document).ready(function() {
   init_collapsible_contents()
 
@@ -1020,6 +1046,8 @@ $(document).ready(function() {
   init_morecontent_scroll()
 
   init_channels_top()
+
+  init_card_position()
 
   scroll_to_panel()
 

@@ -54,7 +54,8 @@
 	overflow: hidden;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-
+    max-width: 800px;
+    margin: auto;
 }
 
 .steps ul, .steps li {

@@ -8,27 +8,17 @@
 
 .nav-steps li {
     float: left;
-    width: 23.4%;
+    width: 33%;
 }
 
 /*steps responsive design*/
 
-@media (max-width: 991px) {
-
-  .nav-steps li{
-    width: 33%
-  }
-
-}
 
 @media (max-width: 501px) {
   .nav-steps .step-content{
     margin-top: 5px;
   }
 
-  .nav-steps li{
-    width: 33%
-  }
 }
 
 @media (max-width: 391px){

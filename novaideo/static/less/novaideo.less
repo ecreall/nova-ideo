@@ -1,3 +1,82 @@
+.person-card-container.fixed{
+  position: fixed;
+  z-index: 100;
+}
+
+.person-card-container .object-menu{
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 51px;
+  padding: 0px 6px;
+  margin: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+}
+
+.person-card-container .listing-object-menu .dropdown-toggle{
+  color: white
+}
+
+.person-card-container .listing-object-menu .dropdown-toggle:hover{
+  color: gray !important;
+}
+
+.person-card-container:hover{
+  .object-menu{
+   opacity: 1;
+  }
+}
+
+
+.person-card-container{
+  float: right;
+  width: 220px;
+}
+
+.card-img{
+  height: 100px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  position: relative;
+}
+
+.card-img>img{
+  border: solid 3px white;
+  position: absolute;
+  bottom: -15px;
+  left: 33%;
+  box-shadow: 0 0 7px grey;
+}
+
+.card-data{
+  text-align: center;
+}
+
+.card-title{
+  font-size: 20px;
+  margin-top: 10px;
+  color: #333;
+  display: inline-block;
+}
+
+.card-addon{
+  color: gray;
+}
+
+.card-addon a {
+  color: gray;
+  font-weight: 700;
+}
+
+.card-addon-item{
+   margin-top: 5px 
+}
+
+.novaideo-main,
+.novaideo-info>.column{
+  max-width: 800px;
+  margin: auto;  
+}
+
 .collapsible-container {
   min-height: 25px;
 }
@@ -624,6 +703,8 @@ a.answer-btn {
 }
 
 .smartfolder-source-nav {
+  float: right;
+  width: 220px;
   margin-top: 20px;
 }
 
@@ -2351,6 +2432,8 @@ form .btn {
 .user-img-container > img {
   position: unset;
   width: 80px;
+  border: 3px solid #fff;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.58);
 }
 
 .user-data-container {
@@ -2406,6 +2489,7 @@ form .btn {
 
 .object-row-content .file-slider {
   margin-bottom: 10px;
+  margin-left: 10px;
 }
 .file-slider {
   padding-right: 10px;
@@ -2469,7 +2553,7 @@ form .btn {
   border-style: solid;
   border-width: 1px 1px 1px 5px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
-  margin: 5px 0px 25px 0px;
+  margin-bottom: 25px;
   padding: 1px 15px;
   z-index: 1031;
 }
@@ -2868,10 +2952,6 @@ a.ajax-action {
 .social-share-toggle > span.fa {
   font-size: 30px;
   vertical-align: sub;
-}
-
-.novaideo-left {
-  padding-right: 0px;
 }
 
 .pontus-main > div > div > .panel > .panel-heading > .panel-title,
@@ -4001,7 +4081,6 @@ ins {
   background-repeat: repeat-x;
   box-shadow: none;
   color: #4b4f56;
-  font-weight: 700;
   height: 30px;
   margin-top: 0;
   padding: 5px 10px;
@@ -4947,6 +5026,20 @@ span.circle {
 }
 
 @media (max-width: 991px) {
+  .person-card-container{
+    display: none
+  }
+
+  .novaideo-left{
+    margin: auto;
+    max-width: 800px;
+  }
+
+  .smartfolder-source-nav{
+      float: none;
+      margin: 0
+  }
+
   .httperror-img {
     margin-top: 5%;
     width: 70%;
@@ -5311,11 +5404,24 @@ span.circle {
 .content-footer {
   color: #8b93a3;
   font-size: 12px;
-  margin-left: 45px;
+  padding-left: 45px;
   margin-top: 0;
   position: relative;
-  width: 96%;
+  width: 100%;
   display: inline-block;
+}
+
+.search-item-bloc .search-item-footer{
+  padding-left: 0px;
+  text-align: center;
+}
+
+.search-item-bloc .search-item-footer .actions-block,{
+  width: 100%;
+}
+
+.search-item-bloc .search-item-footer .actions-block ul li .hidden-xs{
+  display: none;
 }
 
 .search-item-footer .actions-block li > a,
@@ -5325,7 +5431,7 @@ span.circle {
 
 .search-item  .media-bloc .search-item-footer,
 .media-bloc .content-footer {
-  margin-left: 10px !important;
+  padding-left: 10px !important;
   width: 89% !important;
 }
 
@@ -5362,9 +5468,15 @@ span.circle {
   margin-bottom: 0px;
 }
 
+
 .actions-block > ul li {
-  padding-right: 35px;
+  margin-right: 35px;
 }
+
+.actions-block > ul li:last-child {
+  margin-right: 0px;
+}
+
 
 .actions-block > ul li  a  span.footer-icon {
   font-size: 14px;
@@ -5495,3 +5607,4 @@ span.circle {
 .search-icon.icon {
   font-size: 30px;
 }
+
