@@ -20,7 +20,7 @@
           </a>
         <div class="card-addon">
           <small>
-            <span>${object.function}</span>
+            <span>${getattr(object, 'function', '')}</span>
           </small>
           <div tal:condition="getattr(object, 'organization', None)" class="card-addon-item">
             <a i18n:attributes="title" title="Organization" tal:attributes="href request.resource_url(object.organization, '@@index')"><span class="glyphicon glyphicon-home"></span> ${object.organization.title}</a>
