@@ -83,7 +83,7 @@ class EditView(FormView):
     title = _('Edit the profile')
     schema = select(EditPersonSchema(factory=Person,
                                      editable=True,
-                                     omit=('change_password', )),
+                                     omit=('change_password', 'organization')),
                     ['user_title',
                      'first_name',
                      'last_name',
