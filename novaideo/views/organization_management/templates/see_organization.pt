@@ -4,7 +4,7 @@
       organization_picture organization.logo;
       profil_picture getattr(organization_picture, 'profil', organization_picture);">
 <div class="user-panel" style="
-  background: transparent url(${request.static_url('novaideo:static/images/background_organization.svg')}) no-repeat scroll center center / cover ;">
+  background: transparent url(${request.static_url('novaideo:static/images/background_organization.png')}) no-repeat scroll center center / cover ;">
   <div class="user-panel-container" style="
     ">
     <div class="row">

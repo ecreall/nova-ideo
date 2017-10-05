@@ -3,10 +3,12 @@
      tal:define="url request.resource_url(object, '@@index');
                  picture object.picture;
                  profil_picture getattr(picture, 'profil', picture);
-                 default_img request.static_url('novaideo:static/images/user.png');">
+                 default_img request.static_url('novaideo:static/images/user.png');
+                 organization getattr(object, 'organization', None)
+                 ">
   <div role="presentation" class="card-img" 
        style="
-          background: transparent url(${getattr(picture, 'blur', picture).url if picture else request.static_url('novaideo:static/images/background_user.svg')}) no-repeat scroll center center / cover ;">
+          background: transparent url(${getattr(picture, 'blur', picture).url if picture else request.static_url('novaideo:static/images/background_user.png')}) no-repeat scroll center center / cover ;">
     <div class="object-menu pull-right">
         <div tal:replace="structure menu_body"/>
       </div>
@@ -22,8 +24,18 @@
           <small>
             <span>${getattr(object, 'function', '')}</span>
           </small>
-          <div tal:condition="getattr(object, 'organization', None)" class="card-addon-item">
-            <a i18n:attributes="title" title="Organization" tal:attributes="href request.resource_url(object.organization, '@@index')"><span class="glyphicon glyphicon-home"></span> ${object.organization.title}</a>
+          <div tal:condition="organization" class="card-addon-item">
+            <a i18n:attributes="title"
+               title="Organization"
+               tal:attributes="href request.resource_url(organization, '@@index')"
+               tal:define="picture getattr(organization, 'logo', None);
+                           profil_picture getattr(picture, 'profil', None)">
+                <img class="author-img img-circle" 
+                  tal:condition="profil_picture is not None"
+                   tal:attributes="src profil_picture.url"  width="25"/>
+                <span tal:condition="profil_picture is None" class="glyphicon glyphicon-home"></span>
+                ${organization.title}
+            </a>
           </div>
         </div>
       </div>

@@ -204,7 +204,7 @@
           <div class="novaideo-info row"
                tal:define="content panel('novaideo_contents');
                            deadline panel('deadline')" >
-            <div tal:condition="content or deadline" class="col-md-7 column col-md-push-3">
+            <div tal:condition="content or deadline" class="col-md-6 column col-md-push-3">
               ${content}
               ${deadline}
             </div>
@@ -222,7 +222,7 @@
               ${panel('navigation_bar')}
                <div metal:define-slot="left"></div>
             </div>
-            <div class="col-md-7 column ui-sortable novaideo-main">
+            <div class="col-md-6 column ui-sortable novaideo-main">
               <div class="above-content" style="text-align: center;">
               <img class="novaideo-loading-indicator hide-bloc" src="${request.static_url('novaideo:static/images/progress.gif')}"/>
             </div>
@@ -249,7 +249,7 @@
               <div class="below-content"></div>
             </div>
 
-            <div tal:condition="not view_only" class="col-md-2 column ui-sortable novaideo-right">
+            <div tal:condition="not view_only" class="col-md-3 column ui-sortable novaideo-right">
                  <div class="menu-right-toggle top hide-bloc">
                   <span class="glyphicon glyphicon-menu-hamburger" style=""></span>
                 </div>
