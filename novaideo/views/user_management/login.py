@@ -25,7 +25,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView, ViewError
 
 from novaideo.content.interface import IPerson
-from novaideo import _
+from novaideo import _, log
 from novaideo.content.processes.user_management.behaviors import LogIn
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.utilities.util import generate_navbars
@@ -123,8 +123,8 @@ class LoginView(BasicView):
                 node_id='login',
                 descriminators=['body-action'])
             login_bodies = login_navbars['body_actions']
-        except Exception:
-            pass
+        except Exception as e:
+            log.warning(e)
 
         values = dict(
             url=request.resource_url(request.virtual_root, 'login'),

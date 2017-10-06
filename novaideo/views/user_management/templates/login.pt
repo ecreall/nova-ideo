@@ -1,4 +1,5 @@
-<div class="row" i18n:domain="novaideo">
+<div class="row" i18n:domain="novaideo"
+    tal:define="site_id 'Nova-Ideo'">
   <div class="col-sm-12">
        <h2 class="form-signin-heading" ><p class="text-center" i18n:translate="">Log In</p></h2>
        <form action="${url}" method="post"
@@ -19,23 +20,22 @@
          <input type="submit" name="form.submitted"
                 class="btn btn-primary btn-block" i18n:attributes="value"
                 value="Log In" />
-        
-        <div tal:condition="logins">
-          <div class="or-logins" i18n:translate="" >Or</div>
-          <div tal:repeat="body logins">
-                ${structure:body}
-            </div>
-        </div>
-        
 
          <p id="password-reset-link"
               metal:define-macro="password-reset-link">
            <a href="${request.resource_url(request.virtual_root, '@@resetpassword')}" i18n:translate=""
                 >Forgot your password?</a>
          </p>
-
-
        </form>
+
+        <div tal:condition="logins">
+          <div class="or-logins" i18n:translate="" >Or</div>
+          <div tal:repeat="body logins">
+                ${structure:body}
+            </div>
+        </div>
+
+         
   </div>
 </div>
 

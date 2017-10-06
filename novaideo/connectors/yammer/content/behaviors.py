@@ -1,24 +1,16 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms
-# avalaible on http://www.gnu.org/licenses/agpl.html
+# Copyright (c) 2017 by Ecreall under licence AGPL terms
+# available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 
-import transaction
-import datetime
-import pytz
 import io
 from persistent.list import PersistentList
-from persistent.dict import PersistentDict
 
 from pyramid.threadlocal import get_current_request
-from pyramid.security import remember
 from pyramid.httpexceptions import HTTPFound
 
-from substanced.util import get_oid
-from substanced.event import LoggedIn
-from substanced.util import find_service
 import yampy
 
 from dace.processinstance.activity import InfiniteCardinality
@@ -27,90 +19,18 @@ from dace.objectofcollaboration.principal.util import (
     has_any_roles,
     grant_roles,
     get_current)
-from dace.util import name_chooser, find_catalog, getSite, getAllBusinessAction
-from dace.processinstance.core import PROCESS_HISTORY_KEY
+from dace.util import find_catalog, getSite, getAllBusinessAction
 from pontus.file import File
 
-from novaideo import _, my_locale_negotiator
-from novaideo.content.interface import IPerson, INovaIdeoApplication, Iidea
+from novaideo import _
+from novaideo.content.interface import INovaIdeoApplication, Iidea
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.content.idea import Idea
 from novaideo.content.comment import Comment
+from novaideo.connectors.core.content import get_or_create_user, validate_user
+from novaideo.connectors.core import YAMMER_CONNECTOR_ID
 from novaideo.connectors.yammer import IYammerConnector
 from novaideo.utilities.util import html_to_text
-
-
-def create_user(request, appstruct):
-    if appstruct and 'user_data' in appstruct:
-        from novaideo.content.person import Person
-        source_data = appstruct.get('source_data', {})
-        data = appstruct.get('user_data', {})
-        root = getSite()
-        locale = my_locale_negotiator(request)
-        data['locale'] = locale
-        person = Person(**data)
-        person.source_data = PersistentDict(source_data)
-        principals = find_service(root, 'principals')
-        name = person.first_name + ' ' + person.last_name
-        users = principals['users']
-        name = name_chooser(users, name=name)
-        users[name] = person
-        grant_roles(person, roles=('Member',))
-        grant_roles(person, (('Owner', person),))
-        person.state.append('active')
-        person.init_annotations()
-        person.annotations.setdefault(
-            PROCESS_HISTORY_KEY, PersistentList())
-        person.reindex()
-        root.addtoproperty('news_letter_members', person)
-        newsletters = root.get_newsletters_automatic_registration()
-        email = getattr(person, 'email', '')
-        if newsletters and email:
-            for newsletter in newsletters:
-                newsletter.subscribe(
-                    person.first_name, person.last_name, email)
-
-        transaction.commit()
-        return person
-
-    return None
-
-
-def get_or_create_user(request, appstruct, set_source_data=True):
-    user_id = appstruct.get('user_data', {}).get('email', None)
-    novaideo_catalog = find_catalog('novaideo')
-    dace_catalog = find_catalog('dace')
-    identifier_index = novaideo_catalog['identifier']
-    object_provides_index = dace_catalog['object_provides']
-    query = object_provides_index.any([IPerson.__identifier__]) &\
-        identifier_index.any([user_id])
-    users = list(query.execute().all())
-    user = users[0] if users else None
-    if user is None:
-        user = create_user(request, appstruct)
-    elif set_source_data:
-        user.source_data = PersistentDict(appstruct.get('source_data', {}))
-
-    return user
-
-
-def validate_user(context, request, appstruct):
-    user = get_or_create_user(request, appstruct)
-    valid = user and (has_role(user=user, role=('SiteAdmin', )) or
-                      'active' in getattr(user, 'state', []))
-    headers = None
-    if valid:
-        request.session.pop('novaideo.came_from', None)
-        headers = remember(request, get_oid(user))
-        request.registry.notify(
-            LoggedIn(
-                user.email, user,
-                context, request))
-        user.last_connection = datetime.datetime.now(tz=pytz.UTC)
-        if hasattr(user, 'reindex'):
-            user.reindex()
-
-    return user, valid, headers
 
 
 def _get_repleis(request, messages, sourc_id, access_token):
@@ -160,8 +80,8 @@ def get_message_data(request, message_or_id, access_token, include_topics=False,
         user_info = yammer.users.find(user_id)
         user_networks = user_info.get('network_domains')
         source_data = {
-            'app_name': 'yammer',
-            'user_id': user_info.get('id'),
+            'app_name': YAMMER_CONNECTOR_ID,
+            'id': user_info.get('id'),
             'network_domains': user_networks,
             'access_token': None
         }
@@ -255,7 +175,7 @@ def create_processsecurity_validation(process, context):
     if not client_id:
         return False
 
-    yammer_connectors = list(getSite().get_connectors('yammer'))
+    yammer_connectors = list(getSite().get_connectors(YAMMER_CONNECTOR_ID))
     return not yammer_connectors and \
         global_user_processsecurity()
 
@@ -372,19 +292,18 @@ class Import(InfiniteCardinality):
         identifier_index = novaideo_catalog['identifier']
         object_provides_index = dace_catalog['object_provides']
         query = object_provides_index.any([Iidea.__identifier__]) &\
-            identifier_index.any(['yammer_'+i for i in appstruct['messages']])
+            identifier_index.any([YAMMER_CONNECTOR_ID+'_'+i for i in appstruct['messages']])
         ideas = list(query.execute().all())
-        current_ideas = [i.source_data['id'] for i in ideas]
+        current_ideas = [i.source_data[YAMMER_CONNECTOR_ID]['id'] for i in ideas]
         messages = [m for m in appstruct['messages'] if m not in current_ideas]
         if not messages:
             return {}
 
         root = getSite()
-        yammer_connectors = list(root.get_connectors('yammer'))
+        yammer_connectors = list(root.get_connectors(YAMMER_CONNECTOR_ID))
         yammer_connector = yammer_connectors[0] if yammer_connectors else None
-        access_token = getattr(
-            get_current(), 'source_data', {}).get(
-            'access_token', None)
+        access_token = yammer_connector.get_access_tokens(get_current()).get('access_token', None) \
+            if yammer_connector else None
 
         def replies_to_comment(replies, source, comment_action):
             for reply in replies.values():
@@ -433,8 +352,8 @@ class Import(InfiniteCardinality):
                     idea.setproperty('author', author)
                     idea.subscribe_to_channel(author)
                     idea.format(request)
-                    idea.source_data = PersistentDict({
-                        'app_name': 'yammer',
+                    idea.set_source_data({
+                        'app_name': YAMMER_CONNECTOR_ID,
                         'id': m_id
                     })
                     idea.reindex()

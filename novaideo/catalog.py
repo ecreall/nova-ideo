@@ -772,13 +772,12 @@ class SearchableObject(Adapter):
 
     def identifier(self):
         identifiers = [str(get_oid(self.context))]
-        source_id = getattr(self.context, 'source_data', {}).get('id', None)
-        app_name = getattr(self.context, 'source_data', {}).get('app_name', None)
-        if source_id:
-            identifiers.extend([
-                app_name+'_'+source_id,
-                app_name
-                ])
+        source_data = getattr(self.context, 'source_data', {})
+        for app_id, app_data in source_data.items():
+            identifiers.append(app_id)
+            source_id = app_data.get('id', None)
+            if source_id:
+                identifiers.append(app_id+'_'+str(source_id))
 
         return identifiers
 
@@ -825,6 +824,12 @@ class PersonSearch(SearchableObject):
     def identifier(self):
         identifiers = [getattr(self.context, 'identifier', None),
                        getattr(self.context, 'email', None)]
+        source_data = getattr(self.context, 'source_data', {})
+        for app_id, app_data in source_data.items():
+            source_id = app_data.get('id', None)
+            if source_id:
+                identifiers.append(app_id+'_'+str(source_id))
+
         return [i for i in identifiers if i]
 
     def organizations(self):

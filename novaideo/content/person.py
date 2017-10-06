@@ -292,7 +292,6 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         if name == 'organization' and value:
             self.init_contents_organizations()
 
-
     def get_len_tokens(self, root=None, exclude_reserved_tokens=False):
         root = root or getSite()
         return root.tokens_mini if exclude_reserved_tokens \

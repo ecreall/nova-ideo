@@ -1,3 +1,9 @@
+# -*- coding: utf8 -*-
+# Copyright (c) 2017 by Ecreall under licence AGPL terms
+# available on http://www.gnu.org/licenses/agpl.html
+
+# licence: AGPL
+# author: Amen Souissi
 
 import colander
 import deform
@@ -16,6 +22,7 @@ from novaideo.connectors.yammer.views.widget import YammerNotificationWidget
 from novaideo import _
 from novaideo.connectors import IConnector, ConnectorSchema, Connector
 from novaideo.utilities.data_manager import interface
+from novaideo.connectors.core import YAMMER_CONNECTOR_ID
 
 
 @interface()
@@ -153,7 +160,7 @@ class YammerConnector(Connector):
     """YammerConnector class"""
 
     type_title = _('Yammer')
-    connector_id = 'yammer'
+    connector_id = YAMMER_CONNECTOR_ID
     templates = {'default': 'novaideo:connectors/yammer/views/templates/yammer_bloc.pt',
                  'bloc': 'novaideo:connectors/yammer/views/templates/yammer_bloc.pt',
                  'small': 'novaideo:connectors/yammer/views/templates/yammer_bloc.pt',
@@ -189,3 +196,28 @@ class YammerConnector(Connector):
     def get_login_url(self, request):
         redirect_uri = request.resource_url(request.root, 'yammerlogin')
         return self.get_auth_url(redirect_uri)
+
+    def get_access_tokens(self, user):
+        source_data = user.get_source_data(YAMMER_CONNECTOR_ID) if hasattr(user, 'get_source_data') else {}
+        access_token = source_data.get(
+            'access_token', None)
+        return {'access_token': access_token}
+
+    def extract_data(self, sources):
+        access_data = self.authenticator.fetch_access_data(sources)
+        access_token = access_data.access_token.token
+        user_info = access_data.user
+        user_networks = user_info.get('network_domains')
+        source_data = {
+            'app_name': YAMMER_CONNECTOR_ID,
+            'id': user_info.get('id'),
+            'network_domains': user_networks,
+            'access_token': access_token
+        }
+        user_data = {
+            'first_name': user_info.get('first_name'),
+            'last_name': user_info.get('last_name'),
+            'email': user_info.get('email'),
+            'password': None,
+        }
+        return source_data, user_data

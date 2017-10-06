@@ -1,0 +1,4 @@
+<div class="alert alert-warning" i18n:domain="novaideo">
+   <a i18n:translate="" class="pull-right btn btn-warning" style="margin-top: -8px;" href="request.resource_url(request.root, '@@login')}">Try again!</a>
+   <p i18n:translate="">Connection failed</p>
+</div>

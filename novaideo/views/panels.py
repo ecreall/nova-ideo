@@ -726,7 +726,7 @@ class PersonCard(object):
         user = self.request.user
         author = getattr(self.context, 'author', None)
         user_to_display = user if is_root else author
-        if not user_to_display:
+        if not user_to_display or not hasattr(user_to_display, 'templates'):
             return result
 
         result['card'] = render_listing_obj(

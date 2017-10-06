@@ -458,11 +458,15 @@ function init_morecontent_scroll() {
 }
 
 function scroll_to_panel() {
-  var url = document.location.toString()
-  if (url.match("#")) {
-    var panel = $("#" + url.split("#")[1])
-    panel.addClass("in")
-    panel.animate({ scrollTop: 0 }, 800)
+  try {
+    var url = document.location.toString()
+    if (url.match("#")) {
+      var panel = $("#" + url.split("#")[1])
+      panel.addClass("in")
+      panel.animate({ scrollTop: 0 }, 800)
+    }
+  } catch (e) {
+    console.log(e)
   }
 }
 

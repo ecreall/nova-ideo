@@ -1,0 +1,11 @@
+<div tal:omit-tag="" 
+     tal:define="twitter_connectors list(request.root.get_connectors('twitter'));
+	             twitter_connector twitter_connectors[0] if twitter_connectors else None"
+	 i18n:domain="novaideo">
+	 <form class="form-signin-social" tal:condition="twitter_connector" id="${twitter_connector.name}" method="post" action="${twitter_connector.get_login_url(request)}">
+	    <button type="submit" class="btn btn-block btn-social btn-twitter">
+	    <span class="fa fa-twitter"></span>
+	        <span i18n:translate="">Login with</span> Twitter
+	  </button>
+	</form>
+</div>

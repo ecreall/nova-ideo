@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2017 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
@@ -14,7 +15,9 @@ from dace.util import find_catalog
 from pontus.view import BasicView
 
 from novaideo.content.interface import Iidea
+from novaideo.connectors.core import YAMMER_CONNECTOR_ID
 from novaideo import log
+from novaideo.utilities.util import html_to_text
 
 
 def find_yammer_content(interfaces):
@@ -23,7 +26,7 @@ def find_yammer_content(interfaces):
     identifier_index = novaideo_catalog['identifier']
     object_provides_index = dace_catalog['object_provides']
     query = object_provides_index.any([i.__identifier__ for i in interfaces]) &\
-        identifier_index.any(['yammer'])
+        identifier_index.any([YAMMER_CONNECTOR_ID])
     return query.execute().all()
 
 
@@ -44,11 +47,10 @@ class YammerAPI(BasicView):
 
     def find_yammer_messages(self):
         root = self.request.root
-        yammer_connectors = list(root.get_connectors('yammer'))
+        yammer_connectors = list(root.get_connectors(YAMMER_CONNECTOR_ID))
         yammer_connector = yammer_connectors[0] if yammer_connectors else None
-        access_token = getattr(
-            get_current(), 'source_data', {}).get(
-            'access_token', None)
+        access_token = yammer_connector.get_access_tokens(get_current()).get('access_token', None) \
+            if yammer_connector else None
         if yammer_connector and access_token:
             page = self.params('page')
             limit = self.params('limit')
@@ -57,10 +59,10 @@ class YammerAPI(BasicView):
                 messages = yammer.client.get(
                     '/messages', older_than=page, threaded=True, limit=limit)
                 if messages['messages']:
-                    current_ideas = [i.source_data['id']
+                    current_ideas = [i.source_data[YAMMER_CONNECTOR_ID]['id']
                                      for i in find_yammer_content([Iidea])]
                     entries = [{'id': e['id'],
-                                'text': e['body']['plain'][:150]+'...',
+                                'text': html_to_text(e['body']['plain'][:150])+'...',
                                 'imported': str(e['id']) in current_ideas}
                                for e in messages['messages']]
                     return {
