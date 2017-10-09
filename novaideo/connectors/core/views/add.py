@@ -31,8 +31,7 @@ class AddConnectorsView(BasicView):
     template = 'novaideo:connectors/core/views/templates/add_connectors.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     viewid = 'addconnectors'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         self.execute(None)

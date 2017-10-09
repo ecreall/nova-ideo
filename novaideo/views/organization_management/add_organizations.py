@@ -40,6 +40,7 @@ class AddOrganizationsView(FormView):
     behaviors = [AddOrganizations]
     formid = 'formaddorganization'
     name = 'add_organizations'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

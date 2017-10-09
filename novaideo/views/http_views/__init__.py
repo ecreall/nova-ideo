@@ -25,8 +25,7 @@ class NotFoundView(BasicView):
     title = _('Document not found!')
     name = 'notfound'
     template = 'novaideo:views/http_views/templates/404.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
 
     def update(self):
@@ -47,8 +46,7 @@ class InternalServerError(BasicView):
     title = _('An error has occurred!')
     name = 'internalservererror'
     template = 'novaideo:views/http_views/templates/500.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     wrapper_template = 'novaideo:views/http_views/templates/simple_wrapper.pt'
 
     def update(self):
@@ -68,8 +66,7 @@ class InternalServerError(BasicView):
 class ViewErrorToLoginView(ViewErrorView):
     title = _('An error has occurred!')
     name = 'internalservererror'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     wrapper_template = 'novaideo:views/http_views/templates/simple_wrapper.pt'
 
     def update(self):

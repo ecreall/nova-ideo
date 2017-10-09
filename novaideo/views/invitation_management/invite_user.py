@@ -53,6 +53,7 @@ class InviteUserView(FormView):
     behaviors = [InviteUsers, Cancel]
     formid = 'forminviteusers'
     name = 'inviteusers'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         invitations_schema = self.schema.get('invitations').children[0]

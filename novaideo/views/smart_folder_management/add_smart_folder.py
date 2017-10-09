@@ -40,6 +40,7 @@ class AddSmartFolderView(FormView):
     behaviors = [AddSmartFolder, Cancel]
     formid = 'formaddsmartfolder'
     name = 'addsmartfolder'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

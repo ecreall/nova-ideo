@@ -40,6 +40,7 @@ class AddDeadLineView(FormView):
     behaviors = [AddDeadLine, Cancel]
     formid = 'formadddeadline'
     name = 'adddeadline'
+    css_class = 'panel-transparent'
 
     @property
     def requirements(self):

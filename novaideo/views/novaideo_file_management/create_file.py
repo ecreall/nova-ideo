@@ -32,6 +32,7 @@ class CreateFileView(FormView):
     behaviors = [CreateFile, Cancel]
     formid = 'formcreatefile'
     name = 'createfile'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CreateFile: CreateFileView})

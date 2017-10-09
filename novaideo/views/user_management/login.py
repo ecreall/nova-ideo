@@ -44,6 +44,7 @@ class LoginView(BasicView):
     template = 'novaideo:views/user_management/templates/login.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'login'
+    css_class = 'panel-transparent'
 
     def update(self):
         request = self.request

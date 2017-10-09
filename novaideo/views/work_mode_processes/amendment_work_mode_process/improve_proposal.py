@@ -33,6 +33,7 @@ class ImproveProposalView(FormView):
                     ['text'])
     requirements = {'css_links':[],
                     'js_links':['novaideo:static/js/proposal_management.js']}
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

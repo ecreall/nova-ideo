@@ -43,8 +43,7 @@
       <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=18"
             rel="stylesheet"/>
     </div>
-    <link href="${su('daceui:static/css/dace_ui.css')}"
-          rel="stylesheet"/>
+
     <link href="${su('novaideo:static/css/steps/steps.css')}?v=3"
           rel="stylesheet"/>
 

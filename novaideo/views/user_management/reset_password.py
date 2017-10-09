@@ -123,6 +123,7 @@ class ResetRequestView(FormView):
     title = _('Request password reset')
     schema = ResetRequestSchema()
     behaviors = [Send, Cancel]
+    css_class = 'panel-transparent'
 
 
 @view_config(
@@ -171,3 +172,4 @@ class ResetView(FormView):
     title = _('Reset Password')
     schema = ResetSchema()
     behaviors = [Reset, Cancel]
+    css_class = 'panel-transparent'

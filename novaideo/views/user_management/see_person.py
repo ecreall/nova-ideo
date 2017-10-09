@@ -216,8 +216,7 @@ class SeePersonView(MultipleView):
     name = 'seeperson'
     template = 'novaideo:views/templates/entity_multipleview.pt'
     viewid = 'seeperson'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
     views = (DetailsView, PersonContentsView)
     validators = [SeePerson.get_validator()]
 

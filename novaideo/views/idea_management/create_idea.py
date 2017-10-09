@@ -49,6 +49,7 @@ class CreateIdeaView(FormView):
     behaviors = [CrateAndPublishAsProposal, CrateAndPublish, CreateIdea, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         user = get_current(self.request)

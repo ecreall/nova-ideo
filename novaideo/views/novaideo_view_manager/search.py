@@ -70,7 +70,6 @@ class AdvancedSearchView(FilterView):
     behaviors = [Search]
     formid = 'formadvanced_search'
     wrapper_template = 'pontus:templates/views_templates/view_wrapper.pt'
-    container_css_class = 'home'
 
     def update(self):
         self.calculate_posted_filter()
@@ -234,8 +233,7 @@ class SearchResultView(BasicView):
     behaviors = [Search]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         user = get_current()

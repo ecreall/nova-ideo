@@ -43,8 +43,7 @@ class SeeAlertsView(BasicView):
     addon_template = 'novaideo:views/novaideo_view_manager/templates/addon_alerts.pt'
     viewid = 'seealerts'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def update(self):
         user = get_current()

@@ -51,7 +51,7 @@ class ExtractView(FilterView):
     behaviors = [Extract, Cancel]
     formid = 'formextract'
     wrapper_template = 'pontus:templates/views_templates/view_wrapper.pt'
-    container_css_class = 'home'
+    css_class = 'panel-transparent'
 
     def before_update(self):
         self.schema = ExtractionSchema()

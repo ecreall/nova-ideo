@@ -51,6 +51,7 @@ class CreatOrganizationsView(FormView):
     behaviors = [CreatOrganizations, Cancel]
     formid = 'formcreatorganizations'
     name = 'creatorganizations'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({CreatOrganizations: CreatOrganizationsView})

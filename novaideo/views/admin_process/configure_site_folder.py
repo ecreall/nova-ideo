@@ -50,6 +50,7 @@ class ConfigureSiteView(FormView):
     name = 'configuresite'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/contact_management.js']}
+    css_class = 'panel-transparent'
 
     def default_data(self):
         localizer = self.request.localizer

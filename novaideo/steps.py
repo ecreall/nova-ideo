@@ -159,7 +159,8 @@ class StepsPanel(object):
     def __call__(self, context, request):
         self.context = context
         self.request = request
-        if 'proposal' not in self.request.content_to_manage:
+        is_index_view = self.request.view_name in ('index', '', 'novaideoapi')
+        if 'proposal' not in self.request.content_to_manage or not is_index_view:
             return {'condition': False}
 
         result = {}

@@ -7,7 +7,7 @@
                  ">
   <div role="presentation" class="card-img" 
        style="
-          background: transparent url(${request.static_url('novaideo:static/connectors/images/background_connectors.png')}) no-repeat scroll center center / cover ;">
+          background-color: #db4437;">
     <div class="object-menu pull-right">
         <div tal:replace="structure menu_body"/>
       </div>
