@@ -30,6 +30,7 @@ class CreateFacebookConnectorView(FormView):
     behaviors = [CreateConnector, Cancel]
     formid = 'formcreatefacebookconnector'
     name = 'createfacebookconnector'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

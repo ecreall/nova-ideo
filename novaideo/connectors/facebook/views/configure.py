@@ -29,6 +29,7 @@ class ConfigureFacebookConnectorView(FormView):
     behaviors = [Configure, Cancel]
     formid = 'formconfigurefacebookconnector'
     name = 'configurefacebookconnector'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

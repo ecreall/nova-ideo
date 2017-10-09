@@ -30,6 +30,7 @@ class CreateGoogleConnectorView(FormView):
     behaviors = [CreateConnector, Cancel]
     formid = 'formcreategoogleconnector'
     name = 'creategoogleconnector'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

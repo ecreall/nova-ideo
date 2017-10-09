@@ -29,6 +29,7 @@ class ConfigureGoogleConnectorView(FormView):
     behaviors = [Configure, Cancel]
     formid = 'formconfiguregoogleconnector'
     name = 'configuregoogleconnector'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

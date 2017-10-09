@@ -29,6 +29,7 @@ class ConfigureTwitterConnectorView(FormView):
     behaviors = [Configure, Cancel]
     formid = 'formconfiguretwitterconnector'
     name = 'configuretwitterconnector'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         return self.context

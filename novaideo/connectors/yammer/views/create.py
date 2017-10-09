@@ -32,6 +32,7 @@ class CreateYammerConnectorView(FormView):
     behaviors = [CreateConnector, Cancel]
     formid = 'formcreateyammerconnector'
     name = 'createyammerconnector'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

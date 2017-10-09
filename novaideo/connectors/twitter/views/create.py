@@ -30,6 +30,7 @@ class CreateTwitterConnectorView(FormView):
     behaviors = [CreateConnector, Cancel]
     formid = 'formcreatetwitterconnector'
     name = 'createtwitterconnector'
+    css_class = 'panel-transparent'
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
